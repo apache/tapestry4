@@ -39,73 +39,7 @@ import net.sf.tapestry.Tapestry;
  *  Repeatedly renders its wrapped contents while iterating through
  *  a list of values.
  *
- *
- * <table border=1>
- * <tr> 
- *    <th>Parameter</th>
- *    <th>Type</th>
- *    <th>Direction</th>
- *    <th>Required</th> 
- *    <th>Default</th>
- *    <th>Description</th>
- * </tr>
- *
- * <tr>
- *  <td>source</td>
- *  <td>{@link Iterator}
- *		<br>{@link java.util.Collection}
- *      <br>java.lang.Object[]
- *  </td>
- *  <td>in</th>
- *  <td>no</td>
- *  <td>&nbsp;</td>
- *  <td>The source of objects to be iterated, which may be a Collection,
- *  an Iterator or an array of Objects, or a single object (which is
- *  treated as a singleton collection).</td>
- * </tr>
- *
- * <tr>
- *  <td>value</td>
- *  <td>java.lang.Object</td>
- *  <td>out</td>
- *  <td>no</td>
- *  <td>&nbsp;</td>
- *  <td>Used to update the current value on each iteration.
- *  <p>Alternate, wrapped components may access the value via
- *  the {@link #getValue() value property}.</td>
- *  </tr>
- *
- * <tr>
- *	<td>index</td>
- * 	<td>int</td>
- *	<td>out</td>
- *	<td>no</td>
- *	<td>&nbsp;</td>
- *	<td>Used to store the index of the current value within the stream of
- * elements provided by the source parameter.  The index parameter is
- * explicitly updated <em>before</em> the value parameter.
- *
- *	</td> 
- *  </tr>
- *
- *  <tr>
- *		<td>element</td>
- *		<td>{@link String}</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>If specified, then the component acts like an {@link Any}, emitting an open
- *		and close tag before and after each iteration. 
- *		Most often, the element is "tr" when the Foreach is part of an HTML
- *		table.  Any informal parameters
- *		are applied to the tag.  If no element is specified, informal parameters
- *		are ignored.
- *		</td>
- * </tr>
- *
- * </table>
- *
- * <p>Informal parameters are allowed.  A body is allowed (and expected).
+ *  [<a href="../../../../../ComponentReference/Foreach.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

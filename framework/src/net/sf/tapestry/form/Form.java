@@ -56,10 +56,12 @@ import net.sf.tapestry.valid.IValidationDelegate;
 
 /**
  *  Component which contains form element components.  Forms use the
- *  action service to handle the form submission.  A Form will wrap
+ *  action or direct services to handle the form submission.  A Form will wrap
  *  other components and static HTML, including
  *  form components such as {@link Text}, {@link TextField}, {@link Checkbox}, etc.
- *
+ * 
+ *  [<a href="../../../../../ComponentReference/Form.html">Component Reference</a>]
+ * 
  *  <p>When a form is submitted, it continues through the rewind cycle until
  *  <em>after</em> all of its wrapped elements have renderred.  As the form
  *  component render (in the rewind cycle), they will be updating
@@ -72,80 +74,6 @@ import net.sf.tapestry.valid.IValidationDelegate;
  *  <p>Starting in release 1.0.2, a Form can use either the direct service or
  *  the action service.  The default is the direct service, even though
  *  in earlier releases, only the action service was available.
- *
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction</td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- *  <tr>
- *    <td>method</td>
- *    <td>java.lang.String</td>
- *    <td>in</td>
- *   	<td>no</td>
- *		<td>post</td>
- *		<td>The value to use for the method attribute of the &lt;form&gt; tag.</td>
- *	</tr>
- *
- *
- *  <tr>
- *    <td>listener</td>
- *    <td>{@link IActionListener}</td>
- * 	  <td>in</td>
- * 	  <td>yes</td>
- *	  <td>&nbsp;</td>
- *	  <td>The listener, informed <em>after</em> the wrapped components of the form
- *	      have had a chance to absorb the request.</td>
- *	</tr>
- *
- * <tr>
- *	<td>stateful</td>
- *  <td>boolean</td>
- *	<td>in</td>
- *	<td>no</td>
- *	<td>true</td>
- *	<td>If true (the default), then the component requires an active (i.e., non-new)
- *  {@link javax.servlet.http.HttpSession} when triggered.  Failing that, it throws a {@link StaleLinkException}.
- *  If false, then no check is necessary.  Generally, forms are stateful, but it is possible
- *  to put a stateless form onto the Home page of an application.</td>
- * </tr>
- *
- * <tr>
- *		<td>direct</td>
- *		<td>boolean</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>true</td>
- *		<td>If true (the default), then the direct service is used for the form.  This
- *  decreases the amount of work required to process the form submission, and is acceptible
- *  for most forms, even those that contain 
- *  {@link net.sf.tapestry.components.Foreach}es (but not those that are
- *  inside a {@link net.sf.tapestry.components.Foreach}.
- *
- *  <p>An abbreviated form of the rewind cycle takes place, that only references the form
- *  and the components it wraps.
- *  </td>
- * </tr>
- *
- *  <tr>
- *      <td>delegate</td>
- *      <td>{@link IValidationDelegate}</td>
- *      <td>in</td>
- *      <td>yes</td>
- *      <td>&nbsp;</td>
- *      <td>Object used to assist in error tracking and reporting.  A single
- *  instance is shared by all {@link net.sf.tapestry.valid.ValidField} and
- *  {@link net.sf.tapestry.valid.FieldLabel} in a single form.</td>
- *  </tr>
- *
- *	</table>
- *
- * <p>Informal parameters are allowed.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

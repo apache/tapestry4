@@ -38,27 +38,7 @@ import net.sf.tapestry.RequiredParameterException;
 /**
  *  Implements a &lt;frame&gt; within a &lt;frameset&gt;.
  * 
- *  <table border=1>
- *  <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *    <td>Direction </td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- *  </tr>
- *
- *   <tr>
- *    <td>page</td>
- *    <td>{@link String}</td>
- *    <td>in</td>
- *      <td>yes</td>
- *      <td>&nbsp;</td>
- *      <td>The page to display in the frame.</td>
- *   </tr>
- *   </table>
- *
- *  <p>Informal parameters are allowed, but a body is not.
+ *  [<a href="../../../../../ComponentReference/Frame.html">Component Reference</a>]
  * 
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -67,7 +47,7 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class Frame extends AbstractComponent
 {
-	private String targetPage;
+	private String _targetPage;
 	    
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
@@ -77,7 +57,7 @@ public class Frame extends AbstractComponent
         IEngine engine = cycle.getEngine();
         IEngineService pageService = engine.getService(IEngineService.PAGE_SERVICE);
         
-        Gesture g = pageService.buildGesture(cycle, this, new String[] { targetPage });
+        Gesture g = pageService.buildGesture(cycle, this, new String[] { _targetPage });
         
         writer.beginEmpty("frame");
         writer.attribute("src", g.getURL());
@@ -90,12 +70,12 @@ public class Frame extends AbstractComponent
 
     public String getTargetPage()
     {
-        return targetPage;
+        return _targetPage;
     }
 
     public void setTargetPage(String targetPage)
     {
-        this.targetPage = targetPage;
+        _targetPage = targetPage;
     }
 
 }

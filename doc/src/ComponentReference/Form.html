@@ -91,8 +91,7 @@
   <tr>
  		<td>listener</td>
 		<td>
-		 <a href="../api/net/sf/tapestry/IActionListener.html"><tt>
-		 IActionListener</tt></a>
+		 <a href="../api/net/sf/tapestry/IActionListener.html"><tt>IActionListener</tt></a>
 		</td>
 		<td>in</td>
 		<td>yes</td>
@@ -103,8 +102,7 @@
 	</tr>
   <tr>
     <td>delegate</td>
-    <td><a href="../api/net/sf/tapestry/valid/IValidationDelegate.html"><tt>
-		IValidationDelegate</tt></a>
+    <td><a href="../api/net/sf/tapestry/valid/IValidationDelegate.html"><tt>IValidationDelegate</tt></a>
 		</td>
     <td>in</td>
    	<td>no</td>
@@ -122,8 +120,8 @@
 		<td>true</td>
 		<td>If true (the default), then the component requires an active 
 		(i.e., non-new) HttpSession when triggered. Failing that, it throws a 
-		<a href="../api/net/sf/tapestry/StaleLinkException.html"><tt>
-		StaleLinkException</tt></a>. If false, then no check is necessary. 
+		<a href="../api/net/sf/tapestry/StaleLinkException.html"><tt>StaleLinkException</tt></a>. 
+		If false, then no check is necessary. 
 		Generally, forms are stateful, but it is possible to put a stateless form 
 		onto the Home page of an application.
 		</td>
@@ -137,7 +135,7 @@
 		<td>If true (the default), then the direct service is used for the form. 
 		This decreases the amount of work required to process the form submission, 
 		and is acceptible for most forms, even those that contain Foreaches (but 
-		not those that are inside a Foreach. An abbreviated form of the rewind 
+		not those that are inside a Foreach). An abbreviated form of the rewind 
 		cycle takes place, that only references the form and the components it wraps. 
 		</td>
 	</tr>
@@ -194,16 +192,16 @@
 
 
 &lt;component id="<span class="jwcid">loginForm</span>" type="<a href="Form.html">Form</a>"&gt;
-   &lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
+   &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
 
 &lt;component id="usernameTextField" type="<a href="TextField.html">TextField</a>"&gt;
-   &lt;binding name="value" property-path="visit.username"/&gt;
+   &lt;binding name="value" expression="visit.username"/&gt;
 &lt;/component&gt;
 
 &lt;component id="passwordTextField" type="<a href="TextField.html">TextField</a>"&gt;
-   &lt;binding name="value" property-path="visit.password"/&gt;
-   &lt;static-binding name="hidden"&gt;true&lt;/static-binding&gt;
+   &lt;binding name="value" expression="visit.password"/&gt;
+   &lt;field-binding name="hidden" field-name="Boolean.TRUE"/&gt;
 &lt;/component&gt;
 
 
