@@ -52,6 +52,8 @@ public abstract class TableColumns extends AbstractTableViewComponent
 
     public abstract IAsset getArrowUpAsset();
 
+    public abstract void setColumn(ITableColumn column);
+
     // Transient
     private ITableColumn m_objTableColumn = null;
 
@@ -76,9 +78,8 @@ public abstract class TableColumns extends AbstractTableViewComponent
     {
         m_objTableColumn = tableColumn;
 
-        IBinding objColumnBinding = getBinding("column");
-        if (objColumnBinding != null)
-            objColumnBinding.setObject(tableColumn);
+        if (isParameterBound("column"))
+            setColumn(tableColumn);
     }
 
     /**
@@ -104,6 +105,8 @@ public abstract class TableColumns extends AbstractTableViewComponent
                 getTableModelSource());
     }
 
+    public abstract String getColumnClassParameter();
+
     /**
      * Returns the CSS class of the generated table cell. It uses the class parameter if it has been
      * bound, or the default value of "[column name]ColumnHeader" otherwise.
@@ -112,11 +115,10 @@ public abstract class TableColumns extends AbstractTableViewComponent
      */
     public String getColumnClass()
     {
-        IBinding objClassBinding = getBinding("class");
-        if (objClassBinding != null)
-            return objClassBinding.getString();
-        else
-            return getTableColumn().getColumnName() + TABLE_COLUMN_CSS_CLASS_SUFFIX;
+        if (isParameterBound("class"))
+            return getColumnClassParameter();
+
+        return getTableColumn().getColumnName() + TABLE_COLUMN_CSS_CLASS_SUFFIX;
     }
 
     /**
@@ -127,16 +129,21 @@ public abstract class TableColumns extends AbstractTableViewComponent
         Object oldValueUp = cycle.getAttribute(TABLE_COLUMN_ARROW_UP_ATTRIBUTE);
         Object oldValueDown = cycle.getAttribute(TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE);
 
-        cycle.setAttribute(TABLE_COLUMN_ARROW_UP_ATTRIBUTE, getArrowUpAsset());
-        cycle.setAttribute(TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE, getArrowDownAsset());
+        try
+        {
+            cycle.setAttribute(TABLE_COLUMN_ARROW_UP_ATTRIBUTE, getArrowUpAsset());
+            cycle.setAttribute(TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE, getArrowDownAsset());
 
-        super.renderComponent(writer, cycle);
+            super.renderComponent(writer, cycle);
+        }
+        finally
+        {
+            cycle.setAttribute(TABLE_COLUMN_ARROW_UP_ATTRIBUTE, oldValueUp);
+            cycle.setAttribute(TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE, oldValueDown);
 
-        cycle.setAttribute(TABLE_COLUMN_ARROW_UP_ATTRIBUTE, oldValueUp);
-        cycle.setAttribute(TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE, oldValueDown);
-
-        // set the current column to null when the component is not active
-        m_objTableColumn = null;
+            // set the current column to null when the component is not active
+            m_objTableColumn = null;
+        }
     }
 
 }

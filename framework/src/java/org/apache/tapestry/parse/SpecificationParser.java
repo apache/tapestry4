@@ -315,11 +315,6 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         CONVERSION_MAP.put("page", BeanLifecycle.PAGE);
         CONVERSION_MAP.put("render", BeanLifecycle.RENDER);
 
-        CONVERSION_MAP.put("in", Direction.IN);
-        CONVERSION_MAP.put("form", Direction.FORM);
-        CONVERSION_MAP.put("custom", Direction.CUSTOM);
-        CONVERSION_MAP.put("auto", Direction.AUTO);
-
         _parserFactory.setNamespaceAware(false);
         _parserFactory.setValidating(true);
     }
@@ -1229,9 +1224,16 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         ps.setPropertyName(propertyName);
 
         ps.setRequired(getBooleanAttribute("required", false));
+        
+        // TODO: This should be like a binding, qualified with ognl: or whatnot
+        
         ps.setDefaultValue(getAttribute("default-value"));
-        ps.setDirection((Direction) getConvertedAttribute("direction", Direction.CUSTOM));
+        
+        // Direction can be specified in the 3.0 DTD but is now ignored.
+        // 3.1 automagically handles parameters.
 
+        // type will only be specified in a 3.0 DTD.
+        
         String type = getAttribute("type"); // Current, 3.0+ DTD
 
         if (type != null)

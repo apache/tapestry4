@@ -60,7 +60,7 @@ public abstract class Input extends AbstractComponent
 
             renderInformalParameters(writer, cycle);
 
-            String value = readValue();
+            String value = getValue();
             if (Tapestry.isNonBlank(value))
                 writer.attribute("value", value);
 
@@ -78,9 +78,6 @@ public abstract class Input extends AbstractComponent
 
     public abstract boolean isEmptyok();
 
-    public String readValue()
-    {
-        return getBinding("value").getString();
-    }
+    public abstract String getValue();
 
 }

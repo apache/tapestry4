@@ -40,82 +40,77 @@ import org.apache.tapestry.util.StringSplitter;
 import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
- *  Component which contains form element components.  Forms use the
- *  action or direct services to handle the form submission.  A Form will wrap
- *  other components and static HTML, including
- *  form components such as {@link TextArea}, {@link TextField}, {@link Checkbox}, etc.
+ * Component which contains form element components. Forms use the action or direct services to
+ * handle the form submission. A Form will wrap other components and static HTML, including form
+ * components such as {@link TextArea},{@link TextField},{@link Checkbox}, etc. [ <a
+ * href="../../../../../ComponentReference/Form.html">Component Reference </a>]
+ * <p>
+ * When a form is submitted, it continues through the rewind cycle until <em>after</em> all of its
+ * wrapped elements have renderred. As the form component render (in the rewind cycle), they will be
+ * updating properties of the containing page and notifying thier listeners. Again: each form
+ * component is responsible not only for rendering HTML (to present the form), but for handling it's
+ * share of the form submission.
+ * <p>
+ * Only after all that is done will the Form notify its listener.
+ * <p>
+ * Starting in release 1.0.2, a Form can use either the direct service or the action service. The
+ * default is the direct service, even though in earlier releases, only the action service was
+ * available.
  * 
- *  [<a href="../../../../../ComponentReference/Form.html">Component Reference</a>]
- * 
- *  <p>When a form is submitted, it continues through the rewind cycle until
- *  <em>after</em> all of its wrapped elements have renderred.  As the form
- *  component render (in the rewind cycle), they will be updating
- *  properties of the containing page and notifying thier listeners.  Again:
- *  each form component is responsible not only for rendering HTML (to present the
- *  form), but for handling it's share of the form submission.
- *
- *  <p>Only after all that is done will the Form notify its listener.
- *
- *  <p>Starting in release 1.0.2, a Form can use either the direct service or
- *  the action service.  The default is the direct service, even though
- *  in earlier releases, only the action service was available.
- *
- *  @author Howard Lewis Ship, David Solis
- **/
+ * @author Howard Lewis Ship, David Solis
+ */
 
 public abstract class Form extends AbstractComponent implements IForm, IDirect
 {
     private static class HiddenValue
     {
         String _name;
+
         String _value;
+
         String _id;
 
         private HiddenValue(String name, String value)
         {
-			this(name, null, value);
+            this(name, null, value);
         }
 
-		private HiddenValue(String name, String id, String value)
-		{
-			_name	= name;
-			_id		= id;
-			_value	= value;
-		}
+        private HiddenValue(String name, String id, String value)
+        {
+            _name = name;
+            _id = id;
+            _value = value;
+        }
     }
 
     private boolean _rewinding;
-    private boolean _rendering;
+
     private String _name;
 
     /**
-     *  Used when rewinding the form to figure to match allocated ids (allocated during
-     *  the rewind) against expected ids (allocated in the previous request cycle, when
-     *  the form was rendered).
+     * Used when rewinding the form to figure to match allocated ids (allocated during the rewind)
+     * against expected ids (allocated in the previous request cycle, when the form was rendered).
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     private int _allocatedIdIndex;
 
     /**
-     *  The list of allocated ids for form elements within this form.  This list
-     *  is constructed when a form renders, and is validated against when the
-     *  form is rewound.
+     * The list of allocated ids for form elements within this form. This list is constructed when a
+     * form renders, and is validated against when the form is rewound.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     private List _allocatedIds = new ArrayList();
 
     /**
-     *  {@link Map}, keyed on {@link FormEventType}.  Values are either a String (the name
-     *  of a single event), or a {@link List} of Strings.
-     *
-     *  @since 1.0.2
-     **/
+     * {@link Map}, keyed on {@link FormEventType}. Values are either a String (the name of a
+     * single event), or a {@link List}of Strings.
+     * 
+     * @since 1.0.2
+     */
 
     private Map _events;
 
@@ -128,12 +123,10 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     private List _hiddenValues;
 
     /**
-     *  Returns the currently active {@link IForm}, or null if no form is
-     *  active.  This is a convienience method, the result will be
-     *  null, or an instance of {@link IForm}, but not necessarily a
-     *  <code>Form</code>.
-     *
-     **/
+     * Returns the currently active {@link IForm}, or null if no form is active. This is a
+     * convienience method, the result will be null, or an instance of {@link IForm}, but not
+     * necessarily a <code>Form</code>.
+     */
 
     public static IForm get(IRequestCycle cycle)
     {
@@ -141,39 +134,36 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
-     *  Indicates to any wrapped form components that they should respond to the form
-     *  submission.
-     *
-     *  @throws ApplicationRuntimeException if not rendering.
-     **/
+     * Indicates to any wrapped form components that they should respond to the form submission.
+     * 
+     * @throws ApplicationRuntimeException
+     *             if not rendering.
+     */
 
     public boolean isRewinding()
     {
-        if (!_rendering)
+        if (!isRendering())
             throw Tapestry.createRenderOnlyPropertyException(this, "rewinding");
 
         return _rewinding;
     }
 
     /**
-     *  Returns true if this Form is configured to use the direct
-     *  service.
-     *
-     *  <p>This is derived from the direct parameter, and defaults
-     *  to true if not bound.
-     *
-     *  @since 1.0.2
-     **/
+     * Returns true if this Form is configured to use the direct service.
+     * <p>
+     * This is derived from the direct parameter, and defaults to true if not bound.
+     * 
+     * @since 1.0.2
+     */
 
     public abstract boolean isDirect();
 
     /**
-     *  Returns true if the stateful parameter is bound to
-     *  a true value.  If stateful is not bound, also returns
-     *  the default, true.
-     *
-     *  @since 1.0.1
-     **/
+     * Returns true if the stateful parameter is bound to a true value. If stateful is not bound,
+     * also returns the default, true.
+     * 
+     * @since 1.0.1
+     */
 
     public boolean getRequiresSession()
     {
@@ -181,16 +171,15 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
-     *  Constructs a unique identifier (within the Form).  The identifier
-     *  consists of the component's id, with an index number added to
-     *  ensure uniqueness.
-     *
-     *  <p>Simply invokes {@link #getElementId(org.apache.tapestry.form.IFormComponent, java.lang.String)}
-     *  with the component's id.
-     *
-     *
-     *  @since 1.0.2
-     **/
+     * Constructs a unique identifier (within the Form). The identifier consists of the component's
+     * id, with an index number added to ensure uniqueness.
+     * <p>
+     * Simply invokes
+     * {@link #getElementId(org.apache.tapestry.form.IFormComponent, java.lang.String)}with the
+     * component's id.
+     * 
+     * @since 1.0.2
+     */
 
     public String getElementId(IFormComponent component)
     {
@@ -198,17 +187,14 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
-     *  Constructs a unique identifier from the base id.  If possible, the
-     *  id is used as-is.  Otherwise, a unique identifier is appended
-     *  to the id.
-     *
-     *  <p>This method is provided simply so that some components
-     * ({@link ImageSubmit}) have more specific control over
-     *  their names.
-     *
-     *  @since 1.0.3
-     *
-     **/
+     * Constructs a unique identifier from the base id. If possible, the id is used as-is.
+     * Otherwise, a unique identifier is appended to the id.
+     * <p>
+     * This method is provided simply so that some components ({@link ImageSubmit}) have more
+     * specific control over their names.
+     * 
+     * @since 1.0.3
+     */
 
     public String getElementId(IFormComponent component, String baseId)
     {
@@ -218,28 +204,19 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         {
             if (_allocatedIdIndex >= _allocatedIds.size())
             {
-                throw new StaleLinkException(
-                    Tapestry.format(
+                throw new StaleLinkException(Tapestry.format(
                         "Form.too-many-ids",
                         getExtendedId(),
                         Integer.toString(_allocatedIds.size()),
-                        component.getExtendedId()),
-                    this);
+                        component.getExtendedId()), this);
             }
 
             String expected = (String) _allocatedIds.get(_allocatedIdIndex);
 
             if (!result.equals(expected))
-                throw new StaleLinkException(
-                    Tapestry.format(
-                        "Form.id-mismatch",
-                        new Object[] {
-                            getExtendedId(),
-                            Integer.toString(_allocatedIdIndex + 1),
-                            expected,
-                            result,
-                            component.getExtendedId()}),
-                    this);
+                throw new StaleLinkException(Tapestry.format("Form.id-mismatch", new Object[]
+                { getExtendedId(), Integer.toString(_allocatedIdIndex + 1), expected, result,
+                        component.getExtendedId() }), this);
         }
         else
         {
@@ -254,47 +231,39 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
-     *  Returns the name generated for the form.  This is used to faciliate
-     *  components that write JavaScript and need to access the form or
-     *  its contents.
-     *
-     *  <p>This value is generated when the form renders, and is not cleared.
-     *  If the Form is inside a {@link org.apache.tapestry.components.Foreach}, 
-     *  this will be the most recently
-     *  generated name for the Form.
-     *
-     *  <p>This property is exposed so that sophisticated applications can write
-     *  JavaScript handlers for the form and components within the form.
-     *
-     *  @see AbstractFormComponent#getName()
-     *
-     **/
+     * Returns the name generated for the form. This is used to faciliate components that write
+     * JavaScript and need to access the form or its contents.
+     * <p>
+     * This value is generated when the form renders, and is not cleared. If the Form is inside a
+     * {@link org.apache.tapestry.components.Foreach}, this will be the most recently generated
+     * name for the Form.
+     * <p>
+     * This property is exposed so that sophisticated applications can write JavaScript handlers for
+     * the form and components within the form.
+     * 
+     * @see AbstractFormComponent#getName()
+     */
 
     public String getName()
     {
         return _name;
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     protected void prepareForRender(IRequestCycle cycle)
     {
         super.prepareForRender(cycle);
 
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("Form.forms-may-not-nest"),
-                this,
-                null,
-                null);
+            throw new ApplicationRuntimeException(Tapestry.getMessage("Form.forms-may-not-nest"),
+                    this, null, null);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
     }
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
-        _rendering = false;
-
         _allocatedIdIndex = 0;
         _allocatedIds.clear();
 
@@ -319,10 +288,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     protected void writeAttributes(IMarkupWriter writer, ILink link)
     {
-        String method = getMethod();
-
         writer.begin(getTag());
-        writer.attribute("method", (method == null) ? "post" : method);
+        writer.attribute("method", getMethod());
         writer.attribute("name", _name);
         writer.attribute("action", link.getURL(null, false));
 
@@ -341,8 +308,6 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         _rewinding = rewound;
 
         _allocatedIdIndex = 0;
-
-        _rendering = true;
 
         if (rewound)
         {
@@ -375,10 +340,10 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
         if (renderForm)
         {
-            // What's this for?  It's part of checking for stale links.  
+            // What's this for? It's part of checking for stale links.
             // We record the list of allocated ids.
             // On rewind, we check that the stored list against which
-            // ids were allocated.  If the persistent state of the page or
+            // ids were allocated. If the persistent state of the page or
             // application changed between render (previous request cycle)
             // and rewind (current request cycle), then the list
             // of ids will change as well.
@@ -400,20 +365,18 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             int expected = _allocatedIds.size();
 
             // The other case, _allocatedIdIndex > expected, is
-            // checked for inside getElementId().  Remember that
+            // checked for inside getElementId(). Remember that
             // _allocatedIdIndex is incremented after allocating.
 
             if (_allocatedIdIndex < expected)
             {
                 String nextExpectedId = (String) _allocatedIds.get(_allocatedIdIndex);
 
-                throw new StaleLinkException(
-                    Tapestry.format(
+                throw new StaleLinkException(Tapestry.format(
                         "Form.too-few-ids",
                         getExtendedId(),
                         Integer.toString(expected - _allocatedIdIndex),
-                        nextExpectedId),
-                    this);
+                        nextExpectedId), this);
             }
 
             IActionListener listener = getListener();
@@ -428,11 +391,10 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
-     *  Adds an additional event handler.
-     *
-     *  @since 1.0.2
+     * Adds an additional event handler.
      * 
-     **/
+     * @since 1.0.2
+     */
 
     public void addEventHandler(FormEventType type, String functionName)
     {
@@ -441,7 +403,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
         Object value = _events.get(type);
 
-        // The value can either be a String, or a List of String.  Since
+        // The value can either be a String, or a List of String. Since
         // it is rare for there to be more than one event handling function,
         // we start with just a String.
 
@@ -479,11 +441,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         Body body = Body.get(cycle);
 
         if (body == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("Form.needs-body-for-event-handlers"),
-                this,
-                null,
-                null);
+            throw new ApplicationRuntimeException(Tapestry
+                    .getMessage("Form.needs-body-for-event-handlers"), this, null, null);
 
         StringBuffer buffer = new StringBuffer();
 
@@ -501,7 +460,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             buffer.append(type.getPropertyName());
             buffer.append(" = ");
 
-            // The typical case; one event one event handler.  Easy enough.
+            // The typical case; one event one event handler. Easy enough.
 
             if (value instanceof String)
             {
@@ -556,11 +515,10 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
-     *  Simply invokes {@link #render(IMarkupWriter, IRequestCycle)}.
-     *
-     *  @since 1.0.2
+     * Simply invokes {@link #render(IMarkupWriter, IRequestCycle)}.
      * 
-     **/
+     * @since 1.0.2
+     */
 
     public void rewind(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -568,11 +526,10 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
-     *  Method invoked by the direct service.
-     *
-     *  @since 1.0.2
-     *
-     **/
+     * Method invoked by the direct service.
+     * 
+     * @since 1.0.2
+     */
 
     public void trigger(IRequestCycle cycle)
     {
@@ -582,12 +539,10 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
-     *  Builds the EngineServiceLink for the form, using either the direct or
-     *  action service. 
-     *
-     *  @since 1.0.3
-     *
-     **/
+     * Builds the EngineServiceLink for the form, using either the direct or action service.
+     * 
+     * @since 1.0.3
+     */
 
     private ILink getLink(IRequestCycle cycle, String actionId)
     {
@@ -603,7 +558,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
         // A single service parameter is used to store the actionId.
 
-        return service.getLink(cycle, this, new String[] { actionId });
+        return service.getLink(cycle, this, new String[]
+        { actionId });
     }
 
     private void writeLinkParameters(IMarkupWriter writer, ILink link, boolean reserveOnly)
@@ -625,37 +581,33 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
-     *  @since 3.0
-     *
-     **/
+     * @since 3.0
+     */
 
     protected void writeHiddenField(IMarkupWriter writer, String name, String value)
     {
-		writeHiddenField(writer, name, null, value);
+        writeHiddenField(writer, name, null, value);
     }
 
-	protected void writeHiddenField(IMarkupWriter writer, String name, String id, String value)
-	{
-		writer.beginEmpty("input");
-		writer.attribute("type", "hidden");
-		writer.attribute("name", name);
+    protected void writeHiddenField(IMarkupWriter writer, String name, String id, String value)
+    {
+        writer.beginEmpty("input");
+        writer.attribute("type", "hidden");
+        writer.attribute("name", name);
 
-		if(id != null && id.length() != 0)
-			writer.attribute("id", id);
-		
-		writer.attribute("value", value);
-		writer.println();
-	}
+        if (id != null && id.length() != 0)
+            writer.attribute("id", id);
+
+        writer.attribute("value", value);
+        writer.println();
+    }
 
     /**
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
-    private void writeHiddenFieldsForParameter(
-        IMarkupWriter writer,
-        ILink link,
-        String parameterName)
+    private void writeHiddenFieldsForParameter(IMarkupWriter writer, ILink link,
+            String parameterName)
     {
         String[] values = link.getParameterValues(parameterName);
 
@@ -666,13 +618,12 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
-     *  Converts the allocateIds property into a string, a comma-separated list of ids.
-     *  This is included as a hidden field in the form and is used to identify
-     *  discrepencies when the form is submitted.
+     * Converts the allocateIds property into a string, a comma-separated list of ids. This is
+     * included as a hidden field in the form and is used to identify discrepencies when the form is
+     * submitted.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     protected String buildAllocatedIdList()
     {
@@ -691,14 +642,12 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
-     *  Converts a string passed as a parameter (and containing a comma
-     *  separated list of ids) back into the allocateIds property.
+     * Converts a string passed as a parameter (and containing a comma separated list of ids) back
+     * into the allocateIds property.
      * 
-     *  @see #buildAllocatedIdList()
-     * 
-     *  @since 3.0
-     * 
-     **/
+     * @see #buildAllocatedIdList()
+     * @since 3.0
+     */
 
     protected void reconstructAllocatedIds(String storedIdList)
     {
@@ -721,51 +670,36 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     public abstract IActionListener getListener();
 
+    public abstract void setMethod(String method);
+
     public abstract String getMethod();
 
-    /**
-     *  Invoked when not rendering, so it uses the stateful binding.
-     *  If not bound, returns true.
-     * 
-     **/
-
-    public boolean isStateful()
-    {
-        IBinding statefulBinding = getBinding("stateful");
-
-        if (statefulBinding == null)
-            return true;
-
-        return statefulBinding.getBoolean();
-    }
+    public abstract boolean isStateful();
 
     protected void finishLoad()
     {
         setDirect(true);
+        setMethod("post");
     }
 
     public void setEncodingType(String encodingType)
     {
         if (_encodingType != null && !_encodingType.equals(encodingType))
-            throw new ApplicationRuntimeException(
-                Tapestry.format(
+            throw new ApplicationRuntimeException(Tapestry.format(
                     "Form.encoding-type-contention",
                     getExtendedId(),
                     _encodingType,
-                    encodingType),
-                this,
-                null,
-                null);
+                    encodingType), this, null, null);
 
         _encodingType = encodingType;
     }
 
     /**
-     *  Returns the tag of the form.
-     *
-     *  @since 3.0
-     *
-     **/
+     * Returns the tag of the form. The WML equivalent, {@link org.apache.tapestry.wml.Go},
+     * overrides this.
+     * 
+     * @since 3.0
+     */
 
     protected String getTag()
     {
@@ -773,11 +707,11 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
-     * Returns the name of the element.
-     *
-     *
-     *  @since 3.0
-     **/
+     * Returns the name of the element. The WML equivalent, {@link org.apache.tapestry.wml.Go},
+     * overrides this.
+     * 
+     * @since 3.0
+     */
 
     protected String getDisplayName()
     {
@@ -788,25 +722,25 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     public void addHiddenValue(String name, String value)
     {
-		if (_hiddenValues == null)
-			_hiddenValues = new ArrayList();
+        if (_hiddenValues == null)
+            _hiddenValues = new ArrayList();
 
-		_hiddenValues.add(new HiddenValue(name, value));
+        _hiddenValues.add(new HiddenValue(name, value));
     }
 
-	/** @since 3.0 */
+    /** @since 3.0 */
 
-	public void addHiddenValue(String name, String id, String value)
-	{
-		if (_hiddenValues == null)
-			_hiddenValues = new ArrayList();
+    public void addHiddenValue(String name, String id, String value)
+    {
+        if (_hiddenValues == null)
+            _hiddenValues = new ArrayList();
 
-		_hiddenValues.add(new HiddenValue(name, id, value));
-	}
+        _hiddenValues.add(new HiddenValue(name, id, value));
+    }
 
-    /** 
-     * Writes hidden values accumulated during the render
-     * (by components invoking {@link #addHiddenValue(String, String)}.
+    /**
+     * Writes hidden values accumulated during the render (by components invoking
+     * {@link #addHiddenValue(String, String)}.
      * 
      * @since 3.0
      */

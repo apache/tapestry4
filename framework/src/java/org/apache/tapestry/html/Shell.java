@@ -24,27 +24,26 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
 /**
- *  Component for creating a standard 'shell' for a page, which comprises
- *  the &lt;html&gt; and &lt;head&gt; portions of the page.
+ * Component for creating a standard 'shell' for a page, which comprises the &lt;html&gt; and
+ * &lt;head&gt; portions of the page. [ <a
+ * href="../../../../../ComponentReference/Shell.html">Component Reference </a>]
+ * <p>
+ * Specifically does <em>not</em> provide a &lt;body&gt; tag, that is usually accomplished using a
+ * {@link Body}component.
  * 
- *  [<a href="../../../../../ComponentReference/Shell.html">Component Reference</a>]
- *
- *  <p>Specifically does <em>not</em> provide a &lt;body&gt; tag, that is
- *  usually accomplished using a {@link Body} component.
- *
- *  @author Howard Lewis Ship
- * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class Shell extends AbstractComponent
 {
 
-    private static final String generatorContent =
-        "Tapestry Application Framework, version " + Tapestry.VERSION;
+    private static final String generatorContent = "Tapestry Application Framework, version "
+            + Tapestry.VERSION;
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -75,8 +74,9 @@ public abstract class Shell extends AbstractComponent
             writer.attribute("content", generatorContent);
             writer.println();
 
-            if (getRenderContentType()) {
-                // This should not be necessary (the HTTP content type should be sufficient), 
+            if (getRenderContentType())
+            {
+                // This should not be necessary (the HTTP content type should be sufficient),
                 // but some browsers require it for some reason
                 writer.beginEmpty("meta");
                 writer.attribute("http-equiv", "Content-Type");
@@ -100,16 +100,15 @@ public abstract class Shell extends AbstractComponent
             if (stylesheet != null)
                 writeStylesheetLink(writer, cycle, stylesheet);
 
-            Iterator i = Tapestry.coerceToIterator(getStylesheets());
+            Iterator i = (Iterator) getValueConverter().coerceValue(
+                    getStylesheets(),
+                    Iterator.class);
 
-            if (i != null)
+            while (i.hasNext())
             {
-                while (i.hasNext())
-                {
-                    stylesheet = (IAsset) i.next();
+                stylesheet = (IAsset) i.next();
 
-                    writeStylesheetLink(writer, cycle, stylesheet);
-                }
+                writeStylesheetLink(writer, cycle, stylesheet);
             }
 
             writeRefresh(writer, cycle);
@@ -137,7 +136,8 @@ public abstract class Shell extends AbstractComponent
     {
         // This code is deprecated and is here only for backward compatibility
         String DTD = getDTD();
-        if (Tapestry.isNonBlank(DTD)) {
+        if (Tapestry.isNonBlank(DTD))
+        {
             writer.printRaw("<!DOCTYPE HTML PUBLIC \"" + DTD + "\">");
             writer.println();
             return;
@@ -145,7 +145,8 @@ public abstract class Shell extends AbstractComponent
 
         // This is the real code
         String doctype = getDoctype();
-        if (Tapestry.isNonBlank(doctype)) {
+        if (Tapestry.isNonBlank(doctype))
+        {
             writer.printRaw("<!DOCTYPE " + doctype + ">");
             writer.println();
         }
@@ -173,7 +174,8 @@ public abstract class Shell extends AbstractComponent
         IEngineService pageService = cycle.getEngine().getService(Tapestry.PAGE_SERVICE);
         String pageName = getPage().getPageName();
 
-        ILink link = pageService.getLink(cycle, null, new String[] { pageName });
+        ILink link = pageService.getLink(cycle, null, new String[]
+        { pageName });
 
         StringBuffer buffer = new StringBuffer();
         buffer.append(refresh);
@@ -193,14 +195,15 @@ public abstract class Shell extends AbstractComponent
 
     public abstract IAsset getStylesheet();
 
+    public abstract Object getStylesheets();
+
     public abstract String getTitle();
 
     public abstract String getDoctype();
 
     public abstract String getDTD();
 
-    public abstract Object getStylesheets();
-
     public abstract boolean getRenderContentType();
-    
+
+    public abstract ValueConverter getValueConverter();
 }

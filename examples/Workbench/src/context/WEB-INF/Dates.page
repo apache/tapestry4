@@ -20,13 +20,6 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
 
 <page-specification class="org.apache.tapestry.workbench.fields.Dates">
-
-	<component id="helpLink" type="contrib:PopupLink">
-		<binding name="href" expression='"popuplink-help.html"'/>
-		<binding name="height" expression="400"/>
-		<binding name="width" expression="850"/>
-		<binding name="features" expression='"top=200,left=100,resizable=yes,scrollbars=yes"'/>
-	</component>
 	
 	<property-specification name="includeWeek" type="boolean" persistent="yes"/>
 	

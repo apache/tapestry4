@@ -16,6 +16,7 @@ package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Modifier;
 
+import org.apache.hivemind.Defense;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IPageLoader;
@@ -30,13 +31,17 @@ import org.apache.tapestry.spec.IComponentSpecification;
  */
 public class EnhanceUtils
 {
-    static MethodSignature FINISH_LOAD_SIGNATURE = new MethodSignature(void.class, "finishLoad",
-            new Class[]
+    public static final MethodSignature FINISH_LOAD_SIGNATURE = new MethodSignature(void.class,
+            "finishLoad", new Class[]
             { IRequestCycle.class, IPageLoader.class, IComponentSpecification.class }, null);
 
-    static MethodSignature PAGE_DETACHED_SIGNATURE = new MethodSignature(void.class,
+    public static final MethodSignature PAGE_DETACHED_SIGNATURE = new MethodSignature(void.class,
             "pageDetached", new Class[]
             { PageEvent.class }, null);
+
+    public static final MethodSignature CLEANUP_AFTER_RENDER_SIGNATURE = new MethodSignature(
+            void.class, "cleanupAfterRender", new Class[]
+            { IRequestCycle.class }, null);
 
     public static String createMutatorMethodName(String propertyName)
     {
@@ -83,4 +88,42 @@ public class EnhanceUtils
         createSimpleAccessor(op, fieldName, propertyName, propertyType);
         createSimpleMutator(op, fieldName, propertyName, propertyType);
     }
+
+    /**
+     * Returns the corect class for a property to be enhanced into a class. If a type name is
+     * non-null, then it is converted to a Class. If the class being enhanced defines a property,
+     * then the type must be an exact match (this is largely a holdover from Tapestry 3.0, where the
+     * type had to be provided in the specification). If the type name is null, then the value
+     * returned is the type of the existing property (if such a property exists), or
+     * java.lang.Object is no property exists.
+     * 
+     * @param op
+     *            the enhancement operation, which provides most of this logic
+     * @param propertyName
+     *            the name of the property (the property may or may not exist)
+     * @param definedTypeName
+     *            the type indicated for the property, may be null to make the return value match
+     *            the type of an existing property.
+     */
+
+    public static Class extractPropertyType(EnhancementOperation op, String propertyName,
+            String definedTypeName)
+    {
+        Defense.notNull(op, "op");
+        Defense.notNull(propertyName, "propertyName");
+
+        if (definedTypeName != null)
+        {
+            Class propertyType = op.convertTypeName(definedTypeName);
+
+            op.validateProperty(propertyName, propertyType);
+
+            return propertyType;
+        }
+
+        Class propertyType = op.getPropertyType(propertyName);
+
+        return propertyType == null ? Object.class : propertyType;
+    }
+
 }

@@ -26,6 +26,7 @@
       <construct class="org.apache.tapestry.services.impl.OGNLBindingFactory">
         <set-service property="expressionEvaluator" service-id="tapestry.ognl.ExpressionEvaluator"/>
         <set-service property="expressionCache" service-id="tapestry.ognl.ExpressionCache"/>
+        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -34,7 +35,11 @@
     
     Creates bindings where the path is a localized message key for the component.
     
-    <create-instance class="org.apache.tapestry.services.impl.MessageBindingFactory"/>
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.MessageBindingFactory">
+        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>  
+      </construct>
+    </invoke-factory>
     
   </service-point>
   
@@ -42,8 +47,12 @@
     
     Creates bindings where the path is the literal (aka static) value.
     
-    <create-instance class="org.apache.tapestry.services.impl.LiteralBindingFactory"/>
- 
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.LiteralBindingFactory">
+        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>  
+      </construct>
+    </invoke-factory> 
+    
   </service-point>
   
   

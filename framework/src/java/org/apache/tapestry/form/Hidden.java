@@ -55,7 +55,7 @@ public abstract class Hidden extends AbstractFormComponent
 
             if (getEncode())
             {
-                Object value = getBinding("value").getObject();
+                Object value = getValue();
 
                 try
                 {
@@ -67,16 +67,10 @@ public abstract class Hidden extends AbstractFormComponent
                 }
             }
             else
-                externalValue = (String) getBinding("value").getObject("value", String.class);
+                externalValue = (String) getBinding("value").getObject(String.class);
 
             String id = getElementId();
-            //if we would like to test the IForm.addHiddenValue(name, externalValue) method with
-            //Hidden JUnit test the following code must be default. But from the performance issue
-            //I don't use the id parameter clauses.
-            /*
-             * if(id == null || id.length() == 0){ form.addHiddenValue(name, externalValue); }else{
-             * form.addHiddenValue(name, id, externalValue); }
-             */
+
             form.addHiddenValue(name, id, externalValue);
 
             return;
@@ -102,7 +96,7 @@ public abstract class Hidden extends AbstractFormComponent
         // A listener is not always necessary ... it's easy to code
         // the synchronization as a side-effect of the accessor method.
 
-        getBinding("value").setObject(value);
+        setValue(value);
 
         IActionListener listener = getListener();
 
@@ -110,16 +104,7 @@ public abstract class Hidden extends AbstractFormComponent
             listener.actionTriggered(this, cycle);
     }
 
-    public String getElementId()
-    {
-        String value = null;
-        IBinding idBinding = getBinding("id");
-        if (idBinding != null)
-        {
-            value = idBinding.getString();
-        }
-        return value;
-    }
+    public abstract String getElementId();
 
     /** @since 2.2 * */
 
@@ -127,6 +112,10 @@ public abstract class Hidden extends AbstractFormComponent
     {
         return getPage().getEngine().getDataSqueezer();
     }
+
+    public abstract Object getValue();
+
+    public abstract void setValue(Object value);
 
     public abstract IActionListener getListener();
 
@@ -149,16 +138,4 @@ public abstract class Hidden extends AbstractFormComponent
      */
 
     public abstract boolean getEncode();
-
-    public abstract void setEncode(boolean encode);
-
-    /**
-     * Sets the encode parameter property to its default, true.
-     * 
-     * @since 3.0
-     */
-    protected void finishLoad()
-    {
-        setEncode(true);
-    }
 }

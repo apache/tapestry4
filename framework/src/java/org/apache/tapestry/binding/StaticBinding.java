@@ -15,66 +15,27 @@
 package org.apache.tapestry.binding;
 
 import org.apache.hivemind.Location;
+import org.apache.tapestry.coerce.ValueConverter;
 
 /**
- * Stores a static (invariant) String as the value.
- *
- * <p>It may be useful to cache static bindings the way {@link FieldBinding}s are cached.
- *
- * @author Howard Lewis Ship
+ * Stores a static (invariant) string as the value.
+ * <p>
+ * Note that the name exists for historical reasons; a better name would be
+ * <code>LiteralBinding</code>.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public class StaticBinding extends AbstractBinding
 {
     private String _value;
-    private boolean _parsedInt;
-    private int _intValue;
-    private boolean _parsedDouble;
-    private double _doubleValue;
 
-    public StaticBinding(String value, Location location)
+    public StaticBinding(String parameterName, String value, ValueConverter valueConverter,
+            Location location)
     {
-    	super(location);
-    	
+        super(parameterName, valueConverter, location);
+
         _value = value;
-    }
-
-    /**
-     *  Interprets the static value as an integer.
-     *
-     **/
-
-    public int getInt()
-    {
-        if (!_parsedInt)
-        {
-            _intValue = Integer.parseInt(_value);
-            _parsedInt = true;
-        }
-
-        return _intValue;
-    }
-
-    /**
-     *  Interprets the static value as a double.
-     *
-     **/
-
-    public double getDouble()
-    {
-        if (!_parsedDouble)
-        {
-            _doubleValue = Double.parseDouble(_value);
-            _parsedDouble = true;
-        }
-
-        return _doubleValue;
-    }
-
-    public String getString()
-    {
-        return _value;
     }
 
     public Object getObject()

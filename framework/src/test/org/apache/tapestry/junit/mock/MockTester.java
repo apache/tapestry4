@@ -146,6 +146,8 @@ public class MockTester
 
             executeRequest(request);
         }
+
+        _servlet.destroy();
     }
 
     private void executeRequest(Element request) throws IOException, ServletException,
@@ -188,6 +190,10 @@ public class MockTester
         }
 
         _response.end();
+
+        System.out.println("=== Response #" + _requestNumber + " ===\n\n");
+        System.out.println(_response.getOutputString());
+        System.out.println("\n\n");
 
         executeAssertions(request);
     }

@@ -18,21 +18,28 @@ import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.StaticBinding;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.BindingFactory;
 
 /**
- * Implementation of {@link org.apache.tapestry.services.BindingFactory}that
- * constructs {@link org.apache.tapestry.binding.StaticBinding}instances.
+ * Implementation of {@link org.apache.tapestry.services.BindingFactory}that constructs
+ * {@link org.apache.tapestry.binding.StaticBinding}instances.
  * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public class LiteralBindingFactory implements BindingFactory
 {
+    private ValueConverter _valueConverter;
 
-    public IBinding createBinding(IComponent root, String path, Location location)
+    public IBinding createBinding(IComponent root, String parameterName, String path,
+            Location location)
     {
-        return new StaticBinding(path, location);
+        return new StaticBinding(parameterName, path, _valueConverter, location);
     }
 
+    public void setValueConverter(ValueConverter valueConverter)
+    {
+        _valueConverter = valueConverter;
+    }
 }

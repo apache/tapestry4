@@ -127,7 +127,7 @@ public abstract class MultiplePropertySelection extends AbstractFormComponent
 
         String name = form.getElementId(this);
 
-        List selectedList = (List) getBinding("selectedList").getObject("selectedList", List.class);
+        List selectedList = (List) getBinding("selectedList").getObject(List.class);
 
         if (selectedList == null)
             throw Tapestry.createRequiredParameterException(this, "selectedList");

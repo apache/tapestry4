@@ -17,42 +17,29 @@ package org.apache.tapestry.link;
 import java.util.List;
 
 import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ILink;
 
 /**
- *  A component for creating a link using the direct service; used for actions that
- *  are not dependant on dynamic page state.
- *
- *  [<a href="../../../../../ComponentReference/DirectLink.html">Component Reference</a>]
- *
+ * A component for creating a link using the direct service; used for actions that are not dependant
+ * on dynamic page state. [ <a href="../../../../../ComponentReference/DirectLink.html">Component
+ * Reference </a>]
+ * 
  * @author Howard Lewis Ship
- *
- **/
+ */
 
 public abstract class DirectLink extends AbstractLinkComponent implements IDirect
 {
     public abstract IActionListener getListener();
 
     /**
-     *  Returns true if the stateful parameter is bound to
-     *  a true value.  If stateful is not bound, also returns
-     *  the default, true.  May be invoked when not renderring.
-     *
-     **/
+     * Returns true if the stateful parameter is bound to a true value. If stateful is not bound,
+     * also returns the default, true. 
+     */
 
-    public boolean isStateful()
-    {
-        IBinding statefulBinding = getBinding("stateful");
-
-        if (statefulBinding == null)
-            return true;
-
-        return statefulBinding.getBoolean();
-    }
+    public abstract boolean isStateful();
 
     public ILink getLink(IRequestCycle cycle)
     {
@@ -60,24 +47,20 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
     }
 
     /**
-     *  Converts a service parameters value to an array
-     *  of objects.  
-     *  This is used by the {@link DirectLink}, {@link ServiceLink}
-     *  and {@link ExternalLink}
-     *  components.
-     *
-     *  @param parameterValue the input value which may be
-     *  <ul>
-     *  <li>null  (returns null)
-     *  <li>An array of Object (returns the array)
-     *  <li>A {@link List} (returns an array of the values in the List})
-     *  <li>A single object (returns the object as a single-element array)
-     *  </ul>
+     * Converts a service parameters value to an array of objects. This is used by the
+     * {@link DirectLink},{@link ServiceLink}and {@link ExternalLink}components.
      * 
-     *  @return An array representation of the input object.
-     * 
-     *  @since 2.2
-     **/
+     * @param parameterValue
+     *            the input value which may be
+     *            <ul>
+     *            <li>null (returns null)
+     *            <li>An array of Object (returns the array)
+     *            <li>A {@link List}(returns an array of the values in the List})
+     *            <li>A single object (returns the object as a single-element array)
+     *            </ul>
+     * @return An array representation of the input object.
+     * @since 2.2
+     */
 
     public static Object[] constructServiceParameters(Object parameterValue)
     {
@@ -94,29 +77,29 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
             return list.toArray();
         }
 
-        return new Object[] { parameterValue };
+        return new Object[]
+        { parameterValue };
     }
 
     /**
-     *  Invoked by the direct service to trigger the application-specific
-     *  action by notifying the {@link IActionListener listener}.
-     *
-     *  @throws org.apache.tapestry.StaleSessionException if the component is stateful, and
-     *  the session is new.
+     * Invoked by the direct service to trigger the application-specific action by notifying the
+     * {@link IActionListener listener}.
      * 
-     **/
+     * @throws org.apache.tapestry.StaleSessionException
+     *             if the component is stateful, and the session is new.
+     */
 
     public void trigger(IRequestCycle cycle)
     {
         IActionListener listener = getListener();
-        
+
         if (listener == null)
-        	throw Tapestry.createRequiredParameterException(this, "listener");
+            throw Tapestry.createRequiredParameterException(this, "listener");
 
         listener.actionTriggered(this, cycle);
     }
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     public abstract Object getParameters();
 }

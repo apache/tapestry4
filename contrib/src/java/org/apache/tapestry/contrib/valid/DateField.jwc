@@ -15,31 +15,28 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
   
 <component-specification class="org.apache.tapestry.contrib.valid.DateField">
 
-  <parameter name="disabled" type="boolean" direction="in"/>
-  <parameter name="hidden" type="boolean" direction="in"/>
-  <parameter name="displayWidth" type="int" direction="in"/>
-  <parameter name="maximumLength" type="int" direction="in"/>
+  <parameter name="disabled"/>
+  <parameter name="hidden"/>
+  <parameter name="displayWidth"/>
+  <parameter name="maximumLength"/>
 
-  <parameter name="date" type="java.util.Date" direction="auto" required="yes" />
-  <parameter name="displayName" type="java.lang.String" direction="auto" required="yes" />
-  <parameter name="maximum" type="java.util.Date" />
-  <parameter name="minimum" type="java.util.Date" />
+  <parameter name="date" type="java.util.Date" required="yes" />
+  <parameter name="displayName" required="yes" />
+  <parameter name="maximum"/>
+  <parameter name="minimum" />
   <parameter name="required" />
-  <parameter name="format" type="java.text.DateFormat" />
-  <parameter name="displayFormat" type="java.lang.String" />
+  <parameter name="format" />
+  <parameter name="displayFormat"  />
     
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>
   <reserved-parameter name="size"/>
   <reserved-parameter name="maxlength"/>
-
-  <property-specification name="name" type="java.lang.String"/>
-  <property-specification name="form" type="org.apache.tapestry.IForm"/>
 
 </component-specification>

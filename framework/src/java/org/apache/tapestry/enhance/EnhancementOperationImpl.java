@@ -278,7 +278,19 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     private String addClassReference(Class clazz)
     {
-        String fieldName = "_class$" + clazz.getName().replace('.', '$');
+        StringBuffer buffer = new StringBuffer("_class$");
+
+        Class c = clazz;
+
+        while (c.isArray())
+        {
+            buffer.append("array$");
+            c = c.getComponentType();
+        }
+
+        buffer.append(c.getName().replace('.', '$'));
+
+        String fieldName = buffer.toString();
 
         addField(fieldName, Class.class, clazz);
 
@@ -405,7 +417,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
         {
             String name = newClassName();
 
-            _classFab = _classFactory.newClass(name, _baseClass, _resolver.getClassLoader());
+            _classFab = _classFactory.newClass(name, _baseClass);
         }
 
         return _classFab;
@@ -457,19 +469,58 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         result.begin();
 
+        if (existingImplementation(sig))
+            result.addln("super.{0}($$);", sig.getName());
+
+        return result;
+    }
+
+    /**
+     * Returns true if the base class implements the provided method as either a public or a
+     * protected method.
+     */
+
+    private boolean existingImplementation(MethodSignature sig)
+    {
+        Method m = findMethod(sig);
+
+        return m != null && !Modifier.isAbstract(m.getModifiers());
+    }
+
+    /**
+     * Finds a public or protected method in the base class.
+     */
+    private Method findMethod(MethodSignature sig)
+    {
+        // Finding a public method is easy:
+
         try
         {
-            Method m = _baseClass.getMethod(sig.getName(), sig.getParameterTypes());
+            return _baseClass.getMethod(sig.getName(), sig.getParameterTypes());
 
-            if (!Modifier.isAbstract(m.getModifiers()))
-                result.addln("super.{0}($$);", sig.getName());
         }
         catch (NoSuchMethodException ex)
         {
             // Good; no super-implementation to invoke.
         }
 
-        return result;
+        Class c = _baseClass;
+
+        while (c != Object.class)
+        {
+            try
+            {
+                return c.getDeclaredMethod(sig.getName(), sig.getParameterTypes());
+            }
+            catch (NoSuchMethodException ex)
+            {
+                // Ok, continue loop up to next base class.
+            }
+
+            c = c.getSuperclass();
+        }
+
+        return null;
     }
 
     public List findUnclaimedAbstractProperties()

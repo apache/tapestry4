@@ -57,8 +57,7 @@ public class ExtensionLookupFactory implements ServiceImplementationFactory
             if (_specification.checkExtension(extensionName))
                 return _specification.getExtension(extensionName, serviceInterface);
 
-            return _defaultBuilder.buildDefaultImplementation(serviceInterface, factorParameters
-                    .getInvokingModule());
+            return _defaultBuilder.buildDefaultImplementation(serviceInterface);
         }
         catch (Exception ex)
         {

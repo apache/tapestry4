@@ -17,6 +17,7 @@ package org.apache.tapestry.script;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IScript;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.util.xml.DocumentParseException;
 import org.apache.tapestry.util.xml.RuleDirectedParser;
@@ -60,7 +61,8 @@ public class ScriptParser
     /** @since 3.0 */
     public static final String SCRIPT_DTD_3_0_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN";
 
-    public ScriptParser(ClassResolver resolver, ExpressionEvaluator evaluator)
+    public ScriptParser(ClassResolver resolver, ExpressionEvaluator evaluator,
+            ValueConverter valueConverter)
     {
         _parser = new RuleDirectedParser();
 
@@ -77,7 +79,7 @@ public class ScriptParser
                 SCRIPT_DTD_3_0_PUBLIC_ID,
                 "/org/apache/tapestry/script/Script_3_0.dtd");
 
-        _parser.addRule("script", new ScriptRule(evaluator));
+        _parser.addRule("script", new ScriptRule(evaluator, valueConverter));
         _parser.addRule("let", new LetRule());
         _parser.addRule("set", new SetRule());
         _parser.addRule("include-script", new IncludeScriptRule());

@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <component-specification class="org.apache.tapestry.contrib.table.components.TableValues" 
 	allow-body="yes" allow-informal-parameters="yes">
@@ -27,39 +27,33 @@
 	</description>
   
 	<parameter name="column" 
-		type="org.apache.tapestry.contrib.table.model.ITableColumn" 
-		required="no"
-		direction="custom">
+        property-name="columnParameter">
         <description>The current column being rendered</description>
     </parameter>
 
 	<parameter name="element" 
 		type="java.lang.String" 
-		required="no"
-		direction="auto"
     	default-value="'td'">
         <description>The tag to use to wrap the values in, 'td' by default.</description>
     </parameter>
 
     <parameter name="class"
-        type="java.lang.String"
-        required="no"
-        direction="custom">
+        property-name="cellClass">
         <description>The CSS class of the table values</description>
     </parameter>
     
 	<component id="iterColumns" type="Foreach">
-		<binding name="source" expression="tableColumnIterator"/>
-		<binding name="value" expression="tableColumn"/>
+		<binding name="source" value="ognl:tableColumnIterator"/>
+		<binding name="value" value="ognl:tableColumn"/>
 	</component>
   
 	<component id="informal" type="Any" inherit-informal-parameters="yes">
-		<inherited-binding name="element" parameter-name="element"/>
-        <binding name="class" expression="valueClass"/>
+		<binding name="element" value="ognl:element"/>
+        <binding name="class" value="ognl:valueClass"/>
 	</component>
   
 	<component id="insertValueRenderer" type="Delegator">
-		<binding name="delegate" expression="tableValueRenderer"/>
+		<binding name="delegate" value="ognl:tableValueRenderer"/>
 	</component>
   
 </component-specification>

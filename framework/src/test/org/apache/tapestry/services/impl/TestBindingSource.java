@@ -43,7 +43,7 @@ public class TestBindingSource extends HiveMindTestCase
 
         // Training
 
-        factory.createBinding(component, "a literal value without a prefix", l);
+        factory.createBinding(component, "foo", "a literal value without a prefix", l);
         factoryControl.setReturnValue(binding);
 
         replayControls();
@@ -51,7 +51,7 @@ public class TestBindingSource extends HiveMindTestCase
         BindingSourceImpl bs = new BindingSourceImpl();
         bs.setLiteralBindingFactory(factory);
 
-        IBinding actual = bs.createBinding(component, "a literal value without a prefix", l);
+        IBinding actual = bs.createBinding(component, "foo", "a literal value without a prefix", l);
 
         assertSame(binding, actual);
 
@@ -70,7 +70,7 @@ public class TestBindingSource extends HiveMindTestCase
 
         // Training
 
-        factory.createBinding(component, "path part of locator", l);
+        factory.createBinding(component, "bar", "path part of locator", l);
         factoryControl.setReturnValue(binding);
 
         BindingPrefixContribution c = new BindingPrefixContribution();
@@ -84,7 +84,7 @@ public class TestBindingSource extends HiveMindTestCase
 
         bs.initializeService();
 
-        IBinding actual = bs.createBinding(component, "prefix:path part of locator", l);
+        IBinding actual = bs.createBinding(component, "bar", "prefix:path part of locator", l);
 
         assertSame(binding, actual);
 
@@ -105,7 +105,7 @@ public class TestBindingSource extends HiveMindTestCase
 
         // Training
 
-        literalFactory.createBinding(component, "unknown:path part of locator", l);
+        literalFactory.createBinding(component, "zip", "unknown:path part of locator", l);
         factoryControl.setReturnValue(binding);
 
         BindingPrefixContribution c = new BindingPrefixContribution();
@@ -120,7 +120,7 @@ public class TestBindingSource extends HiveMindTestCase
 
         bs.initializeService();
 
-        IBinding actual = bs.createBinding(component, "unknown:path part of locator", l);
+        IBinding actual = bs.createBinding(component, "zip", "unknown:path part of locator", l);
 
         assertSame(binding, actual);
 

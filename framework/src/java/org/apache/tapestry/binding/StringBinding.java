@@ -16,32 +16,35 @@ package org.apache.tapestry.binding;
 
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.coerce.TypeConverter;
+import org.apache.tapestry.coerce.ValueConverter;
 
 /**
- *  A binding that connects directly to a localized string for
- *  a component.
- *
- *  @see IComponent#getString(String)
+ * A binding that connects directly to a localized string for a component.
+ * <p>
+ * This name is historical, and probably should be renamed to <code>MessageBinding</code>.
  * 
- *  @author Howard Lewis Ship
- *  @since 2.0.4
- *
- **/
+ * @see IComponent#getString(String)
+ * @author Howard Lewis Ship
+ * @since 2.0.4
+ */
 
 public class StringBinding extends AbstractBinding
 {
     private IComponent _component;
+
     private String _key;
 
-    public StringBinding(IComponent component, String key, Location location)
+    public StringBinding(IComponent component, String parameterName, String key,
+            ValueConverter valueConverter, Location location)
     {
-    	super(location);
-    	
+        super(parameterName, valueConverter, location);
+
         _component = component;
         _key = key;
     }
 
-    public IComponent getComponent()
+    protected Object getComponent()
     {
         return _component;
     }
@@ -52,24 +55,12 @@ public class StringBinding extends AbstractBinding
     }
 
     /**
-     *  Accesses the specified localized string.  Never returns null.
-     *
-     **/
+     * Accesses the specified localized string. Never returns null.
+     */
 
     public Object getObject()
     {
         return _component.getMessages().getMessage(_key);
-    }
-
-    /**
-     *  Returns true.  Localized component strings are
-     *  read-only.
-     * 
-     **/
-
-    public boolean isInvariant()
-    {
-        return true;
     }
 
     public String toString()

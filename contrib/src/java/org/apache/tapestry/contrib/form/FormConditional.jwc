@@ -29,13 +29,13 @@
     </description>
   </parameter>
   
-  <parameter name="element" type="java.lang.String" direction="in" required="no">
+  <parameter name="element">
   	<description>
   	The element to emulate.
   	</description>
   </parameter>
 
-  <parameter name="listener" type="org.apache.tapestry.IActionListener" direction="in"/>
+  <parameter name="listener"/>
 
   <parameter name="conditionValue" type="boolean">
     <description>
@@ -46,7 +46,6 @@
 
   <reserved-parameter name="invert"/>
   
-  <property-specification name="name" type="java.lang.String"/>
-  <property-specification name="form" type="org.apache.tapestry.IForm"/>
+  <inject name="dataSqueezer" object="service:tapestry.data.DataSqueezer"/>
   
 </component-specification>

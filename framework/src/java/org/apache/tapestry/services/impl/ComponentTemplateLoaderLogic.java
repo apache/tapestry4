@@ -276,7 +276,7 @@ public class ComponentTemplateLoaderLogic
                 String name = (String) entry.getKey();
                 String value = (String) entry.getValue();
 
-                IBinding binding = _bindingSource.createBinding(_loadComponent, value, token
+                IBinding binding = _bindingSource.createBinding(_loadComponent, name, value, token
                         .getLocation());
 
                 addBinding(component, spec, name, binding);
@@ -290,8 +290,11 @@ public class ComponentTemplateLoaderLogic
         if (spec.getParameter(TemplateSource.TEMPLATE_TAG_PARAMETER_NAME) != null
                 && component.getBinding(TemplateSource.TEMPLATE_TAG_PARAMETER_NAME) == null)
         {
-            IBinding binding = _bindingSource.createBinding(component, token.getTag(), token
-                    .getLocation());
+            IBinding binding = _bindingSource.createBinding(
+                    component,
+                    TemplateSource.TEMPLATE_TAG_PARAMETER_NAME,
+                    token.getTag(),
+                    token.getLocation());
 
             addBinding(component, spec, TemplateSource.TEMPLATE_TAG_PARAMETER_NAME, binding);
         }

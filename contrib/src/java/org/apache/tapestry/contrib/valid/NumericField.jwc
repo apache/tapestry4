@@ -15,26 +15,23 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 
 <component-specification class="org.apache.tapestry.contrib.valid.NumericField">
 
-  <parameter name="disabled" type="boolean" direction="in"/>
-  <parameter name="hidden" type="boolean" direction="in"/>
-  <parameter name="displayWidth" type="int" direction="in" />
-  <parameter name="maximumLength" type="int" direction="in" />
+  <parameter name="disabled"/>
+  <parameter name="hidden"/>
+  <parameter name="displayWidth"/>
+  <parameter name="maximumLength"/>
 
-  <parameter name="value" type="java.lang.Object" direction="auto" required="yes"/>
-  <parameter name="displayName" type="java.lang.String" direction="auto" required="yes"/>
-  <parameter name="maximum" type="java.lang.Number"/>
-  <parameter name="minimum" type="java.lang.Number"/>
+  <parameter name="value" required="yes"/>
+  <parameter name="displayName" required="yes"/>
+  <parameter name="maximum"/>
+  <parameter name="minimum"/>
   <parameter name="required"/>
-  <parameter name="type" type="java.lang.String" required="yes" direction="in" />
+  <parameter name="type" required="yes"/>
 
   <reserved-parameter name="name"/>
-  
-  <property-specification name="name" type="java.lang.String"/>
-  <property-specification name="form" type="org.apache.tapestry.IForm"/>
 
 </component-specification>

@@ -21,6 +21,7 @@ import org.apache.hivemind.Resource;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.IScriptProcessor;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
@@ -36,11 +37,17 @@ public class ParsedScript extends AbstractToken implements IScript
 
     private ExpressionEvaluator _evaluator;
 
-    public ParsedScript(ExpressionEvaluator evaluator, Location location)
+    /** @since 3.1 */
+
+    private ValueConverter _valueConverter;
+
+    public ParsedScript(ExpressionEvaluator evaluator, ValueConverter valueConverter,
+            Location location)
     {
         super(location);
 
         _evaluator = evaluator;
+        _valueConverter = valueConverter;
         _scriptResource = location.getResource();
     }
 
@@ -55,8 +62,8 @@ public class ParsedScript extends AbstractToken implements IScript
      */
     public void execute(IRequestCycle cycle, IScriptProcessor processor, Map symbols)
     {
-        ScriptSession session = new ScriptSessionImpl(_scriptResource, cycle, processor, _evaluator,
-                symbols);
+        ScriptSession session = new ScriptSessionImpl(_scriptResource, cycle, processor,
+                _evaluator, _valueConverter, symbols);
 
         writeChildren(null, session);
     }

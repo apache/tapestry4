@@ -18,16 +18,16 @@ import org.apache.hivemind.Location;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  A conditional portion of the generated script.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.1
- *
- **/
+ * A conditional portion of the generated script.
+ * 
+ * @author Howard Lewis Ship
+ * @since 1.0.1
+ */
 
 class IfToken extends AbstractToken
 {
     private boolean _condition;
+
     private String _expression;
 
     IfToken(boolean condition, String expression, Location location)
@@ -40,9 +40,7 @@ class IfToken extends AbstractToken
 
     private boolean evaluate(ScriptSession session)
     {
-        Object value = evaluate(_expression, session);
-
-        return Tapestry.evaluateBoolean(value);
+        return evaluateBoolean(_expression, session);
     }
 
     public void write(StringBuffer buffer, ScriptSession session)

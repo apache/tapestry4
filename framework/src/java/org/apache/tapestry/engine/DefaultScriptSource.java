@@ -22,6 +22,7 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.script.ScriptParser;
 import org.apache.tapestry.services.ExpressionEvaluator;
@@ -41,6 +42,9 @@ public class DefaultScriptSource implements IScriptSource, ResetEventListener
 
     /** @since 3.1 */
     private ExpressionEvaluator _expressionEvaluator;
+
+    /** @since 3.1 */
+    private ValueConverter _valueConverter;
 
     private Map _cache = new HashMap();
 
@@ -65,7 +69,8 @@ public class DefaultScriptSource implements IScriptSource, ResetEventListener
 
     private IScript parse(Resource resource)
     {
-        ScriptParser parser = new ScriptParser(_classResolver, _expressionEvaluator);
+        ScriptParser parser = new ScriptParser(_classResolver, _expressionEvaluator,
+                _valueConverter);
 
         try
         {
@@ -88,5 +93,11 @@ public class DefaultScriptSource implements IScriptSource, ResetEventListener
     public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator)
     {
         _expressionEvaluator = expressionEvaluator;
+    }
+
+    /** @since 3.1 */
+    public void setValueConverter(ValueConverter valueConverter)
+    {
+        _valueConverter = valueConverter;
     }
 }

@@ -31,6 +31,7 @@
   <sub-module descriptor="tapestry.bindings.xml"/>
   <sub-module descriptor="tapestry.services.xml"/>
   <sub-module descriptor="tapestry.ognl.xml"/>
+  <sub-module descriptor="tapestry.coerce.xml"/>
   
   <service-point id="ClasspathResourceFactory" interface="org.apache.tapestry.services.ClasspathResourceFactory">
   
@@ -168,7 +169,7 @@
     <invoke-factory>
       <construct
         class="org.apache.hivemind.service.impl.ObjectTranslator" initialize-method="initializeService">
-        <set-configuration configuration-id="ObjectProviders" property="contributions"/>
+        <set-configuration configuration-id="hivemind.ObjectProviders" property="contributions"/>
       </construct>
     </invoke-factory>
   </service-point>  
@@ -179,13 +180,13 @@
     Special service factory for the InjectedValueProvider service.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.service.impl.InjectedValueProviderFactory">
+      <construct class="org.apache.tapestry.services.impl.InjectedValueProviderFactory">
         <set-service property="objectTranslator" service-id="ObjectTranslator"/>
       </construct>
     </invoke-factory>    
   </service-point>
   
   <service-point id="InjectedValueProvider" interface="org.apache.tapestry.services.InjectedValueProvider">
-    <invoke-factory service-id="InjectValueProviderFactory"/>
+    <invoke-factory service-id="InjectedValueProviderFactory"/>
   </service-point>
 </module>

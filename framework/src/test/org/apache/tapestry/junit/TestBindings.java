@@ -17,21 +17,17 @@ package org.apache.tapestry.junit;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
-import junit.framework.AssertionFailedError;
-
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ClassResolver;
-import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.binding.AbstractBinding;
 import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.binding.ListenerBinding;
 import org.apache.tapestry.binding.StaticBinding;
 import org.apache.tapestry.binding.StringBinding;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.impl.ExpressionCacheImpl;
 import org.apache.tapestry.services.impl.ExpressionEvaluatorImpl;
@@ -40,7 +36,6 @@ import org.apache.tapestry.services.impl.ExpressionEvaluatorImpl;
  * Do tests of bindings.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  */
 
 public class TestBindings extends TapestryTestCase
@@ -49,15 +44,13 @@ public class TestBindings extends TapestryTestCase
 
     public static final Object NULL_FIELD = null;
 
-    private ClassResolver _resolver = new DefaultClassResolver();
-
     private static class TestBinding extends AbstractBinding
     {
         private Object _object;
 
-        private TestBinding(Object object)
+        private TestBinding(Object object, ValueConverter valueConverter)
         {
-            super(null);
+            super("foo", valueConverter, null);
 
             _object = object;
         }
@@ -134,361 +127,150 @@ public class TestBindings extends TapestryTestCase
 
     public final String INSTANCE_FIELD = "InstanceField";
 
-    public void testStaticBindingInt()
-    {
-        IBinding binding = new StaticBinding("107", null);
-
-        assertEquals("Int", 107, binding.getInt());
-
-        // Do it a second time, just to fill a code coverage gap.
-
-        assertEquals("Int", 107, binding.getInt());
-    }
-
-    public void testInvalidStaticBindingInt()
-    {
-        IBinding binding = new StaticBinding("barney", null);
-
-        try
-        {
-            binding.getInt();
-
-            throw new AssertionFailedError("Unreachable.");
-        }
-        catch (NumberFormatException ex)
-        {
-            checkException(ex, "barney");
-        }
-    }
-
-    public void testInvalidStaticBindingDouble()
-    {
-        IBinding binding = new StaticBinding("fred", null);
-
-        try
-        {
-            binding.getDouble();
-
-            throw new AssertionFailedError("Unreachable.");
-        }
-        catch (NumberFormatException ex)
-        {
-            checkException(ex, "fred");
-        }
-    }
-
-    public void testStaticBindingDouble()
-    {
-        IBinding binding = new StaticBinding("3.14", null);
-
-        assertEquals("Double", 3.14, binding.getDouble(), 0.);
-
-        // Do it a second time, just to fill a code coverage gap.
-
-        assertEquals("Double", 3.14, binding.getDouble(), 0.);
-    }
-
     public void testStaticBindingToString()
     {
-        IBinding binding = new StaticBinding("alfalfa", null);
+        ValueConverter vc = newValueConverter();
+
+        replayControls();
+
+        IBinding binding = new StaticBinding("foo", "alfalfa", vc, null);
 
         assertEquals("ToString", "StaticBinding[alfalfa]", binding.toString());
+
+        verifyControls();
     }
 
     public void testStaticBindingObject()
     {
+        ValueConverter vc = newValueConverter();
+
+        replayControls();
+
         String value = Long.toString(System.currentTimeMillis());
 
-        IBinding binding = new StaticBinding(value, null);
+        IBinding binding = new StaticBinding("foo", value, vc, null);
 
         assertEquals("Object", value, binding.getObject());
-    }
 
-    public void testGetIntWithNull()
-    {
-        IBinding binding = new TestBinding(null);
-
-        try
-        {
-            binding.getInt();
-        }
-        catch (BindingException ex)
-        {
-            assertEquals("Binding", binding, ex.getBinding());
-        }
-    }
-
-    public void testGetDoubleWithNull()
-    {
-        IBinding binding = new TestBinding(null);
-
-        try
-        {
-            binding.getDouble();
-        }
-        catch (BindingException ex)
-        {
-            assertEquals("Binding", binding, ex.getBinding());
-        }
+        verifyControls();
     }
 
     public static final double DOUBLE_FIELD = 3.14;
 
-    public void testGetDoubleWithDouble()
-    {
-        IBinding binding = new TestBinding(new Double(3.14));
-
-        assertEquals("Double", 3.14, binding.getDouble(), 0);
-    }
-
-    public void testGetDoubleWithBoolean()
-    {
-        IBinding binding = new TestBinding(Boolean.TRUE);
-
-        assertEquals("Double", 1.0, binding.getDouble(), 0);
-
-        binding = new TestBinding(Boolean.FALSE);
-
-        assertEquals("Double", 0, binding.getDouble(), 0);
-    }
-
-    public void testGetDoubleWithString()
-    {
-        IBinding binding = new TestBinding("-102.7");
-
-        assertEquals("Double", -102.7, binding.getDouble(), 0);
-    }
-
-    public void testGetIntWithInt()
-    {
-        IBinding binding = new TestBinding(new Integer(37));
-
-        assertEquals("Int", 37, binding.getInt());
-    }
-
-    public void testGetIntWithBoolean()
-    {
-        IBinding binding = new TestBinding(Boolean.TRUE);
-
-        assertEquals("Int", 1, binding.getInt());
-
-        binding = new TestBinding(Boolean.FALSE);
-
-        assertEquals("Int", 0, binding.getInt());
-    }
-
-    public void testGetIntWithString()
-    {
-        IBinding binding = new TestBinding("3021");
-
-        assertEquals("Int", 3021, binding.getInt());
-    }
-
-    public void testGetObjectNull()
-    {
-        IBinding binding = new TestBinding(null);
-
-        assertNull("Object", binding.getObject("parameter", Number.class));
-    }
-
-    public void testGetObjectWithCheck()
-    {
-        IBinding binding = new TestBinding("Hello");
-
-        assertEquals("Object", "Hello", binding.getObject("baz", String.class));
-    }
-
-    public void testGetObjectFailureClass()
-    {
-        IBinding binding = new TestBinding("Hello");
-
-        try
-        {
-            binding.getObject("foo", Number.class);
-        }
-        catch (BindingException ex)
-        {
-            assertEquals("Parameter foo (Hello) is an instance of java.lang.String, "
-                    + "which does not inherit from java.lang.Number.", ex.getMessage());
-
-            assertEquals("Binding", binding, ex.getBinding());
-        }
-    }
-
-    public void testGetObjectFailureInterface()
-    {
-        IBinding binding = new TestBinding("Goodbye");
-
-        try
-        {
-            binding.getObject("bar", IRequestCycle.class);
-        }
-        catch (BindingException ex)
-        {
-            assertEquals(
-                    "Parameter bar (Goodbye) is an instance of java.lang.String, which does not "
-                            + "implement interface org.apache.tapestry.IRequestCycle.",
-                    ex.getMessage());
-
-            assertEquals("Binding", binding, ex.getBinding());
-        }
-    }
-
-    public void testGetStringForNull()
-    {
-        IBinding binding = new TestBinding(null);
-
-        assertNull("String", binding.getString());
-    }
-
-    public void testSetBoolean()
-    {
-        IBinding binding = new TestBinding(null);
-
-        try
-        {
-            binding.setBoolean(true);
-
-            throw new AssertionFailedError("Unreachable.");
-        }
-        catch (BindingException ex)
-        {
-            assertEquals("Binding", binding, ex.getBinding());
-        }
-    }
-
-    public void testSetString()
-    {
-        IBinding binding = new TestBinding(null);
-
-        try
-        {
-            binding.setString("Wilma");
-
-            throw new AssertionFailedError("Unreachable.");
-        }
-        catch (BindingException ex)
-        {
-            assertEquals("Binding", binding, ex.getBinding());
-        }
-    }
-
-    public void testSetInt()
-    {
-        IBinding binding = new TestBinding(null);
-
-        try
-        {
-            binding.setInt(98);
-
-            throw new AssertionFailedError("Unreachable.");
-        }
-        catch (BindingException ex)
-        {
-            assertEquals("Binding", binding, ex.getBinding());
-        }
-    }
-
-    public void testSetDouble()
-    {
-        IBinding binding = new TestBinding(null);
-
-        try
-        {
-            binding.setDouble(-1.5);
-
-            throw new AssertionFailedError("Unreachable.");
-        }
-        catch (BindingException ex)
-        {
-            assertEquals("Binding", binding, ex.getBinding());
-        }
-    }
-
     public void testSetObject()
     {
-        IBinding binding = new TestBinding(null);
+        ValueConverter vc = newValueConverter();
+
+        replayControls();
+
+        IBinding binding = new TestBinding(null, vc);
 
         try
         {
             binding.setObject(Boolean.TRUE);
 
-            throw new AssertionFailedError("Unreachable.");
+            unreachable();
         }
         catch (BindingException ex)
         {
             assertEquals("Binding", binding, ex.getBinding());
         }
+
+        verifyControls();
     }
 
-    private ExpressionBinding newBinding(IComponent root, String expression)
+    private ExpressionBinding newBinding(IComponent root, String parameterName, String expression,
+            ValueConverter valueConverter)
     {
         ExpressionCache cache = new ExpressionCacheImpl();
         ExpressionEvaluatorImpl evaluator = new ExpressionEvaluatorImpl();
         evaluator.setExpressionCache(cache);
 
-        return new ExpressionBinding(root, expression, null, evaluator, cache);
+        return new ExpressionBinding(root, parameterName, expression, valueConverter, null,
+                evaluator, cache);
     }
 
     public void testExpressionBinding()
     {
         IPage page = new MockPage();
 
-        ExpressionBinding binding = newBinding(page, "page");
+        ValueConverter vc = newValueConverter();
+
+        replayControls();
+
+        ExpressionBinding binding = newBinding(page, "foo", "page", vc);
 
         assertEquals("Expression property", "page", binding.getExpression());
         assertEquals("Root property", page, binding.getRoot());
         assertEquals("Object property", page, binding.getObject());
+
+        verifyControls();
     }
 
     public void testMalformedOGNLExpression()
     {
         IPage page = new MockPage();
 
-        ExpressionBinding binding = newBinding(page, "zip flob boff");
+        ValueConverter vc = newValueConverter();
+
+        replayControls();
+
+        ExpressionBinding binding = newBinding(page, "foo", "zip flob boff", vc);
 
         try
         {
             binding.getObject();
 
-            throw new AssertionFailedError("Unreachable.");
+            unreachable();
         }
         catch (ApplicationRuntimeException ex)
         {
             checkException(ex, "Unable to parse OGNL expression 'zip flob boff'");
         }
+
+        verifyControls();
     }
 
     public void testUnknownProperty()
     {
         IPage page = new MockPage();
 
-        ExpressionBinding binding = newBinding(page, "tigris");
+        ValueConverter vc = newValueConverter();
+
+        replayControls();
+
+        ExpressionBinding binding = newBinding(page, "foo", "tigris", vc);
 
         try
         {
             binding.getObject();
 
-            throw new AssertionFailedError("Unreachable.");
+            unreachable();
         }
         catch (BindingException ex)
         {
             checkException(ex, "Unable to read OGNL expression");
             checkException(ex, "tigris");
         }
+
+        verifyControls();
     }
 
-    public void testUpdateReadonlyProperty()
+    public void testUpdateReadOnlyProperty()
     {
         IPage page = new MockPage();
 
-        ExpressionBinding binding = newBinding(page, "bindings");
+        ValueConverter vc = newValueConverter();
+
+        replayControls();
+
+        ExpressionBinding binding = newBinding(page, "foo", "bindings", vc);
 
         try
         {
             binding.setObject(new HashMap());
 
-            throw new AssertionFailedError("Unreachable.");
+            unreachable();
         }
         catch (BindingException ex)
         {
@@ -496,116 +278,63 @@ public class TestBindings extends TapestryTestCase
             checkException(ex, "bindings");
         }
 
-    }
-
-    public void testUpdateBoolean()
-    {
-        BoundPage page = new BoundPage();
-        ExpressionBinding binding = newBinding(page, "booleanValue");
-
-        binding.setBoolean(true);
-
-        assertEquals(true, page.getBooleanValue());
-
-        binding.setBoolean(false);
-
-        assertEquals(false, page.getBooleanValue());
-    }
-
-    public void testUpdateInt()
-    {
-        BoundPage page = new BoundPage();
-        ExpressionBinding binding = newBinding(page, "intValue");
-
-        binding.setInt(275);
-
-        assertEquals(275, page.getIntValue());
-    }
-
-    public void testUpdateDouble()
-    {
-        BoundPage page = new BoundPage();
-        ExpressionBinding binding = newBinding(page, "doubleValue");
-
-        binding.setDouble(3.14);
-
-        assertEquals(3.14, page.getDoubleValue(), 0.0);
+        verifyControls();
     }
 
     public void testUpdateObject()
     {
         BoundPage page = new BoundPage();
-        ExpressionBinding binding = newBinding(page, "objectValue");
+        ValueConverter vc = newValueConverter();
+
+        replayControls();
+
+        ExpressionBinding binding = newBinding(page, "foo", "objectValue", vc);
 
         Object object = new HashMap();
 
         binding.setObject(object);
 
         assertEquals(object, page.getObjectValue());
-    }
 
-    /**
-     * Test error cases for {@link org.apache.tapestry.binding.ListenerBinding}.
-     * 
-     * @since 3.0
-     */
-
-    public void testListenerBindingInt()
-    {
-        IBinding b = new ListenerBinding(null, null, null, null);
-
-        try
-        {
-            b.getInt();
-
-            unreachable();
-        }
-        catch (BindingException ex)
-        {
-            checkException(
-                    ex,
-                    "Inappropriate invocation of getInt() on instance of ListenerBinding.");
-        }
-    }
-
-    /** @since 3.0 * */
-
-    public void testListenerBindingDouble()
-    {
-        IBinding b = new ListenerBinding(null, null, null, null);
-
-        try
-        {
-            b.getDouble();
-
-            unreachable();
-        }
-        catch (BindingException ex)
-        {
-            checkException(
-                    ex,
-                    "Inappropriate invocation of getDouble() on instance of ListenerBinding.");
-        }
+        verifyControls();
     }
 
     /** @since 3.0 * */
 
     public void testListenerBindingObject()
     {
-        IBinding b = new ListenerBinding(null, null, null, null);
+        ValueConverter vc = newValueConverter();
+
+        replayControls();
+
+        IBinding b = new ListenerBinding(null, "foo", null, null, vc, null);
 
         assertSame(b, b.getObject());
+
+        verifyControls();
     }
 
     /** @since 3.0 * */
 
     public void testStringBinding()
     {
+        ValueConverter vc = newValueConverter();
+
+        replayControls();
+
         IComponent c = new MockPage();
 
-        StringBinding b = new StringBinding(c, "foo", null);
+        StringBinding b = new StringBinding(c, "parameter", "foo", vc, null);
 
-        assertSame(c, b.getComponent());
         assertEquals("foo", b.getKey());
+
+        verifyControls();
     }
+
+    /** @since 3.1 */
+    private ValueConverter newValueConverter()
+    {
+        return (ValueConverter) newMock(ValueConverter.class);
+    }
+
 }

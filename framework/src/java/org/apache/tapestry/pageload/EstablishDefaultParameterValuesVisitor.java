@@ -64,10 +64,14 @@ public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
                         .getLocation(), null);
 
             // if there is no binding for this parameter, bind it to the default value
+            // Note: this presumes that initial values are always expressions, which
+            // is likely to change in 3.1 soon!
+
             if (component.getBinding(name) == null)
             {
                 IBinding binding = _bindingFactory.createBinding(
                         component,
+                        name,
                         defaultValue,
                         parameterSpec.getLocation());
 

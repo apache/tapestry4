@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 
 <component-specification class="org.apache.tapestry.wml.Input" allow-body="no">
 
@@ -24,22 +24,22 @@
         The Input element specifies a text entry object.
     </description>
 
-    <parameter name="title" type="java.lang.String" direction="in">
+    <parameter name="title">
         <description>
             The title attribute specifies advisory information about the element. The title may be rendered in a
             variety of ways by the user agent (eg, suggested bookmark name, pop-up tooltip, etc.).
         </description>
     </parameter>
 
-    <parameter name="hidden" type="boolean" direction="in"/>
+    <parameter name="hidden"/>
 
-    <parameter name="name" type="java.lang.String" direction="in" required="yes" >
+    <parameter name="name" required="yes" >
         <description>
             The name attribute specifies a variable name.
         </description>
     </parameter>
 
-    <parameter name="format" type="java.lang.String" direction="in">
+    <parameter name="format">
         <description>
             The format attribute specifies an input mask for user input entries. The string consists of mask control
             characters and static text that is displayed in the input area. The user agent may use the format mask to
@@ -50,14 +50,14 @@
         </description>
     </parameter>
 
-    <parameter name="emptyok" type="boolean" direction="in">
+    <parameter name="emptyok">
         <description>
             The emptyok attribute indicates that this input element accepts empty input although a non-empty format
             string has been specified.
         </description>
     </parameter>
 
-    <parameter name="value" type="java.lang.String" required="yes">
+    <parameter name="value" required="yes">
         <description>
             Bind value to the variable that should recieve the user input string.
         </description>

@@ -56,7 +56,7 @@ public abstract class Option extends AbstractComponent
         if (rewinding)
         {
             if (!select.isDisabled())
-                getBinding("selected").setBoolean(select.isSelected(value));
+                setSelected(select.isSelected(value));
 
             renderBody(writer, cycle);
         }
@@ -66,7 +66,7 @@ public abstract class Option extends AbstractComponent
 
             writer.attribute("value", value);
 
-            if (getBinding("selected").getBoolean())
+            if (isSelected())
                 writer.attribute("selected", "selected");
 
             renderInformalParameters(writer, cycle);
@@ -84,4 +84,8 @@ public abstract class Option extends AbstractComponent
     }
 
     public abstract String getLabel();
+
+    public abstract boolean isSelected();
+
+    public abstract void setSelected(boolean selected);
 }

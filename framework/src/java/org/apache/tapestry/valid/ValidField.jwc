@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <component-specification class="org.apache.tapestry.valid.ValidField" allow-body="no">
 
@@ -24,19 +24,19 @@
   A text input field that can validate input.
   </description>
 
-  <parameter name="value" type="java.lang.Object" required="yes" direction="auto"/>
+  <parameter name="value" required="yes"/>
   
-  <parameter name="disabled" type="boolean" direction="in"/>
+  <parameter name="disabled"/>
   
-  <parameter name="hidden" type="boolean" direction="in"/>
+  <parameter name="hidden"/>
     
-  <parameter name="validator" type="org.apache.tapestry.valid.IValidator" required="yes" direction="auto">
+  <parameter name="validator" required="yes">
     <description>
     Converts value to a string and parses strings back into object values.
     </description>
   </parameter>
     
-  <parameter name="displayName" type="java.lang.String" required="yes" direction="auto">
+  <parameter name="displayName" required="yes">
     <description>
     Name used by FieldLabel and when generating validation error messages.
     </description>
@@ -45,8 +45,5 @@
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>
   <reserved-parameter name="name"/>
-
-  <property-specification name="name" type="java.lang.String"/>
-  <property-specification name="form" type="org.apache.tapestry.IForm"/>
   
 </component-specification>

@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <component-specification class="org.apache.tapestry.html.Shell" allow-informal-parameters="no">
 
@@ -25,31 +25,25 @@
   </description>
 
   <parameter name="title" 
-  	type="java.lang.String" 
-  	required="yes"
-  	direction="in">
+  	required="yes">
     <description>
     The title for the page.
     </description>
   </parameter>
   
-  <parameter name="stylesheet" 
-  	type="org.apache.tapestry.IAsset"
-  	direction="in">
+  <parameter name="stylesheet">
     <description>
     If specified, provides an external stylesheet for the page.
     </description>
   </parameter>
   
-  <parameter name="stylesheets" type="java.lang.Object" direction="in">
+  <parameter name="stylesheets">
   	<description>
   	Array or collection of stylesheet assets.
   	</description>	
   </parameter>
 
-  <parameter name="doctype" 
-  	type="java.lang.String"
-  	direction="in"
+  <parameter name="doctype"
   	default-value='"HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\""'>
     <description>
     Used to specify the full definition of the DOCTYPE element in the response page,
@@ -62,10 +56,7 @@
     </description>
   </parameter>
 
-  <parameter name="DTD" 
-  	type="java.lang.String"
-  	direction="in"
-  	default-value='null'>
+  <parameter name="DTD">
     <description>
     This parameter is deprecated. Please use the 'doctype' parameter instead.
 
@@ -74,9 +65,7 @@
   </parameter>
   
   <parameter 
-  	name="renderContentType" 
-  	type="boolean"
-  	direction="in"
+  	name="renderContentType"
   	default-value="true">
     <description>
     Determines whether to render an http-equiv element with the Content Type of this response.
@@ -84,22 +73,20 @@
   </parameter>
   
   <parameter 
-  	name="refresh" 
-  	type="int"
-  	direction="in">
+  	name="refresh">
     <description>
     If specified, the page will refresh itself after the specified delay (in seconds).
     </description>
   </parameter>
   
   <parameter 
-  	name="delegate" 
-  	type="org.apache.tapestry.IRender"
-  	direction="in">
+  	name="delegate">
     <description>
     If specified, the delegate is rendered before the close of the &lt;head&gt;
     tag (typically used to provide &lt;meta&gt; tags).
     </description>
   </parameter>
+  
+  <inject name="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
   
 </component-specification>
