@@ -149,4 +149,8 @@ public class NullWriter implements IMarkupWriter
     public void print(char[] data, int offset, int length, boolean raw)
     {
     }
+
+    public void print(String value, boolean raw)
+    {
+    }
 }

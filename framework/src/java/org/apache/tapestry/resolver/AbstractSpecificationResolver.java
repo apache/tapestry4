@@ -14,11 +14,9 @@
 
 package org.apache.tapestry.resolver;
 
-import javax.servlet.ServletContext;
-
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.util.ContextResource;
 import org.apache.tapestry.INamespace;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.spec.IComponentSpecification;
 

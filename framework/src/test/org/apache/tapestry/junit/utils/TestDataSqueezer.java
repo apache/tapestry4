@@ -35,7 +35,7 @@ import org.apache.tapestry.util.io.DataSqueezerImpl;
 import org.apache.tapestry.util.io.ISqueezeAdaptor;
 
 /**
- * A series of tests for {@link DataSqueezerImpl}and friends.
+ * A series of tests for {@link DataSqueezerImpl}&nbsp;and friends.
  * 
  * @author Howard Lewis Ship
  */
@@ -364,7 +364,12 @@ public class TestDataSqueezer extends TestCase
 
     public void testClassLoader() throws Exception
     {
-        File dir = new File(System.getProperty("PROJECT_ROOT", ".") + "/examples/Workbench/classes");
+        // TODO: Change the build to download some JAR file,
+        // and change this code to reference a class within that
+        // JAR file.
+        
+        File dir = new File(System.getProperty("PROJECT_ROOT", ".")
+                + "/examples/Workbench/target/classes");
 
         if (!dir.exists())
         {

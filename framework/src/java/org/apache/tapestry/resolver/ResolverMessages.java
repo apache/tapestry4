@@ -14,27 +14,45 @@
 
 package org.apache.tapestry.resolver;
 
+import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.INamespace;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * Messages for the resolver package.
- *
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 class ResolverMessages
 {
-    private static final MessageFormatter _formatter =
-        new MessageFormatter(ResolverMessages.class, "ResolverStrings");
+    private static final MessageFormatter _formatter = new MessageFormatter(ResolverMessages.class,
+            "ResolverStrings");
 
-    public static String noSuchComponentType(String type, INamespace namespace)
+    static String noSuchComponentType(String type, INamespace namespace)
     {
-        return _formatter.format("no-such-component-type", type, namespace.getNamespaceId());
+        return _formatter.format("no-such-component-type", type, namespace);
     }
 
-    public static String noSuchPage(String name, INamespace namespace)
+    static String noSuchPage(String name, INamespace namespace)
     {
         return _formatter.format("no-such-page", name, namespace.getNamespaceId());
+    }
+
+    static String resolvingComponent(String type, INamespace namespace)
+    {
+        return _formatter.format("resolving-component", type, namespace);
+    }
+
+    static String checkingResource(Resource resource)
+    {
+        return _formatter.format("checking-resource", resource);
+    }
+
+    static String installingComponent(String type, INamespace namespace,
+            IComponentSpecification specification)
+    {
+        return _formatter.format("installing-component", type, namespace, specification);
     }
 }

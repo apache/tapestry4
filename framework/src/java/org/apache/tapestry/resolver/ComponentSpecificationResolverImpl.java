@@ -23,45 +23,35 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- *  Utility class that understands the rules of component types (which
- *  may optionally have a library prefix) and can resolve 
- *  the type to a {@link org.apache.tapestry.INamespace} and a 
- *  {@link org.apache.tapestry.spec.IComponentSpecification}.
+ * Utility class that understands the rules of component types (which may optionally have a library
+ * prefix) and can resolve the type to a {@link org.apache.tapestry.INamespace}and a
+ * {@link org.apache.tapestry.spec.IComponentSpecification}.
+ * <p>
+ * Like {@link org.apache.tapestry.resolver.PageSpecificationResolver}, if the component is not
+ * defined explicitly in the namespace, a search may occur: Performs the tricky work of resolving a
+ * page name to a page specification. The search for pages in the application namespace is the most
+ * complicated, since Tapestry searches for pages that aren't explicitly defined in the application
+ * specification. The search, based on the <i>simple-name </i> of the page, goes as follows:
+ * <ul>
+ * <li>As declared in the application specification
+ * <li><i>type </i>.jwc in the same folder as the application specification
+ * <li><i>type </i> jwc in the WEB-INF/ <i>servlet-name </i> directory of the context root
+ * <li><i>type </i>.jwc in WEB-INF
+ * <li><i>type </i>.jwc in the application root (within the context root)
+ * <li>By searching the framework namespace
+ * </ul>
+ * The search for components in library namespaces is more abbreviated:
+ * <li>As declared in the library specification
+ * <li><i>type </i>.jwc in the same folder as the library specification
+ * <li>By searching the framework namespace
+ * </ul>
  * 
- *  <p>Like {@link org.apache.tapestry.resolver.PageSpecificationResolver},
- *  if the component is not defined explicitly in the namespace, a search
- *  may occur:
- * 
- *  Performs the tricky work of resolving a page name to a page specification.
- *  The search for pages in the application namespace is the most complicated,
- *  since Tapestry searches for pages that aren't explicitly defined in the
- *  application specification.  The search, based on the <i>simple-name</i>
- *  of the page, goes as follows:
- * 
- *  <ul>
- *  <li>As declared in the application specification
- *  <li><i>type</i>.jwc in the same folder as the application specification
- *  <li><i>type</i> jwc in the WEB-INF/<i>servlet-name</i> directory of the context root
- *  <li><i>type</i>.jwc in WEB-INF
- *  <li><i>type</i>.jwc in the application root (within the context root)
- *  <li>By searching the framework namespace
- *  </ul> 
- * 
- *  The search for components in library namespaces is more abbreviated:
- *  <li>As declared in the library specification
- *  <li><i>type</i>.jwc in the same folder as the library specification
- *  <li>By searching the framework namespace
- *  </ul>
- *
- * 
- *  @author Howard Lewis Ship
- *  @since 3.0
- *
+ * @author Howard Lewis Ship
+ * @since 3.0
  */
 
-public class ComponentSpecificationResolverImpl
-    extends AbstractSpecificationResolver
-    implements ComponentSpecificationResolver
+public class ComponentSpecificationResolverImpl extends AbstractSpecificationResolver implements
+        ComponentSpecificationResolver
 {
     /** Set by container */
     private Log _log;
@@ -77,29 +67,23 @@ public class ComponentSpecificationResolverImpl
     }
 
     /**
-     *  Passed the namespace of a container (to resolve the type in)
-     *  and the type to resolve, performs the processing.  A "bare type"
-     *  (without a library prefix) may be in the containerNamespace,
-     *  or the framework namespace
-     *  (a search occurs in that order).
+     * Passed the namespace of a container (to resolve the type in) and the type to resolve,
+     * performs the processing. A "bare type" (without a library prefix) may be in the
+     * containerNamespace, or the framework namespace (a search occurs in that order).
      * 
-     *  @param cycle current request cycle
-     *  @param containerNamespace namespace that may contain
-     *  a library referenced in the type
-     *  @param type the component specification
-     *  to  find, either a simple name, or prefixed with a library id
-     *  (defined for the container namespace)
-     * 
-     *  @see #getNamespace()
-     *  @see #getSpecification()
-     * 
+     * @param cycle
+     *            current request cycle
+     * @param containerNamespace
+     *            namespace that may contain a library referenced in the type
+     * @param type
+     *            the component specification to find, either a simple name, or prefixed with a
+     *            library id (defined for the container namespace)
+     * @see #getNamespace()
+     * @see #getSpecification()
      */
 
-    public void resolve(
-        IRequestCycle cycle,
-        INamespace containerNamespace,
-        String type,
-        Location location)
+    public void resolve(IRequestCycle cycle, INamespace containerNamespace, String type,
+            Location location)
     {
         int colonx = type.indexOf(':');
 
@@ -115,26 +99,26 @@ public class ComponentSpecificationResolverImpl
     }
 
     /**
-     *  Like {@link #resolve(org.apache.tapestry.IRequestCycle, org.apache.tapestry.INamespace, java.lang.String, org.apache.tapestry.ILocation)},
-     *  but used when the type has already been parsed into a library id and a simple type.
+     * Like
+     * {@link #resolve(org.apache.tapestry.IRequestCycle, org.apache.tapestry.INamespace, java.lang.String, org.apache.tapestry.ILocation)},
+     * but used when the type has already been parsed into a library id and a simple type.
      * 
-     *  @param cycle current request cycle
-     *  @param containerNamespace namespace that may contain
-     *  a library referenced in the type
-     *  @param libraryId the library id within the container namespace, or null
-     *  @param type the component specification
-     *  to  find as a simple name (without a library prefix)
-     *  @param location of reference to be resolved
-     *  @throws ApplicationRuntimeException if the type cannot be resolved
-     * 
+     * @param cycle
+     *            current request cycle
+     * @param containerNamespace
+     *            namespace that may contain a library referenced in the type
+     * @param libraryId
+     *            the library id within the container namespace, or null
+     * @param type
+     *            the component specification to find as a simple name (without a library prefix)
+     * @param location
+     *            of reference to be resolved
+     * @throws ApplicationRuntimeException
+     *             if the type cannot be resolved
      */
 
-    public void resolve(
-        IRequestCycle cycle,
-        INamespace containerNamespace,
-        String libraryId,
-        String type,
-        Location location)
+    public void resolve(IRequestCycle cycle, INamespace containerNamespace, String libraryId,
+            String type, Location location)
     {
         reset();
         _type = type;
@@ -159,20 +143,21 @@ public class ComponentSpecificationResolverImpl
         if (getSpecification() == null)
         {
 
-            throw new ApplicationRuntimeException(
-                ResolverMessages.noSuchComponentType(type, namespace),
-                location,
-                null);
+            throw new ApplicationRuntimeException(ResolverMessages.noSuchComponentType(
+                    type,
+                    namespace), location, null);
 
         }
     }
+
+    // TODO: This looks like a chain-of-command to me
 
     private void searchForComponent(IRequestCycle cycle)
     {
         INamespace namespace = getNamespace();
 
         if (_log.isDebugEnabled())
-            _log.debug("Resolving unknown component '" + _type + "' in " + namespace);
+            _log.debug(ResolverMessages.resolvingComponent(_type, namespace));
 
         String expectedName = _type + ".jwc";
         Resource namespaceLocation = namespace.getSpecificationLocation();
@@ -206,15 +191,18 @@ public class ComponentSpecificationResolverImpl
         if (framework.containsComponentType(_type))
         {
             setSpecification(framework.getComponentSpecification(_type));
+            
+            install();
+            
             return;
         }
 
-        IComponentSpecification specification =
-            getDelegate().findComponentSpecification(cycle, namespace, _type);
-
+        IComponentSpecification specification = getDelegate().findComponentSpecification(
+                cycle,
+                namespace,
+                _type);
+        
         setSpecification(specification);
-
-        // If not found by here, an exception will be thrown.
     }
 
     private boolean found(Resource resource)
@@ -238,13 +226,7 @@ public class ComponentSpecificationResolverImpl
         IComponentSpecification specification = getSpecification();
 
         if (_log.isDebugEnabled())
-            _log.debug(
-                "Installing component type "
-                    + _type
-                    + " into "
-                    + namespace
-                    + " as "
-                    + specification);
+            _log.debug(ResolverMessages.installingComponent(_type, namespace, specification));
 
         namespace.installComponentSpecification(_type, specification);
     }
