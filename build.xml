@@ -9,7 +9,7 @@
 <property file="${root.dir}/config/build.properties"/>
 <property file="${root.dir}/config/common.properties"/>
   
-<property name="javadoc.dir" value="doc/api"/>
+<property name="javadoc.dir" value="web/doc/api"/>
 
 <property name="private.dir" value="private"/>
 
@@ -58,18 +58,14 @@
 
 <target name="clean-all" depends="clean"
 	description="Cleans all subprojects and deletes installed frameworks and WARs.">
-	<delete>
+	<delete quiet="true">
 		<fileset dir="${lib.dir}">
 		  	<include name="*.jar"/>
 		  	<include name="*.war"/>
 		  	<include name="*.ear"/>
 		</fileset>
 	</delete>
-	<delete dir="doc/Tutorial"/>
-	<delete dir="doc/DevelopersGuide"/>
-	<delete dir="doc/ContributorsGuide"/>
-	<delete dir="doc/ComponentReference"/>	
-	<delete dir="doc/api"/>
+	<delete dir="web/doc" quiet="true"/>
 </target>
 
 <target name="install"
@@ -193,13 +189,6 @@
 	</copy>
 	
 	<property name="web.dir" value="${dist.dir}/web"/>
-	
-	<copy todir="${web.dir}" includeEmptyDirs="false">
-		<fileset dir=".">
-			<include name="doc/**"/>
-			<exclude name="doc/src/**"/>
-		</fileset>
-	</copy>
 	
 	<property name="dtd.dir" value="${web.dir}/dtd"/>
 	
