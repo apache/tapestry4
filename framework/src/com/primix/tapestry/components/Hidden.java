@@ -150,6 +150,9 @@ public class Hidden extends AbstractFormComponent
 
 		valueBinding.setString(value);
 		
+        if (listenerBinding == null)
+            return;
+
         try
         {
             listener = (IActionListener)listenerBinding.getValue();
