@@ -8,7 +8,6 @@ import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.html.BasePage;
 import net.sf.tapestry.spec.ComponentSpecification;
 
 /**
@@ -177,7 +176,6 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
             LOG.debug("Found HTML template at " + location);
 
         ComponentSpecification specification = new ComponentSpecification();
-        specification.setComponentClassName(BasePage.class.getName());
         specification.setPageSpecification(true);
         specification.setSpecificationLocation(location);
 

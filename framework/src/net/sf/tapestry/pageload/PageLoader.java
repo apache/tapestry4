@@ -14,6 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
@@ -32,6 +33,7 @@ import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.binding.ExpressionBinding;
 import net.sf.tapestry.binding.StringBinding;
+import net.sf.tapestry.html.BasePage;
 import net.sf.tapestry.resolver.ComponentSpecificationResolver;
 import net.sf.tapestry.resource.ContextResourceLocation;
 import net.sf.tapestry.spec.AssetSpecification;
@@ -462,38 +464,48 @@ public class PageLoader implements IPageLoader
         IComponent result = null;
 
         String className = spec.getComponentClassName();
-        Class componentClass = _resolver.findClass(className);
 
-        try
+        if (Tapestry.isNull(className))
         {
-            result = (IComponent) componentClass.newInstance();
+            result = new BaseComponent();
+        }
+        else
+        {
 
-            result.setNamespace(namespace);
-            result.setSpecification(spec);
-            result.setPage(page);
-            result.setContainer(container);
-            result.setId(id);
+            Class componentClass = _resolver.findClass(className);
+
+            try
+            {
+                result = (IComponent) componentClass.newInstance();
+
+            }
+            catch (ClassCastException ex)
+            {
+                throw new PageLoaderException(
+                    Tapestry.getString("PageLoader.class-not-component", className),
+                    container,
+                    ex);
+            }
+            catch (Exception ex)
+            {
+                throw new PageLoaderException(
+                    Tapestry.getString("PageLoader.unable-to-instantiate", className),
+                    container,
+                    ex);
+            }
+
+            if (result instanceof IPage)
+                throw new PageLoaderException(
+                    Tapestry.getString("PageLoader.page-not-allowed", result.getExtendedId()),
+                    result);
 
         }
-        catch (ClassCastException ex)
-        {
-            throw new PageLoaderException(
-                Tapestry.getString("PageLoader.class-not-component", className),
-                container,
-                ex);
-        }
-        catch (Exception ex)
-        {
-            throw new PageLoaderException(
-                Tapestry.getString("PageLoader.unable-to-instantiate", className),
-                container,
-                ex);
-        }
 
-        if (result instanceof IPage)
-            throw new PageLoaderException(
-                Tapestry.getString("PageLoader.page-not-allowed", result.getExtendedId()),
-                result);
+        result.setNamespace(namespace);
+        result.setSpecification(spec);
+        result.setPage(page);
+        result.setContainer(container);
+        result.setId(id);
 
         _count++;
 
@@ -519,7 +531,23 @@ public class PageLoader implements IPageLoader
     {
         IPage result = null;
 
+        String pageName = namespace.constructQualifiedName(name);
         String className = spec.getComponentClassName();
+
+        if (Tapestry.isNull(className))
+        {
+            if (LOG.isDebugEnabled())
+                LOG.debug("Page " + namespace.constructQualifiedName(name) + " does not specify a component class.");
+
+            className = _engine.getPropertySource().getPropertyValue("net.sf.tapestry.default-page-class");
+
+            if (className == null)
+                className = BasePage.class.getName();
+
+            if (LOG.isDebugEnabled())
+                LOG.debug("Instantiating as class " + className);
+        }
+
         Class pageClass = _resolver.findClass(className);
 
         try
@@ -529,7 +557,7 @@ public class PageLoader implements IPageLoader
             result.setNamespace(namespace);
             result.setSpecification(spec);
             result.setName(name);
-            result.setPageName(namespace.constructQualifiedName(name));
+            result.setPageName(pageName);
             result.setLocale(_locale);
         }
         catch (ClassCastException ex)
