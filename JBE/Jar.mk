@@ -89,14 +89,21 @@ endif
 
 install: jar-install local-install
 
+# Default rule for when INSTALL_DIR or MODULE_NAME is undefined.
+
 jar-install: jar
+
 ifeq "$(INSTALL_DIR)" ""
+jar-install:
 	@$(ECHO) JBE Error: Must set INSTALL_DIR in Makefile
-else
+endif
+
 ifneq "$(MODULE_NAME)" ""
+jar-install: $(INSTALL_DIR)/$(JAR_FILE)
+
+$(INSTALL_DIR)/$(JAR_FILE): $(JAR_FILE)
 	@$(ECHO) "\n*** Installing $(JAR_FILE) to $(INSTALL_DIR) ***\n"
 	@$(CP) $(JAR_FILE) --force $(INSTALL_DIR)
-endif
 endif
 
 # local-install allows additional installation work to follow the normal

@@ -46,9 +46,14 @@ DEPLOY_JAR_FILE := $(MODULE_NAME)-deploy.$(JAR_EXT)
 local-clean:
 	@$(RMDIRS) $(DEPLOY_JAR_FILE)
 
-local-install: 
+ifneq "$(INSTALL_DIR)" ""
+
+local-install: $(INSTALL_DIR)/$(DEPLOY_JAR_FILE)
+
+$(INSTALL_DIR)/$(DEPLOY_JAR_FILE): $(DEPLOY_JAR_FILE)
 	@$(ECHO) "\n*** Installing $(DEPLOY_JAR_FILE) to $(INSTALL_DIR) ... ***\n"
 	@$(CP) --force $(DEPLOY_JAR_FILE) $(INSTALL_DIR)
+endif
 
 local-post-jar: $(DEPLOY_JAR_FILE)
 
@@ -66,7 +71,7 @@ FINAL_EJBC_OPT := $(strip $(SITE_EJBC_OPT) $(EJBC_OPT))
 # EJBC leaves lots of garbage around, so we'll switch to the
 # build directory
 
-$(DEPLOY_JAR_FILE): $(JAR_FILE)
+$(DEPLOY_JAR_FILE): $(JAR_FILE) $(filter %.jar %.zip,$(LOCAL_CLASSPATH))
 	@$(ECHO) "\n*** Creating $(DEPLOY_JAR_FILE) ... ***\n"
 	$(CD) $(MOD_BUILD_DIR) ; \
 	$(JAVA) -classpath "$(EJBC_CLASSPATH)" \

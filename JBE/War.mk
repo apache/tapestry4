@@ -97,14 +97,21 @@ endif
 install: war war-install local-install
 
 war-install:war
+
 ifeq "$(INSTALL_DIR)" ""
+war-install:
 	@$(ECHO) JBE Error: Must set INSTALL_DIR in Makefile
 else
+
 ifneq "$(MODULE_NAME)" ""
+war-install: $(INSTALL_DIR)/$(JAR_FILE)
+
+$(INSTALL_DIR)/$(JAR_FILE): $(JAR_FILE)
 	@$(ECHO) "\n*** Installing $(JAR_FILE) to $(INSTALL_DIR) ***\n"
 	@$(CP) $(JAR_FILE) --force $(INSTALL_DIR)
 endif
 endif
+
 
 # Additional rule that will fire after the WAR is installed.
 
