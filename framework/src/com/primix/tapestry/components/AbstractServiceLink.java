@@ -40,9 +40,11 @@ import java.util.*;
  *  <ul>
  *  <li>enabled</li>
  *  <li>anchor</li>
- *  <li>listener</li>
  * </ul>
  *
+ * <p>Subclasses usually need only implement {@link #getServiceName(IRequestCycle)}
+ * and {@link #getContext(IRequestCycle)}.
+ *                       
  * @author Howard Ship
  * @version $Id$
  */

@@ -231,14 +231,14 @@ public abstract class AbstractApplication
 			monitor = cycle.getMonitor();
 			
 			if (monitor != null)
-				monitor.serviceBegin("home", null);
+				monitor.serviceBegin(HOME_SERVICE, null);
 
 			cycle.setPage(HOME_PAGE);
 
 			render(cycle, output);
 
 			if (monitor != null)
-				monitor.serviceEnd("home");
+				monitor.serviceEnd(HOME_SERVICE);
 		}
 
 		public String buildURL(IRequestCycle cycle, IComponent component,  String[] parameters)
@@ -262,12 +262,12 @@ public abstract class AbstractApplication
 			monitor = cycle.getMonitor();
 			
 			if (monitor != null)
-				monitor.serviceBegin("restart", null);
+				monitor.serviceBegin(RESTART_SERVICE, null);
 
 			restart(cycle);
 
 			if (monitor != null)
-				monitor.serviceEnd("restart");
+				monitor.serviceEnd(RESTART_SERVICE);
 		}
 
 		public String buildURL(IRequestCycle cycle, IComponent component, String[] parameters)
@@ -986,7 +986,7 @@ public abstract class AbstractApplication
 
 		monitor = cycle.getMonitor();
 		if (monitor != null)
-			monitor.serviceBegin("action", pageName + "/" + targetActionId);
+			monitor.serviceBegin(IApplicationService.ACTION_SERVICE, pageName + "/" + targetActionId);
 
 		if (context.getSession().isNew())
 			throw new StaleSessionException();
@@ -1012,7 +1012,7 @@ public abstract class AbstractApplication
 		render(cycle, output);
 
 		if (monitor != null)
-			monitor.serviceEnd("action");
+			monitor.serviceEnd(IApplicationService.ACTION_SERVICE);
 
 	}
 
@@ -1056,7 +1056,8 @@ public abstract class AbstractApplication
 		componentPath = context.getPathInfo(2);
 
 		if (monitor != null)
-			monitor.serviceBegin("direct", pageName + "/" + componentPath);
+			monitor.serviceBegin(IApplicationService.DIRECT_SERVICE, 
+				pageName + "/" + componentPath);
 
 		if (context.getSession().isNew())
 			throw new StaleSessionException();
@@ -1103,7 +1104,7 @@ public abstract class AbstractApplication
 		render(cycle, output);
 
 		if (monitor != null)
-			monitor.serviceEnd("direct");
+			monitor.serviceEnd(IApplicationService.DIRECT_SERVICE);
 	}
 
 	/**
@@ -1125,7 +1126,7 @@ public abstract class AbstractApplication
 
 		monitor = cycle.getMonitor();
 		if (monitor != null)
-			monitor.serviceBegin("page", pageName);
+			monitor.serviceBegin(IApplicationService.PAGE_SERVICE, pageName);
 
 		// At one time, the page service required a session, but that is no longer necessary.
 		// User's can now bookmark pages within a Tapestry application.  Pages
@@ -1147,7 +1148,7 @@ public abstract class AbstractApplication
 		render(cycle, output);
 
 		if (monitor != null)
-			monitor.serviceEnd("page");
+			monitor.serviceEnd(IApplicationService.PAGE_SERVICE);
 	}
 
 	/**
