@@ -50,7 +50,7 @@ import com.primix.tapestry.spec.*;
  *    <td>java.lang.String</td>
  *    <td>R / W</td>
  *   	<td>no</td>
- *		<td>post</td>
+ *		<td>&nbsp;</td>
  *		<td>The text inside the text field.  The binding is only updated
  *			when the the TextField component is not disabled.
  *
@@ -101,15 +101,6 @@ import com.primix.tapestry.spec.*;
  *			determine.
  *
  *			<p>Corresponds to the <code>maxlength</code> HTML attribute.</td> </tr>
- *
- *  <tr>
- *    <td>listener</td>
- *    <td>{@link IActionListener}</td>
- * 	  <td>R</td>
- * 	  <td>no</td>
- *	  <td>&nbsp;</td>
- *	  <td>The listener is notified after the text binding has been updated.</td>
- *	</tr>
  *
  *	</table>
  *
