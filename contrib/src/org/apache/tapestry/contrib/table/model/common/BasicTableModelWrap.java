@@ -19,6 +19,7 @@ import java.util.Iterator;
 import org.apache.tapestry.contrib.table.model.IBasicTableModel;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
+import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
 
 /**
  * @version $Id$
@@ -31,6 +32,12 @@ public class BasicTableModelWrap extends AbstractTableModel
 
     public BasicTableModelWrap(IBasicTableModel objBasicTableModel, ITableColumnModel objColumnModel)
     {
+        this(objBasicTableModel, objColumnModel, new SimpleTableState());
+    }
+
+    public BasicTableModelWrap(IBasicTableModel objBasicTableModel, ITableColumnModel objColumnModel, SimpleTableState objState)
+    {
+        super(objState);
         m_objBasicTableModel = objBasicTableModel;
         m_objTableColumnModel = objColumnModel;
     }

@@ -27,6 +27,13 @@
         <description>The tag to use to wrap the values in, 'td' by default.</description>
     </parameter>
 
+    <parameter name="class"
+        type="java.lang.String"
+        required="no"
+        direction="custom">
+        <description>The CSS class of the table values</description>
+    </parameter>
+    
 	<component id="iterColumns" type="Foreach">
 		<binding name="source" expression="tableColumnIterator"/>
 		<binding name="value" expression="tableColumn"/>
@@ -34,6 +41,7 @@
   
 	<component id="informal" type="Any" inherit-informal-parameters="yes">
 		<inherited-binding name="element" parameter-name="element"/>
+        <binding name="class" expression="valueClass"/>
 	</component>
   
 	<component id="insertValueRenderer" type="Delegator">

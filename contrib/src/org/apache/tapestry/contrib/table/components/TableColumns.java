@@ -50,8 +50,11 @@ public abstract class TableColumns extends AbstractTableViewComponent
     public static final String TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE =
         "org.apache.tapestry.contrib.table.components.TableColumns.arrowDown";
 
+    public static final String TABLE_COLUMN_CSS_CLASS_SUFFIX = "ColumnHeader";
+
     // Bindings
     public abstract IBinding getColumnBinding();
+    public abstract IBinding getClassBinding();
     public abstract IAsset getArrowDownAsset();
     public abstract IAsset getArrowUpAsset();
 
@@ -105,6 +108,22 @@ public abstract class TableColumns extends AbstractTableViewComponent
         return getTableColumn().getColumnRenderer(
             getPage().getRequestCycle(),
             getTableModelSource());
+    }
+
+    /**
+     * Returns the CSS class of the generated table cell.
+     * It uses the class parameter if it has been bound, or
+     * the default value of "[column name]ColumnHeader" otherwise.
+     * 
+     * @return the CSS class of the cell
+     */
+    public String getColumnClass()
+    {
+        IBinding objClassBinding = getClassBinding();
+        if (objClassBinding != null)
+            return objClassBinding.getString();
+        else
+            return getTableColumn().getColumnName() + TABLE_COLUMN_CSS_CLASS_SUFFIX;
     }
 
     /**
