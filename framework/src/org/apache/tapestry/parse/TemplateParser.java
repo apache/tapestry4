@@ -56,6 +56,7 @@
 package org.apache.tapestry.parse;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -235,13 +236,7 @@ public class TemplateParser
      **/
 
     public static final String IMPLICIT_ID_PATTERN =
-        "^("
-            + PROPERTY_NAME_PATTERN
-            + ")?@((("
-            + PROPERTY_NAME_PATTERN
-            + "):)?("
-            + PROPERTY_NAME_PATTERN
-            + "))$";
+        "^(" + PROPERTY_NAME_PATTERN + ")?@(((" + PROPERTY_NAME_PATTERN + "):)?(" + PROPERTY_NAME_PATTERN + "))$";
 
     private static final int IMPLICIT_ID_PATTERN_ID_GROUP = 1;
     private static final int IMPLICIT_ID_PATTERN_TYPE_GROUP = 2;
@@ -270,12 +265,12 @@ public class TemplateParser
      **/
 
     private ILocation _templateLocation;
-    
+
     /**
      *  Location with in the resource for the current line.
      * 
      **/
-    
+
     private ILocation _currentLocation;
 
     /**
@@ -379,8 +374,7 @@ public class TemplateParser
         {
             _simpleIdPattern = compiler.compile(SIMPLE_ID_PATTERN);
             _implicitIdPattern = compiler.compile(IMPLICIT_ID_PATTERN);
-        }
-        catch (MalformedPatternException ex)
+        } catch (MalformedPatternException ex)
         {
             throw new ApplicationRuntimeException(ex);
         }
@@ -412,31 +406,114 @@ public class TemplateParser
 
         try
         {
-            _templateData = templateData;
-            _resourceLocation = resourceLocation;
-            _templateLocation = new Location(resourceLocation);
-            _delegate = delegate;
-            _ignoring = false;
-            _line = 1;
+            beforeParse(templateData, delegate, resourceLocation);
 
             parse();
 
             result = (TemplateToken[]) _tokens.toArray(new TemplateToken[_tokens.size()]);
-        }
-        finally
+        } finally
         {
-            _delegate = null;
-            _templateData = null;
-            _resourceLocation = null;
-            _templateLocation = null;
-            _currentLocation = null;
-            _stack.clear();
-            _tokens.clear();
-            _attributes.clear();
-            _idAllocator.clear();
+            afterParse();
         }
 
         return result;
+    }
+
+    /**
+     *  perform default initialization of the parser
+     * 
+     *  @author glongman@intelligentworks.com
+     */
+
+    protected void beforeParse(
+        char[] templateData,
+        ITemplateParserDelegate delegate,
+        IResourceLocation resourceLocation)
+    {
+        _templateData = templateData;
+        _resourceLocation = resourceLocation;
+        _templateLocation = new Location(resourceLocation);
+        _delegate = delegate;
+        _ignoring = false;
+        _line = 1;
+    }
+
+    /**
+     *  Perform default cleanup after parsing completes
+     * 
+     *  @author glongman@intelligentworks.com
+     */
+
+    protected void afterParse()
+    {
+        _delegate = null;
+        _templateData = null;
+        _resourceLocation = null;
+        _templateLocation = null;
+        _currentLocation = null;
+        _stack.clear();
+        _tokens.clear();
+        _attributes.clear();
+        _idAllocator.clear();
+    }
+
+    /**
+     * Used by the parser to report problems in the parse.
+     * Parsing <b>must</b> stop when a problem is reported.
+     * <p>
+     * The default implementation simply throws an exception that contains
+     * the message and location parameters.
+     * <p>
+     * Subclasses may override but <b>must</b> ensure they throw the required exception.
+     * 
+     * @author glongman@intelligentworks.com
+     *  
+     * @param message
+     * @param location
+     * @param line ignored by the default impl
+     * @param cursor ignored by the default impl
+     * @throws TemplateParseException always thrown in order to terminate the parse.
+     */
+
+    protected void templateParseProblem(String message, ILocation location, int line, int cursor)
+        throws TemplateParseException
+    {
+        throw new TemplateParseException(message, location);
+    }
+
+    /**
+     * Used by the parser to report tapestry runtime specific problems in the parse.
+     * Parsing <b>must</b> stop when a problem is reported.
+     * <p>
+     * The default implementation simply rethrows the exception.
+     * <p>
+     * Subclasses may override but <b>must</b> ensure they rethrow the exception.
+     * 
+     * @author glongman@intelligentworks.com
+     *  
+     * @param exception
+     * @param line ignored by the default impl
+     * @param cursor ignored by the default impl
+     * @throws ApplicationRuntimeException always rethrown in order to terminate the parse.
+     */
+
+    protected void templateParseProblem(ApplicationRuntimeException exception, int line, int cursor)
+        throws ApplicationRuntimeException
+    {
+        throw exception;
+    }
+
+    /**
+     * Give subclasses access to the parse results
+     * 
+     * @author glongman@intelligentworks.com
+     */
+    protected List getTokens()
+    {
+        if (_tokens == null)
+            return Collections.EMPTY_LIST;
+
+        return _tokens;
     }
 
     /**
@@ -457,8 +534,7 @@ public class TemplateParser
             // Every character matched.
 
             return true;
-        }
-        catch (IndexOutOfBoundsException ex)
+        } catch (IndexOutOfBoundsException ex)
         {
             return false;
         }
@@ -468,7 +544,7 @@ public class TemplateParser
     private static final char[] COMMENT_END = new char[] { '-', '-', '>' };
     private static final char[] CLOSE_TAG = new char[] { '<', '/' };
 
-    private void parse() throws TemplateParseException
+    protected void parse() throws TemplateParseException
     {
         _cursor = 0;
         _blockStart = -1;
@@ -528,11 +604,11 @@ public class TemplateParser
         while (true)
         {
             if (_cursor >= length)
-                throw new TemplateParseException(
-                    Tapestry.format(
-                        "TemplateParser.comment-not-ended",
-                        Integer.toString(startLine)),
-                    new Location(_resourceLocation, startLine));
+                templateParseProblem(
+                    Tapestry.format("TemplateParser.comment-not-ended", Integer.toString(startLine)),
+                    new Location(_resourceLocation, startLine),
+                    startLine,
+                    _cursor);
 
             if (lookahead(COMMENT_END))
                 break;
@@ -612,14 +688,14 @@ public class TemplateParser
         {
             if (_cursor >= length)
             {
-                String key =
-                    (tagName == null)
-                        ? "TemplateParser.unclosed-unknown-tag"
-                        : "TemplateParser.unclosed-tag";
+                String key = (tagName == null) ? "TemplateParser.unclosed-unknown-tag" : "TemplateParser.unclosed-tag";
 
-                throw new TemplateParseException(
+                templateParseProblem(
                     Tapestry.format(key, tagName, Integer.toString(startLine)),
-                    startLocation);
+                    startLocation,
+                    startLine,
+                    cursorStart);
+
             }
 
             char ch = _templateData[_cursor];
@@ -664,11 +740,7 @@ public class TemplateParser
 
                     if (ch == '=' || ch == '/' || ch == '>' || Character.isWhitespace(ch))
                     {
-                        attributeName =
-                            new String(
-                                _templateData,
-                                attributeNameStart,
-                                _cursor - attributeNameStart);
+                        attributeName = new String(_templateData, attributeNameStart, _cursor - attributeNameStart);
 
                         state = ADVANCE_PAST_EQUALS;
                         break;
@@ -717,13 +789,15 @@ public class TemplateParser
                 case WAIT_FOR_ATTRIBUTE_VALUE :
 
                     if (ch == '/' || ch == '>')
-                        throw new TemplateParseException(
+                        templateParseProblem(
                             Tapestry.format(
                                 "TemplateParser.missing-attribute-value",
                                 tagName,
                                 Integer.toString(_line),
                                 attributeName),
-                            getCurrentLocation());
+                            getCurrentLocation(),
+                            _line,
+                            _cursor);
 
                     // Ignore whitespace between '=' and the attribute value.  Also, look
                     // for initial quote.
@@ -758,10 +832,7 @@ public class TemplateParser
                     if (ch == quoteChar)
                     {
                         String attributeValue =
-                            new String(
-                                _templateData,
-                                attributeValueStart,
-                                _cursor - attributeValueStart);
+                            new String(_templateData, attributeValueStart, _cursor - attributeValueStart);
 
                         _attributes.put(attributeName, attributeValue);
 
@@ -782,10 +853,7 @@ public class TemplateParser
                     if (ch == '/' || ch == '>' || Character.isWhitespace(ch))
                     {
                         String attributeValue =
-                            new String(
-                                _templateData,
-                                attributeValueStart,
-                                _cursor - attributeValueStart);
+                            new String(_templateData, attributeValueStart, _cursor - attributeValueStart);
 
                         _attributes.put(attributeName, attributeValue);
 
@@ -805,12 +873,14 @@ public class TemplateParser
         if (localizationKey != null && tagName.equalsIgnoreCase("span"))
         {
             if (_ignoring)
-                throw new TemplateParseException(
+                templateParseProblem(
                     Tapestry.format(
                         "TemplateParser.component-may-not-be-ignored",
                         tagName,
                         Integer.toString(startLine)),
-                    startLocation);
+                    startLocation,
+                    startLine,
+                    cursorStart);
 
             // If the tag isn't empty, then create a Tag instance to ignore the
             // body of the tag.
@@ -829,8 +899,7 @@ public class TemplateParser
                 // Start ignoring content until the close tag.
 
                 _ignoring = true;
-            }
-            else
+            } else
             {
                 // Cursor is at the closing carat, advance over it and any whitespace.                
                 advance();
@@ -843,13 +912,9 @@ public class TemplateParser
 
             boolean raw = checkBoolean(RAW_ATTRIBUTE_NAME, _attributes);
 
-            Map attributes =
-                filter(
-                    _attributes,
-                    new String[] { LOCALIZATION_KEY_ATTRIBUTE_NAME, RAW_ATTRIBUTE_NAME });
+            Map attributes = filter(_attributes, new String[] { LOCALIZATION_KEY_ATTRIBUTE_NAME, RAW_ATTRIBUTE_NAME });
 
-            TemplateToken token =
-                new LocalizationToken(tagName, localizationKey, raw, attributes, startLocation);
+            TemplateToken token = new LocalizationToken(tagName, localizationKey, raw, attributes, startLocation);
 
             _tokens.add(token);
 
@@ -898,7 +963,7 @@ public class TemplateParser
     {
         if (jwcId.equalsIgnoreCase(CONTENT_ID))
         {
-            processContentTag(tagName, startLine, emptyTag);
+            processContentTag(tagName, startLine, cursorStart, emptyTag);
 
             return;
         }
@@ -906,12 +971,11 @@ public class TemplateParser
         boolean isRemoveId = jwcId.equalsIgnoreCase(REMOVE_ID);
 
         if (_ignoring && !isRemoveId)
-            throw new TemplateParseException(
-                Tapestry.format(
-                    "TemplateParser.component-may-not-be-ignored",
-                    tagName,
-                    Integer.toString(startLine)),
-                startLocation);
+            templateParseProblem(
+                Tapestry.format("TemplateParser.component-may-not-be-ignored", tagName, Integer.toString(startLine)),
+                startLocation,
+                startLine,
+                cursorStart);
 
         String type = null;
         boolean allowBody = false;
@@ -937,33 +1001,49 @@ public class TemplateParser
             if (jwcId == null)
                 jwcId = _idAllocator.allocateId("$" + simpleType);
 
-            allowBody = _delegate.getAllowBody(libraryId, simpleType, startLocation);
+            try
+            {
+                allowBody = _delegate.getAllowBody(libraryId, simpleType, startLocation);
+            } catch (ApplicationRuntimeException e)
+            {
+                // give subclasses a chance to handle and rethrow
+                templateParseProblem(e, startLine, cursorStart);
+            }
 
-        }
-        else
+        } else
         {
             if (!isRemoveId)
             {
                 if (!_patternMatcher.matches(jwcId, _simpleIdPattern))
-                    throw new TemplateParseException(
+                    templateParseProblem(
                         Tapestry.format(
                             "TemplateParser.component-id-invalid",
                             tagName,
                             Integer.toString(startLine),
                             jwcId),
-                        startLocation);
+                        startLocation,
+                        startLine,
+                        cursorStart);
 
                 if (!_delegate.getKnownComponent(jwcId))
-                    throw new TemplateParseException(
+                    templateParseProblem(
                         Tapestry.format(
                             "TemplateParser.unknown-component-id",
                             tagName,
                             Integer.toString(startLine),
                             jwcId),
-                        startLocation);
+                        startLocation,
+                        startLine,
+                        cursorStart);
 
-                allowBody = _delegate.getAllowBody(jwcId, startLocation);
-
+                try
+                {
+                    allowBody = _delegate.getAllowBody(jwcId, startLocation);
+                } catch (ApplicationRuntimeException e)
+                {
+                    // give subclasses a chance to handle and rethrow
+                    templateParseProblem(e, startLine, cursorStart);
+                }
             }
         }
 
@@ -974,12 +1054,11 @@ public class TemplateParser
         boolean ignoreBody = !emptyTag && (isRemoveId || !allowBody);
 
         if (_ignoring && ignoreBody)
-            throw new TemplateParseException(
-                Tapestry.format(
-                    "TemplateParser.nested-ignore",
-                    tagName,
-                    Integer.toString(startLine)),
-                new Location(_resourceLocation, startLine));
+            templateParseProblem(
+                Tapestry.format("TemplateParser.nested-ignore", tagName, Integer.toString(startLine)),
+                new Location(_resourceLocation, startLine),
+                startLine,
+                cursorStart);
 
         if (!emptyTag)
             pushNewTag(tagName, startLine, isRemoveId, ignoreBody);
@@ -1015,24 +1094,25 @@ public class TemplateParser
         _stack.add(tag);
     }
 
-    private void processContentTag(String tagName, int startLine, boolean emptyTag)
+    private void processContentTag(String tagName, int startLine, int cursorStart, boolean emptyTag)
         throws TemplateParseException
     {
         if (_ignoring)
-            throw new TemplateParseException(
+            templateParseProblem(
                 Tapestry.format(
                     "TemplateParser.content-block-may-not-be-ignored",
                     tagName,
                     Integer.toString(startLine)),
-                new Location(_resourceLocation, startLine));
+                new Location(_resourceLocation, startLine),
+                startLine,
+                cursorStart);
 
         if (emptyTag)
-            throw new TemplateParseException(
-                Tapestry.format(
-                    "TemplateParser.content-block-may-not-be-empty",
-                    tagName,
-                    Integer.toString(startLine)),
-                new Location(_resourceLocation, startLine));
+            templateParseProblem(
+                Tapestry.format("TemplateParser.content-block-may-not-be-empty", tagName, Integer.toString(startLine)),
+                new Location(_resourceLocation, startLine),
+                startLine,
+                cursorStart);
 
         _tokens.clear();
         _blockStart = -1;
@@ -1101,10 +1181,7 @@ public class TemplateParser
 
             if (prefix.equals(LOCALIZATION_KEY_PREFIX))
             {
-                token.addAttribute(
-                    name,
-                    AttributeType.LOCALIZATION_KEY,
-                    attributeValue.substring(pos + 1).trim());
+                token.addAttribute(name, AttributeType.LOCALIZATION_KEY, attributeValue.substring(pos + 1).trim());
                 return;
 
             }
@@ -1133,8 +1210,8 @@ public class TemplateParser
         int length = _templateData.length;
         int startLine = _line;
 
-		ILocation startLocation = getCurrentLocation();
-		
+        ILocation startLocation = getCurrentLocation();
+
         _cursor += CLOSE_TAG.length;
 
         int tagStart = _cursor;
@@ -1142,11 +1219,11 @@ public class TemplateParser
         while (true)
         {
             if (_cursor >= length)
-                throw new TemplateParseException(
-                    Tapestry.format(
-                        "TemplateParser.incomplete-close-tag",
-                        Integer.toString(startLine)),
-                    startLocation);
+                templateParseProblem(
+                    Tapestry.format("TemplateParser.incomplete-close-tag", Integer.toString(startLine)),
+                    startLocation,
+                    startLine,
+                    cursorStart);
 
             char ch = _templateData[_cursor];
 
@@ -1169,7 +1246,7 @@ public class TemplateParser
                 break;
 
             if (tag._mustBalance)
-                throw new TemplateParseException(
+                templateParseProblem(
                     Tapestry.format(
                         "TemplateParser.improperly-nested-close-tag",
                         new Object[] {
@@ -1177,18 +1254,19 @@ public class TemplateParser
                             Integer.toString(startLine),
                             tag._tagName,
                             Integer.toString(tag._line)}),
-                    startLocation);
+                    startLocation,
+                    startLine,
+                    cursorStart);
 
             stackPos--;
         }
 
         if (stackPos < 0)
-            throw new TemplateParseException(
-                Tapestry.format(
-                    "TemplateParser.unmatched-close-tag",
-                    tagName,
-                    Integer.toString(startLine)),
-                startLocation);
+            templateParseProblem(
+                Tapestry.format("TemplateParser.unmatched-close-tag", tagName, Integer.toString(startLine)),
+                startLocation,
+                startLine,
+                cursorStart);
 
         // Special case for the content tag
 
@@ -1209,8 +1287,7 @@ public class TemplateParser
             addTextToken(cursorStart - 1);
 
             _tokens.add(new CloseToken(tagName, getCurrentLocation()));
-        }
-        else
+        } else
         {
             // The close of a static tag.  Unless removing the tag
             // entirely, make sure the block tag is part of a text block.
@@ -1370,8 +1447,7 @@ public class TemplateParser
      * 
      **/
 
-    private static final String[] CONVERSIONS =
-        { "&lt;", "<", "&gt;", ">", "&quot;", "\"", "&amp;", "&" };
+    private static final String[] CONVERSIONS = { "&lt;", "<", "&gt;", ">", "&quot;", "\"", "&amp;", "&" };
 
     /**
      *  Provided a raw input string that has been recognized to be an expression,
@@ -1430,7 +1506,7 @@ public class TemplateParser
 
         return value.equalsIgnoreCase("true");
     }
-    
+
     /**
      *  Gets the current location within the file.  This allows the location to be
      *  created only as needed, and multiple objects on the same line can share
@@ -1439,12 +1515,12 @@ public class TemplateParser
      *  @since 3.0
      * 
      **/
-    
+
     protected ILocation getCurrentLocation()
     {
-    	if (_currentLocation == null)
-    	_currentLocation = new Location(_resourceLocation, _line);
-    	
-    	return _currentLocation;
+        if (_currentLocation == null)
+            _currentLocation = new Location(_resourceLocation, _line);
+
+        return _currentLocation;
     }
 }
