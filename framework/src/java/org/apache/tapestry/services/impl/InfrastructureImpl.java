@@ -15,7 +15,6 @@
 package org.apache.tapestry.services.impl;
 
 import org.apache.hivemind.ClassResolver;
-import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
@@ -53,9 +52,7 @@ public class InfrastructureImpl implements Infrastructure
 
     private ObjectPool _objectPool;
 
-    private IComponentClassEnhancer _componentClassEnhancer;
-
-    private IPageSource _pageSource;
+     private IPageSource _pageSource;
 
     private ClassResolver _classResolver;
 
@@ -148,16 +145,6 @@ public class InfrastructureImpl implements Infrastructure
     public void setObjectPool(ObjectPool pool)
     {
         _objectPool = pool;
-    }
-
-    public IComponentClassEnhancer getComponentClassEnhancer()
-    {
-        return _componentClassEnhancer;
-    }
-
-    public void setComponentClassEnhancer(IComponentClassEnhancer enhancer)
-    {
-        _componentClassEnhancer = enhancer;
     }
 
     public IApplicationSpecification getApplicationSpecification()

@@ -21,69 +21,66 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  The Input element specifies a text entry object.
- *
- *  @author David Solis
- *  @since 3.0
- *
- **/
+ * The Input element specifies a text entry object.
+ * 
+ * @author David Solis
+ * @since 3.0
+ */
 
 public abstract class Input extends AbstractComponent
 {
 
-	/**
-	 *  @see AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
-	 **/
+    /**
+     * @see AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
+     */
 
-	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-	{
-		boolean render = !cycle.isRewinding();
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        boolean render = !cycle.isRewinding();
 
-		if (render)
-		{
-			writer.beginEmpty("input");
+        if (render)
+        {
+            writer.beginEmpty("input");
 
-			writer.attribute("type", isHidden() ? "password" : "text");
+            writer.attribute("type", isHidden() ? "password" : "text");
 
             writer.attribute("name", getName());
 
-			String title = getTitle();
-			if (Tapestry.isNonBlank(title))
-				writer.attribute("title", title);
+            String title = getTitle();
+            if (Tapestry.isNonBlank(title))
+                writer.attribute("title", title);
 
-			String format = getFormat();
+            String format = getFormat();
             if (Tapestry.isNonBlank(format))
-				writer.attribute("format", format);
+                writer.attribute("format", format);
 
             boolean emptyok = isEmptyok();
             if (emptyok != false)
-				writer.attribute("emptyok", emptyok);
+                writer.attribute("emptyok", emptyok);
 
-			renderInformalParameters(writer, cycle);
+            renderInformalParameters(writer, cycle);
 
-			String value = readValue();
-			if (Tapestry.isNonBlank(value))
-				writer.attribute("value", value);
+            String value = readValue();
+            if (Tapestry.isNonBlank(value))
+                writer.attribute("value", value);
 
-			writer.closeTag();
-		}
-	}
+            writer.closeTag();
+        }
+    }
 
-	public abstract String getTitle();
+    public abstract String getTitle();
 
-	public abstract String getName();
+    public abstract String getName();
 
-	public abstract String getFormat();
+    public abstract String getFormat();
 
-	public abstract boolean isHidden();
+    public abstract boolean isHidden();
 
-	public abstract boolean isEmptyok();
+    public abstract boolean isEmptyok();
 
-	public abstract IBinding getValueBinding();
-
-	public String readValue()
+    public String readValue()
     {
-		return getValueBinding().getString();
-	}
+        return getBinding("value").getString();
+    }
 
 }

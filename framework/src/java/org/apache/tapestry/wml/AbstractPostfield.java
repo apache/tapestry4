@@ -23,36 +23,30 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.AbstractFormComponent;
 
 /**
- *  A base class for building components that correspond to WML postfield elements.
- *  All such components must be wrapped (directly or indirectly) by
- *  a {@link Go} component.
- *
- *  @author David Solis
- *  @since 3.0
- *
- **/
+ * A base class for building components that correspond to WML postfield elements. All such
+ * components must be wrapped (directly or indirectly) by a {@link Go}component.
+ * 
+ * @author David Solis
+ * @since 3.0
+ */
 
 public abstract class AbstractPostfield extends AbstractFormComponent
 {
 
     /**
-     *  Returns the {@link org.apache.tapestry.wml.Go} wrapping this component.
-     *
-     *  @throws  ApplicationRuntimeException if the component is not wrapped by a
-     * {@link org.apache.tapestry.wml.Go}.
-     *
-     **/
+     * Returns the {@link org.apache.tapestry.wml.Go}wrapping this component.
+     * 
+     * @throws ApplicationRuntimeException
+     *             if the component is not wrapped by a {@link org.apache.tapestry.wml.Go}.
+     */
 
     public IForm getForm(IRequestCycle cycle)
     {
         IForm result = Go.get(cycle);
 
         if (result == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("Postfield.must-be-contained-by-go"),
-                this,
-                null,
-                null);
+            throw new ApplicationRuntimeException(Tapestry
+                    .getMessage("Postfield.must-be-contained-by-go"), this, null, null);
 
         setForm(result);
 
@@ -60,8 +54,8 @@ public abstract class AbstractPostfield extends AbstractFormComponent
     }
 
     /**
-     *  @see org.apache.tapestry.AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
-     **/
+     * @see org.apache.tapestry.AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -105,16 +99,16 @@ public abstract class AbstractPostfield extends AbstractFormComponent
 
     public abstract String getVarName();
 
-    public abstract IBinding getValueBinding();
-
     public void updateValue(Object value)
     {
-        getValueBinding().setObject(value);
+        getBinding("value").setObject(value);
     }
 
     public abstract IForm getForm();
+
     public abstract void setForm(IForm form);
 
     public abstract String getName();
+
     public abstract void setName(String name);
 }

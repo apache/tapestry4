@@ -24,22 +24,17 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  Used to insert some text (from a parameter) into the HTML.
- *
- *  [<a href="../../../../../ComponentReference/Insert.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship
+ * Used to insert some text (from a parameter) into the HTML. [ <a
+ * href="../../../../../ComponentReference/Insert.html">Component Reference </a>]
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class Insert extends AbstractComponent
 {
-    public abstract IBinding getFormatBinding();
-
     /**
-     *  Prints its value parameter, possibly formatted by its format parameter.
-     *
-     **/
+     * Prints its value parameter, possibly formatted by its format parameter.
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -67,11 +62,9 @@ public abstract class Insert extends AbstractComponent
             }
             catch (Exception ex)
             {
-                throw new ApplicationRuntimeException(
-                    Tapestry.format("Insert.unable-to-format", value),
-                    this,
-                    getFormatBinding().getLocation(),
-                    ex);
+                throw new ApplicationRuntimeException(Tapestry.format(
+                        "Insert.unable-to-format",
+                        value), this, getBinding("format").getLocation(), ex);
             }
         }
 

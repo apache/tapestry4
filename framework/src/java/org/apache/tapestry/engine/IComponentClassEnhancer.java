@@ -17,35 +17,32 @@ package org.apache.tapestry.engine;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- *
- *  A provider of enhanced classes, classes with new methods 
- *  and new attributes, and possibly, implementing new
- *  Java interfaces.  The primary use of class enhancement is to
- *  automate the creation of transient and persistant properties.
+ * A provider of enhanced classes, classes with new methods and new attributes, and possibly,
+ * implementing new Java interfaces. The primary use of class enhancement is to automate the
+ * creation of transient and persistant properties.
+ * <p>
+ * Implementations of this interface must be threadsafe.
  * 
- *  <p>
- *  Implementations of this interface must be threadsafe.
- *
- *  @author Howard Lewis Ship
- *  @since 3.0
- * 
+ * @author Howard Lewis Ship
+ * @since 3.0
+ * @deprecated To be removed in 3.2
+ * @see org.apache.tapestry.services.ComponentConstructorFactory
  */
 
 public interface IComponentClassEnhancer
-{	
-	/**
-	 *  Used to access the class for a given component (or page).  Returns the
-	 *  specified class, or an enhanced version of the class if the
-	 *  component requires enhancement.
-	 * 
-	 *  @param specification the specification for the component
-	 *  @param className the name of base class to enhance, as extracted
-	 *  from the specification (or possibly, from a default).
-	 * 
-	 *  @throws org.apache.tapestry.ApplicationRuntimeException if the class does not exist, is invalid,
-	 *  or may not be enhanced.
-	 * 
-	 */
-	
-	public Class getEnhancedClass(IComponentSpecification specification, String className);
+{
+    /**
+     * Used to access the class for a given component (or page). Returns the specified class, or an
+     * enhanced version of the class if the component requires enhancement.
+     * 
+     * @param specification
+     *            the specification for the component
+     * @param className
+     *            the name of base class to enhance, as extracted from the specification (or
+     *            possibly, from a default).
+     * @throws org.apache.tapestry.ApplicationRuntimeException
+     *             if the class does not exist, is invalid, or may not be enhanced.
+     */
+
+    public Class getEnhancedClass(IComponentSpecification specification, String className);
 }

@@ -17,6 +17,9 @@ package org.apache.tapestry.enhance;
 import java.lang.reflect.Constructor;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.impl.BaseLocatable;
+import org.apache.tapestry.services.ComponentConstructor;
 
 /**
  * @author Howard M. Lewis Ship
@@ -24,6 +27,8 @@ import org.apache.hivemind.ApplicationRuntimeException;
  */
 public class ComponentConstructorImpl implements ComponentConstructor
 {
+    private Location _location;
+
     private Constructor _constructor;
 
     private Object[] _parameters;
@@ -37,10 +42,16 @@ public class ComponentConstructorImpl implements ComponentConstructor
      *            the parameters to pass to the constructor. These are retained, not copied.
      */
 
-    public ComponentConstructorImpl(Constructor c, Object[] parameters)
+    public ComponentConstructorImpl(Constructor c, Object[] parameters, Location location)
     {
         _constructor = c;
         _parameters = parameters;
+        _location = location;
+    }
+
+    public Class getComponentClass()
+    {
+        return _constructor.getDeclaringClass();
     }
 
     public Object newInstance()
@@ -53,7 +64,7 @@ public class ComponentConstructorImpl implements ComponentConstructor
         {
             throw new ApplicationRuntimeException(EnhanceMessages.instantiationFailure(
                     _constructor,
-                    ex), ex);
+                    ex), null, _location, ex);
         }
     }
 

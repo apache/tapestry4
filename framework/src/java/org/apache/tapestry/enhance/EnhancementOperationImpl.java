@@ -33,11 +33,12 @@ import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.Defense;
+import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * Implementation of {@link org.apache.tapestry.enhance.EnhancementOperation}that knows how to
- * provide a {@link org.apache.tapestry.enhance.ComponentConstructor}from any enhancements.
+ * provide a {@link org.apache.tapestry.services.ComponentConstructor}from any enhancements.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
@@ -243,6 +244,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         constructorBuilder().addln("{0} = ${1};", fieldName, Integer.toString(x));
 
+        _classReferences.put(clazz, fieldName);
+
         return fieldName;
     }
 
@@ -277,6 +280,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     public void forceEnhancement()
     {
+        classFab();
     }
 
     /**
@@ -286,14 +290,13 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     public ComponentConstructor getConstructor()
     {
-
         finalizeEnhancedClass();
 
         Constructor c = findConstructor();
 
         Object[] params = _constructorArguments.toArray();
 
-        return new ComponentConstructorImpl(c, params);
+        return new ComponentConstructorImpl(c, params, _specification.getLocation());
     }
 
     private void finalizeEnhancedClass()
@@ -354,6 +357,9 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     private String newClassName()
     {
-        return _baseClass.getName() + "$Enhance_" + _uid++;
+        String baseName = _baseClass.getName();
+        int dotx = baseName.lastIndexOf('.');
+
+        return "$" + baseName.substring(dotx + 1) + "_" + _uid++;
     }
 }

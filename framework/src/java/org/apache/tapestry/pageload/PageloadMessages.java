@@ -19,27 +19,25 @@ import org.apache.tapestry.IComponent;
 
 /**
  * Messages for the pageload package
- *
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 class PageloadMessages
 {
-    private static final MessageFormatter _formatter =
-        new MessageFormatter(PageloadMessages.class, "PageloadStrings");
+    private static final MessageFormatter _formatter = new MessageFormatter(PageloadMessages.class,
+            "PageloadStrings");
 
     public static String parameterMustHaveNoDefaultValue(IComponent component, String name)
     {
         return _formatter.format(
-            "parameter-must-have-no-default-value",
-            component.getExtendedId(),
-            name);
+                "parameter-must-have-no-default-value",
+                component.getExtendedId(),
+                name);
     }
 
-    public static String unableToInitializeProperty(
-        String propertyName,
-        IComponent component,
-        Throwable cause)
+    public static String unableToInitializeProperty(String propertyName, IComponent component,
+            Throwable cause)
     {
         return _formatter.format("unable-to-initialize-property", propertyName, component, cause);
     }
@@ -51,40 +49,34 @@ class PageloadMessages
 
     public static String inheritInformalInvalidComponentFormalOnly(IComponent component)
     {
-        return _formatter.format(
-            "inherit-informal-invalid-component-formal-only",
-            component.getExtendedId());
+        return _formatter.format("inherit-informal-invalid-component-formal-only", component
+                .getExtendedId());
     }
 
-    public static String inheritInformalInvalidContainerFormalOnly(
-        IComponent container,
-        IComponent component)
+    public static String inheritInformalInvalidContainerFormalOnly(IComponent container,
+            IComponent component)
     {
-        return _formatter.format(
-            "inherit-informal-invalid-container-formal-only",
-            container.getExtendedId(),
-            component.getExtendedId());
+        return _formatter.format("inherit-informal-invalid-container-formal-only", container
+                .getExtendedId(), component.getExtendedId());
     }
 
     public static String formalParametersOnly(IComponent component, String parameterName)
     {
-        return _formatter.format(
-            "formal-parameters-only",
-            component.getExtendedId(),
-            parameterName);
+        return _formatter
+                .format("formal-parameters-only", component.getExtendedId(), parameterName);
     }
 
     public static String unableToInstantiateComponent(IComponent container, Throwable cause)
     {
         return _formatter.format(
-            "unable-to-instantiate-component",
-            container.getExtendedId(),
-            cause);
+                "unable-to-instantiate-component",
+                container.getExtendedId(),
+                cause);
     }
 
-    public static String classNotComponent(String className)
+    public static String classNotComponent(Class componentClass)
     {
-        return _formatter.format("class-not-component", className);
+        return _formatter.format("class-not-component", componentClass.getName());
     }
 
     public static String unableToInstantiate(String className, Throwable cause)
@@ -97,9 +89,9 @@ class PageloadMessages
         return _formatter.format("page-not-allowed", component.getExtendedId());
     }
 
-    public static String classNotPage(String className)
+    public static String classNotPage(Class componentClass)
     {
-        return _formatter.format("class-not-page", className);
+        return _formatter.format("class-not-page", componentClass.getName());
     }
 
     public static String missingAsset(String name, IComponent component)

@@ -731,15 +731,13 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     public boolean isStateful()
     {
-        IBinding statefulBinding = getStatefulBinding();
+        IBinding statefulBinding = getBinding("stateful");
 
         if (statefulBinding == null)
             return true;
 
         return statefulBinding.getBoolean();
     }
-
-    public abstract IBinding getStatefulBinding();
 
     protected void finishLoad()
     {

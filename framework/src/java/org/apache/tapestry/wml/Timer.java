@@ -21,18 +21,18 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  The Timer element declares a card timer, which exposes a means of processing inactivity or idle time.
- *  The timer is initialised and started at card entry and is stopped when the card is exited.
- *
- *  @author David Solis
- *  @since 3.0
+ * The Timer element declares a card timer, which exposes a means of processing inactivity or idle
+ * time. The timer is initialised and started at card entry and is stopped when the card is exited.
+ * 
+ * @author David Solis
+ * @since 3.0
  */
 
 public abstract class Timer extends AbstractComponent
 {
     /**
-     *  @see AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
-     **/
+     * @see AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -58,10 +58,8 @@ public abstract class Timer extends AbstractComponent
 
     public abstract String getName();
 
-    public abstract IBinding getValueBinding();
-
     public String readValue()
     {
-        return getValueBinding().getString();
+        return getBinding("value").getString();
     }
 }

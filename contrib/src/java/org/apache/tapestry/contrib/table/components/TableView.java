@@ -114,8 +114,6 @@ public abstract class TableView
     public abstract ITableModel getTableModelValue();
     public abstract Object getSource();
     public abstract Object getColumns();
-    public abstract IBinding getColumnsBinding();
-    public abstract IBinding getPageSizeBinding();
     public abstract int getInitialPage();
     public abstract String getInitialSortColumn();
     public abstract boolean getInitialSortOrder();
@@ -217,7 +215,7 @@ public abstract class TableView
         }
 
         // update the page size if set in the parameter
-        IBinding objPageSizeBinding = getPageSizeBinding();
+        IBinding objPageSizeBinding = getBinding("pageSize");
         if (objPageSizeBinding != null)
             objState.getPagingState().setPageSize(objPageSizeBinding.getInt());
 
@@ -313,7 +311,7 @@ public abstract class TableView
         if (objColumns instanceof String)
         {
             String strColumns = (String) objColumns;
-            if (getColumnsBinding().isInvariant())
+            if (getBinding("columns").isInvariant())
             {
                 // if the binding is invariant, create the columns only once
                 if (m_objColumnModel == null)

@@ -15,8 +15,8 @@
 package org.apache.tapestry.enhance;
 
 /**
- * A worker that is employed by the {@link org.apache.tapestry.engine.IComponentClassEnhancer}to
- * perform some enhancement.
+ * A worker that is employed by the {@link org.apache.tapestry.services.ComponentConstructorFactory}
+ * to perform some enhancement.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1

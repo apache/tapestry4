@@ -21,18 +21,18 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  The setvar element specifies the variable to set in the current browser context as a side effect of executing a task.
- *
- *  @author David Solis
- *  @since 3.0
- *
+ * The setvar element specifies the variable to set in the current browser context as a side effect
+ * of executing a task.
+ * 
+ * @author David Solis
+ * @since 3.0
  */
 
 public abstract class Setvar extends AbstractComponent
 {
     /**
-     *  @see AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
-     **/
+     * @see AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -58,11 +58,9 @@ public abstract class Setvar extends AbstractComponent
 
     public abstract String getName();
 
-    public abstract IBinding getValueBinding();
-
     public String readValue()
     {
-        return getValueBinding().getString();
+        return getBinding("value").getString();
     }
 
 }

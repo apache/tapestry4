@@ -53,7 +53,7 @@ Final value: [boy]
  
 		<assert-regexp name="Page Class">
 <![CDATA[
-Page class: \[org\.apache\.tapestry\.html\.\$BasePage\_(.*?)\]
+Page class: \[\$BasePage\_(.*?)\]
 ]]>	
 		</assert-regexp>
  
@@ -163,7 +163,7 @@ Final value: [Taxi]
  
 		<assert-regexp name="Page Class">
 <![CDATA[
-Page class: \[org\.apache\.tapestry\.junit\.mock\.c9\.\$Three_(.*?)\]
+Page class: \[\$Three_(.*?)\]
 ]]>	
 		</assert-regexp>
  
@@ -187,57 +187,8 @@ Initial value: [Tapestry]
 Final value: [Taxi]
 		</assert-output>
 	</request>
-		
-	<!-- Page Four includes an non-abstract accessor for the property, so it will
-	     cause an exception. -->
 	     		
-	<request>
-  	  	<parameter name="service" value="page/Four"/>
-  	  		  	  	 	
-		<assert-output name="Page Title">
-<![CDATA[		
-<title>Exception</title>
-]]>			
-		</assert-output>
-		
-		<assert-output name="Exception Message">
-Unable to enhance class org.apache.tapestry.junit.mock.c9.Four because it implements a non-abstract write method for property 'word'.
-		</assert-output>		
-		
-	</request>		
-	
-	<request>
-  	  	<parameter name="service" value="page/Five"/>
-  	  		  	  	 	
-		<assert-output name="Page Title">
-<![CDATA[		
-<title>Exception</title>
-]]>			
-		</assert-output>
-		
-		<assert-output name="Exception Message">
-Unable to enhance class org.apache.tapestry.junit.mock.c9.Five because it implements a non-abstract read method for property 'word'.
-		</assert-output>		
-		
-	</request>		
-	
-	<!-- This test is about making sure the property type in the specification matches
-		 the actual property type (if the class declares abstract accessor methods). -->
-		 
-	<request> 
-		<parameter name="service" value="page/Six"/>	  	  	  	  	 	
- 	  	  	
-		<assert-output name="Page Title">
-<![CDATA[		
-<title>Exception</title>
-]]>
-		</assert-output>
-		
-		<assert-output name="Exception Message">
-Unable to enhance class org.apache.tapestry.junit.mock.c9.Six because it contains property 'value' of type int, not the expected type long.
-		</assert-output>		
 
-	</request>			
 	
 	<request>
 		<parameter name="service" value="page/Seven"/>
@@ -340,37 +291,8 @@ value: \[(.*?)\]
 		</assert>
 		 	
 	</request>
-		
-	<!-- Test an abstract page that includes an abstract method that
-		 isn't implemented. -->
-		 
-	<request>
-		<parameter name="service" value="page/Eight"/>
-			
-		<assert-output name="Title">
-<![CDATA[
-<title>Exception</title
-]]>	
-		</assert-output>
-		
-		<assert-output name="Message">		
-Method 'public abstract long org.apache.tapestry.junit.mock.c9.Eight.setEnhancedProperty(long)' (declared in class org.apache.tapestry.junit.mock.c9.Eight) has no implementation in class org.apache.tapestry.junit.mock.c9.Eight (or enhanced subclass org.apache.tapestry.junit.mock.c9.$Eight_
-		</assert-output>
-	</request>
+	
 
-	<request>
-		<parameter name="service" value="page/Nine"/>
-			
-		<assert-output name="Title">
-<![CDATA[
-<title>Exception</title
-]]>	
-		</assert-output>
-		
-		<assert-output name="Message">
-		Method 'public abstract void org.apache.tapestry.junit.mock.c9.Nine.pageDetached(org.apache.tapestry.event.PageEvent)' (declared in class org.apache.tapestry.junit.mock.c9.Nine) has no implementation in class org.apache.tapestry.junit.mock.c9.Nine (or enhanced subclass org.apache.tapestry.junit.mock.c9.$Nine_	
-		</assert-output>
-	</request>
 	
 	<request>
 		<parameter name="service" value="page/Ten"/>

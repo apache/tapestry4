@@ -24,97 +24,86 @@ import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 
 /**
- * A low level Table component that generates the columns in the current row in the table.
- * This component must be wrapped by {@link org.apache.tapestry.contrib.table.components.TableRows}.
- * 
+ * A low level Table component that generates the columns in the current row in the table. This
+ * component must be wrapped by {@link org.apache.tapestry.contrib.table.components.TableRows}.
  * <p>
- * The component iterates over the columns in the table and 
- * automatically renders the column values for the current table row. 
- * The columns are wrapped in 'td' tags by default. <br>
- * The column values are rendered using the renderer returned by the 
- * getValueRenderer() method in {@link org.apache.tapestry.contrib.table.model.ITableColumn}.
- * 
- * <p> 
- * Please see the Component Reference for details on how to use this component. 
- * 
- *  [<a href="../../../../../../../ComponentReference/contrib.TableValues.html">Component Reference</a>]
+ * The component iterates over the columns in the table and automatically renders the column values
+ * for the current table row. The columns are wrapped in 'td' tags by default. <br>
+ * The column values are rendered using the renderer returned by the getValueRenderer() method in
+ * {@link org.apache.tapestry.contrib.table.model.ITableColumn}.
+ * <p>
+ * Please see the Component Reference for details on how to use this component. [ <a
+ * href="../../../../../../../ComponentReference/contrib.TableValues.html">Component Reference </a>]
  * 
  * @author mindbridge
- *
  */
 public abstract class TableValues extends AbstractTableRowComponent
 {
     public static final String TABLE_VALUE_CSS_CLASS_SUFFIX = "ColumnValue";
 
-    // Bindings
-    public abstract IBinding getColumnBinding();
-    public abstract IBinding getClassBinding();
-
-	// Transient
-	private ITableColumn m_objTableColumn;
+    // Transient
+    private ITableColumn m_objTableColumn;
 
     /**
      * Get the list of all table columns to be displayed.
      * 
      * @return an iterator of all table columns
      */
-	public Iterator getTableColumnIterator()
-	{
-		ITableColumnModel objColumnModel =
-			getTableModelSource().getTableModel().getColumnModel();
-		return objColumnModel.getColumns();
-	}
+    public Iterator getTableColumnIterator()
+    {
+        ITableColumnModel objColumnModel = getTableModelSource().getTableModel().getColumnModel();
+        return objColumnModel.getColumns();
+    }
 
     /**
-     * Returns the currently rendered table column. 
-     * You can call this method to obtain the current column.
-     *  
+     * Returns the currently rendered table column. You can call this method to obtain the current
+     * column.
+     * 
      * @return ITableColumn the current table column
      */
-	public ITableColumn getTableColumn()
-	{
-		return m_objTableColumn;
-	}
+    public ITableColumn getTableColumn()
+    {
+        return m_objTableColumn;
+    }
 
     /**
-     * Sets the currently rendered table column. 
-     * This method is for internal use only.
+     * Sets the currently rendered table column. This method is for internal use only.
      * 
-     * @param tableColumn The current table column
+     * @param tableColumn
+     *            The current table column
      */
-	public void setTableColumn(ITableColumn tableColumn)
-	{
-		m_objTableColumn = tableColumn;
-        
-        IBinding objColumnBinding = getColumnBinding();
+    public void setTableColumn(ITableColumn tableColumn)
+    {
+        m_objTableColumn = tableColumn;
+
+        IBinding objColumnBinding = getBinding("column");
         if (objColumnBinding != null)
             objColumnBinding.setObject(tableColumn);
-	}
+    }
 
     /**
      * Returns the renderer to be used to generate the appearance of the current column
      * 
      * @return the value renderer of the current column
      */
-	public IRender getTableValueRenderer()
-	{
-		Object objRow = getTableRowSource().getTableRow();
-		return getTableColumn().getValueRenderer(
-			getPage().getRequestCycle(),
-			getTableModelSource(),
-			objRow);
-	}
+    public IRender getTableValueRenderer()
+    {
+        Object objRow = getTableRowSource().getTableRow();
+        return getTableColumn().getValueRenderer(
+                getPage().getRequestCycle(),
+                getTableModelSource(),
+                objRow);
+    }
 
     /**
-     * Returns the CSS class of the generated table cell.
-     * It uses the class parameter if it has been bound, or
-     * the default value of "[column name]ColumnValue" otherwise.
+     * Returns the CSS class of the generated table cell. It uses the class parameter if it has been
+     * bound, or the default value of "[column name]ColumnValue" otherwise.
      * 
      * @return the CSS class of the cell
      */
     public String getValueClass()
     {
-        IBinding objClassBinding = getClassBinding();
+        IBinding objClassBinding = getBinding("class");
         if (objClassBinding != null)
             return objClassBinding.getString();
         else
@@ -122,7 +111,8 @@ public abstract class TableValues extends AbstractTableRowComponent
     }
 
     /**
-     * @see org.apache.tapestry.BaseComponent#renderComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.BaseComponent#renderComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {

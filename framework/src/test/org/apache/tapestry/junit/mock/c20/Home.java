@@ -42,7 +42,7 @@ public abstract class Home extends BasePage
 
     public IPropertySelectionModel getModeModel()
     {
-        ResourceBundle bundle = ResourceBundle.getBundle(getClass().getPackage().getName()
+        ResourceBundle bundle = ResourceBundle.getBundle(Home.class.getPackage().getName()
                 + ".ModeStrings", getLocale());
 
         return new EnumPropertySelectionModel(new Enum[]

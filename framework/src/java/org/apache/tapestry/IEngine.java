@@ -325,10 +325,11 @@ public interface IEngine
     public ObjectPool getPool();
 
     /**
-     * Returns an object that can create enhanced versions of component classes.
+     * 
      * 
      * @since 3.0
      * @see org.apache.tapestry.engine.AbstractEngine#createComponentClassEnhancer(RequestContext)
+     * @throws UnsupportedOperationException
      * @deprecated To be removed in 3.2.
      */
 

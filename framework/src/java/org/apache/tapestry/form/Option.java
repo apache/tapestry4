@@ -22,36 +22,29 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  A component that renders an HTML &lt;option&gt; form element.
- *  Such a component must be wrapped (possibly indirectly)
- *  inside a {@link Select} component.
- *
- *  [<a href="../../../../../ComponentReference/Option.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship
+ * A component that renders an HTML &lt;option&gt; form element. Such a component must be wrapped
+ * (possibly indirectly) inside a {@link Select}component. [ <a
+ * href="../../../../../ComponentReference/Option.html">Component Reference </a>]
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class Option extends AbstractComponent
 {
     /**
-     *  Renders the &lt;option&gt; element, or responds when the form containing the element 
-     *  is submitted (by checking {@link Form#isRewinding()}.
-     *
-     *  <p>If the <code>label</code> property is set, it is inserted inside the
-     *  &lt;option&gt; element.
-     *
-     **/
+     * Renders the &lt;option&gt; element, or responds when the form containing the element is
+     * submitted (by checking {@link Form#isRewinding()}.
+     * <p>
+     * If the <code>label</code> property is set, it is inserted inside the &lt;option&gt;
+     * element.
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         Select select = Select.get(cycle);
         if (select == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("Option.must-be-contained-by-select"),
-                this,
-                null,
-                null);
+            throw new ApplicationRuntimeException(Tapestry
+                    .getMessage("Option.must-be-contained-by-select"), this, null, null);
 
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.
@@ -63,7 +56,7 @@ public abstract class Option extends AbstractComponent
         if (rewinding)
         {
             if (!select.isDisabled())
-                getSelectedBinding().setBoolean(select.isSelected(value));
+                getBinding("selected").setBoolean(select.isSelected(value));
 
             renderBody(writer, cycle);
         }
@@ -73,7 +66,7 @@ public abstract class Option extends AbstractComponent
 
             writer.attribute("value", value);
 
-            if (getSelectedBinding().getBoolean())
+            if (getBinding("selected").getBoolean())
                 writer.attribute("selected", "selected");
 
             renderInformalParameters(writer, cycle);
@@ -89,8 +82,6 @@ public abstract class Option extends AbstractComponent
         }
 
     }
-
-    public abstract IBinding getSelectedBinding();
 
     public abstract String getLabel();
 }

@@ -28,16 +28,14 @@ import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.DataSqueezer;
 
 /**
- *  A specialized component used to edit a list of items
- *  within a form; it is similar to a {@link org.apache.tapestry.components.Foreach} but leverages
- *  hidden inputs within the &lt;form&gt; to store the items in the list.
- *
- *  [<a href="../../../../../ComponentReference/ListEdit.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.2
+ * A specialized component used to edit a list of items within a form; it is similar to a
+ * {@link org.apache.tapestry.components.Foreach}but leverages hidden inputs within the
+ * &lt;form&gt; to store the items in the list. [ <a
+ * href="../../../../../ComponentReference/ListEdit.html">Component Reference </a>]
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 1.0.2
+ */
 
 public abstract class ListEdit extends AbstractFormComponent
 {
@@ -60,7 +58,7 @@ public abstract class ListEdit extends AbstractFormComponent
 
         if (!cycleRewinding)
         {
-            i = Tapestry.coerceToIterator(getSourceBinding().getObject());
+            i = Tapestry.coerceToIterator(getBinding("source").getObject());
         }
         else
         {
@@ -79,8 +77,8 @@ public abstract class ListEdit extends AbstractFormComponent
 
         int index = 0;
 
-        IBinding indexBinding = getIndexBinding();
-        IBinding valueBinding = getValueBinding();
+        IBinding indexBinding = getBinding("index");
+        IBinding valueBinding = getBinding("value");
         IActionListener listener = getListener();
         String element = getElement();
 
@@ -128,11 +126,9 @@ public abstract class ListEdit extends AbstractFormComponent
         }
         catch (IOException ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("ListEdit.unable-to-convert-value", value),
-                this,
-                null,
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "ListEdit.unable-to-convert-value",
+                    value), this, null, ex);
         }
 
         form.addHiddenValue(name, externalValue);
@@ -146,11 +142,9 @@ public abstract class ListEdit extends AbstractFormComponent
         }
         catch (IOException ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("ListEdit.unable-to-convert-string", value),
-                this,
-                null,
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "ListEdit.unable-to-convert-string",
+                    value), this, null, ex);
         }
     }
 
@@ -161,19 +155,11 @@ public abstract class ListEdit extends AbstractFormComponent
         return getPage().getEngine().getDataSqueezer();
     }
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     public abstract IActionListener getListener();
 
-    /** @since 3.0 **/
-
-    public abstract IBinding getSourceBinding();
-
-    public abstract IBinding getValueBinding();
-
-    public abstract IBinding getIndexBinding();
-
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public boolean isDisabled()
     {

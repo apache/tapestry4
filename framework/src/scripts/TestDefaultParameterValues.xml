@@ -104,41 +104,5 @@
 		</assert-output>
 		
 	</request>
-
-
-	<request>
-		<parameter name="service" value="page/Two"/>	
-
-		<assert-output name="Page Title">
-<![CDATA[		
-<title>Exception</title>
-]]>
-		</assert-output>
-  	  	  	
-
-		<assert-output name="parameter must have default value">
-<![CDATA[
-Parameter 'intValue' must be required or have a default value as it uses direction 'auto'.
-]]>
-		</assert-output>
-	</request>
-
-		
-	<request>
-		<parameter name="service" value="page/Three"/>
-
-		<assert-output name="Page Title">
-<![CDATA[		
-<title>Exception</title>
-]]>
-		</assert-output>
-  	  	  	
-
-		<assert-output name="required parameter must not have default value">
-<![CDATA[
-Parameter intValue of component Three/$Bad2 is required and must not have a default value.
-]]>
-		</assert-output>
-	</request>
 		
  </mock-test>

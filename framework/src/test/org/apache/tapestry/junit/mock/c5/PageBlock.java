@@ -26,35 +26,15 @@ import org.apache.tapestry.components.Block;
  * component id.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 
-public class PageBlock extends BaseComponent
+public abstract class PageBlock extends BaseComponent
 {
-    private String _targetPageName;
 
-    private String _targetBlockId = "block";
+    public abstract String getTargetBlockId();
 
-    public String getTargetBlockId()
-    {
-        return _targetBlockId;
-    }
-
-    public String getTargetPageName()
-    {
-        return _targetPageName;
-    }
-
-    public void setTargetBlockId(String targetBlockId)
-    {
-        _targetBlockId = targetBlockId;
-    }
-
-    public void setTargetPageName(String targetPageName)
-    {
-        _targetPageName = targetPageName;
-    }
+    public abstract String getTargetPageName();
 
     /**
      * Used the targetPageName and targetBlockId (which defaults to "block") to obtain a reference
@@ -64,8 +44,8 @@ public class PageBlock extends BaseComponent
     public Block getTargetBlock()
     {
         IRequestCycle cycle = getPage().getRequestCycle();
-        IPage targetPage = cycle.getPage(_targetPageName);
+        IPage targetPage = cycle.getPage(getTargetPageName());
 
-        return (Block) targetPage.getNestedComponent(_targetBlockId);
+        return (Block) targetPage.getNestedComponent(getTargetBlockId());
     }
 }
