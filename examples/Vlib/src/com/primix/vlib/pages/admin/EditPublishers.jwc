@@ -27,7 +27,7 @@
   </component>
   
   <component id="inputPublisherName" type="TextField">
-    <binding name="text" property-path="publisher.name"/>
+    <binding name="value" property-path="publisher.name"/>
     <static-binding name="displayWidth">40</static-binding>
     <static-binding name="maximumLength">40</static-binding>
   </component>

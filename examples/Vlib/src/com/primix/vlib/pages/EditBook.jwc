@@ -51,7 +51,7 @@
   <component id="inputISBN" type="TextField">
     <static-binding name="maximumLength">20</static-binding>
     <static-binding name="displayWidth">20</static-binding>
-    <binding name="text" property-path="attributes.ISBN"/>
+    <binding name="value" property-path="attributes.ISBN"/>
   </component>
   
   <component id="labelPublisher" type="FieldLabel">
@@ -72,7 +72,7 @@
   </component>
   
   <component id="inputDescription" type="Text">
-    <binding name="text" property-path="attributes.description"/>
+    <binding name="value" property-path="attributes.description"/>
     <static-binding name="columns">35</static-binding>
     <static-binding name="rows">8</static-binding>
   </component>
