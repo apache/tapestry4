@@ -6,7 +6,7 @@
   
 <script>
 
-<include-script resource-path="/net/sf/tapestry/form/MaskEdit.js"/>
+<include-script resource-path="/net/sf/tapestry/contrib/form/MaskEdit.js"/>
 
 <input-symbol key="maskEdit" class="net.sf.tapestry.form.TextField" required="yes"/>
 <input-symbol key="maskValue" class="net.sf.tapestry.form.Hidden" required="yes"/>
