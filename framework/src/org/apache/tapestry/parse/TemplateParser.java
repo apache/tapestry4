@@ -148,6 +148,45 @@ import org.apache.tapestry.util.IdAllocator;
 public class TemplateParser
 {
     /**
+     *  A Factory used by {@link org.apache.tapestry.parse.TemplateParser} to create 
+     *  {@link org.apache.tapestry.parse.TemplateToken} objects
+     * 
+     *  <p>
+     *  This class is extended by Spindle - the Eclipse Plugin for Tapestry
+     * 
+     *  @since 3.0
+     *  @author glongman@intelligentworks.com
+     */
+    protected static class TemplateTokenFactory
+    {
+
+        public OpenToken createOpenToken(String tagName, String jwcId, String type, ILocation location)
+        {
+            return new OpenToken(tagName, jwcId, type, location);
+        }
+
+        public Object createCloseToken(String tagName, ILocation location)
+        {
+            return new CloseToken(tagName, location);
+        }
+
+        public TemplateToken createTextToken(char[] templateData, int blockStart, int end, ILocation templateLocation)
+        {
+            return new TextToken(templateData, blockStart, end, templateLocation);
+        }
+
+        public TemplateToken createLocalizationToken(
+            String tagName,
+            String localizationKey,
+            boolean raw,
+            Map attributes,
+            ILocation startLocation)
+        {
+            return new LocalizationToken(tagName, localizationKey, raw, attributes, startLocation);
+        }
+    }
+
+    /**
      *  Attribute value prefix indicating that the attribute is an OGNL expression.
      * 
      *  @since 3.0
@@ -366,6 +405,14 @@ public class TemplateParser
 
     private Map _attributes = new HashMap();
 
+    /**
+     *  A factory used to create template tokens
+     *
+     * @author glongman@intelligentworks.com
+     */
+
+    protected TemplateTokenFactory _factory;
+
     public TemplateParser()
     {
         Perl5Compiler compiler = new Perl5Compiler();
@@ -380,6 +427,8 @@ public class TemplateParser
         }
 
         _patternMatcher = new Perl5Matcher();
+
+        _factory = new TemplateTokenFactory();
     }
 
     /**
@@ -631,7 +680,7 @@ public class TemplateParser
 
         if (_blockStart <= end)
         {
-            TemplateToken token = new TextToken(_templateData, _blockStart, end, _templateLocation);
+            TemplateToken token = _factory.createTextToken(_templateData, _blockStart, end, _templateLocation);
 
             _tokens.add(token);
         }
@@ -914,7 +963,8 @@ public class TemplateParser
 
             Map attributes = filter(_attributes, new String[] { LOCALIZATION_KEY_ATTRIBUTE_NAME, RAW_ATTRIBUTE_NAME });
 
-            TemplateToken token = new LocalizationToken(tagName, localizationKey, raw, attributes, startLocation);
+            TemplateToken token =
+                _factory.createLocalizationToken(tagName, localizationKey, raw, attributes, startLocation);
 
             _tokens.add(token);
 
@@ -1072,7 +1122,7 @@ public class TemplateParser
             addOpenToken(tagName, jwcId, type, startLocation);
 
             if (emptyTag)
-                _tokens.add(new CloseToken(tagName, getCurrentLocation()));
+                _tokens.add(_factory.createCloseToken(tagName, getCurrentLocation()));
         }
 
         advance();
@@ -1130,7 +1180,7 @@ public class TemplateParser
 
     private void addOpenToken(String tagName, String jwcId, String type, ILocation location)
     {
-        OpenToken token = new OpenToken(tagName, jwcId, type, location);
+        OpenToken token = _factory.createOpenToken(tagName, jwcId, type, location);
         _tokens.add(token);
 
         if (_attributes.isEmpty())
@@ -1286,7 +1336,7 @@ public class TemplateParser
         {
             addTextToken(cursorStart - 1);
 
-            _tokens.add(new CloseToken(tagName, getCurrentLocation()));
+            _tokens.add(_factory.createCloseToken(tagName, getCurrentLocation()));
         } else
         {
             // The close of a static tag.  Unless removing the tag
