@@ -196,7 +196,7 @@ public class MultiplePropertySelection extends AbstractFormComponent
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
         IMultiplePropertySelectionRenderer renderer = null;

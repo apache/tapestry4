@@ -139,7 +139,7 @@ public class Radio extends AbstractComponent
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         boolean rewinding;
         boolean disabled = false;

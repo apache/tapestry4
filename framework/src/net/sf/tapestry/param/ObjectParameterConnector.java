@@ -23,40 +23,51 @@
 // Lesser General Public License for more details.
 //
 
-package net.sf.tapestry.components;
+package net.sf.tapestry.param;
 
-import net.sf.tapestry.AbstractComponent;
+import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
-import net.sf.tapestry.IMarkupWriter;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.RequiredParameterException;
+import net.sf.tapestry.util.prop.PropertyHelper;
+import sun.security.action.GetPropertyAction;
 
 /**
- *  Renders the text and components wrapped by a component.
+ *  Implements {@link IParameterConnector} for object parameters.
  *
- * <p>Informal parameters are not allowed.  The component may not have a body.
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *  @since 2.0.3
  *
- * @author Howard Lewis Ship
- * @version $Id$
- * 
  **/
 
-public class InsertWrapped extends AbstractComponent
+public class ObjectParameterConnector extends AbstractParameterConnector
 {
+    private Class requiredType;
+
+    protected ObjectParameterConnector(
+        IComponent component,
+        String parameterName,
+        IBinding binding,
+        Class requiredType)
+    {
+        super(component, parameterName, binding);
+
+        this.requiredType = requiredType;
+    }
+
     /**
-     *  Finds this <code>InsertWrapped</code>'s container, and invokes
-     *  {@link IComponent#renderWrapped(IMarkupWriter, IRequestCycle)}
-     *  on it.
-     *
+     *  Sets the parameter property to null.
+     * 
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void setParameter() throws RequiredParameterException
     {
-        IComponent container;
-        String containerId;
-
-        container = getContainer();
-
-        container.renderWrapped(writer, cycle);
+        setPropertyValue(getBindingValue(requiredType));
     }
+
+    public void clearParameter()
+    {
+        setPropertyValue(null);
+    }
+
 }

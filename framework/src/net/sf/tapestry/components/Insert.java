@@ -28,8 +28,6 @@ package net.sf.tapestry.components;
 import java.text.Format;
 
 import net.sf.tapestry.AbstractComponent;
-import net.sf.tapestry.BindingException;
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
@@ -90,50 +88,10 @@ import net.sf.tapestry.Tapestry;
 
 public class Insert extends AbstractComponent
 {
-    private IBinding valueBinding;
-    private IBinding formatBinding;
-    private IBinding rawBinding;
-    private boolean staticRawValue;
-    private boolean rawValue;
-    private IBinding classBinding;
-    private String staticClassValue;
-
-    public IBinding getFormatBinding()
-    {
-        return formatBinding;
-    }
-
-    public void setFormatBinding(IBinding value)
-    {
-        formatBinding = value;
-    }
-
-    public IBinding getValueBinding()
-    {
-        return valueBinding;
-    }
-
-    public IBinding getRawBinding()
-    {
-        return rawBinding;
-    }
-
-    public void setRawBinding(IBinding value)
-    {
-        rawBinding = value;
-        staticRawValue = value.isStatic();
-
-        if (staticRawValue)
-            rawValue = value.getBoolean();
-    }
-
-    public void setClassBinding(IBinding value)
-    {
-        classBinding = value;
-
-        if (classBinding.isStatic())
-            staticClassValue = classBinding.getString();
-    }
+    private Object value;
+    private Format format;
+    private String styleClass;
+    private boolean raw;
 
     /**
      *  Prints its value parameter, possibly formatted by its format parameter.
@@ -149,37 +107,22 @@ public class Insert extends AbstractComponent
      *  </ul>
      *
      **/
- 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
-    {
-        Object value = null;
-        Format format = null;
-        String insert;
-        boolean raw = false;
 
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
         if (cycle.isRewinding())
             return;
 
-        if (valueBinding != null)
-            value = valueBinding.getObject();
-
-        if (value == null)
-            return;
-
-        if (formatBinding != null)
-        {
-            try
-            {
-                format = (Format) formatBinding.getObject("format", Format.class);
-            }
-            catch (BindingException ex)
-            {
-                throw new RequestCycleException(this, ex);
-            }
-        }
+        String insert = null;
 
         if (format == null)
+        {
+            if (value == null)
+            	return;
+            	
             insert = value.toString();
+        }
         else
         {
             try
@@ -188,24 +131,17 @@ public class Insert extends AbstractComponent
             }
             catch (Exception ex)
             {
-                throw new RequestCycleException(Tapestry.getString("Insert.unable-to-format", value), this, ex);
+                throw new RequestCycleException(
+                    Tapestry.getString("Insert.unable-to-format", value),
+                    this,
+                    ex);
             }
         }
 
-        if (staticRawValue)
-            raw = rawValue;
-        else if (rawBinding != null)
-            raw = rawBinding.getBoolean();
-
-        String classValue = staticClassValue;
-
-        if (classValue == null && classBinding != null)
-            classValue = classBinding.getString();
-
-        if (classValue != null)
+        if (styleClass != null)
         {
             writer.begin("span");
-            writer.attribute("class", classValue);
+            writer.attribute("class", styleClass);
         }
 
         if (raw)
@@ -213,13 +149,48 @@ public class Insert extends AbstractComponent
         else
             writer.print(insert);
 
-        if (classValue != null)
+        if (styleClass != null)
             writer.end(); // <span>
-
     }
 
-    public void setValueBinding(IBinding value)
+    public Object getValue()
     {
-        valueBinding = value;
+        return value;
     }
+
+    public void setValue(Object value)
+    {
+        this.value = value;
+    }
+
+    public Format getFormat()
+    {
+        return format;
+    }
+
+    public void setFormat(Format format)
+    {
+        this.format = format;
+    }
+
+    public String getStyleClass()
+    {
+        return styleClass;
+    }
+
+    public void setStyleClass(String styleClass)
+    {
+        this.styleClass = styleClass;
+    }
+
+    public boolean getRaw()
+    {
+        return raw;
+    }
+
+    public void setRaw(boolean raw)
+    {
+        this.raw = raw;
+    }
+
 }

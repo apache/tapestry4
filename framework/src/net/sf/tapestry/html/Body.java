@@ -245,7 +245,7 @@ public class Body extends AbstractComponent
         return Integer.toString(uniqueId++);
     }
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
         IMarkupWriter nested;

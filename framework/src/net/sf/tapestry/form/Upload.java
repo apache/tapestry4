@@ -110,7 +110,7 @@ public class Upload extends AbstractFormComponent
         return fileBinding;
     }
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
         IForm form = getForm(cycle);

@@ -115,19 +115,13 @@ import net.sf.tapestry.Tapestry;
 
 public class Foreach extends AbstractComponent
 {
-    private IBinding sourceBinding;
+    private Object source;
     private IBinding valueBinding;
     private IBinding indexBinding;
-    private IBinding elementBinding;
-    private String staticElement;
+	private String element;
 
     private Object value;
     private boolean rendering;
-
-    public IBinding getSourceBinding()
-    {
-        return sourceBinding;
-    }
 
     public IBinding getIndexBinding()
     {
@@ -139,22 +133,6 @@ public class Foreach extends AbstractComponent
         indexBinding = value;
     }
 
-    /** @since 1.0.4 **/
-
-    public void setElementBinding(IBinding value)
-    {
-        elementBinding = value;
-
-        if (value.isStatic())
-            staticElement = value.getString();
-    }
-
-    /** @since 1.0.4 **/
-
-    public IBinding getElementBinding()
-    {
-        return elementBinding;
-    }
 
     /**
      *  Gets the source binding and returns an {@link Iterator}
@@ -167,15 +145,12 @@ public class Foreach extends AbstractComponent
      *
      **/
 
-    protected Iterator getSourceData() throws RequestCycleException
+    protected Iterator getSourceData()
     {
-
-        if (sourceBinding == null)
-            return null;
-
-        Object rawValue = sourceBinding.getObject();
-
-        return Tapestry.coerceToIterator(rawValue);
+ 		if (source == null)
+ 			return null;
+ 		
+        return Tapestry.coerceToIterator(source);
     }
 
     public IBinding getValueBinding()
@@ -189,7 +164,7 @@ public class Foreach extends AbstractComponent
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         Iterator dataSource = getSourceData();
 
@@ -198,15 +173,6 @@ public class Foreach extends AbstractComponent
         if (dataSource == null)
             return;
 
-        String element = null;
-
-        if (elementBinding != null && !cycle.isRewinding())
-        {
-            if (staticElement == null)
-                element = (String) elementBinding.getObject("element", String.class);
-            else
-                element = staticElement;
-        }
 
         try
         {
@@ -248,11 +214,6 @@ public class Foreach extends AbstractComponent
         }
     }
 
-    public void setSourceBinding(IBinding value)
-    {
-        sourceBinding = value;
-    }
-
     public void setValueBinding(IBinding value)
     {
         valueBinding = value;
@@ -271,6 +232,26 @@ public class Foreach extends AbstractComponent
             throw new RenderOnlyPropertyException(this, "value");
 
         return value;
+    }
+
+    public String getElement()
+    {
+        return element;
+    }
+
+    public void setElement(String element)
+    {
+        this.element = element;
+    }
+
+    public Object getSource()
+    {
+        return source;
+    }
+
+    public void setSource(Object source)
+    {
+        this.source = source;
     }
 
 }

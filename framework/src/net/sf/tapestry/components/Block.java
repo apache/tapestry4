@@ -48,18 +48,19 @@ import net.sf.tapestry.RequestCycleException;
  *  @version $Id$
  *  @author Howard Lewis Ship
  *  @since 0.2.9
+ * 
  **/
 
 public class Block extends AbstractComponent
 {
     /**
      *  Does nothing; the idea of a Block is to defer the rendering of
-     *  the body of the block until a {@link InsertBlock} forces it
+     *  the body of the block until an {@link InsertBlock} forces it
      *  out.
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         // Nothing!
     }

@@ -23,40 +23,41 @@
 // Lesser General Public License for more details.
 //
 
-package net.sf.tapestry.components;
 
-import net.sf.tapestry.AbstractComponent;
+package net.sf.tapestry.param;
+
+import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
-import net.sf.tapestry.IMarkupWriter;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.RequiredParameterException;
 
 /**
- *  Renders the text and components wrapped by a component.
+ *  Creates a connection between a parameter and a property of type {@link String}.
  *
- * <p>Informal parameters are not allowed.  The component may not have a body.
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *  @since 2.0.3
  *
- * @author Howard Lewis Ship
- * @version $Id$
- * 
  **/
-
-public class InsertWrapped extends AbstractComponent
+ 
+public class StringParameterConnector extends AbstractParameterConnector
 {
-    /**
-     *  Finds this <code>InsertWrapped</code>'s container, and invokes
-     *  {@link IComponent#renderWrapped(IMarkupWriter, IRequestCycle)}
-     *  on it.
-     *
-     **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected StringParameterConnector(
+        IComponent component,
+        String parameterName,
+        IBinding binding)
     {
-        IComponent container;
-        String containerId;
+        super(component, parameterName, binding);
+    }
 
-        container = getContainer();
-
-        container.renderWrapped(writer, cycle);
+	/**
+	 *  Invokes {@link IBinding#getString()} to obtain the property
+	 *  value.
+	 * 
+	 **/
+	
+    public void setParameter() throws RequiredParameterException
+    {
+        setPropertyValue(getBinding().getString());
     }
 }

@@ -111,7 +111,7 @@ public class Option extends AbstractComponent
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         String value;
         String label = null;

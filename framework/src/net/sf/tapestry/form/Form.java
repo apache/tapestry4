@@ -73,9 +73,6 @@ import net.sf.tapestry.valid.IValidationDelegate;
  *  the action service.  The default is the direct service, even though
  *  in earlier releases, only the action service was available.
  *
- *  <p>The listener is always type {@link IActionListener}, even when
- *  the direct service is used.
- *
  * <table border=1>
  * <tr> 
  *    <td>Parameter</td>
@@ -152,668 +149,593 @@ import net.sf.tapestry.valid.IValidationDelegate;
  *  @version $Id$
  **/
 
-public class Form extends AbstractComponent 
-implements IForm, IDirect, PageDetachListener
+public class Form
+    extends AbstractComponent
+    implements IForm, IDirect, PageDetachListener
 {
-	private IBinding methodBinding;
-	private String methodValue;
-
-	private IBinding listenerBinding;
-
-	private boolean rewinding;
-	private boolean rendering;
-	private String name;
-	private IBinding statefulBinding;
-	private boolean staticStateful;
-	private boolean statefulValue;
-
-	private IBinding directBinding;
-	private boolean staticDirect;
-	private boolean directValue;
-
-	private IValidationDelegate delegate;
-	private IBinding delegateBinding;
-
-	/**
-	 *  Number of element ids allocated.
-	 *
-	 *  @since 1.0.2
-	 *
-	 **/
-
-	private int elementCount;
-
-	/**
-	 *  {@link Map}, keyed on {@link FormEventType}.  Values are either a String (the name
-	 *  of a single event), or a {@link List} of Strings.
-	 *
-	 *  @since 1.0.2
-	 **/
-
-	private Map events;
-
-	private static final int EVENT_MAP_SIZE = 3;
-
-	/**
-	 * A Map, keyed on component id, used to allocate new component ids.
-	 *
-	 * @since 1.0.2
-	 *
-	 **/
-
-	private Map allocatorMap;
-
-	/**
-	 *  Class used to allocate ids (used as form element names).
-	 *
-	 **/
-
-	private static class IdAllocator
-	{
-		String baseId;
-		int index;
-
-		IdAllocator(String baseId)
-		{
-			this.baseId = baseId;
-		}
-
-		public String nextId()
-		{
-			return baseId + index++;
-		}
-	}
-
-	/**
-	 *  Returns the currently active {@link IForm}, or null if no form is
-	 *  active.  This is a convienience method, the result will be
-	 *  null, or an instance of {@link IForm}, but not necessarily a
-	 *  <code>Form</code>.
-	 *
-	 **/
-
-	public static IForm get(IRequestCycle cycle)
-	{
-		return (IForm) cycle.getAttribute(ATTRIBUTE_NAME);
-	}
-
-	public IBinding getMethodBinding()
-	{
-		return methodBinding;
-	}
-
-	public void setListenerBinding(IBinding value)
-	{
-		listenerBinding = value;
-	}
-
-	public IBinding getListenerBinding()
-	{
-		return listenerBinding;
-	}
-
-	public IBinding getDelegateBinding()
-	{
-		return delegateBinding;
-	}
-
-	public void setDelegateBinding(IBinding value)
-	{
-		delegateBinding = value;
-	}
-	
-	/**
-	 *  Indicates to any wrapped form components that they should respond to the form
-	 *  submission.
-	 *
-	 *  @throws RenderOnlyPropertyException if not rendering.
-	 **/
-
-	public boolean isRewinding()
-	{
-		if (!rendering)
-			throw new RenderOnlyPropertyException(this, "rewinding");
-
-		return rewinding;
-	}
-
-	public void setStatefulBinding(IBinding value)
-	{
-		statefulBinding = value;
-
-		staticStateful = value.isStatic();
-		if (staticStateful)
-			statefulValue = value.getBoolean();
-	}
-
-	public IBinding getStatefulBinding()
-	{
-		return statefulBinding;
-	}
-
-	/**
-	 *  @since 1.0.2
-	 *
-	 **/
-
-	public IBinding getDirectBinding()
-	{
-		return directBinding;
-	}
-
-	/**
-	 *  @since 1.0.2
-	 *
-	 **/
-
-	public void setDirectBinding(IBinding value)
-	{
-		directBinding = value;
-
-		staticDirect = value.isStatic();
-		if (staticDirect)
-			directValue = value.getBoolean();
-	}
-
-	/**
-	 *  Returns true if this Form is configured to use the direct
-	 *  service.
-	 *
-	 *  <p>This is derived from the direct parameter, and defaults
-	 *  to true if not bound.
-	 *
-	 *  @since 1.0.2
-	 **/
-
-	public boolean isDirect()
-	{
-		if (staticDirect)
-			return directValue;
-
-		if (directBinding != null)
-			return directBinding.getBoolean();
-
-		return true;
-	}
-
-	/**
-	 *  Returns true if the stateful parameter is bound to
-	 *  a true value.  If stateful is not bound, also returns
-	 *  the default, true.
-	 *
-	 *  @since 1.0.1
-	 **/
-
-	public boolean getRequiresSession()
-	{
-		if (staticStateful)
-			return statefulValue;
-
-		if (statefulBinding != null)
-			return statefulBinding.getBoolean();
-
-		return true;
-	}
-
-	/**
-	 *  Constructs a unique identifier (within the Form).  The identifier
-	 *  consists of the component's id, with an index number added to
-	 *  ensure uniqueness.
-	 *
-	 *  <p>Simply invokes {@link #getElementId(String)} with the component's id.
-	 *
-	 *
-	 *  @since 1.0.2
-	 **/
-
-	public String getElementId(IComponent component)
-	{
-		return getElementId(component.getId());
-	}
-
-	/**
-	 *  Constructs a unique identifier from the base id.  If possible, the
-	 *  id is used as-is.  Otherwise, a unique identifier is appended
-	 *  to the id.
-	 *
-	 *  <p>This method is provided simply so that some components
-	 * ({@link ImageSubmit}) have more specific control over
-	 *  their names.
-	 *
-	 *  @since 1.0.3
-	 *
-	 **/
-
-	public String getElementId(String baseId)
-	{
-		if (allocatorMap == null)
-			allocatorMap = new HashMap();
-
-		String result = null;
-
-		IdAllocator allocator = (IdAllocator) allocatorMap.get(baseId);
-
-		if (allocator == null)
-		{
-			result = baseId;
-			allocator = new IdAllocator(baseId);
-		}
-		else
-			result = allocator.nextId();
-
-		// Record the allocated id.  This protects against degenerate
-		// names by the developer, such as 'foo' (in a Foreach) and
-		// 'foo0' elsewhere.
-
-		allocatorMap.put(result, allocator);
-
-		elementCount++;
-
-		return result;
-	}
-
-	/**
-	 *  Returns the name generated for the form.  This is used to faciliate
-	 *  components that write JavaScript and need to access the form or
-	 *  its contents.
-	 *
-	 *  <p>This value is generated when the form renders, and is not cleared.
-	 *  If the Form is inside a {@link Foreach}, this will be the most recently
-	 *  generated name for the Form.
-	 *
-	 *  <p>This property is exposed so that sophisticated applications can write
-	 *  JavaScript handlers for the form and components within the form.
-	 *
-	 *  @see AbstractFormComponent#getName()
-	 *
-	 **/
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void render(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		String method = "post";
-		IActionListener listener;
-
-		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-			throw new RequestCycleException(
-				Tapestry.getString("Form.forms-may-not-nest"),
-				this);
-
-		cycle.setAttribute(ATTRIBUTE_NAME, this);
-
-		String actionId = cycle.getNextActionId();
-		name = "Form" + actionId;
-
-		try
-		{
-			boolean renderForm = !cycle.isRewinding();
-			boolean rewound = cycle.isRewound(this);
-
-			rewinding = rewound;
-
-			Gesture g = getGesture(cycle, actionId);
-
-			if (renderForm)
-			{
-				if (methodValue != null)
-					method = methodValue;
-				else if (methodBinding != null)
-					method = methodBinding.getString();
-
-				writer.begin("form");
-				writer.attribute("method", method);
-				writer.attribute("name", name);
-				writer.attribute("action", cycle.encodeURL(g.getServletPath()));
-
-				generateAttributes(writer, cycle);
-				writer.println();
-			}
-
-			// Write the hidden's, or at least, reserve the query parameters
-			// required by the Gesture.
-
-			writeGestureParameters(writer, g, !renderForm);
-
-			elementCount = 0;
-
-			rendering = true;
-			renderWrapped(writer, cycle);
-
-			if (renderForm)
-			{
-				// What's this for?  It's part of checking for stale links.  
-				// We record how many elements we allocated ids for.
-				// On rewind, we check that the same number of elements
-				// ids were allocated.  If the persistent state of the page or
-				// application changed between render (previous request cycle)
-				// and rewind (current request cycle), then
-				// this count might change.
-				//
-				// In some cases, state can change without changing this
-				// number -- hopefully, such changes are benign since we
-				// don't have a way to detect them.
-
-				writer.beginEmpty("input");
-				writer.attribute("type", "hidden");
-				writer.attribute("name", name);
-				writer.attribute("value", elementCount);
-				writer.println();
-
-				writer.end("form");
-
-				// Write out event handlers collected during the rendering.
-
-				emitEventHandlers(writer, cycle);
-			}
-
-			if (rewound)
-			{
-				String actual;
-
-				actual = cycle.getRequestContext().getParameter(name);
-
-				if (actual == null || Integer.parseInt(actual) != elementCount)
-					throw new StaleLinkException(
-						Tapestry.getString("Form.bad-element-count", getExtendedId()),
-						getPage());
-
-				try
-				{
-					listener =
-						(IActionListener) listenerBinding.getObject("listener", IActionListener.class);
-				}
-				catch (BindingException ex)
-				
-					{
-					throw new RequestCycleException(this, ex);
-				}
-
-				if (listener == null)
-					throw new RequiredParameterException(this, "listener", listenerBinding);
-
-				listener.actionTriggered(this, cycle);
-
-				// Abort the rewind render.
-
-				throw new RenderRewoundException(this);
-			}
-
-			cycle.removeAttribute(ATTRIBUTE_NAME);
-		}
-		finally
-		{
-			rendering = false;
-			elementCount = 0;
-
-			if (events != null)
-				events.clear();
-
-			if (allocatorMap != null)
-				allocatorMap.clear();
-		}
-	}
-
-	public void setMethodBinding(IBinding value)
-	{
-		methodBinding = value;
-
-		if (value.isStatic())
-			methodValue = value.getString();
-	}
-
-	/**
-	 *  Adds an additional event handler.
-	 *
-	 * @since 1.0.2
-	 **/
-
-	public void addEventHandler(FormEventType type, String functionName)
-	{
-		if (events == null)
-			events = new HashMap(EVENT_MAP_SIZE);
-
-		Object value = events.get(type);
-
-		// The value can either be a String, or a List of String.  Since
-		// it is rare for there to be more than one event handling function,
-		// we start with just a String.
-
-		if (value == null)
-		{
-			events.put(type, functionName);
-			return;
-		}
-
-		// The second function added converts it to a List.
-
-		if (value instanceof String)
-		{
-			List list = new ArrayList();
-			list.add(value);
-			list.add(functionName);
-
-			events.put(type, list);
-			return;
-		}
-
-		// The third and subsequent function justs
-		// adds to the List.
-
-		List list = (List) value;
-		list.add(functionName);
-	}
-
-	private void emitEventHandlers(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		StringBuffer buffer = null;
-
-		if (events == null || events.isEmpty())
-			return;
-
-		Body body = Body.get(cycle);
-
-		if (body == null)
-			throw new RequestCycleException(
-				Tapestry.getString("Form.needs-body-for-event-handlers"),
-				this);
-
-		Iterator i = events.entrySet().iterator();
-		while (i.hasNext())
-		{
-			Map.Entry entry = (Map.Entry) i.next();
-			FormEventType type = (FormEventType) entry.getKey();
-			Object value = entry.getValue();
-
-			String formPath = "document." + name;
-			String propertyName = type.getPropertyName();
-			String finalFunctionName;
-
-			boolean combineWithAnd = type.getCombineUsingAnd();
-
-			// The typical case; one event one event handler.  Easy enough.
-
-			if (value instanceof String)
-			{
-				finalFunctionName = (String) value;
-			}
-			else
-			{
-
-				String compositeName = propertyName + "_" + name;
-
-				if (buffer == null)
-					buffer = new StringBuffer(200);
-
-				buffer.append("function ");
-				buffer.append(compositeName);
-				buffer.append("()\n{\n");
-
-				List l = (List) value;
-				int count = l.size();
-				for (int j = 0; j < count; j++)
-				{
-					String functionName = (String) l.get(j);
-
-					buffer.append("  ");
-
-					if (j > 0 && combineWithAnd)
-						buffer.append("&& ");
-
-					buffer.append(functionName);
-					buffer.append("()");
-
-					// If combining normally, or on the very last
-					// name, add a semicolon to end the statement.
-
-					if (j + 1 == count || !combineWithAnd)
-						buffer.append(';');
-
-					buffer.append('\n');
-				}
-
-				buffer.append("}\n\n");
-
-				finalFunctionName = compositeName;
-			}
-
-			body.addOtherInitialization(
-				formPath + "." + propertyName + " = " + finalFunctionName + ";");
-
-		}
-
-		if (buffer != null)
-			body.addOtherScript(buffer.toString());
-
-	}
-
-	/**
-	 *  Simply invokes {@link #render(IMarkupWriter, IRequestCycle)}.
-	 *
-	 * @since 1.0.2
-	 **/
-
-	public void rewind(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		render(writer, cycle);
-	}
-
-	/**
-	 *  Method invoked by the direct service.
-	 *
-	 *  @since 1.0.2
-	 *
-	 **/
-
-	public void trigger(IRequestCycle cycle)
-		throws RequestCycleException
-	{
+    private String method;
+    private IActionListener listener;
+    private boolean rewinding;
+    private boolean rendering;
+    private String name;
+    private boolean stateful;
+    private boolean direct = true;
+    private IValidationDelegate delegate;
+    
+    // Needs the stateful binding, since isStateful() can be invoked
+    // when not rendering.
+    
+    private IBinding statefulBinding;
+
+    /**
+     *  Number of element ids allocated.
+     *
+     *  @since 1.0.2
+     *
+     **/
+
+    private int elementCount;
+
+    /**
+     *  {@link Map}, keyed on {@link FormEventType}.  Values are either a String (the name
+     *  of a single event), or a {@link List} of Strings.
+     *
+     *  @since 1.0.2
+     **/
+
+    private Map events;
+
+    private static final int EVENT_MAP_SIZE = 3;
+
+    /**
+     * A Map, keyed on component id, used to allocate new component ids.
+     *
+     * @since 1.0.2
+     *
+     **/
+
+    private Map allocatorMap;
+
+    /**
+     *  Class used to allocate ids (used as form element names).
+     *
+     **/
+
+    private static class IdAllocator
+    {
+        String baseId;
+        int index;
+
+        IdAllocator(String baseId)
+        {
+            this.baseId = baseId;
+        }
+
+        public String nextId()
+        {
+            return baseId + index++;
+        }
+    }
+
+    /**
+     *  Returns the currently active {@link IForm}, or null if no form is
+     *  active.  This is a convienience method, the result will be
+     *  null, or an instance of {@link IForm}, but not necessarily a
+     *  <code>Form</code>.
+     *
+     **/
+
+    public static IForm get(IRequestCycle cycle)
+    {
+        return (IForm) cycle.getAttribute(ATTRIBUTE_NAME);
+    }
+
+    /**
+     *  Indicates to any wrapped form components that they should respond to the form
+     *  submission.
+     *
+     *  @throws RenderOnlyPropertyException if not rendering.
+     **/
+
+    public boolean isRewinding()
+    {
+        if (!rendering)
+            throw new RenderOnlyPropertyException(this, "rewinding");
+
+        return rewinding;
+    }
+
+    /**
+     *  Returns true if this Form is configured to use the direct
+     *  service.
+     *
+     *  <p>This is derived from the direct parameter, and defaults
+     *  to true if not bound.
+     *
+     *  @since 1.0.2
+     **/
+
+    public boolean isDirect()
+    {
+        return direct;
+    }
+
+    /**
+     *  Returns true if the stateful parameter is bound to
+     *  a true value.  If stateful is not bound, also returns
+     *  the default, true.
+     *
+     *  @since 1.0.1
+     **/
+
+    public boolean getRequiresSession()
+    {
+        // Can't rely on stateful property, since that is only valid
+        // during render ... so we go direct to the binding.
+
+        if (statefulBinding == null)
+            return true;
+
+        return statefulBinding.getBoolean();
+    }
+
+    /**
+     *  Constructs a unique identifier (within the Form).  The identifier
+     *  consists of the component's id, with an index number added to
+     *  ensure uniqueness.
+     *
+     *  <p>Simply invokes {@link #getElementId(String)} with the component's id.
+     *
+     *
+     *  @since 1.0.2
+     **/
+
+    public String getElementId(IComponent component)
+    {
+        return getElementId(component.getId());
+    }
+
+    /**
+     *  Constructs a unique identifier from the base id.  If possible, the
+     *  id is used as-is.  Otherwise, a unique identifier is appended
+     *  to the id.
+     *
+     *  <p>This method is provided simply so that some components
+     * ({@link ImageSubmit}) have more specific control over
+     *  their names.
+     *
+     *  @since 1.0.3
+     *
+     **/
+
+    public String getElementId(String baseId)
+    {
+        if (allocatorMap == null)
+            allocatorMap = new HashMap();
+
+        String result = null;
+
+        IdAllocator allocator = (IdAllocator) allocatorMap.get(baseId);
+
+        if (allocator == null)
+        {
+            result = baseId;
+            allocator = new IdAllocator(baseId);
+        }
+        else
+            result = allocator.nextId();
+
+        // Record the allocated id.  This protects against degenerate
+        // names by the developer, such as 'foo' (in a Foreach) and
+        // 'foo0' elsewhere.
+
+        allocatorMap.put(result, allocator);
+
+        elementCount++;
+
+        return result;
+    }
+
+    /**
+     *  Returns the name generated for the form.  This is used to faciliate
+     *  components that write JavaScript and need to access the form or
+     *  its contents.
+     *
+     *  <p>This value is generated when the form renders, and is not cleared.
+     *  If the Form is inside a {@link Foreach}, this will be the most recently
+     *  generated name for the Form.
+     *
+     *  <p>This property is exposed so that sophisticated applications can write
+     *  JavaScript handlers for the form and components within the form.
+     *
+     *  @see AbstractFormComponent#getName()
+     *
+     **/
+
+    public String getName()
+    {
+        return name;
+    }
+
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
+            throw new RequestCycleException(
+                Tapestry.getString("Form.forms-may-not-nest"),
+                this);
+
+        cycle.setAttribute(ATTRIBUTE_NAME, this);
+
+        String actionId = cycle.getNextActionId();
+        name = "Form" + actionId;
+
+        boolean renderForm = !cycle.isRewinding();
+        boolean rewound = cycle.isRewound(this);
+
+        rewinding = rewound;
+
+        Gesture g = getGesture(cycle, actionId);
+
+        if (renderForm)
+        {
+            writer.begin("form");
+            writer.attribute("method", (method == null) ? "post" : method);
+            writer.attribute("name", name);
+            writer.attribute("action", cycle.encodeURL(g.getServletPath()));
+
+            generateAttributes(writer, cycle);
+            writer.println();
+        }
+
+        // Write the hidden's, or at least, reserve the query parameters
+        // required by the Gesture.
+
+        writeGestureParameters(writer, g, !renderForm);
+
+        elementCount = 0;
+
+        rendering = true;
+        renderWrapped(writer, cycle);
+
+        if (renderForm)
+        {
+            // What's this for?  It's part of checking for stale links.  
+            // We record how many elements we allocated ids for.
+            // On rewind, we check that the same number of elements
+            // ids were allocated.  If the persistent state of the page or
+            // application changed between render (previous request cycle)
+            // and rewind (current request cycle), then
+            // this count might change.
+            //
+            // In some cases, state can change without changing this
+            // number -- hopefully, such changes are benign since we
+            // don't have a way to detect them.
+
+            writer.beginEmpty("input");
+            writer.attribute("type", "hidden");
+            writer.attribute("name", name);
+            writer.attribute("value", elementCount);
+            writer.println();
+
+            writer.end("form");
+
+            // Write out event handlers collected during the rendering.
+
+            emitEventHandlers(writer, cycle);
+        }
+
+        if (rewound)
+        {
+            String actual;
+
+            actual = cycle.getRequestContext().getParameter(name);
+
+            if (actual == null || Integer.parseInt(actual) != elementCount)
+                throw new StaleLinkException(
+                    Tapestry.getString("Form.bad-element-count", getExtendedId()),
+                    getPage());
+
+            listener.actionTriggered(this, cycle);
+
+            // Abort the rewind render.
+
+            throw new RenderRewoundException(this);
+        }
+
+        cycle.removeAttribute(ATTRIBUTE_NAME);
+    }
+
+    /**
+     *  Adds an additional event handler.
+     *
+     *  @since 1.0.2
+     * 
+     **/
+
+    public void addEventHandler(FormEventType type, String functionName)
+    {
+        if (events == null)
+            events = new HashMap(EVENT_MAP_SIZE);
+
+        Object value = events.get(type);
+
+        // The value can either be a String, or a List of String.  Since
+        // it is rare for there to be more than one event handling function,
+        // we start with just a String.
+
+        if (value == null)
+        {
+            events.put(type, functionName);
+            return;
+        }
+
+        // The second function added converts it to a List.
+
+        if (value instanceof String)
+        {
+            List list = new ArrayList();
+            list.add(value);
+            list.add(functionName);
+
+            events.put(type, list);
+            return;
+        }
+
+        // The third and subsequent function justs
+        // adds to the List.
+
+        List list = (List) value;
+        list.add(functionName);
+    }
+
+    private void emitEventHandlers(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        StringBuffer buffer = null;
+
+        if (events == null || events.isEmpty())
+            return;
+
+        Body body = Body.get(cycle);
+
+        if (body == null)
+            throw new RequestCycleException(
+                Tapestry.getString("Form.needs-body-for-event-handlers"),
+                this);
+
+        Iterator i = events.entrySet().iterator();
+        while (i.hasNext())
+        {
+            Map.Entry entry = (Map.Entry) i.next();
+            FormEventType type = (FormEventType) entry.getKey();
+            Object value = entry.getValue();
+
+            String formPath = "document." + name;
+            String propertyName = type.getPropertyName();
+            String finalFunctionName;
+
+            boolean combineWithAnd = type.getCombineUsingAnd();
+
+            // The typical case; one event one event handler.  Easy enough.
+
+            if (value instanceof String)
+            {
+                finalFunctionName = (String) value;
+            }
+            else
+            {
+
+                String compositeName = propertyName + "_" + name;
+
+                if (buffer == null)
+                    buffer = new StringBuffer(200);
+
+                buffer.append("function ");
+                buffer.append(compositeName);
+                buffer.append("()\n{\n");
+
+                List l = (List) value;
+                int count = l.size();
+                for (int j = 0; j < count; j++)
+                {
+                    String functionName = (String) l.get(j);
+
+                    buffer.append("  ");
+
+                    if (j > 0 && combineWithAnd)
+                        buffer.append("&& ");
+
+                    buffer.append(functionName);
+                    buffer.append("()");
+
+                    // If combining normally, or on the very last
+                    // name, add a semicolon to end the statement.
+
+                    if (j + 1 == count || !combineWithAnd)
+                        buffer.append(';');
+
+                    buffer.append('\n');
+                }
+
+                buffer.append("}\n\n");
+
+                finalFunctionName = compositeName;
+            }
+
+            body.addOtherInitialization(
+                formPath + "." + propertyName + " = " + finalFunctionName + ";");
+
+        }
+
+        if (buffer != null)
+            body.addOtherScript(buffer.toString());
+
+    }
+
+    /**
+     *  Simply invokes {@link #render(IMarkupWriter, IRequestCycle)}.
+     *
+     * @since 1.0.2
+     **/
+
+    public void rewind(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        render(writer, cycle);
+    }
+
+    /**
+     *  Method invoked by the direct service.
+     *
+     *  @since 1.0.2
+     *
+     **/
+
+    public void trigger(IRequestCycle cycle) throws RequestCycleException
+    {
         String[] parameters = cycle.getServiceParameters();
-        
-		cycle.rewindForm(this, parameters[0]);
-	}
 
-	/**
-	 *  Builds the URL for the form, using either the direct or
-	 *  action service.  In addition, writes the query parameters
-	 *  needed by the service.
-	 *
-	 *  @since 1.0.3
-	 *
-	 **/
+        cycle.rewindForm(this, parameters[0]);
+    }
 
-	private Gesture getGesture(IRequestCycle cycle, String actionId)
-	{
-		String serviceName = null;
+    /**
+     *  Builds the URL for the form, using either the direct or
+     *  action service.  In addition, writes the query parameters
+     *  needed by the service.
+     *
+     *  @since 1.0.3
+     *
+     **/
 
-		if (isDirect())
-			serviceName = IEngineService.DIRECT_SERVICE;
-		else
-			serviceName = IEngineService.ACTION_SERVICE;
+    private Gesture getGesture(IRequestCycle cycle, String actionId)
+    {
+        String serviceName = null;
 
-		IEngine engine = cycle.getEngine();
-		IEngineService service = engine.getService(serviceName);
+        if (isDirect())
+            serviceName = IEngineService.DIRECT_SERVICE;
+        else
+            serviceName = IEngineService.ACTION_SERVICE;
 
-		return service.buildGesture(cycle, this, new String[] { actionId });
-	}
+        IEngine engine = cycle.getEngine();
+        IEngineService service = engine.getService(serviceName);
 
-	private void writeGestureParameters(
-		IMarkupWriter writer,
-		Gesture g,
-		boolean reserveOnly)
-	{
-		Iterator i = g.getQueryParameters();
+        return service.buildGesture(cycle, this, new String[] { actionId });
+    }
 
-		while (i.hasNext())
-		{
-			Map.Entry e = (Map.Entry) i.next();
+    private void writeGestureParameters(
+        IMarkupWriter writer,
+        Gesture g,
+        boolean reserveOnly)
+    {
+        Iterator i = g.getQueryParameters();
 
-			String key = (String) e.getKey();
+        while (i.hasNext())
+        {
+            Map.Entry e = (Map.Entry) i.next();
 
-			if (!reserveOnly)
-			{
-				writer.beginEmpty("input");
-				writer.attribute("type", "hidden");
-				writer.attribute("name", key);
-				writer.attribute("value", (String) e.getValue());
-				writer.println();
-			}
+            String key = (String) e.getKey();
 
-			// Reserve the name, in case any form component has the
-			// same name.
+            if (!reserveOnly)
+            {
+                writer.beginEmpty("input");
+                writer.attribute("type", "hidden");
+                writer.attribute("name", key);
+                writer.attribute("value", (String) e.getValue());
+                writer.println();
+            }
 
-			getElementId(key);
-		}
-	}
+            // Reserve the name, in case any form component has the
+            // same name.
 
-	/**
-	 *  Finds the delegate for for the form.  The delegate binding is only
-	 *  resolved once per request cycle.
-	 * 
-	 **/
-	
-	public IValidationDelegate getDelegate()
-	throws RequestCycleException
-	{
-		if (delegate == null)
-		{
-			if (delegateBinding != null)
-				delegate = (IValidationDelegate)delegateBinding.getObject("delegate",
-					IValidationDelegate.class);
-					
-			if (delegate == null)
-				throw new RequiredParameterException(this, "delegate", delegateBinding);
-		}
-		
-		return delegate;
-	}
+            getElementId(key);
+        }
+    }
 
-	/**
-	 *  Clears the delegate property at the end of the request cycle.
-	 * 
-	 **/
-	
-	public void pageDetached(PageEvent event)
-	{
-		delegate = null;
-	}
+    protected void cleanupAfterRender(IRequestCycle cycle)
+    {
+        super.cleanupAfterRender(cycle);
 
+        rendering = false;
+        elementCount = 0;
+        events = null;
+        allocatorMap = null;
+    }
 
-	/**
-	 *  Adds this Form as a page detach listener, so that the delegate property
-	 *  can be cleared at the end of the request cycle.
-	 * 
-	 **/
-	
-	protected void finishLoad()
-	{
-		page.addPageDetachListener(this);
-	}
+    /**
+     *  Clears the delegate property at the end of the request cycle.
+     * 
+     **/
+
+    public void pageDetached(PageEvent event)
+    {
+        delegate = null;
+    }
+
+    /**
+     *  Adds this Form as a page detach listener, so that the delegate property
+     *  can be cleared at the end of the request cycle.
+     * 
+     **/
+
+    protected void finishLoad()
+    {
+        page.addPageDetachListener(this);
+    }
+
+    public IValidationDelegate getDelegate()
+    {
+        return delegate;
+    }
+
+    public void setDelegate(IValidationDelegate delegate)
+    {
+        this.delegate = delegate;
+    }
+
+    public void setDirect(boolean direct)
+    {
+        this.direct = direct;
+    }
+
+    public IActionListener getListener()
+    {
+        return listener;
+    }
+
+    public void setListener(IActionListener listener)
+    {
+        this.listener = listener;
+    }
+
+    public String getMethod()
+    {
+        return method;
+    }
+
+    public void setMethod(String method)
+    {
+        this.method = method;
+    }
+
+    public boolean isStateful()
+    {
+        return stateful;
+    }
+
+    public void setStateful(boolean stateful)
+    {
+        this.stateful = stateful;
+    }
+
+    public IBinding getStatefulBinding()
+    {
+        return statefulBinding;
+    }
+
+    public void setStatefulBinding(IBinding statefulBinding)
+    {
+        this.statefulBinding = statefulBinding;
+    }
 
 }

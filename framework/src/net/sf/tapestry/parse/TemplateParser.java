@@ -40,7 +40,7 @@ import net.sf.tapestry.Tapestry;
  *  the equivalent of a &lt;jwc&gt; tag by including a <code>jwcid</code>
  *  attribute.
  *
- *  <p>The parser edits out HTML comments, removes
+ *  <p>The parser removes
  *  the body of some tags (when the corresponding component doesn't
  *  allow a body), identifies more template errors, and allows
  *  portions of the template to be completely removed.

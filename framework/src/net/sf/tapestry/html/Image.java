@@ -139,7 +139,7 @@ public class Image extends AbstractComponent
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
         String imageURL = null;

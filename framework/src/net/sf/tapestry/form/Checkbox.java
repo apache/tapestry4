@@ -82,21 +82,14 @@ import net.sf.tapestry.RequestCycleException;
 
 public class Checkbox extends AbstractFormComponent
 {
+    private boolean disabled;    
     private IBinding selectedBinding;
-    private IBinding disabledBinding;
-    private boolean staticDisabled;
-    private boolean disabledValue;
 
     private String name;
 
     public String getName()
     {
         return name;
-    }
-
-    public IBinding getDisabledBinding()
-    {
-        return disabledBinding;
     }
 
     public IBinding getSelectedBinding()
@@ -114,7 +107,7 @@ public class Checkbox extends AbstractFormComponent
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         String value;
         boolean disabled = false;
@@ -130,11 +123,6 @@ public class Checkbox extends AbstractFormComponent
         // Used whether rewinding or not.
 
         name = form.getElementId(this);
-
-        if (staticDisabled)
-            disabled = disabledValue;
-        else if (disabledBinding != null)
-            disabled = disabledBinding.getBoolean();
 
         if (rewinding)
         {
@@ -170,17 +158,19 @@ public class Checkbox extends AbstractFormComponent
 
     }
 
-    public void setDisabledBinding(IBinding value)
-    {
-        disabledBinding = value;
-
-        staticDisabled = value.isStatic();
-        if (staticDisabled)
-            disabledValue = value.getBoolean();
-    }
-
     public void setSelectedBinding(IBinding value)
     {
         selectedBinding = value;
     }
+    
+    public boolean getDisabled()
+    {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled)
+    {
+        this.disabled = disabled;
+    }
+
 }

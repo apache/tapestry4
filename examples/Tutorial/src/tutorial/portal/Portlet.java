@@ -64,13 +64,14 @@ public class Portlet extends BaseComponent
         return model;
     }
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+	// Simplify for new scheme
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         try
         {
             model = (PortletModel) modelBinding.getObject("model", PortletModel.class);
 
-            super.render(writer, cycle);
+            super.renderComponent(writer, cycle);
         }
         finally
         {

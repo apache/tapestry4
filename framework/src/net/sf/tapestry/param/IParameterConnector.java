@@ -22,41 +22,41 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
 //
+package net.sf.tapestry.param;
 
-package net.sf.tapestry.components;
-
-import net.sf.tapestry.AbstractComponent;
-import net.sf.tapestry.IComponent;
-import net.sf.tapestry.IMarkupWriter;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.RequiredParameterException;
 
 /**
- *  Renders the text and components wrapped by a component.
+ *  Define a type of connector between a binding of a component and a JavaBeans
+ *  property of the component (with the same name).  Allows
+ *  for the parameter to be set before the component is rendered,
+ *  then cleared after the component is rendered.
  *
- * <p>Informal parameters are not allowed.  The component may not have a body.
- *
- * @author Howard Lewis Ship
- * @version $Id$
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *  @since 2.0.3
  * 
  **/
 
-public class InsertWrapped extends AbstractComponent
+public interface IParameterConnector
 {
     /**
-     *  Finds this <code>InsertWrapped</code>'s container, and invokes
-     *  {@link IComponent#renderWrapped(IMarkupWriter, IRequestCycle)}
-     *  on it.
-     *
+     *  Sets the parameter from the binding.
+     *  
+     *  @throws RequiredParameterException if the parameter is
+     *  required, but the {@link net.sf.tapestry.IBinding}
+     *  supplies a null value.
+     * 
      **/
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
-    {
-        IComponent container;
-        String containerId;
-
-        container = getContainer();
-
-        container.renderWrapped(writer, cycle);
-    }
+    
+	public void setParameter()
+	throws RequiredParameterException;
+	
+	/**
+	 *  Clears the parameters to a null, 0 or false value
+	 *  (depending on type).
+	 * 
+	 **/
+	
+	public void clearParameter();
 }

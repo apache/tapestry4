@@ -105,7 +105,7 @@ public class InsertText extends AbstractComponent
             modeValue = (InsertTextMode) value.getObject("mode", InsertTextMode.class);
     }
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
         InsertTextMode mode = modeValue;

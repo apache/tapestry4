@@ -146,20 +146,16 @@ public class BookLink extends BaseComponent
     }
 
     /**
-     *  Overrides render() to always set the book property to null after
+     *  Sets the book property to null after
      *  renderring.
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void cleanupAfterRender(IRequestCycle cycle)
     {
-        try
-        {
-            super.render(writer, cycle);
-        }
-        finally
-        {
-            book = null;
-        }
+        book = null;
+        
+        super.cleanupAfterRender(cycle);
     }
+
 }

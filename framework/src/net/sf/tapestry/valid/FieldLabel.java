@@ -107,7 +107,7 @@ public class FieldLabel extends AbstractComponent
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
         if (cycle.isRewinding())

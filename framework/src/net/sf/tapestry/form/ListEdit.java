@@ -241,7 +241,7 @@ public class ListEdit extends AbstractComponent
 		return elementBinding;
 	}
 
-	public void render(IMarkupWriter writer, IRequestCycle cycle)
+	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		ISource source = null;

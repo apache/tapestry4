@@ -83,7 +83,7 @@ public class ShowInspector extends BaseComponent implements IDirect
      *  @since 1.0.5
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
 
@@ -138,7 +138,7 @@ public class ShowInspector extends BaseComponent implements IDirect
 
         body.process(scriptSession);
 
-        super.render(writer, cycle);
+        super.renderComponent(writer, cycle);
 
         symbols = null;
     }

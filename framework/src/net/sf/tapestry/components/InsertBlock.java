@@ -78,33 +78,29 @@ import net.sf.tapestry.RequestCycleException;
 
 public class InsertBlock extends AbstractComponent
 {
-    private IBinding blockBinding;
-
-    public void setBlockBinding(IBinding value)
-    {
-        blockBinding = value;
-    }
-
-    public IBinding getBlockBinding()
-    {
-        return blockBinding;
-    }
+    private Block block;
 
     /**
-     *  If the block parameter is bound and not null,
+     *  If block is not null,
      *  then {@link net.sf.tapestry.IComponent#renderWrapped(IMarkupWriter, IRequestCycle)}
      *  is invoked on it.
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        if (blockBinding == null)
-            return;
-
-        Block block = (Block) blockBinding.getObject("block", Block.class);
-
-        if (block != null)
+         if (block != null)
             block.renderWrapped(writer, cycle);
     }
+    
+    public Block getBlock()
+    {
+        return block;
+    }
+
+    public void setBlock(Block block)
+    {
+        this.block = block;
+    }
+
 }
