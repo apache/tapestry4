@@ -20,7 +20,7 @@
     <binding name="selected" expression="sortColumn"/>
     <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@TITLE"/>
     <binding name="descending" expression="descending"/>
-    <binding name="listener" expression="listeners.resort"/>
+    <binding name="listener" expression="listeners.requery"/>
   </component>   
     
   <component id="sortAuthor" copy-of="sortTitle">

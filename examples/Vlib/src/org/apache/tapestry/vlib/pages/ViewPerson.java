@@ -59,6 +59,8 @@ import java.rmi.RemoteException;
 
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.components.Browser;
@@ -77,8 +79,12 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
  * 
  **/
 
-public abstract class ViewPerson extends BasePage implements IExternalPage
+public abstract class ViewPerson extends BasePage implements IExternalPage, PageRenderListener
 {
+    public abstract Integer getPersonId();
+
+    public abstract void setPersonId(Integer personId);
+
     public abstract void setPerson(Person value);
 
     public abstract Person getPerson();
@@ -106,20 +112,16 @@ public abstract class ViewPerson extends BasePage implements IExternalPage
 
     public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
     {
-        Integer personPK = (Integer) parameters[0];
+        Integer personId = (Integer) parameters[0];
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+        setPersonId(personId);
 
-        Person person = vengine.readPerson(personPK);
-
-        setPerson(person);
+        // Force the query to be re-run when the person changes.
 
         runQuery();
-
-        // cycle.setPage(this);
     }
 
-    public void resort(IRequestCycle cycle)
+    public void requery(IRequestCycle cycle)
     {
         runQuery();
     }
@@ -127,7 +129,7 @@ public abstract class ViewPerson extends BasePage implements IExternalPage
     private void runQuery()
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-        Person person = getPerson();
+        Integer personId = getPersonId();
 
         SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
 
@@ -145,7 +147,7 @@ public abstract class ViewPerson extends BasePage implements IExternalPage
 
             try
             {
-                int count = query.ownerQuery(person.getId(), ordering);
+                int count = query.ownerQuery(personId, ordering);
 
                 _browser.initializeForResultCount(count);
 
@@ -161,4 +163,21 @@ public abstract class ViewPerson extends BasePage implements IExternalPage
 
     }
 
+    public void pageBeginRender(PageEvent event)
+    {
+        Person person = getPerson();
+
+        if (person == null)
+        {
+            VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+
+            person = vengine.readPerson(getPersonId());
+
+            setPerson(person);
+        }
+    }
+
+	public void pageEndRender(PageEvent event)
+	{
+	}
 }

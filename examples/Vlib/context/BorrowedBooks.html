@@ -22,7 +22,7 @@
     <th><span jwcid="sortOwner">Owner</span></th>
     <th>Return</th>
   </tr>
-  <tr jwcid="browser@Browser" query="ognl:borrowedQuery" value="ognl:currentBook">
+  <tr jwcid="browser@Browser" query="ognl:borrowedQuery" value="ognl:currentBook" listener="ognl:listeners.requery">
     <td><a jwcid="@BookLink" book="ognl:currentBook" href="#" class="clsDataBlue">DocBook:The Definitive Guide</a>
     </td>
     <td><span jwcid="@Insert" value="ognl:currentBook.author">Walsh &#38; Muellner</span>

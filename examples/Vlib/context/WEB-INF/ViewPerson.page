@@ -6,10 +6,10 @@
 	
 <page-specification class="org.apache.tapestry.vlib.pages.ViewPerson">
 
-  <property name="page-type">search</property>
- 
+  <property-specification name="personId" type="java.lang.Integer" persistent="yes"/>
+  <property-specification name="person" type="org.apache.tapestry.vlib.ejb.Person"/>
+  
   <property-specification name="query" type="org.apache.tapestry.vlib.ejb.IBookQuery" persistent="yes"/>
-  <property-specification name="person" type="org.apache.tapestry.vlib.ejb.Person" persistent="yes"/>
   <property-specification name="currentMatch" type="org.apache.tapestry.vlib.ejb.Book"/>
 
   <property-specification name="sortColumn" type="org.apache.tapestry.vlib.ejb.SortColumn" persistent="yes">
@@ -21,7 +21,7 @@
     <binding name="selected" expression="sortColumn"/>
     <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@TITLE"/>
     <binding name="descending" expression="descending"/>
-    <binding name="listener" expression="listeners.resort"/>
+    <binding name="listener" expression="listeners.requery"/>
   </component>   
     
   <component id="sortAuthor" copy-of="sortTitle">

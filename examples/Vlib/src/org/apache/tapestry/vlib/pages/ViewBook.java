@@ -62,6 +62,8 @@ import javax.ejb.FinderException;
 
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.Book;
@@ -75,9 +77,13 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * 
  **/
 
-public abstract class ViewBook extends BasePage implements IExternalPage
+public abstract class ViewBook extends BasePage implements IExternalPage, PageRenderListener
 {
     private DateFormat _dateFormat;
+
+    public abstract Integer getBookId();
+
+    public abstract void setBookId(Integer bookId);
 
     public abstract Book getBook();
 
@@ -85,8 +91,15 @@ public abstract class ViewBook extends BasePage implements IExternalPage
 
     public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
     {
-        Integer bookPK = (Integer) parameters[0];
+        Integer bookId = (Integer) parameters[0];
+
+        setBookId(bookId);
+    }
+
+    public void readBook()
+    {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+        Integer bookId = getBookId();
 
         int i = 0;
         while (true)
@@ -95,19 +108,19 @@ public abstract class ViewBook extends BasePage implements IExternalPage
 
             try
             {
-                setBook(bean.getBook(bookPK));
+                setBook(bean.getBook(bookId));
 
                 return;
             }
             catch (FinderException ex)
             {
-                vengine.presentError("Book not found in database.", cycle);
+                vengine.presentError("Book not found in database.", getRequestCycle());
                 return;
             }
             catch (RemoteException ex)
             {
                 vengine.rmiFailure(
-                    "Remote exception obtaining information for book " + bookPK + ".",
+                    "Remote exception obtaining information for book #" + bookId + ".",
                     ex,
                     i++);
             }
@@ -123,4 +136,16 @@ public abstract class ViewBook extends BasePage implements IExternalPage
 
         return _dateFormat;
     }
+
+    public void pageBeginRender(PageEvent event)
+    {
+        if (getBook() == null)
+            readBook();
+    }
+
+    public void pageEndRender(PageEvent event)
+    {
+
+    }
+
 }

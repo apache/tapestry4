@@ -117,6 +117,26 @@ public class Global
             {
                 Object raw = getRootNamingContext().lookup(name);
 
+                if (raw == null)
+                {
+                    String message =
+                        "JNDI lookup of "
+                            + name
+                            + " yielded null; expected instance of "
+                            + expectedClass.getName()
+                            + ".";
+
+                    LOG.error(message);
+
+                    if (i++ == 0)
+                    {
+                        clear();
+                        continue;
+                    }
+
+                    throw new ApplicationRuntimeException(message);
+                }
+
                 result = PortableRemoteObject.narrow(raw, expectedClass);
 
                 break;
@@ -132,7 +152,10 @@ public class Global
                 String message = "Unable to resolve object " + name + ".";
 
                 if (i++ == 0)
+                {
                     LOG.error(message, ex);
+                    clear();
+                }
                 else
                     throw new ApplicationRuntimeException(message, ex);
             }
@@ -159,7 +182,10 @@ public class Global
                     String message = "Unable to locate root naming context.";
 
                     if (i++ == 0)
+                    {
                         LOG.error(message, ex);
+                        clear();
+                    }
                     else
                         throw new ApplicationRuntimeException(message, ex);
                 }

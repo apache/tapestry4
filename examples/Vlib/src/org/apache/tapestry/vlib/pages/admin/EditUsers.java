@@ -222,6 +222,9 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
             }
         }
 
+		// Force a requery
+		
+		setListEditMap(null);
         setMessage(getString("users-updated"));
 
     }

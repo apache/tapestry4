@@ -6,7 +6,8 @@
 	
 <page-specification class="org.apache.tapestry.vlib.pages.ViewBook">
   
-  <property-specification name="book" type="org.apache.tapestry.vlib.ejb.Book" persistent="yes"/>
+  <property-specification name="bookId" type="java.lang.Integer" persistent="yes"/>
+  <property-specification name="book" type="org.apache.tapestry.vlib.ejb.Book"/>
   
   <component id="ownerLink" type="PersonLink">
     <binding name="id" expression="book.ownerId"/>

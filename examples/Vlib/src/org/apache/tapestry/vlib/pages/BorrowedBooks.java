@@ -117,7 +117,7 @@ public abstract class BorrowedBooks
 	 *
 	 **/
 	
-    public void resort(IRequestCycle cycle)
+    public void requery(IRequestCycle cycle)
     {
         runQuery();
     }
