@@ -105,7 +105,7 @@ public class MultiKey implements Externalizable
      *  @param makeCopy If true, a copy of the keys is created.  If false,
      *  the keys are simple retained by the <code>MultiKey</code>.
      *
-     *  @throws InvalidArgumentException if keys is null, of if the
+     *  @throws IllegalArgumentException if keys is null, of if the
      *  first element of keys is null.
      *
      **/
