@@ -59,7 +59,7 @@
 				</static-binding>
 				<binding>
 					<name>enabled</name>
-					<property-path>page.application.userLoggedIn</property-path>
+					<property-path>page.visit.userLoggedIn</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -69,7 +69,7 @@
 			<bindings>
 				<binding>
 					<name>condition</name>
-					<property-path>page.application.userLoggedIn</property-path>
+					<property-path>page.visit.userLoggedIn</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -79,7 +79,7 @@
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>page.application.user.naturalName</property-path>
+					<property-path>page.visit.user.naturalName</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -89,7 +89,7 @@
 			<bindings>
 				<binding>
 					<name>condition</name>
-					<property-path>page.application.userLoggedIn</property-path>
+					<property-path>page.visit.userLoggedIn</property-path>
 				</binding>
 				<field-binding>
 					<name>invert</name>

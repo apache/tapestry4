@@ -22,7 +22,7 @@
 			<bindings>
 				<binding>
 					<name>title</name>
-					<property-path>page.application.specification.name</property-path>
+					<property-path>page.engine.specification.name</property-path>
 				</binding>
 			</bindings>
 		</component>

@@ -68,14 +68,14 @@ implements IErrorProperty
 
 	private final static int ONE_WEEK = 7 * 24 * 60 * 60;
 	
-	public void detachFromApplication()
+	public void detach()
 	{
 		email = null;
 		password = null;
 		error = null;
 		targetPage = null;
 
-		super.detachFromApplication();
+		super.detach();
 	}
 
     public IValidationDelegate getValidationDelegate()
@@ -162,11 +162,7 @@ implements IErrorProperty
 	 */
 	 
 	private void attemptLogin(IRequestCycle cycle)
-	{
-		VirtualLibraryApplication app;
-		IPersonHome personHome;
-		IPerson person;
-		
+	{		
         // An error, from a validation field, may already have occured.
 
         if (getError() != null)
@@ -174,10 +170,9 @@ implements IErrorProperty
 
 		try
 		{
-			app = (VirtualLibraryApplication)application;
-			
-			personHome = app.getPersonHome();
-			person = personHome.findByEmail(email);
+            Visit visit = (Visit)getVisit();
+			IPersonHome personHome = visit.getPersonHome();
+			IPerson person = personHome.findByEmail(email);
 			
 			if (!person.getPassword().equals(password))
 			{
@@ -228,7 +223,6 @@ implements IErrorProperty
 	 
 	public void loginUser(IPerson person, IRequestCycle cycle)
 	{
-		VirtualLibraryApplication app;
 		String email;
 		Cookie cookie;
 				
@@ -241,9 +235,8 @@ implements IErrorProperty
 			throw new ApplicationRuntimeException(e);
 		}
 
-		app = (VirtualLibraryApplication)application;
-		
-		app.setUser(person);
+        Visit visit = (Visit)getVisit();
+		visit.setUser(person);
 
 		// After logging in, go to the MyBooks page, unless otherwise
 		// specified.
@@ -257,13 +250,13 @@ implements IErrorProperty
 		// the browser (IE 5.0 anyway) quietly drops the cookie.
 		
 		cookie = new Cookie(COOKIE_NAME, email);
-		cookie.setPath(application.getServletPrefix());
+		cookie.setPath(engine.getServletPrefix());
 		cookie.setMaxAge(ONE_WEEK);
 		
 		// Record the user's email address in a cookie
 		
 		cycle.getRequestContext().addCookie(cookie);
 
-		app.forgetPage(getName());
+		engine.forgetPage(getName());
 	}	
 }

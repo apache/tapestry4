@@ -50,9 +50,9 @@ public class Matches extends BasePage
 	private Book currentMatch;
 	private int matchCount;
 	
-	public void detachFromApplication()
+	public void detach()
 	{
-		super.detachFromApplication();
+		super.detach();
 		
 		bookQuery = null;
 		currentMatch = null;
@@ -85,18 +85,14 @@ public class Matches extends BasePage
 	 
 	public IBookQuery getBookQuery()
 	{
-		VirtualLibraryApplication app;
-		IBookQueryHome home;
-		
 		if (bookQuery == null)
 		{
 			try
 			{
 				// No existing handle, so time to create a new bean.
 				
-				app = (VirtualLibraryApplication)application;
-				
-				home = app.getBookQueryHome();
+                Visit visit = (Visit)getVisit();
+				IBookQueryHome home = visit.getBookQueryHome();
 				
                 bookQuery = home.create();
 

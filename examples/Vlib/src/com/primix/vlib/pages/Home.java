@@ -52,9 +52,9 @@ public class Home extends BasePage
 	private String message;
 	private String searchAuthor;
 	
-	public void detachFromApplication()
+	public void detach()
 	{
-		super.detachFromApplication();
+		super.detach();
 		
 		searchTitle = null;
 		searchPublisherPK = null;

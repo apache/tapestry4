@@ -46,7 +46,7 @@ public class SurveyPage extends BasePage
 	private IPropertySelectionModel sexModel;
 	private IPropertySelectionModel raceModel;
 
-	public void detachFromApplication()
+	public void detach()
 	{
 		survey = null;
 		error = null;
@@ -54,7 +54,7 @@ public class SurveyPage extends BasePage
 		
 		// We keep the models, since they are stateless
 
-    	super.detachFromApplication();
+    	super.detach();
 	}
 
 
@@ -124,7 +124,7 @@ public class SurveyPage extends BasePage
 				
 				// Survey is OK, add it to the database.
 				
-				((SurveyApplication)getApplication()).getDatabase().addSurvey(survey);
+				((SurveyEngine)getEngine()).getDatabase().addSurvey(survey);
 				
 				setSurvey(null);	
 				

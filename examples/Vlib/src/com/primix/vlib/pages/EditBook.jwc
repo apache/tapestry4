@@ -169,7 +169,7 @@
 				</binding>
 				<binding>
 					<name>model</name>
-					<property-path>application.publisherModel</property-path>
+					<property-path>visit.publisherModel</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -223,7 +223,7 @@
 				</binding>
 				<binding>
 					<name>model</name>
-					<property-path>application.personModel</property-path>
+					<property-path>visit.personModel</property-path>
 				</binding>
 			</bindings>
 		</component>

@@ -45,10 +45,4 @@ public class VirtualLibraryServlet extends ApplicationServlet
 		return "/com/primix/vlib/Vlib.application";	
 	}
 	
-
-	protected IApplication createApplication(RequestContext context)
-	{
-		return new VirtualLibraryApplication(context);
-	}
-
 }

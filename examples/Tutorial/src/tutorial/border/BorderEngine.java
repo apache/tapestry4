@@ -1,7 +1,5 @@
 package tutorial.border;
 
-import com.primix.tapestry.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -36,10 +34,18 @@ import com.primix.tapestry.*;
  *
  */ 
 
-public class BorderServlet extends ApplicationServlet
+import java.util.*;
+import com.primix.tapestry.*;
+import com.primix.tapestry.engine.*;
+
+public class BorderEngine extends SimpleEngine
 {
-	protected String getApplicationSpecificationPath()
-	{
-		return "/tutorial/border/Border.application";
-	}
+    private static final String[] pageNames =
+    { "Home", "Credo", "Legal" };
+
+    public String[] getPageNames()
+    {
+        return pageNames;
+    }
+
 }

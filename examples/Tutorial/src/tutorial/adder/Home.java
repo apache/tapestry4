@@ -66,13 +66,13 @@ public class Home extends BasePage
 		return newValue;
 	}
 
-	public void detachFromApplication()
+	public void detach()
 	{
 		items = null;
 		newValue = null;
 		error = null;
 
-		super.detachFromApplication();
+		super.detach();
 	}
 
 	public void addItem(double value)

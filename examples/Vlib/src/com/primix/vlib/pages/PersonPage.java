@@ -55,7 +55,7 @@ implements IExternalPage
 	private String email;
 	private String fullName;
 	
-	public void detachFromApplication()
+	public void detach()
 	{
 		bookQuery = null;
 		currentMatch = null;
@@ -63,7 +63,7 @@ implements IExternalPage
 		email = null;
 		fullName = null;
 
-		super.detachFromApplication();
+		super.detach();
 	}
 	
 	public String getEmail()
@@ -126,18 +126,13 @@ implements IExternalPage
 	 */
 	 
 	public IBookQuery getBookQuery()
-	{
-		VirtualLibraryApplication app;
-		IBookQueryHome home;
-		
+	{		
 		if (bookQuery == null)
 		{
 			try
 			{
-
-				app = (VirtualLibraryApplication)application;
-				
-				home = app.getBookQueryHome();
+                Visit visit = (Visit)getVisit();
+				IBookQueryHome home = visit.getBookQueryHome();
 				
 				bookQuery = home.create();
 
@@ -177,24 +172,16 @@ implements IExternalPage
 	 
 	public void setup(Integer personPK, IRequestCycle cycle)
 	{
-		VirtualLibraryApplication app;
-		int count;
-		IPersonHome home;
-		IPerson person;
-		IBookQuery query;
-		Home homePage;
-		
-		app = (VirtualLibraryApplication)application;
-		
-		query = getBookQuery();
+		IBookQuery query = getBookQuery();
 		
 		try
 		{
-			count = query.ownerQuery(personPK);
+			int count = query.ownerQuery(personPK);
 			setMatchCount(count);
 			
-			home = app.getPersonHome();
-			person = home.findByPrimaryKey(personPK);
+            Visit visit = (Visit)getVisit();
+			IPersonHome home = visit.getPersonHome();
+			IPerson person = home.findByPrimaryKey(personPK);
 			
 			setEmail(person.getEmail());
 			setFullName(person.getNaturalName());
@@ -202,7 +189,7 @@ implements IExternalPage
 		}
 		catch (FinderException e)
 		{
-			homePage = (Home)cycle.getPage("Home");
+			Home homePage = (Home)cycle.getPage("Home");
 			homePage.setError("Person " + personPK + " not found in database.");
 			
 			cycle.setPage(homePage);

@@ -55,9 +55,9 @@ extends Protected
 	
 	private static final int MAP_SIZE = 11;
 	
-	public void detachFromApplication()
+	public void detach()
 	{
-		super.detachFromApplication();
+		super.detach();
 
 		attributes = null;
 		password1 = null;
@@ -102,13 +102,11 @@ extends Protected
 	 
 	public void beginEdit(IRequestCycle cycle)
 	{
-		VirtualLibraryApplication app;
-		
-		app = (VirtualLibraryApplication)application;
+        Visit visit = (Visit)getVisit();
 		
 		try
 		{
-			attributes = app.getUser().getEntityAttributes();
+			attributes = visit.getUser().getEntityAttributes();
 		}
 		catch (RemoteException e)
 		{
@@ -142,8 +140,6 @@ extends Protected
 	
 	private void updateProfile(IRequestCycle cycle)
 	{
-		VirtualLibraryApplication app;
-		
         // Possibly one of the validating text fields found an error.
 
         if (getError() != null)
@@ -174,8 +170,8 @@ extends Protected
 			attributes.put("password", password1);
 		}
 		
-		app = (VirtualLibraryApplication)application;
-		
+        Visit visit = (Visit)getVisit();
+        		
 		try
 		{
 			/**
@@ -185,14 +181,14 @@ extends Protected
 			 *
 			 */
 			 
-			app.getUser().updateEntityAttributes(attributes);
+			visit.getUser().updateEntityAttributes(attributes);
 		}
 		catch (RemoteException e)
 		{
 			throw new ApplicationRuntimeException(e);
 		}
 		
-		app.clearCache();
+		visit.clearCache();
 		
 		cycle.setPage("MyBooks");
 	}

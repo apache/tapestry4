@@ -49,9 +49,9 @@ implements IErrorProperty
 	private String error;
     private IValidationDelegate validationDelegate;
 
-	public void detachFromApplication()
+	public void detach()
 	{
-		super.detachFromApplication();
+		super.detach();
 
 		error = null;
 	}
@@ -95,12 +95,10 @@ implements IErrorProperty
 	public void validate(IRequestCycle cycle)
 	throws RequestCycleException
 	{
-		VirtualLibraryApplication app;
+		Visit visit = (Visit)getVisit();
 		Login page;
 		
-		app = (VirtualLibraryApplication)application;
-		
-		if (app.isUserLoggedIn())
+		if (visit.isUserLoggedIn())
 			return;
 		
 		// User not logged in ... redirect through the Login page.

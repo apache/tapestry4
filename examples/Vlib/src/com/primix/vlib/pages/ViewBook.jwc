@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XML Spy v3.0 NT (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
 <specification>
@@ -113,7 +112,7 @@
 			<bindings>
 				<binding>
 					<name>listener</name>
-					<property-path>application.borrowListener</property-path>
+					<property-path>visit.borrowListener</property-path>
 				</binding>
 				<binding>
 					<name>context</name>

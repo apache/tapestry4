@@ -20,7 +20,7 @@
 			<bindings>
 				<field-binding>
 					<name>service</name>
-					<field-name>com.primix.vlib.VirtualLibraryApplication.EXTERNAL_SERVICE</field-name>
+					<field-name>com.primix.vlib.VirtualLibraryEngine.EXTERNAL_SERVICE</field-name>
 				</field-binding>
 				<binding>
 					<name>context</name>

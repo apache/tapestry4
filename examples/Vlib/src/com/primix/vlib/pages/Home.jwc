@@ -110,21 +110,7 @@
 				</binding>
 				<binding>
 					<name>model</name>
-					<property-path>application.publisherModel</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>addNewBook</id>
-			<type>Direct</type>
-			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>application.addNewBookListener</property-path>
-				</binding>
-				<binding>
-					<name>enabled</name>
-					<property-path>application.userLoggedIn</property-path>
+					<property-path>visit.publisherModel</property-path>
 				</binding>
 			</bindings>
 		</component>

@@ -1,5 +1,7 @@
 package tutorial.hello;
 
+import com.primix.tapestry.*;
+
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -34,9 +36,6 @@ package tutorial.hello;
  *
  */ 
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.app.*;
-
 public class HelloWorldServlet extends ApplicationServlet
 {
 	protected String getApplicationSpecificationPath()
@@ -44,9 +43,5 @@ public class HelloWorldServlet extends ApplicationServlet
 		return "/tutorial/hello/HelloWorld.application";
 	}
 
-	protected IApplication createApplication(RequestContext context)
-	{
-		return new SimpleApplication(context, null);
-	}
 }
 

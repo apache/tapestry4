@@ -1,5 +1,7 @@
 package tutorial.simple;
 
+import com.primix.tapestry.*;
+
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -34,19 +36,12 @@ package tutorial.simple;
  *
  */ 
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.app.*;
-
-public class SimpleServlet extends ApplicationServlet
+public class SimpleServlet 
+extends ApplicationServlet
 {
 	protected String getApplicationSpecificationPath()
 	{
 		return "/tutorial/simple/Simple.application";
-	}
-
-	protected IApplication createApplication(RequestContext context)
-	{
-		return new SimpleApplication(context, null);
 	}
 }
 

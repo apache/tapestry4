@@ -52,9 +52,9 @@ public class ConfirmBookDelete extends BasePage
 	private String bookTitle;
 	private Integer bookPK;
 	
-	public void detachFromApplication()
+	public void detach()
 	{
-		super.detachFromApplication();
+		super.detach();
 		
 		bookTitle = null;
 		bookPK = null;
@@ -79,15 +79,13 @@ public class ConfirmBookDelete extends BasePage
 	 
 	public void selectBook(Integer bookPK, IRequestCycle cycle)
 	{
-		VirtualLibraryApplication app;
+		Visit visit = (Visit)getVisit();
 		IBookHome home;
 		IBook book;
 		
 		this.bookPK = bookPK;
 		
-		app = (VirtualLibraryApplication)application;
-		
-		home = app.getBookHome();
+		home = visit.getBookHome();
 		
 		try
 		{
@@ -129,12 +127,10 @@ public class ConfirmBookDelete extends BasePage
 	
 	private void deleteBook(Integer bookPK, IRequestCycle cycle)
 	{
-		VirtualLibraryApplication app;
+		Visit visit = (Visit)getVisit();
 		IBookHome home;
 		
-		app = (VirtualLibraryApplication)application;
-		
-		home = app.getBookHome();
+		home = visit.getBookHome();
 		
 		try
 		{

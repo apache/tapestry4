@@ -19,7 +19,7 @@
 
 				<binding>
 					<name>pages</name>
-					<property-path>application.pageNames</property-path>
+					<property-path>engine.pageNames</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -31,7 +31,7 @@
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>application.database.surveyCount</property-path>
+					<property-path>engine.database.surveyCount</property-path>
 				</binding>
 			</bindings>
 		</component>

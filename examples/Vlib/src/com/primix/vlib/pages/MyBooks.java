@@ -64,7 +64,7 @@ extends Protected
 	
 	private Book currentBook;
 	
-	public void detachFromApplication()
+	public void detach()
 	{
 		message = null;
 		ownedQuery = null;
@@ -73,7 +73,7 @@ extends Protected
         borrowedBooks = null;
 		currentBook = null;
 
-		super.detachFromApplication();
+		super.detach();
 	}
 	
     /**
@@ -115,13 +115,10 @@ extends Protected
 
     private IBookQuery getNewQuery()
     {
-		IBookQueryHome home;
-		VirtualLibraryApplication app;
-
 		// Create a new query.
 		
-		app = (VirtualLibraryApplication)application;
-		home = app.getBookQueryHome();
+        Visit visit = (Visit)getVisit();
+		IBookQueryHome home = visit.getBookQueryHome();
 			
 		try
 		{
@@ -162,15 +159,12 @@ extends Protected
 	{
         if (ownedBooks == null)
         {
-	        VirtualLibraryApplication app = (VirtualLibraryApplication)application;
-	        IBookQuery query;
-	        int count;
-	
-	        query = getOwnedQuery();
+	        IBookQuery query = getOwnedQuery();
 	
 	        try
 	        {
-		        count = query.ownerQuery(app.getUserPK());
+                Visit visit = (Visit)getVisit();
+		        int count = query.ownerQuery(visit.getUserPK());
 		
 		        ownedBooks =  query.get(0, count);
 	        }
@@ -188,15 +182,12 @@ extends Protected
     {
         if (borrowedBooks == null)
         {
-            VirtualLibraryApplication app = (VirtualLibraryApplication)application;
-            IBookQuery query;
-            int count;
-
-            query = getBorrowedQuery();
+            IBookQuery query = getBorrowedQuery();
     
             try
             {
-    	        count = query.borrowerQuery(app.getUserPK());
+                Visit visit = (Visit)getVisit();
+    	        int count = query.borrowerQuery(visit.getUserPK());
     	
     	        borrowedBooks =  query.get(0, count);
             }
@@ -328,15 +319,12 @@ extends Protected
 
     private void returnBook(Integer bookPK)
     {
-        VirtualLibraryApplication app = (VirtualLibraryApplication)application;
-        IOperations operations;
-        IBook book;
-
-        operations = app.getOperations();
+        Visit visit = (Visit)getVisit();
+        IOperations operations = visit.getOperations();
 
         try
         {
-            book = operations.returnBook(bookPK);
+            IBook book = operations.returnBook(bookPK);
 
             setMessage("Returned book: " + book.getTitle());
         }
