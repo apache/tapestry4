@@ -99,7 +99,7 @@ component has a required parameter named <varname>color</>.  The class's
   String encodedColor;
 
   colorBinding = getBinding("color");
-  color = (Color)colorBinding.getValue();
+  color = (Color)colorBinding.getObject("color", Color.class);
   encodedColor = RequestContext.encodeColor(color);
 
   writer.begin("font");
@@ -157,7 +157,7 @@ public void render(IResponseWriter writer, IRequestCycle cycle)
   Color color;
   String encodedColor;
 
-  color = (Color)<emphasis>colorBinding</>.getValue();
+  color = (Color)<emphasis>colorBinding</>.getObject("color", Color.class);
   encodedColor = RequestContext.encodeColor(color);
 
   writer.begin("font");
@@ -241,7 +241,7 @@ Components which use assets don't care what flavor they are; they
 simply rely on the method <function>buildURL()</> to provide a 
 URL they can incorporate into the HTML they generate.  For example, the 
 <classname>Image</> component has an image parameter that is used to 
-build the <varname>src</> attribute of an HTML &start-tag;img&end-tag; element.
+build the <varname>src</> attribute of an HTML <sgmltag class=starttag>img</> element.
 </>
 
 <para>

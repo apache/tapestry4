@@ -309,17 +309,17 @@ items in the shopping cart.  Each line item identifies the product, cost and qua
 <example>
 	<title>HTML template for Shopping Cart</>
 	<programlisting><![CDATA[<h1>Contents of shopping cart for
-]]><emphasis>&lt;jwc id="insertUserName"/&gt;</>:<![CDATA[</h1>
+]]>&start-jwc; id="insertUserName"/&end-jwc;:<![CDATA[</h1>
 <table>
   <tr> <th>Product</th> <th>Qty</th> <th>Price</th> </tr>]]>
-<emphasis>&lt;jwc id="e-item"&gt;</>
+&start-jwc; id="e-item"&end-jwc;
 <![CDATA[<tr>
-  <td> ]]><emphasis>&lt;jwc id="insertProductName"&gt;</><![CDATA[ </td>
-  <td> ]]><emphasis>&lt;jwc id="insertQuantity"/&gt;</><![CDATA[ </td>
-  <td> ]]><emphasis>&lt;jwc id="insertPrice"/&gt;</><![CDATA[ </td>
-  <td> ]]><emphasis>&lt;jwc id="remove"&gt;</>remove<emphasis>&lt;/jwc&gt;</><![CDATA[ </td>
+  <td> ]]>&start-jwc; id="insertProductName"&end-jwc;<![CDATA[ </td>
+  <td> ]]>&start-jwc; id="insertQuantity"/&end-jwc;<![CDATA[ </td>
+  <td> ]]>&start-jwc; id="insertPrice"/&end-jwc;<![CDATA[ </td>
+  <td> ]]>&start-jwc; id="remove"&end-jwc;remove&close-jwc;<![CDATA[ </td>
 </tr>
-]]><emphasis>&lt;/jwc&gt;</>
+]]>&close-jwc;
 <![CDATA[</table>]]></programlisting>
 </example>
 
@@ -748,7 +748,7 @@ exception page.
 <para>
 In practice, virtually all Tapestry pages will use a 
 <classname>Body</> component wrapping the majority of the page (it takes
-the place of the normal &start-tag;body&end-tag; element), and a <classname>Body</> component 
+the place of the normal <sgmltag class=starttag>body</> element), and a <classname>Body</> component 
 buffers the output of all components it wraps.  This buffering is necessary so that the 
 <classname>Body</>
 component can write out various JavaScript handlers before the main body of HTML is written 

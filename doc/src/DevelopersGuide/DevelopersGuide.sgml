@@ -12,16 +12,14 @@
 <!ENTITY chap-coding-components SYSTEM "chap-coding-components.sgml">
 <!ENTITY chap-inspector SYSTEM "chap-inspector.sgml">
 
-<!ENTITY jwc-tag "<literal>&lt;jwc&gt;</literal>">
+<!ENTITY jwc-tag "<sgmltag class=starttag>jwc</sgmltag>">
 
-<!ENTITY start-jwc "<emphasis>&lt;">
-<!ENTITY end-jwc "&gt;</emphasis>">
+<!ENTITY start-jwc "<emphasis><sgmltag class=starttag>jwc">
+<!ENTITY end-jwc "</sgmltag></emphasis>">
+<!ENTITY close-jwc "<emphasis><sgmltag class=endtag>jwc</sgmltag></emphasis>">
 
 <!ENTITY start-listing "<informalexample><programlisting>">
 <!ENTITY end-listing "</programlisting></informalexample>">
-
-<!ENTITY start-tag "<literal>&lt;">
-<!ENTITY end-tag "&gt;</literal>">
 
 ]>
 
