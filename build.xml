@@ -377,8 +377,8 @@
 	 
 		<!-- Enable debugging when running the tutorial -->
 		
-		<jvmarg line="-showversion -Xdebug -Xnoagent"/>
-		<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
+		<!-- jvmarg line="-showversion -Xdebug -Xnoagent"/>
+		<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/ -->
 		
 		<!-- Jetty can get easily confused (under NT) unless this is turned off. -->
 		
