@@ -9,6 +9,7 @@
   <!ENTITY chapter-three-ex1 SYSTEM "./tutorial-pagelinking.xml">
   <!ENTITY chapter-five SYSTEM "./tutorial-chapter-five.xml">
   <!ENTITY chapter-six SYSTEM "./tutorial-chapter-six.xml">
+  <!ENTITY chapter-components SYSTEM "./tutorial-chapter-components.xml">
   %TapestryLinks;
 ]>
 <!-- Conventions:
@@ -80,21 +81,7 @@
   	<title>Localization</title>
   </chapter>
 
-  <chapter id="components">
-  	<title>Creating Components</title>
-  	<section id="components-intro">
-  		<title>Introduction</title>
-  	</section>
-  	<section id="components-templating">
-  		<title>Component Templates</title>
-  	</section>
-  	<section id="components-events">
-  		<title>Handling Events</title>
-  	</section>
-  	<section id="components-rendering">
-  		<title>Rendering</title>
-  	</section>
-  </chapter>
+  &chapter-components;
 
   <chapter id="common-tasks">
   	<title>Common Tasks With Tapestry</title>
