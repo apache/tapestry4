@@ -19,6 +19,7 @@
 [
 <!ENTITY project-report-menu.ent SYSTEM "project-report-menu.ent">
 <!ENTITY tapestry-report-menu.ent SYSTEM "tapestry-report-menu.ent">
+<!ENTITY tapestry-contrib-report-menu.ent SYSTEM "tapestry-contrib-report-menu.ent">
 <!ENTITY tapestry-portlet-report-menu.ent SYSTEM "tapestry-portlet-report-menu.ent">
 ]
 >
@@ -111,6 +112,15 @@
       
     </tapestry>
     
+   <contrib label="Contrib Library" tab="contrib" href="tapestry-contrib/">
+      
+      <index label="Overview" href="index.html"/>
+    
+      <reports label="Reports">
+        &tapestry-contrib-report-menu.ent;
+      </reports>    
+   </contrib>
+       
    <portlet label="Portlet Support" tab="portlet" href="tapestry-portlet/">
       
       <index label="Overview" href="index.html"/>
