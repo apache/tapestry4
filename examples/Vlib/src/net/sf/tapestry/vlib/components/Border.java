@@ -31,8 +31,10 @@ import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.callback.PageCallback;
+import net.sf.tapestry.vlib.VirtualLibraryEngine;
 import net.sf.tapestry.vlib.Visit;
 import net.sf.tapestry.vlib.pages.EditProfile;
+import net.sf.tapestry.vlib.pages.Home;
 import net.sf.tapestry.vlib.pages.Login;
 import net.sf.tapestry.vlib.pages.NewBook;
 
@@ -145,6 +147,20 @@ public class Border extends BaseComponent
             login.setCallback(new PageCallback(getPage()));
 
         cycle.setPage(login);
+    }
+    
+    public void logout(IRequestCycle cycle)
+    throws RequestCycleException
+    {
+        VirtualLibraryEngine engine = (VirtualLibraryEngine)getPage().getEngine();
+        
+        engine.logout();
+        
+        Home home = (Home)cycle.getPage("Home");
+        
+        home.setMessage("Goodbye.");
+        
+        cycle.setPage(home);
     }
 
     public IAsset getSearchIcon()

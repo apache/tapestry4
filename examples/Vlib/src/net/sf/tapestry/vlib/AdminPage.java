@@ -41,23 +41,23 @@ import net.sf.tapestry.vlib.pages.Login;
 
 public class AdminPage extends Protected
 {
-    private String message;
+    private String _message;
 
     public void detach()
     {
-        message = null;
+        _message = null;
 
         super.detach();
     }
 
     public String getMessage()
     {
-        return message;
+        return _message;
     }
 
     public void setMessage(String value)
     {
-        message = value;
+        _message = value;
     }
 
     public void validate(IRequestCycle cycle) throws RequestCycleException

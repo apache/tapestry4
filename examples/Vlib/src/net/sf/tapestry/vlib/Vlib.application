@@ -6,11 +6,8 @@
 
 <application name="Virtual Library" engine-class="net.sf.tapestry.vlib.VirtualLibraryEngine">
 
-  <service name="external" class="net.sf.tapestry.vlib.ExternalService"/>
-
   <page name="Home" specification-path="/net/sf/tapestry/vlib/pages/Home.page"/>
   <page name="Login" specification-path="/net/sf/tapestry/vlib/pages/Login.page"/>
-  <page name="Logout" specification-path="/net/sf/tapestry/vlib/pages/Logout.page"/>
   <page name="Matches" specification-path="/net/sf/tapestry/vlib/pages/Matches.page"/>
   <page name="MyLibrary" specification-path="/net/sf/tapestry/vlib/pages/MyLibrary.page"/>
   <page name="BorrowedBooks" specification-path="/net/sf/tapestry/vlib/pages/BorrowedBooks.page"/>
@@ -21,7 +18,8 @@
   <page name="Person" specification-path="/net/sf/tapestry/vlib/pages/PersonPage.page"/>
   <page name="ViewBook" specification-path="/net/sf/tapestry/vlib/pages/ViewBook.page"/>
   <page name="Register" specification-path="/net/sf/tapestry/vlib/pages/Register.page"/>
-  
+  <page name="ApplicationUnavailable" specification-path="/net/sf/tapestry/vlib/pages/ApplicationUnavailable.page"/>
+  	
   <page name="admin.TransferBooks" 
   	specification-path="/net/sf/tapestry/vlib/pages/admin/TransferBooks.page"/>
   <page name="admin.EditPublishers"

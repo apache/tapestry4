@@ -15,17 +15,17 @@
   
   <parameter name="omit" java-type="boolean" direction="in"/>
   
-  <parameter name="class" property-name="styleClass" java-type="java.lang.String" direction="in"/>
+  <parameter name="class" java-type="java.lang.String"/>
   
   <component id="ifShowLink" type="Conditional">
   	<binding name="condition" expression="omit"/>
     <field-binding name="invert" field-name="Boolean.TRUE"/>
   </component>
   
-  <component id="link" type="ServiceLink">
-    <field-binding name="service" field-name="net.sf.tapestry.vlib.ExternalService.SERVICE_NAME"/>
-    <binding name="parameters" expression="{ &quot;Person&quot;, primaryKey }"/>
-    <binding name="class" expression="styleClass"/>
+  <component id="link" type="ExternalLink">
+    <static-binding name="page">Person</static-binding>
+    <binding name="parameters" expression="primaryKey"/>
+    <inherited-binding name="class" parameter-name="class"/>
   </component>
   
   <component id="insertPersonName" type="Insert">
