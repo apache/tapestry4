@@ -17,6 +17,7 @@ package org.apache.tapestry.link;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
 /**
@@ -28,6 +29,8 @@ import org.apache.tapestry.engine.ILink;
 
 public abstract class PageLink extends AbstractLinkComponent
 {
+    public abstract IEngineService getPageService();
+
     public ILink getLink(IRequestCycle cycle)
     {
         String parameter = null;
@@ -39,7 +42,7 @@ public abstract class PageLink extends AbstractLinkComponent
         else
             parameter = namespace.constructQualifiedName(targetPage);
 
-        return getLink(cycle, Tapestry.PAGE_SERVICE, parameter);
+        return getPageService().getLink(cycle, parameter);
     }
 
     public abstract String getTargetPage();

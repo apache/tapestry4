@@ -17,6 +17,7 @@ package org.apache.tapestry.html;
 import java.util.Date;
 import java.util.Iterator;
 
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
@@ -27,6 +28,7 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
  * Component for creating a standard 'shell' for a page, which comprises the &lt;html&gt; and
@@ -34,14 +36,13 @@ import org.apache.tapestry.engine.ILink;
  * href="../../../../../ComponentReference/Shell.html">Component Reference </a>]
  * <p>
  * Specifically does <em>not</em> provide a &lt;body&gt; tag, that is usually accomplished using a
- * {@link Body}component.
+ * {@link Body}&nbsp; component.
  * 
  * @author Howard Lewis Ship
  */
 
 public abstract class Shell extends AbstractComponent
 {
-
     private static final String generatorContent = "Tapestry Application Framework, version "
             + Tapestry.VERSION;
 
@@ -59,7 +60,7 @@ public abstract class Shell extends AbstractComponent
 
             IPage page = getPage();
 
-            writer.comment("Application: " + page.getEngine().getSpecification().getName());
+            writer.comment("Application: " + getApplicationSpecification().getName());
 
             writer.comment("Page: " + page.getPageName());
             writer.comment("Generated: " + new Date());
@@ -69,20 +70,12 @@ public abstract class Shell extends AbstractComponent
             writer.begin("head");
             writer.println();
 
-            writer.beginEmpty("meta");
-            writer.attribute("name", "generator");
-            writer.attribute("content", generatorContent);
-            writer.println();
+            writeMetaTag(writer, "name", "generator", generatorContent);
 
             if (getRenderContentType())
-            {
-                // This should not be necessary (the HTTP content type should be sufficient),
-                // but some browsers require it for some reason
-                writer.beginEmpty("meta");
-                writer.attribute("http-equiv", "Content-Type");
-                writer.attribute("content", writer.getContentType());
-                writer.println();
-            }
+                writeMetaTag(writer, "http-equiv", "Content-Type", writer.getContentType());
+
+            getBaseTagWriter().render(writer, cycle);
 
             writer.begin("title");
 
@@ -134,18 +127,9 @@ public abstract class Shell extends AbstractComponent
 
     private void writeDocType(IMarkupWriter writer, IRequestCycle cycle)
     {
-        // This code is deprecated and is here only for backward compatibility
-        String DTD = getDTD();
-        if (Tapestry.isNonBlank(DTD))
-        {
-            writer.printRaw("<!DOCTYPE HTML PUBLIC \"" + DTD + "\">");
-            writer.println();
-            return;
-        }
-
         // This is the real code
         String doctype = getDoctype();
-        if (Tapestry.isNonBlank(doctype))
+        if (HiveMind.isNonBlank(doctype))
         {
             writer.printRaw("<!DOCTYPE " + doctype + ">");
             writer.println();
@@ -171,7 +155,7 @@ public abstract class Shell extends AbstractComponent
         // Here comes the tricky part ... have to assemble a complete URL
         // for the current page.
 
-        IEngineService pageService = cycle.getEngine().getService(Tapestry.PAGE_SERVICE);
+        IEngineService pageService = getPageService();
         String pageName = getPage().getPageName();
 
         ILink link = pageService.getLink(cycle, pageName);
@@ -181,11 +165,15 @@ public abstract class Shell extends AbstractComponent
         buffer.append("; URL=");
         buffer.append(link.getAbsoluteURL());
 
-        // Write out the <meta> tag
+        writeMetaTag(writer, "http-equiv", "Refresh", buffer.toString());
+    }
 
+    private void writeMetaTag(IMarkupWriter writer, String key, String value, String content)
+    {
         writer.beginEmpty("meta");
-        writer.attribute("http-equiv", "Refresh");
-        writer.attribute("content", buffer.toString());
+        writer.attribute(key, value);
+        writer.attribute("content", content);
+        writer.println();
     }
 
     public abstract IRender getDelegate();
@@ -200,9 +188,20 @@ public abstract class Shell extends AbstractComponent
 
     public abstract String getDoctype();
 
-    public abstract String getDTD();
-
     public abstract boolean getRenderContentType();
 
+    /** @since 3.1 */
     public abstract ValueConverter getValueConverter();
+
+    /** @since 3.1 */
+
+    public abstract IEngineService getPageService();
+
+    /** @since 3.1 */
+
+    public abstract IApplicationSpecification getApplicationSpecification();
+
+    /** @since 3.1 */
+
+    public abstract IRender getBaseTagWriter();
 }

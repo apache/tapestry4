@@ -29,12 +29,12 @@ class BindingMessages
 
     public static String convertObjectError(IBinding binding, Throwable cause)
     {
-        return _formatter.format("convert-object-error", binding.getParameterName(), cause);
+        return _formatter.format("convert-object-error", binding.getDescription(), cause);
     }
 
     public static String readOnlyBinding(IBinding binding)
     {
-        return _formatter.format("read-only-binding", binding);
+        return _formatter.format("read-only-binding", binding.getDescription(), binding);
     }
 
     public static String missingAsset(IComponent component, String assetName)

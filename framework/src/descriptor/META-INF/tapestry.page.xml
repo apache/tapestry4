@@ -48,6 +48,7 @@
         <set-object property="defaultScriptLanguage"
                        value="app-property:org.apache.tapestry.default-script-language"/>
         <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+        <set-service property="assetSource" service-id="tapestry.asset.AssetSource"/>
       </construct>
     </invoke-factory>
   </service-point>

@@ -17,6 +17,7 @@ package org.apache.tapestry.binding;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.easymock.MockControl;
 
 /**
  * Base class for building tests for {@link org.apache.tapestry.IBinding}implementations.
@@ -30,6 +31,17 @@ public class BindingTestCase extends HiveMindTestCase
     protected IComponent newComponent()
     {
         return (IComponent) newMock(IComponent.class);
+    }
+
+    protected IComponent newComponent(String extendedId)
+    {
+        MockControl control = newControl(IComponent.class);
+        IComponent component = (IComponent) control.getMock();
+
+        component.getExtendedId();
+        control.setReturnValue(extendedId);
+
+        return component;
     }
 
     protected ValueConverter newValueConverter()

@@ -31,10 +31,10 @@ public class ComponentBinding extends AbstractBinding
 
     private final String _componentId;
 
-    public ComponentBinding(IComponent component, String componentId, String parameterName,
+    public ComponentBinding(IComponent component, String componentId, String description,
             ValueConverter valueConverter, Location location)
     {
-        super(parameterName, valueConverter, location);
+        super(description, valueConverter, location);
 
         Defense.notNull(component, "component");
         Defense.notNull(componentId, "componentId");

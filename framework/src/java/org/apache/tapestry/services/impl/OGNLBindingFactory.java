@@ -38,10 +38,10 @@ public class OGNLBindingFactory implements BindingFactory
 
     private ValueConverter _valueConverter;
 
-    public IBinding createBinding(IComponent root, String parameterName, String path,
+    public IBinding createBinding(IComponent root, String description, String path,
             Location location)
     {
-        return new ExpressionBinding(root, parameterName, path, _valueConverter, location,
+        return new ExpressionBinding(root, description, path, _valueConverter, location,
                 _expressionEvaluator, _expressionCache);
     }
 

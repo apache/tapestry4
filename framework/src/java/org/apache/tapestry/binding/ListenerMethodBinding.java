@@ -29,10 +29,10 @@ public class ListenerMethodBinding extends AbstractBinding
 
     private final String _methodName;
 
-    public ListenerMethodBinding(IComponent component, String methodName, String parameterName,
+    public ListenerMethodBinding(IComponent component, String methodName, String description,
             ValueConverter valueConverter, Location location)
     {
-        super(parameterName, valueConverter, location);
+        super(description, valueConverter, location);
 
         Defense.notNull(component, "component");
         Defense.notNull(methodName, "methodName");

@@ -23,27 +23,27 @@ import org.apache.tapestry.coerce.ValueConverter;
 /**
  * A binding that connects directly to a localized string for a component.
  * <p>
- * This name is historical, and probably should be renamed to <code>MessageBinding</code>.
+ * Note: Renamed from StringBinding to MessageBinding in release 3.1.
  * 
  * @see IComponent#getString(String)
  * @author Howard Lewis Ship
  * @since 2.0.4
  */
 
-public class StringBinding extends AbstractBinding
+public class MessageBinding extends AbstractBinding
 {
     private final IComponent _component;
 
     private final String _key;
 
-    public StringBinding(IComponent component, String parameterName, String key,
+    public MessageBinding(IComponent component, String description, String key,
             ValueConverter valueConverter, Location location)
     {
-        super(parameterName, valueConverter, location);
+        super(description, valueConverter, location);
 
         Defense.notNull(component, "component");
         Defense.notNull(key, "key");
-        
+
         _component = component;
         _key = key;
     }

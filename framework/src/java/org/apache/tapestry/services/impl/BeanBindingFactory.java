@@ -23,14 +23,16 @@ import org.apache.tapestry.services.BindingFactory;
 
 /**
  * @author Howard M. Lewis Ship
+ * @since 3.1
  */
 public class BeanBindingFactory implements BindingFactory
 {
     private ValueConverter _valueConverter;
 
-    public IBinding createBinding(IComponent root, String name, String path, Location location)
+    public IBinding createBinding(IComponent root, String description, String path,
+            Location location)
     {
-        return new BeanBinding(root, path, name, _valueConverter, location);
+        return new BeanBinding(root, path, description, _valueConverter, location);
     }
 
     public void setValueConverter(ValueConverter valueConverter)

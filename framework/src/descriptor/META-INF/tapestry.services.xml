@@ -174,5 +174,21 @@
     </invoke-factory>
     
   </service-point>
+  
+  <service-point id="EngineServiceObjectProvider" interface="org.apache.hivemind.service.ObjectProvider">
+    
+    Implementation of the "engine-service:" object provider prefix.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.EngineServiceObjectProvider">
+        <set-service property="serviceMap" service-id="ServiceMap"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+ <contribution configuration-id="hivemind.ObjectProviders">
+    <provider prefix="engine-service" service-id="EngineServiceObjectProvider"/>
+ </contribution>
 
 </module>

@@ -15,38 +15,32 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
   
 <component-specification class="org.apache.tapestry.link.ExternalLink">
 
-  <description>Creates a IExternalPage link.</description>
+  <description>Creates link using the external service, which can pass service parameters to the targeted page.</description>
 
   <parameter name="page" 
-  	type="java.lang.String" 
   	required="yes" 
-  	property-name="targetPage"
-  	direction="in"/>
+  	property-name="targetPage"/>
 
-  <parameter name="parameters" type="java.lang.Object" direction="in">
+  <parameter name="parameters">
     <description>
     An object, or list of objects, encoded into the URL
     as service parameters.
     </description>
   </parameter>
   
-  <parameter name="disabled"
-  	type="boolean"
-  	direction="in"/>
+  <parameter name="disabled"/>
   	  	
-  <parameter name="anchor" 
-  	type="java.lang.String"
-  	direction="in"/>
+  <parameter name="anchor"/>
   	
-  <parameter name="renderer"
-  	type="org.apache.tapestry.link.ILinkRenderer"
-  	direction="in"/>
+  <parameter name="renderer"/>
   	
   <reserved-parameter name="href"/>
+  
+  <inject name="externalService" object="engine-service:external"/>
     
 </component-specification>

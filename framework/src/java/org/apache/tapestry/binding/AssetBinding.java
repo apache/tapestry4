@@ -33,10 +33,10 @@ public class AssetBinding extends AbstractBinding
 
     private final String _assetName;
 
-    public AssetBinding(IComponent component, String assetName, String parameterName,
+    public AssetBinding(IComponent component, String assetName, String description,
             ValueConverter valueConverter, Location location)
     {
-        super(parameterName, valueConverter, location);
+        super(description, valueConverter, location);
 
         Defense.notNull(component, "component");
         Defense.notNull(assetName, "assetName");

@@ -61,6 +61,16 @@
     <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
       <construct service-id="RequestGlobals" property="response"/>
     </invoke-factory>
-  </service-point>    
+  </service-point>   
+  
+  <service-point id="ServletContext" interface="javax.servlet.ServletContext">
+    
+    Exposes the global ServletContext instance as a service.
+    
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+      <construct service-id="ApplicationGlobals" property="context"/>
+    </invoke-factory>
+    
+  </service-point> 
   
 </module>

@@ -17,19 +17,18 @@ package org.apache.tapestry.binding;
 import java.util.Date;
 
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.binding.StaticBinding}. It also tests some common behaviors
- * provided by {@link org.apache.tapestry.binding.AbstractBinding}.
+ * Tests for {@link org.apache.tapestry.binding.LiteralBinding}. It also tests some common
+ * behaviors provided by {@link org.apache.tapestry.binding.AbstractBinding}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class TestStaticBinding extends BindingTestCase
+public class TestLiteralBinding extends BindingTestCase
 {
     public void testGetObject()
     {
@@ -38,10 +37,10 @@ public class TestStaticBinding extends BindingTestCase
 
         replayControls();
 
-        StaticBinding b = new StaticBinding("param", "literal-value", vc, l);
+        LiteralBinding b = new LiteralBinding("parameter foo", "literal-value", vc, l);
 
         assertSame(l, b.getLocation());
-        assertEquals("param", b.getParameterName());
+        assertEquals("parameter foo", b.getDescription());
         assertEquals("literal-value", b.getObject());
 
         assertEquals(true, b.isInvariant());
@@ -57,7 +56,7 @@ public class TestStaticBinding extends BindingTestCase
 
         replayControls();
 
-        StaticBinding b = new StaticBinding("param", "literal-value", vc, l);
+        LiteralBinding b = new LiteralBinding("parameter foo", "literal-value", vc, l);
 
         assertEquals("StaticBinding[literal-value]", b.toString());
 
@@ -76,7 +75,8 @@ public class TestStaticBinding extends BindingTestCase
 
         replayControls();
 
-        StaticBinding b = new StaticBinding("param", "my-literal", vc, fabricateLocation(99));
+        LiteralBinding b = new LiteralBinding("parameter foo", "my-literal", vc,
+                fabricateLocation(99));
 
         assertSame(date, b.getObject(Date.class));
 
@@ -96,7 +96,7 @@ public class TestStaticBinding extends BindingTestCase
         replayControls();
 
         Location location = fabricateLocation(99);
-        StaticBinding b = new StaticBinding("param", "my-literal", vc, location);
+        LiteralBinding b = new LiteralBinding("parameter foo", "my-literal", vc, location);
 
         try
         {
@@ -105,7 +105,7 @@ public class TestStaticBinding extends BindingTestCase
         }
         catch (BindingException ex)
         {
-            assertEquals("Error converting value for parameter 'param': Failure", ex.getMessage());
+            assertEquals("Error converting value for parameter foo: Failure", ex.getMessage());
             assertSame(innerException, ex.getRootCause());
             assertSame(location, ex.getLocation());
             assertSame(b, ex.getBinding());
@@ -121,7 +121,7 @@ public class TestStaticBinding extends BindingTestCase
 
         replayControls();
 
-        StaticBinding b = new StaticBinding("param", "literal-value", vc, l);
+        LiteralBinding b = new LiteralBinding("parameter foo", "literal-value", vc, l);
 
         try
         {
@@ -130,7 +130,9 @@ public class TestStaticBinding extends BindingTestCase
         }
         catch (BindingException ex)
         {
-            assertEquals("Binding value may not be updated.", ex.getMessage());
+            assertEquals(
+                    "Binding for parameter foo (StaticBinding[literal-value]) may not be updated.",
+                    ex.getMessage());
             assertSame(b, ex.getBinding());
             assertSame(l, ex.getLocation());
         }

@@ -72,10 +72,11 @@ public interface IBinding extends Locatable
     public void setObject(Object value);
 
     /**
-     * Returns the name of the component parameter for this binding.
+     * Returns a description of how the binding is used; this description
+     * is localized and incorporated into some exception messages.
      * 
      * @since 3.1
      */
     
-    public String getParameterName();
+    public String getDescription();
 }

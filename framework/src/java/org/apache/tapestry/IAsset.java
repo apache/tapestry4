@@ -20,48 +20,42 @@ import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Resource;
 
 /**
- *  Representation of a asset (GIF, JPEG, etc.) that may be owned by a
- *  {@link IComponent}.
- *
- *  <p>Assets may be completely external (i.e., on some other web site), 
- *  contained by the {@link javax.servlet.ServletContext},  
- *  or stored somewhere in the classpath.
- *
- *  <p>In the latter two cases, the resource may be localized.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Representation of a asset (GIF, JPEG, etc.) that may be owned by a {@link IComponent}.
+ * <p>
+ * Assets may be completely external (i.e., on some other web site), contained by the
+ * {@link javax.servlet.ServletContext}, or stored somewhere in the classpath.
+ * <p>
+ * In the latter two cases, the resource may be localized.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public interface IAsset extends Locatable
 {
     /**
-     *  Returns a URL for the asset, ready to be inserted into the output HTML.
-     *  If the asset can be localized, the localized version (matching the
-     *  {@link java.util.Locale} of the current {@link IPage page}) is returned.
+     * Returns a URL for the asset, ready to be inserted into the output HTML. If the asset can be
+     * localized, the localized version (matching the {@link java.util.Locale}of the current
+     * {@link IPage page}) is returned.
      * 
-     *  @throws ApplicationRuntimeException if the asset does not exist.
-     *
-     **/
+     * @throws ApplicationRuntimeException
+     *             if the asset does not exist.
+     */
 
     public String buildURL(IRequestCycle cycle);
 
     /**
-     *  Accesses the localized version of the resource (if possible) and returns it as
-     *  an input stream.  A version of the resource localized to the
-     *  current {@link IPage page} is returned.
+     * Accesses the localized version of the resource (if possible) and returns it as an input
+     * stream. A version of the resource localized to the current {@link IPage page}is returned.
      * 
-     *  @throws ApplicationRuntimeException if the asset does not exist, or
-     *  can't be read.
-     *
-     **/
+     * @throws ApplicationRuntimeException
+     *             if the asset does not exist, or can't be read.
+     */
 
     public InputStream getResourceAsStream(IRequestCycle cycle);
-    
+
     /**
-     *  Returns the underlying location of the asset.
-     * 
-     **/
-    
+     * Returns the underlying location of the asset.
+     */
+
     public Resource getResourceLocation();
 }

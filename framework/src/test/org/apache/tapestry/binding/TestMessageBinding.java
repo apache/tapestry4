@@ -20,7 +20,7 @@ import org.apache.tapestry.coerce.ValueConverter;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.binding.StringBinding}(yes, another name snafu).
+ * Tests for {@link org.apache.tapestry.binding.MessageBinding}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
@@ -35,7 +35,7 @@ public class TestMessageBinding extends BindingTestCase
 
         replayControls();
 
-        StringBinding b = new StringBinding(component, "param", "key", vc, fabricateLocation(12));
+        MessageBinding b = new MessageBinding(component, "param", "key", vc, fabricateLocation(12));
 
         assertSame(component, b.getComponent());
         assertEquals("key", b.getKey());
@@ -54,7 +54,7 @@ public class TestMessageBinding extends BindingTestCase
 
         replayControls();
 
-        StringBinding b = new StringBinding(component, "param", "key", vc, fabricateLocation(12));
+        MessageBinding b = new MessageBinding(component, "param", "key", vc, fabricateLocation(12));
 
         assertEquals("StringBinding[Foo/bar.baz key]", b.toString());
 
@@ -78,7 +78,7 @@ public class TestMessageBinding extends BindingTestCase
         mc.setReturnValue("value");
 
         replayControls();
-        StringBinding b = new StringBinding(component, "param", "key", vc, fabricateLocation(12));
+        MessageBinding b = new MessageBinding(component, "param", "key", vc, fabricateLocation(12));
 
         assertEquals("value", b.getObject());
 

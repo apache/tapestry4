@@ -29,7 +29,7 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.ITemplateComponent;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.binding.StaticBinding;
+import org.apache.tapestry.binding.LiteralBinding;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.parse.CloseToken;
 import org.apache.tapestry.parse.ComponentTemplate;
@@ -276,8 +276,13 @@ public class ComponentTemplateLoaderLogic
                 String name = (String) entry.getKey();
                 String value = (String) entry.getValue();
 
-                IBinding binding = _bindingSource.createBinding(_loadComponent, name, value, token
-                        .getLocation());
+                String description = ImplMessages.templateParameterName(name);
+
+                IBinding binding = _bindingSource.createBinding(
+                        _loadComponent,
+                        description,
+                        value,
+                        token.getLocation());
 
                 addBinding(component, spec, name, binding);
             }
@@ -325,7 +330,7 @@ public class ComponentTemplateLoaderLogic
         // TODO: This is ugly! Need a better/smarter way, even if we have to extend BindingSource
         // to tell us.
 
-        boolean literal = binding instanceof StaticBinding;
+        boolean literal = binding instanceof LiteralBinding;
 
         boolean isFormal = (spec.getParameter(name) != null);
 

@@ -32,9 +32,10 @@ public class ListenerBindingFactory implements BindingFactory
 {
     private ValueConverter _valueConverter;
 
-    public IBinding createBinding(IComponent root, String name, String path, Location location)
+    public IBinding createBinding(IComponent root, String description, String path,
+            Location location)
     {
-        return new ListenerMethodBinding(root, path, name, _valueConverter, location);
+        return new ListenerMethodBinding(root, path, description, _valueConverter, location);
     }
 
     public void setValueConverter(ValueConverter valueConverter)

@@ -16,7 +16,7 @@ package org.apache.tapestry.junit.form;
 
 import org.apache.tapestry.form.ListEditMap;
 import org.apache.tapestry.junit.TapestryTestCase;
-import org.apache.tapestry.spec.AssetType;
+import org.apache.tapestry.spec.BeanLifecycle;
 
 /**
  * Suite of tests for {@link org.apache.tapestry.form.ListEditMap}.
@@ -32,9 +32,9 @@ public class TestListEditMap extends TapestryTestCase
     {
         ListEditMap m = new ListEditMap();
 
-        m.add("external", AssetType.EXTERNAL);
-        m.add("private", AssetType.PRIVATE);
-        m.add("context", AssetType.CONTEXT);
+        m.add("request", BeanLifecycle.REQUEST);
+        m.add("page", BeanLifecycle.PAGE);
+        m.add("render", BeanLifecycle.RENDER);
 
         return m;
     }
@@ -43,14 +43,14 @@ public class TestListEditMap extends TapestryTestCase
     {
         ListEditMap m = create();
 
-        assertEquals("context", m.getKey());
+        assertEquals("render", m.getKey());
 
         checkList("keys", new Object[]
-        { "external", "private", "context" }, m.getKeys());
+        { "request", "page", "render" }, m.getKeys());
         checkList("all values", new Object[]
-        { AssetType.EXTERNAL, AssetType.PRIVATE, AssetType.CONTEXT }, m.getAllValues());
+        { BeanLifecycle.REQUEST, BeanLifecycle.PAGE, BeanLifecycle.RENDER }, m.getAllValues());
         checkList("all values", new Object[]
-        { AssetType.EXTERNAL, AssetType.PRIVATE, AssetType.CONTEXT }, m.getValues());
+        { BeanLifecycle.REQUEST, BeanLifecycle.PAGE, BeanLifecycle.RENDER }, m.getValues());
 
         assertNull(m.getDeletedKeys());
     }
@@ -59,10 +59,10 @@ public class TestListEditMap extends TapestryTestCase
     {
         ListEditMap m = create();
 
-        m.setKey("private");
+        m.setKey("page");
 
-        assertEquals("private", m.getKey());
-        assertSame(AssetType.PRIVATE, m.getValue());
+        assertEquals("page", m.getKey());
+        assertSame(BeanLifecycle.PAGE, m.getValue());
     }
 
     public void testGetUnknown()
@@ -78,7 +78,7 @@ public class TestListEditMap extends TapestryTestCase
     {
         ListEditMap m = create();
 
-        m.setKey("private");
+        m.setKey("page");
 
         assertEquals(false, m.isDeleted());
 
@@ -87,13 +87,13 @@ public class TestListEditMap extends TapestryTestCase
         assertEquals(true, m.isDeleted());
 
         checkList("all values", new Object[]
-        { AssetType.EXTERNAL, AssetType.PRIVATE, AssetType.CONTEXT }, m.getAllValues());
+        { BeanLifecycle.REQUEST, BeanLifecycle.PAGE, BeanLifecycle.RENDER }, m.getAllValues());
 
         checkList("undeleted values", new Object[]
-        { AssetType.EXTERNAL, AssetType.CONTEXT }, m.getValues());
+        { BeanLifecycle.REQUEST, BeanLifecycle.RENDER }, m.getValues());
 
         checkList("deleted keys", new Object[]
-        { "private" }, m.getDeletedKeys());
+        { "page" }, m.getDeletedKeys());
     }
 
     public void testMarkAlreadyDeleted()
@@ -101,7 +101,7 @@ public class TestListEditMap extends TapestryTestCase
 
         ListEditMap m = create();
 
-        m.setKey("private");
+        m.setKey("page");
 
         assertEquals(false, m.isDeleted());
 
@@ -114,32 +114,32 @@ public class TestListEditMap extends TapestryTestCase
     {
         ListEditMap m = create();
 
-        m.setKey("private");
+        m.setKey("page");
         m.setDeleted(true);
 
-        m.setKey("context");
+        m.setKey("render");
         assertEquals(false, m.isDeleted());
         m.setDeleted(true);
 
         assertEquals(true, m.isDeleted());
 
         checkList("undeleted values", new Object[]
-        { AssetType.EXTERNAL }, m.getValues());
+        { BeanLifecycle.REQUEST }, m.getValues());
     }
 
     public void testDeleteUndelete()
     {
         ListEditMap m = create();
 
-        m.setKey("private");
+        m.setKey("page");
         m.setDeleted(true);
         m.setDeleted(false);
 
-        m.setKey("context");
+        m.setKey("render");
         m.setDeleted(true);
 
         checkList("undeleted values", new Object[]
-        { AssetType.EXTERNAL, AssetType.PRIVATE }, m.getValues());
+        { BeanLifecycle.REQUEST, BeanLifecycle.PAGE }, m.getValues());
     }
 
 }

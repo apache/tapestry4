@@ -56,7 +56,7 @@ public class TestBeanBinding extends HiveMindTestCase
 
         assertSame(component, binding.getComponent());
         assertSame(l, binding.getLocation());
-        assertEquals("param", binding.getParameterName());
+        assertEquals("param", binding.getDescription());
     }
 
 }

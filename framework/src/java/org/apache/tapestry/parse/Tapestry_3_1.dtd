@@ -19,22 +19,24 @@ For page specifications, the root element is page-specification.
 For library specifiations, the root element is library-specification.
 
 This DTD represents a significant change from (and simplification of) the 3.0 DTD. 
-Tapestry 3.1 will continue to parse specfiication that use the 3.0 DTD for the
+Tapestry 3.1 will continue to parse specifications that use the 3.0 DTD for the
 forseable future.
 
 The following changes have occured:
 
-- The <service> element has been removed; it was used to define engine services, which
+- <service> has been removed; it was used to define engine services, which
   is now accomplished using the HiveMind tapestry.services.ApplicationServices
   configuration point.
-- The <static-binding>, <inherited-binding> and <message-binding> elements have been removed.
+- <static-binding>, <inherited-binding> and <message-binding> elements have been removed.
   There is now just <binding>, whose value attribute contains a prefix to interpret how
   the remainder of the value is interpreted (no prefix meaning a literal, or static, value).
 - <property> renamed to <meta> and <property-specification> renamed to <property>
 - Removed the type attribute from <property>
 - Added <inject>
 - Removed the direction and type attributes from <parameter>
-
+- Consoliated <context-asset>, <private-asset> and <external-asset> into <asset>
+- Consolidated <set-property> and <set-message-property> into <set>
+- More flexibility on the order of elements
 -->
 <!-- =======================================================
 Entity: attribute-flag
@@ -51,7 +53,7 @@ type.  Defaults to String.
 
 -->
 <!ENTITY % static-value-type "(boolean|int|long|double|String) 'String'">
-<!ENTITY % library-content "(description?, meta*, (page|component-type|service|library|extension)*)">
+<!ENTITY % library-content "(description?, (meta|page|component-type|service|library|extension)*)">
 <!-- =======================================================
 Element: application
 Root element
@@ -68,6 +70,24 @@ Attributes:
 	engine-class CDATA #IMPLIED
 >
 <!-- =======================================================
+Element: asset
+Contained by: component-specification, page-specification
+
+An asset that may be referenced by the component. Different prefixes
+may be applied to the path indicate where the asset is stored; 
+context: for the web application context folder or classpath:
+for a file stored in the web applications' classpath.
+
+Attributes:
+  name: The name of the asset.
+  path: The path for the resource, which may be relative or absolute.
+-->
+<!ELEMENT asset (meta*)>
+<!ATTLIST asset
+	name CDATA #REQUIRED
+	path CDATA #REQUIRED
+>
+  <!-- =======================================================
 Element: bean
 Appears in: component-specification, page-specification
 
@@ -99,7 +119,7 @@ The bean may have its properties set.  Properties are set on both
 newly instantiated beans, and beans that are retrieved from a pool.
 
 -->
-<!ELEMENT bean (description?, meta*, (set-property | set-message-property)*)>
+<!ELEMENT bean (description?, (meta|set)*)>
 <!ATTLIST bean
 	name CDATA #REQUIRED
 	class CDATA #REQUIRED
@@ -159,7 +179,7 @@ Attribute:
 
 The Tapestry page loader ensures that either type or copy-of is specified, but not both.
 -->
-<!ELEMENT component (meta*, (binding | listener-binding)*)>
+<!ELEMENT component (meta | binding | listener-binding)*>
 <!ATTLIST component
 	id ID #REQUIRED
 	type CDATA #IMPLIED
@@ -197,27 +217,11 @@ Attributes:
   allow-informal-parameters:  If yes (the default), informal parameters (parameters that are not
     explictily defined) are allowed.
 -->
-<!ELEMENT component-specification (description?, parameter*, reserved-parameter*, meta*, (bean | component | external-asset | context-asset | private-asset | property | inject)*)>
+<!ELEMENT component-specification (description?, (parameter | reserved-parameter | meta | bean | component | asset | property | inject)*)>
 <!ATTLIST component-specification
 	class CDATA #IMPLIED
 	allow-body %attribute-flag; "yes"
 	allow-informal-parameters %attribute-flag; "yes"
->
-<!-- =======================================================
-Element: context-asset
-Contained by: component-specification, page-specification
-
-An asset located in the same web application context as the running
-application.
-
-Attributes:
-  name: The name of the asset.
-  path: The path, relative to the web application context, of the resource.
--->
-<!ELEMENT context-asset (meta*)>
-<!ATTLIST context-asset
-	name CDATA #REQUIRED
-	path CDATA #REQUIRED
 >
 <!-- =======================================================
 Element: description
@@ -243,28 +247,12 @@ Attributes:
   immediate: If true, the extension is instantiated early instead of as-needed.
   
 -->
-<!ELEMENT extension (meta*, configure*)>
+<!ELEMENT extension (meta | configure)* >
 <!ATTLIST extension
 	name CDATA #REQUIRED
 	class CDATA #REQUIRED
 	immediate %attribute-flag; "no"
 >
-<!-- =======================================================
-Element: external-asset
-Contained by: component-specification, page-specification
-
-Defines an asset at some external source.
-
-Attributes:
-  name: The name of the asset.
-  URL: The URL used to reference the asset.
--->
-<!ELEMENT external-asset (meta*)>
-<!ATTLIST external-asset
-	name CDATA #REQUIRED
-	URL CDATA #REQUIRED
->
-
 <!-- =======================================================
 Element: inject
 Contained by: component-specification, page-specification
@@ -380,7 +368,7 @@ a body, and never allow parameters (formal or otherwise).
 Attributes:
   class: The Java class to instantiate for the component.
 -->
-<!ELEMENT page-specification (description?, meta*, (bean | component | external-asset | context-asset | private-asset | property | inject)*)>
+<!ELEMENT page-specification (description?,  (meta| bean | component | asset | property | inject)*)>
 <!ATTLIST page-specification
 	class CDATA #IMPLIED
 >
@@ -405,21 +393,6 @@ Attributes:
 	required %attribute-flag; "no"
 	property-name CDATA #IMPLIED
 	default-value CDATA #IMPLIED
->
-<!-- =======================================================
-Element: private-asset
-Contained by: component-specification, page-specification
-
-An asset available within the Java classpath (i.e., bundled inside a JAR or WAR).
-
-Attributes:
-  name: The name of the asset.
-  resource-path: The complete pathname of the resource.
--->
-<!ELEMENT private-asset (meta*)>
-<!ATTLIST private-asset
-	name CDATA #REQUIRED
-	resource-path CDATA #REQUIRED
 >
 <!-- =======================================================
 Element: property
@@ -458,36 +431,23 @@ Attributes:
 <!ATTLIST reserved-parameter
 	name CDATA #REQUIRED
 >
+
 <!-- =======================================================
-Element: set-property
+Element: set
 Appears in: bean
 
-Used to initialize a property of a helper bean.  An OGNL expression
-is provided as the expression attribute, or as wrapped
-character data.
+Used to initialize a property of a managed bean.  The value
+is a binding reference, and is provided as the value attribute, 
+or as wrapped character data.
 
 Attributes:
   name: The name of the property to be set.
-  expression: The OGNL expression that provides a value.
+  value: The value (as a binding reference) to set the property
+    to.
 -->
-<!ELEMENT set-property (#PCDATA)>
-<!ATTLIST set-property
+<!ELEMENT set (#PCDATA)>
+<!ATTLIST set
 	name CDATA #REQUIRED
-	expression CDATA #IMPLIED
->
-<!-- =======================================================
-Element: set-message-property
-Appears in: bean
-
-A localized string.
-
-Attributes:
-  key:  Sets a property of a string from a localized string.
-
--->
-<!ELEMENT set-message-property EMPTY>
-<!ATTLIST set-message-property
-	name CDATA #REQUIRED
-	key CDATA #REQUIRED
+	value CDATA #IMPLIED
 >
 

@@ -193,4 +193,9 @@ final class ImplMessages
     {
         return _formatter.format("is-constant-expression-error", expression, ex);
     }
+
+    public static String templateParameterName(String name)
+    {
+        return _formatter.format("template-parameter-name", name);
+    }
 }

@@ -51,15 +51,15 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
 
     private final IComponent _component;
 
-    public ListenerBinding(IComponent component, String parameterName, String language,
+    public ListenerBinding(IComponent component, String description, String language,
             String script, ValueConverter valueConverter, Location location)
     {
-        super(parameterName, valueConverter, location);
+        super(description, valueConverter, location);
 
         Defense.notNull(component, "component");
         Defense.notNull(language, "language");
         Defense.notNull(script, "script");
-        
+
         _component = component;
         _language = language;
         _script = script;

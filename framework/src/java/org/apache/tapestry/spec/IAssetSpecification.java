@@ -19,21 +19,18 @@ import org.apache.hivemind.LocationHolder;
 import org.apache.tapestry.util.IPropertyHolder;
 
 /**
- *  Defines an internal, external or private asset.
+ * Defines an internal, external or private asset.
  * 
  * @author glongman@intelligentworks.com
  */
 public interface IAssetSpecification extends IPropertyHolder, LocationHolder, Locatable
 {
     /**
-     *  Returns the base path for the asset.  This may be interpreted as a URL, relative URL
-     *  or the path to a resource, depending on the type of asset.
-     *
-     **/
-    public abstract String getPath();
-    public abstract AssetType getType();
-    /** @since 3.0 **/
-    public abstract void setPath(String path);
-    /** @since 3.0 **/
-    public abstract void setType(AssetType type);
+     * Returns the base path for the asset. This may be interpreted as a URL, relative URL or the
+     * path to a resource, depending on the type of asset.
+     */
+    public String getPath();
+
+    /** @since 3.0 * */
+    public void setPath(String path);
 }

@@ -102,8 +102,8 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
      * Standard constructor used to render a response page.
      */
 
-    public RequestCycle(IEngine engine, RequestContext requestContext, QueryParameterMap parameters, IEngineService service,
-            IMonitor monitor)
+    public RequestCycle(IEngine engine, RequestContext requestContext,
+            QueryParameterMap parameters, IEngineService service, IMonitor monitor)
     {
         _engine = engine;
         _requestContext = requestContext;
@@ -708,5 +708,14 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         b.append("targetComponent", _targetComponent);
 
         return b.toString();
+    }
+
+    /** @since 3.1 */
+
+    public String getAbsoluteURL(String partialURL)
+    {
+        String contextPath = _requestContext.getContextPath();
+
+        return _requestContext.getAbsoluteURL(contextPath + partialURL);
     }
 }

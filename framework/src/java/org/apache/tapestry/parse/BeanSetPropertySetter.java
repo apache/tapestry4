@@ -16,42 +16,49 @@ package org.apache.tapestry.parse;
 
 import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.hivemind.util.PropertyUtils;
-import org.apache.tapestry.bean.IBeanInitializer;
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.bean.BindingBeanInitializer;
+import org.apache.tapestry.services.BindingSource;
 import org.apache.tapestry.spec.IBeanSpecification;
 
 /**
- * Holds the data from a &lt;set-property&gt; element while the body is being
- * parsed.
- *
+ * Holds the data from a &lt;set-property&gt; element while the body is being parsed.
+ * 
  * @author Howard Lewis Ship
  */
 class BeanSetPropertySetter extends BaseLocatable
 {
     private IBeanSpecification _beanSpecification;
-    private IBeanInitializer _initializer;
-    private String _expression;
 
-    BeanSetPropertySetter(
-        IBeanSpecification beanSpecification,
-        IBeanInitializer initializer,
-        String expression)
+    private BindingBeanInitializer _initializer;
+
+    private String _bindingReference;
+
+    private String _prefix;
+
+    BeanSetPropertySetter(IBeanSpecification beanSpecification, BindingBeanInitializer initializer,
+            String prefix, String expression)
     {
         _beanSpecification = beanSpecification;
         _initializer = initializer;
-        _expression = expression;
+        _prefix = prefix;
+        _bindingReference = expression;
     }
 
-    void applyExpression(String expression)
+    void applyBindingReference(String bindingReference)
     {
-        PropertyUtils.write(_initializer, "expression", expression);
+        String fullBindingReference = _prefix == null ? bindingReference : _prefix
+                + bindingReference;
+
+        _initializer.setBindingReference(fullBindingReference);
 
         _beanSpecification.setLocation(getLocation());
         _beanSpecification.addInitializer(_initializer);
     }
 
-    public String getExpression()
+    public String getBindingReference()
     {
-        return _expression;
+        return _bindingReference;
     }
 
 }
