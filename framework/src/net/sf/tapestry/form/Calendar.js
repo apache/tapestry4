@@ -95,7 +95,6 @@ function pad(number,X)
 
 function formatDate(date) 
 {
-
     var bits = new Array();
     bits['d'] = date.getDate();
     bits['dd'] = pad(date.getDate(),2);
@@ -126,18 +125,33 @@ function fSetSelected(aCell)
   var iMonth = parseInt(tbSelMonth.value);
 
   aCell.bgColor = gcBG;
-  with (aCell.children["cellText"]){
+  
+  with (aCell.children["cellText"])
+  {
     var iDay = parseInt(innerText);
-    if (color==gcGray)
-    iOffset = -1;
-  iMonth += iOffset;
-  if (iMonth<1) {
-    iYear--;
-    iMonth = 12;
-  }else if (iMonth>12){
-    iYear++;
-    iMonth = 1;
-  }
+    if (color == gcGray) 
+    {
+      if (iDay < 13) 
+      {
+        iOffset = 1;
+      } 
+      else 
+      {
+        iOffset = -1;
+      }
+    }
+    iMonth += iOffset;
+    
+    if (iMonth < 1) 
+    {
+      iYear--;
+      iMonth = 12;
+    } 
+    else if (iMonth > 12) 
+    {
+      iYear++;
+      iMonth = 1;
+    }
   }
   fSetDate(iYear, iMonth, iDay);
   window.event.cancelBubble = true;
@@ -173,43 +187,57 @@ function fBuildCal(iYear, iMonth)
 function fDrawCal(iYear, iMonth, iCellWidth, iDateTextSize) 
 {
   var WeekDay = new Array("Su","Mo","Tu","We","Th","Fr","Sa");
-  var styleTD = " bgcolor='"+gcBG+"' width='"+iCellWidth+"' height = 19 bordercolor='"+gcBG+"' valign='middle' align='center'  style='font:bold "+iDateTextSize+" Courier;";            //Coded by Liming Weng(Victor Won)  email:victorwon@netease.com
+  var styleTD = " bgcolor='" + gcBG + "' width='" + iCellWidth + 
+                "' height = 19 bordercolor='" + gcBG + 
+                "' valign='middle' align='center'  style='font:bold " + 
+                iDateTextSize + " Courier;";
 
-  var txt="";
-  txt+="<tr>";
-  for(i=0; i<7; i++)
-    txt+="<td "+styleTD+"color:#000099' >" + WeekDay[i] + "</td>";
-  txt+="</tr>";
+  // Draw calendar table header
+  var txt= "";
+  txt += "<tr>";
+  for (i = 0; i < 7; i++) {
+    txt += "<td " + styleTD + "color:#000099' >" + WeekDay[i] + "</td>";
+  }
+  txt += "</tr>";
 
-    for (w = 1; w < 7; w++) {
-    txt+="<tr>";
+  // Draw calendar table
+  for (w = 1; w < 7; w++) {
+    txt += "<tr>";
     for (d = 0; d < 7; d++) {
-      txt+="<td id=calCell "+styleTD+"cursor:hand;' onMouseOver='this.bgColor=gcToggle' onMouseOut='this.bgColor=gcBG' onclick='fSetSelected(this)'>";
-      txt+="<font id=cellText> </font>";
-      txt+="</td>";
+      txt += "<td id=calCell " + styleTD + 
+             "cursor:hand;' onMouseOver='this.bgColor=gcToggle' onMouseOut='this.bgColor=gcBG' onclick='fSetSelected(this)'>";
+      txt += "<font id=cellText> </font>";
+      txt += "</td>";
     }
-    txt+="</tr>";
+    txt += "</tr>";
   }
   return txt;
-
 }
 
 function fUpdateCal(iYear, iMonth) 
 {
   myMonth = fBuildCal(iYear, iMonth);
   var i = 0;
-  for (w = 0; w < 6; w++)
-  for (d = 0; d < 7; d++)
-    with (cellText[(7*w)+d]) {
-      i++;
-      if (myMonth[w+1][d]<0) {
-        color = gcGray;
-        innerText = -myMonth[w+1][d];
-      }else{
-        color = ((d==0)||(d==6))?"white":"black";
-        innerText = myMonth[w+1][d];
+  for (w = 0; w < 6; w++) 
+  {
+    for (d = 0; d < 7; d++) 
+    {
+      with (cellText[(7*w)+d]) 
+      {
+        i++;
+        if (myMonth[w+1][d] < 0) 
+        {
+          color = gcGray;
+          innerText = -myMonth[w+1][d];
+        } 
+        else 
+        {
+          color = ((d==0)||(d==6)) ? "white" : "black";
+          innerText = myMonth[w+1][d];
+        }
       }
     }
+  }
   window.event.cancelBubble = true;
 }
 
