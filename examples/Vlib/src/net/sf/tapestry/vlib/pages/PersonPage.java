@@ -31,12 +31,12 @@ import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
 
 import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.IExternalPage;
 import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.html.BasePage;
 import net.sf.tapestry.spec.ComponentSpecification;
-import net.sf.tapestry.vlib.IExternalPage;
 import net.sf.tapestry.vlib.VirtualLibraryEngine;
 import net.sf.tapestry.vlib.components.Browser;
 import net.sf.tapestry.vlib.ejb.Book;
@@ -128,8 +128,10 @@ public class PersonPage extends BasePage implements IExternalPage
      *
      **/
 
-    public void setup(Integer personPK, IRequestCycle cycle)
+    public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
     {
+        Integer personPK = (Integer)parameters[0];
+        
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)

@@ -10,9 +10,9 @@
   
   <parameter name="book" java-type="net.sf.tapestry.vlib.ejb.Book" required="yes" direction="in"/>
   
-  <component id="link" type="ServiceLink">
-    <field-binding name="service" field-name="net.sf.tapestry.vlib.ExternalService.SERVICE_NAME"/>
-    <binding name="parameters" expression="{ &quot;ViewBook&quot;, book.primaryKey } "/>
+  <component id="link" type="ExternalLink">
+    <static-binding name="page">ViewBook</static-binding>
+    <binding name="parameters" expression="book.primaryKey"/>
   </component>
   
   <component id="insertBookTitle" type="Insert">

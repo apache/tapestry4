@@ -46,33 +46,33 @@ import net.sf.tapestry.vlib.pages.Login;
 
 public class Protected extends BasePage implements IErrorProperty
 {
-    private String error;
-    private IValidationDelegate validationDelegate;
+    private String _error;
+    private IValidationDelegate _validationDelegate;
 
     public void detach()
     {
-        error = null;
-        validationDelegate = null;
+        _error = null;
+        _validationDelegate = null;
 
         super.detach();
     }
 
     public IValidationDelegate getValidationDelegate()
     {
-        if (validationDelegate == null)
-            validationDelegate = new SimpleValidationDelegate();
+        if (_validationDelegate == null)
+            _validationDelegate = new SimpleValidationDelegate();
 
-        return validationDelegate;
+        return _validationDelegate;
     }
 
     public void setError(String value)
     {
-        error = value;
+        _error = value;
     }
 
     public String getError()
     {
-        return error;
+        return _error;
     }
 
     protected void setErrorField(String componentId, String message, String value)
@@ -93,7 +93,7 @@ public class Protected extends BasePage implements IErrorProperty
 
     protected boolean isInError()
     {
-        return error != null || getValidationDelegate().getHasErrors();
+        return _error != null || getValidationDelegate().getHasErrors();
     }
 
     /**

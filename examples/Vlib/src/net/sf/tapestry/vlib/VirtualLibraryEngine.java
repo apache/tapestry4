@@ -32,6 +32,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.LogManager;
@@ -39,6 +40,7 @@ import org.apache.log4j.Logger;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.ResponseOutputStream;
 import net.sf.tapestry.engine.SimpleEngine;
 import net.sf.tapestry.form.IPropertySelectionModel;
 import net.sf.tapestry.vlib.ejb.IBookQuery;
@@ -47,6 +49,7 @@ import net.sf.tapestry.vlib.ejb.IOperations;
 import net.sf.tapestry.vlib.ejb.IOperationsHome;
 import net.sf.tapestry.vlib.ejb.Person;
 import net.sf.tapestry.vlib.ejb.Publisher;
+import net.sf.tapestry.vlib.pages.ApplicationUnavailable;
 
 /**
  *
@@ -67,22 +70,24 @@ public class VirtualLibraryEngine extends SimpleEngine
 {
     public static final Logger LOG = LogManager.getLogger(VirtualLibraryEngine.class);
 
-    private static boolean debugEnabled = Boolean.getBoolean("net.sf.tapestry.vlib.debug-enabled");
+    private static final boolean DEBUG_ENABLED = Boolean.getBoolean("net.sf.tapestry.vlib.debug-enabled");
 
-    private transient boolean killSession;
+    private transient boolean _killSession;
 
     // Home interfaces are static, such that they are only
     // looked up once (JNDI lookup is very expensive).
 
-    private static IBookQueryHome bookQueryHome;
-    private static IOperationsHome operationsHome;
-    private transient IOperations operations;
+    private static IBookQueryHome _bookQueryHome;
+    private static IOperationsHome _operationsHome;
+    private transient IOperations _operations;
 
-    private static Context rootNamingContext;
+    private static Context _rootNamingContext;
 
-    private transient IPropertySelectionModel publisherModel;
-    private transient IPropertySelectionModel personModel;
+    private transient IPropertySelectionModel _publisherModel;
+    private transient IPropertySelectionModel _personModel;
 
+    private transient String _applicationUnavailableMessage;
+    
     /**
      *  Creates an instance of {@link Visit}.
      *
@@ -106,8 +111,10 @@ public class VirtualLibraryEngine extends SimpleEngine
     protected void cleanupAfterRequest(IRequestCycle cycle)
     {
         clearCache();
+        
+        _applicationUnavailableMessage = null;
 
-        if (killSession)
+        if (_killSession)
         {
             try
             {
@@ -136,28 +143,28 @@ public class VirtualLibraryEngine extends SimpleEngine
         if (visit != null)
             visit.setUser(null);
 
-        killSession = true;
+        _killSession = true;
     }
 
     public boolean isDebugEnabled()
     {
-        return debugEnabled;
+        return DEBUG_ENABLED;
     }
 
     public IBookQueryHome getBookQueryHome()
     {
-        if (bookQueryHome == null)
-            bookQueryHome = (IBookQueryHome) findNamedObject("vlib/BookQuery", IBookQueryHome.class);
+        if (_bookQueryHome == null)
+            _bookQueryHome = (IBookQueryHome) findNamedObject("vlib/BookQuery", IBookQueryHome.class);
 
-        return bookQueryHome;
+        return _bookQueryHome;
     }
 
     public IOperationsHome getOperationsHome()
     {
-        if (operationsHome == null)
-            operationsHome = (IOperationsHome) findNamedObject("vlib/Operations", IOperationsHome.class);
+        if (_operationsHome == null)
+            _operationsHome = (IOperationsHome) findNamedObject("vlib/Operations", IOperationsHome.class);
 
-        return operationsHome;
+        return _operationsHome;
     }
 
     /**
@@ -175,12 +182,12 @@ public class VirtualLibraryEngine extends SimpleEngine
         for (int i = 0; i < 2; i++)
         {
 
-            if (operations == null)
+            if (_operations == null)
             {
                 try
                 {
                     home = getOperationsHome();
-                    operations = home.create();
+                    _operations = home.create();
 
                     break;
                 }
@@ -195,7 +202,7 @@ public class VirtualLibraryEngine extends SimpleEngine
             }
         }
 
-        return operations;
+        return _operations;
     }
 
     public Object findNamedObject(String name, Class expectedClass)
@@ -231,11 +238,11 @@ public class VirtualLibraryEngine extends SimpleEngine
     {
         for (int i = 0; i < 2; i++)
         {
-            if (rootNamingContext == null)
+            if (_rootNamingContext == null)
             {
                 try
                 {
-                    rootNamingContext = new InitialContext();
+                    _rootNamingContext = new InitialContext();
 
                     break;
                 }
@@ -246,7 +253,7 @@ public class VirtualLibraryEngine extends SimpleEngine
             }
         }
 
-        return rootNamingContext;
+        return _rootNamingContext;
     }
 
     /**
@@ -259,10 +266,10 @@ public class VirtualLibraryEngine extends SimpleEngine
 
     public IPropertySelectionModel getPublisherModel()
     {
-        if (publisherModel == null)
-            publisherModel = buildPublisherModel();
+        if (_publisherModel == null)
+            _publisherModel = buildPublisherModel();
 
-        return publisherModel;
+        return _publisherModel;
     }
 
     private IPropertySelectionModel buildPublisherModel()
@@ -278,11 +285,11 @@ public class VirtualLibraryEngine extends SimpleEngine
 
         for (int i = 0; i < 2; i++)
         {
-            IOperations bean = getOperations();
+            IOperations operations = getOperations();
 
             try
             {
-                publishers = bean.getPublishers();
+                publishers = operations.getPublishers();
 
                 // Exit the retry loop
 
@@ -311,8 +318,8 @@ public class VirtualLibraryEngine extends SimpleEngine
 
     public void clearCache()
     {
-        publisherModel = null;
-        personModel = null;
+        _publisherModel = null;
+        _personModel = null;
     }
 
     /**
@@ -323,10 +330,10 @@ public class VirtualLibraryEngine extends SimpleEngine
 
     public IPropertySelectionModel getPersonModel()
     {
-        if (personModel == null)
-            personModel = buildPersonModel();
+        if (_personModel == null)
+            _personModel = buildPersonModel();
 
-        return personModel;
+        return _personModel;
     }
 
     private IPropertySelectionModel buildPersonModel()
@@ -335,11 +342,11 @@ public class VirtualLibraryEngine extends SimpleEngine
 
         for (int i = 0; i < 2; i++)
         {
-            IOperations bean = getOperations();
+            IOperations operations = getOperations();
 
             try
             {
-                persons = bean.getPersons();
+                persons = operations.getPersons();
 
                 break;
             }
@@ -425,19 +432,27 @@ public class VirtualLibraryEngine extends SimpleEngine
      *
      * @param message the message for the exception, or for the log message
      * @param ex the exception thrown
-     * @param throwException if true, an {@link ApplicationRuntimeException}
+     * @param finalFailure if true, an {@link ApplicationRuntimeException}
      * is thrown after the message is logged.
      *
      **/
 
-    public void rmiFailure(String message, RemoteException ex, boolean throwException)
+    public void rmiFailure(String message, RemoteException ex, boolean finalFailure)
     {
         LOG.error(message, ex);
 
-        if (throwException)
-            throw new ApplicationRuntimeException(message, ex);
-
         clearEJBs();
+
+        if (finalFailure)
+            punt(message, ex);
+
+    }
+
+    private void punt(String message, Throwable ex)
+    {
+        _applicationUnavailableMessage = message;
+        
+        throw new ApplicationRuntimeException(message, ex);
     }
 
     /**
@@ -446,21 +461,59 @@ public class VirtualLibraryEngine extends SimpleEngine
      *
      **/
 
-    public void namingFailure(String message, NamingException ex, boolean throwException)
+    public void namingFailure(String message, NamingException ex, boolean finalFailure)
     {
         LOG.error(message, ex);
 
-        if (throwException)
-            throw new ApplicationRuntimeException(message, ex);
-
         clearEJBs();
+
+        if (finalFailure)
+            punt(message, ex);
     }
 
     private void clearEJBs()
     {
-        bookQueryHome = null;
-        operations = null;
-        operationsHome = null;
-        rootNamingContext = null;
+        _bookQueryHome = null;
+        _operations = null;
+        _operationsHome = null;
+        _rootNamingContext = null;
     }
+
+    /**
+     *  Invoked when any kind of runtime exception percolates up to the
+     *  top level service method.  Normally, the standard Exception
+     *  page is displayed; we logout and setup our own version of the page
+     *  instead.
+     * 
+     **/
+
+    protected void activateExceptionPage(IRequestCycle cycle, ResponseOutputStream output, Throwable cause)
+        throws ServletException
+    {
+        try
+        {
+            logout();
+
+            ApplicationUnavailable page = (ApplicationUnavailable) cycle.getPage("ApplicationUnavailable");
+
+            String message = _applicationUnavailableMessage;
+            
+            if (message == null)
+                message = cause.getMessage();
+                
+            if (message == null)
+                message = cause.getClass().getName();
+
+            page.activate(message, cause);
+
+            cycle.setPage(page);
+
+            renderResponse(cycle, output);
+        }
+        catch (Throwable t)
+        {
+            super.activateExceptionPage(cycle, output, cause);
+        }
+    }
+
 }

@@ -73,6 +73,15 @@ import net.sf.tapestry.vlib.pages.PersonPage;
  *		</td>
  *	</tr>
  *
+ *  <tr>
+ *      <td>class</td>
+ *      <td>String</td>
+ *      <td>in</td>
+ *      <td>no</td>
+ *      <td>&nbsp;</td>
+ *      <td>The CSS class to use with the generated link.
+ *      </td>
+ *  </tr>
  *  </table>
  *
  *  <p>Informal parameters are not allowed.  A body is not allowed.
@@ -87,18 +96,6 @@ public class PersonLink extends BaseComponent
     private Integer _primaryKey;
     private String _name;
     private boolean _omit;
-    private String _styleClass;
-
-    public String getStyleClass()
-    {
-        return _styleClass;
-    }
-
-    public void setStyleClass(String styleClass)
-    {
-        _styleClass = styleClass;
-    }
-
     public String getName()
     {
         return _name;

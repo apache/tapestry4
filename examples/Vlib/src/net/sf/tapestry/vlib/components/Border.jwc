@@ -87,8 +87,8 @@
 	<field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
   
-  <component id="logout" type="PageLink">
-    <static-binding name="page">Logout</static-binding>
+  <component id="logout" type="DirectLink">
+    <binding name="listener" expression="listeners.logout"/>
   </component>
 
   <component id="ifImageTitle" type="Conditional">
@@ -134,7 +134,6 @@
   <context-asset name="header_Person" path="/images/hd_bookinventory.gif"/>
   <context-asset name="header_EditProfile" path="/images/hd_editprofile.gif"/>
   <context-asset name="header_Login" path="/images/hd_login.gif"/>
-  <context-asset name="header_Logout" path="/images/hd_logout.gif"/>
   <context-asset name="header_Register" path="/images/hd_register_noslash.gif"/>
   <context-asset name="header_ViewBook" path="/images/hd_viewbook.gif"/>
   <context-asset name="header_EditBook" path="/images/hd_editbooks.gif"/>

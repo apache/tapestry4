@@ -30,9 +30,9 @@ import java.text.DateFormat;
 
 import javax.ejb.FinderException;
 
+import net.sf.tapestry.IExternalPage;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.html.BasePage;
-import net.sf.tapestry.vlib.IExternalPage;
 import net.sf.tapestry.vlib.VirtualLibraryEngine;
 import net.sf.tapestry.vlib.ejb.Book;
 import net.sf.tapestry.vlib.ejb.IOperations;
@@ -68,8 +68,9 @@ public class ViewBook extends BasePage implements IExternalPage
         fireObservedChange("book", value);
     }
 
-    public void setup(Integer bookPK, IRequestCycle cycle)
+    public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
     {
+        Integer bookPK = (Integer) parameters[0];
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)

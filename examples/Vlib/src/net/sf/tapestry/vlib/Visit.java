@@ -53,28 +53,28 @@ public class Visit implements Serializable
      *
      **/
 
-    private transient Person user;
-    private Integer userPK;
+    private transient Person _user;
+    private Integer _userPK;
 
     /**
      *  Set when the user first logs in.  This is the time of their previous
-     *  last login (logging in returns the old value then updates the value
+     *  login (logging in returns the old value then updates the value
      *  for subsequent logins).
      *
      **/
 
-    private Timestamp lastAccess;
+    private Timestamp _lastAccess;
 
-    private VirtualLibraryEngine engine;
+    private VirtualLibraryEngine _engine;
 
     public Visit(VirtualLibraryEngine engine)
     {
-        this.engine = engine;
+        _engine = engine;
     }
 
     public VirtualLibraryEngine getEngine()
     {
-        return engine;
+        return _engine;
     }
 
     /**
@@ -85,7 +85,7 @@ public class Visit implements Serializable
 
     public Timestamp getLastAccess()
     {
-        return lastAccess;
+        return _lastAccess;
     }
 
     /**
@@ -95,17 +95,17 @@ public class Visit implements Serializable
 
     public Person getUser()
     {
-        if (user != null)
-            return user;
+        if (_user != null)
+            return _user;
 
-        if (userPK == null)
+        if (_userPK == null)
             return null;
 
         for (int i = 0; i < 2; i++)
         {
             try
             {
-                user = engine.getOperations().getPerson(userPK);
+                _user = _engine.getOperations().getPerson(_userPK);
 
                 break;
             }
@@ -115,11 +115,11 @@ public class Visit implements Serializable
             }
             catch (RemoteException ex)
             {
-                engine.rmiFailure("Unable to access logged-in user.", ex, i > 0);
+                _engine.rmiFailure("Unable to access logged-in user.", ex, i > 0);
             }
         }
 
-        return user;
+        return _user;
     }
 
     /**
@@ -130,7 +130,7 @@ public class Visit implements Serializable
 
     public Integer getUserPK()
     {
-        return userPK;
+        return _userPK;
     }
 
     /**
@@ -141,16 +141,16 @@ public class Visit implements Serializable
 
     public void setUser(Person value)
     {
-        lastAccess = null;
-        user = value;
-        userPK = null;
+        _lastAccess = null;
+        _user = value;
+        _userPK = null;
 
-        if (user == null)
+        if (_user == null)
             return;
 
-        userPK = user.getPrimaryKey();
+        _userPK = _user.getPrimaryKey();
 
-        lastAccess = user.getLastAccess();
+        _lastAccess = _user.getLastAccess();
     }
 
     /**
@@ -160,7 +160,7 @@ public class Visit implements Serializable
 
     public boolean isUserLoggedIn()
     {
-        return userPK != null;
+        return _userPK != null;
     }
 
     /**
@@ -171,15 +171,15 @@ public class Visit implements Serializable
 
     public boolean isUserLoggedOut()
     {
-        return userPK == null;
+        return _userPK == null;
     }
 
     public boolean isLoggedInUser(Integer primaryKey)
     {
-        if (userPK == null)
+        if (_userPK == null)
             return false;
 
-        return userPK.equals(primaryKey);
+        return _userPK.equals(primaryKey);
     }
 
     /**
@@ -192,9 +192,9 @@ public class Visit implements Serializable
 
     public void clearCache()
     {
-        user = null;
+        _user = null;
 
-        engine.clearCache();
+        _engine.clearCache();
     }
 
 }
