@@ -471,21 +471,41 @@ public abstract class AbstractEngine
 			return true;
 		}
 		
-		private String[] serviceContext = new String[2];
+		private String[] normalContext = new String[2];
+		private String[] extendedContext = new String[3];
 		
 		public Gesture buildGesture(IRequestCycle cycle, IComponent component, 
 				String[] parameters)
 		{
+			String[] context;
+			
 			// New since 1.0.1, we use the component to determine
 			// the page, not the cycle.  Through the use of tricky
 			// things such as Block/InsertBlock, it is possible 
 			// that a component from a page different than
 			// the response page will render.
+			// In 1.0.6, we start to record *both* the render page
+			// and the component page (if different), as the extended
+			// context.
 			
-			serviceContext[0] = component.getPage().getName();
-			serviceContext[1] = component.getIdPath();
+			IPage renderPage = cycle.getPage();
+			IPage componentPage = component.getPage();
 			
-			return assembleGesture(getServletPath(), DIRECT_SERVICE, serviceContext, parameters);
+			if (renderPage == componentPage)
+			{
+				normalContext[0] = componentPage.getName();
+				normalContext[1] = component.getIdPath();
+				context = normalContext;
+			}
+			else
+			{
+				extendedContext[0] = renderPage.getName();
+				extendedContext[1] = componentPage.getName();
+				extendedContext[2] = component.getIdPath();
+				context = extendedContext;
+			}
+			
+			return assembleGesture(getServletPath(), DIRECT_SERVICE, context, parameters);
 		}
 		
 		public String getName()
@@ -1204,31 +1224,49 @@ public abstract class AbstractEngine
 		IDirect direct;
 		IMonitor monitor = cycle.getMonitor();
 		int count = 0;
+		String componentPageName;
+		IPage componentPage;
 		
 		if (serviceContext != null)
 			count = serviceContext.length;
 		
-		if (count != 2)
+		if (count != 2 && count != 3 )
 			throw new ApplicationRuntimeException(
-				"Service direct requires at two service context parameters.");
+				"Service direct requires two or three service context parameters.");
 		
-		String pageName = serviceContext[0];
-		String componentPath = serviceContext[1];
+		int i = 0;
+		String pageName = serviceContext[i++];
+		
+		if (count == 2)
+			componentPageName = pageName;
+		else
+			componentPageName = serviceContext[i++];
+		
+		String componentPath = serviceContext[i++];
 		
 		if (monitor != null)
 			monitor.serviceBegin(IEngineService.DIRECT_SERVICE, 
-					pageName + "/" + componentPath);
+					componentPageName + "/" + componentPath);
 		
 		IPage page = cycle.getPage(pageName);
 		
 		// Allow the page to validate that the user is allowed to visit.  This is simple
 		// protection from malicious users who hack the URLs directly, or make inappropriate
 		// use of the back button. 
+		// Using Block/InsertBlock, it is possible that the component is on a different page
+		// than the render page.  The render page is validated, not necessaily the component
+		// page.
 		
 		page.validate(cycle);
 		cycle.setPage(page);
 		
-		IComponent component = page.getNestedComponent(componentPath);
+		if (count == 2)
+			componentPage = page;
+		else
+			componentPage = cycle.getPage(componentPageName);
+		
+		
+		IComponent component = componentPage.getNestedComponent(componentPath);
 		
 		try
 		{
@@ -1237,14 +1275,14 @@ public abstract class AbstractEngine
 		catch (ClassCastException ex)
 		{
 			throw new RequestCycleException(
-				"Component " + pageName + "/" +
-					componentPath + " does not implement the IDirect interface.",
+				"Component " + component.getExtendedId() + " does not implement the IDirect interface.",
 				component, ex);
 		}
 		
 		direct.trigger(cycle, parameters);
 		
-		// Render the response.
+		// Render the response.  This will be the response page (the first element in the context)
+		// unless the direct (or its delegate) changes it.
 		
 		render(cycle, output);
 		

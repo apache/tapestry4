@@ -15,7 +15,7 @@ import com.primix.tapestry.*;
 public class Weather 
 	extends BasePage
 {
-	private boolean weekend;
+	private boolean weekend = false;
 	
 	public void detach()
 	{
@@ -42,34 +42,15 @@ public class Weather
 		
 		return "Sunny, bright, 76 - 82.  Now, get back to your cube.";
 	}
-	
-	/**
-	 *  The context is '1' for the 'weekend' link, or '0' otherwise.
-	 *
-	 */
-	
-	private void update(String context, IRequestCycle cycle)
+
+	public void selectWeekend(IRequestCycle cycle)
 	{
-		setWeekend(context.equals("1"));
-		
-		// Here's the kicker; this page, Weather, should not render the response.
-		// The response should be rendered by the Home page.  In fact, this page,
-		// outside of the 'content' block, has not actual content.
-		
-		cycle.setPage("Home");
+		setWeekend(true);
 	}
 	
-	public IDirectListener getLinkListener()
+	public void selectWeekday(IRequestCycle cycle)
 	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect direct, String[] context, 
-					IRequestCycle cycle)
-				throws RequestCycleException
-			{
-				update(context[0], cycle);
-			}
-		};
+		setWeekend(false);
 	}
 	
 	public String getWeekdayClass()
