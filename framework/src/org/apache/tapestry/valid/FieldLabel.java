@@ -92,7 +92,11 @@ public abstract class FieldLabel extends AbstractComponent
 
         delegate.writeLabelPrefix(field, writer, cycle);
 
-        writer.print(displayName);
+        if (getRaw()) {
+            writer.printRaw(displayName);
+        } else {
+            writer.print(displayName);
+        }
 
         delegate.writeLabelSuffix(field, writer, cycle);
     }
@@ -100,4 +104,6 @@ public abstract class FieldLabel extends AbstractComponent
     public abstract String getDisplayName();
 
     public abstract IFormComponent getField();
+
+    public abstract boolean getRaw();
 }
