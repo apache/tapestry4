@@ -78,21 +78,10 @@ import net.sf.tapestry.engine.ILink;
  *
  **/
 
-public class DirectLink extends AbstractLinkComponent implements IDirect
+public abstract class DirectLink extends AbstractLinkComponent implements IDirect
 {
-    private IBinding _listenerBinding;
-    private Object _parameters;
-    private IBinding _statefulBinding;
 
-    public void setStatefulBinding(IBinding value)
-    {
-        _statefulBinding = value;
-    }
-
-    public IBinding getStatefulBinding()
-    {
-        return _statefulBinding;
-    }
+    public abstract IBinding getStatefulBinding();
 
     /**
      *  Returns true if the stateful parameter is bound to
@@ -103,18 +92,17 @@ public class DirectLink extends AbstractLinkComponent implements IDirect
 
     public boolean isStateful()
     {
-        if (_statefulBinding == null)
+        IBinding statefulBinding = getStatefulBinding();
+
+        if (statefulBinding == null)
             return true;
 
-        return _statefulBinding.getBoolean();
+        return statefulBinding.getBoolean();
     }
 
     public ILink getLink(IRequestCycle cycle) throws RequestCycleException
     {
-        return getLink(
-            cycle,
-            Tapestry.DIRECT_SERVICE,
-            constructServiceParameters(_parameters));
+        return getLink(cycle, Tapestry.DIRECT_SERVICE, constructServiceParameters(getParameters()));
     }
 
     /**
@@ -171,15 +159,7 @@ public class DirectLink extends AbstractLinkComponent implements IDirect
         listener.actionTriggered(this, cycle);
     }
 
-    public IBinding getListenerBinding()
-    {
-        return _listenerBinding;
-    }
-
-    public void setListenerBinding(IBinding value)
-    {
-        _listenerBinding = value;
-    }
+    public abstract IBinding getListenerBinding();
 
     /**
      *  Need to use the listener binding, since this method gets called even when the
@@ -190,11 +170,11 @@ public class DirectLink extends AbstractLinkComponent implements IDirect
     private IActionListener getListener(IRequestCycle cycle) throws RequestCycleException
     {
         IActionListener result;
+        IBinding listenerBinding = getListenerBinding();
 
         try
         {
-            result =
-                (IActionListener) _listenerBinding.getObject("listener", IActionListener.class);
+            result = (IActionListener) listenerBinding.getObject("listener", IActionListener.class);
 
         }
         catch (BindingException ex)
@@ -203,22 +183,12 @@ public class DirectLink extends AbstractLinkComponent implements IDirect
         }
 
         if (result == null)
-            throw new RequiredParameterException(this, "listener", _listenerBinding);
+            throw new RequiredParameterException(this, "listener", listenerBinding);
 
         return result;
     }
 
     /** @since 2.2 **/
 
-    public Object getParameters()
-    {
-        return _parameters;
-    }
-
-    /** @since 2.2. **/
-
-    public void setParameters(Object context)
-    {
-        _parameters = context;
-    }
+    public abstract Object getParameters();
 }

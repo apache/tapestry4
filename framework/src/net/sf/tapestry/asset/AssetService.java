@@ -177,6 +177,10 @@ public class AssetService extends AbstractService
     {
         Object[] parameters = getParameters(cycle);
 
+        if (Tapestry.size(parameters) != 1)
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("service-single-parameter", Tapestry.ASSET_SERVICE));
+
         String resourcePath = (String) parameters[0];
 
         URL resourceURL = cycle.getEngine().getResourceResolver().getResource(resourcePath);

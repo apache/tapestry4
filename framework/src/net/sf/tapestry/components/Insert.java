@@ -72,99 +72,70 @@ import net.sf.tapestry.Tapestry;
  * 
  **/
 
-public class Insert extends AbstractComponent
+public abstract class Insert extends AbstractComponent
 {
-    private Object _value;
-    private Format _format;
-
-    // The class parameter is connected to the styleClass property
-    private String _styleClass;
-    private boolean _raw;
-
     /**
      *  Prints its value parameter, possibly formatted by its format parameter.
      *
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         if (cycle.isRewinding())
             return;
 
-        if (_value == null)
+        Object value = getValue();
+
+        if (value == null)
             return;
 
         String insert = null;
 
-        if (_format == null)
+        Format format = getFormat();
+
+        if (format == null)
         {
-            insert = _value.toString();
+            insert = value.toString();
         }
         else
         {
             try
             {
-                insert = _format.format(_value);
+                insert = format.format(value);
             }
             catch (Exception ex)
             {
-                throw new RequestCycleException(Tapestry.getString("Insert.unable-to-format", _value), this, ex);
+                throw new RequestCycleException(
+                    Tapestry.getString("Insert.unable-to-format", value),
+                    this,
+                    ex);
             }
         }
 
-        if (_styleClass != null)
+        String styleClass = getStyleClass();
+
+        if (styleClass != null)
         {
             writer.begin("span");
-            writer.attribute("class", _styleClass);
+            writer.attribute("class", styleClass);
         }
 
-        if (_raw)
+        if (getRaw())
             writer.printRaw(insert);
         else
             writer.print(insert);
 
-        if (_styleClass != null)
+        if (styleClass != null)
             writer.end(); // <span>
     }
 
-    public Object getValue()
-    {
-        return _value;
-    }
+    public abstract Object getValue();
 
-    public void setValue(Object value)
-    {
-        _value = value;
-    }
+    public abstract Format getFormat();
 
-    public Format getFormat()
-    {
-        return _format;
-    }
+    public abstract String getStyleClass();
 
-    public void setFormat(Format format)
-    {
-        _format = format;
-    }
-
-    public String getStyleClass()
-    {
-        return _styleClass;
-    }
-
-    public void setStyleClass(String styleClass)
-    {
-        _styleClass = styleClass;
-    }
-
-    public boolean getRaw()
-    {
-        return _raw;
-    }
-
-    public void setRaw(boolean raw)
-    {
-        _raw = raw;
-    }
+    public abstract boolean getRaw();
 
 }

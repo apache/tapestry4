@@ -54,9 +54,11 @@
  */
 package net.sf.tapestry.multipart;
 
+import java.io.FileOutputStream;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  *  Allows an input stream to be read as both individual lines

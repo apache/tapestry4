@@ -73,11 +73,8 @@ import net.sf.tapestry.RequestCycleException;
  * 
  **/
 
-public class Image extends AbstractComponent
+public abstract class Image extends AbstractComponent
 {
-    private IAsset _image;
-    private int _border;
-
     /**
      *  Renders the &lt;img&gt; element.
      *
@@ -93,13 +90,13 @@ public class Image extends AbstractComponent
         if (cycle.isRewinding())
             return;
 
-        String imageURL = _image.buildURL(cycle);
+        String imageURL = getImage().buildURL(cycle);
 
         writer.beginEmpty("img");
 
         writer.attribute("src", imageURL);
 
-        writer.attribute("border", 0);
+        writer.attribute("border", getBorder());
 
         generateAttributes(writer, cycle);
 
@@ -107,24 +104,7 @@ public class Image extends AbstractComponent
 
     }
 
-    public int getBorder()
-    {
-        return _border;
-    }
-
-    public void setBorder(int border)
-    {
-        _border = border;
-    }
-
-    public IAsset getImage()
-    {
-        return _image;
-    }
-
-    public void setImage(IAsset image)
-    {
-        _image = image;
-    }
-
+    public abstract IAsset getImage();
+    
+    public abstract int getBorder();
 }

@@ -75,11 +75,8 @@ import net.sf.tapestry.engine.ILink;
  *
  **/
 
-public class ActionLink extends AbstractLinkComponent implements IAction
+public abstract class ActionLink extends AbstractLinkComponent implements IAction
 {
-    private IActionListener _listener;
-    private IBinding _statefulBinding;
-
     /**
      *  Returns true if the stateful parameter is bound to
      *  a true value.  If stateful is not bound, also returns
@@ -94,10 +91,12 @@ public class ActionLink extends AbstractLinkComponent implements IAction
 
     public boolean getRequiresSession()
     {
-        if (_statefulBinding == null)
+    	IBinding statefulBinding = getStatefulBinding();
+    	
+        if (statefulBinding == null)
             return true;
 
-        return _statefulBinding.getBoolean();
+        return statefulBinding.getBoolean();
     }
 
     public ILink getLink(IRequestCycle cycle) throws RequestCycleException
@@ -106,7 +105,7 @@ public class ActionLink extends AbstractLinkComponent implements IAction
 
         if (cycle.isRewound(this))
         {
-            _listener.actionTriggered(this, cycle);
+            getListener().actionTriggered(this, cycle);
 
             throw new RenderRewoundException(this);
         }
@@ -114,24 +113,7 @@ public class ActionLink extends AbstractLinkComponent implements IAction
         return getLink(cycle, Tapestry.ACTION_SERVICE, new Object[] { actionId });
     }
 
-    public IBinding getStatefulBinding()
-    {
-        return _statefulBinding;
-    }
+    public abstract IBinding getStatefulBinding();
 
-    public void setStatefulBinding(IBinding statefulBinding)
-    {
-        _statefulBinding = statefulBinding;
-    }
-
-    public IActionListener getListener()
-    {
-        return _listener;
-    }
-
-    public void setListener(IActionListener listener)
-    {
-        _listener = listener;
-    }
-
+    public abstract IActionListener getListener();
 }

@@ -76,18 +76,15 @@ import net.sf.tapestry.form.IFormComponent;
  * 
  **/
 
-public class FieldLabel extends AbstractComponent
+public abstract class FieldLabel extends AbstractComponent
 {
-    private IFormComponent _field;
-    private String _displayName;
-
     /**
-     *  Gets the {@link IField} 
-     *  and {@link IValidationDelegate delegate},
-     *  then renders the label obtained from the field.  Does nothing
-     *  when rewinding.
-     *
-     **/
+    *  Gets the {@link IField} 
+    *  and {@link IValidationDelegate delegate},
+    *  then renders the label obtained from the field.  Does nothing
+    *  when rewinding.
+    *
+    **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
@@ -95,40 +92,26 @@ public class FieldLabel extends AbstractComponent
         if (cycle.isRewinding())
             return;
 
-        String finalDisplayName = (_displayName != null) ? _displayName : _field.getDisplayName();
+        IFormComponent field = getField();
+        String displayName = getDisplayName();
+
+        String finalDisplayName = (displayName != null) ? displayName : field.getDisplayName();
 
         if (finalDisplayName == null)
             throw new RequestCycleException(
-                Tapestry.getString("FieldLabel.no-display-name", _field.getExtendedId()),
+                Tapestry.getString("FieldLabel.no-display-name", field.getExtendedId()),
                 this);
 
         IValidationDelegate delegate = Form.get(cycle).getDelegate();
 
-        delegate.writeLabelPrefix(_field, writer, cycle);
+        delegate.writeLabelPrefix(field, writer, cycle);
 
         writer.print(finalDisplayName);
 
-        delegate.writeLabelSuffix(_field, writer, cycle);
+        delegate.writeLabelSuffix(field, writer, cycle);
     }
 
-    public String getDisplayName()
-    {
-        return _displayName;
-    }
+    public abstract String getDisplayName();
 
-    public void setDisplayName(String displayName)
-    {
-        _displayName = displayName;
-    }
-
-    public IFormComponent getField()
-    {
-        return _field;
-    }
-
-    public void setField(IFormComponent field)
-    {
-        _field = field;
-    }
-
+    public abstract IFormComponent getField();
 }

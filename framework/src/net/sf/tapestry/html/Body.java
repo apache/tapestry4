@@ -87,7 +87,7 @@ import net.sf.tapestry.resource.ClasspathResourceLocation;
  * 
  **/
 
-public class Body extends AbstractComponent
+public abstract class Body extends AbstractComponent
 {
     // Unique id number, used for naming DOM items in the HTML.
 
@@ -124,15 +124,6 @@ public class Body extends AbstractComponent
      **/
 
     private Set _includedScripts;
-
-    /** 
-     *  Element name to use.
-     * 
-     *  @since 2.2
-     * 
-     **/
-
-    private String _element = "body";
 
     private static final String ATTRIBUTE_NAME = "net.sf.tapestry.active.Body";
 
@@ -314,7 +305,7 @@ public class Body extends AbstractComponent
 
             // Start the body tag.
             writer.println();
-            writer.begin(_element);
+            writer.begin(getElement());
             generateAttributes(writer, cycle);
 
             if (onLoadName != null)
@@ -459,18 +450,12 @@ public class Body extends AbstractComponent
         }
     }
 
-    /** @since 2.2 **/
+    public abstract String getElement();
 
-    public String getElement()
+    public abstract void setElement(String element);
+
+    protected void finishLoad()
     {
-        return _element;
+      	setElement("body");
     }
-
-    /** @since 2.2 **/
-
-    public void setElement(String element)
-    {
-        _element = element;
-    }
-
 }

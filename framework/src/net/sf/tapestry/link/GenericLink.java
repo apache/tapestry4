@@ -73,23 +73,12 @@ import net.sf.tapestry.engine.ILink;
  * 
  **/
 
-public class GenericLink extends AbstractLinkComponent
+public abstract class GenericLink extends AbstractLinkComponent
 {
-    private String _href;
-
-    public String getHref()
-    {
-        return _href;
-    }
-
-    public void setHref(String href)
-    {
-        _href = href;
-    }
+    public abstract String getHref();
 
     public ILink getLink(IRequestCycle cycle) throws RequestCycleException
     {
-        return new StaticLink(_href);
+        return new StaticLink(getHref());
     }
-
 }

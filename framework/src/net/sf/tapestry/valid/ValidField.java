@@ -88,7 +88,7 @@ import net.sf.tapestry.html.Body;
  *
  **/
 
-public class ValidField extends AbstractTextField implements IField, IFormComponent
+public abstract class ValidField extends AbstractTextField implements IField, IFormComponent
 {
     private static final Map TYPES = new HashMap();
 
@@ -121,43 +121,15 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
         TYPES.put("java.math.BigDecimal", BigDecimal.class);
     }
 
-    private IBinding _valueBinding;
-
-    // Can't be an "in" parameter, because FieldLabel may request it when the
-    // ValidField is not renderring.
-
-    private IBinding _displayNameBinding;
-    private String _displayNameValue;
-
-    private IValidator _validator;
 
     /** @since 2.2 **/
 
-    private String _typeName;
     private Class _valueType;
 
-    public IBinding getValueBinding()
-    {
-        return _valueBinding;
-    }
+    public abstract IBinding getValueBinding();
+    public abstract void setValueBinding(IBinding valueBinding);
 
-    public void setValueBinding(IBinding value)
-    {
-        _valueBinding = value;
-    }
-
-    public IBinding getDisplayNameBinding()
-    {
-        return _displayNameBinding;
-    }
-
-    public void setDisplayNameBinding(IBinding value)
-    {
-        _displayNameBinding = value;
-
-        if (value.isInvariant())
-            _displayNameValue = value.getString();
-    }
+    public abstract IBinding getDisplayNameBinding();
 
     /**
      *  Returns the display name for the component.  Because of the interaction
@@ -168,14 +140,7 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
 
     public String getDisplayName()
     {
-        // Return the static value, if known.
-
-        if (_displayNameValue != null)
-            return _displayNameValue;
-
-        // Otherwise, a dynamic value (how strange).
-
-        return _displayNameBinding.getString();
+    	return getDisplayNameBinding().getString();
     }
 
     /**
@@ -288,7 +253,7 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
         if (delegate.isInError())
             return delegate.getInvalidInput();
 
-        Object value = _valueBinding.getObject();
+        Object value = getValueBinding().getObject();
         String result = getValidator().toString(this, value);
 
         if (Tapestry.isNull(result) && getValidator().isRequired())
@@ -312,34 +277,16 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
             return;
         }
 
-        _valueBinding.setObject(objectValue);
+        getValueBinding().setObject(objectValue);
         delegate.reset();
     }
 
-    public IValidator getValidator()
-    {
-        return _validator;
-    }
-
-    public void setValidator(IValidator validator)
-    {
-        _validator = validator;
-    }
-
+    public abstract IValidator getValidator();
+    
     /** @since 2.2. **/
 
-    public String getTypeName()
-    {
-        return _typeName;
-    }
-
-    /** @since 2.2 **/
-
-    public void setTypeName(String typeName)
-    {
-        _typeName = typeName;
-    }
-
+    public abstract String getTypeName();
+    
     public Class getValueType()
     {
         if (_valueType == null)
@@ -350,18 +297,20 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
 
     private Class resolveType()
     {
-        if (_typeName == null)
+    	String typeName = getTypeName();
+    	
+        if (typeName == null)
             throw new NullPointerException(Tapestry.getString("ValidField.no-type", this));
 
         synchronized (TYPES)
         {
-            Class result = (Class) TYPES.get(_typeName);
+            Class result = (Class) TYPES.get(typeName);
 
             if (result != null)
                 return result;
         }
 
-        return getPage().getEngine().getResourceResolver().findClass(_typeName);
+        return getPage().getEngine().getResourceResolver().findClass(typeName);
     }
 
     protected void cleanupAfterRender(IRequestCycle cycle)

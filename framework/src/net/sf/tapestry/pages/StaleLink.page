@@ -6,6 +6,8 @@
   
 <page-specification class="net.sf.tapestry.pages.StaleLink">
   
+  <property-specification name="message" type="java.lang.String"/>
+  
   <component id="home" type="ServiceLink">
     <binding name="service" expression="@net.sf.tapestry.Tapestry@HOME_SERVICE"/>
   </component>

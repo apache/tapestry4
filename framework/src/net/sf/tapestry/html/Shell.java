@@ -81,13 +81,8 @@ import net.sf.tapestry.engine.ILink;
  * 
  **/
 
-public class Shell extends AbstractComponent
+public abstract class Shell extends AbstractComponent
 {
-    private String _title;
-    private IAsset _stylesheet;
-    private IRender _delegate;
-    private int _refresh;
-    private String _DTD = "-//W3C//DTD HTML 4.0 Transitional//EN";
 
     private static final String generatorContent =
         "Tapestry Application Framework, version " + Tapestry.VERSION;
@@ -103,10 +98,12 @@ public class Shell extends AbstractComponent
         {
             startTime = System.currentTimeMillis();
 
-            if (!Tapestry.isNull(_DTD))
+            String DTD = getDTD();
+
+            if (!Tapestry.isNull(DTD))
             {
                 writer.printRaw("<!DOCTYPE HTML PUBLIC \"");
-                writer.printRaw(_DTD);
+                writer.printRaw(DTD);
                 writer.printRaw("\">");
                 writer.println();
             }
@@ -130,19 +127,23 @@ public class Shell extends AbstractComponent
 
             writer.begin("title");
 
-            writer.print(_title);
+            writer.print(getTitle());
             writer.end(); // title
             writer.println();
 
-            if (_delegate != null)
-                _delegate.render(writer, cycle);
+            IRender delegate = getDelegate();
 
-            if (_stylesheet != null)
+            if (delegate != null)
+                delegate.render(writer, cycle);
+
+            IAsset stylesheet = getStylesheet();
+
+            if (stylesheet != null)
             {
                 writer.beginEmpty("link");
                 writer.attribute("rel", "stylesheet");
                 writer.attribute("type", "text/css");
-                writer.attribute("href", _stylesheet.buildURL(cycle));
+                writer.attribute("href", stylesheet.buildURL(cycle));
                 writer.println();
             }
 
@@ -170,7 +171,9 @@ public class Shell extends AbstractComponent
     private void writeRefresh(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
-        if (_refresh <= 0)
+        int refresh = getRefresh();
+
+        if (refresh <= 0)
             return;
 
         // Here comes the tricky part ... have to assemble a complete URL
@@ -182,7 +185,7 @@ public class Shell extends AbstractComponent
         ILink link = pageService.getLink(cycle, null, new String[] { pageName });
 
         StringBuffer buffer = new StringBuffer();
-        buffer.append(_refresh);
+        buffer.append(refresh);
         buffer.append("; URL=");
         buffer.append(link.getAbsoluteURL());
 
@@ -193,54 +196,21 @@ public class Shell extends AbstractComponent
         writer.attribute("content", buffer.toString());
     }
 
-    public IRender getDelegate()
-    {
-        return _delegate;
-    }
+    public abstract IRender getDelegate();
 
-    public void setDelegate(IRender delegate)
-    {
-        _delegate = delegate;
-    }
+    public abstract int getRefresh();
 
-    public int getRefresh()
-    {
-        return _refresh;
-    }
+    public abstract IAsset getStylesheet();
 
-    public void setRefresh(int refresh)
-    {
-        _refresh = refresh;
-    }
+    public abstract String getTitle();
 
-    public IAsset getStylesheet()
-    {
-        return _stylesheet;
-    }
+    public abstract String getDTD();
 
-    public void setStylesheet(IAsset stylesheet)
-    {
-        _stylesheet = stylesheet;
-    }
+    public abstract void setDTD(String DTD);
 
-    public String getTitle()
+    protected void finishLoad()
     {
-        return _title;
-    }
-
-    public void setTitle(String title)
-    {
-        _title = title;
-    }
-
-    public String getDTD()
-    {
-        return _DTD;
-    }
-
-    public void setDTD(String DTD)
-    {
-        _DTD = DTD;
+        setDTD("-//W3C//DTD HTML 4.0 Transitional//EN");
     }
 
 }

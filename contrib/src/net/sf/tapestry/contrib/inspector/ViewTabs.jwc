@@ -5,26 +5,8 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
 <component-specification class="net.sf.tapestry.contrib.inspector.ViewTabs">
-
-  <component id="e" type="Foreach">
-    <binding name="source" expression="views"/>
-    <binding name="value" expression="view"/>
-  </component>
   
-  <component id="select" type="ActionLink">
-    <binding name="listener" expression="listeners.selectTab"/>
-  </component>
-  
-  <component id="tab" type="Rollover">
-    <binding name="image" expression="viewImage"/>
-    <binding name="focus" expression="focusImage"/>
-  </component>
-  
-  <component id="banner" type="Image">
-    <binding name="image" expression="bannerImage"/>
-  </component>
-  
-  <component id="renderBody" type="RenderBody"/>
+  <property-specification name="view" type="net.sf.tapestry.contrib.inspector.View"/>
   
   <private-asset name="SPECIFICATION" resource-path="Specification_Np1.gif"/>
   <private-asset name="SPECIFICATION_selected" resource-path="Specification_Hp3.gif"/>

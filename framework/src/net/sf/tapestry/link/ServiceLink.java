@@ -72,36 +72,16 @@ import net.sf.tapestry.engine.ILink;
  *
  **/
 
-public class ServiceLink extends AbstractLinkComponent
+public abstract class ServiceLink extends AbstractLinkComponent
 {
-    private String _service;
-    private Object _parameters;
-
     public ILink getLink(IRequestCycle cycle) throws RequestCycleException
     {
-        Object[] parameters = DirectLink.constructServiceParameters(_parameters);
+        Object[] parameters = DirectLink.constructServiceParameters(getParameters());
 
-        return getLink(cycle, _service, parameters);
+        return getLink(cycle, getService(), parameters);
     }
 
-    public String getService()
-    {
-        return _service;
-    }
+    public abstract String getService();
 
-    public void setService(String service)
-    {
-        _service = service;
-    }
-
-    public Object getParameters()
-    {
-        return _parameters;
-    }
-
-    public void setParameters(Object parameters)
-    {
-        _parameters = parameters;
-    }
-
+    public abstract Object getParameters();
 }

@@ -75,10 +75,7 @@ import net.sf.tapestry.RenderRewoundException;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.StaleLinkException;
 import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.engine.EngineServiceLink;
 import net.sf.tapestry.engine.ILink;
-import net.sf.tapestry.event.PageDetachListener;
-import net.sf.tapestry.event.PageEvent;
 import net.sf.tapestry.html.Body;
 import net.sf.tapestry.util.IdAllocator;
 import net.sf.tapestry.util.StringSplitter;
@@ -109,20 +106,11 @@ import net.sf.tapestry.valid.IValidationDelegate;
  *  @version $Id$
  **/
 
-public class Form extends AbstractComponent implements IForm, IDirect, PageDetachListener
+public abstract class Form extends AbstractComponent implements IForm, IDirect
 {
-    private String _method;
-    private IActionListener _listener;
     private boolean _rewinding;
     private boolean _rendering;
     private String _name;
-    private boolean _direct = true;
-    private IValidationDelegate _delegate;
-
-    // Need the stateful binding, since isStateful() can be invoked
-    // when not rendering.
-
-    private IBinding _statefulBinding;
 
     /**
      *  Used when rewinding the form to figure to match allocated ids (allocated during
@@ -197,10 +185,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
      *  @since 1.0.2
      **/
 
-    public boolean isDirect()
-    {
-        return _direct;
-    }
+    public abstract boolean isDirect();
 
     /**
      *  Returns true if the stateful parameter is bound to
@@ -327,8 +312,10 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
         if (renderForm)
         {
+        	String method = getMethod();
+        	
             writer.begin("form");
-            writer.attribute("method", (_method == null) ? "post" : _method);
+            writer.attribute("method", (method == null) ? "post" : method);
             writer.attribute("name", _name);
             writer.attribute("action", link.getURL(null, false));
 
@@ -398,8 +385,10 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
                     this);
             }
 
-            if (_listener != null)
-                _listener.actionTriggered(this, cycle);
+			IActionListener listener = getListener();
+
+            if (listener != null)
+                listener.actionTriggered(this, cycle);
 
             // Abort the rewind render.
 
@@ -649,15 +638,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
         super.cleanupAfterRender(cycle);
     }
 
-    /**
-     *  Clears the delegate property at the end of the request cycle.
-     * 
-     **/
 
-    public void pageDetached(PageEvent event)
-    {
-        _delegate = null;
-    }
 
     /**
      *  Converts the allocateIds property into a string, a comma-separated list of ids.
@@ -707,40 +688,15 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
             _allocatedIds.add(ids[i]);
     }
 
-    public IValidationDelegate getDelegate()
-    {
-        return _delegate;
-    }
+    public abstract IValidationDelegate getDelegate();
 
-    public void setDelegate(IValidationDelegate delegate)
-    {
-        _delegate = delegate;
-    }
+    public abstract void setDelegate(IValidationDelegate delegate);
 
-    public void setDirect(boolean direct)
-    {
-        _direct = direct;
-    }
+    public abstract void setDirect(boolean direct);
+    
+    public abstract IActionListener getListener();
 
-    public IActionListener getListener()
-    {
-        return _listener;
-    }
-
-    public void setListener(IActionListener listener)
-    {
-        _listener = listener;
-    }
-
-    public String getMethod()
-    {
-        return _method;
-    }
-
-    public void setMethod(String method)
-    {
-        _method = method;
-    }
+    public abstract String getMethod();
 
     /**
      *  Invoked when not rendering, so it uses the stateful binding.
@@ -750,19 +706,19 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     public boolean isStateful()
     {
-        if (_statefulBinding == null)
+    	IBinding statefulBinding = getStatefulBinding();
+    	
+        if (statefulBinding == null)
             return true;
 
-        return _statefulBinding.getBoolean();
+        return statefulBinding.getBoolean();
     }
 
-    public IBinding getStatefulBinding()
+    public abstract IBinding getStatefulBinding();
+    
+    protected void finishLoad()
     {
-        return _statefulBinding;
+        setDirect(true);
     }
 
-    public void setStatefulBinding(IBinding statefulBinding)
-    {
-        _statefulBinding = statefulBinding;
-    }
 }

@@ -75,30 +75,31 @@ import net.sf.tapestry.Tapestry;
  *  break the input into individual lines and insert additional
  *  HTML to make each line seperate.
  *
- * <p>This can be down more simply, using the &lt;pre&gt; HTML element, but
- * that usually renders the text in a non-proportional font.
+ *  <p>This can be down more simply, using the &lt;pre&gt; HTML element, but
+ *  that usually renders the text in a non-proportional font.
  *
  * @author Howard Lewis Ship
  * @version $Id$
  * 
  **/
 
-public class InsertText extends AbstractComponent
+public abstract class InsertText extends AbstractComponent
 {
-    private String _value;
-    private InsertTextMode _mode = InsertTextMode.BREAK;
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
-        if (_value == null)
+        String value = getValue();
+
+        if (value == null)
             return;
 
         StringReader reader = null;
         LineNumberReader lineReader = null;
+        InsertTextMode mode = getMode();
 
         try
         {
-            reader = new StringReader(_value);
+            reader = new StringReader(value);
 
             lineReader = new LineNumberReader(reader);
 
@@ -113,7 +114,7 @@ public class InsertText extends AbstractComponent
                 if (line == null)
                     break;
 
-                _mode.writeLine(lineNumber, line, writer);
+                mode.writeLine(lineNumber, line, writer);
 
                 lineNumber++;
             }
@@ -121,7 +122,10 @@ public class InsertText extends AbstractComponent
         }
         catch (IOException ex)
         {
-            throw new RequestCycleException(Tapestry.getString("InsertText.conversion-error"), this, ex);
+            throw new RequestCycleException(
+                Tapestry.getString("InsertText.conversion-error"),
+                this,
+                ex);
         }
         finally
         {
@@ -145,24 +149,15 @@ public class InsertText extends AbstractComponent
         }
     }
 
-    public InsertTextMode getMode()
-    {
-        return _mode;
-    }
+    public abstract InsertTextMode getMode();
 
-    public void setMode(InsertTextMode mode)
-    {
-        _mode = mode;
-    }
+    public abstract void setMode(InsertTextMode mode);
 
-    public String getValue()
-    {
-        return _value;
-    }
+    public abstract String getValue();
 
-    public void setValue(String value)
+    protected void finishLoad()
     {
-        _value = value;
+        setMode(InsertTextMode.BREAK);
     }
 
 }

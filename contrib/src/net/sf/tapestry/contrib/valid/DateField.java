@@ -155,7 +155,7 @@ import net.sf.tapestry.valid.ValidField;
  * 
  **/
 
-public class DateField extends ValidField
+public abstract class DateField extends ValidField
 {
     private IBinding minimumBinding;
     private IBinding maximumBinding;

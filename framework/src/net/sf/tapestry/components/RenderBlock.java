@@ -91,10 +91,8 @@ import net.sf.tapestry.RequestCycleException;
  * 
  **/
 
-public class RenderBlock extends AbstractComponent
+public abstract class RenderBlock extends AbstractComponent
 {
-    private Block _block;
-
     /**
      *  If block is not null,
      *  then the block's inserter is set (to this),
@@ -106,25 +104,19 @@ public class RenderBlock extends AbstractComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
-        if (_block != null)
+    	Block block = getBlock();
+    	
+        if (block != null)
         {
             // make a copy of the inserter so we don't overwrite completely
-            IComponent previousInserter = _block.getInserter();
-            _block.setInserter(this);
-            _block.renderBody(writer, cycle);
+            IComponent previousInserter = block.getInserter();
+            block.setInserter(this);
+            block.renderBody(writer, cycle);
             // reset the inserter as it was before we changed it
-            _block.setInserter(previousInserter);
+            block.setInserter(previousInserter);
         }
     }
 
-    public Block getBlock()
-    {
-        return _block;
-    }
-
-    public void setBlock(Block block)
-    {
-        _block = block;
-    }
+    public abstract Block getBlock();
 
 }

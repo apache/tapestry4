@@ -70,11 +70,8 @@ import net.sf.tapestry.RequestCycleException;
  * 
  **/
 
-public class TextArea extends AbstractFormComponent
+public abstract class TextArea extends AbstractFormComponent
 {
-    private int _rows;
-    private int _columns;
-    private boolean _disabled;
     private String _name;
 
     public String getName()
@@ -82,17 +79,14 @@ public class TextArea extends AbstractFormComponent
         return _name;
     }
 
-    /** @since 2.2 **/
-
-    private String _value;
-
     /**
      *  Renders the form element, or responds when the form containing the element
      *  is submitted (by checking {@link Form#isRewinding()}.
      *
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         IForm form = getForm(cycle);
 
@@ -107,75 +101,49 @@ public class TextArea extends AbstractFormComponent
 
         if (rewinding)
         {
-            _value = cycle.getRequestContext().getParameter(_name);
+        	if (!isDisabled())
+	            setValue(cycle.getRequestContext().getParameter(_name));
 
             return;
         }
+        
+        if (cycle.isRewinding())
+        	return;
 
         writer.begin("textarea");
 
         writer.attribute("name", _name);
 
-        if (_disabled)
+        if (isDisabled())
             writer.attribute("disabled");
 
-        if (_rows != 0)
-            writer.attribute("rows", _rows);
+        int rows = getRows();
+        int columns = getColumns();
 
-        if (_columns != 0)
-            writer.attribute("cols", _columns);
+        if (rows != 0)
+            writer.attribute("rows", rows);
+
+        if (columns != 0)
+            writer.attribute("cols", columns);
 
         generateAttributes(writer, cycle);
 
-        if (_value != null)
-            writer.print(_value);
+        String value = getValue();
+
+        if (value != null)
+            writer.print(value);
 
         writer.end();
 
     }
 
-    public int getColumns()
-    {
-        return _columns;
-    }
+    public abstract int getColumns();
 
-    public void setColumns(int columns)
-    {
-        _columns = columns;
-    }
+    public abstract boolean isDisabled();
 
-    public boolean isDisabled()
-    {
-        return _disabled;
-    }
+    public abstract int getRows();
 
-    public void setDisabled(boolean disabled)
-    {
-        _disabled = disabled;
-    }
+    public abstract String getValue();
 
-    public int getRows()
-    {
-        return _rows;
-    }
-
-    public void setRows(int rows)
-    {
-        _rows = rows;
-    }
-
-    /** @since 2.2 **/
-
-    public String getValue()
-    {
-        return _value;
-    }
-
-    /** @since 2.2 **/
-
-    public void setValue(String value)
-    {
-        _value = value;
-    }
-
+    public abstract void setValue(String value);
 }

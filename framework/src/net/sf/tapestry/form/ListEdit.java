@@ -55,9 +55,7 @@
 package net.sf.tapestry.form;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import net.sf.tapestry.AbstractComponent;
 import net.sf.tapestry.IActionListener;
@@ -83,37 +81,8 @@ import net.sf.tapestry.util.io.DataSqueezer;
  * 
  **/
 
-public class ListEdit extends AbstractComponent
+public abstract class ListEdit extends AbstractComponent
 {
-    private IBinding _valueBinding;
-    private IBinding _indexBinding;
-    private IBinding _sourceBinding;
-
-    private String _element;
-
-    /** @since 2.2 **/
-
-    private IActionListener _listener;
-
-    public void setValueBinding(IBinding value)
-    {
-        _valueBinding = value;
-    }
-
-    public IBinding getValueBinding()
-    {
-        return _valueBinding;
-    }
-
-    public void setIndexBinding(IBinding value)
-    {
-        _indexBinding = value;
-    }
-
-    public IBinding getIndexBinding()
-    {
-        return _indexBinding;
-    }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
@@ -138,7 +107,7 @@ public class ListEdit extends AbstractComponent
 
         if (!cycleRewinding)
         {
-            i = Tapestry.coerceToIterator(_sourceBinding.getObject());
+            i = Tapestry.coerceToIterator(getSourceBinding().getObject());
         }
         else
         {
@@ -148,21 +117,26 @@ public class ListEdit extends AbstractComponent
             i = Tapestry.coerceToIterator(submittedValues);
         }
 
-		// If the source (when rendering), or the submitted values (on submit)
-		// are null, then skip the remainder (nothing to update, nothing to
-		// render).
-		
-		if (i == null)
-			return;
-			
+        // If the source (when rendering), or the submitted values (on submit)
+        // are null, then skip the remainder (nothing to update, nothing to
+        // render).
+
+        if (i == null)
+            return;
+
         int index = 0;
+
+        IBinding indexBinding = getIndexBinding();
+        IBinding valueBinding = getValueBinding();
+        IActionListener listener = getListener();
+        String element = getElement();
 
         while (i.hasNext())
         {
             Object value = null;
 
-            if (_indexBinding != null)
-                _indexBinding.setInt(index++);
+            if (indexBinding != null)
+                indexBinding.setInt(index++);
 
             if (cycleRewinding)
                 value = convertValue((String) i.next());
@@ -172,20 +146,20 @@ public class ListEdit extends AbstractComponent
                 writeValue(writer, name, value);
             }
 
-            _valueBinding.setObject(value);
+            valueBinding.setObject(value);
 
-            if (_listener != null)
-                _listener.actionTriggered(this, cycle);
+            if (listener != null)
+                listener.actionTriggered(this, cycle);
 
-            if (_element != null)
+            if (element != null)
             {
-                writer.begin(_element);
+                writer.begin(element);
                 generateAttributes(writer, cycle);
             }
 
             renderBody(writer, cycle);
 
-            if (_element != null)
+            if (element != null)
                 writer.end();
 
         }
@@ -230,15 +204,7 @@ public class ListEdit extends AbstractComponent
         }
     }
 
-    public String getElement()
-    {
-        return _element;
-    }
-
-    public void setElement(String element)
-    {
-        _element = element;
-    }
+    public abstract String getElement();
 
     private DataSqueezer getDataSqueezer()
     {
@@ -247,30 +213,14 @@ public class ListEdit extends AbstractComponent
 
     /** @since 2.2 **/
 
-    public IActionListener getListener()
-    {
-        return _listener;
-    }
+    public abstract IActionListener getListener();
 
-    /** @since 2.2 **/
+    /** @since 2.4 **/
 
-    public void setListener(IActionListener listener)
-    {
-        _listener = listener;
-    }
+    public abstract IBinding getSourceBinding();
 
-	/** @since 2.4 **/
-	
-    public IBinding getSourceBinding()
-    {
-        return _sourceBinding;
-    }
+    public abstract IBinding getValueBinding();
 
-	/** @since 2.4 **/
-	
-    public void setSourceBinding(IBinding sourceBinding)
-    {
-        _sourceBinding = sourceBinding;
-    }
+    public abstract IBinding getIndexBinding();
 
 }

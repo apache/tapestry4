@@ -67,15 +67,12 @@ import net.sf.tapestry.bean.BeanProvider;
 import net.sf.tapestry.bean.BeanProviderPropertyAccessor;
 import net.sf.tapestry.event.ChangeObserver;
 import net.sf.tapestry.event.ObservedChangeEvent;
-import net.sf.tapestry.event.PageCleanupListener;
 import net.sf.tapestry.event.PageDetachListener;
 import net.sf.tapestry.event.PageRenderListener;
 import net.sf.tapestry.listener.ListenerMap;
 import net.sf.tapestry.param.ParameterManager;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.util.prop.OgnlUtils;
-import net.sf.tapestry.util.prop.PropertyFinder;
-import net.sf.tapestry.util.prop.PropertyInfo;
 import ognl.OgnlRuntime;
 
 /**
@@ -463,12 +460,6 @@ public abstract class AbstractComponent implements IComponent
             Map.Entry entry = (Map.Entry) i.next();
             String name = (String) entry.getKey();
 
-            // Skip over formal parameters stored in the bindings
-            // Map.  We're just interested in informal parameters.
-
-            if (_specification.getParameter(name) != null)
-                continue;
-
             IBinding binding = (IBinding) entry.getValue();
 
             Object value = binding.getObject();
@@ -487,7 +478,6 @@ public abstract class AbstractComponent implements IComponent
                 attribute = value.toString();
 
             writer.attribute(name, attribute);
-
         }
 
     }
@@ -495,13 +485,10 @@ public abstract class AbstractComponent implements IComponent
     /**
      *  Returns the named binding, or null if it doesn't exist.
      *
-     *  <p>This method looks for a JavaBeans property with an
-     *  appropriate name, of type {@link IBinding}.  The property
-     *  should be named <code><i>name</i>Binding</code>.  If it exists
-     *  and is both readable and writable, then it is accessor method
-     *  is invoked.  Components which implement such methods can
-     *  access their own binding through their instance variables
-     *  instead of invoking this method, a performance optimization.
+     *  All components are expected to have a read/write accessor for each
+     *  formal parameter (such accessors are fabricated as needed).  Formal
+     *  parameters are accessed via this property, informal parameters are
+     *  stored in a Map.
      *
      *  @see #setBinding(String,IBinding)
      *
@@ -509,12 +496,10 @@ public abstract class AbstractComponent implements IComponent
 
     public IBinding getBinding(String name)
     {
-        String bindingPropertyName = name + "Binding";
-        PropertyInfo info = PropertyFinder.getPropertyInfo(getClass(), bindingPropertyName);
-
-        if (info != null && info.isReadWrite() && info.getType().equals(IBinding.class))
+        if (_specification.getParameter(name) != null)
         {
             IResourceResolver resolver = getPage().getEngine().getResourceResolver();
+            String bindingPropertyName = name + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
 
             return (IBinding) OgnlUtils.get(bindingPropertyName, resolver, this);
         }
@@ -656,13 +641,7 @@ public abstract class AbstractComponent implements IComponent
      *  Adds the binding with the given name, replacing any existing binding
      *  with that name.
      *
-     *  <p>This method checks to see if a matching JavaBeans property
-     *  (with a name of <code><i>name</i>Binding</code> and a type of
-     *  {@link IBinding}) exists.  If so, that property is updated.
-     *  An optimized component can simply implement accessor and
-     *  mutator methods and then access its bindings via its own
-     *  instance variables, rather than going through {@link
-     *  #getBinding(String)}.
+     *  <p>Formal parameters will have an read/write property.
      *
      *  <p>Informal parameters should <em>not</em> be stored in
      *  instance variables if @link
@@ -672,12 +651,9 @@ public abstract class AbstractComponent implements IComponent
 
     public void setBinding(String name, IBinding binding)
     {
-        String bindingPropertyName = name + "Binding";
-
-        PropertyInfo info = PropertyFinder.getPropertyInfo(getClass(), bindingPropertyName);
-
-        if (info != null && info.isReadWrite() && info.getType().equals(IBinding.class))
+        if (_specification.getParameter(name) != null)
         {
+            String bindingPropertyName = name + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
             IResourceResolver resolver = getPage().getEngine().getResourceResolver();
             OgnlUtils.set(bindingPropertyName, resolver, this, binding);
             return;
@@ -745,8 +721,7 @@ public abstract class AbstractComponent implements IComponent
 
         HashSet result = new HashSet();
 
-        // All the informal bindings go into the bindings Map.   Also
-        // formal parameters where there isn't a corresponding JavaBeans property.
+        // All the informal bindings go into the bindings Map. 
 
         if (_bindings != null)
             result.addAll(_bindings.keySet());
@@ -787,8 +762,7 @@ public abstract class AbstractComponent implements IComponent
     {
         Map result = new HashMap();
 
-        // Add any informal parameters, as well as any formal parameters
-        // that don't have a correspoinding JavaBeans property.
+        // Add any informal parameters.
 
         if (_bindings != null)
             result.putAll(_bindings);
@@ -902,7 +876,15 @@ public abstract class AbstractComponent implements IComponent
     protected void prepareForRender(IRequestCycle cycle) throws RequestCycleException
     {
         if (_parameterManager == null)
+        {
+            // Pages inherit from this class too, but pages (by definition)
+            // never have parameters.
+
+            if (getSpecification().isPageSpecification())
+                return;
+
             _parameterManager = new ParameterManager(this);
+        }
 
         _parameterManager.setParameters(cycle);
     }
@@ -937,7 +919,8 @@ public abstract class AbstractComponent implements IComponent
     protected void cleanupAfterRender(IRequestCycle cycle)
     
     {
-        _parameterManager.resetParameters(cycle);
+        if (_parameterManager != null)
+            _parameterManager.resetParameters(cycle);
     }
 
     /**

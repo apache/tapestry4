@@ -73,48 +73,25 @@ import net.sf.tapestry.engine.ILink;
  *
  **/
 
-public class PageLink extends AbstractLinkComponent
+public abstract class PageLink extends AbstractLinkComponent
 {
-    private String _targetPage;
-
-    /** @since 2.2 **/
-
-    private INamespace _targetNamespace;
-
     public ILink getLink(IRequestCycle cycle) throws RequestCycleException
     {
         String parameter = null;
+        INamespace namespace = getTargetNamespace();
+        String targetPage = getTargetPage();
 
-        if (_targetNamespace == null)
-            parameter = _targetPage;
+        if (namespace == null)
+            parameter = targetPage;
         else
-            parameter = _targetNamespace.constructQualifiedName(_targetPage);
+            parameter = namespace.constructQualifiedName(targetPage);
 
         return getLink(cycle, Tapestry.PAGE_SERVICE, new String[] { parameter });
     }
 
-    public String getTargetPage()
-    {
-        return _targetPage;
-    }
-
-    public void setTargetPage(String targetPage)
-    {
-        _targetPage = targetPage;
-    }
+    public abstract String getTargetPage();
 
     /** @since 2.2 **/
 
-    public INamespace getTargetNamespace()
-    {
-        return _targetNamespace;
-    }
-
-    /** @since 2.2 **/
-
-    public void setTargetNamespace(INamespace targetNamespace)
-    {
-        _targetNamespace = targetNamespace;
-    }
-
+    public abstract INamespace getTargetNamespace();
 }

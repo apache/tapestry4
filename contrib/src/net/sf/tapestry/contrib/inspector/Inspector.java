@@ -70,70 +70,29 @@ import net.sf.tapestry.html.BasePage;
  *  @version $Id$
  **/
 
-public class Inspector extends BasePage
+public abstract class Inspector extends BasePage
 {
-    private View _view = View.SPECIFICATION;
-    private String _inspectedPageName;
-    private String _inspectedIdPath;
+    private Map _blocks = new HashMap();
 
-    private static final int MAP_SIZE = 7;
-
-    private Map _blocks;
-
-    public void detach()
+    protected void finishLoad()
     {
-        _view = View.SPECIFICATION;
-        _inspectedPageName = null;
-        _inspectedIdPath = null;
-
-        super.detach();
-    }
-
-    public void finishLoad()
-    {
-        _blocks = new HashMap(MAP_SIZE);
-
         _blocks.put(View.TEMPLATE, getComponent("templateBlock"));
         _blocks.put(View.SPECIFICATION, getComponent("specificationBlock"));
         _blocks.put(View.ENGINE, getComponent("engineBlock"));
         _blocks.put(View.PROPERTIES, getComponent("propertiesBlock"));
     }
 
-    public View getView()
-    {
-        return _view;
-    }
+    public abstract View getView();
 
-    public void setView(View value)
-    {
-        _view = value;
+    public abstract void setView(View value);
 
-        fireObservedChange("view", value);
-    }
+    public abstract String getInspectedPageName();
+    
+    public abstract void setInspectedPageName(String value);
 
-    public String getInspectedPageName()
-    {
-        return _inspectedPageName;
-    }
+    public abstract String getInspectedIdPath();
 
-    public void setInspectedPageName(String value)
-    {
-        _inspectedPageName = value;
-
-        fireObservedChange("inspectedPageName", value);
-    }
-
-    public String getInspectedIdPath()
-    {
-        return _inspectedIdPath;
-    }
-
-    public void setInspectedIdPath(String value)
-    {
-        _inspectedIdPath = value;
-
-        fireObservedChange("inspectedIdPath", value);
-    }
+    public abstract void setInspectedIdPath(String value);
 
     /** 
      *  Invoked to change the component being inspected within the current
@@ -195,7 +154,7 @@ public class Inspector extends BasePage
 
     public IPage getInspectedPage()
     {
-        return getRequestCycle().getPage(_inspectedPageName);
+        return getRequestCycle().getPage(getInspectedPageName());
     }
 
     /**
@@ -206,7 +165,7 @@ public class Inspector extends BasePage
 
     public IComponent getInspectedComponent()
     {
-        return getInspectedPage().getNestedComponent(_inspectedIdPath);
+        return getInspectedPage().getNestedComponent(getInspectedIdPath());
     }
 
     public String getInspectorTitle()
@@ -221,6 +180,6 @@ public class Inspector extends BasePage
 
     public Block getBlockForView()
     {
-        return (Block) _blocks.get(_view);
+        return (Block) _blocks.get(getView());
     }
 }

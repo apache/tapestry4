@@ -67,48 +67,32 @@ import net.sf.tapestry.IRequestCycle;
  *
  **/
 
-public class ViewTabs extends BaseComponent
+public abstract class ViewTabs extends BaseComponent
 {
-    private static View[] views =
+    private static View[] _views =
         {
             View.SPECIFICATION,
             View.TEMPLATE,
             View.PROPERTIES,
             View.ENGINE };
 
-    private View view;
-
-    public View[] getViews()
+     public View[] getViews()
     {
-        return views;
+        return _views;
     }
 
-    public void setView(View value)
-    {
-        view = value;
-    }
+    public abstract void setView(View value);
 
-    // We don't worry about cleaning this up at the end of the request cycle
-    // because the value is an Enum, a singleton that would stay in memory
-    // anyway.
-
-    public View getView()
-    {
-        return view;
-    }
+    public abstract View getView();
 
     private IAsset getImageForView(boolean focus)
     {
-        StringBuffer buffer;
-        Inspector inspector;
-        boolean selected;
-        String key;
+        Inspector inspector = (Inspector) getPage();
+		View view = getView();
+		
+        boolean selected = (view == inspector.getView());
 
-        inspector = (Inspector) getPage();
-
-        selected = (view == inspector.getView());
-
-        buffer = new StringBuffer(view.getName());
+        StringBuffer buffer = new StringBuffer(view.getName());
 
         if (selected)
             buffer.append("_selected");
@@ -116,7 +100,7 @@ public class ViewTabs extends BaseComponent
         if (focus)
             buffer.append("_focus");
 
-        key = buffer.toString();
+        String key = buffer.toString();
 
         return (IAsset) getAssets().get(key);
     }
@@ -133,22 +117,16 @@ public class ViewTabs extends BaseComponent
 
     public IAsset getBannerImage()
     {
-        Inspector inspector;
-        View selectedView;
-        String key;
-
-        inspector = (Inspector) getPage();
-        selectedView = inspector.getView();
-        key = selectedView.getName() + "_banner";
+         Inspector inspector = (Inspector) getPage();
+        View selectedView = inspector.getView();
+        String key = selectedView.getName() + "_banner";
 
         return (IAsset) getAssets().get(key);
     }
 
     public void selectTab(IRequestCycle cycle)
     {
-        Inspector inspector;
-
-        inspector = (Inspector) getPage();
-        inspector.setView(view);
+        Inspector inspector = (Inspector) getPage();
+        inspector.setView(getView());
     }
 }

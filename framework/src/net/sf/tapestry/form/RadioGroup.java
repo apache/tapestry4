@@ -75,12 +75,8 @@ import net.sf.tapestry.Tapestry;
  * 
  **/
 
-public class RadioGroup extends AbstractFormComponent
-{
-    private IBinding _selectedBinding;
-  
-  	private boolean _disabled;
-  	
+public abstract class RadioGroup extends AbstractFormComponent
+{  	
     // Cached copy of the value from the selectedBinding
     private Object _selection;
 
@@ -111,15 +107,7 @@ public class RadioGroup extends AbstractFormComponent
         return (RadioGroup) cycle.getAttribute(ATTRIBUTE_NAME);
     }
 
-    public IBinding getSelectedBinding()
-    {
-        return _selectedBinding;
-    }
-
-    public void setSelectedBinding(IBinding value)
-    {
-        _selectedBinding = value;
-    }
+    public abstract IBinding getSelectedBinding();
 
 
     public String getName()
@@ -141,11 +129,8 @@ public class RadioGroup extends AbstractFormComponent
      *
      **/
 
-    public boolean isDisabled()
-    {
-        return _disabled;
-    }
-
+    public abstract boolean isDisabled();
+    
     public boolean isRewinding()
     {
         if (!_rendering)
@@ -183,7 +168,7 @@ public class RadioGroup extends AbstractFormComponent
 
     public void updateSelection(Object value)
     {
-        _selectedBinding.setObject(value);
+        getSelectedBinding().setObject(value);
     }
 
     /**
@@ -244,7 +229,7 @@ public class RadioGroup extends AbstractFormComponent
             // selection is, so that the correct one can mark itself 'checked'.
 
             if (!_rewinding)
-                _selection = _selectedBinding.getObject();
+                _selection = getSelectedBinding().getObject();
 
             renderBody(writer, cycle);
         }
@@ -256,10 +241,4 @@ public class RadioGroup extends AbstractFormComponent
 
         cycle.removeAttribute(ATTRIBUTE_NAME);
     }
-
-    public void setDisabled(boolean disabled)
-    {
-        _disabled = disabled;
-    }
-
 }

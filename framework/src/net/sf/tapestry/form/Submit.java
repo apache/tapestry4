@@ -78,37 +78,14 @@ import net.sf.tapestry.RequestCycleException;
  * 
  **/
 
-public class Submit extends AbstractFormComponent
+public abstract class Submit extends AbstractFormComponent
 {
-    private String _label;
-    private IActionListener _listener;
-    private boolean _disabled;
-    private Object _tag;
-    
-    /**
-     *  Can't use a "form" direction parameter, because
-     *  the binding must be updated before
-     *  the listener is invoked.
-     * 
-     **/
-    
-    private IBinding _selectedBinding;
 
     private String _name;
 
     public String getName()
     {
         return _name;
-    }
-
-    public void setSelectedBinding(IBinding value)
-    {
-        _selectedBinding = value;
-    }
-
-    public IBinding getSelectedBinding()
-    {
-        return _selectedBinding;
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -125,7 +102,7 @@ public class Submit extends AbstractFormComponent
         {
             // Don't bother doing anything if disabled.
 
-            if (_disabled)
+            if (isDisabled())
                 return;
 
             // How to know which Submit button was actually
@@ -141,11 +118,15 @@ public class Submit extends AbstractFormComponent
             if (value == null)
                 return;
 
-            if (_selectedBinding != null)
-                _selectedBinding.setObject(_tag);
+            IBinding selectedBinding = getSelectedBinding();
 
-            if (_listener != null)
-                _listener.actionTriggered(this, cycle);
+            if (selectedBinding != null)
+                selectedBinding.setObject(getTag());
+
+            IActionListener listener = getListener();
+
+            if (listener != null)
+                listener.actionTriggered(this, cycle);
 
             return;
         }
@@ -154,55 +135,27 @@ public class Submit extends AbstractFormComponent
         writer.attribute("type", "submit");
         writer.attribute("name", _name);
 
-        if (_disabled)
+        if (isDisabled())
             writer.attribute("disabled");
 
-        if (_label != null)
-            writer.attribute("value", _label);
+        String label = getLabel();
+
+        if (label != null)
+            writer.attribute("value", label);
 
         generateAttributes(writer, cycle);
 
         writer.closeTag();
     }
 
-    public String getLabel()
-    {
-        return _label;
-    }
+    public abstract String getLabel();
 
-    public void setLabel(String label)
-    {
-        _label = label;
-    }
+    public abstract IBinding getSelectedBinding();
 
-    public boolean isDisabled()
-    {
-        return _disabled;
-    }
+    public abstract boolean isDisabled();
 
-    public void setDisabled(boolean disabled)
-    {
-        _disabled = disabled;
-    }
+    public abstract IActionListener getListener();
 
-    public IActionListener getListener()
-    {
-        return _listener;
-    }
-
-    public void setListener(IActionListener listener)
-    {
-        _listener = listener;
-    }
-
-    public Object getTag()
-    {
-        return _tag;
-    }
-
-    public void setTag(Object tag)
-    {
-        _tag = tag;
-    }
+    public abstract Object getTag();
 
 }

@@ -129,7 +129,7 @@ import net.sf.tapestry.valid.ValidField;
  * 
  **/
 
-public class ValidatingTextField extends ValidField
+public abstract class ValidatingTextField extends ValidField
 {
     private IBinding minimumLengthBinding;
     private IBinding requiredBinding;

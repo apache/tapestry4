@@ -6,37 +6,12 @@
 	
 <page-specification class="net.sf.tapestry.contrib.inspector.Inspector">
 
-  <component id="shell" type="Shell">
-    <binding name="title" expression="inspectorTitle"/>
-    <binding name="stylesheet" expression="assets.stylesheet"/>
-  </component>
-
-  <component id="body" type="Body"/>
-
-  <component id="selector" type="inspector:Selector"/>
-
-  <component id="viewTabs" type="inspector:ViewTabs"/>
-
-  <component id="renderBlockForView" type="RenderBlock">
-    <binding name="block" expression="blockForView"/>
-  </component>
-
-  <component id="specificationBlock" type="Block"/>
-
-  <component id="showSpecification" type="inspector:ShowSpecification"/>
-
-  <component id="templateBlock" type="Block"/>
-
-  <component id="showTemplate" type="inspector:ShowTemplate"/>
-
-  <component id="propertiesBlock" type="Block"/>
-
-  <component id="showProperties" type="inspector:ShowProperties"/>
-
-  <component id="engineBlock" type="Block"/>
-
-  <component id="showEngine" type="inspector:ShowEngine"/>
-
+  <property-specification name="view" type="net.sf.tapestry.contrib.inspector.View"
+  		persistent="yes"
+  		initial-value="@net.sf.tapestry.contrib.inspector.View@SPECIFICATION"/>
+  <property-specification name="inspectedPageName" type="java.lang.String" persistent="yes"/>
+  <property-specification name="inspectedIdPath" type="java.lang.String" persistent="yes"/>
+  
   <private-asset name="stylesheet" resource-path="Inspector.css"/>
 
 </page-specification>

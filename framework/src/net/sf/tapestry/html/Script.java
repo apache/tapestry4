@@ -86,11 +86,10 @@ import net.sf.tapestry.Tapestry;
  *
  **/
 
-public class Script extends AbstractComponent
+public abstract class Script extends AbstractComponent
 {
     private static final Log LOG = LogFactory.getLog(Script.class);
 
-    private String _scriptPath;
     private Map _baseSymbols;
 
     /**
@@ -150,7 +149,9 @@ public class Script extends AbstractComponent
 
     private IScript getParsedScript(IRequestCycle cycle) throws RequestCycleException
     {
-        if (_scriptPath == null)
+        String scriptPath = getScriptPath();
+
+        if (scriptPath == null)
             throw new RequiredParameterException(this, "scriptPath", getBinding("scriptPath"));
 
         IEngine engine = cycle.getEngine();
@@ -159,8 +160,9 @@ public class Script extends AbstractComponent
         // If the script path is relative, it should be relative to the Script component's
         // container (i.e., relative to a page in the application).
 
-        IResourceLocation rootLocation = getContainer().getSpecification().getSpecificationLocation();
-        IResourceLocation scriptLocation = rootLocation.getRelativeLocation(_scriptPath);
+        IResourceLocation rootLocation =
+            getContainer().getSpecification().getSpecificationLocation();
+        IResourceLocation scriptLocation = rootLocation.getRelativeLocation(scriptPath);
 
         try
         {
@@ -173,7 +175,8 @@ public class Script extends AbstractComponent
 
     }
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         ScriptSession session;
 
@@ -182,7 +185,9 @@ public class Script extends AbstractComponent
             Body body = Body.get(cycle);
 
             if (body == null)
-                throw new RequestCycleException(Tapestry.getString("Script.must-be-contained-by-body"), this);
+                throw new RequestCycleException(
+                    Tapestry.getString("Script.must-be-contained-by-body"),
+                    this);
 
             _symbols = getInputSymbols();
 
@@ -202,15 +207,7 @@ public class Script extends AbstractComponent
         renderBody(writer, cycle);
     }
 
-    public String getScriptPath()
-    {
-        return _scriptPath;
-    }
-
-    public void setScriptPath(String scriptPath)
-    {
-        _scriptPath = scriptPath;
-    }
+    public abstract String getScriptPath();
 
     public Map getBaseSymbols()
     {
