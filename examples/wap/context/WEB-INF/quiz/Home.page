@@ -4,7 +4,7 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN"
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 
-<page-specification class="wap.quiz.Home">
+<page-specification class="org.apache.tapestry.wap.quiz.Home">
 
     <component id="username" type="wml:Postfield">
         <binding name="value" expression="username"/>
@@ -13,7 +13,7 @@
 
     <component id="level" type="wml:SelectionField">
         <binding name="value" expression="level"/>
-        <binding name="model" expression="@wap.quiz.Home@LEVEL_MODEL"/>
+        <binding name="model" expression="@org.apache.tapestry.wap.quiz.Home@LEVEL_MODEL"/>
         <binding name="name" expression="components.selectLevel.name"/>
     </component>
 
@@ -24,7 +24,7 @@
 
     <component id="selectLevel" type="wml:PropertySelection">
         <static-binding name="name">level</static-binding>
-        <binding name="model" expression="@wap.quiz.Home@LEVEL_MODEL"/>
+        <binding name="model" expression="@org.apache.tapestry.wap.quiz.Home@LEVEL_MODEL"/>
     </component>
 
     <component id="go" type="wml:Go">
