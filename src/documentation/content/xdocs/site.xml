@@ -44,6 +44,7 @@
       <state label="Managing server-side state" href="state.html"/>
       <hivemind label="HiveMind Integration" href="hivemind.html"/>
       <friend-urls label="Friendly URLs" href="friendly-urls.html"/>
+      <events label="Page Events" href="events.html"/>
       <configuration label="Configuring Tapestry" href="configuration.html"/>
       <proprties label="Tapestry Object Properties" href="properties.html"/>
       <upgrade label="Upgrading from 3.0" href="upgrade.html"/>

@@ -150,6 +150,7 @@
       <action type="update" dev="HLS"> Use enhancement to inject page event registration into components. </action>
       <action type="add" dev="PF"> Added LabeledPropertySelectionModel that decorates an IPropertySelectionModel with an label row. </action>
       <action type="add" dev="PF"> New ButtonLinkRenderer, an ILinkRenderer implementation that renders a link component as a button. </action>
+      <action type="update" dev="HLS"> Split PageRenderListener into PageBeginRenderListener and PageEndRenderListener. </action>
     </release>
     <release version="3.0" date="Apr 18 2004">
       <action type="fix" dev="HLS" fixes-bug="28345"> Workbench/Upload exception when no file specified </action>

@@ -27,8 +27,10 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.ObservedChangeEvent;
+import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
+import org.apache.tapestry.test.Creator;
 import org.easymock.MockControl;
 
 /**
@@ -183,25 +185,26 @@ public class TestPageRecorder extends HiveMindTestCase
         IRequestCycle cycle = newCycle();
         ErrorLog log = newLog();
 
-        MockControl pagec = newControl(IPage.class);
-        IPage page = (IPage) pagec.getMock();
+        Creator creator = new Creator();
+
+        PageFixture page = (PageFixture) creator.newInstance(PageFixture.class);
 
         MockControl sourcec = newControl(PropertyPersistenceStrategySource.class);
         PropertyPersistenceStrategySource source = (PropertyPersistenceStrategySource) sourcec
                 .getMock();
 
-        IPageChange pc = new PageChange(null, "requestCycle", cycle);
+        IPageChange pc = new PageChange(null, "cartoonName", "Dexter's Laboratory");
 
         source.getAllStoredChanges("MyPage", cycle);
         sourcec.setReturnValue(Collections.singletonList(pc));
-
-        page.setRequestCycle(cycle);
 
         replayControls();
 
         PageRecorderImpl pr = new PageRecorderImpl("MyPage", cycle, source, log);
 
         pr.rollback(page);
+
+        assertEquals("Dexter's Laboratory", page.getCartoonName());
 
         verifyControls();
     }

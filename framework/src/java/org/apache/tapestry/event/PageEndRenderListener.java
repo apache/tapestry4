@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,19 +17,20 @@ package org.apache.tapestry.event;
 import java.util.EventListener;
 
 /**
- * An interface for objects that want to know when the end of the request cycle occurs, so that any
- * resources that should be limited to just one request cycle can be released.
+ * Counterpart to {@link org.apache.tapestry.event.PageBeginRenderListener}, for the (typically
+ * less-interesting) end of page render event.
  * 
- * @see org.apache.tapestry.event.PageAttachListener
- * @author Howard Lewis Ship
- * @since 1.0.5
+ * @author Howard M. Lewis Ship
+ * @since 3.1
  */
-
-public interface PageDetachListener extends EventListener
+public interface PageEndRenderListener extends EventListener
 {
     /**
-     * Invoked by the page from its {@link org.apache.tapestry.IPage#detach()}method.
+     * Invoked after a successful render of the page. Allows objects to release any resources they
+     * needed during the the render.
+     * 
+     * @see org.apache.tapestry.AbstractComponent#pageEndRender(PageEvent)
      */
 
-    public void pageDetached(PageEvent event);
+    public void pageEndRender(PageEvent event);
 }

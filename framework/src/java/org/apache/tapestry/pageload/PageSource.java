@@ -27,22 +27,19 @@ import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.util.MultiKey;
 
 /**
- *  A source for pages for a particular application.  Each application
- *  should have its own <code>PageSource</code>, storing it into the
- *  {@link javax.servlet.ServletContext} using a unique key (usually built from
- *  the application name).
- *
- *  <p>The <code>PageSource</code> acts as a pool for {@link IPage} instances.
- *  Pages are retrieved from the pool using {@link #getPage(IRequestCycle, String, IMonitor)}
- *  and are later returned to the pool using {@link #releasePage(IPage)}.
- *
- *
- *  <p>TBD: Pooled pages stay forever.  Need a strategy for cleaning up the pool,
- *  tracking which pages have been in the pool the longest, etc.  A mechanism
- *  for reporting pool statistics would be useful.
- *
- *  @author Howard Lewis Ship
+ * A source for pages for a particular application. Each application should have its own
+ * <code>PageSource</code>, storing it into the {@link javax.servlet.ServletContext}using a
+ * unique key (usually built from the application name).
+ * <p>
+ * The <code>PageSource</code> acts as a pool for {@link IPage}instances. Pages are retrieved
+ * from the pool using {@link #getPage(IRequestCycle, String, IMonitor)}and are later returned to
+ * the pool using {@link #releasePage(IPage)}.
+ * <p>
+ * TBD: Pooled pages stay forever. Need a strategy for cleaning up the pool, tracking which pages
+ * have been in the pool the longest, etc. A mechanism for reporting pool statistics would be
+ * useful.
  * 
+ * @author Howard Lewis Ship
  */
 
 public class PageSource implements IPageSource
@@ -52,17 +49,14 @@ public class PageSource implements IPageSource
 
     /** @since 3.1 */
     private PageSpecificationResolver _pageSpecificationResolver;
-    
+
     /** @since 3.1 */
-    
+
     private IPageLoader _loader;
 
     /**
-     *  The pool of {@link IPage}s.  The key is a {@link MultiKey},
-     *  built from the page name and the page locale.  This is a reference
-     *  to a shared pool.
-     * 
-     *
+     * The pool of {@link IPage}s. The key is a {@link MultiKey}, built from the page name and the
+     * page locale. This is a reference to a shared pool.
      */
 
     private ObjectPool _pool;
@@ -73,15 +67,15 @@ public class PageSource implements IPageSource
     }
 
     /**
-     *  Builds a key for a named page in the application's current locale.
-     *
+     * Builds a key for a named page in the application's current locale.
      */
 
     protected MultiKey buildKey(IEngine engine, String pageName)
     {
         Object[] keys;
 
-        keys = new Object[] { pageName, engine.getLocale()};
+        keys = new Object[]
+        { pageName, engine.getLocale() };
 
         // Don't make a copy, this array is just for the MultiKey.
 
@@ -89,16 +83,16 @@ public class PageSource implements IPageSource
     }
 
     /**
-     *  Builds a key from an existing page, using the page's name and locale.  This is
-     *  used when storing a page into the pool.
-     *
+     * Builds a key from an existing page, using the page's name and locale. This is used when
+     * storing a page into the pool.
      */
 
     protected MultiKey buildKey(IPage page)
     {
         Object[] keys;
 
-        keys = new Object[] { page.getPageName(), page.getLocale()};
+        keys = new Object[]
+        { page.getPageName(), page.getLocale() };
 
         // Don't make a copy, this array is just for the MultiKey.
 
@@ -106,9 +100,7 @@ public class PageSource implements IPageSource
     }
 
     /**
-     *  Gets the page from a pool, or otherwise loads the page.  This operation
-     *  is threadsafe.
-     *
+     * Gets the page from a pool, or otherwise loads the page. This operation is threadsafe.
      */
 
     public IPage getPage(IRequestCycle cycle, String pageName, IMonitor monitor)
@@ -123,8 +115,7 @@ public class PageSource implements IPageSource
 
             _pageSpecificationResolver.resolve(cycle, pageName);
 
-            result =
-                _loader.loadPage(
+            result = _loader.loadPage(
                     _pageSpecificationResolver.getSimplePageName(),
                     _pageSpecificationResolver.getNamespace(),
                     cycle,
@@ -132,21 +123,12 @@ public class PageSource implements IPageSource
 
             monitor.pageCreateEnd(pageName);
         }
-        else
-        {
-            // The page loader attaches the engine, but a page from
-            // the pool needs to be explicitly attached.
-
-            result.attach(engine);
-        }
 
         return result;
     }
 
     /**
-     *  Returns the page to the appropriate pool.  Invokes
-     *  {@link IPage#detach()}.
-     *
+     * Returns the page to the appropriate pool. Invokes {@link IPage#detach()}.
      */
 
     public void releasePage(IPage page)
@@ -181,8 +163,8 @@ public class PageSource implements IPageSource
         _pageSpecificationResolver = resolver;
     }
 
-	/** @since 3.1 */
-	
+    /** @since 3.1 */
+
     public void setLoader(IPageLoader loader)
     {
         _loader = loader;

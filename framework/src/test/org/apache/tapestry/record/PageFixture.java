@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,24 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.event;
+package org.apache.tapestry.record;
 
-import java.util.EventListener;
+import org.apache.tapestry.html.BasePage;
 
 /**
- * An interface for objects that want to know when the end of the request cycle occurs, so that any
- * resources that should be limited to just one request cycle can be released.
- * 
- * @see org.apache.tapestry.event.PageAttachListener
  * @author Howard Lewis Ship
- * @since 1.0.5
+ * @since 3.1
  */
 
-public interface PageDetachListener extends EventListener
+public abstract class PageFixture extends BasePage
 {
-    /**
-     * Invoked by the page from its {@link org.apache.tapestry.IPage#detach()}method.
-     */
+    public abstract String getCartoonName();
 
-    public void pageDetached(PageEvent event);
+    public abstract void setCartoonName(String value);
 }

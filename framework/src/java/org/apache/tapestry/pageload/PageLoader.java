@@ -40,7 +40,6 @@ import org.apache.tapestry.binding.ListenerBinding;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.ChangeObserver;
-import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.services.BSFManagerFactory;
 import org.apache.tapestry.services.ComponentConstructor;
@@ -92,8 +91,6 @@ public class PageLoader implements IPageLoader
     private IEngine _engine;
 
     private List _inheritedBindingQueue = new ArrayList();
-
-    private List _propertyInitializers = new ArrayList();
 
     /** @since 3.1 */
     private IComponentVisitor _establishDefaultParameterValuesVisitor;
@@ -550,8 +547,6 @@ public class PageLoader implements IPageLoader
         {
             page = instantiatePage(name, namespace, specification);
 
-            page.attach(_engine);
-
             constructComponent(cycle, page, page, specification, namespace);
 
             // Walk through the complete component tree to set up the default
@@ -563,20 +558,12 @@ public class PageLoader implements IPageLoader
             // Walk through the complete component tree to ensure that required
             // parameters are bound
             _verifyRequiredParametersWalker.walkComponentTree(page);
-
-            // Note that we defer this until last, because
-            // we want to ensure that the page is attached to the engine,
-            // and that all sub-components of components are created
-            // because everything is free to reference everthing else!
-
-            establishDefaultPropertyValues();
         }
         finally
         {
             _locale = null;
             _engine = null;
             _inheritedBindingQueue.clear();
-            _propertyInitializers.clear();
         }
 
         if (_log.isDebugEnabled())
@@ -605,20 +592,6 @@ public class PageLoader implements IPageLoader
                     .get(i);
 
             queued.connect();
-        }
-    }
-
-    private void establishDefaultPropertyValues()
-    {
-        _log.debug("Setting default property values");
-
-        int count = _propertyInitializers.size();
-
-        for (int i = 0; i < count; i++)
-        {
-            PageDetachListener initializer = (PageDetachListener) _propertyInitializers.get(i);
-
-            initializer.pageDetached(null);
         }
     }
 

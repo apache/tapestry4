@@ -24,100 +24,90 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.event.ChangeObserver;
+import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageDetachListener;
+import org.apache.tapestry.event.PageEndRenderListener;
 import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.event.PageAttachListener;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.util.StringSplitter;
 
 /**
- *  Abstract base class implementing the {@link IPage} interface.
- *
- *  @author Howard Lewis Ship, David Solis
- *  @since 0.2.9
+ * Abstract base class implementing the {@link IPage}interface.
  * 
- **/
+ * @author Howard Lewis Ship, David Solis
+ * @since 0.2.9
+ */
 
 public abstract class AbstractPage extends BaseComponent implements IPage
 {
     private static final Log LOG = LogFactory.getLog(AbstractPage.class);
 
     /**
-     *  Object to be notified when a observered property changes.  Observered
-     *  properties are the ones that will be persisted between request cycles.
-     *  Unobserved properties are reconstructed.
-     *
-     **/
+     * Object to be notified when a observered property changes. Observered properties are the ones
+     * that will be persisted between request cycles. Unobserved properties are reconstructed.
+     */
 
     private ChangeObserver _changeObserver;
 
     /**
-     *  The {@link IEngine} the page is currently attached to.
-     *
-     **/
+     * The {@link IEngine}the page is currently attached to.
+     */
 
     private IEngine _engine;
 
     /**
-     *  The visit object, if any, for the application.  Set inside
-     *  {@link #attach(IEngine)} and cleared
-     *  by {@link #detach()}.
-     *
-     **/
+     * The visit object, if any, for the application. Set inside {@link #attach(IEngine)}and
+     * cleared by {@link #detach()}.
+     */
 
     private Object _visit;
 
     /**
-     *  The qualified name of the page, which may be prefixed by the
-     *  namespace.
+     * The qualified name of the page, which may be prefixed by the namespace.
      * 
-     *  @since 2.3
-     * 
-     **/
+     * @since 2.3
+     */
 
     private String _pageName;
 
     /**
-     *  Set when the page is attached to the engine.
-     *
-     **/
+     * Set when the page is attached to the engine.
+     */
 
     private IRequestCycle _requestCycle;
 
     /**
-     *  The locale of the page, initially determined from the {@link IEngine engine}.
-     *
-     **/
+     * The locale of the page, initially determined from the {@link IEngine engine}.
+     */
 
     private Locale _locale;
 
     /**
-     *  A list of listeners for the page.
-     *  @see PageRenderListener
-     *  @see PageDetachListener
-     *
-     *  @since 1.0.5
-     **/
+     * A list of listeners for the page.
+     * 
+     * @see PageRenderListener
+     * @see PageDetachListener
+     * @since 1.0.5
+     */
 
     private EventListenerList _listenerList;
-    
-    
+
     /**
-     *  The output encoding to be used when rendering this page.
-     *  This value is cached from the engine.
-     *
-     *  @since 3.0
-     **/
+     * The output encoding to be used when rendering this page. This value is cached from the
+     * engine.
+     * 
+     * @since 3.0
+     */
     private String _outputEncoding;
 
     /**
-     *  Standard constructor; invokes {@link #initialize()}
-     *  to configure initial values for properties
-     *  of the page.
+     * Standard constructor; invokes {@link #initialize()}to configure initial values for
+     * properties of the page.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public AbstractPage()
     {
@@ -125,32 +115,28 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     *  Implemented in subclasses to provide a particular kind of
-     *  response writer (and therefore, a particular kind of
-     *  content).
-     *
-     **/
+     * Implemented in subclasses to provide a particular kind of response writer (and therefore, a
+     * particular kind of content).
+     */
 
     abstract public IMarkupWriter getResponseWriter(OutputStream out);
 
     /**
-     *  Prepares the page to be returned to the pool.
-     *  <ul>
-     *  <li>Clears the changeObserved property
-     *	<li>Invokes {@link PageDetachListener#pageDetached(PageEvent)} on all listeners
-     *  <li>Invokes {@link #initialize()} to clear/reset any properties	
+     * Prepares the page to be returned to the pool.
+     * <ul>
+     * <li>Clears the changeObserved property
+     * <li>Invokes {@link PageDetachListener#pageDetached(PageEvent)}on all listeners
+     * <li>Invokes {@link #initialize()}to clear/reset any properties
      * <li>Clears the engine, visit and requestCycle properties
-     *	</ul>
-     *
-     *  <p>Subclasses may override this method, but must invoke this
-     *  implementation (usually, last).
-     *
-     **/
+     * </ul>
+     * <p>
+     * Subclasses may override this method, but must invoke this implementation (usually, last).
+     */
 
     public void detach()
     {
-    	Tapestry.addMethodInvocation(Tapestry.ABSTRACTPAGE_DETACH_METHOD_ID);
-    	
+        Tapestry.addMethodInvocation(Tapestry.ABSTRACTPAGE_DETACH_METHOD_ID);
+
         // Do this first,so that any changes to persistent properties do not
         // cause errors.
 
@@ -166,17 +152,16 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     *  Method invoked from the constructor, and from
-     *  {@link #detach()} to (re-)initialize properties
-     *  of the page.  This is most useful when
-     *  properties have non-null initial values.
+     * Method invoked from the constructor, and from {@link #detach()}to (re-)initialize properties
+     * of the page. This is most useful when properties have non-null initial values.
+     * <p>
+     * Subclasses may override this implementation (which is empty).
      * 
-     *  <p>Subclasses may override this implementation
-     *  (which is empty).
-     * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     * @deprecated To be removed in 3.2 with no replacement.
+     * @see PageDetachListener
+     * @see PageAttachListener
+     */
 
     protected void initialize()
     {
@@ -194,9 +179,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     *  Returns the name of the page.
-     *
-     **/
+     * Returns the name of the page.
+     */
 
     public String getExtendedId()
     {
@@ -204,9 +188,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     *  Pages always return null for idPath.
-     *
-     **/
+     * Pages always return null for idPath.
+     */
 
     public String getIdPath()
     {
@@ -214,10 +197,9 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     *  Returns the locale for the page, which may be null if the
-     *  locale is not known (null corresponds to the "default locale").
-     *
-     **/
+     * Returns the locale for the page, which may be null if the locale is not known (null
+     * corresponds to the "default locale").
+     */
 
     public Locale getLocale()
     {
@@ -227,8 +209,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     public void setLocale(Locale value)
     {
         if (_locale != null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("AbstractPage.attempt-to-change-locale"));
+            throw new ApplicationRuntimeException(Tapestry
+                    .getMessage("AbstractPage.attempt-to-change-locale"));
 
         _locale = value;
     }
@@ -257,34 +239,32 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     *  Called by the {@link IEngine engine} to attach the page
-     *  to itself.  Does
-     *  <em>not</em> change the locale, but since a page is selected
-     *  from the {@link org.apache.tapestry.engine.IPageSource} pool based on its
-     *  locale matching the engine's locale, they should match
-     *  anyway.
-     *
-     **/
+     * Called by the {@link IEngine engine}to attach the page to itself. Does <em>not</em> change
+     * the locale, but since a page is selected from the
+     * {@link org.apache.tapestry.engine.IPageSource}pool based on its locale matching the engine's
+     * locale, they should match anyway.
+     */
 
-    public void attach(IEngine value)
+    public void attach(IEngine engine, IRequestCycle cycle)
     {
         if (_engine != null)
-            LOG.error(this +" attach(" + value + "), but engine = " + _engine);
+            LOG.error(this + " attach(" + engine + "), but engine = " + _engine);
 
-        _engine = value;
+        _engine = engine;
+        _requestCycle = cycle;
+
+        firePageAttached();
     }
 
     /**
-     *
      * <ul>
-     *  <li>Invokes {@link PageRenderListener#pageBeginRender(PageEvent)}
-     *  <li>Invokes {@link #beginResponse(IMarkupWriter, IRequestCycle)}
-     *  <li>Invokes {@link IRequestCycle#commitPageChanges()} (if not rewinding)
-     *  <li>Invokes {@link #render(IMarkupWriter, IRequestCycle)}
-     *  <li>Invokes {@link PageRenderListener#pageEndRender(PageEvent)} (this occurs
-     *  even if a previous step throws an exception)
-     *
-     **/
+     * <li>Invokes {@link PageRenderListener#pageBeginRender(PageEvent)}
+     * <li>Invokes {@link #beginResponse(IMarkupWriter, IRequestCycle)}
+     * <li>Invokes {@link IRequestCycle#commitPageChanges()}(if not rewinding)
+     * <li>Invokes {@link #render(IMarkupWriter, IRequestCycle)}
+     * <li>Invokes {@link PageRenderListener#pageEndRender(PageEvent)}(this occurs even if a
+     * previous step throws an exception)
+     */
 
     public void renderPage(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -310,21 +290,20 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         _changeObserver = value;
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public void setPageName(String pageName)
     {
         if (_pageName != null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("AbstractPage.attempt-to-change-name"));
+            throw new ApplicationRuntimeException(Tapestry
+                    .getMessage("AbstractPage.attempt-to-change-name"));
 
         _pageName = pageName;
     }
 
     /**
-     *  By default, pages are not protected and this method does nothing.
-     *
-     **/
+     * By default, pages are not protected and this method does nothing.
+     */
 
     public void validate(IRequestCycle cycle)
     {
@@ -334,12 +313,10 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     *  Does nothing, subclasses may override as needed.
-     *
-     * @deprecated To be removed in 3.1.  Implement 
-     * {@link PageRenderListener} instead.
-     *
-     **/
+     * Does nothing, subclasses may override as needed.
+     * 
+     * @deprecated To be removed in 3.1. Implement {@link PageRenderListener}instead.
+     */
 
     public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -350,16 +327,9 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         return _requestCycle;
     }
 
-    public void setRequestCycle(IRequestCycle value)
-    {
-        _requestCycle = value;
-    }
-
     /**
-     *  Returns the visit object obtained from the engine via
-     *  {@link IEngine#getVisit(IRequestCycle)}.
-     *
-     **/
+     * Returns the visit object obtained from the engine via {@link IEngine#getVisit(IRequestCycle)}.
+     */
 
     public Object getVisit()
     {
@@ -370,12 +340,10 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     *  Convienience methods, simply invokes
-     *  {@link IEngine#getGlobal()}.
+     * Convienience methods, simply invokes {@link IEngine#getGlobal()}.
      * 
-     *  @since 2.3
-     * 
-     **/
+     * @since 2.3
+     */
 
     public Object getGlobal()
     {
@@ -396,9 +364,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     *  @since 2.1-beta-2
-     * 
-     **/
+     * @since 2.1-beta-2
+     */
 
     private void removeListener(Class listenerClass, EventListener listener)
     {
@@ -408,13 +375,63 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public void addPageRenderListener(PageRenderListener listener)
     {
-        addListener(PageRenderListener.class, listener);
+        addPageBeginRenderListener(listener);
+        addPageEndRenderListener(listener);
+    }
+
+    /** @since 3.1 */
+    public void addPageBeginRenderListener(PageBeginRenderListener listener)
+    {
+        addListener(PageBeginRenderListener.class, listener);
+    }
+
+    /** @since 3.1 */
+    public void addPageEndRenderListener(PageEndRenderListener listener)
+    {
+        addListener(PageEndRenderListener.class, listener);
+    }
+
+    /** @since 3.1 */
+    public void removePageBeginRenderListener(PageBeginRenderListener listener)
+    {
+        removeListener(PageBeginRenderListener.class, listener);
+    }
+
+    /** @since 3.1 */
+    public void removePageEndRenderListener(PageEndRenderListener listener)
+    {
+        removeListener(PageEndRenderListener.class, listener);
     }
 
     /**
-     *  @since 1.0.5
-     *
-     **/
+     * @since 3.1
+     */
+
+    protected void firePageAttached()
+    {
+        if (_listenerList == null)
+            return;
+
+        PageEvent event = null;
+        Object[] listeners = _listenerList.getListenerList();
+
+        for (int i = 0; i < listeners.length; i += 2)
+        {
+            if (listeners[i] == PageAttachListener.class)
+            {
+                PageAttachListener l = (PageAttachListener) listeners[i + 1];
+
+                if (event == null)
+                    event = new PageEvent(this, _requestCycle);
+
+                l.pageAttached(event);
+            }
+        }
+    }
+
+    /**
+     * @since 1.0.5
+     */
 
     protected void firePageDetached()
     {
@@ -439,9 +456,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     *  @since 1.0.5
-     *
-     **/
+     * @since 1.0.5
+     */
 
     protected void firePageBeginRender()
     {
@@ -453,9 +469,9 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
         for (int i = 0; i < listeners.length; i += 2)
         {
-            if (listeners[i] == PageRenderListener.class)
+            if (listeners[i] == PageBeginRenderListener.class)
             {
-                PageRenderListener l = (PageRenderListener) listeners[i + 1];
+                PageBeginRenderListener l = (PageBeginRenderListener) listeners[i + 1];
 
                 if (event == null)
                     event = new PageEvent(this, _requestCycle);
@@ -466,9 +482,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     *  @since 1.0.5
-     *
-     **/
+     * @since 1.0.5
+     */
 
     protected void firePageEndRender()
     {
@@ -480,9 +495,9 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
         for (int i = 0; i < listeners.length; i += 2)
         {
-            if (listeners[i] == PageRenderListener.class)
+            if (listeners[i] == PageEndRenderListener.class)
             {
-                PageRenderListener l = (PageRenderListener) listeners[i + 1];
+                PageEndRenderListener l = (PageEndRenderListener) listeners[i + 1];
 
                 if (event == null)
                     event = new PageEvent(this, _requestCycle);
@@ -493,9 +508,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     *  @since 2.1-beta-2
-     * 
-     **/
+     * @since 2.1-beta-2
+     */
 
     public void removePageDetachListener(PageDetachListener listener)
     {
@@ -504,24 +518,25 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public void removePageRenderListener(PageRenderListener listener)
     {
-        removeListener(PageRenderListener.class, listener);
+        removePageBeginRenderListener(listener);
+        removePageEndRenderListener(listener);
     }
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     public void beginPageRender()
     {
         firePageBeginRender();
     }
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     public void endPageRender()
     {
         firePageEndRender();
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public String getPageName()
     {
@@ -536,6 +551,18 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     public void removePageValidateListener(PageValidateListener listener)
     {
         removeListener(PageValidateListener.class, listener);
+    }
+
+    /** @since 3.1 */
+    public void addPageAttachListener(PageAttachListener listener)
+    {
+        addListener(PageAttachListener.class, listener);
+    }
+
+    /** @since 3.1 */
+    public void removePageAttachListener(PageAttachListener listener)
+    {
+        removeListener(PageAttachListener.class, listener);
     }
 
     protected void firePageValidate()
@@ -561,16 +588,16 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     *  Returns the output encoding to be used when rendering this page.
-     *  This value is usually cached from the Engine.
+     * Returns the output encoding to be used when rendering this page. This value is usually cached
+     * from the Engine.
      * 
-     *  @since 3.0
-     **/
+     * @since 3.0
+     */
     protected String getOutputEncoding()
     {
         if (_outputEncoding == null)
             _outputEncoding = getEngine().getOutputEncoding();
-        
+
         return _outputEncoding;
     }
 }

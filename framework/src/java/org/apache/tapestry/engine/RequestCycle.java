@@ -219,10 +219,9 @@ public class RequestCycle implements IRequestCycle
 
     public IPage getPage(String name)
     {
-        IPage result = null;
+        Defense.notNull(name, "name");
 
-        if (name == null)
-            throw new NullPointerException(Tapestry.getMessage("RequestCycle.invalid-null-name"));
+        IPage result = null;
 
         if (_loadedPages != null)
             result = (IPage) _loadedPages.get(name);
@@ -232,8 +231,6 @@ public class RequestCycle implements IRequestCycle
             _monitor.pageLoadBegin(name);
 
             result = _pageSource.getPage(this, name, _monitor);
-
-            result.setRequestCycle(this);
 
             // Get the recorder that will eventually observe and record
             // changes to persistent properties of the page.
@@ -250,6 +247,11 @@ public class RequestCycle implements IRequestCycle
             // property changes.
 
             result.setChangeObserver(recorder);
+
+            // Now that persistent properties have been restored, we can
+            // attach the page to this request.
+
+            result.attach(_engine, this);
 
             _monitor.pageLoadEnd(name);
 
