@@ -22,15 +22,13 @@
 	allow-body="no" allow-informal-parameters="yes">
 
 	<parameter name="localeSelectionListener" 
-		type="org.apache.tapestry.workbench.table.ILocaleSelectionListener" 
 		required="yes"/>
 
     <bean name="rowClass" class="org.apache.tapestry.bean.EvenOdd"/>
 
-	<property-specification name="currentLocale" type="java.util.Locale"/>
+	<property name="currentLocale"/>
 	
-	<property-specification name="selectedLocales" type="java.util.Set" 
-		persistent="yes" initial-value="new java.util.HashSet()"/>
+	<property name="selectedLocales" persistent="yes" initial-value="ognl:new java.util.HashSet()"/>
 
 	<component id="form" type="Form">
 		<!--binding name="listener" value="ognl:listeners.formSubmit"/-->

@@ -38,6 +38,7 @@ The start of the JUnit test suite: JUnit Simple Application.
 		<match>html</match>
 		<match>head</match>
 		<match>meta</match>
+    <match>base</match>
 		<match>title</match>
 		<match>/title</match>
 		<match>/head</match>

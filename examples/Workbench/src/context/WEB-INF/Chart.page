@@ -23,12 +23,16 @@
   <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
   
 	<bean name="required" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
-	  <set-property name="required" expression="true"/>
+	  <set name="required" value="true"/>
 	</bean>
 
   <bean name="intValidator" class="org.apache.tapestry.valid.NumberValidator" lifecycle="page">
-  	<set-property name="required" expression="true"/>
-  	<set-property name="minimum" expression="0"/>
+  	<set name="required" value="true"/>
+      
+      <!-- Property is a Number, so ensure that the value is an integer, not the string "0"
+      (which leaves no way to convert to Number). -->
+      
+  	<set name="minimum" value="ognl:0"/>
   </bean>
 
   <component id="showError" type="ShowError">

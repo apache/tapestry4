@@ -37,9 +37,9 @@
      
   <servlet-mapping>
   	<servlet-name>workbench</servlet-name>
-  	<url-pattern>/app</url-pattern>
+  	<url-pattern>/app/*</url-pattern>
   </servlet-mapping>  
-
+  
   <servlet-mapping>
     <servlet-name>workbench</servlet-name>
     <url-pattern>*.page</url-pattern>

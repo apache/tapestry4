@@ -48,13 +48,14 @@
     </binding>
   </component>
 
-  <context-asset name="activeLeft" path="images/tab-active-left.gif"/>
-  <context-asset name="activeMid" path="images/tab-active-mid.gif"/>
-  <context-asset name="activeRight" path="images/tab-active-right.gif"/>
+  <asset name="activeLeft" path="images/tab-active-left.gif"/>
+  <asset name="activeMid" path="images/tab-active-mid.gif"/>
+  <asset name="activeRight" path="images/tab-active-right.gif"/>
 
-  <context-asset name="inactiveLeft" path="images/tab-inactive-left.gif"/>
-  <context-asset name="inactiveMid" path="images/tab-inactive-mid.gif"/>
-  <context-asset name="inactiveRight" path="images/tab-inactive-right.gif"/>
+  <asset name="inactiveLeft" path="images/tab-inactive-left.gif"/>
+  <asset name="inactiveMid" path="images/tab-inactive-mid.gif"/>
+  <asset name="inactiveRight" path="images/tab-inactive-right.gif"/>
 
-  <context-asset name="stylesheet" path="css/workbench.css"/>  
- </component-specification>
+  <asset name="stylesheet" path="css/workbench.css"/>  
+
+</component-specification>

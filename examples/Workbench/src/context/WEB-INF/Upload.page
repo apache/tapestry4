@@ -27,6 +27,6 @@
   	<binding name="model" value="ognl:bytesPerLineModel"/>
   </component>
    
-  <context-asset name="continue" path="images/Continue.gif"/>
+  <asset name="continue" path="images/Continue.gif"/>
 
 </page-specification>
