@@ -1,3 +1,9 @@
+* Sep 28 2000 hship
+
+Improve handling of dependencies of jar files:  make the WebLogic deplyable jar
+dependent on the any framework jars; make installed jars dependent on Module jars (rather
+than blindly copying them).
+
 * Sep 25 2000 hship
 
 Speed up writing of catalog entries by using $(addprefix) to generate a single long line
