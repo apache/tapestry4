@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServlet;
 
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.util.ContextResource;
 import org.apache.tapestry.parse.ISpecificationParser;
-import org.apache.tapestry.resource.ContextResource;
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.services.ClasspathResourceFactory;

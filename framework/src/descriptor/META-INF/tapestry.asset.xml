@@ -80,7 +80,7 @@
   <configuration-point id="AssetFactoryAdapters" schema-id="hivemind.lib.AdapterRegistry"/>
   
   <contribution configuration-id="AssetFactoryAdapters">
-    <adapter class="org.apache.tapestry.resource.ContextResource" 
+    <adapter class="org.apache.hivemind.util.ContextResource" 
             object="service:ContextAssetFactory"/>
             
     <adapter class="org.apache.hivemind.util.ClasspathResource"
