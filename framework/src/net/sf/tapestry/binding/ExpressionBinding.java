@@ -157,6 +157,14 @@ public class ExpressionBinding extends AbstractBinding
     private IResourceResolver _resolver;
 
     /**
+     *  The OGNL context for this binding.  It is retained
+     *  for the lifespan of the binding once created.
+     * 
+     **/
+    
+    private Map _context;
+    
+    /**
      *  Creates a {@link ExpressionBinding} from the root object
      *  and an OGNL expression.
      * 
@@ -233,7 +241,10 @@ public class ExpressionBinding extends AbstractBinding
 
     private Map getOgnlContext()
     {
-        return Ognl.createDefaultContext(_root, _resolver);
+        if (_context == null)
+            _context = Ognl.createDefaultContext(_root, _resolver);
+            
+        return _context;
     }
 
     /**
