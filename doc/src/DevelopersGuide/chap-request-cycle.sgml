@@ -326,6 +326,16 @@ As with an &Action; component, a full rewind must be done,
 to account for conditional portions of the page and any &Foreach; components.
 </>
 
+<note>
+<para>
+Starting with Tapestry release 1.0.2, &Form;s may now use the direct service instead
+of the action service; this is configurable.  Using the direct service is the
+default behavior unless specified.  A rewind still occurs, it simply starts directly
+with the &Form; component, rather than having to "work down" to it.  This can be
+a big gain if a page contains many forms.
+</>
+</>
+
 <para>
 The &Form; component doesn't terminate the rewind cycle until <emphasis>after</> all of 
 its wrapped components have had a chance to render.  It then notifies its own listener.

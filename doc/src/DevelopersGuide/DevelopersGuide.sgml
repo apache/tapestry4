@@ -12,6 +12,7 @@
 <!ENTITY chap-coding-components SYSTEM "chap-coding-components.sgml">
 <!ENTITY chap-script SYSTEM "chap-script.sgml">
 <!ENTITY chap-inspector SYSTEM "chap-inspector.sgml">
+<!ENTITY appendix-faq SYSTEM "faq.sgml">
 
 <!ENTITY jwc-tag "<sgmltag class=starttag>jwc</sgmltag>">
 
@@ -25,6 +26,7 @@
 <!-- Common classes and components -->
 
 <!ENTITY HttpSession "<classname>HttpSession</>">
+<!ENTITY HttpServletRequest "<classname>HttpServletRequest</>">
 <!ENTITY Map "<classname>Map</>">
 
 <!ENTITY Action '<link linkend="builtin.Action"><classname>Action</classname></link>'>
@@ -101,6 +103,8 @@
 &chap-coding-components;
 &chap-script;
 &chap-inspector;
+
+&appendix-faq;
 
 </book>
 

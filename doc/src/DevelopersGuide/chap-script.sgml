@@ -19,7 +19,7 @@ patterns such as client side validation of forms or even complex animations.
 <para>
 In traditional, static web page development, the author is completely responsible
 for this aspect of development, usually aided by a web page authoring tool, such as
-Dreamweaver.  Ultimately, though, the web page developer assigning unique names or ids to
+Dreamweaver.  Ultimately, though, the web page developer assigns unique names or ids to
 various elements on the page, and attaches JavaScript event handlers to 
 the elements.
 
@@ -78,7 +78,7 @@ including everything that has need for dynamic scripting.
 	
 <para>
 The &Body; component provides a number of services to the components it wraps.  It handles preloading of
-images.  It provides the ability to add aribrary JavaScript to the page, or to the
+images.  It provides the ability to add arbitrary JavaScript to the page, or to the
 <sgmltag class=starttag>body</> element's onload event handler.  Finally, it provides an easy way 
 to generate unique identifiers needed for things like image names.
 </>
@@ -265,7 +265,7 @@ of a <sgmltag class=starttag>script</> element.
 
 <para>
 This element is used to define new symbols.  The most common use of this is to define the
-name of a function, usually by combining some unique name of id with other text.  This new
+name of a function, usually by combining some unique name or id with other text.  This new
 symbol is then used in the <sgmltag class=starttag>body</> element to define the function, and
 in the <sgmltag class=starttag>initialization</> element to establish the function as the
 handler for some HTML element's event.
@@ -273,7 +273,7 @@ handler for some HTML element's event.
   
 <para>
 The <sgmltag class=starttag>let</> elements are evaluated in order.  Often, some building
-blocks are estabilished first, to which are added suffixes and prefixes to form the final
+block symbols are established first; other symbols add suffixes and prefixes to form the final
 names of functions.
 </>
 

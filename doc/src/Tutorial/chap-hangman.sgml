@@ -1,7 +1,7 @@
 <!-- $Id$ -->
 
 <chapter id="hangman">
-	<title>Poutpourri!</>
+  <title>Poutpourri!</>
         
 <para>
 So far, these examples have been a little bit cut-and-dried.  Lets do a meatier example that uses a 
@@ -15,12 +15,12 @@ allowed).
 </>
 
 <figure>
-	<title>Hangman Home Page</>
-	<mediaobject>
-		<imageobject>
-			<imagedata fileref="images/hangman-home.jpg" format="jpg">
-		</imageobject>
-	</>
+  <title>Hangman Home Page</>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/hangman-home.jpg" format="jpg">
+    </imageobject>
+  </>
 </figure>
 
 
@@ -31,12 +31,12 @@ make guesses (from a shrinking list of possible letters):
 
 
 <figure>
-	<title>Hangman Guess Page</>
-	<mediaobject>
-		<imageobject>
-			<imagedata fileref="images/hangman-guess.jpg" format="jpg">
-		</imageobject>
-	</>
+  <title>Hangman Guess Page</>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/hangman-guess.jpg" format="jpg">
+    </imageobject>
+  </>
 </figure>
 
 <para>
@@ -44,12 +44,12 @@ After you give up, or when you make too many mistakes, you end up on the the Fai
 </>
 
 <figure>
-	<title>Hangman Failed Page</>
-	<mediaobject>
-		<imageobject>
-			<imagedata fileref="images/hangman-lose.jpg" format="jpg">
-		</imageobject>
-	</>
+  <title>Hangman Failed Page</>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/hangman-lose.jpg" format="jpg">
+    </imageobject>
+  </>
 </figure>
 
 
@@ -59,17 +59,17 @@ But, if you guess all the letters, you are sent to the Success page:
 </>
 
 <figure>
-	<title>Hangman Success Page</>
-	<mediaobject>
-		<imageobject>
-			<imagedata fileref="images/hangman-win.jpg" format="jpg">
-		</imageobject>
-	</>
+  <title>Hangman Success Page</>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/hangman-win.jpg" format="jpg">
+    </imageobject>
+  </>
 </figure>
 
 
-	<section id="hangman.visit">
-    	<title>The Visit Object</>
+  <section id="hangman.visit">
+      <title>The Visit Object</>
         
 <para>
 The center of this application is an object that represents game, an object of class 
@@ -96,7 +96,7 @@ the visit object.
 </>
 
 <figure>
-	<title>Hangman.application</>
+  <title>Hangman.application</>
     <programlisting>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE application PUBLIC
@@ -137,17 +137,17 @@ So, returning from that distraction, the game object is a property of the visit 
 accessible from any page (via the page's visit property).
 </>
 
-		</section>
+    </section>
         
-	<section id="hangman.home-page">
-		<title>The Home Page</>
+  <section id="hangman.home-page">
+    <title>The Home Page</>
         
 <para>
 The Home page's job is to collect the difficulty and initiate a game:
 </>
 
 <figure>
-	<title>Home.java</>
+  <title>Home.java</>
     <programlisting><![CDATA[public class Home
 extends BasePage
 implements IActionListener
@@ -239,7 +239,7 @@ The interesting part of the Home page HTML template is the form:
 </>
 
 <figure>
-	<title>Home.html (excerpt)</>
+  <title>Home.html (excerpt)</>
     <programlisting><![CDATA[<jwc id="form">
 
 <jwc id="group">
@@ -292,7 +292,7 @@ This comes together in the Home page specification:
 </>
 
 <figure>
-	<title>Home.jwc (excerpt)</>
+  <title>Home.jwc (excerpt)</>
     <programlisting>
   &lt;component id="group" type="RadioGroup"&gt;
     &lt;binding name="selected" property-path="misses"/&gt;
@@ -339,34 +339,34 @@ So the end result is: when the user clicks the radio button for a Hard game, the
 <varname>HARD</> is assigned to the page's <varname>misses</> property.
 </>
 
-	</section>
+  </section>
     
     <section id="hangman.guess-page">
-    	<title>The Guess Page</>
+      <title>The Guess Page</>
         
 <para>
 This is the page where uses make letter guesses.  The page has four sections:
 </>
 
 <itemizedlist>
-	<listitem>
-    	<para>
+  <listitem>
+      <para>
         A display of the word, with underscores replacing unguessed letters.
         </>
     </>
     <listitem>
-    	<para>
+      <para>
         A status area, showing the number of bad guesses and an optional error message after an 
-		invalid guess.
+    invalid guess.
         </>
     </>
     <listitem>
-    	<para>
+      <para>
         A list of letters that may be guessed.  Letters disappear after they are used.
         </>
     </>
     <listitem>
-    	<para>
+      <para>
         An option to give up and see the word, terminating the game.
         </>
     </>
@@ -377,7 +377,7 @@ Let's start with the HTML template this time:
 </>
 
 <figure>
-	<title>Guess.html (excerpt)
+  <title>Guess.html (excerpt)
     <programlisting><![CDATA[<h1>Make a Guess</h1>
 
 <font size=+3>
@@ -418,7 +418,7 @@ Let's look at the specification for those three components (<varname>e</>,
 </>
 
 <figure>
-	<title>Guess.jwc (excerpt)</>
+  <title>Guess.jwc (excerpt)</>
     <programlisting>
 &lt;component id="e" type="Foreach"&gt;
   &lt;binding name="source" property-path="unused"/&gt;
@@ -476,18 +476,18 @@ In this case, the context is simply the letter to be guessed.
 All of this comes together in the Java code for the Guess page.
 </>
 
-<figure>	
-	<title>Guess.java (excerpt)</>
+<figure>  
+  <title>Guess.java (excerpt)</>
     <programlisting><![CDATA[
 public IDirectListener getGuessListener()
 {
   return new IDirectListener()
   {
     public void directTriggered(IDirect direct,
-							  String[] context, IRequestCycle cycle)
+                String[] context, IRequestCycle cycle)
     throws RequestCycleException
     {
-	  makeGuess(context[0], cycle);
+      makeGuess(context[0], cycle);
     }
   };
 }
@@ -545,15 +545,15 @@ which will display the word with the
 guessed letter filled in, and with fewer options in the list of possible guesses.
 </>
 
-	</section>
+  </section>
     
     <section id="hangman.limitations">
-    	<title>Limitations</>
+      <title>Limitations</>
         
 <para>
 This is a very, very simple implementation of the game.  For example, it's easy to cheat; you can 
 give up, then use your browser's back button to return to the <varname>Guess</>
 page and keep guessing (with accuracy, if your memory is any good).
 
-	</section>
+  </section>
 </chapter>

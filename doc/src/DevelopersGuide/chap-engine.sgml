@@ -184,10 +184,20 @@ The class <classname>com.primix.tapestry.util.exception.ExceptionAnalyzer</> and
 </>
 
 <para>
-The StaleLink page is displayed when a <classname>com.primix.tapestry.StaleLinkException</> 
+The <classname>StaleLink</> page is displayed when a <classname>com.primix.tapestry.StaleLinkException</> 
 is  thrown, which may occur during the processing of the request.  The exception is thrown when 
 Tapestry determines that the state of the page (on the server) is out of synch with the client's view 
-of the page ... this most often happens when the user makes use of the browser's back button.</>
+of the page ... this most often happens when the user makes use of the browser's back button.
+<footnote>
+<para>
+If desired, the application's engine can override the method
+<function>handleStaleLinkException()</function>.  The default implementation of
+this method redirects to the <classname>StaleLink</> page, but a custom implementation
+could set up an error message on the application's <classname>Home</> page and
+redirect there instead.
+</>
+</>
+</>
 
 <para>
 The default implementation informs the user of the problem ("you really shouldn't use the back 
@@ -203,6 +213,12 @@ is configured to be stateful (which is the default)
 and the <classname>HttpSession</> doesn't exist, or is 
 newly created - this indicates a fresh connection to the servlet container after the old session 
 timed out and was discarded.
+<footnote>
+<para>
+Likewise, the default behavior can be changed by overriding the method
+<function>handleStaleSessionException()</function>.
+</>
+</>
 </>
 
 <para>

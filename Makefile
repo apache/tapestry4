@@ -76,8 +76,7 @@ javadoc:
 RELEASE_DIR := $(notdir $(shell $(PWD)))
 
 # The small release contains the precompiled JAR and javadoc, but
-# virtually nothing else.  We include gnu-regexp because its very
-# hard to find and tiny to boot.
+# virtually nothing else. 
 
 SMALL_RELEASE := \
 	$(RELEASE_DIR)/ChangeLog \
@@ -86,8 +85,7 @@ SMALL_RELEASE := \
 	$(RELEASE_DIR)/images \
 	$(RELEASE_DIR)/doc/DevelopersGuide \
 	$(RELEASE_DIR)/doc/api \
-	$(RELEASE_DIR)/lib/com.primix.tapestry.jar \
-	$(RELEASE_DIR)/lib/gnu-regexp.jar
+	$(RELEASE_DIR)/lib/com.primix.tapestry.jar
 
 # The medium release adds the JBE, JBE documentation
 # and the Tapestry source code.

@@ -29,7 +29,20 @@ discussed in the following sections.
 </>
 
 <para>
-Pages may have persistent state, properties that persist between request cycles.  In fact, any 
+Pages may have persistent state, properties specific to a particular user
+that persist between request cycles.  These properties live only as long as the
+&HttpSession;.  There is some complexity here, because the page state is
+entirely <emphasis>seperate</> from any instance of the page.  Remember that
+on subsequent requests, a different page from the page pool may be used
+to service the request ... in fact, in a clustering environment, the request
+may be serviced by an entirely different server.  Tapestry
+efficiently and transparently hides these details; when any portion of an application
+requests a page, it receives an instance of the page with all persistent page properties
+set the the values previously stored for the user.
+</>
+
+<para>
+In fact, any 
 component may have persistent state, and use the page as means for recording that state.
 </>
 
@@ -45,7 +58,9 @@ subsequent request for the same session arrives, it is restored from the persist
 In a clustering server application, consequtive requests for the same session may be serviced by 
 different servers within the cluster.  Serializing and deserializing the
 &HttpSession; is the mechanism 
-by which the servers are kept synchronized.
+by which the servers are kept synchronized.  Persistent page properties are stored as part
+of the engine, and so they continue to be available, even after the engine has moved
+from one server to another.
 </>
 
 <para>
@@ -81,7 +96,8 @@ In Tapestry, the lifespan of each property is very important.  There are three l
 	<listitem>
 		<para>
 			Persistent.  Changes the property are recorded and persist between request cycles.  
-			Persistent properties are restored when the page is next loaded.
+			Persistent properties are restored when the page is next loaded.  Persistent
+			properties are specific to an individual user.
 		</>
 	</>
 
@@ -308,7 +324,8 @@ items in the shopping cart.  Each line item identifies the product, cost and qua
 
 <example>
 	<title>HTML template for Shopping Cart</>
-	<programlisting><![CDATA[<h1>Contents of shopping cart for
+	<programlisting><![CDATA[
+<h1>Contents of shopping cart for
 ]]>&start-jwc; id="insertUserName"/&end-jwc;:<![CDATA[</h1>
 <table>
   <tr> <th>Product</th> <th>Qty</th> <th>Price</th> </tr>]]>
@@ -601,6 +618,12 @@ practice, this means that a relatively small number of page objects can be share
 are a large number of clients (a single pool is shared by all clients).  The maximum number of 
 instances of any one page is determined by the maximum number of clients that simultaneously 
 process a request that involves that page.
+</>
+
+<para>
+As the page is removed the pool, all of its persistent page properties are set.  Thus
+the page is <emphasis>equivalent</> to the page last used by the application, even
+if it is not the same instance.
 </>
 
 <para>
