@@ -40,7 +40,7 @@
 		</td>
 
 		<td>
-		<a href="../home">[ Home ]</a>
+		<a href="<%= response.encodeURL("../home") %>">[Home]</a>
 		</td>
 
 		<td>
@@ -48,7 +48,8 @@
 	if (isLoggedIn)
 	{
 		writer.begin("a");
-		writer.attribute("href", "../mybooks");
+		writer.attribute("href", 
+			response.encodeURL("../mybooks"));
 		writer.closeTag();
 	} %>[ My Books ]<%
 if (isLoggedIn)
@@ -68,8 +69,9 @@ if (isLoggedIn)
 	else
 	{
 		writer.begin("a");
-		writer.attribute("href", "../login");
-		writer.print("[ Login ]");
+		writer.attribute("href",
+			response.encodeURL( "../login"));
+		writer.print("[Login]");
 		writer.end();
 	}
 %>
@@ -78,8 +80,9 @@ if (isLoggedIn)
 	if (request.getAttribute("omit-logout") == null)
 	{
 		writer.begin("a");
-		writer.attribute("href", "../logout");
-		writer.print("[ Logout ]");
+		writer.attribute("href",
+			response.encodeURL("../logout"));
+		writer.print("[Logout]");
 		writer.end();
 	}
 %>		</td>
