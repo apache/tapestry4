@@ -31,7 +31,10 @@
   -->
 
   <tab label="Tapestry Project" href="index.html" id="project"/>
+  <tab label="Users Guide" dir="UsersGuide" href="UsersGuide" id="users-guide"/>
   <tab label="Framework" dir="tapestry" href="tapestry" id="tapestry"/>
+  
+  
   <!-- Add new tabs here, eg:
   <tab label="How-Tos" dir="community/howto/"/>
   <tab label="XML Site" dir="xml-site/"/>

@@ -1,0 +1,171 @@
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!--
+  Provides a common place to define entities that are links to API and other external
+  documentation.
+-->
+
+<!-- Overridden by documents not in the documentation root directory, i.e., to '../', '../../', etc. -->
+
+<!ENTITY projectroot ''>
+
+<!-- Common Tapestry classes -->
+
+<!ENTITY apiroot "&projectroot;tapestry/apidocs/org/apache/tapestry">
+
+<!ENTITY AbstractComponent 			'<link href="&apiroot;/AbstractComponent.html">AbstractComponent</link>'>
+<!ENTITY AbstractEngine 			'<link href="&apiroot;/engine/AbstractEngine.html">AbstractEngine</link>'>
+<!ENTITY AbstractFormComponent 		'<link href="&apiroot;/form/AbstractFormComponent.html">AbstractFormComponent</link>'>
+<!ENTITY AbstractPage 				'<link href="&apiroot;/AbstractPage.html">AbstractPage</link>'>
+<!ENTITY ApplicationServlet 		'<link href="&apiroot;/ApplicationServlet.html">ApplicationServlet</link>'>
+<!ENTITY ChangeObserver 			'<link href="&apiroot;/event/ChangeObserver.html">ChangeObserver</link>'>
+<!ENTITY BaseComponent 				'<link href="&apiroot;/BaseComponent.html">BaseComponent</link>'>
+<!ENTITY BaseEngine 				'<link href="&apiroot;/engine/BaseEngine.html">BaseEngine</link>'>
+<!ENTITY BasePage 					'<link href="&apiroot;/html/BasePage.html">BasePage</link>'>
+<!ENTITY DataSqueezer 				'<link href="&apiroot;/util/io/DataSqueezer.html">DataSqueezer</link>'>
+<!ENTITY Default 					'<link href="&apiroot;/bean/Default.html">Default</link>'>
+<!ENTITY DefaultMonitorFactory 		'<link href="&apiroot;/engine/DefaultMonitorFactory.html">DefaultMonitorFactory</link>'>
+<!ENTITY DefaultMultipartDecoder 	'<link href="&apiroot;/multipart/DefaultMultipartDecoder.html">DefaultMultipartDecoder</link>'>
+<!ENTITY DefaultValuePersister 		'<link href="&apiroot;/record/DefaultValuePersister.html">DefaultValuePersister</link>'>
+<!ENTITY Enum 						'<link href="&apiroot;/util/Enum.html">Enum</link>'>
+<!ENTITY EnumPropertySelectionModel '<link href="&apiroot;/form/EnumPropertySelectionModel.html">EnumPropertySelectionModel</link>'>
+<!ENTITY EvenOdd 					'<link href="&apiroot;/bean/EvenOdd.html">EvenOdd</link>'>
+<!ENTITY ExceptionAnalyzer 			'<link href="&apiroot;/util/exception/ExceptionAnalyzer.html">ExceptionAnalyzer</link>'>
+<!ENTITY ExceptionDescription 		'<link href="&apiroot;/util/exception/ExceptionDescription.html">ExceptionDescription</link>'>
+<!ENTITY IAsset 					'<link href="&apiroot;/IAsset.html">IAsset</link>'>
+<!ENTITY IBeanProvider 				'<link href="&apiroot;/IBeanProvider.html">IBeanProvider</link>'>
+<!ENTITY IBinding 					'<link href="&apiroot;/IBinding.html">IBinding</link>'>
+<!ENTITY IActionListener 			'<link href="&apiroot;/IActionListener.html">IActionListener</link>'>
+<!ENTITY IApplicationSpecification 	'<link href="&apiroot;/spec/IApplicationSpecification.html">IApplicationSpecification</link>'>
+<!ENTITY IComponent 				'<link href="&apiroot;/IComponent.html">IComponent</link>'>
+<!ENTITY IComponentClassEnhancer 	'<link href="&apiroot;/engine/IComponentClassEnhancer.html">IComponentClassEnhancer</link>'>
+<!ENTITY IComponentMessagesSource 	'<link href="&apiroot;/engine/IComponentMessagesSource.html">IComponentMessagesSource</link>'>
+<!ENTITY IComponentSpecification 	'<link href="&apiroot;/spec/IComponentSpecification.html">IComponentSpecification</link>'>
+<!ENTITY IDirect 					'<link href="&apiroot;/IDirect.html">IDirect</link>'>
+<!ENTITY IEngine 					'<link href="&apiroot;/IEngine.html">IEngine</link>'>
+<!ENTITY IForm 						'<link href="&apiroot;/IForm.html">IForm</link>'>
+<!ENTITY IFormComponent 			'<link href="&apiroot;/form/IFormComponent.html">IFormComponent</link>'>
+<!ENTITY IEngineService 			'<link href="&apiroot;/IEngineService.html">IEngineService</link>'>
+<!ENTITY INamespace 				'<link href="&apiroot;/INamespace.html">INamespace</link>'>
+<!ENTITY IMarkupWriter 				'<link href="&apiroot;/IMarkupWriter.html">IMarkupWriter</link>'>
+<!ENTITY IMonitor 					'<link href="&apiroot;/engine/IMonitor.html">IMonitor</link>'>
+<!ENTITY IMonitorFactory			'<link href="&apiroot;/engine/IMonitorFactory.html">IMonitorFactory</link>'>
+<!ENTITY IMultipartDecoder 			'<link href="&apiroot;/multipart/IMultipartDecoder.html">IMultipartDecoder</link>'>
+<!ENTITY IPage 						'<link href="&apiroot;/IPage.html">IPage</link>'>
+<!ENTITY IPageRecorder 				'<link href="&apiroot;/IPageRecorder.html">IPageRecorder</link>'>
+<!ENTITY IPageSource 				'<link href="&apiroot;/engine/IPageSource.html">IPageSource</link>'>
+<!ENTITY IPropertySelectionModel 	'<link href="&apiroot;/form/IPropertySelectionModel.html">IPropertySelectionModel</link>'>
+<!ENTITY IPropertySource 			'<link href="&apiroot;/engine/IPropertySource.html">IPropertySource</link>'>
+<!ENTITY IPoolable 					'<link href="&apiroot;/util/pool/IPoolable.html">IPoolable</link>'>
+<!ENTITY IRender 					'<link href="&apiroot;/IRender.html">IRender</link>'>
+<!ENTITY IResourceResolver 			'<link href="&apiroot;/IResourceResolver.html">IResourceResolver</link>'>
+<!ENTITY IRequestCycle 				'<link href="&apiroot;/IRequestCycle.html">IRequestCycle</link>'>
+<!ENTITY IRequestDecoder 			'<link href="&apiroot;/request/IRequestDecoder.html">IRequestDecoder</link>'>
+<!ENTITY IScriptSource 				'<link href="&apiroot;/engine/IScriptSource.html">IScriptSource</link>'>
+<!ENTITY ISpecificationSource 		'<link href="&apiroot;/engine/ISpecificationSource.html">ISpecificationSource</link>'>
+<!ENTITY ISpecificationResolverDelegate
+									'<link href="&apiroot;/resolver/ISpecificationResolverDelegate.html">ISpecificationResolverDelegate</link>'>
+<!ENTITY ITemplateSource 			'<link href="&apiroot;/engine/ITemplateSource.html">ITemplateSource</link>'>
+<!ENTITY ITemplateSourceDelegate 	'<link href="&apiroot;/engine/ITemplateSourceDelegate.html">ITemplateSourceDelegate</link>'>
+<!ENTITY IValidator 				'<link href="&apiroot;/valid/IValidator.html">IValidator</link>'>
+<!ENTITY IValidationDelegate 		'<link href="&apiroot;/valid/IValidationDelegate.html">IValidationDelegate</link>'>
+<!ENTITY IUploadFile 				'<link href="&apiroot;/IUploadFile.html">IUploadFile</link>'>
+<!ENTITY ListenerMap 				'<link href="&apiroot;/listener/ListenerMap.html">ListenerMap</link>'>
+<!ENTITY PageDetachListener 		'<link href="&apiroot;/event/PageDetachListener.html">PageDetachListener</link>'>
+<!ENTITY PageRecorder 				'<link href="&apiroot;/record/PageRecorder.html">PageRecorder</link>'>
+<!ENTITY PageRedirectException 		'<link href="&apiroot;/PageRedirectException.html">PageRedirectException</link>'>
+<!ENTITY PageRenderListener 		'<link href="&apiroot;/event/PageRenderListener.html">PageRenderListener</link>'>
+<!ENTITY ParameterManager 			'<link href="&apiroot;/param/ParameterManager.html">ParameterManager</link>'>
+<!ENTITY Pool 						'<link href="&apiroot;/util/pool/Pool.html">Pool</link>'>
+<!ENTITY RedirectFilter 			'<link href="&apiroot;/RedirectFilter.html">RedirectFilter</link>'>
+<!ENTITY RequestContext 			'<link href="&apiroot;/RequestContext.html">RequestContext</link>'>
+<!ENTITY SimpleEngine 				'<link href="&apiroot;/engine/SimpleEngine.html">SimpleEngine</link>'>
+<!ENTITY SpecificationParser 		'<link href="&apiroot;/parse/SpecificationParser">SpecificationParser</link>'>
+<!ENTITY StaleLinkException 		'<link href="&apiroot;/StaleLinkException.html">StaleLinkException</link>'>
+<!ENTITY Tapestry 					'<link href="&apiroot;/Tapestry.html">Tapestry</link>'>
+<!ENTITY ValidationDelegate 		'<link href="&apiroot;/valid/ValidationDelegate.html">ValidationDelegate</link>'>
+
+<!-- Links to Component Reference -->
+
+<!ENTITY ReferenceRoot "&projectroot;ComponentReference">
+  
+<!ENTITY ActionLink '<link href="&ReferenceRoot;/ActionLink.html">ActionLink</link>'>
+<!ENTITY Any '<link href="&ReferenceRoot;/Any.html">Any</link>'>
+<!ENTITY Block '<link href="&ReferenceRoot;/Block.html">Block</link>'>
+<!ENTITY Checkbox '<link href="&ReferenceRoot;/Checkbox.html">Checkbox</link>'>
+<!ENTITY Body '<link href="&ReferenceRoot;/Body.html">Body</link>'>
+<!ENTITY Conditional '<link href="&ReferenceRoot;/Conditional.html">Conditional</link>'>
+<!ENTITY Delegator '<link href="&ReferenceRoot;/Delegator.html">Delegator</link>'>
+<!ENTITY DirectLink '<link href="&ReferenceRoot;/DirectLink.html">DirectLink</link>'>
+<!ENTITY ExceptionDisplay '<link href="&ReferenceRoot;/ExceptionDisplay.html">ExceptionDisplay</link>'>
+<!ENTITY ExternalLink '<link href="&ReferenceRoot;/ExternalLink.html">ExternalLink</link>'>
+<!ENTITY Foreach '<link href="&ReferenceRoot;/Foreach.html">Foreach</link>'>
+<!ENTITY Form '<link href="&ReferenceRoot;/Form.html">Form</link>'>
+<!ENTITY Frame '<link linkend="bultin.Frame.html">Frame</link>'>
+<!ENTITY GenericLink '<link href="&ReferenceRoot;/GenericLink.html">GenericLink</link>'>
+<!ENTITY Hidden '<link href="&ReferenceRoot;/Hidden.html">Hidden</link>'>
+<!ENTITY ListEdit '<link href="&ReferenceRoot;/ListEdit.html">ListEdit</link>'>
+<!ENTITY Image '<link href="&ReferenceRoot;/Image.html">Image</link>'>
+<!ENTITY Insert '<link href="&ReferenceRoot;/Insert.html">Insert</link>'>
+<!ENTITY InsertText '<link href="&ReferenceRoot;/InsertText.html">InsertText</link>'>
+<!ENTITY InspectorButton '<link href="&ReferenceRoot;/InspectorButton.html">InspectorButton</link>'>
+<!ENTITY Option '<link href="&ReferenceRoot;/Option.html">Option</link>'>
+<!ENTITY PageLink '<link href="&ReferenceRoot;/PageLink.html">PageLink</link>'>
+<!ENTITY Palette '<link href="&ReferenceRoot;/contrib.Palette.html">Palette</link>'>
+<!ENTITY PropertySelection '<link href="&ReferenceRoot;/PropertySelection.html">PropertySelection</link>'>
+<!ENTITY Radio '<link href="&ReferenceRoot;/Radio.html">Radio</link>'>
+<!ENTITY RadioGroup '<link href="&ReferenceRoot;/RadioGroup.html">RadioGroup</link>'>
+<!ENTITY RenderBlock '<link href="&ReferenceRoot;/RenderBlock.html">RenderBlock</link>'>
+<!ENTITY RenderBody '<link href="&ReferenceRoot;/RenderBody.html">RenderBody</link>'>
+<!ENTITY Rollover '<link href="&ReferenceRoot;/Rollover.html">Rollover</link>'>
+<!ENTITY Script '<link href="&ReferenceRoot;/Script.html">Script</link>'>
+<!ENTITY Select '<link href="&ReferenceRoot;/Select.html">Select</link>'>
+<!ENTITY ServiceLink '<link href="&ReferenceRoot;/ServiceLink.html">ServiceLink</link>'>
+<!ENTITY Shell '<link href="&ReferenceRoot;/Shell.html">Shell</link>'>
+<!ENTITY Submit '<link href="&ReferenceRoot;/Submit.html">Submit</link>'>
+<!ENTITY TextArea '<link href="&ReferenceRoot;/TextArea.html">TextArea</link>'>
+<!ENTITY TextField '<link href="&ReferenceRoot;/TextField.html">TextField</link>'>
+<!ENTITY Upload '<link href="&ReferenceRoot;/Upload.html">Upload</link>'>
+<!ENTITY ValidField '<link href="&ReferenceRoot;/ValidField.html">ValidField</link>'>
+  
+<!-- External links -->
+
+<!ENTITY Ant 			'<link href="http://ant.apache.org/">Ant</link>'>
+<!ENTITY BSF 			'<link href="http://jakarta.apache.org/bsf/">BSF</link>'>
+<!ENTITY BCEL 			'<link href="http://jakarta.apache.org/bcel/">BCEL</link>'>
+<!ENTITY Eclipse 		'<link href="http://www.eclipse.org">Eclipse</link>'>
+<!ENTITY HiveMind		'<link href="http://jakarta.apache.org/hivemind/">HiveMind</link>'>
+<!ENTITY Log4J 			'<link href="http://jakarta.apache.org/log4j/">Log4J</link>'>
+<!ENTITY Jakarta		'<link href="http://jakarta.apache.org">Jakarta</link>'>
+<!ENTITY Javassist 		'<link href="http://jboss.org/developers/projects/javassist.html">Javassist</link>'>
+<!ENTITY JBoss 			'<link href="http://www.jboss.org">JBoss</link>'>
+<!ENTITY Jetty 			'<link href="http://sf.net/projects/jetty/">Jetty</link>'>
+<!ENTITY JUnit 			'<link href="http://www.junit.org">JUnit</link>'>
+<!ENTITY Jython	  		'<link href="http://www.jython.org">Jython</link>'>
+<!ENTITY OGNL 			'<link href="http://www.ognl.org">OGNL</link>'>
+<!ENTITY Saxon 			'<link href="http://sf.net/projects/saxon/">Saxon</link>'>
+
+<!ENTITY Struts 		'<link href="http://struts.apache.org/">Struts</link>'>
+<!ENTITY WebWork 		'<link href="http://opensymphony.com/webwork/">WebWork</link>'>
+<!ENTITY Velocity 		'<link href="http://jakarta.apache.org/velocity/">Velocity</link>'>
+
+<!ENTITY TapestryHomePage
+						'<link href="http://jakarta.apache.org/tapestry/">Tapestry Home Page</link>'>
+
+<!-- Other useful stuff -->
+
+<!ENTITY HowardLewisShipEmail '<link href="mailto:hlship@apache.org">Howard M. Lewis Ship</link>'>

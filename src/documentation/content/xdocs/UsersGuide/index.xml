@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+[
+	<!ENTITY projectroot '../'>
+	<!ENTITY % links.ent SYSTEM "../links.ent">
+  <!ENTITY % common.ent SYSTEM "common.ent">
+	%links.ent;
+  %common.ent;
+]>
+<document>
+  <header>
+    <title>Users Guide - Introduction</title>
+  </header>
+
+<body>
+
+	
+<p>
+Tapestry is a component-based web application framework, written in Java.  Tapestry
+is more than a simple templating system; Tapestry builds on the Java Servlet API to
+build a platform for creating dynamic, interactive web sites.  More than
+just another templating language, Tapestry is a real framework for building
+complex applications from simple, reusable components.  Tapestry offloads
+much of the error-prone work in creating web applications into the framework itself,
+taking over mundane tasks such as dispatching incoming requests, constructing and
+interpretting URLs encoded with information, handling localization and internationalization
+and much  more besides.
+</p>
+
+<p>
+The "mantra" of Tapestry is "objects, methods and properties".  That is, rather than have developers concerned
+about the paraphanlia of the Servlet API: requests, responses, sessions, attributes, parameters, URLs and so on,
+Tapestry focuses the developer on objects (including Tapestry pages and components, but
+also including the domain objects  of the application), methods on those objects,
+and JavaBeans properties of those objects.  That is, in a Tapestry application, the
+actions of the user (clicking links and submitting forms) results in changes to object properties
+combined with the invocation of user-supplied methods (containing application logic).  Tapestry
+takes care of the plumbing necessary to connect these user actions 
+with the objects.
+</p>
+
+<p>
+This can take some getting used to. You don't write servlets in Tapestry, you write
+<em>listener methods</em>.  You don't build URLs to servlets either -- you
+use an existing component (such as &DirectLink;) and configure its <code>listener</code> parameter
+to invoke your listener method.  What does a listener method do? It interacts with backend systems (often,
+stateless session EJBs) or does other bookkeeping related to the request and selects a new page to provide
+a response to the user ... basically, the core code at the center of a servlet. In Tapestry, you write much less code
+because all the boring, mechanical plumbing (creating URLs, dispatching incoming requests, managing
+server-side state, and so forth) is the responsibility of the framework.
+</p>
+
+<p>
+This is not to say the Servlet API is inaccessible; it is simply not
+<em>relevant</em> to a typical Tapestry user.
+</p>
+
+<p>
+This document describes many of the internals of Tapestry.  It is not a tutorial,
+that is available as a separate document.  Instead, this is a guide to
+some of the internals of Tapestry, and is intended for experienced developers
+who wish to leverage Tapestry fully.
+</p>
+
+<p>
+Tapestry is currently in release 3.0, and has come a long way in the last couple
+of years.  Tapestry's focus is still on generating dynamic HTML pages, although there's plenty
+of support for XHTML, WML and other types of markup as well.
+</p>
+
+<p>
+Nearly all of Tapestry's API is described in terms of interfaces, with
+default implementations supplied.
+By substituting new objects with the correct interfaces, the behavior of the framework
+can be changed significantly. A common
+example  is to override where page and component specifications are stored
+(perhaps in a database).
+</p>
+
+<p>
+Finally, Tapestry boasts extremely complete JavaDoc API documentation.  This document
+exists to supplement that documentation, to fill in gaps that may not be obvious.  The JavaDoc
+is often the best reference.
+</p>
+
+<section id="intro.overview">
+	<title>An overview of Tapestry</title>
+	
+<p>
+Perhaps the hardest part of understanding Tapestry is the fact that it is 
+<em>component-centric</em>	not 
+<em>operation-centric</em>.  Most web technologies (&Struts;, servlets, PHP, etc.)
+are operation-centric.  You create servlets (or Actions, or what have you)
+that are invoked when a user clicks a link or submits a form. You are responsible for selecting an appropriate
+URL, and the name and type of any query parameters, so that you can pass along the information you need
+in the URL.
+</p>
+
+<p>
+You are also responsible for connecting your output pages (whether they are JSPs, &Velocity; templates,
+or some other form of templating technology) to those operations. This requires you to construct those URLs and get them into the
+<code>href</code>	 attribute of your &lt;a&gt; tag, or
+into the <code>action</code> attribute
+of your &lt;form&gt; tag.
+</p>
+
+<p>
+Everything is different inside Tapestry. Tapestry applications consist of pages; pages are constructed 
+from smaller components. Components may themselves be constructed from other components. Every page has a unique name,
+and every component within a page has its own unique id ... this is a <em>component object model</em>.
+Effectively, every component has an <em>address</em> that can easily be incorporated into a URL.
+</p>
+
+<p>
+In practical terms, your don't write a servlet for the <code>add-item-to-shopping-cart</code>	operation.
+In fact, you don't even write an <code>add-item-to-shopping-cart</code> component. What you do is take an existing component, such
+as &DirectLink;, and configure it. When the component renders, it will create a callback URL. When you click that link, the callback URL (which
+includes the name of the page and the id of the component within the page) will invoke a method on the component ... and <em>that</em>
+method invokes your application-specific <em>listener method</em>.
+</p>
+
+<note>
+Listener methods in Tapestry are very similar in intent to <em>delegates</em> in C#. In both cases, a method of a
+particular object instance is represented as an object. Calling this a "listener" or a "listener method" is a bit of a naming
+snafu; it should be called a "delegate" and a "delegate method" but the existing naming is too deeply entrenched to change any time soon.	
+</note>
+
+<p>
+You supply just the listener method ... not an entire servlet.
+Tapestry takes care that your listener method is invoked at the right time, under the right conditions. You don't have to think about how to build that URL,
+what data goes in the URL, or how to hook it up to your application-specific code--that's all handled by the framework.
+</p>
+
+<figure alt="Tapestry request dispatch (high level)" src="&imageroot;/high-level-component-request.png"/>
+
+</section> <!-- intro.overview -->
+
+<section id="intro.pages-and-components">
+	<title>Pages and components</title>
+	
+<p>
+Tapestry divides an application into a set of pages.  Each page is assembled from Tapestry components.
+Components themselves may be assembled from other components ... there's no artificial depth limit.
+</p>
+
+
+<p>
+Tapestry pages are themselves components, but are components with some special responsibilities.
+</p>
+
+<p>
+All Tapestry components can be containers of other components.  Tapestry pages, and most
+user-defined components, have a template, a special HTML file that defines the static
+and dynamic portions of the component, with markers to indicate where embedded components are
+active.  Components do not have to have a template, most of the components provided with
+Tapestry generate their portion of response in code, not using a template.
+</p>
+
+<p>
+Components may have one or more named parameters which may be set (or, more correctly, "bound") 
+by the page or component
+which contains them.  Unlike Java method parameters, Tapestry component parameters may be
+bidirectional; a component may read a parameter to obtain a value, or write a parameter
+to set a value.
+</p>
+
+<p>
+Most components are concerned only with generating HTML.  A certain subset of components deal with the flip-side
+of requests; handling of incoming requests.  Link classes, such as &PageLink;, &DirectLink; and
+&ActionLink;, create clickable links in the rendered page and are involved in dispatching to user-supplied
+code when such a link is triggered by clicking it.
+</p>
+
+<p>
+Other components, &Form;, and the form control components (&TextField;, &PropertySelection;, &Checkbox;, etc.),
+facilitate HTML forms.  When such components render, they read properties from application objects so as
+to provide default values.  When the forms are submitted, the components
+within the form read HTTP query parameters, convert the values to appropriate types
+and then update properties of application objects.
+</p> 
+
+</section> <!-- intro.pages-and-components -->
+
+<section id="intro.engine-service-visit">
+	<title>Engines, services and friends</title>
+	
+<p>
+Tapestry has evolved its own jargon over time.
+</p>
+
+<p>
+The Engine is a central object, it occupies the same semantic space in Tapestry that the
+HttpSession does in the Servlet API.  The Engine is ultimately responsible for
+storing the persistent state of the application (properties that exist from one request to
+the next), and this is accomplished by storing the Engine into the HttpSession.
+This document will largely discuss the <em>default</em> implementation,
+with notes about how the default implementation may be extended or overriden, where appropriate.
+</p>
+	
+<p>
+Engine services are the bridge between servlets and URLs and the rest of Tapestry.  Engine services 
+are responsible	for encoding URLs, providing query parameters that identify, to the framework,
+the exact operation that should occur when the generated URL is triggered (by the end user
+clicking a link or submitting a form).  Services are also responsible for dispatching
+those incoming requests.  This encapsulation of URL encoding and decoding inside a single object
+is key to how Tapestry components can flexibily operate without concern for how they are contained and on which
+page ... the services take into account page and location when formulating URLs.
+</p>
+
+<p>
+The <!-- link linkend="state.visit">Visit</link --> Visit object
+is an application-defined object that acts as a focal point
+for all server-side state (not associated with any single page).  Individual applications define for themselves
+the class of the Visit object.  The Visit is stored as a property of the Engine, and so is ultimately
+stored persistently in the HttpSession.
+</p>
+
+<p>
+The <!-- link linkend="state.global">Global</link --> Global object is also application-specific. It stores information
+global to the entire application, independent of any particular user or session. A common use for the Global
+object is to centralize logic that performs JNDI lookups of session EJBs.
+</p>
+	
+</section> <!-- intro.engine-service-visit -->
+
+<section id="intro.ognl">
+	<title>Object Graph Navigation Language</title>	
+	
+<p>
+Tapestry is tightly integrated with &OGNL;, the Object Graph Navigation Language. OGNL is a Java expression language, which is used
+to peek into objects and read or update their properties. OGNL is similar to, and must more powerful than, 
+the expression language built into the JSP 2.0 standard tag library. OGNL not only support property access,
+it can include mathematical expressions and method invocations. It can reference static fields of public classes. 
+It can create new objects, including lists and maps.
+</p>
+
+<p>
+The simplest OGNL expressions are property names, such as <code>foo</code>, which
+is equivalent to method <code>getFoo()</code> (or <code>setFoo()</code> if the expression is
+being used to update a property). The "Navigation" part comes
+into play when the expression is a series of property names, such as <code>foo.bar.baz</code>,
+which is equivalent to <code>getFoo().getBar().getBaz()</code> ... though care must always be taken that the intermediate
+properties (<code>foo</code> and <code>bar</code> in this example) are not null.
+</p>
+
+<p>
+OGNL is primarily used to allow two different objects (such as a page and a component contained by that page) to
+share information. 	
+</p>
+
+</section>  <!-- intro.ognl -->
+
+<section id="history">
+  <title>Tapestry Past, Tapestry Future</title>
+  
+<p>
+Since its initial introduction in early 2000, Tapestry has been in a constant state of evolution, driven by feedback from its community.
+Tapestry took a big leap forward in 2003.  During that period, the Tapestry project moved from 
+<link href="http://sf.net">SourceForge</link> to &Jakarta;. This was also the transition from release 2.3 to release 3.0 (the final 3.0 release occuring in April 2004).
+</p>  
+
+<p>
+Tapestry 3.0 was designed to radically change how Tapestry applications were created.  It introduced a kind of RAD (Rapid 
+Application Development) support in the form of <link href="template.html#template.components">implicit
+  components</link> ... a way of specifying a component's type and parameters in place in the HTML template, which is much
+  more familiar to JSP and PHP developers.
+</p>
+
+<p>
+ Tapestry 3.0 also saw the introduction of <em>line precise error reporting</em>, in which runtime errors are related back
+ to relevant lines in the HTML template or specification file.  Further, 3.0 introduced 
+ the &spec.property-specification; element, and the <em>bytecode enhancement</em> technology behind it.
+</p>
+
+<p>
+ At the time of this writing, Tapestry 3.1 is in an early alpha stage. It represents an even more radical
+ leap beyond 3.0 by introducing a new, sophisticated infrastructure on top of the 
+ &HiveMind; microkernel.  This new backbone will provide the support necessary to meet the needs of Tapestry's
+ much larger community ... including support for <em>prettier</em> URLs, integration of Tapestry and the Java Portlet API,
+ and modularization of applications (allowing the use of folders, and thus, J2EE declarative security). In addition,
+ a more sophisticated approach to implementing connected parameter properties will be introduced, and more flexibility for
+ storing session-specific state as HTTP cookies or query parameters will be provided.
+</p>
+
+<note>
+The exact feature set for Tapestry 3.1, and its schedule, are most assuredly up in the air!
+</note>
+
+<p>
+  A further future direction, in the Tapestry 4.0 timeframe (the far future), is to rethink the component object model
+  such that the classes <em>you</em> write do not sub-class Tapestry base classes. Page and component Java classes will
+  be simple POJOs (Plain Old Java Objects) and will have any Tapestry dependencies <em>injected</em> into them.
+</p>
+  
+</section>
+
+</body>
+</document>
