@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id: LinkSubmit.html,v 1.8 2003/03/06 17:19:18 hlship Exp $ --> 
+<html>
+<head>
+<title>LinkSubmit</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><A href="InspectorButton.html"><IMG alt=InspectorButton src="common-images/prev.png"></a></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+  <td align="right"><A href="ListEdit.html"><IMG alt=ListEdit src="common-images/next.png"></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>LinkSubmit</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <A href="../api/org/apache/tapestry/form/LinkSubmit.html">
+		 org.apache.tapestry.form.LinkSubmit</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td><A href="LinkSubmit.html"><font color="blue">Link Submit</font></a></td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr valign="center">
+ <td colspan="2">&nbsp;</td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Creates a hyperlink that submits its enclosing form using a JavaScript function.
+            
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Submit.html">Submit</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>false</td>
+		<td>Controls whether the link is produced. If disabled, the portion of the 
+    template the link surrounds is still rendered, but not the link itself.</td>
+	</tr>
+   <tr>
+    <td>selected</td>
+    <td>Object</td>
+    <td>out</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>
+    This parameter is bound to a property that is updated when the submit 
+    button is clicked by the user. The property is updated to match the tag 
+    parameter.
+    </td>
+   </tr>
+   <tr>
+    <td>tag</td>
+    <td>Object</td>
+    <td>in</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>
+    Tag used with the selected parameter to indicate which Submit button
+    on a form was clicked.
+    </td>
+   </tr>
+   <tr>
+ 		<td>listener</td>
+ 		<td>
+     <A href="../api/org/apache/tapestry/IActionListener.html"><tt>IActionListener</tt></A>
+    </td>
+ 		<td>in</td>
+ 		<td>no</td>
+ 		<td>&nbsp;</td>
+ 		<td>
+    If specified, the listener is notified.  This notification occurs as the 
+    component is rewinded, i.e., prior to the <A href="Form.html">Form</A>'s 
+    listener. In addition, the selected property (if bound) will be updated 
+    <u>before</u> the listener is notified.
+ 		</td>
+	
+	</table>
+            <P>Body: <STRONG>rendered</STRONG><BR>Informal parameters: 
+            <STRONG>allowed</STRONG>
+    <br>
+  Reserved 
+            parameters: "name", "href" </P>
+    
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  This example is under construction.</p>
+      
+  
+ </td></tr></table>
+</td></tr>
+<tr>
+ <td colspan="3"><hr></td>  
+</tr>
+<tr>
+ <td align="left"><A href="InspectorButton.html"><IMG alt=InspectorButton src="common-images/prev.png"></a></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+ <td align="right"><A href="ListEdit.html"><IMG alt=ListEdit src="common-images/next.png"></a></td>  
+</tr>
+</table>
+
+</body>
+</html>
