@@ -212,10 +212,8 @@ function ${updateFunctionName}()
   if (document.images)
     ${deselectImagePath}.src =
       disabled ? ${deselectDisabledImage}
-               : ${deselectImage};
-         
+               : ${deselectImage};   
 <if expression="sortUser">
-
   var upImage = ${upImagePath};
   var downImage = ${downImagePath};
   
@@ -266,7 +264,6 @@ function ${selectFunctionName}()
   var target = ${selectedPath};
      
   palette_transfer_selections(source, target);
-  
 <if expression="sortLabel">
   palette_sort_by_label(target);
 </if>
@@ -285,7 +282,6 @@ function ${deselectFunctionName}()
   var target = ${availablePath};
   
   palette_transfer_selections(source, target);
-  
 <if expression="sortLabel">
   palette_sort_by_label(target);
 </if>
@@ -302,7 +298,6 @@ function ${formSubmitFunctionName}()
   
   return true;
 }
-
 <if expression="sortUser">
 function ${moveUpFunctionName}()
 {
@@ -330,7 +325,6 @@ function ${moveDownFunctionName}()
   ${updateFunctionName}();
 }
 </if>
-
 function ${selectedChangeFunctionName}()
 {
   palette_clear_selections(${availablePath});
@@ -342,7 +336,6 @@ function ${availableChangeFunctionName}()
   palette_clear_selections(${selectedPath});
   ${updateFunctionName}();
 }
-
 </body>
 
 <initialization>
@@ -351,8 +344,6 @@ ${selectedPath}.onchange = ${selectedChangeFunctionName};
 ${selectedPath}.ondblclick = ${deselectFunctionName};
 ${availablePath}.onchange = ${availableChangeFunctionName};
 ${availablePath}.ondblclick = ${selectFunctionName};
-
-${updateFunctionName}();
 
 </initialization>
 </script>

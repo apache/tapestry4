@@ -72,6 +72,10 @@
   <property-specification name="name" type="java.lang.String"/>
   <property-specification name="form" type="org.apache.tapestry.IForm"/>
   
+  <property-specification name="selectedColumn" type="org.apache.tapestry.contrib.palette.PaletteColumn"/>
+  <property-specification name="availableColumn" type="org.apache.tapestry.contrib.palette.PaletteColumn"/>
+  
+  
   <private-asset name="Select" resource-path="select_right.gif"/>
   <private-asset name="SelectDisabled" resource-path="select_right_off.gif"/>
   <private-asset name="Deselect" resource-path="deselect_left.gif"/>
