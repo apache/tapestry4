@@ -14,12 +14,11 @@
 
 package org.apache.tapestry.services.impl;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.logging.Log;
 import org.apache.tapestry.services.RequestExceptionReporter;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebSession;
 
 /**
  * @author Howard M. Lewis Ship
@@ -29,14 +28,14 @@ public class RequestExceptionReporterImpl implements RequestExceptionReporter
 {
     private Log _log;
 
-    private HttpServletRequest _request;
+    private WebRequest _request;
 
     public void setLog(Log log)
     {
         _log = log;
     }
 
-    public void setRequest(HttpServletRequest request)
+    public void setRequest(WebRequest request)
     {
         _request = request;
     }
@@ -51,12 +50,10 @@ public class RequestExceptionReporterImpl implements RequestExceptionReporter
 
         System.err.println("\n");
 
-        HttpSession session = _request.getSession();
+        WebSession session = _request.getSession(false);
 
         if (session != null)
             System.err.println("      Session id    : " + session.getId());
-
-        System.err.println("      Client address: " + _request.getRemoteAddr());
 
         System.err.println("\nExceptions:\n");
 

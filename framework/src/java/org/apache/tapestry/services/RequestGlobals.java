@@ -17,8 +17,8 @@ package org.apache.tapestry.services;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tapestry.container.ContainerRequest;
-import org.apache.tapestry.container.ContainerResponse;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  * Access point for thread-local information about the current request.
@@ -30,13 +30,13 @@ public interface RequestGlobals
 {
     public void store(HttpServletRequest request, HttpServletResponse response);
 
-    public void store(ContainerRequest request, ContainerResponse response);
+    public void store(WebRequest request, WebResponse response);
 
     public HttpServletRequest getRequest();
 
-    public ContainerRequest getContainerRequest();
+    public WebRequest getWebRequest();
 
     public HttpServletResponse getResponse();
     
-    public ContainerResponse getContainerResponse();
+    public WebResponse getWebResponse();
 }

@@ -28,16 +28,16 @@ import org.apache.hivemind.test.ArgumentMatcher;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.test.TypeMatcher;
 import org.apache.hivemind.util.ClasspathResource;
-import org.apache.tapestry.container.ContainerRequest;
-import org.apache.tapestry.container.ContainerResponse;
-import org.apache.tapestry.container.ServletContainerRequest;
-import org.apache.tapestry.container.ServletContainerResponse;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.services.ClasspathResourceFactory;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.RequestGlobals;
 import org.apache.tapestry.services.RequestServicer;
 import org.apache.tapestry.services.ResetEventCoordinator;
+import org.apache.tapestry.web.ServletWebRequest;
+import org.apache.tapestry.web.ServletWebResponse;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebResponse;
 import org.easymock.MockControl;
 
 /**
@@ -80,11 +80,11 @@ public class TestBasicInfrastructure extends HiveMindTestCase
         HttpServletResponse p = (HttpServletResponse) newMock(HttpServletResponse.class);
         RequestServicer n = (RequestServicer) newMock(RequestServicer.class);
 
-        ContainerRequest cr = new ServletContainerRequest(r);
-        ContainerResponse cp = new ServletContainerResponse(p);
+        WebRequest wr = new ServletWebRequest(r);
+        WebResponse wp = new ServletWebResponse(p);
 
         rg.store(r, p);
-        rg.store(cr, cp);
+        rg.store(wr, wp);
         control.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
         { new TypeMatcher(), new TypeMatcher() }));
 

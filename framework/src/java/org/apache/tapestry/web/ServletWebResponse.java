@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,16 +24,16 @@ import org.apache.hivemind.util.Defense;
 
 /**
  * Adapts {@link javax.servlet.http.HttpServletResponse}&nbsp;as
- * {@link org.apache.tapestry.container.ContainerResponse}.
+ * {@link org.apache.tapestry.web.WebResponse}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class ServletContainerResponse implements ContainerResponse
+public class ServletWebResponse implements WebResponse
 {
     private final HttpServletResponse _servletResponse;
 
-    public ServletContainerResponse(HttpServletResponse response)
+    public ServletWebResponse(HttpServletResponse response)
     {
         Defense.notNull(response, "response");
 
@@ -52,7 +52,7 @@ public class ServletContainerResponse implements ContainerResponse
         }
         catch (IOException ex)
         {
-            throw new ApplicationRuntimeException(ContainerMessages
+            throw new ApplicationRuntimeException(WebMessages
                     .streamOpenError(contentType, ex), null, ex);
         }
     }

@@ -19,14 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
-import org.apache.tapestry.container.ContainerRequest;
-import org.apache.tapestry.container.ContainerResponse;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  * Tapestry infrastructure ... key services required by the {@link org.apache.tapestry.IEngine}
@@ -175,7 +175,7 @@ public interface Infrastructure
      * 
      */
     
-    public ContainerRequest getContainerRequest();
+    public WebRequest getWebRequest();
     
     /**
      * Returns the container response for the current request cycle.
@@ -184,7 +184,7 @@ public interface Infrastructure
      * 
      */
     
-    public ContainerResponse getContainerResponse();
+    public WebResponse getWebResponse();
 
     /**
      * Returns the context path, which identifies the application within the application server.

@@ -12,15 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+
+import org.apache.hivemind.test.HiveMindTestCase;
 
 /**
- * Primarily concerned with maintaining server-side state as attributes.
+ * Common code used when testing the various container adapters.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public interface ContainerSession extends AttributeHolder
+public class BaseWebTestCase extends HiveMindTestCase
 {
+
+    protected Enumeration newEnumeration()
+    {
+        List l = new ArrayList();
+        l.add("fred");
+        l.add("barney");
+
+        return Collections.enumeration(l);
+    }
+
+    protected void checkList(List l)
+    {
+        assertEquals("barney", l.get(0));
+        assertEquals("fred", l.get(1));
+    }
 
 }

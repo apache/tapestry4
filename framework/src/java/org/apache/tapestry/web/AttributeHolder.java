@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
 
 import java.util.List;
 
 /**
  * Interface for objects that can hold attributes. Attributes are objects that are stored and
  * retrieved using unique string names. There may be constraints on when attributes can be accessed
- * (for example, {@link org.apache.tapestry.container.ContainerSession}attributes should not be
+ * (for example, {@link org.apache.tapestry.web.WebSession}attributes should not be
  * changed once the response is committed).
  * 
  * @author Howard M. Lewis Ship
@@ -44,7 +44,7 @@ public interface AttributeHolder
 
     /**
      * Updates the attribute, replacing (or removing) its value. For certain implementations, the
-     * attribute may need to be serializable (for example, a {@link ContainerSession}
+     * attribute may need to be serializable (for example, a {@link WebSession}
      * &nbsp;attribute in a clustered application).
      * 
      * @param name

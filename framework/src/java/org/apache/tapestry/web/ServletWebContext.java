@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,18 +26,18 @@ import org.apache.hivemind.util.Defense;
 
 /**
  * Adapts {@link javax.servlet.ServletContext}&nbsp;as
- * {@link org.apache.tapestry.container.ContainerContext}.
+ * {@link org.apache.tapestry.web.WebContext}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class ServletContainerContext implements ContainerContext
+public class ServletWebContext implements WebContext
 {
-    private static final Log LOG = LogFactory.getLog(ServletContainerContext.class);
+    private static final Log LOG = LogFactory.getLog(ServletWebContext.class);
 
     private final ServletContext _servletContext;
 
-    public ServletContainerContext(ServletContext context)
+    public ServletWebContext(ServletContext context)
     {
         Defense.notNull(context, "context");
 
@@ -46,7 +46,7 @@ public class ServletContainerContext implements ContainerContext
 
     public List getAttributeNames()
     {
-        return ContainerUtils.toSortedList(_servletContext.getAttributeNames());
+        return WebUtils.toSortedList(_servletContext.getAttributeNames());
     }
 
     public Object getAttribute(String name)
@@ -71,7 +71,7 @@ public class ServletContainerContext implements ContainerContext
         }
         catch (MalformedURLException ex)
         {
-            LOG.error(ContainerMessages.errorGettingResource(path, ex), ex);
+            LOG.error(WebMessages.errorGettingResource(path, ex), ex);
 
             return null;
         }
@@ -84,6 +84,6 @@ public class ServletContainerContext implements ContainerContext
 
     public List getInitParameterNames()
     {
-        return ContainerUtils.toSortedList(_servletContext.getInitParameterNames());
+        return WebUtils.toSortedList(_servletContext.getInitParameterNames());
     }
 }

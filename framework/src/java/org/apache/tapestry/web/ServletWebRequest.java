@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
 
 import java.util.List;
 
@@ -23,18 +23,18 @@ import org.apache.hivemind.util.Defense;
 
 /**
  * Adapter from {@link javax.servlet.http.HttpServletRequest}&nbsp;to
- * {@link org.apache.tapestry.container.ContainerRequest}.
+ * {@link org.apache.tapestry.web.WebRequest}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class ServletContainerRequest implements ContainerRequest
+public class ServletWebRequest implements WebRequest
 {
     private final HttpServletRequest _servletRequest;
     
-    private ContainerSession _containerSession;
+    private WebSession _containerSession;
 
-    public ServletContainerRequest(HttpServletRequest request)
+    public ServletWebRequest(HttpServletRequest request)
     {
         Defense.notNull(request, "request");
 
@@ -43,7 +43,7 @@ public class ServletContainerRequest implements ContainerRequest
 
     public List getParameterNames()
     {
-        return ContainerUtils.toSortedList(_servletRequest.getParameterNames());
+        return WebUtils.toSortedList(_servletRequest.getParameterNames());
     }
 
     public String getParameterValue(String parameterName)
@@ -61,7 +61,7 @@ public class ServletContainerRequest implements ContainerRequest
         return _servletRequest.getContextPath();
     }
 
-    public ContainerSession getSession(boolean create)
+    public WebSession getSession(boolean create)
     {
         if (_containerSession != null)
             return _containerSession;
@@ -69,14 +69,14 @@ public class ServletContainerRequest implements ContainerRequest
         HttpSession session = _servletRequest.getSession(create);
 
         if (session != null)
-            _containerSession = new ServletContainerSession(session);
+            _containerSession = new ServletWebSession(session);
 
         return _containerSession;
     }
 
     public List getAttributeNames()
     {
-        return ContainerUtils.toSortedList(_servletRequest.getAttributeNames());
+        return WebUtils.toSortedList(_servletRequest.getAttributeNames());
     }
 
     public Object getAttribute(String name)

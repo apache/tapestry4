@@ -17,10 +17,9 @@ package org.apache.tapestry.record;
 import java.util.Collection;
 import java.util.Collections;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebSession;
 import org.easymock.MockControl;
 
 /**
@@ -31,10 +30,10 @@ import org.easymock.MockControl;
  */
 public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 {
-    private HttpServletRequest newRequest(boolean create, HttpSession session)
+    private WebRequest newRequest(boolean create, WebSession session)
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        MockControl control = newControl(WebRequest.class);
+        WebRequest request = (WebRequest) control.getMock();
 
         request.getSession(create);
 
@@ -43,19 +42,19 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
         return request;
     }
 
-    private HttpSession newSession()
+    private WebSession newSession()
     {
-        return (HttpSession) newMock(HttpSession.class);
+        return (WebSession) newMock(WebSession.class);
     }
 
-    private HttpSession newSession(String attributeName, Object value)
+    private WebSession newSession(String attributeName, Object value)
     {
-        MockControl control = newControl(HttpSession.class);
-        HttpSession session = (HttpSession) control.getMock();
+        MockControl control = newControl(WebSession.class);
+        WebSession session = (WebSession) control.getMock();
 
         session.getAttributeNames();
 
-        control.setReturnValue(Collections.enumeration(Collections.singletonList(attributeName)));
+        control.setReturnValue(Collections.singletonList(attributeName));
 
         if (value != null)
         {
@@ -66,25 +65,25 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
         return session;
     }
 
-    private HttpSession newSession(String attributeName, boolean remove)
+    private WebSession newSession(String attributeName, boolean remove)
     {
-        MockControl control = newControl(HttpSession.class);
-        HttpSession session = (HttpSession) control.getMock();
+        MockControl control = newControl(WebSession.class);
+        WebSession session = (WebSession) control.getMock();
 
         session.getAttributeNames();
 
-        control.setReturnValue(Collections.enumeration(Collections.singletonList(attributeName)));
+        control.setReturnValue(Collections.singletonList(attributeName));
 
         if (remove)
-            session.removeAttribute(attributeName);
+            session.setAttribute(attributeName, null);
 
         return session;
     }
 
     public void testStorePageProperty()
     {
-        HttpSession session = newSession();
-        HttpServletRequest request = newRequest(true, session);
+        WebSession session = newSession();
+        WebRequest request = newRequest(true, session);
 
         Object value = new Object();
 
@@ -104,10 +103,10 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
     public void testClearPageProperty()
     {
-        HttpSession session = newSession();
-        HttpServletRequest request = newRequest(true, session);
+        WebSession session = newSession();
+        WebRequest request = newRequest(true, session);
 
-        session.removeAttribute("myapp,Help,bar");
+        session.setAttribute("myapp,Help,bar", null);
 
         replayControls();
 
@@ -123,8 +122,8 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
     public void testStoreComponentProperty()
     {
-        HttpSession session = newSession();
-        HttpServletRequest request = newRequest(true, session);
+        WebSession session = newSession();
+        WebRequest request = newRequest(true, session);
 
         Object value = new Object();
 
@@ -144,7 +143,7 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
     public void testGetStoredChangesNoSession()
     {
-        HttpServletRequest request = newRequest(false, null);
+        WebRequest request = newRequest(false, null);
 
         replayControls();
 
@@ -158,8 +157,8 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
     public void testGetStoreChangesNoMatch()
     {
-        HttpSession session = newSession("myapp,Home,foo,bar", null);
-        HttpServletRequest request = newRequest(false, session);
+        WebSession session = newSession("myapp,Home,foo,bar", null);
+        WebRequest request = newRequest(false, session);
 
         replayControls();
 
@@ -177,8 +176,8 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
     public void testGetStoredPageProperty()
     {
         Object value = new Object();
-        HttpSession session = newSession("myapp,Help,bar", value);
-        HttpServletRequest request = newRequest(false, session);
+        WebSession session = newSession("myapp,Help,bar", value);
+        WebRequest request = newRequest(false, session);
 
         replayControls();
 
@@ -202,8 +201,8 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
     public void testGetStoredComponentProperty()
     {
         Object value = new Object();
-        HttpSession session = newSession("myapp,Help,zap.biff,bar", value);
-        HttpServletRequest request = newRequest(false, session);
+        WebSession session = newSession("myapp,Help,zap.biff,bar", value);
+        WebRequest request = newRequest(false, session);
 
         replayControls();
 
@@ -226,7 +225,7 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
     public void testDiscardChangesNoSession()
     {
-        HttpServletRequest request = newRequest(false, null);
+        WebRequest request = newRequest(false, null);
 
         replayControls();
 
@@ -240,8 +239,8 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
     public void testDiscardChangesNoMatch()
     {
-        HttpSession session = newSession("myapp,Home,foo", false);
-        HttpServletRequest request = newRequest(false, session);
+        WebSession session = newSession("myapp,Home,foo", false);
+        WebRequest request = newRequest(false, session);
 
         replayControls();
 
@@ -254,8 +253,8 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
     public void testDiscardChangesWithMatch()
     {
-        HttpSession session = newSession("myapp,Home,foo", true);
-        HttpServletRequest request = newRequest(false, session);
+        WebSession session = newSession("myapp,Home,foo", true);
+        WebRequest request = newRequest(false, session);
 
         replayControls();
 
