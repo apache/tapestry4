@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<component-specification class="net.sf.tapestry.contrib.table.components.TableColumns" 
+	allow-body="yes" allow-informal-parameters="yes">
+	
+	<description>
+	</description>
+  
+	<parameter name="tableView" 
+		java-type="net.sf.tapestry.contrib.table.components.TableView" 
+		required="yes"
+		direction="custom"/>
+  
+	<component id="iterColumns" type="Foreach">
+		<binding name="source" expression="tableColumnIterator"/>
+		<binding name="value" expression="tableColumn"/>
+	</component>
+  
+	<component id="informal" type="InheritInformalAny">
+		<static-binding name="element">th</static-binding>
+	</component>
+  
+	<component id="insertColumnRenderer" type="InsertRenderer">
+		<binding name="renderer" expression="tableColumnRenderer"/>
+	</component>
+
+</component-specification>
