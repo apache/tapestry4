@@ -1127,9 +1127,13 @@ public abstract class AbstractApplication
 		if (monitor != null)
 			monitor.serviceBegin("page", pageName);
 
-		if (context.getSession().isNew())
-			throw new StaleSessionException();
-
+		// At one time, the page service required a session, but that is no longer necessary.
+		// User's can now bookmark pages within a Tapestry application.  Pages
+		// can implement validate() and throw a PageRedirectException if they don't
+		// want to be accessed this way.  For example, most applications have a concept
+		// of a "login" and have a fe pages that don't require the user to be logged in,
+		// and other pages that do.  The protected pages should redirect to a login page.
+		
 		page = cycle.getPage(pageName);
 
 		// Allow the page to validate that the user is allowed to visit.  This is simple

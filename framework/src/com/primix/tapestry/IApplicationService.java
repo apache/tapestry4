@@ -73,6 +73,9 @@ public interface IApplicationService
      *  <p>This service is used with actions that are tied to the
      *  dynamic state of the page, which require a rewind of the page.
      *
+	 *  <p>The action service throws a {@link StaleSessionException} if invoked
+	 *  in a new session.
+	 *
      */
 	 
     public final static String ACTION_SERVICE = "action";
@@ -89,6 +92,8 @@ public interface IApplicationService
      *  service URL; these will be made available to the {@link Direct}
      *  component's listener.
      *
+     *  <p>The direct service throws a {@link StaleSessionException} if invoked
+     *  in a new session.
      */
 
     public final static String DIRECT_SERVICE = "direct";
@@ -131,7 +136,7 @@ public interface IApplicationService
     /**
      *  Builds a URL for a service.  This is performed during the
      *  rendering phase of one request cycle and bulds URLs that will
-     *  invoke activity is a subsequent request cycle.
+     *  invoke activity in a subsequent request cycle.
      *
      *  @param cycle Defines the request cycle being processed.
      *  @param component The component requesting the URL.
