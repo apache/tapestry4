@@ -12,7 +12,6 @@
 <!ENTITY IRequestCycle '<ulink url="&ApiRoot;/IRequestCycle.html"><classname>IRequestCycle</classname></ulink>'>
 <!ENTITY IDirectListener '<ulink url="&ApiRoot;/IDirectListener .html"><classname>IDirectListener</classname></ulink>'>
 <!ENTITY IActionListener '<ulink url="&ApiRoot;/IActionListener.html"><classname>IActionListener</classname></ulink>'>
-<!ENTITY IValidationDelegate '<ulink url="&ApiRoot;/form/IValidationDelegate.html"><classname>IValidationDelegate</classname></ulink>'>
 <!ENTITY IBinding '<ulink url="&ApiRoot;/IBinding.html"><classname>IBinding</classname></ulink>'>
 <!ENTITY AbstractComponent '<ulink url="&ApiRoot;/AbstractComponent.html"><classname>AbstractComponent</classname></ulink>'>
 <!ENTITY PropertyHelper '<ulink url="&ApiRoot;/util/prop/PropertyHelper.html"><classname>PropertyHelper</classname></ulink>'>
@@ -24,6 +23,18 @@
 <!ENTITY Default '<ulink url="&ApiRoot;/bean/Default.html"><classname>Default</classname></ulink>'>
 <!ENTITY ValidationDelegate '<ulink url="&ApiRoot;/valid/ValidationDelegate.html"><classname>ValidationDelegate</classname></ulink>'>
 <!ENTITY EvenOdd '<ulink url="&ApiRoot;/inspector/EvenOdd.html"><classname>EvenOdd</classname></ulink>'>
+<!ENTITY ApplicationServlet '<ulink url="&ApiRoot;/ApplicationServlet.html"><classname>ApplicationServlet</classname></ulink>'>
+<!ENTITY PageRedirectException '<ulink url="&ApiRoot;/PageRedirectException.html"><classname>PageRedirectException</classname></ulink>'>
+<!ENTITY IDirect '<ulink url="&ApiRoot;/IDirect.html"><classname>IDirect</classname></ulink>'>
+<!ENTITY BasePage '<ulink url="&ApiRoot;/BasePage.html"><classname>BasePage</classname></ulink>'>
+<!ENTITY BaseComponent '<ulink url="&ApiRoot;/BaseComponent.html"><classname>BaseComponent</classname></ulink>'>
+<!ENTITY IPageRecorder '<ulink url="&ApiRoot;/IPageRecorder.html"><classname>IPageRecorder</classname></ulink>'>
+<!ENTITY ExceptionAnalyzer '<ulink url="&ApiRoot;/util/exceptionExceptionAnalyzer.html"><classname>ExceptionAnalyzer</classname></ulink>'>
+<!ENTITY ExceptionDescription '<ulink url="&ApiRoot;/util/ExceptionDescription.html"><classname>ExceptionDescription</classname></ulink>'>
+<!ENTITY StaleLinkException '<ulink url="&ApiRoot;/StaleLinkException.html"><classname>StaleLinkException</classname></ulink>'>
+<!ENTITY Gesture '<ulink url="&ApiRoot;/Gesture.html"><classname>Gesture</classname></ulink>'>
+<!ENTITY IValidatingTextField '<ulink url="&ApiRoot;/valid/IValidatingTextField.html"><classname>IValidatingTextField</classname></ulink>'>
+<!ENTITY IValidationDelegate '<ulink url="&ApiRoot;/valid/IValidationDelegate.html"><classname>IValidationDelegate</classname></ulink>'>
 <!-- Classes provided by Sun -->
 <!ENTITY HttpSession "<classname>HttpSession</classname>">
 <!ENTITY HttpServletRequest "<classname>HttpServletRequest</classname>">
@@ -37,6 +48,7 @@
 <!ENTITY Body '<link linkend="builtin.Body"><classname>Body</classname></link>'>
 <!ENTITY Conditional '<link linkend="builtin.Conditional"><classname>Conditional</classname></link>'>
 <!ENTITY Direct '<link linkend="builtin.Direct"><classname>Direct</classname></link>'>
+<!ENTITY ExceptionDisplay '<link linkend="builtin.ExceptionDisplay"><classname>ExceptionDisplay</classname></link>'>
 <!ENTITY Foreach '<link linkend="builtin.Foreach"><classname>Foreach</classname></link>'>
 <!ENTITY Form '<link linkend="builtin.Form"><classname>Form</classname></link>'>
 <!ENTITY Hidden '<link linkend="builtin.Hidden"><classname>Hidden</classname></link>'>
@@ -208,7 +220,7 @@ For comparison, an equivalent Tapestry template to the previous JSP example:
 </informalexample>
 <para>This defines a component named <varname>insertUserName</varname> on the page.
 To assist HTML development, a sample value, "<literal>John Doe</literal>" is included, but
-this is automatically editted out when the HTML template is used.
+this is automatically editted out when the HTML template is used by the framework.
 </para>
 <para>
 The <sgmltag class="starttag">span</sgmltag> tag simply indicated where the Tapestry component
@@ -1543,13 +1555,11 @@ during a request.  Helper beans are no exception.  There exists a general helper
 <varname>request</varname> lifecycle may be placed into the pool for subsequent reuse (in the same or different page).  This
 only occurs with helper beans that implement the &IPoolable; interface.
 </para>
-
 <para>
 Tapestry includes a handful of useful helper beans.  &Default; is used to provide default values for optional parameters.
 &ValidationDelegate; cal be used with &ValidatingTextField;, it allows simple handling of validation errors and presentation.
 &EvenOdd; is used by the <link linkend="inspector">Tapestry Inspector</link>; it generates a stream of values alternating between "even" and "odd"; this is combined with cascading stylesheets to make the rows alternate between white and grey backgrounds.
 </para>
-
 </section>
 <section id="components.specification">
 <title>Component Specification</title>
@@ -2393,7 +2403,7 @@ items in the shopping cart.  Each line item identifies the product, cost and qua
   <tr>
     <th>Product</th> <th>Qty</th> <th>Price</th>
   </tr>
-  <span jwcid="e-item">
+  <span jwcid="eachItem">
   <tr>
     <td><span jwcid="insertProductName">Product Name</span></td>
     <td><span jwcid="insertQuantity">5</span></td>
@@ -2409,7 +2419,7 @@ when previewing the HTML layout (they are removed by Tapestry at runtime).  Some
 areas have been glossed over, such as allowing quantities to be changed.
 </para>
 <para>
-Component <varname>e-item</varname> is our &Foreach;.   
+Component <varname>eachItem</varname> is our &Foreach;.   
 It will render its body (all the text and components it wraps) several times, 
 depending on the number of line items in the cart.  On each pass it:
 </para>
@@ -2427,7 +2437,7 @@ depending on the number of line items in the cart.  On each pass it:
 <para>
 This continues until there are no more values in its source.  Lets say this is a page that has a 
 <varname>lineItem</varname> property that is being updated by the 
-<varname>e-item</varname> component.  The <varname>insertProductName</varname>, 
+<varname>eachItem</varname> component.  The <varname>insertProductName</varname>, 
 <varname>insertQuantity</varname> and <varname>insertPrice</varname> components use dynamic 
 bindings such as <literal>lineItem.productName</literal>, 
 <literal>lineItem.quantity</literal> and <literal>lineItem.price</literal>.
@@ -2438,7 +2448,7 @@ Part of the page's specification would configure these embedded components.
 <example>
 <title>Shopping Cart Specification (excerpt)</title>
 <programlisting>
-&lt;component id="e-item" type="Foreach"&gt;
+&lt;component id="eachItem" type="Foreach"&gt;
   &lt;binding name="source" property-path="items"/&gt;
   &lt;binding name="value" property-path="lineItem"/&gt;
 &lt;/component&gt;
@@ -2615,8 +2625,7 @@ the Minolta product, and that will be the product added to the shopping cart, re
 current value of the product property.
 </para>
 <para>
-HTML Forms, controlled by the &Form; component, 
-must make use of the action service, and so they are 
+HTML Forms, controlled by the &Form; component, are also
 susceptible to these issues related to the browser back button.  Still, there are techniques to make 
 even forms safe.  Borrowing an idea from more traditional JavaServer Pages development, a 
 hidden field can be included in the form to sychronize the form and the application ... for 
@@ -2650,11 +2659,37 @@ are a large number of clients (a single pool is shared by all clients).  The max
 instances of any one page is determined by the maximum number of clients that simultaneously 
 process a request that involves that page.
 </para>
+<figure>
+<title>Page Lifecycle</title>
+<mediaobject>
+<imageobject>
+<imagedata fileref="images/Page-lifecycle.gif" format="GIF"/>
+</imageobject>
+</mediaobject>
+</figure>
 <para>
-As the page is removed the pool, all of its persistent page properties are set.  Thus
+As the page is retrieved from the pool, all of its persistent page properties are set.  Thus
 the page is <emphasis>equivalent</emphasis> to the page last used by the application, even
 if it is not the same instance.  This includes any state (that is, the settings of any instance variables)
 that are particular to the client.
+</para>
+<para>
+This process is managed by the &IRequestCycle;.  When asked for a page, it checks whether the page has
+been accessed yet for this request.  If not, the page must be obtained from the page loader and properly
+attached and configured.
+</para>
+<figure>
+<title>Page Loading Sequence</title>
+<mediaobject>
+<imageobject>
+<imagedata fileref="images/Page-Load-sequence.gif" format="GIF"/>
+</imageobject>
+</mediaobject>
+</figure>
+<para>
+The page loader maintains a pool of pages, or can construct a new page instance as needed.  The
+&IPageRecorder; for the page tracks the persistant page properties and can reset the properties
+of the page instance to values appropriate to the current session.
 </para>
 <para>
 A page is taken out of the pool only long enough to process a request for a client that involves it.  
@@ -2670,13 +2705,7 @@ request arrives (from a different client) that involves the same page, a new ins
 Unless and until that happens, a single instance will be used and re-used by all clients, regardless of 
 the number of clients.
 </para>
-<note>
-<para>
-	The current version of Tapestry never clears out the page pool; this potentially means that a 
-	sudden glut of requests may create a large number of pages that may later not be used.  This will 
-	be addressed in future versions of the framework.
-	</para>
-</note>
+<para>Pages stay in the pool until culled, at which point the garbage collector will release the memory used by the page (and all the components embedded in it).  The default behavior is to cull unused pages after approximately ten minutes.</para>
 </section>
 <section id="pages.localization">
 <title>Page Localization</title>
@@ -2764,17 +2793,67 @@ need to know about this lifecycle.
 &IPage; can produce a number of events related to its lifecycle.  &PageRenderListener; is a listener interface for determining when the page starts and finishes rendering (this includes rewind renders related to the
 &Action; component).
 </para>
+<figure>
+<title>Page Render Sequence</title>
+<mediaobject>
+<imageobject>
+<imagedata fileref="images/Page-Render-sequence.gif" format="GIF"/>
+</imageobject>
+</mediaobject>
+</figure>
+<para>
+The call to <function>commitPageChanges()</function> is very important.  It is not possible to make any
+changes to persistant page properties after this method is invoked; doing so will throw an exception.
+</para>
+<figure>
+<title>Page Rewind Sequence</title>
+<mediaobject>
+<imageobject>
+<imagedata fileref="images/Page-Rewind-sequence.gif" format="GIF"/>
+</imageobject>
+</mediaobject>
+</figure>
+<para>
+Page rewinds, which are related to the &Form; and &Action; components, also perform a render operation
+in order to restore dynamic state on the page.  The &PageRenderListener; events are still fired.  The
+event listeners can invoke <function>isRewinding()</function> on &IRequestCycle; to determine
+whether this is a normal render, or for rewind purposes.
+</para>
 <para>
 The &PageDetachListener; interface is used by objects that wish to know when the page is detached from the
 application, prior to be stored into the page pool (for later reuse).  This is used by any components
 that maintain any independant state, such as &ValidatingTextField;.
 </para>
+<figure>
+<title>Page Detach Sequence</title>
+<mediaobject>
+<imageobject>
+<imagedata fileref="images/Page-Detach-sequence.gif" format="GIF"/>
+</imageobject>
+</mediaobject>
+</figure>
+<para>
+This cleanup occurs at the end of the request, after a response has been sent to the client web browser.
+</para>
 <para>
 Finally,  the &PageCleanupListener; is implemented by objects that need to know when the
 &HttpSession; is invalidated.
 </para>
+<figure>
+<title>Page Cleanup Sequence</title>
+<mediaobject>
+<imageobject>
+<imagedata fileref="images/Page-Cleanup-sequence.gif" format="GIF"/>
+</imageobject>
+</mediaobject>
+</figure>
 <para>
-Components that implement one of these interfaces can also override the method
+The engine knows when the &HttpSession; has been invalidated because the container will
+invoke <function>valueUnbound()</function>.  It loads and rolls back each page, then invokes
+<function>cleanupPage()</function> to allow the page to gracefully cleanup any held resources.
+</para>
+<para>
+Components that implement one of these interfaces usually override the method
 <function>finishLoad()</function> (from &AbstractComponent;) to register themselves with the page.
 </para>
 </section>
@@ -2809,12 +2888,26 @@ recorders will be serialized with the application engine (which is stored within
 Every Tapestry application has a single servlet, which acts 
 as a bridge between the servlet container and the 
 application engine.  The application servlet is a subclass of 
-<classname>com.primix.tapestry.ApplicationServlet</classname>.
+&ApplicationServlet;.
 </para>
 <para>
 The subclass provides the framework with the path to the application specification by 
 implementing the method <function>getApplicationSpecificationPath()</function>.
 </para>
+<para>
+The servlet's main job is to find or create the &IEngine; instance.  It then delegates all the behavior
+for processing the request to the application engine.  Encoded in the URL will be a particular
+application service; the engine delegates to the service to perform the real work of handling
+the request.
+</para>
+<figure>
+<title>ApplicationServlet Sequence</title>
+<mediaobject>
+<imageobject>
+<imagedata fileref="images/ApplicationServlet-sequence.gif" format="GIF"/>
+</imageobject>
+</mediaobject>
+</figure>
 <note>
 <title>Is a subclass really necessary?</title>
 <para>
@@ -2934,17 +3027,17 @@ The framework will invoke the accessor method
 before the page is rendered.
 </para>
 <para>
-The class <classname>com.primix.tapestry.util.exception.ExceptionAnalyzer</classname> and the 
-<classname>ExceptionDisplay</classname> component are typically used to present this information.
+The class &ExceptionAnalyzer; and the 
+&ExceptionDisplay; component are typically used to present this information.
 </para>
 <para>
-The <classname>StaleLink</classname> page is displayed when a <classname>com.primix.tapestry.StaleLinkException</classname> 
+The <classname>StaleLink</classname> page is displayed when a &StaleLinkException;
 is  thrown, which may occur during the processing of the request.  The exception is thrown when 
 Tapestry determines that the state of the page (on the server) is out of synch with the client's view 
 of the page ... this most often happens when the user makes use of the browser's back button.
 <footnote>
 <para>
-If desired, the application's engine can override the method
+If desired, the application engine can override the method
 <function>handleStaleLinkException()</function>.  The default implementation of
 this method redirects to the <classname>StaleLink</classname> page, but a custom implementation
 could set up an error message on the application's <classname>Home</classname> page and
@@ -3095,8 +3188,7 @@ This is combined with the a <sgmltag class="starttag">component</sgmltag> declar
 <para>
 The <varname>login</varname> component will locate the page service, and provide 'Login'
 (the name of the target 
-page) as a parameter.  The page service will build and return an appropriate URL (
-<filename>/<replaceable>servlet path</replaceable>?service=page&amp;context=Login</filename>), 
+page) as a parameter.  The page service will build and return an appropriate URL, 
 which the <varname>login</varname> component will incorporate into the <sgmltag class="starttag">a</sgmltag> hyperlink it 
 generates.
 </para>
@@ -3105,7 +3197,7 @@ The resulting HTML:
 </para>
 <informalexample>
 <programlisting>
-Click &lt;a href="/<replaceable>servlet path</replaceable>/page/Login"&gt;here&lt;/a&gt; to login.</programlisting>
+Click &lt;a href="/<replaceable>servlet-path</replaceable>?service=page&amp;context=Login"&gt;here&lt;/a&gt; to login.</programlisting>
 </informalexample>
 <para>
 If the user later clicks that link, the application will invoke the page service to handle the URL; 
@@ -3115,6 +3207,29 @@ will extract the page name (<literal>Login</literal>) and render that page.
 <para>
 The other services are more or less complicated, but share the same basic trait:  the service 
 provides the URL and later responds if the URL is triggered.
+</para>
+<para>
+Links (&Action;, &Direct;, etc.) and &Form;s use services in slightly different ways.  Links encode
+all the information directly into the URL whereas &Form;s encode most of the information as
+hidden form fields.
+</para>
+<figure>
+<title>Services and Gestures
+</title>
+<mediaobject>
+<imageobject>
+<imagedata fileref="images/Gestures.gif" format="GIF"/>
+</imageobject>
+</mediaobject>
+</figure>
+<para>
+In the first part, a service generates a &Gesture; and then extracts the full URL from it, for use
+as the <varname>href</varname> attribute of the <sgmltag class="starttag">a</sgmltag> tag.
+</para>
+<para>
+In the second part, a service is used to access the servlet path (which becomes the
+<varname>action</varname> attribute of the <sgmltag class="starttag">form</sgmltag> element).
+The query parameters are individually extracted and encoded as hidden fields in the form.
 </para>
 </section>
 <section id="engine.logging">
@@ -3396,7 +3511,8 @@ information, separated by slashes.
 <listitem>
 <para>
 <varname>parameters</varname>: additional parameters that can be made available to
-the component.  This is used by a &Direct; component.</para>
+the component.  This is used by a &Direct; component.  As with the context, multiple
+values are seperated with slashes.</para>
 </listitem>
 </itemizedlist>
 </para>
@@ -3413,17 +3529,22 @@ A page service stores the name of the page as the single value in the service co
 <para>
 The request cycle for the page service is relatively simple.
 </para>
-<itemizedlist>
-<listitem>
-<para>The service extracts the page name from the URL</para>
-</listitem>
-<listitem>
-<para>The named page it loaded and rolled back to its last recorded state</para>
-</listitem>
-<listitem>
-<para>The page is rendered to provide the HTML response sent back to the client</para>
-</listitem>
-</itemizedlist>
+<figure>
+<title>Page Service Sequence</title>
+<mediaobject>
+<imageobject>
+<imagedata fileref="images/Page-Service-sequence.gif" format="GIF"/>
+</imageobject>
+</mediaobject>
+</figure>
+<para>
+The URL contains the name of the page, and the corresponding page is aquired from
+the request cycle.  The page is given a chance to validate that the user can
+access it, it can throw &PageRedirectException; to force a render of a different page.
+Otherwise, <function>setPage()</function> tells the request cycle which page will
+be used to render a response, and <function>renderPage()</function> peforms
+the actual render.
+</para>
 </section>
 <section id="cycle.listeners">
 <title>Action and Direct listeners</title>
@@ -3543,45 +3664,34 @@ specified by the &Direct; component's <varname>context</varname> parameter are e
 <para>
 The request cycle for the direct service is more complicated that the page service.
 </para>
-<itemizedlist>
-<listitem>
-<para>The service extracts the page name from the context</para>
-</listitem>
-<listitem>
-<para>The page is loaded and its persistent state 
-		is rolled back to its last recorded state</para>
-</listitem>
-<listitem>
-<para>The service extracts the id path from the context</para>
-</listitem>
-<listitem>
-<para>The component is located within the page, using its id path</para>
-</listitem>
-<listitem>
-<para>The component is notified that it has been triggered, 
-		with the context passed as an array of Strings</para>
-</listitem>
-<listitem>
-<para>The component locates its listener</para>
-</listitem>
-<listitem>
-<para>The listener is informed that the component was triggered</para>
-</listitem>
-<listitem>
-<para>The listener reacts in an application specific way, 
-		and may update the state of any number of pages</para>
-</listitem>
-<listitem>
-<para>The listener may optionally select a new page to render a response</para>
-</listitem>
-<listitem>
-<para>The state of any changed pages is recorded by the page recorders</para>
-</listitem>
-<listitem>
-<para>The result page (the page specified in the context, unless overridden by the listener) is 
-	rendered to provide the HTML response sent back to the client</para>
-</listitem>
-</itemizedlist>
+<figure>
+<title>Direct Service Sequence</title>
+<mediaobject>
+<imageobject>
+<imagedata fileref="images/Direct-Service-sequence.gif" format="GIF"/>
+</imageobject>
+</mediaobject>
+</figure>
+<para>
+As with the page service, the page involved has a chance validate the request.
+The component is located within the page, and the page is set as the default
+response page.  The listener is free to override this, and can load other pages,
+change thier properties, or otherwise affect the state of the application.
+</para>
+<para>
+After the listener has its chance to respond to the request, a response page
+is renderred.
+</para>
+<note>
+<title>&IDirect; vs. &Direct;</title>
+<para>
+The sequence shown above is for the &Direct; component, which implements the &IDirect;
+interface.  In some rare cases, it is desirable to have a different component
+implement the &IDirect; interface instead.  It will still implement
+<function>directTriggered()</function> but will respond in its own way, likely without
+a listener.
+</para>
+</note>
 <para>
 This is the primary way (besides forms) in which applications respond to the user.  
 What's key is the component's listener, of type 
@@ -3632,64 +3742,18 @@ The request cycle for the action service is more complicated that the direct ser
 This sequence assumes that the component is an 
 &Action;, the details of handling form submissions are described in a later section.
 </para>
-<itemizedlist>
-<listitem>
+<figure>
+<title>Action Service Sequence</title>
+<mediaobject>
+<imageobject>
+<imagedata fileref="images/Action-Service-sequence.gif" format="GIF"/>
+</imageobject>
+</mediaobject>
+</figure>
 <para>
-			The service extracts the page name from the context
-			</para>
-</listitem>
-<listitem>
-<para>The page is loaded and rolled back to its last recorded state</para>
-</listitem>
-<listitem>
-<para>The service extracts the action id and component id path from the context</para>
-</listitem>
-<listitem>
-<para>A render of the page is started, with output discarded</para>
-</listitem>
-<listitem>
-<para>Each component "goes through the motions" of rendering</para>
-</listitem>
-<listitem>
-<para>Eventually, the &Action; component identifies that the page has been 
-		rewound (the action id in the context matches the current action id)
-		</para>
-</listitem>
-<listitem>
-<para>
-			The &Action; component locates its listener
-		</para>
-</listitem>
-<listitem>
-<para>
-			The listener is informed that the action was triggered
-		</para>
-</listitem>
-<listitem>
-<para>
-			The listener reacts in an application specific way, and may 
-			update the state of any number of pages
-		</para>
-</listitem>
-<listitem>
-<para>
-			The listener may optionally select a new page to render a response
-		</para>
-</listitem>
-<listitem>
-<para>The &Action; component terminates the rewind cycle
-		</para>
-</listitem>
-<listitem>
-<para>The state of any changed pages is recorded by the page recorders
-		</para>
-</listitem>
-<listitem>
-<para>The result page (the page specified in the URL, unless overridden by the listener) 
-		is rendered to provide the HTML response sent back to the client
-		</para>
-</listitem>
-</itemizedlist>
+The point of the action service is to restore the <emphasis>dynamic state</emphasis>
+of the page to how it was when the &Action; component rendered the link.  Only then is
+the listener notified.</para>
 <para>
 The process of restoring the page's dynamic state is called rewinding.  Rewinding is used to 
 go beyond restoring a page's persistent state and actually restore the page's dynamic state.  
@@ -3928,7 +3992,7 @@ A name for the the component, used when formulating error messages.
 <varlistentry>
 <term>delegate</term>
 <listitem>
-<para>An <classname>IValidationDelegate</classname> used to handle validation exceptions.
+<para>An &IValidationDelegate; used to handle validation exceptions.
 			</para>
 </listitem>
 </varlistentry>
@@ -4015,8 +4079,7 @@ A component, used on the standard exception page, which renders a detailed list 
 <varlistentry>
 <term>exceptions</term>
 <listitem>
-<para>An array of <classname>com.primix.tapestry.util.exception.ExceptionDescription</classname>
-			objects.
+<para>An array of &ExceptionDescription; objects.
 			</para>
 </listitem>
 </varlistentry>
@@ -4035,7 +4098,7 @@ state of the field, for instance, to make the label red when the field itself is
 <varlistentry>
 <term>field</term>
 <listitem>
-<para>The validating text field (type <classname>IValidatingTextField</classname>)
+<para>The validating text field (type &IValidatingTextField;>)
 			associated with the label.</para>
 </listitem>
 </varlistentry>
@@ -4052,7 +4115,8 @@ state of the field, for instance, to make the label red when the field itself is
 <title>Foreach</title>
 <para>
 A component that loops through a set of values, setting a property 
-for each value before rendering its wrapped elements.
+for each value before rendering its wrapped elements.  The &ListEdit;
+component is often more useful if the items are inside a &Form;.
 </para>
 <variablelist>
 <title>Parameters</title>
@@ -4953,8 +5017,8 @@ public IActionListener getListener()
     public void actionTriggered(IComponent component,
                                 IRequestCycle cycle)
     {
-      Visit visit; <co id="apps.common-logic.ex.visit"/>
-<replaceable>ISomeHomeInterface</replaceable> home;
+      Visit visit; <co id="apps.common-logic.ex.visit"/><![CDATA[
+      ]]><replaceable>ISomeHomeInterface</replaceable> home;
 	
       visit = (Visit)getVisit();
 	
@@ -5182,7 +5246,7 @@ converted to handles when stored, and back into references when restored.
 <title>Page classes</title>
 <para>
 It is often useful to create one or two subclasses of 
-<classname>com.primix.tapestry.BasePage</classname> specific to your application.  
+&BasePage; specific to your application.  
 Often your application will have a consistent navigational border on some 
 or all pages that can be supported by the base class.
 Many applications have one set of pages that are visible 
@@ -5235,16 +5299,16 @@ components must implement the <function>render()</function> method.
 </para>
 <para>
 Components that use templates inherit from a subclass of 
-<classname>AbstractComponent</classname>: 
-<classname>com.primix.tapestry.BaseComponent</classname>.  They should leave the <function>render()</function>
-method alone (it already does what it should ... 
-load the template if necessary and render itself using the template).
+&AbstractComponent;: 
+&BaseComponent;.  They should leave the <function>render()</function>
+method alone.
 </para>
 <para>
-In some cases, a new component can be written just by combining existing components (
-this often involves using inherited bindings).  Such a codeless 
+In some cases, a new component can be written just by combining existing components 
+(this often involves using inherited bindings).  Such a codeless 
 component will consist of just a specification and an HTML 
-template and will use the <classname>BaseComponent</classname> class.
+template and will use the &BaseComponent; class without subclassing.  This
+is even more possible when using <link linkend="components.helper-beans">helper beans</link>.
 </para>
 </section>
 <section id="coding-components.parameters">
@@ -5551,6 +5615,19 @@ images.  It provides the ability to add arbitrary JavaScript to the page, or to 
 to generate unique identifiers needed for things like image names.
 </para>
 <para>
+When the &Body; component renders, it registers itself as an attribute of the &IRequestCycle;.  This
+allows components wrapped by the &Body; component, directly or indirectly, to locate it and invoke methods
+on it.  These methods are used to define preloaded images, and add JavaScript code to the response HTML.
+</para>
+<figure>
+<title>Body Component Rendering Sequence</title>
+<mediaobject>
+<imageobject>
+<imagedata fileref="images/Body-sequence.gif" format="GIF"/>
+</imageobject>
+</mediaobject>
+</figure>
+<para>
 When rendering is complete, the &Body; component will have produced three distinct portions of the
 HTML response:
 </para>
@@ -5579,7 +5656,7 @@ function onload_body()  <co id="script.body.onload"/>
 <para>
   This script block is only emitted when necessary; that is, because some component
   needed to generate scripting or initialization (or preloaded images).  The block
-  is properly "commented" so that older browsers, that don't support scripting,
+  is properly "commented" so that older browsers, those that fail to support scripting,
   will not be confused by the JavaScript code.
   </para>
 </callout>
@@ -5637,9 +5714,9 @@ of a <sgmltag class="starttag">script</sgmltag> element.
 
 &lt;script&gt;
 
-  [ &lt;let ...&gt; ...] <co id="script.dtd.script.let"/>
-  [ &lt;body&gt; ] <co id="script.dtd.script.body"/>
-  [ &lt;initialization&gt; ] <co id="script.dtd.script.initialization"/>
+  [ &lt;<link linkend="script.spec.let">let</link> ...&gt; ...] <co id="script.dtd.script.let"/>
+  [ &lt;<link linkend="script.spec.body">body</link>&gt; ] <co id="script.dtd.script.body"/>
+  [ &lt;<link linkend="script.spec.initialization">initialization</link>&gt; ] <co id="script.dtd.script.initialization"/>
   
 &lt;/script&gt;
 </programlisting>
@@ -5670,7 +5747,7 @@ of a <sgmltag class="starttag">script</sgmltag> element.
 </calloutlist>
 </para>
 </section>
-<section>
+<section id="script.spec.let">
 <title>
 <sgmltag class="starttag">let</sgmltag> element</title>
 <figure>
@@ -5679,10 +5756,10 @@ of a <sgmltag class="starttag">script</sgmltag> element.
 &lt;let key="<replaceable>symbol-name</replaceable>"&gt; <co id="script.dtd.let.key"/>
   [
      [ <replaceable>text</replaceable> ] <co id="script.dtd.let.text"/>
-     [ &lt;insert ...&gt; ] 
-     [ &lt;if ...&gt; ] 
-     [ &lt;if-not ...&gt; ] 
-     [ &lt;foreach ...&gt; ] 
+     [ &lt;<link linkend="script.spec.insert">insert</link> ...&gt; ] 
+     [ &lt;<link linkend="script.spec.if">if</link> ...&gt; ] 
+     [ &lt;<link linkend="script.spec.if-not">if-not</link> ...&gt; ] 
+     [ &lt;<link linkend="script.spec.foreach">foreach</link>...&gt; ] 
   ... ] <co id="script.dtd.let.full-content"/>
 &lt;/let&gt;
 
@@ -5728,7 +5805,7 @@ block symbols are established first; other symbols add suffixes and prefixes to 
 names of functions.
 </para>
 </section>
-<section>
+<section id="script.spec.insert">
 <title>
 <sgmltag class="starttag">insert</sgmltag> element</title>
 <figure>
@@ -5744,7 +5821,7 @@ a full property path (operating like a <sgmltag class="starttag">binding</sgmlta
 in a component specification).
 </para>
 </section>
-<section>
+<section id="script.spec.if">
 <title>
 <sgmltag class="starttag">if</sgmltag> element</title>
 <figure>
@@ -5762,7 +5839,7 @@ it includes its content.  The content is full content, meaning just about anythi
 contained (including <sgmltag class="starttag">if</sgmltag>, <sgmltag class="starttag">foreach</sgmltag>, etc.).
 </para>
 </section>
-<section>
+<section id="script.spec.if-not">
 <title>
 <sgmltag class="starttag">if-not</sgmltag> element</title>
 <figure>
@@ -5779,7 +5856,7 @@ The <sgmltag class="starttag">if-not</sgmltag> element is the same as the
 property, including its content if the property is false.
 </para>
 </section>
-<section>
+<section id="script.spec.foreach">
 <title>
 <sgmltag class="starttag">foreach</sgmltag> element</title>
 <figure>
@@ -5797,7 +5874,7 @@ it iterates through a list of objects.  On each iteration, it sets the named sym
 (via the <varname>key</varname> attribute) and inserts its body.
 </para>
 </section>
-<section>
+<section id="script.spec.body">
 <title>
 <sgmltag class="starttag">body</sgmltag> element</title>
 <figure>
@@ -5813,7 +5890,7 @@ The <sgmltag class="starttag">body</sgmltag> element evaluates its content and t
 script block preceding the HTML <sgmltag class="starttag">body</sgmltag> element in the response HTML.
 </para>
 </section>
-<section>
+<section id="script.spec.initialization">
 <title>
 <sgmltag class="starttag">initialization</sgmltag> element</title>
 <figure>
@@ -6236,10 +6313,10 @@ This section contains a few Q's and A's gleemed from the
 </question>
 <answer>
 <para>
-Prior to release 1.0.5, there was an interface, <classname>ILifecycle</classname> that could
+Prior to release 1.0.5, there was an interface, <classname>ILifecycle</classname>, that could
 optionally be implemented by components so that they could be informed about the lifecycle
 of the page which contains them, especially knowing when the page was detached from the engine (so that
-the components could reset thieer state accordingly).  
+the components could reset thier state accordingly).  
 </para>
 <para>
 By release 1.0.5, this has become somewhat awkward.  Firstly, several non-component objects needed
