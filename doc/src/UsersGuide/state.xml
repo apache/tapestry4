@@ -1,5 +1,19 @@
 <!-- $Id$ -->
-
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
 <chapter id="state">
 	<title>Managing server-side state</title>
 	
@@ -67,7 +81,7 @@ new, backup server, to which the client's requests are routed.
 
 <para>
 Different application servers implement &HttpSession; replication and failover in different ways; the servlet API
-specification is delibrately unspecific on how this implementation should take place.  Tapestry
+specification is delibrately non-specific on how this implementation should take place.  Tapestry
 follows the conventions of the most limited interpretation of the servlet specification; it assumes
 that attribute replication only occurs when the &HttpSession; <function>setAttribute()</function>	
 method is invoked
@@ -149,7 +163,7 @@ concerns just a single visit to the web application.
 <para>
 Tapestry doesn't mandate anything about the Visit object's class. The type of the
 <literal>visit</literal>	property is &Object;. In Java code, accessing the Visit object
-involves a cast
+involves a cast from &Object; to an application-specific class.
 The following example demonstrates how a &listener-method;
 may access the visit object.
 </para>
@@ -308,13 +322,25 @@ particular page in the page pool.
 <para>
 For this scheme to work it is important that at the end of the request cycle, the page must return
 to its pristine state.  The prisitine state is equivalent to a freshly created instance of the page.  In other words, any
-properties of the page that changed during the processing of the request must be returned to thier initial values.
+properties of the page that changed during the processing of the request must be returned to their initial values.
 </para>
 
 <para>
 The page is then returned to the page pool, where it will wait to be used in a future request. That request may be for 
 the same end user, or for another user entirely.	
 </para>
+
+<note>
+	<title>Importance of resetting properties</title>	
+	
+	<para>
+	Imagine a page containing a form in which a user enters their address and credit card information. When
+	the form is submitted, properties of the page will be updated with the values supplied by the user.
+	Those values must be cleared out before the page is stored into the page pool ... if not, then the <emphasis>next</emphasis>
+	user who accesses the page will see the previous user's address and credit card information as default
+	values for the form fields!
+	</para>
+</note>
 
 <para>
 Tapestry separates the persistent state of a page from any instance of the page. 
@@ -351,13 +377,13 @@ setter method.
 <para>
 Persistent properties make use of a &spec.property-specification; element in the
 page or component specification.  Tapestry does something special when a component
-contains any such elements; it dynamically generates a subclass that provides the desired fields,
+contains any such elements; it dynamically fabricates a subclass that provides the desired fields,
 methods and whatever extra initialization or cleanup is required.
 </para>
 
 <para>
 You may also, optionally, make your class abstract, and define abstract accessor methods that will
-be filled in by Tapestry in the generated subclass.  This allows you to read and update properties inside
+be filled in by Tapestry in the fabricated subclass.  This allows you to read and update properties inside
 your class, inside listener methods.
 </para>
 
@@ -414,7 +440,7 @@ public abstract class MyPage extends &BasePage;
   <property-specification
     name="itemsPerPage"
     persistent="yes"
-    type="int"initial-value="10"/>
+    type="int" initial-value="10"/>
 
 </page-specification>
 ]]>
@@ -440,6 +466,13 @@ Tapestry then takes a snapshot of the property value, which it retains
 and uses at the end of each request cycle
 to reset the property back to its "pristine" state.
 </para>
+
+<warning>
+<para>
+The previous paragraph may not be accurate; I believe Mindbridge may have changed this behavior
+recently.	
+</para>	
+</warning>
 
 <para>
 This means that you may perform initialization for the property inside

@@ -1,5 +1,534 @@
-<chapter id="components">
+<!-- $Id$ -->
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+	<chapter id="components">
 	<title>Creating Tapestry components</title>
+
+
+<section id="components.intro">
+	<title>Introduction</title>
+	
+<para>
+Tapestry is a component based web application framework; components, objects which implement
+the &IComponent; interface, are the fundamental building blocks of Tapestry.  Additional objects,
+such as the the engine, &IMarkupWriter; and the request cycle are infrastructure. The following figure
+identifies the core Tapestry classes and interfaces.
+</para>	
+
+<figure>
+  <title>Core Tapestry Classes and Interfaces</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/core-classes.png" format="PNG"/>
+    </imageobject>
+ </mediaobject>
+</figure>	
+	
+<para>
+Tapestry components can be simple or complex. They can be specific to a
+single application or completely generic. They can be part of an application,
+or they can be packaged into
+a <link linkend="components.libraries">component library</link>.
+</para>
+
+<para>
+All the techniques used with pages work with components as well ... pages are a specialized kind
+of Tapestry component. This includes
+<link linkend="state.page-properties">specified properties</link>	 (including persistent properties)
+and &listener-method;s.
+</para>
+
+<para>
+Components fit into the overall page rendering process because they implement the &IRender; interface.
+Components that inherit from &BaseComponent; will use an HTML template.  Components that inherit
+from &AbstractComponent; will render output in Java code, by implementing method
+<function>renderComponent()</function>.
+</para>
+
+<para>
+The components provided with the framework are not special in any way: they don't have access to
+any special APIs or perform any special down-casts. Anything a framework component can do, can be done by
+your own components.	
+</para>
+
+</section>  <!-- components.intro -->
+
+<section id="components.spec">
+	<title>Component Specifications</title>
+	
+<para>
+Every component has a component specification, a file ending in <filename>.jwc</filename>	whose
+root element is &spec.component-specification;.
+</para>
+
+<para>
+Each component's specification defines the basic characteristics of the component:
+<itemizedlist>
+	<listitem>
+		<para>The Java class for the component (which defaults to &BaseComponent;)</para>	
+	</listitem>	
+	<listitem>
+		<para>Whether the component uses its body, or discards it (the <literal>allow-body</literal> attribute,
+			which defaults to <literal>yes</literal>)</para>	
+	</listitem>
+	<listitem>
+		<para>
+			The name, type and other information for each <emphasis>formal</emphasis>
+			parameter.
+		</para>	
+	</listitem>
+	<listitem>
+		<para>
+			Whether the component allows informal parameters or discards them
+			(the <literal>allow-informal-parameters</literal> attribute, which defaults to 
+			<literal>yes</literal>)
+		</para>	
+	</listitem>
+	<listitem>
+		<para>
+		The names of any <emphasis>reserved parameters</emphasis> which may <emphasis>not</emphasis>
+		be used as informal parameters.
+		</para>	
+	</listitem>
+</itemizedlist>	
+</para>
+
+<para>
+Beyond those additions, a component specification is otherwise the same as a &spec.page-specification;.
+</para>
+
+<para>
+When a component is referenced in an HTML template (using the <literal>@<replaceable>Type</replaceable></literal>
+syntax), or in a specification (as the <literal>type</literal> attribute of
+a &spec.component; element), Tapestry must locate and parse the component's specification (this is only done once, with the
+result cached for later).
+</para>
+
+<para>
+Tapestry searches for components in the following places:
+<itemizedlist>
+	<listitem>
+		<para>As specified in a &spec.component-type; element (with the application specification)</para>	
+	</listitem>	
+	<listitem>
+		<para>In the same folder (typically, <filename>WEB-INF</filename>	) as the 
+			application specification</para>
+	</listitem>
+	<listitem>
+		<para>
+		In the <filename>WEB-INF/<replaceable>servlet-name</replaceable></filename> folder
+		(<replaceable>servlet-name</replaceable> is the name of the Tapestry &ApplicationServlet;
+		for the application)
+		<footnote>
+			<para>
+			This is a very rare option that will only occur when a single WAR file contains
+			multiple Tapestry applications.
+			</para>	
+		</footnote>
+		</para>	
+	</listitem>
+	<listitem>
+		<para>
+			In the <filename>WEB-INF</filename> folder
+		</para>	
+	</listitem>
+	<listitem>
+		<para>
+			In the root context directory
+		</para>	
+	</listitem>
+</itemizedlist>	
+</para>
+
+<para>
+Generally, the <emphasis>correct</emphasis>	 place is in the
+<filename>WEB-INF</filename> folder.  <link linkend="components.libraries">Components packaged into
+	libraries</link> have a different (and simpler) search.
+</para>
+	
+	
+</section> <!-- components.spec -->
+
+<section id="components.coding">
+	<title>Coding components</title>
+	
+<para>
+When creating a new component by subclassing &AbstractComponent;, you must write the
+<function>renderComponent()</function>	 method. This method is invoked when the components container (typically, but not always,
+a page) invokes its own <function>renderBody()</function> method.
+</para>
+
+<programlisting>
+protected void renderComponent(&IMarkupWriter; writer, &IRequestCycle; cycle)
+{
+  . . .
+}	
+</programlisting>
+
+<para>
+The &IMarkupWriter; object is used to produce output. It contains a number of <function>print()</function>	 methods
+that output text (the method is overloaded for different types).  It also contains <function>printRaw()</function>
+methods -- the difference being that <function>print()</function> uses a filter to convert certain characters
+into HTML entities.  
+</para>
+	
+	
+<para>
+&IMarkupWriter; also includes methods to simplify creating markup style output: that is, elements with attributes.	
+</para>
+
+
+<para>
+For example, to create a <sgmltag class="starttag">a</sgmltag> link:
+
+<informalexample>
+<programlisting>
+writer.begin("a");
+writer.attribute("url", url);
+writer.attribute("class", styleClass);
+
+renderBody(writer, cycle);
+
+writer.end(); // close the &lt;a&gt;	
+</programlisting>	
+</informalexample>
+	</para>
+	
+<para>
+The <function>begin()</function>	 method renders an open tag (the <sgmltag class="starttag">a</sgmltag>, in
+this case). The <function>end()</function> method renders
+the corresponding <sgmltag class="closetag">a</sgmltag>. As you can see, writing attributes into the tag
+is very simple.
+</para>
+	
+	
+<para>
+The call to <function>renderBody()</function> is used to render <emphasis>this</emphasis> component's
+body. A component doesn't have to render its body; the standard &Image; component doesn't render its
+body (and its component specification indicates that it discards its body). The &Conditional; component
+decides whether or not to render its body, and the
+&Foreach; component may render its body multiple times.
+</para>
+
+<para>
+A component that allows informal parameters can render those as well:
+
+<informalexample><programlisting>
+writer.beginEmpty("img");
+writer.attribute("src", imageURL);
+renderInformalParameters(writer, cycle);
+</programlisting>	
+</informalexample>	
+</para>
+
+<para>
+This example will add any informal parameters for the component
+as additional attributes within the <sgmltag class="starttag">img</sgmltag>	 element. These informal parameters
+can be specified in the page's HTML template, or within the &spec.component; tag of the page's specification. Note the use
+of the <function>beginEmpty()</function> method, for creating a start tag that is not balanced with an end tag (or
+a call to the <function>end()</function> method).
+</para>
+
+</section> <!-- components.coding -->
+
+<section id="components.parameters">
+	<title>Component Parameters</title>
+	
+<para>
+A Tapestry page consists of a number of components. These components communicate with, and coordinate with,
+the page (and each other) via <emphasis>parameters</emphasis>.
+</para>
+
+<para>
+A component parameter has a unique name and a type (a Java class, interface, or primitive type name).	
+The &spec.parameter; component specification element is used to define formal component parameters.
+</para>
+
+<para>
+In a traditional desktop application, components have <emphasis>properties</emphasis>. A controller may
+set the properties of a component, but that's it: properties are write-and-forget.
+</para>
+	
+<para>
+The Tapestry model is a little more complex. A component's parameters are <emphasis>bound</emphasis>	
+to properties of the enclosing page. The component is allowed to read its parameter, to access
+the page property the parameter is bound to.  A component may also <emphasis>update</emphasis> its
+parameter, to force a change to the bound page property.
+</para>	
+
+<para>
+The vast majority of components simply read their parameters. Updating parameters is more rare; the most
+common components that update their parameters are form control components such as &TextField; or &Checkbox;.	
+</para>
+
+<para>
+Because bindings are in the form of &OGNL; expressions, the property bound to a component parameter
+may not directly be a property of the page ... using a property sequence allows great flexibility.	
+</para>
+
+<figure>
+  <title>Parameter Bindings</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/parameter-bindings.png" format="PNG"/>
+    </imageobject>
+    <caption>
+      <para>
+Using &OGNL;, the &TextField; component's <varname>value</varname> parameter is bound
+to the <classname>LineItem</classname>'s <varname>quantity</varname> property, using
+the OGNL expression <literal>lineItem.quantity</literal>, and the &Insert; component's
+<varname>value</varname> parameter is bound to the <classname>Product</classname>'s 
+<varname>name</varname> property using the OGNL expression <literal>lineItem.product.name</literal>.
+
+     </para>
+   </caption>
+ </mediaobject>
+</figure>	
+
+<para>
+Not all parameter bindings are writable. So far, the examples have been for parameters bound using
+the &spec.binding; specification element (or the equivalent use of the <literal>ognl:</literal>	prefix
+in an HTML template).  <emphasis>Invariant bindings</emphasis> are also possible--these are bindings directly to fixed
+values that never change and can't be updated.  The &spec.static-binding; element is invariant; it's
+HTML template equivalent is a attribute with no prefix. Likewise, the
+&spec.message-binding; element, and the <literal>message:</literal> prefix on an attribute, are invariant.
+</para>
+	
+<section id="components.parameters.bindings">
+	<title>Using Bindings</title>
+	
+<para>
+To understand how Tapestry parameters work, you must understand how the binding objects work (even
+though, as we'll see, the binding objects are typically hidden). When a component needs access to
+a bound parameter value, it will invoke the method <code>getObject()</code>	 on &IBinding;
+</para>
+
+
+<figure>
+  <title>Reading a Parameter</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/read-binding.png" format="PNG"/>
+    </imageobject>
+    <caption>
+      <para>
+The <function>getObject()</function> method on &IBinding; will (if the binding is dynamic) evaluate the
+OGNL expression (provided in the &spec.binding; specification element) to access a property of the
+page. The result is that cast or otherwise coerced to a type useful to the component.
+     </para>
+   </caption>
+ </mediaobject>
+</figure>	
+
+
+<para>
+Updating a parameter is the same way, except that the method is
+<function>setObject()</function>. Most of the implementations of &IBinding; (those for literal strings
+and localize messages), will throw an exception immediately, since they are invariant.
+</para>
+
+<figure>
+  <title>Writing a Parameter</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/write-binding.png" format="PNG"/>
+    </imageobject>
+    <caption>
+      <para>
+The <function>setObject()</function> method will use OGNL to update a page property.
+     </para>
+   </caption>
+ </mediaobject>
+</figure>	
+
+<para>
+These flows are complicated by the fact that parameters may be optional; so not only do you need to acquire the
+correct binding object (method <function>getBinding()</function> defined in &IComponent;), 
+but your code must be prepared for that object to be null (if the parameter
+is optional). 	
+</para>
+
+</section> <!-- components.parameters.bindings -->
+		
+<section id="components.parameters.connected">
+	<title>Connected Parameter Properties</title>
+	
+<para>
+Accessing and manipulating the &IBinding; objects is tedious, so Tapestry has an alternate approach. Parameters may
+be represented as <emphasis>connected parameter properties</emphasis>	 that hide the existence of
+the binding objects entirely. If you component needs to know the value bound to a parameter, it can
+read the connected parameter property. If it wants to update the property bound to the parameter, the component
+will update the connected parameter. This is a much more natural approach, but requires a little bit of setup.
+</para>
+
+<para>
+As with <link linkend="state.page-properties">specified properties</link>, Tapestry will fabricate an enhanced subclass with
+the necessary instance variables, accessor methods, and cleanup code.
+</para>
+	
+<para>
+Connected parameters are controlled by the <varname>direction</varname>	
+attribute of the &spec.parameter; element.
+<footnote>
+<para>
+	The name, "direction", made sense initially, but is now a bit confusing. It probably
+	should have been called "processing" or "connection-type".
+</para>
+</footnote>
+There are four values:
+<literal>in</literal>, <literal>form</literal>, <literal>auto</literal>
+and <literal>custom</literal>.  The default is <literal>custom</literal>, which
+<emphasis>does not</emphasis> create a connected parameter property at all.
+</para>
+
+<section id="components.parameters.connected.in">
+	<title>Direction: in</title>
+	
+<para>
+The majority of component parameters are read-only, and are only actually used
+within the component's <function>renderComponent()</function>	 method ... the method that
+actually produces HTML output. For such components, direction <literal>in</literal>
+is the standard, efficient choice.
+</para>
+
+<para>
+The connected parameter for each component is set just before <function>renderComponent()</function>	
+is invoked.  The parameter is reset to its initial value just after 
+<function>renderComponent()</function> is invoked.
+</para>
+
+<para>
+Each component has a &ParameterManager;, whose responsibility is to set and reset connected
+parameter properties.	
+</para>
+
+<figure>
+  <title>ParameterManager and <function>renderComponent()</function></title>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="images/parameter-manager.png" format="PNG"/>
+    </imageobject>
+    <caption>
+      <para>
+The &ParameterManager; will read the values bound to each parameter, and update the
+connected parameter property before the component's <function>renderComponent()</function>
+method is invoked. The &ParameterManager; cleans up after <function>renderComponent()</function>
+is invoked.
+     </para>
+   </caption>
+ </mediaobject>
+</figure>	
+
+<para>
+For invariant bindings (literal strings and such), the ParameterManager will only set the connected parameter property once,
+and does not reset the property after <function>renderComponent()</function>.
+</para>
+
+<warning>
+	<para>
+		If your component has any &listener-method;s that need to access a parameter value, then you
+		can't use direction <literal>in</literal> (or direction <literal>form</literal>).  Listener methods are
+		invoked outside of the page rendering process, when value stored in the
+		connected parameter property is not set. You must use direction <literal>auto</literal> or 
+		<literal>custom</literal> in such cases.
+		</para>	
+</warning>
+
+	
+</section> <!-- components.parameters.connected.in -->
+
+<section id="components.parameters.connected.form">
+	<title>Direction: form</title>
+	
+<para>
+Components, such as &TextField; or &Checkbox;, that produce form control elements are the
+most likely candidates for updating their parameters. The read a parameter (usually named
+<varname>value</varname>) when they render. When the form is submitted, the same components
+read a query parameter and update their <varname>value</varname> parameter.
+</para>
+
+<para>
+The <literal>form</literal>	 direction simplifies this. For the most part, <literal>form</literal>
+is the same as <literal>in</literal>.  The diffference is, when the form is submitted, after the
+component's <function>renderComponent()</function> method has been invoked, the connected parameter property
+is read and used to update the binding (that is, invoke the binding object's <function>setObject()</function> 
+method).
+</para>
+	
+</section> <!-- components.parameters.connected.form -->
+
+<section id="components.parameters.connected.auto">
+	<title>Direction: auto</title>
+	
+<para>
+The previous direction values, <literal>in</literal> and <literal>form</literal>, have limitations. The value may only be
+accessed from within the component's <function>renderComponent()</function> method. That's often insufficient,
+especially when the component has a &listener-method; that needs access to a parameter.
+</para>
+
+<para>
+Direction <literal>auto</literal>	doesn't use the &ParameterManager;. Instead, the connected parameter property
+is <emphasis>synthetic</emphasis>.  Reading the property immediately turns around and invokes
+&IBinding;'s <function>getObject()</function> method.  Updating the property invokes
+the &IBinding;'s <function>setObject()</function> function.
+</para>
+
+<para>
+This can be a bit less efficient than direction <literal>in</literal>, as the &OGNL; expression may be
+evaluated multiple times. In Tapestry 3.0, there are other limitations: the parameter must either be an object type, 
+or one of a limited number of primitive Java types: boolean, int or double. The parameter must also be required. Future releases
+of Tapestry will relax these limitations.
+</para>
+
+<note>
+	<title>Removing parameter directions</title>
+	<para>
+Parameter directions are a bit of a sore spot: you must make too many decisions about how to use them, especially
+in terms of render-time-only vs. &listener-method;. Direction <literal>auto</literal>	 is too limited and
+possibly too inefficient. Tapestry 3.1 should address these limitations by improving direction
+<literal>auto</literal>. Instead of specifying a direction, you'll specify how long the component can cache the
+value obtained from the binding object (no caching, or only while the component is rendering, or until
+the page finishes rendering).
+	</para>
+</note>
+	
+</section> <!-- components.parameters.connected.auto -->	
+	
+<section id="components.parameters.connected.custom">
+	<title>Direction: custom</title>
+	
+<para>
+The <literal>custom</literal>	 direction, which is the default, <emphasis>does not</emphasis>
+create a connected parameter property. Your code is still responsible for
+accessing the &IBinding; object (via the <function>getBinding()</function> method of
+&IComponent;) and for invoking methods on the binding object.
+</para>	
+
+</section> <!-- components.parameters.connected.custom -->	
+
+</section> <!-- components.parameters.connected -->		
+		
+</section> <!-- components.parameters -->
+
+
+
+<section id="components.libraries">
+	<title>Component Libraries</title>
+	
+</section> <!-- components.libraries -->
 
 
 </chapter>
