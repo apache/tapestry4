@@ -53,67 +53,57 @@
  *
  */
 
-package org.apache.tapestry.contrib.table.model.sql;
+package org.apache.tapestry.contrib.table.components;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.Serializable;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
+import org.apache.tapestry.contrib.table.model.ITableModel;
+import org.apache.tapestry.contrib.table.model.ITableSessionStateManager;
+import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
 
 /**
+ *  Acts like {@link FullSessionStateManager} if the model is provided via the
+ *  tableModel parameter; saves only the model state otherwise. 
  * 
- * @version $Id$
- * @author mindbridge
+ *  @author mindbridge
+ *  @version $Id$
  */
-public class SqlTableColumn extends SimpleTableColumn
+public class TableViewSessionStateManager implements ITableSessionStateManager
 {
-	private static final Log LOG = LogFactory.getLog(SqlTableColumn.class);
+    private TableView m_objView;
 
-	/**
-	 * Creates an SqlTableColumn
-	 * @param strSqlField the identifying name of the column and the SQL field it refers to
-	 * @param strDisplayName the display name of the column
-	 */
-	public SqlTableColumn(String strSqlField, String strDisplayName)
-	{
-		super(strSqlField, strDisplayName);
-	}
+    public TableViewSessionStateManager(TableView objView)
+    {
+        m_objView = objView;
+    }
+    
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableSessionStateManager#getSessionState(org.apache.tapestry.contrib.table.model.ITableModel)
+     */
+    public Serializable getSessionState(ITableModel objModel)
+    {
+        // if the model is provided using the 'tableModel' parameter, 
+        // emulate FullTableSessionStateManager and save everything
+        // (backward compatibility)
+        if (m_objView.getCachedTableModelValue() != null)
+            return (Serializable) objModel;
+            
+        // otherwise save only the state
+        return new SimpleTableState(objModel.getPagingState(), objModel.getSortingState());
+    }
 
-	/**
-	 * Creates an SqlTableColumn
-	 * @param strSqlField the identifying name of the column and the SQL field it refers to
-	 * @param strDisplayName the display name of the column
-	 * @param bSortable whether the column is sortable
-	 */
-	public SqlTableColumn(
-		String strSqlField,
-		String strDisplayName,
-		boolean bSortable)
-	{
-		super(strSqlField, strDisplayName, bSortable);
-	}
-
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn#getColumnValue(Object)
-	 */
-	public Object getColumnValue(Object objRow)
-	{
-		try
-		{
-			ResultSet objRS = (ResultSet) objRow;
-            String strColumnName = getColumnName();
-			Object objValue = objRS.getObject(strColumnName);
-			if (objValue == null)
-				objValue = "";
-			return objValue;
-		}
-		catch (SQLException e)
-		{
-			LOG.error("Cannot get the value for column: " + getColumnName(), e);
-			return "";
-		}
-	}
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableSessionStateManager#recreateTableModel(java.io.Serializable)
+     */
+    public ITableModel recreateTableModel(Serializable objState)
+    {
+        // if the state implements ITableModel, return itself
+        // (backward compatibility)
+        if (objState instanceof ITableModel)
+            return (ITableModel) objState;
+            
+        // otherwise have the component re-generate the model using the provided state
+        return m_objView.generateTableModel((SimpleTableState) objState);
+    }
 
 }

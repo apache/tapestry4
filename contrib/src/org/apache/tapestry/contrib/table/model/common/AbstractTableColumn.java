@@ -58,8 +58,10 @@ package org.apache.tapestry.contrib.table.model.common;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.components.Block;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableModelSource;
 import org.apache.tapestry.contrib.table.model.ITableRendererSource;
@@ -236,5 +238,22 @@ public class AbstractTableColumn implements ITableColumn, Serializable
 	{
 		m_objValueRendererSource = valueRendererSource;
 	}
+
+    /**
+     *  Use the column name to get the column and renderer sources 
+     *  from the provided component.
+     *   
+     *  @param objRendererSourceContainer the component from which to get the settings 
+     */
+    public void loadSettings(IComponent objSettingsContainer)
+    {
+        IComponent objColumnRendererSource = (IComponent) objSettingsContainer.getComponents().get(getColumnName() + "ColumnRenderer");
+        if (objColumnRendererSource != null && objColumnRendererSource instanceof Block)
+            setColumnRendererSource(new BlockTableRendererSource((Block) objColumnRendererSource));
+
+        IComponent objValueRendererSource = (IComponent) objSettingsContainer.getComponents().get(getColumnName() + "ValueRenderer");
+        if (objValueRendererSource != null && objValueRendererSource instanceof Block)
+            setValueRendererSource(new BlockTableRendererSource((Block) objValueRendererSource));
+    }
 
 }

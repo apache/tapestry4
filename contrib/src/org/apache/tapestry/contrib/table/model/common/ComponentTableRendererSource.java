@@ -57,12 +57,11 @@ package org.apache.tapestry.contrib.table.model.common;
 
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.util.ComponentAddress;
-
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableModelSource;
 import org.apache.tapestry.contrib.table.model.ITableRendererListener;
 import org.apache.tapestry.contrib.table.model.ITableRendererSource;
+import org.apache.tapestry.util.ComponentAddress;
 
 /**
  * 

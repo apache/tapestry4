@@ -55,112 +55,72 @@
 
 package org.apache.tapestry.contrib.table.model.common;
 
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.components.Block;
-import org.apache.tapestry.components.BlockRenderer;
-import org.apache.tapestry.contrib.table.model.ITableColumn;
-import org.apache.tapestry.contrib.table.model.ITableModelSource;
-import org.apache.tapestry.contrib.table.model.ITableRendererListener;
-import org.apache.tapestry.contrib.table.model.ITableRendererSource;
-import org.apache.tapestry.util.ComponentAddress;
+import java.io.Serializable;
+
+import org.apache.tapestry.contrib.table.model.ITableModel;
+import org.apache.tapestry.contrib.table.model.ITablePagingState;
+import org.apache.tapestry.contrib.table.model.ITableSortingState;
+import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
 
 /**
+ * A base table model that implements the handling of the model state.
+ * Used by most standard ITableModel implementations.
  * 
  * @version $Id$
  * @author mindbridge
- * @since 2.3
  */
-public class BlockTableRendererSource implements ITableRendererSource
+public abstract class AbstractTableModel implements ITableModel, Serializable
 {
-	private ComponentAddress m_objBlockAddress;
-	private ComponentAddress m_objListenerAddress;
+    private SimpleTableState m_objTableState;
 
-	public BlockTableRendererSource(Block objBlock)
-	{
-		this(new ComponentAddress(objBlock));
-	}
+    protected AbstractTableModel()
+    {
+        this(new SimpleTableState());
+    }
 
-	public BlockTableRendererSource(
-		Block objBlock,
-		ITableRendererListener objListener)
-	{
-		this(new ComponentAddress(objBlock), new ComponentAddress(objListener));
-	}
+    protected AbstractTableModel(SimpleTableState objTableState)
+    {
+        m_objTableState = objTableState;
+    }
+    
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableModel#getPagingState()
+     */
+    public ITablePagingState getPagingState()
+    {
+        return getState().getPagingState();
+    }
 
-	public BlockTableRendererSource(ComponentAddress objBlockAddress)
-	{
-		this(objBlockAddress, null);
-	}
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableModel#getSortingState()
+     */
+    public ITableSortingState getSortingState()
+    {
+        return getState().getSortingState();
+    }
 
-	public BlockTableRendererSource(
-		ComponentAddress objBlockAddress,
-		ComponentAddress objListenerAddress)
-	{
-		setBlockAddress(objBlockAddress);
-		setListenerAddress(objListenerAddress);
-	}
+    /**
+     * Returns the tableState.
+     * @return SimpleTableState
+     */
+    public SimpleTableState getState()
+    {
+        return m_objTableState;
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
-	 */
-	public IRender getRenderer(
-		IRequestCycle objCycle,
-		ITableModelSource objSource,
-		ITableColumn objColumn,
-		Object objRow)
-	{
-		ComponentAddress objListenerAddress = getListenerAddress();
-		if (objListenerAddress != null)
-		{
-			ITableRendererListener objListener =
-				(ITableRendererListener) objListenerAddress.findComponent(
-					objCycle);
-			objListener.initializeRenderer(
-				objCycle,
-				objSource,
-				objColumn,
-				objRow);
-		}
+    protected abstract int getRowCount();
+    
+    public int getPageCount()
+    {
+        int nRowCount = getRowCount();
+        if (nRowCount == 0)
+            return 1;
 
-		Block objBlock = (Block) getBlockAddress().findComponent(objCycle);
-		return new BlockRenderer(objBlock);
-	}
+        int nPageSize = getPagingState().getPageSize();
+        if (nPageSize <= 0)
+            return 1;
 
-	/**
-	 * Returns the blockAddress.
-	 * @return ComponentAddress
-	 */
-	public ComponentAddress getBlockAddress()
-	{
-		return m_objBlockAddress;
-	}
-
-	/**
-	 * Sets the blockAddress.
-	 * @param blockAddress The blockAddress to set
-	 */
-	public void setBlockAddress(ComponentAddress blockAddress)
-	{
-		m_objBlockAddress = blockAddress;
-	}
-
-	/**
-	 * Returns the listenerAddress.
-	 * @return ComponentAddress
-	 */
-	public ComponentAddress getListenerAddress()
-	{
-		return m_objListenerAddress;
-	}
-
-	/**
-	 * Sets the listenerAddress.
-	 * @param listenerAddress The listenerAddress to set
-	 */
-	public void setListenerAddress(ComponentAddress listenerAddress)
-	{
-		m_objListenerAddress = listenerAddress;
-	}
-
+        return (nRowCount - 1) / nPageSize + 1;
+    }
+    
 }

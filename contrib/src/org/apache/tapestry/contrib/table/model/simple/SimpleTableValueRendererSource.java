@@ -76,6 +76,12 @@ import org.apache.tapestry.valid.RenderString;
  */
 public class SimpleTableValueRendererSource implements ITableRendererSource
 {
+    /** 
+     *  The representation of null values. This is geared towards HTML, but will
+     *  work for some other *ML languages as well. In any case, changing the 
+     *  column's value renderer allows selecting fully custom rendering behaviour. 
+     **/ 
+    private static final String EMPTY_REPRESENTATION = "&nbsp;";
 
 	/**
 	 * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
@@ -90,7 +96,7 @@ public class SimpleTableValueRendererSource implements ITableRendererSource
 
 		Object objValue = objSimpleColumn.getColumnValue(objRow);
 		if (objValue == null)
-			objValue = "";
+			objValue = EMPTY_REPRESENTATION;
 
 		return new RenderString(objValue.toString());
 	}

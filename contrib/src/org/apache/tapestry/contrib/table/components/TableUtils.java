@@ -23,13 +23,13 @@
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation", "Tapestry" 
+ * 4. The names "Apache" and "Apache Software Foundation", "Tapestry"
  *    must not be used to endorse or promote products derived from this
  *    software without prior written permission. For written
  *    permission, please contact apache@apache.org.
  *
- * 5. Products derived from this software may not be called "Apache" 
- *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their 
+ * 5. Products derived from this software may not be called "Apache"
+ *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their
  *    name, without prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -53,67 +53,80 @@
  *
  */
 
-package org.apache.tapestry.contrib.table.model.sql;
+package org.apache.tapestry.contrib.table.components;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
- * 
- * @version $Id$
- * @author mindbridge
- */
-public class SqlTableColumn extends SimpleTableColumn
+ *  A placeholder for a static methods related to the Table component
+ *
+ *  @since 3.0
+ *  @version $Id$
+ *  @author Mindbridge
+ **/
+public class TableUtils
 {
-	private static final Log LOG = LogFactory.getLog(SqlTableColumn.class);
 
-	/**
-	 * Creates an SqlTableColumn
-	 * @param strSqlField the identifying name of the column and the SQL field it refers to
-	 * @param strDisplayName the display name of the column
-	 */
-	public SqlTableColumn(String strSqlField, String strDisplayName)
-	{
-		super(strSqlField, strDisplayName);
-	}
+    /**
+     *  Contains strings loaded from TableStrings.properties.
+     *
+     **/
 
-	/**
-	 * Creates an SqlTableColumn
-	 * @param strSqlField the identifying name of the column and the SQL field it refers to
-	 * @param strDisplayName the display name of the column
-	 * @param bSortable whether the column is sortable
-	 */
-	public SqlTableColumn(
-		String strSqlField,
-		String strDisplayName,
-		boolean bSortable)
-	{
-		super(strSqlField, strDisplayName, bSortable);
-	}
+    private static ResourceBundle s_objStrings = null;
 
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn#getColumnValue(Object)
-	 */
-	public Object getColumnValue(Object objRow)
-	{
-		try
-		{
-			ResultSet objRS = (ResultSet) objRow;
-            String strColumnName = getColumnName();
-			Object objValue = objRS.getObject(strColumnName);
-			if (objValue == null)
-				objValue = "";
-			return objValue;
-		}
-		catch (SQLException e)
-		{
-			LOG.error("Cannot get the value for column: " + getColumnName(), e);
-			return "";
-		}
-	}
+    /**
+     *  Gets a string from the TableStrings resource bundle.
+     *
+     **/
+
+    public static String format(String key, Object[] args)
+    {
+        if (s_objStrings == null)
+            s_objStrings = ResourceBundle.getBundle("org.apache.tapestry.contrib.table.components.TableStrings");
+
+        String pattern = s_objStrings.getString(key);
+
+        if (args == null)
+            return pattern;
+
+        return MessageFormat.format(pattern, args);
+    }
+
+    /**
+     *  Convienience method for invoking {@link #format(String, Object[])}.
+     **/
+
+    public static String getMessage(String key)
+    {
+        return format(key, null);
+    }
+
+    /**
+     *  Convienience method for invoking {@link #format(String, Object[])}.
+     **/
+
+    public static String format(String key, Object arg)
+    {
+        return format(key, new Object[] { arg });
+    }
+
+    /**
+     *  Convienience method for invoking {@link #format(String, Object[])}.
+     **/
+
+    public static String format(String key, Object arg1, Object arg2)
+    {
+        return format(key, new Object[] { arg1, arg2 });
+    }
+
+    /**
+     *  Convienience method for invoking {@link #format(String, Object[])}.
+     **/
+
+    public static String format(String key, Object arg1, Object arg2, Object arg3)
+    {
+        return format(key, new Object[] { arg1, arg2, arg3 });
+    }
 
 }

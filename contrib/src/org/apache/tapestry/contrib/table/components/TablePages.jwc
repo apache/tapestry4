@@ -15,7 +15,7 @@
 		required="no"
 		direction="custom"/>
 
-	<component id="wrap" type="Any" inherit-informal-parameters="yes"/>
+	<component id="informal" type="Any" inherit-informal-parameters="yes"/>
   
 	<component id="condCurrent" type="Conditional">
 		<binding name="condition" expression="condCurrent"/>

@@ -55,6 +55,7 @@
 
 package org.apache.tapestry.contrib.table.model.common;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -85,12 +86,26 @@ public abstract class AbstractTableDataModel implements ITableDataModel
 	 */
 	protected void fireTableDataModelEvent(CTableDataModelEvent objEvent)
 	{
-		for (Iterator it = m_arrListeners.iterator(); it.hasNext();)
-		{
-			ITableDataModelListener objListener =
-				(ITableDataModelListener) it.next();
-			objListener.tableDataChanged(objEvent);
-		}
+        synchronized (m_arrListeners) {
+            List arrEmptyReferences = null;
+        
+    		for (Iterator it = m_arrListeners.iterator(); it.hasNext();)
+    		{
+                WeakReference objRef = (WeakReference) it.next();
+    			ITableDataModelListener objListener =
+    				(ITableDataModelListener) objRef.get();
+                if (objListener != null) 
+                    objListener.tableDataChanged(objEvent);
+                else {
+                    if (arrEmptyReferences == null)
+                        arrEmptyReferences = new ArrayList();
+                    arrEmptyReferences.add(objRef);
+                }
+    		}
+
+            if (arrEmptyReferences != null)
+                m_arrListeners.removeAll(arrEmptyReferences);
+        }
 	}
 
 	/**
@@ -98,7 +113,9 @@ public abstract class AbstractTableDataModel implements ITableDataModel
 	 */
 	public void addTableDataModelListener(ITableDataModelListener objListener)
 	{
-		m_arrListeners.add(objListener);
+        synchronized (m_arrListeners) {
+    		m_arrListeners.add(new WeakReference(objListener));
+        }
 	}
 
 	/**
@@ -106,7 +123,24 @@ public abstract class AbstractTableDataModel implements ITableDataModel
 	 */
 	public void removeTableDataModelListener(ITableDataModelListener objListener)
 	{
-		m_arrListeners.remove(objListener);
+        synchronized (m_arrListeners) {
+            List arrEmptyReferences = null;
+        
+            for (Iterator it = m_arrListeners.iterator(); it.hasNext();)
+            {
+                WeakReference objRef = (WeakReference) it.next();
+                ITableDataModelListener objStoredListener =
+                    (ITableDataModelListener) objRef.get();
+                if (objListener == objStoredListener || objStoredListener == null) { 
+                    if (arrEmptyReferences == null)
+                        arrEmptyReferences = new ArrayList();
+                    arrEmptyReferences.add(objRef);
+                }
+            }
+
+            if (arrEmptyReferences != null)
+                m_arrListeners.removeAll(arrEmptyReferences);
+        }
 	}
 
 }

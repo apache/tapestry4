@@ -56,11 +56,13 @@
 package org.apache.tapestry.contrib.table.model.simple;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.tapestry.contrib.table.model.CTableDataModelEvent;
 import org.apache.tapestry.contrib.table.model.common.AbstractTableDataModel;
 import org.apache.tapestry.contrib.table.model.common.ArrayIterator;
@@ -85,6 +87,17 @@ public class SimpleListTableDataModel extends AbstractTableDataModel implements 
 	{
 		m_arrRows = arrRows;
 	}
+
+    public SimpleListTableDataModel(Collection arrRows)
+    {
+        m_arrRows = new ArrayList(arrRows);
+    }
+
+    public SimpleListTableDataModel(Iterator objRows)
+    {
+        m_arrRows = new ArrayList();
+        CollectionUtils.addAll(m_arrRows, objRows);
+    }
 
 	/**
 	 * @see org.apache.tapestry.contrib.table.model.ITableDataModel#getRowCount()

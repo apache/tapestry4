@@ -55,112 +55,60 @@
 
 package org.apache.tapestry.contrib.table.model.common;
 
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.components.Block;
-import org.apache.tapestry.components.BlockRenderer;
+import java.util.Iterator;
+
+import org.apache.tapestry.contrib.table.model.IBasicTableModel;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
-import org.apache.tapestry.contrib.table.model.ITableModelSource;
-import org.apache.tapestry.contrib.table.model.ITableRendererListener;
-import org.apache.tapestry.contrib.table.model.ITableRendererSource;
-import org.apache.tapestry.util.ComponentAddress;
+import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 
 /**
- * 
  * @version $Id$
  * @author mindbridge
- * @since 2.3
  */
-public class BlockTableRendererSource implements ITableRendererSource
+public class BasicTableModelWrap extends AbstractTableModel 
 {
-	private ComponentAddress m_objBlockAddress;
-	private ComponentAddress m_objListenerAddress;
+    private IBasicTableModel m_objBasicTableModel;
+    private ITableColumnModel m_objTableColumnModel;
 
-	public BlockTableRendererSource(Block objBlock)
-	{
-		this(new ComponentAddress(objBlock));
-	}
+    public BasicTableModelWrap(IBasicTableModel objBasicTableModel, ITableColumnModel objColumnModel)
+    {
+        m_objBasicTableModel = objBasicTableModel;
+        m_objTableColumnModel = objColumnModel;
+    }
 
-	public BlockTableRendererSource(
-		Block objBlock,
-		ITableRendererListener objListener)
-	{
-		this(new ComponentAddress(objBlock), new ComponentAddress(objListener));
-	}
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableModel#getColumnModel()
+     */
+    public ITableColumnModel getColumnModel()
+    {
+        return m_objTableColumnModel;
+    }
 
-	public BlockTableRendererSource(ComponentAddress objBlockAddress)
-	{
-		this(objBlockAddress, null);
-	}
+    /**
+     * @see org.apache.tapestry.contrib.table.model.common.AbstractTableModel#getRowCount()
+     */
+    protected int getRowCount()
+    {
+        return m_objBasicTableModel.getRowCount();
+    }
 
-	public BlockTableRendererSource(
-		ComponentAddress objBlockAddress,
-		ComponentAddress objListenerAddress)
-	{
-		setBlockAddress(objBlockAddress);
-		setListenerAddress(objListenerAddress);
-	}
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableModel#getCurrentPageRows()
+     */
+    public Iterator getCurrentPageRows()
+    {
+        int nPageSize = getPagingState().getPageSize();
+        if (nPageSize <= 0)
+            nPageSize = getRowCount();
 
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
-	 */
-	public IRender getRenderer(
-		IRequestCycle objCycle,
-		ITableModelSource objSource,
-		ITableColumn objColumn,
-		Object objRow)
-	{
-		ComponentAddress objListenerAddress = getListenerAddress();
-		if (objListenerAddress != null)
-		{
-			ITableRendererListener objListener =
-				(ITableRendererListener) objListenerAddress.findComponent(
-					objCycle);
-			objListener.initializeRenderer(
-				objCycle,
-				objSource,
-				objColumn,
-				objRow);
-		}
-
-		Block objBlock = (Block) getBlockAddress().findComponent(objCycle);
-		return new BlockRenderer(objBlock);
-	}
-
-	/**
-	 * Returns the blockAddress.
-	 * @return ComponentAddress
-	 */
-	public ComponentAddress getBlockAddress()
-	{
-		return m_objBlockAddress;
-	}
-
-	/**
-	 * Sets the blockAddress.
-	 * @param blockAddress The blockAddress to set
-	 */
-	public void setBlockAddress(ComponentAddress blockAddress)
-	{
-		m_objBlockAddress = blockAddress;
-	}
-
-	/**
-	 * Returns the listenerAddress.
-	 * @return ComponentAddress
-	 */
-	public ComponentAddress getListenerAddress()
-	{
-		return m_objListenerAddress;
-	}
-
-	/**
-	 * Sets the listenerAddress.
-	 * @param listenerAddress The listenerAddress to set
-	 */
-	public void setListenerAddress(ComponentAddress listenerAddress)
-	{
-		m_objListenerAddress = listenerAddress;
-	}
+        int nCurrentPage = getPagingState().getCurrentPage();
+        int nFrom = nCurrentPage * nPageSize;
+        
+        String strSortColumn = getSortingState().getSortColumn();
+        ITableColumn objSortColumn = getColumnModel().getColumn(strSortColumn); 
+        boolean bSortOrder = getSortingState().getSortOrder();
+        
+        return m_objBasicTableModel.getCurrentPageRows(nFrom, nPageSize, objSortColumn, bSortOrder);
+    }
 
 }

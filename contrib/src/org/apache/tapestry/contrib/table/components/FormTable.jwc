@@ -4,7 +4,7 @@
   "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
 	
-<component-specification class="org.apache.tapestry.contrib.table.components.Table" 
+<component-specification class="org.apache.tapestry.contrib.table.components.FormTable" 
 	allow-body="no" allow-informal-parameters="yes">
 
     <description>
@@ -128,14 +128,14 @@
 	<component id="tableView" type="TableView">
 		<inherited-binding name="tableModel" parameter-name="tableModel"/>
 		<inherited-binding name="source" parameter-name="source"/>
-		<inherited-binding name="columns" parameter-name="columns"/>
+		<binding name="columns" expression="formColumns"/>
 		<inherited-binding name="tableSessionStateManager" parameter-name="tableSessionStateManager"/>
 		<inherited-binding name="tableSessionStoreManager" parameter-name="tableSessionStoreManager"/>
 		<static-binding name="element">span</static-binding>
         <binding name="columnSettingsContainer" expression="container"/>
 	</component>
 
-	<component id="tablePages" type="TablePages">
+	<component id="tablePages" type="TableFormPages">
 		<inherited-binding name="pagesDisplayed" parameter-name="pagesDisplayed"/>
 		<inherited-binding name="class" parameter-name="pagesClass"/>
 	</component>
@@ -145,7 +145,7 @@
 		<inherited-binding name="class" parameter-name="columnsClass"/>
 	</component>
 
-	<component id="tableRows" type="TableRows">
+	<component id="tableRows" type="TableFormRows">
 		<inherited-binding name="row" parameter-name="row"/>
 		<inherited-binding name="class" parameter-name="rowsClass"/>
 	</component>

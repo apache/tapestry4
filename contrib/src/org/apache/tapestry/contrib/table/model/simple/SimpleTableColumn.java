@@ -58,6 +58,8 @@ package org.apache.tapestry.contrib.table.model.simple;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.contrib.table.model.ITableRendererSource;
 import org.apache.tapestry.contrib.table.model.common.AbstractTableColumn;
 
 /**
@@ -70,6 +72,15 @@ import org.apache.tapestry.contrib.table.model.common.AbstractTableColumn;
  */
 public class SimpleTableColumn extends AbstractTableColumn
 {
+    public static final ITableRendererSource DEFAULT_COLUMN_RENDERER_SOURCE = 
+        new SimpleTableColumnRendererSource();
+
+    public static final ITableRendererSource FORM_COLUMN_RENDERER_SOURCE = 
+        new SimpleTableColumnFormRendererSource();
+
+    public static final ITableRendererSource DEFAULT_VALUE_RENDERER_SOURCE = 
+        new SimpleTableValueRendererSource();
+
 	private String m_strDisplayName;
 	private ITableColumnEvaluator m_objEvaluator;
 
@@ -146,8 +157,8 @@ public class SimpleTableColumn extends AbstractTableColumn
 		super(strColumnName, bSortable, null);
 		setComparator(new DefaultTableComparator());
 		setDisplayName(strDisplayName);
-		setColumnRendererSource(new SimpleTableColumnRendererSource());
-		setValueRendererSource(new SimpleTableValueRendererSource());
+		setColumnRendererSource(DEFAULT_COLUMN_RENDERER_SOURCE);
+		setValueRendererSource(DEFAULT_VALUE_RENDERER_SOURCE);
 		setEvaluator(objEvaluator);
 	}
 
@@ -216,6 +227,22 @@ public class SimpleTableColumn extends AbstractTableColumn
 		// default fallback
 		return objRow.toString();
 	}
+
+    /**
+     *  Use the column name to get the display name, as well as 
+     *  the column and renderer sources from the provided component.
+     *   
+     *  @param objRendererSourceContainer the component from which to get the settings 
+     */
+    public void loadSettings(IComponent objSettingsContainer)
+    {
+        String strDisplayName = objSettingsContainer.getMessages().getMessage(getColumnName(), null);
+        if (strDisplayName != null)
+            setDisplayName(strDisplayName);
+        
+        super.loadSettings(objSettingsContainer);
+    }
+
 
 	public class DefaultTableComparator implements Comparator, Serializable
 	{
