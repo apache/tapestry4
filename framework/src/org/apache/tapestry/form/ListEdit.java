@@ -138,7 +138,7 @@ public abstract class ListEdit extends AbstractFormComponent
             else
             {
                 value = i.next();
-                writeValue(writer, name, value);
+                writeValue(form, name, value);
             }
 
             valueBinding.setObject(value);
@@ -160,7 +160,7 @@ public abstract class ListEdit extends AbstractFormComponent
         }
     }
 
-    private void writeValue(IMarkupWriter writer, String name, Object value)
+    private void writeValue(IForm form, String name, Object value)
     {
         String externalValue;
 
@@ -176,11 +176,8 @@ public abstract class ListEdit extends AbstractFormComponent
                 ex);
         }
 
-        writer.beginEmpty("input");
-        writer.attribute("type", "hidden");
-        writer.attribute("name", name);
-        writer.attribute("value", externalValue);
-        writer.println();
+
+		form.addHiddenValue(name, externalValue);
     }
 
     private Object convertValue(String value)

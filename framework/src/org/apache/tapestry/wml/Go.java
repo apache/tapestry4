@@ -91,7 +91,7 @@ public abstract class Go extends Form
 
     protected void writeHiddenField(IMarkupWriter writer, String name, String value)
     {
-        writer.beginEmpty(getInputTag());
+        writer.beginEmpty("postfield");
         writer.attribute("name", name);
         writer.attribute("value", value);
         writer.println();
@@ -125,10 +125,6 @@ public abstract class Go extends Form
         return "go";
     }
 
-    protected String getInputTag()
-    {
-        return "postfield";
-    }
 
     protected String getDisplayName()
     {

@@ -276,4 +276,10 @@ public class TestingForm extends BaseLocatable implements IForm
     {
     }
 
+    /** @since 3.0 */
+    public void addHiddenValue(String name, String value)
+    {
+
+    }
+
 }

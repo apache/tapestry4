@@ -107,6 +107,18 @@ import org.apache.tapestry.valid.IValidationDelegate;
 
 public abstract class Form extends AbstractComponent implements IForm, IDirect
 {
+    private static class HiddenValue
+    {
+        String _name;
+        String _value;
+
+        private HiddenValue(String name, String value)
+        {
+            _name = name;
+            _value = value;
+        }
+    }
+
     private boolean _rewinding;
     private boolean _rendering;
     private String _name;
@@ -148,6 +160,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     private String _encodingType;
 
+    private List _hiddenValues;
+
     /**
      *  Returns the currently active {@link IForm}, or null if no form is
      *  active.  This is a convienience method, the result will be
@@ -172,7 +186,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     {
         if (!_rendering)
             throw Tapestry.createRenderOnlyPropertyException(this, "rewinding");
- 
+
         return _rewinding;
     }
 
@@ -267,8 +281,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         }
 
         _allocatedIdIndex++;
-	
-		component.setName(result);
+
+        component.setName(result);
 
         return result;
     }
@@ -319,6 +333,9 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         _events = null;
 
         _elementIdAllocator.clear();
+
+        if (_hiddenValues != null)
+            _hiddenValues.clear();
 
         cycle.removeAttribute(ATTRIBUTE_NAME);
 
@@ -399,7 +416,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             // of ids will change as well.
 
             writeHiddenField(writer, _name, buildAllocatedIdList());
-
+			writeHiddenValues(writer);
+    		
             nested.close();
 
             writer.end(getTag());
@@ -650,7 +668,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     protected void writeHiddenField(IMarkupWriter writer, String name, String value)
     {
-        writer.beginEmpty(getInputTag());
+        writer.beginEmpty("input");
         writer.attribute("type", "hidden");
         writer.attribute("name", name);
         writer.attribute("value", value);
@@ -783,18 +801,6 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     /**
-     * Returns the tag of the input element used by the form.
-     *
-     *  @since 3.0
-     *
-     **/
-
-    protected String getInputTag()
-    {
-        return "input";
-    }
-
-    /**
      * Returns the name of the element.
      *
      *
@@ -805,4 +811,33 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     {
         return "Form";
     }
+
+    /** @since 3.0 */
+
+    public void addHiddenValue(String name, String value)
+    {
+        if (_hiddenValues == null)
+            _hiddenValues = new ArrayList();
+
+        _hiddenValues.add(new HiddenValue(name, value));
+    }
+
+	/** 
+	 * Writes hidden values accumulated during the render
+	 * (by components invoking {@link #addHiddenValue(String, String)}.
+	 * 
+	 * @since 3.0
+	 */
+	
+	protected void writeHiddenValues(IMarkupWriter writer)
+	{
+		int count = Tapestry.size(_hiddenValues);
+		
+		for (int i = 0; i < count; i++)
+		{
+			HiddenValue hv = (HiddenValue)_hiddenValues.get(i);
+			
+			writeHiddenField(writer, hv._name, hv._value);
+		}
+	}
 }

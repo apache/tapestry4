@@ -31,10 +31,11 @@ using the inherit-informal-parameters attribute. </li>
 Besides setting the page to be rendered, it also invokes page.validate() and handles the page redirections.</li>
 <li>Added addValidateListener() and removeValidateListener()
 to <a href="doc/api/org/apache/tapestry/IPage.html">IPage</a>.</li>
-<li>Squeezed strings are now always prefixed with 'S'</li>
+<li><a href="doc/api/org/apache/tapestry/util/io/DataSqueezer.html">DataSqueezer</a>: Squeezed strings are now always prefixed with 'S'</li>
 <li>Added mechanism for checking that super-class implementations of key methods are invoked.</li>
 <li>Added checks that <a href="doc/api/org/apache/tapestry/IPage.html">IPage</a> methods
 <code>validate()</code> and <code>detach</code> are properly overriden by subclasses.</li>
+<li>Changed Form, Hidden and ListEdit so that all hidden fields are written out with the &lt;form&gt; tag.</li>
 </ul>
 
 <pre>
