@@ -379,4 +379,49 @@ Framework: []
 			</assert-output>
 		
 		</request>			
+		
+		<request>
+			<parameter name="service" value="page/LanguageSelection"/>
+			
+		<assert-output name="Selected Language">
+		Selected Language: []
+		</assert-output>
+		
+		<assert-output name="Java">
+<![CDATA[<input type="radio" name="group" value="0"/> Java]]>					
+		</assert-output>
+
+		<assert-output name="C#">
+<![CDATA[<input type="radio" name="group" value="1"/> C#]]>					
+		</assert-output>
+			
+		<assert-output name="C#">
+<![CDATA[<input type="radio" name="group" value="2"/> Python]]>					
+		</assert-output>			
+		</request>
+		
+		<request>
+			<parameter name="service" value="direct/1/LanguageSelection/form"/>
+			<parameter name="sp" value="S0"/>
+			<parameter name="Form0" value="group"/>
+			<parameter name="group" value="2"/>
+			
+
+		<assert-output name="Selected Language">
+		Selected Language: [Language[PYTHON]]
+		</assert-output>
+		
+		<assert-output name="Java">
+<![CDATA[<input type="radio" name="group" value="0"/> Java]]>					
+		</assert-output>
+
+		<assert-output name="C#">
+<![CDATA[<input type="radio" name="group" value="1"/> C#]]>					
+		</assert-output>
+			
+		<assert-output name="C#">
+<![CDATA[<input type="radio" name="group" checked="checked" value="2"/> Python]]>					
+		</assert-output>			
+		</request>
+			
 </mock-test>
