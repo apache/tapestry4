@@ -60,7 +60,6 @@ import java.util.Map;
 
 import ognl.ClassResolver;
 import ognl.Ognl;
-import ognl.OgnlException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.Tapestry;

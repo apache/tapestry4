@@ -55,12 +55,7 @@
 
 package org.apache.tapestry.script;
 
-import java.util.Map;
-
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
  *  

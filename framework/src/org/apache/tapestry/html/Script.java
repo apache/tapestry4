@@ -71,7 +71,6 @@ import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IScriptSource;
-import org.apache.tapestry.script.ScriptSession;
 
 /**
  *  Works with the {@link Body} component to add a script (and perhaps some initialization) 

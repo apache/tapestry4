@@ -71,7 +71,6 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.html.Body;
-import org.apache.tapestry.script.ScriptSession;
 
 /**
  *  Component that can be placed into application pages that will launch

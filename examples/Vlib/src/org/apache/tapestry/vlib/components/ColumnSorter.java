@@ -57,7 +57,6 @@ package org.apache.tapestry.vlib.components;
 
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.vlib.ejb.SortColumn;
