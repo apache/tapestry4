@@ -44,7 +44,7 @@ MOD_META_RESOURCES = ejb-jar.xml weblogic-ejb-jar.xml
 
 include $(SYS_MAKEFILE_DIR)/Jar.mk
 
-DEPLOY_JAR_FILE := $(JAR_NAME)-deploy.$(JAR_EXT)
+DEPLOY_JAR_FILE := $(MODULE_NAME)-deploy.$(JAR_EXT)
 
 local-clean:
 	@$(RMDIRS) $(DEPLOY_JAR_FILE)
