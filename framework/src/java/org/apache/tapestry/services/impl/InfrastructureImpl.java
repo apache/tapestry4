@@ -51,6 +51,8 @@ public class InfrastructureImpl implements Infrastructure
 
     private IPropertySource _applicationPropertySource;
 
+    private IPropertySource _globalPropertySource;
+
     private ResetEventCoordinator _resetEventCoordinator;
 
     private ComponentMessagesSource _componentMessagesSource;
@@ -84,7 +86,7 @@ public class InfrastructureImpl implements Infrastructure
     private HttpServletRequest _request;
 
     private HttpServletResponse _response;
-    
+
     private ServletContext _context;
 
     private String _applicationId;
@@ -294,14 +296,24 @@ public class InfrastructureImpl implements Infrastructure
     {
         _applicationId = applicationId;
     }
-    
+
     public void setContext(ServletContext context)
     {
         _context = context;
     }
-    
+
     public Resource getContextRoot()
     {
         return new ContextResource(_context, "/");
+    }
+
+    public IPropertySource getGlobalPropertySource()
+    {
+        return _globalPropertySource;
+    }
+
+    public void setGlobalPropertySource(IPropertySource globalPropertySource)
+    {
+        _globalPropertySource = globalPropertySource;
     }
 }

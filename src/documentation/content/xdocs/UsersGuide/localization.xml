@@ -56,23 +56,23 @@
           and components within the namespace.</p>
           
         <p>
-          The basic key searched for is <code>org.apache.tapestry.messages-encoding</code>.  The value for this key
+          The basic meta-data  property name searched for is <code>org.apache.tapestry.messages-encoding</code>.  The value for this name
           is the name of the charset for the properties file.
         </p>
         
         <p>
-          However, the base key is modified to reflect the locale for the file being read; the locale string is appended
-          to the key; this <code>org.apache.tapestry.messages-encoding_fr</code> will define the character set for
+          However, the base name is modified to reflect the locale for the file being read; the locale string is appended
+          to the key, thus <code>org.apache.tapestry.messages-encoding_fr</code> will define the character set for
           the file <code>WEB-INF/Home_fr.properties</code>
         </p>
         
         <p>
-          For each localization of the base key, a search of the following locations takes place.
+          For each localization of the base property name, a search of the following locations takes place.
         </p>
         <ul>
           <li>The page or component specification.</li>
-          <li>The namespace specification for the namespace containing the page or component.</li>
-          <li>The <link href="configuration.html#configuration.search-path">application property search path</link></li>
+          <li>The namespace (library or application) specification for the namespace containing the page or component.</li>
+          <li>The &global-property-source;.</li>
         </ul>
         
         <p>
@@ -194,6 +194,14 @@
 </source>      
       
     </section>
+    
+    <section id="localization.assets">
+      <title>Localization of Assets</title>
+      
+      <p>
+        Coming soon.
+      </p>
+    </section>  <!-- localization.assets -->
     
     <section id="localization.messages-property">
       <title>Formatting messages</title>
