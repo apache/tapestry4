@@ -135,7 +135,7 @@ public class Hidden extends AbstractFormComponent
 
 				value = valueBinding.getString();
 
-			writer.beginOrphan("input");
+			writer.beginEmpty("input");
 			writer.attribute("type", "hidden");
 			writer.attribute("name", name);
 			writer.attribute("value", value);

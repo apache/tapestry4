@@ -219,7 +219,7 @@ public class TextField extends AbstractFormComponent
 			hidden = hiddenBinding.getBoolean();
 
 
-		writer.beginOrphan("input");
+		writer.beginEmpty("input");
 
 		writer.attribute("type", hidden ? "password" : "text");
 

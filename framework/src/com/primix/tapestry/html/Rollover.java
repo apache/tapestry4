@@ -249,7 +249,7 @@ public class Rollover extends AbstractComponent
 		compressed = writer.compress(true);
 
 
-		writer.beginOrphan("img");
+		writer.beginEmpty("img");
 
 		writer.attribute("src", imageURL);
 

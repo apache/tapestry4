@@ -229,7 +229,7 @@ public class Submit extends AbstractFormComponent
 		else if (labelBinding != null)
 			label = labelBinding.getString();
 
-		writer.beginOrphan("input");
+		writer.beginEmpty("input");
 		writer.attribute("type", "submit");
 		writer.attribute("name", name);
 

@@ -42,7 +42,7 @@ import java.text.NumberFormat;
  * of the features that are useful when creating GTML.
  *
  * Elements are started with the {@link #begin(String)} 
- * or {@link #beginOrphan(String)}
+ * or {@link #beginEmpty(String)}
  * methods. Once they are started, attributes for the elements may be set with
  * the various <code>attribute()</code> methods. The element is closed off
  * (i.e., the closing '&gt;' character is written) when any other method
@@ -82,7 +82,7 @@ implements IResponseWriter
 
 	/**
 	* Indicates whether a tag is open or not. A tag is opened by
-	* {@link #begin(String)} or {@link #beginOrphan(String)}.
+	* {@link #begin(String)} or {@link #beginEmpty(String)}.
 	* It stays open while calls to the <code>attribute()</code>
 	* methods are made. It is closed
 	* (the '&gt;' is written) when any other method is invoked.
@@ -295,7 +295,7 @@ implements IResponseWriter
 	*
 	*/
 
-	public void beginOrphan(String name)
+	public void beginEmpty(String name)
 	{
 		if (openTag)
 			closeTag();
@@ -365,7 +365,7 @@ implements IResponseWriter
 	* Closes the most recently opened element by writing the '&gt;' that ends
 	* it. Once this is invoked, the <code>attribute()</code> methods
 	* may not be used until a new element is opened with {@link #begin(String)} or
-	* or {@link #beginOrphan(String)}.
+	* or {@link #beginEmpty(String)}.
 	*/
 
 	public void closeTag()

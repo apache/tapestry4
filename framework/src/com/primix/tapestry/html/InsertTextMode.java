@@ -46,7 +46,7 @@ extends Enum
         public void writeLine(int lineNumber, String line, IResponseWriter writer)
         {
             if (lineNumber > 0)
-                writer.beginOrphan("br");
+                writer.beginEmpty("br");
 
             writer.print(line);
         }

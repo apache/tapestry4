@@ -169,7 +169,7 @@ public class Image extends AbstractComponent
 		else if (borderBinding != null)
 			border = borderBinding.getInt();
 
-		writer.beginOrphan("img");
+		writer.beginEmpty("img");
 
 		writer.attribute("src", imageURL);
 

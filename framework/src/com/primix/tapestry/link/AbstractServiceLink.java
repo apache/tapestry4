@@ -4,6 +4,7 @@ import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
 import com.primix.tapestry.components.html.*;
 import java.util.*;
+import javax.servlet.http.*;
 
 /*
  * Tapestry Web Application Framework
@@ -39,6 +40,7 @@ import java.util.*;
  *  Supplies support for the following parameters:
  *
  *  <ul>
+ *  <li>scheme</li>
  *  <li>enabled</li>
  *  <li>anchor</li>
  * </ul>
@@ -55,7 +57,13 @@ public abstract class AbstractServiceLink
     extends AbstractComponent
     implements IServiceLink
 {
+	private static final int DEFAULT_HTTP_PORT = 80;
 	private static final String[] reservedNames = { "href" };
+
+	// A number of characters to add to the URL to get the initial size
+	// of the StringBuffer used to assemble the complete URL.
+	
+	private static final int URL_PAD = 50;
 
 	private IBinding enabledBinding;
 	private boolean staticEnabled;
@@ -66,6 +74,12 @@ public abstract class AbstractServiceLink
 	private IBinding anchorBinding;
 	private String anchorValue;
 
+	private IBinding schemeBinding;
+	private String schemeValue;
+	
+	private IBinding portBinding;
+	private int portValue;
+	
 	private boolean rendering;
 
 	private static final int MAP_SIZE = 3;
@@ -91,6 +105,9 @@ public abstract class AbstractServiceLink
 		String serviceName;
 		String url;
 		String anchor = null;
+		StringBuffer buffer = null;
+		String scheme = null;
+		int port = 0;
 
 		serviceName = getServiceName(cycle);
 		service = cycle.getEngine().getService(serviceName);
@@ -99,21 +116,83 @@ public abstract class AbstractServiceLink
 			throw new RequestCycleException("No engine service named " + 
 				serviceName + ".",
 				this, cycle);
-
+		
+		// Perform the major work of building the URL.
+		
 		url = service.buildURL(cycle, this, context);
 
 		url = cycle.encodeURL(url);
-
+		
+		// Now, dress up the URL with scheme, server port and anchor,
+		// as necessary.
+		
 		if (anchorValue != null)
 			anchor = anchorValue;
 		else
 			if (anchorBinding != null)
 			anchor = anchorBinding.getString();
 
-		if (anchor != null)
-			url += "#" + anchor;
+		if (schemeValue != null)
+			scheme = schemeValue;
+		else
+			if (schemeBinding != null)
+				scheme = schemeBinding.getString();	
+		
+		if (portValue != 0)
+			port = portValue;
+		else
+			if (portBinding != null)
+				port = portBinding.getInt();
+				
+		// If nothing to add to the URL, then simply return it.
+		
+		if (anchor == null &&
+			scheme == null &&
+			port == 0)
+				return url;
+			
+		buffer = new StringBuffer(url.length() + URL_PAD);
+		
+		if (scheme != null || port != 0)
+		{
+			HttpServletRequest request = cycle.getRequestContext().getRequest();
+			
+			// If just the port is specified, but not the scheme, use the
+			// same scheme as the incoming request.
+			
+			if (scheme == null)
+				scheme = request.getScheme();
+				
+			buffer.append(scheme);
+			buffer.append("://");
+			buffer.append(request.getServerName());
+			
+			// If scheme specified but not port, use the same
+			// port as the incoming request.
+			
+			if (port == 0)
+				port = request.getServerPort();
 
-		return url;
+			// This is a little shakey .. the scheme may not be 'http', for example.
+			// Not sure how to get this information automatically, may be
+			// for the application to figure out.
+			
+			if (port != DEFAULT_HTTP_PORT)
+			{
+				buffer.append(':');
+				buffer.append(port);	
+			}		
+		}
+
+		buffer.append(url);
+		
+		if (anchor != null)
+		{
+			buffer.append('#');
+			buffer.append(anchor);
+		}
+		
+		return buffer.toString();
 	}
 
 	public IBinding getAnchorBinding()
@@ -126,6 +205,32 @@ public abstract class AbstractServiceLink
 		return enabledBinding;
 	}
 
+	public IBinding getSchemeBinding()
+	{
+		return schemeBinding;
+	}
+	
+	public void setSchemeBinding(IBinding value)
+	{
+		schemeBinding = value;
+		
+		if (value.isStatic())
+			schemeValue = value.getString();
+	}
+	
+	public IBinding getPortBinding()
+	{
+		return portBinding;
+	}
+	
+	public void setPortBinding(IBinding value)
+	{
+		portBinding = value;
+		
+		if (value.isStatic())
+			portValue = value.getInt();
+	}	
+		
 	/**
 	*  Returns the service used to build URLs.
 	*

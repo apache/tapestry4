@@ -11,14 +11,21 @@
 			<required>yes</required>
 		</parameter>
 		<parameter>
+			<name>context</name>
+		</parameter>
+		<parameter>
 			<name>enabled</name>
+		</parameter>
+		<parameter>
+			<name>scheme</name>
+			<java-type>java.lang.String</java-type>
+		</parameter>
+		<parameter>
+			<name>port</name>
 		</parameter>
 		<parameter>
 			<name>anchor</name>
 			<java-type>java.lang.String</java-type>
-		</parameter>
-		<parameter>
-			<name>context</name>
 		</parameter>
 	</parameters>
 </specification>

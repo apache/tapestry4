@@ -147,7 +147,7 @@ public class Option extends AbstractComponent
 		{
 			compressed = writer.compress(true);
 
-			writer.beginOrphan("option");
+			writer.beginEmpty("option");
 
 			writer.attribute("value", value);
 

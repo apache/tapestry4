@@ -307,7 +307,7 @@ public class ImageSubmit extends AbstractFormComponent
 
 		imageURL = image.buildURL(cycle);
 
-		writer.beginOrphan("input");
+		writer.beginEmpty("input");
 		writer.attribute("type", "image");
 		writer.attribute("name", name);
 
