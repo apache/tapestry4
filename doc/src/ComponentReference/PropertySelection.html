@@ -1,0 +1,371 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+<body>
+
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>PropertySelection</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/form/PropertySelection.html">
+		 net.sf.tapestry.form.PropertySelection</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellspacing="8">
+	 <tr>
+	  <td>Color
+		 <select>
+		  <option>Red</option>
+		  <option>Blue</option>
+		  <option>Green</option>
+		 </select>
+		</td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Creates form elements that allow a property of an object to be selected. 
+	This may take the form of a &lt;select&gt; or a sequence of 
+	&lt;input type='radio'&gt; elements. Uses a model to map between Java values 
+	that will be assigned, and textual labels that will appear in the HTML 
+	response.
+	<p>
+	Note complex Object's need to properly implement the <tt>Object.equals()</tt> 
+	method if the correct item intial item is to be displayed.  
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b><br>
+	<a href="Select.html">Select</a>, <a href="Option.html">Option</a>, 
+	<a href="Radio.html">Radio</a>, <a href="RadioGroup.html">RadioGroup</a>,
+	<a href="Form.html">Form</a>, 
+  <a href="Script.html">Script</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b> &nbsp;&nbsp;&nbsp; (informal parameters allowed, and are applied to the &lt;select&gt; tag)
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4"  class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th width="">Description</th>
+  </tr>
+  <tr>
+    <td>value</td>
+    <td>Object</td>
+    <td>in-out</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>The property to set. During rendering, this property is read, and sets 
+		the default value of the selection (if it is null, no element is selected). 
+		When the form is submitted, this property is updated based on the new 
+		selection. 
+		</td>
+	</tr>
+  <tr>
+ 		<td>model</td>
+		<td>
+		 <a href="../api/net/sf/tapestry/form/IPropertySelectionModel.html"><tt>
+		 IPropertySelectionModel</tt></a>
+		</td>
+		<td>in</td>
+		<td>yes</td>
+		<td>&nbsp;</td>
+		<td>The model provides a list of possible labels, and matches those labels 
+		against possible values that can be assigned back to the property.
+		</td>
+	</tr>
+  <tr>
+ 		<td>disabled</td>
+		<td>boolean</td>
+		<td>in</td>
+		<td>no</td>
+		<td>false</td>
+		<td>Controls whether the &lt;select&gt; is active or not. A disabled 
+		PropertySelection does not update its value parameter. Corresponds to the 
+		'disabled' HTML attribute.
+		</td>
+	</tr>
+  <tr>
+ 		<td>submitOnChange</td>
+		<td>boolean</td>
+		<td>in</td>
+		<td>no</td>
+		<td>false</td>
+		<td>If true, then additional JavaScript is added to submit the containing 
+		form when select is changed. Equivalent to specifying a JavaScript event 
+		handler of <code>this.form.submit()</code>. 
+		</td>
+	</tr>
+	</table>		
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+  <p>
+The PropertySelection component provides gender selection drop down list.
+  <p>
+
+<table valign="middle" bgcolor="#c0c0c0" cellspacing="8">
+ <tr>
+  <td>Gender:
+	 <select>
+	  <option>Unspecified</option>
+	  <option>Female</option>
+	  <option>Male</option>
+	 </select>
+	</td>
+ </tr>
+</table>
+		
+<pre>
+&lt;form jwcid="detailsForm"&gt;
+ Gender: &lt;span jwcid="<span class="jwcid">selectGender</span>"/&gt;
+&lt;/form&gt;
+
+
+&lt;bean name="genderSelectModel" class="GenderPropertySelectionModel"/&gt;          
+
+&lt;component jwcid="detailsForm" type="<a href="Form.html">Form</a>"&gt;
+    &lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
+&lt;/component&gt;
+
+&lt;component jwcid="<span class="jwcid">selectGender</span>" type="<a href="PropertySelection.html">PropertySelection</a>"&gt;
+    &lt;binding name="model" property-path="beans.genderSelectModel"/&gt;
+    &lt;binding name="value" property-path="clothingItem"/&gt;
+&lt;/component&gt;
+
+
+public class DetailsPage extends BasePage {
+    private String gender;
+   
+    public String getGender() { return gender;  }
+
+    public void setGender(String value) { 
+        gender = value;
+        fireObservedChange("gender", gender);
+    }
+   
+    public void detach() {
+        gender = null;
+        super.detach();
+    }   
+
+    public void formSubmit(IRequestCycle cycle) { }   
+}
+
+public class GenderPropertySelectionModel implements IPropertySelectionModel {
+    public int getOptionCount() { return 3; }
+
+    public Object getOption(int index) {
+        if (index == 0) {
+            return "U"
+        } else if (index == 1) {
+            return "F"
+        } else {
+            return "M";	
+        }
+    }
+
+    public String getLabel(int index) {
+        if (index == 0) {
+            return "Unspecified";
+        } else if (index == 1) {
+            return "Female";
+        } else {
+            return "Male";	
+        }
+    }
+
+    public String getValue(int index) { return "" + index; }
+
+    public Object translateValue(String value) {
+        return getOption(Integer.parseInt(value));
+    }
+}
+</pre>
+	
+<hr>
+<p>
+Provides list of clothing items for the user to select. When the user selects a 
+cloting item from the list the description, label and price is automatically 
+updated. The list of clothing items would typically be loaded from a database.
+<p>
+Note the <a href="Script.html">Script</a> SelectSubmit is used to automatically 
+submit the form when user selects an item. Alternatively in version 2.2 and 
+latter you can simply set the 'submitOnChange' property to true.
+<p>
+
+<table valign="middle" bgcolor="#c0c0c0" cellspacing="8">
+ <tr>
+  <td>Item:
+	 <select>
+	  <option>Dress</option>
+	  <option>Jacket</option>
+	  <option>Pants</option>
+	  <option>Shirt</option>
+	  <option>Skirt</option>
+	 </select>
+   <p>
+   Description: Cotton full length Summer dress
+   <p>
+   Label: CountryClub 
+   <p>
+   Price: $89.95 
+	</td>
+ </tr>
+</table>
+
+<pre>
+&lt;form jwcid="purchageForm"&gt;
+ Item: &lt;span jwcid="<span class="jwcid">selectItem</span>"/&gt; &lt;span jwcid="itemOnChange"/&gt;
+ &lt;p&gt;
+ Description: &lt;span jwcid="insertDescription"/&gt;
+ &lt;p&gt;
+ Label: &lt;span jwcid="insertLabel"/&gt;
+ &lt;p&gt;
+ Price: $&lt;span jwcid="insertPrice"/&gt;
+&lt;/form&gt;
+
+
+&lt;component jwcid="purchaseForm" type="<a href="Form.html">Form</a>"&gt;
+    &lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
+&lt;/component&gt;
+
+&lt;component jwcid="<span class="jwcid">selectItem</span>" type="<a href="PropertySelection.html">PropertySelection</a>"&gt;
+    &lt;binding name="model" property-path="itemSelectionModel"/&gt;
+    &lt;binding name="value" property-path="clothingItem"/&gt;
+&lt;/component&gt;
+
+&lt;component id="itemOnChange" type="<a href="Script.html">Script</a>"&gt;
+    &lt;static-binding name="script"&gt;/net/sf/tapestry/form/SelectSubmit.script&lt;/static-binding&gt;
+    &lt;binding name="component" property-path="components.itemSelect"/&gt;
+&lt;/component&gt;
+
+&lt;component jwcid="insertDescription" type="<a href="Insert.html">Insert</a>"&gt;
+    &lt;binding name="value" property-path="clothingItem.description"/&gt;
+&lt;/component&gt;
+
+&lt;component jwcid="insertLabel" type="<a href="Insert.html">Insert</a>"&gt;
+    &lt;binding name="value" property-path="clothingItem.label"/&gt;
+&lt;/component&gt;
+
+&lt;component jwcid="insertPrice" type="<a href="Insert.html">Insert</a>"&gt;
+    &lt;binding name="value" property-path="clothingItem.price"/&gt;
+&lt;/component&gt;
+
+
+public class PurchagePage extends BasePage {
+    private String clothingItem;
+    private ItemSelectionModel itemSelectionModel;
+
+    public Item getClothingItem() { return clothingItem;  }
+
+    public void setClothingItem(Item value) { 
+        clothingItem = value;  
+        fireObservedChange("clothingItem", clothingItem);
+    }
+
+    public ItemSelectionModel getItemSelectionModel() { 
+        return itemSelectionModel;
+    } 
+
+    public ItemSelectionModel setItemSelectionModel(ItemSelectionModel value) { 
+        itemSelectionModel = value;
+        fireObservedChange("itemSelectionModel", itemSelectionModel);
+    }
+   
+    public void detach() {
+        clothingItem = null;
+        itemSelectionModel = null;
+        super.detach();
+    }
+
+    public void formSubmit(IRequestCycle cycle) { }   
+}
+
+public class Item implements Serializable {
+    private Integer id;	 
+    private String name;
+    private String description;
+    private String label;
+    private String price;
+
+    public Item(Integer id, String name, String desc, String label, String price) { 
+        this.id = id; 
+        this.name = name;
+        this.description = desc;
+        this.label = label;
+        this.price = price;
+    }
+
+    public int getId() { return id;  }
+
+    public String getName() { return name;  }
+
+    public int getDescription() { return description;  }
+
+    public int getLabel() { return label;  }   
+   
+    public int getPrice() { return price;  }   
+}
+
+public class ItemSelectionModel implements IPropertySelectionModel, Serializable {
+    private List itemList;
+
+    public ItemPropertySelectionModel(List itemList) { 
+        this.itemList = itemList; 
+    }  
+
+    public int getOptionCount() { return itemList.size(); }
+
+    public Object getOption(int index) {
+        return itemList.get(index)
+    }
+
+    public String getLabel(int index) {
+        return ((Item) itemList.get(index)).getName();
+    }
+
+    public String getValue(int index) { return "" + index; }
+
+    public Object translateValue(String value) {
+        return getOption(Integer.parseInt(value));
+    }
+}
+</pre>
+
+ </td>
+</tr>
+</table>
+
+</body>
+</html>

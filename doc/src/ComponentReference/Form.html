@@ -1,0 +1,241 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>Form</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/form/Form.html">
+		 net.sf.tapestry.form.Form</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td>Non Visual Component</input>
+		</td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  A component that manages an HTML &lt;form&gt;. The other form-related 
+	components must be wrapped inside the Form.
+	<p>
+  When a form is submitted, it continues through the rewind cycle until after 
+	all of its wrapped elements have renderred. As the form component render 
+	(in the rewind cycle), they will be updating properties of the containing 
+	page and notifying thier listeners. Again: each form component is responsible 
+	not only for rendering HTML (to present the form), but for handling it's 
+	share of the form submission. 
+	<p>
+  Only after all that is done will the Form notify its listener.	 	
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Checkbox.html">Checkbox</a>, 
+	<a href="FieldLabel.html">FieldLabel</a>, 
+	<a href="Hidden.html">Hidden</a>, 
+	<a href="ImageSubmit.html">ImageSubmit</a>, 
+	<a href="Option.html">Option</a>, 
+	<a href="PropertySelection.html">PropertySelection</a>, 
+	<a href="Radio.html">Radio</a>, 
+	<a href="RadioGroup.html">RadioGroup</a>, 
+	<a href="Submit.html">Submit</a>, 
+	<a href="Text.html">Text</a>, 
+	<a href="TextField.html">TextField</a>, 
+	<a href="ValidField.html">ValidField</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b> &nbsp;&nbsp; (no informal parameters)
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+ 		<td>listener</td>
+		<td>
+		 <a href="../api/net/sf/tapestry/IActionListener.html"><tt>
+		 IActionListener</tt></a>
+		</td>
+		<td>in</td>
+		<td>no</td>
+		<td>&nbsp;</td>
+		<td>The listener, informed <i>after</i> the wrapped components of the form 
+		have had a chance to absorb the request.
+		</td>
+	</tr>
+  <tr>
+    <td>delegate</td>
+    <td><a href="api/net/sf/tapestry/valid/IValidationDelegate.html"><tt>
+		IValidationDelegate</tt></a>
+		</td>
+    <td>in</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>Object used to assist in error tracking and reporting. A single 
+		instance is shared by all <a href="ValidField.html">ValidField</a> and 
+		<a href="FieldLabel.html">FieldLabel</a> in a single form. 
+		</td>
+	</tr>
+  <tr>
+    <td>stateful</td>
+    <td>boolean</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>true</td>
+		<td>If true (the default), then the component requires an active 
+		(i.e., non-new) HttpSession when triggered. Failing that, it throws a 
+		<a href="../api/net/sf/tapestry/StaleLinkException.html"><tt>
+		StaleLinkException</tt></a>. If false, then no check is necessary. 
+		Generally, forms are stateful, but it is possible to put a stateless form 
+		onto the Home page of an application.
+		</td>
+	</tr>
+  <tr>
+    <td>direct</td>
+    <td>boolean</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>true</td>
+		<td>If true (the default), then the direct service is used for the form. 
+		This decreases the amount of work required to process the form submission, 
+		and is acceptible for most forms, even those that contain Foreaches (but 
+		not those that are inside a Foreach. An abbreviated form of the rewind 
+		cycle takes place, that only references the form and the components it wraps. 
+		</td>
+	</tr>
+  <tr>
+    <td>method</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>POST</td>
+		<td>The value to use for the method attribute of the &lt;form&gt; tag.
+		</td>
+	</tr>
+	</table>		
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+	The Form component is used to provide a simple login page.
+	<p>
+
+<table bgcolor="#c0c0c0" cellpadding="4">
+<form>
+ <tr>
+  <td>Username:</td><td><input type="text" size="12"/></td>
+ </tr>
+ <tr>
+  <td>Password:</td><td><input type="password" size="12"/></td>
+ </tr>
+ <tr align="right">
+  <td>&nbsp;</td><td><input type="submit" value="Login"/></td>
+ </tr>
+<form>
+</table>
+
+<pre>
+&lt;form jwcid="<span class="jwcid">loginForm</span>"&gt;
+ &lt;table cellpadding="4"&gt;
+  &lt;tr&gt;
+   &lt;td>Username:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="usernameTextField" type="text" size="12"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td>Password:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="passwordTextField" type="password" size="12"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr align="right"&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;input type="submit" value="Login"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+ &lt;/table&gt;
+&lt;form&gt;
+
+
+&lt;component jwcid="<span class="jwcid">loginForm</span>" type="<a href="Form.html">Form</a>"&gt;
+   &lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
+&lt;/component&gt;
+
+&lt;component jwcid="usernameTextField" type="<a href="TextField.html">TextField</a>"&gt;
+   &lt;binding name="value" property-path="visit.username"/&gt;
+&lt;/component&gt;
+
+&lt;component jwcid="passwordTextField" type="<a href="TextField.html">TextField</a>"&gt;
+   &lt;binding name="value" property-path="visit.password"/&gt;
+&lt;/component&gt;
+
+
+public class LoginPage extends BasePage {
+
+    public void formSubmit(IRequestCycle cycle) {
+        Visit visit = (Visit) getVisit();
+			
+        if (visit.isAuthenticated()) {
+            page.setPage("Home");		
+        } 
+    }
+}
+
+public class Visit() implements Serializable  {
+    private username;
+    private password;
+
+    public getUsername() { return username; }
+
+    public setUsername(String value) { 
+        username = value;
+    }
+
+    public getPassword() { return password; }
+
+    public setPassword(String value) { 
+        password = value;
+    }
+
+    public boolean isAuthenticated() {
+        // Some authentication code.
+        return true;
+    }		
+}
+</pre>
+
+ </td>
+</tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>Insert</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/components/Insert.html">
+		 net.sf.tapestry.components.Insert</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td>Inserted text</input>
+		</td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+	Makes part of an HTML template conditional. The body of the Conditional 
+	component is only rendered if a specified condition is met.
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+  <a href="Conditional.html">Conditional</a>,
+  <a href="Foreach.html">Foreach</a>,
+	<a href="Insertblock.html">InsertBlock</a>, 
+  <a href="InsertText.html">InsertText</a>,
+  <a href="InsertWrapped.html">InsertWrapped</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b> &nbsp;&nbsp;&nbsp; (no informal parameters) 
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>value</td>
+    <td>Object</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>The value to be inserted. If the binding is null, then nothing is 
+    inserted. Any object may be inserted, the <tt>toString()</tt> method is 
+    used to convert it to a printable value.
+		</td>
+	</tr>
+  <tr>
+ 		<td>format</td>
+		<td>
+     <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/text/Format.html">
+     <tt>Format</tt>
+     </a>
+    </td>
+		<td>in</td>
+		<td>no</td>
+		<td>&nbsp;</td>
+		<td>An optional format object used to convert the value parameter for 
+    insertion into the HTML response. 
+		</td>
+	</tr>
+  <tr>
+ 		<td>class</td>
+		<td>string</td>
+		<td>in</td>
+		<td>no</td>
+		<td>&nbsp;</td>
+		<td>If specified, then the output is wrapped in an HTML &lt;span&gt; tag, 
+    using the value specified as the CSS class. 
+		</td>
+	</tr>
+  <tr>
+ 		<td>raw</td>
+		<td>boolean</td>
+		<td>in</td>
+		<td>no</td>
+		<td>false</td>
+		<td>If true, then the method 
+    <a href="../api/net/sf/tapestry/IMarkupWriter.html#printRaw(java.lang.String)">
+    <tt>IMarkupWriter.printRaw(String)</tt></a> is used, rather than 
+    <a href="../api/net/sf/tapestry/IMarkupWriter.html#print(java.lang.String)">
+    <tt>IMarkupWriter.print(String)</tt></a>.		
+    </td>
+	</tr>
+	</table>		
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+	Inserts the pages dueDate and applies the specified DateFormat and HTML class.  
+	<p>
+
+<table bgcolor="#c0c0c0" cellpadding="8">
+<tr>
+ <td>
+ The order was due on the <font color="red"><b>21 January 2002</b></font>. 	
+ </td>
+</tr>
+</table>
+
+<pre>
+The order was due on the &lt;span jwcid="<span class="jwcid">insertDueDate</span>"/&gt;.
+
+
+&lt;component jwcid="<span class="jwcid">insertDueDate</span>" type="<a href="Insert.html">Insert</a>"&gt;
+    &lt;binding name="value" property-path="dueDate"/&gt;
+    &lt;field-binding name="format" field-name="EnquiryPage.DATE_FORMAT"/&gt;
+    &lt;binding name="class" property-path="dueClass"/&gt;
+&lt;/component&gt;
+
+
+public class EnquiryPage extends BasePage {
+    public static final SimpleDateFormat DATE_FORMAT =
+        new SimpleDateFormat("E, dd MMM yyyy");
+
+    public Date getDueDate() { return dueDate; }
+
+    public String getDueClass() { return dueClass;  }
+}
+</pre>
+ </td>
+</tr>
+</table>
+
+</body>
+</html>

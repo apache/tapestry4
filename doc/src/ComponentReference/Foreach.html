@@ -1,0 +1,257 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>Foreach</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/components/Foreach.html">
+		 net.sf.tapestry.components.Foreach</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td>Non Visual Component</input>
+		</td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  A component that loops through a set of values, setting a property for each 
+	value before rendering its wrapped elements. The <a href="ListEdit.html">
+	ListEdit</a> component is often more useful if the items are inside a 
+	<a href="Form.html">Form</a>. 	
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+  <a href="Conditional.html">Conditional</a>,
+	<a href="Insert.html">Insert</a>, 
+  <a href="ListEdit.html">ListEdit</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b> &nbsp;&nbsp;&nbsp; (informal parameters allowed)
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>source</td>
+    <td>
+		<a href="http://java.sun.com/products/jdk/1.2/docs/api/java/lang/Iterator">
+		<tt>Iterator</tt></a>, 
+		<a href="http://java.sun.com/products/jdk/1.2/docs/api/java/lang/Collection">
+		<tt>Collection</tt></a>, 
+		<tt>Object[]</tt>
+		</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>The source of objects to be iterated, which may be a Collection, an 
+		Iterator or an array of Objects, or a single object (which is treated as a 
+		singleton collection).
+		</td>
+	</tr>
+  <tr>
+ 		<td>value</td>
+		<td>Object</td>
+		<td>out</td>
+		<td>no</td>
+		<td>&nbsp;</td>
+		<td>Used to update the current value on each iteration. 
+		</td>
+	</tr>
+  <tr>
+ 		<td>index</td>
+		<td>int</td>
+		<td>out</td>
+		<td>no</td>
+		<td>&nbsp;</td>
+		<td>Used to store the index of the current value within the stream of 
+		elements provided by the source parameter. The index parameter is 
+		explicitly updated <i>before</i> the value parameter. 		
+    </td>
+	</tr>
+  <tr>
+ 		<td>element</td>
+		<td>String</td>
+		<td>in</td>
+		<td>no</td>
+		<td>&nbsp;</td>
+		<td>If specified, then the component acts like an <a href="Any.html">Any</a>, 
+		emitting an open and close tag before and after each iteration. Most often, 
+		the element is "tr" when the Foreach is part of an HTML table. Any informal 
+		parameters are applied to the tag. If no element is specified, informal 
+		parameters are ignored. 		
+    </td>
+	</tr>
+	</table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+	The Foreach component is used to generate a table of customers sourced
+	from the pages Customer list.
+	<p>
+
+<table bgcolor="#c0c0c0" cellspacing="6">
+  <tr align="left">
+   <th>ID</th>
+   <th>&nbsp;</th>
+   <th>Name</th>
+   <th>&nbsp;</th>
+   <th>Level</th>
+  </tr>
+  <tr>
+   <td colspan="5"><hr></td>
+  </tr>
+  <tr>
+   <td>10276</td>
+   <td>&nbsp;</td>
+   <td>Ms Sophie L. Jamies</td>
+   <td>&nbsp;</td>
+   <td>Platinum</td>
+  </tr>
+  <tr>
+   <td>10539</td>
+   <td>&nbsp;</td>
+   <td>Mr Albert H. Davies</td>
+   <td>&nbsp;</td>
+   <td>Gold</td>
+  </tr>
+  <tr>
+   <td>10552</td>
+   <td>&nbsp;</td>
+   <td>Mrs Jan S. Flawson</td>
+   <td>&nbsp;</td>
+   <td>Gold</td>
+  </tr>
+  <tr>
+   <td>10863</td>
+   <td>&nbsp;</td>
+   <td>Mr Robert J. Hassel</td>
+   <td>&nbsp;</td>
+   <td>Silver</td>
+  </tr>
+</table>
+
+<pre>
+&lt;table cellspacing="6"&gt;
+  &lt;tr&gt;
+   &lt;td&gt;ID&lt;/td&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+   &lt;td&gt;Name&lt;/td&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+   &lt;td&gt;Level&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td colspan="5"&gt;&lt;hr&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+ &lt;span jwcid="<span class="jwcid">foreachCustomer</span>"&gt;
+  &lt;tr&gt;
+   &lt;td&gt;&lt;span jwcid="insertId"/&gt;&lt;/td&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+   &lt;td&gt;&lt;span jwcid="insertFullName"/&gt;&lt;/td&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
+   &lt;td&gt;&lt;span jwcid="insertMemberLevel"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+ &lt;/span&gt;
+&lt;/table&gt;
+
+
+&lt;component jwcid="<span class="jwcid">foreachCustomer</span>" type="<a href="Foreach.html">Foreach</a>"&gt;
+    &lt;binding name="source" property-path="customerList"/&gt;
+    &lt;binding name="value" property-path="customer"/&gt;
+&lt;/component&gt;
+
+&lt;component jwcid="insertId" type="<a href="Insert.html">Insert</a>"&gt;
+    &lt;binding name="value" property-path="id"/&gt;
+&lt;/component&gt;
+
+&lt;component jwcid="insertFullName" type="<a href="Insert.html">Insert</a>"&gt;
+    &lt;binding name="value" property-path="fullName"/&gt;
+&lt;/component&gt;
+
+&lt;component jwcid="insertMemberLevel" type="<a href="Insert.html">Insert</a>"&gt;
+    &lt;binding name="value" property-path="memberLevel"/&gt;
+&lt;/component&gt;
+
+
+public class SalesPage extends BasePage {
+    private List customerList;
+    private Customer customer;
+	 
+    public List getCustomerList() { return customerList; }
+	 
+    public void setCustomer(Customer value) {
+        customer = value;
+    }
+
+    public Customer getCustomer() { return customer; }
+
+    public void detach() {
+        customerList = null;
+        customer = null;
+        super.detach();
+    }
+}
+
+public class Customer {
+    private Integer id;
+    private String fullName;
+    private String memberLevel;
+
+    public Customer(Integer id, String fullName, String memberLevel) { 
+        this.id = id;
+        this.fullName = fullName;
+        this.memberLevel = memberLevel; 
+    }
+
+    public Integer getId() { return id; }
+		
+    public String getFullName() { return fullName; }
+
+    public String getMemberLevel() { return memberLevel; }
+}
+</pre>
+ </td>
+</tr>
+</table>
+
+</body>
+</html>

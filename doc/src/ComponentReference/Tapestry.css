@@ -1,0 +1,46 @@
+/*  $Id$ */
+
+IMG
+{
+  border: 0;
+}
+
+BODY
+{
+  background-color: #839cd1;
+}
+
+BODY, TABLE, TD, P
+{
+	font-family:verdana, arial, helvetica, sans-serif;
+	font-size:12px;
+}
+
+/* Most links should be white (against the blue background) */
+
+A
+{
+	color:white;
+}
+
+/* Inside programlisting blocks (with a light background), use
+   black links. */
+   
+PRE.programlisting A
+{
+	color:black;
+}
+
+/* Component reference component jwc ids. */
+
+SPAN.JWCID
+{
+  font-weight: bold;
+}
+
+/* Component reference component types. */
+
+SPAN.TYPE
+{
+  font-weight: bold;
+}
