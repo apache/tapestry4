@@ -285,7 +285,7 @@ public class ApplicationServlet extends HttpServlet
         _registry.cleanupThread();
 
         _requestServicer = (ServletRequestServicer) _registry.getService(
-                "tapestry.request.ServletRequestServicerPipeline",
+                "tapestry.request.ServletRequestServicer",
                 ServletRequestServicer.class);
     }
 

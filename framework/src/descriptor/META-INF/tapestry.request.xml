@@ -89,7 +89,7 @@
     
   </configuration-point> 
   
-  <service-point id="ServletRequestServicerPipeline" interface="ServletRequestServicer">
+  <service-point id="ServletRequestServicer" interface="ServletRequestServicer">
     
     A pipeline for handling each request.
     
@@ -108,7 +108,7 @@
   <service-point id="WebRequestServicerPipelineBridge" interface="ServletRequestServicer">
     <invoke-factory model="primitive">
 		  <construct class="impl.WebRequestServicerPipelineBridge">
-			  <set-service property="webRequestServicer" service-id="WebRequestServicerPipeline"/>
+			  <set-service property="webRequestServicer" service-id="WebRequestServicer"/>
 			  <set-service property="requestGlobals" service-id="tapestry.globals.RequestGlobals"/>
 		  </construct>
 	  </invoke-factory>
@@ -121,7 +121,7 @@
 	
   </configuration-point>   
   
-  <service-point id="WebRequestServicerPipeline" interface="WebRequestServicer">
+  <service-point id="WebRequestServicer" interface="WebRequestServicer">
     
 	A secondary pipeline for handling each requests wrapped in the WebRequest abstraction
 	layer.
