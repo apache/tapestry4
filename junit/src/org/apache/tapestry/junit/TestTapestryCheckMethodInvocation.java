@@ -71,11 +71,6 @@ import org.apache.tapestry.Tapestry;
 public class TestTapestryCheckMethodInvocation extends TapestryTestCase
 {
 
-    public TestTapestryCheckMethodInvocation(String name)
-    {
-        super(name);
-    }
-
     public void testSuccess()
     {
         Tapestry.clearMethodInvocations();

@@ -74,11 +74,6 @@ import org.apache.tapestry.spec.IContainedComponent;
 public class TestComponentSpecification extends TapestryTestCase
 {
 
-    public TestComponentSpecification(String name)
-    {
-        super(name);
-    }
-
     public void testBeanProperty() throws Exception
     {
         IComponentSpecification s = parseComponent("BeanProperty.jwc");

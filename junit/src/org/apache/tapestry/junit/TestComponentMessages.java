@@ -73,12 +73,6 @@ import org.apache.tapestry.IPage;
 
 public class TestComponentMessages extends TapestryTestCase
 {
-
-    public TestComponentMessages(String name)
-    {
-        super(name);
-    }
-
     private void check(IPage page, String key, String expected)
     {
         String actual = page.getMessage(key);

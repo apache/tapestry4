@@ -75,10 +75,6 @@ import org.apache.tapestry.spec.Direction;
 
 public class TestEnum extends TapestryTestCase
 {
-    public TestEnum(String name)
-    {
-        super(name);
-    }
 
     public void testSerialization() throws Exception
     {

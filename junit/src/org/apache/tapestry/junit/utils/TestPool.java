@@ -81,7 +81,7 @@ public class TestPool extends TapestryTestCase
         private BadBean()
         {
         }
-    }          
+    }
 
     public static class NotifyBean implements IPoolable
     {
@@ -121,11 +121,6 @@ public class TestPool extends TapestryTestCase
             bean._reset = true;
         }
 
-    }
-
-    public TestPool(String name)
-    {
-        super(name);
     }
 
     public void testStore()
@@ -250,48 +245,50 @@ public class TestPool extends TapestryTestCase
      *  Test retrieve and store of StringBuffer.
      * 
      **/
-    
+
     public void testStringBuffer()
     {
         Pool p = new Pool(false);
-        
-        StringBuffer buffer = (StringBuffer)p.retrieve(StringBuffer.class);
-        
+
+        StringBuffer buffer = (StringBuffer) p.retrieve(StringBuffer.class);
+
         assertNotNull(buffer);
-        
+
         buffer.append("foo");
-        
+
         p.store(buffer);
-        
+
         assertEquals(0, buffer.length());
-        
-        StringBuffer buffer2 = (StringBuffer)p.retrieve(StringBuffer.class);
-        
+
+        StringBuffer buffer2 = (StringBuffer) p.retrieve(StringBuffer.class);
+
         assertSame(buffer, buffer2);
-        
-        StringBuffer buffer3 = (StringBuffer)p.retrieve(StringBuffer.class);
-        
+
+        StringBuffer buffer3 = (StringBuffer) p.retrieve(StringBuffer.class);
+
         assertEquals(false, buffer == buffer3);
     }
-    
+
     /**
      *  Test retrieve of a bean that can't be instantiated.
      * 
      **/
-    
+
     public void testBadBean()
     {
         Pool p = new Pool(false);
-        
+
         try
         {
             p.retrieve(BadBean.class);
-            
+
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
         {
-            checkException(ex, "Unable to instantiate new instance of class org.apache.tapestry.junit.utils.TestPool$BadBean.");
+            checkException(
+                ex,
+                "Unable to instantiate new instance of class org.apache.tapestry.junit.utils.TestPool$BadBean.");
         }
     }
 }

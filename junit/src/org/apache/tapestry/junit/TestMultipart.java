@@ -70,11 +70,6 @@ import org.apache.tapestry.multipart.ValuePart;
 public class TestMultipart extends TapestryTestCase
 {
 
-    public TestMultipart(String name)
-    {
-        super(name);
-    }
-
     public void testSingle()
     {
         ValuePart p = new ValuePart("first");

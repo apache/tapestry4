@@ -67,10 +67,6 @@ import org.apache.tapestry.Tapestry;
  **/
 public class TestTapestryGetClassName extends TapestryTestCase
 {
-    public TestTapestryGetClassName(String name)
-    {
-        super(name);
-    }
 
     private void attempt(String expected, Class subject)
     {

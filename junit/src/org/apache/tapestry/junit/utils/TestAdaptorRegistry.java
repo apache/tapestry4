@@ -74,11 +74,6 @@ import org.apache.tapestry.util.AdaptorRegistry;
 public class TestAdaptorRegistry extends TapestryTestCase
 {
 
-    public TestAdaptorRegistry(String name)
-    {
-        super(name);
-    }
-
     private AdaptorRegistry build()
     {
         AdaptorRegistry result = new AdaptorRegistry();

@@ -75,11 +75,6 @@ import org.apache.tapestry.util.LocalizedNameGenerator;
 public class TestLocalizedNameGenerator extends TapestryTestCase
 {
 
-    public TestLocalizedNameGenerator(String name)
-    {
-        super(name);
-    }
-
     public void testBasic()
     {
         LocalizedNameGenerator g = new LocalizedNameGenerator("basic", Locale.US, ".test");

@@ -169,11 +169,6 @@ public class TestBindings extends TapestryTestCase
         }
     }
 
-    public TestBindings(String name)
-    {
-        super(name);
-    }
-
     public void testGetObject()
     {
         IBinding binding =

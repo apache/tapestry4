@@ -86,11 +86,6 @@ public class TestTapestryFindLocation extends TapestryTestCase
         }
     }
 
-    public TestTapestryFindLocation(String name)
-    {
-        super(name);
-    }
-
     public void testEmpty()
     {
         assertNull(Tapestry.findLocation(new Object[] {

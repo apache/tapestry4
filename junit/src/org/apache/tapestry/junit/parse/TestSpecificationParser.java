@@ -87,11 +87,6 @@ import org.apache.tapestry.util.xml.DocumentParseException;
 public class TestSpecificationParser extends TapestryTestCase
 {
 
-    public TestSpecificationParser(String name)
-    {
-        super(name);
-    }
-
     private void checkLine(ILocatable locatable, int line)
     {
         assertEquals("Line", line, locatable.getLocation().getLineNumber());

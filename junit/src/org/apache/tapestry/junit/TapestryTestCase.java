@@ -94,11 +94,6 @@ public class TapestryTestCase extends TestCase
 
     private IResourceResolver _resolver = new DefaultResourceResolver();
 
-    public TapestryTestCase(String name)
-    {
-        super(name);
-    }
-
     protected IPage createPage(String specificationPath, Locale locale)
     {
         IResourceLocation location = new ClasspathResourceLocation(_resolver, specificationPath);
