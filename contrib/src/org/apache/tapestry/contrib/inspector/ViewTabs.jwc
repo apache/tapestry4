@@ -28,9 +28,4 @@
   <private-asset name="ENGINE_focus" resource-path="Engine_NRp2.gif"/>
   <private-asset name="ENGINE_selected_focus" resource-path="Engine_HRp4.gif"/>
   <private-asset name="ENGINE_banner" resource-path="Engine_NBanner.gif"/>
-  <private-asset name="LOGGING" resource-path="Logging_Np1.gif"/>
-  <private-asset name="LOGGING_selected" resource-path="Logging_Hp3.gif"/>
-  <private-asset name="LOGGING_focus" resource-path="Logging_NRp2.gif"/>
-  <private-asset name="LOGGING_selected_focus" resource-path="Logging_HRp4.gif"/>
-  <private-asset name="LOGGING_banner" resource-path="Logging_NBanner.gif"/>
 </component-specification>
