@@ -15,6 +15,8 @@
   <parameter name="source" required="yes" java-type="java.lang.Object"
   direction="in"/>
   
+  <parameter name="listener" java-type="net.sf.tapestry.IActionListener" direction="in"/>
+  
   <parameter name="value" required="yes" java-type="java.lang.Object"/>
   
   <parameter name="index" java-type="int"/>
