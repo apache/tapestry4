@@ -292,7 +292,7 @@ public class SpecificationParserTest extends TapestryTestCase
         catch (DocumentParseException ex)
         {
             checkException(ex, "Invalid$Component");
-            checkException(ex, "alias");
+            checkException(ex, "type");
         }
     }
 
@@ -449,6 +449,22 @@ public class SpecificationParserTest extends TapestryTestCase
         assertEquals("hudson", c.getBinding("rock").getValue());
     }
 
+    public void testAttributeAndBody() throws Exception
+    {
+        try
+        {
+            parsePage("AttributeAndBody.page");
+
+            unreachable();
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(
+                ex,
+                "It is not valid to specify a value for attribute 'value' of <static-binding> and provide a value in the body of the element.");
+        }
+    }
+
     /**
      *  Tests the new (in DTD 1.4) value attribute on a configure element.
      * 
@@ -507,8 +523,8 @@ public class SpecificationParserTest extends TapestryTestCase
         return buffer.toString();
     }
 
-	/** @since 2.4 **/
-	
+    /** @since 2.4 **/
+
     public void testPropertySpecifications() throws Exception
     {
         ComponentSpecification spec = parsePage("PropertySpecifications.page");
@@ -540,22 +556,38 @@ public class SpecificationParserTest extends TapestryTestCase
 
         assertNull("Unknown PropertySpecification", ps);
     }
-    
+
     /** @since 2.4 **/
-    
-    public void testDuplicatePropertySpecification()
-    throws Exception
+
+    public void testDuplicatePropertySpecification() throws Exception
     {
-    	try
-    	{
-    		parsePage("DuplicatePropertySpecification.page");
-    		
-    		unreachable();
-    	}
-    	catch (IllegalArgumentException ex)
-    	{
-    		checkException(ex, "already contains property specification for property 'bool'");   		
-    	}
+        try
+        {
+            parsePage("DuplicatePropertySpecification.page");
+
+            unreachable();
+        }
+        catch (IllegalArgumentException ex)
+        {
+            checkException(ex, "already contains property specification for property 'bool'");
+        }
     }
-     
+
+    /** @since 2.4 **/
+
+    public void testMissingRequiredExtendedAttribute() throws Exception
+    {
+        try
+        {
+            parsePage("MissingRequiredExtendedAttribute.page");
+
+            unreachable();
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(
+                ex,
+                "Element <binding> does not specify a value for attribute 'expression', or contain a body value.");
+        }
+    }
 }
