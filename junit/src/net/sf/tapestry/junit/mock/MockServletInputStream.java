@@ -52,68 +52,78 @@
  *  information on the Apache Software Foundation, please see
  *  <http://www.apache.org/>.
  */
-package net.sf.tapestry.junit;
+package net.sf.tapestry.junit.mock;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
-import net.sf.tapestry.junit.enhance.TestClassFabricator;
-import net.sf.tapestry.junit.mock.MockTestCase;
-import net.sf.tapestry.junit.parse.SpecificationParserTest;
-import net.sf.tapestry.junit.parse.TemplateParserTest;
-import net.sf.tapestry.junit.script.ScriptTest;
-import net.sf.tapestry.junit.spec.TestApplicationSpecification;
-import net.sf.tapestry.junit.spec.TestComponentSpecification;
-import net.sf.tapestry.junit.utils.TestAdaptorRegistry;
-import net.sf.tapestry.junit.utils.TestDataSqueezer;
-import net.sf.tapestry.junit.utils.TestEnum;
-import net.sf.tapestry.junit.utils.TestIdAllocator;
-import net.sf.tapestry.junit.utils.TestLocalizedNameGenerator;
-import net.sf.tapestry.junit.utils.TestPool;
-import net.sf.tapestry.junit.utils.TestPropertyFinder;
-import net.sf.tapestry.junit.valid.ValidSuite;
+import javax.servlet.ServletInputStream;
 
 /**
- *  Master suite of Tapestry tests, combining all other test suites.
+ *  Implementation of {@link ServletInputStream} used in mock object testing.
+ *  The data in the stream is provided by a binary file.  The implemenation
+ *  wraps around a {@link java.io.FileInputStream} redirecting all method
+ *  invocations to the inner stream.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ *  @since 2.4
  *
  **/
 
-public class TapestrySuite extends TestSuite
+public class MockServletInputStream extends ServletInputStream
 {
-    public static Test suite()
+    private InputStream _inner;
+
+    public MockServletInputStream(String path) throws IOException
     {
-        TestSuite suite = new TestSuite();
+        _inner = new FileInputStream(path);
+    }
 
-		suite.addTestSuite(TestStaticLink.class);
-		suite.addTestSuite(TestEngineServiceLink.class);
-        suite.addTestSuite(TestAdaptorRegistry.class);
-        suite.addTestSuite(TestTapestryCoerceToIterator.class);
-        suite.addTestSuite(TestPool.class);
-        suite.addTestSuite(TestLocalizedNameGenerator.class);
-        suite.addTestSuite(TestResourceLocation.class);
-        suite.addTestSuite(TestPropertyFinder.class);
-        suite.addTestSuite(TestListenerMap.class);
-        suite.addTestSuite(TestIdAllocator.class);
-        suite.addTestSuite(ComponentStringsTest.class);
-        suite.addTestSuite(TemplateParserTest.class);
-        suite.addTestSuite(SpecificationParserTest.class);
-        suite.addTestSuite(TestApplicationSpecification.class);
-        suite.addTest(ValidSuite.suite());
-        suite.addTestSuite(TestMultipart.class);
-        suite.addTestSuite(TestEnum.class);
-        suite.addTestSuite(TestDataSqueezer.class);
-        suite.addTestSuite(ScriptTest.class);
-        suite.addTestSuite(TestComponentSpecification.class);
-        suite.addTestSuite(BindingsTestCase.class);
-        suite.addTestSuite(TestPropertySource.class);
-        suite.addTestSuite(ComponentTest.class);
-        suite.addTestSuite(TestClassFabricator.class);
-        suite.addTestSuite(MockTestCase.class);
+    public int read() throws IOException
+    {
+        return _inner.read();
+    }
 
-        return suite;
+    public int available() throws IOException
+    {
+        return _inner.available();
+    }
+
+    public void close() throws IOException
+    {
+        _inner.close();
+    }
+
+    public synchronized void mark(int readlimit)
+    {
+        _inner.mark(readlimit);
+    }
+
+    public boolean markSupported()
+    {
+        return _inner.markSupported();
+    }
+
+    public int read(byte[] b, int off, int len) throws IOException
+    {
+        return _inner.read(b, off, len);
+    }
+
+    public int read(byte[] b) throws IOException
+    {
+        return _inner.read(b);
+    }
+
+    public synchronized void reset() throws IOException
+    {
+        _inner.reset();
+    }
+
+    public long skip(long n) throws IOException
+    {
+        return _inner.skip(n);
     }
 
 }

@@ -102,6 +102,8 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
     private MockSession _session;
     private String _servletPath;
     private List _cookies = new ArrayList();
+    private String _contentType;
+    private String _contentPath;
 
     public MockRequest(MockContext servletContext, String servletPath)
     {
@@ -262,12 +264,20 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
 
     public String getContentType()
     {
-        return null;
+        return _contentType;
+    }
+    
+    public void setContentType(String contentType)
+    {
+    	_contentType = contentType;
     }
 
     public ServletInputStream getInputStream() throws IOException
     {
-        return null;
+ 		if (_contentPath == null)
+ 			return null;
+ 			
+ 		return new MockServletInputStream(_contentPath);
     }
 
     public String getParameter(String name)
@@ -412,4 +422,15 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
         if (_session != null)
             _session.simulateFailover();
     }
+    
+    public String getContentPath()
+    {
+        return _contentPath;
+    }
+
+    public void setContentPath(String contentPath)
+    {
+        _contentPath = contentPath;
+    }
+
 }

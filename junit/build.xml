@@ -50,6 +50,7 @@
     <delete dir="${classes.dir}" quiet="true"/>
     <delete dir="${clover-classes.dir}" quiet="true"/>
     <delete dir="${clover-db.dir}" quiet="true"/>
+    <delete dir=".private" quiet="true"/>
   </target>
 
   <target name="compile" depends="init" description="Compile all test classes.">

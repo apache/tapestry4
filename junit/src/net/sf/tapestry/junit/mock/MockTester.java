@@ -54,6 +54,9 @@
  */
 package net.sf.tapestry.junit.mock;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -183,8 +186,8 @@ public class MockTester
         {
             Element request = (Element) l.get(i);
 
-			_requestNumber = i + 1;
-			
+            _requestNumber = i + 1;
+
             executeRequest(request);
         }
     }
@@ -195,6 +198,14 @@ public class MockTester
         Cookie[] oldRequestCookies = (_request == null ? null : _request.getCookies());
 
         _request = new MockRequest(_context, "/" + _servlet.getServletName());
+
+        String contentType = request.getAttributeValue("content-type");
+        if (contentType != null)
+            _request.setContentType(contentType);
+
+        String contentPath = request.getAttributeValue("content-path");
+        if (contentPath != null)
+            _request.setContentPath(contentPath);
 
         _request.addCookies(oldRequestCookies);
 
@@ -409,6 +420,7 @@ public class MockTester
         executeExpressionAssertions(request);
         executeOutputMatchesAssertions(request);
         executeCookieAssertions(request);
+        executeOutputStreamAssertions(request);
     }
 
     /**
@@ -750,6 +762,91 @@ public class MockTester
     private String buildTestName(String name)
     {
         return "Request #" + _requestNumber + "/" + name;
+    }
+
+    private void executeOutputStreamAssertions(Element request) throws DocumentParseException
+    {
+        List l = request.getChildren("assert-output-stream");
+        int count = l.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            Element assertion = (Element) l.get(i);
+
+            executeOutputStreamAssertion(assertion);
+        }
+
+    }
+
+    private void executeOutputStreamAssertion(Element element) throws DocumentParseException
+    {
+        String name = element.getAttributeValue("name");
+        String contentType = element.getAttributeValue("content-type");
+        String path = element.getAttributeValue("path");
+
+        String actualContentType = _response.getContentType();
+
+        if (!contentType.equals(actualContentType))
+            throw new AssertionFailedError(
+                buildTestName(name)
+                    + " content-type was '"
+                    + actualContentType
+                    + "', expected '"
+                    + contentType
+                    + "'.");
+
+        byte[] actualContent = _response.getResponseBytes();
+        byte[] expectedContent = getFileContent(path);
+
+        if (actualContent.length != expectedContent.length)
+            throw new AssertionFailedError(
+                buildTestName(name)
+                    + " actual length of "
+                    + actualContent.length
+                    + " bytes does not match expected length of "
+                    + expectedContent.length
+                    + " bytes.");
+
+        for (int i = 0; i < actualContent.length; i++)
+        {
+            if (actualContent[i] != expectedContent[i])
+                throw new AssertionFailedError(
+                    buildTestName(name) + " content mismatch at index + " + i + ".");
+
+        }
+    }
+
+    private byte[] getFileContent(String path)
+    {
+        try
+        {
+            InputStream in = new FileInputStream(path);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            byte[] buffer = new byte[1000];
+
+            while (true)
+            {
+                int length = in.read(buffer);
+                if (length < 0)
+                    break;
+
+                out.write(buffer, 0, length);
+            }
+
+            in.close();
+            out.close();
+
+            return out.toByteArray();
+        }
+        catch (FileNotFoundException ex)
+        {
+            throw new ApplicationRuntimeException("File '" + path + "' not found.", ex);
+        }
+        catch (IOException ex)
+        {
+            throw new ApplicationRuntimeException("Unable to read file '" + path + "'.", ex);
+        }
     }
 
 }

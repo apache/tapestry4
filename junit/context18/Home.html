@@ -1,0 +1,29 @@
+<html jwcid="@Shell" title="Home">
+<body jwcid="@Body">
+
+<form jwcid="@Form">
+	
+<span jwcid="@RadioGroup" selected="[[ size ]]" disabled="[[ groupDisabled ]]">
+	<input type="radio" jwcid="@Radio" value="[[ 10 ]]"/> Small
+	<br/>
+	<input type="radio" jwcid="@Radio" value="[[ 20 ]]"/> Medium
+	<br/>
+	<input type="radio" jwcid="@Radio" value="[[ 30 ]]"/> Large
+	<br/>
+	<input type="radio" jwcid="@Radio" value="[[ 100 ]]" disabled="[[ true ]]"/> Gargantuan
+</span>
+
+</form>
+
+Size: [<span jwcid="@Insert" value="[[ size ]]"/>]
+
+<br/>
+
+<form jwcid="dummy@Form" direct="[[ false ]]"/>
+
+<br/>
+
+<a href="#" jwcid="@DirectLink" listener="[[ listeners.disableGroup ]]">disable group</a>
+
+</body>
+</html>

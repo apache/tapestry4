@@ -52,68 +52,45 @@
  *  information on the Apache Software Foundation, please see
  *  <http://www.apache.org/>.
  */
-package net.sf.tapestry.junit;
+package net.sf.tapestry.junit.mock.c19;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import net.sf.tapestry.junit.enhance.TestClassFabricator;
-import net.sf.tapestry.junit.mock.MockTestCase;
-import net.sf.tapestry.junit.parse.SpecificationParserTest;
-import net.sf.tapestry.junit.parse.TemplateParserTest;
-import net.sf.tapestry.junit.script.ScriptTest;
-import net.sf.tapestry.junit.spec.TestApplicationSpecification;
-import net.sf.tapestry.junit.spec.TestComponentSpecification;
-import net.sf.tapestry.junit.utils.TestAdaptorRegistry;
-import net.sf.tapestry.junit.utils.TestDataSqueezer;
-import net.sf.tapestry.junit.utils.TestEnum;
-import net.sf.tapestry.junit.utils.TestIdAllocator;
-import net.sf.tapestry.junit.utils.TestLocalizedNameGenerator;
-import net.sf.tapestry.junit.utils.TestPool;
-import net.sf.tapestry.junit.utils.TestPropertyFinder;
-import net.sf.tapestry.junit.valid.ValidSuite;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IUploadFile;
+import net.sf.tapestry.html.BasePage;
 
 /**
- *  Master suite of Tapestry tests, combining all other test suites.
+ *  Used in tests of upload and the {@link net.sf.tapestry.form.Upload}
+ *  component.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ *  @since 2.4
  *
  **/
 
-public class TapestrySuite extends TestSuite
+public abstract class Home extends BasePage
 {
-    public static Test suite()
+    public abstract IUploadFile getUploadFile();
+	public abstract void setUploadDisabled(boolean uploadDisabled);
+
+    public void formSubmit(IRequestCycle cycle)
     {
-        TestSuite suite = new TestSuite();
+    	IUploadFile file = getUploadFile();
+    	
+    	if (file == null)
+    	{
+    		cycle.setPage("Three");
+    		return;
+    	}
+    	
+        Two page = (Two) cycle.getPage("Two");
 
-		suite.addTestSuite(TestStaticLink.class);
-		suite.addTestSuite(TestEngineServiceLink.class);
-        suite.addTestSuite(TestAdaptorRegistry.class);
-        suite.addTestSuite(TestTapestryCoerceToIterator.class);
-        suite.addTestSuite(TestPool.class);
-        suite.addTestSuite(TestLocalizedNameGenerator.class);
-        suite.addTestSuite(TestResourceLocation.class);
-        suite.addTestSuite(TestPropertyFinder.class);
-        suite.addTestSuite(TestListenerMap.class);
-        suite.addTestSuite(TestIdAllocator.class);
-        suite.addTestSuite(ComponentStringsTest.class);
-        suite.addTestSuite(TemplateParserTest.class);
-        suite.addTestSuite(SpecificationParserTest.class);
-        suite.addTestSuite(TestApplicationSpecification.class);
-        suite.addTest(ValidSuite.suite());
-        suite.addTestSuite(TestMultipart.class);
-        suite.addTestSuite(TestEnum.class);
-        suite.addTestSuite(TestDataSqueezer.class);
-        suite.addTestSuite(ScriptTest.class);
-        suite.addTestSuite(TestComponentSpecification.class);
-        suite.addTestSuite(BindingsTestCase.class);
-        suite.addTestSuite(TestPropertySource.class);
-        suite.addTestSuite(ComponentTest.class);
-        suite.addTestSuite(TestClassFabricator.class);
-        suite.addTestSuite(MockTestCase.class);
-
-        return suite;
+        page.setFile(file);
+        cycle.setPage(page);
     }
-
+    
+    public void disableUpload(IRequestCycle cycle)
+    {
+    	setUploadDisabled(true);
+    }
 }

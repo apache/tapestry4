@@ -54,66 +54,96 @@
  */
 package net.sf.tapestry.junit;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 
-import net.sf.tapestry.junit.enhance.TestClassFabricator;
-import net.sf.tapestry.junit.mock.MockTestCase;
-import net.sf.tapestry.junit.parse.SpecificationParserTest;
-import net.sf.tapestry.junit.parse.TemplateParserTest;
-import net.sf.tapestry.junit.script.ScriptTest;
-import net.sf.tapestry.junit.spec.TestApplicationSpecification;
-import net.sf.tapestry.junit.spec.TestComponentSpecification;
-import net.sf.tapestry.junit.utils.TestAdaptorRegistry;
-import net.sf.tapestry.junit.utils.TestDataSqueezer;
-import net.sf.tapestry.junit.utils.TestEnum;
-import net.sf.tapestry.junit.utils.TestIdAllocator;
-import net.sf.tapestry.junit.utils.TestLocalizedNameGenerator;
-import net.sf.tapestry.junit.utils.TestPool;
-import net.sf.tapestry.junit.utils.TestPropertyFinder;
-import net.sf.tapestry.junit.valid.ValidSuite;
+import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.multipart.UploadPart;
+import net.sf.tapestry.multipart.ValuePart;
 
 /**
- *  Master suite of Tapestry tests, combining all other test suites.
+ *  A few tests to fill in the code coverage of 
+ * {@link net.sf.tapestry.multipart.ValuePart} and
+ * {@link net.sf.tapestry.multipart.UploadPart}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ *  @since 2.4
  *
  **/
-
-public class TapestrySuite extends TestSuite
+public class TestMultipart extends TapestryTestCase
 {
-    public static Test suite()
+
+    public TestMultipart(String name)
     {
-        TestSuite suite = new TestSuite();
-
-		suite.addTestSuite(TestStaticLink.class);
-		suite.addTestSuite(TestEngineServiceLink.class);
-        suite.addTestSuite(TestAdaptorRegistry.class);
-        suite.addTestSuite(TestTapestryCoerceToIterator.class);
-        suite.addTestSuite(TestPool.class);
-        suite.addTestSuite(TestLocalizedNameGenerator.class);
-        suite.addTestSuite(TestResourceLocation.class);
-        suite.addTestSuite(TestPropertyFinder.class);
-        suite.addTestSuite(TestListenerMap.class);
-        suite.addTestSuite(TestIdAllocator.class);
-        suite.addTestSuite(ComponentStringsTest.class);
-        suite.addTestSuite(TemplateParserTest.class);
-        suite.addTestSuite(SpecificationParserTest.class);
-        suite.addTestSuite(TestApplicationSpecification.class);
-        suite.addTest(ValidSuite.suite());
-        suite.addTestSuite(TestMultipart.class);
-        suite.addTestSuite(TestEnum.class);
-        suite.addTestSuite(TestDataSqueezer.class);
-        suite.addTestSuite(ScriptTest.class);
-        suite.addTestSuite(TestComponentSpecification.class);
-        suite.addTestSuite(BindingsTestCase.class);
-        suite.addTestSuite(TestPropertySource.class);
-        suite.addTestSuite(ComponentTest.class);
-        suite.addTestSuite(TestClassFabricator.class);
-        suite.addTestSuite(MockTestCase.class);
-
-        return suite;
+        super(name);
     }
 
+    public void testSingle()
+    {
+        ValuePart p = new ValuePart("first");
+
+        assertEquals(1, p.getCount());
+        assertEquals("first", p.getValue());
+
+        checkList("values", new String[] { "first" }, p.getValues());
+    }
+
+    public void testTwo()
+    {
+        ValuePart p = new ValuePart("alpha");
+
+        p.add("beta");
+
+        assertEquals(2, p.getCount());
+        assertEquals("alpha", p.getValue());
+        checkList("values", new String[] { "alpha", "beta" }, p.getValues());
+    }
+
+    public void testThree()
+    {
+        ValuePart p = new ValuePart("moe");
+        p.add("larry");
+        p.add("curly");
+
+        checkList("values", new String[] { "moe", "larry", "curly" }, p.getValues());
+    }
+
+    public void testGetStreamFailure()
+    {
+        UploadPart p = new UploadPart("filePath", "contentType", new File("DOES-NOT-EXIST"));
+
+        try
+        {
+            p.getStream();
+
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            checkException(ex, "Unable to open uploaded file");
+        }
+    }
+
+    public void testUnableToCleanup() throws Exception
+    {
+        File file = File.createTempFile("unable-to-delete-", ".data");
+
+        FileOutputStream out = new FileOutputStream(file);
+        PrintWriter w = new PrintWriter(out);
+
+        w.println("Test Data");
+
+        w.close();
+
+        UploadPart p = new UploadPart("filePath", "contentType", file);
+
+        // Open the stream, and leave it open, so the
+        // file can't be deleted.
+
+        p.getStream();
+
+        p.cleanup();
+    }
 }

@@ -82,6 +82,7 @@ public class MockResponse implements HttpServletResponse
     private List _cookies = new ArrayList();
 
     private String _redirectLocation;
+    private String _contentType;
 
     private class ServletOutputStreamImpl extends ServletOutputStream
     {
@@ -249,8 +250,9 @@ public class MockResponse implements HttpServletResponse
     {
     }
 
-    public void setContentType(String arg0)
+    public void setContentType(String contentType)
     {
+    	_contentType = contentType;
     }
 
     public void setBufferSize(int arg0)
@@ -312,8 +314,19 @@ public class MockResponse implements HttpServletResponse
         return _outputByteStream.toString();
     }
 
+	public byte[] getResponseBytes()
+	{
+		return _outputByteStream.toByteArray();
+	}
+
     public Cookie[] getCookies()
     {
         return (Cookie[]) _cookies.toArray(new Cookie[_cookies.size()]);
     }
+    
+    public String getContentType()
+    {
+        return _contentType;
+    }
+
 }

@@ -1,0 +1,20 @@
+<html jwcid="@Shell" title="Home">
+<body jwcid="@Body">
+
+<form jwcid="main@Form" listener="[[ listeners.formSubmit ]]">
+
+<textarea jwcid="text@TextArea" value="[[ text ]]" disabled="[[ textAreaDisabled ]]"/>
+<select jwcid="mode@PropertySelection" value="[[ mode ]]" model="[[ modeModel ]]"/>
+	
+</form>
+
+<br/>
+
+<form jwcid="actionForm@Form" direct="[[ false ]]"/>
+
+<br/>
+
+<a href="#" jwcid="disable@DirectLink" listener="[[ listeners.disableTextArea ]]"/>
+
+</body>
+</html>

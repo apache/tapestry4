@@ -1,0 +1,18 @@
+<html jwcid="@Shell" title="Two">
+<body jwcid="@Body">
+
+Content Type: [<span jwcid="@Insert" value="[[ file.contentType ]]"/>]
+<br/>
+Path: [<span jwcid="@Insert" value="[[ file.filePath ]]"/>]
+<br/>
+Name: [<span jwcid="@Insert" value="[[ file.fileName ]]"/>]
+<br/>
+Truncated: [<span jwcid="@Insert" value="[[ file.truncated ]]"/>]
+
+<span jwcid="@Conditional" condition="[[ uploadMatch ]]">
+<br/>
+Contents match.
+</span>
+
+</body> 
+</html>

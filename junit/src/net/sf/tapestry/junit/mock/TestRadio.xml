@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c18" root="context18"/>
+
+  	<servlet name="app" class="net.sf.tapestry.ApplicationServlet"/>
+
+	<request>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>	
+		</assert-output>
+		
+		<assert-output-matches name="Radio Fields">
+<![CDATA[
+<input type="radio" .*?> \w+
+]]>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" value="0"/> Small]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" checked="checked" value="1"/> Medium]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" value="2"/> Large]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" disabled="disabled" value="3"/> Gargantuan]]></match>
+									
+		</assert-output-matches>
+		
+		<assert-output name="Size Field">
+		Size: [20]	
+		</assert-output>
+
+	</request>
+	
+	<!-- Pretend to click the "Large" button. -->
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/$Form"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="$RadioGroup" value="2"/>
+		<parameter name="Form0" value="$RadioGroup"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>	
+		</assert-output>
+		
+		<assert-output-matches name="Radio Fields">
+<![CDATA[
+<input type="radio" .*?> \w+
+]]>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" value="0"/> Small]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" value="1"/> Medium]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" checked="checked" value="2"/> Large]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" disabled="disabled" value="3"/> Gargantuan]]></match>
+									
+		</assert-output-matches>
+		
+		<assert-output name="Size Field">
+		Size: [30]	
+		</assert-output>
+
+	</request>
+
+	<!-- Submit with no option selected. -->
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/$Form"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="Form0" value="$RadioGroup"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>	
+		</assert-output>
+		
+		<assert-output-matches name="Radio Fields">
+<![CDATA[
+<input type="radio" .*?> \w+
+]]>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" value="0"/> Small]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" checked="checked" value="1"/> Medium]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" value="2"/> Large]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" disabled="disabled" value="3"/> Gargantuan]]></match>
+									
+		</assert-output-matches>
+		
+		<assert-output name="Size Field">
+		Size: [20]	
+		</assert-output>
+
+	</request>
+
+	<!-- Pretend to click the "Gargantuan" button (even though it is disabled). -->
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/$Form"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="$RadioGroup" value="3"/>
+		<parameter name="Form0" value="$RadioGroup"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>	
+		</assert-output>
+		
+		<assert-output-matches name="Radio Fields">
+<![CDATA[
+<input type="radio" .*?> \w+
+]]>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" value="0"/> Small]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" checked="checked" value="1"/> Medium]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" value="2"/> Large]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" disabled="disabled" value="3"/> Gargantuan]]></match>
+									
+		</assert-output-matches>
+		
+		<assert-output name="Size Field">
+		Size: [20]	
+		</assert-output>
+
+	</request>
+
+	<!-- Click the dummy form (using action service). -->
+	
+	<request>
+		<parameter name="service" value="action"/>
+		<parameter name="context" value="0/Home/1/dummy"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="Form1" value=""/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>	
+		</assert-output>
+		
+		<assert-output-matches name="Radio Fields">
+<![CDATA[
+<input type="radio" .*?> \w+
+]]>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" value="0"/> Small]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" checked="checked" value="1"/> Medium]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" value="2"/> Large]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" disabled="disabled" value="3"/> Gargantuan]]></match>
+									
+		</assert-output-matches>
+		
+		<assert-output name="Size Field">
+		Size: [20]	
+		</assert-output>
+
+	</request>
+
+	<!-- Click the link to disable the group. -->
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/$DirectLink"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>	
+		</assert-output>
+		
+		<assert-output-matches name="Radio Fields">
+<![CDATA[
+<input type="radio" .*?> \w+
+]]>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" disabled="disabled" value="0"/> Small]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" checked="checked" disabled="disabled" value="1"/> Medium]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" disabled="disabled" value="2"/> Large]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" disabled="disabled" value="3"/> Gargantuan]]></match>
+									
+		</assert-output-matches>
+		
+		<assert-output name="Size Field">
+		Size: [20]	
+		</assert-output>
+			
+	</request>
+	
+	<!-- Select the (now disabled) large value. -->
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/$Form"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="$RadioGroup" value="2"/>
+		<parameter name="Form0" value="$RadioGroup"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>	
+		</assert-output>
+		
+		<assert-output-matches name="Radio Fields">
+<![CDATA[
+<input type="radio" .*?> \w+
+]]>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" disabled="disabled" value="0"/> Small]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" checked="checked" disabled="disabled" value="1"/> Medium]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" disabled="disabled" value="2"/> Large]]></match>
+			<match><![CDATA[<input type="radio" name="$RadioGroup" disabled="disabled" value="3"/> Gargantuan]]></match>
+									
+		</assert-output-matches>
+		
+		<assert-output name="Size Field">
+		Size: [20]	
+		</assert-output>
+		
+	</request>
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="NestedGroups"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Exception Name">
+		net.sf.tapestry.RequestCycleException
+		</assert-output>
+		
+		<assert-output name="Exception Messge">
+		RadioGroup components may not be nested.
+		</assert-output>
+		
+		<assert-output name="Component Id">
+		[NestedGroups/inner]
+		</assert-output>
+	</request>
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="NoGroup"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Exception Name">
+		net.sf.tapestry.RequestCycleException
+		</assert-output>
+		
+		<assert-output name="Exception Messge">
+		Radio component must be contained within a RadioGroup.
+		</assert-output>
+		
+		<assert-output name="Component Id">
+		[NoGroup/orphan]
+		</assert-output>
+	</request>
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="NoForm"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Exception Name">
+		net.sf.tapestry.RequestCycleException
+		</assert-output>
+		
+		<assert-output name="Exception Messge">
+		This component must be contained within a Form.
+		</assert-output>
+		
+		<assert-output name="Component Id">
+		[NoForm/orphan]
+		</assert-output>
+	</request>
+</mock-test>
