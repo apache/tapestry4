@@ -67,11 +67,6 @@ public class FieldBinding extends AbstractBinding
         this.fieldName = fieldName;
     }
 
-    public boolean isStatic()
-    {
-        return true;
-    }
-
     public String toString()
     {
         StringBuffer buffer;

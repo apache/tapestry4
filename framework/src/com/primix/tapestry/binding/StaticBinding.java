@@ -43,12 +43,22 @@ import com.primix.tapestry.*;
 public class StaticBinding extends AbstractBinding
 {
 	private String value;
-	private Integer integerValue;
+    private boolean accessed;
+    private int intValue;
+    private double doubleValue;
 
 	public StaticBinding(String value)
 	{
 		this.value = value;
 	}
+
+    private void parse()
+    {
+        accessed = true;
+
+        intValue = Integer.parseInt(value);
+        doubleValue = Double.parseDouble(value);
+    }
 
 	/**
 	*  Invokes {@link #getInteger()} and converts the result.
@@ -56,31 +66,18 @@ public class StaticBinding extends AbstractBinding
 	*/
 
 	public int getInt()
-	throws NullValueForBindingException
 	{
-		if (integerValue == null)
-			getInteger();
+        if (!accessed) parse();
 
-		if (integerValue == null)
-			throw new NullValueForBindingException(this);
-
-		return integerValue.intValue();		
+        return intValue;
 	}
 
-	/**
-	*  Attempts to build an {@link Integer} from the {@link String}
-	*  using the <code>String</code> constructor of
-	*  {@link Integer}, returning that value.
-	*
-	*/
+    public double getDouble()
+    {
+        if (!accessed) parse();
 
-	public Integer getInteger()
-	{
-		if (integerValue == null)
-			integerValue = new Integer(value);
-
-		return integerValue;
-	}
+        return doubleValue;
+    }
 
 	public String getString()
 	{
@@ -90,16 +87,6 @@ public class StaticBinding extends AbstractBinding
 	public Object getValue()
 	{
 		return value;
-	}
-
-	/**
-	*  Returns true.
-	*
-	*/
-
-	public boolean isStatic()
-	{
-		return true;
 	}
 
 	public String toString()

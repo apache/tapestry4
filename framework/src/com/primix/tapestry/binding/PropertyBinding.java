@@ -160,17 +160,22 @@ public class PropertyBinding extends AbstractBinding
 		return false;
 	}
 
-	public void setBoolean(boolean value) throws ReadOnlyBindingException
+	public void setBoolean(boolean value)
 	{
 		setValue(value ? Boolean.TRUE : Boolean.FALSE);
 	}
 
-	public void setInt(int value) throws ReadOnlyBindingException
+	public void setInt(int value)
 	{
 		setValue(new Integer(value));
 	}
 
-	public void setString(String value) throws ReadOnlyBindingException
+    public void setDouble(double value)
+    {
+        setValue(new Double(value));
+    }
+
+	public void setString(String value)
 	{
 		setValue(value);
 	}
@@ -204,10 +209,10 @@ public class PropertyBinding extends AbstractBinding
 			buffer.append(propertyPath);
 			buffer.append(" of ");
 			buffer.append(root);
-			buffer.append(" to <");
+			buffer.append(" to ");
 			buffer.append(value);
 			
-			buffer.append(">.");
+			buffer.append('.');
 
 			throw new BindingException(buffer.toString(), this, e);
 		}
