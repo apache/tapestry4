@@ -68,7 +68,7 @@ public class Namespace implements INamespace
         _parent = parent;
         _specification = specification;
         _specificationSource = specificationSource;
-        
+
         _applicationNamespace = (_id == null);
         _frameworkNamespace = FRAMEWORK_NAMESPACE.equals(_id);
     }
@@ -83,11 +83,11 @@ public class Namespace implements INamespace
             buffer.append("<application>");
         else
             buffer.append(getExtendedId());
-            
+
         buffer.append(']');
-        
+
         return buffer.toString();
-    }                    
+    }
 
     /**
      *  Map of {@link ComponentSpecification} keyed on page name.
@@ -136,12 +136,13 @@ public class Namespace implements INamespace
     {
         String firstId = id;
         String nextIds = null;
-        
+
         // Split the id into first and next if it is a dot separated sequence
         int index = id.indexOf('.');
-        if (index >= 0) {
+        if (index >= 0)
+        {
             firstId = id.substring(0, index);
-            nextIds = id.substring(index+1);
+            nextIds = id.substring(index + 1);
         }
 
         // Get the first namespace
@@ -158,7 +159,7 @@ public class Namespace implements INamespace
         // the needed namespace
         if (result != null && nextIds != null)
             result = result.getChildNamespace(nextIds);
-        
+
         return result;
     }
 
@@ -224,11 +225,11 @@ public class Namespace implements INamespace
     {
         if (_parent == null)
             return _id;
-            
+
         String parentId = _parent.getExtendedId();
 
         // If immediate child of application namespace
-        
+
         if (parentId == null)
             return _id;
 
@@ -245,7 +246,7 @@ public class Namespace implements INamespace
     {
         if (_frameworkNamespace)
             return Tapestry.getString("Namespace.framework-namespace");
-            
+
         if (_applicationNamespace)
             return Tapestry.getString("Namespace.application-namespace");
 
@@ -283,10 +284,10 @@ public class Namespace implements INamespace
                 Tapestry.getString("Namespace.library-id-not-found", id, getNamespaceId()));
 
         ILibrarySpecification ls = _specificationSource.getLibrarySpecification(path);
- 
+
         return new Namespace(id, this, ls, _specificationSource);
     }
-    
+
     public boolean containsAlias(String alias)
     {
         return _specification.getComponentSpecificationPath(alias) != null;
@@ -295,6 +296,18 @@ public class Namespace implements INamespace
     public boolean containsPage(String name)
     {
         return _specification.getPageSpecificationPath(name) != null;
+    }
+
+    /** @since 2.3 **/
+
+    public String constructQualifiedName(String pageName)
+    {
+        String prefix = getExtendedId();
+
+        if (prefix == null)
+            return pageName;
+
+        return prefix + SEPARATOR + pageName;
     }
 
 }

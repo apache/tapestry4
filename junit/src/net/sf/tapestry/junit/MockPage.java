@@ -319,4 +319,9 @@ public class MockPage implements IPage
     {
     }
 
+    public String getQualifiedName()
+    {
+        return null;
+    }
+
 }

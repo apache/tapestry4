@@ -203,10 +203,10 @@ public class TemplateParserTest extends TestCase
 
         assertTokenCount(tokens, 4);
 
-        assertTextToken(tokens[0], 0, 37);
+        assertTextToken(tokens[0], 0, 38);
         assertOpenToken(tokens[1], "emptyTag");
         assertCloseToken(tokens[2]);
-        assertTextToken(tokens[3], 58, 96);
+        assertTextToken(tokens[3], 63, 102);
     }
 
     public void testSimpleNested() throws TemplateParseException
@@ -277,11 +277,6 @@ public class TemplateParserTest extends TestCase
             "Tag <img> on line 9 is missing a value for attribute src.");
     }
 
-    public void testMissingJwcIdFailure()
-    {
-        runFailure("MissingJwcId.html", "Tag <jWc> on line 7 does not specify an id.");
-    }
-
     public void testIncompleteCloseFailure()
     {
         runFailure("IncompleteClose.html", "Incomplete close tag on line 6.");
@@ -298,7 +293,7 @@ public class TemplateParserTest extends TestCase
     {
         runFailure(
             "InvalidDynamicNesting.html",
-            "Closing tag </body> on line 12 is improperly nested with tag <jwc> on line 8.");
+            "Closing tag </body> on line 12 is improperly nested with tag <span> on line 8.");
     }
 
     public void testUnknownComponentIdFailure()
@@ -327,12 +322,13 @@ public class TemplateParserTest extends TestCase
         assertTextToken(tokens[0], 0, 119);
         assertTextToken(tokens[1], 188, 268);
         assertOpenToken(tokens[2], "e");
-        assertTextToken(tokens[3], 337, 338);
+        assertTextToken(tokens[3], 341, 342);
         assertOpenToken(tokens[4], "row");
-        assertTextToken(tokens[5], 355, 373);
+        assertTextToken(tokens[5], 359, 377);
         assertCloseToken(tokens[6]);
+        assertTextToken(tokens[7], 383, 383);
         assertCloseToken(tokens[8]);
-        assertTextToken(tokens[9], 386, 396);
+        assertTextToken(tokens[9], 391, 401);
     }
 
     public void testBodyRemove() throws TemplateParseException
@@ -363,20 +359,15 @@ public class TemplateParserTest extends TestCase
     {
         runFailure(
             "RemovedComponent.html",
-            "Tag <jwc> on line 5 is a dynamic component, and may not appear inside an ignored block.");
+            "Tag <span> on line 5 is a dynamic component, and may not appear inside an ignored block.");
     }
 
     public void testNestedRemoveFailure()
     {
         runFailure(
             "NestedRemove.html",
-            "Tag <jwc> on line 4 should be ignored, but is already inside "
+            "Tag <span> on line 4 should be ignored, but is already inside "
                 + "an ignored block (ignored blocks may not be nested).");
-    }
-
-    public void testInvalidJwcAttributeFailure()
-    {
-        runFailure("InvalidJwcAttribute.html", "Tag <jwc> on line 5 may only contain attribute 'id'.");
     }
 
     public void testBasicContent() throws TemplateParseException
@@ -387,7 +378,7 @@ public class TemplateParserTest extends TestCase
         assertTextToken(tokens[0], 108, 165);
         assertOpenToken(tokens[1], "nested");
         assertCloseToken(tokens[2]);
-        assertTextToken(tokens[3], 184, 188);
+        assertTextToken(tokens[3], 188, 192);
     }
 
     public void testIgnoredContentFailure()

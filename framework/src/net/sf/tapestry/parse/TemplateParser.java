@@ -101,57 +101,77 @@ public class TemplateParser
 
     public static final String LOCALIZATION_KEY_ATTRIBUTE_NAME = "key";
 
-    private ITemplateParserDelegate delegate;
+    /**
+     *  Used with {@link #LOCALIZATION_KEY_ATTRIBUTE_NAME} to indicate a string
+     *  that should be rendered "raw" (without escaping HTML).  If not specified,
+     *  defaults to "false".  The value must equal "true" (caselessly).
+     * 
+     *  @since 2.3
+     * 
+     **/
+
+    public static final String RAW_ATTRIBUTE_NAME = "raw";
+
+    /**
+     *  Attribute used to identify components.
+     * 
+     *  @since 2.3
+     * 
+     **/
+
+    public static final String JWCID_ATTRIBUTE_NAME = "jwcid";
+
+    private ITemplateParserDelegate _delegate;
 
     /**
      *  Identifies the template being parsed; used with error messages.
      *
      **/
 
-    private String resourcePath;
+    private String _resourcePath;
 
     /**
      *  Local reference to the template data that is to be parsed.
      *
      **/
 
-    private char[] templateData;
+    private char[] _templateData;
 
     /**
      *  List of Tag
      *
      **/
 
-    private List stack = new ArrayList();
+    private List _stack = new ArrayList();
 
     private static class Tag
     {
         // The element, i.e., <jwc> or virtually any other element (via jwcid attribute)
-        String tagName;
+        String _tagName;
         // If true, the tag is a placeholder for a dynamic element
-        boolean component;
+        boolean _component;
         // If true, the body of the tag is being ignored, and the
         // ignore flag is cleared when the close tag is reached
-        boolean ignoringBody;
+        boolean _ignoringBody;
         // If true, then the entire tag (and its body) is being ignored
-        boolean removeTag;
+        boolean _removeTag;
         // If true, then the tag must have a balanced closing tag.
         // This is always true for components.
-        boolean mustBalance;
+        boolean _mustBalance;
         // The line on which the start tag exists
-        int line;
+        int _line;
         // If true, then the parse ends when the closing tag is found.
-        boolean content;
+        boolean _content;
 
         Tag(String tagName, int line)
         {
-            this.tagName = tagName;
-            this.line = line;
+            _tagName = tagName;
+            _line = line;
         }
 
         boolean match(String matchTagName)
         {
-            return tagName.equalsIgnoreCase(matchTagName);
+            return _tagName.equalsIgnoreCase(matchTagName);
         }
     }
 
@@ -160,7 +180,7 @@ public class TemplateParser
      *
      **/
 
-    private List tokens = new ArrayList();
+    private List _tokens = new ArrayList();
 
     /**
      *  The location of the 'cursor' within the template data.  The
@@ -168,7 +188,7 @@ public class TemplateParser
      *
      **/
 
-    private int cursor;
+    private int _cursor;
 
     /**
      *  The start of the current block of static text, or -1 if no block
@@ -176,14 +196,14 @@ public class TemplateParser
      *
      **/
 
-    private int blockStart;
+    private int _blockStart;
 
     /**
      *  The current line number; tracked by advance().  Starts at 1.
      *
      **/
 
-    private int line;
+    private int _line;
 
     /**
      *  Set to true when the body of a tag is being ignored.  This is typically
@@ -193,7 +213,7 @@ public class TemplateParser
      *
      **/
 
-    private boolean ignoring;
+    private boolean _ignoring;
 
     /**
      *  A {@link Map} of {@link Strings}, used to store attributes collected
@@ -201,7 +221,7 @@ public class TemplateParser
      *
      **/
 
-    private Map attributes = new HashMap();
+    private Map _attributes = new HashMap();
 
     /**
      *  Parses the template data into an array of {@link TemplateToken}s.
@@ -217,34 +237,31 @@ public class TemplateParser
      *
      **/
 
-    public TemplateToken[] parse(
-        char[] templateData,
-        ITemplateParserDelegate delegate,
-        String resourcePath)
+    public TemplateToken[] parse(char[] templateData, ITemplateParserDelegate delegate, String resourcePath)
         throws TemplateParseException
     {
         TemplateToken[] result = null;
 
         try
         {
-            this.templateData = templateData;
-            this.resourcePath = resourcePath;
-            this.delegate = delegate;
-            ignoring = false;
-            line = 1;
+            _templateData = templateData;
+            _resourcePath = resourcePath;
+            _delegate = delegate;
+            _ignoring = false;
+            _line = 1;
 
             parse();
 
-            result = (TemplateToken[]) tokens.toArray(new TemplateToken[tokens.size()]);
+            result = (TemplateToken[]) _tokens.toArray(new TemplateToken[_tokens.size()]);
         }
         finally
         {
-            this.delegate = null;
-            this.templateData = null;
-            this.resourcePath = null;
-            stack.clear();
-            tokens.clear();
-            attributes.clear();
+            _delegate = null;
+            _templateData = null;
+            _resourcePath = null;
+            _stack.clear();
+            _tokens.clear();
+            _attributes.clear();
         }
 
         return result;
@@ -261,7 +278,7 @@ public class TemplateParser
         {
             for (int i = 0; i < match.length; i++)
             {
-                if (templateData[cursor + i] != match[i])
+                if (_templateData[_cursor + i] != match[i])
                     return false;
             }
 
@@ -281,16 +298,16 @@ public class TemplateParser
 
     private void parse() throws TemplateParseException
     {
-        cursor = 0;
-        blockStart = -1;
-        int length = templateData.length;
+        _cursor = 0;
+        _blockStart = -1;
+        int length = _templateData.length;
 
-        while (cursor < length)
+        while (_cursor < length)
         {
-            if (templateData[cursor] != '<')
+            if (_templateData[_cursor] != '<')
             {
-                if (blockStart < 0 && !ignoring)
-                    blockStart = cursor;
+                if (_blockStart < 0 && !_ignoring)
+                    _blockStart = _cursor;
 
                 advance();
                 continue;
@@ -319,7 +336,7 @@ public class TemplateParser
         // be added.  Often the last few tags are static tags so we definately
         // need to end the text block.
 
-        addTextToken(templateData.length - 1);
+        addTextToken(_templateData.length - 1);
     }
 
     /**
@@ -330,19 +347,19 @@ public class TemplateParser
 
     private void skipComment() throws TemplateParseException
     {
-        int length = templateData.length;
-        int startLine = line;
+        int length = _templateData.length;
+        int startLine = _line;
 
-        if (blockStart < 0 && !ignoring)
-            blockStart = cursor;
+        if (_blockStart < 0 && !_ignoring)
+            _blockStart = _cursor;
 
         while (true)
         {
-            if (cursor >= length)
+            if (_cursor >= length)
                 throw new TemplateParseException(
                     Tapestry.getString("TemplateParser.comment-not-ended", Integer.toString(startLine)),
                     startLine,
-                    resourcePath);
+                    _resourcePath);
 
             if (lookahead(COMMENT_END))
                 break;
@@ -352,7 +369,7 @@ public class TemplateParser
             advance();
         }
 
-        cursor += COMMENT_END.length;
+        _cursor += COMMENT_END.length;
         advanceOverWhitespace();
     }
 
@@ -360,17 +377,17 @@ public class TemplateParser
     {
         // No active block to add to.
 
-        if (blockStart < 0)
+        if (_blockStart < 0)
             return;
 
-        if (blockStart <= end)
+        if (_blockStart <= end)
         {
-            TemplateToken token = new TemplateToken(templateData, blockStart, end);
+            TemplateToken token = new TemplateToken(_templateData, _blockStart, end);
 
-            tokens.add(token);
+            _tokens.add(token);
         }
 
-        blockStart = -1;
+        _blockStart = -1;
     }
 
     private static final int WAIT_FOR_ATTRIBUTE_NAME = 0;
@@ -382,24 +399,24 @@ public class TemplateParser
 
     private void startTag() throws TemplateParseException
     {
-        int cursorStart = cursor;
-        int length = templateData.length;
+        int cursorStart = _cursor;
+        int length = _templateData.length;
         String tagName = null;
         boolean endOfTag = false;
         boolean emptyTag = false;
-        int startLine = line;
+        int startLine = _line;
 
         advance();
 
         // Collect the element type
 
-        while (cursor < length)
+        while (_cursor < length)
         {
-            char ch = templateData[cursor];
+            char ch = _templateData[_cursor];
 
             if (ch == '/' || ch == '>' || Character.isWhitespace(ch))
             {
-                tagName = new String(templateData, cursorStart + 1, cursor - cursorStart - 1);
+                tagName = new String(_templateData, cursorStart + 1, _cursor - cursorStart - 1);
 
                 break;
             }
@@ -407,34 +424,29 @@ public class TemplateParser
             advance();
         }
 
-        boolean isJwcTag = (tagName != null && tagName.equalsIgnoreCase("jwc"));
-        String jwcId = null;
-        String jwcIdAttributeName = isJwcTag ? "id" : "jwcid";
         String attributeName = null;
-        String localizationKey = null;
         int attributeNameStart = -1;
         int attributeValueStart = -1;
         int state = WAIT_FOR_ATTRIBUTE_NAME;
         char quoteChar = 0;
 
-        attributes.clear();
+        _attributes.clear();
 
         // Collect each attribute
 
         while (!endOfTag)
         {
-            if (cursor >= length)
+            if (_cursor >= length)
             {
-                String key =
-                    (tagName == null) ? "TemplateParser.unclosed-unknown-tag" : "TemplateParser.unclosed-tag";
+                String key = (tagName == null) ? "TemplateParser.unclosed-unknown-tag" : "TemplateParser.unclosed-tag";
 
                 throw new TemplateParseException(
                     Tapestry.getString(key, tagName, Integer.toString(startLine)),
                     startLine,
-                    resourcePath);
+                    _resourcePath);
             }
 
-            char ch = templateData[cursor];
+            char ch = _templateData[_cursor];
 
             switch (state)
             {
@@ -465,7 +477,7 @@ public class TemplateParser
                     // Found non-whitespace, assume its the attribute name.
                     // Note: could use a check here for non-alpha.
 
-                    attributeNameStart = cursor;
+                    attributeNameStart = _cursor;
                     state = COLLECT_ATTRIBUTE_NAME;
                     advance();
                     break;
@@ -476,17 +488,7 @@ public class TemplateParser
 
                     if (ch == '=' || ch == '/' || ch == '>' || Character.isWhitespace(ch))
                     {
-                        attributeName = new String(templateData, attributeNameStart, cursor - attributeNameStart);
-
-                        if (isJwcTag && !attributeName.equalsIgnoreCase(jwcIdAttributeName))
-                            throw new TemplateParseException(
-                                Tapestry.getString(
-                                    "TemplateParser.unexpected-attribute",
-                                    tagName,
-                                    Integer.toString(startLine),
-                                    jwcIdAttributeName),
-                                startLine,
-                                resourcePath);
+                        attributeName = new String(_templateData, attributeNameStart, _cursor - attributeNameStart);
 
                         state = ADVANCE_PAST_EQUALS;
                         break;
@@ -539,10 +541,10 @@ public class TemplateParser
                             Tapestry.getString(
                                 "TemplateParser.missing-attiribute-value",
                                 tagName,
-                                Integer.toString(line),
+                                Integer.toString(_line),
                                 attributeName),
-                            line,
-                            resourcePath);
+                            _line,
+                            _resourcePath);
 
                     // Ignore whitespace between '=' and the attribute value.  Also, look
                     // for initial quote.
@@ -559,14 +561,14 @@ public class TemplateParser
 
                         state = COLLECT_QUOTED_VALUE;
                         advance();
-                        attributeValueStart = cursor;
+                        attributeValueStart = _cursor;
                         break;
                     }
 
                     // Not whitespace or quote, must be start of unquoted attribute.
 
                     state = COLLECT_UNQUOTED_VALUE;
-                    attributeValueStart = cursor;
+                    attributeValueStart = _cursor;
                     break;
 
                 case COLLECT_QUOTED_VALUE :
@@ -576,15 +578,10 @@ public class TemplateParser
 
                     if (ch == quoteChar)
                     {
-                        String attributeValue = new String(templateData, attributeValueStart, cursor - attributeValueStart);
+                        String attributeValue =
+                            new String(_templateData, attributeValueStart, _cursor - attributeValueStart);
 
-                        if (attributeName.equalsIgnoreCase(jwcIdAttributeName))
-                            jwcId = attributeValue;
-                        else
-                            attributes.put(attributeName, attributeValue);
-
-                        if (attributeName.equalsIgnoreCase(LOCALIZATION_KEY_ATTRIBUTE_NAME))
-                            localizationKey = attributeValue;
+                        _attributes.put(attributeName, attributeValue);
 
                         // Advance over the quote.
                         advance();
@@ -602,15 +599,10 @@ public class TemplateParser
 
                     if (ch == '/' || ch == '>' || Character.isWhitespace(ch))
                     {
-                        String attributeValue = new String(templateData, attributeValueStart, cursor - attributeValueStart);
+                        String attributeValue =
+                            new String(_templateData, attributeValueStart, _cursor - attributeValueStart);
 
-                        if (attributeName.equalsIgnoreCase(jwcIdAttributeName))
-                            jwcId = attributeValue;
-                        else
-                            attributes.put(attributeName, attributeValue);
-
-                        if (attributeName.equalsIgnoreCase(LOCALIZATION_KEY_ATTRIBUTE_NAME))
-                            localizationKey = attributeValue;
+                        _attributes.put(attributeName, attributeValue);
 
                         state = WAIT_FOR_ATTRIBUTE_NAME;
                         break;
@@ -621,25 +613,21 @@ public class TemplateParser
             }
         }
 
-        if (isJwcTag && jwcId == null)
-            throw new TemplateParseException(
-                Tapestry.getString("TemplateParser.tag-missing-id", tagName, Integer.toString(startLine)),
-                startLine,
-                resourcePath);
-
         // Check for invisible localizations
-        
-        if (tagName.equalsIgnoreCase("span") && localizationKey != null)
+
+        String localizationKey = findValueCaselessly(LOCALIZATION_KEY_ATTRIBUTE_NAME, _attributes);
+
+        if (localizationKey != null && tagName.equalsIgnoreCase("span"))
         {
-            if (ignoring)
+            if (_ignoring)
                 throw new TemplateParseException(
                     Tapestry.getString(
                         "TemplateParser.component-may-not-be-ignored",
                         tagName,
                         Integer.toString(startLine)),
                     startLine,
-                    resourcePath);
-                                
+                    _resourcePath);
+
             // If the tag isn't empty, then create a Tag instance to ignore the
             // body of the tag.
 
@@ -647,16 +635,16 @@ public class TemplateParser
             {
                 Tag tag = new Tag(tagName, startLine);
 
-                tag.component = false;
-                tag.removeTag = true;
-                tag.ignoringBody = true;
-                tag.mustBalance = true;
+                tag._component = false;
+                tag._removeTag = true;
+                tag._ignoringBody = true;
+                tag._mustBalance = true;
 
-                stack.add(tag);
-                
+                _stack.add(tag);
+
                 // Start ignoring content until the close tag.
-                
-                ignoring = true;
+
+                _ignoring = true;
             }
             else
             {
@@ -669,30 +657,31 @@ public class TemplateParser
 
             addTextToken(cursorStart - 1);
 
-            TemplateToken token =
-                new TemplateToken(
-                    TokenType.LOCALIZATION,
-                    localizationKey,
-                    tagName,
-                    filter(attributes, LOCALIZATION_KEY_ATTRIBUTE_NAME));
+            boolean raw = checkBoolean(RAW_ATTRIBUTE_NAME, _attributes);
 
-            tokens.add(token);
+            Map attributes = filter(_attributes, new String[] { LOCALIZATION_KEY_ATTRIBUTE_NAME, RAW_ATTRIBUTE_NAME });
+
+            TemplateToken token = new TemplateToken(localizationKey, raw, tagName, attributes);
+
+            _tokens.add(token);
 
             return;
         }
+
+        String jwcId = findValueCaselessly(JWCID_ATTRIBUTE_NAME, _attributes);
 
         if (jwcId != null)
         {
             if (jwcId.equalsIgnoreCase(CONTENT_ID))
             {
-                if (ignoring)
+                if (_ignoring)
                     throw new TemplateParseException(
                         Tapestry.getString(
                             "TemplateParser.content-block-may-not-be-ignored",
                             tagName,
                             Integer.toString(startLine)),
                         startLine,
-                        resourcePath);
+                        _resourcePath);
 
                 if (emptyTag)
                     throw new TemplateParseException(
@@ -701,18 +690,18 @@ public class TemplateParser
                             tagName,
                             Integer.toString(startLine)),
                         startLine,
-                        resourcePath);
+                        _resourcePath);
 
-                tokens.clear();
-                blockStart = -1;
+                _tokens.clear();
+                _blockStart = -1;
 
                 Tag tag = new Tag(tagName, startLine);
 
-                tag.mustBalance = true;
-                tag.content = true;
+                tag._mustBalance = true;
+                tag._content = true;
 
-                stack.clear();
-                stack.add(tag);
+                _stack.clear();
+                _stack.add(tag);
 
                 advance();
 
@@ -721,7 +710,7 @@ public class TemplateParser
 
             boolean isRemoveId = jwcId.equalsIgnoreCase(REMOVE_ID);
 
-            if (!(isRemoveId || delegate.getKnownComponent(jwcId)))
+            if (!(isRemoveId || _delegate.getKnownComponent(jwcId)))
                 throw new TemplateParseException(
                     Tapestry.getString(
                         "TemplateParser.unknown-component-id",
@@ -729,43 +718,43 @@ public class TemplateParser
                         Integer.toString(startLine),
                         jwcId),
                     startLine,
-                    resourcePath);
+                    _resourcePath);
 
-            if (ignoring && !isRemoveId)
+            if (_ignoring && !isRemoveId)
                 throw new TemplateParseException(
                     Tapestry.getString(
                         "TemplateParser.component-may-not-be-ignored",
                         tagName,
                         Integer.toString(startLine)),
                     startLine,
-                    resourcePath);
+                    _resourcePath);
 
             // Ignore the body if we're removing the entire tag,
             // of if the corresponding component doesn't allow
             // a body.
 
-            boolean ignoreBody = !emptyTag && (isRemoveId || !delegate.getAllowBody(jwcId));
+            boolean ignoreBody = !emptyTag && (isRemoveId || !_delegate.getAllowBody(jwcId));
 
-            if (ignoring && ignoreBody)
+            if (_ignoring && ignoreBody)
                 throw new TemplateParseException(
                     Tapestry.getString("TemplateParser.nested-ignore", tagName, Integer.toString(startLine)),
                     startLine,
-                    resourcePath);
+                    _resourcePath);
 
             if (!emptyTag)
             {
                 Tag tag = new Tag(tagName, startLine);
 
-                tag.component = !isRemoveId;
-                tag.removeTag = isRemoveId;
+                tag._component = !isRemoveId;
+                tag._removeTag = isRemoveId;
 
-                tag.ignoringBody = ignoreBody;
+                tag._ignoringBody = ignoreBody;
 
-                ignoring = tag.ignoringBody;
+                _ignoring = tag._ignoringBody;
 
-                tag.mustBalance = true;
+                tag._mustBalance = true;
 
-                stack.add(tag);
+                _stack.add(tag);
             }
 
             // End any open block.
@@ -774,13 +763,13 @@ public class TemplateParser
 
             if (!isRemoveId)
             {
-                if (attributes.isEmpty())
-                    tokens.add(new TemplateToken(jwcId, tagName));
+                if (_attributes.isEmpty())
+                    _tokens.add(new TemplateToken(jwcId, tagName));
                 else
-                    tokens.add(new TemplateToken(jwcId, tagName, new HashMap(attributes)));
+                    _tokens.add(new TemplateToken(jwcId, tagName, filter(_attributes, JWCID_ATTRIBUTE_NAME)));
 
                 if (emptyTag)
-                    tokens.add(new TemplateToken(TokenType.CLOSE, tagName));
+                    _tokens.add(new TemplateToken(TokenType.CLOSE, tagName));
             }
 
             advance();
@@ -794,13 +783,13 @@ public class TemplateParser
         if (!emptyTag)
         {
             Tag tag = new Tag(tagName, startLine);
-            stack.add(tag);
+            _stack.add(tag);
         }
 
         // If there wasn't an active block, then start one.
 
-        if (blockStart < 0 && !ignoring)
-            blockStart = cursorStart;
+        if (_blockStart < 0 && !_ignoring)
+            _blockStart = cursorStart;
 
         advance();
     }
@@ -821,23 +810,23 @@ public class TemplateParser
 
     private void closeTag() throws TemplateParseException
     {
-        int cursorStart = cursor;
-        int length = templateData.length;
-        int startLine = line;
+        int cursorStart = _cursor;
+        int length = _templateData.length;
+        int startLine = _line;
 
-        cursor += CLOSE_TAG.length;
+        _cursor += CLOSE_TAG.length;
 
-        int tagStart = cursor;
+        int tagStart = _cursor;
 
         while (true)
         {
-            if (cursor >= length)
+            if (_cursor >= length)
                 throw new TemplateParseException(
                     Tapestry.getString("TemplateParser.incomplete-close-tag", Integer.toString(startLine)),
                     startLine,
-                    resourcePath);
+                    _resourcePath);
 
-            char ch = templateData[cursor];
+            char ch = _templateData[_cursor];
 
             if (ch == '>')
                 break;
@@ -845,25 +834,29 @@ public class TemplateParser
             advance();
         }
 
-        String tagName = new String(templateData, tagStart, cursor - tagStart);
+        String tagName = new String(_templateData, tagStart, _cursor - tagStart);
 
-        int stackPos = stack.size() - 1;
+        int stackPos = _stack.size() - 1;
         Tag tag = null;
 
         while (stackPos >= 0)
         {
-            tag = (Tag) stack.get(stackPos);
+            tag = (Tag) _stack.get(stackPos);
 
             if (tag.match(tagName))
                 break;
 
-            if (tag.mustBalance)
+            if (tag._mustBalance)
                 throw new TemplateParseException(
                     Tapestry.getString(
                         "TemplateParser.improperly-nested-close-tag",
-                        new Object[] { tagName, Integer.toString(startLine), tag.tagName, Integer.toString(tag.line)}),
+                        new Object[] {
+                            tagName,
+                            Integer.toString(startLine),
+                            tag._tagName,
+                            Integer.toString(tag._line)}),
                     startLine,
-                    resourcePath);
+                    _resourcePath);
 
             stackPos--;
         }
@@ -872,41 +865,41 @@ public class TemplateParser
             throw new TemplateParseException(
                 Tapestry.getString("TemplateParser.unmatched-close-tag", tagName, Integer.toString(startLine)),
                 startLine,
-                resourcePath);
+                _resourcePath);
 
         // Special case for the content tag
 
-        if (tag.content)
+        if (tag._content)
         {
             addTextToken(cursorStart - 1);
 
             // Advance the cursor right to the end.
 
-            cursor = length;
-            stack.clear();
+            _cursor = length;
+            _stack.clear();
             return;
         }
 
         // When a component closes, add a CLOSE tag.
-        if (tag.component)
+        if (tag._component)
         {
             addTextToken(cursorStart - 1);
 
-            tokens.add(new TemplateToken(TokenType.CLOSE, tagName));
+            _tokens.add(new TemplateToken(TokenType.CLOSE, tagName));
         }
         else
         {
             // The close of a static tag.  Unless removing the tag
             // entirely, make sure the block tag is part of a text block.
 
-            if (blockStart < 0 && !tag.removeTag && !ignoring)
-                blockStart = cursorStart;
+            if (_blockStart < 0 && !tag._removeTag && !_ignoring)
+                _blockStart = cursorStart;
         }
 
         // Remove all elements at stackPos or above.
 
-        for (int i = stack.size() - 1; i >= stackPos; i--)
-            stack.remove(i);
+        for (int i = _stack.size() - 1; i >= stackPos; i--)
+            _stack.remove(i);
 
         // Advance cursor past '>'
 
@@ -916,14 +909,14 @@ public class TemplateParser
         // For components that simply don't contain a body, removeTag will
         // be false.
 
-        if (tag.removeTag)
+        if (tag._removeTag)
             advanceOverWhitespace();
 
         // If we were ignoring the body of the tag, then clear the ignoring
         // flag, since we're out of the body.
 
-        if (tag.ignoringBody)
-            ignoring = false;
+        if (tag._ignoringBody)
+            _ignoring = false;
     }
 
     /**
@@ -935,18 +928,18 @@ public class TemplateParser
 
     private void advance()
     {
-        int length = templateData.length;
+        int length = _templateData.length;
 
-        if (cursor >= length)
+        if (_cursor >= length)
             return;
 
-        char ch = templateData[cursor];
+        char ch = _templateData[_cursor];
 
-        cursor++;
+        _cursor++;
 
         if (ch == '\n')
         {
-            line++;
+            _line++;
             return;
         }
 
@@ -954,10 +947,10 @@ public class TemplateParser
 
         if (ch == '\r')
         {
-            line++;
+            _line++;
 
-            if (cursor < length && templateData[cursor] == '\n')
-                cursor++;
+            if (_cursor < length && _templateData[_cursor] == '\n')
+                _cursor++;
 
             return;
         }
@@ -968,11 +961,11 @@ public class TemplateParser
 
     private void advanceOverWhitespace()
     {
-        int length = templateData.length;
+        int length = _templateData.length;
 
-        while (cursor < length)
+        while (_cursor < length)
         {
-            char ch = templateData[cursor];
+            char ch = _templateData[_cursor];
             if (!Character.isWhitespace(ch))
                 return;
 
@@ -1012,5 +1005,86 @@ public class TemplateParser
         }
 
         return result;
+    }
+
+    /**
+     *  Variation of {@link #filter(Map, String)} when multiple keys
+     *  should be removed.
+     * 
+     **/
+
+    private Map filter(Map input, String[] removeKeys)
+    {
+        if (input == null || input.isEmpty())
+            return null;
+
+        Map result = null;
+
+        Iterator i = input.entrySet().iterator();
+        
+nextkey:        
+        while (i.hasNext())
+        {
+            Map.Entry entry = (Map.Entry) i.next();
+
+            String key = (String) entry.getKey();
+
+            for (int j = 0; j < removeKeys.length; j++)
+            {
+                if (key.equalsIgnoreCase(removeKeys[j]))
+                continue nextkey;
+            }
+
+            if (result == null)
+                result = new HashMap(input.size());
+
+            result.put(key, entry.getValue());
+        }
+
+        return result;
+    }
+
+    /**
+     *  Searches a Map for given key, caselessly.  The Map is expected to consist of Strings for keys and
+     *  values.  Returns the value for the first key found that matches (caselessly) the input key.  Returns null
+     *  if no value found.
+     * 
+     **/
+
+    private String findValueCaselessly(String key, Map map)
+    {
+        String result = (String) map.get(key);
+
+        if (result != null)
+            return result;
+
+        Iterator i = map.entrySet().iterator();
+        while (i.hasNext())
+        {
+            Map.Entry entry = (Map.Entry) i.next();
+
+            String entryKey = (String) entry.getKey();
+
+            if (entryKey.equalsIgnoreCase(key))
+                return (String) entry.getValue();
+        }
+
+        return null;
+    }
+    
+    /**
+     *  Returns true if the  map contains the given key (caseless search) and the value
+     *  is "true" (caseless comparison).
+     * 
+     **/
+    
+    private boolean checkBoolean(String key, Map map)
+    {
+        String value = findValueCaselessly(key, map);
+        
+        if (value == null)
+            return false;
+            
+         return value.equalsIgnoreCase("true");
     }
 }

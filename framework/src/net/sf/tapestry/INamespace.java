@@ -52,6 +52,16 @@ public interface INamespace
     public static final String FRAMEWORK_NAMESPACE = "framework";
     
     /**
+     *  Character used to seperate the namespace prefix from the page name
+     *  or component type.
+     * 
+     *  @since 2.3
+     * 
+     **/
+    
+    public static final char SEPARATOR = ':';
+    
+    /**
      *  Returns an identifier for the namespace.  Identifiers
      *  are simple names (they start with a letter,
      *  and may contain letters, numbers, underscores and dashes).
@@ -192,5 +202,15 @@ public interface INamespace
     **/
    
    public ILibrarySpecification getSpecification();
+   
+   /**
+    *  Constructs a qualified name for the given simple page name by
+    *  applying the correct prefix (if any).
+    * 
+    *  @since 2.3
+    * 
+    **/
+   
+   public String constructQualifiedName(String pageName);
     
 }

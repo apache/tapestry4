@@ -153,4 +153,10 @@ public class MockTestCase extends TapestryTestCase
     {
         attempt("/net/sf/tapestry/junit/mock/TestStaleSessionException.xml");
     }
+    
+    public void testStrings()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestStrings.xml");
+    }
 }
