@@ -36,7 +36,8 @@ import java.io.InputStream;
  *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 2.0.1
- */
+ *
+ **/
 
 public class LineInput extends FilterInputStream
 {

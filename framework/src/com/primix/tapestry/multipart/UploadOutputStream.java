@@ -1,5 +1,5 @@
 /*
- * Sabertooth Object/Relational Mapping Framework
+ * Tapestry Web Application Framework
  * Copyright (c) 2002 by Howard Lewis Ship 
  *
  * mailto:hship@users.sf.net
@@ -34,6 +34,7 @@ import org.apache.log4j.Category;
   *  @author Howard Lewis Ship
   *  @version $Id$
   *  @since 2.0.1
+  *
   **/
 
 class UploadOutputStream extends OutputStream

@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2003 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -29,18 +29,24 @@ package com.primix.tapestry;
 /**
  *  Provides access to an {@link IScript}.
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 1.0.2
  */
 
 public interface IScriptSource
 {
+    /**
+     *  Retrieves the script identified by the resource path from the source's
+     *  cache, reading and parsing the script if necessary.
+     * 
+     **/
+    
 	public IScript getScript(String resourcePath)
 		throws ResourceUnavailableException;
 
 	/**
-	 *  Invoked to clear any cached data.
+	 *  Invoked to clear any cached scripts.
 	 *
 	 */
 

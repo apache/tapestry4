@@ -37,7 +37,8 @@ import com.primix.tapestry.Tapestry;
  *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 2.0.1
- */
+ *
+ **/
 
 public class UploadPart implements IUploadFile, IPart
 {

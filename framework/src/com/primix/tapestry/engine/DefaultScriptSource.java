@@ -45,7 +45,7 @@ import com.primix.tapestry.util.xml.DocumentParseException;
  *  Provides basic access to scripts available on the classpath.  Scripts are cached in
  *  memory once parsed.
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 1.0.2
  */
@@ -54,7 +54,7 @@ public class DefaultScriptSource implements IScriptSource
 {
 	private IResourceResolver resolver;
 
-	private Map cache;
+	private Map cache = new HashMap();
 
 	private static final int MAP_SIZE = 17;
 
@@ -65,27 +65,20 @@ public class DefaultScriptSource implements IScriptSource
 
 	public void reset()
 	{
-		cache = null;
+		cache.clear();
 	}
 
-	public IScript getScript(String resourcePath)
-		throws ResourceUnavailableException
+	public IScript getScript(String resourcePath) throws ResourceUnavailableException
 	{
 		IScript result;
 
-			synchronized (this)
+			synchronized (cache)
 			{
-				if (cache == null)
-					cache = new HashMap(MAP_SIZE);
+				result = (IScript) cache.get(resourcePath);
 			}
 
-		synchronized (cache)
-		{
-			result = (IScript) cache.get(resourcePath);
-		}
-
-		if (result != null)
-			return result;
+				if (result != null)
+					return result;
 
 		result = parse(resourcePath);
 
@@ -97,7 +90,7 @@ public class DefaultScriptSource implements IScriptSource
 			cache.put(resourcePath, result);
 		}
 
-		return result;
+			return result;
 	}
 
 	private IScript parse(String resourcePath) throws ResourceUnavailableException
@@ -149,7 +142,7 @@ public class DefaultScriptSource implements IScriptSource
 				buffer.append(cache.keySet());
 			}
 
-			buffer.append(", ");
+				buffer.append(", ");
 		}
 
 		buffer.append("]");
