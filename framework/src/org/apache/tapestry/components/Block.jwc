@@ -6,7 +6,7 @@
 
 <component-specification class="org.apache.tapestry.components.Block" allow-informal-parameters="no">
 	<description>
-	A block of dynamic content.  Blocks don't render until an InsertBlock component
+	A block of dynamic content.  Blocks don't render until a RenderBlock component
 	triggers them.
 	</description>
 </component-specification>
