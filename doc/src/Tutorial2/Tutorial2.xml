@@ -5,6 +5,7 @@
   <!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
   <!ENTITY chapter-one SYSTEM "./tutorial-chapter-one.xml">
   <!ENTITY chapter-two SYSTEM "./tutorial-chapter-two.xml">
+  <!ENTITY chapter-three SYSTEM "./tutorial-chapter-three.xml">
   %TapestryLinks;
 ]>
 <!-- Conventions:
@@ -29,27 +30,9 @@
     </copyright>
   </bookinfo>
 
-  &chapter-one;
+	&chapter-one;
 	&chapter-two;
-
-  <chapter id="Introductory-examples">
-  	<title>Introductory Examples</title>
-  	<section id="ex-helloworld">
-  		<title>Hello World</title>
-  	</section>
-
-  	<section id="ex-pagelinking">
-  		<title>Page Linking</title>
-  	</section>
-
-  	<section id="ex-simpleaction">
-  		<title>Responding to actions</title>
-  	</section>
-
-  	<section id="ex-propertybinding">
-  		<title>Introduction to Tapestry Binding</title>
-  	</section>
-  </chapter>
+	&chapter-three;
 
   <chapter id="pages">
   	<title>Pages</title>

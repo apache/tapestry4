@@ -1,0 +1,93 @@
+  <chapter id="Introductory-examples">
+  	<title>Introductory Examples</title>
+  	<para>
+  	This section provides a set of examples that show some of the fundamental aspects of
+  	Tapestry. It begins with a discussion on Tapestry binding, which is the process by which you 
+  	as a developer link your objects to the components in the HTML page. Moving on, we 
+  	create a simple multiple page application using the &Page; component, and then show
+  	how to respond to user actions (typically Submit buttons) via the &Action; component.
+  	</para>
+  	<para>
+  	More advanced examples can be found from <xref linkend="forms"/> onwards.
+  	</para>
+  	
+  	<section id="ex-propertybinding">
+  		<title>Introduction to Tapestry Binding</title>
+  		<para>
+  		Most components have more than a single property. For example, the &Form; component typically
+  		requires that both <varname>listener</varname> and <varname>delegate</varname> properties be set to
+  		something meaningful.
+  		</para>
+  		<para>
+  		There are multiple ways to provide values for the component properties:
+			<variablelist>
+				<varlistentry>
+					<term>Property Binding</term>
+					<listitem><para>
+					Binds a component value to something, using an &OGNL; (Object Graph Navigation Language) expression. 
+					This is the most flexible
+					binding type within Tapestry. These bindings in the most part look like JavaBean property names
+					strung together with dots. e.g: <varname>visit.name</varname>, would work against against
+					the following object graph:	<function>this.getVisit().getName()</function>.  
+					Virtually anything can be references by 
+					an &OGNL; expression, including methods, JavaBean properties and static fields 
+					(<function>Boolean.TRUE</function>).</para>
+					<para>
+					<emphasis>All OGNL expressions are evaluated in the context of a current object, and a chain 
+					simply uses the result of the previous link in the chain as the current object for the next one. 
+					You can extend a chain as long as you like. (from &OGNL; web site)</emphasis>
+					In Tapestry, the current object that you start with is the object for the page 
+					in question. For the 'hello world' application covered previously, this is the
+					OGNL expressions must begin their evaluation somewhere. In Tapestry, this is  
+					the <classname>tutorial.hello.Home</classname> obect.
+					Lets run through a few quick examples:
+					<orderedlist>
+						<listitem>Use <emphasis>sometext</emphasis> to access <function>public String getSomeText()</function> from the example</listitem>
+						<listitem>Use <emphasis>sometext.length()</emphasis> to access the <function>length()</function> method of the <function>String</function> object returned by the <function>getSomeText()</function> methodd.</listitem>
+						<listitem>Use <emphasis>true</emphasis> to refer to the constant which equals 'true' or <function>Boolean.TRUE</function></listitem>
+						<listitem>Use <emphasis>user.listAllCustomers()</emphasis> to get the <function>Collection</function> from the method <functon>currentPageObject.getUser().listAllCustomers()</functon> which is a member of the current page object</listitem>
+						<listitem>Use <emphasis>@com.someplace.MyClass@interestingMethod("hello world")</emphasis> to return the value from the static method <function>com.someplace.MyClass.interestingMethod(String arg)</function></listitem>
+						<listitem>Use <emphasis>@Boolean@TRUE</emphasis> to refer to <function>Boolean.TRUE</function>
+					</orderedlist>
+					</para>
+					<para>
+					This section provides only a brief introdcution to the use of OGNL. For a full explanation, see the &OGNL; website.
+					</para>
+					</listitem>
+				</varlistentry>
+				
+				<varlistentry>
+					<term>Static Binding</term>
+					<listitem><para>A completely static piece of text, hardcoded into the component specification.</para></listitem>
+				</varlistentry>
+	
+				<varlistentry>
+					<term>Field Binding</term>
+					<listitem><para>
+					Refers to a static member variable on some class, e.g: <function>Boolean.TRUE</function>
+					or <function>com.mycompany.myclass.MyObject.SOMEVAR</function>. Static bindings must use full qualified
+					object names, except if the property being referenced is part of <function>java.lang</function>
+					</para>
+					</listitem>
+				</varlistentry>
+	
+				<varlistentry>
+					<term>String Binding</term>
+					<listitem><para>
+					Used for localization, the value of this binding should refer to some localized asset.
+					</para></listitem>
+				</varlistentry>
+			</variablelist>
+  		</para>
+  	</section>
+
+  	<section id="ex-pagelinking">
+  		<title>Page Linking</title>
+  	</section>
+
+  	<section id="ex-simpleaction">
+  		<title>Responding to actions</title>
+  	</section>
+
+  </chapter>
+
