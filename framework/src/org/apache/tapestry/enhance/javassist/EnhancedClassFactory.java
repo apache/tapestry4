@@ -86,15 +86,34 @@ public class EnhancedClassFactory implements IEnhancedClassFactory
     public EnhancedClassFactory(IResourceResolver resourceResolver)
     {
         _resourceResolver = resourceResolver;
+
+        reset();
+    }
+    
+    protected ClassPool createClassPool()
+    {
         ClassLoader loader = _resourceResolver.getClassLoader();
         
-        _enhancedClassLoader = new EnhancedClassLoader(loader);
-
-        // get the default ClassPool and make sure it uses the application resource resolver 
-        _classPool = ClassPool.getDefault();
-        _classPool.insertClassPath(new LoaderClassPath(loader));
-
+        // create a new ClassPool and make sure it uses the application resource resolver 
+        ClassPool classPool = new ClassPool(null);
+        classPool.insertClassPath(new LoaderClassPath(loader));
+        
+        return classPool;
     }
+    
+    /**
+     * @see org.apache.tapestry.enhance.IEnhancedClassFactory#reset()
+     */
+    public synchronized void reset()
+    {
+        // create a new class pool and discard the previous one
+        _classPool = createClassPool();
+        _typeMap = new ClassMapping(_classPool);
+
+        ClassLoader loader = _resourceResolver.getClassLoader();
+        _enhancedClassLoader = new EnhancedClassLoader(loader);
+    }
+   
 
     /**
      * @see org.apache.tapestry.enhance.IEnhancedClassFactory#createEnhancedClass(java.lang.String, java.lang.Class)
@@ -111,8 +130,6 @@ public class EnhancedClassFactory implements IEnhancedClassFactory
 
     public ClassMapping getClassMapping()
     {
-        if (_typeMap == null)
-            _typeMap = new ClassMapping(_classPool);
         return _typeMap;
     }
 
@@ -129,14 +146,21 @@ public class EnhancedClassFactory implements IEnhancedClassFactory
 
         if (result == null)
         {
-            try
-            {
-                result = _classPool.get(type);
-                getClassMapping().recordType(type, result);
-            }
-            catch (NotFoundException e)
-            {
-                throw new CodeGenerationException(e);
+            synchronized (this) {
+                result = getClassMapping().getType(type);
+
+                if (result == null)
+                {
+                    try
+                    {
+                        result = _classPool.get(type);
+                        getClassMapping().recordType(type, result);
+                    }
+                    catch (NotFoundException e)
+                    {
+                        throw new CodeGenerationException(e);
+                    }
+                }
             }
         }
 
