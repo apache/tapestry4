@@ -206,8 +206,8 @@ public abstract class EditBook extends Protected implements PageRenderListener
 
         MyLibrary page = (MyLibrary) cycle.getPage("MyLibrary");
         page.setMessage(formatString("updated-book", attributes.get("title")));
-
-        cycle.setPage(page);
+		page.activate(cycle);
+      
     }
 
     public void pageBeginRender(PageEvent event)

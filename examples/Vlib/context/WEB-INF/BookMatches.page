@@ -11,6 +11,38 @@
   <property-specification name="bookQuery" type="org.apache.tapestry.vlib.ejb.IBookQuery" persistent="yes"/>
   <property-specification name="currentMatch" type="org.apache.tapestry.vlib.ejb.Book"/>
    
+  <property-specification name="author" type="java.lang.String" persistent="yes"/>
+  <property-specification name="title" type="java.lang.String" persistent="yes"/>
+  <property-specification name="publisherPK" type="java.lang.Integer" persistent="yes"/>
+  
+  <property-specification name="sortColumn" type="org.apache.tapestry.vlib.ejb.SortColumn" persistent="yes">
+  	@org.apache.tapestry.vlib.ejb.SortColumn@TITLE
+  </property-specification>
+  <property-specification name="descending" type="boolean" persistent="yes"/>
+   
+  <component id="sortTitle" type="ColumnSorter">
+    <binding name="selected" expression="sortColumn"/>
+    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@TITLE"/>
+    <binding name="descending" expression="descending"/>
+    <binding name="listener" expression="listeners.resort"/>
+  </component> 
+  
+  <component id="sortAuthor" copy-of="sortTitle">
+    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@AUTHOR"/>
+  </component>
+  
+  <component id="sortPublisher" copy-of="sortTitle">
+    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@PUBLISHER"/>	
+  </component>
+  
+  <component id="sortOwner" copy-of="sortTitle">
+    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@OWNER"/>
+  </component>
+ 
+  <component id="sortBorrower" copy-of="sortTitle">
+    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@HOLDER"/>
+  </component>
+  
   <component id="ownerLink" type="PersonLink">
     <binding name="primaryKey" expression="currentMatch.ownerPrimaryKey"/>
     <binding name="name" expression="currentMatch.ownerName"/>

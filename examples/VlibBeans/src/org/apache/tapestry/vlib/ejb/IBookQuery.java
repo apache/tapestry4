@@ -85,7 +85,6 @@ public interface IBookQuery extends EJBObject
 
     /**
      *  Performs a query of books with the matching title and (optionally) publisher.
-     *  The results will be sorted by book title.
      *
      *  @param title The title to be search for.  Any book with that contains this
      *  value in its title attribute will be returned.  Use null to not limit the
@@ -97,26 +96,26 @@ public interface IBookQuery extends EJBObject
      *
      **/
 
-    public int masterQuery(String title, String author, Object publisherPK) throws RemoteException;
+    public int masterQuery(String title, String author, Integer publisherPK, SortOrdering sortOrdering) throws RemoteException;
 
     /**
      *  Queries on books owned by a given person, sorted by title.
      *
      **/
 
-    public int ownerQuery(Integer ownerPK) throws RemoteException;
+    public int ownerQuery(Integer ownerPK, SortOrdering sortOrdering) throws RemoteException;
 
     /**
      *  Queries on books held by a given person, sorted by title.
      *
      **/
 
-    public int holderQuery(Integer holderPK) throws RemoteException;
+    public int holderQuery(Integer holderPK, SortOrdering sortOrdering) throws RemoteException;
 
     /**
-     *  Queries the list of books held by the borrower but not owned by the borrower..
+     *  Queries the list of books held by the borrower but not owned by the borrower.
      *
      **/
 
-    public int borrowerQuery(Integer borrowerPK) throws RemoteException;
+    public int borrowerQuery(Integer borrowerPK, SortOrdering sortOrdering) throws RemoteException;
 }

@@ -105,6 +105,8 @@ import org.apache.tapestry.vlib.ejb.LoginException;
 import org.apache.tapestry.vlib.ejb.Person;
 import org.apache.tapestry.vlib.ejb.Publisher;
 import org.apache.tapestry.vlib.ejb.RegistrationException;
+import org.apache.tapestry.vlib.ejb.SortColumn;
+import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 /**
  *  Implementation of the {@link org.apache.tapestry.vlib.ejb.IOperations} 
@@ -814,7 +816,8 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
      *
      **/
 
-    private void moveBooksFromDeletedPersons(Integer deleted[], Integer adminPK) throws RemoveException
+    private void moveBooksFromDeletedPersons(Integer deleted[], Integer adminPK)
+        throws RemoveException
     {
         StatementAssembly assembly = new StatementAssembly();
 
@@ -844,7 +847,9 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         }
         catch (SQLException ex)
         {
-            throw new XRemoveException("Unable to move books from deleted owners: " + ex.getMessage(), ex);
+            throw new XRemoveException(
+                "Unable to move books from deleted owners: " + ex.getMessage(),
+                ex);
         }
         finally
         {
@@ -869,9 +874,11 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         columns[Book.DESCRIPTION_COLUMN] = set.getString(column++);
         columns[Book.ISBN_COLUMN] = set.getString(column++);
         columns[Book.OWNER_PK_COLUMN] = set.getObject(column++);
-        columns[Book.OWNER_NAME_COLUMN] = buildName(set.getString(column++), set.getString(column++));
+        columns[Book.OWNER_NAME_COLUMN] =
+            buildName(set.getString(column++), set.getString(column++));
         columns[Book.HOLDER_PK_COLUMN] = set.getObject(column++);
-        columns[Book.HOLDER_NAME_COLUMN] = buildName(set.getString(column++), set.getString(column++));
+        columns[Book.HOLDER_NAME_COLUMN] =
+            buildName(set.getString(column++), set.getString(column++));
         columns[Book.PUBLISHER_PK_COLUMN] = set.getObject(column++);
         columns[Book.PUBLISHER_NAME_COLUMN] = set.getString(column++);
         columns[Book.AUTHOR_COLUMN] = set.getString(column++);
@@ -897,7 +904,7 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
      *
      **/
 
-    private static final String[] bookSelectColumns =
+    private static final String[] BOOK_SELECT_COLUMNS =
         {
             "book.BOOK_ID",
             "book.TITLE",
@@ -916,32 +923,77 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
             "book.LENDABLE",
             "book.DATE_ADDED" };
 
-    private static final String[] bookAliasColumns =
+    private static final String[] BOOK_ALIAS_COLUMNS =
         { "BOOK book", "PERSON owner", "PERSON holder", "PUBLISHER publisher" };
 
-    private static final String[] bookJoins =
+    private static final String[] BOOK_JOINS =
         {
             "book.OWNER_ID = owner.PERSON_ID",
             "book.HOLDER_ID = holder.PERSON_ID",
             "book.PUBLISHER_ID = publisher.PUBLISHER_ID" };
 
+    private static final Map BOOK_SORT_ASCENDING = new HashMap();
+    private static final Map BOOK_SORT_DESCENDING = new HashMap();
+
+    static {
+        BOOK_SORT_ASCENDING.put(SortColumn.TITLE, "book.TITLE");
+        BOOK_SORT_ASCENDING.put(SortColumn.HOLDER, "holder.LAST_NAME, holder.FIRST_NAME");
+        BOOK_SORT_ASCENDING.put(SortColumn.OWNER, "owner.FIRST_NAME, owner.LAST_NAME");
+        BOOK_SORT_ASCENDING.put(SortColumn.PUBLISHER, "publisher.NAME");
+        BOOK_SORT_ASCENDING.put(SortColumn.AUTHOR, "book.AUTHOR");
+
+        BOOK_SORT_DESCENDING.put(SortColumn.TITLE, "book.TITLE DESC");
+        BOOK_SORT_DESCENDING.put(
+            SortColumn.HOLDER,
+            "holder.LAST_NAME DESC, holder.FIRST_NAME DESC");
+        BOOK_SORT_DESCENDING.put(SortColumn.OWNER, "owner.FIRST_NAME DESC, owner.LAST_NAME DESC");
+        BOOK_SORT_DESCENDING.put(SortColumn.PUBLISHER, "publisher.NAME DESC");
+        BOOK_SORT_DESCENDING.put(SortColumn.AUTHOR, "book.AUTHOR DESC");
+    }
+
     protected StatementAssembly buildBaseBookQuery()
     {
-        StatementAssembly result;
-
-        result = new StatementAssembly();
+        StatementAssembly result = new StatementAssembly();
 
         result.newLine("SELECT ");
-        result.addList(bookSelectColumns, ", ");
+        result.addList(BOOK_SELECT_COLUMNS, ", ");
 
         result.newLine("FROM ");
-        result.addList(bookAliasColumns, ", ");
+        result.addList(BOOK_ALIAS_COLUMNS, ", ");
 
         result.newLine("WHERE ");
-        result.addList(bookJoins, " AND ");
+        result.addList(BOOK_JOINS, " AND ");
 
         return result;
     }
+
+	/**
+	 *  Adds a sort ordering clause to the statement.  If ordering is null,
+	 *  orders by book title.
+	 * 
+	 *  @param assembly to update
+	 *  @param ordering defines the column to sort on, and the order (ascending or descending)
+	 *  @since 2.4
+	 * 
+	 *
+	 **/
+	
+	protected void addSortOrdering(StatementAssembly assembly, SortOrdering ordering)
+	{
+		if (ordering == null)
+		{
+			assembly.newLine("ORDER BY book.TITLE");
+			return;
+		}
+		
+		Map sorts =
+			ordering.isDescending() ? BOOK_SORT_DESCENDING : BOOK_SORT_ASCENDING;
+			
+		String term = (String)sorts.get(ordering.getColumn());
+		
+		assembly.newLine("ORDER BY ");
+		assembly.add(term);
+	}
 
     protected void addSubstringSearch(StatementAssembly assembly, String column, String value)
     {
@@ -1040,7 +1092,8 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
             {
                 raw = environment.lookup("ejb/Publisher");
 
-                publisherHome = (IPublisherHome) PortableRemoteObject.narrow(raw, IPublisherHome.class);
+                publisherHome =
+                    (IPublisherHome) PortableRemoteObject.narrow(raw, IPublisherHome.class);
             }
             catch (NamingException e)
             {
@@ -1235,7 +1288,8 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         {
             Context context = new InitialContext();
 
-            QueueConnectionFactory factory = (QueueConnectionFactory) context.lookup("QueueConnectionFactory");
+            QueueConnectionFactory factory =
+                (QueueConnectionFactory) context.lookup("QueueConnectionFactory");
 
             QueueConnection connection = factory.createQueueConnection();
 
@@ -1259,7 +1313,8 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         return mailQueueSender;
     }
 
-    protected void sendMail(String emailAddress, String subject, String content) throws EJBException
+    protected void sendMail(String emailAddress, String subject, String content)
+        throws EJBException
     {
 
         // Sending mail is temporarily disabled

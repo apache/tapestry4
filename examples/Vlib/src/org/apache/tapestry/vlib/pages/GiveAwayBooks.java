@@ -86,12 +86,12 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
             }
         }
 
-        IMessageProperty myLibrary = (IMessageProperty) cycle.getPage("MyLibrary");
+        MyLibrary myLibrary = (MyLibrary) cycle.getPage("MyLibrary");
 
         myLibrary.setMessage(
             formatString("transfered-books", Integer.toString(count), target.getNaturalName()));
 
-        cycle.setPage(myLibrary);
+		myLibrary.activate(cycle);
     }
 
     private IPropertySelectionModel buildPersonModel()
@@ -170,7 +170,7 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
             {
                 IBookQuery query = vengine.createNewQuery();
 
-                int count = query.ownerQuery(userPK);
+                int count = query.ownerQuery(userPK, null);
 
                 if (count > 0)
                     books = query.get(0, count);

@@ -59,16 +59,21 @@ import java.rmi.RemoteException;
 
 import javax.ejb.FinderException;
 
-import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.PageRedirectException;
+import org.apache.tapestry.html.BasePage;
+import org.apache.tapestry.vlib.ActivateCallback;
+import org.apache.tapestry.vlib.IActivate;
+import org.apache.tapestry.vlib.IErrorProperty;
 import org.apache.tapestry.vlib.IMessageProperty;
-import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.components.Browser;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.IOperations;
+import org.apache.tapestry.vlib.ejb.SortColumn;
+import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 /**
  *  Shows a list of the user's books, allowing books to be editted or
@@ -85,8 +90,18 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * 
  **/
 
-public abstract class MyLibrary extends Protected implements IMessageProperty
+public abstract class MyLibrary
+    extends BasePage
+    implements IMessageProperty, IActivate, IErrorProperty
 {
+    public abstract void setOwnedQuery(IBookQuery value);
+
+    public abstract IBookQuery getOwnedQuery();
+
+    public abstract SortColumn getSortColumn();
+
+    public abstract boolean isDescending();
+
     private Browser _browser;
 
     public void finishLoad()
@@ -94,23 +109,42 @@ public abstract class MyLibrary extends Protected implements IMessageProperty
         _browser = (Browser) getComponent("browser");
     }
 
-    /**
-     *  A dirty little secret of Tapestry and page recorders:  persistent
-     *  properties must be set before the render (when this method is invoked)
-     *  and can't change during the render.  We force
-     *  the creation of the owned book query and re-execute it whenever
-     *  the MyLibrary page is rendered.
-     *
-     **/
-
-    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
+    public void validate(IRequestCycle cycle)
     {
-        super.beginResponse(writer, cycle);
+        Visit visit = (Visit) getVisit();
 
+        if (visit != null && visit.isUserLoggedIn())
+            return;
+
+        // User not logged in ... redirect through the Login page.
+
+        Login login = (Login) cycle.getPage("Login");
+
+        login.setCallback(new ActivateCallback(this));
+
+        throw new PageRedirectException(login);
+    }
+
+    public void activate(IRequestCycle cycle)
+    {
+        runQuery();
+
+        cycle.setPage(this);
+    }
+
+    public void resort(IRequestCycle cycle)
+    {
+        runQuery();
+    }
+
+    private void runQuery()
+    {
         Visit visit = (Visit) getVisit();
         Integer userPK = visit.getUserPK();
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+
+        SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
 
         int i = 0;
         while (true)
@@ -125,7 +159,7 @@ public abstract class MyLibrary extends Protected implements IMessageProperty
                     setOwnedQuery(query);
                 }
 
-                int count = query.ownerQuery(userPK);
+                int count = query.ownerQuery(userPK, ordering);
 
                 if (count != _browser.getResultCount())
                     _browser.initializeForResultCount(count);
@@ -140,10 +174,6 @@ public abstract class MyLibrary extends Protected implements IMessageProperty
             }
         }
     }
-
-    public abstract void setOwnedQuery(IBookQuery value);
-
-    public abstract IBookQuery getOwnedQuery();
 
     /**
      *  Listener invoked to allow a user to edit a book.
@@ -199,6 +229,8 @@ public abstract class MyLibrary extends Protected implements IMessageProperty
                 vengine.rmiFailure("Remote exception returning book.", ex, i++);
             }
         }
+
+        runQuery();
     }
 
 }

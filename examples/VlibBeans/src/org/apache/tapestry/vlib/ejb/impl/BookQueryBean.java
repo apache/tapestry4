@@ -65,6 +65,7 @@ import org.apache.tapestry.contrib.ejb.XEJBException;
 import org.apache.tapestry.contrib.jdbc.IStatement;
 import org.apache.tapestry.contrib.jdbc.StatementAssembly;
 import org.apache.tapestry.vlib.ejb.Book;
+import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 /**
  *  Implementation of a stateful session bean used to query the 
@@ -152,7 +153,11 @@ public class BookQueryBean extends OperationsBean
      *
      **/
 
-    public int masterQuery(String title, String author, Object publisherPK)
+    public int masterQuery(
+        String title,
+        String author,
+        Integer publisherPK,
+        SortOrdering sortOrdering)
     {
         IStatement statement = null;
         Connection connection = null;
@@ -167,7 +172,7 @@ public class BookQueryBean extends OperationsBean
 
             try
             {
-                statement = buildMasterQuery(connection, title, author, publisherPK);
+                statement = buildMasterQuery(connection, title, author, publisherPK, sortOrdering);
             }
             catch (SQLException ex)
             {
@@ -190,7 +195,7 @@ public class BookQueryBean extends OperationsBean
      *
      **/
 
-    public int ownerQuery(Integer ownerPK)
+    public int ownerQuery(Integer ownerPK, SortOrdering sortOrdering)
     {
         IStatement statement = null;
         Connection connection = null;
@@ -205,11 +210,11 @@ public class BookQueryBean extends OperationsBean
 
             try
             {
-                statement = buildPersonQuery(connection, "owner.PERSON_ID", ownerPK);
+                statement = buildPersonQuery(connection, "owner.PERSON_ID", ownerPK, sortOrdering);
             }
-            catch (SQLException e)
+            catch (SQLException ex)
             {
-                throw new XEJBException("Unable to create query statement.", e);
+                throw new XEJBException("Unable to create query statement.", ex);
             }
 
             processQuery(statement);
@@ -228,7 +233,7 @@ public class BookQueryBean extends OperationsBean
      *
      **/
 
-    public int holderQuery(Integer holderPK)
+    public int holderQuery(Integer holderPK, SortOrdering sortOrdering)
     {
         IStatement statement = null;
         Connection connection = null;
@@ -243,7 +248,8 @@ public class BookQueryBean extends OperationsBean
 
             try
             {
-                statement = buildPersonQuery(connection, "holder.PERSON_ID", holderPK);
+                statement =
+                    buildPersonQuery(connection, "holder.PERSON_ID", holderPK, sortOrdering);
             }
             catch (SQLException ex)
             {
@@ -261,7 +267,7 @@ public class BookQueryBean extends OperationsBean
         return getResultCount();
     }
 
-    public int borrowerQuery(Integer borrowerPK)
+    public int borrowerQuery(Integer borrowerPK, SortOrdering sortOrdering)
     {
         IStatement statement = null;
         Connection connection = null;
@@ -276,7 +282,7 @@ public class BookQueryBean extends OperationsBean
 
             try
             {
-                statement = buildBorrowerQuery(connection, borrowerPK);
+                statement = buildBorrowerQuery(connection, borrowerPK, sortOrdering);
             }
             catch (SQLException ex)
             {
@@ -345,7 +351,8 @@ public class BookQueryBean extends OperationsBean
         Connection connection,
         String title,
         String author,
-        Object publisherPK)
+        Integer publisherPK,
+        SortOrdering ordering)
         throws SQLException
     {
         StatementAssembly assembly;
@@ -367,12 +374,16 @@ public class BookQueryBean extends OperationsBean
             assembly.addParameter(publisherPK);
         }
 
-        assembly.newLine("ORDER BY book.TITLE");
+        addSortOrdering(assembly, ordering);
 
         return assembly.createStatement(connection);
     }
 
-    private IStatement buildPersonQuery(Connection connection, String personColumn, Integer personPK)
+    private IStatement buildPersonQuery(
+        Connection connection,
+        String personColumn,
+        Integer personPK,
+        SortOrdering sortOrdering)
         throws SQLException
     {
         StatementAssembly assembly;
@@ -384,12 +395,15 @@ public class BookQueryBean extends OperationsBean
         assembly.add(" = ");
         assembly.addParameter(personPK);
 
-        assembly.newLine("ORDER BY book.TITLE");
+        addSortOrdering(assembly, sortOrdering);
 
         return assembly.createStatement(connection);
     }
 
-    private IStatement buildBorrowerQuery(Connection connection, Integer borrowerPK)
+    private IStatement buildBorrowerQuery(
+        Connection connection,
+        Integer borrowerPK,
+        SortOrdering sortOrdering)
         throws SQLException
     {
         StatementAssembly assembly;
@@ -404,7 +418,7 @@ public class BookQueryBean extends OperationsBean
         assembly.addSep(" AND ");
         assembly.add("book.HOLDER_ID <> book.OWNER_ID");
 
-        assembly.newLine("ORDER BY book.TITLE");
+        addSortOrdering(assembly, sortOrdering);
 
         return assembly.createStatement(connection);
     }

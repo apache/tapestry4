@@ -67,6 +67,8 @@ import org.apache.tapestry.vlib.components.Browser;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.Person;
+import org.apache.tapestry.vlib.ejb.SortColumn;
+import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 /**
  *  Displays the book inventory list for a single {@link IPerson}, showing
@@ -88,6 +90,10 @@ public abstract class ViewPerson extends BasePage implements IExternalPage
 
     public abstract void setQuery(IBookQuery value);
 
+    public abstract SortColumn getSortColumn();
+
+    public abstract boolean isDescending();
+
     private Browser _browser;
 
     public void finishLoad()
@@ -107,35 +113,46 @@ public abstract class ViewPerson extends BasePage implements IExternalPage
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
+        Person person = vengine.readPerson(personPK);
+
+        setPerson(person);
+
+        runQuery();
+
+        // cycle.setPage(this);
+    }
+
+    public void resort(IRequestCycle cycle)
+    {
+        runQuery();
+    }
+
+    private void runQuery()
+    {
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+        Person person = getPerson();
+
+        SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
+
         int i = 0;
         while (true)
         {
+            IBookQuery query = getQuery();
+
+            if (query == null)
+            {
+                query = vengine.createNewQuery();
+
+                setQuery(query);
+            }
+
             try
             {
-                IBookQuery query = getQuery();
-
-                if (query == null)
-                {
-                    query = vengine.createNewQuery();
-
-                    setQuery(query);
-                }
-
-                int count = query.ownerQuery(personPK);
+                int count = query.ownerQuery(person.getPrimaryKey(), ordering);
 
                 _browser.initializeForResultCount(count);
 
-                IOperations operations = vengine.getOperations();
-
-                setPerson(operations.getPerson(personPK));
-
                 break;
-            }
-            catch (FinderException e)
-            {
-                vengine.presentError(
-                    "Person " + personPK + " not found in database.",
-                    getRequestCycle());
             }
             catch (RemoteException ex)
             {
@@ -145,7 +162,6 @@ public abstract class ViewPerson extends BasePage implements IExternalPage
             }
         }
 
-        cycle.setPage(this);
     }
 
 }
