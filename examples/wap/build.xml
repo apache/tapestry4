@@ -10,7 +10,6 @@
   <property name="wap.war" value="wap.war"/>
   
   <path id="project.class.path">
-    <pathelement location="${lib.ext.dir}/ejb.jar"/>
     <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
     <pathelement location="${lib.ext.dir}/${commons-logging.jar}"/>    
 	<pathelement location="${lib.ext.dir}/${commons-lang.jar}"/>    

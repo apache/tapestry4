@@ -9,7 +9,6 @@
     <classpathentry kind="src" path="examples/VlibBeans/src"/>
     <classpathentry kind="src" path="examples/Vlib/src"/>
     <classpathentry kind="lib" path="lib/ext/jakarta-oro-2.0.6.jar"/>
-    <classpathentry kind="lib" path="lib/ext/ejb.jar"/>
     <classpathentry kind="lib" path="lib/ext/javax.servlet.jar"/>
     <classpathentry kind="lib" path="lib/ext/javax.xml.jaxp.jar"/>
     <classpathentry kind="lib" path="lib/ext/junit.jar"/>

@@ -147,6 +147,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     private IdAllocator _elementIdAllocator = new IdAllocator();
 
+    private String _encodingType;
+
     /**
      *  Returns the currently active {@link IForm}, or null if no form is
      *  active.  This is a convienience method, the result will be
@@ -197,7 +199,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     public boolean getRequiresSession()
     {
-		return isStateful();
+        return isStateful();
     }
 
     /**
@@ -292,14 +294,39 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         return _name;
     }
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    /** @since 2.4 **/
+
+    protected void prepareForRender(IRequestCycle cycle) throws RequestCycleException
     {
+        super.prepareForRender(cycle);
+
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
             throw new RequestCycleException(Tapestry.getString("Form.forms-may-not-nest"), this);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
+    }
 
+    protected void cleanupAfterRender(IRequestCycle cycle)
+    {
+        _rendering = false;
+
+        _allocatedIdIndex = 0;
+        _allocatedIds.clear();
+
+        _events = null;
+
+        _elementIdAllocator.clear();
+
+        cycle.removeAttribute(ATTRIBUTE_NAME);
+
+        _encodingType = null;
+
+        super.cleanupAfterRender(cycle);
+    }
+
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
         String actionId = cycle.getNextActionId();
         _name = "Form" + actionId;
 
@@ -307,26 +334,6 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         boolean rewound = cycle.isRewound(this);
 
         _rewinding = rewound;
-
-        ILink link = getLink(cycle, actionId);
-
-        if (renderForm)
-        {
-        	String method = getMethod();
-        	
-            writer.begin("form");
-            writer.attribute("method", (method == null) ? "post" : method);
-            writer.attribute("name", _name);
-            writer.attribute("action", link.getURL(null, false));
-
-            generateAttributes(writer, cycle);
-            writer.println();
-        }
-
-        // Write the hidden's, or at least, reserve the query parameters
-        // required by the Gesture.
-
-        writeLinkParameters(writer, link, !renderForm);
 
         _allocatedIdIndex = 0;
 
@@ -339,7 +346,35 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             reconstructAllocatedIds(storedIdList);
         }
 
-        renderBody(writer, cycle);
+        ILink link = getLink(cycle, actionId);
+
+        // When rendering, use a nested writer so that an embedded Upload
+        // component can force the encoding type.
+
+        IMarkupWriter nested = writer.getNestedWriter();
+
+        renderBody(nested, cycle);
+
+        if (renderForm)
+        {
+            String method = getMethod();
+
+            writer.begin("form");
+            writer.attribute("method", (method == null) ? "post" : method);
+            writer.attribute("name", _name);
+            writer.attribute("action", link.getURL(null, false));
+
+            if (_encodingType != null)
+                writer.attribute("enctype", _encodingType);
+
+            generateAttributes(writer, cycle);
+            writer.println();
+        }
+
+        // Write the hidden's, or at least, reserve the query parameters
+        // required by the Gesture.
+
+        writeLinkParameters(writer, link, !renderForm);
 
         if (renderForm)
         {
@@ -356,6 +391,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             writer.attribute("name", _name);
             writer.attribute("value", buildAllocatedIdList());
             writer.println();
+
+            nested.close();
 
             writer.end("form");
 
@@ -385,7 +422,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
                     this);
             }
 
-			IActionListener listener = getListener();
+            IActionListener listener = getListener();
 
             if (listener != null)
                 listener.actionTriggered(this, cycle);
@@ -394,8 +431,6 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
             throw new RenderRewoundException(this);
         }
-
-        cycle.removeAttribute(ATTRIBUTE_NAME);
     }
 
     /**
@@ -590,7 +625,6 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
         for (int i = 0; i < count; i++)
         {
-
             String name = names[i];
 
             // Reserve the name.
@@ -623,22 +657,6 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             writer.println();
         }
     }
-
-    protected void cleanupAfterRender(IRequestCycle cycle)
-    {
-        _rendering = false;
-
-        _allocatedIdIndex = 0;
-        _allocatedIds.clear();
-
-        _events = null;
-
-        _elementIdAllocator.clear();
-
-        super.cleanupAfterRender(cycle);
-    }
-
-
 
     /**
      *  Converts the allocateIds property into a string, a comma-separated list of ids.
@@ -693,7 +711,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     public abstract void setDelegate(IValidationDelegate delegate);
 
     public abstract void setDirect(boolean direct);
-    
+
     public abstract IActionListener getListener();
 
     public abstract String getMethod();
@@ -706,8 +724,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     public boolean isStateful()
     {
-    	IBinding statefulBinding = getStatefulBinding();
-    	
+        IBinding statefulBinding = getStatefulBinding();
+
         if (statefulBinding == null)
             return true;
 
@@ -715,10 +733,25 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     public abstract IBinding getStatefulBinding();
-    
+
     protected void finishLoad()
     {
         setDirect(true);
+    }
+
+    public void setEncodingType(String encodingType) throws RequestCycleException
+    {
+        if (_encodingType != null && !_encodingType.equals(encodingType))
+            throw new RequestCycleException(
+                Tapestry.getString(
+                    "Form.encoding-type-contention",
+                    getExtendedId(),
+                    _encodingType,
+                    encodingType),
+                this,
+                null);
+
+        _encodingType = encodingType;
     }
 
 }

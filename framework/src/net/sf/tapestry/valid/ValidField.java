@@ -103,7 +103,7 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
 
     public String getDisplayName()
     {
-    	return getDisplayNameBinding().getString();
+        return getDisplayNameBinding().getString();
     }
 
     /**
@@ -135,27 +135,33 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
 
         delegate.setFormComponent(this);
 
-        if (rendering)
-            delegate.writePrefix(writer, cycle, this, validator);
+        try
+        {
 
-        super.renderComponent(writer, cycle);
+            if (rendering)
+                delegate.writePrefix(writer, cycle, this, validator);
 
-        if (rendering)
-            delegate.writeSuffix(writer, cycle, this, validator);
+            super.renderComponent(writer, cycle);
 
-        // If rendering and there's either an error in the field,
-        // or the field is required but the value is currently null,
-        // then we may have identified the default field (which will
-        // automatically receive focus).
+            if (rendering)
+                delegate.writeSuffix(writer, cycle, this, validator);
 
-        if (rendering && delegate.isInError())
-            addSelect(cycle);
+            // If rendering and there's either an error in the field,
+            // then we may have identified the default field (which will
+            // automatically receive focus).
 
-        // That's OK, but an ideal situation would know about non-validating
-        // text fields, and also be able to put the cursor in the
-        // first field, period (even if there are no required or error fields).
-        // Still, this pretty much rocks!
+            if (rendering && delegate.isInError())
+                addSelect(cycle);
 
+            // That's OK, but an ideal situation would know about non-validating
+            // text fields, and also be able to put the cursor in the
+            // first field, period (even if there are no required or error fields).
+            // Still, this pretty much rocks!
+        }
+        finally
+        {
+            delegate.setFormComponent(null);
+        }
     }
 
     /**
@@ -166,8 +172,8 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
     protected void beforeCloseTag(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
-    	IValidator validator = getValidator();
-    	
+        IValidator validator = getValidator();
+
         validator.renderValidatorContribution(this, writer, cycle);
 
         getForm().getDelegate().writeAttributes(writer, cycle, this, validator);
@@ -233,7 +239,7 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
         Object objectValue = null;
         IValidationDelegate delegate = getForm().getDelegate();
 
-		delegate.recordFieldInputValue(value);
+        delegate.recordFieldInputValue(value);
 
         try
         {
@@ -246,13 +252,9 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
         }
 
         getValueBinding().setObject(objectValue);
-        delegate.reset();
     }
 
     public abstract IValidator getValidator();
-   
-
-
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {

@@ -5,13 +5,13 @@
 <span jwcid="@Border">
 
 <p>The Upload component is used as a form element and allows files to be uploaded to Tapestry.  It can
-be freely mixed<a href="#note"><sup>*</sup></a> with other components in a form.
+be freely mixed with other components in a form.
 
 <p>The following form allows you to upload a file and see a hexadecimal dump of it.
 
 <span jwcid="@ShowError" delegate="[[ beans.delegate ]]"/>
 
-<form jwcid="@Form" listener="[[ listeners.formSubmit ]]" enctype="multipart/form-data">
+<form jwcid="@Form" listener="[[ listeners.formSubmit ]]">
 
 <table class="form">
 	<tr>
@@ -40,13 +40,6 @@ be freely mixed<a href="#note"><sup>*</sup></a> with other components in a form.
 	
 </table>
 </form>
-
-
-<p>
-<a name="note"><sup>*</sup>
-At this time, the developer must manually set the containing form's 
-<code>enctype</code> attribute 
-to <code>multipart/form-data</code>.
 
 </span>
 

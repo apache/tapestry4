@@ -23,6 +23,16 @@ changed incompatibly.  This will only be an issue if you have created custom val
 validators.</li>
 <li>Added methods to <a href="doc/api/net/sf/tapestry/valid/IComponentStrings.html">IComponentStrings</a> for formatting localized strings
 with arguments.</li>
+<li>Remove ejb.jar and any direct dependencies on javax.ejb classes (application servers are responsible for properly replicating
+EJBObject and EJBHome instances).</li>
+<li>Added a <code>createRequestCycle()</code> method to 
+<a href="doc/api/net/sf/tapestry/engine/AbstractEngine.html">AbstractEngine</a>.</li>
+<li>Moved the invocation of the 
+<a href="doc/api/net/sf/tapestry/IMonitor.html">IMonitor</a> method  <code>serviceEnd()</code>
+to always occur after the invocation of <code>serviceException()</code>.</li>
+<li>The <a href="doc/ComponentReference/Upload.html">Upload</a> component now works with the enclosing Form
+to automatically set the encoding type to <code>multipart/form-data</code>.  It is no longer necessary to set
+the <code>enctype</code> attribute of the Form.</li>
 </ul>		
 	
 <h3>Release 2.4-alpha-3</h3>

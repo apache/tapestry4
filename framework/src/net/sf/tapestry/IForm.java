@@ -162,4 +162,18 @@ public interface IForm extends IAction
      **/
 
     public IValidationDelegate getDelegate() throws RequestCycleException;
+    
+    /**
+     *  May be invoked by a component to force the encoding type of the
+     *  form to a particular value.
+     * 
+     *  @see net.sf.tapestry.form.Upload
+     *  @throws RequestCycleException if the current encoding type is not null
+     *  and doesn't match the suggested encoding type
+     *  @since 2.4
+     * 
+     **/
+    
+    public void setEncodingType(String encodingType)
+    throws RequestCycleException;
 }

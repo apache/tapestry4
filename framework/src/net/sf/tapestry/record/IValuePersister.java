@@ -61,7 +61,6 @@ import net.sf.tapestry.IRequestCycle;
  *  The values provided to the page recorder are not stored as is; there are several
  *  conversions that occur:
  *  <ul>
- *  <li>{@link javax.ejb.EJBObject} is wrapped up in a {@link net.sf.tapestry.record.EJBWrapper}
  *  <li>Non-immutable objects are copied, using a {@link net.sf.tapestry.record.IValueCopier}
  *  <li>null passes through unchanged
  *  </ul>

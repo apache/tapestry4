@@ -139,10 +139,15 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
      *
      **/
 
-    public RequestCycle(IEngine engine, RequestContext requestContext, IMonitor monitor)
+    public RequestCycle(
+        IEngine engine,
+        RequestContext requestContext,
+        IEngineService service,
+        IMonitor monitor)
     {
         _engine = engine;
         _requestContext = requestContext;
+        _service = service;
         _monitor = monitor;
     }
 
@@ -175,16 +180,6 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     public IEngineService getService()
     {
         return _service;
-    }
-
-    /**
-     *  @since 1.0.1
-     *
-     **/
-
-    public void setService(IEngineService value)
-    {
-        _service = value;
     }
 
     public String encodeURL(String URL)

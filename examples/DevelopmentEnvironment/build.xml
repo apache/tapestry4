@@ -29,7 +29,6 @@
     <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
     <pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
-    <pathelement location="${lib.ext.dir}/ejb.jar"/>
     <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>
     <pathelement location="${lib.ext.dir}/${ognl.jar}"/>
     <pathelement location="config"/>
