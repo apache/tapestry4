@@ -80,6 +80,7 @@ public class TestRegexpMatcher extends TapestryTestCase
         RegexpMatcher m = new RegexpMatcher();
 
         assertTrue(m.matches("[a-z]+", "c"));
+        assertTrue(m.matches("foo|foot", "foo"));
     }
 
     public void testNonmatch()
@@ -87,6 +88,7 @@ public class TestRegexpMatcher extends TapestryTestCase
         RegexpMatcher m = new RegexpMatcher();
 
         assertTrue(!m.matches("[0-9]+", "q"));
+        assertTrue(!m.matches("foo|foot", "foot"));
     }
 
     public void testBadPattern()
@@ -110,5 +112,34 @@ public class TestRegexpMatcher extends TapestryTestCase
         RegexpMatcher m = new RegexpMatcher();
 
         m.clear();
+    }
+
+    public void testContains()
+    {
+        RegexpMatcher m = new RegexpMatcher();
+
+        assertTrue(m.contains("[a-z]+", "c"));
+        assertTrue(m.contains("^(\\d{5}(-\\d{4})?)$", "06514"));
+        assertTrue(m.contains("^(\\d{5}(-\\d{4})?)$", "06514-3149"));
+        assertTrue(m.contains("foo|foot", "12foot12"));
+    }
+
+    public void testNotContains()
+    {
+        RegexpMatcher m = new RegexpMatcher();
+
+        assertTrue(!m.contains("[0-9]+", "q"));
+        assertTrue(!m.contains("^(\\d{5}(-\\d{4})?)$", "0651"));
+        assertTrue(!m.contains("^(\\d{5}(-\\d{4})?)$", "065147"));
+        assertTrue(!m.contains("^(\\d{5}(-\\d{4})?)$", "06514-314"));
+        assertTrue(!m.contains("^(\\d{5}(-\\d{4})?)$", "06514-31497"));
+        assertTrue(!m.contains("^(foo|foot)$", "12foot12"));
+    }
+
+    public void testGetEscapedPatternStrings()
+    {
+        RegexpMatcher m = new RegexpMatcher();
+
+        assertEquals(m.getEscapedPatternString("^\\d$"), "\\^\\\\d\\$");
     }
 }
