@@ -1,3 +1,9 @@
+* Apr 9 2001 hship
+
+Keep the buffer and parameters live in a StatementAssembly even after
+creating the IStatement (useful for debugging).
+[ #414879 ] ClassCastException / PropertyHelper
+
 * Apr 4 2001 hship
 
 Add some simple method overrides to StatementAssembly to make it more useful.

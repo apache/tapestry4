@@ -288,11 +288,6 @@ public class StatementAssembly
 		else
 			result = new ParameterizedStatement(sql, connection, parameters);
 
-		// These are no longer needed.
-
-		buffer = null;
-		parameters = null;
-
 		return result;		
 	}
 
