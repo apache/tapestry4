@@ -10,7 +10,7 @@ import net.sf.tapestry.IRequestCycle;
  * It is usually used by the {@link net.sf.tapestry.contrib.table.model.ITableColumn} 
  * implementations via aggregation.
  * 
- * @see net.sf.tapestry.contrib.table.model.column.AbstractTableColumn
+ * @see net.sf.tapestry.contrib.table.model.common.AbstractTableColumn
  * @version $Id$
  * @author mindbridge
  * @since 2.3

@@ -10,12 +10,12 @@ import net.sf.tapestry.contrib.table.model.common.ComponentTableRendererSource;
 
 /**
  * This is a simple implementation of 
- * {@link net.sf.tapestry.contrib.table.model.column.ITableColumnRendererSource} 
- * that returns a standard column renderer. <p>
+ * {@link net.sf.tapestry.contrib.table.model.ITableRendererSource} 
+ * that returns a standard renderer of a column header. <p>
  * 
  * This implementation requires that the column passed is of type SimpleTableColumn
  * 
- * @see net.sf.tapestry.contrib.table.model.column.AbstractTableColumn
+ * @see net.sf.tapestry.contrib.table.model.common.AbstractTableColumn
  * @version $Id$
  * @author mindbridge
  * @since 2.3
@@ -30,7 +30,7 @@ public class SimpleTableColumnRendererSource implements ITableRendererSource
 	}
 
 	/**
-	 * @see net.sf.tapestry.contrib.table.model.column.ITableColumnRendererSource#getColumnRenderer(IRequestCycle, ITableModelSource, ITableColumn)
+	 * @see net.sf.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
 	 */
 	public IRender getRenderer(
 		IRequestCycle objCycle,

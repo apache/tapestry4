@@ -5,7 +5,7 @@ import net.sf.tapestry.IRequestCycle;
 
 /**
  * 
- * @see net.sf.tapestry.contrib.table.model.column.AbstractTableColumn
+ * @see net.sf.tapestry.contrib.table.model.common.AbstractTableColumn
  * @version $Id$
  * @author mindbridge
  * @since 2.3
