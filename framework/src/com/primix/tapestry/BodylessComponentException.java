@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -36,7 +36,7 @@ package com.primix.tapestry;
  *  @version $Id$
  */
 
-public class BodylessComponentException extends RequestCycleException
+public class BodylessComponentException extends PageLoaderException
 {
 	public BodylessComponentException(IComponent component)
 	{

@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -34,10 +34,10 @@ import com.primix.tapestry.spec.ComponentSpecification;
 import com.primix.tapestry.components.*;
 
 /**
- *  Additional {@link IComponent} methods for components with special lifecycles.  
+ *  Additional {@link IComponent} methods for components with special lifecycles.
  *  Few components require these methods.
  *
- *  <p>The advantage of these methods versus simply 
+ *  <p>The advantage of these methods versus simply
  *  overriding {@link IComponent#render(IResponseWriter, IRequestCycle)} is that
  *  they are called just once, before and after all rendering takes place.
  *  Components may be inside one or more {@link Foreach} components, or something
@@ -55,7 +55,7 @@ public interface ILifecycle
     
     /**
      *  Invoked after rendering has taken place, even if an exception is thrown.
-     *  <p>A component is <em>not</em> guarenteed to have been sent 
+     *  <p>A component is <em>not</em> guarenteed to have been sent
      *  {@link #prepareForRender(IRequestCycle)} yet,
      *  as an exception may be thrown while lifecycle methods are being invoked.
      *
@@ -64,19 +64,7 @@ public interface ILifecycle
     public void cleanupAfterRender(IRequestCycle cycle);
 
     /**
-     *  Allows a component to finish any setup after it has been constructed.
-     *
-     *  <p>The exact timing is not
-     *  specified, but any components contained by the 
-     *  receiving component will also have been constructed
-     *  before this method is invoked.
-     *
-     */
- 
-    public void finishLoad(IPageLoader loader, ComponentSpecification specification);
-
-    /**
-     *  Invoked on all lifecycle components prior to starting the rendering process.  
+     *  Invoked on all lifecycle components prior to starting the rendering process.
      *  This gives components an opportunity to claim any resources needed for the duration of
      *  the render process.  Lifecycle components on a page will have this method
      *  invoked in an unspecified order.

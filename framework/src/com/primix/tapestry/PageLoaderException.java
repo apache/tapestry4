@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -38,17 +38,30 @@ package com.primix.tapestry;
 
 public class PageLoaderException extends Exception
 {
-	private transient IPageLoader pageLoader;
 	private Throwable rootCause;
 	private String pageName;
 	private transient IComponent component;
 
-	public PageLoaderException(String message, IPageLoader pageLoader, 
+	/**
+	 * @since 0.2.12
+	 *
+	 */
+	
+	public PageLoaderException(String message, Throwable rootCause)
+	{
+		this(message, (IComponent)null, rootCause);
+	}
+	
+	/**
+	 * @since 0.2.12
+	 *
+	 */
+	
+	public PageLoaderException(String message,
 		IComponent component, Throwable rootCause)
 	{
 		super(message);
 
-		this.pageLoader = pageLoader;
 		this.rootCause = rootCause;
 		this.component = component;
 
@@ -62,25 +75,31 @@ public class PageLoaderException extends Exception
 
 	}
 
-	public PageLoaderException(String message, IPageLoader pageLoader, 
-		String pageName, Throwable rootCause)
+	/**
+	 * @since 0.2.12
+	 *
+	 */
+	
+	public PageLoaderException(String message, IComponent component)
 	{
-		super(message);
-
-		this.pageLoader = pageLoader;
-		this.rootCause = rootCause;
+		this(message, component, null);
+	}
+	
+	/**
+	 * @since 0.2.12
+	 *
+	 */
+	
+	public PageLoaderException(String message, String pageName, Throwable rootCause)
+	{
+		this(message, (IComponent)null, rootCause);
+		
 		this.pageName = pageName;
-
 	}
 
 	public IComponent getComponent()
 	{
 		return component;
-	}
-
-	public IPageLoader getPageLoader()
-	{
-		return pageLoader;
 	}
 
 	public String getPageName()

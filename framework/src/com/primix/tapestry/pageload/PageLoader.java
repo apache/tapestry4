@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -51,15 +51,18 @@ public class PageLoader
 	private static final Category CAT =
 		Category.getInstance(PageLoader.class);
 
-	private static final int  MAP_SIZE = 11;
+	private static final int MAP_SIZE = 11;
 
 	private IEngine engine;
 	private IResourceResolver resolver;
 	private ISpecificationSource specificationSource;
 	private PageSource pageSource;
 
-	// The locale of the application, which is also the locale
-	// of the page being loaded.
+	/**
+	 * The locale of the application, which is also the locale
+	 * of the page being loaded.
+	 *
+	 */
 
 	private Locale locale;
 
@@ -98,21 +101,21 @@ public class PageLoader
 	/**
 	*  Binds properties of the component as defined by the container's specification.
 	*
-	* <p>This implemenation is very simple, we will need a lot more
+	* <p>This implementation is very simple, we will need a lot more
 	*  sanity checking and error checking in the final version.
 	*
-	*  @param container The containing component.  For a dynamic 
+	*  @param container The containing component.  For a dynamic
 	*  binding ({@link PropertyBinding}) the property name
-	*  is evaluated with the container as the root. 
+	*  is evaluated with the container as the root.
 	*  @param component The contained component being bound.
 	*  @param spec The specification of the contained component.
-	* @param contained The contained component specification (from the container's 
+	* @param contained The contained component specification (from the container's
 	* {@link ComponentSpecification}).
 	* @param propertyBindings a cache of {@link PropertyBinding}s for the container
 	*
 	*/
 
-	private void bind(IComponent container, IComponent component, ComponentSpecification spec, 
+	private void bind(IComponent container, IComponent component, ComponentSpecification spec,
 		ContainedComponent contained, Map propertyBindings)
 	throws PageLoaderException
 	{
@@ -141,8 +144,8 @@ public class PageLoader
 					throw new PageLoaderException(
 						"Component " + component.getExtendedId() +
 						" allows only formal parameters, binding " +
-						name + " is not allowed.", 
-						this, component, null);
+						name + " is not allowed.",
+						component, null);
 			}
 
 			bspec = contained.getBinding(name);
@@ -173,10 +176,10 @@ public class PageLoader
 			if (parameterSpec.isRequired() &&
 				component.getBinding(name) == null)
 				throw new PageLoaderException(
-					"Required parameter " + name + " of component " 
+					"Required parameter " + name + " of component "
 					+ component.getExtendedId() +
 					" is not bound.",
-					this, component, null);
+					component, null);
 		}
 
 	}
@@ -213,7 +216,7 @@ public class PageLoader
 		// Otherwise, its an inherited binding.  Dig it out of the container.
 		// This may return null if the container doesn't have the named binding.
 
-		return container.getBinding(bindingValue);		
+		return container.getBinding(bindingValue);
 
 	}
 
@@ -224,6 +227,7 @@ public class PageLoader
 	* <li>Add the contained components to the container.
 	* <li>Setting up bindings between container and containees.
 	* <li>Construct the containees recursively.
+	* <li>Telling the component its 'ready' (so that it can load its HTML template)
 	* </ul>
 	*
 	* @param page The page on which the container exists.
@@ -250,7 +254,7 @@ public class PageLoader
 
 		i = containerSpec.getComponentIds().iterator();
 		while (i.hasNext())
-		{		
+		{
 			id = (String)i.next();
 
 			// Get the sub-component specification from the
@@ -265,9 +269,9 @@ public class PageLoader
 			{
 				spec = specificationSource.getSpecification(contained.getType());
 			}
-			catch (ResourceUnavailableException re)
+			catch (ResourceUnavailableException ex)
 			{
-				throw new PageLoaderException(re.getMessage(), this, container, re);
+				throw new PageLoaderException("Unable to load component specification.",  ex);
 			}
 
 			// Instantiate the contained component.
@@ -287,14 +291,15 @@ public class PageLoader
 			constructComponent(page, component, spec);
 		}
 
-		addAssets(container, containerSpec); 
+		addAssets(container, containerSpec);
 
+		container.finishLoad(this, containerSpec);
+		
 		if (container instanceof ILifecycle)
 		{
 			ILifecycle lifecycle = (ILifecycle)container;
 			
 			page.addLifecycleComponent(lifecycle);
-			lifecycle.finishLoad(this, containerSpec);
 		}
 
 		depth--;
@@ -302,13 +307,13 @@ public class PageLoader
 	}
 
 	/**
-	*  Instantiates a component from its specification. We instantiate 
+	*  Instantiates a component from its specification. We instantiate
 	* the component object, then set its specification, page, container and id.
 	*
 	*  @see AbstractComponent
 	*/
 
-	private IComponent instantiateComponent(IPage page, IComponent container, 
+	private IComponent instantiateComponent(IPage page, IComponent container,
 		String id, ComponentSpecification spec)
 	throws PageLoaderException
 	{
@@ -332,15 +337,15 @@ public class PageLoader
 		catch (ClassCastException e)
 		{
 			throw new PageLoaderException(
-				"Class " + className + 
-				" does not implement the IComponent interface.", 
-				this, container, e);
+				"Class " + className +
+				" does not implement the IComponent interface.",
+				container, e);
 		}
 		catch (Exception e)
 		{
 			throw new PageLoaderException(
 				"Unable to instantiate an instance of class " + className + ".",
-				this, container, e);
+				container, e);
 		}
 
 		count++;
@@ -349,10 +354,10 @@ public class PageLoader
 	}
 
 	/**
-	*  Instantitates a page from its specification.  
+	*  Instantitates a page from its specification.
 	*
-	*  
-	* We instantiate the page object, then set its specification, 
+	*
+	* We instantiate the page object, then set its specification,
 	* name and locale.
 	*
 	* @see IEngine
@@ -381,15 +386,15 @@ public class PageLoader
 		catch (ClassCastException e)
 		{
 			throw new PageLoaderException(
-				"Class " + className + 
-				" does not implement the IPage interface.", 
-				this, name, e);
+				"Class " + className +
+				" does not implement the IPage interface.",
+				name, e);
 		}
 		catch (Exception e)
 		{
 			throw new PageLoaderException(
 				"Unable to instantiate an instance of class " + className + ".",
-				this, name, e);
+				name, e);
 		}
 
 		return result;
@@ -425,16 +430,16 @@ public class PageLoader
 		maxDepth = 0;
 
 		try
-		{			
+		{
 			specification = specificationSource.getSpecification(type);
 
 			page = instantiatePage(name, specification);
 
 			constructComponent(page, page, specification);
 		}
-		catch (ResourceUnavailableException e)
+		catch (ResourceUnavailableException ex)
 		{
-			throw new PageLoaderException(e.getMessage(), this, name, e);
+			throw new PageLoaderException(ex.getMessage(), name, ex);
 		}
 		finally
 		{
@@ -445,7 +450,7 @@ public class PageLoader
 		}
 
 		if (CAT.isInfoEnabled())
-			CAT.info("Loaded page " + page + 
+			CAT.info("Loaded page " + page +
 				" with " + count + " components (maximum depth " + maxDepth + ")");
 
 		return page;
@@ -487,5 +492,14 @@ public class PageLoader
 		return pageSource.getContextAsset(path);
 	}
 
+	public IEngine getEngine()
+	{
+		return engine;
+	}
+	
+	public ITemplateSource getTemplateSource()
+	{
+		return engine.getTemplateSource();
+	}
 }
 
