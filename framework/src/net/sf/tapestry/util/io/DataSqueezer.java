@@ -94,6 +94,7 @@ public class DataSqueezer
 
     private void registerDefaultAdaptors()
     {
+        new CharacterAdaptor().register(this);
         new StringAdaptor().register(this);
         new IntegerAdaptor().register(this);
         new DoubleAdaptor().register(this);
