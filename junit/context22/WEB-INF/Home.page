@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<page-specification>
+	
+	<property-specification name="flag" type="boolean" persistent="yes"/>
+	
+	<component id="start" type="DirectLink">
+		<listener-binding name="listener">
+page.flag = 1
+cycle.setPage("Two")	
+		</listener-binding>	
+	</component>
+</page-specification>

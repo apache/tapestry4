@@ -66,9 +66,13 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
@@ -82,11 +86,9 @@ import org.apache.tapestry.parse.TemplateParser;
 import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.IRenderDescription;
 import org.apache.tapestry.util.MultiKey;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  *  Default implementation of {@link ITemplateSource}.  Templates, once parsed,
@@ -131,15 +133,21 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     private IResourceLocation _applicationRootLocation;
 
+    /** @since 2.4 **/
+
+    private ITemplateSourceDelegate _delegate;
+
     private static class ParserDelegate implements ITemplateParserDelegate
     {
         private IComponent _component;
         private ComponentSpecificationResolver _resolver;
+        private IRequestCycle _cycle;
 
         ParserDelegate(IComponent component, IRequestCycle cycle)
         {
             _component = component;
             _resolver = new ComponentSpecificationResolver(cycle);
+            _cycle = cycle;
         }
 
         public boolean getKnownComponent(String componentId)
@@ -161,7 +169,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         {
             INamespace namespace = _component.getNamespace();
 
-            _resolver.resolve(namespace, libraryId, type);
+            _resolver.resolve(_cycle, namespace, libraryId, type);
 
             ComponentSpecification spec = _resolver.getSpecification();
 
@@ -212,13 +220,21 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
         if (result == null)
         {
+            result = getTemplateFromDelegate(cycle, component, locale);
+
+            if (result != null)
+                return result;
+
             String stringKey =
                 component.getSpecification().isPageSpecification()
                     ? "DefaultTemplateSource.no-template-for-page"
                     : "DefaultTemplateSource.no-template-for-component";
 
             throw new ApplicationRuntimeException(
-                Tapestry.getString(stringKey, component.getExtendedId(), locale));
+                Tapestry.getString(stringKey, component.getExtendedId(), locale),
+                component,
+                component.getLocation(),
+                null);
         }
 
         saveToCache(key, result);
@@ -235,6 +251,29 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
     {
         _cache.put(key, template);
 
+    }
+
+    private ComponentTemplate getTemplateFromDelegate(
+        IRequestCycle cycle,
+        IComponent component,
+        Locale locale)
+    {
+        if (_delegate == null)
+        {
+            IEngine engine = cycle.getEngine();
+            IApplicationSpecification spec = engine.getSpecification();
+
+            if (spec.checkExtension(Tapestry.TEMPLATE_SOURCE_DELEGATE_EXTENSION_NAME))
+                _delegate =
+                    (ITemplateSourceDelegate) spec.getExtension(
+                        Tapestry.TEMPLATE_SOURCE_DELEGATE_EXTENSION_NAME,
+                        ITemplateSourceDelegate.class);
+            else
+                _delegate = NullTemplateSourceDelegate.getSharedInstance();
+
+        }
+
+        return _delegate.findTemplate(cycle, component, locale);
     }
 
     /**

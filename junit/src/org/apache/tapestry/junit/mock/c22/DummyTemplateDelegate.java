@@ -53,70 +53,34 @@
  *
  */
 
-package org.apache.tapestry.junit.utils;
+package org.apache.tapestry.junit.mock.c22;
 
-import junit.framework.TestCase;
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.html.BasePage;
-import org.apache.tapestry.util.prop.PropertyFinder;
-import org.apache.tapestry.util.prop.PropertyInfo;
+import java.util.Locale;
+
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.ITemplateSourceDelegate;
+import org.apache.tapestry.parse.ComponentTemplate;
 
 /**
- *  Tests the {@link org.apache.tapestry.util.prop.PropertyFinder}
- *  class.
+ *  Used to test the {@link org.apache.tapestry.engine.ITemplateSourceDelegate}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.2
+ *  @since 2.4
  *
  **/
 
-public class TestPropertyFinder extends TestCase
+public class DummyTemplateDelegate implements ITemplateSourceDelegate
 {
 
-    public TestPropertyFinder(String name)
+    public ComponentTemplate findTemplate(IRequestCycle cycle, IComponent component, Locale locale)
     {
-        super(name);
-    }
+        cycle.getRequestContext().getSession().setAttribute(
+            "template",
+            component.getSpecification().getSpecificationLocation().toString());
 
-    public void testReadOnlyProperty()
-    {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(PublicBean.class, "syntheticProperty");
-
-        assertEquals("syntheticProperty", i.getName());
-        assertEquals(double.class, i.getType());
-        assertEquals(true, i.isRead());
-        assertEquals(false, i.isReadWrite());
-        assertEquals(false, i.isWrite());
-    }
-
-    public void testReadWriteProperty()
-    {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(AbstractComponent.class, "id");
-
-        assertEquals("id", i.getName());
-        assertEquals(String.class, i.getType());
-        assertEquals(true, i.isRead());
-        assertEquals(true, i.isReadWrite());
-        assertEquals(true, i.isWrite());
-    }
-
-    public void testInheritedProperty()
-    {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(BasePage.class, "pageName");
-
-        assertEquals("pageName", i.getName());
-        assertEquals(String.class, i.getType());
-        assertEquals(true, i.isRead());
-        assertEquals(true, i.isReadWrite());
-        assertEquals(true, i.isWrite());
-    }
-
-    public void testUnknownProperty()
-    {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(PublicBean.class, "fred");
-
-        assertNull(i);
+        return null;
     }
 
 }

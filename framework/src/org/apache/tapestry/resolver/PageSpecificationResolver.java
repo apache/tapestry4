@@ -73,16 +73,24 @@ import org.apache.tapestry.spec.ComponentSpecification;
  *  of the page, goes as follows:
  * 
  *  <ul>
+ *  <li>As declared in the application specification
  *  <li><i>simple-name</i>.page in the same folder as the application specification
  *  <li><i>simple-name</i> page in the WEB-INF/<i>servlet-name</i> directory of the context root
  *  <li><i>simple-name</i>.page in WEB-INF
  *  <li><i>simple-name</i>.page in the application root (within the context root)
  *  <li><i>simple-name</i>.html as a template in the application root, 
  *      for which an implicit specification is generated
+ *  <li>By searching the framework namespace
+ *  <li>By invoking {@link org.apache.tapestry.resolver.ISpecificationResolverDelegate#findPageSpecification(IRequestCycle, INamespace, String)}
  *  </ul>
  * 
- *  <p>If none of these work out, then the page is searched for in the framework namespace.
- *  This is used to find default implementations of pages such as Exception and StaleLink.
+ *  <p>Pages in a component library are searched for in a more abbreviated fashion:
+ *  <ul>
+ *  <li>As declared in the library specification
+ *  <li><i>simple-name</i>.page in the same folder as the library specification
+ *  <li>By searching the framework namespace
+ *  <li>By invoking {@link org.apache.tapestry.resolver.ISpecificationResolverDelegate#findPageSpecification(IRequestCycle, INamespace, String)}
+ *  </ul>
  *
  *  @see org.apache.tapestry.IPageSource
  *  @author Howard Lewis Ship
@@ -110,7 +118,7 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
      * 
      **/
 
-    public void resolve(String prefixedName)
+    public void resolve(IRequestCycle cycle, String prefixedName)
     {
         reset();
 
@@ -147,7 +155,7 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
 
         // Not defined in the specification, so it's time to hunt it down.
 
-        searchForPage();
+        searchForPage(cycle);
 
         if (getSpecification() == null)
             throw new ApplicationRuntimeException(
@@ -163,7 +171,7 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
         return _simpleName;
     }
 
-    private void searchForPage()
+    private void searchForPage(IRequestCycle cycle)
     {
         INamespace namespace = getNamespace();
 
@@ -181,54 +189,60 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
         if (found(namespaceLocation.getRelativeLocation(expectedName)))
             return;
 
-        // If not for the (unnamed) application specification, then return ... which will
-        // cause an exception.
-
-        if (!namespace.isApplicationNamespace())
-            return;
-
-        // The application namespace gets some extra searching.
-
-        if (found(getWebInfAppLocation().getRelativeLocation(expectedName)))
-            return;
-
-        if (found(getWebInfLocation().getRelativeLocation(expectedName)))
-            return;
-
-        if (found(getApplicationRootLocation().getRelativeLocation(expectedName)))
-            return;
-
-        // The wierd one ... where we see if there's a templatge in the application root location.
-
-        String templateName = _simpleName + "." + getTemplateExtension();
-
-        IResourceLocation templateLocation =
-            getApplicationRootLocation().getRelativeLocation(templateName);
-
-        if (templateLocation.getResourceURL() != null)
+        if (namespace.isApplicationNamespace())
         {
-            setupImplicitPage(templateLocation);
-            return;
+
+            // The application namespace gets some extra searching.
+
+            if (found(getWebInfAppLocation().getRelativeLocation(expectedName)))
+                return;
+
+            if (found(getWebInfLocation().getRelativeLocation(expectedName)))
+                return;
+
+            if (found(getApplicationRootLocation().getRelativeLocation(expectedName)))
+                return;
+
+            // The wierd one ... where we see if there's a template in the application root location.
+
+            String templateName = _simpleName + "." + getTemplateExtension();
+
+            IResourceLocation templateLocation =
+                getApplicationRootLocation().getRelativeLocation(templateName);
+
+            if (templateLocation.getResourceURL() != null)
+            {
+                setupImplicitPage(templateLocation);
+                return;
+            }
+
+            // Not found in application namespace, so maybe its a framework page.
+
+            INamespace framework = getSpecificationSource().getFrameworkNamespace();
+
+            if (framework.containsPage(_simpleName))
+            {
+                if (LOG.isDebugEnabled())
+                    LOG.debug("Found " + _simpleName + " in framework namespace.");
+
+                setNamespace(framework);
+
+                // Note:  This implies that normal lookup rules don't work
+                // for the framework!  Framework pages must be
+                // defined in the framework library specification.
+
+                setSpecification(framework.getPageSpecification(_simpleName));
+                return;
+            }
         }
 
-        // Not found in application namespace, so maybe its a framework page.
+        // Not found by any normal rule, so its time to
+        // consult the delegate.
 
-        INamespace framework = getSpecificationSource().getFrameworkNamespace();
-
-        if (framework.containsPage(_simpleName))
-        {
-            if (LOG.isDebugEnabled())
-                LOG.debug("Found " + _simpleName + " in framework namespace.");
-
-            setNamespace(framework);
-
-            // Note:  This implies that normal lookup rules don't work
-            // for the framework!  Framework pages must be
-            // defined in the framework library specification.
-
-            setSpecification(framework.getPageSpecification(_simpleName));
-        }
-
+        ComponentSpecification specification =
+            getDelegate().findPageSpecification(cycle, namespace, _simpleName);
+            
+        setSpecification(specification);
     }
 
     private void setupImplicitPage(IResourceLocation location)

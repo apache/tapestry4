@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE application PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<application>
+	<extension name="org.apache.tapestry.specification-resolver-delegate"
+			  class="org.apache.tapestry.junit.mock.c22.DummySpecDelegate"/>
+	<extension name="org.apache.tapestry.template-source-delegate"
+			  class="org.apache.tapestry.junit.mock.c22.DummyTemplateDelegate"/>
+	
+</application>

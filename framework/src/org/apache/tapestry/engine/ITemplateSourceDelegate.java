@@ -53,70 +53,43 @@
  *
  */
 
-package org.apache.tapestry.junit.utils;
+package org.apache.tapestry.engine;
 
-import junit.framework.TestCase;
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.html.BasePage;
-import org.apache.tapestry.util.prop.PropertyFinder;
-import org.apache.tapestry.util.prop.PropertyInfo;
+import java.util.Locale;
+
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.parse.ComponentTemplate;
 
 /**
- *  Tests the {@link org.apache.tapestry.util.prop.PropertyFinder}
- *  class.
+ *  Acts as a delegate to the {@link ITemplateSource}, providing access to
+ *  page and component templates after the normal search mechanisms have failed.
+ * 
+ *  <p>
+ *  The delegate must be threadsafe.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.2
- *
+ *  @since 2.4
+ *  @see org.apache.tapestry.engine.DefaultTemplateSource
+ * 
  **/
 
-public class TestPropertyFinder extends TestCase
+public interface ITemplateSourceDelegate
 {
-
-    public TestPropertyFinder(String name)
-    {
-        super(name);
-    }
-
-    public void testReadOnlyProperty()
-    {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(PublicBean.class, "syntheticProperty");
-
-        assertEquals("syntheticProperty", i.getName());
-        assertEquals(double.class, i.getType());
-        assertEquals(true, i.isRead());
-        assertEquals(false, i.isReadWrite());
-        assertEquals(false, i.isWrite());
-    }
-
-    public void testReadWriteProperty()
-    {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(AbstractComponent.class, "id");
-
-        assertEquals("id", i.getName());
-        assertEquals(String.class, i.getType());
-        assertEquals(true, i.isRead());
-        assertEquals(true, i.isReadWrite());
-        assertEquals(true, i.isWrite());
-    }
-
-    public void testInheritedProperty()
-    {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(BasePage.class, "pageName");
-
-        assertEquals("pageName", i.getName());
-        assertEquals(String.class, i.getType());
-        assertEquals(true, i.isRead());
-        assertEquals(true, i.isReadWrite());
-        assertEquals(true, i.isWrite());
-    }
-
-    public void testUnknownProperty()
-    {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(PublicBean.class, "fred");
-
-        assertNull(i);
-    }
-
+	/**
+	 *  Invoked by the {@link ITemplateSource} when a template can't be found
+	 *  by normal means (i.e., in the normal locations).  This method
+	 *  should find the template.  The result may be null.  The delegate
+	 *  is responsible for caching the result.
+	 * 
+	 *  @param cycle for access to Tapestry and Servlet API objects
+	 *  @param component component (or page) for which a template is needed
+	 *  @param locale the desired locale for the template
+	 * 
+	 **/
+	
+	public ComponentTemplate findTemplate(IRequestCycle cycle,
+	IComponent component,
+	Locale locale);
 }

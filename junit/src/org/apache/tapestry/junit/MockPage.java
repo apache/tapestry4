@@ -72,7 +72,6 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.ChangeObserver;
-import org.apache.tapestry.event.PageCleanupListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.spec.BaseLocatable;
@@ -117,11 +116,6 @@ public class MockPage extends BaseLocatable implements IPage
         this.locale = locale;
     }
 
-    public String getName()
-    {
-        return null;
-    }
-
     public IComponent getNestedComponent(String path)
     {
         return null;
@@ -139,11 +133,7 @@ public class MockPage extends BaseLocatable implements IPage
     {
     }
 
-    public void setName(String value)
-    {
-    }
-
-    public void validate(IRequestCycle cycle) 
+    public void validate(IRequestCycle cycle)
     {
     }
 
@@ -165,24 +155,12 @@ public class MockPage extends BaseLocatable implements IPage
     {
     }
 
-    public void cleanupPage()
-    {
-    }
-
     public Object getVisit()
     {
         return null;
     }
 
     public void addPageRenderListener(PageRenderListener listener)
-    {
-    }
-
-    public void addPageDetachListener(PageDetachListener listener)
-    {
-    }
-
-    public void addPageCleanupListener(PageCleanupListener listener)
     {
     }
 
@@ -193,7 +171,6 @@ public class MockPage extends BaseLocatable implements IPage
     public void addComponent(IComponent component)
     {
     }
-
 
     public Map getAssets()
     {
@@ -277,7 +254,6 @@ public class MockPage extends BaseLocatable implements IPage
         _specification = value;
     }
 
-
     public void setBinding(String name, IBinding binding)
     {
     }
@@ -287,7 +263,10 @@ public class MockPage extends BaseLocatable implements IPage
         return null;
     }
 
-    public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification)
+    public void finishLoad(
+        IRequestCycle cycle,
+        IPageLoader loader,
+        ComponentSpecification specification)
     {
     }
 
@@ -310,10 +289,6 @@ public class MockPage extends BaseLocatable implements IPage
     public void setEngine(IEngine engine)
     {
         _engine = engine;
-    }
-
-    public void removePageCleanupListener(PageCleanupListener listener)
-    {
     }
 
     public void removePageDetachListener(PageDetachListener listener)
@@ -371,6 +346,10 @@ public class MockPage extends BaseLocatable implements IPage
     public IComponentStrings getStrings()
     {
         return null;
+    }
+
+    public void addPageDetachListener(PageDetachListener listener)
+    {
     }
 
 }
