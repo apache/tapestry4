@@ -61,7 +61,7 @@
 
 		<echo>Generating checksums ...</echo>
 
-		<checksum fileext="md5">
+		<checksum fileext=".md5">
 			<fileset dir="${framework.version}">
 				<include name="*.tar.gz"/>
 				<include name="*.zip"/>
