@@ -48,15 +48,6 @@ public class BorderApplication extends SimpleApplication
     super(context, locale);
   }
 
-  protected String getSpecificationAttributeName()
-  {
-    return "Border.specification";
-  }
-
-  protected String getSpecificationResourceName()
-  {
-    return "/tutorial/border/Border.application";
-  }
   
   public String[] getPageNames()
   {

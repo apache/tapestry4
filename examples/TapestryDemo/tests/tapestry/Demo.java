@@ -43,23 +43,15 @@ import javax.naming.*;
 
 public class Demo extends ApplicationServlet
 {
-	protected IApplication getApplication(RequestContext context)
+	protected String getApplicationSpecificationPath()
 	{
-		IApplication result;
-		String name = "tests.tapestry.DemoApplication";
-
-		result = (IApplication)context.getSessionAttribute(name);
-
-		if (result == null)
-		{
-			result = new DemoApplication(context); 
-
-			context.setSessionAttribute(name, result);
-		}
-
-		return result;
+		return "/tests/tapestry/Demo.application";
 	}
-
+	
+	protected IApplication createApplication(RequestContext context)
+	{
+		return new DemoApplication(context); 
+	}
 
 	public String getServletInfo()
 	{

@@ -35,24 +35,16 @@ package tutorial.border;
  */ 
 
 import com.primix.tapestry.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
 
 public class BorderServlet extends ApplicationServlet
 {
-  protected IApplication getApplication(RequestContext context)
-  {
-    String name = "Border.application";
-    IApplication application;
+	protected String getApplicationSpecificationPath()
+	{
+		return "/tutorial/border/Border.application";
+	}
 
-    application = (IApplication)context.getSessionAttribute(name);
-
-    if (application == null)
-    {
-      application = new BorderApplication(context, null);
-      context.setSessionAttribute(name, application);
-    }
-
-    return application;
-  }
+	protected IApplication createApplication(RequestContext context)
+	{
+		return new BorderApplication(context, null);
+	}
 }
