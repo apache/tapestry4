@@ -16,40 +16,36 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <component-specification class="org.apache.tapestry.components.Insert" 
-	allow-body="no">
+    allow-body="no">
   
   <description>
   Emits a value into the response page.
   </description>
   
-  
-  <parameter name="value" type="java.lang.Object" direction="in">
+  <parameter name="value">
   	<description>
   	The value to be emitted.  Non-strings are converted to strings.
   	</description>
   </parameter>
   
-  <parameter name="format" type="java.text.Format" direction="in">
+  <parameter name="format">
   	<description>
   	A Format object used to convert the value to a string.
   	</description>
   </parameter>
   
-  <parameter name="raw" type="boolean" direction="in">
+  <parameter name="raw">
   	<description>
   	If false (the default), then HTML characters in the value are escaped.  If
   	true, then value is emitted exactly as is.
   	</description>
   </parameter>
   
-  <parameter name="class" 
-  	type="java.lang.String"
-  	property-name="styleClass"
-  	direction="in">
+  <parameter name="class" property-name="styleClass">
   	<description>
   	If specified, then any output is wrapped in an HTML span tag with the given CSS class.
   	</description>

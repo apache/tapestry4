@@ -16,21 +16,21 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
   
 <component-specification class="org.apache.tapestry.components.Conditional">
   <description>
   Conditionally emulates an element and its attributes (if element is specified) and/or includes a block of content if a condition is met.
   </description>
   
-  <parameter name="condition" type="boolean" direction="in" required="yes">
+  <parameter name="condition" required="yes">
     <description>
     The condition to evaluate.
     </description>
   </parameter>
   
-  <parameter name="invert" type="boolean" direction="in">
+  <parameter name="invert">
     <description>
     If true, inverts the condition, so that a false condition causes the 
     content to be included.  If false (the default), then the condition
@@ -38,7 +38,7 @@
     </description>
   </parameter>
 
-  <parameter name="element" type="java.lang.String" direction="in" required="no">
+  <parameter name="element">
   	<description>
   	The element to emulate.
   	</description>
