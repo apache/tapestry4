@@ -56,6 +56,31 @@ public class Direction extends Enum
 	
 	public static final Direction CUSTOM = new Direction("CUSTOM");
 
+
+    /**
+     *  Encapsulates the semantics of a component parameter whose value 
+     *  is automatically cached.
+     * 
+     *  <p>The component must define an abstract getter and possibly an
+     *  abstract setter for the property defined by the parameter.
+     *  Tapestry will automatically create implementations for those 
+     *  methods. They will operate in the following way:
+     * 
+     *  <ul>
+     *  <li>The get method of the property will get the value from the
+     *  binding upon the first request and will cache it. Further 
+     *  invocations of that method will return the cached value. 
+     *  Cached values are discarded when the page is detached.
+     * 
+     *  <li>The set method (if implemented) will set the value in the 
+     *  binding and will update the cache.
+     * 
+     *  @since 2.3
+     * 
+     **/
+
+    public static final Direction CACHED = new Direction("CACHED");    
+    
     protected Direction(String name)
     {
         super(name);

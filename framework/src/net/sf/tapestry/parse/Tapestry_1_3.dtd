@@ -399,7 +399,7 @@ Attributes:
   java-type CDATA #IMPLIED
   required %attribute-flag; "no"
   property-name CDATA #IMPLIED
-  direction (in|form|custom) "custom"
+  direction (in|form|custom|cached) "custom"
 >
 
 <!-- =======================================================

@@ -364,6 +364,7 @@ public class SpecificationParser extends AbstractDocumentParser
         _conversionMap.put("in", Direction.IN);
         _conversionMap.put("form", Direction.FORM);
         _conversionMap.put("custom", Direction.CUSTOM);
+        _conversionMap.put("cached", Direction.CACHED);
     }
 
     public SpecificationParser()

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<component-specification class="net.sf.tapestry.junit.load.EnhancedComponent" 
+	allow-body="yes" allow-informal-parameters="yes">
+	
+	<parameter name="cachedParameterString" 
+		java-type="java.lang.String" 
+		required="no"
+		direction="cached"/>
+  
+</component-specification>
