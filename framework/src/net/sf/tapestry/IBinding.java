@@ -115,16 +115,6 @@ public interface IBinding
 
     public Object getObject(String parameterName, Class type);
 
-    /**
-     *  Returns true if the value is statically defined.  Static values
-     *  are always read-only.
-     *
-     *  @deprecated use {@link #isInvariant()} instead.
-     **/
-
-    public boolean isStatic();
-
-
 	/**
 	 *  Returns true if the value is invariant (not changing; the
 	 *  same value returned each time).  Static and field bindings

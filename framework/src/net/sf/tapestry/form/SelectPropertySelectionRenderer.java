@@ -33,6 +33,7 @@ import net.sf.tapestry.RequestCycleException;
  *  Implementation of {@link IPropertySelectionRenderer} that
  *  produces a &lt;select&gt; element (containing &lt;option&gt; elements).
  *
+ *  @deprecated To be removed in 2.3.
  *  @version $Id$
  *  @author Howard Lewis Ship
  *

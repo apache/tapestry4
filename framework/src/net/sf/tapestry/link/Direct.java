@@ -329,7 +329,7 @@ public class Direct extends GestureLink implements IDirect
     }
 
     /**
-     *  @deprecated use {@link #getParameters().
+     *  @deprecated To be removed in 2.3, use {@link #getParameters().
      * 
      **/
 
@@ -339,7 +339,7 @@ public class Direct extends GestureLink implements IDirect
     }
 
     /**
-     *  @deprecated use {@link #setParameters(Object)}.
+     *  @deprecated To be removed in 2.3, use {@link #setParameters(Object)}.
      * 
      **/
 

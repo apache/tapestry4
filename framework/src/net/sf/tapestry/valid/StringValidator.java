@@ -51,18 +51,6 @@ public class StringValidator extends BaseValidator
             super(required);
         }
 
-        /** 
-         *  @deprecated to be removed in 2.1
-         * 
-         *  @throws UnsupportedOperationException 
-         * 
-         **/
-
-        public void setLocale(Locale value)
-        {
-            throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
-        }
-
         /** @throws UnsupportedOperationException **/
 
         public void setMinimumLength(int minimumLength)

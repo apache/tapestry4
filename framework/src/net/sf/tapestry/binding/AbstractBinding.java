@@ -166,19 +166,6 @@ public abstract class AbstractBinding implements IBinding
         throw new ReadOnlyBindingException(this);
     }
 
-    /**
-     *  Default implementation: returns the result
-     *  of {@link #isInvariant()}.
-     * 
-     *  @deprecated use {@link #isInvariant()}
-     * 
-     **/
-
-    public boolean isStatic()
-    {
-        return isInvariant();
-    }
-
 	/**
 	 *  Default implementation: returns true.
 	 * 

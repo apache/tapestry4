@@ -47,31 +47,14 @@ import net.sf.tapestry.spec.ComponentSpecification;
 
 public class BaseComponent extends AbstractComponent
 {
-    /**
-     *  @deprecated to be remoaved after 2.1
-     * 
-     **/
-
-    protected static final int OUTER_INIT_SIZE = 5;
-
-    /**
-     * 
-     *  @deprecated to be removed after 2.1, use {@link IComponent#renderWrapped(IMarkupWriter, IRequestCycle)}.
-     * 
-     **/
-
-    protected int outerCount = 0;
-
-    /**
-     * 
-     *  @deprecated to be removed after 2.1, use {@link IComponent#renderWrapped(IMarkupWriter, IRequestCycle)}.
-     * 
-     **/
-
-    protected IRender[] outer;
-
     private static final Category CAT =
         Category.getInstance(BaseComponent.class);
+
+    private int _outerCount = 0;
+
+    private static final int OUTER_INIT_SIZE = 5;
+
+    private IRender[] _outer;
 
     /**
      *  A class used with invisible localizations.  Constructed
@@ -83,13 +66,13 @@ public class BaseComponent extends AbstractComponent
 
     private class LocalizedStringRender implements IRender
     {
-        private String key;
-        private Map attributes;
+        private String _key;
+        private Map _attributes;
 
         private LocalizedStringRender(String key, Map attributes)
         {
-            this.key = key;
-            this.attributes = attributes;
+            _key = key;
+            _attributes = attributes;
         }
 
         public void render(IMarkupWriter writer, IRequestCycle cycle)
@@ -98,11 +81,11 @@ public class BaseComponent extends AbstractComponent
             if (cycle.isRewinding())
                 return;
 
-            if (attributes != null)
+            if (_attributes != null)
             {
                 writer.begin("span");
 
-                Iterator i = attributes.entrySet().iterator();
+                Iterator i = _attributes.entrySet().iterator();
 
                 while (i.hasNext())
                 {
@@ -114,9 +97,9 @@ public class BaseComponent extends AbstractComponent
                 }
             }
 
-            writer.print(getString(key));
+            writer.print(getString(_key));
 
-            if (attributes != null)
+            if (_attributes != null)
                 writer.end();
         }
 
@@ -125,12 +108,12 @@ public class BaseComponent extends AbstractComponent
             StringBuffer buffer = new StringBuffer("LocalizedStringRender@");
             buffer.append(Integer.toHexString(hashCode()));
             buffer.append('[');
-            buffer.append(key);
+            buffer.append(_key);
 
-            if (attributes != null)
+            if (_attributes != null)
             {
                 buffer.append(' ');
-                buffer.append(attributes);
+                buffer.append(_attributes);
             }
 
             buffer.append(']');
@@ -145,35 +128,34 @@ public class BaseComponent extends AbstractComponent
      *  receiver's <code>render()</code> method.  That is, they are
      *  top-level elements on the HTML template.
      *
-     *  @deprecated to be marked private after 2.1
      * 
      **/
 
-    protected void addOuter(IRender element)
+    private void addOuter(IRender element)
     {
-        if (outer == null)
+        if (_outer == null)
         {
-            outer = new IRender[OUTER_INIT_SIZE];
-            outer[0] = element;
+            _outer = new IRender[OUTER_INIT_SIZE];
+            _outer[0] = element;
 
-            outerCount = 1;
+            _outerCount = 1;
             return;
         }
 
         // No more room?  Make the array bigger.
 
-        if (outerCount == outer.length)
+        if (_outerCount == _outer.length)
         {
             IRender[] newOuter;
 
-            newOuter = new IRender[outer.length * 2];
+            newOuter = new IRender[_outer.length * 2];
 
-            System.arraycopy(outer, 0, newOuter, 0, outerCount);
+            System.arraycopy(_outer, 0, newOuter, 0, _outerCount);
 
-            outer = newOuter;
+            _outer = newOuter;
         }
 
-        outer[outerCount++] = element;
+        _outer[_outerCount++] = element;
     }
 
     /**
@@ -183,10 +165,9 @@ public class BaseComponent extends AbstractComponent
      *
      *  <P>This is coded as a single, big, ugly method for efficiency.
      * 
-     *  @deprecated to be marked private after 2.1
      **/
 
-    protected void readTemplate(IPageLoader loader) throws PageLoaderException
+    private void readTemplate(IPageLoader loader) throws PageLoaderException
     {
         ComponentTemplate componentTemplate;
         Set seenIds = new HashSet();
@@ -521,8 +502,8 @@ public class BaseComponent extends AbstractComponent
         if (CAT.isDebugEnabled())
             CAT.debug("Begin render " + getExtendedId());
 
-        for (int i = 0; i < outerCount; i++)
-            outer[i].render(writer, cycle);
+        for (int i = 0; i < _outerCount; i++)
+            _outer[i].render(writer, cycle);
 
         if (CAT.isDebugEnabled())
             CAT.debug("End render " + getExtendedId());
