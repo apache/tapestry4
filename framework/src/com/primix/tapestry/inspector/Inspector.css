@@ -1,6 +1,10 @@
 P  {}
 
-H1  {}
+H1  {
+	font-size: 12pt;
+	font-weight: bold;
+
+}
 
 H2  {}
 
@@ -14,7 +18,9 @@ A:Active  {}
 
 A:Hover  {}
 
-BODY  {}
+BODY  {
+	font-family: "Trebuchet MS", sans-serif;
+}
 
 
 TABLE.inspector-data TR.odd TD  {
@@ -46,7 +52,6 @@ TABLE.inspector-data,
 TABLE.selector
 {
 	font-size: 9pt;
-	font-family: "Trebuchet MS", sans-serif;
 }
 
 TABLE.selector TD.page-link
@@ -78,8 +83,6 @@ SPAN.message
 {
 	color : Silver
 	font-size: large;
-	text-align: center;
-	font-weight: bold;
 }
 
 SPAN.jwc-tag
@@ -92,22 +95,4 @@ SPAN.jwc-id
 	font-style: italic;
 }
 
-TABLE.java-source
-{
-
-}
-
-TABLE.java-source TH
-{
-	text-align: right;
-	font-size: small;
-	margin-right: 4px;
-
-}
-
-TABLE.java-source TD
-{
-	font-family: monospace;
-	background-color: Silver;
-}
 	

@@ -104,5 +104,25 @@
 				</binding>
 			</bindings>
 		</component>
+		<component>
+			<id>insertByteCount</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>applicationByteCount</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertSerializedApplication</id>
+			<type>Delegator</type>
+			<bindings>
+				<binding>
+					<name>delegate</name>
+					<property-path>applicationDumpDelegate</property-path>
+				</binding>
+			</bindings>
+		</component>
 	</components>
 </specification>
