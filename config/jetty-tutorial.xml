@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- $Id$ -->
-<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure 1.1//EN"
- "http://jetty.mortbay.com/configure_1_1.dtd">
+<!DOCTYPE Configure PUBLIC
+	"-//Mort Bay Consulting//DTD Configure 1.2//EN"
+	"http://jetty.mortbay.org/configure_1_2.dtd">
 <!--
   This configuration file is used to allow the Tutorial to be run directly from
   the main distribution directory (i.e., without having to build the frameworks).
@@ -11,30 +12,23 @@
     <Arg>
       <New class="org.mortbay.http.SocketListener">
         <Set name="Port">8080</Set>
-        <Set name="MinThreads">5</Set>
-        <Set name="MaxThreads">255</Set>
+        <Set name="MinThreads">1</Set>
+        <Set name="MaxThreads">10</Set>
         <Set name="MaxIdleTimeMs">50000</Set>
       </New>
     </Arg>
   </Call>
-  <!-- This writes a log of each incoming request to the default output, which makes
-       it easier to see what Tapestry and Jetty are up to. -->
-  <Set name="LogSink">
-    <New class="org.mortbay.util.WriterLogSink"/>
-  </Set>
   
   <Call name="addWebApplication">
-    <Arg>/tutorial/*</Arg>
+    <Arg>/tutorial</Arg>
     <Arg>lib/Tutorial.war</Arg>
-    <Arg/>
+    <Arg>config/webdefault.xml</Arg>
+    <Arg type="boolean">false</Arg>
   </Call>
   
    <Call name="addContext">
     <Arg>/private/*</Arg>
     <Set name="ResourceBase">private</Set>
     <Set name="ServingResources">TRUE</Set>
-
   </Call>
-  
-  
 </Configure>

@@ -42,124 +42,124 @@ output symbols:
 <!-- baseName - base name from which other names are generated -->
 
 <let key="baseName">
-  <insert property-path="formName"/>_<insert property-path="name"/>
+  ${formName}_${name}
 </let>
 
 <let key="buttons">
-  buttons_<insert property-path="baseName"/>
+  buttons_${baseName}
 </let>
 
 <let key="selectDisabled">
-  <insert property-path="buttons"/>.selectDisabled
+  ${buttons}.selectDisabled
 </let>
 
 <let key="deselectDisabled">
-  <insert property-path="buttons"/>.deselectDisabled
+  ${buttons}.deselectDisabled
 </let>
 
 <let key="upDisabled">
-  <insert property-path="buttons"/>.upDisabled
+  ${buttons}.upDisabled
 </let>
 
 <let key="downDisabled">
-  <insert property-path="buttons"/>.downDisabled
+  ${buttons}.downDisabled
 </let>
 
 <let key="availableName">
-  <insert property-path="name"/>_avail
+  ${name}_avail
 </let>
 
 <let key="updateFunctionName">
-  update_<insert property-path="baseName"/>
+  update_${baseName}
 </let>
 
 <let key="selectFunctionName">
-  select_<insert property-path="baseName"/>
+  select_${baseName}
 </let>
 
 <let key="selectOnClickScript">
-  javascript:<insert property-path="selectFunctionName"/>();
+  javascript:${selectFunctionName}();
 </let>
 
 <let key="deselectFunctionName">
-  deselect_<insert property-path="baseName"/>
+  deselect_${baseName}
 </let>
 
 <let key="deselectOnClickScript">
-  javascript:<insert property-path="deselectFunctionName"/>();
+  javascript:${deselectFunctionName}();
 </let>
 
 <let key="formSubmitFunctionName">
-  onsubmit_<insert property-path="baseName"/>
+  onsubmit_${baseName}
 </let>
 
 <let key="selectImageName">
-  selectimage_<insert property-path="baseName"/>
+  selectimage_${baseName}
 </let>
 
 <let key="selectImagePath">
-  document.<insert property-path="selectImageName"/>
+  document.${selectImageName}
 </let>
 
 <let key="deselectImageName">
-  deselectimage_<insert property-path="baseName"/>
+  deselectimage_${baseName}
 </let>
 
 <let key="deselectImagePath">
-  document.<insert property-path="deselectImageName"/>
+  document.${deselectImageName}
 </let>
 
 <let key="formPath">
-  document.<insert property-path="formName"/>
+  document.${formName}
 </let>
 
 <let key="selectedPath">
-  <insert property-path="formPath"/>.<insert property-path="name"/>
+  ${formPath}.${name}
 </let>
 
 <let key="selectedChangeFunctionName">
-  onChange_<insert property-path="baseName"/>_selected
+  onChange_${baseName}_selected
 </let>
 
 <let key="availablePath">
-  <insert property-path="formPath"/>.<insert property-path="availableName"/>
+  ${formPath}.${availableName}
 </let>
 
 <let key="availableChangeFunctionName">
-  onChange_<insert property-path="baseName"/>_available
+  onChange_${baseName}_available
 </let>
 
 
 <let key="upImageName">
-  upimage_<insert property-path="baseName"/>
+  upimage_${baseName}
 </let>
 
 <let key="upImagePath">
-  document.<insert property-path="upImageName"/>
+  document.${upImageName}
 </let>
 
 <let key="downImageName">
-  downimage_<insert property-path="baseName"/>
+  downimage_${baseName}
 </let>
 
 <let key="downImagePath">
-  document.<insert property-path="downImageName"/>
+  document.${downImageName}
 </let>
 
 <let key="moveUpFunctionName">
-  moveup_<insert property-path="baseName"/>
+  moveup_${baseName}
 </let>
 
 <let key="upOnClickScript">
-  javascript:<insert property-path="moveUpFunctionName"/>();
+  javascript:${moveUpFunctionName}();
 </let>
 
 <let key="moveDownFunctionName">
-  movedown_<insert property-path="baseName"/>
+  movedown_${baseName}
 </let>
 
 <let key="downOnClickScript">
-  javascript:<insert property-path="moveDownFunctionName"/>();
+  javascript:${moveDownFunctionName}();
 </let>
 
 
@@ -170,48 +170,48 @@ output symbols:
      loading, at which point the update function will determine which
      can be used. -->
      
-var <insert property-path="buttons"/> = new Object();
-<insert property-path="selectDisabled"/> = true;
-<insert property-path="deselectDisabled"/> = true;
+var ${buttons} = new Object();
+${selectDisabled} = true;
+${deselectDisabled} = true;
 <if property-path="sortUser">
-<insert property-path="upDisabled"/> = true;
-<insert property-path="downDisabled"/> = true;
+${upDisabled} = true;
+${downDisabled} = true;
 </if>
 
-function <insert property-path="updateFunctionName"/>()
+function ${updateFunctionName}()
 {
-  var disabled = <insert property-path="availablePath"/>.selectedIndex &lt; 0;
+  var disabled = ${availablePath}.selectedIndex &lt; 0;
   
-  <insert property-path="selectDisabled"/> = disabled;
+  ${selectDisabled} = disabled;
  
   if (document.images)
-    <insert property-path="selectImagePath"/>.src =
-      disabled ? <insert property-path="selectDisabledImage"/>
-               : <insert property-path="selectImage"/>;
+    ${selectImagePath}.src =
+      disabled ? ${selectDisabledImage}
+               : ${selectImage};
 
-  var selected = <insert property-path="selectedPath"/>;
+  var selected = ${selectedPath};
   var index = selected.selectedIndex;
 
   disabled = index &lt; 0;
-  <insert property-path="deselectDisabled"/> = disabled;
+  ${deselectDisabled} = disabled;
  
   if (document.images)
-    <insert property-path="deselectImagePath"/>.src =
-      disabled ? <insert property-path="deselectDisabledImage"/>
-               : <insert property-path="deselectImage"/>;
+    ${deselectImagePath}.src =
+      disabled ? ${deselectDisabledImage}
+               : ${deselectImage};
          
 <if property-path="sortUser">
 
-  var upImage = <insert property-path="upImagePath"/>;
-  var downImage = <insert property-path="downImagePath"/>
+  var upImage = ${upImagePath};
+  var downImage = ${downImagePath}
   
-  <insert property-path="upDisabled"/> = true;
-  <insert property-path="downDisabled"/> = true;
+  ${upDisabled} = true;
+  ${downDisabled} = true;
   
   if (document.images)
   {
-    upImage.src = <insert property-path="upDisabledImage"/>;
-    downImage.src = <insert property-path="downDisabledImage"/>;
+    upImage.src = ${upDisabledImage};
+    downImage.src = ${downDisabledImage};
   }
   
   <!-- If there's no selection in the "selected" column, then leave
@@ -229,27 +229,27 @@ function <insert property-path="updateFunctionName"/>()
     return;
   }
   
-  <insert property-path="upDisabled"/> = (index == 0);
-  <insert property-path="downDisabled"/> = (index == selected.options.length - 1);  
+  ${upDisabled} = (index == 0);
+  ${downDisabled} = (index == selected.options.length - 1);  
   
   if (document.images)
   {
-    if (!<insert property-path="upDisabled"/>)
-      upImage.src = <insert property-path="upImage"/>;
+    if (!${upDisabled})
+      upImage.src = ${upImage};
 
-    if (!<insert property-path="downDisabled"/>)
-      downImage.src = <insert property-path="downImage"/>;
+    if (!${downDisabled})
+      downImage.src = ${downImage};
   }
 </if>  
 }
 
-function <insert property-path="selectFunctionName"/>()
+function ${selectFunctionName}()
 {
- if (<insert property-path="selectDisabled"/>)
+ if (${selectDisabled})
     return;
     
-  var source = <insert property-path="availablePath"/>;
-  var target = <insert property-path="selectedPath"/>;
+  var source = ${availablePath};
+  var target = ${selectedPath};
      
   palette_transfer_selections(source, target);
   
@@ -259,16 +259,16 @@ function <insert property-path="selectFunctionName"/>()
 <if property-path="sortValue">
   palette_sort_by_value(target);
 </if>
-  <insert property-path="updateFunctionName"/>();
+  ${updateFunctionName}();
 }
 
-function <insert property-path="deselectFunctionName"/>()
+function ${deselectFunctionName}()
 {
-  if (<insert property-path="deselectDisabled"/>)
+  if (${deselectDisabled})
     return;
   
-  var source = <insert property-path="selectedPath"/>;
-  var target = <insert property-path="availablePath"/>;
+  var source = ${selectedPath};
+  var target = ${availablePath};
   
   palette_transfer_selections(source, target);
   
@@ -278,67 +278,67 @@ function <insert property-path="deselectFunctionName"/>()
 <if property-path="sortValue">
   palette_sort_by_value(target);
 </if>
-  <insert property-path="updateFunctionName"/>();  
+  ${updateFunctionName}();  
 }
 
-function <insert property-path="formSubmitFunctionName"/>()
+function ${formSubmitFunctionName}()
 {
-  palette_clear_selections(<insert property-path="availablePath"/>);
-  palette_select_all(<insert property-path="selectedPath"/>);
+  palette_clear_selections(${availablePath});
+  palette_select_all(${selectedPath});
   
   return true;
 }
 
 <if property-path="sortUser">
-function <insert property-path="moveUpFunctionName"/>()
+function ${moveUpFunctionName}()
 {
-  if (<insert property-path="upDisabled"/>)
+  if (${upDisabled})
     return;
     
-  var element = <insert property-path="selectedPath"/>;
+  var element = ${selectedPath};
   var options = element.options;
     
   palette_swap_options(options, element.selectedIndex, element.selectedIndex - 1);
   
-  <insert property-path="updateFunctionName"/>();
+  ${updateFunctionName}();
 }
 
-function <insert property-path="moveDownFunctionName"/>()
+function ${moveDownFunctionName}()
 {
-  if (<insert property-path="downDisabled"/>)
+  if (${downDisabled})
     return;
     
-  var element = <insert property-path="selectedPath"/>;
+  var element = ${selectedPath};
   var options = element.options;
   
   palette_swap_options(options, element.selectedIndex, element.selectedIndex + 1);
   
-  <insert property-path="updateFunctionName"/>();
+  ${updateFunctionName}();
 }
 </if>
 
-function <insert property-path="selectedChangeFunctionName"/>()
+function ${selectedChangeFunctionName}()
 {
-  palette_clear_selections(<insert property-path="availablePath"/>);
-  <insert property-path="updateFunctionName"/>();
+  palette_clear_selections(${availablePath});
+  ${updateFunctionName}();
 }
 
-function <insert property-path="availableChangeFunctionName"/>()
+function ${availableChangeFunctionName}()
 {
-  palette_clear_selections(<insert property-path="selectedPath"/>);
-  <insert property-path="updateFunctionName"/>();
+  palette_clear_selections(${selectedPath});
+  ${updateFunctionName}();
 }
 
 </body>
 
 <initialization>
 
-<insert property-path="selectedPath"/>.onchange = <insert property-path="selectedChangeFunctionName"/>;
-<insert property-path="selectedPath"/>.ondblclick = <insert property-path="deselectFunctionName"/>;
-<insert property-path="availablePath"/>.onchange = <insert property-path="availableChangeFunctionName"/>;
-<insert property-path="availablePath"/>.ondblclick = <insert property-path="selectFunctionName"/>;
+${selectedPath}.onchange = ${selectedChangeFunctionName};
+${selectedPath}.ondblclick = ${deselectFunctionName};
+${availablePath}.onchange = ${availableChangeFunctionName};
+${availablePath}.ondblclick = ${selectFunctionName};
 
-<insert property-path="updateFunctionName"/>();
+${updateFunctionName}();
 
 </initialization>
 </script>

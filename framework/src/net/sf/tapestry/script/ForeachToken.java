@@ -69,6 +69,9 @@ class ForeachToken extends AbstractToken
 
         Iterator i = Tapestry.coerceToIterator(rawSource);
 
+        if (i == null)
+            return;
+            
         while (i.hasNext())
         {
             Object newValue = i.next();

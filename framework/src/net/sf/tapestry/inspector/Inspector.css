@@ -132,12 +132,12 @@ TR.request-context-header TH  {
 TABLE.request-context-object TR.odd TD  {
 	text-align : left;
 	color : Black;
-	background-color : #C0C0FF;
+	background-color : Silver;
 }
 
 TABLE.request-context-object TR.odd TH  {
 	color : Black;
-	background-color : #C0C0FF;
+	background-color : Silver;
 	text-align : right;
 }
 
@@ -174,13 +174,13 @@ TABLE.exception-display TR.even TH  {
 
 TABLE.exception-display TR.odd TD  {
 	text-align : left;
-	background-color : #C0C0FF;
+	background-color : Silver;
 }
 
 TABLE.exception-display TR.odd TH  {
 	text-align : right;
 	font-weight : bold;
-	background-color : #C0C0FF;	
+	background-color : Silver;	
 }
 
 TABLE.exception-display TR.even TD  {

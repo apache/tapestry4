@@ -26,6 +26,7 @@
 	<pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
 	<pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
 	<pathelement location="${lib.ext.dir}/ejb.jar"/>
+	<pathelement location="config"/>
 </path>
 
 <path id="full.classpath">
@@ -327,9 +328,12 @@
 		<jvmarg line="-showversion -Xdebug -Xnoagent"/>
 		<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
 		
-		<!-- Jetty 3.1.5 can get easily confused (under NT) unless this is turned off. -->
+		<!-- Jetty can get easily confused (under NT) unless this is turned off. -->
 		
 		<sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
+		
+	 	<sysproperty key="net.sf.tapestry.asset.dir" value="${private.dir}"/>
+	 	<sysproperty key="net.sf.tapestry.asset.URL" value="/private"/>		
 	</java>
 </target>
 
