@@ -1,55 +1,42 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
 <project name="Tapestry Contrib Framework" default="install">
-  <!-- Directory in which compiled classes are placed -->
-  <property name="classes" value="classes"/>
-  <!-- Directory that contains library frameworks, and to
-       which the framework is eventually installed -->
-  <property name="lib" value="../lib"/>
-  <!-- Directory containing source code and package resources -->
-  <property name="src" value="src"/>
-  
-  <property file="../framework/src/com/primix/tapestry/Version.properties"/>
-  
-  <!-- Path of the installed framework jar -->
-  <property name="framework.jar" value="${lib}/net.sf.tapestry.contrib_${framework.version}.jar"/>
-  <!-- Relative path to the Javadoc directory -->
-  <property name="javadoc.dir" value="../doc/api"/>
-  
-  <!-- Read the configuration file to get the absolute path
-       to the JBoss installation (2.4.x). -->
-       
-  <property file="../config/build.properties"/>
-  
+
+  <property name="root.dir" value=".."/>
+  <property file="${root.dir}/config/Version.properties"/>
+  <property file="${root.dir}/config/build.properties"/>
+  <property file="${root.dir}/config/common.properties"/>
   
   <path id="project.class.path">
-    <pathelement location="${lib}/ext/javax.servlet.jar"/>
-    <pathelement location="${lib}/ext/log4j-core.jar"/>
-    <pathelement location="${lib}/ext/javax.xml.jaxp.jar"/>
-    <pathelement location="${lib}/ext/org.apache.crimson.jar"/>
-    <pathelement location="${lib}/com.primix.tapestry_${framework.version}.jar"/>
-    <pathelement location="${lib}/ext/mckoidb.jar"/>
-    <pathelement location="${jboss.dir}/lib/jmxri.jar"/>
-    <pathelement location="${jboss.dir}/lib/ext/jboss.jar"/>
-    <pathelement location="${jboss.dir}/lib/ext/jboss-j2ee.jar"/>
+    <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
+    <pathelement location="${lib.ext.dir}/log4j-core.jar"/>
+    <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
+    <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
+    <pathelement location="${framework.jar}"/>
+    <pathelement location="${lib.ext.dir}/mckoidb.jar"/>
+    <pathelement location="${jboss.lib.dir}/jmxri.jar"/>
+    <pathelement location="${jboss.lib.ext.dir}/jboss.jar"/>
+    <pathelement location="${jboss.lib.ext.dir}/jboss-j2ee.jar"/>
   </path>
   
   <target name="init">
-    <tstamp/>
-    <mkdir dir="${classes}"/>
+    <mkdir dir="${classes.dir}"/>
   </target>
+  
   <target name="clean">
-    <delete dir="${classes}"/>
+    <delete dir="${classes.dir}"/>
   </target>
+  
   <target name="compile" depends="init" description="Compile all classes in the framework.">
-    <javac srcdir="${src}" destdir="${classes}">
+    <javac srcdir="${src.dir}" destdir="${classes.dir}">
       <classpath refid="project.class.path"/>
     </javac>
   </target>
+  
   <target name="install" depends="compile" description="Compile all classes and build the installed JAR including all package resources.">
-    <jar jarfile="${framework.jar}">
-      <fileset dir="${classes}"/>
-      <fileset dir="${src}">
+    <jar jarfile="${contrib.jar}">
+      <fileset dir="${classes.dir}"/>
+      <fileset dir="${src.dir}">
         <include name="**/*.jwc"/>
         <include name="**/*.html"/>
         <include name="**/*.gif"/>

@@ -2,63 +2,56 @@
 <!-- $Id$ -->
 <project name="Tapestry Framework JUnit Test Suite" default="run">
 
-  <!-- Directory in which compiled classes are placed -->
-  <property name="classes" value="classes"/>
-
-  <!-- Directory that contains library frameworks -->
-  <property name="lib" value="../lib"/>
-  
-  <!-- Directory containing source code and package resources -->
-  <property name="src" value="src"/>
-
-  <property file="../framework/src/com/primix/tapestry/Version.properties"/>
- 
+  <property name="root.dir" value="../"/>
+  <property file="${root.dir}/config/Version.properties"/>
+  <property file="${root.dir}/config/build.properties"/>
+  <property file="${root.dir}/config/common.properties"/>
+   
   <path id="project.class.path">
-    <pathelement location="${lib}/com.primix.tapestry_${framework.version}.jar"/>
-    <pathelement location="${lib}/ext/ejb.jar"/>
-    <pathelement location="${lib}/ext/javax.servlet.jar"/>
-    <pathelement location="${lib}/ext/log4j-core.jar"/>
-    <pathelement location="${lib}/ext/javax.xml.jaxp.jar"/>
-    <pathelement location="${lib}/ext/org.apache.crimson.jar"/>
-    <pathelement location="${lib}/ext/junit.jar"/>
+    <pathelement location="${framework.jar}"/>
+    <pathelement location="${lib.ext.dir}/ejb.jar"/>
+    <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
+    <pathelement location="${lib.ext.dir}/log4j-core.jar"/>
+    <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
+    <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
+    <pathelement location="${lib.ext.dir}/junit.jar"/>
   </path>
 
   <target name="init">
-    <tstamp/>
-    <mkdir dir="${classes}"/>
+    <mkdir dir="${classes.dir}"/>
   </target>
 
   <target name="clean">
-    <delete dir="${classes}"/>
+    <delete dir="${classes.dir}"/>
   </target>
 
   <target name="compile" depends="init" description="Compile all test classes.">
-    <javac srcdir="${src}" destdir="${classes}">
+    <javac srcdir="${src.dir}" destdir="${classes.dir}">
       <classpath refid="project.class.path"/>
     </javac>
   </target>
 
-  <path id="junit.classpath">
-    <path location="${classes}"/>
+  <path id="junit.class.path">
+    <path location="${classes.dir}"/>
   	 <!-- Add the src directory back in, since package resources needed by
   	      the tests are there.  Also, ensure that the local copy 
   	      of junit/running/excluded.properties overrides the default
   	      copy in junit.jar -->
-  	 <path location="${src}"/>
+  	 <path location="${src.dir}"/>
   	 <path refid="project.class.path"/>
   </path>
   	  
   <target name="run" depends="compile" description="Run the test suite.">
   	<junit printsummary="on" haltonfailure="on">
-	  <classpath refid="junit.classpath"/>
+	  <classpath refid="junit.class.path"/>
     		
   	  <test name="net.sf.tapestry.junit.TapestrySuite"/>
   	</junit>
   </target>
   
-  <target name="gui" depends="compile" description="Run the JUnit gui.">
+  <target name="gui" depends="compile" description="Run the JUnit GUI.">
   	<java fork="true" classname="net.sf.tapestry.junit.TapestrySuite">
-  		<classpath refid="junit.classpath"/>
+  		<classpath refid="junit.class.path"/>
   	</java>
   	
   </target>
