@@ -66,19 +66,23 @@ SGML_CATALOG_FILES := \
 
 MOD_VARIABLE_DEFS := \
 	%html-ext%=.html \
-	%html-prefix%=$(HTML_DIR)/ \
-	%root-filename%="$(HTML_DIR)/$(basename $(MAIN_DOCUMENT))"
+	%root-filename%=$(basename $(MAIN_DOCUMENT))
 	
 FINAL_VARIABLE_DEFS := $(MOD_VARIABLE_DEFS) $(VARIABLE_DEFS)
 
-FINAL_STYLESHEET = $(firstword $(STYLESHEET) $(DOCBOOK_DSSSL_DIR)/html/docbook.dsl)
+ifdef STYLESHEET
+FINAL_STYLESHEET := $(call JBE_CANONICALIZE, $(STYLESHEET))
+else
+FINAL_STYLESHEET := $(DOCBOOK_DSSSL_DIR)/html/docbook.dsl
+endif
 
 html: initialize $(DOCUMENT_RESOURCE_STAMP_FILE)
 	$(call NOTE, Generating HTML documentation from $(MAIN_DOCUMENT) ...)
+	$(CD) $(HTML_DIR); \
 	$(OPENJADE) -t sgml -d $(FINAL_STYLESHEET) $(OPENJADE_OPT) \
 	$(foreach vardef,$(FINAL_VARIABLE_DEFS),-V $(vardef)) \
 	$(foreach cat,$(SGML_CATALOG_FILES),-c $(cat)) \
-	$(MAIN_DOCUMENT)
+	../$(MAIN_DOCUMENT)
 
 
 clean:
@@ -90,8 +94,9 @@ ifeq "$(INSTALL_DIR)" ""
 	$(error You must set a value for INSTALL_DIR)
 endif
 	$(call NOTE, Installing HTML documentation to $(INSTALL_DIR) ...)
+	@$(RM) $(INSTALL_DIR)
 	@$(MKDIRS) $(INSTALL_DIR)
-	$(call COPY_TREE, $(HTML_DIR), . , $(INSTALL_DIR))	
+	@$(call COPY_TREE, $(HTML_DIR), . , $(INSTALL_DIR))	
 
 # Rules for dealing with DOCUMENT_RESOURCES, generally images (or directories of images)
 # that should be included with the generated HTML. 
