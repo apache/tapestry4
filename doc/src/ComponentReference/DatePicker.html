@@ -54,8 +54,10 @@
   <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/sql/Date.html">Date</a>
   field component for selecting dates. DatePicker presents a drop down monthly 
   calendar for users to select dates from.
-  <p>
-  JavaScript must be enabled in the client browser to use this component. 
+  <p>  
+  JavaScript must be enabled in the client browser to use the drop down 
+  calendar. If JavaScript is not enabled users can still enter a date value
+  in the HTML text field.  
   <p>
   Note a rendering feature of Netscape and Internet Explorer gives the HTML 
   &lt;select&gt; element the highest Z-level index. The HTML &lt;select&gt; 
@@ -65,8 +67,6 @@
   organize the form's UI layout so this does not occur.
  </td>
 </tr>
-Both Netscape and IE give combo / drop
-down boxes, highest Z-level index and cannot be covered.
 
 <tr>
  <td colspan="2">
@@ -88,7 +88,7 @@ down boxes, highest Z-level index and cannot be covered.
     <th>Type</th>
     <th>Direction</th>
     <th>Required</th> 
-    <th>Default</th>
+    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
     <th>Description</th>
    </tr>
    <tr>
@@ -98,8 +98,18 @@ down boxes, highest Z-level index and cannot be covered.
     </td>
     <td>in</td>
     <td>yes</td>
-    <td>today</td>
-    <td>The data value.</td>
+    <td>&nbsp;</td>
+    <td>
+    The data value.
+    <p>
+    Note the 
+    <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/sql/Date.html"><tt>java.sql.Date</tt></a>
+    class better represents a true calendar date than
+    <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/util/Date.html"><tt>java.util.Date</tt></a>,
+    however internally the data value is stored as a millisecond long time value. 
+    Take care to ensure date time values are 'normalized' before performing any 
+    comparison or equality operations.    
+    </td>
    </tr>
    <tr>
     <td>format</td>
@@ -126,8 +136,91 @@ down boxes, highest Z-level index and cannot be covered.
  <td colspan="2">
   <b>Examples</b>
   <p>
-  This example is under construction.</p>
-      
+  This example provides a simple form where the user can select a start date and
+  an end date.
+  </p>
+
+<table class="examples" cellpadding="8">
+<tr>
+ <td>
+<form jwcid="form">
+<table valign="middle">
+ <tr>
+  <td>Start Date:</td><td><input type="text" size="15" value="1 Jan 2002"/><input type="button" value="V"/></td>
+ </tr>
+ <tr>
+  <td>End Date:</td><td><input type="text" size="15" value="31 Jun 2002"/><input type="button" value="V"/></td>
+ </tr>
+ <tr>
+  <td colspan="2">&nbsp;</td>
+ </tr>
+ <tr>
+  <td colspan="2" align="right"><input type="submit" value="Submit"/></td>
+ </tr>
+</table>
+ </td>
+</tr>
+</table>
+
+<pre>  
+&lt;form jwcid="form"&gt;
+&lt;table valign="middle"&gt;
+ &lt;tr&gt;
+  &lt;td&gt;Start Date:&lt;/td&gt; &lt;td&gt;&lt;span jwcid="<span class="jwcid">startDatePicker</span>"/&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+  &lt;td&gt;End Date:&lt;/td&gt; &lt;td&gt;&lt;span jwcid="<span class="jwcid">endDatePicker</span>"/&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+  &lt;td colspan="2"&gt;&amp;nbsp;&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+  &lt;td colspan="2" align="right"&gt;&lt;input type="submit" value="Submit"/&gt;&lt;/td&gt;
+ &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/form&gt;
+
+
+&lt;component id="form" type="<a href="Form.html">Form</a>"/&gt;
+    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">startDatePicker</span>" type="<a href="DatePicker.html">DatePicker</a>"&gt;
+    &lt;binding name="value" expression="startDate"/&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">endDatePicker</span>" type="<a href="DatePicker.html">DatePicker</a>"&gt;
+    &lt;binding name="value" expression="endDate"/&gt;
+&lt;/component&gt;
+	
+
+public class Dates extends BasePage {
+    private Date startDate;
+    private Date endDate;
+ 
+    public Date getStartDate() { return startDate; }
+
+    public void setStartDate(Date value) {
+        startDate = value;
+    }
+
+    public Date getEndDate() { return endDate; }
+
+    public void setEndDate(Date value) {
+        endDate = value;
+    }  
+
+    public void detach() {
+        startDate = null;
+        endDate = null;       
+        super.detach();
+    }
+
+    public void formSubmit(IRequestCycle cycle) {
+        // Process the submitted dates.
+    }
+}
+</pre>  
 
  </td></tr></table>
 </td></tr>
