@@ -33,6 +33,7 @@ import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.service.impl.ClassFabImpl;
 import org.apache.hivemind.service.impl.CtClassSource;
+import org.apache.hivemind.service.impl.HiveMindClassPool;
 
 /**
  * A utility class that is used to instantiate abstract Tapestry pages and
@@ -54,16 +55,19 @@ public class Creator
     private Map _classes = new HashMap();
     private final CtClassSource _classSource;
 
-	public Creator()
-	{
-		this(Thread.currentThread().getContextClassLoader());
-	}
+    public Creator()
+    {
+        this(Thread.currentThread().getContextClassLoader());
+    }
 
     public Creator(ClassLoader loader)
     {
-        _classSource = new CtClassSource(loader);
-    }
+        HiveMindClassPool pool = new HiveMindClassPool();
 
+        pool.appendClassLoader(loader);
+
+        _classSource = new CtClassSource(pool);
+    }
 
     private void addAccessorMethod(ClassFab classFab, PropertyDescriptor pd, String attributeName)
     {

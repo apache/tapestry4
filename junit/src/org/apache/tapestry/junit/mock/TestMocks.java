@@ -22,6 +22,7 @@ import java.io.PrintStream;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.junit.TapestryTestCase;
 
 /**
@@ -60,6 +61,8 @@ public class TestMocks extends TapestryTestCase
         MockTester tester = new MockTester(getProjectDir() + "/junit/", path);
 
         tester.execute();
+        
+        PropertyUtils.clearCache();
     }
 
     public static Test suite()
