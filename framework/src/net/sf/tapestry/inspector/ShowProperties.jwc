@@ -10,8 +10,7 @@
   <bean name="propertyClass" class="net.sf.tapestry.bean.EvenOdd"/>
   
   <component id="ifNoProperties" type="Conditional">
-    <binding name="condition" expression="properties"/>
-    <field-binding name="invert" field-name="Boolean.TRUE"/>
+    <binding name="condition" expression="!properties"/>
   </component>
   
   <component id="ifHasProperties" type="Conditional">

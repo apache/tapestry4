@@ -31,8 +31,7 @@
   </component>
   
   <component id="ifNotPage" type="Conditional">
-  	<binding name="condition" expression="inspectedSpecification.pageSpecification"/>
-  	<field-binding name="invert" field-name="Boolean.TRUE"/>
+  	<binding name="condition" expression="! inspectedSpecification.pageSpecification"/>
   </component>  
   
   <component id="insertAllowInformal" type="Insert">

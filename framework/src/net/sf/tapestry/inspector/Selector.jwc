@@ -13,7 +13,7 @@
   <component id="selectPage" type="PropertySelection">
     <binding name="value" expression="page.inspectedPageName"/>
     <binding name="model" expression="pageModel"/>
-    <field-binding name="submitOnChange" field-name="Boolean.TRUE"/>
+    <binding name="submitOnChange" expression="true"/>
   </component>
 
   <component id="page" type="Direct">

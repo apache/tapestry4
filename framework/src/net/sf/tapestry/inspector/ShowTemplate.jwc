@@ -6,8 +6,7 @@
 	
 <component-specification class="net.sf.tapestry.inspector.ShowTemplate">
   <component id="ifNoTemplate" type="Conditional">
-    <binding name="condition" expression="hasTemplate"/>
-    <field-binding name="invert" field-name="Boolean.TRUE"/>
+    <binding name="condition" expression="! hasTemplate"/>
   </component>
   
   <component id="ifTemplate" type="Conditional">
