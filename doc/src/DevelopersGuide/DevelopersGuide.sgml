@@ -4,6 +4,7 @@
 <!ENTITY c2 SYSTEM "c2.sgml">
 <!ENTITY c3 SYSTEM "c3.sgml">
 <!ENTITY c4 SYSTEM "c4.sgml">
+<!ENTITY c5 SYSTEM "c5.sgml">
 
 <!ENTITY jwc-tag "<literal>&lt;jwc&gt;</literal>">
 
@@ -27,6 +28,7 @@
 	Tapestry component aliases are <classname>
 
 	In-line code snippets use <function>
+	Property paths and JavaBeans property names used <varname>
 -->
 
 <book>
@@ -45,11 +47,10 @@
 			<holder>Primix Solutions</holder>
 		</copyright>
 	</bookinfo>
-<!--
 &c1;
 &c2;
 &c3;
--->
 &c4;
+&c5;
 
 </book>

@@ -2,10 +2,14 @@
 
 MAIN_DOCUMENT =	JBE.sgml
 
-INSTALL_DIR := ../../doc/JBE
+HTML_INSTALL_DIR := ../../doc/JBE
+
+RTF_INSTALL_DIR := ../../doc/rtf/JBE
 
 DOCUMENT_RESOURCES = images
 
-VARIABLE_DEFS := %shade-verbatim%
+HTML_VARIABLE_DEFS := %shade-verbatim%
+
+FORMATS := rtf html
 
 include $(SYS_MAKEFILE_DIR)/DocBook.mk
