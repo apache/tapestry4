@@ -110,7 +110,6 @@ public class Checkbox extends AbstractFormComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         String value;
-        boolean disabled = false;
         boolean checked;
 
         IForm form = getForm(cycle);
