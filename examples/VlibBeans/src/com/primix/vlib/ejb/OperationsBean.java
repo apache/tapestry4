@@ -563,6 +563,30 @@ public class OperationsBean implements SessionBean
 		return result;
 	}
 
+	/**
+	 *  Attempts to register a new user, first checking that the
+	 *  e-mail and names are unique.
+	 *
+	 */
+	 
+	public IPerson registerNewUser(String firstName, String lastName, 
+									String email, String password)
+	throws RegistrationException, CreateException, RemoteException
+	{
+		IPersonHome home;
+		
+		validateUniquePerson(firstName, lastName, email);
+		
+		if (password == null ||
+			password.trim().length() == 0)
+				throw new RegistrationException("Must specify a password.");
+			
+			
+		home = getPersonHome();
+		
+		return home.create(firstName, lastName, email, password);
+	}
+
 
 	/**
 	 *  Translates the next row from the result set into a {@link Book}.
@@ -833,6 +857,66 @@ public class OperationsBean implements SessionBean
 		
 		return new Person(columns);
 	}	
+	
+	private void validateUniquePerson(String firstName, String lastName, String email)
+	throws RegistrationException
+	{
+		Connection connection = null;
+		IStatement statement = null;
+		ResultSet set = null;
+		StatementAssembly assembly;
+		String trimmedEmail;
+		String trimmedFirstName;
+		String trimmedLastName;
+		
+		trimmedEmail = email.trim().toLowerCase();
+		trimmedLastName = lastName.trim().toLowerCase();
+		trimmedFirstName = firstName.trim().toLowerCase();
+		
+		try
+		{
+			connection = getConnection();
+			
+			assembly = new StatementAssembly();
+			assembly.newLine("SELECT PERSON_ID");
+			assembly.newLine("FROM PERSON");
+			assembly.newLine("WHERE ");
+			
+			assembly.addParameter("EMAIL.trim().toLowerCase() = ?", trimmedEmail);
+			
+			statement = assembly.createStatement(connection);
+			set = statement.executeQuery();
+			
+			if (set.next())
+				throw new RegistrationException("Email address is already in use by another user.");
+			
+			close(null, statement, set);
+			
+			assembly = new StatementAssembly();
+			assembly.newLine("SELECT PERSON_ID");
+			assembly.newLine("FROM PERSON");
+			assembly.newLine("WHERE ");
+
+			assembly.addParameter("FIRST_NAME.trim().toLowerCase() = ?", trimmedFirstName);
+			assembly.addSep(" AND ");
+			assembly.addParameter("LAST_NAME.trim().toLowerCase() = ?", trimmedLastName);
+			
+			statement = assembly.createStatement(connection);
+			set = statement.executeQuery();
+			
+			if (set.next())
+				throw new RegistrationException("Name provided is already in use by another user.");
+			
+		}
+		catch (SQLException e)
+		{
+			throw new RegistrationException("Could not access database.", e);
+		}
+		finally
+		{
+			close(connection, statement, set);
+		}
+	}
 }  
 
 

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v3.0 NT (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
 <specification>
@@ -71,6 +72,16 @@
 				<static-binding>
 					<name>maximumWidth</name>
 					<value>20</value>
+				</static-binding>
+			</bindings>
+		</component>
+		<component>
+			<id>register</id>
+			<type>Page</type>
+			<bindings>
+				<static-binding>
+					<name>page</name>
+					<value>Register</value>
 				</static-binding>
 			</bindings>
 		</component>
