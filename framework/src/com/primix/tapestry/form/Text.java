@@ -26,6 +26,8 @@
 
 package com.primix.tapestry.form;
 
+import org.apache.log4j.Category;
+
 import com.primix.tapestry.*;
 
 // Appease Javadoc
@@ -46,7 +48,7 @@ import com.primix.tapestry.html.*;
  * </tr>
  *
  *  <tr>
- *    <td>text</td>
+ *    <td>value</td>
  *    <td>java.lang.String</td>
  *    <td>R / W</td>
  *   	<td>no</td>
@@ -102,7 +104,9 @@ import com.primix.tapestry.html.*;
 
 public class Text extends AbstractFormComponent
 {
-	private IBinding textBinding;
+	private static final Category CAT = Category.getInstance(Text.class);
+	
+	private IBinding valueBinding;
 	private IBinding rowsBinding;
 	private IBinding columnsBinding;
 	private IBinding disabledBinding;
@@ -130,7 +134,17 @@ public class Text extends AbstractFormComponent
 
 	public IBinding getTextBinding()
 	{
-		return textBinding;
+		return getValueBinding();
+	}
+
+	public IBinding getValueBinding()
+	{
+		return valueBinding;
+	}
+	
+	public void setValueBinding(IBinding value)
+	{
+		valueBinding = value;
 	}
 
 	/**
@@ -154,8 +168,8 @@ public class Text extends AbstractFormComponent
 
 		IForm form = getForm(cycle);
 
-		if (textBinding == null)
-			throw new RequiredParameterException(this, "text", null);
+		if (valueBinding == null)
+			throw new RequiredParameterException(this, "value", null);
 
 		// It isn't enough to know whether the cycle in general is rewinding, need to know
 		// specifically if the form which contains this component is rewinding.
@@ -175,7 +189,7 @@ public class Text extends AbstractFormComponent
 			{
 				String value = cycle.getRequestContext().getParameter(name);
 
-				textBinding.setString(value);
+				valueBinding.setString(value);
 			}
 
 			return;
@@ -196,7 +210,7 @@ public class Text extends AbstractFormComponent
 
 		generateAttributes(writer, cycle);
 
-		String value = textBinding.getString();
+		String value = valueBinding.getString();
 		if (value != null)
 			writer.print(value);
 
@@ -219,8 +233,18 @@ public class Text extends AbstractFormComponent
 		rowsBinding = value;
 	}
 
+	private boolean warning = true;
+	
 	public void setTextBinding(IBinding value)
 	{
-		textBinding = value;
+		if (warning)
+		{
+			CAT.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "text", "value"));
+			warning = false;
+		}
+		
+		setValueBinding(value);
 	}
+	
+	
 }

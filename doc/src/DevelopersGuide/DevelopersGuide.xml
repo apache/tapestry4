@@ -4622,7 +4622,7 @@ within a &Form; component.
       <variablelist>
         <title>Parameters</title>
         <varlistentry>
-          <term>text</term>
+          <term>value</term>
           <listitem>
             <para>The text inside the text area.</para>
           </listitem>
@@ -4665,7 +4665,7 @@ Implements a component that manages an HTML
       <variablelist>
         <title>Parameters</title>
         <varlistentry>
-          <term>text</term>
+          <term>value</term>
           <listitem>
             <para>The text inside the text field.</para>
           </listitem>

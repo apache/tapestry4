@@ -14,12 +14,12 @@
     <field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
   <component id="inputTitle" type="TextField">
-    <binding name="text" property-path="searchTitle"/>
+    <binding name="value" property-path="searchTitle"/>
     <static-binding name="displayWidth">30</static-binding>
     <static-binding name="maximumLength">100</static-binding>
   </component>
   <component id="inputAuthor" type="TextField">
-    <binding name="text" property-path="searchAuthor"/>
+    <binding name="value" property-path="searchAuthor"/>
     <static-binding name="maximumLength">100</static-binding>
     <static-binding name="displayWidth">30</static-binding>
   </component>

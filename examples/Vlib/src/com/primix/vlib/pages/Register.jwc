@@ -24,7 +24,7 @@
   <component id="inputFirstName" type="TextField">
     <static-binding name="displayWidth">30</static-binding>
     <static-binding name="maximumLength">30</static-binding>
-    <binding name="text" property-path="firstName"/>
+    <binding name="value" property-path="firstName"/>
   </component>
   
   <component id="labelLastName" type="FieldLabel">

@@ -26,6 +26,8 @@
 
 package com.primix.tapestry.form;
 
+import org.apache.log4j.Category;
+
 import com.primix.tapestry.*;
 
 // Appease Javadoc
@@ -114,25 +116,45 @@ import com.primix.tapestry.html.*;
 
 public class TextField extends AbstractTextField
 {
-	private IBinding textBinding;
+	private static final Category CAT = Category.getInstance(TextField.class);
+	
+	private IBinding valueBinding;
 
 	public IBinding getTextBinding()
 	{
-		return textBinding;
+		return getValueBinding();
 	}
 
+	private boolean warning = true;
+	
 	public void setTextBinding(IBinding value)
 	{
-		textBinding = value;
+		if (warning)
+		{
+			CAT.error(Tapestry.getString("deprecated-component-param", getExtendedId(), "text", "value"));
+			warning = false;
+		}
+		
+		setValueBinding(value);
+	}
+	
+	public IBinding getValueBinding()
+	{
+		return valueBinding;
+	}
+
+	public void setValueBinding(IBinding value)
+	{
+		valueBinding = value;
 	}
 
 	public String readValue()
 	{
-		return textBinding.getString();
+		return valueBinding.getString();
 	}
 
 	public void updateValue(String value)
 	{
-		textBinding.setString(value);
+		valueBinding.setString(value);
 	}
 }
