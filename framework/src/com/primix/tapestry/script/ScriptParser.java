@@ -130,12 +130,21 @@ public class ScriptParser
 			
 		for (Node child = root.getFirstChild(); child != null; child = child.getNextSibling())
 		{
+			
+			// Ordered first since it is most prevalent.
+			
 			if (isElement(child, "let"))
 			{
 				result.addToken(buildLet(child));
 				continue;
 			}
 			
+			if (isElement(child, "include-script"))
+			{
+				result.addToken(buildIncludeScript(child));
+				continue;
+			}
+
 			if (isElement(child, "body"))
 			{
 				result.addToken(buildBody(child));
@@ -296,6 +305,15 @@ public class ScriptParser
 		build(result, node);
 		
 		return result;
+	}
+	
+	/** @since 1.0.5 **/
+	
+	private IScriptToken buildIncludeScript(Node node)
+	{
+		String path = getAttribute(node, "resource-path");
+		
+		return new IncludeScriptToken(path);
 	}
 }
 

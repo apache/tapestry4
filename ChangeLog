@@ -1,3 +1,19 @@
+* Sep 3 2001 hship
+
+framework:
+- Add Body.includeScript()
+- Add PracticalBrowserSniffer.js
+- Simplify image preloading in Body component
+- Add Body.process(ScriptSession)
+- Add the <include-script> element to the Tapestry Script DTD
+- Add IncludedScript token type
+- First, broken, attempt to get ShowInspector component to work with Navigator 6
+
+contrib:
+- Split Palette.script into two pieces, moving the static functions
+  into PaletteFunctions.js.
+- Kludge partial support for using Palette with Navigator 6
+  
 * Aug 31 2001 hship
 
 framework:

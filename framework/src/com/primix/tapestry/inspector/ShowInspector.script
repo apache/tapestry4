@@ -17,93 +17,81 @@ Input symbols:
 -->
 <script>
 
+<include-script resource-path="/com/primix/tapestry/html/PracticalBrowserSniffer.js"/>
 
-<body> <![CDATA[
+<body>
+var ti = new Object();
 
-var ti_isNav4 = 
-	(parseInt(navigator.appVersion) >= 4 &&	navigator.appName == "Netscape");
-
-function ti_getObjectHeight(object)
-{
-  if (ti_isNav4)
-    return object.clip.height;
-    
-  return object.clientHeight;
-}
-
-function ti_getObjectWidth(object)
-{
-  if (ti_isNav4)
-    return object.clip.width;
-    
-  return object.clientWidth;
-}
-
-function ti_getInsideWindowWidth()
-{
-  if (ti_isNav4)
-    return window.innerWidth + window.pageXOffset;
-    
-  return document.body.clientWidth + document.body.scrollLeft;
-}
-
-function ti_getInsideWindowHeight()
-{
-  if (ti_isNav4)
-    return window.innerHeight + window.pageYOffset;
-    
-  return document.body.clientHeight + document.body.scrollTop;
-}
-
-
-function ti_shiftTo(object, x, y)
-{
-  if (ti_isNav4)
-  {
-    object.moveTo(x, y);
-    return;
-  }
-  
-  object.pixelLeft = x;
-  object.pixelTop = y;
-}
-
+ti.oldX = 0;
+ti.oldY = 0;
 
 function ti_positionInspector()
 {
   var object;
-  var content;
-  
-  if (ti_isNav4)
+  var width;
+  var height;
+
+  if (navigator.family == "nn4")
   {
     object = document.tapestryInspector;
-    content = object;
+    width = innerWidth + pageXOffset;
+    height = innerHeight + pageYOffset;
   }
   else
   {
-    object = document.all.tapestryInspector.style;
-    content = document.all.tapestryInspector;
+    object = document.getElementById("tapestryInspector");
+    
+	if (navigator.OS == "mac" || navigator.family == "gecko")
+	{
+	  width = document.body.offsetWidth;
+	  height = document.body.offsetWidth;
+	}
+	else
+	{
+	  // IE 4, 5 on PC
+	  width = document.body.clientWidth + document.body.scrollLeft;
+	  height = document.body.clientHeight + document.body.scrollTop;
+	}
   }
+   	
+  // 55 is the width/height of the Flash animation, plus
+  // a couple of pixels of border.
   
-  var x = ti_getInsideWindowWidth() - ti_getObjectWidth(content) - 3;
-  var y = ti_getInsideWindowHeight() - ti_getObjectHeight(content) - 3;
-  
-  ti_shiftTo(object, x, y);
-  object.visibility = "visible";
-  
+  var x = width - 55;
+  var y = height - 55;
+
+  if (navigator.family == "nn4")
+  {
+    if (x != ti.oldX || y != ti.oldY)
+    {
+      object.moveTo(x, y);
+    }
+  }
+  else
+  {
+    if (x != ti.oldX)
+    {
+       object.style.left = x + "px";
+       ti.oldX = x;
+    }
+    if (y != ti.oldY)
+    {
+    	object.style.top = y + "px";
+    	ti.oldY = y;
+    }
+  }
+
   // Reposition it every quarter second.
   
-  window.setTimeout("ti_positionInspector()", 250);
+  window.setTimeout("ti_positionInspector()", 5000);
 }
-
-]]>
 
 function ti_raiseInspector()
 {
   var newWindow = window.open(
   	"<insert property-path="URL"/>",
-  	"<insert property-path="windowName"/>");
-  	// "titlebar,resizable,scrollbars,height=700,height=600");
+  	"<insert property-path="windowName"/>",
+  	"titlebar,resizable,scrollbars,height=700,height=600");
   	
   newWindow.focus();
 }
@@ -111,10 +99,10 @@ function ti_raiseInspector()
 
 </body>
 
-<initialization>
+<initialization> <![CDATA[
 
 ti_positionInspector();
 
-</initialization>
+]]></initialization>
 
 </script>

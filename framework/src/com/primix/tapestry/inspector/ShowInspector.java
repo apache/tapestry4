@@ -137,8 +137,11 @@ public class ShowInspector
 
 		Body body = Body.get(cycle);
 
-		body.addOtherScript(scriptSession.getBody());
-		body.addOtherInitialization(scriptSession.getInitialization());
+		if (body == null)
+			throw new RequestCycleException(
+				"ShowInspector component must be wrapped by a Body component.", this);
+		
+		body.process(scriptSession);
 
 		super.render(writer, cycle);
 	}

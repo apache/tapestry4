@@ -308,7 +308,7 @@ public class Rollover extends AbstractComponent
 
 		ScriptSession session = getParsedScript().execute(symbols);
 
-		body.addOtherScript(session.getBody());
+		body.process(session);
 		
 		// Add attributes to the link to control mouse over/out.
 		// Because the script is written before the <body> tag,
