@@ -32,7 +32,7 @@ See http://xml.apache.org/forrest/linking.html for more info
 <!DOCTYPE site
 [
 <!ENTITY project-report-menu.ent SYSTEM "project-report-menu.ent">
-<!ENTITY tapestry-report-menu.ent SYSTEM "tapestry/report-menu.ent">
+<!ENTITY tapestry-report-menu.ent SYSTEM "tapestry-report-menu.ent">
 ]
 >
 
@@ -101,9 +101,9 @@ See http://xml.apache.org/forrest/linking.html for more info
         <ValidField label="ValidField" href="ValidField.html"/>
       </ComponentReference>
       
-      <!-- reports label="Reports">
+      <reports label="Reports">
         &tapestry-report-menu.ent;
-      </reports -->
+      </reports>
       
     </tapestry>
     
@@ -113,9 +113,9 @@ See http://xml.apache.org/forrest/linking.html for more info
         <item label="CVS Access"      href="cvs.html"/>    
         <item label="Downloads" href="downloads.html"/>
     
-        <!-- reports label="Reports">
+        <reports label="Reports">
           &project-report-menu.ent;
-        </reports -->        
+        </reports>        
     </project>
     
     <info label="Useful Information">

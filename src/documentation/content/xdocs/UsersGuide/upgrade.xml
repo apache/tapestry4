@@ -60,7 +60,7 @@ The &lt;service&gt; element in a Tapestry 3.0 DTD is now ignored.
   <title>Component Parameters</title>
   
 <p>
-Tapestry 3.1 has greatly streamlined  <a href="components.html#components.parameters">component parameters</a>.
+Tapestry 3.1 has greatly streamlined  <link href="components.html#components.parameters">component parameters</link>.
 </p>
 
 <section>

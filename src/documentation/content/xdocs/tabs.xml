@@ -25,6 +25,5 @@
   <tab label="Tapestry Project" href="index.html" id="project"/>
   <tab label="Users Guide" dir="UsersGuide"  id="users-guide"/>
   <tab label="Framework" dir="tapestry" id="tapestry"/>
-  <tab label="Contrib" dir="tapestry-contrib" id="contrib"/>
 
  </tabs>

@@ -87,7 +87,7 @@ library is being built, example code is not.
 </p>
 
 <p>
-If you are using Tapestry in a production environment, it is recommended that you stick with Tapestry <strong>3.0</strong>,
+If you are using Tapestry in a production environment, it is recommended that you stick with Tapestry <strong>3.0.1</strong>,
 the latest stable release.
 </p>
   
