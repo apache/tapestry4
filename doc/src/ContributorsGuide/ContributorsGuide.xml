@@ -288,6 +288,14 @@ performs builds over all sub-projects.
 		</listitem>
 	</varlistentry>		
 	
+	<varlistentry>
+		<term><filename>doc/src/ComponentReference</filename></term>
+		<listitem>
+		<para>
+		Builds the component reference documentation.
+		</para>
+		</listitem>
+	</varlistentry>		
 </variablelist>
 
 </section>
@@ -373,16 +381,32 @@ The following Ant build targets are available from the Tapestry root directory:
 <para>
 Tapestry documentation, including this manual, is also generated using Ant.  Documentation
 source is in &DocBook; XML format, and uses XSL transformation to generate readable HTML.
-</para>
+Tapestry uses &Saxon; to generate HTML documentation, and
+&Fop; to generate PDF documentation.
 
+<itemizedlist>
+
+<listitem>
 <para>
-To generate documentation, you must obtain the &Saxon; distribution, release 6.5.2 or better.  Copy
-the file <filename>saxon.jar</filename> into the Ant <filename>lib</filename> directory.  
-In addition, update your
+Download and unpack the &Saxon; distribution, release 6.5.2 or better.
+</para>
+</listitem>
+
+<listitem>
+<para>
+Copy <filename>saxon.jar</filename> into the
+Ant <filename>lib</filename> directory.  
+</para>
+</listitem>
+
+<listitem>
+<para>
+
+Update your
 <envar>ANT_OPTS</envar> environment variable
 to add the following two system properties:
 
-	<itemizedlist mark="opencircle">
+	<itemizedlist>
           <listitem>
             <para>
               -Djavax.xml.parsers.DocumentBuilderFactory=org.apache.crimson.jaxp.DocumentBuilderFactoryImpl
@@ -394,6 +418,43 @@ to add the following two system properties:
             </para>
           </listitem>
 	</itemizedlist>
+
+
+</para>
+</listitem>
+
+<listitem>
+<para>
+Download &Fop; 0.20.4rc and unpack into a permanent directory.
+</para>
+</listitem>
+
+<listitem>
+<para>
+Update <filename>config/build.properties</filename> and add
+a <literal>fop.dir</literal> entry, identifying the directory
+into which you unpacked FOP.  Be sure to use an absolute
+path name, and only forward slashes.
+</para>
+</listitem>
+
+<listitem>
+<para>
+Get a copy of <ulink url="http://java.sun.com/products/jimi/">JIMI</ulink>
+(an imaging package from Sun, needed by FOP to process PNG image files), and
+unpack it to temporary directory.
+</para>
+</listitem>
+
+<listitem>
+<para>
+Copy <filename>JimiProClasses.zip</filename> into the <filename><replaceable>FOP</replaceable>/lib</filename>
+directory.
+</para>
+</listitem>
+
+</itemizedlist>
+
 </para>
 
 </section>
@@ -761,10 +822,25 @@ and can be removed in the following minor release.
 </para>
 
 <para>
-For example, a method may be marked in release 2.2-alpha-1.  This change isn't considered 
+For example, a method may be marked as
+deprecated in release 2.2-alpha-1.  This change isn't considered 
 "real" until release 2.2.  The method can be removed any time after that, say in release 2.3-alpha-3,
 and the removal becomes "real" in release 2.3.
 </para>
+
+<para>
+Don't simply mark a method as deprecated, give the end-developer
+the information needed adapt their code.  Use the following template
+as part of the Javadoc comment:
+
+<informalexample>
+<programlisting>
+  @deprecated To be removed in <replaceable>Version</replaceable>.
+    Use {@link <replaceable>SomeClass#someMethod(...)</replaceable>} instead.
+</programlisting>
+</informalexample>
+</para>
+
 
 <para>
 It is also important for the changer to make the transition as simple as possible for
@@ -772,6 +848,14 @@ the end-developer.  Base classes and default implementations should be changed
 to make use of the new API in such as way that, at most, a recompile
 of the end-developer's classes is required.
 </para>
+
+<para>
+Sometimes, changes require a lack of backwards compatibility.  If
+a method has to change and the old signature can't be maintained, then
+simply change it ... but be sure to document the change in the
+Tapestry release notes (<filename>web/new.html</filename>).
+</para>
+
 
 </section>
 
@@ -787,6 +871,12 @@ related to your components, such as helper beans, models, etc.
 <para>
 JUnit test source code is placed into the <filename class="directory">junit/src</filename> source tree.
 The package name for JUnit tests is <literal>net.sf.tapestry.junit</literal>.
+</para>
+
+<para>
+Work is underway to allow unit testing of components using
+a <emphasis>mock</emphasis> Servlet API, but this will
+not be available until Tapestry release 2.3.
 </para>
 
 </section>
@@ -879,9 +969,16 @@ have a body (that is, wrap other components) is supplied at the end.
 
 <para>
 Recently, <ulink url="../ComponentReference/index.html">seperate HTML component documentation</ulink>
-has been created.  It is likely that in the future, this will be the standard location
-for Framework component documentation (and the JavaDoc will have a link to the correct
-component reference page).
+has been created.  This will be the standard location
+for Framework component documentation.  Javadoc for the
+component should simply have a link
+to the correct Component Reference page.
+</para>
+
+<para>
+The component reference is simply HTML (at least, for the time being).
+There are many examples and a template available, for creating
+new reference pages.
 </para>
 
 </section>
@@ -905,8 +1002,8 @@ When checking code in, use the SourceForge request as the checkin comment.
 	
 	
 <para>
-In addition, update the file <filename>web/new.html</filename> to identify
-the feature request.
+In addition, update the Tapestry release notes, the file <filename>web/new.html</filename>,
+to identify the feature request.
 </para>
 
 <para>
