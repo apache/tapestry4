@@ -185,28 +185,11 @@
 &lt;/table&gt;
 &lt;/form&gt;
 
+&lt;property-specification name=&quot;startDate&quot; type=&quot;java.util.Date&quot;/&gt;<br>&lt;property-specification name=&quot;endDate&quot; type=&quot;java.util.Date&quot;/&gt;<br>	
+public abstract class Dates extends BasePage {
+    public abstract Date getStartDate();
 	
-
-public class Dates extends BasePage {
-    private Date startDate;
-    private Date endDate;
- 
-    public Date getStartDate() { return startDate; }
-
-    public void setStartDate(Date value) {
-        startDate = value;
-    }
-
-    public Date getEndDate() { return endDate; }
-
-    public void setEndDate(Date value) {
-        endDate = value;
-    }  
-
-    protected void initialize() {
-        startDate = null;
-        endDate = null;       
-    }
+    public abstract Date getEndDate();
 
     public void formSubmit(IRequestCycle cycle) {
         // Process the submitted dates.

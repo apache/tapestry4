@@ -263,6 +263,8 @@
             <pre>
 
 &lt;form jwcid=&quot;@<A href="Form.html">Form</A>&quot; delegate=&quot;ognl:beans.delegate&quot;&gt;<br>&lt;table class=&quot;examples&quot; cellpadding=&quot;2&quot;&gt;<br>&lt;tr&gt;<br> &lt;td colspan=&quot;2&quot;&gt;&lt;span class=&quot;title&quot;&gt;Regal Auctions Bid Page&lt;/span&gt;&lt;/td&gt;<br>&lt;/tr&gt;<br>&lt;tr&gt;<br> &lt;td colspan=&quot;2&quot;&gt;&lt;hr&gt;&lt;/td&gt;<br>&lt;/tr&gt;<br>&lt;tr&gt;<br> &lt;td colspan=&quot;2&quot;&gt;&lt;span jwcid=&quot;@ShowError&quot; delegate=&quot;ognl:beans.delegate&quot;/&gt;&lt;/td&gt;<br>&lt;/tr&gt;<br>&lt;tr&gt;<br> &lt;td&gt;&lt;span jwcid=&quot;@<A href="FieldLabel.html">FieldLabel</A>&quot; field=&quot;ognl:components.lotNoField&quot;&gt;Lot Number&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;input jwcid=&quot;lotNoField&quot; type=&quot;text&quot; size=&quot;4&quot; maxlength=&quot;4&quot;/&gt;&lt;/td&gt;<br>&lt;/tr&gt;<br>&lt;tr&gt;<br> &lt;td&gt;&lt;span jwcid=&quot;@<A href="FieldLabel.html">FieldLabel</A>&quot; field=&quot;ognl:components.bidAmountField&quot;&gt;Bid Amount&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;input jwcid=&quot;bidAmountField&quot; type=&quot;text&quot; size=&quot;7&quot; maxlength=&quot;7&quot;/&gt;&lt;/td&gt;<br>&lt;/tr&gt;<br>&lt;tr&gt;<br> &lt;td&gt;&lt;span jwcid=&quot;@<A href="FieldLabel.html">FieldLabel</A>&quot; field=&quot;ognl:components.fullNameField&quot;&gt;Full Name&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;input jwcid=&quot;fullNameField&quot; type=&quot;text&quot; size=&quot;25&quot; maxlength=&quot;30&quot;/&gt;&lt;/td&gt;<br>&lt;/tr&gt;<br>&lt;tr&gt;<br> &lt;td&gt;&lt;span jwcid=&quot;@<A href="FieldLabel.html">FieldLabel</A>&quot; field=&quot;ognl:components.emailField&quot;&gt;Email&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;input jwcid=&quot;emailField&quot; type=&quot;text&quot; size=&quot;25&quot; maxlength=&quot;30&quot;/&gt;&lt;/td&gt;<br>&lt;/tr&gt;<br>&lt;tr&gt;<br> &lt;td&gt;&lt;span jwcid=&quot;@<A href="FieldLabel.html">FieldLabel</A>&quot; field=&quot;ognl:components.telephoneField&quot;&gt;Telephone&lt;/span&gt;&lt;/td&gt;&lt;td&gt;&lt;input jwcid=&quot;telephoneField&quot; type=&quot;text&quot; size=&quot;25&quot; maxlength=&quot;30&quot;/&gt;&lt;/td&gt;<br>&lt;/tr&gt;<br>&lt;tr&gt;<br> &lt;td colspan=&quot;2&quot; align=&quot;right&quot;&gt;<br>  &lt;input jwcid=&quot;@Submit&quot; listener=&quot;ognl:listeners.okSubmit&quot;  type=&quot;Submit&quot; value=&quot;   OK   &quot;/&gt;<br>  &lt;input jwcid=&quot;@Submit&quot; listener=&quot;ognl:listeners.cancelSubmit&quot;onclick=&quot;form.onsubmit = null;&quot;/&gt;<br> &lt;/td&gt;<br>&lt;/tr&gt;<br>&lt;/table&gt;<br>&lt;/form&gt;<br>
+
+&lt;property-specification name=&quot;lotBid&quot; type=&quot;com.mycorp.LotBid&quot; persistent=&quot;yes&quot; initial-value=&quot;new com.mycorp.LotBid()&quot;/&gt;<br>&lt;property-specification name=&quot;actionDetails&quot; type=&quot;com.mycorp.ActionDetails&quot; persistent=&quot;yes&quot;/&gt;<br>
 &lt;bean name="delegate" class="com.mycorp.FormValidationDelegate"/&gt;
 
 &lt;bean name="lotNoValidator" class="<A href="../api/org/apache/tapestry/valid/NumberValidator.html">org.apache.tapestry.valid.NumberValidator</a>"&gt;
@@ -325,29 +327,13 @@
 &lt;/component&gt;
 
 
+public abstract class LotBidPage extends BasePage {
+    public abstract LotBid getLotBid();
 
-public class LotBidPage extends BasePage {
-    private LotBid lotBid = new LotBid();
-    private ActionDetails actionDetails;
+    public abstract void setLotBid(LotBid value);
+    public asbtract AuctionDetails getAuctionDetails();
 
-    public LotBid getLotBid() { return lotBid; }
-
-    public void setLotBid(LotBid value) {
-        lotBid = value;
-        fireObservedChange("lotBid", value);
-    }
-
-    public AuctionDetails getAuctionDetails() { return auctionDetails; }
-
-    public void setAuctionDetails(AuctionDetails value) {
-        auctionDetails = value;
-        fireObservedChange("auctionDetails", value);
-    }
-
-    protected void initialize() {
-        lotBid = new LotBid();
-        actionDetails = null;
-    }
+    public abstract void setAuctionDetails(AuctionDetails value);
 
     public void okSubmit(IRequestCycle cycle) {
         ValidationDelegate delegate = (ValidationDelegate) 

@@ -190,25 +190,14 @@
  Gender: &lt;span jwcid="<span class="jwcid">@<a href="PropertySelection.html">PropertySelection</a></span>" model="ognl:@com.mycorp.DetailsPage@GENDER_MODEL" value="ognl:gender"/&gt;
 &lt;/form&gt;
 
-
-
+&lt;property-specification name=&quot;gender&quot; type=&quot;java.lang.String&quot;/&gt;<br>
 package com.mycorp;
 
-public class DetailsPage extends BasePage {
+public abstract class DetailsPage extends BasePage {
     public static final <A href="../api/org/apache/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a> GENDER_MODEL = 
         new <A href="../api/org/apache/tapestry/form/StringPropertySelectionModel.html">StringPropertySelectionModel</a>(new String[] { "Unspecified", "Female", "Male" });
-
-    private String gender;
    
-    public String getGender() { return gender;  }
-
-    public void setGender(String value) { 
-        gender = value;
-    }
-   
-    protected void initialize() {
-        gender = null;
-    }   
+    public abstract String getGender();
 
     public void formSubmit(IRequestCycle cycle) {   
         // Process form submission
@@ -263,87 +252,71 @@ public class DetailsPage extends BasePage {
     &lt;binding name="<b>submitOnChange</b>" expression="true"/&gt;
 &lt;/component&gt;
 
+&lt;property-specification name=&quot;clothingItem&quot; type=&quot;Item&quot; persistent=&quot;yes&quot;/&gt;<br>&lt;property-specification name=&quot;itemSelectionModel&quot; type=&quot;ItemSelectionModel&quot; persistent=&quot;yes&quot;/&gt;<br>
 
+public abstract class PurchagePage extends BasePage {
 
-    public class PurchagePage extends BasePage {
-        private Item clothingItem;
-        private ItemSelectionModel itemSelectionModel;
+    public abstract Item getClothingItem();
+    public abstract void setClothingItem(Item value);
 
-        public Item getClothingItem() { return clothingItem;  }
+    public abstract ItemSelectionModel getItemSelectionModel();
 
-        public void setClothingItem(Item value) {
-            clothingItem = value;
-            fireObservedChange("clothingItem", value);
-        }
+    public void setItemSelectionModel(ItemSelectionModel value);
 
-        public ItemSelectionModel getItemSelectionModel() {
-            return itemSelectionModel;
-        }
+    public void formSubmit(IRequestCycle cycle) {
+        // Process form submission
+    }
+}
 
-        public void setItemSelectionModel(ItemSelectionModel value) {
-            itemSelectionModel = value;
-            fireObservedChange("itemSelectionModel", value);
-        }
+public class Item implements Serializable {
+    private int id;
+    private String name;
+    private String description;
+    private String label;
+    private String price;
 
-        protected void initialize() {
-            clothingItem = null;
-            itemSelectionModel = null;
-        }
-
-        public void formSubmit(IRequestCycle cycle) {
-            // Process form submission
-        }
+    public Item(int id, String name, String desc, String label, String price) {
+        this.id = id;
+        this.name = name;
+        this.description = desc;
+        this.label = label;
+        this.price = price;
     }
 
-    public class Item implements Serializable {
-        private int id;
-        private String name;
-        private String description;
-        private String label;
-        private String price;
+    public int getId() { return id;  }
 
-        public Item(int id, String name, String desc, String label, String price) {
-            this.id = id;
-            this.name = name;
-            this.description = desc;
-            this.label = label;
-            this.price = price;
-        }
+    public String getName() { return name;  }
 
-        public int getId() { return id;  }
+    public String getDescription() { return description;  }
 
-        public String getName() { return name;  }
+    public String getLabel() { return label;  }
 
-        public String getDescription() { return description;  }
+    public String getPrice() { return price;  }
+}
 
-        public String getLabel() { return label;  }
+public class ItemSelectionModel implements IPropertySelectionModel, Serializable {
+    private List itemList;
 
-        public String getPrice() { return price;  }
+    public ItemSelectionModel(List itemList) {
+        this.itemList = itemList;
     }
 
-    public class ItemSelectionModel implements IPropertySelectionModel, Serializable {
-        private List itemList;
+    public int getOptionCount() { return itemList.size(); }
 
-        public ItemSelectionModel(List itemList) {
-            this.itemList = itemList;
-        }
-
-        public int getOptionCount() { return itemList.size(); }
-
-        public Object getOption(int index) {
-            return itemList.get(index);
-        }
-
-        public String getLabel(int index) {
-            return ((Item) itemList.get(index)).getName();
-        }
-
-        public String getValue(int index) { return Integer.toString(index); }
-
-        public Object translateValue(String value) {
-            return getOption(Integer.parseInt(value));
-        }
+    public Object getOption(int index) {
+        return itemList.get(index);
     }
+
+    public String getLabel(int index) {
+        return ((Item) itemList.get(index)).getName();
+    }
+
+    public String getValue(int index) { return Integer.toString(index); }
+
+    public Object translateValue(String value) {
+        return getOption(Integer.parseInt(value));
+    }
+}
 </pre>
           </td>
         </tr></table>

@@ -269,20 +269,12 @@
 &lt;/table&gt;
 
 
-&lt;private-asset name="deleteImage" resource-path="/com/mycorp/delete.gif"/&gt;
+&lt;property-specification name=&quot;customer&quot; type=&quot;com.mycorp.Customer&quot;/&gt;<br>&lt;private-asset name="deleteImage" resource-path="/com/mycorp/delete.gif"/&gt;
 
 
 package com.mycorp; 
 
-public class SalesPage extends BasePage {
-    private Customer customer;
-	 
-    public Customer getCustomer() { return customer; }
-
-    public void setCustomer(Customer value) {
-        customer = value;
-    }
-    
+public abstract class SalesPage extends BasePage {
     public void customerSelectAction(IRequestCycle cycle) {
         Visit visit = (Visit) getVisit();        
         Object[] parameters = cycle.getServiceParameters();
@@ -296,10 +288,6 @@ public class SalesPage extends BasePage {
         Object[] parameters = cycle.getServiceParameters();
         Customer customer = visit.findCustomerByPrimaryKey((Integer) parameters[0]);
         visit.deleteCustomer(customer);
-    }
-
-    protected void initialize() {
-        customer = null;
     }
 }
 
@@ -325,7 +313,7 @@ public class Visit() implements Serializable {
     }        	 
 }
 
-public class Customer {
+public class Customer implements Serializable {
     private Integer id;
     private String fullName;
     private String memberLevel;
@@ -343,8 +331,8 @@ public class Customer {
     public String getMemberLevel() { return memberLevel; }
 }
 </pre>      
-
- </td></tr></table>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>

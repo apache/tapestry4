@@ -172,21 +172,14 @@
 The order was due on the &lt;span jwcid="<span class="jwcid">@<a href="Insert.html">Insert</a></span>" value="ognl:dueDate" format="ognl:@EnquiryPage.@DATE_FORMAT" class=&quot;ognl:dueClass&quot;/&gt;.
 
 
+&lt;property-specification name=&quot;dueDate&quot; type=&quot;java.util.Date&quot;/&gt;<br>&lt;property-specification name=&quot;dueClass&quot; type=&quot;java.lang.String&quot;/&gt;<br>
 
-public class EnquiryPage extends BasePage {
-    public static final SimpleDateFormat DATE_FORMAT =
-        new SimpleDateFormat("dd MMM yyyy");
-    private Date dueDate;
-    private String dueClass;
+public abstract class EnquiryPage extends BasePage {
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd MMM yyyy");
 
-    public Date getDueDate() { return dueDate; }
+    public abstract Date getDueDate();
 
-    public String getDueClass() { return dueClass; }
-    
-    protected void initialize() {
-        dueDate = null;
-        dueClass = null;
-    }    
+    public abstract String getDueClass();
 }
 </pre>
           </td>

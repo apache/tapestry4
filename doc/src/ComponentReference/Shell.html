@@ -253,23 +253,18 @@ Welcome to MyCorp's Customer Portal secure login page.
 &lt;/html&gt;
 
 
+&lt;property-specification name=&quot;dailyMessage&quot; type=&quot;java.lang.String&quot;/&gt;
+&lt;property-specification name=&quot;messageClass&quot; type=&quot;java.lang.String&quot;/&gt;
 &lt;private-asset name="stylesheet" resource-path="/com/mycorp/pages/style.css"/&gt;
 
 
 package com.mycorp.pages.customer.login;
 
-public class CustomerLoginPage extends BasePage {
-    private String dailyMessage;
-    private String messageClass;
+public abstract class CustomerLoginPage extends BasePage {
+    public abstract String getDailyMessage();
 
-    public String getDailyMessage() { return dailyMessage; }
+    public abstract String getMessageClass();
     
-    public String getMessageClass() { return messageClass; }
-    
-    protected void initialize() {
-        dailyMessage = null;
-        messageClass = null;
-    }
 }
 </pre>
           </td>

@@ -226,33 +226,11 @@
   &lt;/tr&gt;
 &lt;/table&gt;
 
+&lt;property-specification name=&quot;customerList&quot; type=&quot;java.util.List&quot; persistent=&quot;yes&quot;/&gt;<br>&lt;property-specification name=&quot;customer&quot; type=&quot;Customer&quot;/&gt;<br>
+public abstract class SalesPage extends BasePage {
+    public abstract List getCustomerList();
 
-public class SalesPage extends BasePage {
-    private List customerList;
-    private Customer customer;
-	 
-    public List getCustomerList() { return customerList; }
-	 
-    public List setCustomerList(List value) { 
-        customerList = value;
-        fireObservedChange("customerList", value); 
-    }
-
-    public Customer getCustomer() { return customer; }
-
-    public void setCustomer(Customer value) {
-        customer = value;
-    }
-    
-    public void customerSelectAction(IRequestCycle cycle) {
-        Customer customer = getCustomer();
-        // Perform some action with the selected customer.
-    }
-
-    protected void initialize() {
-        customerList = null;
-        customer = null;
-    }
+    public abstract List setCustomerList(List value);
 }
 
 public class Customer implements Serializable {

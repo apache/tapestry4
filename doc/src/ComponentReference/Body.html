@@ -122,19 +122,12 @@
 &lt;/body&gt;
 
 
+&lt;property-specification name=&quot;accountStatus&quot; type=&quot;java.lang.String&quot; persistent=&quot;yes&quot;/&gt;<br>&lt;property-specification name=&quot;statusColor&quot; type=&quot;java.lang.String&quot; persistent=&quot;yes&quot;/&gt;<br>
 
-public class AccountPage extends BasePage {
-    private String accountStatus;
-    private String statusColor;
+public abstract class AccountPage extends BasePage {
+    public void setAccountStatus(String accountStatus);
 
-    public String getAccountStatus() { return accountStatus; }
-
-    public String getStatusColor() { return statusColor; }
-    
-    protected void initialize() {
-        accountStatus = null;
-        statusColor = null;
-    }
+    public void setStatusColor(String statusColor);
 }
 </pre>
           </td>

@@ -213,26 +213,14 @@
 &lt;/table&gt;
 
 
-
-public class SalesPage extends BasePage {
-    private List customerList;
-    private Customer customer;
+&lt;property-specification name=&quot;customerList&quot; type=&quot;java.util.List&quot; persistent=&quot;yes&quot;/&gt;<br>&lt;property-specification name=&quot;customer&quot; type=&quot;Customer&quot;/&gt;<br>
+public abstract class SalesPage extends BasePage {
+    public abstract List getCustomerList();
 	 
-    public List getCustomerList() { return customerList; }
-	 
-    public Customer getCustomer() { return customer; }
-
-    public void setCustomer(Customer value) {
-        customer = value;
-    }
-
-    protected void initialize() {
-        customerList = null;
-        customer = null;
-    }
+    public abstract List setCustomerList(List value);
 }
 
-public class Customer {
+public class Customer implements Serializable {
     private Integer id;
     private String fullName;
     private String memberLevel;
