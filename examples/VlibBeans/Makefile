@@ -29,7 +29,7 @@ JBOSS_CONF_DIR = $(JBOSS_DIR)/conf/default
 # Rule to configure the jBoss server for the VlibBeans
 # demo.
 
-configure-jboss: 
+configure-jboss:  setup-jbe-utils
 ifeq ("$(JBOSS_DIR)","")
 	$(error You must set JBOSS_DIR (in $(SYS_MAKEFILE_DIR)/config/LocalConfig.mk) \
 	before configuring jBoss.)

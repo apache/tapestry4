@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+
+<specification>
+	<class>tutorial.hangman.Guess</class>
+
+	<components>
+
+
+	<component>
+		<id>insertGuess</id>
+		<type>Insert</type>
+		<bindings>
+			<binding>
+				<name>value</name>
+				<property-path>guessed</property-path>
+			</binding>
+		</bindings>
+	</component>
+
+	<component>
+		<id>insertMissed</id>
+		<type>Insert</type>
+		<bindings>
+			<binding>
+				<name>value</name>
+				<property-path>visit.game.missed</property-path>
+			</binding>
+		</bindings>
+	</component>
+
+	<component>
+		<id>insertMaxMisses</id>
+		<type>Insert</type>
+		<bindings>
+			<binding>
+				<name>value</name>
+				<property-path>visit.game.maxMisses</property-path>
+			</binding>
+		</bindings>
+	</component>
+
+	<component>
+		<id>ifError</id>
+		<type>Conditional</type>
+
+		<bindings>
+			<binding>
+				<name>condition</name>
+				<property-path>error</property-path>
+			</binding>
+		</bindings>
+	</component>
+
+	<component>
+		<id>insertError</id>
+		<type>Insert</type>
+
+		<bindings>
+			<binding>
+				<name>value</name>
+				<property-path>error</property-path>
+			</binding>
+		</bindings>
+	</component>
+
+	<component>
+		<id>e</id>
+		<type>Foreach</type>
+
+		<bindings>
+			<binding>
+				<name>source</name>
+				<property-path>unused</property-path>
+			</binding>
+		</bindings>
+	</component>
+
+	<component>
+		<id>guess</id>
+		<type>Direct</type>
+
+		<bindings>
+			<binding>
+				<name>listener</name>
+				<property-path>guessListener</property-path>
+			</binding>
+
+			<binding>
+				<name>context</name>
+				<property-path>components.e.value</property-path>
+			</binding>
+		</bindings>
+	</component>
+
+	<component>
+		<id>insertLetter</id>
+		<type>Insert</type>
+
+		<bindings>
+			<binding>
+				<name>value</name>
+				<property-path>components.e.value</property-path>
+			</binding>
+		</bindings>
+	</component>
+
+	<component>
+		<id>giveUp</id>
+		<type>Page</type>
+
+		<bindings>
+			<static-binding>
+				<name>page</name>
+				<value>Failed</value>
+			</static-binding>
+		</bindings>
+	</component>
+
+	</components>
+
+</specification>

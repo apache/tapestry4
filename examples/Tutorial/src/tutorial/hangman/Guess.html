@@ -1,0 +1,33 @@
+<html>
+<head>
+<title>Tapestry Hangman</title>
+</head>
+<body>
+
+<h1>Make a Guess</h1>
+
+<font size=+3>
+	<jwc id="insertGuess"/>
+</font>
+
+<p>
+
+You have made <jwc id="insertMissed"/> bad guesses,
+out of a maximum of <jwc id="insertMaxMisses"/>.
+
+<jwc id="ifError">
+<p>
+<font size=+3 color=red><jwc id="insertError"/></font>
+</jwc>
+
+<p>Guess:
+<font size=+1>
+<jwc id="e">
+<jwc id="guess"><jwc id="insertLetter"/></jwc>
+</jwc>
+</font>
+
+<p><jwc id="giveUp">Give up?</jwc>
+
+</body>
+</html>

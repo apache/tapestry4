@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+
+<specification>
+	<class>com.primix.tapestry.BasePage</class>
+
+	<components>
+
+		<component>
+			<id>insertWord</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>visit.game.word</property-path>
+				</binding>
+			</bindings>
+		</component>
+
+		<component>
+			<id>startAgain</id>
+			<type>Page</type>
+
+			<bindings>
+				<static-binding>
+					<name>page</name>
+					<value>Home</value>
+				</static-binding>
+			</bindings>
+		</component>
+	</components>
+
+</specification>
+	
