@@ -22,43 +22,39 @@ import java.util.List;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  A basic kind of janitor, an object that periodically invokes
- *  {@link ICleanable#executeCleanup()} on a set of objects.
- *
- *  <p>The JanitorThread holds a <em>weak reference</em> to
- *  the objects it operates on.
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 1.0.5
- *
- **/
+ * A basic kind of janitor, an object that periodically invokes {@link ICleanable#executeCleanup()}
+ * on a set of objects.
+ * <p>
+ * The JanitorThread holds a <em>weak reference</em> to the objects it operates on.
+ * 
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 1.0.5
+ */
 
 public class JanitorThread extends Thread
 {
     /**
      * Default number of seconds between janitor runs, about 30 seconds.
-     *
-     **/
+     */
 
     public static final long DEFAULT_INTERVAL_MILLIS = 30 * 1024;
 
     private long interval = DEFAULT_INTERVAL_MILLIS;
+
     private boolean lockInterval = false;
 
     private static JanitorThread shared = null;
 
     /**
-     *  A {@link List} of {@link WeakReference}s to {@link ICleanable} instances.
-     *
-     **/
+     * A {@link List}of {@link WeakReference}s to {@link ICleanable}instances.
+     */
 
     private List references = new ArrayList();
 
     /**
-     *  Creates a new daemon Janitor.
-     *
-     **/
+     * Creates a new daemon Janitor.
+     */
 
     public JanitorThread()
     {
@@ -66,10 +62,9 @@ public class JanitorThread extends Thread
     }
 
     /**
-     *  Creates new Janitor with the given name.  The thread
-     *  will have minimum priority and be a daemon.
-     *
-     **/
+     * Creates new Janitor with the given name. The thread will have minimum priority and be a
+     * daemon.
+     */
 
     public JanitorThread(String name)
     {
@@ -80,14 +75,11 @@ public class JanitorThread extends Thread
     }
 
     /**
-     *  Returns a shared instance of JanitorThread.  In most cases,
-     *  the shared instance should be used, rather than creating
-     *  a new instance; the exception being when particular
-     *  scheduling is of concern.  It is also bad policy to
-     *  change the sleep interval on the shared janitor
-     *  (though nothing prevents this, either).
-     *
-     **/
+     * Returns a shared instance of JanitorThread. In most cases, the shared instance should be
+     * used, rather than creating a new instance; the exception being when particular scheduling is
+     * of concern. It is also bad policy to change the sleep interval on the shared janitor (though
+     * nothing prevents this, either).
+     */
 
     public synchronized static JanitorThread getSharedJanitorThread()
     {
@@ -108,13 +100,16 @@ public class JanitorThread extends Thread
     }
 
     /**
-     *  Updates the property, then interrupts the thread.
-     *
-     *  @param value the interval, in milliseconds, between sweeps.
-     *
-     *  @throws IllegalStateException always, if the receiver is the shared JanitorThread
-     *  @throws IllegalArgumentException if value is less than 1
-     **/
+     * Updates the property, which may not take effect until the next time the thread finishes
+     * sleeping.
+     * 
+     * @param value
+     *            the interval, in milliseconds, between sweeps.
+     * @throws IllegalStateException
+     *             always, if the receiver is the shared JanitorThread
+     * @throws IllegalArgumentException
+     *             if value is less than 1
+     */
 
     public void setInterval(long value)
     {
@@ -122,19 +117,16 @@ public class JanitorThread extends Thread
             throw new IllegalStateException(Tapestry.getMessage("JanitorThread.interval-locked"));
 
         if (value < 1)
-            throw new IllegalArgumentException(Tapestry.getMessage("JanitorThread.illegal-interval"));
+            throw new IllegalArgumentException(Tapestry
+                    .getMessage("JanitorThread.illegal-interval"));
 
         interval = value;
-
-        interrupt();
     }
 
     /**
-     *  Adds a new cleanable object to the list of references.  Care should be taken that
-     *  objects are not added multiple times; they will be
-     *  cleaned too often.
-     *
-     **/
+     * Adds a new cleanable object to the list of references. Care should be taken that objects are
+     * not added multiple times; they will be cleaned too often.
+     */
 
     public void add(ICleanable cleanable)
     {
@@ -147,12 +139,9 @@ public class JanitorThread extends Thread
     }
 
     /**
-     *  Runs through the list of targets and invokes
-     *  {@link ICleanable#executeCleanup()}
-     *  on each of them.  {@link WeakReference}s that have been invalidated
-     *  are weeded out.
-     *
-     **/
+     * Runs through the list of targets and invokes {@link ICleanable#executeCleanup()}on each of
+     * them. {@link WeakReference}s that have been invalidated are weeded out.
+     */
 
     protected void sweep()
     {
@@ -175,34 +164,34 @@ public class JanitorThread extends Thread
     }
 
     /**
-     *  Waits for the next run, by sleeping for the desired period.
-     *
-     *
-     **/
+     * Waits for the next run, by sleeping for the desired period. Returns true if the sleep was
+     * successful, or false if the thread was interrupted (and should shut down).
+     */
 
-    protected void waitForNextPass()
+    protected boolean waitForNextPass()
     {
         try
         {
             sleep(interval);
+
+            return true;
         }
         catch (InterruptedException ex)
         {
-            // Ignore.
+            return false;
         }
     }
 
     /**
-     *  Alternates between {@link #waitForNextPass()} and
-     *  {@link #sweep()}.
-     *
-     **/
+     * Alternates between {@link #waitForNextPass()}and {@link #sweep()}.
+     */
 
     public void run()
     {
         while (true)
         {
-            waitForNextPass();
+            if (!waitForNextPass())
+                return;
 
             sweep();
         }
