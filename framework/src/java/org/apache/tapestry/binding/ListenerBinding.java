@@ -27,7 +27,7 @@ import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.util.pool.Pool;
+import org.apache.tapestry.services.ObjectPool;
 
 /**
  *  A very specialized binding that can be used as an {@link org.apache.tapestry.IActionListener},
@@ -184,12 +184,16 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
         }
     }
 
+	/**
+	 * TODO: remove the use of the pool; the BSFManager should be injected in, and be
+	 * a pooled HiveMind service.
+	 */
     private BSFManager obtainBSFManager(IRequestCycle cycle)
     {
         IEngine engine = cycle.getEngine();
-        Pool pool = engine.getPool();
+        ObjectPool pool = engine.getPool();
 
-        BSFManager result = (BSFManager) pool.retrieve(BSF_POOL_KEY);
+        BSFManager result = (BSFManager) pool.get(BSF_POOL_KEY);
 
         if (result == null)
         {

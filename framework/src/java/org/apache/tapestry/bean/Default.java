@@ -15,7 +15,6 @@
 package org.apache.tapestry.bean;
 
 import org.apache.tapestry.IBinding;
-import org.apache.tapestry.util.pool.IPoolable;
 
 /**
  *  A helper bean to assist with providing defaults for unspecified
@@ -29,7 +28,7 @@ import org.apache.tapestry.util.pool.IPoolable;
  * 
  **/
 
-public class Default implements IPoolable
+public class Default
 {
     private IBinding binding;
     private Object defaultValue;

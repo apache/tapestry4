@@ -42,7 +42,6 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.multipart.DefaultMultipartDecoder;
 import org.apache.tapestry.multipart.IMultipartDecoder;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.util.IRenderDescription;
 
 /**
  *  This class encapsulates all the relevant data for one request cycle of an
@@ -607,26 +606,6 @@ public class RequestContext implements IRender
     {
         if (value == null)
             return;
-
-        if (value instanceof IRenderDescription)
-        {
-            IRenderDescription renderValue = (IRenderDescription) value;
-
-            writer.begin("tr");
-            writer.attribute("class", getRowClass());
-
-            writer.begin("th");
-            writer.print(name);
-            writer.end();
-
-            writer.begin("td");
-
-            renderValue.renderDescription(writer);
-
-            writer.end("tr");
-            writer.println();
-            return;
-        }
 
         pair(writer, name, value.toString());
     }

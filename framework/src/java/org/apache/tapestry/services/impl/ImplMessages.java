@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.tapestry.services.Infrastructure;
 
 /**
  * 
@@ -61,14 +62,26 @@ final class ImplMessages
     {
         return _formatter.format("unable-to-read-template", template);
     }
-    
+
     public static String unableToParseTemplate(Resource resource)
     {
-    	return _formatter.format("unable-to-parse-template", resource);
+        return _formatter.format("unable-to-parse-template", resource);
     }
-    
+
     public static String unableToParseSpecification(Resource resource)
     {
-    	return _formatter.format("unable-to-parse-specification", resource);
+        return _formatter.format("unable-to-parse-specification", resource);
+    }
+
+    public static String unableToReadInfrastructureProperty(
+        String propertyName,
+        Infrastructure service,
+        Throwable cause)
+    {
+        return _formatter.format(
+            "unable-to-read-infrastructure-property",
+            propertyName,
+            service,
+            cause);
     }
 }

@@ -33,7 +33,6 @@ import org.apache.tapestry.request.RequestContext;
  * 
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  **/
 public class MockRequestCycle implements IRequestCycle

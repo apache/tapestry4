@@ -58,4 +58,9 @@ public interface Infrastructure
      */
     
     public ISpecificationSource getSpecificationSource();
+
+	/**
+	 * Returns a generic, shared ObjectPool instance.
+	 */
+    public ObjectPool getObjectPool();
 }

@@ -71,7 +71,7 @@
       <construct class="org.apache.tapestry.services.impl.TemplateSourceImpl">
         <set-service property="parser" service-id="TemplateParser"/>
         <set-object property="applicationPropertySource" 
-                       value="service-property:tapestry.Infrastructure:applicationPropertySource"/>
+                       value="infrastructure:applicationPropertySource"/>
         <set-service property="delegate" service-id="TemplateSourceDelegate"/>
         <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
         <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:context"/>

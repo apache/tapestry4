@@ -21,6 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.hivemind.ErrorHandler;
 import org.apache.hivemind.order.Orderer;
 import org.apache.tapestry.engine.IPropertySource;
+import org.apache.tapestry.util.DelegatingPropertySource;
 
 /**
  * Orders a list of {@link org.apache.tapestry.services.impl.PropertySourceContribution}s
@@ -32,7 +33,7 @@ import org.apache.tapestry.engine.IPropertySource;
 public class PropertySourceImpl implements IPropertySource
 {
     private List _contributions;
-    private List _orderedSources;
+    private IPropertySource _delegate;
     private ErrorHandler _errorHandler;
     private Log _log;
 
@@ -49,26 +50,24 @@ public class PropertySourceImpl implements IPropertySource
             orderer.add(c, c.getName(), c.getAfter(), c.getBefore());
         }
 
-        _orderedSources = orderer.getOrderedObjects();
+        List ordered = orderer.getOrderedObjects();
+
+        DelegatingPropertySource delegate = new DelegatingPropertySource();
+
+        i = ordered.iterator();
+        while (i.hasNext())
+        {
+            PropertySourceContribution c = (PropertySourceContribution) i.next();
+
+            delegate.addSource(c.getSource());
+        }
+
+        _delegate = delegate;
     }
 
     public String getPropertyValue(String propertyName)
     {
-        Iterator i = _orderedSources.iterator();
-
-        while (i.hasNext())
-        {
-            IPropertySource source = (IPropertySource) i.next();
-
-            String result = source.getPropertyValue(propertyName);
-
-            if (result != null)
-                return result;
-        }
-
-		// Not found, return null.
-		
-        return null;
+        return _delegate.getPropertyValue(propertyName);
     }
 
     public void setContributions(List list)

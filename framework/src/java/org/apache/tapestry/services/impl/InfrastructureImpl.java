@@ -18,6 +18,7 @@ import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.Infrastructure;
+import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.ResetEventCoordinator;
 import org.apache.tapestry.services.TemplateSource;
 
@@ -34,6 +35,7 @@ public class InfrastructureImpl implements Infrastructure
     private ComponentMessagesSource _componentMessagesSource;
     private TemplateSource _templateSource;
     private ISpecificationSource _specificationSource;
+    private ObjectPool _objectPool;
 
     public void setApplicationPropertySource(IPropertySource source)
     {
@@ -83,6 +85,16 @@ public class InfrastructureImpl implements Infrastructure
     public void setSpecificationSource(ISpecificationSource source)
     {
         _specificationSource = source;
+    }
+
+    public ObjectPool getObjectPool()
+    {
+        return _objectPool;
+    }
+
+    public void setObjectPool(ObjectPool pool)
+    {
+        _objectPool = pool;
     }
 
 }

@@ -22,7 +22,6 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.util.pool.IPoolable;
 
 /**
  *  Base class for resolving a {@link org.apache.tapestry.spec.IComponentSpecification}
@@ -32,9 +31,9 @@ import org.apache.tapestry.util.pool.IPoolable;
  *  @author Howard Lewis Ship
  *  @since 3.0
  *
- **/
+ */
 
-public class AbstractSpecificationResolver implements IPoolable
+public class AbstractSpecificationResolver
 {
     private ISpecificationSource _specificationSource;
 
