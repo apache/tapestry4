@@ -4,17 +4,15 @@
 <!ENTITY chap-setup SYSTEM "chap-setup.sgml">
 <!ENTITY chap-hello SYSTEM "chap-hello.sgml">
 <!ENTITY chap-dynamic SYSTEM "chap-dynamic.sgml">
+<!ENTITY chap-interactive SYSTEM "chap-interactive.sgml">
 
-<!ENTITY jwc-tag "<literal>&lt;jwc&gt;</literal>">
+<!ENTITY jwc-tag "<sgmltag class=starttag>jwc</>">
 
 <!ENTITY start-jwc "<emphasis>&lt;">
 <!ENTITY end-jwc "&gt;</emphasis>">
 
 <!ENTITY start-listing "<informalexample><programlisting>">
 <!ENTITY end-listing "</programlisting></informalexample>">
-
-<!ENTITY start-tag "<literal>&lt;">
-<!ENTITY end-tag "&gt;</literal>">
 
 ]>
 
