@@ -160,12 +160,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         if (result == null)
         {
-            // This will shortly no longer be necesasry, when JavaTypeUtils' logic
-            // is rolled into HiveMind's DefaultClassResolver.
-
-            String jvmTypeName = JavaTypeUtils.getJVMClassName(type);
-
-            result = _resolver.findClass(jvmTypeName);
+            result = _resolver.findClass(type);
 
             _javaClassMapping.recordType(type, result);
         }
