@@ -168,7 +168,7 @@ description="Builds the Tapestry documentation.">
 <target name="javadoc" description="Generate API documentation for the framework and examples.">
   <mkdir dir="${javadoc.dir}"/>
   <javadoc author="true" version="true" destdir="${javadoc.dir}" splitindex="true"
-    windowtitle="Tapestry API ${framework.version}" classpathref="full.classpath">
+    windowtitle="Tapestry API ${framework.version}">
 
   <doctitle>Tapestry API (Release ${framework.version})</doctitle>
 
@@ -198,6 +198,12 @@ description="Builds the Tapestry documentation.">
     <pathelement location="junit/src"/>
   </sourcepath>
   
+  <classpath>
+  	<path refid="full.classpath"/>
+  	<pathelement location="${lib}/junit.jar"/>
+  	<pathelement location="${jboss.dir}/lib/jboss-jdbc_ext.jar"/>
+  	<pathelement location="${jboss.dir}/lib/ext/mail.jar"/>
+  </classpath>
   </javadoc>
 
 </target>
