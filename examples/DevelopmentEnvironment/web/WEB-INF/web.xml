@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+ "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+<web-app>
+  <display-name>Tapestry Tutorial</display-name>
+  
+  <!-- A typical Tapestry WAR will have exactly one servlet.  The Tutorial is actually
+       several seperate Tapestry application bundled together.  The framework allows for
+       this (you'll notice that each object stored in the ServletContext has a unique
+       name to avoid collisions between sibling Tapestry applications.
+
+       It's a good idea to load the servlet on startup; this helps get the large
+       number of Tapestry classes loaded.
+
+       -->
+
+	<!-- Since this is the demo build environment, no Tapestry Applications are defined -->
+
+  <session-config>
+  	<session-timeout>15</session-timeout>
+  </session-config>
+  
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+</web-app>
