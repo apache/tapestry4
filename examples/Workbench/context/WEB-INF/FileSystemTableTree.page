@@ -41,6 +41,7 @@
         <static-binding name="entriesPerTablePage">40</static-binding>
         <binding name="tableColunms" expression='tableColumns'/>
         <binding name="treeStateListener" expression='treeStateListener'/>
+        <binding name="showRootNode" expression="@java.lang.Boolean@FALSE"/>
     </component>
 
     <component id="directoryTableView" type="DirectoryTableView">
