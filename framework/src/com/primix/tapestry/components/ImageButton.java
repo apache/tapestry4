@@ -244,14 +244,14 @@ public class ImageButton extends AbstractFormComponent
 				
 			value = context.getParameter(parameterName);
 			
-			if (name == null)
+			if (value == null)
 				return;
 			
             // The point parameter is not really used, unless the
             // ImageButton is used for its original purpose (as a kind
             // of image map).  In modern usage, we only care about
             // whether the user clicked on the image (and thus submitted
-            // the form), not where in the image.
+            // the form), not where in the image the user actually clicked.
 
 			if (pointBinding != null)
 			{
@@ -265,6 +265,9 @@ public class ImageButton extends AbstractFormComponent
 				pointBinding.setValue(new Point(x, y));
 			}
 
+            // Notify the application, bug setting the select parameter
+            // to the tag parameter.
+
             if (selectedBinding == null)
                 return;
 
@@ -277,7 +280,9 @@ public class ImageButton extends AbstractFormComponent
 			 // OK, now to notify the application code (via the parameters)
 			 // that *this* ImageButton was selected.  We do this by applying
 			 // a tag (presumably, specific to the ImageButton in question)
-			 // to the selected binding.
+			 // to the selected binding.  When the containing Form's listener
+             // is invoked, it can determine which (if any) ImageButton
+             // (or Submit) was clicked.
 	
 	
 			 if (tagValue == null)

@@ -1,3 +1,12 @@
+* Nov 17 2000 hship
+
+Fix typo in exception message for unreferenced components.
+Fix bug in ImageButton that caused it to be confused about which ImageButton was clicked if
+a form contains more than one.
+Cache ExternalAssets in the PageSource (as with FieldBinding and StaticBinding),
+so that duplicate external assets will be represented only once.  This is useful when
+a commonly used component (such as a border) is used on multiple pages.
+
 * Nov 13 2000 hship
 
 Allow static bindings to be pooled the same as field bindings.
