@@ -59,16 +59,22 @@ import com.primix.foundation.*;
  * <li>Writing an HTML description of the <code>RequestContext</code> (for debugging).
  * </ul>
  *
+ * <p>This class is not a component, but does implement {@link IRender}.  When asked to render
+ * (perhaps as the delegate of a {@link com.primix.tapestry.components.Delegator} component}
+ * it simply invokes {@link #write(IResponseWriter)} to display all debugging output.
+ *
  * <p>This class is derived from the original class <code>com.primix.servlet.RequestContext</code>
  * part of the <b>ServletUtils</b> framework available from
  * <a href="http://www.gjt.org/servlets/JCVSlet/list/gjt/com/primix/servlet">The Giant 
  * Java Tree</a>.
+ *
  *
  * @version $Id$
  * @author Howard Ship
  */
  
 public class RequestContext
+implements IRender
 {
 	private HttpSession session;
 	private HttpServletRequest request;
@@ -919,7 +925,7 @@ public class RequestContext
 	/**
 	* Writes the state of the context to the writer, typically for inclusion
 	* in a HTML page returned to the user. This is useful
-	* when debugging, and is typically invoked from a JSP.
+	* when debugging.
 	*
 	*/
 
@@ -1259,5 +1265,15 @@ public class RequestContext
 		writer.end(); // System Properties
 	}
 
+	/**
+	 *  Invokes {@link #write(IResponseWriter)}, which is used for debugging.
+	 *
+	 */
+	 
+	public void render(IResponseWriter writer, IRequestCycle cycle) 
+	throws RequestCycleException
+	{
+		write(writer);
+	}
 }
 
