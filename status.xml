@@ -284,6 +284,9 @@ NextGen) be released as version number 3.0.
     <action type="fix" dev="HLS" fixes-bug="TAPESTRY-258">
       Have RenderString implement useful toString().
     </action>  
+    <action type="fix" dev="HLS" fixes-bug="TAPESTRY-260">
+      Change ListEditMap to never return null from getDeletedKeys().
+    </action>
   </release>
 
   <release version="3.0.1" date="Oct 16 2004">

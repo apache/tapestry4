@@ -19,13 +19,11 @@ import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.Direction;
 
 /**
- *  Suite of tests for {@link org.apache.tapestry.form.ListEditMap}.
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 3.0
- *
- **/
+ * Suite of tests for {@link org.apache.tapestry.form.ListEditMap}.
+ * 
+ * @author Howard Lewis Ship
+ * @since 3.0
+ */
 
 public class TestListEditMap extends TapestryTestCase
 {
@@ -47,17 +45,14 @@ public class TestListEditMap extends TapestryTestCase
 
         assertEquals("custom", m.getKey());
 
-        checkList("keys", new Object[] { "in", "auto", "custom" }, m.getKeys());
-        checkList(
-            "all values",
-            new Object[] { Direction.IN, Direction.AUTO, Direction.CUSTOM },
-            m.getAllValues());
-        checkList(
-            "all values",
-            new Object[] { Direction.IN, Direction.AUTO, Direction.CUSTOM },
-            m.getValues());
+        checkList("keys", new Object[]
+        { "in", "auto", "custom" }, m.getKeys());
+        checkList("all values", new Object[]
+        { Direction.IN, Direction.AUTO, Direction.CUSTOM }, m.getAllValues());
+        checkList("all values", new Object[]
+        { Direction.IN, Direction.AUTO, Direction.CUSTOM }, m.getValues());
 
-        assertNull(m.getDeletedKeys());
+        assertEquals(true, m.getDeletedKeys().isEmpty());
     }
 
     public void testGet()
@@ -91,17 +86,14 @@ public class TestListEditMap extends TapestryTestCase
 
         assertEquals(true, m.isDeleted());
 
-        checkList(
-            "all values",
-            new Object[] { Direction.IN, Direction.AUTO, Direction.CUSTOM },
-            m.getAllValues());
+        checkList("all values", new Object[]
+        { Direction.IN, Direction.AUTO, Direction.CUSTOM }, m.getAllValues());
 
-        checkList(
-            "undeleted values",
-            new Object[] { Direction.IN, Direction.CUSTOM },
-            m.getValues());
+        checkList("undeleted values", new Object[]
+        { Direction.IN, Direction.CUSTOM }, m.getValues());
 
-        checkList("deleted keys", new Object[] { "auto" }, m.getDeletedKeys());
+        checkList("deleted keys", new Object[]
+        { "auto" }, m.getDeletedKeys());
     }
 
     public void testMarkAlreadyDeleted()
@@ -131,7 +123,8 @@ public class TestListEditMap extends TapestryTestCase
 
         assertEquals(true, m.isDeleted());
 
-        checkList("undeleted values", new Object[] { Direction.IN }, m.getValues());
+        checkList("undeleted values", new Object[]
+        { Direction.IN }, m.getValues());
     }
 
     public void testDeleteUndelete()
@@ -145,7 +138,8 @@ public class TestListEditMap extends TapestryTestCase
         m.setKey("custom");
         m.setDeleted(true);
 
-        checkList("undeleted values", new Object[] { Direction.IN, Direction.AUTO }, m.getValues());
+        checkList("undeleted values", new Object[]
+        { Direction.IN, Direction.AUTO }, m.getValues());
     }
 
 }
