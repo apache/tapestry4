@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="yes"?>
+<!-- $Id$ -->
+
+<specification>
+	<class>com.primix.tapestry.components.Any</class>
+	
+	<parameter>
+		<name>element</name>
+		<java-type>java.lang.String</java-type>
+		<required>yes</required>
+	</parameter>
+	
+</specification>

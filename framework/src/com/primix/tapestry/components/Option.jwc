@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!-- $Id$ -->
+
+<specification>
+	<class>com.primix.tapestry.components.Option</class>
+	
+	<allow-body>no</allow-body>
+	
+	<parameter>
+		<name>selected</name>
+		<java-type>java.lang.Boolean</java-type>
+		<required>yes</required>
+	</parameter>
+	
+	<parameter>
+		<name>label</name>
+		<java-type>java.lang.String</java-type>
+	</parameter>
+	
+</specification>

@@ -1,0 +1,154 @@
+package com.primix.tapestry.components;
+
+import com.primix.tapestry.spec.ComponentSpecification;
+import com.primix.tapestry.*;
+import java.util.*;
+
+/*
+ * Tapestry Web Application Framework
+ * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ *
+ * Primix Solutions
+ * One Arsenal Marketplace
+ * Watertown, MA 02472
+ * http://www.primix.com
+ * mailto:hship@primix.com
+ * 
+ * This library is free software.
+ * 
+ * You may redistribute it and/or modify it under the terms of the GNU
+ * Lesser General Public License as published by the Free Software Foundation.
+ *
+ * Version 2.1 of the license should be included with this distribution in
+ * the file LICENSE, as well as License.html. If the license is not
+ * included with this distribution, you may find a copy at the FSF web
+ * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+ * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ */
+
+/**
+ *  A component for creating a link that is handled using the action service.
+ *
+ *
+ * <table border=1>
+ * <tr> <th>Parameter</th> <th>Type</th> <th>Read / Write </th> <th>Required</th> <th>Default</th> <th>Description</th>
+ * </tr>
+ * <tr>
+ *  <td>listener</td> <td>{@link IActionListener}</td>
+ *  <td>R</td>
+ *  <td>no</td> <td>&nbsp;</td>
+ *  <td>Specifies an object that is notified when the link is clicked, for services that
+ *  require a listener.</td> </tr>
+ *
+ * <tr>
+ *   <td>enabled</td> <td>boolean</td> <td>R</td> <td>No</td> <td>true</td>
+ *   <td>Controls whether the link is produced.  If disabled, the portion of the template
+ *  the link surrounds is still rendered, but not the link itself.
+ *  </td></tr>
+ *
+ *
+ * <tr>
+ *		<td>anchor</td>
+ *		<td>java.lang.String</td>
+ *		<td>R</td>
+ *		<td>no</td>
+ *		<td>&nbsp;</td>
+ *		<td>The name of an anchor or element to link to.  The final URL will have '#'
+ *   and the anchor appended to it.
+ * </td> </tr>
+ *
+ * </table>
+ *
+ * <p>Informal  parameters are allowed.
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
+
+
+public class Action extends AbstractServiceLink
+{
+	private IBinding listenerBinding;
+
+	// Each instance gets its own context array.
+
+	private String[] context;
+
+	public Action(IPage page, IComponent container, String name,ComponentSpecification specification)
+	{
+		super(page, container, name, specification);
+	}
+
+	public IBinding getListenerBinding()
+	{
+		return listenerBinding;
+	}
+
+	public void setListenerBinding(IBinding value)
+	{
+		listenerBinding = value;
+	}
+
+	private IActionListener getListener(IRequestCycle cycle)
+	throws RequestCycleException
+	{
+		IActionListener result;
+
+		try
+		{
+			result = (IActionListener)listenerBinding.getValue();
+
+			if (result == null)
+				throw new RequiredParameterException(this, "listener", cycle);
+		}
+		catch (ClassCastException e)
+		{
+			throw new RequestCycleException(
+				"Parameter listener must be type IActionListener.",
+				this, cycle, e);
+		}
+
+		return result;
+	}
+
+	/**
+	*  Returns {@link IApplicationService#ACTION_SERVICE}.
+	*/
+
+	protected String getServiceName(IRequestCycle cycle)
+	{
+		return IApplicationService.ACTION_SERVICE;
+	}
+
+
+	protected String[] getContext(IRequestCycle cycle)
+	throws RequestCycleException
+	{
+		String actionId;
+		IActionListener listener;
+
+		actionId = cycle.getNextActionId();
+
+		if (cycle.isRewound())
+		{
+			listener = getListener(cycle);
+
+			listener.actionTriggered(this, cycle);
+
+			throw new RenderRewoundException(this, cycle);
+		}
+
+		if (context == null)
+			context = new String[1];
+
+		context[0] = actionId;
+
+		return context;
+	}
+}

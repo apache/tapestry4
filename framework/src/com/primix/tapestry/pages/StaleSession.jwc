@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="yes"?>
+<!-- $Id$ -->
+
+<specification>
+	<class>com.primix.tapestry.BasePage</class>
+		
+	<component>
+		<id>restart</id>
+		<type>Service</type>
+		
+		<static-binding>
+			<name>service</name>
+			<value>restart</value>
+		</static-binding>
+	</component>
+	
+</specification>

@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<!-- $Id$ -->
+
+<specification>
+	<class>com.primix.tapestry.components.Select</class>
+	
+	<parameter>
+		<name>multiple</name>
+	</parameter>
+	
+	<parameter>
+		<name>disabled</name>
+	</parameter>
+	
+	<parameter>
+		<name>listener</name>
+		<java-type>com.primix.tapestry.components.IActionListener</java-type>
+	</parameter>
+	
+</specification>

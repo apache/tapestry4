@@ -1,0 +1,52 @@
+<?xml version="1.0" standalone="yes"?>
+<!-- $Id$ -->
+
+<specification>
+	<class>com.primix.tapestry.pages.Exception</class>
+	
+	<component>
+		<id>insertStylesheetURL</id>
+		<type>InsertURL</type>
+		
+		<binding>
+			<name>asset</name>
+			<property-path>assets.stylesheet</property-path>
+		</binding>
+	</component>
+	
+	<component>
+		<id>exceptionDisplay</id>
+		<type>ExceptionDisplay</type>
+		
+		<binding>
+			<name>exceptions</name>
+			<property-path>exceptions</property-path>
+		</binding>
+	</component>
+	
+	<component>
+		<id>restart</id>
+		<type>Service</type>
+		
+		<static-binding>
+			<name>service</name>
+			<value>restart</value>
+		</static-binding>
+	</component>
+	
+	<component>
+		<id>showDebug</id>
+		<type>Delegator</type>
+		
+		<binding>
+			<name>delegate</name>
+			<property-path>showDebugDelegate</property-path>
+		</binding>
+	</component>
+	
+	<private-asset>
+		<name>stylesheet</name>
+		<resource-path>/com/primix/tapestry/pages/Exception.css</resource-path>
+	</private-asset>
+	
+</specification>

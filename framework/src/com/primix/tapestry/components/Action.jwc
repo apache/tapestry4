@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<!-- $Id$ -->
+
+<specification>
+	<class>com.primix.tapestry.components.Action</class>
+		
+	<parameter>
+		<name>listener</name>
+		<java-type>com.primix.tapestry.components.IActionListener</java-type>
+		<required>yes</required>
+	</parameter>
+	
+	<parameter>
+		<name>enabled</name>
+	</parameter>
+	
+	<parameter>
+		<name>anchor</name>
+		<java-type>java.lang.String</java-type>
+	</parameter>
+		
+</specification>
