@@ -39,7 +39,7 @@
     <ibiblio-dependency artifact="hivemind"           version="${hivemind.version}" group="hivemind"/>
     <ibiblio-dependency artifact="hivemind-lib"       version="${hivemind.version}" group="hivemind"/>
     <ibiblio-dependency artifact="oro"                version="2.0.6"               group="oro"/>
-		<ibiblio-dependency artifact="javassist"          version="2.6"                 group="jboss"/>
+		<ibiblio-dependency artifact="javassist"          version="${javassist.version}" group="jboss"/>
 		<ibiblio-dependency artifact="servletapi"         version="2.3"                 group="servletapi"/>
     <ibiblio-dependency artifact="ognl"               version="2.6.3"               group="ognl"/>
     
