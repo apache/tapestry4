@@ -26,6 +26,7 @@
     <person name="Geoff Longman" id="GL"/>
     <person name="Tsvetelin Saykov" id="TS"/>
     <person name="Neil Clayton" id="NC"/>
+    <person name="Paul Ferraro" email="pmf8@columbia.edu" id="PF"/>
     <!-- Retired -->
     <person name="Malcom Edgar" id="ME"/>
     <!-- Add more people here -->
@@ -147,6 +148,8 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-165"> Allow control over attribute name for components in templates. </action>
       <action type="update" dev="HLS"> Inject specification into components. </action>
       <action type="update" dev="HLS"> Use enhancement to inject page event registration into components. </action>
+      <action type="add" dev="PF"> Added LabeledPropertySelectionModel that decorates an IPropertySelectionModel with an label row. </action>
+      <action type="add" dev="PF"> New ButtonLinkRenderer, an ILinkRenderer implementation that renders a link component as a button. </action>
     </release>
     <release version="3.0" date="Apr 18 2004">
       <action type="fix" dev="HLS" fixes-bug="28345"> Workbench/Upload exception when no file specified </action>
