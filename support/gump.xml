@@ -1,5 +1,7 @@
 <module name="jakarta-tapestry">
 
+  <!-- $Id$ -->
+
   <url href="http://jakarta.apache.org/proposals/tapestry/index.html"/>
   <description>
   Component-based web application framework organized around insanely
