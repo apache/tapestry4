@@ -9,8 +9,8 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="Upload.html"><img src="common-images/prev.png" alt="Upload"/></a></td>  
-  <td align="right"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+  <td align="left"><A href="Upload.html"><IMG alt=Upload src="common-images/prev.png"></a></td>  
+  <td align="right"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
  <tr>
  <tr>
   <td colspan="2"><hr></td>  
@@ -27,7 +27,7 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/valid/ValidField.html">
+		 <A href="../api/net/sf/tapestry/valid/ValidField.html">
 		 net.sf.tapestry.valid.ValidField</a>
 		</td>
 	 </tr>
@@ -36,13 +36,13 @@
  <td>
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
 	 <tr>
-	  <td><b>Age</b></td><td><input type="text" style="{background:yellow}"></td>
+	  <td><b>Age</b></td><td><input style="BACKGROUND: yellow"></td>
 	 </tr>
   </table>
  </td>
 </tr>
 
-<tr valign="middle">
+<tr valign="center">
  <td colspan="2">&nbsp;</td>
 </tr>
 
@@ -57,16 +57,15 @@
   <p>
 	The ValidField component creates HTML of form: &lt;input type="text" name="personAge" value="25"&gt;
   <p>
-  <a href="Form.html">Form</a> component that creates a text field that allows 
+  <A href="Form.html">Form</a> component that creates a text field that allows 
   for validation of user input and conversion between string and object
-  values. A ValidField uses an <a href="Form.html">Form</a>  
-  <a href="../api/net/sf/tapestry/valid/ValidationDelegate.html">validationDelegate</a> 
+  values. A ValidField uses an <A href="Form.html">Form</a>  
+  <A href="../api/net/sf/tapestry/valid/ValidationDelegate.html">validationDelegate</a> 
   to track errors at the form level and an 
-  <a href="../api/net/sf/tapestry/valid/IValidator/html">validator</a> to 
-  to perform validations and convert between Strings and Objects.  
-  A validator may be shared my ValidFields in a form.
-  <p>
-  This component may NOT wrap around other components or static HTML. 
+  <A href="../api/net/sf/tapestry/valid/IValidator/html">validator</a> 
+            to to perform validations and convert between Strings and Objects. A 
+            validator may be shared my ValidFields in a form.</p>
+             
  </td>
 </tr>
 
@@ -74,9 +73,9 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<a href="Form.html">Form</a>, 
-  <a href="Text.html">Text</a>,
-  <a href="TextField.html">TextField</a>
+	<A href="Form.html">Form</a>, 
+  <A href="Text.html">Text</a>,
+  <A href="TextField.html">TextField</a>
  </td>
 </tr>
 
@@ -159,14 +158,14 @@
    <td>&nbsp;</td>
    <td>
     A textual name for the field that is used when formulating error messages.
- 	  Also used by the <a href="FieldLabel.html">FieldLabel</a> component to 
+ 	  Also used by the <A href="FieldLabel.html">FieldLabel</a> component to 
     properly label the field.
    </td>
   </tr>
   <tr>
    <td>validator</td>
    <td>
-    <a href="../api/net/sf/tapestry/valid/IValidator/html"><tt>IValidator</tt></a>
+    <A href="../api/net/sf/tapestry/valid/IValidator/html"><tt>IValidator</tt></a>
    </td>
    <td>in</td>
    <td>yes</td>
@@ -178,8 +177,12 @@
    </td>
   </tr>
 	</table>
-  Informal parameters: allowed<br>
-  Reserved parameters: "name", "type", "value"
+            <P>Body: <STRONG>removed</STRONG><BR>Informal parameters: 
+            <STRONG>allowed</STRONG>
+    <br>
+  Reserved 
+            parameters: "name", "type", "value" </P>
+      
  </td>
 </tr>
 
@@ -191,9 +194,9 @@
 	<p>
 
 <table class="examples" cellpadding="8">
-<tr valign="middle">
+<tr valign="center">
  <td><b>Enquiry date</b></td> 
- <td><input style="{background:yellow}" type="text" name="example4" value="11/37/2002"></td>
+ <td><input style="BACKGROUND: yellow" name="example4" value="11/37/2002"></td>
 </tr>
 </table>
 
@@ -208,24 +211,24 @@
 &lt;/form&gt;
 
 
-&lt;bean name="validationDelegate" class="<a href="../api/net/sf/tapestry/valid/ValidationDelegate.html">net.sf.tapestry.valid.ValidationDelegate</a>"/&gt;
+&lt;bean name="validationDelegate" class="<A href="../api/net/sf/tapestry/valid/ValidationDelegate.html">net.sf.tapestry.valid.ValidationDelegate</a>"/&gt;
     
-&lt;bean name="dateValidator" class="<a href="../api/net/sf/tapestry/valid/DateValidator.html">net.sf.tapestry.valid.DateValidator</a>"&gt;
+&lt;bean name="dateValidator" class="<A href="../api/net/sf/tapestry/valid/DateValidator.html">net.sf.tapestry.valid.DateValidator</a>"&gt;
     &lt;set-property name="required"&gt;
         &lt;field-value field-name="Boolean.TRUE"/&gt;
     &lt;/set-property&gt;
 &lt;/bean&gt;
 
-&lt;component id="form" type="<a href="Form.html">Form</a>"&gt;
+&lt;component id="form" type="<A href="Form.html">Form</a>"&gt;
     &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
     &lt;binding name="delegate" expression="beans.validationDelegate"/&gt;
 &lt;/component&gt;
     
-&lt;component id="dateLabel" type="<a href="FieldLabel.html">FieldLabel</a>"&gt;
+&lt;component id="dateLabel" type="<A href="FieldLabel.html">FieldLabel</a>"&gt;
     &lt;binding name="field" expression="components.dateField"/&gt;
 &lt;/component&gt;
 
-&lt;component id="<span class="jwcid">dateField</span>" type="<a href="ValidField.html">ValidField</a>"&gt;
+&lt;component id="<span class="jwcid">dateField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
     &lt;binding name="value" expression="visit.enquiryDate"/&gt;
     &lt;binding name="validator" expression="beans.dateValidator"/&gt;
 &lt;/component&gt;
@@ -254,8 +257,8 @@ public class Visit implements Serializable {
  <td colspan="2"><hr></td>  
 </tr>
 <tr>
-  <td align="left"><a href="Upload.html"><img src="common-images/prev.png" alt="Upload"/></a></td>  
-  <td align="right"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+  <td align="left"><A href="Upload.html"><IMG alt=Upload src="common-images/prev.png"></a></td>  
+  <td align="right"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
 </tr>
 </table>
 
