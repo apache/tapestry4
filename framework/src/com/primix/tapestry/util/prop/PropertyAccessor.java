@@ -62,7 +62,14 @@ class PropertyAccessor implements IPropertyAccessor
 		accessor = pd.getReadMethod();
 		mutator = pd.getWriteMethod();
 	}
+	
+	/** @since 1.0.6 **/
 
+	public String getName()
+	{
+		return pd.getName();
+	}
+	
 	/**
 	*
 	*  @throws MissingAccessorException if the class does not define an accessor method

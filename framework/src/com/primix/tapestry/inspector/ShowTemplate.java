@@ -234,7 +234,15 @@ implements IDirect
     {
         Inspector inspector = (Inspector)page;
 
-        inspector.setInspectedIdPath(context[0]);
+        inspector.selectComponent(context[0]);
+		
+		IComponent newComponent = inspector.getInspectedComponent();
+		
+		// If the component is not a BaseComponent then it won't have
+		// a template, so switch to the specification view.
+		
+		if (!(newComponent instanceof BaseComponent))
+			inspector.setView(View.SPECIFICATION);
     }
 
 }

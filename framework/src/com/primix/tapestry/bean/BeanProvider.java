@@ -98,6 +98,13 @@ public class BeanProvider
 		
 	}
 	
+	/** @since 1.0.6 **/
+	
+	public Collection getBeanNames()
+	{
+		return component.getSpecification().getBeanNames();
+	}
+	
 	/**
 	 *  @since 1.0.5
 	 *

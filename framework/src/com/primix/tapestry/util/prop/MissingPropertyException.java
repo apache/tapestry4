@@ -47,7 +47,7 @@ public class MissingPropertyException extends RuntimeException
     
     public MissingPropertyException(Object instance, String propertyName)
     {
-        this(null, null, instance, propertyName);
+        this(instance, propertyName, instance, propertyName);
     }
 
 	public MissingPropertyException(Object rootObject, String propertyPath,
@@ -62,21 +62,41 @@ public class MissingPropertyException extends RuntimeException
         this.propertyPath = propertyPath;
 	}
     
+	/**
+	 *  The object in which property access failed.
+	 *
+	 */
+	
 	public Object getInstance()
 	{
 		return instance;
 	}
     
+	/**
+	 *  The name of the property the instance fails to provide.
+	 *
+	 */
+	
 	public String getPropertyName()
 	{
 		return propertyName;
 	}
 
+	/**
+	 *  The root object, the object which is the root of the property path.
+	 *
+	 */
+	
     public Object getRootObject()
     {
         return rootObject;
     }
 
+	/**
+	 *  The property path (containing the invalid property name).
+	 *
+	 */
+	
     public String getPropertyPath()
     {
         return propertyPath;

@@ -1,0 +1,64 @@
+<!-- $Id$ -->
+<!--
+  Provides a common place to define entities that are links to API and other external
+  documentation.
+-->
+
+<!-- Classes provided by Sun -->
+
+<!ENTITY Double "<classname>Double</classname>">
+<!ENTITY HttpServletRequest "<classname>HttpServletRequest</classname>">
+<!ENTITY HttpSession "<classname>HttpSession</classname>">
+<!ENTITY Iterator "<classname>Iterator</classname>">
+<!ENTITY List "<classname>List</classname>">
+<!ENTITY Map "<classname>Map</classname>">
+<!ENTITY ServletContext "<classname>ServletContext</classname>">
+<!ENTITY String "<classname>String</classname>">
+
+<!-- Common Tapestry classes -->
+
+<!ENTITY ApiRoot "../api/com/primix/tapestry">
+
+<!ENTITY AbstractComponent '<ulink url="&ApiRoot;/AbstractComponent.html"><classname>AbstractComponent</classname></ulink>'>
+<!ENTITY ApplicationServlet '<ulink url="&ApiRoot;/ApplicationServlet.html"><classname>ApplicationServlet</classname></ulink>'>
+<!ENTITY BaseComponent '<ulink url="&ApiRoot;/BaseComponent.html"><classname>BaseComponent</classname></ulink>'>
+<!ENTITY BasePage '<ulink url="&ApiRoot;/BasePage.html"><classname>BasePage</classname></ulink>'>
+<!ENTITY Default '<ulink url="&ApiRoot;/bean/Default.html"><classname>Default</classname></ulink>'>
+<!ENTITY Enum '<ulink url="&ApiRoot;/util/Enum.html"><classname>Enum</classname></ulink>'>
+<!ENTITY EnumPropertySelectionModel '<ulink url="&ApiRoot;/form/EnumPropertySelectionModel.html"><classname>EnumPropertySelectionModel</classname></ulink>'>
+<!ENTITY EvenOdd '<ulink url="&ApiRoot;/inspector/EvenOdd.html"><classname>EvenOdd</classname></ulink>'>
+<!ENTITY ExceptionAnalyzer '<ulink url="&ApiRoot;/util/exceptionExceptionAnalyzer.html"><classname>ExceptionAnalyzer</classname></ulink>'>
+<!ENTITY ExceptionDescription '<ulink url="&ApiRoot;/util/ExceptionDescription.html"><classname>ExceptionDescription</classname></ulink>'>
+<!ENTITY Gesture '<ulink url="&ApiRoot;/Gesture.html"><classname>Gesture</classname></ulink>'>
+<!ENTITY IBinding '<ulink url="&ApiRoot;/IBinding.html"><classname>IBinding</classname></ulink>'>
+<!ENTITY IActionListener '<ulink url="&ApiRoot;/IActionListener.html"><classname>IActionListener</classname></ulink>'>
+<!ENTITY IDirect '<ulink url="&ApiRoot;/IDirect.html"><classname>IDirect</classname></ulink>'>
+<!ENTITY IDirectListener '<ulink url="&ApiRoot;/IDirectListener .html"><classname>IDirectListener</classname></ulink>'>
+<!ENTITY IEngine '<ulink url="&ApiRoot;/IEngine.html"><classname>IEngine</classname></ulink>'>
+<!ENTITY ILifecycle '<ulink url="&ApiRoot;/ILifecycle.html"><classname>ILifecycle</classname></ulink>'>
+<!ENTITY IPage '<ulink url="&ApiRoot;/IPage.html"><classname>IPage</classname></ulink>'>
+<!ENTITY IPageRecorder '<ulink url="&ApiRoot;/IPageRecorder.html"><classname>IPageRecorder</classname></ulink>'>
+<!ENTITY IPropertySelectionModel '<ulink url="&ApiRoot;/form/IPropertySelectionModel.html"><classname>IPropertySelectionModel</classname></ulink>'>
+<!ENTITY IPoolable '<ulink url="&ApiRoot;/util/pool/IPoolable.html"><classname>IPoolable</classname></ulink>'>
+<!ENTITY IRequestCycle '<ulink url="&ApiRoot;/IRequestCycle.html"><classname>IRequestCycle</classname></ulink>'>
+<!ENTITY IValidationDelegate '<ulink url="&ApiRoot;/valid/IValidationDelegate.html"><classname>IValidationDelegate</classname></ulink>'>
+<!ENTITY IValidatingTextField '<ulink url="&ApiRoot;/valid/IValidatingTextField.html"><classname>IValidatingTextField</classname></ulink>'>
+<!ENTITY PageCleanupListener '<ulink url="&ApiRoot;/event/PageCleanupListener.html"><classname>PageCleanupListener</classname></ulink>'>
+<!ENTITY PageDetachListener '<ulink url="&ApiRoot;/event/PageDetachListener.html"><classname>PageDetachListener</classname></ulink>'>
+<!ENTITY PageRedirectException '<ulink url="&ApiRoot;/PageRedirectException.html"><classname>PageRedirectException</classname></ulink>'>
+<!ENTITY PageRenderListener '<ulink url="&ApiRoot;/event/PageRenderListener.html"><classname>PageRenderListener</classname></ulink>'>
+<!ENTITY PropertyHelper '<ulink url="&ApiRoot;/util/prop/PropertyHelper.html"><classname>PropertyHelper</classname></ulink>'>
+<!ENTITY SimpleEngine '<ulink url="&ApiRoot;/engine/SimpleEngine.html"><classname>SimpleEngine</classname></ulink>'>
+<!ENTITY StaleLinkException '<ulink url="&ApiRoot;/StaleLinkException.html"><classname>StaleLinkException</classname></ulink>'>
+<!ENTITY ValidationDelegate '<ulink url="&ApiRoot;/valid/ValidationDelegate.html"><classname>ValidationDelegate</classname></ulink>'>
+
+
+<!-- External links -->
+
+<!ENTITY Ant '<ulink url="http://jakarta.apache.org/ant">Ant</ulink>'>
+<!ENTITY Jetty '<ulink url="http://sf.net/projects/jetty">Jetty</ulink>'>
+<!ENTITY Log4J '<ulink url="http://jakarta.apache.org/log4j">Log4J</ulink>'>
+
+<!-- Components -->
+
+

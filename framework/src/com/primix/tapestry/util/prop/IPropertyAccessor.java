@@ -38,7 +38,16 @@ package com.primix.tapestry.util.prop;
 
 public interface IPropertyAccessor
 {
-
+	/** 
+	 *  Returns the name of the property.
+	 *
+	 *  @since 1.0.6
+	 *
+	 */
+	
+	public String getName();
+	
+	
 	/**
 	*  Returns the current value of the property in the instance.
 	*

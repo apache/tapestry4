@@ -52,6 +52,11 @@ implements IPropertyAccessor
 		this.field = field;
 	}
 		
+	public String getName()
+	{
+		return field.getName();
+	}
+	
 	public void set(Object instance, Object value)
 	{ 
 		try

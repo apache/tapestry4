@@ -5,43 +5,11 @@
   "http://www.oasis-open.org/docbook/xml/4.1/docbookx.dtd" [
 <!-- Useful snippets -->
 <!ENTITY jwc-tag "<sgmltag class='starttag'>jwc</sgmltag>">
-<!-- Common Tapestry classes and components -->
-<!ENTITY ApiRoot "../api/com/primix/tapestry">
-<!ENTITY IEngine '<ulink url="&ApiRoot;/IEngine.html"><classname>IEngine</classname></ulink>'>
-<!ENTITY SimpleEngine '<ulink url="&ApiRoot;/engine/SimpleEngine.html"><classname>SimpleEngine</classname></ulink>'>
-<!ENTITY IRequestCycle '<ulink url="&ApiRoot;/IRequestCycle.html"><classname>IRequestCycle</classname></ulink>'>
-<!ENTITY IDirectListener '<ulink url="&ApiRoot;/IDirectListener .html"><classname>IDirectListener</classname></ulink>'>
-<!ENTITY IActionListener '<ulink url="&ApiRoot;/IActionListener.html"><classname>IActionListener</classname></ulink>'>
-<!ENTITY IBinding '<ulink url="&ApiRoot;/IBinding.html"><classname>IBinding</classname></ulink>'>
-<!ENTITY AbstractComponent '<ulink url="&ApiRoot;/AbstractComponent.html"><classname>AbstractComponent</classname></ulink>'>
-<!ENTITY PropertyHelper '<ulink url="&ApiRoot;/util/prop/PropertyHelper.html"><classname>PropertyHelper</classname></ulink>'>
-<!ENTITY PageDetachListener '<ulink url="&ApiRoot;/event/PageDetachListener.html"><classname>PageDetachListener</classname></ulink>'>
-<!ENTITY PageRenderListener '<ulink url="&ApiRoot;/event/PageRenderListener.html"><classname>PageRenderListener</classname></ulink>'>
-<!ENTITY PageCleanupListener '<ulink url="&ApiRoot;/event/PageCleanupListener.html"><classname>PageCleanupListener</classname></ulink>'>
-<!ENTITY IPoolable '<ulink url="&ApiRoot;/util/pool/IPoolable.html"><classname>IPoolable</classname></ulink>'>
-<!ENTITY IPage '<ulink url="&ApiRoot;/IPage.html"><classname>IPage</classname></ulink>'>
-<!ENTITY Default '<ulink url="&ApiRoot;/bean/Default.html"><classname>Default</classname></ulink>'>
-<!ENTITY ValidationDelegate '<ulink url="&ApiRoot;/valid/ValidationDelegate.html"><classname>ValidationDelegate</classname></ulink>'>
-<!ENTITY EvenOdd '<ulink url="&ApiRoot;/inspector/EvenOdd.html"><classname>EvenOdd</classname></ulink>'>
-<!ENTITY ApplicationServlet '<ulink url="&ApiRoot;/ApplicationServlet.html"><classname>ApplicationServlet</classname></ulink>'>
-<!ENTITY PageRedirectException '<ulink url="&ApiRoot;/PageRedirectException.html"><classname>PageRedirectException</classname></ulink>'>
-<!ENTITY IDirect '<ulink url="&ApiRoot;/IDirect.html"><classname>IDirect</classname></ulink>'>
-<!ENTITY BasePage '<ulink url="&ApiRoot;/BasePage.html"><classname>BasePage</classname></ulink>'>
-<!ENTITY BaseComponent '<ulink url="&ApiRoot;/BaseComponent.html"><classname>BaseComponent</classname></ulink>'>
-<!ENTITY IPageRecorder '<ulink url="&ApiRoot;/IPageRecorder.html"><classname>IPageRecorder</classname></ulink>'>
-<!ENTITY ExceptionAnalyzer '<ulink url="&ApiRoot;/util/exceptionExceptionAnalyzer.html"><classname>ExceptionAnalyzer</classname></ulink>'>
-<!ENTITY ExceptionDescription '<ulink url="&ApiRoot;/util/ExceptionDescription.html"><classname>ExceptionDescription</classname></ulink>'>
-<!ENTITY StaleLinkException '<ulink url="&ApiRoot;/StaleLinkException.html"><classname>StaleLinkException</classname></ulink>'>
-<!ENTITY Gesture '<ulink url="&ApiRoot;/Gesture.html"><classname>Gesture</classname></ulink>'>
-<!ENTITY IValidatingTextField '<ulink url="&ApiRoot;/valid/IValidatingTextField.html"><classname>IValidatingTextField</classname></ulink>'>
-<!ENTITY IValidationDelegate '<ulink url="&ApiRoot;/valid/IValidationDelegate.html"><classname>IValidationDelegate</classname></ulink>'>
-<!-- Classes provided by Sun -->
-<!ENTITY HttpSession "<classname>HttpSession</classname>">
-<!ENTITY HttpServletRequest "<classname>HttpServletRequest</classname>">
-<!ENTITY Map "<classname>Map</classname>">
-<!ENTITY String "<classname>String</classname>">
-<!ENTITY List "<classname>List</classname>">
-<!-- Components -->
+
+<!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
+
+%TapestryLinks;
+  
 <!ENTITY Action '<link linkend="builtin.Action"><classname>Action</classname></link>'>
 <!ENTITY Block '<link linkend="builtin.Block"><classname>Block</classname></link>'>
 <!ENTITY Checkbox '<link linkend="builtin.Checkbox"><classname>Checkbox</classname></link>'>
@@ -53,7 +21,7 @@
 <!ENTITY Form '<link linkend="builtin.Form"><classname>Form</classname></link>'>
 <!ENTITY Hidden '<link linkend="builtin.Hidden"><classname>Hidden</classname></link>'>
 <!ENTITY ListEdit '<link linkend="builtin.ListEdit"><classname>ListEdit</classname></link>'>
-<!ENTITY Image '<link linkend="builtin.InsertWrapped"><classname>Image</classname></link>'>
+<!ENTITY Image '<link linkend="builtin.Image"><classname>Image</classname></link>'>
 <!ENTITY Insert '<link linkend="builtin.Insert"><classname>Insert</classname></link>'>
 <!ENTITY InsertBlock '<link linkend="builtin.InsertBlock"><classname>InsertBlock</classname></link>'>
 <!ENTITY InsertText '<link linkend="builtin.InsertText"><classname>InsertText</classname></link>'>
@@ -71,8 +39,7 @@
 <!ENTITY Text '<link linkend="builtin.Text"><classname>Text</classname></link>'>
 <!ENTITY TextField '<link linkend="builtin.TextField"><classname>TextField</classname></link>'>
 <!ENTITY ValidatingTextField '<link linkend="builtin.ValidatingTextField"><classname>ValidatingTextField</classname></link>'>
-<!-- External links -->
-<!ENTITY Log4J '<ulink url="http://jakarta.apache.org/log4j">Log4J</ulink>'>
+
 ]>
 <!-- Conventions:
 
@@ -6287,11 +6254,11 @@ This section contains a few Q's and A's gleemed from the
 </qandaentry>
 <qandaentry>
 <question>
-<para>What happended to the <classname>ILifecycle</classname> interface?</para>
+<para>What happended to the &ILifecycle; interface?</para>
 </question>
 <answer>
 <para>
-Prior to release 1.0.5, there was an interface, <classname>ILifecycle</classname>, that could
+Prior to release 1.0.5, there was an interface, &ILifecycle;, that could
 optionally be implemented by components so that they could be informed about the lifecycle
 of the page which contains them, especially knowing when the page was detached from the engine (so that
 the components could reset thier state accordingly).  
@@ -6306,7 +6273,8 @@ For release 1.05, the interface was replaced by a more standard approach; well d
 These are described in the <link linkend="pages.events">Page Events</link> section of this document.
 </para>
 <para>
-The <classname>ILifecycle</classname> interface will be completely removed in release 1.1.0.
+The &ILifecycle; interface will be completely removed in release 1.1.0.  In the meantime, its deprecated, which
+will generate some warnings in your code if you create classes which implement the interface.
 </para>
 </answer>
 </qandaentry>

@@ -9,7 +9,7 @@
  * mailto:hship@primix.com
  * 
  * This library is free software.
- * 
+ * 1
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -43,7 +43,7 @@ import java.util.*;
 
 public class BeanProviderHelper extends PropertyHelper
 {
-	private static class BeanAccessor
+	public static class BeanAccessor
 	implements IPropertyAccessor
 	{
 		private String name;
@@ -53,6 +53,13 @@ public class BeanProviderHelper extends PropertyHelper
 			this.name = name;
 		}
 
+		/** @since 1.0.6 **/
+		
+		public String getName()
+		{
+			return name;
+		}
+		
 		public Object get(Object instance)
 		{
 			IBeanProvider provider = (IBeanProvider)instance;
@@ -112,5 +119,14 @@ public class BeanProviderHelper extends PropertyHelper
 			result = new BeanAccessor(name);
 
 		return result;
+	}
+	
+	/** @since 1.0.6 **/
+	
+	public Collection getSyntheticPropertyNames(Object instance)
+	{
+		IBeanProvider provider = (IBeanProvider)instance;
+
+		return provider.getBeanNames();
 	}
 }

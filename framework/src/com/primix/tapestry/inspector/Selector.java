@@ -59,7 +59,7 @@ public class Selector extends BaseComponent
 	{
 		Inspector inspector = (Inspector)getPage();
 		
-		inspector.setInspectedIdPath(null);
+		inspector.selectComponent(null);
 	}
 	
 	/**

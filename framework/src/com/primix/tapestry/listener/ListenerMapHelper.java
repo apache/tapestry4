@@ -45,7 +45,7 @@ import java.util.*;
 public class ListenerMapHelper
 	extends PropertyHelper
 {
-	private static class ListenerMapAccessor
+	public static class ListenerMapAccessor
 		implements IPropertyAccessor
 	{
 		private String name;
@@ -53,6 +53,13 @@ public class ListenerMapHelper
 		private ListenerMapAccessor(String name)
 		{
 			this.name = name;
+		}
+		
+		/** @since 1.0.6 **/
+		
+		public String getName()
+		{
+			return name;
 		}
 		
 		public Object get(Object instance)
@@ -118,5 +125,18 @@ public class ListenerMapHelper
 		
 		return result;
 	}
+	
+	/**
+	 *  @since 1.0.6
+	 *
+	 */
+	
+	public Collection getSyntheticPropertyNames(Object instance)
+	{
+		ListenerMap listenerMap = (ListenerMap)instance;
+
+		return listenerMap.getListenerNames();
+	}
+
 }
 

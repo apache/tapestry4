@@ -3,6 +3,7 @@
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.inspector.ShowProperties">
 
+  <bean name="persistPropertyClass" class="com.primix.tapestry.inspector.EvenOdd"/>
   <bean name="propertyClass" class="com.primix.tapestry.inspector.EvenOdd"/>
   
   <component id="ifNoProperties" type="Conditional">
@@ -18,10 +19,10 @@
     <binding name="source" property-path="properties"/>
     <binding name="value" property-path="change"/>
     <static-binding name="element">tr</static-binding>
-    <binding name="class" property-path="beans.propertyClass.next"/>
+    <binding name="class" property-path="beans.persistPropertyClass.next"/>
   </component>
   
-  <component id="select" type="Direct">
+  <component id="selectComponent" type="Direct">
     <binding name="listener" property-path="page.listeners.selectComponent"/>
     <binding name="context" property-path="change.componentPath"/>
     <binding name="disabled" property-path="disableComponentLink"/>
@@ -31,15 +32,75 @@
     <binding name="value" property-path="change.componentPath"/>
   </component>
   
-  <component id="insertPropertyName" type="Insert">
+  <component id="insertPersistPropertyName" type="Insert">
     <binding name="value" property-path="change.propertyName"/>
   </component>
   
-  <component id="insertValueClass" type="Insert">
+  <component id="insertPersistValueClass" type="Insert">
     <binding name="value" property-path="valueClassName"/>
   </component>
   
-  <component id="insertValue" type="Insert">
+  <component id="insertPersistValue" type="Insert">
     <binding name="value" property-path="change.newValue"/>
   </component>
+  
+  <component id="banner" type="Image">
+    <binding name="image" property-path="assets.banner"/>
+  </component>
+  
+  <component id="exploreComponent" type="Direct">
+    <binding name="listener" property-path="listeners.exploreComponent"/>
+  </component>
+  
+  <component id="insertComponentName" type="Insert">
+    <binding name="value" property-path="page.inspectedComponent.extendedId"/>
+  </component>
+  
+  <component id="explorePath" type="Foreach">
+    <binding name="source" property-path="explorePath"/>
+  </component>
+  
+  <component id="selectExplorePath" type="Direct">
+    <binding name="listener" property-path="listeners.selectExplorePath"/>
+    <binding name="context" property-path="components.explorePath.value.path"/>
+  </component>
+  
+  <component id="insertExploreProperty" type="Insert">
+    <binding name="value" property-path="components.explorePath.value.propertyName"/>
+  </component>
+  
+  <component id="insertExploredClassName" type="Insert">
+  	<binding name="value" property-path="exploredClassName"/>
+  </component>
+ 
+  <component id="insertExploredValue" type="Insert">
+    <binding name="value" property-path="exploredValue"/>
+  </component>
+  
+  <component id="ifNotNull" type="Conditional">
+    <binding name="condition" property-path="page.exploredObject"/>
+  </component>
+  
+  <component id="accessors" type="Foreach">
+    <binding name="source" property-path="accessors"/>
+    <binding name="value" property-path="accessor"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" property-path="beans.propertyClass.next"/>
+  </component>
+  
+  <component id="exploreProperty" type="Direct">
+    <binding name="listener" property-path="listeners.exploreProperty"/>
+    <binding name="context" property-path="accessor.name"/> 
+  </component>
+  
+  <component id="insertPropertyName" type="Insert">
+    <binding name="value" property-path="accessor.name"/>
+  </component>
+  
+  <component id="insertPropertyType" type="Insert">
+    <binding name="value" property-path="accessorTypeName"/>
+  </component>
+  
+  <private-asset name="banner" resource-path="/com/primix/tapestry/inspector/PropertiesExplorer_NBanner.gif"/>
+  
 </specification>

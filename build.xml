@@ -46,10 +46,11 @@ In some of the documentation in the web directory.
 </path>
 
 <path id="full.classpath">
-    <pathelement location="${jboss.dir}/lib/jboss-jdbc_ext.jar"/>
-    <pathelement location="${jboss.dir}/lib/ext/mail.jar"/>
-    <pathelement location="${jboss.dir}/lib/ext/activation.jar"/>
-    <pathelement location="${jboss.dir}/lib/ext/jboss-j2ee.jar"/>
+	<pathelement location="${lib}/VlibBeans.jar"/>
+	<pathelement location="examples/VlibBeans/jboss"/>
+    <pathelement location="${jboss.dir}/client/jboss-j2ee.jar"/>
+    <pathelement location="${jboss.dir}/client/jboss-client.jar"/>
+    <pathelement location="${jboss.dir}/client/jnp-client.jar"/>
     <path refid="tutorial.classpath"/>
 </path>
 
@@ -73,6 +74,7 @@ In some of the documentation in the web directory.
       <include name="*.war"/>
       <include name="com.primix.tapestry.jar"/>
       <include name="net.sf.tapestry.contrib.jar"/>
+      <include name="VlibBeans.jar"/>
      </fileset>
   </delete>
 </target>

@@ -1,3 +1,26 @@
+* Oct 8 2001 hship
+
+doc:
+- Fix up some errors in the Tutorial documentation, including
+  the broken Inspector images
+  
+framework:
+- Extend PropertyHelper to describe properties available for an instance
+- Enhance the Inspector's Properties view to add the Property Explorer
+
+junit:
+- Fix parser test suite (related to CR/LF issues)
+- Add master test suite for Tapestry
+- Add test suite for PropertyHelper (and related)
+- Add junit.properties file to allow JUnit to initialize
+- Make use of the <junit> Ant task to run the tests
+
+vlib:
+- Fix problem in web.xml deployment descriptor (which broke private assets).
+  
+web:
+- Update the "What's New" and "FAQ" pages.
+
 * Sep 30 2001 hship
 
 Removed all references to the Java Build Environment; Tapestry is now built using
