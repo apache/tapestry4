@@ -4151,6 +4151,25 @@ The other form-related components must be wrapped inside the <classname>Form</cl
       </variablelist>
     </section>
     
+  
+      <section id="builtin.Frame">
+      <title>Frame</title>
+      <para>
+Provides the <sgmltag class="starttag">frame</sgmltag> element within
+a <sgmltag class="starttag">frameset</sgmltag>.
+
+</para>
+      <variablelist>
+        <title>Parameters</title>
+        <varlistentry>
+          <term>page</term>
+          <listitem>
+            <para>The name of the page to display in the frame.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
+  
     
         <section id="builtin.GenericLink">
       <title>GenericLink</title>

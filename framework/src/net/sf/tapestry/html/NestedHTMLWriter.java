@@ -31,7 +31,7 @@ import java.io.PrintWriter;
 import net.sf.tapestry.IMarkupWriter;
 
 /**
- *  Subclass of {@link HTMLResponseWriter} that is nested.  A nested writer
+ *  Subclass of {@link HTMLWriter} that is nested.  A nested writer
  *  buffers its output, then inserts it into its parent writer when it is
  *  closed.
  *
@@ -39,7 +39,7 @@ import net.sf.tapestry.IMarkupWriter;
  *  @version $Id$
  */
 
-public class NestedHTMLWriter extends HTMLResponseWriter
+public class NestedHTMLWriter extends HTMLWriter
 {
 	private IMarkupWriter parent;
 	private CharArrayWriter internalBuffer;
@@ -56,7 +56,7 @@ public class NestedHTMLWriter extends HTMLResponseWriter
 	}
 
 	/**
-	*  Invokes the {@link HTMLResponseWriter#close() super-class
+	*  Invokes the {@link HTMLWriter#close() super-class
 	*  implementation}, then gets the data accumulated in the
 	*  internal buffer and provides it to the containing writer using
 	*  {@link IMarkupWriter#printRaw(char[], int, int)}.

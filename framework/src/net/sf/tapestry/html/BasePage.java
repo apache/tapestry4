@@ -31,24 +31,24 @@ import net.sf.tapestry.AbstractPage;
 import net.sf.tapestry.IMarkupWriter;
 
 /**
- * Concrete class for HTML pages. Most pages
- * should be able to simply subclass this, adding new properties and
- * methods.  An unlikely exception would be a page that was not based
- * on a template.
+ *  Concrete class for HTML pages. Most pages
+ *  should be able to simply subclass this, adding new properties and
+ *  methods.  An unlikely exception would be a page that was not based
+ *  on a template.
  *
- * @version $Id$
- * @author Howard Lewis Ship
+ *  @version $Id$
+ *  @author Howard Lewis Ship
  **/
 
 public class BasePage extends AbstractPage
 {
     /**
-     *  Returns a new {@link HTMLResponseWriter}.
+     *  Returns a new {@link HTMLWriter}.
      *
      **/
 
     public IMarkupWriter getResponseWriter(OutputStream out)
     {
-        return new HTMLResponseWriter(out);
+        return new HTMLWriter(out);
     }
 }
