@@ -34,9 +34,7 @@ public class ForceNonAbstractWorker implements EnhancementWorker
         if (!Modifier.isAbstract(baseClass.getModifiers()))
             return;
 
-        if (op.hasEnhancements())
-            return;
-
-        op.forceEnhancement();
+        if (!op.hasEnhancements())
+            op.forceEnhancement();
     }
 }

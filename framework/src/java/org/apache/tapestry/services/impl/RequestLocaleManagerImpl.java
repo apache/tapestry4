@@ -18,8 +18,8 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.hivemind.Defense;
 import org.apache.tapestry.ApplicationServlet;
-import org.apache.tapestry.Defense;
 import org.apache.tapestry.services.CookieSource;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.util.StringSplitter;

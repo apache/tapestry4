@@ -14,31 +14,24 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.util.List;
-
-import org.apache.commons.logging.Log;
 import org.apache.hivemind.ServiceImplementationFactory;
-import org.apache.hivemind.internal.Module;
+import org.apache.hivemind.ServiceImplementationFactoryParameters;
 
 /**
- * Used to create an service instance of {@link  org.apache.tapestry.services.impl.SymbolSourcesPropertySource}.
- * This is because SSPS needs an instance of {@link org.apache.hivemind.internal.Module}, and there's
- * no way to do that with hivemind.BuilderFactory.
- *
+ * Used to create an service instance of
+ * {@link  org.apache.tapestry.services.impl.SymbolSourcesPropertySource}. This is because SSPS
+ * needs an instance of {@link org.apache.hivemind.internal.Module}, and there's no way to do that
+ * with hivemind.BuilderFactory.
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public class SymbolSourcesPropertySourceFactory implements ServiceImplementationFactory
 {
 
-    public Object createCoreServiceImplementation(
-        String serviceId,
-        Class serviceInterface,
-        Log serviceLog,
-        Module invokingModule,
-        List parameters)
+    public Object createCoreServiceImplementation(ServiceImplementationFactoryParameters parameters)
     {
-        return new SymbolSourcesPropertySource(invokingModule);
+        return new SymbolSourcesPropertySource(parameters.getInvokingModule());
     }
 
 }

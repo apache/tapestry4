@@ -19,44 +19,46 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ServiceImplementationFactory;
+import org.apache.hivemind.ServiceImplementationFactoryParameters;
 import org.apache.hivemind.internal.Module;
 import org.apache.hivemind.lib.DefaultImplementationBuilder;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
- * An implementation of {@link org.apache.hivemind.ServiceImplementationFactory}
- * that looks for a service implementation provided as an
+ * An implementation of {@link org.apache.hivemind.ServiceImplementationFactory}that looks for a
+ * service implementation provided as an
  * {@link org.apache.tapestry.spec.ILibrarySpecification#getExtension(String) application
  * extension}. If no such extension exists, then a
- * {@link org.apache.hivemind.lib.DefaultImplementationBuilder default implementation}
- * is constructed and returned instead. This allows compatibility with Tapestry 3.0 and
- * earlier application extensions (though those will be phased out in the future).
- *
+ * {@link org.apache.hivemind.lib.DefaultImplementationBuilder default implementation}is
+ * constructed and returned instead. This allows compatibility with Tapestry 3.0 and earlier
+ * application extensions (though those will be phased out in the future).
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public class ExtensionLookupFactory implements ServiceImplementationFactory
 {
     private IApplicationSpecification _specification;
+
     private DefaultImplementationBuilder _defaultBuilder;
 
     public Object createCoreServiceImplementation(
-        String serviceId,
-        Class serviceInterface,
-        Log serviceLog,
-        Module invokingModule,
-        List parameters)
+            ServiceImplementationFactoryParameters factorParameters)
     {
-        ExtensionLookupParameter p = (ExtensionLookupParameter) parameters.get(0);
+        ExtensionLookupParameter p = (ExtensionLookupParameter) factorParameters.getParameters()
+                .get(0);
 
         String extensionName = p.getExtensionName();
+
+        Class serviceInterface = factorParameters.getServiceInterface();
 
         try
         {
             if (_specification.checkExtension(extensionName))
                 return _specification.getExtension(extensionName, serviceInterface);
 
-            return _defaultBuilder.buildDefaultImplementation(serviceInterface, invokingModule);
+            return _defaultBuilder.buildDefaultImplementation(serviceInterface, factorParameters
+                    .getInvokingModule());
         }
         catch (Exception ex)
         {

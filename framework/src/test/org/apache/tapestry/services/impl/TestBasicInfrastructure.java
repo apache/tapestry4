@@ -24,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.impl.DefaultClassResolver;
@@ -55,8 +56,6 @@ import org.easymock.MockControl;
  */
 public class TestBasicInfrastructure extends HiveMindTestCase
 {
-    private static final Log LOG = LogFactory.getLog(TestBasicInfrastructure.class);
-
     public void testRequestGlobals()
     {
         RequestGlobalsImpl si = new RequestGlobalsImpl();
@@ -104,6 +103,8 @@ public class TestBasicInfrastructure extends HiveMindTestCase
 
         ai.initialize(servlet);
 
+        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+
         replayControls();
 
         // Build the list.
@@ -115,8 +116,7 @@ public class TestBasicInfrastructure extends HiveMindTestCase
         List l = Collections.singletonList(ic);
 
         MasterInitializer mi = new MasterInitializer();
-        mi.setErrorHandler(new DefaultErrorHandler());
-        mi.setLog(LOG);
+        mi.setErrorLog(log);
         mi.setInitializers(l);
 
         mi.initialize(servlet);

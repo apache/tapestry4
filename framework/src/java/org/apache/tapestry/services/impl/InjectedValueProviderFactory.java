@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ServiceImplementationFactory;
+import org.apache.hivemind.ServiceImplementationFactoryParameters;
 import org.apache.hivemind.internal.Module;
 import org.apache.hivemind.schema.Translator;
 
@@ -33,12 +34,11 @@ public class InjectedValueProviderFactory implements ServiceImplementationFactor
 {
     private Translator _objectTranslator;
 
-    public Object createCoreServiceImplementation(String serviceId, Class serviceInterface,
-            Log serviceLog, Module invokingModule, List parameters)
+    public Object createCoreServiceImplementation(ServiceImplementationFactoryParameters parameters)
     {
         // The invoking module here is the tapestry module
-        
-        return new InjectedValueProviderImpl(invokingModule, _objectTranslator);
+
+        return new InjectedValueProviderImpl(parameters.getInvokingModule(), _objectTranslator);
     }
 
     public void setObjectTranslator(Translator objectTranslator)

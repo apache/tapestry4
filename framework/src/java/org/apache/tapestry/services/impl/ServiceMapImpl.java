@@ -19,9 +19,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.services.ServiceMap;
@@ -36,11 +35,9 @@ public class ServiceMapImpl implements ServiceMap
 {
     private List _applicationServices;
 
-    private ErrorHandler _errorHandler;
-
     private List _factoryServices;
 
-    private Log _log;
+    private ErrorLog _errorLog;
 
     /**
      * Map of {@link IEngineService}keyed on String name.
@@ -74,8 +71,10 @@ public class ServiceMapImpl implements ServiceMap
 
             if (existing != null)
             {
-                _errorHandler.error(_log, ImplMessages.dupeService(name, existing), HiveMind
-                        .getLocation(s), null);
+                _errorLog.error(
+                        ImplMessages.dupeService(name, existing),
+                        HiveMind.getLocation(s),
+                        null);
                 continue;
             }
 
@@ -100,19 +99,13 @@ public class ServiceMapImpl implements ServiceMap
         _applicationServices = applicationServices;
     }
 
-    public void setErrorHandler(ErrorHandler errorHandler)
-    {
-        _errorHandler = errorHandler;
-    }
-
     public void setFactoryServices(List factoryServices)
     {
         _factoryServices = factoryServices;
     }
 
-    public void setLog(Log log)
+    public void setErrorLog(ErrorLog errorLog)
     {
-        _log = log;
+        _errorLog = errorLog;
     }
-
 }

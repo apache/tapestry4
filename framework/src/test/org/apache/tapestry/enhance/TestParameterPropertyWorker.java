@@ -17,9 +17,8 @@ package org.apache.tapestry.enhance;
 import java.lang.reflect.Modifier;
 import java.util.Collections;
 
-import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
@@ -232,12 +231,10 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         op.getBaseClass();
         opc.setReturnValue(BaseComponent.class);
 
-        Log log = (Log) newMock(Log.class);
-        ErrorHandler errorHandler = (ErrorHandler) newMock(ErrorHandler.class);
+        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
-        errorHandler
+        log
                 .error(
-                        log,
                         "Error adding property 'wilma' to class org.apache.tapestry.BaseComponent: Simulated error.",
                         l,
                         ex);
@@ -245,8 +242,7 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         replayControls();
 
         ParameterPropertyWorker w = new ParameterPropertyWorker();
-        w.setLog(log);
-        w.setErrorHandler(errorHandler);
+        w.setErrorLog(log);
 
         w.performEnhancement(op);
 
@@ -281,26 +277,23 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         op.getBaseClass();
         opc.setReturnValue(BaseComponent.class);
 
-        Log log = (Log) newMock(Log.class);
-        MockControl ehc = newControl(ErrorHandler.class);
-        ErrorHandler errorHandler = (ErrorHandler) ehc.getMock();
+        MockControl logc = newControl(ErrorLog.class);
+        ErrorLog log = (ErrorLog) logc.getMock();
 
-        errorHandler
+        log
                 .error(
-                        log,
                         "Error adding property 'wilma' to class org.apache.tapestry.BaseComponent: "
                                 + "Parameter 'wilma' must be required or have a default value as it uses direction 'auto'.",
                         l,
                         new ApplicationRuntimeException(""));
 
-        ehc.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, null, null, new TypeMatcher() }));
+        logc.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
+        { null, null, new TypeMatcher() }));
 
         replayControls();
 
         ParameterPropertyWorker w = new ParameterPropertyWorker();
-        w.setLog(log);
-        w.setErrorHandler(errorHandler);
+        w.setErrorLog(log);
 
         w.performEnhancement(op);
 

@@ -19,8 +19,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -33,9 +32,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  */
 public class EnhancedClassValidatorImpl implements EnhancedClassValidator
 {
-    private ErrorHandler _errorHandler;
-
-    private Log _log;
+    private ErrorLog _errorLog;
 
     public void validate(Class baseClass, Class enhancedClass, IComponentSpecification specification)
     {
@@ -60,11 +57,8 @@ public class EnhancedClassValidatorImpl implements EnhancedClassValidator
                     if (implementedMethods.contains(s))
                         continue;
 
-                    _errorHandler.error(_log, EnhanceMessages.noImplForAbstractMethod(
-                            m,
-                            current,
-                            baseClass.getName(),
-                            enhancedClass), specification.getLocation(), null);
+                    _errorLog.error(EnhanceMessages.noImplForAbstractMethod(m, current, baseClass
+                            .getName(), enhancedClass), specification.getLocation(), null);
                 }
 
                 implementedMethods.add(s);
@@ -80,7 +74,7 @@ public class EnhancedClassValidatorImpl implements EnhancedClassValidator
             current = current.getSuperclass();
 
             // Once advanced up to a concrete class, we trust that
-            // the compiler did its checking.  Alternately, if
+            // the compiler did its checking. Alternately, if
             // we started on java.lang.Object for some reason, current
             // will be null and we can stop.S
 
@@ -90,13 +84,8 @@ public class EnhancedClassValidatorImpl implements EnhancedClassValidator
 
     }
 
-    public void setErrorHandler(ErrorHandler errorHandler)
+    public void setErrorLog(ErrorLog errorLog)
     {
-        _errorHandler = errorHandler;
-    }
-
-    public void setLog(Log log)
-    {
-        _log = log;
+        _errorLog = errorLog;
     }
 }

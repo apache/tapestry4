@@ -14,8 +14,7 @@
 
 package org.apache.tapestry.enhance;
 
-import org.apache.commons.logging.Log;
-import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -70,9 +69,7 @@ public class TestEnhancedClassValidator extends HiveMindTestCase
 
     public void testIncomplete()
     {
-        Log log = (Log) newMock(Log.class);
-        ErrorHandler errorHandler = (ErrorHandler) newMock(ErrorHandler.class);
-
+        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
         Location l = fabricateLocation(11);
 
         MockControl specControl = newControl(IComponentSpecification.class);
@@ -81,9 +78,8 @@ public class TestEnhancedClassValidator extends HiveMindTestCase
         spec.getLocation();
         specControl.setReturnValue(l);
 
-        errorHandler
+        log
                 .error(
-                        log,
                         "Method 'public abstract void org.apache.tapestry.enhance.TestEnhancedClassValidator$AbstractBase.foo()' (declared in class org.apache.tapestry.enhance.TestEnhancedClassValidator$AbstractBase) has no implementation in class org.apache.tapestry.enhance.TestEnhancedClassValidator$AbstractBase (or enhanced subclass org.apache.tapestry.enhance.TestEnhancedClassValidator$Incomplete).",
                         l,
                         null);
@@ -91,8 +87,7 @@ public class TestEnhancedClassValidator extends HiveMindTestCase
         replayControls();
 
         EnhancedClassValidatorImpl v = new EnhancedClassValidatorImpl();
-        v.setLog(log);
-        v.setErrorHandler(errorHandler);
+        v.setErrorLog(log);
 
         v.validate(AbstractBase.class, Incomplete.class, spec);
 

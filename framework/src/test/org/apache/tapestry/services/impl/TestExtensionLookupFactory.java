@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.ServiceImplementationFactoryParameters;
 import org.apache.hivemind.internal.Module;
 import org.apache.hivemind.lib.DefaultImplementationBuilder;
 import org.apache.hivemind.test.HiveMindTestCase;
@@ -49,7 +50,17 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
 
         Runnable r = (Runnable) newMock(Runnable.class);
 
+        MockControl fpc = newControl(ServiceImplementationFactoryParameters.class);
+        ServiceImplementationFactoryParameters fp = (ServiceImplementationFactoryParameters) fpc
+                .getMock();
+
         // Training
+
+        fp.getParameters();
+        fpc.setReturnValue(createParameters("foo.bar"));
+
+        fp.getServiceInterface();
+        fpc.setReturnValue(Runnable.class);
 
         spec.checkExtension("foo.bar");
         specControl.setReturnValue(true);
@@ -62,12 +73,7 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
         ExtensionLookupFactory f = new ExtensionLookupFactory();
         f.setSpecification(spec);
 
-        Object actual = f.createCoreServiceImplementation(
-                "biz.bap.Boom",
-                Runnable.class,
-                null,
-                null,
-                createParameters("foo.bar"));
+        Object actual = f.createCoreServiceImplementation(fp);
 
         assertSame(r, actual);
 
@@ -86,10 +92,23 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
 
         Runnable r = (Runnable) newMock(Runnable.class);
 
+        MockControl fpc = newControl(ServiceImplementationFactoryParameters.class);
+        ServiceImplementationFactoryParameters fp = (ServiceImplementationFactoryParameters) fpc
+                .getMock();
+
         // Training
+
+        fp.getParameters();
+        fpc.setReturnValue(createParameters("foo.bar"));
+
+        fp.getServiceInterface();
+        fpc.setReturnValue(Runnable.class);
 
         spec.checkExtension("foo.bar");
         specControl.setReturnValue(false);
+
+        fp.getInvokingModule();
+        fpc.setReturnValue(module);
 
         dib.buildDefaultImplementation(Runnable.class, module);
         dibControl.setReturnValue(r);
@@ -100,12 +119,7 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
         f.setSpecification(spec);
         f.setDefaultBuilder(dib);
 
-        Object actual = f.createCoreServiceImplementation(
-                "biz.bap.Boom",
-                Runnable.class,
-                null,
-                module,
-                createParameters("foo.bar"));
+        Object actual = f.createCoreServiceImplementation(fp);
 
         assertSame(r, actual);
 
@@ -120,13 +134,23 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
         p.setLocation(l);
         p.setExtensionName("gnip.gnop");
 
-        List parameters = Collections.singletonList(p);
+        MockControl fpc = newControl(ServiceImplementationFactoryParameters.class);
+        ServiceImplementationFactoryParameters fp = (ServiceImplementationFactoryParameters) fpc
+                .getMock();
+
+        fp.getParameters();
+        fpc.setReturnValue(Collections.singletonList(p));
+
+        fp.getServiceInterface();
+        fpc.setReturnValue(null);
 
         ExtensionLookupFactory f = new ExtensionLookupFactory();
 
+        replayControls();
+
         try
         {
-            f.createCoreServiceImplementation(null, null, null, null, parameters);
+            f.createCoreServiceImplementation(fp);
 
             unreachable();
         }
@@ -134,5 +158,7 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
         {
             assertSame(l, ex.getLocation());
         }
+
+        verifyControls();
     }
 }

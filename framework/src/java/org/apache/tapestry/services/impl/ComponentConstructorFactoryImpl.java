@@ -23,6 +23,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.order.Orderer;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.tapestry.enhance.EnhancedClassValidator;
@@ -43,9 +44,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
 public class ComponentConstructorFactoryImpl implements ComponentConstructorFactory,
         ResetEventListener
 {
-    private ErrorHandler _errorHandler;
-
-    private Log _log;
+    private ErrorLog _errorLog;
 
     private ClassFactory _classFactory;
 
@@ -71,7 +70,7 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
 
     public void initializeService()
     {
-        Orderer orderer = new Orderer(_log, _errorHandler, "worker");
+        Orderer orderer = new Orderer(_errorLog, "worker");
 
         Iterator i = _contributions.iterator();
         while (i.hasNext())
@@ -134,18 +133,13 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
         _contributions = contributions;
     }
 
-    public void setErrorHandler(ErrorHandler errorHandler)
-    {
-        _errorHandler = errorHandler;
-    }
-
-    public void setLog(Log log)
-    {
-        _log = log;
-    }
-
     public void setValidator(EnhancedClassValidator validator)
     {
         _validator = validator;
+    }
+
+    public void setErrorLog(ErrorLog errorLog)
+    {
+        _errorLog = errorLog;
     }
 }
