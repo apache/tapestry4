@@ -1,7 +1,7 @@
 # $Id$
 #
 
-JAR_NAME = Tapestry
+MODULE_NAME = Tapestry
 
 PACKAGES = \
 	com.primix.tapestry \
@@ -20,7 +20,7 @@ RESOURCE_PACKAGES = \
 	com.primix.tapestry.components \
 	com.primix.tapestry.pages
 
-LOCAL_RELATIVE_CLASSPATH = \
+LOCAL_CLASSPATH = \
 	../lib/gnu-regexp.jar \
 	../lib/jaxp.jar \
 	../lib/parser.jar \
@@ -29,7 +29,7 @@ LOCAL_RELATIVE_CLASSPATH = \
 
 INSTALL_DIR := ../lib
 
-JAVADOC_DIR = ../javadoc/$(JAR_NAME)
+JAVADOC_DIR = ../javadoc
 
 JAVADOC_OPT = \
 	-version -author -windowtitle "Tapestry API" \
