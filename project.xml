@@ -4,7 +4,7 @@
   <name>Tapestry Web Application Framework</name>
   <id>tapestry</id>
   <groupId>jakarta-tapestry</groupId>
-  <currentVersion>3.0-beta-2</currentVersion>
+  <currentVersion>3.0-beta-3</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -125,13 +125,13 @@
       
     <dependency>
       <id>commons-digester</id>
-      <version>1.4.1</version>
+      <version>1.5</version>
       <url>http://jakarta.apache.org/commons/</url>
     </dependency>
     
     <dependency>
       <id>commons-fileupload</id>
-      <version>1.0-beta-1</version>
+      <version>1.0</version>
       <url>http://jakarta.apache.org/commons/</url>
     </dependency>
         
