@@ -103,6 +103,20 @@ public final class Tapestry
     public final static String TAG_SUPPORT_SERVICE_ATTRIBUTE =
         "org.apache.tapestry.tagsupport.service";
 
+	/**
+	 * Name of a request attribute used with the
+	 * {@link #TAGSUPPORT_SERVICE} service.  The attribute
+	 * defines the correct servlet path for the
+	 * Tapestry application (which, for the odd-man-out TAGSUPPORT_SERVICE
+	 * may not match HttpServletRequest.getServletPath() because of
+	 * the use of an include.
+	 * 
+	 * @since 3.0
+	 */
+	
+	public final static String TAG_SUPPORT_SERVLET_PATH_ATTRIBUTE	=
+	"org.apach.tapestry.tagsupport.servlet-path";
+	
     /**
      *  Name of a request attribute used with the
      *  {@link #TAGSUPPORT_SERVICE} service.  The attribute
