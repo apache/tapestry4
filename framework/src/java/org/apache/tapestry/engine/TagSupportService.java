@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -53,7 +52,7 @@ public class TagSupportService implements IEngineService
      *             always
      */
 
-    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, Object parameter)
     {
         throw new ApplicationRuntimeException(Tapestry.getMessage("TagSupportService.service-only"));
     }
@@ -83,7 +82,9 @@ public class TagSupportService implements IEngineService
 
         IEngineService service = cycle.getEngine().getService(serviceName);
 
-        ILink link = service.getLink(cycle, null, parameters);
+        // TODO: This is all screwed up now!
+        
+        ILink link = service.getLink(cycle, parameters);
 
         String URI = link.getURL();
 

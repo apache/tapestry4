@@ -16,43 +16,29 @@ package org.apache.tapestry.link;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.engine.ExternalServiceParameter;
 import org.apache.tapestry.engine.ILink;
 
 /**
- *  A component for creating a link to {@link org.apache.tapestry.IExternalPage} using the
- * {@link org.apache.tapestry.engine.ExternalService}.
- *
- *  [<a href="../../../../../ComponentReference/ExternalLink.html">Component Reference</a>]
- *
+ * A component for creating a link to {@link org.apache.tapestry.IExternalPage}using the
+ * {@link org.apache.tapestry.engine.ExternalService}. [ <a
+ * href="../../../../../ComponentReference/ExternalLink.html">Component Reference </a>]
+ * 
  * @see org.apache.tapestry.IExternalPage
  * @see org.apache.tapestry.engine.ExternalService
- *
  * @author Malcolm Edgar
- *
- **/
+ */
 
 public abstract class ExternalLink extends AbstractLinkComponent
 {
     public ILink getLink(IRequestCycle cycle)
     {
-        return getLink(cycle, Tapestry.EXTERNAL_SERVICE, getServiceParameters());
-    }
+        Object[] serviceParameters = DirectLink.constructServiceParameters(getParameters());
 
-    private Object[] getServiceParameters()
-    {
-        Object[] pageParameters = DirectLink.constructServiceParameters(getParameters());
-        String targetPage = getTargetPage();
+        ExternalServiceParameter esp = new ExternalServiceParameter(getTargetPage(),
+                serviceParameters);
 
-        if (pageParameters == null)
-            return new Object[] { targetPage };
-
-        Object[] parameters = new Object[pageParameters.length + 1];
-
-        parameters[0] = targetPage;
-
-        System.arraycopy(pageParameters, 0, parameters, 1, pageParameters.length);
-
-        return parameters;
+        return getLink(cycle, Tapestry.EXTERNAL_SERVICE, esp);
     }
 
     public abstract Object getParameters();

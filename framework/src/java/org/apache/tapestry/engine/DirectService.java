@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IPage;
@@ -59,8 +60,14 @@ public class DirectService extends AbstractService
 
     private static final String STATEFUL_OFF = "0";
 
-    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, Object parameter)
     {
+        Defense.isAssignable(parameter, DirectServiceParameter.class, "parameter");
+
+        DirectServiceParameter dsp = (DirectServiceParameter) parameter;
+
+        IComponent component = dsp.getDirect();
+        Object[] serviceParameters = dsp.getServiceParameters();
 
         // New since 1.0.1, we use the component to determine
         // the page, not the cycle. Through the use of tricky
@@ -90,7 +97,7 @@ public class DirectService extends AbstractService
         context[i++] = componentPage.getPageName();
         context[i++] = component.getIdPath();
 
-        return constructLink(cycle, Tapestry.DIRECT_SERVICE, context, parameters, true);
+        return constructLink(cycle, Tapestry.DIRECT_SERVICE, context, serviceParameters, true);
     }
 
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,

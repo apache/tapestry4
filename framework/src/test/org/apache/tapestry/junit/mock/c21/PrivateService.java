@@ -28,7 +28,6 @@ import org.apache.tapestry.request.ResponseOutputStream;
  * Test case for service which can't be instantiated.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 public class PrivateService implements IEngineService
@@ -38,7 +37,7 @@ public class PrivateService implements IEngineService
     {
     }
 
-    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, Object parameter)
     {
         return null;
     }

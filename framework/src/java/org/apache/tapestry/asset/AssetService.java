@@ -25,6 +25,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -81,16 +82,14 @@ public class AssetService extends AbstractService
      * with a leading slash).
      */
 
-    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, Object parameter)
     {
-        if (Tapestry.size(parameters) != 1)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "service-single-parameter",
-                    Tapestry.ASSET_SERVICE));
+        Defense.isAssignable(parameter, String.class, "parameter");
 
         // Service is stateless
 
-        return constructLink(cycle, Tapestry.ASSET_SERVICE, null, parameters, false);
+        return constructLink(cycle, Tapestry.ASSET_SERVICE, null, new Object[]
+        { parameter }, false);
     }
 
     public String getName()

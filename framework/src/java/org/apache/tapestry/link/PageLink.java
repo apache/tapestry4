@@ -20,14 +20,11 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ILink;
 
 /**
- *  A component for creating a navigation link to another page, 
- *  using the page service.
- *
- *  [<a href="../../../../../ComponentReference/PageLink.html">Component Reference</a>]
- *
+ * A component for creating a navigation link to another page, using the page service. [ <a
+ * href="../../../../../ComponentReference/PageLink.html">Component Reference </a>]
+ * 
  * @author Howard Ship
- *
- **/
+ */
 
 public abstract class PageLink extends AbstractLinkComponent
 {
@@ -42,12 +39,12 @@ public abstract class PageLink extends AbstractLinkComponent
         else
             parameter = namespace.constructQualifiedName(targetPage);
 
-        return getLink(cycle, Tapestry.PAGE_SERVICE, new String[] { parameter });
+        return getLink(cycle, Tapestry.PAGE_SERVICE, parameter);
     }
 
     public abstract String getTargetPage();
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     public abstract INamespace getTargetNamespace();
 }

@@ -32,6 +32,8 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RenderRewoundException;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.engine.ActionServiceParameter;
+import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.html.Body;
@@ -547,19 +549,26 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     private ILink getLink(IRequestCycle cycle, String actionId)
     {
         String serviceName = null;
+        Object parameter = null;
 
         if (isDirect())
+        {
             serviceName = Tapestry.DIRECT_SERVICE;
+            parameter = new DirectServiceParameter(this, new Object[]
+            { actionId });
+        }
         else
+        {
+            // I'd love to pull out support for the action service entirely!
+
             serviceName = Tapestry.ACTION_SERVICE;
+            parameter = new ActionServiceParameter(this, actionId);
+        }
 
         IEngine engine = cycle.getEngine();
         IEngineService service = engine.getService(serviceName);
-
-        // A single service parameter is used to store the actionId.
-
-        return service.getLink(cycle, this, new String[]
-        { actionId });
+        
+        return service.getLink(cycle, parameter);
     }
 
     private void writeLinkParameters(IMarkupWriter writer, ILink link, boolean reserveOnly)

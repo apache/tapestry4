@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.ResponseOutputStream;
@@ -51,12 +50,10 @@ public class RestartService extends AbstractService
     /** @since 3.1 */
     private AbsoluteURLBuilder _builder;
 
-    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, Object parameter)
     {
-        if (Tapestry.size(parameters) != 0)
-            throw new IllegalArgumentException(Tapestry.format(
-                    "service-no-parameters",
-                    Tapestry.RESTART_SERVICE));
+        if (parameter != null)
+            throw new IllegalArgumentException(EngineMessages.serviceNoParameter(this));
 
         return constructLink(cycle, Tapestry.RESTART_SERVICE, null, null, true);
     }

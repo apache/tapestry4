@@ -18,6 +18,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
+import org.apache.hivemind.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
@@ -25,6 +26,7 @@ import org.apache.tapestry.engine.AbstractService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.RequestExceptionReporter;
+import org.apache.tapestry.util.ComponentAddress;
 import org.jCharts.Chart;
 import org.jCharts.encoders.JPEGEncoder13;
 
@@ -44,35 +46,26 @@ public class ChartService extends AbstractService
     /** @since 3.1 */
     private RequestExceptionReporter _exceptionReporter;
 
-    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, Object parameter)
     {
-        String[] context;
-        String pageName = component.getPage().getPageName();
-        String idPath = component.getIdPath();
+        Defense.isAssignable(parameter, IComponent.class, "parameter");
 
-        if (idPath != null)
-        {
-            context = new String[2];
-            context[1] = idPath;
-        }
-        else
-            context = new String[1];
+        IComponent component = (IComponent) parameter;
 
-        context[0] = pageName;
+        Object[] serviceParameters = new Object[]
+        { new ComponentAddress(component) };
 
-        return constructLink(cycle, SERVICE_NAME, context, null, true);
+        return constructLink(cycle, SERVICE_NAME, null, serviceParameters, true);
     }
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output)
-            throws ServletException, IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
+            IOException
     {
-        String context[] = getServiceContext(cycle.getRequestContext());
+        Object[] serviceParameters = getParameters(cycle);
 
-        String pageName = context[0];
-        String idPath = (context.length == 1) ? null : context[1];
+        ComponentAddress address = (ComponentAddress) serviceParameters[0];
 
-        IPage page = cycle.getPage(pageName);
-        IComponent component = (idPath == null) ? page : page.getNestedComponent(idPath);
+        IComponent component = address.findComponent(cycle);
 
         try
         {

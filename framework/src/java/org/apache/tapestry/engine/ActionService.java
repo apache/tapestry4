@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Defense;
 import org.apache.tapestry.IAction;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
@@ -59,12 +60,13 @@ public class ActionService extends AbstractService
 
     private static final String STATEFUL_OFF = "0";
 
-    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, Object parameter)
     {
-        if (parameters == null || parameters.length != 1)
-            throw new IllegalArgumentException(Tapestry.format(
-                    "service-single-parameter",
-                    Tapestry.ACTION_SERVICE));
+        Defense.isAssignable(parameter, ActionServiceParameter.class, "parameter");
+
+        ActionServiceParameter asp = (ActionServiceParameter) parameter;
+
+        IComponent component = asp.getComponent();
 
         String stateful = cycle.getEngine().isStateful() ? STATEFUL_ON : STATEFUL_OFF;
         IPage componentPage = component.getPage();
@@ -78,7 +80,7 @@ public class ActionService extends AbstractService
 
         serviceContext[i++] = stateful;
         serviceContext[i++] = responsePage.getPageName();
-        serviceContext[i++] = (String) parameters[0];
+        serviceContext[i++] = asp.getActionId();
 
         // Because of Block/InsertBlock, the component may not be on
         // the same page as the response page and we need to make

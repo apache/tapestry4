@@ -57,6 +57,7 @@
 <!ENTITY IComponentSpecification 	'<link href="&apiroot;/spec/IComponentSpecification.html">IComponentSpecification</link>'>
 <!ENTITY IDirect 					'<link href="&apiroot;/IDirect.html">IDirect</link>'>
 <!ENTITY IEngine 					'<link href="&apiroot;/IEngine.html">IEngine</link>'>
+<!ENTITY IEngineService				'<link href="&apiroot;/engine/IEngineService.html">IEngineService</link>'>
 <!ENTITY IForm 						'<link href="&apiroot;/IForm.html">IForm</link>'>
 <!ENTITY IFormComponent 			'<link href="&apiroot;/form/IFormComponent.html">IFormComponent</link>'>
 <!ENTITY IEngineService 			'<link href="&apiroot;/IEngineService.html">IEngineService</link>'>

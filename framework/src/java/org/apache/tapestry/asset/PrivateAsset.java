@@ -27,15 +27,13 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
 /**
- *  An implementation of {@link org.apache.tapestry.IAsset} for localizable assets within
- *  the JVM's classpath.
- *
- *  <p>The localization code here is largely cut-and-paste from
- *  {@link ContextAsset}.
- *
- *  @author Howard Ship
+ * An implementation of {@link org.apache.tapestry.IAsset}for localizable assets within the JVM's
+ * classpath.
+ * <p>
+ * The localization code here is largely cut-and-paste from {@link ContextAsset}.
  * 
- **/
+ * @author Howard Ship
+ */
 
 public class PrivateAsset extends AbstractAsset
 {
@@ -48,12 +46,10 @@ public class PrivateAsset extends AbstractAsset
     }
 
     /**
-     *  Gets the localized version of the resource.  Build
-     *  the URL for the resource.  If possible, the application's
-     *  {@link AssetExternalizer} is located, to copy the resource to
-     *  a directory visible to the web server.
-     *
-     **/
+     * Gets the localized version of the resource. Build the URL for the resource. If possible, the
+     * application's {@link AssetExternalizer}is located, to copy the resource to a directory
+     * visible to the web server.
+     */
 
     public String buildURL(IRequestCycle cycle)
     {
@@ -67,14 +63,9 @@ public class PrivateAsset extends AbstractAsset
         if (externalURL != null)
             return externalURL;
 
-        // Otherwise, the service is responsible for dynamically retrieving the
-        // resource.
-
-        String[] parameters = new String[] { path };
-
         IEngineService service = cycle.getEngine().getService(Tapestry.ASSET_SERVICE);
 
-        ILink link = service.getLink(cycle, null, parameters);
+        ILink link = service.getLink(cycle, path);
 
         return link.getURL();
     }
@@ -91,9 +82,9 @@ public class PrivateAsset extends AbstractAsset
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("PrivateAsset.resource-missing", location),
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "PrivateAsset.resource-missing",
+                    location), ex);
         }
     }
 

@@ -54,6 +54,11 @@ Engine services are now defined using HiveMind, in the <code>tapestry.services.A
 The &lt;service&gt; element in a Tapestry 3.0 DTD is now ignored.
 </p>
 
+<p>
+The &IEngineService; interface has changed in non-backwards compatible ways. If your application created
+custom engine services, you will have to make changes to your code.
+</p>
+
 </section>  <!-- upgrade.service -->
 
 <section id="upgrade.parameters">

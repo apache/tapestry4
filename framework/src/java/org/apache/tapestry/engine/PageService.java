@@ -19,7 +19,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IComponent;
+import org.apache.hivemind.Defense;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -39,15 +39,14 @@ public class PageService extends AbstractService
     /** @since 3.1 */
     private ResponseRenderer _responseRenderer;
 
-    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, Object parameter)
     {
-        if (Tapestry.size(parameters) != 1)
-            throw new IllegalArgumentException(Tapestry.format(
-                    "service-single-parameter",
-                    Tapestry.PAGE_SERVICE));
+        Defense.isAssignable(parameter, String.class, "parameter");
 
-        return constructLink(cycle, Tapestry.PAGE_SERVICE, new String[]
-        { (String) parameters[0] }, null, true);
+        String[] context = new String[]
+        { (String) parameter };
+
+        return constructLink(cycle, Tapestry.PAGE_SERVICE, context, null, true);
 
     }
 

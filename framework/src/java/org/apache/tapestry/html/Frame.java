@@ -23,13 +23,11 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
 /**
- *  Implements a &lt;frame&gt; within a &lt;frameset&gt;.
+ * Implements a &lt;frame&gt; within a &lt;frameset&gt;. [ <a
+ * href="../../../../../ComponentReference/Frame.html">Component Reference </a>]
  * 
- *  [<a href="../../../../../ComponentReference/Frame.html">Component Reference</a>]
- * 
- *  @author Howard Lewis Ship
- *
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class Frame extends AbstractComponent
 {
@@ -40,7 +38,7 @@ public abstract class Frame extends AbstractComponent
 
         IEngine engine = cycle.getEngine();
         IEngineService pageService = engine.getService(Tapestry.PAGE_SERVICE);
-        ILink link = pageService.getLink(cycle, this, new String[] { getTargetPage() });
+        ILink link = pageService.getLink(cycle, getTargetPage());
 
         writer.beginEmpty("frame");
         writer.attribute("src", link.getURL());
