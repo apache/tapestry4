@@ -67,19 +67,9 @@ as updates to the tutorials and manuals represents the
 <chapter id="cvs">
 	<title>CVS Access</title>
 
-<warning>
-<title>We've Moved to Jakarta</title>
-<para>
-Some of the details are in transition, with the move from SourceForge
-to &Jakarta;.  The new server location is <literal>cvs.apache.org</literal>,
-the repository path is <literal>/home/cvs</literal> and
-the module is <literal>jakarta-tapestry</literal>.
-</para>
-</warning>
-
 <para>
 Using Eclipse, obtaining the source code takes only a few steps.   Tapestry
-compiles using some libraries from &JBoss; 3.0.4 and &Jetty; 4.x which must be downloaded first.
+compiles using some libraries from &JBoss; 3.0.6 and &Jetty; 4.x which must be downloaded first.
 </para>
 
 <para>
@@ -99,7 +89,7 @@ panel.  A new entry for <literal>JBOSS_DIR</literal> should be added.
 <para>
 Activate the CVS Repositories view and use the context menu to create a new CVS Repository location.
 This raises a panel for defining connection information.  Fill in your own
-SourceForge name and password:
+Jakarta name and password:
 </para>
 
 <figure>
@@ -112,8 +102,8 @@ SourceForge name and password:
 </figure>
 
 <para>
-Next, open the new CVS Repository location and navigate down to the Tapestry
-module, then use the context menu to checkout the Tapestry project:
+Next, open the new CVS Repository location.  Expand the "HEAD" node, then scroll down to the "jakarta-tapestry" module.
+Right click and select "Check Out As Project".
 </para>
 
 
@@ -150,7 +140,7 @@ development using the excellent open-source IDE, &Eclipse;.
 <para>
 To perform a full build from the command line, you must have
 JDK 1.3 or better installed, as well
-as &JBoss; 3.0.4.
+as &JBoss; 3.0.6.
 </para>
 
 <para>
