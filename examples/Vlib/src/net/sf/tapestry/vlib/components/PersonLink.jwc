@@ -24,7 +24,7 @@
   
   <component id="link" type="Service">
     <field-binding name="service" field-name="net.sf.tapestry.vlib.ExternalService.SERVICE_NAME"/>
-    <binding name="parameters" expression="personParameters"/>
+    <binding name="parameters" expression="{ &quot;Person&quot;, primaryKey }"/>
     <binding name="class" expression="styleClass"/>
   </component>
   

@@ -31,8 +31,7 @@
   </component>
   
   <component id="ifNoVisit" type="Conditional">
-    <binding name="condition" expression="page.engine.hasVisit"/>
-    <field-binding name="invert" field-name="Boolean.TRUE"/>
+    <binding name="condition" expression="! page.engine.hasVisit"/>
   </component>
   
   <component id="insertVisit" type="Insert">
@@ -54,7 +53,7 @@
   
   <component id="reset" type="ServiceLink">
     <field-binding name="service" field-name="net.sf.tapestry.IEngineService.RESET_SERVICE"/>
-    <binding name="disabled" expression="resetServiceDisabled"/>
+    <binding name="disabled" expression="! engine.resetServiceEnabled"/>
   </component>
   
   <component id="resetButton" type="Rollover">

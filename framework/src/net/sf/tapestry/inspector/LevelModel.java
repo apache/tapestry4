@@ -26,46 +26,43 @@
 package net.sf.tapestry.inspector;
 
 import net.sf.tapestry.form.IPropertySelectionModel;
-import org.apache.log4j.Priority;
+
+import org.apache.log4j.Level;
 
 /**
- *  Provides a {@link IPropertySelectionModel} for setting the priority of
- *  a {@link org.apache.log4j.Category}.
+ *  Provides a {@link IPropertySelectionModel} for setting the {@link org.apache.log4j.Level} of
+ *  a {@link org.apache.log4j.Logger}.
  *
  *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/
 
-public class PriorityModel implements IPropertySelectionModel
+public class LevelModel implements IPropertySelectionModel
 {
-    private Priority[] values;
+    private Level[] _values;
 
-    public PriorityModel()
+    private static final Level[] ALL_LEVELS =
+        { Level.OFF, Level.FATAL, Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG, Level.ALL };
+
+    private static final Level[] ALL_LEVELS_WITH_NULL =
+        { Level.OFF, Level.FATAL, Level.ERROR, Level.WARN, Level.INFO, Level.DEBUG, Level.ALL, null };
+
+    public LevelModel()
     {
         this(true);
     }
 
-    public PriorityModel(boolean includeNull)
+    public LevelModel(boolean includeNull)
     {
-        if (includeNull)
-        {
-            Priority[] allValues = Priority.getAllPossiblePriorities();
-            values = new Priority[allValues.length + 1];
-            values[0] = null;
-            System.arraycopy(allValues, 0, values, 1, allValues.length);
-        }
-        else
-        {
-            values = Priority.getAllPossiblePriorities();
-        }
+        _values = includeNull ? ALL_LEVELS_WITH_NULL : ALL_LEVELS;
     }
 
     public Object translateValue(String value)
     {
         int index = Integer.parseInt(value);
 
-        return values[index];
+        return _values[index];
     }
 
     public String getValue(int index)
@@ -75,21 +72,21 @@ public class PriorityModel implements IPropertySelectionModel
 
     public int getOptionCount()
     {
-        return values.length;
+        return _values.length;
     }
 
     public Object getOption(int index)
     {
-        return values[index];
+        return _values[index];
     }
 
     public String getLabel(int index)
     {
-        Priority option = values[index];
+        Level option = _values[index];
 
         if (option == null)
             return "";
 
-        return values[index].toString();
+        return _values[index].toString();
     }
 }

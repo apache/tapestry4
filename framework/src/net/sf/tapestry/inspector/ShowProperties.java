@@ -53,28 +53,6 @@ import net.sf.tapestry.util.prop.IPublicBean;
 
 public class ShowProperties extends BaseComponent implements PageRenderListener
 {
-
-    public static class AccessorElement implements IPublicBean, Comparable
-    {
-        public String propertyPath;
-        public String propertyName;
-        public String propertyType;
-        public boolean error;
-
-        /**
-         *  The names will be unique and we want to sort
-         *  into ascending order by name.
-         *
-         **/
-
-        public int compareTo(Object other)
-        {
-            AccessorElement otherElement = (AccessorElement) other;
-
-            return propertyName.compareTo(otherElement.propertyName);
-        }
-    }
-
     private List _properties;
     private IPageChange _change;
     private IPage _inspectedPage;
@@ -158,16 +136,6 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
     public IPageChange getChange()
     {
         return _change;
-    }
-
-    /**
-     *  Returns true if the current change has a null component path.
-     *
-     **/
-
-    public boolean getDisableComponentLink()
-    {
-        return _change.getComponentPath() == null;
     }
 
     /**

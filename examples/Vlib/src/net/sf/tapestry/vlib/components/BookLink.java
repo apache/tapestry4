@@ -70,7 +70,7 @@ import net.sf.tapestry.vlib.ejb.Book;
 
 public class BookLink extends BaseComponent
 {
-    private Book book;
+    private Book _book;
 
     /**
      *  One week, in milliseconds (1/1000 second).  Books that have been added in the last
@@ -90,7 +90,7 @@ public class BookLink extends BaseComponent
         if (visit != null)
             lastAccess = visit.getLastAccess();
 
-        Timestamp dateAdded = book.getDateAdded();
+        Timestamp dateAdded = _book.getDateAdded();
 
         // Some old records may not contain a value for dateAdded
 
@@ -113,28 +113,14 @@ public class BookLink extends BaseComponent
         return lastAccess.compareTo(dateAdded) <= 0;
     }
 
-    /**
-     *  Returns a set of service parameters
-     *  appropriate for {@link net.sf.tapestry.vlib.ExternalService}.
-     *  The first parameters is the page to jump to
-     *  ({@link net.sf.tapestry.vlib.pages.ViewBook}), 
-     *  the second is the primary key of the person.
-     *
-     **/
-
-    public Object[] getBookParameters()
-    {
-        return new Object[] { "ViewBook", getBook().getPrimaryKey()};
-    }
-
     public Book getBook()
     {
-        return book;
+        return _book;
     }
 
     public void setBook(Book book)
     {
-        this.book = book;
+        _book = book;
     }
 
 }
