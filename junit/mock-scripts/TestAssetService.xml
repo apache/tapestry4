@@ -19,7 +19,7 @@
 		
 		<assert-output name="Image Tag">
 <![CDATA[
-<img src="/c16/app?service=asset&amp;sp=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fc16%2Flogo.png" border="0"/>
+<img src="/c16/app?service=asset&amp;sp=S%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fc16%2Flogo.png" border="0"/>
 ]]>
 		</assert-output>
 	</request>

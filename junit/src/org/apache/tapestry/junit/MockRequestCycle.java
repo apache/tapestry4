@@ -197,4 +197,12 @@ public class MockRequestCycle implements IRequestCycle
         return _lastEncodedURL;
     }
 
+	public void activate(String name)
+	{
+	}
+
+	public void activate(IPage page)
+	{
+	}
+
 }

@@ -54,7 +54,7 @@ Zees ees nawt cheeze!
 		
 		<assert-output name="English Home image">
 <![CDATA[		
-/mock/app?service=asset&amp;sp=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome.png		
+/mock/app?service=asset&amp;sp=S%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome.png		
 ]]>
 		</assert-output>
 		
@@ -74,7 +74,7 @@ href="/mock/app?service=direct/0/Assets/switch"
 		
 		<assert-output name="French Home image">
 <![CDATA[		
-/mock/app?service=asset&amp;sp=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png		
+/mock/app?service=asset&amp;sp=S%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png		
 ]]>
 		</assert-output>
 		
@@ -106,7 +106,7 @@ Zees ees nawt cheeze!
 
 		<assert-output name="DirectLink switch URL still stateless">
 <![CDATA[		
-href="/mock/app?service=direct/0/Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=Hello"
+href="/mock/app?service=direct/0/Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=SHello"
 ]]>
 		</assert-output>			
 	</request>
@@ -119,7 +119,7 @@ href="/mock/app?service=direct/0/Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=Hello"
 		
 		<assert-output name="French Home image">
 <![CDATA[		
-/mock/app?service=asset&amp;sp=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png		
+/mock/app?service=asset&amp;sp=S%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png		
 ]]>
 		</assert-output>
 		

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c25" root="context25"/>
+
+  	<servlet name="cycleActivatePage" class="org.apache.tapestry.ApplicationServlet"/>
+
+	<request>
+		<parameter name="service" value="direct/0/Home/$DirectLink"/>
+
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Three</title>
+]]>
+		</assert-output>
+	</request>
+	
+	
+	<request>
+		<parameter name="service" value="direct/0/Four/$DirectLink"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Exception</title>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Message">
+		A validation cycle during page activation was detected: Five; Six; Five
+		</assert-output>
+	</request>
+	
+</mock-test>

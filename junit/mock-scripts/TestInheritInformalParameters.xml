@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c24" root="context24"/>
+
+  	<servlet name="inheritInformal" class="org.apache.tapestry.ApplicationServlet"/>
+
+	<request>
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="src">
+		src="http://the.wall/"
+		</assert-output>
+		
+		<assert-output name="border">
+		border="0"
+		</assert-output>
+		
+		<assert-output name="width">
+		width="250"
+		</assert-output>
+		
+		<assert-output name="height">
+		height="150"
+		</assert-output>
+		
+		<assert-output name="length">
+		length="350"
+		</assert-output>
+
+		<assert-no-output name="no-border">
+		border="7"
+		</assert-no-output>
+
+		<assert-no-output name="no-src">
+		src="testSrc"
+		</assert-no-output>
+
+		<assert-no-output name="no-class">
+		class="testClass"
+		</assert-no-output>
+	</request>
+	
+	
+	<request>
+		<parameter name="service" value="page/Two"/>	
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Exception</title>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Message">
+		Component Two/$BadInsert.insert allows only formal parameters, but has inherit-informal-parameters set.	
+		</assert-output>
+	</request>
+	
+	
+	<request>
+		<parameter name="service" value="page/Three"/>	
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Exception</title>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Message">
+		Component Three/$BadImage allows only formal parameters, but it contains component Three/$BadImage.image that has inherit-informal-parameters set.
+		</assert-output>
+	</request>
+	
+</mock-test>

@@ -172,7 +172,7 @@ public class TestDataSqueezer extends TestCase
 
     public void testString() throws IOException
     {
-        attempt("Now is the time for all good men ...", "Now is the time for all good men ...");
+        attempt("Now is the time for all good men ...", "SNow is the time for all good men ...");
         attempt("X marks the spot!", "SX marks the spot!");
         attempt("So long, sucker!", "SSo long, sucker!");
     }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<component-specification allow-informal-parameters="no">
+	
+	<parameter name="image" required="yes" type="org.apache.tapestry.IAsset"/>
+	<reserved-parameter name="class"/>
+	
+	<component id="image" type="Image" inherit-informal-parameters="yes">
+		<inherited-binding name="image" parameter-name="image"/>
+	</component>
+	
+</component-specification>

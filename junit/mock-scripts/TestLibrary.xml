@@ -21,7 +21,7 @@
   	  	  	
   	  <assert-output name="DirectLink with parameters">
 <![CDATA[  	  
-  	  <a href="/junit/mock?service=direct/0/Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=Hello">
+  	  <a href="/junit/mock?service=direct/0/Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=SHello">
 ]]>
   	  </assert-output>
   	  	  	
@@ -145,7 +145,7 @@
 	
   	  <assert-output name="DirectLink with parameters">
 <![CDATA[  	  
-  	  <a href="/junit/mock?service=direct/1/Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=Hello">
+  	  <a href="/junit/mock?service=direct/1/Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=SHello">
 ]]>
   	  </assert-output>
   </request>
