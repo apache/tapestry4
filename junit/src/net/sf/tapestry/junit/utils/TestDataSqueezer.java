@@ -36,6 +36,7 @@ import java.util.Map;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
+import net.sf.tapestry.ComponentAddress;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.engine.ResourceResolver;
 import net.sf.tapestry.spec.BeanLifecycle;
@@ -142,6 +143,12 @@ public class TestDataSqueezer extends TestCase
         attempt("Now is the time for all good men ...", "Now is the time for all good men ...");
         attempt("X marks the spot!", "SX marks the spot!");
         attempt("So long, sucker!", "SSo long, sucker!");
+    }
+
+    public void testComponentAddress() throws IOException 
+    {
+        ComponentAddress objAddress = new ComponentAddress("framework:DirectLink", "component.subcomponent");
+        attempt(objAddress, "Aframework:DirectLink/component.subcomponent");
     }
 
     public void testArray() throws IOException
