@@ -4,9 +4,9 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 
-<page-specification class="net.sf.tapestry.junit.mock.c19.Home">
+<page-specification class="org.apache.tapestry.junit.mock.c19.Home">
 
-  <property-specification name="uploadFile" type="net.sf.tapestry.IUploadFile"/>
+  <property-specification name="uploadFile" type="org.apache.tapestry.request.IUploadFile"/>
   <property-specification name="uploadDisabled" type="boolean" persistent="yes"/>
 
 </page-specification>

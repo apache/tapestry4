@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE application PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<application name="Invalid Page Name">
+	
+  <service name="home" class="tutorial.workbench.WorkbenchHomeService"/>
+  <service name="chart" class="tutorial.workbench.chart.ChartService"/>
+  <service name="in$valid" class="it.just.doesnt.matter.Service"/>
+	
+  <page name="Home" specification-path="/tutorial/workbench/Home.jwc"/>
+  
+</application>

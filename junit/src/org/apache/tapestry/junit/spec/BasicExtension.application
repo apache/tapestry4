@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--$Id$-->
+<!DOCTYPE application PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<application name="Test Basic Extension">
+  
+  <extension name="testBean" class="org.apache.tapestry.junit.spec.TestBean">
+  	<configure property-name="booleanProperty" type="boolean">true</configure>
+  	<configure property-name="intProperty" type="int">18</configure>
+  	<configure property-name="longProperty" type="long">383838</configure>
+  	<configure property-name="doubleProperty" type="double">-3.14</configure>
+  	<configure property-name="stringProperty">Tapestry: Java Web Components</configure>
+  </extension>
+    
+</application>

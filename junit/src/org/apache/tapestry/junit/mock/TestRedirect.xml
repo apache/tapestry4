@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+
+
+
+<mock-test>
+    <context name="mock" root="context13"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+
+	<request>
+	
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>		
+		</assert-output>	
+	
+		<assert-output name="Internal Redirect Link">
+<![CDATA[
+href="/mock/app?service=direct&amp;context=0/Home/internal"
+]]>	
+		</assert-output>	
+		
+		<assert-output name="External Redirect Link">
+<![CDATA[
+href="/mock/app?service=direct&amp;context=0/Home/external"
+]]>	
+		</assert-output>	
+	
+		<assert-output name="Null Redirect Link">
+<![CDATA[
+href="/mock/app?service=direct&amp;context=0/Home/null"
+]]>	
+		</assert-output>	
+		
+		<assert-output name="Servlet Exception Redirect Link">
+<![CDATA[
+href="/mock/app?service=direct&amp;context=0/Home/servletException"
+]]>	
+		</assert-output>	
+		
+		
+		<assert-output name="Missing Redirect Link">
+<![CDATA[
+href="/mock/app?service=direct&amp;context=0/Home/missing"
+]]>	
+		</assert-output>	
+
+		<assert-output name="Index Redirect Link">
+<![CDATA[
+href="/mock/app?service=direct&amp;context=0/Home/index"
+]]>	
+		</assert-output>	
+		
+		<assert-output name="Fail External Redirect Link">
+<![CDATA[
+href="/mock/app?service=direct&amp;context=0/Home/failExternal"
+]]>	
+		</assert-output>	
+				
+	</request>
+	
+		
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/internal"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Warning</title>
+]]>			
+		</assert-output>
+		
+		<assert-output name="Message">
+This page is static, forwarded to by the Tapestry application.		
+		</assert-output>
+	</request>
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/external"/>
+		
+		<assert name="Redirect Location">
+		
+		response.redirectLocation.equals("http://jakarta.apache.org/tapestry")
+			
+		</assert>
+	</request>
+	
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/null"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>					
+		</assert-output>
+		
+		<assert-output name="Message">
+		Unable to find a request dispatcher for local resource 'NULL'.
+		</assert-output>
+	</request>
+	
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/servletException"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>					
+		</assert-output>
+		
+		<assert-output name="Exception Message">
+		Unable to forward to local resource 'FAIL_SERVLET'.
+		</assert-output>
+		
+		<assert-output name="Servlet Exception Message">
+		Test-directed ServletException from RequestDispatcher forward().
+		</assert-output>
+				
+	</request>
+		
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/missing"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>					
+		</assert-output>
+		
+		<assert-output name="Exception Message">
+		Unable to forward to local resource 'Missing.html'.
+		</assert-output>
+		
+		<assert-output name="FileNotFoundException">
+		java.io.FileNotFoundException	
+		</assert-output>
+				
+	</request>
+
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/index"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Index Page</title>
+]]>			
+		</assert-output>	
+			<assert-output name="Message">
+<![CDATA[			
+<a href="app">Tapestry Application</a>
+]]>	
+		</assert-output>
+	</request>
+
+		
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/failExternal"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>					
+		</assert-output>
+		
+		<assert-output name="Exception Message">
+		Unable to redirect to http://somehost/FAIL_IO.
+		</assert-output>
+		
+		<assert-output name="IOException">
+		java.io.IOException	
+		</assert-output>
+				
+		<assert-output name="IOException message.">
+		Forced IOException in MockResponse.sendRedirect().	
+		</assert-output>
+	</request>			
+</mock-test>
+    	

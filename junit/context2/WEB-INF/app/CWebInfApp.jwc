@@ -5,5 +5,5 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 
 <component-specification
-  class="net.sf.tapestry.BaseComponent"
+  class="org.apache.tapestry.BaseComponent"
   allow-informal-parameters="no"/>

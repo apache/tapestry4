@@ -4,7 +4,7 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
-<page-specification class="net.sf.tapestry.junit.mock.c9.Seven">
+<page-specification class="org.apache.tapestry.junit.mock.c9.Seven">
 
   <property-specification name="booleanValue" type="boolean" persistent="yes"/>
   <property-specification name="byteValue" type="byte" persistent="yes"/>

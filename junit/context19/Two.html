@@ -1,15 +1,15 @@
 <html jwcid="@Shell" title="Two">
 <body jwcid="@Body">
 
-Content Type: [<span jwcid="@Insert" value="[[ file.contentType ]]"/>]
+Content Type: [<span jwcid="@Insert" value="ognl:file.contentType"/>]
 <br/>
-Path: [<span jwcid="@Insert" value="[[ file.filePath ]]"/>]
+Path: [<span jwcid="@Insert" value="ognl:file.filePath"/>]
 <br/>
-Name: [<span jwcid="@Insert" value="[[ file.fileName ]]"/>]
+Name: [<span jwcid="@Insert" value="ognl:file.fileName"/>]
 <br/>
-Truncated: [<span jwcid="@Insert" value="[[ file.truncated ]]"/>]
+Truncated: [<span jwcid="@Insert" value="ognl:file.truncated"/>]
 
-<span jwcid="@Conditional" condition="[[ uploadMatch ]]">
+<span jwcid="@Conditional" condition="ognl:uploadMatch">
 <br/>
 Contents match.
 </span>

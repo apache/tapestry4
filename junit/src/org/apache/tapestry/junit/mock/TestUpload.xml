@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+
+<!-- Tests IPage.validate(), PageRedirectException and PageCallback -->
+
+<mock-test>
+    <context name="c19" root="context19"/>
+    
+    <servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+
+	<request>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>	
+		</assert-output>
+		
+		
+		<assert-output name="Upload Field">
+<![CDATA[
+<input type="file" name="$Upload"/>
+]]>	
+		</assert-output>
+	</request>
+
+	<!-- The upload itself. -->
+	
+	<request 
+		content-type="multipart/form-data; boundary=---------------------------7d33212e1c03e2" 
+		content-path="context19/upload-message.request">
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Two</title>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Content Type">
+		Content Type: [text/plain]
+		</assert-output>
+		
+		<assert-output name="Path">
+		Path: [context19/message.txt]
+		</assert-output>
+		
+		<assert-output name="Name">
+		Name: [message.txt]
+		</assert-output>
+		
+		<assert-output name="Match Confirmation">
+		Contents match.
+		</assert-output>
+		
+	</request>
+	
+	<request 
+		content-type="multipart/form-data; boundary=---------------------------xyzzyx" 
+		content-path="context19/upload-long.request">
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Two</title>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Content Type">
+		Content Type: [text/html]
+		</assert-output>
+		
+		<assert-output name="Path">
+		Path: [context19/long.html]
+		</assert-output>
+		
+		<assert-output name="Name">
+		Name: [long.html]
+		</assert-output>
+		
+		<assert-output name="Match Confirmation">
+		Contents match.
+		</assert-output>
+		
+	</request>
+	
+	<request 
+		content-type="multipart/form-data; boundary=---------------------------9d33212e1c03e3" 
+		content-path="context19/upload-image.request">
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Two</title>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Content Type">
+		Content Type: [image/x-png]
+		</assert-output>
+		
+		<assert-output name="Path">
+		Path: [context19/Tapestry-Banner.png]
+		</assert-output>
+		
+		<assert-output name="Name">
+		Name: [Tapestry-Banner.png]
+		</assert-output>
+		
+		<assert-output name="Match Confirmation">
+		Contents match.
+		</assert-output>
+		
+	</request>
+	
+	<!-- Test a disabled Upload component. -->
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/$DirectLink"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>	
+		</assert-output>
+		
+		
+		<assert-output name="Upload Field">
+<![CDATA[
+<input type="file" name="$Upload" disabled="disabled"/>
+]]>	
+		</assert-output>			
+	</request>
+	
+	<!-- Do the upload with the Upload component disabled.  -->
+	
+	<request 
+		content-type="multipart/form-data; boundary=---------------------------7d33212e1c03e2" 
+		content-path="context19/upload-message.request">
+			
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Three</title>
+]]>
+</assert-output>
+
+	</request>
+	
+	<!-- Now test some stuff in multipart decoder that detects multiple values for the
+		 same element name. -->
+		 
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Four"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Four</title>
+]]>
+		</assert-output>
+		
+		<assert-output-matches name="Options">
+<![CDATA[
+<option.*?/option>
+]]>	
+			<match><![CDATA[<option value="0">Lights on</option>]]></match>
+			<match><![CDATA[<option value="1">Nobody Home</option>]]></match>			
+		</assert-output-matches>	
+	</request>
+	
+	<!-- Do the form submission -->
+	<request 
+		content-type="multipart/form-data; boundary=---------------------------eldorado" 
+		content-path="context19/form-four.request">
+
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Four</title>
+]]>
+		</assert-output>
+		
+		<assert-output-matches name="Options">
+<![CDATA[
+<option.*?/option>
+]]>	
+			<match><![CDATA[<option value="0" selected="selected">Lights on</option>]]></match>
+			<match><![CDATA[<option value="1" selected="selected">Nobody Home</option>]]></match>			
+		</assert-output-matches>
+		
+	</request>	
+	
+</mock-test>

@@ -1,0 +1,17 @@
+
+<!-- Test for implcit components, named and anonymous. -->
+
+<body jwcid="@Body">
+
+<table>
+<tr jwcid="loop@Foreach"
+	element="tr"
+	source="ognl:items">
+	<td><span jwcid="@Insert" value="ognl:components.loop.value.name"/></td>
+	<td><span jwcid="@Insert" value="ognl:components.loop.value.price"/></td>
+</tr>
+</table>
+
+<span jwcid="@contrib:InspectorButton"/>
+
+</body>

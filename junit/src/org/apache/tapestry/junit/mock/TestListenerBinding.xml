@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c7" root="context7"/>
+
+  	<servlet name="lb" class="org.apache.tapestry.ApplicationServlet"/>
+  	
+
+	<request>
+  	 	<parameter name="service" value="page"/>
+  	 	<parameter name="context" value="Two"/>
+  	  	  	
+		<assert-output name="Page Title">
+<![CDATA[		
+<title>Listener Binding</title>
+]]>
+		</assert-output>
+  	  	  	
+		<assert-output name="Initial Message">
+Message: No message.
+		</assert-output>
+	
+		<assert-output name="Link">
+<![CDATA[		
+/c7/lb?service=direct&amp;context=0/Two/link
+]]>
+		</assert-output>
+ 
+  	</request>
+  
+	<request>
+		<parameter name="service" value="direct"/>
+  		<parameter name="context" value="0/Two/link"/>
+  		
+ 		<assert-output name="Page Title">
+<![CDATA[		
+<title>Listener Binding</title>
+]]>
+		</assert-output>
+  	  	  	
+		<assert-output name="Updated Message">
+Message: Component was clicked.
+		</assert-output>
+	</request> 		
+  
+	<request>
+  	 	<parameter name="service" value="reset"/>
+  	 	<parameter name="context" value="Two"/>
+  	  	  	
+		<assert-output name="Page Title">
+<![CDATA[		
+<title>Listener Binding</title>
+]]>
+		</assert-output>
+  	  	  	
+		<assert-output name="Initial Message">
+Message: No message.
+		</assert-output>	
+	</request>
+
+	<request>
+		<parameter name="service" value="direct"/>
+  		<parameter name="context" value="0/Two/link"/>
+  		
+ 		<assert-output name="Page Title">
+<![CDATA[		
+<title>Listener Binding</title>
+]]>
+		</assert-output>
+  	  	  	
+		<assert-output name="Updated Message">
+Message: Component was clicked.
+		</assert-output>
+		
+		<assert-output name="invalidScriptLink URL">
+<![CDATA[
+/c7/lb?service=direct&amp;context=0/Two/invalidScriptLink
+]]>
+		</assert-output>
+		
+		<assert-output name="unknownLanguageLink URL">
+<![CDATA[
+/c7/lb?service=direct&amp;context=0/Two/unknownLanguageLink
+]]>
+		</assert-output>	
+				
+	</request> 		
+	  
+	<!--  Trigger a case where the script to execute is invalid. -->
+	
+	<request>
+		<parameter name="service" value="direct"/>
+  		<parameter name="context" value="0/Two/invalidScriptLink"/>
+	
+ 		<assert-output name="Page Title">
+<![CDATA[		
+<title>Exception</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Invalid Script Error Message">
+Unable to execute listener script "'listener' listener script for component Two/invalidScriptLink": exception from Jython
+		</assert-output>		
+	</request>
+
+	<!-- Trigger a case where the script language is not defined. -->
+
+	<request>
+		<parameter name="service" value="direct"/>
+  		<parameter name="context" value="0/Two/unknownLanguageLink"/>
+	
+ 		<assert-output name="Page Title">
+<![CDATA[		
+<title>Exception</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Unknown Language Error Message">
+Unable to execute listener script "'listener' listener script for component Two/unknownLanguageLink": unsupported language: DoesNotExist.
+		</assert-output>		
+	</request>
+			  
+ </mock-test>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c2" root="context2"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="org.apache.tapestry.application-specification"
+  			value="/org/apache/tapestry/junit/mock/c2/C2.application"/>
+  	</servlet>      
+    
+<!-- Check that the home service is the default service. -->
+    
+    <request>   			
+		<assert-output name="Title">
+<![CDATA[
+<title>Implicit Home Page</title>
+]]>
+		</assert-output>		
+
+		<assert-output name="Text from Home Page">
+No page specification.
+		</assert-output>
+		
+	</request>	
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="WithApplication"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>WithApplication Page</title>
+]]>
+		</assert-output>		
+
+		<assert-output name="Text from page">
+This page's specification is a sibling of the app specification.
+		</assert-output>
+				
+	</request>	
+			
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="InPages"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>InPages Page</title>
+]]>
+		</assert-output>		
+
+		<assert-output name="Text from page">
+The specification, and properties files, are located in WEB-INF/pages.
+		</assert-output>
+				
+	</request>
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="InWebInf"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>InWebInf Page</title>
+]]>
+		</assert-output>		
+
+		<assert-output name="Text from page">
+The specification, and properties files, are located in directly in WEB-INF.
+		</assert-output>
+				
+	</request>	
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="InAppRoot"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>InAppRoot Page</title>
+]]>
+		</assert-output>		
+
+		<assert-output name="Text from page">
+The specification, and properties files, are located in the application root.
+		</assert-output>
+				
+	</request>	
+	
+		
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="StaleLink"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Application StaleLink Page</title>
+]]>
+		</assert-output>		
+
+		<assert-output name="Text from page">
+This is an application-provided version of the StaleLink page.
+		</assert-output>
+				
+	</request>	
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="framework:StaleLink"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Stale Link</title>
+]]>
+		</assert-output>		
+
+		<assert-output name="Text from page">
+<![CDATA[
+You have clicked on a <i>stale link</i>.
+]]>
+		</assert-output>
+				
+	</request>							 	 	 
+</mock-test>
+    	

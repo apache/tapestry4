@@ -1,12 +1,12 @@
 <html jwcid="@Shell" title="Two">
 <body jwcid="@Body">
 
-<form jwcid="@Form" listener="[[ listeners.formSubmit ]]">
+<form jwcid="@Form" listener="ognl:listeners.formSubmit">
 
-	<select jwcid="@Select" multiple="[[ true ]]">
-		<option jwcid="@Option" selected="[[ animal ]]" label="Animal"/>
-		<option jwcid="@Option" selected="[[ vegetable ]]" label="Vegetable"/>
-		<option jwcid="@Option" selected="[[ mineral ]]">Mineral (or unknown)</option>
+	<select jwcid="@Select" multiple="ognl:true">
+		<option jwcid="@Option" selected="ognl:animal" label="Animal"/>
+		<option jwcid="@Option" selected="ognl:vegetable" label="Vegetable"/>
+		<option jwcid="@Option" selected="ognl:mineral">Mineral (or unknown)</option>
 	</select>
 	
 	<input type="submit" value="Go"/>	

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="fail"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="org.apache.tapestry.application-specification"
+  			value="/org/apache/tapestry/junit/mock/fail/Fail.application"/>
+  	</servlet>      
+       
+    <request>
+    	
+    	<assert-output name="Page Title">
+<![CDATA[    	
+<title>Exception</title>
+]]>
+		</assert-output>
+					
+		<assert-output name="Error">
+Page 'Home' not found in application namespace.
+		</assert-output>
+	</request>		
+
+</mock-test>
+    	

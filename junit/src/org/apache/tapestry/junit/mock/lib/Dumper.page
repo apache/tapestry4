@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<page-specification
+	class="org.apache.tapestry.junit.mock.lib.Dumper">
+
+	<component id="border" type="Border">
+		<static-binding name="title">Dumper</static-binding>
+	</component>
+	
+	<component id="foreach" type="Foreach">
+		<binding name="source" expression="objects"/>
+		<binding name="value" expression="currentObject"/>
+		<static-binding name="element">tr</static-binding>
+	</component>
+	
+	<component id="insertIndex" type="Insert">
+		<binding name="value" expression="components.foreach.index"/>
+	</component>
+	
+	<component id="insertClass" type="Insert">
+		<binding name="value" expression="className"/>
+	</component>
+	
+	<component id="insertValue" type="Insert">
+		<binding name="value" expression="currentObject"/>
+	</component>
+	
+	<component id="refresh" type="PageLink">
+		<static-binding name="page">Dumper</static-binding>
+		<binding name="namespace" expression="namespace"/>
+	</component>
+	
+</page-specification>	

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<page-specification class="org.apache.tapestry.junit.mock.app.ProtectedLinkResult">
+
+  <component id="border" type="lib:Border">
+  	<static-binding name="title">ProtectedLink: Result</static-binding>
+  </component>
+  
+  <component id="foreach" type="Foreach">
+  	<binding name="source" expression="parameters"/>
+  	<static-binding name="element">li</static-binding>	
+  </component>
+  
+  <component id="insertParameter" type="Insert">
+  	<binding name="value" expression="components.foreach.value"/>
+  </component>
+   
+</page-specification>

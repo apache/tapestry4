@@ -5,5 +5,5 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
   
 <page-specification>
-	<property name="net.sf.tapestry.template-extension" value="phtml"/>
+	<property name="org.apache.tapestry.template-extension" value="phtml"/>
 </page-specification>

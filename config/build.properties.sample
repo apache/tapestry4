@@ -7,3 +7,15 @@ jboss.dir=
 
 # The absolute path to the directory containing the Tomcat installation.
 tomcat.dir=
+
+# The absolute path to the directory containing the Jetty installation.
+jetty.dir=
+
+# The absolute path to the directory containing external distributions
+# needed by Tapestry (but not included due to licence conflict).
+# To run the demos, the following files are needed in the directory:
+# mckoidb*.jar			http://www.mckoi.com/database/		(version 0.94h)
+# jcommon*.jar			http://www.object-refinery.com/jcommon/
+# jfreechart*.jar		http://www.object-refinery.com/jfreechart/
+
+tapestry.ext.dir=

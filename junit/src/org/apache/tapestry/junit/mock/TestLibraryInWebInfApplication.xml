@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c4" root="context4"/>
+
+  	<servlet name="foo" class="org.apache.tapestry.ApplicationServlet"/>
+       
+    <request>
+ 		
+ 		<assert-output name="Page Title">
+<![CDATA[
+<title>App Spec in WEB-INF</title>
+]]> 		
+ 		</assert-output>
+ 		
+ 		<assert-output name="Application Name">
+Application name: Application foo in WEB-INF
+ 		</assert-output>
+ 		
+ 		<assert-output name="Engine Class">
+Engine class: org.apache.tapestry.junit.mock.c4.C4Engine
+		</assert-output>
+		
+ 	</request>
+			
+</mock-test>
+    	

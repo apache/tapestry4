@@ -3,27 +3,27 @@
 
 <form jwcid="@Form">
 	
-<span jwcid="@RadioGroup" selected="[[ size ]]" disabled="[[ groupDisabled ]]">
-	<input type="radio" jwcid="@Radio" value="[[ 10 ]]"/> Small
+<span jwcid="@RadioGroup" selected="ognl:size" disabled="ognl:groupDisabled">
+	<input type="radio" jwcid="@Radio" value="ognl:10"/> Small
 	<br/>
-	<input type="radio" jwcid="@Radio" value="[[ 20 ]]"/> Medium
+	<input type="radio" jwcid="@Radio" value="ognl:20"/> Medium
 	<br/>
-	<input type="radio" jwcid="@Radio" value="[[ 30 ]]"/> Large
+	<input type="radio" jwcid="@Radio" value="ognl:30"/> Large
 	<br/>
-	<input type="radio" jwcid="@Radio" value="[[ 100 ]]" disabled="[[ true ]]"/> Gargantuan
+	<input type="radio" jwcid="@Radio" value="ognl:100" disabled="ognl:true"/> Gargantuan
 </span>
 
 </form>
 
-Size: [<span jwcid="@Insert" value="[[ size ]]"/>]
+Size: [<span jwcid="@Insert" value="ognl:size"/>]
 
 <br/>
 
-<form jwcid="dummy@Form" direct="[[ false ]]"/>
+<form jwcid="dummy@Form" direct="ognl:false"/>
 
 <br/>
 
-<a href="#" jwcid="@DirectLink" listener="[[ listeners.disableGroup ]]">disable group</a>
+<a href="#" jwcid="@DirectLink" listener="ognl:listeners.disableGroup">disable group</a>
 
 </body>
 </html>

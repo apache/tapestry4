@@ -3,11 +3,11 @@
 
 <span jwcid="block@Block">
 
-<span jwcid="@Conditional" condition="[[ visit.formTriggered ]]">
+<span jwcid="@Conditional" condition="ognl:visit.formTriggered">
 Form HAS been triggered.
 </span>
 
-<span jwcid="@Conditional" condition="[[ ! visit.formTriggered ]]">
+<span jwcid="@Conditional" condition="ognl:! visit.formTriggered">
 Form HAS NOT been triggered.
 </span>
 
@@ -15,7 +15,7 @@ Form HAS NOT been triggered.
 
 <form jwcid="@Form">
 
-<input type="submit" jwcid="@Submit" label="Trigger" listener="[[ visit.listeners.formTrigger ]]"/>
+<input type="submit" jwcid="@Submit" label="Trigger" listener="ognl:visit.listeners.formTrigger"/>
 
 </form>
 

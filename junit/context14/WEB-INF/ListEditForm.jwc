@@ -4,7 +4,7 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 
-<component-specification class="net.sf.tapestry.junit.mock.c14.ListEditForm">
+<component-specification class="org.apache.tapestry.junit.mock.c14.ListEditForm">
 	
 	<parameter name="source" type="java.lang.Object" required="yes" direction="in"/>
 	

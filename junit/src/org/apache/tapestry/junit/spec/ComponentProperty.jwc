@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<component-specification class="org.apache.tapestry.BaseComponent">
+
+	<component id="barney" type="Dessert">
+		<property name="chocolate">cake</property>
+		<property name="apple">pie</property>
+		<property name="frozen">yogurt</property>
+	</component>
+	
+</component-specification>	

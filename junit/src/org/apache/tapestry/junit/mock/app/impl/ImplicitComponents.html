@@ -1,0 +1,17 @@
+<!-- $Id$ -->
+
+<span jwcid="$content$">
+<span jwcid="@lib:Border" title="Implicit Components">
+
+Application Name: <span jwcid="@Insert" value="ognl:engine.specification.name"/>
+
+<ul>
+<li jwcid="loop@Foreach"
+	source="ognl:{ &quot;Alpha&quot;, &quot;Beta&quot;, &quot;Gamma&quot; }"
+	element="li">
+	<span jwcid="@Insert" value="ognl:components.loop.value"/>
+</li>
+</ul>
+
+</span>
+</span>
