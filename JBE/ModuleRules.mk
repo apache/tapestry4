@@ -101,7 +101,7 @@ _JAVA_FILES := $(shell $(CAT) $(MOD_JAVA_CATALOG))
 
 $(MOD_JAVA_STAMP_FILE): $(_JAVA_FILES)
 ifneq "$(_JAVA_FILES)" ""
-	$(call NOTE, Compiling ...)
+	$(call NOTE, Compiling ($(words $?) files) ...)
 	$(JAVAC) $(FINAL_JAVAC_OPT) $?
 else
 	$(call NOTE, Nothing to compile)

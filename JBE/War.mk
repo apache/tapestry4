@@ -82,7 +82,7 @@ ifeq "$(PROJECT_NAME)" ""
 	$(error Must define PROJECT_NAME in Makefile)
 endif
 	$(call NOTE, Installing $(JAR_FILE) to $(INSTALL_DIR))
-	$(CP) $(JAR_FILE) $(INSTALL_DIR)
+	@$(CP) $(JAR_FILE) $(INSTALL_DIR)
 
 $(WAR_LIB_STAMP_FILE): $(INSTALL_LIBRARIES)
 ifdef INSTALL_LIBRARIES

@@ -1,3 +1,8 @@
+* Jun 14 2001 hship
+
+Minor output changes during builds, including, display the
+number of files to compile.
+
 * Jun 13 2001 hship
 
 Fix broken code related to overriding RESOURCE_EXTENSIONS.
