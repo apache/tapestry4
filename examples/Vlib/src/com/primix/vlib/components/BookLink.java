@@ -3,7 +3,7 @@ package com.primix.vlib.components;
 import com.primix.tapestry.components.*;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
-import com.primix.vlib.*;
+import com.primix.vlib.ejb.*;
 
 /*
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -40,45 +40,84 @@ import com.primix.vlib.*;
  * <tr> <th>Parameter</th> <th>Type</th> <th>Read / Write </th> <th>Required</th> <th>Default</th> <th>Description</th>
  * </tr>
  * <tr>
- *  <td>primaryKey</td> <td>{@link Integer}</td>
+ *  <td>book</td> <td>{@link Book}</td>
  *  <td>R</td>
  *  <td>yes</td> <td>&nbsp;</td>
- *  <td>The primary key of the {@link IBook} to be displayed when the link is triggered.</td> </tr>
- *
- * <tr>
- *   <td>enabled</td> <td>boolean</td> <td>R</td> <td>No</td> <td>true</td>
- *   <td>Controls whether the link is produced.  If disabled, the portion of the template
- *  the link surrounds is still rendered, but not the link itself.
- *  </td></tr>
- *
- *
- * <tr>
- *		<td>anchor</td>
- *		<td>java.lang.String</td>
- *		<td>R</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>The name of an anchor or element to link to.  The final URL will have '#'
- *   and the anchor appended to it.
- * </td> </tr>
+ *  <td>The {@link Book} to create a link to.</td>
+ * </tr>
  *
  * </table>
  *
- * <p>Informal  parameters are allowed.
+ * <p>Informal parameters are allowed.
  *
  * @author Howard Ship
  * @version $Id$
  */
 
-public class Book extends ExternalLink
+public class BookLink extends BaseComponent
 {
-	public Book(IPage page, IComponent container, String id, ComponentSpecification spec)
+    private IBinding bookBinding;
+    private Book book;
+    private String[] context;
+
+	public BookLink(IPage page, IComponent container, String id, ComponentSpecification spec)
 	{
 		super(page, container, id, spec);
 	}
 
-	protected String getPageName()
-	{
-		return "ViewBook";
-	}
+    public IBinding getBookBinding()
+    {
+        return bookBinding;
+    }
+
+    public void setBookBinding(IBinding value)
+    {
+        bookBinding = value;
+    }
+
+    public Book getBook()
+    {
+        if (book == null)
+            book = (Book)bookBinding.getValue();
+
+        return book;
+    }
+
+    /**
+     *  The context has two elements.  The first is the page to jump to
+     *  ({@link PersonPage}), the second is the primary key of the person.
+     *
+     */
+
+    public String[] getContext()
+    {
+        if (context == null)
+        {
+            context = new String[2];
+            context[0] = "ViewBook";
+        }
+
+        context[1] = getBook().getPrimaryKey().toString();
+
+        return context;
+    }
+
+    /**
+     *  Overrides render() to always set the book property to null after
+     *  renderring.
+     *
+     */
+
+    public void render(IResponseWriter writer, IRequestCycle cycle)
+    throws RequestCycleException
+    {
+        try
+        {
+            super.render(writer, cycle);
+        }
+        finally
+        {
+            book = null;
+        }
+    }
 }

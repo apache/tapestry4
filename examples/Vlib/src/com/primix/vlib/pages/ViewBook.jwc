@@ -60,21 +60,15 @@
 			</bindings>
 		</component>
 		<component>
-			<id>showOwner</id>
-			<type>Person</type>
+			<id>ownerLink</id>
+			<type>PersonLink</type>
 			<bindings>
 				<binding>
 					<name>primaryKey</name>
 					<property-path>book.ownerPrimaryKey</property-path>
 				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertOwnerName</id>
-			<type>Insert</type>
-			<bindings>
 				<binding>
-					<name>value</name>
+					<name>name</name>
 					<property-path>book.ownerName</property-path>
 				</binding>
 			</bindings>
@@ -100,21 +94,15 @@
 			</bindings>
 		</component>
 		<component>
-			<id>showHolder</id>
-			<type>Person</type>
+			<id>holderLink</id>
+			<type>PersonLink</type>
 			<bindings>
 				<binding>
 					<name>primaryKey</name>
 					<property-path>book.holderPrimaryKey</property-path>
 				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertHolderName</id>
-			<type>Insert</type>
-			<bindings>
 				<binding>
-					<name>value</name>
+					<name>name</name>
 					<property-path>book.holderName</property-path>
 				</binding>
 			</bindings>

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+<specification>
+	<class>com.primix.vlib.components.PersonLink</class>
+	<allow-body>no</allow-body>
+	<parameters>
+		<allow-informal-parameters>no</allow-informal-parameters>
+		<parameter>
+			<name>name</name>
+			<java-type>java.lang.String</java-type>
+			<required>yes</required>
+		</parameter>
+		<parameter>
+			<name>primaryKey</name>
+			<java-type>java.lang.Integer</java-type>
+			<required>yes</required>
+		</parameter>
+	</parameters>
+	<components>
+		<component>
+			<id>link</id>
+			<type>Service</type>
+			<bindings>
+				<static-binding>
+					<name>service</name>
+					<value>external</value>
+				</static-binding>
+				<binding>
+					<name>context</name>
+					<property-path>context</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertPersonName</id>
+			<type>Insert</type>
+			<bindings>
+				<inherited-binding>
+					<name>value</name>
+					<parameter-name>name</parameter-name>
+				</inherited-binding>
+			</bindings>
+		</component>
+	</components>
+</specification>
