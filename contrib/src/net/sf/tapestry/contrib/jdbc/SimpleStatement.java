@@ -23,49 +23,88 @@
 // Lesser General Public License for more details.
 //
 
-package net.sf.tapestry.util.jdbc;
+package net.sf.tapestry.contrib.jdbc;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- *  A wrapper around {@link Statement} or {@link java.sql.PreparedStatement}.
+ *  A wrapper around {@link Statement}.
  *
  *  @version $Id$
  *  @author Howard Lewis Ship
- * 
+ *
  **/
 
-public interface IStatement
+public class SimpleStatement implements IStatement
 {
+    private String SQL;
+    private Statement statement;
+
+    public SimpleStatement(String SQL, Connection connection) throws SQLException
+    {
+        this.SQL = SQL;
+        this.statement = connection.createStatement();
+    }
+
+    /** @since 1.0.7 **/
+
+    public SimpleStatement(
+        String SQL,
+        Connection connection,
+        int resultSetType,
+        int resultSetConcurrency)
+        throws SQLException
+    {
+        this.SQL = SQL;
+        this.statement =
+            connection.createStatement(resultSetType, resultSetConcurrency);
+    }
+
     /**
      * Returns the SQL associated with this statement.
      *
      **/
 
-    public String getSQL();
+    public String getSQL()
+    {
+        return SQL;
+    }
 
     /**
-     *  Returns the underlying {@link Statement} (or {@link java.sql.PreparedStatement}).
+     *  Returns the underlying {@link Statement}.
      *
      **/
 
-    public Statement getStatement();
+    public Statement getStatement()
+    {
+        return statement;
+    }
 
     /**
      *  Closes the underlying statement, and nulls the reference to it.
      *
      **/
 
-    public void close() throws SQLException;
+    public void close() throws SQLException
+    {
+        statement.close();
+
+        statement = null;
+        SQL = null;
+    }
 
     /**
      *  Executes the statement as a query, returning a {@link ResultSet}.
      *
      **/
 
-    public ResultSet executeQuery() throws SQLException;
+    public ResultSet executeQuery() throws SQLException
+    {
+        return statement.executeQuery(SQL);
+    }
 
     /**
      *  Executes the statement as an update, returning the number of rows
@@ -73,5 +112,22 @@ public interface IStatement
      *
      **/
 
-    public int executeUpdate() throws SQLException;
+    public int executeUpdate() throws SQLException
+    {
+        return statement.executeUpdate(SQL);
+    }
+
+    public String toString()
+    {
+        StringBuffer buffer;
+
+        buffer = new StringBuffer(super.toString());
+
+        buffer.append("[SQL=<\n");
+        buffer.append(SQL);
+        buffer.append("\n>]");
+
+        return buffer.toString();
+    }
+
 }

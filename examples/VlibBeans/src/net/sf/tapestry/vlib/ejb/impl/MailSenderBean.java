@@ -39,10 +39,10 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import net.sf.tapestry.util.ejb.XEJBException;
+import net.sf.tapestry.contrib.ejb.XEJBException;
 
 /**
  *  Implementation of a stateless session bean that sends mail.
@@ -54,7 +54,7 @@ import net.sf.tapestry.util.ejb.XEJBException;
 
 public class MailSenderBean implements SessionBean
 {
-    private static final Logger LOG = LogManager.getLogger(MailSenderBean.class);
+    private static final Log LOG = LogFactory.getLog(MailSenderBean.class);
 
     private SessionContext context;
 

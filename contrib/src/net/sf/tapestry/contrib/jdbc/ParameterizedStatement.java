@@ -23,7 +23,7 @@
 // Lesser General Public License for more details.
 //
 
-package net.sf.tapestry.util.jdbc;
+package net.sf.tapestry.contrib.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

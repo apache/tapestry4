@@ -38,7 +38,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import net.sf.tapestry.util.ejb.XEJBException;
+import net.sf.tapestry.contrib.ejb.XEJBException;
 
 /**
  *  Implementation of the {@link net.sf.tapestry.vlib.ejb.IKeyAllocator}
