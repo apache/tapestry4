@@ -74,157 +74,159 @@ import com.primix.tapestry.form.*;
 public interface IRequestCycle
 {
     /**
-    *  Invoked after the request cycle is no longer needed, to release any resources
-    *  it may have.  This includes releasing any loaded pages back to the page source.
-    *
-    */
-
+	 *  Invoked after the request cycle is no longer needed, to release any resources
+	 *  it may have.  This includes releasing any loaded pages back to the page source.
+	 *
+	 */
+	
     public void cleanup();
-
+	
     /**
-    *  Passes the String through <code>HttpServletResponse.encodeURL()</code>, which
-    *  ensures that the session id is encoded in the URL (if necessary).
-    *
-    */
-
+	 *  Passes the String through <code>HttpServletResponse.encodeURL()</code>, which
+	 *  ensures that the session id is encoded in the URL (if necessary).
+	 *
+	 */
+	
     public String encodeURL(String URL);
-
+	
     /**
-    *  Returns the engine which is processing this request cycle.
-    *
-    */
-
+	 *  Returns the engine which is processing this request cycle.
+	 *
+	 */
+	
     public IEngine getEngine();
-
+	
     /**
-    *  Retrieves a previously stored attribute, returning null
-    *  if not found.  Attributes allow components to locate each other; primarily
-    *  they allow a wrapped component to locate a component which wraps it.
-    *
-    */
-
+	 *  Retrieves a previously stored attribute, returning null
+	 *  if not found.  Attributes allow components to locate each other; primarily
+	 *  they allow a wrapped component to locate a component which wraps it.
+	 *
+	 */
+	
     public Object getAttribute(String name);
-
+	
     public IMonitor getMonitor();
-
+	
     /**
-    *  Returns the next action id.  Action ids are used to identify different actions on a
-    *  page (URLs that are related to dynamic page state).  
-    *
-    */
-
+	 *  Returns the next action id.  Action ids are used to identify different actions on a
+	 *  page (URLs that are related to dynamic page state).  
+	 *
+	 */
+	
     public String getNextActionId();
-
+	
     /**
-    *  Identifies the page being rendered.
-    *
-    */
-
+	 *  Identifies the page being rendered.
+	 *
+	 */
+	
     public IPage getPage();
-
+	
     /**
-    *  Returns the page with the given name.  If the page has been
-    *  previously loaded in the current request cycle, that page is
-    *  returned.  Otherwise, the engine's page loader is used to
-    *  load the page.
-    *
-    *  @see IEngine#getPageSource()
-    */
-
+	 *  Returns the page with the given name.  If the page has been
+	 *  previously loaded in the current request cycle, that page is
+	 *  returned.  Otherwise, the engine's page loader is used to
+	 *  load the page.
+	 *
+	 *  @see IEngine#getPageSource()
+	 */
+	
     public IPage getPage(String name);
-
+	
     public RequestContext getRequestContext();
-
+	
     /**
-    *  Returns true if the context is being used to rewind a prior
-    *  state of the page.  This is only true when there is a target
-    *  action id.
-    *
-    */
-
+	 *  Returns true if the context is being used to rewind a prior
+	 *  state of the page.  This is only true when there is a target
+	 *  action id.
+	 *
+	 */
+	
     public boolean isRewinding();
-
+	
     /**
-    *  Checks to see if the current action id matches the target
-    *  action id.  Returns true only if they match.  Returns false if
-    *  there is no target action id (that is, during page rendering).
-    *
-    *  <p>If theres a match on action id, then the component's id path
-    *  is compared against the target id path.  If there's a mismatch
-    *  then a {@link StaleLinkException} is thrown.
-    */
-
+	 *  Checks to see if the current action id matches the target
+	 *  action id.  Returns true only if they match.  Returns false if
+	 *  there is no target action id (that is, during page rendering).
+	 *
+	 *  <p>If theres a match on action id, then the component
+	 *  is compared against the target component.  If there's a mismatch
+	 *  then a {@link StaleLinkException} is thrown.
+	 */
+	
     public boolean isRewound(IComponent component)
-    throws StaleLinkException;
-
+		throws StaleLinkException;
+	
     /**
-    *  Removes a previously stored attribute, if one with the given name exists.
-    *
-    */
-
+	 *  Removes a previously stored attribute, if one with the given name exists.
+	 *
+	 */
+	
     public void removeAttribute(String name);
-
+	
     /**
-    *  Renders the given page.  Applications should always use this
-    *  method to render the page, rather than directly invoking
-    *  {@link IPage#render(IResponseWriter, IRequestCycle)} since the
-    *  request cycle must perform some setup before rendering.
-    *
-    */
-
+	 *  Renders the given page.  Applications should always use this
+	 *  method to render the page, rather than directly invoking
+	 *  {@link IPage#render(IResponseWriter, IRequestCycle)} since the
+	 *  request cycle must perform some setup before rendering.
+	 *
+	 */
+	
     public void renderPage(IResponseWriter writer)
-    throws RequestCycleException;
-
+		throws RequestCycleException;
+	
     /**
-    *  Rewinds a page and executes some form of action when the
-    *  component with the specified action id is reached.
-    *
-    *  @see IAction
-    *
-    */
-
+	 *  Rewinds a page and executes some form of action when the
+	 *  component with the specified action id is reached.
+	 *
+	 *  @see IAction
+	 *
+	 */
+	
     public void rewindPage(String targetActionId, IComponent targetComponent)
-    throws RequestCycleException;
-
+		throws RequestCycleException;
+	
     /**
-    *  Allows a temporary object to be stored in the request cycle,
-    *  which allows otherwise unrelated objects to communicate.  This
-    *  is similar to <code>HttpServletRequest.setAttribute()</code>,
-    *  except that values can be changed and removed as well.
-    *
-    */
-
+	 *  Allows a temporary object to be stored in the request cycle,
+	 *  which allows otherwise unrelated objects to communicate.  This
+	 *  is similar to <code>HttpServletRequest.setAttribute()</code>,
+	 *  except that values can be changed and removed as well.
+	 *
+	 * <p>This is used by components to locate each other.  A component, such
+	 * as {@link com.primix.tapestry.html.Body}, will write itself under a well-known name
+	 * into the request cycle, and components it wraps can locate it by that name.
+	 */
+	
     public void setAttribute(String name, Object value);
-
+	
     /**
-    *  Sets the page to be rendered.  This is called by a component
-    *  during the rewind phase to specify an alternate page to render
-    *  during the response phase.
-    *
-    */
-
+	 *  Sets the page to be rendered.  This is called by a component
+	 *  during the rewind phase to specify an alternate page to render
+	 *  during the response phase.
+	 *
+	 */
+	
     public void setPage(IPage page);
-
+	
     /**
-    *  Sets the page to be rendered.  This is called by a component
-    *  during the rewind phase to specify an alternate page to render
-    *  during the response phase.
-    *
-    */
-
+	 *  Sets the page to be rendered.  This is called by a component
+	 *  during the rewind phase to specify an alternate page to render
+	 *  during the response phase.
+	 *
+	 */
+	
     public void setPage(String name);
-
+	
     /**
-    *  Invoked just before rendering the response page to get all
-    *  {@link IPageRecorder page recorders} touched in this request cycle
-    *  to commit their changes (save them to persistant storage and increment
-    *  their version numbers).
-    *
-    *  @see IPageRecorder#commit()
-    */
-
+	 *  Invoked just before rendering the response page to get all
+	 *  {@link IPageRecorder page recorders} touched in this request cycle
+	 *  to commit their changes (save them to persistant storage).
+	 *
+	 *  @see IPageRecorder#commit()
+	 */
+	
     public void commitPageChanges()
-    throws PageRecorderCommitException;
+		throws PageRecorderCommitException;
 	
 	/**
 	 *  Returns the service which initiated this request cycle.  This may return

@@ -254,8 +254,6 @@ public abstract class AbstractComponent implements IComponent
 	 *  Does nothing.  Subclasses may overide as needed.  {@link BaseComponent}
 	 * loads its HTML template.
 	 *
-	 *  @see ILifecycle
-	 *
 	 */
 	
 	public void finishLoad(IPageLoader loader, ComponentSpecification specification)

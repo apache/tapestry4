@@ -60,6 +60,24 @@ public final class Tapestry
 	public static final String VERSION = "1.0.1";
 	
 	/**
+	 *  A {@link Map} that links Locale names (as in {@link Locale#toString()} to
+	 *  {@link Locale} instances.  This prevents needless duplication
+	 *  of Locales.
+	 *
+	 */
+	
+	private static final Map localeMap = new HashMap();
+
+	static
+	{
+		Locale[] locales = Locale.getAvailableLocales();
+		for (int i = 0; i < locales.length; i++)
+		{
+			localeMap.put(locales[i].toString(), locales[i]);
+		}
+	}
+	
+	/**
 	 *  A {@link Decorator} used to coerce arbitrary objects
 	 *  to boolean values.
 	 *
@@ -346,5 +364,61 @@ public final class Tapestry
 		
 		return adaptor.coerce(value);		
 	}
+
+	/**
+	 *  Gets the {@link Locale} for the given string, which is the result
+	 *  of {@link Locale#toString()}.  If no such locale is already registered,
+	 *  a new instance is created, registered and returned.
+	 *
+	 *
+	 */
+	
+	public static Locale getLocale(String s)
+	{
+		Locale result = null;
+		
+		synchronized(localeMap)
+		{
+			result = (Locale)localeMap.get(s);
+		}
+		
+		if (result == null)
+		{
+			StringSplitter splitter = new StringSplitter('_');
+			String[] terms = splitter.splitToArray(s);
+			
+			switch(terms.length)
+			{
+				case 1:
+					
+					result = new Locale(terms[0], "");
+					break;
+					
+				case 2:
+					
+					result = new Locale(terms[0], terms[1]);
+					break;
+					
+				case 3:
+					
+					result = new Locale(terms[0], terms[1], terms[2]);
+					break;
+					
+				default:
+					
+					throw new IllegalArgumentException("Unable to convert '" + s + "' to a Locale.");
+			}
+			
+			synchronized(localeMap)
+			{
+				localeMap.put(s, result);
+			}
+			
+		}
+		
+		return result;
+	
+	}
+	
 }
 

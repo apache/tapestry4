@@ -6,6 +6,7 @@
     <binding name="target" property-path="windowTarget"/>
     <binding name="listener" property-path="listener"/>
     <inherited-binding name="enabled" parameter-name="enabled"/>
+    <field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
   <component id="button" type="Rollover">
     <binding name="image" property-path="assets.image"/>

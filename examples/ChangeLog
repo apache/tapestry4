@@ -1,3 +1,10 @@
+* May 30 2001 hship
+
+Fix Tutorial Makefile
+Fix some graphic anomlies in the Portal tutorial
+Check in the PSP sources for some of the Portal images.
+Fix bad public ID in Vlib.application.
+
 * May 29 2001 hship
 
 Portal tutorial:

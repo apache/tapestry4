@@ -56,6 +56,7 @@ import com.primix.tapestry.asset.*;
  *  <li>{@link StaticBinding}
  *  <li>{@link ExternalAsset}
  *  <li>{@link ContextAsset}
+ *  <li><{@link PrivateAsset}
  *  </ul>
  *
  *  <p>This caching allows common objects to be created once, and

@@ -31,10 +31,13 @@ package com.primix.tapestry;
 import javax.servlet.http.*;
 import java.io.*;
 import javax.servlet.*;
+import java.util.*;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.parse.*;
+import com.primix.tapestry.util.*;
 import com.primix.tapestry.util.exception.*;
 import com.primix.tapestry.util.xml.*;
+import com.primix.tapestry.util.pool.*;
 import org.apache.log4j.*;
 
 /**
@@ -45,7 +48,7 @@ import org.apache.log4j.*;
  * incoming requests to it.
  *
  * <p>In some servlet containers (notably
- * <a href="www.bea.com"/>WebLogic</a>,
+ * <a href="www.bea.com"/>WebLogic</a>)
  * it is necessary to invoke {@link HttpSession#setAttribute(String,Object)}
  * in order to force a persistent value to be replicated to the other
  * servers in the cluster.  Tapestry applications usually only have a single
@@ -57,12 +60,22 @@ import org.apache.log4j.*;
  * end of each request cycle.
  *
  * <p>The application servlet also has a default implementation of
- * {@link #setupLogging} that configures logging for Log4J.  Subclasses
+ * {@link #setupLogging} that configures logging for 
+ *  <a href="http://jakarta.apache.org/log4j">Log4J</a>.  Subclasses
  * with more sophisticated logging needs will need to overide this
  * method.
  *
+ * <p>As of release 1.0.1, it is no longer necessary for a {@link HttpSession}
+ * to be created on the first request cycle.  Instead, the HttpSession is created
+ * as needed by the {@link IEngine} ... that is, when a visit object is created,
+ * or when persistent page state is required.  Otherwise, for sessionless requests,
+ * an {@link IEngine} from a {@link Pool} is used.  Additional work must be done
+ * so that the {@link IEngine} can change locale <em>without</em> forcing 
+ * the creation of a session; this involves the servlet and the engine storing
+ * locale information in a {@link Cookie}.
+ *
  * <p>This class is derived from the original class
- * <code>com.primix.servlet.GatewayServlet</code>
+ * <code>com.primix.servlet.GatewayServlet</code>,
  * part of the <b>ServletUtils</b> framework available from
  * <a href="http://www.gjt.org/servlets/JCVSlet/list/gjt/com/primix/servlet">The Giant
  * Java Tree</a>.
@@ -77,6 +90,22 @@ abstract public class ApplicationServlet
 {
 	private static final Category CAT =
 		Category.getInstance(ApplicationServlet.class);
+	
+	/**
+	 *  Name of the cookie written to the client web browser to
+	 *  identify the locale.
+	 *
+	 */
+	
+	private static final String LOCALE_COOKIE_NAME = "com.primix.tapestry.locale";
+	
+	/**
+	 *  A {@link Pool} used to store {@link IEngine engine}s that are not currently
+	 *  in use.  The key is on {@link Locale}.
+	 *
+	 */
+	
+	private Pool enginePool = new Pool();
 	
 	/**
 	 *  The application specification, which is read once and kept in memory
@@ -136,7 +165,7 @@ abstract public class ApplicationServlet
 		try
 		{
 			
-			// The subclass provides the delegate.
+			// The subclass provides the engine.
 			
 			engine = getEngine(context);
 			
@@ -146,23 +175,49 @@ abstract public class ApplicationServlet
 			
 			boolean dirty = engine.service(context);
 			
-			if (dirty && storeEngine)
+			HttpSession session = context.getSession();
+			
+
+			// When there's an active session, we *may* store it into
+			// the HttpSession and we *will not* store the engine
+			// back into the engine pool.
+			
+			if (session != null)
 			{
-				if (CAT.isDebugEnabled())
-					CAT.debug("Storing " + engine + " into session as " + attributeName);
 				
-				try
+				// If the service may have changed the engine and the
+				// special storeEngine flag is on, then re-save the engine
+				// into the session.  Otherwise, we only save the engine
+				// into the session when the session is first created (is new).
+				
+				if ((dirty && storeEngine) || session.isNew())
 				{
-					context.setSessionAttribute(attributeName, engine);
-				}
-				catch (IllegalStateException ex)
-				{
-					// Ignore, the session been's invalidated.
-					
 					if (CAT.isDebugEnabled())
-						CAT.debug("Session invalidated.");
-				}
+						CAT.debug("Storing " + engine + " into session as " + attributeName);
+					
+					try
+					{
+						session.setAttribute(attributeName, engine);
+					}
+					catch (IllegalStateException ex)
+					{
+						// Ignore because the session been's invalidated.
+						// Allow the engine (which has state particular to the client)
+						// to be reclaimed by the garbage collector.
+						
+						if (CAT.isDebugEnabled())
+							CAT.debug("Session invalidated.");
+					}
+				}					
+				return;
 			}
+			
+			// No session; the engine contains no state particular to
+			// the client (except for locale).  Don't throw it away,
+			// instead save it in a pool for later reuse (by this, or another
+			// client in the same locale).
+			
+			enginePool.store(engine.getLocale(), engine);
 			
 		}
 		catch (ServletException ex)
@@ -222,35 +277,66 @@ abstract public class ApplicationServlet
 	}
 	
 	/**
-	 *  Retrieves the {@link IEngine} instance for this session
-	 *  from the {@link HttpSession}, or invokes
-	 *  {@link #createEngine(RequestContext)} to create the
-	 *  application instance.
-	 *
-	 * <p>If the engine does not need to be stored in the {@link HttpSession}
-	 * (not possible with the framework provided implementations)
-	 * then this method should be overided as appropriate.
+	 *  Retrieves the {@link IEngine engine} that will process this
+	 *  request.  This comes from one of the following places:
+	 *  <ul>
+	 *  <li>The {@link HttpSession}, if the there is one.
+	 *  <li>From the pool of available engines
+	 *  <li>Freshly created
+	 *  </ul>
 	 *
 	 */
 	
 	protected IEngine getEngine(RequestContext context)
 		throws ServletException
 	{
-		IEngine engine;
+		IEngine engine = null;
+		HttpSession session = context.getSession();
 		
-		engine = (IEngine)context.getSessionAttribute(attributeName);
+		// If there's a session, then find the engine within it.
+		
+		if (session != null)
+		{
+			engine = (IEngine)session.getAttribute(attributeName);
+			if (engine != null)
+				return engine;
+		}
+		
+		Locale locale = getLocaleFromRequest(context);
+		
+		engine = (IEngine)enginePool.retrieve(locale);
 		
 		if (engine == null)
 		{
 			engine = createEngine(context);
-			
-			context.setSessionAttribute(attributeName, engine);
+			engine.setLocale(locale);
 		}
-		
 		
 		return engine;
 	}
 	
+	/**
+	 *  Determines the {@link Locale} for the incoming request.
+	 *  This is determined from the locale cookie or, if not set,
+	 *  from the request itself.  This may return null
+	 *  if no locale is determined.
+	 *
+	 */
+	
+	
+	protected Locale getLocaleFromRequest(RequestContext context)
+		throws ServletException
+	{
+		Cookie cookie = context.getCookie(LOCALE_COOKIE_NAME);
+		
+		if (cookie != null)
+			return Tapestry.getLocale(cookie.getValue());
+		
+		return context.getRequest().getLocale();
+	}
+	
+
+		
 	/**
 	 *  Reads the application specification when the servlet is
 	 *  first initialized.  All {@link IEngine engine instances}
@@ -315,9 +401,14 @@ abstract public class ApplicationServlet
 	 *  <li>Gets the JVM system property <code></code> and uses it as the pattern
 	 * for a {@link PatternLayout}.  If the property is not defined, then the
 	 * default pattern <code>%c{1} [%p] %m%n</code> is used.
-	 *  <li>Configures a single {@link Appender} for the root {@link Category}, a {@link FileAppender}
-	 *  to <code>System.out</code>, using the pattern specified.
+	 *  <li>Configures a single {@link ConsoleAppender} for the root {@link Category},
+	 *  using the pattern specified.
 	 *  </ul>
+	 *
+	 *  <p>In addition, for each priority, a check is made for a JVM system property
+	 *  <code>com.primix.tapestry.log4j.<em>priority</em></code> (i.e. <code>...log4j.DEBUG</code>).
+	 *  The value is a list of categories seperated by semicolons.  Each of these
+	 *  categories will be assigned that priority.
 	 *
 	 *  @since 0.2.9
 	 */
@@ -334,13 +425,35 @@ abstract public class ApplicationServlet
 		
 		Category root = Category.getRoot();
 		root.setPriority(priority);
-
+		
 		String pattern = System.getProperty("com.primix.tapestry.log-pattern",
-										  "%c{1} [%p] %m%n");
+				"%c{1} [%p] %m%n");
 		
 		Layout layout = new PatternLayout(pattern);
 		Appender rootAppender = new ConsoleAppender(layout);
 		root.addAppender(rootAppender);
+
+		Priority[] priorities = Priority.getAllPossiblePriorities();
+		StringSplitter splitter = new StringSplitter(';');
+		
+		for (int i = 0; i < priorities.length; i++)
+		{
+			priority = priorities[i];
+			String key = "com.primix.tapestry.log4j." + priority.toString();
+			String categoryList = System.getProperty(key);
+			
+			if (categoryList != null)
+			{
+				String[] categories	= splitter.splitToArray(categoryList);
+				
+				for (int j = 0; j < categories.length; j++)
+				{
+					Category cat = Category.getInstance(categories[j]);
+					cat.setPriority(priority);
+				}
+			}
+		}
+	
 	}
 	
 	/**
@@ -391,6 +504,29 @@ abstract public class ApplicationServlet
 		{
 			throw new ServletException(ex);
 		}
+	}
+	
+	/**
+	 *  Invoked from the {@link IEngine engine}, just prior to starting to
+	 *  render a response, when the locale has changed.  The servlet writes a
+	 *  {@link Cookie} so that, on subsequent request cycles, an engine localized
+	 *  to the selected locale is chosen.
+	 *
+	 *  <p>At this time, the cookie is <em>not</em> persistent.  That may
+	 *  change is subsequent releases.
+	 *
+	 *  @since 1.0.1
+	 */
+	
+	public void writeLocaleCookie(Locale locale, IEngine engine, RequestContext cycle)
+	{
+		if (CAT.isDebugEnabled())
+			CAT.debug("Writing locale cookie " + locale);
+		
+		Cookie cookie = new Cookie(LOCALE_COOKIE_NAME, locale.toString());
+		cookie.setPath(engine.getServletPrefix());
+		
+		cycle.addCookie(cookie);
 	}
 }
 

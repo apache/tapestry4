@@ -408,7 +408,7 @@ public abstract class AbstractDocumentParser
 	 *  <p>This implementation obtains a builder with the following
 	 *  characteristics:
 	 *  <ul>
-	 *  <li>validating
+	 *  <li>validating (if {@link #getRequireValidatingParser()} returns true}
 	 *  <li>ignoringElementContentWhitespace
 	 *  <li>ignoringComments
 	 *  <li>coalescing
@@ -428,7 +428,7 @@ public abstract class AbstractDocumentParser
 	{
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		
-		factory.setValidating(true);
+		factory.setValidating(getRequireValidatingParser());
 		factory.setIgnoringElementContentWhitespace(true);
 		factory.setIgnoringComments(true);
 		factory.setCoalescing(true);
@@ -442,6 +442,20 @@ public abstract class AbstractDocumentParser
 			CAT.debug("Constructed new builder " + result);
 		
 		return result;
+	}
+	
+	/**
+	 *  Used by {@link #constructBuilder()} to determine if the a validating
+	 *  {@link DocumentBuilder} is required.  This implementation returns true,
+	 *  subclasses that don't require a validating builder (such as documents
+	 *  without a known DTD), may override to return false.
+	 *
+	 *  @since 1.0.1
+	 */
+	
+	protected boolean getRequireValidatingParser()
+	{
+		return true;
 	}
 	
 	/**

@@ -5,6 +5,7 @@
   <component id="border" type="Border"/>
   <component id="form" type="Form">
     <binding name="listener" property-path="formListener"/>
+    <field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
   <component id="inputLocale" type="PropertySelection">
     <binding name="value" property-path="selectedLocale"/>

@@ -35,12 +35,10 @@ import java.util.*;
 import com.primix.tapestry.components.*;
 
 /**
- * Defines an object which may be used on a Tapestry web page.
+ * Defines an object which may be used to provide dynamic content on a Tapestry web page.
  *
  * <p>Components are created dynamically from thier class names (part of the
- *  {@link ComponentSpecification}.  Classes which
- * implement <code>IComponent</code>
- * must implement a no-arguments constructor (like any good JavaBean).
+ *  {@link ComponentSpecification}). 
  *
  * <p>The {@link ILifecycle} interface defines additional methods
  * for components that need to perform extra work as they are loaded and before
@@ -50,7 +48,8 @@ import com.primix.tapestry.components.*;
  * @version $Id$
  */
 
-public interface IComponent extends IRender
+public interface IComponent 
+	extends IRender
 {
 	
 	/**
@@ -260,6 +259,9 @@ public interface IComponent extends IRender
 	 *  specified, but any components contained by the
 	 *  receiving component will also have been constructed
 	 *  before this method is invoked.
+	 *
+	 *  <p>This was originally part of the {@link ILifecycle} interface, but was
+	 *  moved here in release 0.2.12.
 	 *
 	 * @since 0.2.12
 	 */

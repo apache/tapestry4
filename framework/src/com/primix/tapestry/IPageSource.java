@@ -43,7 +43,7 @@ package com.primix.tapestry;
 public interface IPageSource
 {
     /**
-     *  Gets a given page for the engine.  This may involve using an previously
+     *  Gets a given page for the engine.  This may involve using a previously
      *  loaded page from a pool of available pages, or the page may be loaded as needed.
      *
      */

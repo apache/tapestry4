@@ -92,6 +92,10 @@ public interface IEngine
 	 *  This is used when transitioning from one part
 	 *  of an application to another.  All property changes for the page are lost.
 	 *
+	 *  <p>This should be done if the page is no longer needed or relevant, otherwise
+	 *  the properties for the page will continue to be recorded by the engine, which
+	 *  is wasteful (especially if clustering or failover is employed on the application).
+	 *
 	 *  <p>Throws an {@link ApplicationRuntimeException} if there are uncommitted changes
 	 *  for the recorder (in the current request cycle).
 	 *
@@ -101,9 +105,7 @@ public interface IEngine
 	
     /**
 	 *  Returns the locale for the engine.  This locale is used when selecting
-	 *  templates and assets.  If the local has not been set (is null), then this
-	 *  method should return the default locale for the JVM.
-	 *
+	 *  templates and assets.
 	 */
 	
     public Locale getLocale();
@@ -122,7 +124,7 @@ public interface IEngine
 	 *  Returns a recorder for a page.  Returns null if the page record has
 	 *  not been created yet.
 	 *
-	 *  @see #createPageRecorder(String)
+	 *  @see #createPageRecorder(String, IRequestCycle)
 	 */
 	
     public IPageRecorder getPageRecorder(String pageName);
@@ -132,7 +134,7 @@ public interface IEngine
 	 *
 	 */
 	
-	public IPageRecorder createPageRecorder(String pageName);
+	public IPageRecorder createPageRecorder(String pageName, IRequestCycle cycle);
 	
     /**
 	 *  Returns the object used to load a page from its specification.

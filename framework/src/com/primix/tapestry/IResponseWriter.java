@@ -33,7 +33,7 @@ package com.primix.tapestry;
  *  A <code>IResponseWriter</code> handles translation from unicode to
  *  the markup language (escaping characters such as '&lt;' and '&gt;' to
  *  their entity equivalents, '&amp;lt;' and '&amp;gt;') as well as assisting
- *  with nested elements, closing tags, indentation, processing directives, etc.
+ *  with nested elements, closing tags, etc.
  *
  *  @author Howard Ship
  *  @version $Id$

@@ -4,6 +4,7 @@
 <specification class="tutorial.hangman.Home">
   <component id="form" type="Form">
     <binding name="listener" property-path="formListener"/>
+    <field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
   <component id="group" type="RadioGroup">
     <binding name="selected" property-path="misses"/>

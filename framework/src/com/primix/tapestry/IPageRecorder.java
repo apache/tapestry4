@@ -46,62 +46,62 @@ import com.primix.tapestry.event.*;
 public interface IPageRecorder extends ChangeObserver
 {
     /**
-     *  Persists all changes that have been accumulated.  If the recorder
-     *  saves change incrementally, this should ensure that all changes have been persisted.
-     *
-     *  <p>After commiting, a page record automatically locks itself.
-     */
- 
+	 *  Persists all changes that have been accumulated.  If the recorder
+	 *  saves change incrementally, this should ensure that all changes have been persisted.
+	 *
+	 *  <p>After commiting, a page record automatically locks itself.
+	 */
+	
     public void commit()
-    throws PageRecorderCommitException;
-
+		throws PageRecorderCommitException;
+	
     /**
-     *  Returns a {@link Collection} of {@link IPageChange} objects that represent
-     *  the persistant state of the page.
-     *
-     */
- 
+	 *  Returns a {@link Collection} of {@link IPageChange} objects that represent
+	 *  the persistant state of the page.
+	 *
+	 */
+	
     public Collection getChanges();
-
+	
 	/**
 	 *  Returns true if the recorder has any changes for the page.
 	 *
 	 */
-	 
+	
 	public boolean getHasChanges();
-
+	
     /**
-     *  Returns true if the recorder has observed any changes that have not
-     *  been committed to external storage.
-     *
-     */
- 
+	 *  Returns true if the recorder has observed any changes that have not
+	 *  been committed to external storage.
+	 *
+	 */
+	
     public boolean isDirty();
-
+	
     /**
-     *  Returns true if the recorder is in a locked state, following
-     *  a {@link #commit()}.
-     *
-     */
-
+	 *  Returns true if the recorder is in a locked state, following
+	 *  a {@link #commit()}.
+	 *
+	 */
+	
     public boolean isLocked();
-
+	
     /**
-     *  Rolls back the page to the currently persisted state.
-     *
-     *  <p>A page recorder can only rollback changes to properties
-     *  which have changed * at some point.  This can cause some minor
-     *  problems, addressed by * {@link ILifecycle#reset()}.
-     */
- 
+	 *  Rolls back the page to the currently persisted state.
+	 *
+	 *  <p>A page recorder can only rollback changes to properties
+	 *  which have changed  at some point.  This can cause some minor
+	 *  problems, addressed by  {@link ILifecycle#reset()}.
+	 */
+	
     public void rollback(IPage page);
- 
+	
     /**
-     *  Invoked to lock or unlock the recorder.  Recoders are locked
-     *  after they are commited, and stay locked until
-     *  explicitly unlocked in a subsequent request cycle.
-     *
-     */
-
+	 *  Invoked to lock or unlock the recorder.  Recoders are locked
+	 *  after they are commited, and stay locked until
+	 *  explicitly unlocked in a subsequent request cycle.
+	 *
+	 */
+	
     public void setLocked(boolean value);
 }
