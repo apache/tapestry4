@@ -16,7 +16,7 @@
   <property name="classes.dir" value="./classes"/>
   <property name="src.dir" value="./src"/>
   <property name="war.dir" value="./webapps"/>
-  <property name="war.tmp.dir" value="./webapp-build"/>
+  <property name="war.name" value="learn-tapestry.war"/>
 
   <property name="root.dir" value="${tapestry.install.dir}"/>
   <property file="${root.dir}/config/Version.properties"/>
@@ -59,13 +59,8 @@
     </javac>
   </target>
   
-  <target name="extract-webapp" depends="war">
-    <delete dir="${web.tmp.dir}"/>
-    <mkdir dir="${web.tmp.dir}"/>
-  </target>
-
   <!-- Run your code within the standard Jetty Web Container -->
-  <target name="run" depends="compile, extract-webapp">
+  <target name="run" depends="war">
     <delete dir="${private.dir}" quiet="true"/>
     <mkdir dir="${private.dir}"/>
 	  
@@ -91,7 +86,7 @@
   </target>
   
   <target name="war" depends="prepare">
-    <war destfile="${war.dir}/learn-tapestry.war"
+    <war destfile="${war.dir}/${war-name}"
 	 webxml="./etc/web.xml"
 	 basedir="./web"
 	 >
