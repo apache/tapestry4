@@ -16,7 +16,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  *  @see TokenType#OPEN
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since NEXT_RELEASE
+ *  @since 2.4
  *
  **/
 

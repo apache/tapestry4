@@ -201,7 +201,7 @@ public class PageLoader implements IPageLoader
      *  checks each component in the tree to ensure that
      *  all of its required parameters are bound.
      * 
-     *  @since NEXT_RELEASE
+     *  @since 2.4
      * 
      **/
 
@@ -367,7 +367,7 @@ public class PageLoader implements IPageLoader
      *  specification).
      * 
      *  @see net.sf.tapestry.BaseComponentTemplateLoader
-     *  @since NEXT_RELEASE
+     *  @since 2.4
      * 
      **/
 

@@ -51,7 +51,7 @@ public abstract class TemplateToken
      *  to the description.  Subclasses may override this method without invoking
      *  this implementation, which is empty.
      * 
-     *  @since NEXT_RELEASE
+     *  @since 2.4
      * 
      **/
     

@@ -18,7 +18,7 @@ import net.sf.tapestry.Tapestry;
  *  @see TokenType#TEXT
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since NEXT_RELEASE
+ *  @since 2.4
  *
  **/
 

@@ -41,7 +41,7 @@ public interface ITemplateParserDelegate
      * 
      *  @throws PageLoaderException if the specification cannot be found
      * 
-     *  @since NEXT_RELEASE
+     *  @since 2.4
      * 
      **/
     

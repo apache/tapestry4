@@ -13,7 +13,7 @@ import net.sf.tapestry.engine.NullWriter;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since NEXT_RELEASE
+ *  @since 2.4
  *
  **/
 

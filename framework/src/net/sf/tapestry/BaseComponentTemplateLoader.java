@@ -30,7 +30,7 @@ import net.sf.tapestry.spec.ComponentSpecification;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since NEXT_RELEASE
+ *  @since 2.4
  *
  **/
 

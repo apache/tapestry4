@@ -10,7 +10,7 @@ import java.util.Map;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since NEXT_RELEASE
+ *  @since 2.4
  *
  **/
 

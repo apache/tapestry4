@@ -563,7 +563,7 @@ public final class Tapestry
     /**
      *  Returns true if the Map is null or empty.
      * 
-     *  @since NEXT_RELEASE
+     *  @since 2.4
      * 
      **/
     

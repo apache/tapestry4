@@ -146,7 +146,7 @@ public class TemplateParser
     /**
      *  Pattern used to recognize ordinary components (defined in the specification).
      * 
-     *  @since NEXT_RELEASE
+     *  @since 2.4
      * 
      **/
 
@@ -158,7 +158,7 @@ public class TemplateParser
      *  is the type (which may be qualified with a library prefix).
      *  Subgroup 6 is the library id, Subgroup 7 is the simple component type.
      * 
-     *  @since NEXT_RELEASE
+     *  @since 2.4
      * 
      **/
 

@@ -15,7 +15,7 @@ public class PageLoaderException extends Exception
     private String _pageName;
     private transient IComponent _component;
 
-    /** @since NEXT_RELEASE **/
+    /** @since 2.4 **/
     
     public PageLoaderException(String message)
     {

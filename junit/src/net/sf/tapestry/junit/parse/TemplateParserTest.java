@@ -487,7 +487,7 @@ public class TemplateParserTest extends TestCase
     /**
      *  Tests for implicit components (both named and anonymous).
      * 
-     *  @since NEXT_RELEASE
+     *  @since 2.4
      * 
      **/
 

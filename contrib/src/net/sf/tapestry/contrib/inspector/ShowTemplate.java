@@ -128,7 +128,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
         writer.end(); // <pre>        
     }
     
-    /** @since NEXT_RELEASE **/
+    /** @since 2.4 **/
     
     private IComponent getInspectedComponent()
     {
@@ -137,7 +137,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
         return page.getInspectedComponent();
     }
 
-    /** @since NEXT_RELEASE **/
+    /** @since 2.4 **/
 
     private void write(IMarkupWriter writer, TextToken token)
     {
@@ -151,7 +151,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
         writer.print(token.getTemplateData(), start, end - start + 1);
     }
 
-    /** @since NEXT_RELEASE **/
+    /** @since 2.4 **/
 
     private void write(IMarkupWriter writer, CloseToken token)
     {
@@ -165,7 +165,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
         writer.end(); // <span>
     }
 
-    /** @since NEXT_RELEASE **/
+    /** @since 2.4 **/
 
     private void write(IMarkupWriter writer, LocalizationToken token)
     {
@@ -209,7 +209,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
         writer.end(); // <span>
     }
 
-    /** @since NEXT_RELEASE **/
+    /** @since 2.4 **/
 
     private void write(IMarkupWriter writer, boolean nextIsClose, OpenToken token)
     {

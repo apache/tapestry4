@@ -90,7 +90,7 @@ public interface IPageSource
     
     /**
      * 
-     *  @since NEXT_RELEASE
+     *  @since 2.4
      * 
      **/
     

@@ -40,7 +40,7 @@ public interface IPageLoader
      *  specification).
      * 
      *  @see net.sf.tapestry.BaseComponentTemplateLoader
-     *  @since NEXT_RELEASE
+     *  @since 2.4
      * 
      **/
 

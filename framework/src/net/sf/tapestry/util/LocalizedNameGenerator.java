@@ -12,7 +12,7 @@ import net.sf.tapestry.Tapestry;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since NEXT_RELEASE
+ *  @since 2.4
  *
  **/
 
