@@ -5,18 +5,22 @@ MODULE_NAME = Vlib
 PACKAGES = \
 	com.primix.vlib \
 	com.primix.vlib.pages \
-	com.primix.vlib.components
+	com.primix.vlib.components \
+	com.primix.vlib.jsp
 
 LOCAL_CLASSPATH = \
 	$(INSTALL_DIR)/j2ee.jar \
 	$(INSTALL_DIR)/xerces.jar \
 	$(INSTALL_DIR)/PrimixFoundation.jar \
 	$(INSTALL_DIR)/Tapestry.jar \
-	$(INSTALL_DIR)/VlibBeans.jar
+	$(INSTALL_DIR)/VlibBeans.jar \
+	$(INSTALL_DIR)/ServletUtils.jar
 
 INSTALL_DIR = ../../lib
 
 JAVADOC_DIR = ../../javadoc
+
+CONTEXT_RESOURCES = jsp
 
 WEB_INF_RESOURCES = weblogic.xml
 
@@ -41,7 +45,8 @@ WEBLOGIC_CLASSPATH := \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/xerces.jar \
 	$(INSTALL_DIR)/Tapestry.jar \
-	$(INSTALL_DIR)/PrimixFoundation.jar
+	$(INSTALL_DIR)/PrimixFoundation.jar \
+	$(INSTALL_DIR)/ServletUtils.jar
 	
 # Convert from space-seperated to proper form, and convert relative paths to absolute paths.
 
