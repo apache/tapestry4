@@ -4,8 +4,8 @@
 <specification class="com.primix.tapestry.form.Submit" allow-body="no">
   <parameter name="label" java-type="java.lang.String"/>
   <parameter name="disabled"/>
-  <parameter name="selected">
-  <parameter name="tag">
+  <parameter name="selected"/>
+  <parameter name="tag"/>
   <parameter name="listener" java-type="com.primix.tapestry.IActionListener"/>
   
   <reserved-parameter name="name"/>

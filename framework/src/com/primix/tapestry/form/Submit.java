@@ -215,16 +215,27 @@ public class Submit extends AbstractFormComponent
 			if (value == null)
 				return;
 
-			// OK, now to notify the application code (via the parameters)
-			// that *this* Submit was selected.  We do this by applying
-			// a tag (presumably, specific to the Submit in question)
-			// to the selected binding.
+			if (selectedBinding != null)
+    			{
+    			// OK, now to notify the application code (via the parameters)
+    			// that *this* Submit was selected.  We do this by applying
+    			// a tag (presumably, specific to the Submit in question)
+    			// to the selected binding.
+    
+				if (tagBinding == null)
+					throw new RequestCycleException(
+						"The tag parameter is required if the selected parameter is bound.",
+						this);
 
-			if (tagValue == null)
-				tagValue = tagBinding.getObject();
+    			if (tagValue == null)
+    				tagValue = tagBinding.getObject();
+    
+ 				if (tagValue == null)
+					throw new RequiredParameterException(this, "tag", tagBinding);
 
-			if (tagValue != null)
-				selectedBinding.setObject(tagValue);
+	   			if (tagValue != null)
+    				selectedBinding.setObject(tagValue);
+			}
 
 			if (listenerBinding != null)
 			{
