@@ -101,6 +101,24 @@ public class ComponentClassFactory
      **/
     private static int _uid = 0;
 
+    /**
+     *  Mapping between a primitive type and its Java VM representation
+     *  Used for the encoding of array types
+     **/
+    private static Map _primitiveTypes = new HashMap();  
+
+    static {
+        _primitiveTypes.put("boolean", "Z");
+        _primitiveTypes.put("short", "S");
+        _primitiveTypes.put("int", "I");
+        _primitiveTypes.put("long", "J");
+        _primitiveTypes.put("float", "F");
+        _primitiveTypes.put("double", "D");
+        _primitiveTypes.put("char", "C");
+        _primitiveTypes.put("byte", "B");
+    }
+
+
     private IResourceResolver _resolver;
 
     private IEnhancedClassFactory _enhancedClassFactory;
@@ -217,14 +235,7 @@ public class ComponentClassFactory
         {
             try
             {
-                String typeName = type;
-                
-                // if it is an array name reformat it in the way Java expects it
-                if (type.endsWith("[]")) {
-                    String className = type.substring(0, type.length() - 2);
-                    typeName = "[L" + className + ";"; 
-                }
-            
+                String typeName = translateClassName(type, true);
                 result = _resolver.findClass(typeName);
             }
             catch (Exception ex)
@@ -239,6 +250,29 @@ public class ComponentClassFactory
         }
 
         return result;
+    }
+
+    // this method and its static Map should go into a utility class somewhere  
+    protected String translateClassName(String type, boolean toplevel)
+    {
+        // if it is an array name reformat it in the way Java expects it
+        if (type.endsWith("[]")) {
+            String subtype = type.substring(0, type.length() - 2);
+            return "[" + translateClassName(subtype, false); 
+        }
+        
+        // if not an array and at the top level of the recursion, 
+        // return the type as it is  
+        if (toplevel) 
+            return type;
+
+        // test for a primitive type
+        String primitiveIdentifier = (String) _primitiveTypes.get(type); 
+        if (primitiveIdentifier != null)
+            return primitiveIdentifier;
+        
+        // a normal java class 
+        return "L" + type + ";";
     }
 
     protected void checkPropertyType(PropertyDescriptor pd, Class propertyType, ILocation location)
@@ -499,5 +533,6 @@ public class ComponentClassFactory
         }
         return _enhancedClass;
     }
+
 
 }
