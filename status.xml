@@ -484,6 +484,11 @@ DatePicker now allows informal attributes that will be applied to the field.
 Fixed one more place where the encoding needs to be set
 </action>
 
+<action type="fix" dev="HLS" fixes-bug="23544">
+Don't use <code>request.getRemoteHost()</code> since that requires
+an expensive reverse DNS lookup.
+</action>
+
 			</release>
 		</changes>
 	</status>

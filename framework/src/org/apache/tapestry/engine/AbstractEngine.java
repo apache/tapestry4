@@ -1199,7 +1199,11 @@ public abstract class AbstractEngine
         else
             _sessionId = null;
 
-        _clientAddress = request.getRemoteHost();
+ 		// Previously, this used getRemoteHost(), but that requires an
+ 		// expensive reverse DNS lookup. Possibly, the host name lookup
+ 		// should occur ... but only if there's an actual error message
+ 		// to display.
+ 		
         if (_clientAddress == null)
             _clientAddress = request.getRemoteAddr();
 
