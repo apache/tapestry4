@@ -83,6 +83,7 @@ public class BasicTestSuite extends TestSuite
         suite.addTestSuite(TestContentType.class);
         suite.addTestSuite(TestRequestCycleToString.class);
         suite.addTestSuite(TestDirection.class);
+        suite.addTestSuite(TestLocalizedProperties.class);
 
         return suite;
     }

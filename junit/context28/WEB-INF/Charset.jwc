@@ -21,8 +21,6 @@
 
 <component-specification>
 
-	<property name="org.apache.tapestry.template-encoding" value="ISO-8859-1"/>
-
 	<property name="org.apache.tapestry.template-encoding_bg" value="ISO-8859-5"/>
 	<property name="org.apache.tapestry.template-encoding_bg_BG" value="UTF-8"/>
 
@@ -31,4 +29,8 @@
 
 	<property name="org.apache.tapestry.template-encoding_es" value="UTF-16"/>
 
+    
+	<property name="org.apache.tapestry.messages-encoding_zh" value="UTF-8"/>
+	<property name="org.apache.tapestry.messages-encoding_zh_TW" value="Big5"/>
+    
 </component-specification>
