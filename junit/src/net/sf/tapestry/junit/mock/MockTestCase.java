@@ -170,4 +170,15 @@ public class MockTestCase extends TapestryTestCase
     {
         attempt("/net/sf/tapestry/junit/mock/TestImplicitComponents.xml");
     }
+    
+    /**
+     *  Perform basic tests of the home service.
+     * 
+     **/
+    
+    public void testHome()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestHome.xml");
+    }
 }

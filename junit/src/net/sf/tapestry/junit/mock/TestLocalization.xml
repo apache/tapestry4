@@ -33,7 +33,7 @@ If it's not Scottish, it's crap!
 		
 		<assert-output name="French Blurb">
 Zees ees nawt cheeze!
-		</assert-output>\
+		</assert-output>
 		
 	</request>
 
@@ -66,5 +66,42 @@ Zees ees nawt cheeze!
 /mock/images/back_fr.png
 		</assert-output>		
 	</request>	
+	
+	
+	<!-- Test ability to switch locales and store a cookie descrbing
+	 	 the locale. -->
+	 	 
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="Assets/switch"/>
+		
+		<!-- Switch sends us back to the Home page, but in French. -->
+		
+		<assert-output name="French Blurb">
+Zees ees nawt cheeze!
+		</assert-output>
+		
+		<assert-cookie name="net.sf.tapestry.locale" value="fr"/>
+		
+	</request>
+		
+	<!-- With the cookie in place, going back to the Assets page should
+		 provide the French version. -->
+		 		
+	<request>
+	  	<parameter name="service" value="page"/>
+	  	<parameter name="context" value="Assets"/>
+		
+		<assert-output name="French Home image" regexp="false">
+<![CDATA[		
+/mock/app?service=asset&amp;sp=%2Fnet%2Fsf%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png		
+]]>
+		</assert-output>
+		
+		<assert-output name="French Back image" regexp="false">
+/mock/images/back_fr.png
+		</assert-output>		
+	</request>		
+			 	 	 
 </mock-test>
     	

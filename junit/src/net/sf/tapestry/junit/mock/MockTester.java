@@ -326,6 +326,7 @@ public class MockTester
         executeOutputAssertions(request);
         executeExpressionAssertions(request);
         executeOutputMatchesAssertions(request);
+        executeCookieAssertions(request);
     }
 
     /**
@@ -562,6 +563,41 @@ public class MockTester
             throw new AssertionFailedError(
                 name + ": Too few matches for '" + pattern + "' (expected " + count + " but got " + i + ").");
         }
+    }
+
+    private void executeCookieAssertions(Element request)
+    {
+        List l = request.getChildren("assert-cookie");
+        int count = l.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            Element assertion = (Element) l.get(i);
+
+            executeCookieAssertion(assertion);
+        }
+    }
+
+    private void executeCookieAssertion(Element assertion)
+    {
+        String name = assertion.getAttributeValue("name");
+        String value = assertion.getAttributeValue("value");
+
+        Cookie[] cookies = _response.getCookies();
+
+        for (int i = 0; i < cookies.length; i++)
+        {
+            if (!cookies[i].getName().equals(name))
+                continue;
+
+            if (cookies[i].getValue().equals(value))
+                return;
+
+            throw new AssertionFailedError(
+                "Response cookie '" + name + "': expected '" + value + "', but was '" + cookies[i].getValue() + "'.");
+        }
+
+        throw new AssertionFailedError("Could not find cookie named '" + name + "' in response.");
     }
 
 }
