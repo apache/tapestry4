@@ -85,7 +85,7 @@ public class PageService extends AbstractService
             throw new IllegalArgumentException(
                 Tapestry.format("service-single-parameter", Tapestry.PAGE_SERVICE));
 
-        return constructLink(cycle, Tapestry.PAGE_SERVICE, (String[]) parameters, null, true);
+        return constructLink(cycle, Tapestry.PAGE_SERVICE, new String[] {(String) parameters[0]}, null, true);
 
     }
 

@@ -10,42 +10,44 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 	<tr>
 		<td valign="top" align="left"><IMG alt="[Tapestry Banner]" src="images/Tapestry-Banner.png" border="0">
-		
+
 <h3>Release 3.0-beta-4</h3>
 
 <ul>
 <li>Added new validator, Pattern Validator [harishkswamy]</li>
-<li>Fixed the null pointer exception from FieldLabel when not enclosed by Form 
+<li>Fixed the null pointer exception from FieldLabel when not enclosed by Form
 	or when IValidationDelegate is not provided [harishkswamy]</li>
+<li>Added support for OGNL TypeConverter in expression bindings [ehatcher]</li>
 </ul>
 
 <pre>
 [ 21833 ] build.properties.sample does not include jython.dir
 [ 22840 ] Table component doesn't sort fine when there are null values
-[ 22640 ] Wrong Package in link 
-[ 22641 ] JavaDoc: should IField be IFieldTracking?? 
-[ 23668 ] contrib:PopupLink ignores informal parameters 
-[ 22635 ] Wrong Package in link 
-[ 22634 ] Typo: "In a IListenerBindingSpecification" 
-[ 22694 ] Add url parameter to Shell component 
-[ 23870 ] current OGNL 2.6.3 needs to be used 
-[ 23511 ] Problem with URL encodings at EngineServiceLink.java 
-[ 23227 ] The source parameter of Foreach should be required 
+[ 22640 ] Wrong Package in link
+[ 22641 ] JavaDoc: should IField be IFieldTracking??
+[ 23668 ] contrib:PopupLink ignores informal parameters
+[ 22635 ] Wrong Package in link
+[ 22634 ] Typo: "In a IListenerBindingSpecification"
+[ 22694 ] Add url parameter to Shell component
+[ 23870 ] current OGNL 2.6.3 needs to be used
+[ 23511 ] Problem with URL encodings at EngineServiceLink.java
+[ 23227 ] The source parameter of Foreach should be required
 [ 20252 ] tests failing under JDK 1.3
-[ 23500 ] Name attribute gets duplicated in TextField 
-[ 22835 ] DateField component throws an ApplicationRuntimeException 
-[ 22836 ] NumericField component throws an ApplicationRuntimeException 
-[ 22837 ] Using NumericField cause a ClassCastException 
+[ 23500 ] Name attribute gets duplicated in TextField
+[ 22835 ] DateField component throws an ApplicationRuntimeException
+[ 22836 ] NumericField component throws an ApplicationRuntimeException
+[ 22837 ] Using NumericField cause a ClassCastException
 [ 24467 ] Compatibility of the AbstractEngine to servlet-api 2.2
 [ 24298 ] patch to allow workbench to work with JDK 1.4.2 and current Jetty
-[ 24425 ] race condition in class enhancement 
-[ 23916 ] The Dates tab in the Workbench contains an empty popup link 
+[ 24425 ] race condition in class enhancement
+[ 23916 ] The Dates tab in the Workbench contains an empty popup link
 [ 24008 ] ApplicationRuntime Exception loses root cause...
 [ 22958 ] NumberValidator forces to input a value
 [ 21871 ] junit.jar needed to build junit subproject
 [ 20253 ] JUnit XML tests broken under JDK with no XML parser (eg. 1.3)
-[ 24393 ] No JVM requirements mentioned in docs 
-[ 24874 ] [PATCH]ValidationStrings_zh_TW.properties 
+[ 24393 ] No JVM requirements mentioned in docs
+[ 24874 ] [PATCH]ValidationStrings_zh_TW.properties
+[ 25117 ] PageService.getLink throws ClassCastException if parameters arg is Object[]
 </pre>
 
 <h3>Release 3.0-beta-3</h3>
@@ -71,18 +73,18 @@
 
 <ul>
 <li>Package the workbench.war standalone (such that it includes all necessary libraries).</li>
-<li>Fix a case where the taglib would generate the wrong URL (under Tomcat).</li>	
+<li>Fix a case where the taglib would generate the wrong URL (under Tomcat).</li>
 <li>Changed the underlying library for bytecode enhancement to Javassist</li>
-<li>The 'default-value' attribute has been added to the definition of component parameters.  
+<li>The 'default-value' attribute has been added to the definition of component parameters.
 It specifies the value of the parameter if it is not bound.</li>
 <li>The 'auto' parameters no longer need to be required if they have a default-value defined.</li>
-<li>The HTML tag with which a component is inserted in a template is now accessible via the 
+<li>The HTML tag with which a component is inserted in a template is now accessible via the
 'templateTag' parameter. This parameter is automatically added to each component and has a
 default value of null.</li>
-<li>The <a href="doc/ComponentReference/Any.html">Any</a> component now renders itself 
+<li>The <a href="doc/ComponentReference/Any.html">Any</a> component now renders itself
 with the tag with which it was inserted if 'element' is undefined.</li>
-<li>The character encoding used for a component template can now be defined using the  
-property 'org.apache.tapestry.template-encoding'. The property is localizable, so you can define 
+<li>The character encoding used for a component template can now be defined using the
+property 'org.apache.tapestry.template-encoding'. The property is localizable, so you can define
 'org.apache.tapestry.template-encoding_ru' to specify the encoding for all Russian templates, for example.</li>
 <li>The character encoding used to generate the response can now be specified
 using the property 'org.apache.tapestry.output-encoding'. It is UTF-8 by default.</li>
@@ -94,29 +96,29 @@ using the property 'org.apache.tapestry.output-encoding'. It is UTF-8 by default
 </ul>
 
 <pre>
-[ 18379 ] IMonitor Enhancement 
+[ 18379 ] IMonitor Enhancement
 [ 18382 ] isRewinding not set properly during events
 [ 20954 ] Missing component InsertRenderer in Contrib
-[ 21002 ] CodeGenerationException uses JDK 1.4 API 
+[ 21002 ] CodeGenerationException uses JDK 1.4 API
 [ 21073 ] "isXXXXX" getter for boolean properties in components missing
-[ 21145 ] array properties and parameters do not work  
+[ 21145 ] array properties and parameters do not work
 [ 20545 ] Invalid encoding name "Cp1252"
-[ 20281 ] Exception page fails to display  
+[ 20281 ] Exception page fails to display
 [ 20598 ] Using @Conditional within a tag
 [ 20917 ] Typo in ComponentReference documentation
 [ 20595 ] wml:Input does not render its title parameter
-[ 21332 ] index attribute for the script foreach element  
-[ 19510 ] createDb.sql in VLIB example typo  
+[ 21332 ] index attribute for the script foreach element
+[ 19510 ] createDb.sql in VLIB example typo
 </pre>
 
 <h4>Non-backwards compatible changes:</h4>
 
 <ul>
 <li>Removed the <code>tag</code> attribute from the Script Specification <code>&lt;unique&gt;</code>
-element [hlship]	
-</li>	
+element [hlship]
+</li>
 </ul>
-		
+
 <h3>Release 3.0-beta-1a</h3>
 
 <pre>
@@ -139,7 +141,7 @@ element [hlship]
 <a href="doc/api/org/apache/tapestry/AbstractComponent.html">AbstractComponent</a>.</li>
 <li>Added support for the informal parameters of a component to be passed down to a contained component
 using the inherit-informal-parameters attribute. </li>
-<li>Added <a href="doc/api/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a>.activate() as a replacement for setPage(). 
+<li>Added <a href="doc/api/org/apache/tapestry/IRequestCycle.html">IRequestCycle</a>.activate() as a replacement for setPage().
 Besides setting the page to be rendered, it also invokes page.validate() and handles the page redirections.</li>
 <li>Added addValidateListener() and removeValidateListener()
 to <a href="doc/api/org/apache/tapestry/IPage.html">IPage</a>.</li>
@@ -160,7 +162,7 @@ render a block only once per page render (using <code>&lt;unique&gt;</code>)
 <li>Added <a href="doc/api/org/apache/tapestry/RedirectFilter.html">RedirectFilter</a>, a 2.3 Servlet API filter used to redirect
 a "naked" URL for a servlet context to the Tapestry application servlet.</li>
 <li>Adjusted the deployment for the Virtual Library application to be http://localhost/ (not http://localhost/vlib/app).</li>
-<li>Fixed a number of problems identified by <a href="http://www.cs.umd.edu/~pugh/java/bugs">FindBugs</a> 
+<li>Fixed a number of problems identified by <a href="http://www.cs.umd.edu/~pugh/java/bugs">FindBugs</a>
 and <a href="http://pmd.sf.net">PMD</a> tools.</li>
 <li>Changed version numbers of latest specification DTDs to match the Tapestry release (3.0).</li>
 <li>Update to use <a href="http://mckoi.com/database/">>McKoi DB 1.00</a> for the Virtual Library.</li>
@@ -169,19 +171,19 @@ and <a href="http://pmd.sf.net">PMD</a> tools.</li>
 <pre>
 [ 18340 ] ApplicationRuntimeException doesn't compile on jdk 1.3.
 [ 18336 ] Tapestry 2.4a5 - LOGGING images missing for Inspector component
-[ 18490 ] compile warning for Workbench 
+[ 18490 ] compile warning for Workbench
 [ 18013 ] typo in EvenOdd javadoc
-[ 18607 ] Check for unimplemented abstract methods    
-[ 17904 ] Ongoing LGPL Issues 
-[ 19153 ] Easier way to override validation messages  
-[ 19263 ] Change error message for null parameter 
-[ 18880 ] DatePicker broken under Mozilla  
-[ 19340 ] exception does not give class information 
+[ 18607 ] Check for unimplemented abstract methods
+[ 17904 ] Ongoing LGPL Issues
+[ 19153 ] Easier way to override validation messages
+[ 19263 ] Change error message for null parameter
+[ 18880 ] DatePicker broken under Mozilla
+[ 19340 ] exception does not give class information
 [ 19490 ] Body Component renders invalid markup
-[ 19700 ] TapestryStrings.properties typo   
+[ 19700 ] TapestryStrings.properties typo
 [ 19782 ] DateValidator displayFormat default should use format pattern
 [ 19463 ] Race condition inside PageSource
-[ 20113 ] Build should not require JBoss or Jetty  
+[ 20113 ] Build should not require JBoss or Jetty
 [ 20180 ] XML parse errors should fail, but are ignored
 [ 20251 ] Error in LinkSubmit specification
 </pre>
@@ -193,13 +195,13 @@ and <a href="http://pmd.sf.net">PMD</a> tools.</li>
 into the session unecessarily often.</li>
 <li>Fix NPE when image parameter of Image component is bound but value is null.</li>
 <li>Create a basic JSP tag library to allow JSPs to access Tapestry pages using the page and external services.</li>
-<li>Added support for primitive arrays, java.lang.Object[] and java.lang.String[] 
+<li>Added support for primitive arrays, java.lang.Object[] and java.lang.String[]
 for connected parameters.</li>
 <li>Added connected parameter support for missing primitive types byte and char</li>
 <li>Added support for primitive arrays, java.lang.Object[], and java.lang.String[] for declared properties.</li>
 <li>Replaced JFreeChart with JCharts, due to licensing considerations.</li>
 <li>Refactored to use Jakarta Digester to parse specifications.</li>
-<li>Changed specification and template parsers to track locations of specification objects and attach them 
+<li>Changed specification and template parsers to track locations of specification objects and attach them
 to runtime objects and exceptions for error reporting purposes.</li>
 <li>Severely refactored exceptions, removing many exception classes and flattening all others
  under ApplicationRuntimeException.</li>
@@ -214,8 +216,8 @@ to be provided in non-standard ways (when not found using the default rules).</l
 </ul>
 
 <pre>
-[ 18249 ] file upload using Commons FileUpload 
-[ 17905 ] Link to mailing list and archives is wrong.  
+[ 18249 ] file upload using Commons FileUpload
+[ 17905 ] Link to mailing list and archives is wrong.
 </pre>
 
 <h3>Release 2.4-alpha-4</h3>
@@ -241,9 +243,9 @@ validators.</li>
 with arguments.</li>
 <li>Remove ejb.jar and any direct dependencies on javax.ejb classes (application servers are responsible for properly replicating
 EJBObject and EJBHome instances).</li>
-<li>Added a <code>createRequestCycle()</code> method to 
+<li>Added a <code>createRequestCycle()</code> method to
 <a href="doc/api/org/apache/tapestry/engine/AbstractEngine.html">AbstractEngine</a>.</li>
-<li>Moved the invocation of the 
+<li>Moved the invocation of the
 <a href="doc/api/org/apache/tapestry/IMonitor.html">IMonitor</a> method  <code>serviceEnd()</code>
 to always occur after the invocation of <code>serviceException()</code>.</li>
 <li>The <a href="doc/ComponentReference/Upload.html">Upload</a> component now works with the enclosing Form
@@ -253,8 +255,8 @@ the <code>enctype</code> attribute of the Form.</li>
 <li>Removed non-ASL libraries from CVS.  These files will need to be downloaded separately.</li>
 <li>Removed some of the old tutorials, leaving just the Workbench and Virtual Library as examples.</li>
 <li>Removed the "Demo" pages from the web site, until we find a stable home.</li>
-</ul>		
-	
+</ul>
+
 <h3>Release 2.4-alpha-3</h3>
 
 <ul>
@@ -275,23 +277,23 @@ to using a particular attribute (useful for complex OGNL expressions).
 <li>Continued extending the JUnit test suite.
 <li>Deprecated the <code>PageCleanupListener</code> interface and removed support for it.
 </ul>
-		
+
 <pre>
 [ 665622 ] net.sf.tapestry.html.Frame uses old DOCTYPE
 [ 675882 ] option component generates invalid HTML
 [ 622691 ] Full release
 [ 679655 ] Upload component very slow on file uploads
-</pre>		
-		
+</pre>
+
 <h3>Release 2.4-alpha-2</h3>
 
 <ul>
 <li>Made improvements to how Tapestry handles arrays of objects and scalars</li>
-<LI>Upgrade demos to deploy into JBoss 3.0.4</LI>   
+<LI>Upgrade demos to deploy into JBoss 3.0.4</LI>
 <li>Merge in changes from Tapestry 2.3</li>
 <li><code>&lt;binding&gt;</code> elements may now specify the expression as the parsed data
-instead of the expression attribute</li> 
-<li>The template extension may now be overriden using the configuration property <code>net.sf.tapestry.template-extension</code>         
+instead of the expression attribute</li>
+<li>The template extension may now be overriden using the configuration property <code>net.sf.tapestry.template-extension</code>
 <li>Added support for declarative transient and persistent properties via
 <code>&lt;property-specification&gt;</code> element in page and component specifications.  Tapestry
 will create (on the fly) a subclass with
@@ -312,9 +314,9 @@ Added support for specifying expressions in the component template.  Expressions
 are specified as attributes with the format "<code>[[ <i>expression</i> ]]</code>".
 The brackets and leading and trailing whitespace are removed.
 Expressions specified this way are the equivalent of the
-<code>&lt;binding&gt;</code> 
-        element in a specification. 
-        
+<code>&lt;binding&gt;</code>
+        element in a specification.
+
 
 <li>
 Tapestry now supports <i>implicit components</i>.  Implicit components are
@@ -322,71 +324,71 @@ declared exclusively in the containing component's template (instead of in
 the containing component's specification) using a special
 <code>jwcid</code> syntax:
 <code>@<i>type</i></code> (for anonymous components) or
-<code><i>id</i>@<i>type</i></code> (for named components). Implicit 
-        components are especially useful for components that take no parameters, 
-        but may also make use of template expressions. 
-        
+<code><i>id</i>@<i>type</i></code> (for named components). Implicit
+        components are especially useful for components that take no parameters,
+        but may also make use of template expressions.
+
 
 <li>
 Added support for the
 <code>&lt;listener-binding&gt;</code> element in page and component
 specifications.  This allows a listener method to be provided, directly within the
-specification, as a script written in a <a href="http://jakarta.apache.org/bsf">BSF</a>-supported language. 
-        
+specification, as a script written in a <a href="http://jakarta.apache.org/bsf">BSF</a>-supported language.
+
 
 <li>
 A number of non-backwards compatible changes were made to several
 framework interfaces to support more flexibility on where specifications
 and templates may be located, but these should not affect the overwhelming
 majority of Tapestry users.  In addition, private assets and context assets
-may also be relative.  
+may also be relative.
 
 <br>
-Private assets are relative to the component 
-        specification which declares them, context assets are relative to the 
-        application servlet (within the servlet context). 
-        
+Private assets are relative to the component
+        specification which declares them, context assets are relative to the
+        application servlet (within the servlet context).
+
 
 <li>
-Moved the Inspector out of the framework and 
-        into the contrib library. 
-        
+Moved the Inspector out of the framework and
+        into the contrib library.
+
 
 <li>
-Created smarter checks for stale sessions for 
-        ActionLink, DirectLink and Form. The action and direct services used by 
-        the components now encode whether the application was stateful into the 
-        URL. The stateful check only occurs if the application was stateful when 
-        the URL was rendered. 
-        
+Created smarter checks for stale sessions for
+        ActionLink, DirectLink and Form. The action and direct services used by
+        the components now encode whether the application was stateful into the
+        URL. The stateful check only occurs if the application was stateful when
+        the URL was rendered.
+
 
 <li>
 Changed Form to record the exact ids generated during the render (it used to just store the count).
-This allows a more useful exception message to be generated 
+This allows a more useful exception message to be generated
 for the
-<A href="doc/api/org/apache/tapestry/StaleLinkException.html">StaleLinkException</a>. 
+<A href="doc/api/org/apache/tapestry/StaleLinkException.html">StaleLinkException</a>.
 
-        
+
 
 <li>
-Changed the default StaleLink page to have a 
-        message property, and to display the message from the 
-        StaleLinkException. 
-        
+Changed the default StaleLink page to have a
+        message property, and to display the message from the
+        StaleLinkException.
+
 
 <li>
 Components (and even pages) can now implement page listener interfaces
 (<A href="doc/api/org/apache/tapestry/event/PageDetachListener.html">PageDetachListener</a>,
 <A href="doc/api/org/apache/tapestry/event/PageRenderListener.html">PageRenderListener</a> or
 <A href="doc/api/org/apache/tapestry/event/PageCleanupListener.html">PageCleanupListener</a>)
-and <code>finishLoad()</code> will <i>automatically</i> add them as a listener to the 
-        corresponding page events. 
-        
+and <code>finishLoad()</code> will <i>automatically</i> add them as a listener to the
+        corresponding page events.
+
 
 <li>
-The entire mechanism used to store persistant 
-        page properties has been revised. 
-        
+The entire mechanism used to store persistant
+        page properties has been revised.
+
 
 <li>
 Implemented a number of improvements to
@@ -403,7 +405,7 @@ from the pool.
 </pre>
 
 
-	
+
 
 <h3><A href="more_new.html">More ...</a></h3><!-- END Content -->
 		</td>
