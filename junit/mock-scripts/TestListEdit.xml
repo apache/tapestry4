@@ -24,7 +24,7 @@
 			<match>name="sp" value="S0"</match>
 			<match>name="Form0" value="e,inputColor,inputColor_0,inputColor_1"</match>			
 			<match>name="e" value="Clothing"</match>
-			<match>name="e" value="Eye Color"</match>
+			<match>name="e" value="SEye Color"</match>
 			<match>name="e" value="SFood"</match>
 		</assert-output-matches>
 
@@ -45,7 +45,7 @@
 		<parameter name="sp" value="S0"/>
 		<parameter name="e">
 			<value>Clothing</value>
-			<value>Eye Color</value>
+			<value>SEye Color</value>
 			<value>SFood</value>
 		</parameter>
 		<parameter name="inputColor" value="3"/>
@@ -76,7 +76,7 @@
 		<parameter name="sp" value="S0"/>
 		<parameter name="e">
 			<value>3Clothing</value>
-			<value>Eye Color</value>
+			<value>SEye Color</value>
 			<value>SFood</value>
 		</parameter>
 		<parameter name="inputColor" value="3"/>
