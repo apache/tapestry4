@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!-- $Id$ -->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd">
+<document>
+
+ <header>
+  <title>Jakarta Tapestry - Reporting Problems</title>
+ </header>
+
+<body>
+
+
+		
+<p>
+So, you've hit a problem with Tapestry and you want help, what do you do? You may need help, and we (the Tapestry
+community) want to help you, but the first step is to make sure you really have a problem.
+</p>
+
+		
+<section><title>Things To Check First</title>
+<p>
+Has your environment changed recently? Did you change JDKs, operating systems, application servers or change to a new
+version of Tapestry? The most common cause of problems is Java's special version of <i>DLL hell</i>: conflicting versions
+of the same JAR file on the classpath. Perhaps you upgraded to a new version of Tapestry and some of the old JAR files
+are still hanging around. Perhaps an innocuous change to your build file no longer builds your WAR files correctly.
+Take a moment to check the classpath.
+</p>
+</section>
+
+<section><title>Search For The Answer</title>
+
+<p>
+New users often hit the same problems; likely, your problem has been reported and solved already.	
+Check the online documentation: there's a <link href="site:faq">Frequently Asked Questions list</link>	
+to check, and more information on the <link href="site:wiki">Wiki</link>. A quick check at
+<link href="http://www.google.com">Google</link> is also worthwhile (the mailing list discussions are mirrored
+in many places).
+</p>
+</section>
+
+<section><title>Post Your Question</title>
+<p>
+Next, you want to <link href="http://www.catb.org/~esr/faqs/smart-questions.html">learn how to ask questions properly</link>. 
+This is <em>very important</em> -- volunteers are taking time off from thier own jobs, or own spare time, to answer <em>your</em> question.
+<em>You aren't owed anything.</em> Questions get answered if they are easy or if they are interesting. Questions that are lacking in detail are easier to ignore
+than to work on. Questions that are antagonistic get ignored. Questions that have been covered to death in 
+the <link href="site:doc">documentation</link>, 
+the <link href="site:faq">FAQ</link>, the 
+<link href="site:wiki">Wiki</link> or 
+<a href="http://www.manning.com/lewisship/">The Book</a> will likely be ignored.
+</p>
+
+<p>
+Subscribe to the Tapestry user mailing list (tapestry-user@jakarta.apache.org) and post your message there <em>and only there</em>.
+Sending mail directly to a Tapestry developer will, at most, result in a curt reminder to use the user mailing list. 
+</p>
+
+<p>
+Tapestry provides a <em>wealth</em> of information when errors occur.  Don't just say "it broke": <em>cut and past the exception report</em> into your message.
+If there's no error message or exception report, tell us <em>exactly</em> what behavior occured, and <em>exactly</em> what behavior you expected.
+</p>
+
+<p>
+We'll need to know your environment:
+<ul>
+	<li>Tapestry version</li>	
+	<li>JDK version</li>
+	<li>Operating System</li>
+	<li>Application Server</li>
+</ul>	
+</p>
+
+<p>
+Finally, 	for most non-trivial problems, we'll need to know what was in your HTML template and page (or component) 
+specification, and probably your Java class as well. For the best, and fastest,
+response, post as much of this as possible.
+</p>
+
+</section>
+
+<section>
+	<title>Problem Resolution</title>	
+	
+<p>
+In farily rare cases, you may have uncovered an actual problem. In other cases, we (the Tapestry developers)
+may discuss an improvement to the framework to address your situtation. In <em>either case</em>, it is incumbent
+upon you to add a bug or improvement request into the 
+<a href="http://jakarta.apache.org/site/bugs.html">Bugzilla</a> issue tracking system. If it doesn't go into Bugzilla,
+its very unlikely that anything further will happen. Think of this tiny effort as
+your payment for all the free software and support we've provided you with.
+</p>
+</section>
+
+<section>
+	<title>Submitting Patches</title>	
+	
+<p>
+If you have a bug you want fixed, you may want to fix it yourself!  This is an excellent opportunity to
+get more involved in Tapestry and the Tapestry community. Creating a patch and getting it applied are two different things, however.
+
+</p>
+
+<p>
+Don't post your patch to the mailing list ... there's any number of reasons that attachments will be lost or deleted.
+Find (or create) a Bugzilla issue and add the patch as a Bugzilla attachment.
+</p>
+
+<p>
+A patch is <em>not</em>	an updated file: a patch is a difference file, usually generated with the <code>cvs diff</code> command.
+The easier you make it for us, the more likely it is that your patch will be applied.
+<ul>
+<li>A single patch (covering multiple files) is easier than a scattering of individual patches</li>
+<li>A real patch (generated by CVS) is <em>vastly</em> preferable
+	 to attaching changed source files</li>
+<li>A patch generated at the project root is preferable to lower-level patches (it takes the guesswork out of applying the patch).</li>
+</ul>
+</p>
+
+</section>
+
+</body>
+</document>
