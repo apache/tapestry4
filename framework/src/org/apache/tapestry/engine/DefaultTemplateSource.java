@@ -288,7 +288,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
      *  <li>Fail!
      *  </ul>
      * 
-     *  @returns the template, or null if not found
+     *  @return the template, or null if not found
      * 
      **/
 
@@ -379,7 +379,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
      *  This may be in the template map already, or may involve reading and
      *  parsing the template.
      *
-     *  @returns the template, or null if not found.
+     *  @return the template, or null if not found.
      * 
      **/
 
