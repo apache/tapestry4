@@ -156,7 +156,7 @@ function getYearSelect(currentDate) {   // generate a list
                                         // of years
     var sel = document.createElement("SELECT");
     var year = currentDate.getFullYear();
-    for (var i = year - 10 ; i < year + 10 ; i++) {
+    for (var i = 1920; i < 2021; i++) {
         var opt = document.createElement("OPTION");
         opt.innerHTML = i;
         opt.value = i;
