@@ -30,7 +30,7 @@ import net.sf.tapestry.vlib.ejb.Person;
  * 
  **/
 
-public class PersonPage extends BasePage implements IExternalPage
+public class ViewPerson extends BasePage implements IExternalPage
 {
     private IBookQuery query;
     private Book currentMatch;

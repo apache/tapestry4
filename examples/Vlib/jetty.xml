@@ -19,7 +19,7 @@
   	
   <Call name="addWebApplication">
     <Arg>/vlib</Arg>
-    <Arg>.</Arg>
+    <Arg>context</Arg>
     <Set name="DefaultsDescriptor">../../config/webdefault.xml</Set>
   </Call>
 	
