@@ -27,13 +27,13 @@
 		
 		<assert-output name="Link URL">
 <![CDATA[
-href="/mock/app\?service=direct&amp;context=Guard/link"
+href="/mock/app?service=direct&amp;context=Guard/link"
 ]]>
 		</assert-output>
 		
 		<assert-output name="Callback">
 <![CDATA[
-Callback: PageCallback\[Protected\]
+Callback: PageCallback[Protected]
 ]]>		
 		</assert-output>		
   	</request>

@@ -31,6 +31,52 @@ public class MockTestCase extends TapestryTestCase
     }
 
     /**
+     *  Test failure for application that doesn't provide a home page.
+     * 
+     **/
+    
+    public void testFailNoHome()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestFailNoHome.xml");
+    }
+
+    /**
+     *  Test when the class specified for a page does not exist.
+     * 
+     **/
+    
+    public void testFailMissingClass()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestFailMissingClass.xml");
+    }
+    
+    /**
+     *  Test when the class specified for a page 
+     *  does not implement {@link net.sf.tapestry.IPage}
+     * 
+     **/
+    
+    public void testFailNotPage()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestFailNotPage.xml");
+    } 
+    
+    /**
+     *  Test when the class specified for a component 
+     *  does not implement {@link net.sf.tapestry.IComponent}
+     * 
+     **/
+    
+    public void testFailNotComponent()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestFailNotComponent.xml");
+    }     
+       
+    /**
      *  Test basics including the PageLink and DirectLink (w/o parameters).
      * 
      **/
@@ -180,5 +226,17 @@ public class MockTestCase extends TapestryTestCase
     throws Exception
     {
         attempt("/net/sf/tapestry/junit/mock/TestHome.xml");
+    }
+    
+    /**
+     *  Test cases where the page's template comes from
+     *  a $template asset.
+     * 
+     **/
+    
+    public void testAssetTemplates()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestAssetTemplates.xml");
     }
 }

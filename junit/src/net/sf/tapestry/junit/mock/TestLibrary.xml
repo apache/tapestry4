@@ -19,7 +19,7 @@
   	  	  	
   	  <assert-output name="DirectLink with parameters">
 <![CDATA[  	  
-  	  <a href="/junit/mock\?service=direct&amp;context=Home/link&amp;sp=2&amp;sp=d3\.5&amp;sp=Hello">
+  	  <a href="/junit/mock?service=direct&amp;context=Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=Hello">
 ]]>
   	  </assert-output>
   	  	  	
@@ -89,7 +89,7 @@
 	
   	  <assert-output name="PageLink (for library page).">
 <![CDATA[  	  
-  	  <a href="/junit/mock\?service=page&amp;context=lib:Dumper">
+  	  <a href="/junit/mock?service=page&amp;context=lib:Dumper">
 ]]>
   	  </assert-output>	
 	

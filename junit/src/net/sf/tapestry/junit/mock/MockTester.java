@@ -322,6 +322,7 @@ public class MockTester
     private void executeAssertions(Element request) throws DocumentParseException
     {
         executeOutputAssertions(request);
+        executeRegexpAssertions(request);
         executeExpressionAssertions(request);
         executeOutputMatchesAssertions(request);
         executeCookieAssertions(request);
@@ -401,10 +402,41 @@ public class MockTester
     }
 
     /**
-     *  Handles &lt;assert-output&gt; elements inside &lt;request&gt;.
+     *  Handles &lt;assert-regexp&gt; elements inside &lt;request&gt;.
      *  Checks that a regular expression appears in the output.
      *  Content of element is the regular expression.
      * 
+     *  <p>
+     *  Attribute name is used in error messages.
+     * 
+     **/
+
+    private void executeRegexpAssertions(Element request) throws DocumentParseException
+    {
+        String outputString = null;
+
+        List assertions = request.getChildren("assert-regexp");
+        int count = assertions.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            Element a = (Element) assertions.get(i);
+
+            String name = a.getAttributeValue("name");
+            String pattern = a.getTextTrim();
+
+            if (outputString == null)
+                outputString = _response.getOutputString();
+
+            matchRegexp(name, outputString, pattern);
+        }
+
+    }
+
+/**
+     *  Handles &lt;assert-output&gt; elements inside &lt;request&gt;.
+     *  Checks that a substring appears in the output.
+     *  Content of element is the substring to search for.
      *  <p>
      *  Attribute name is used in error messages.
      * 
@@ -419,25 +451,19 @@ public class MockTester
 
         for (int i = 0; i < count; i++)
         {
-            boolean useRegexp = true;
-
             Element a = (Element) assertions.get(i);
 
             String name = a.getAttributeValue("name");
-            String pattern = a.getTextTrim();
+            String substring = a.getTextTrim();
 
             if (outputString == null)
                 outputString = _response.getOutputString();
 
-            String regexp = a.getAttributeValue("regexp");
-
-            if (regexp != null)
-                useRegexp = regexp.equalsIgnoreCase("true");
-
-            match(name, outputString, pattern, useRegexp);
+            matchSubstring(name, outputString, substring);
         }
 
     }
+
 
     private PatternMatcher getMatcher()
     {
@@ -472,28 +498,26 @@ public class MockTester
         return result;
     }
 
-    private void match(String name, String text, String pattern, boolean useRegexp) throws DocumentParseException
+    private void matchRegexp(String name, String text, String pattern) throws DocumentParseException
     {
+        Pattern compiled = compile(pattern);
 
-        if (useRegexp)
-        {
-            Pattern compiled = compile(pattern);
-
-            if (getMatcher().contains(text, compiled))
-                return;
-
-            System.err.println(text);
-
-            throw new AssertionFailedError(name + ": Response does not contain regular expression '" + pattern + "'.");
-
-        }
-
-        if (text.indexOf(pattern) >= 0)
+        if (getMatcher().contains(text, compiled))
             return;
 
         System.err.println(text);
 
-        throw new AssertionFailedError(name + ": Response does not contain string '" + pattern + "'.");
+        throw new AssertionFailedError(name + ": Response does not contain regular expression '" + pattern + "'.");
+    }
+
+    private void matchSubstring(String name, String text, String substring)
+    {
+        if (text.indexOf(substring) >= 0)
+            return;
+
+        System.err.println(text);
+
+        throw new AssertionFailedError(name + ": Response does not contain string '" + substring + "'.");
     }
 
     private void executeOutputMatchesAssertions(Element request) throws DocumentParseException

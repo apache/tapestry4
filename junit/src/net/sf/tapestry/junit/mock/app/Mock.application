@@ -33,6 +33,13 @@
 		
 	<page name="Assets" specification-path="/net/sf/tapestry/junit/mock/app/Assets.page"/>
 					
+	<page name="PrivateAssetTemplate"
+		specification-path="/net/sf/tapestry/junit/mock/app/PrivateAssetTemplate.page"/>
+
+	<page name="ContextAssetTemplate"
+		specification-path="/net/sf/tapestry/junit/mock/app/ContextAssetTemplate.page"/>
+
+							
 	<library id="lib" specification-path="/net/sf/tapestry/junit/mock/lib/MockLibrary.library"/>
 	
 </application>	

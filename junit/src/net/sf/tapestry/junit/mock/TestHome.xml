@@ -24,7 +24,7 @@ If it's not Scottish, it's crap!
 	  	<parameter name="service" value="page"/>
 	  	<parameter name="context" value="Assets"/>
 		
-		<assert-output name="Home Link" regexp="false">
+		<assert-output name="Home Link">
 <![CDATA[		
 href="/mock/app?service=home"		
 ]]>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<page-specification class="net.sf.tapestry.html.BasePage">
+
+  <component id="border" type="lib:Border">
+  	<static-binding name="title">Context Asset Template</static-binding>
+  </component>
+
+  <context-asset name="$template" path="/ContextAssetTemplate.html"/>
+  
+</page-specification>	

@@ -2,7 +2,6 @@
 
 <!-- $Id$ -->
 
-
 <!-- Tests stale session exception with a DirectLink. -->
 
 <mock-test>
@@ -29,14 +28,14 @@
 		
 		<assert-output name="DirectLink URL">
 <![CDATA[
-href="/mock/app\?service=direct&amp;context=Stale/directLink"
+href="/mock/app?service=direct&amp;context=Stale/directLink"
 ]]>		
 		</assert-output>
 		
 
 		<assert-output name="ActionLink URL">
 <![CDATA[
-href="/mock/app\?service=action&amp;context=Stale/0/actionLink"
+href="/mock/app?service=action&amp;context=Stale/0/actionLink"
 ]]>		
 		</assert-output>		
 		
@@ -98,8 +97,5 @@ href="/mock/app\?service=action&amp;context=Stale/0/actionLink"
 <title>Stale Session</title>
 ]]>
 		</assert-output>
-	</request>
-	
-					
-		  	
+	</request>  	
 </mock-test>

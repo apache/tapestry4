@@ -26,8 +26,8 @@
  		
 		<assert-output name="Initialization Scripting">
 <![CDATA[
-document.Form0.inputFirstName.focus\(\);
-document.Form0.inputFirstName.select\(\);
+document.Form0.inputFirstName.focus();
+document.Form0.inputFirstName.select();
 document.Form0.onsubmit = onsubmit_Form0;
 ]]>
 		</assert-output>
@@ -127,18 +127,18 @@ document.Form0.onsubmit = onsubmit_Form0;
 ]]>  		
  		</assert-output>
  				
-		<assert-output name="Error Message">
+		<assert-regexp name="Error Message">
 <![CDATA[
 <span class="error">\s*You must enter a value for Last Name\.\s*</span>
 ]]>  		
- 		</assert-output> 				
+ 		</assert-regexp> 				
 
 		<!-- Check that the inputLastName field is the default -->
 		
  		<assert-output name="Default Field">
 <![CDATA[
-document.Form0.inputLastName.focus\(\);
-document.Form0.inputLastName.select\(\);		 				
+document.Form0.inputLastName.focus();
+document.Form0.inputLastName.select();		 				
 ]]>  		
  		</assert-output>
  		 				
@@ -167,7 +167,7 @@ document.Form0.inputLastName.select\(\);
 		
 		<assert-output name="Last Name">
 <![CDATA[
-<input type="text" name="inputLastName" maxlength="100" size="40"/>&nbsp;<font color="red">\*\*</font>
+<input type="text" name="inputLastName" maxlength="100" size="40"/>&nbsp;<font color="red">**</font>
 ]]>
 		</assert-output>				
 	</request>
@@ -189,29 +189,29 @@ document.Form0.inputLastName.select\(\);
 ]]>  		
 		</assert-output>
 		
-		<assert-output name="First Name">
+		<assert-regexp name="First Name">
 <![CDATA[
 <th>First Name:</th>\s*<td>Suzy</td>
 ]]>
-		</assert-output>
+		</assert-regexp>
 		
-		<assert-output name="Last Name">
+		<assert-regexp name="Last Name">
 <![CDATA[
 <th>Last Name:</th>\s*<td>Lewis Ship</td>
 ]]>
-		</assert-output>	
+		</assert-regexp>	
 		
-		<assert-output name="Sex">
+		<assert-regexp name="Sex">
 <![CDATA[
 <th>Sex:</th>\s*<td>Female</td>
 ]]>
-		</assert-output>	
+		</assert-regexp>	
 		
-		<assert-output name="Age">
+		<assert-regexp name="Age">
 <![CDATA[
 <th>Age:</th>\s*<td>Adult \(18 \- 60\)</td>
 ]]>
-		</assert-output>	
+		</assert-regexp>	
 									
   	</request>		
 </mock-test>	
