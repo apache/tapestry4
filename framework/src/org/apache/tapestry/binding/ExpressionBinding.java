@@ -265,19 +265,19 @@ public class ExpressionBinding extends AbstractBinding
 
     private Map getOgnlContext()
     {
-        if (_context == null) {
+        if (_context == null)
             _context = Ognl.createDefaultContext(_root, _resolver);
-        }
 
-        if (_root.getPage() != null) {
-            if (_root.getPage().getEngine() != null) {
-                IApplicationSpecification appSpec =
-                        _root.getPage().getEngine().getSpecification();
-                if (appSpec != null && appSpec.checkExtension(Tapestry.OGNL_TYPE_CONVERTER)) {
-                    TypeConverter typeConverter =
-                            (TypeConverter) appSpec.getExtension(
-                                    Tapestry.OGNL_TYPE_CONVERTER,
-                                    TypeConverter.class);
+        if (_root.getPage() != null)
+        {
+            if (_root.getPage().getEngine() != null)
+            {
+                IApplicationSpecification appSpec = _root.getPage().getEngine().getSpecification();
+
+                if (appSpec != null && appSpec.checkExtension(Tapestry.OGNL_TYPE_CONVERTER))
+                {
+                    TypeConverter typeConverter = (TypeConverter) appSpec.getExtension(
+                        Tapestry.OGNL_TYPE_CONVERTER, TypeConverter.class);
 
                     Ognl.setTypeConverter(_context, typeConverter);
                 }
