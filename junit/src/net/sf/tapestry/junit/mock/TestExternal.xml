@@ -17,7 +17,9 @@
   	  <parameter name="context" value="ServiceTest"/>	  	
   	  	  	
   	  <assert-output name="Page Title">
+<![CDATA[	  
 <title>ServiceTest Page</title>
+]]>
   	  </assert-output>
   	  	  	
   	  <assert-output name="ServiceLink with parameters">
@@ -27,8 +29,6 @@
   	  </assert-output>
   	  	  	
 
-  	  	  
- 
   </request>
   
   <request>
@@ -72,7 +72,7 @@
   	
   	<assert-output name="Page Title">
 <![CDATA[
-	<title>Exception</title>
+<title>Exception</title>
 ]]>
 	</assert-output>
 	
@@ -90,7 +90,7 @@
   	  	
   	<assert-output name="Page Title">
 <![CDATA[
-	<title>Exception</title>
+<title>Exception</title>
 ]]>
 	</assert-output>
 	

@@ -41,6 +41,29 @@ public class MockTestCase extends TapestryTestCase
     // in a static suite() method.
 
 
+    /**
+     *  Test that default class names for pages and components work.
+     * 
+     **/
+    
+    public void testDefaultComponentClass()
+    throws Exception
+    {
+        attempt("TestDefaultComponentClass.xml");
+    }
+    
+    /**
+     *  Test that the default class for pages can be overridden
+     *  with a configuration parameter.
+     * 
+     **/
+    
+    public void testOverrideDefaultComponentClass()
+    throws Exception
+    {
+        attempt("TestOverrideDefaultComponentClass.xml");
+    }
+
     public void testPersistentProperties()
     throws Exception
     {
