@@ -50,13 +50,9 @@ import java.text.NumberFormat;
  * {@link #flush()}). The <code>end()</code> methods end an element,
  * writing an GTML close tag to the output.
  *
- * <p>The class provides some simple indentation support, which can be turned
- * off when exact spacing is important.
- *
  * <p>TBD:
  * <ul>
  * <li>Support XML and XHTML
- * <li>Better control of indentation
  *  <li>What to do with Unicode characters with a value greater than 255?
  * </ul>
  *
@@ -108,18 +104,10 @@ implements IResponseWriter
 
 	private int depth = 0;
 
-	/**
-	* When compressed, automatic indentation is turned off so that
-	* unwanted spaces don't cause problems.
-	*
-	*/
-
-	protected boolean compressed = false;
-
 	private char[] buffer;
-	
+
 	private String[] entities;
-	
+
 	/**
 	 *  Implemented in concrete subclasses to provide a mapping from characters
 	 *  to entities.  The offset in the array corresponds to the
@@ -129,11 +117,11 @@ implements IResponseWriter
 	 *  character, otherwise we might use a {@link Map}.
 	 *
 	 */
-	 	
+
 	abstract protected String[] getEntities();
-	
+
 	private boolean[] safe;
-	
+
 	/**
 	 *  Implemented in concrete subclasses to provide an indication of which
 	 *  characters are 'safe' to insert directly into the response.  The index
@@ -141,7 +129,7 @@ implements IResponseWriter
 	 *  index out of range), then the character is escaped.
 	 *
 	 */
-	 
+
 	abstract protected boolean[] getSafe();
 
 	/**
@@ -149,9 +137,9 @@ implements IResponseWriter
 	 *  produced by this response writer.
 	 *
 	 */
-	 
+
 	abstract public String getContentType();
-	
+
 	abstract public IResponseWriter getNestedWriter();
 
 	/**
@@ -280,12 +268,10 @@ implements IResponseWriter
 
 		push(name);
 
-		indent();
-
 		writer.print('<');
 		writer.print(name);
 
-			openTag = true;
+		openTag = true;
 	}
 
 	/**
@@ -300,17 +286,10 @@ implements IResponseWriter
 		if (openTag)
 			closeTag();
 
-		// Pretend to push it onto the open tag stack just long enough
-		// to get the indentation right.
-
-		depth++;
-		indent();
-		depth--;
-
 		writer.print('<');
 		writer.print(name);
 
-			openTag = true;
+		openTag = true;
 	}
 
 	/**
@@ -347,7 +326,6 @@ implements IResponseWriter
 
 		while (depth > 0)
 		{
-			indent();
 			name = pop();
 			writer.print("</");
 			writer.print(name);
@@ -376,10 +354,10 @@ implements IResponseWriter
 	}
 
 	/**
-	* Writes an GTML comment. Any open tag is first closed. The comment
-	* is indented as if it were an GTML tag. The method takes care of
-	* providing the <code>&lt;!--</code> and <code>--&gt;</code>, but
-	* does not provide a blank line after the close of the comment.
+	* Writes an GTML comment. Any open tag is first closed. 
+	* The method takes care of
+	* providing the <code>&lt;!--</code> and <code>--&gt;</code>, 
+	* including a blank line after the close of the comment.
 	*
 	* <p>Most characters are valid inside an GTML comment, so no check
 	* of the contents is made (much like {@link #printRaw(String)}.
@@ -391,27 +369,9 @@ implements IResponseWriter
 		if (openTag)
 			closeTag();
 
-		indent();
-
 		writer.print("<!-- ");
 		writer.print(value);
-		writer.print(" -->");
-	}
-
-	/**
-	* Changes the compressed property, but returns the value before the
-	* change. This is used by clients that need to temporarily turn
-	* compression on, but want to restore it back to it's prior value.
-	*/
-
-	public boolean compress(boolean value)
-	{
-		boolean old;
-
-		old = compressed;
-		compressed = value;
-
-		return old;
+		writer.println(" -->");
 	}
 
 	/**
@@ -429,9 +389,7 @@ implements IResponseWriter
 		if (openTag)
 			closeTag();
 
-		indent();
-
-			name = pop();
+		name = pop();
 
 		writer.print("</");
 		writer.print(name);
@@ -455,9 +413,7 @@ implements IResponseWriter
 
 		while (true)
 		{
-			indent();
-
-				tagName = pop();
+			tagName = pop();
 
 			writer.print("</");
 			writer.print(tagName);
@@ -477,34 +433,6 @@ implements IResponseWriter
 	public void flush()
 	{
 		writer.flush();
-	}
-
-	/**
-	* Prints a line seperator, then spaces to the
-	* current indentation depth (two spaces per level of depth). Does nothing if
-	* compressed.
-	*
-	*/
-
-	protected final void indent()
-	{
-		int i;
-
-		if (compressed)
-			return;
-
-		writer.println();
-
-		// We want the outermost tag (typically, the 'html' tag) to not be indented,
-		// so we count from 1 not 0.
-
-		for (i = 1; i < depth; i++)
-			writer.print("  ");
-	}
-
-	public boolean isCompressed()
-	{
-		return compressed;
 	}
 
 	/**
@@ -573,7 +501,7 @@ implements IResponseWriter
 			writer.print(value);
 			return;
 		}
-		
+
 		if (value < entities.length)
 			entity = entities[value];
 
@@ -703,7 +631,7 @@ implements IResponseWriter
 
 		activeElementStack.push(name);
 
-			depth++;
+		depth++;
 	}
 
 	/**
@@ -729,7 +657,7 @@ implements IResponseWriter
 			// Ignore safe characters.  In an URL, ampersands
 			// are OK but quotes are not.  Outside a URL, ampersands
 			// won't be in safe[], but quotes will.
-			
+
 			isSafe = (ch < safe.length && safe[ch]);
 
 			if (isURL)
@@ -753,7 +681,7 @@ implements IResponseWriter
 				writer.write(data, start, safelength);
 
 			entity = null;
-			
+
 			if (ch < entities.length)
 				entity = entities[ch];
 
@@ -770,20 +698,6 @@ implements IResponseWriter
 			writer.write(data, start, safelength);
 	}
 
-	/**
-	*  Changes the compressed attribute.  When the <code>AbstractResponseWriter</code>
-	*  is compressed,
-	*  it does not perform any indentation.  This is useful for elements, such
-	*  as &lt;textarea&gt; or &lt;pre&gt; where exact spacing counts.
-	*
-	*  @see #compress(boolean)
-	*
-	*/
-
-    public void setCompressed(boolean value)
-	{
-		compressed = value;
-	}
-	 
 }
+
 

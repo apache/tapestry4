@@ -166,7 +166,6 @@ public class Select extends AbstractFormComponent
 	public void render(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
 	{
 		Form form;
-		boolean compressed;
 		boolean multiple;
 
 		form = getForm(cycle);

@@ -48,10 +48,16 @@ import com.primix.foundation.*;
 
 public class BasePage extends AbstractPage
 {
-    public IResponseWriter getResponseWriter(OutputStream out)
-    {
-        return new HTMLResponseWriter(out);
-    }
+	/**
+	*  Returns a new {@link HTMLResponseWriter}.
+	*
+	*/
+
+	public IResponseWriter getResponseWriter(OutputStream out)
+	{
+		return new HTMLResponseWriter(out);
+	}
 
 }
+
 

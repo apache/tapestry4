@@ -157,8 +157,10 @@ public class Shell extends AbstractComponent
 
             writer.printRaw("<!DOCTYPE HTML PUBLIC " +
                             "\"-//W3C//DTD HTML 4.0 Transitional//EN\">");
+			writer.println();
 
             page = getPage();
+
 
             writer.comment("Application: " + 
                 page.getEngine().getSpecification().getName());
@@ -167,11 +169,14 @@ public class Shell extends AbstractComponent
             writer.comment("Generated: " + new Date());
 
             writer.begin("html");
+			writer.println();
             writer.begin("head");
+			writer.println();
             writer.begin("title");
 
             writer.print(title);
             writer.end();  // title
+			writer.println();
 
             if (stylesheet != null)
             {
@@ -179,11 +184,13 @@ public class Shell extends AbstractComponent
                 writer.attribute("rel", "stylesheet");
                 writer.attribute("type", "text/css");
                 writer.attribute("href", stylesheet.buildURL(cycle));
+				writer.println();
             }
 
             writer.beginEmpty("meta");
             writer.attribute("name", "generator");
             writer.attribute("content", "Tapestry Web Application Framework");
+			writer.println();
 
             writeRefresh(writer, cycle);
 
@@ -197,6 +204,7 @@ public class Shell extends AbstractComponent
         if (!rewinding)
         {
             writer.end(); // html
+			writer.println();
 
             endTime = System.currentTimeMillis();
 

@@ -52,6 +52,8 @@ import com.primix.tapestry.*;
  *  <td>The element to be produced.</td>
  * </tr>
  *
+ *  </table>
+ *
  * <p>Informal parameters are allowed.
  *
  *  @author Howard Ship

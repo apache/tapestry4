@@ -40,6 +40,14 @@
 					<name>focus</name>
 					<property-path>focusImage</property-path>
 				</binding>
+				<static-binding>
+					<name>width</name>
+					<value>120</value>
+				</static-binding>
+				<static-binding>
+					<name>height</name>
+					<value>19</value>
+				</static-binding>
 			</bindings>
 		</component>
 		<component>

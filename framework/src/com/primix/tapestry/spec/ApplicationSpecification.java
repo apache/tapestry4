@@ -140,6 +140,11 @@ extends BasePropertyHolder
 			"/com/primix/tapestry/components/html/valid/FieldLabel.jwc");
 		defaultComponentMap.put("Script",
 			"/com/primix/tapestry/script/Script.jwc");
+		defaultComponentMap.put("Block",
+			"/com/primix/tapestry/components/Block.jwc");
+		defaultComponentMap.put("InsertBlock",
+			"/com/primix/tapestry/components/InsertBlock.jwc");
+			
 	}
 
 	// Default page map shared by all applications.
@@ -178,6 +183,9 @@ extends BasePropertyHolder
 	*  <tr>
 	*	 <td>/com/primix/tapestry/components/html/link/Action.jwc</td>
 	*	 <td>{@link Action}</td></tr>
+	* <tr>
+	* <td>/com/primix/tapestry/components/Block.jwc </td> 
+	*		<td>{@link Block}</td></tr>
 	* <tr>
 	*		<td>/com/primix/tapestry/components/html/form/Checkbox.jwc</td>
 	*		<td>{@link Checkbox}</td>
@@ -236,6 +244,10 @@ extends BasePropertyHolder
 	*  <tr>
 	* <td>/com/primix/tapestry/components/Insert.jwc </td> 
 	*		<td>{@link Insert}</td></tr>
+	*
+	* <tr>
+	* <td>/com/primix/tapestry/components/InsertBlock.jwc </td> 
+	*		<td>{@link InsertBlock}</td></tr>
 	*
 	*   <tr>
 	*       <td>/com/primix/tapestry/components/html/InsertText.jwc</td>

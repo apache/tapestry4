@@ -45,9 +45,6 @@ import java.util.*;
  *  an {@link IActionListener} (the JavaScript handlers for dealing with mouse
  *  movement are applied to the &lt;a&gt; created by the {@link IActionListener}).
  *
- *  <p>Informal parameters are applied only to the &lt;img&gt;
- *  element, there isn't a way to apply them to the &lt;a&gt; element.
- *
  * <table border=1>
  * <tr> 
  *    <td>Parameter</td>
@@ -104,7 +101,8 @@ import java.util.*;
  *
  * </table>
  *
- * <p>Informal parameters are allowed.
+ * <p>Informal parameters are allowed and are applied to the &lt;img&gt; tag.  A body
+ *  is not allowed.
  *
  *
  *  @author Howard Ship
@@ -128,12 +126,6 @@ public class Rollover extends AbstractComponent
 	private IBinding focus;
 	private IBinding blur;
 	private IBinding disabled;
-
-	/**
-	*  Note that the onMouseXXX attributes are NOT reserved, 
-	*  but should be used with care.
-	*
-	*/
 
 	private final static String[] reservedNames = { "name", "src", "border" };
 
@@ -197,7 +189,6 @@ public class Rollover extends AbstractComponent
 		boolean dynamic = false;
 		String onMouseOutName = null;
 		int borderValue = 0;
-		boolean compressed;
 		Body body;
 		String focusImageName = null;
 		String blurImageName = null;
@@ -245,9 +236,6 @@ public class Rollover extends AbstractComponent
 		if (imageURL == null)
 			throw new RequiredParameterException(this, "image", null);			
 
-		compressed = writer.compress(true);
-
-
 		writer.beginEmpty("img");
 
 		writer.attribute("src", imageURL);
@@ -278,7 +266,6 @@ public class Rollover extends AbstractComponent
 
 		writer.closeTag();
 
-		writer.setCompressed(compressed);
 	}
 
 	private static final String SCRIPT_RESOURCE = "Rollover.script";
