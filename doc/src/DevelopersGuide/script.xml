@@ -30,7 +30,7 @@ var preload = new Array();
 preload[0] = new Image();
 preload[0].src = "/images/button.gif";
 preload[1] = new Image();
-preload[1].src "/images/button-highlight.gif";
+preload[1].src = "/images/button-highlight.gif";
 
 function rollover(image, index)
 {
@@ -392,7 +392,7 @@ contained (including <sgmltag class="starttag">if</sgmltag>, <sgmltag class="sta
           <programlisting>
 &lt;if-not property-path="<replaceable>property-path</replaceable>"&gt;
   [ <replaceable>full content</replaceable> ]
-&lt;/if&gt;
+&lt;/if-not&gt;
 </programlisting>
         </figure>
         <para>
