@@ -1,9 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2001 by Howard Ship
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * http://sourceforge.net/projects/tapestry
- * mailto:hship@sourceforge.net
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -17,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -148,19 +149,18 @@ import java.math.*;
  *
  */
 
-public class NumericField
-extends AbstractValidatingTextField
+public class NumericField extends AbstractValidatingTextField
 {
-    private IBinding valueBinding;
-    private IBinding minimumBinding;
-    private IBinding maximumBinding;
+	private IBinding valueBinding;
+	private IBinding minimumBinding;
+	private IBinding maximumBinding;
 
 	/**
 	 *  Private interface used to handle parsing Strings to different
 	 *  numeric types.
 	 *
 	 */
-	
+
 	private interface NumberAdaptor
 	{
 		/**
@@ -169,9 +169,9 @@ extends AbstractValidatingTextField
 		 *
 		 *  @throws NumberFormatException if the String can not be parsed.
 		 */
-		
+
 		public Number parse(String value);
-		
+
 		/**
 		 *  Compares two instances of the adapted class (the subclass of
 		 * {@link Number} handled by the adaptor).  Casts the left and
@@ -179,23 +179,22 @@ extends AbstractValidatingTextField
 		 * {@link Comparable#compareTo(Object)}.
 		 *
 		 */
-		
+
 		public int compare(Number left, Number right);
 	}
 
 	private static Decorator numberAdaptors = new Decorator();
-	
-	private static abstract class AbstractAdaptor
-		implements NumberAdaptor
+
+	private static abstract class AbstractAdaptor implements NumberAdaptor
 	{
 		public int compare(Number left, Number right)
 		{
-			Comparable lc = (Comparable)left;
-			
+			Comparable lc = (Comparable) left;
+
 			return lc.compareTo(right);
 		}
 	}
-	
+
 	private static class ByteAdaptor extends AbstractAdaptor
 	{
 		public Number parse(String value)
@@ -203,7 +202,7 @@ extends AbstractValidatingTextField
 			return new Byte(value);
 		}
 	}
-	
+
 	private static class ShortAdaptor extends AbstractAdaptor
 	{
 		public Number parse(String value)
@@ -211,7 +210,7 @@ extends AbstractValidatingTextField
 			return new Short(value);
 		}
 	}
-	
+
 	private static class IntAdaptor extends AbstractAdaptor
 	{
 		public Number parse(String value)
@@ -219,7 +218,7 @@ extends AbstractValidatingTextField
 			return new Integer(value);
 		}
 	}
-	
+
 	private static class LongAdaptor extends AbstractAdaptor
 	{
 		public Number parse(String value)
@@ -227,7 +226,7 @@ extends AbstractValidatingTextField
 			return new Long(value);
 		}
 	}
-	
+
 	private static class FloatAdaptor extends AbstractAdaptor
 	{
 		public Number parse(String value)
@@ -235,7 +234,7 @@ extends AbstractValidatingTextField
 			return new Float(value);
 		}
 	}
-	
+
 	private static class DoubleAdaptor extends AbstractAdaptor
 	{
 		public Number parse(String value)
@@ -243,7 +242,7 @@ extends AbstractValidatingTextField
 			return new Double(value);
 		}
 	}
-	
+
 	private static class BigDecimalAdaptor extends AbstractAdaptor
 	{
 		public Number parse(String value)
@@ -251,7 +250,7 @@ extends AbstractValidatingTextField
 			return new BigDecimal(value);
 		}
 	}
-	
+
 	private static class BigIntegerAdaptor extends AbstractAdaptor
 	{
 		public Number parse(String value)
@@ -259,16 +258,15 @@ extends AbstractValidatingTextField
 			return new BigInteger(value);
 		}
 	}
-	
-	static
-	{
+
+	static {
 		NumberAdaptor byteAdaptor = new ByteAdaptor();
 		NumberAdaptor shortAdaptor = new ShortAdaptor();
 		NumberAdaptor intAdaptor = new IntAdaptor();
 		NumberAdaptor longAdaptor = new LongAdaptor();
 		NumberAdaptor floatAdaptor = new FloatAdaptor();
 		NumberAdaptor doubleAdaptor = new DoubleAdaptor();
-		
+
 		numberAdaptors.register(Byte.class, byteAdaptor);
 		numberAdaptors.register(Byte.TYPE, byteAdaptor);
 		numberAdaptors.register(Short.class, shortAdaptor);
@@ -279,56 +277,56 @@ extends AbstractValidatingTextField
 		numberAdaptors.register(Float.TYPE, floatAdaptor);
 		numberAdaptors.register(Double.class, doubleAdaptor);
 		numberAdaptors.register(Double.TYPE, doubleAdaptor);
-		
+
 		numberAdaptors.register(BigDecimal.class, new BigDecimalAdaptor());
 		numberAdaptors.register(BigInteger.class, new BigIntegerAdaptor());
 	}
+
+	public IBinding getValueBinding()
 	
-    public IBinding getValueBinding()
-    {
-        return valueBinding;
-    }
+	{
+		return valueBinding;
+	}
 
-    public void setValueBinding(IBinding value)
-    {
-        valueBinding = value;
-    }
+	public void setValueBinding(IBinding value)
+	{
+		valueBinding = value;
+	}
 
-    public IBinding getMinimumBinding()
-    {
-        return minimumBinding;
-    }
+	public IBinding getMinimumBinding()
+	{
+		return minimumBinding;
+	}
 
-    public void setMinimumBinding(IBinding value)
-    {
-        minimumBinding = value;
-    }
+	public void setMinimumBinding(IBinding value)
+	{
+		minimumBinding = value;
+	}
 
-    public IBinding getMaximumBinding()
-    {
-        return maximumBinding;
-    }
+	public IBinding getMaximumBinding()
+	{
+		return maximumBinding;
+	}
 
-    public void setMaximumBinding(IBinding value)
-    {
-        maximumBinding = value;
-    }
+	public void setMaximumBinding(IBinding value)
+	{
+		maximumBinding = value;
+	}
 
-    /**
-     *  Reads the current value of the text parameter.
-     *
-     */
+	/**
+	 *  Reads the current value of the text parameter.
+	 *
+	 */
 
-    protected String read()
-    {
-		Number value = (Number)valueBinding.getObject("value", Number.class);
-		
+	protected String read()
+	{
+		Number value = (Number) valueBinding.getObject("value", Number.class);
+
 		if (value == null)
 			return "";
 
 		return value.toString();
-    }
-
+	}
 
 	/**
 	 *  Takes the String and "{@link IBinding#getType() sniffs}"
@@ -338,101 +336,88 @@ extends AbstractValidatingTextField
 	 *
 	 */
 
-    protected void update(String value)
-    {
+	protected void update(String value)
+	
+	{
 		Number objectValue = null;
 		Number minimum = null;
 		Number maximum = null;
 		NumberAdaptor adaptor = null;
-		
-        if (value.length() == 0)
-        {
-            if (isRequired())
-            {
-                String errorMessage =
-                    getString("field-is-required", getDisplayName());
 
-                notifyDelegate(ValidationConstraint.REQUIRED,
-                    errorMessage);
+		if (value.length() == 0)
+		{
+			if (isRequired())
+			{
+				String errorMessage = getString("field-is-required", getDisplayName());
 
-                return;
-            }
+				notifyDelegate(ValidationConstraint.REQUIRED, errorMessage);
 
-            // Null field, not required, don't update anything.
+				return;
+			}
 
-            return;
-        }
-		
+			// Null field, not required, don't update anything.
+
+			return;
+		}
+
 		Class valueClass = valueBinding.getType();
-		
-        try
-        {
-			adaptor = (NumberAdaptor)numberAdaptors.getAdaptor(valueClass);
-			
+
+		try
+		{
+			adaptor = (NumberAdaptor) numberAdaptors.getAdaptor(valueClass);
+
 			if (adaptor == null)
 				throw new ApplicationRuntimeException(
 					"No adaptor to parse String to " + valueClass.getName() + ".");
-			
+
 			objectValue = adaptor.parse(value);
-        }
-        catch (NumberFormatException ex)
-        {
-            String errorMessage = getString("invalid-numeric-format", getDisplayName());
-    
-            notifyDelegate(ValidationConstraint.NUMBER_FORMAT,
-                        errorMessage);
+		}
+		catch (NumberFormatException ex)
+		{
+			String errorMessage = getString("invalid-numeric-format", getDisplayName());
 
-            return;
-        }
+			notifyDelegate(ValidationConstraint.NUMBER_FORMAT, errorMessage);
 
-        // Check if within the given range.
+			return;
+		}
+
+		// Check if within the given range.
 
 		if (minimumBinding != null)
-			minimum = (Number)minimumBinding.getObject("minimum", Number.class);
-		
-		if (minimum != null)
-		{
-			
-			if (adaptor.compare(objectValue, minimum) < 0)
-            {
-                String errorMessage = getString("number-too-small", getDisplayName(),
-                    minimum);
+			minimum = (Number) minimumBinding.getObject("minimum", Number.class);
 
-                notifyDelegate(ValidationConstraint.TOO_SMALL,
-                        errorMessage);
-				
+		if (minimum != null)
+		
+			{
+
+			if (adaptor.compare(objectValue, minimum) < 0)
+			{
+				String errorMessage = getString("number-too-small", getDisplayName(), minimum);
+
+				notifyDelegate(ValidationConstraint.TOO_SMALL, errorMessage);
+
 				return;
-            }
-        }
-		
+			}
+		}
+
 		if (maximumBinding != null)
-			maximum = (Number)maximumBinding.getObject("maximum", Number.class);
-		
+			maximum = (Number) maximumBinding.getObject("maximum", Number.class);
+
 		if (maximum != null)
-		{
+		
+			{
 			if (adaptor.compare(objectValue, maximum) > 0)
 			{
-				String errorMessage = getString("number-too-large", getDisplayName(),
-						maximum);
-				
+				String errorMessage = getString("number-too-large", getDisplayName(), maximum);
+
 				notifyDelegate(ValidationConstraint.TOO_LARGE, errorMessage);
 				return;
 			}
 		}
-		
+
 		// Survived ALL the tests, safe to assign!
-		
+
 		valueBinding.setObject(objectValue);
-    }
+	}
 
 }
-
-
-
-
-
-
-
-
-
-

@@ -1,14 +1,13 @@
 /*
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Tapestry Web Application Framework
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -19,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; wihtout even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -47,109 +46,106 @@ import javax.servlet.http.*;
  * @version $Id$
  */
 
-public class Login 
-	extends BasePage
-	implements IErrorProperty
+public class Login extends BasePage implements IErrorProperty
 {
 	private String email;
 	private String password;
 	private String error;
 	private ICallback callback;
-    private IValidationDelegate validationDelegate;
-	
+	private IValidationDelegate validationDelegate;
+
 	/**
 	 *  The name of a cookie to store on the user's machine that will identify
 	 *  them next time they log in.
 	 *
 	 */
-	
+
 	private static final String COOKIE_NAME = "com.primix.vlib.Login.email";
-	
+
 	private final static int ONE_WEEK = 7 * 24 * 60 * 60;
-	
+
 	public void detach()
 	{
 		email = null;
 		password = null;
 		error = null;
 		callback = null;
-		
+
 		super.detach();
 	}
-	
-    public IValidationDelegate getValidationDelegate()
-    {
+
+	public IValidationDelegate getValidationDelegate()
+	{
 		if (validationDelegate == null)
 			validationDelegate = new SimpleValidationDelegate(this);
-		
+
 		return validationDelegate;
-    }
-	
+	}
+
 	public void setEmail(String value)
 	{
 		email = value;
 	}
-	
+
 	/**
 	 *  Gets the email address.  If not previously set, it is retrieve from
 	 *  the cookie (thus forming the default).
 	 *
 	 */
-	
+
 	public String getEmail()
 	{
 		// If not set, see if a value was previously recorded in a Cookie
-		
+
 		if (email == null)
 			email = getRequestCycle().getRequestContext().getCookieValue(COOKIE_NAME);
-		
+
 		return email;
 	}
-	
+
 	public void setPassword(String value)
 	{
 		password = value;
 	}
-	
+
 	public String getPassword()
 	{
 		return password;
 	}
-	
+
 	public void setError(String value)
 	{
 		error = value;
 	}
-	
+
 	public String getError()
 	{
 		return error;
 	}
-	
-    protected void setErrorField(String componentId, String message)
-    {
+
+	protected void setErrorField(String componentId, String message)
+	{
 		IValidatingTextField field;
-		
-		field = (IValidatingTextField)getComponent(componentId);
+
+		field = (IValidatingTextField) getComponent(componentId);
 		field.setError(true);
-		
+
 		if (error == null)
 			error = message;
-    }
-	
+	}
+
 	public void setCallback(ICallback value)
 	{
 		callback = value;
-		
+
 		fireObservedChange("callback", value);
 	}
-	
+
 	public ICallback getCallback()
 	{
 		return callback;
 	}
-	
-	
+
 	/**
 	 *  Attempts to login.  If successful, updates the application's user property
 	 *  and redirects to the target page (or the home page if no target page is specified).
@@ -160,46 +156,43 @@ public class Login
 	 *  message is displayed.
 	 *
 	 */
-	
-	public void attemptLogin(IRequestCycle cycle)
-		throws RequestCycleException
-	{		
+
+	public void attemptLogin(IRequestCycle cycle) throws RequestCycleException
+	{
 		// An error, from a validation field, may already have occured.
-		
+
 		if (getError() != null)
 			return;
-		
-		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
-		
+
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+
 		for (int i = 0; i < 2; i++)
 		{
 			try
 			{
 				IOperations operations = vengine.getOperations();
-				
+
 				Person person = operations.login(email, password);
-			
+
 				loginUser(person, cycle);
-				
+
 				break;
-				
+
 			}
 			catch (LoginException ex)
 			{
-				String fieldName = 
-						ex.isPasswordError() ? "inputPassword" : "inputEmail";
-				
+				String fieldName = ex.isPasswordError() ? "inputPassword" : "inputEmail";
+
 				setErrorField(fieldName, ex.getMessage());
 				return;
 			}
 			catch (RemoteException ex)
 			{
-				vengine.rmiFailure("Remote exception validating user.", ex, i > 0);		
+				vengine.rmiFailure("Remote exception validating user.", ex, i > 0);
 			}
 		}
 	}
-	
-		
+
 	/**
 	 *  Sets up the {@link IPerson} as the logged in user, creates
 	 *  a cookie for thier email address (for subsequent logins),
@@ -207,40 +200,40 @@ public class Login
 	 *  a specified page).
 	 *
 	 */
-	
+
 	public void loginUser(Person person, IRequestCycle cycle)
 		throws RequestCycleException, RemoteException
 	{
 		String email;
 		Cookie cookie;
-		
+
 		email = person.getEmail();
-		
+
 		// Get the visit object; this will likely force the
 		// creation of the visit object and an HttpSession.
-		
-		Visit visit = (Visit)getVisit();
+
+		Visit visit = (Visit) getVisit();
 		visit.setUser(person);
-		
+
 		// After logging in, go to the MyLibrary page, unless otherwise
 		// specified.
-		
+
 		if (callback == null)
 			cycle.setPage("MyLibrary");
-		else	
+		else
 			callback.peformCallback(cycle);
-		
+
 		// I've found that failing to set a maximum age and a path means that
 		// the browser (IE 5.0 anyway) quietly drops the cookie.
-		
+
 		cookie = new Cookie(COOKIE_NAME, email);
 		cookie.setPath(engine.getServletPath());
 		cookie.setMaxAge(ONE_WEEK);
-		
+
 		// Record the user's email address in a cookie
-		
+
 		cycle.getRequestContext().addCookie(cookie);
-		
+
 		engine.forgetPage(getName());
-	}	
+	}
 }

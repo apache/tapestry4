@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,38 +18,37 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  */
- 
+
 package com.primix.tapestry.form;
 
 import com.primix.tapestry.util.*;
 import java.util.*;
 
- /**
-  *  Implementation of {@link IPropertySelectionModel} that wraps around
-  *  a set of {@link Enum}s.  In addition to this, a {@link Locale} and
-  *  some information needed to extract labels from a {@link ResourceBundle}
-  *  are provided.
-  *
-  *  <p>Uses a simple index number as the value (used to represent the option).
-  *
-  *  <p>The resource bundle from which labels are extracted is usually
-  *  a resource within the Tapestry application.  Since 
-  *  {@link ResourceBundle#getBundle(String, Locale)} uses its caller's class loader,
-  *  and that classloader will be the Tapestry framework's classloader, the application's
-  *  resources won't be visible.  This requires that the application resolve
-  *  the resource to a {@link ResourceBundle} before creating this model.
-  *  
-  *  @version $Id$
-  *  @author Howard Ship
-  */
-  
-public class EnumPropertySelectionModel
-implements IPropertySelectionModel
+/**
+ *  Implementation of {@link IPropertySelectionModel} that wraps around
+ *  a set of {@link Enum}s.  In addition to this, a {@link Locale} and
+ *  some information needed to extract labels from a {@link ResourceBundle}
+ *  are provided.
+ *
+ *  <p>Uses a simple index number as the value (used to represent the option).
+ *
+ *  <p>The resource bundle from which labels are extracted is usually
+ *  a resource within the Tapestry application.  Since 
+ *  {@link ResourceBundle#getBundle(String, Locale)} uses its caller's class loader,
+ *  and that classloader will be the Tapestry framework's classloader, the application's
+ *  resources won't be visible.  This requires that the application resolve
+ *  the resource to a {@link ResourceBundle} before creating this model.
+ *  
+ *  @version $Id$
+ *  @author Howard Ship
+ */
+
+public class EnumPropertySelectionModel implements IPropertySelectionModel
 {
 	private Enum[] options;
 	private String[] labels;
@@ -86,7 +83,10 @@ implements IPropertySelectionModel
 	 * @param   resourcePrefix An optional prefix used when accessing keys within the bundle. 
 	 */
 
-	public EnumPropertySelectionModel(Enum[] options, ResourceBundle bundle, String resourcePrefix)
+	public EnumPropertySelectionModel(
+		Enum[] options,
+		ResourceBundle bundle,
+		String resourcePrefix)
 	{
 		this.options = options;
 		this.bundle = bundle;
@@ -119,7 +119,7 @@ implements IPropertySelectionModel
 		if (labels == null)
 			readLabels();
 
-		return labels[index];	
+		return labels[index];
 	}
 
 	public String getValue(int index)
@@ -131,7 +131,7 @@ implements IPropertySelectionModel
 	{
 		int index;
 
-			index = Integer.parseInt(value);
+		index = Integer.parseInt(value);
 
 		return options[index];
 	}
@@ -142,7 +142,7 @@ implements IPropertySelectionModel
 		String key;
 		String enumerationId;
 
-			labels = new String[options.length];
+		labels = new String[options.length];
 
 		for (i = 0; i < options.length; i++)
 		{
@@ -153,7 +153,7 @@ implements IPropertySelectionModel
 			else
 				key = resourcePrefix + "." + enumerationId;
 
-				labels[i] = bundle.getString(key);	
+			labels[i] = bundle.getString(key);
 		}
 
 	}

@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -44,7 +42,6 @@ import java.lang.Double;
  *  @author Howard Ship
  *
  */
- 
 
 public class StatementAssembly
 {
@@ -120,57 +117,56 @@ public class StatementAssembly
 		lineLength += textLength;
 	}
 
+	/**
+	 *  @since 0.2.10
+	 *
+	 */
+
+	public void add(int value)
+	{
+		add(Integer.toString(value));
+	}
 
 	/**
 	 *  @since 0.2.10
 	 *
 	 */
-	 
-	public void add(int value)
-	{
-		add(Integer.toString(value));
-	}
-		
-	/**
-	 *  @since 0.2.10
-	 *
-	 */
-	 
+
 	public void add(short value)
 	{
 		add(Short.toString(value));
 	}
-	
+
 	/**
 	 *  @since 0.2.10
 	 *
 	 */
-	 
+
 	public void add(float value)
 	{
 		add(Float.toString(value));
 	}
-	
+
 	/**
 	 *  @since 0.2.10
 	 *
 	 */
-	 
+
 	public void add(double value)
 	{
 		add(Double.toString(value));
 	}
-	
+
 	/**
 	 *  @since 0.2.10
 	 *
 	 */
-	 
+
 	public void add(long value)
 	{
 		add(Long.toString(value));
 	}
-	
+
 	/**
 	 *  Adds an arbitrary object to the SQL by invoking {@link Object#toString()}.
 	 *  This is typically used with {@link Integer}, {@link Double}, etc.  Note that
@@ -179,23 +175,23 @@ public class StatementAssembly
 	 *
 	 *  @since 0.2.10
 	 */
-	 
+
 	public void add(Object value)
 	{
 		add(value.toString());
 	}
-	
+
 	/**
 	 * Adds a boolean value as either '0' or '1'.
 	 *
 	 * @since 0.2.10
 	 */
-	 
+
 	public void add(boolean value)
 	{
 		add(value ? "1" : "0");
 	}
-	
+
 	/** 
 	 *  Adds a seperator (usually a comma and a space) to the current line, regardless
 	 *  of line length.  "this is purely aesthetic ... it just looks odd if a seperator
@@ -246,13 +242,13 @@ public class StatementAssembly
 
 			add(items[i]);
 		}
-	}	
+	}
 
 	/**
 	 *  @since 0.2.10
 	 *
 	 */
-	 
+
 	public void addList(Object[] items, String seperator)
 	{
 		for (int i = 0; i < items.length; i++)
@@ -268,7 +264,7 @@ public class StatementAssembly
 	 *  @since 0.2.10
 	 *
 	 */
-	 
+
 	public void addList(int[] items, String seperator)
 	{
 		for (int i = 0; i < items.length; i++)
@@ -280,7 +276,6 @@ public class StatementAssembly
 		}
 	}
 
-	
 	/**
 	 *  Adds a parameter to the statement.  Adds a question mark to the SQL and stores
 	 *  the value for later.
@@ -294,7 +289,7 @@ public class StatementAssembly
 
 		parameters.add(value);
 
-		add("?");	
+		add("?");
 	}
 
 	/**
@@ -319,8 +314,7 @@ public class StatementAssembly
 	 *
 	 */
 
-	public IStatement createStatement(Connection connection)
-	throws SQLException
+	public IStatement createStatement(Connection connection) throws SQLException
 	{
 		String sql;
 		IStatement result;
@@ -332,7 +326,7 @@ public class StatementAssembly
 		else
 			result = new ParameterizedStatement(sql, connection, parameters);
 
-		return result;		
+		return result;
 	}
 
 	public String toString()
@@ -373,6 +367,4 @@ public class StatementAssembly
 		return description.toString();
 	}
 
-
 }
-

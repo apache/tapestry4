@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -41,39 +39,39 @@ import java.io.*;
  *  @version $Id$
  *  @since 0.2.9
  */
- 
+
 public class ScriptSession
 {
 	private String scriptPath;
 	private Map symbols;
 	private String body;
 	private String initialization;
-	
+
 	/**
 	 *  List of included scripts.
 	 *
 	 *  @since 1.0.5
 	 *
 	 */
-	
+
 	private List includes;
-		
+
 	public ScriptSession(String scriptPath, Map symbols)
 	{
 		this.scriptPath = scriptPath;
 		this.symbols = symbols;
 	}
-	
+
 	public String getScriptPath()
 	{
 		return scriptPath;
 	}
-	
+
 	public Map getSymbols()
 	{
 		return symbols;
 	}
-	
+
 	/**
 	 *  Returns a list of scripts included by the
 	 *  the executed script.  These are not URLs, they
@@ -82,48 +80,48 @@ public class ScriptSession
 	 *  @since 1.0.5
 	 *
 	 */
-	
+
 	public List getIncludedScripts()
 	{
 		return includes;
 	}
-	
+
 	public void addIncludedScript(String resourcePath)
 	{
 		if (includes == null)
 			includes = new ArrayList();
-		
+
 		includes.add(resourcePath);
 	}
-	
+
 	public void setBody(String value)
 	{
 		body = value;
 	}
-	
+
 	public String getBody()
 	{
 		return body;
 	}
-	
+
 	public String getInitialization()
 	{
 		return initialization;
 	}
-	
+
 	public void setInitialization(String value)
 	{
 		initialization = value;
 	}
-	
+
 	public String toString()
 	{
 		StringBuffer buffer = new StringBuffer();
-		
+
 		buffer.append("ScriptSession[");
 		buffer.append(scriptPath);
 		buffer.append(']');
-		
+
 		return buffer.toString();
 	}
 }

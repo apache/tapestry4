@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -56,8 +54,7 @@ import javax.ejb.Handle;
  * @version $Id$
  */
 
-public abstract class PageRecorder
-implements IPageRecorder, Serializable
+public abstract class PageRecorder implements IPageRecorder, Serializable
 {
 	protected transient boolean dirty = false;
 	protected transient boolean locked = false;
@@ -71,8 +68,7 @@ implements IPageRecorder, Serializable
 	*
 	*/
 
-	public abstract void commit()
-	throws PageRecorderCommitException;
+	public abstract void commit() throws PageRecorderCommitException;
 
 	/**
 	*  Returns a <code>Collection</code> of {@link IPageChange} objects
@@ -90,6 +86,7 @@ implements IPageRecorder, Serializable
 	*/
 
 	public boolean isDirty()
+	
 	{
 		return dirty;
 	}
@@ -139,11 +136,14 @@ implements IPageRecorder, Serializable
 
 		if (locked)
 			throw new ApplicationRuntimeException(
-				"Page recorder for page " + component.getPage().getName() +
-				" is locked after a commit(), but received a change to " +
-				" property " + propertyName + " of component " +
-				component.getExtendedId() + ".");
-
+				"Page recorder for page "
+					+ component.getPage().getName()
+					+ " is locked after a commit(), but received a change to "
+					+ " property "
+					+ propertyName
+					+ " of component "
+					+ component.getExtendedId()
+					+ ".");
 
 		if (propertyName == null)
 		{
@@ -160,10 +160,15 @@ implements IPageRecorder, Serializable
 		catch (Throwable t)
 		{
 			t.printStackTrace();
-			throw new ApplicationRuntimeException
-				("Unable to persist property " + propertyName + 
-				" of " + component.getExtendedId() + 
-				" as " + newValue + ".", t);
+			throw new ApplicationRuntimeException(
+				"Unable to persist property "
+					+ propertyName
+					+ " of "
+					+ component.getExtendedId()
+					+ " as "
+					+ newValue
+					+ ".",
+				t);
 		}
 	}
 
@@ -187,7 +192,9 @@ implements IPageRecorder, Serializable
 	*
 	*/
 
-	protected abstract void recordChange(String componentPath, String propertyName, 
+	protected abstract void recordChange(
+		String componentPath,
+		String propertyName,
 		Object newValue);
 
 	/**
@@ -206,7 +213,7 @@ implements IPageRecorder, Serializable
 
 		while (i.hasNext())
 		{
-			change = (PageChange)i.next();
+			change = (PageChange) i.next();
 
 			component = page.getNestedComponent(change.componentPath);
 
@@ -221,8 +228,7 @@ implements IPageRecorder, Serializable
 			}
 			catch (Throwable t)
 			{
-				throw new RollbackException(component, change.propertyName, 
-					change.newValue, t);
+				throw new RollbackException(component, change.propertyName, change.newValue, t);
 			}
 		}
 	}
@@ -238,14 +244,13 @@ implements IPageRecorder, Serializable
 	*  @since 0.2.9
 	*/
 
-	protected Serializable persistValue(Object value)
-	throws IOException
+	protected Serializable persistValue(Object value) throws IOException
 	{
 		if (!(value instanceof EJBObject))
 		{
 			try
 			{
-				return (Serializable)value;
+				return (Serializable) value;
 			}
 			catch (ClassCastException ex)
 			{
@@ -255,7 +260,7 @@ implements IPageRecorder, Serializable
 
 		try
 		{
-			EJBObject ejb = (EJBObject)value;
+			EJBObject ejb = (EJBObject) value;
 
 			return ejb.getHandle();
 		}
@@ -273,15 +278,14 @@ implements IPageRecorder, Serializable
 	*  @since 0.2.9
 	*/
 
-	protected Object restoreValue(Object value)
-	throws IOException
+	protected Object restoreValue(Object value) throws IOException
 	{
 		if (!(value instanceof Handle))
 			return value;
 
 		try
 		{
-			Handle handle = (Handle)value;
+			Handle handle = (Handle) value;
 
 			return handle.getEJBObject();
 		}
@@ -292,4 +296,3 @@ implements IPageRecorder, Serializable
 	}
 
 }
-

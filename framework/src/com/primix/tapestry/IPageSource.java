@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -42,32 +40,32 @@ package com.primix.tapestry;
 
 public interface IPageSource
 {
-    /**
+	/**
 	 *  Gets a given page for the engine.  This may involve using a previously
 	 *  loaded page from a pool of available pages, or the page may be loaded as needed.
 	 *
 	 */
-	
-    public IPage getPage(IEngine engine, String pageName, IMonitor monitor)
+
+	public IPage getPage(IEngine engine, String pageName, IMonitor monitor)
 		throws PageLoaderException;
-	
-    /**
+
+	/**
 	 *  Invoked after the engine is done with the page
 	 *  (typically, after the response to the client has been sent).
 	 *  The page is returned to the pool for later reuse.
 	 *
 	 */
-	
-    public void releasePage(IPage page);
-	
-    /**
+
+	public void releasePage(IPage page);
+
+	/**
 	 *  Invoked to have the source clear any internal cache.  This is most often
 	 *  used when debugging an application.
 	 *
 	 */
-	
-    public void reset();
-	
+
+	public void reset();
+
 	/**
 	 *  Gets a field binding for the named field (the name includes the class name
 	 *  and the field).  If no such binding exists, then one is created, otherwise
@@ -75,44 +73,41 @@ public interface IPageSource
 	 *
 	 * @since 1.0.2
 	 */
-	
+
 	public IBinding getFieldBinding(String fieldName);
-	
+
 	/**
 	 *  Like {@link #getFieldBinding(String)}, except for static bindings.
 	 *
 	 * @since 1.0.2
 	 */
-	
+
 	public IBinding getStaticBinding(String value);
-	
+
 	/**
 	 *  Gets a cached asset.
 	 *
 	 *  @since 1.0.2
 	 *
 	 */
-	
+
 	public IAsset getExternalAsset(String URL);
-	
-	
-	
-	
+
 	/**
 	 *  Gets a cached asset.
 	 *
 	 *  @since 1.0.2
 	 *
 	 */
-	
+
 	public IAsset getContextAsset(String assetPath);
-	
+
 	/**
 	 *  Gets a cached asset.
 	 *
 	 *  @since 1.0.2
 	 *
 	 */
-	
+
 	public IAsset getPrivateAsset(String resourcePath);
 }

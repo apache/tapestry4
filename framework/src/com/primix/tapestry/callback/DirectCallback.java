@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,12 +18,12 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  */
- 
+
 package com.primix.tapestry.callback;
 
 import com.primix.tapestry.*;
@@ -39,46 +37,45 @@ import com.primix.tapestry.*;
  *
  */
 
-public class DirectCallback
-implements ICallback
+public class DirectCallback implements ICallback
 {
 	private String pageName;
 	private String componentIdPath;
 	private String[] context;
-	
+
 	public String toString()
 	{
 		StringBuffer buffer = new StringBuffer("DirectCallback[");
-		
+
 		buffer.append(pageName);
 		buffer.append('/');
 		buffer.append(componentIdPath);
-		
+
 		if (context != null)
 		{
 			char sep = ' ';
-		
+
 			for (int i = 0; i < context.length; i++)
 			{
 				buffer.append(sep);
 				buffer.append(context[i]);
-				
+
 				sep = '/';
 			}
 		}
-		
+
 		buffer.append(']');
-		
+
 		return buffer.toString();
-		
+
 	}
-	
+
 	/**
 	 *  Creates a new DirectCallback for the component.  The context
 	 *  (which may be null) is retained, not copied.
 	 *
 	 */
-	 
+
 	public DirectCallback(IDirect component, String[] context)
 	{
 		pageName = component.getPage().getName();
@@ -92,25 +89,25 @@ implements ICallback
 	 *  and invokes {@link IDirect#trigger(IRequestCycle, String[])} upon it.
 	 *
 	 */
-	 
-	public void peformCallback(IRequestCycle cycle)
-	throws RequestCycleException
+
+	public void peformCallback(IRequestCycle cycle) throws RequestCycleException
 	{
 		IPage page = cycle.getPage(pageName);
 		IComponent component = page.getNestedComponent(componentIdPath);
 		IDirect direct = null;
-		
+
 		try
 		{
-			direct = (IDirect)component;
+			direct = (IDirect) component;
 		}
 		catch (ClassCastException ex)
 		{
 			throw new RequestCycleException(
-				"Component " + component.getExtendedId() + " is not type IDirect.", 
-				component, ex);
+				"Component " + component.getExtendedId() + " is not type IDirect.",
+				component,
+				ex);
 		}
-		
+
 		direct.trigger(cycle, context);
 	}
 }

@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -107,13 +105,12 @@ public class RadioGroup extends AbstractFormComponent
 	*
 	*/
 
-
 	private static final String ATTRIBUTE_NAME =
 		"com.primix.tapestry.active.RadioGroup";
 
 	public static RadioGroup get(IRequestCycle cycle)
 	{
-		return (RadioGroup)cycle.getAttribute(ATTRIBUTE_NAME);
+		return (RadioGroup) cycle.getAttribute(ATTRIBUTE_NAME);
 	}
 
 	public IBinding getSelectedBinding()
@@ -147,7 +144,7 @@ public class RadioGroup extends AbstractFormComponent
 			throw new RenderOnlyPropertyException(this, "nextOptionId");
 
 		return nextOptionId++;
-	}	
+	}
 
 	/**
 	*  Used by {@link Radio} components wrapped by this <code>RadioGroup</code> to see
@@ -223,12 +220,13 @@ public class RadioGroup extends AbstractFormComponent
 	*/
 
 	public void render(IResponseWriter writer, IRequestCycle cycle)
-	throws RequestCycleException
+		throws RequestCycleException
 	{
 		IForm form = getForm(cycle);
 
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-			throw new RequestCycleException("RadioGroup components may not be nested.",
+			throw new RequestCycleException(
+				"RadioGroup components may not be nested.",
 				this);
 
 		// It isn't enough to know whether the cycle in general is rewinding, need to know
@@ -282,6 +280,3 @@ public class RadioGroup extends AbstractFormComponent
 	}
 
 }
-
-
-

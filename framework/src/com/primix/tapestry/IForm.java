@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -42,28 +40,27 @@ import com.primix.tapestry.form.*;
  *  @since 1.0.2
  */
 
-
 public interface IForm extends IAction
 {
-	
-    /**
+
+	/**
 	 *  Attribute name used with the request cycle; allows other components to locate
 	 *  the IForm.
 	 *
 	 *  @since 1.0.5
 	 */
-	
-    public static final String ATTRIBUTE_NAME = "com.primix.tapestry.active.Form";
-	
+
+	public static final String ATTRIBUTE_NAME = "com.primix.tapestry.active.Form";
+
 	/**
 	 *  Invoked by the {@link IRequestCycle} to allow a form that uses
 	 *  the direct service, to respond to the form submission.
 	 *
 	 */
-	
+
 	public void rewind(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException;
-	
+
 	/**
 	 *  Adds an additional event handler.  The type determines when the
 	 *  handler will be invoked, {@link FormEventType#SUBMIT}
@@ -71,9 +68,9 @@ public interface IForm extends IAction
 	 *
 	 * @since 1.0.5
 	 */
-	
+
 	public void addEventHandler(FormEventType type, String functionName);
-	
+
 	/**
 	 *  Constructs a unique identifier (within the Form).  The identifier
 	 *  consists of the component's id, with an index number added to
@@ -84,9 +81,9 @@ public interface IForm extends IAction
 	 *
 	 *  @since 1.0.5
 	 */
-	
+
 	public String getElementId(IComponent component);
-	
+
 	/**
 	 *  Constructs a unique identifier from the base id.  If possible, the
 	 *  id is used as-is.  Otherwise, a unique identifier is appended
@@ -99,18 +96,18 @@ public interface IForm extends IAction
 	 *  @since 1.0.5
 	 *
 	 */
-	
+
 	public String getElementId(String baseId);
-	
+
 	/**
 	 * Returns the name of the form.
 	 *
 	 *  @since 1.0.5
 	 *
 	 */
-	
+
 	public String getName();
-	
+
 	/**
 	 *  Returns true if the form is rewinding (meaning, the form was the subject
 	 *  of the request cycle).
@@ -118,7 +115,6 @@ public interface IForm extends IAction
 	 * @since 1.0.5
 	 *
 	 */
-	
+
 	public boolean isRewinding();
 }
-

@@ -1,14 +1,13 @@
 /*
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Tapestry Web Application Framework
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -19,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; wihtout even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -43,46 +42,45 @@ import com.primix.vlib.pages.*;
  */
 
 public class Border extends BaseComponent
-{	
-    private static final String WINDOW_TITLE = "Primix Virtual Library";
-	
-    private IBinding titleBinding;
-    private IBinding subtitleBinding;
-	
+{
+	private static final String WINDOW_TITLE = "Primix Virtual Library";
+
+	private IBinding titleBinding;
+	private IBinding subtitleBinding;
+
 	private static final int SEARCH_PAGE_TYPE = 1;
 	private static final int LIBRARY_PAGE_TYPE = 2;
-	
+
 	// Also used for logout and registration pages.
-	
+
 	private static final int LOGIN_PAGE_TYPE = 3;
-	
+
 	private static final int ADMIN_PAGE_TYPE = 4;
-	
+
 	private int pageType = 0;
-	
+
 	private IAsset subheader;
-	
-    public void setTitleBinding(IBinding value)
-    {
+
+	public void setTitleBinding(IBinding value)
+	{
 		titleBinding = value;
-    }
-	
-    public IBinding getTitleBinding()
-    {
+	}
+
+	public IBinding getTitleBinding()
+	{
 		return titleBinding;
-    }
-	
-    public void setSubtitleBinding(IBinding value)
-    {
+	}
+
+	public void setSubtitleBinding(IBinding value)
+	{
 		subtitleBinding = value;
-    }
-	
-    public IBinding getSubtitleBinding()
-    {
+	}
+
+	public IBinding getSubtitleBinding()
+	{
 		return subtitleBinding;
-    }
-	
-	
+	}
+
 	/**
 	 *  Determines the 'type' of page, which is used to highlight (with an icon) one of the options
 	 *  on the left-side navigation bar.
@@ -98,15 +96,15 @@ public class Border extends BaseComponent
 	 *  <p>If not specified, "search" is assumed.
 	 *
 	 */
-	
+
 	protected int getPageType()
 	{
 		if (pageType == 0)
 		{
 			String typeName = getPage().getSpecification().getProperty("page-type");
-			
+
 			pageType = SEARCH_PAGE_TYPE;
-			
+
 			if ("library".equals(typeName))
 				pageType = LIBRARY_PAGE_TYPE;
 			else if ("login".equals(typeName))
@@ -114,167 +112,163 @@ public class Border extends BaseComponent
 			else if ("admin".equals(typeName))
 				pageType = ADMIN_PAGE_TYPE;
 		}
-		
+
 		return pageType;
 	}
-	
+
 	public boolean isLoggedOut()
 	{
-		return ! isLoggedIn();
+		return !isLoggedIn();
 	}
-	
+
 	public boolean isLoggedIn()
 	{
 		// Get the visit, if it exists, without creating it.
-		
-		Visit visit = (Visit)page.getEngine().getVisit();
-		
+
+		Visit visit = (Visit) page.getEngine().getVisit();
+
 		if (visit == null)
 			return false;
-		
+
 		return visit.isUserLoggedIn();
 	}
-	
+
 	/**
 	 *  Returns true if the user is logged in and is an adminstrator.
 	 *  This makes additional left-side options appear.
 	 *
 	 */
-	
+
 	public boolean isAdmin()
 	{
-		Visit visit = (Visit)page.getEngine().getVisit();
-		
-		return (visit != null &&
-					visit.isUserLoggedIn() &&
-					visit.getUser().isAdmin());
+		Visit visit = (Visit) page.getEngine().getVisit();
+
+		return (visit != null && visit.isUserLoggedIn() && visit.getUser().isAdmin());
 	}
-	
+
 	/**
 	 *  Show the Logout button on all pages except the Logout page itself.
 	 *
 	 */
-	
+
 	public boolean getShowLogout()
 	{
 		return !getPage().getName().equals("Logout");
 	}
-	
-    public String getWindowTitle()
-    {
+
+	public String getWindowTitle()
+	{
 		String subtitle = null;
-		
+
 		if (subtitleBinding != null)
 			subtitle = subtitleBinding.getString();
-		
+
 		if (subtitle == null)
 			return WINDOW_TITLE;
 		else
 			return WINDOW_TITLE + ": " + subtitle;
-    }
-	
-	public void login(IRequestCycle cycle)
-		throws RequestCycleException
+	}
+
+	public void login(IRequestCycle cycle) throws RequestCycleException
 	{
-		Login login = (Login)cycle.getPage("Login");
-		
+		Login login = (Login) cycle.getPage("Login");
+
 		// If on one of the Login pages (including Logout)
 		// then don't set a callback (this will cause the user
 		// to go to the MyLibrary page).
-	
+
 		if (getPageType() != LOGIN_PAGE_TYPE)
 			login.setCallback(new PageCallback(page));
-		
+
 		cycle.setPage(login);
 	}
-	
+
 	public IAsset getSearchIcon()
 	{
 		return getIcon(SEARCH_PAGE_TYPE);
 	}
-	
+
 	public IAsset getMyLibraryIcon()
 	{
 		return getIcon(LIBRARY_PAGE_TYPE);
 	}
-	
+
 	public IAsset getLoginIcon()
 	{
 		return getIcon(LOGIN_PAGE_TYPE);
 	}
-	
+
 	public boolean isLibraryPage()
 	{
 		return getPageType() == LIBRARY_PAGE_TYPE;
 	}
-	
+
 	/**
 	 *  Show the slash on library pages that aren't "MyLibrary".
 	 *
 	 */
-	
+
 	public boolean getShowSlash()
 	{
-		return ! getPage().getName().equals("MyLibrary");
+		return !getPage().getName().equals("MyLibrary");
 	}
-	
+
 	public IAsset getAdminIcon()
 	{
 		return getIcon(ADMIN_PAGE_TYPE);
 	}
-	
+
 	private IAsset getIcon(int type)
 	{
-		String name = 
-			(type == getPageType()) ? "dot" : "spacer";
-		
+		String name = (type == getPageType()) ? "dot" : "spacer";
+
 		return getAsset(name);
 	}
-	
+
 	/**
 	 *  Listener that invokes the {@link EditProfile} page to allow a user
 	 *  to edit thier name, etc.
 	 *
 	 */
-	
+
 	public void editProfile(IRequestCycle cycle)
 	{
 		EditProfile page;
-		
-		page = (EditProfile)cycle.getPage("EditProfile");
-		
+
+		page = (EditProfile) cycle.getPage("EditProfile");
+
 		page.beginEdit(cycle);
 	}
-	
+
 	/**
 	 *  Listener used to return a book.
 	 *
 	 */
-	
-    public void addNewBook(IRequestCycle cycle)
-    {
-		NewBook page = (NewBook)cycle.getPage("NewBook");
-		
+
+	public void addNewBook(IRequestCycle cycle)
+	{
+		NewBook page = (NewBook) cycle.getPage("NewBook");
+
 		// Setup defaults for the new book.
-		
+
 		page.getAttributes().put("lendable", Boolean.TRUE);
-		
+
 		cycle.setPage(page);
 	}
-	
+
 	public IAsset getSubheader()
 	{
 		if (subheader == null)
 		{
 			String name = "header-" + getPage().getName();
-			
+
 			subheader = getAsset(name);
-			
+
 			if (subheader == null)
 				subheader = getAsset("spacer");
 		}
-		
+
 		return subheader;
 	}
-	
-}	
+
+}

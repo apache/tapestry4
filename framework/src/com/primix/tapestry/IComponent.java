@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -45,17 +43,16 @@ import com.primix.tapestry.components.*;
  * @version $Id$
  */
 
-public interface IComponent
-	extends IRender
+public interface IComponent extends IRender
 {
-	
+
 	/**
 	 *  Adds an asset to the component.  This is invoked from the page loader.
 	 *
 	 */
-	
+
 	public void addAsset(String name, IAsset asset);
-	
+
 	/**
 	 *  Adds a component to a container.  Should only be called during the page
 	 *  loading process, which is responsible for any checking.
@@ -63,39 +60,39 @@ public interface IComponent
 	 *  @see IPageLoader
 	 *
 	 */
-	
+
 	public void addComponent(IComponent component);
-	
+
 	/**
 	 *  Adds a new renderable element to the receiver.  The element may be either
 	 *  another component, or static HTML.
 	 */
-	
+
 	public void addWrapped(IRender element);
-	
+
 	/**
 	 *  Returns the asset map for the component, which may be null.
 	 *
 	 *  <p>The return value is unmodifiable.
 	 */
-	
+
 	public Map getAssets();
-	
+
 	/**
 	 *  Returns the named asset, or null if not found.
 	 *
 	 */
-	
+
 	public IAsset getAsset(String name);
-	
+
 	/**
 	 *  Returns the binding with the given name or null if not found.
 	 *
 	 *  <p>Bindings are added to a component using {@link #setBinding(String,IBinding)}.
 	 */
-	
+
 	public IBinding getBinding(String name);
-	
+
 	/**
 	 *  Returns a {@link Collection} of the names of all bindings (which includes
 	 *  bindings for both formal and informal parameters).
@@ -104,9 +101,9 @@ public interface IComponent
 	 *  or may simply be empty for a component with no bindings.
 	 *
 	 */
-	
+
 	public Collection getBindingNames();
-	
+
 	/**
 	 *  Returns a {@link Map} of the {@link IBinding bindings} for this component; this includes informal parameters
 	 *  as well as formal bindings.
@@ -114,9 +111,9 @@ public interface IComponent
 	 *  @since 1.0.5
 	 *
 	 */
-	
+
 	public Map getBindings();
-	
+
 	/**
 	 *  Retrieves an contained component by its id.
 	 *  Contained components have unique ids within their container.
@@ -125,9 +122,9 @@ public interface IComponent
 	 *  component does not exist.
 	 *
 	 */
-	
+
 	public IComponent getComponent(String id);
-	
+
 	/**
 	 *  Returns the component which embeds the receiver.  All components are contained within
 	 *  other components, with the exception of the root page component.
@@ -135,27 +132,26 @@ public interface IComponent
 	 *  <p>A page returns null.
 	 *
 	 */
-	
+
 	public IComponent getContainer();
-	
+
 	/**
 	 *  Sets the container of the component.    This is write-once,
 	 *  an attempt to change it later will throw an {@link ApplicationRuntimeException}.
 	 *
 	 */
-	
-	
+
 	public void setContainer(IComponent value);
-	
+
 	/**
 	 *  Returns a string identifying the name of the page and the id path of the reciever within
 	 *  the page.  Pages simply return their name.
 	 *
 	 *  @see #getIdPath()
 	 */
-	
+
 	public String getExtendedId();
-	
+
 	/**
 	 *  Returns the simple id of the component, as defined in its specification.
 	 *
@@ -165,17 +161,17 @@ public interface IComponent
 	 *  <p>A  {@link IPage page} will always return null.
 	 *
 	 */
-	
+
 	public String getId();
-	
+
 	/**
 	 *  Sets the id of the component.    This is write-once,
 	 *  an attempt to change it later will throw an {@link ApplicationRuntimeException}.
 	 *
 	 */
-	
+
 	public void setId(String value);
-	
+
 	/**
 	 *  Returns the qualified id of the component.  This represents a path from the
 	 *  {@link IPage page} to
@@ -188,49 +184,49 @@ public interface IComponent
 	 *
 	 *  @see #getId()
 	 */
-	
+
 	public String getIdPath();
-	
+
 	/**
 	 *  Returns the page which ultimately contains the receiver.  A page will return itself.
 	 *
 	 */
-	
+
 	public IPage getPage();
-	
+
 	/**
 	 *  Sets the page which ultimiately contains the component.  This is write-once,
 	 *  an attempt to change it later will throw an {@link ApplicationRuntimeException}.
 	 *
 	 */
-	
+
 	public void setPage(IPage value);
-	
+
 	/**
 	 *  Returns the specification which defines the component.
 	 *
 	 */
-	
+
 	public ComponentSpecification getSpecification();
-	
+
 	/**
 	 *  Sets the specification used by the component.  This is write-once, an attempt
 	 *  to change it later will throw an {@link ApplicationRuntimeException}.
 	 *
 	 */
-	
+
 	public void setSpecification(ComponentSpecification value);
-	
+
 	/**
 	 *  Invoked to make the receiver render any elements it wraps.  This is typically
 	 *  invoked by the receiver itself.  This method is public so that the
 	 *  {@link InsertWrapped} component may operate.
 	 *
 	 */
-	
+
 	public void renderWrapped(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException;
-	
+
 	/**
 	 *  Adds a binding to a container.  Should only be called during the page
 	 *  loading process (which is responsible for eror checking).
@@ -238,9 +234,9 @@ public interface IComponent
 	 *  @see IPageLoader
 	 *
 	 */
-	
+
 	public void setBinding(String name, IBinding binding);
-	
+
 	/**
 	 *  Returns the contained components as an unmodifiable {@link Map}.  This
 	 *  allows peer components to work together without directly involving their
@@ -256,10 +252,10 @@ public interface IComponent
 	 *  component contains no other components.
 	 *
 	 */
-	
+
 	public Map getComponents();
-	
-    /**
+
+	/**
 	 *  Allows a component to finish any setup after it has been constructed.
 	 *
 	 *  <p>The exact timing is not
@@ -273,9 +269,10 @@ public interface IComponent
 	 *
 	 * @since 0.2.12
 	 */
-	
-    public void finishLoad(IPageLoader loader, ComponentSpecification specification)
-		throws PageLoaderException;
-	
-}
 
+	public void finishLoad(
+		IPageLoader loader,
+		ComponentSpecification specification)
+		throws PageLoaderException;
+
+}

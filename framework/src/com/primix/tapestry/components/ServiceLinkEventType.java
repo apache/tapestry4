@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,12 +18,12 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  */
- 
+
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.util.*;
@@ -40,67 +38,66 @@ import com.primix.tapestry.util.*;
  *
  */
 
-public class ServiceLinkEventType
-extends Enum
+public class ServiceLinkEventType extends Enum
 {
 	private String attributeName;
-	
+
 	/**
 	 *  Type for <code>onMouseOver</code>.  This may also be called "focus".
 	 *
 	 */
-	
-	public static final ServiceLinkEventType MOUSE_OVER
-		= new ServiceLinkEventType("MOUSE_OVER", "onMouseOver");
-	
+
+	public static final ServiceLinkEventType MOUSE_OVER =
+		new ServiceLinkEventType("MOUSE_OVER", "onMouseOver");
+
 	/**
 	 * Type for <code>onMouseOut</code>.  This may also be called "blur".
 	 *
 	 */
-	
-	public static final ServiceLinkEventType MOUSE_OUT
-		= new ServiceLinkEventType("MOUSE_OUT", "onMouseOut");
-	
+
+	public static final ServiceLinkEventType MOUSE_OUT =
+		new ServiceLinkEventType("MOUSE_OUT", "onMouseOut");
+
 	/**
 	 * Type for <code>onClick</code>.
 	 *
 	 * @since 1.0.1
 	 *
 	 */
-	
-	public static final ServiceLinkEventType CLICK
-		= new ServiceLinkEventType("CLICK", "onClick");
-	
+
+	public static final ServiceLinkEventType CLICK =
+		new ServiceLinkEventType("CLICK", "onClick");
+
 	/**
 	 * Type for <code>onDblClick</code>.
 	 *
 	 * @since 1.0.1
 	 *
 	 */
-	
-	public static final ServiceLinkEventType DOUBLE_CLICK
-		= new ServiceLinkEventType("DOUBLE_CLICK", "onDblClick");
-	
+
+	public static final ServiceLinkEventType DOUBLE_CLICK =
+		new ServiceLinkEventType("DOUBLE_CLICK", "onDblClick");
+
 	/**
 	 * Type for <code>onMouseDown</code>.
 	 *
 	 * @since 1.0.1.
 	 *
 	 */
-	
-	public static final ServiceLinkEventType MOUSE_DOWN
-		= new ServiceLinkEventType("MOUSE_DOWN", "onMouseDown");
-	
+
+	public static final ServiceLinkEventType MOUSE_DOWN =
+		new ServiceLinkEventType("MOUSE_DOWN", "onMouseDown");
+
 	/**
 	 * Type for <code>onMouseUp</code>.
 	 *
 	 * @since 1.0.1
 	 *
 	 */
-	
-	public static final ServiceLinkEventType MOUSE_UP
-		= new ServiceLinkEventType("MOUSE_UP", "onMouseUp");
-	
+
+	public static final ServiceLinkEventType MOUSE_UP =
+		new ServiceLinkEventType("MOUSE_UP", "onMouseUp");
+
 	/**
 	 *  Constructs a new type of event.  The name should match the
 	 *  static final variable (i.e., MOUSE_OVER) and the attributeName
@@ -109,20 +106,20 @@ extends Enum
 	 *  <p>This method is protected so that subclasses can be created
 	 *  to provide additional managed event types.
 	 */
-	 
+
 	protected ServiceLinkEventType(String name, String attributeName)
 	{
 		super(name);
-		
+
 		this.attributeName = attributeName;
 	}
-	
+
 	/**
 	 *  Returns the name of the HTML attribute corresponding to this
 	 *  type.
 	 *
 	 */
-	
+
 	public String getAttributeName()
 	{
 		return attributeName;
@@ -132,5 +129,5 @@ extends Enum
 	{
 		return getSingleton();
 	}
-	
+
 }

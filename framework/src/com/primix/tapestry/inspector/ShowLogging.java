@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -20,12 +18,11 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  */
-
 
 package com.primix.tapestry.inspector;
 
@@ -45,9 +42,7 @@ import org.apache.log4j.*;
  *  @since 0.2.9
  */
 
-public class ShowLogging
-	extends BaseComponent
-	implements PageDetachListener
+public class ShowLogging extends BaseComponent implements PageDetachListener
 {
 	private Category category;
 	private String error;
@@ -55,180 +50,181 @@ public class ShowLogging
 	private IValidationDelegate validationDelegate;
 	private IPropertySelectionModel rootPriorityModel;
 	private IPropertySelectionModel priorityModel;
-	
+
 	/**
 	 *  Registers this component as a {@link PageDetachListener}.
 	 *
 	 *  @since 1.0.5
 	 *
 	 */
-	
+
 	protected void finishLoad()
 	{
 		page.addPageDetachListener(this);
 	}
-	
+
 	/**
 	 *  Clears out everything when the page is detached.
 	 *
 	 *  @since 1.0.5
 	 *
 	 */
-	
+
 	public void pageDetached(PageEvent event)
 	{
 		category = null;
 		error = null;
 		newCategory = null;
 	}
-	
-	private class ValidationDelegate
-		extends BaseValidationDelegate
+
+	private class ValidationDelegate extends BaseValidationDelegate
 	{
-		public void invalidField(IValidatingTextField field,
-				ValidationConstraint constraint,
-				String defaultErrorMessage)
+		public void invalidField(
+			IValidatingTextField field,
+			ValidationConstraint constraint,
+			String defaultErrorMessage)
 		{
 			if (error == null)
 				error = defaultErrorMessage;
 		}
-		
-		public void writeErrorSuffix(IValidatingTextField field,
-				IResponseWriter writer,
-				IRequestCycle cycle)
+
+		public void writeErrorSuffix(
+			IValidatingTextField field,
+			IResponseWriter writer,
+			IRequestCycle cycle)
 		{
 			writer.begin("span");
 			writer.attribute("class", "error");
 			writer.print("**");
 			writer.end();
 		}
-		
+
 	}
-	
+
 	public String getError()
 	{
 		return error;
 	}
-	
+
 	public void setError(String value)
 	{
 		error = value;
 	}
-	
+
 	public String getNewCategory()
 	{
 		return newCategory;
 	}
-	
+
 	public void setNewCategory(String value)
 	{
 		newCategory = value;
 	}
-	
+
 	public void setCategoryName(String value)
 	{
 		category = Category.getInstance(value);
 	}
-	
+
 	public Category getCategory()
 	{
 		return category;
 	}
-	
+
 	/**
 	 *  Returns a sorted list of all known categorys.
 	 *
 	 */
-	
+
 	public List getCategoryNames()
 	{
 		List result = new ArrayList();
 		Enumeration e;
-		
+
 		e = Category.getCurrentCategories();
 		while (e.hasMoreElements())
 		{
-			Category c = (Category)e.nextElement();
-			
+			Category c = (Category) e.nextElement();
+
 			result.add(c.getName());
 		}
-		
+
 		Collections.sort(result);
-		
+
 		return result;
 	}
-	
+
 	public Category getRootCategory()
 	{
 		return Category.getRoot();
 	}
-	
+
 	/**
 	 *  Returns a {@link IPropertySelectionModel} for {@link Priority}
 	 *  that does not allow a null value to be selected.
 	 *
 	 */
-	
+
 	public IPropertySelectionModel getRootPriorityModel()
 	{
 		if (rootPriorityModel == null)
 			rootPriorityModel = new PriorityModel(false);
-		
+
 		return rootPriorityModel;
 	}
-	
+
 	/**
 	 *  Returns a {@link IPropertySelectionModel} for {@link Priority}
 	 *  include a null option.
 	 *
 	 */
-	
+
 	public IPropertySelectionModel getPriorityModel()
 	{
 		if (priorityModel == null)
 			priorityModel = new PriorityModel();
-		
+
 		return priorityModel;
 	}
-	
+
 	public IValidationDelegate getValidationDelegate()
 	{
 		if (validationDelegate == null)
 			validationDelegate = new ValidationDelegate();
-		
+
 		return validationDelegate;
 	}
-	
+
 	public void priorityChange(IRequestCycle cycle)
 	{
 		// Do nothing.  This will redisplay the logging page after the
 		// priorities are updated.
 	}
-	
+
 	public void addNewCategory(IRequestCycle cycle)
 	{
 		// If the validating text field has an error, then go no further.
-		
+
 		if (error != null)
 			return;
-		
+
 		IValidatingTextField field =
-			(IValidatingTextField)getComponent("inputNewCategory");
-		
+			(IValidatingTextField) getComponent("inputNewCategory");
+
 		if (Category.exists(newCategory) != null)
 		{
 			error = "Category " + newCategory + " already exists.";
 			field.setError(true);
 			return;
 		}
-		
+
 		// Force the new category into existence
-		
+
 		Category.getInstance(newCategory);
-		
+
 		// Clear the field
 		newCategory = null;
 		field.refresh();
-		
+
 	}
 }

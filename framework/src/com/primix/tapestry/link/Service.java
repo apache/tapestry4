@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -111,7 +109,6 @@ import com.primix.tapestry.*;
  * @version $Id$
  */
 
-
 public class Service extends AbstractServiceLink
 {
 	private IBinding serviceBinding;
@@ -142,21 +139,19 @@ public class Service extends AbstractServiceLink
 		if (value.isStatic())
 			serviceValue = value.getString();
 	}
-	
+
 	public IBinding getContextBinding()
 	{
 		return contextBinding;
 	}
-	
+
 	public void setContextBinding(IBinding value)
 	{
 		contextBinding = value;
 	}
-	
 
 	protected String[] getContext(IRequestCycle cycle)
 	{
 		return Direct.getContext(contextBinding);
 	}
 }
-

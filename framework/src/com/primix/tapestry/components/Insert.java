@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -72,43 +70,42 @@ import java.text.Format;
  * @version $Id$
  */
 
-
 public class Insert extends AbstractComponent
 {
 	private IBinding valueBinding;
 	private IBinding formatBinding;
-    private IBinding rawBinding;
-    private boolean staticRawValue;
-    private boolean rawValue;
+	private IBinding rawBinding;
+	private boolean staticRawValue;
+	private boolean rawValue;
 
 	public IBinding getFormatBinding()
 	{
 		return formatBinding;
 	}
-	
+
 	public void setFormatBinding(IBinding value)
 	{
 		formatBinding = value;
 	}
-	
+
 	public IBinding getValueBinding()
 	{
 		return valueBinding;
 	}
 
-    public IBinding getRawBinding()
-    {
-        return rawBinding;
-    }
+	public IBinding getRawBinding()
+	{
+		return rawBinding;
+	}
 
-    public void setRawBinding(IBinding value)
-    {
-        rawBinding = value;
-        staticRawValue = value.isStatic();
+	public void setRawBinding(IBinding value)
+	{
+		rawBinding = value;
+		staticRawValue = value.isStatic();
 
-        if (staticRawValue)
-            rawValue = value.getBoolean();
-    }
+		if (staticRawValue)
+			rawValue = value.getBoolean();
+	}
 
 	/**
 	*  Prints its value parameter, possibly formatted by its format parameter.
@@ -117,20 +114,21 @@ public class Insert extends AbstractComponent
 	*  <li>If the cycle is rewinding, then this method does nothing.
 	*  <li>If both the value is null, then this method does nothing
 	*  <li>If the format is non-null, then {@link Format#format(Object)} is invoked and
-    *  the resulting String is what's inserted.
-    *  <li>The method will use either {@link IResponseWriter#print(String)} or
-    *  {@link IResponseWriter#printRaw(String)}, depending on the value
-    *  of the raw parameter.
+	*  the resulting String is what's inserted.
+	*  <li>The method will use either {@link IResponseWriter#print(String)} or
+	*  {@link IResponseWriter#printRaw(String)}, depending on the value
+	*  of the raw parameter.
 	*  </ul>
 	*
 	*/
 
-	public void render(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
+	public void render(IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException
 	{
 		Object value = null;
 		Format format = null;
 		String insert;
-        boolean raw = false;
+		boolean raw = false;
 
 		if (cycle.isRewinding())
 			return;
@@ -142,42 +140,45 @@ public class Insert extends AbstractComponent
 		{
 			try
 			{
-				format = (Format)formatBinding.getObject("format", Format.class);
+				format = (Format) formatBinding.getObject("format", Format.class);
 			}
 			catch (BindingException ex)
-			{
-				throw new RequestCycleException(this,  ex);
+			
+				{
+				throw new RequestCycleException(this, ex);
 			}
 		}
-		
+
 		if (value == null)
 			return;
-			
+
 		if (format == null)
 			insert = value.toString();
 		else
-        {
-            try
-            {
-			    insert = format.format(value);
-            }
-            catch (Exception e)
-            {
-                throw new RequestCycleException("Unable to format object " + value + ".",
-                        this, e);
-            }
-        }
+		{
+			try
+			{
+				insert = format.format(value);
+			}
+			catch (Exception e)
+			{
+				throw new RequestCycleException(
+					"Unable to format object " + value + ".",
+					this,
+					e);
+			}
+		}
 
-        if (staticRawValue)
-            raw = rawValue;
-        else if (rawBinding != null)
-            raw = rawBinding.getBoolean();
+		if (staticRawValue)
+			raw = rawValue;
+		else if (rawBinding != null)
+			raw = rawBinding.getBoolean();
 
-        if (raw)
-            writer.printRaw(insert);
-        else
-		    writer.print(insert);
-			
+		if (raw)
+			writer.printRaw(insert);
+		else
+			writer.print(insert);
+
 	}
 
 	public void setValueBinding(IBinding value)
@@ -185,4 +186,3 @@ public class Insert extends AbstractComponent
 		valueBinding = value;
 	}
 }
-

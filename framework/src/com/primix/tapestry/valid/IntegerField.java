@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -135,169 +133,150 @@ import java.text.*;
  *
  */
 
-public class IntegerField
-extends AbstractValidatingTextField
+public class IntegerField extends AbstractValidatingTextField
 {
-    private IBinding valueBinding;
+	private IBinding valueBinding;
 
-    private IBinding minimumBinding;
-    private boolean staticMinimum;
-    private int minimumValue;
+	private IBinding minimumBinding;
+	private boolean staticMinimum;
+	private int minimumValue;
 
-    private IBinding maximumBinding;
-    private boolean staticMaximum;
-    private int maximumValue;
+	private IBinding maximumBinding;
+	private boolean staticMaximum;
+	private int maximumValue;
 
-    public IBinding getValueBinding()
-    {
-        return valueBinding;
-    }
+	public IBinding getValueBinding()
+	{
+		return valueBinding;
+	}
 
-    public void setValueBinding(IBinding value)
-    {
-        valueBinding = value;
-    }
+	public void setValueBinding(IBinding value)
+	{
+		valueBinding = value;
+	}
 
-    public IBinding getMinimumBinding()
-    {
-        return minimumBinding;
-    }
+	public IBinding getMinimumBinding()
+	{
+		return minimumBinding;
+	}
 
-    public void setMinimumBinding(IBinding value)
-    {
-        minimumBinding = value;
+	public void setMinimumBinding(IBinding value)
+	{
+		minimumBinding = value;
 
-        staticMinimum = value.isStatic();
-        if (staticMinimum)
-            minimumValue = value.getInt();
-    }
+		staticMinimum = value.isStatic();
+		if (staticMinimum)
+			minimumValue = value.getInt();
+	}
 
-    public IBinding getMaximumBinding()
-    {
-        return maximumBinding;
-    }
+	public IBinding getMaximumBinding()
+	{
+		return maximumBinding;
+	}
 
-    public void setMaximumBinding(IBinding value)
-    {
-        maximumBinding = value;
+	public void setMaximumBinding(IBinding value)
+	{
+		maximumBinding = value;
 
-        staticMaximum = value.isStatic();
-        if (staticMaximum)
-            maximumValue = value.getInt();
-    }
+		staticMaximum = value.isStatic();
+		if (staticMaximum)
+			maximumValue = value.getInt();
+	}
 
-    /**
-     *  Reads the current value of the text parameter.
-     *
-     */
+	/**
+	 *  Reads the current value of the text parameter.
+	 *
+	 */
 
-    protected String read()
-    {
-        // Get the value binding and convert it from an Integer to a String.
+	protected String read()
+	{
+		// Get the value binding and convert it from an Integer to a String.
 
-        return valueBinding.getString();
-    }
+		return valueBinding.getString();
+	}
 
+	protected void update(String value)
+	{
+		int minimumLength = 0;
+		int length;
+		String errorMessage;
+		int scalarValue;
+		int minimum;
+		int maximum;
 
+		length = value.length();
 
-    protected void update(String value)
-    {
-        int minimumLength = 0;
-        int length;
-        String errorMessage;
-        int scalarValue;
-        int minimum;
-        int maximum;
+		if (length == 0)
+		{
+			if (isRequired())
+			{
+				errorMessage = getString("field-is-required", getDisplayName());
 
-        length = value.length();
+				notifyDelegate(ValidationConstraint.REQUIRED, errorMessage);
 
-        if (length == 0)
-        {
-            if (isRequired())
-            {
-                errorMessage =
-                    getString("field-is-required", getDisplayName());
-
-                notifyDelegate(ValidationConstraint.REQUIRED,
-                    errorMessage);
-
-                return;
-            }
-
-            // Null field, not required, don't update anything.
-
-            return;
-        }
-
-        try
-        {
-            scalarValue = Integer.parseInt(value);
-        }
-        catch (NumberFormatException e)
-        {
-            errorMessage = getString("invalid-int-format", getDisplayName());
-    
-            notifyDelegate(ValidationConstraint.NUMBER_FORMAT,
-                        errorMessage);
-
-            return;
-        }
-
-        // Check it within the given range.
-
-        if (minimumBinding != null)
-        {
-            if (staticMinimum)
-                minimum = minimumValue;
-            else
-                minimum = minimumBinding.getInt();
-
-            if (scalarValue < minimum)
-            {
-                errorMessage = getString("number-too-small", getDisplayName(),
-                    new Integer(minimum));
-
-                notifyDelegate(ValidationConstraint.TOO_SMALL,
-                        errorMessage);
-				
 				return;
-            }
-        }
+			}
 
-        if (maximumBinding != null)
-        {
-            if (staticMaximum)
-                maximum = maximumValue;
-            else
-                maximum = maximumBinding.getInt();
+			// Null field, not required, don't update anything.
 
-            if (scalarValue > maximum)
-            {
-                errorMessage = getString("number-too-large", getDisplayName(),
-                    new Integer(maximum));
+			return;
+		}
 
-                notifyDelegate(ValidationConstraint.TOO_LARGE,
-                        errorMessage);
-				
+		try
+		{
+			scalarValue = Integer.parseInt(value);
+		}
+		catch (NumberFormatException e)
+		{
+			errorMessage = getString("invalid-int-format", getDisplayName());
+
+			notifyDelegate(ValidationConstraint.NUMBER_FORMAT, errorMessage);
+
+			return;
+		}
+
+		// Check it within the given range.
+
+		if (minimumBinding != null)
+		{
+			if (staticMinimum)
+				minimum = minimumValue;
+			else
+				minimum = minimumBinding.getInt();
+
+			if (scalarValue < minimum)
+			{
+				errorMessage =
+					getString("number-too-small", getDisplayName(), new Integer(minimum));
+
+				notifyDelegate(ValidationConstraint.TOO_SMALL, errorMessage);
+
 				return;
-            }
-        }
+			}
+		}
 
+		if (maximumBinding != null)
+		{
+			if (staticMaximum)
+				maximum = maximumValue;
+			else
+				maximum = maximumBinding.getInt();
 
-        // Valid!  Update through our binding.
+			if (scalarValue > maximum)
+			{
+				errorMessage =
+					getString("number-too-large", getDisplayName(), new Integer(maximum));
 
-        valueBinding.setInt(scalarValue);
+				notifyDelegate(ValidationConstraint.TOO_LARGE, errorMessage);
 
-    }
+				return;
+			}
+		}
+
+		// Valid!  Update through our binding.
+
+		valueBinding.setInt(scalarValue);
+
+	}
 
 }
-
-
-
-
-
-
-
-
-
-

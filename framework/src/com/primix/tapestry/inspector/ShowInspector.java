@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,12 +18,11 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  */
-
 
 package com.primix.tapestry.inspector;
 
@@ -51,74 +48,72 @@ import com.primix.tapestry.html.*;
  *
  */
 
-
-public class ShowInspector 
-	extends BaseComponent
-	implements IDirect
+public class ShowInspector extends BaseComponent implements IDirect
 {
 	private IScript script;
 	private String movieURL;
 	private Map symbols;
-	
+
 	/**
 	 *  Gets the listener for the link component.
 	 *
 	 *  @since 1.0.5
 	 */
-	
+
 	public void trigger(IRequestCycle cycle, String[] context)
 		throws RequestCycleException
 	{
-		Inspector inspector = (Inspector)cycle.getPage("Inspector");
-		
+		Inspector inspector = (Inspector) cycle.getPage("Inspector");
+
 		inspector.inspect(getPage().getName(), cycle);
 	}
-	
+
 	/**
 	 *  Renders the script, then invokes the normal implementation.
 	 *
 	 *  @since 1.0.5
 	 */
-	
+
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		ScriptSession scriptSession;
-		
+
 		if (cycle.isRewinding())
 			return;
-		
+
 		if (script == null)
 		{
 			IEngine engine = page.getEngine();
 			IScriptSource source = engine.getScriptSource();
-		
+
 			try
 			{
-				script = source.getScript("/com/primix/tapestry/inspector/ShowInspector.script");
+				script =
+					source.getScript("/com/primix/tapestry/inspector/ShowInspector.script");
 			}
 			catch (ResourceUnavailableException ex)
 			{
 				throw new RequestCycleException(this, ex);
 			}
 		}
-		
+
 		if (symbols == null)
 			symbols = new HashMap();
 		else
 			symbols.clear();
-		
 
-		IEngineService service = page.getEngine().getService(IEngineService.DIRECT_SERVICE);
+		IEngineService service =
+			page.getEngine().getService(IEngineService.DIRECT_SERVICE);
 		Gesture g = service.buildGesture(cycle, this, null);
 		String URL = cycle.encodeURL(g.getFullURL(cycle));
-		
+
 		symbols.put("URL", URL);
 
 		HttpSession session = cycle.getRequestContext().getSession();
-		
+
 		try
-		{			
+		{
 			scriptSession = script.execute(symbols);
 		}
 		catch (ScriptException ex)
@@ -134,12 +129,12 @@ public class ShowInspector
 
 		if (body == null)
 			throw new RequestCycleException(
-				"ShowInspector component must be wrapped by a Body component.", this);
-		
+				"ShowInspector component must be wrapped by a Body component.",
+				this);
+
 		body.process(scriptSession);
 
 		super.render(writer, cycle);
 	}
 
-	
 }

@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -33,7 +31,7 @@ import java.io.*;
 
 // Appease Javadoc
 import com.primix.tapestry.form.*;
- 
+
 /**
  *  Inserts formatted text (possibly collected using a {@link Text} component.
  *  To maintain the line breaks provided originally, this component will
@@ -73,103 +71,105 @@ import com.primix.tapestry.form.*;
 
 public class InsertText extends AbstractComponent
 {
-    private IBinding textBinding;
-    private IBinding modeBinding;
-    private InsertTextMode modeValue;
+	private IBinding textBinding;
+	private IBinding modeBinding;
+	private InsertTextMode modeValue;
 
-    public IBinding getTextBinding()
-    {
-        return textBinding;
-    }
+	public IBinding getTextBinding()
+	{
+		return textBinding;
+	}
 
-    public void setTextBinding(IBinding value)
-    {
-        textBinding = value;
-    }
+	public void setTextBinding(IBinding value)
+	{
+		textBinding = value;
+	}
 
-    public IBinding getModeBinding()
-    {
-        return modeBinding;
-    }
-        
-    public void setModeBinding(IBinding value)
-    {
-        modeBinding = value;
+	public IBinding getModeBinding()
+	{
+		return modeBinding;
+	}
 
-        if (value.isStatic())
-            modeValue = (InsertTextMode)value.getObject("mode", InsertTextMode.class);
-    }
+	public void setModeBinding(IBinding value)
+	{
+		modeBinding = value;
+
+		if (value.isStatic())
+			modeValue = (InsertTextMode) value.getObject("mode", InsertTextMode.class);
+	}
 
 	public void render(IResponseWriter writer, IRequestCycle cycle)
-	throws RequestCycleException
+		throws RequestCycleException
+	
 	{
-        InsertTextMode mode = modeValue;
-        String text;
-        StringReader reader = null;
-        LineNumberReader lineReader = null;
-        int lineNumber = 0;
-        String line;
+		InsertTextMode mode = modeValue;
+		String text;
+		StringReader reader = null;
+		LineNumberReader lineReader = null;
+		int lineNumber = 0;
+		String line;
 
-        if (textBinding == null)
-            return;
+		if (textBinding == null)
+			return;
 
-        text = textBinding.getString();
-        if (text == null)
-            return;
+		text = textBinding.getString();
+		if (text == null)
+			return;
 
-        if (mode == null && modeBinding != null)
-            mode = (InsertTextMode)modeBinding.getObject("mode", InsertTextMode.class);
+		if (mode == null && modeBinding != null)
+			mode = (InsertTextMode) modeBinding.getObject("mode", InsertTextMode.class);
 
-        if (mode == null)
-            mode = InsertTextMode.BREAK;
+		if (mode == null)
+			mode = InsertTextMode.BREAK;
 
-        try
-        {
-            reader = new StringReader(text);
+		try
+		
+			{
+			reader = new StringReader(text);
 
-            lineReader = new LineNumberReader(reader);
+			lineReader = new LineNumberReader(reader);
 
-            while (true)
-            {
-                line = lineReader.readLine();
+			while (true)
+			{
+				line = lineReader.readLine();
 
-                // Exit loop at end of file.
+				// Exit loop at end of file.
 
-                if (line == null)
-                    break;
+				if (line == null)
+					break;
 
-                mode.writeLine(lineNumber, line, writer);
+				mode.writeLine(lineNumber, line, writer);
 
-                lineNumber++;
-            }
+				lineNumber++;
+			}
 
-        }
-        catch (IOException ex)
-        {
-            throw new RequestCycleException("Error converting text to lines (for InsertText).",
-                    this, ex);
-        }
-        finally
-        {
-            close(lineReader);
-            close(reader);
-        }
-
+		}
+		catch (IOException ex)
+		{
+			throw new RequestCycleException(
+				"Error converting text to lines (for InsertText).",
+				this,
+				ex);
+		}
+		finally
+		{
+			close(lineReader);
+			close(reader);
+		}
 
 	}
 
-    private void close(Reader reader)
-    {
-        if (reader == null)
-            return;
+	private void close(Reader reader)
+	{
+		if (reader == null)
+			return;
 
-        try
-        {
-            reader.close();
-        }
-        catch (IOException e)
-        {
-        }
-    }
+		try
+		{
+			reader.close();
+		}
+		catch (IOException e)
+		{
+		}
+	}
 }
-

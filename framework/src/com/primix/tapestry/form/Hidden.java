@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -80,90 +78,89 @@ import com.primix.tapestry.html.*;
  *  @version $Id$
  */
 
-
 public class Hidden extends AbstractFormComponent
 {
 	private IBinding valueBinding;
 	private IBinding listenerBinding;
 	private String name;
-	
+
 	public String getName()
 	{
 		return name;
 	}
-	
+
 	public IBinding getValueBinding()
 	{
 		return valueBinding;
 	}
-	
+
 	public void setValueBinding(IBinding value)
 	{
 		valueBinding = value;
 	}
-	
+
 	public IBinding getListenerBinding()
 	{
 		return listenerBinding;
 	}
-	
+
 	public void setListenerBinding(IBinding value)
 	{
 		listenerBinding = value;
 	}
-	
+
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		IActionListener listener;
-		
+
 		IForm form = getForm(cycle);
 		boolean formRewound = form.isRewinding();
-		
+
 		name = form.getElementId(this);
-		
+
 		// If the form containing the Hidden isn't rewound, then render.
-		
+
 		if (!formRewound)
 		{
 			// Optimiziation: if the page is rewinding (some other action or
 			// form was submitted), then don't bother rendering.
-			
+
 			if (cycle.isRewinding())
 				return;
-			
+
 			String value = valueBinding.getString();
-			
+
 			writer.beginEmpty("input");
 			writer.attribute("type", "hidden");
 			writer.attribute("name", name);
 			writer.attribute("value", value);
-			
+
 			return;
 		}
-		
+
 		String value = cycle.getRequestContext().getParameter(name);
-		
+
 		// A listener is not always necessary ... it's easy to code
 		// the synchronization as a side-effect of the accessor method.
-		
+
 		valueBinding.setString(value);
-		
+
 		if (listenerBinding == null)
 			return;
-		
+
 		try
 		{
-			listener = (IActionListener)listenerBinding.getObject("listener",
-					IActionListener.class);
+			listener =
+				(IActionListener) listenerBinding.getObject("listener", IActionListener.class);
 		}
 		catch (BindingException ex)
-		{
+		
+			{
 			throw new RequestCycleException(this, ex);
 		}
-		
+
 		if (listener != null)
 			listener.actionTriggered(this, cycle);
 	}
 }
-

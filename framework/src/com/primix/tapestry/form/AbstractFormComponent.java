@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -28,11 +26,10 @@
 
 package com.primix.tapestry.form;
 
-import com.primix.tapestry.*;
-
-// Appease Javadoc
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.html.*;
+import com.primix.tapestry.AbstractComponent;
+import com.primix.tapestry.IForm;
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.RequestCycleException;
 
 /**
  *  A base class for building components that correspond to HTML form elements.
@@ -45,7 +42,7 @@ import com.primix.tapestry.html.*;
  */
 
 public abstract class AbstractFormComponent
-    extends AbstractComponent
+	extends AbstractComponent
 	implements IFormComponent
 {
 	/**
@@ -54,26 +51,23 @@ public abstract class AbstractFormComponent
 	 *  @throws RequestCycleException if the component is not wrapped by a {@link Form}.
 	 *
 	 */
-	
-	public IForm getForm(IRequestCycle cycle)
-		throws RequestCycleException
+
+	public IForm getForm(IRequestCycle cycle) throws RequestCycleException
 	{
 		IForm result = Form.get(cycle);
-		
+
 		if (result == null)
 			throw new RequestCycleException(
 				"This component must be contained within a Form.",
 				this);
-		
+
 		return result;
 	}
-	
+
 	public IForm getForm()
 	{
 		return Form.get(page.getRequestCycle());
 	}
-	
+
 	abstract public String getName();
 }
-
-

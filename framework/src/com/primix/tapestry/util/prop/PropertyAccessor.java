@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,12 +18,12 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  */
- 
+
 package com.primix.tapestry.util.prop;
 
 import java.beans.*;
@@ -44,10 +42,10 @@ import org.apache.log4j.*;
  *
  * @see PropertyHelper
  */
- 
+
 class PropertyAccessor implements IPropertyAccessor
 {
-	private static final Category CAT = 
+	private static final Category CAT =
 		Category.getInstance(PropertyAccessor.class);
 
 	protected PropertyDescriptor pd;
@@ -56,20 +54,21 @@ class PropertyAccessor implements IPropertyAccessor
 	private Object[] args;
 
 	PropertyAccessor(PropertyDescriptor pd)
+	
 	{
 		this.pd = pd;
 
 		accessor = pd.getReadMethod();
 		mutator = pd.getWriteMethod();
 	}
-	
+
 	/** @since 1.0.6 **/
 
 	public String getName()
 	{
 		return pd.getName();
 	}
-	
+
 	/**
 	*
 	*  @throws MissingAccessorException if the class does not define an accessor method
@@ -89,8 +88,10 @@ class PropertyAccessor implements IPropertyAccessor
 		{
 			propertyName = pd.getName();
 
-			throw new MissingAccessorException("No accessor method for property " + propertyName
-				+ ".", target, propertyName);
+			throw new MissingAccessorException(
+				"No accessor method for property " + propertyName + ".",
+				target,
+				propertyName);
 		}
 
 		try
@@ -101,8 +102,8 @@ class PropertyAccessor implements IPropertyAccessor
 		{
 			String message;
 
-			message = "Could not invoke method " + accessor.getName() + " on " +
-				target + ".";
+			message =
+				"Could not invoke method " + accessor.getName() + " on " + target + ".";
 
 			throw new DynamicInvocationException(message, e);
 		}
@@ -118,8 +119,7 @@ class PropertyAccessor implements IPropertyAccessor
 
 	public boolean isReadWrite()
 	{
-		return (accessor != null) &&
-			(mutator != null);
+		return (accessor != null) && (mutator != null);
 	}
 
 	public boolean isWritable()
@@ -131,7 +131,7 @@ class PropertyAccessor implements IPropertyAccessor
 	{
 		return pd.getPropertyType();
 	}
-	
+
 	/**
 	*
 	*  @throws MissingAccessorException if the class does not define a mutator method
@@ -145,12 +145,15 @@ class PropertyAccessor implements IPropertyAccessor
 		{
 			String propertyName = pd.getName();
 
-			throw new MissingAccessorException("No mutator method for property " +
-				propertyName + ".", subject, propertyName);
+			throw new MissingAccessorException(
+				"No mutator method for property " + propertyName + ".",
+				subject,
+				propertyName);
 		}
 
 		if (CAT.isDebugEnabled())
-			CAT.debug("Setting property " + pd.getName() + " of " + subject + " to " + value);
+			CAT.debug(
+				"Setting property " + pd.getName() + " of " + subject + " to " + value);
 
 		// The array is lazily allocated and then held onto for any future work.
 		// This creates a window for multithreading problems.
@@ -159,22 +162,19 @@ class PropertyAccessor implements IPropertyAccessor
 			args = new Object[1];
 
 		args[0] = value;
-	
+
 		try
 		{
 			mutator.invoke(subject, args);
-			}	
+		}
 		catch (Exception e)
 		{
 			String message;
 
-			message = "Could not invoke method " + mutator.getName() + " on " +
-				subject + ".";
+			message =
+				"Could not invoke method " + mutator.getName() + " on " + subject + ".";
 
 			throw new DynamicInvocationException(message, e);
-			}
+		}
 	}
 }
-
-
-

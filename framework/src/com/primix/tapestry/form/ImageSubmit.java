@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -132,7 +130,6 @@ import com.primix.tapestry.html.*;
  *  @version $Id$
  */
 
-
 public class ImageSubmit extends AbstractFormComponent
 {
 	private IBinding imageBinding;
@@ -145,89 +142,88 @@ public class ImageSubmit extends AbstractFormComponent
 	private String staticName;
 	private Object staticTagValue;
 	private String name;
-	
+
 	public String getName()
 	{
 		return name;
 	}
-	
+
 	public void setImageBinding(IBinding value)
 	{
 		imageBinding = value;
 	}
-	
+
 	public IBinding getImageBinding()
 	{
 		return imageBinding;
 	}
-	
+
 	public void setPointBinding(IBinding value)
 	{
 		pointBinding = value;
 	}
-	
+
 	public IBinding getPointBinding()
 	{
 		return pointBinding;
 	}
-	
+
 	public IBinding getDisabledBinding()
 	{
 		return disabledBinding;
 	}
-	
+
 	public void setDisabledBinding(IBinding value)
 	{
 		disabledBinding = value;
 	}
-	
+
 	public IBinding getDisabledImageBinding()
 	{
 		return disabledImageBinding;
 	}
-	
+
 	public void setDisabledImageBinding(IBinding value)
 	{
 		disabledImageBinding = value;
 	}
-	
+
 	public void setSelectedBinding(IBinding value)
 	{
 		selectedBinding = value;
 	}
-	
+
 	public IBinding getSelectedBinding()
 	{
 		return selectedBinding;
 	}
-	
+
 	public void setTagBinding(IBinding value)
 	{
 		tagBinding = value;
-		
+
 		if (value.isStatic())
 			staticTagValue = value.getObject();
 	}
-	
+
 	public IBinding getTagBinding()
 	{
 		return tagBinding;
 	}
-	
+
 	public IBinding getNameBinding()
 	{
 		return nameBinding;
 	}
-	
+
 	public void setNameBinding(IBinding value)
 	{
 		nameBinding = value;
-		
+
 		if (value.isStatic())
 			staticName = value.getString();
 	}
-	
-	
+
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
@@ -240,128 +236,125 @@ public class ImageSubmit extends AbstractFormComponent
 		String imageURL;
 		boolean disabled = false;
 		Object tagValue = staticTagValue;
-		
+
 		IForm form = getForm(cycle);
-		
+
 		boolean rewinding = form.isRewinding();
-		
+
 		name = null;
-		
+
 		if (nameBinding != null)
 		{
 			String baseId = staticName;
 			if (baseId == null)
 				baseId = nameBinding.getString();
-			
+
 			if (baseId != null)
 				name = form.getElementId(baseId);
 		}
 
 		if (name == null)
 			name = form.getElementId(this);
-		
+
 		if (disabledBinding != null)
 			disabled = disabledBinding.getBoolean();
-		
+
 		if (rewinding)
 		{
 			// If disabled, do nothing.
-			
+
 			if (disabled)
 				return;
-			
+
 			context = cycle.getRequestContext();
-			
+
 			// Image clicks get submitted as two request parameters: 
 			// foo.x and foo.y
-			
+
 			parameterName = name + ".x";
-			
+
 			value = context.getParameter(parameterName);
-			
+
 			if (value == null)
 				return;
-			
+
 			// The point parameter is not really used, unless the
 			// ImageButton is used for its original purpose (as a kind
 			// of image map).  In modern usage, we only care about
 			// whether the user clicked on the image (and thus submitted
 			// the form), not where in the image the user actually clicked.
-			
+
 			if (pointBinding != null)
 			{
 				x = Integer.parseInt(value);
-				
+
 				parameterName = name + ".y";
 				value = context.getParameter(parameterName);
-				
+
 				y = Integer.parseInt(value);
-				
+
 				pointBinding.setObject(new Point(x, y));
 			}
-			
+
 			// Notify the application, by setting the select parameter
 			// to the tag parameter.
-			
+
 			if (selectedBinding == null)
 				return;
-			
+
 			if (tagBinding == null)
 				throw new RequestCycleException(
 					"The tag parameter is required if the selected parameter is bound.",
 					this);
-			
-			
+
 			// OK, now to notify the application code (via the parameters)
 			// that *this* ImageButton was selected.  We do this by applying
 			// a tag (presumably, specific to the ImageButton in question)
 			// to the selected binding.  When the containing Form's listener
 			// is invoked, it can determine which (if any) ImageButton
 			// (or Submit) was clicked.
-			
-			
+
 			if (tagValue == null)
 				tagValue = tagBinding.getObject();
-			
+
 			if (tagValue == null)
 				throw new RequiredParameterException(this, "tag", tagBinding);
-			
-			selectedBinding.setObject(tagValue);                        
+
+			selectedBinding.setObject(tagValue);
 		}
-		
+
 		// Not rewinding, do the real render
-		
+
 		if (disabled && disabledImageBinding != null)
-			image = (IAsset)disabledImageBinding.getObject("disabledImage", IAsset.class);
-		
+			image = (IAsset) disabledImageBinding.getObject("disabledImage", IAsset.class);
+
 		if (image == null)
-		{
-			image = (IAsset)imageBinding.getObject("image", IAsset.class);
-			
+		
+			{
+			image = (IAsset) imageBinding.getObject("image", IAsset.class);
+
 			if (image == null)
 				throw new RequiredParameterException(this, "image", imageBinding);
-		}                                
-		
+		}
+
 		imageURL = image.buildURL(cycle);
-		
+
 		writer.beginEmpty("input");
 		writer.attribute("type", "image");
 		writer.attribute("name", name);
-		
+
 		if (disabled)
 			writer.attribute("disabled");
-		
+
 		// NN4 places a border unless you tell it otherwise.
 		// IE ignores the border attribute and never shows a border.
-		
+
 		writer.attribute("border", 0);
-		
+
 		writer.attribute("src", imageURL);
-		
+
 		generateAttributes(writer, cycle);
-		
+
 		writer.closeTag();
-	}        
+	}
 }
-
-

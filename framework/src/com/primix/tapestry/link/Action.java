@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -105,113 +103,110 @@ import com.primix.tapestry.*;
  * @version $Id$
  */
 
-
-public class Action 
-	extends AbstractServiceLink
-	implements IAction
+public class Action extends AbstractServiceLink implements IAction
 {
 	private IBinding listenerBinding;
 	private IBinding statefulBinding;
 	private boolean staticStateful;
 	private boolean statefulValue;
-	
+
 	// Each instance gets its own context array.
-	
+
 	private String[] context;
-	
+
 	public IBinding getListenerBinding()
 	{
 		return listenerBinding;
 	}
-	
+
 	public void setListenerBinding(IBinding value)
 	{
 		listenerBinding = value;
 	}
-	
+
 	private IActionListener getListener(IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		IActionListener result;
-		
+
 		try
 		{
-			result = (IActionListener)listenerBinding.getObject("listener", IActionListener.class);
+			result =
+				(IActionListener) listenerBinding.getObject("listener", IActionListener.class);
 		}
 		catch (BindingException ex)
-		{
+		
+			{
 			throw new RequestCycleException(this, ex);
 		}
-		
+
 		if (result == null)
 			throw new RequiredParameterException(this, "listener", listenerBinding);
-		
+
 		return result;
 	}
-	
+
 	public void setStatefulBinding(IBinding value)
 	{
 		statefulBinding = value;
-		
+
 		staticStateful = value.isStatic();
 		if (staticStateful)
 			statefulValue = value.getBoolean();
 	}
-	
+
 	public IBinding getStatefulBinding()
 	{
 		return statefulBinding;
 	}
-	
+
 	/**
 	 *  Returns true if the stateful parameter is bound to
 	 *  a true value.  If stateful is not bound, also returns
 	 *  the default, true.
 	 *
 	 */
-	
+
 	public boolean getRequiresSession()
 	{
 		if (staticStateful)
 			return statefulValue;
-		
+
 		if (statefulBinding != null)
 			return statefulBinding.getBoolean();
-		
+
 		return true;
 	}
 	/**
 	 *  Returns {@link IEngineService#ACTION_SERVICE}.
 	 */
-	
+
 	protected String getServiceName(IRequestCycle cycle)
 	{
 		return IEngineService.ACTION_SERVICE;
 	}
-	
-	
-	protected String[] getContext(IRequestCycle cycle)
-		throws RequestCycleException
+
+	protected String[] getContext(IRequestCycle cycle) throws RequestCycleException
 	{
 		String actionId;
 		IActionListener listener;
-		
+
 		actionId = cycle.getNextActionId();
-		
+
 		if (cycle.isRewound(this))
 		{
 			listener = getListener(cycle);
-			
+
 			listener.actionTriggered(this, cycle);
-			
+
 			throw new RenderRewoundException(this);
 		}
-		
+
 		if (context == null)
 			context = new String[1];
-		
+
 		context[0] = actionId;
-		
+
 		return context;
 	}
 }

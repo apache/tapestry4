@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -28,7 +26,6 @@
 
 package com.primix.tapestry.bean;
 
-	
 /**
  *  Base class for initializing a property of a JavaBean.
  *
@@ -36,20 +33,18 @@ package com.primix.tapestry.bean;
  *  @version $Id$
  *  @since 1.0.5
  */
-	
-abstract public class AbstractBeanInitializer
-	implements IBeanInitializer
+
+abstract public class AbstractBeanInitializer implements IBeanInitializer
 {
 	protected String propertyName;
-	
+
 	public AbstractBeanInitializer(String propertyName)
 	{
 		this.propertyName = propertyName;
 	}
-	
+
 	public String getPropertyName()
 	{
 		return propertyName;
 	}
 }
-

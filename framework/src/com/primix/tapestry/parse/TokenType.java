@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -39,37 +37,37 @@ import com.primix.tapestry.util.Enum;
  * @author Howard Ship
  * @version $Id$
  */
- 
+
 public class TokenType extends Enum
 {
-    /**
-     *  Raw HTML text.
-     *
-     */
-	 
-    public static final TokenType TEXT = new TokenType("TEXT");
-	
-    /**
-     *  The opening tag of a JWC element: &lt;jwc id="name"&gt;
-     *
-     */
-	 
-    public static final TokenType OPEN = new TokenType("OPEN");
+	/**
+	 *  Raw HTML text.
+	 *
+	 */
 
-    /**
-     *  The closing tag of a JWC element: &lt;/jwc&gt;
-     *
-     */
-	 
-    public static final TokenType CLOSE = new TokenType("CLOSE");
+	public static final TokenType TEXT = new TokenType("TEXT");
 
-    private TokenType(String name)
-    {
+	/**
+	 *  The opening tag of a JWC element: &lt;jwc id="name"&gt;
+	 *
+	 */
+
+	public static final TokenType OPEN = new TokenType("OPEN");
+
+	/**
+	 *  The closing tag of a JWC element: &lt;/jwc&gt;
+	 *
+	 */
+
+	public static final TokenType CLOSE = new TokenType("CLOSE");
+
+	private TokenType(String name)
+	{
 		super(name);
-    }
-    
-    private Object readResolve()
-    {
-    	return getSingleton();
-    }
+	}
+
+	private Object readResolve()
+	{
+		return getSingleton();
+	}
 }

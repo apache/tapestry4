@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix Solutions
- * One Arsenal Marketplace
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -38,24 +36,22 @@ import java.rmi.*;
  *  @author Howard Ship
  *
  */
- 
+
 public interface IBookQuery extends EJBObject
 {
 	/**
 	 *  Returns the total number of results rows in the query.
 	 *
 	 */
-	 
-	public int getResultCount()
-	throws RemoteException;
+
+	public int getResultCount() throws RemoteException;
 
 	/**
 	 *  Returns a selected subset of the results.
 	 *
 	 */
-	 
-	public Book[] get(int offset, int length)
-	throws RemoteException;	
+
+	public Book[] get(int offset, int length) throws RemoteException;
 
 	/**
 	 *  Performs a query of books with the matching title and (optionally) publisher.
@@ -70,31 +66,28 @@ public interface IBookQuery extends EJBObject
 	 *  to select for any publisher.
 	 *
 	 */
-	 
+
 	public int masterQuery(String title, String author, Object publisherPK)
-	throws RemoteException;
+		throws RemoteException;
 
 	/**
 	 *  Queries on books owned by a given person, sorted by title.
 	 *
 	 */
-	 
-	public int ownerQuery(Integer ownerPK)
-	throws RemoteException;
-	
+
+	public int ownerQuery(Integer ownerPK) throws RemoteException;
+
 	/**
 	 *  Queries on books held by a given person, sorted by title.
 	 *
 	 */
-	 
-	public int holderQuery(Integer holderPK)
-	throws RemoteException;	
 
-    /**
-     *  Queries the list of books held by the borrower but not owned by the borrower..
-     *
-     */
+	public int holderQuery(Integer holderPK) throws RemoteException;
 
-    public int borrowerQuery(Integer borrowerPK)
-    throws RemoteException;
+	/**
+	 *  Queries the list of books held by the borrower but not owned by the borrower..
+	 *
+	 */
+
+	public int borrowerQuery(Integer borrowerPK) throws RemoteException;
 }

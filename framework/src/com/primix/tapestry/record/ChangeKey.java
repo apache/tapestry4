@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -61,7 +59,7 @@ public class ChangeKey
 
 		try
 		{
-			ChangeKey other = (ChangeKey)object;
+			ChangeKey other = (ChangeKey) object;
 
 			propertyNameIdentical = propertyName == other.propertyName;
 			componentPathIdentical = componentPath == other.componentPath;
@@ -76,21 +74,21 @@ public class ChangeKey
 				if (!propertyName.equals(other.propertyName))
 					return false;
 
-				// If this far, that propertyName is equal
+			// If this far, that propertyName is equal
 
-				if (componentPathIdentical)
-					return true;
+			if (componentPathIdentical)
+				return true;
 
-				// If one's null and the other isn't then they can't
-				// be equal.
+			// If one's null and the other isn't then they can't
+			// be equal.
 
-				if (componentPath == null || other.componentPath == null)
-					return false;
+			if (componentPath == null || other.componentPath == null)
+				return false;
 
-				// So it comes down to this ... are the two (non-null)
-				// componentPath's equal?
+			// So it comes down to this ... are the two (non-null)
+			// componentPath's equal?
 
-				return componentPath.equals(other.componentPath);	
+			return componentPath.equals(other.componentPath);
 		}
 		catch (ClassCastException e)
 		{
@@ -127,4 +125,3 @@ public class ChangeKey
 		return result;
 	}
 }
-

@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -76,35 +74,34 @@ import com.primix.tapestry.*;
 
 public class InsertBlock extends AbstractComponent
 {
-    private IBinding blockBinding;
-    
-    public void setBlockBinding(IBinding value)
-    {
-        blockBinding = value;
-    }
-    
-    public IBinding getBlockBinding()
-    {
-        return blockBinding;
-    }
-    
-    /**
-     *  If the block parameter is bound and not null,
-     *  then {@link IComponent#renderWrapped(IResponseWriter, IRequestCycle)}
-     *  is invoked on it.
-     *
-     */
-     
-    public void render(IResponseWriter writer, IRequestCycle cycle)
-    throws RequestCycleException
-    {
-        if (blockBinding == null)
-            return;
-        
-        Block block = (Block)blockBinding.getObject("block", Block.class);
-        
-        if (block != null)
-            block.renderWrapped(writer, cycle);
-    }
-}
+	private IBinding blockBinding;
 
+	public void setBlockBinding(IBinding value)
+	{
+		blockBinding = value;
+	}
+
+	public IBinding getBlockBinding()
+	{
+		return blockBinding;
+	}
+
+	/**
+	 *  If the block parameter is bound and not null,
+	 *  then {@link IComponent#renderWrapped(IResponseWriter, IRequestCycle)}
+	 *  is invoked on it.
+	 *
+	 */
+
+	public void render(IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException
+	{
+		if (blockBinding == null)
+			return;
+
+		Block block = (Block) blockBinding.getObject("block", Block.class);
+
+		if (block != null)
+			block.renderWrapped(writer, cycle);
+	}
+}

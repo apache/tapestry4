@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -37,7 +35,6 @@ import com.primix.tapestry.util.*;
 import org.apache.log4j.*;
 import javax.swing.event.*;
 
-
 /**
  * Abstract base class implementing the {@link IPage} interface.
  *
@@ -46,61 +43,58 @@ import javax.swing.event.*;
  * @since 0.2.9
  */
 
-public abstract class AbstractPage
-	extends BaseComponent
-	implements IPage
+public abstract class AbstractPage extends BaseComponent implements IPage
 {
-	private static final Category CAT =
-		Category.getInstance(AbstractPage.class);
-	
+	private static final Category CAT = Category.getInstance(AbstractPage.class);
+
 	/**
 	 *  Object to be notified when a observered property changes.  Observered
 	 *  properties are the ones that will be persisted between request cycles.
 	 *  Unobserved properties are reconstructed.
 	 *
 	 */
-	
+
 	private ChangeObserver changeObserver;
-	
+
 	/**
 	 *  The {@link IEngine} the page is currently attached to.  This may
 	 *  be read, but not changed, but subclasses.
 	 *
 	 */
-	
+
 	protected IEngine engine;
-	
+
 	/**
 	 *  The visit object, if any, for the application.  Set inside
 	 *  {@link #attach(IEngine)} and cleared
 	 *  by {@link #detach()}.
 	 *
 	 */
-	
+
 	private Object visit;
-	
+
 	/**
 	 *  The name of this page.  This may be read, but not changed, by
 	 *  subclasses.
 	 *
 	 */
-	
+
 	protected String name;
-	
+
 	/**
 	 *  Set when the page is attached to the engine.
 	 *
 	 */
-	
+
 	private IRequestCycle requestCycle;
-	
+
 	/**
 	 *  The locale of the page, initially determined from the {@link IEngine engine}.
 	 *
 	 */
-	
+
 	private Locale locale;
-	
+
 	/**
 	 *  A list of listeners for the page.
 	 *  @see PageRenderListener
@@ -108,18 +102,18 @@ public abstract class AbstractPage
 	 *
 	 *  @since 1.0.5
 	 */
-	
+
 	private EventListenerList listenerList;
-	
+
 	/**
 	 *  Implemented in subclasses to provide a particular kind of
 	 *  response writer (and therefore, a particular kind of
 	 *  content).
 	 *
 	 */
-	
+
 	abstract public IResponseWriter getResponseWriter(OutputStream out);
-	
+
 	/**
 	 *  Prepares the page to be returned to the pool.
 	 *  <ul>
@@ -131,99 +125,100 @@ public abstract class AbstractPage
 	 *  implementation (usually, last).
 	 *
 	 */
-	
+
 	public void detach()
+	
 	{
 		firePageDetached();
-		
+
 		engine = null;
 		visit = null;
 		changeObserver = null;
 		requestCycle = null;
 	}
-	
+
 	public IEngine getEngine()
 	{
 		return engine;
 	}
-	
+
 	public ChangeObserver getChangeObserver()
 	{
 		return changeObserver;
 	}
-	
+
 	/**
 	 *  Returns the name of the page.
 	 *
 	 */
-	
+
 	public String getExtendedId()
 	{
 		return name;
 	}
-	
+
 	/**
 	 *  Pages always return null for idPath.
 	 *
 	 */
-	
+
 	public String getIdPath()
 	{
 		return null;
 	}
-	
+
 	/**
 	 *  Returns the locale for the page, which may be null if the
 	 *  locale is not known (null corresponds to the "default locale").
 	 *
 	 */
-	
+
 	public Locale getLocale()
 	{
 		return locale;
 	}
-	
+
 	public void setLocale(Locale value)
 	{
 		if (locale != null)
 			throw new ApplicationRuntimeException("Attempt to change existing locale for a page.");
-		
+
 		locale = value;
 	}
-	
+
 	public String getName()
 	{
 		return name;
 	}
-	
+
 	public IPage getPage()
 	{
 		return this;
 	}
-	
+
 	public IComponent getNestedComponent(String path)
 	{
 		StringSplitter splitter;
 		IComponent current;
 		String[] elements;
 		int i;
-		
+
 		if (path == null)
 			return this;
-		
+
 		splitter = new StringSplitter('.');
 		current = this;
-		
+
 		elements = splitter.splitToArray(path);
 		for (i = 0; i < elements.length; i++)
 		{
 			current = current.getComponent(elements[i]);
 		}
-		
+
 		return current;
-		
+
 	}
-	
+
 	/**
 	 *  Called by the {@link IEngine engine} to attach the page
 	 *  to itself.  Does
@@ -233,15 +228,15 @@ public abstract class AbstractPage
 	 *  anyway.
 	 *
 	 */
-	
+
 	public void attach(IEngine value)
 	{
 		if (engine != null)
-			CAT.error(this + " attach(" + value + "), but engine = " + engine);
-		
+			CAT.error(this +" attach(" + value + "), but engine = " + engine);
+
 		engine = value;
 	}
-	
+
 	/**
 	 *
 	 * <ul>
@@ -253,19 +248,19 @@ public abstract class AbstractPage
 	 *  even if a previous step throws an exception)
 	 *
 	 */
-	
+
 	public void renderPage(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		try
 		{
 			firePageBeginRender();
-						
+
 			beginResponse(writer, cycle);
-			
+
 			if (!cycle.isRewinding())
 				cycle.commitPageChanges();
-			
+
 			render(writer, cycle);
 		}
 		catch (PageRecorderCommitException ex)
@@ -277,52 +272,51 @@ public abstract class AbstractPage
 			firePageEndRender();
 		}
 	}
-	
+
 	public void setChangeObserver(ChangeObserver value)
 	{
 		changeObserver = value;
 	}
-	
+
 	public void setName(String value)
 	{
 		if (name != null)
 			throw new ApplicationRuntimeException("Attempt to change existing name for a page.");
-		
+
 		name = value;
 	}
-	
+
 	/**
 	 *  By default, pages are not protected and this method does nothing.
 	 *
 	 */
-	
-	public void validate(IRequestCycle cycle)
-		throws RequestCycleException
+
+	public void validate(IRequestCycle cycle) throws RequestCycleException
 	{
 		// Does nothing.
 	}
-	
+
 	/**
 	 *  Does nothing, subclasses may override as needed.
 	 *
 	 *
 	 */
-	
+
 	public void beginResponse(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 	}
-	
+
 	public IRequestCycle getRequestCycle()
 	{
 		return requestCycle;
 	}
-	
+
 	public void setRequestCycle(IRequestCycle value)
 	{
 		requestCycle = value;
 	}
-	
+
 	/**
 	 *  Invokes {@link PageCleanupListener#pageCleanup(PageEvent)} on any
 	 *  listener.
@@ -330,125 +324,131 @@ public abstract class AbstractPage
 	 *  <p>Subclasses may override, but should invoke this implementation.
 	 *
 	 */
-	
+
 	public void cleanupPage()
 	{
 		firePageCleanup();
 	}
-	
+
 	/**
 	 *  Returns the visit object obtained from the engine via
 	 *  {@link IEngine#getVisit(IRequestCycle)}.
 	 *
 	 */
-	
+
 	public Object getVisit()
 	{
 		if (visit == null)
 			visit = engine.getVisit(requestCycle);
-		
+
 		return visit;
 	}
-	
+
 	public void addPageDetachListener(PageDetachListener listener)
 	{
 		addListener(PageDetachListener.class, listener);
 	}
-	
+
 	private void addListener(Class listenerClass, EventListener listener)
+	
 	{
 		if (listenerList == null)
 			listenerList = new EventListenerList();
-		
+
 		listenerList.add(listenerClass, listener);
 	}
-	
+
 	public void addPageRenderListener(PageRenderListener listener)
 	{
 		addListener(PageRenderListener.class, listener);
 	}
-	
+
 	public void addPageCleanupListener(PageCleanupListener listener)
+	
 	{
 		addListener(PageCleanupListener.class, listener);
 	}
-	
+
 	/**
 	 *  @since 1.0.5
 	 *
 	 */
-	
+
 	protected void firePageDetached()
+	
 	{
 		if (listenerList == null)
 			return;
-		
+
 		PageEvent event = null;
 		Object[] listeners = listenerList.getListenerList();
-		
+
 		for (int i = 0; i < listeners.length; i += 2)
 		{
 			if (listeners[i] == PageDetachListener.class)
-			{
-				PageDetachListener l = (PageDetachListener)listeners[i+1];
-				
+			
+				{
+				PageDetachListener l = (PageDetachListener) listeners[i + 1];
+
 				if (event == null)
 					event = new PageEvent(this, requestCycle);
-				
+
 				l.pageDetached(event);
 			}
 		}
 	}
-	
+
 	/**
 	 *  @since 1.0.5
 	 *
 	 */
-	
+
 	protected void firePageBeginRender()
 	{
 		if (listenerList == null)
 			return;
-		
+
 		PageEvent event = null;
 		Object[] listeners = listenerList.getListenerList();
-		
+
 		for (int i = 0; i < listeners.length; i += 2)
 		{
 			if (listeners[i] == PageRenderListener.class)
-			{
-				PageRenderListener l = (PageRenderListener)listeners[i+1];
-				
+			
+				{
+				PageRenderListener l = (PageRenderListener) listeners[i + 1];
+
 				if (event == null)
 					event = new PageEvent(this, requestCycle);
-				
+
 				l.pageBeginRender(event);
 			}
 		}
 	}
-	
+
 	/**
 	 *  @since 1.0.5
 	 *
 	 */
-	
+
 	protected void firePageEndRender()
 	{
 		if (listenerList == null)
 			return;
-		
+
 		PageEvent event = null;
 		Object[] listeners = listenerList.getListenerList();
-		
+
 		for (int i = 0; i < listeners.length; i += 2)
 		{
 			if (listeners[i] == PageRenderListener.class)
-			{
-				PageRenderListener l = (PageRenderListener)listeners[i+1];
-				
+			
+				{
+				PageRenderListener l = (PageRenderListener) listeners[i + 1];
+
 				if (event == null)
 					event = new PageEvent(this, requestCycle);
-				
+
 				l.pageEndRender(event);
 			}
 		}
@@ -457,22 +457,22 @@ public abstract class AbstractPage
 	{
 		if (listenerList == null)
 			return;
-		
+
 		PageEvent event = null;
 		Object[] listeners = listenerList.getListenerList();
-		
+
 		for (int i = 0; i < listeners.length; i += 2)
 		{
 			if (listeners[i] == PageCleanupListener.class)
-			{
-				PageCleanupListener l = (PageCleanupListener)listeners[i+1];
-				
+			
+				{
+				PageCleanupListener l = (PageCleanupListener) listeners[i + 1];
+
 				if (event == null)
 					event = new PageEvent(this, null);
-				
+
 				l.pageCleanup(event);
 			}
 		}
 	}
 }
-

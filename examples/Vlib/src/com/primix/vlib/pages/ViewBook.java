@@ -1,14 +1,13 @@
 /*
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Tapestry Web Application Framework
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -19,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; wihtout even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -43,45 +42,43 @@ import javax.rmi.*;
  * @version $Id$
  */
 
-
-public class ViewBook extends BasePage
-	implements IExternalPage
+public class ViewBook extends BasePage implements IExternalPage
 {
-	private Book book;	
-	
+	private Book book;
+
 	public void detach()
 	{
 		super.detach();
-		
+
 		book = null;
 	}
-	
+
 	public Book getBook()
 	{
 		return book;
 	}
-	
+
 	public void setBook(Book value)
 	{
 		book = value;
-		
+
 		fireObservedChange("book", value);
 	}
-	
+
 	public void setup(Integer bookPK, IRequestCycle cycle)
 	{
-		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
-		
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+
 		for (int i = 0; i < 2; i++)
 		{
 			IOperations bean = vengine.getOperations();
-			
+
 			try
 			{
 				setBook(bean.getBook(bookPK));
-				
+
 				cycle.setPage(this);
-				
+
 				return;
 			}
 			catch (FinderException ex)
@@ -92,28 +89,28 @@ public class ViewBook extends BasePage
 			catch (RemoteException ex)
 			{
 				vengine.rmiFailure(
-					"Remote exception obtaining information for book " +
-						bookPK + ".", ex, i > 0);
+					"Remote exception obtaining information for book " + bookPK + ".",
+					ex,
+					i > 0);
 			}
 		}
-		
-		
+
 	}
-	
+
 	/**
 	 *  Only want to show the holder if it doesn't match the owner.
 	 *
 	 */
-	
+
 	public boolean getShowHolder()
 	{
 		Integer ownerPK;
 		Integer holderPK;
-		
+
 		ownerPK = book.getOwnerPrimaryKey();
 		holderPK = book.getHolderPrimaryKey();
-		
+
 		return !ownerPK.equals(holderPK);
 	}
-	
+
 }

@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -47,8 +45,7 @@ import org.apache.log4j.*;
 
 public class PrivateAsset implements IAsset
 {
-	private static final Category CAT = 
-		Category.getInstance(PrivateAsset.class);
+	private static final Category CAT = Category.getInstance(PrivateAsset.class);
 
 	private AssetExternalizer externalizer;
 
@@ -63,6 +60,7 @@ public class PrivateAsset implements IAsset
 	private Map localizations;
 
 	public PrivateAsset(String resourcePath)
+	
 	{
 		this.resourcePath = resourcePath;
 	}
@@ -102,7 +100,8 @@ public class PrivateAsset implements IAsset
 		catch (ResourceUnavailableException e)
 		{
 			throw new ApplicationRuntimeException(
-				"Could not build URL for private asset " + localizedResourcePath + ".", e);
+				"Could not build URL for private asset " + localizedResourcePath + ".",
+				e);
 		}
 
 		if (externalURL != null)
@@ -118,14 +117,14 @@ public class PrivateAsset implements IAsset
 		// Since it is no longer necessary to have an active HttpSession to
 		// use the asset service, there's no need to encode the URL anymore.
 		// This change was made in release 1.0.1.
-		
+
 		Gesture g = service.buildGesture(cycle, null, parameters);
-		
+
 		return g.getFullURL();
 	}
 
 	public InputStream getResourceAsStream(IRequestCycle cycle)
-	throws ResourceUnavailableException
+		throws ResourceUnavailableException
 	{
 		try
 		{
@@ -137,8 +136,9 @@ public class PrivateAsset implements IAsset
 		}
 		catch (Exception ex)
 		{
-			throw new ResourceUnavailableException("Could not access private asset " +
-				resourcePath + ".", ex);
+			throw new ResourceUnavailableException(
+				"Could not access private asset " + resourcePath + ".",
+				ex);
 		}
 	}
 
@@ -152,7 +152,7 @@ public class PrivateAsset implements IAsset
 	*/
 
 	private String findLocalization(IRequestCycle cycle)
-	throws ResourceUnavailableException
+		throws ResourceUnavailableException
 	{
 		Locale locale = cycle.getPage().getLocale();
 		int dotx;
@@ -167,28 +167,31 @@ public class PrivateAsset implements IAsset
 
 		if (localizations == null)
 		{
-			synchronized(this)
+			synchronized (this)
 			{
 				if (localizations == null)
 					localizations = new HashMap(MAP_SIZE);
 			}
 		}
 
-		synchronized(localizations)
+		synchronized (localizations)
 		{
-			result = (String)localizations.get(locale);
+			result = (String) localizations.get(locale);
 			if (result != null)
 				return result;
 		}
 
 		if (CAT.isDebugEnabled())
-			CAT.debug("Searching for localization of private asset " + resourcePath +
-				" in locale " + locale.getDisplayName());
+			CAT.debug(
+				"Searching for localization of private asset "
+					+ resourcePath
+					+ " in locale "
+					+ locale.getDisplayName());
 
 		dotx = resourcePath.lastIndexOf('.');
 		suffix = resourcePath.substring(dotx);
 
-		buffer = new StringBuffer (dotx + 30);
+		buffer = new StringBuffer(dotx + 30);
 
 		buffer.append(resourcePath.substring(0, dotx));
 		rawLength = buffer.length();
@@ -234,7 +237,7 @@ public class PrivateAsset implements IAsset
 
 			if (resolver.getResource(candidatePath) != null)
 			{
-				synchronized(localizations)
+				synchronized (localizations)
 				{
 					localizations.put(locale, candidatePath);
 				}
@@ -247,16 +250,13 @@ public class PrivateAsset implements IAsset
 
 		}
 
-		throw new ResourceUnavailableException
-			("Could not find private asset " +
-			resourcePath + " for locale " + locale + ".");
+		throw new ResourceUnavailableException(
+			"Could not find private asset " + resourcePath + " for locale " + locale + ".");
 
 	}
-
 
 	public String toString()
 	{
 		return "PrivateAsset[" + resourcePath + "]";
 	}
 }
-

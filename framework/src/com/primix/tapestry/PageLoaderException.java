@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -46,19 +44,21 @@ public class PageLoaderException extends Exception
 	 * @since 0.2.12
 	 *
 	 */
-	
+
 	public PageLoaderException(String message, Throwable rootCause)
 	{
-		this(message, (IComponent)null, rootCause);
+		this(message, (IComponent) null, rootCause);
 	}
-	
+
 	/**
 	 * @since 0.2.12
 	 *
 	 */
-	
-	public PageLoaderException(String message,
-		IComponent component, Throwable rootCause)
+
+	public PageLoaderException(
+		String message,
+		IComponent component,
+		Throwable rootCause)
 	{
 		super(message);
 
@@ -79,21 +79,24 @@ public class PageLoaderException extends Exception
 	 * @since 0.2.12
 	 *
 	 */
-	
+
 	public PageLoaderException(String message, IComponent component)
 	{
 		this(message, component, null);
 	}
-	
+
 	/**
 	 * @since 0.2.12
 	 *
 	 */
-	
-	public PageLoaderException(String message, String pageName, Throwable rootCause)
+
+	public PageLoaderException(
+		String message,
+		String pageName,
+		Throwable rootCause)
 	{
-		this(message, (IComponent)null, rootCause);
-		
+		this(message, (IComponent) null, rootCause);
+
 		this.pageName = pageName;
 	}
 
@@ -112,4 +115,3 @@ public class PageLoaderException extends Exception
 		return rootCause;
 	}
 }
-

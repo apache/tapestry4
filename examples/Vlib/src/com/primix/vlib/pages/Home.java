@@ -1,14 +1,13 @@
 /*
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Tapestry Web Application Framework
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -19,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; wihtout even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -43,16 +42,14 @@ import javax.rmi.*;
  * @version $Id$
  */
 
-public class Home 
-	extends BasePage
-	implements IErrorProperty
+public class Home extends BasePage implements IErrorProperty
 {
 	private String searchTitle;
 	private Object searchPublisherPK;
 	private String error;
 	private String message;
 	private String searchAuthor;
-	
+
 	public void detach()
 	{
 		searchTitle = null;
@@ -60,72 +57,72 @@ public class Home
 		error = null;
 		message = null;
 		searchAuthor = null;
-		
+
 		super.detach();
 	}
-	
+
 	public String getSearchTitle()
 	{
 		return searchTitle;
 	}
-	
+
 	public void setSearchTitle(String value)
 	{
 		searchTitle = value;
 	}
-	
+
 	public String getSearchAuthor()
 	{
 		return searchAuthor;
 	}
-	
+
 	public void setSearchAuthor(String value)
 	{
 		searchAuthor = value;
 	}
-	
+
 	public Object getSearchPublisherPK()
 	{
 		return searchPublisherPK;
 	}
-	
+
 	public void setSearchPublisherPK(Object value)
 	{
 		searchPublisherPK = value;
 	}
-	
+
 	public void setError(String value)
 	{
 		error = value;
 	}
-	
+
 	public String getError()
 	{
 		return error;
 	}
-	
+
 	public void setMessage(String value)
 	{
 		message = value;
 	}
-	
+
 	public String getMessage()
 	{
 		return message;
 	}
-	
+
 	/**
 	 *  Invokes {@link Matches#performQuery(String,String,Object,IRequestCycle)}.
 	 *
 	 */
-	
+
 	public void search(IRequestCycle cycle)
 	{
 		Matches matches;
-		
-		matches = (Matches)cycle.getPage("Matches");
-		
+
+		matches = (Matches) cycle.getPage("Matches");
+
 		matches.performQuery(searchTitle, searchAuthor, searchPublisherPK, cycle);
 	}
-	
+
 }

@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -41,16 +39,14 @@ import org.apache.log4j.*;
  * @version $Id$
  */
 
-public class BaseComponent
-	extends AbstractComponent
+public class BaseComponent extends AbstractComponent
 {
 	protected static final int OUTER_INIT_SIZE = 5;
 	protected int outerCount = 0;
 	protected IRender[] outer;
-	
-	private static final Category CAT  =
-		Category.getInstance(BaseComponent.class);
-	
+
+	private static final Category CAT = Category.getInstance(BaseComponent.class);
+
 	/**
 	 *  Adds an element as an outer element for the receiver.  Outer
 	 *  elements are elements that should be directly rendered by the
@@ -58,34 +54,35 @@ public class BaseComponent
 	 *  top-level elements on the HTML template.
 	 *
 	 */
-	
+
 	protected void addOuter(IRender element)
+	
 	{
 		if (outer == null)
 		{
 			outer = new IRender[OUTER_INIT_SIZE];
 			outer[0] = element;
-			
+
 			outerCount = 1;
 			return;
 		}
-		
+
 		// No more room?  Make the array bigger.
-		
+
 		if (outerCount == outer.length)
 		{
 			IRender[] newOuter;
-			
+
 			newOuter = new IRender[outer.length * 2];
-			
+
 			System.arraycopy(outer, 0, newOuter, 0, outerCount);
-			
+
 			outer = newOuter;
 		}
-		
+
 		outer[outerCount++] = element;
 	}
-	
+
 	/**
 	 *
 	 * Reads the receiver's template and figures out which elements wrap which
@@ -93,18 +90,17 @@ public class BaseComponent
 	 *
 	 * <P>This is coded as a single, big, ugly method for efficiency.
 	 */
-	
-	protected void readTemplate(IPageLoader loader)
-		throws PageLoaderException
+
+	protected void readTemplate(IPageLoader loader) throws PageLoaderException
 	{
 		IComponent component;
 		ComponentTemplate componentTemplate;
 		Set seenIds = new HashSet();
 		IPageSource pageSource = loader.getEngine().getPageSource();
-		
+
 		if (CAT.isDebugEnabled())
-			CAT.debug(this + " reading template");
-		
+			CAT.debug(this +" reading template");
+
 		try
 		{
 			ITemplateSource source = loader.getTemplateSource();
@@ -114,28 +110,28 @@ public class BaseComponent
 		{
 			throw new PageLoaderException("Unable to obtain template.", this, ex);
 		}
-		
+
 		int count = componentTemplate.getTokenCount();
-		
+
 		// The stack can never be as large as the number of tokens, so this is safe.
-		
+
 		IComponent[] componentStack = new IComponent[count];
 		IComponent activeComponent = null;
 		int stackx = 0;
 		boolean check = true;
-		
+
 		for (int i = 0; i < count; i++)
 		{
 			TemplateToken token = componentTemplate.getToken(i);
 			TokenType type = token.getType();
-			
+
 			if (type == TokenType.TEXT)
 			{
 				// Get a render for the token.  This allows the token and the render
 				// to be shared across sessions.
-				
+
 				IRender element = token.getRender();
-				
+
 				if (activeComponent == null)
 					addOuter(element);
 				else
@@ -143,48 +139,54 @@ public class BaseComponent
 					if (check)
 					{
 						check = false;
-						
+
 						if (!activeComponent.getSpecification().getAllowBody())
 							throw new BodylessComponentException(activeComponent);
 					}
-					
+
 					activeComponent.addWrapped(element);
 				}
-				
+
 				continue;
 			}
-			
+
 			// On an OPEN, we get the name
-			
+
 			if (type == TokenType.OPEN)
 			{
 				String id = token.getId();
-				
+
 				try
 				{
 					component = getComponent(id);
-					
+
 					check = true;
 				}
 				catch (NoSuchComponentException ex)
 				{
 					throw new PageLoaderException(
-						"Template for component " +
-							getExtendedId() +
-							" references undefined embedded component " +
-							id + ".", this,  ex);
+						"Template for component "
+							+ getExtendedId()
+							+ " references undefined embedded component "
+							+ id
+							+ ".",
+						this,
+						ex);
 				}
-				
+
 				// Make sure the template contains each component only once.
-				
+
 				if (seenIds.contains(id))
 					throw new PageLoaderException(
-						"Template for component " + getExtendedId() +
-							" contains multiple references to embedded component " +
-							id + ".", this);
-				
+						"Template for component "
+							+ getExtendedId()
+							+ " contains multiple references to embedded component "
+							+ id
+							+ ".",
+						this);
+
 				seenIds.add(id);
-				
+
 				if (activeComponent == null)
 					addOuter(component);
 				else
@@ -192,89 +194,91 @@ public class BaseComponent
 					if (check)
 					{
 						check = false;
-						
+
 						// If you use a <jwc> tag in the template, you can get here.
 						// If you use a normal tag and a jwcid attribute, the
 						// body is automatically editted out.
-						
+
 						if (!activeComponent.getSpecification().getAllowBody())
 							throw new BodylessComponentException(activeComponent);
 					}
-					
+
 					activeComponent.addWrapped(component);
 				}
-				
+
 				addStaticBindings(component, token.getAttributes(), pageSource);
-				
+
 				componentStack[stackx++] = activeComponent;
-				
+
 				activeComponent = component;
-				
+
 				continue;
 			}
-			
+
 			if (type == TokenType.CLOSE)
 			{
 				try
 				{
 					activeComponent = componentStack[--stackx];
-					
+
 					check = true;
 				}
 				catch (IndexOutOfBoundsException e)
 				{
 					// This is now almost impossible to reach, because the
 					// TemplateParser does a great job of checking for most of these cases.
-					
+
 					throw new PageLoaderException(
-						"More </jwc> tags than <jwc> tags in template.", this);
+						"More </jwc> tags than <jwc> tags in template.",
+						this);
 				}
 			}
 		}
-		
+
 		// This is also pretty much unreachable, and the message is kind of out
 		// of date, too.
-		
+
 		if (stackx != 0)
-			throw new PageLoaderException(
-				"Not all <jwc> tags closed in template.",
-				this);
-		
+			throw new PageLoaderException("Not all <jwc> tags closed in template.", this);
+
 		checkAllComponentsReferenced(seenIds);
-		
+
 		if (CAT.isDebugEnabled())
-			CAT.debug(this + " finished reading template");
+			CAT.debug(this +" finished reading template");
 	}
-	
+
 	/**
 	 * Adds static bindings for any attrributes specified in the HTML
 	 * template, skipping any that are reserved (explicitly, or
 	 * because they match a formal parameter name).
 	 *
 	 */
-	
-	private void addStaticBindings(IComponent component, Map attributes, IPageSource pageSource)
-	{	
+
+	private void addStaticBindings(
+		IComponent component,
+		Map attributes,
+		IPageSource pageSource)
+	{
 		if (attributes == null || attributes.isEmpty())
 			return;
-		
+
 		ComponentSpecification spec = component.getSpecification();
-		
+
 		boolean rejectInformal = !spec.getAllowInformalParameters();
-		
+
 		Iterator i = attributes.entrySet().iterator();
-		
+
 		while (i.hasNext())
 		{
-			Map.Entry e = (Map.Entry)i.next();
-			
-			String name = (String)e.getKey();
-			
+			Map.Entry e = (Map.Entry) i.next();
+
+			String name = (String) e.getKey();
+
 			// If matches a formal parameter name, allow it to be set
 			// unless there's already a binding.
-			
+
 			boolean isFormal = (spec.getParameter(name) != null);
-			
+
 			if (isFormal)
 			{
 				if (component.getBinding(name) != null)
@@ -283,25 +287,25 @@ public class BaseComponent
 			else
 			{
 				// Skip informal parameters if the component doesn't allow them.
-				
+
 				if (rejectInformal)
 					continue;
-				
+
 				// If the name is reserved (matches a formal parameter
 				// or reserved name, caselessly), then skip it.
-				
+
 				if (spec.isReservedParameterName(name))
 					continue;
 			}
-			
-			String value = (String)e.getValue();
-			
+
+			String value = (String) e.getValue();
+
 			IBinding binding = pageSource.getStaticBinding(value);
-			
+
 			component.setBinding(name, binding);
 		}
 	}
-	
+
 	private void checkAllComponentsReferenced(Set seenIds)
 		throws PageLoaderException
 	{
@@ -311,92 +315,91 @@ public class BaseComponent
 		int j = 0;
 		Iterator i;
 		Map components;
-		
+
 		// First, contruct a modifiable copy of the ids of all expected components
 		// (that is, components declared in the specification).
-		
+
 		components = getComponents();
-		
+
 		// Occasionally, a component will have a template but no embedded components.
-		
+
 		if (components == null)
 			ids = Collections.EMPTY_SET;
 		else
 			ids = components.keySet();
-		
+
 		// If the seen ids ... ids referenced in the template, matches
 		// all the ids in the specification then we're fine.
-		
+
 		if (seenIds.containsAll(ids))
 			return;
-		
+
 		// Create a modifiable copy.  Remove the ids that are referenced in
 		// the template.  The remainder are worthy of note.
-		
+
 		ids = new HashSet(ids);
 		ids.removeAll(seenIds);
-		
+
 		count = ids.size();
-		
+
 		buffer = new StringBuffer("Template for component ");
 		buffer.append(getExtendedId());
 		buffer.append(" does not reference embedded component");
 		if (count > 0)
 			buffer.append('s');
-		
+
 		i = ids.iterator();
 		while (i.hasNext())
 		{
 			j++;
-			
+
 			if (j == 1)
 				buffer.append(": ");
+			else if (j == count)
+				buffer.append(" and ");
 			else
-				if (j == count)
-					buffer.append(" and ");
-				else
-					buffer.append(", ");
-			
+				buffer.append(", ");
+
 			buffer.append(i.next());
 		}
-		
+
 		buffer.append('.');
-		
+
 		throw new PageLoaderException(buffer.toString(), this);
 	}
-	
+
 	/**
 	 *  Renders the top level components contained by the receiver.
 	 *
 	 */
-	
+
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		if (CAT.isDebugEnabled())
 			CAT.debug("Begin render " + getExtendedId());
-		
+
 		for (int i = 0; i < outerCount; i++)
 			outer[i].render(writer, cycle);
-		
+
 		if (CAT.isDebugEnabled())
 			CAT.debug("End render " + getExtendedId());
 	}
-	
+
 	/**
 	 *  Loads the template for the component, and invokes
 	 *  {@link #finishLoad()}.  Subclasses must invoke this method first,
 	 *  before adding any additional behavior.
 	 *
 	 */
-	
-	public void finishLoad(IPageLoader loader, ComponentSpecification specification)
+
+	public void finishLoad(
+		IPageLoader loader,
+		ComponentSpecification specification)
 		throws PageLoaderException
 	{
 		readTemplate(loader);
-		
+
 		finishLoad();
 	}
 }
-
-

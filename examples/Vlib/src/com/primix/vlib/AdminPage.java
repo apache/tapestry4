@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,12 +18,12 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  */
-
+ 
 package com.primix.vlib;
 
 import com.primix.tapestry.*;
@@ -39,50 +37,47 @@ import com.primix.tapestry.callback.*;
  *  @version $Id$
  */
 
-
-public class AdminPage
-	extends Protected
+public class AdminPage extends Protected
 {
 	private String message;
-	
+
 	public void detach()
 	{
 		message = null;
-		
+
 		super.detach();
 	}
-	
+
 	public String getMessage()
 	{
 		return message;
 	}
-	
+
 	public void setMessage(String value)
 	{
 		message = value;
 	}
-	
-	public void validate(IRequestCycle cycle)
-		throws RequestCycleException
+
+	public void validate(IRequestCycle cycle) throws RequestCycleException
 	{
-		Visit visit = (Visit)engine.getVisit();
-		
+		Visit visit = (Visit) engine.getVisit();
+
 		if (visit == null || !visit.isUserLoggedIn())
 		{
-			Login login = (Login)cycle.getPage("Login");
-			
+			Login login = (Login) cycle.getPage("Login");
+
 			login.setCallback(new PageCallback(this));
-			
+
 			throw new PageRedirectException(login);
 		}
 
 		if (!visit.getUser().isAdmin())
 		{
 			visit.getEngine().presentError(
-					"That function is restricted to adminstrators.", cycle);
-			
+				"That function is restricted to adminstrators.",
+				cycle);
+
 			throw new PageRedirectException(cycle.getPage());
 		}
 	}
 }
-

@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix Solutions
- * One Arsenal Marketplace
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -50,10 +48,9 @@ public interface IKeyAllocator extends EJBObject
 	 *  not have been previously returned by any instance.
 	 *
 	 */
-	 
-	public Integer allocateKey()
-		throws RemoteException;
-	
+
+	public Integer allocateKey() throws RemoteException;
+
 	/**
 	 * Allocates several keys, as if invoking {@link #allocateKey}
 	 * multiple times.  No guarentees are made that the
@@ -61,7 +58,6 @@ public interface IKeyAllocator extends EJBObject
 	 * are unique.
 	 *
 	 */
-	 	 
-	public Integer[] allocateKeys(int count)
-		throws RemoteException;	
+
+	public Integer[] allocateKeys(int count) throws RemoteException;
 }

@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -44,15 +42,14 @@ import java.io.*;
  *  @version $Id$
  */
 
-
 public class ExceptionAnalyzer
 {
 	private List exceptionDescriptions;
 	private List propertyDescriptions;
 	private CharArrayWriter writer;
-	
+
 	private static final int LIST_SIZE = 3;
-	
+
 	private boolean exhaustive = false;
 
 	/**
@@ -60,17 +57,17 @@ public class ExceptionAnalyzer
 	 *  the default, then stack trace is extracted for only the deepest exception.
 	 *
 	 */
-	
+
 	public boolean isExhaustive()
 	{
 		return exhaustive;
 	}
-	
+
 	public void setExhaustive(boolean value)
 	{
 		exhaustive = value;
 	}
-	
+
 	/**
 	 *  Analyzes the exceptions.  This builds an {@link ExceptionDescription} for the
 	 *  exception.  It also looks for a non-null {@link Throwable}
@@ -88,40 +85,40 @@ public class ExceptionAnalyzer
 	 *
 	 *  <p>A future enhancement will be to alphabetically sort the properties by name.
 	 */
-	
+
 	public ExceptionDescription[] analyze(Throwable exception)
 	{
 		ExceptionDescription[] result;
-		
+
 		if (writer == null)
 			writer = new CharArrayWriter();
-		
+
 		if (propertyDescriptions == null)
 			propertyDescriptions = new ArrayList(LIST_SIZE);
-		
+
 		if (exceptionDescriptions == null)
 			exceptionDescriptions = new ArrayList(LIST_SIZE);
-		
+
 		while (exception != null)
 		{
-			exception = buildDescription(exception);		
+			exception = buildDescription(exception);
 		}
-		
+
 		result = new ExceptionDescription[exceptionDescriptions.size()];
-		result = (ExceptionDescription[])exceptionDescriptions.toArray(result);
-		
+		result = (ExceptionDescription[]) exceptionDescriptions.toArray(result);
+
 		exceptionDescriptions.clear();
 		propertyDescriptions.clear();
-		
+
 		writer.reset();
-		
+
 		// We never actually close() the writer which is bad ... I'm expecting that
 		// the finalize() method will close them, or that they don't need to
 		// close.
-		
+
 		return result;
 	}
-    
+
 	protected Throwable buildDescription(Throwable exception)
 	{
 		BeanInfo info;
@@ -140,38 +137,39 @@ public class ExceptionAnalyzer
 		String stringValue;
 		String message;
 		String[] stackTrace = null;
-		
+
 		propertyDescriptions.clear();
-		
+
 		message = exception.getMessage();
 		exceptionClass = exception.getClass();
-		
+
 		// Get properties, ignoring those in Throwable and higher
 		// (including the 'message' property).
-		
+
 		try
 		{
 			info = Introspector.getBeanInfo(exceptionClass, Throwable.class);
 		}
 		catch (IntrospectionException e)
-		{
+		
+			{
 			return null;
 		}
-		
+
 		descriptors = info.getPropertyDescriptors();
-		
+
 		for (i = 0; i < descriptors.length; i++)
 		{
 			descriptor = descriptors[i];
-			
+
 			name = descriptor.getName();
-			
+
 			type = descriptor.getPropertyType();
-			
+
 			method = descriptor.getReadMethod();
 			if (method == null)
 				continue;
-			
+
 			try
 			{
 				value = method.invoke(exception, null);
@@ -180,64 +178,64 @@ public class ExceptionAnalyzer
 			{
 				continue;
 			}
-			
+
 			if (value == null)
 				continue;
-			
+
 			// Some annoying exceptions duplicate the message property
 			// (I'm talking to YOU SAXParseException), so just edit that out.
-			
-			if (message != null &&
-					message.equals(value))
+
+			if (message != null && message.equals(value))
 				continue;
-			
+
 			// Skip Throwables ... but the first non-null
 			// found is the next exception.  We kind of count
 			// on there being no more than one Throwable
 			// property per Exception.
-			
+
 			if (value instanceof Throwable)
 			{
 				if (next == null)
-					next = (Throwable)value;
-				
+					next = (Throwable) value;
+
 				continue;
 			}
-			
+
 			stringValue = value.toString().trim();
-			
+
 			if (stringValue.length() == 0)
 				continue;
-			
-			property = new ExceptionProperty(
-				descriptor.getDisplayName(), value.toString());
-			
-			propertyDescriptions.add(property);			
+
+			property = new ExceptionProperty(descriptor.getDisplayName(), value.toString());
+
+			propertyDescriptions.add(property);
 		}
-		
-		
+
 		// If exhaustive, or in the deepest exception (where there's no next)
 		// the extract the stack trace.
-		
+
 		if (next == null || exhaustive)
 			stackTrace = getStackTrace(exception);
-		
+
 		// Would be nice to sort the properties here.
-		
+
 		properties = new ExceptionProperty[propertyDescriptions.size()];
 
-		ExceptionProperty[] propArray = (ExceptionProperty[])propertyDescriptions.toArray(properties);
-		
-		description = new ExceptionDescription(
-			exceptionClass.getName(), 
-			message, propArray, 
-			stackTrace);
-		
+		ExceptionProperty[] propArray =
+			(ExceptionProperty[]) propertyDescriptions.toArray(properties);
+
+		description =
+			new ExceptionDescription(
+				exceptionClass.getName(),
+				message,
+				propArray,
+				stackTrace);
+
 		exceptionDescriptions.add(description);
-		
+
 		return next;
 	}
-    
+
 	/**
 	 *  Gets the stack trace for the exception, and converts it into an array of strings.
 	 *
@@ -254,45 +252,45 @@ public class ExceptionAnalyzer
 	 *  working.
 	 *
 	 */
-	
+
 	protected String[] getStackTrace(Throwable exception)
 	{
 		writer.reset();
-		
+
 		PrintWriter printWriter = new PrintWriter(writer);
-		
+
 		exception.printStackTrace(printWriter);
-		
+
 		printWriter.close();
-		
+
 		String fullTrace = writer.toString();
-		
+
 		writer.reset();
-		
+
 		// OK, the trick is to convert the full trace into an array of stack frames.
-		
+
 		StringReader stringReader = new StringReader(fullTrace);
 		LineNumberReader lineReader = new LineNumberReader(stringReader);
 		int lineNumber = 0;
 		List frames = new ArrayList();
-		
+
 		try
 		{
 			while (true)
 			{
 				String line = lineReader.readLine();
-				
+
 				if (line == null)
 					break;
-				
+
 				// Always ignore the first line.
-				
+
 				if (++lineNumber == 1)
 					continue;
-				
+
 				frames.add(stripFrame(line));
 			}
-			
+
 			lineReader.close();
 		}
 		catch (IOException ex)
@@ -300,152 +298,149 @@ public class ExceptionAnalyzer
 			// Not likely to happen with this particular set
 			// of readers.
 		}
-		
+
 		String result[] = new String[frames.size()];
-		
-		return (String[])frames.toArray(result);
+
+		return (String[]) frames.toArray(result);
 	}
-	
-	
+
 	private static final int SKIP_LEADING_WHITESPACE = 0;
 	private static final int SKIP_T = 1;
 	private static final int SKIP_OTHER_WHITESPACE = 2;
-	
+
 	/**
 	 *  Sun's JVM prefixes each line in the stack trace
 	 *  with "<tab>at ", other JVMs don't.  This method
 	 *  looks for and strips such stuff.
 	 *
 	 */
-	
+
 	private String stripFrame(String frame)
 	{
 		char array[] = frame.toCharArray();
-		
+
 		int i = 0;
 		int state = SKIP_LEADING_WHITESPACE;
 		boolean more = true;
-		
+
 		while (more)
 		{
 			// Ran out of characters to skip?  Return the empty string.
-			
+
 			if (i == array.length)
 				return "";
-			
+
 			char ch = array[i];
-			
+
 			switch (state)
 			{
 				// Ignore whitespace at the start of the line.
-				
-				case SKIP_LEADING_WHITESPACE:
-					
+
+				case SKIP_LEADING_WHITESPACE :
+
 					if (Character.isWhitespace(ch))
 					{
 						i++;
 						continue;
 					}
-					
+
 					if (ch == 'a')
 					{
 						state = SKIP_T;
 						i++;
 						continue;
 					}
-					
+
 					// Found non-whitespace, not 'a'
 					more = false;
 					break;
-					
-				// Skip over the 't' after an 'a'
-					
-				case SKIP_T:
-					
+
+					// Skip over the 't' after an 'a'
+
+				case SKIP_T :
+
 					if (ch == 't')
 					{
 						state = SKIP_OTHER_WHITESPACE;
 						i++;
 						continue;
 					}
-					
+
 					// Back out the skipped-over 'a'
-					
+
 					i--;
 					more = false;
 					break;
-					
-				// Skip whitespace between 'at' and the name of the class
-					
-				case SKIP_OTHER_WHITESPACE:
-					
+
+					// Skip whitespace between 'at' and the name of the class
+
+				case SKIP_OTHER_WHITESPACE :
+
 					if (Character.isWhitespace(ch))
 					{
 						i++;
 						continue;
 					}
-					
+
 					// Not whitespace
 					more = false;
 					break;
 			}
-			
+
 		}
-		
-		
+
 		// Found nothing to strip out.
-		
+
 		if (i == 0)
 			return frame;
-		
+
 		return frame.substring(i);
 	}
-	
-    /**
+
+	/**
 	 *  Produces a text based exception report to the provided stream.
 	 *
 	 */
-	
-    public void reportException(Throwable exception, PrintStream stream)
-    {
+
+	public void reportException(Throwable exception, PrintStream stream)
+	{
 		int i;
 		int j;
 		ExceptionDescription[] descriptions;
 		ExceptionProperty[] properties;
 		String[] stackTrace;
 		String message;
-		
-	    descriptions = analyze(exception);
-		
-	    for (i = 0; i < descriptions.length; i++)
-	    {
-		    message = descriptions[i].getMessage();
-			
-		    if (message == null)
-			    stream.println(descriptions[i].getExceptionClassName());
-		    else
-			    stream.println(descriptions[i].getExceptionClassName() + ": " +
-							descriptions[i].getMessage());
-			
-		    properties = descriptions[i].getProperties();
-			
-		    for (j = 0; j < properties.length; j++)
-			    stream.println("   " + properties[j].getName() + ": " +
-							properties[j].getValue());
-			
-		    // Just show the stack trace on the deepest exception.
-			
-		    if (i + 1 == descriptions.length)
-		    {
-			    stackTrace = descriptions[i].getStackTrace();
-				
-			    for (j = 0; j < stackTrace.length; j++)
-				    stream.println(stackTrace[j]);
-		    }
-		    else
-			    stream.println();
-	    }
-	}
-	
-}
 
+		descriptions = analyze(exception);
+
+		for (i = 0; i < descriptions.length; i++)
+		{
+			message = descriptions[i].getMessage();
+
+			if (message == null)
+				stream.println(descriptions[i].getExceptionClassName());
+			else
+				stream.println(
+					descriptions[i].getExceptionClassName() + ": " + descriptions[i].getMessage());
+
+			properties = descriptions[i].getProperties();
+
+			for (j = 0; j < properties.length; j++)
+				stream.println(
+					"   " + properties[j].getName() + ": " + properties[j].getValue());
+
+			// Just show the stack trace on the deepest exception.
+
+			if (i + 1 == descriptions.length)
+			{
+				stackTrace = descriptions[i].getStackTrace();
+
+				for (j = 0; j < stackTrace.length; j++)
+					stream.println(stackTrace[j]);
+			}
+			else
+				stream.println();
+		}
+	}
+
+}

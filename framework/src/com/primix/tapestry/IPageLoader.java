@@ -47,15 +47,15 @@ public interface IPageLoader
 	 *
 	 * @since 0.2.12
 	 */
-	
+
 	public IEngine getEngine();
-	
+
 	/**
 	 *  A convienience; returns the template source provided by
 	 *  the {@link IEngine engine}.
 	 *
 	 * @since 0.2.12
 	 */
-	
+
 	public ITemplateSource getTemplateSource();
 }

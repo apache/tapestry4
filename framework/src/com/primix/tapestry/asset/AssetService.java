@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -58,18 +56,17 @@ public class AssetService extends AbstractService
 {
 	private String servletPath;
 	private IResourceResolver resolver;
-	
+
 	/**
 	 *  Defaults MIME types, by extension, used when the servlet container
 	 *  doesn't provide MIME types.  ServletExec Debugger, for example,
 	 *  fails to do provide these.
 	 *
 	 */
-	
+
 	private static Map mimeTypes;
-	
-	static
-	{
+
+	static {
 		mimeTypes = new HashMap(17);
 		mimeTypes.put("css", "text/css");
 		mimeTypes.put("gif", "image/gif");
@@ -78,15 +75,15 @@ public class AssetService extends AbstractService
 		mimeTypes.put("htm", "text/html");
 		mimeTypes.put("html", "text/html");
 	}
-	
+
 	private static final int BUFFER_SIZE = 1024;
-	
+
 	public AssetService(IEngine engine)
 	{
 		servletPath = engine.getServletPath();
 		resolver = engine.getResourceResolver();
 	}
-	
+
 	/**
 	 *  Builds a {@link Gesture} for a {@link PrivateAsset}.
 	 *
@@ -94,40 +91,40 @@ public class AssetService extends AbstractService
 	 *  (which is expected to start with a leading slash).
 	 *
 	 */
-	
-	public Gesture buildGesture(IRequestCycle cycle, IComponent component, 
-			String[] parameters)
+
+	public Gesture buildGesture(
+		IRequestCycle cycle,
+		IComponent component,
+		String[] parameters)
 	{
-		if (parameters == null ||
-				parameters.length != 1)
-			throw new ApplicationRuntimeException(
-				"Service asset requires exactly one parameter.");
-		
+		if (parameters == null || parameters.length != 1)
+			throw new ApplicationRuntimeException("Service asset requires exactly one parameter.");
+
 		return assembleGesture(servletPath, ASSET_SERVICE, parameters, null);
 	}
-	
+
 	public String getName()
 	{
 		return ASSET_SERVICE;
 	}
-	
+
 	private static String getMimeType(String path)
 	{
 		String key;
 		String result;
 		int dotx;
-		
+
 		dotx = path.lastIndexOf('.');
 		key = path.substring(dotx + 1).toLowerCase();
-		
-		result = (String)mimeTypes.get(key);
-		
+
+		result = (String) mimeTypes.get(key);
+
 		if (result == null)
 			result = "text/plain";
-		
+
 		return result;
 	}
-	
+
 	/**
 	 *  Retrieves a resource from the classpath and returns it to the
 	 *  client in a binary output stream.
@@ -140,77 +137,73 @@ public class AssetService extends AbstractService
 	 *  the error back to the client web browser.
 	 *
 	 */
-	
-	
-	public boolean service(IRequestCycle cycle, ResponseOutputStream output) 
+
+	public boolean service(IRequestCycle cycle, ResponseOutputStream output)
 		throws ServletException, IOException, RequestCycleException
 	{
-		
+
 		RequestContext context = cycle.getRequestContext();
 		String resourcePath = context.getParameter(CONTEXT_QUERY_PARMETER_NAME);
-		
+
 		IMonitor monitor = cycle.getMonitor();
 		if (monitor != null)
 			monitor.serviceBegin("asset", resourcePath);
-		
+
 		URL resourceURL = resolver.getResource(resourcePath);
-		
+
 		if (resourceURL == null)
 			throw new ApplicationRuntimeException(
 				"Could not find resource " + resourcePath + ".");
-		
+
 		URLConnection resourceConnection = resourceURL.openConnection();
-		
-		ServletContext servletContext = cycle.getRequestContext().getServlet().
-			getServletContext();
-		
+
+		ServletContext servletContext =
+			cycle.getRequestContext().getServlet().getServletContext();
+
 		// Getting the content type and length is very dependant
 		// on support from the application server (represented
 		// here by the servletContext).
-		
+
 		String contentType = servletContext.getMimeType(resourcePath);
 		int contentLength = resourceConnection.getContentLength();
-		
+
 		if (contentLength > 0)
-			cycle.getRequestContext().getResponse().
-				setContentLength(contentLength);
-		
+			cycle.getRequestContext().getResponse().setContentLength(contentLength);
+
 		// Set the content type.  If the servlet container doesn't
 		// provide it, try and guess it by the extension.
-		
-		if (contentType == null ||
-				contentType.length() == 0)
+
+		if (contentType == null || contentType.length() == 0)
 			contentType = getMimeType(resourcePath);
-		
+
 		output.setContentType(contentType);
-		
+
 		// Disable any further buffering inside the ResponseOutputStream
-		
+
 		output.forceFlush();
-		
+
 		InputStream input = resourceConnection.getInputStream();
-		
+
 		byte[] buffer = new byte[BUFFER_SIZE];
-		
+
 		while (true)
 		{
 			int bytesRead = input.read(buffer);
-			
+
 			if (bytesRead < 0)
 				break;
-			
+
 			output.write(buffer, 0, bytesRead);
 		}
-		
+
 		input.close();
-		
+
 		if (monitor != null)
 			monitor.serviceEnd("asset");
-		
+
 		// The IEngine is responsible for closing the ResponseOutputStream
 		// Return false, to indicate that no server side state could have changed.
-		
+
 		return false;
 	}
 }
-

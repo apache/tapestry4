@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,12 +18,12 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  */
-
+ 
 package com.primix.tapestry;
 
 import java.io.*;
@@ -67,8 +65,7 @@ import java.text.NumberFormat;
  * @since 0.2.9
  */
 
-public abstract class AbstractResponseWriter
-implements IResponseWriter
+public abstract class AbstractResponseWriter implements IResponseWriter
 {
 	/**
 	* The underlying {@link PrintWriter} that output is sent to.  
@@ -169,7 +166,6 @@ implements IResponseWriter
 		writer = new PrintWriter(stream);
 	}
 
-
 	/**
 	* Simply prints the attribute name. This is used for
 	* idempotent attributes, such as 'disabled' in an
@@ -226,7 +222,6 @@ implements IResponseWriter
 	* @throws IllegalStateException if there is no open tag.
 	*/
 
-
 	public void attribute(String name, String value)
 	{
 		checkTagOpen();
@@ -242,8 +237,7 @@ implements IResponseWriter
 
 		length = value.length();
 
-		if (buffer == null ||
-			buffer.length < length)
+		if (buffer == null || buffer.length < length)
 			buffer = new char[length];
 
 		value.getChars(0, length, buffer, 0);
@@ -305,8 +299,8 @@ implements IResponseWriter
 	private void checkTagOpen()
 	{
 		if (!openTag)
-			throw new IllegalStateException("A tag must be open before attributes " +
-				"may be set in an IResponseWriter.");
+			throw new IllegalStateException(
+				"A tag must be open before attributes " + "may be set in an IResponseWriter.");
 	}
 
 	/**
@@ -444,7 +438,7 @@ implements IResponseWriter
 	{
 		String result;
 
-		result = (String)activeElementStack.pop();
+		result = (String) activeElementStack.pop();
 		depth--;
 
 		return result;
@@ -495,8 +489,7 @@ implements IResponseWriter
 		if (openTag)
 			closeTag();
 
-		if (value < safe.length &&
-			safe[value])
+		if (value < safe.length && safe[value])
 		{
 			writer.print(value);
 			return;
@@ -514,7 +507,7 @@ implements IResponseWriter
 		// Not a well-known entity.  Print it's numeric equivalent.  Note:  this omits
 		// the leading '0', but most browsers (IE 5.0) don't seem to mind.  Is this a bug?
 
-		writer.print("&#" + (int)value + ";");		
+		writer.print("&#" + (int) value + ";");
 	}
 
 	/**
@@ -554,8 +547,7 @@ implements IResponseWriter
 
 		length = value.length();
 
-		if (buffer == null ||
-			buffer.length < length)
+		if (buffer == null || buffer.length < length)
 			buffer = new char[length];
 
 		value.getChars(0, length, buffer, 0);
@@ -664,8 +656,7 @@ implements IResponseWriter
 			{
 				if (ch == '&')
 					isSafe = true;
-				else
-					if (ch == '"') 
+				else if (ch == '"')
 					isSafe = false;
 			}
 
@@ -686,7 +677,7 @@ implements IResponseWriter
 				entity = entities[ch];
 
 			if (entity == null)
-				entity = "&#" + (int)ch + ";";
+				entity = "&#" + (int) ch + ";";
 
 			writer.print(entity);
 
@@ -699,5 +690,3 @@ implements IResponseWriter
 	}
 
 }
-
-

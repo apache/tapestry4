@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -45,45 +43,44 @@ import org.apache.log4j.*;
  *  @version $Id$
  */
 
-
-public class MailQueueBean 
+public class MailQueueBean
 	extends AbstractMessageDrivenBean
 	implements IMailMessageConstants
 {
-	private static final Category CAT = 
-		Category.getInstance(MailQueueBean.class);
-	
+	private static final Category CAT = Category.getInstance(MailQueueBean.class);
+
 	private static IMailSenderHome mailSenderHome;
 	private transient IMailSender mailSender;
-	
+
 	/**
 	 *  Logs the message receipt; more to come soon.
 	 *
 	 */
-	
+
 	public void onMessage(Message message)
+	
 	{
 		IMailSender sender = null;
 		String emailAddress;
 		String subject;
 		String content;
-		
+
 		try
 		{
 			emailAddress = message.getStringProperty(EMAIL_ADDRESS);
 			subject = message.getStringProperty(SUBJECT);
-			
-			TextMessage textMessage = (TextMessage)message;
-			
+
+			TextMessage textMessage = (TextMessage) message;
+
 			content = textMessage.getText();
 		}
 		catch (JMSException ex)
 		{
 			CAT.error("Unable to extract properties from message.", ex);
-			
+
 			return;
 		}
-		
+
 		try
 		{
 			sender = getMailSender();
@@ -92,7 +89,7 @@ public class MailQueueBean
 		{
 			CAT.error("Unable to obtain IMailSender instance.", ex);
 		}
-		
+
 		try
 		{
 			sender.sendMail(emailAddress, subject, content);
@@ -100,51 +97,52 @@ public class MailQueueBean
 		catch (RemoteException ex)
 		{
 			CAT.error("Remote exception sending mail.", ex);
-			
+
 			return;
 		}
 		catch (EJBException ex)
 		{
 			CAT.error("Error sending mail: " + ex.getMessage(), ex);
-			
+
 			return;
 		}
-		
+
 		// Not clear if we have to acknowledge the message here.
 		// What about TP stuff? 
 	}
-	
-	private IMailSender getMailSender()
-		throws RemoteException
+
+	private IMailSender getMailSender() throws RemoteException
 	{
 		if (mailSender != null)
 			return mailSender;
-		
+
 		if (mailSenderHome == null)
 		{
 			try
 			{
 				Object raw = environment.lookup("ejb/MailSender");
-				
-				mailSenderHome = (IMailSenderHome)PortableRemoteObject.narrow(raw,
-						IMailSenderHome.class);
+
+				mailSenderHome =
+					(IMailSenderHome) PortableRemoteObject.narrow(raw, IMailSenderHome.class);
 			}
 			catch (NamingException ex)
-			{
+			
+				{
 				throw new RemoteException("Unable to obtain reference to IMailSenderHome.", ex);
 			}
 		}
-		
+
 		try
 		{
 			mailSender = mailSenderHome.create();
 		}
 		catch (CreateException ex)
 		{
-			throw new RemoteException("Unable to create new instance of MailSender bean.", ex);
+			throw new RemoteException(
+				"Unable to create new instance of MailSender bean.",
+				ex);
 		}
-		
+
 		return mailSender;
 	}
 }
-

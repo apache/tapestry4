@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix Solutions
- * One Arsenal Marketplace
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -37,151 +35,149 @@ import java.io.*;
  *  @version $Id$
  *  @author Howard Ship
  *
- */ 
+ */
 
-public class HangmanGame
-implements Serializable
+public class HangmanGame implements Serializable
 {
-    private char[] word;
-    private char[] guessed;
-    private boolean[] used;
-    private int lettersLeft;
+	private char[] word;
+	private char[] guessed;
+	private boolean[] used;
+	private int lettersLeft;
 
-    private int missed;
-    private int maxMisses;
+	private int missed;
+	private int maxMisses;
 
-    private  static final int N_LETTERS = 26;
+	private static final int N_LETTERS = 26;
 
-    /**
-     *  Starts a new game, resetting the number of misses.
-     *
-     */
+	/**
+	 *  Starts a new game, resetting the number of misses.
+	 *
+	 */
 
-    public void start(String word, int maxMisses)
-    {
-        this.word = word.toUpperCase().toCharArray();
+	public void start(String word, int maxMisses)
+	{
+		this.word = word.toUpperCase().toCharArray();
 
-        guessed = new char[this.word.length];
-        for (int i = 0; i < this.word.length; i++)
-            guessed[i] = '_';
+		guessed = new char[this.word.length];
+		for (int i = 0; i < this.word.length; i++)
+			guessed[i] = '_';
 
-        if (used == null)
-            used = new boolean[N_LETTERS];
-        
-        for (int i = 0; i < N_LETTERS; i++)
-            used[i] = false;
+		if (used == null)
+			used = new boolean[N_LETTERS];
 
-        lettersLeft = this.word.length;
-        missed = 0;
-        this.maxMisses = maxMisses;
-    }
+		for (int i = 0; i < N_LETTERS; i++)
+			used[i] = false;
 
-    /**
-     *  Returns true when the maximum number of misses has been reached.
-     *
-     */
+		lettersLeft = this.word.length;
+		missed = 0;
+		this.maxMisses = maxMisses;
+	}
 
-    public boolean getFailed()
-    {
-        return missed >= maxMisses;
-    }
+	/**
+	 *  Returns true when the maximum number of misses has been reached.
+	 *
+	 */
 
-    /**
-     *  Returns true when all letters have been guessed.
-     *
-     */
+	public boolean getFailed()
+	{
+		return missed >= maxMisses;
+	}
 
-    public boolean getDone()
-    {
-        return lettersLeft == 0;
-    }
+	/**
+	 *  Returns true when all letters have been guessed.
+	 *
+	 */
 
-    /**
-     *  Returns an array of characters, each position is either a correctly guessed
-     *  letter, or an underscore (for an as-yet unguessed letter).
-     *
-     */
+	public boolean getDone()
+	{
+		return lettersLeft == 0;
+	}
 
-    public char[] getGuessed()
-    {
-        return guessed;
-    }
+	/**
+	 *  Returns an array of characters, each position is either a correctly guessed
+	 *  letter, or an underscore (for an as-yet unguessed letter).
+	 *
+	 */
 
-    /**
-     *  Returns the word being guessed.
-     *
-     */
+	public char[] getGuessed()
+	{
+		return guessed;
+	}
 
-    public String getWord()
-    {
-        return new String(word);
-    }
+	/**
+	 *  Returns the word being guessed.
+	 *
+	 */
 
-    /**
-     *  Guesses a letter.  Returns the number of letters left to guess.
-     *
-     *  @param letter a single letter, in the range 'A' to 'Z'.
-     *
-     *  @throws GameException if the letter doesn't appear
-     *  in the word.
-     *
-     */
+	public String getWord()
+	{
+		return new String(word);
+	}
 
-    public void guess(char letter)
-    throws GameException
-    {
-        int index;
-        boolean found = false;
+	/**
+	 *  Guesses a letter.  Returns the number of letters left to guess.
+	 *
+	 *  @param letter a single letter, in the range 'A' to 'Z'.
+	 *
+	 *  @throws GameException if the letter doesn't appear
+	 *  in the word.
+	 *
+	 */
 
-        used[letter - 'A'] = true;
+	public void guess(char letter) throws GameException
+	{
+		int index;
+		boolean found = false;
 
-        for (int i = 0; i < word.length; i++)
-        {
-            if (word[i] == letter)
-            {
-                found = true;
-                // Replace the underscore with the actual letter
-                guessed[i] = letter;
-                lettersLeft--;
-            }
-        }
+		used[letter - 'A'] = true;
 
-        if (!found)
-        {
-            missed++;
-            throw new GameException("'" + letter + "' is not in the word.");
-        }
-    }
+		for (int i = 0; i < word.length; i++)
+		{
+			if (word[i] == letter)
+			{
+				found = true;
+				// Replace the underscore with the actual letter
+				guessed[i] = letter;
+				lettersLeft--;
+			}
+		}
 
-    /**
-     *  Returns an array of unused letters that may be guessed.
-     *
-     */
+		if (!found)
+		{
+			missed++;
+			throw new GameException("'" + letter + "' is not in the word.");
+		}
+	}
 
-    public char[] getUnusedLetters()
-    {
-        char[] buffer = new char[N_LETTERS];
-        int length = 0;
+	/**
+	 *  Returns an array of unused letters that may be guessed.
+	 *
+	 */
 
-        for (char letter = 'A'; letter <= 'Z'; letter++)
-        {
-            if (!used[letter - 'A'])
-                buffer[length++] = letter;
-        }
+	public char[] getUnusedLetters()
+	{
+		char[] buffer = new char[N_LETTERS];
+		int length = 0;
 
-        char[] result = new char[length];
-        System.arraycopy(buffer, 0, result, 0, length);
+		for (char letter = 'A'; letter <= 'Z'; letter++)
+		{
+			if (!used[letter - 'A'])
+				buffer[length++] = letter;
+		}
 
-        return result;
-    }
+		char[] result = new char[length];
+		System.arraycopy(buffer, 0, result, 0, length);
 
-    public int getMissed()
-    {
-        return missed;
-    }
+		return result;
+	}
 
-    public int getMaxMisses()
-    {
-        return maxMisses;
-    }
+	public int getMissed()
+	{
+		return missed;
+	}
+
+	public int getMaxMisses()
+	{
+		return maxMisses;
+	}
 }

@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 1
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -43,8 +41,7 @@ import java.util.*;
 
 public class BeanProviderHelper extends PropertyHelper
 {
-	public static class BeanAccessor
-	implements IPropertyAccessor
+	public static class BeanAccessor implements IPropertyAccessor
 	{
 		private String name;
 
@@ -54,16 +51,16 @@ public class BeanProviderHelper extends PropertyHelper
 		}
 
 		/** @since 1.0.6 **/
-		
+
 		public String getName()
 		{
 			return name;
 		}
-		
+
 		public Object get(Object instance)
 		{
-			IBeanProvider provider = (IBeanProvider)instance;
-			
+			IBeanProvider provider = (IBeanProvider) instance;
+
 			return provider.getBean(name);
 		}
 
@@ -87,22 +84,22 @@ public class BeanProviderHelper extends PropertyHelper
 		 *  type of objects stored in a {@link Map}.
 		 *
 		 */
-		 
+
 		public Class getType()
 		{
 			return Object.class;
 		}
-		
+
 		/**
 		 * Does nothing; the IBeanProvider properties are read-only.
 		 *
 		 */
-		
+
 		public void set(Object instance, Object value)
-		{ 
+		
+		{
 		}
 	}
-
 
 	public BeanProviderHelper(Class beanClass)
 	{
@@ -120,12 +117,12 @@ public class BeanProviderHelper extends PropertyHelper
 
 		return result;
 	}
-	
+
 	/** @since 1.0.6 **/
-	
+
 	public Collection getSyntheticPropertyNames(Object instance)
 	{
-		IBeanProvider provider = (IBeanProvider)instance;
+		IBeanProvider provider = (IBeanProvider) instance;
 
 		return provider.getBeanNames();
 	}

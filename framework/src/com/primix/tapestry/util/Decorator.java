@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -75,34 +73,34 @@ import org.apache.log4j.*;
 
 public class Decorator
 {
-	private static final Category CAT = 
-		Category.getInstance(Decorator.class);
-	
+	private static final Category CAT = Category.getInstance(Decorator.class);
+
 	private static final int REGISTRATION_MAP_SIZE = 7;
 	private static final int CACHE_MAP_SIZE = 29;
-	
+
 	/**
 	 *  A Map of adaptor objects, keyed on registration Class.
 	 *
 	 */
-	
-	private Map registrations; 
-	
+
+	private Map registrations;
+
 	/**
 	 *  A Map of adaptor objects, keyed on subject Class.
 	 *
 	 */
-	
+
 	private Map cache;
-	
+
 	/**
 	 *  Registers an adaptor for a registration class.
 	 *
 	 *  @throws IllegalArgumentException if an adaptor has already
 	 *  been registered for the given class.
 	 */
-	
+
 	public void register(Class registrationClass, Object adaptor)
+	
 	{
 		if (registrations == null)
 		{
@@ -112,61 +110,60 @@ public class Decorator
 					registrations = new HashMap(REGISTRATION_MAP_SIZE);
 			}
 		}
-		
+
 		synchronized (registrations)
 		{
 			if (registrations.containsKey(registrationClass))
 				throw new IllegalArgumentException(
-					"A registration for class " + registrationClass.getName() + 
-						" already exists.");
-			
+					"A registration for class " + registrationClass.getName() + " already exists.");
+
 			registrations.put(registrationClass, adaptor);
 		}
-		
+
 		if (CAT.isInfoEnabled())
 			CAT.info("Registered " + adaptor + " for " + registrationClass.getName());
-		
+
 		// Can't tell what is and isn't valid in the cache.
 		// Also, normally all registrations occur before any adaptors
 		// are searched for, so this is not a big deal.
-		
+
 		cache = null;
 	}
-	
+
 	/**
 	 *  Gets the adaptor for the specified subjectClass.
 	 *
 	 *  @throws IllegalArgumentException if no adaptor could be found.
 	 *
 	 */
-	
+
 	public Object getAdaptor(Class subjectClass)
 	{
 		Object result;
-		
+
 		if (CAT.isDebugEnabled())
 			CAT.debug("Getting adaptor for class " + subjectClass.getName());
-		
+
 		if (cache != null)
 		{
 			synchronized (cache)
 			{
 				result = cache.get(subjectClass);
-				
+
 				if (result != null)
 				{
 					if (CAT.isDebugEnabled())
 						CAT.debug("Found " + result + " in cache");
-					
+
 					return result;
 				}
 			}
 		}
-		
+
 		result = searchForAdaptor(subjectClass);
-		
+
 		// Record the result in the cache
-		
+
 		if (cache == null)
 		{
 			synchronized (this)
@@ -175,18 +172,18 @@ public class Decorator
 					cache = new HashMap(CACHE_MAP_SIZE);
 			}
 		}
-		
+
 		synchronized (cache)
 		{
 			cache.put(subjectClass, result);
 		}
-		
+
 		if (CAT.isDebugEnabled())
 			CAT.debug("Found " + result);
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Searches the registration Map for a match, based on inheritance.
 	 *
@@ -209,7 +206,7 @@ public class Decorator
 	 * </ul>
 	 *
 	 */
-	
+
 	private Object searchForAdaptor(Class subjectClass)
 	{
 		LinkedList queue = null;
@@ -217,126 +214,126 @@ public class Decorator
 		Class searchClass;
 		Object result;
 		int length;
-		
+
 		if (registrations == null)
-			throw new IllegalArgumentException(
-				"No adaptors have been registered.");
-		
+			throw new IllegalArgumentException("No adaptors have been registered.");
+
 		if (CAT.isDebugEnabled())
 			CAT.debug("Searching for adaptor for class " + subjectClass.getName());
-		
+
 		synchronized (registrations)
 		{
 			// Step one: work up through the class inheritance.
-			
+
 			searchClass = subjectClass;
-			
+
 			// Primitive types have null, not Object, as their parent
 			// class.
-			
+
 			while (searchClass != Object.class && searchClass != null)
-			{
+			
+				{
 				result = registrations.get(searchClass);
 				if (result != null)
 					return result;
-				
+
 				// Not an exact match.  If the search class
 				// implements any interfaces, add them to the queue.
-				
+
 				interfaces = searchClass.getInterfaces();
 				length = interfaces.length;
-				
+
 				if (queue == null && length > 0)
 					queue = new LinkedList();
-				
+
 				for (int i = 0; i < length; i++)
 					queue.addLast(interfaces[i]);
-				
+
 				// Advance up to the next superclass
-				
-				searchClass = searchClass.getSuperclass();   
-				
+
+				searchClass = searchClass.getSuperclass();
+
 			}
-			
+
 			// Ok, the easy part failed, lets start searching
 			// interfaces.
-			
+
 			if (queue != null)
 			{
 				while (!queue.isEmpty())
 				{
-					searchClass = (Class)queue.removeFirst();
-					
+					searchClass = (Class) queue.removeFirst();
+
 					result = registrations.get(searchClass);
 					if (result != null)
 						return result;
-					
+
 					// Interfaces can extend other interfaces; add them
 					// to the queue.
-					
+
 					interfaces = searchClass.getInterfaces();
 					length = interfaces.length;
-					
+
 					for (int i = 0; i < length; i++)
 						queue.addLast(interfaces[i]);
 				}
 			}
-			
+
 			// Not a match on interface; our last gasp is to check
 			// for a registration for java.lang.Object
-			
+
 			result = registrations.get(Object.class);
 			if (result != null)
 				return result;
-			
+
 		}
-		
+
 		// No match?  That's rare ... and an error.
-		
+
 		throw new IllegalArgumentException(
-			"Could not find an adaptor for class " +
-				subjectClass.getName() + ".");
-		
+			"Could not find an adaptor for class " + subjectClass.getName() + ".");
+
 	}
-	
+
 	public String toString()
+	
 	{
 		StringBuffer buffer;
 		Iterator i;
 		Map.Entry entry;
 		boolean first = true;
 		Class registeredClass;
-		
+
 		buffer = new StringBuffer();
 		buffer.append("Decorator[");
-		
+
 		if (registrations != null)
 		{
-			synchronized(registrations)
+			synchronized (registrations)
 			{
 				i = registrations.entrySet().iterator();
-				
+
 				while (i.hasNext())
 				{
 					if (!first)
 						buffer.append(' ');
-					
-					entry = (Map.Entry)i.next();
-					
-					registeredClass = (Class)entry.getKey();
-					
+
+					entry = (Map.Entry) i.next();
+
+					registeredClass = (Class) entry.getKey();
+
 					buffer.append(registeredClass.getName());
 					buffer.append("=");
 					buffer.append(entry.getValue());
-					
+
 					first = false;
 				}
 			}
 		}
-		
+
 		buffer.append("]");
-		
+
 		return buffer.toString();
-		
+
 	}
 }

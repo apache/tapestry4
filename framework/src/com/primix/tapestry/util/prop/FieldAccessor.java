@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -41,32 +39,38 @@ import com.primix.tapestry.util.*;
  *  @since 1.0.1
  *
  */
- 
-class FieldAccessor
-implements IPropertyAccessor
+
+class FieldAccessor implements IPropertyAccessor
 {
- 	private Field field;
+	private Field field;
 
 	FieldAccessor(Field field)
 	{
 		this.field = field;
 	}
-		
+
 	public String getName()
 	{
 		return field.getName();
 	}
-	
+
 	public void set(Object instance, Object value)
-	{ 
+	{
 		try
 		{
 			field.set(instance, value);
 		}
 		catch (Exception ex)
 		{
-			throw new DynamicInvocationException("Unable to set public attribute " +
-				field.getName() + " of " + instance + " to " + value + ".", ex);
+			throw new DynamicInvocationException(
+				"Unable to set public attribute "
+					+ field.getName()
+					+ " of "
+					+ instance
+					+ " to "
+					+ value
+					+ ".",
+				ex);
 		}
 	}
 
@@ -98,10 +102,9 @@ implements IPropertyAccessor
 		}
 		catch (Exception ex)
 		{
-			throw new DynamicInvocationException("Unable to read public attribute " +
-				field.getName() + " of " + instance + ".", ex);
+			throw new DynamicInvocationException(
+				"Unable to read public attribute " + field.getName() + " of " + instance + ".",
+				ex);
 		}
 	}
 }
-
- 

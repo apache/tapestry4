@@ -1,15 +1,13 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix Solutions
- * One Arsenal Marketplace
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
- * 
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -20,7 +18,7 @@
  * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
  *
  * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied waranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
@@ -46,42 +44,39 @@ import com.primix.vlib.ejb.*;
  *  @author Howard Ship
  *
  */
- 
+
 public class PublisherBean extends AbstractEntityBean
 {
 	// Primary Key
-	
+
 	public Integer publisherId;
-	
+
 	public String name;
-	
+
 	public String getName()
 	{
 		return name;
 	}
-	
+
 	public void setName(String value)
 	{
 		name = value;
 		dirty = true;
 	}
-	
+
 	protected String[] getAttributePropertyNames()
 	{
-		return new String[] 
-		{ "name"
-		};
+		return new String[] { "name" };
 	}
-	
-	public Integer ejbCreate(String name)
-	throws RemoteException
+
+	public Integer ejbCreate(String name) throws RemoteException
 	{
 		publisherId = allocateKey();
 		this.name = name;
-		
+
 		return null;
 	}
-	
+
 	public void ejbPostCreate(String name)
 	{
 		// Do nothing
