@@ -86,6 +86,14 @@ public interface ITemplateSource
      **/
     
     public static final String TEMPLATE_ASSET_NAME = "$template";
+
+    /**
+     * 
+     *  @since 3.0
+     * 
+     **/
+    
+    public static final String TEMPLATE_TAG_PARAMETER_NAME = "templateTag";
     
     /**
      *  Locates the template for the component.

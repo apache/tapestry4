@@ -56,7 +56,6 @@
 package org.apache.tapestry.pageload;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -103,7 +102,6 @@ import org.apache.tapestry.spec.IBindingSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.spec.IListenerBindingSpecification;
-import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
@@ -130,6 +128,7 @@ public class PageLoader implements IPageLoader
     private ISpecificationSource _specificationSource;
     private ComponentSpecificationResolver _componentResolver;
     private List _inheritedBindingQueue = new ArrayList();
+    private ComponentTreeWalker _componentTreeWalker;
 
     /**
      * The locale of the application, which is also the locale
@@ -203,25 +202,28 @@ public class PageLoader implements IPageLoader
     private static class QueuedInheritInformalBindings implements IQueuedInheritedBinding
     {
         private IComponent _component;
-        
+
         private QueuedInheritInformalBindings(IComponent component)
         {
             _component = component;
         }
-        
-		public void connect()
-		{
+
+        public void connect()
+        {
 
             IComponent container = _component.getContainer();
-            
+
             for (Iterator it = container.getBindingNames().iterator(); it.hasNext();)
-			{
-				String bindingName = (String) it.next();
+            {
+                String bindingName = (String) it.next();
                 connectInformalBinding(container, _component, bindingName);
-    		}
-		}
-        
-        private void connectInformalBinding(IComponent container, IComponent component, String bindingName)
+            }
+        }
+
+        private void connectInformalBinding(
+            IComponent container,
+            IComponent component,
+            String bindingName)
         {
             IComponentSpecification componentSpec = component.getSpecification();
             IComponentSpecification containerSpec = container.getSpecification();
@@ -231,13 +233,13 @@ public class PageLoader implements IPageLoader
                 return;
 
             // check if parameter is informal for the component
-            if (componentSpec.getParameter(bindingName) != null ||
-                componentSpec.isReservedParameterName(bindingName))
+            if (componentSpec.getParameter(bindingName) != null
+                || componentSpec.isReservedParameterName(bindingName))
                 return;
-                
+
             // check if parameter is informal for the container
-            if (containerSpec.getParameter(bindingName) != null ||
-                containerSpec.isReservedParameterName(bindingName))
+            if (containerSpec.getParameter(bindingName) != null
+                || containerSpec.isReservedParameterName(bindingName))
                 return;
 
             // if everything passes, establish binding
@@ -271,6 +273,19 @@ public class PageLoader implements IPageLoader
 
         _servletLocation =
             new ContextResourceLocation(context.getServlet().getServletContext(), servletPath);
+
+        // Create the mechanism for walking the component tree when it is complete
+        IComponentVisitor verifyRequiredParametersVisitor = new VerifyRequiredParametersVisitor();
+        IComponentVisitor establishDefaultParameterValuesVisitor =
+            new EstablishDefaultParameterValuesVisitor(_resolver);
+
+        // Perform required parameter verfication and set up of the default parameter values
+        IComponentVisitor[] visitors =
+            new IComponentVisitor[] {
+                verifyRequiredParametersVisitor,
+                establishDefaultParameterValuesVisitor };
+
+        _componentTreeWalker = new ComponentTreeWalker(visitors);
     }
 
     /**
@@ -308,7 +323,7 @@ public class PageLoader implements IPageLoader
                     contained.getLocation(),
                     null);
 
-            if (containerFormalOnly)                    
+            if (containerFormalOnly)
                 throw new ApplicationRuntimeException(
                     Tapestry.format(
                         "PageLoader.inherit-informal-invalid-container-formal-only",
@@ -318,8 +333,7 @@ public class PageLoader implements IPageLoader
                     contained.getLocation(),
                     null);
 
-            IQueuedInheritedBinding queued =
-                new QueuedInheritInformalBindings(component);
+            IQueuedInheritedBinding queued = new QueuedInheritInformalBindings(component);
             _inheritedBindingQueue.add(queued);
         }
 
@@ -387,53 +401,6 @@ public class PageLoader implements IPageLoader
         }
     }
 
-    /**
-     *  Invoked from {@link #loadPage(String, INamespace, IRequestCycle, IComponentSpecification)}
-     *  after the entire tree of components in the page has been constructed.  Recursively
-     *  checks each component in the tree to ensure that
-     *  all of its required parameters are bound.
-     * 
-     *  @since 3.0
-     * 
-     **/
-
-    private void verifyRequiredParameters(IComponent component)
-    {
-        IComponentSpecification spec = component.getSpecification();
-
-        Iterator i = spec.getParameterNames().iterator();
-
-        while (i.hasNext())
-        {
-            String name = (String) i.next();
-            IParameterSpecification parameterSpec = spec.getParameter(name);
-
-            if (parameterSpec.isRequired() && component.getBinding(name) == null)
-                throw new ApplicationRuntimeException(
-                    Tapestry.format(
-                        "PageLoader.required-parameter-not-bound",
-                        name,
-                        component.getExtendedId()),
-                    component,
-                    component.getLocation(),
-                    null);
-        }
-
-        Collection components = component.getComponents().values();
-
-        if (Tapestry.size(components) == 0)
-            return;
-
-        i = components.iterator();
-
-        while (i.hasNext())
-        {
-            IComponent embedded = (IComponent) i.next();
-
-            verifyRequiredParameters(embedded);
-        }
-    }
-
     private IBinding convert(IComponent container, IBindingSpecification spec)
     {
         BindingType type = spec.getType();
@@ -441,7 +408,7 @@ public class PageLoader implements IPageLoader
         String value = spec.getValue();
 
         // The most common type. 
-		// TODO These bindings should be created somehow using the SpecFactory in SpecificationParser
+        // TODO These bindings should be created somehow using the SpecFactory in SpecificationParser
         if (type == BindingType.DYNAMIC)
             return new ExpressionBinding(_resolver, container, value, location);
 
@@ -836,7 +803,9 @@ public class PageLoader implements IPageLoader
 
             establishInheritedBindings();
 
-            verifyRequiredParameters(page);
+            // Walk through the complete component tree to ensure that required parameters
+            // are bound and to set up the default parameter values.
+            _componentTreeWalker.walkComponentTree(page);
         }
         finally
         {
@@ -866,7 +835,8 @@ public class PageLoader implements IPageLoader
 
         for (int i = 0; i < count; i++)
         {
-            IQueuedInheritedBinding queued = (IQueuedInheritedBinding) _inheritedBindingQueue.get(i);
+            IQueuedInheritedBinding queued =
+                (IQueuedInheritedBinding) _inheritedBindingQueue.get(i);
 
             queued.connect();
         }

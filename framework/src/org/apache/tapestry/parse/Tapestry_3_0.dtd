@@ -378,6 +378,7 @@ Attributes:
 	type CDATA #IMPLIED
 	required %attribute-flag; "no"
 	property-name CDATA #IMPLIED
+	default-value CDATA #IMPLIED
 	direction (in | form | custom | auto) "custom"
 >
 <!-- =======================================================

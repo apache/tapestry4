@@ -68,6 +68,7 @@ import org.apache.tapestry.binding.StaticBinding;
 import org.apache.tapestry.binding.StringBinding;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.engine.IPageSource;
+import org.apache.tapestry.engine.ITemplateSource;
 import org.apache.tapestry.parse.AttributeType;
 import org.apache.tapestry.parse.CloseToken;
 import org.apache.tapestry.parse.ComponentTemplate;
@@ -364,12 +365,15 @@ public class BaseComponentTemplateLoader
 
     private void addTemplateBindings(IComponent component, OpenToken token)
     {
+        IComponentSpecification spec = component.getSpecification();
+
+        // add a static binding carrying the template tag
+        addStaticBinding(component, spec, ITemplateSource.TEMPLATE_TAG_PARAMETER_NAME, token.getTag(), token.getLocation());
+
         Map attributes = token.getAttributesMap();
 
         if (attributes == null)
             return;
-
-        IComponentSpecification spec = component.getSpecification();
 
         Iterator i = attributes.entrySet().iterator();
 
