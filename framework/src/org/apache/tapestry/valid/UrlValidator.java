@@ -70,6 +70,12 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.util.StringSplitter;
 
+/**
+ *
+ *  @version $Id$
+ *  @since 3.0
+ *
+ **/
 public class UrlValidator extends BaseValidator {
 	private int _minimumLength;
 	private String _minimumLengthMessage;
@@ -296,7 +302,7 @@ public class UrlValidator extends BaseValidator {
 	}
 
 	/**
-	 * @param collection
+	 * @param protocols comma separated list of allowed protocols
 	 */
 	public void setAllowedProtocols(String protocols) {
 		StringSplitter spliter = new StringSplitter(',');
