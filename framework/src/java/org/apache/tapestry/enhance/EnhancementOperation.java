@@ -133,4 +133,13 @@ public interface EnhancementOperation
      */
     public void extendMethodImplementation(Class interfaceClass, MethodSignature methodSignature,
             String code);
+    
+    /**
+     * Returns true if the class implements the specified interface.  Checks the base class
+     * (as identified in the specification), but <em>also</em> accounts for any additional
+     * interfaces that may be added by {@link #extendMethodImplementation(Class, MethodSignature, String)}.
+     * 
+     */
+    
+    public boolean implementsInterface(Class interfaceClass);
 }
