@@ -185,7 +185,8 @@ public class Checkbox extends AbstractFormComponent
 
 			listener = getListener(cycle);
 
-			listener.actionTriggered(this, cycle);
+			if (listener != null)
+				listener.actionTriggered(this, cycle);
 		}
 		else
 		{

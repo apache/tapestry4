@@ -101,7 +101,9 @@ public class ApplicationSpecification extends BasePropertyHolder
 		componentMap.put("InsertURL",
 			"/com/primix/tapestry/components/InsertURL.jwc");
 		componentMap.put("ImageButton",
-			"/com/primix/tapestry/components/ImageButton.jwc");		
+			"/com/primix/tapestry/components/ImageButton.jwc");	
+		componentMap.put("PropertySelection",
+			"/com/primix/tapestry/components/PropertySelection.jwc");	
 
 		// Provide defaults for three of the four standard pages.
 		// An application must provide a home page and may override
@@ -189,6 +191,10 @@ public class ApplicationSpecification extends BasePropertyHolder
 	*	 <td>/com/primix/tapestry/components/Page.jwc</td>
 	*	 <td>{@link Page}</td></tr>
 	* <tr>
+	* <tr>
+	*  <td>/com/primix/tapestry/components/PropertySelection.jwc</td>
+	*  <td>{@link PropertySelection}</td> </tr>
+	*
 	*		<td>/com/primix/tapestry/components/Radio.jwc</td>
 	*		<td>{@link Radio}</td> </tr>
 	* <tr>

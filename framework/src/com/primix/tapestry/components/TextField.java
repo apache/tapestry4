@@ -35,8 +35,6 @@ import com.primix.tapestry.spec.*;
  *  Implements a component that manages an HTML &lt;input type=text&gt; or
  *  &lt;input type=password&gt; form element.
  *
- * <p><b>This will be merged with {@link Text} shortly.</b>
- *
  * <table border=1>
  * <tr> 
  *    <td>Parameter</td>
@@ -110,8 +108,7 @@ import com.primix.tapestry.spec.*;
  * 	  <td>R</td>
  * 	  <td>no</td>
  *	  <td>&nbsp;</td>
- *	  <td>The listener is notified after the text binding has been updated.  The
- *		  listener is notified <em>even if the TextField is disabled</em>.</td>
+ *	  <td>The listener is notified after the text binding has been updated.</td>
  *	</tr>
  *
  *	</table>
@@ -227,12 +224,15 @@ public class TextField extends AbstractFormComponent
 				value = cycle.getRequestContext().getParameter(name);
 
 				textBinding.setString(value);
+				
+				// Notify the listener, if any.
+				
+				listener = getListener(cycle);
+
+				if (listener != null)
+					listener.actionTriggered(this, cycle);	
 			}
 
-			listener = getListener(cycle);
-
-			if (listener != null)
-				listener.actionTriggered(this, cycle);	
 		}
 		else
 		{
