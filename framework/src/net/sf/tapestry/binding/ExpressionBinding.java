@@ -199,13 +199,13 @@ public class ExpressionBinding extends AbstractBinding
 
     private Object resolveProperty()
     {
-        if (_parsedExpression == null)
-            _parsedExpression = OgnlUtils.getParsedExpression(_expression);
-
         Object result;
 
         try
         {
+            if (_parsedExpression == null)
+                _parsedExpression = OgnlUtils.getParsedExpression(_expression);
+
             Map context = getOgnlContext();
 
             result = Ognl.getValue(_parsedExpression, context, _root);
@@ -230,7 +230,7 @@ public class ExpressionBinding extends AbstractBinding
      *  context variables (such as page, request cycle and engine).
      * 
      **/
-    
+
     private Map getOgnlContext()
     {
         return Ognl.createDefaultContext(_root, _resolver);

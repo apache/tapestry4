@@ -43,6 +43,8 @@ import java.sql.Timestamp;
 
 public class Book implements Serializable
 {
+    private static final long serialVersionUID = 4762562744970539598L;
+    
     /**
      *  Column index for the Book's primary key.
      *

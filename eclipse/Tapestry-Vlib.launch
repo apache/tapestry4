@@ -25,10 +25,6 @@
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry
-    internalArchive=&quot;/Tapestry/lib/ext/log4j-core.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
-"/>
-        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry internalArchive=&quot;/Tapestry/lib/ext/mckoidb.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
@@ -41,19 +37,7 @@
     internalArchive=&quot;/Tapestry/lib/ext/org.mortbay.jetty.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry
-    internalArchive=&quot;/Tapestry/lib/ext/jcommon-0.5.6.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
-"/>
-        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry
-    internalArchive=&quot;/Tapestry/lib/ext/jfreechart-0.7.4.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
-"/>
-        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry internalArchive=&quot;/Tapestry/config&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
-"/>
-        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry containerPath=&quot;JBOSS_DIR/client/jboss-client.jar&quot;
-    path=&quot;3&quot; type=&quot;3&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry containerPath=&quot;JBOSS_DIR/client/jboss-j2ee.jar&quot;
@@ -61,6 +45,22 @@
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry containerPath=&quot;JBOSS_DIR/lib/jboss-jmx.jar&quot;
+    path=&quot;3&quot; type=&quot;3&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry containerPath=&quot;JBOSS_DIR/client/jboss-client.jar&quot;
+    path=&quot;3&quot; type=&quot;3&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry
+    containerPath=&quot;JBOSS_DIR/client/jbosssx-client.jar&quot; path=&quot;3&quot; type=&quot;3&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry containerPath=&quot;JBOSS_DIR/client/jnet.jar&quot;
+    path=&quot;3&quot; type=&quot;3&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry containerPath=&quot;JBOSS_DIR/client/jnp-client.jar&quot;
     path=&quot;3&quot; type=&quot;3&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
@@ -76,24 +76,37 @@
     path=&quot;3&quot; type=&quot;3&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry containerPath=&quot;JBOSS_DIR/client/jnp-client.jar&quot;
-    path=&quot;3&quot; type=&quot;3&quot;/&gt;
-"/>
-        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry containerPath=&quot;JBOSS_DIR/client/jnet.jar&quot;
-    path=&quot;3&quot; type=&quot;3&quot;/&gt;
+&lt;runtimeClasspathEntry
+    internalArchive=&quot;/Tapestry/lib/ext/jakarta-oro-2.0.6.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    containerPath=&quot;JBOSS_DIR/client/jbosssx-client.jar&quot; path=&quot;3&quot; type=&quot;3&quot;/&gt;
+    internalArchive=&quot;/Tapestry/lib/ext/jcommon-0.6.4.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry
+    internalArchive=&quot;/Tapestry/lib/ext/jfreechart-0.9.2.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry
+    internalArchive=&quot;/Tapestry/lib/ext/log4j-1.2.6.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry
+    internalArchive=&quot;/Tapestry/lib/ext/ognl-2.1.2.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
     </listAttribute>
-    <stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_default"/>
-    <stringAttribute key="org.eclipse.debug.ui.target_run_perspective" value="perspective_default"/>
+    <stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_none"/>
+    <stringAttribute key="org.eclipse.debug.ui.target_run_perspective" value="perspective_none"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_INSTALL_TYPE_ID" value="org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Tapestry"/>
+    <mapAttribute key="org.eclipse.jdt.launchingVM_INSTALL_TYPE_SPECIFIC_ATTRS_MAP">
+        <mapEntry key="org.eclipse.jdt.launching.JAVA_COMMAND" value="javaw"/>
+    </mapAttribute>
     <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="Tapestry/examples/Vlib"/>
     <stringAttribute key="org.eclipse.debug.core.source_locator_id" value="org.eclipse.jdt.debug.ui.javaSourceLocator"/>
     <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_INSTALL_NAME" value="JDK 1.4.0"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="jetty.xml"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.mortbay.jetty.Server"/>
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dnet.sf.tapestry.disable-caching=true -Dnet.sf.tapestry.enable-reset-service=true -Dorg.mortbay.util.FileResource.checkAliases=false  -Djava.naming.factory.initial=org.jnp.interfaces.NamingContextFactory -Djava.naming.factory.url.pkgs=org.jboss.naming:org.jnp.interfaces -Djava.naming.provider.url=localhost:1099"/>

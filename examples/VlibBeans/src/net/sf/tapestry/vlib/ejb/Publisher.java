@@ -37,6 +37,8 @@ import java.io.Serializable;
 
 public class Publisher implements Serializable
 {
+    private static final long serialVersionUID = -4137036147085472403L;
+    
     private Integer primaryKey;
     private String name;
 

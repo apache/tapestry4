@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="net.sf.tapestry.vlib.pages.Logout">
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+<page-specification class="net.sf.tapestry.vlib.pages.Logout">
 
   <property name="page-type">login</property>
   
@@ -9,4 +11,4 @@
     <static-binding name="title">Goodbye</static-binding>
   </component>
      
-</specification>
+</page-specification>

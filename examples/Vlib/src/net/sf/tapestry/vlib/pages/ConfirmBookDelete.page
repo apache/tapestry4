@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="net.sf.tapestry.vlib.pages.ConfirmBookDelete">
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<page-specification class="net.sf.tapestry.vlib.pages.ConfirmBookDelete">
  
   <property name="page-type">library</property>
    
@@ -10,12 +13,12 @@
    </component>
   
   <component id="insertBookTitle" type="Insert">
-    <binding name="value" property-path="bookTitle"/>
+    <binding name="value" expression="bookTitle"/>
   </component>
   
   <component id="yes" type="Direct">
-    <binding name="listener" property-path="listeners.deleteBook"/>
-    <binding name="parameters" property-path="bookPrimaryKey"/>
+    <binding name="listener" expression="listeners.deleteBook"/>
+    <binding name="parameters" expression="bookPrimaryKey"/>
   </component>
   
   <component id="no" type="Page">
@@ -23,4 +26,4 @@
   </component>
   
   
-</specification>
+</page-specification>

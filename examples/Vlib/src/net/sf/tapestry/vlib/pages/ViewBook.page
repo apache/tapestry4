@@ -1,56 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="net.sf.tapestry.vlib.pages.ViewBook">
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<page-specification class="net.sf.tapestry.vlib.pages.ViewBook">
 
   <component id="border" type="Border">
     <static-binding name="title">View Book</static-binding>
-    <binding name="subtitle" property-path="book.title"/>
+    <binding name="subtitle" expression="book.title"/>
   </component>
   
   <component id="insertTitle" type="Insert">
-    <binding name="value" property-path="book.title"/>
+    <binding name="value" expression="book.title"/>
   </component>
   <component id="insertAuthor" type="Insert">
-    <binding name="value" property-path="book.author"/>
+    <binding name="value" expression="book.author"/>
   </component>
   <component id="insertPublisherName" type="Insert">
-    <binding name="value" property-path="book.publisherName"/>
+    <binding name="value" expression="book.publisherName"/>
   </component>
   <component id="insertISBN" type="Insert">
-    <binding name="value" property-path="book.ISBN"/>
+    <binding name="value" expression="book.ISBN"/>
   </component>
   <component id="ownerLink" type="PersonLink">
-    <binding name="primaryKey" property-path="book.ownerPrimaryKey"/>
-    <binding name="name" property-path="book.ownerName"/>
+    <binding name="primaryKey" expression="book.ownerPrimaryKey"/>
+    <binding name="name" expression="book.ownerName"/>
   </component>
 
   <component id="insertDateAdded" type="Insert">
-  	<binding name="value" property-path="book.dateAdded"/>
-  	<binding name="format" property-path="dateFormat"/>
+  	<binding name="value" expression="book.dateAdded"/>
+  	<binding name="format" expression="dateFormat"/>
   </component>
 
   <component id="insertDescription" type="InsertText">
-    <binding name="value" property-path="book.description"/>
+    <binding name="value" expression="book.description"/>
   </component>
   
   <component id="ifShowHolder" type="Conditional">
-    <binding name="condition" property-path="showHolder"/>
+    <binding name="condition" expression="showHolder"/>
   </component>
   
   <component id="holderLink" type="PersonLink">
-    <binding name="primaryKey" property-path="book.holderPrimaryKey"/>
-    <binding name="name" property-path="book.holderName"/>
+    <binding name="primaryKey" expression="book.holderPrimaryKey"/>
+    <binding name="name" expression="book.holderName"/>
     <static-binding name="class">clsDataBlue</static-binding>
   </component>
 
 	<component id="ifNotLendable" type="Conditional">
-		<binding name="condition" property-path="book.lendable"/>
+		<binding name="condition" expression="book.lendable"/>
 		<field-binding name="invert" field-name="Boolean.TRUE"/>
 	</component>
 		
   <component id="borrow" type="Borrow">
-    <binding name="book" property-path="book"/>
+    <binding name="book" expression="book"/>
   </component>
 
-</specification>
+</page-specification>

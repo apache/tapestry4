@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="net.sf.tapestry.vlib.pages.EditProfile">
+<!DOCTYPE page-specification PUBLIC
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<page-specification class="net.sf.tapestry.vlib.pages.EditProfile">
 
   <property name="page-type">library</property>
  
@@ -12,26 +15,26 @@
   <component id="showError" type="ShowError"/>
   
   <component id="showValidationError" type="ShowValidationError">
-  	<binding name="delegate" property-path="validationDelegate"/>
+  	<binding name="delegate" expression="validationDelegate"/>
   </component>
   
   <component id="form" type="Form">
-    <binding name="listener" property-path="listeners.updateProfile"/>
-    <binding name="delegate" property-path="validationDelegate"/>
+    <binding name="listener" expression="listeners.updateProfile"/>
+    <binding name="delegate" expression="validationDelegate"/>
   </component>
 
   <component id="inputFirstName" type="TextField">
     <static-binding name="displayWidth">30</static-binding>
     <static-binding name="maximumLength">30</static-binding>
-    <binding name="value" property-path="attributes.firstName"/>
+    <binding name="value" expression="attributes.firstName"/>
   </component>
 
   <component id="labelLastName" type="FieldLabel">
-    <binding name="field" property-path="components.inputLastName"/>
+    <binding name="field" expression="components.inputLastName"/>
    </component>
 
   <component id="inputLastName" type="ValidField">
-    <binding name="value" property-path="attributes.lastName"/>
+    <binding name="value" expression="attributes.lastName"/>
     <static-binding name="displayWidth">30</static-binding>
     <static-binding name="maximumLength">30</static-binding>
     <static-binding name="displayName">Last Name</static-binding>
@@ -39,11 +42,11 @@
   </component>
 
   <component id="labelEmail" type="FieldLabel">
-    <binding name="field" property-path="components.inputEmail"/>
+    <binding name="field" expression="components.inputEmail"/>
   </component>
 
   <component id="inputEmail" type="ValidField">
-    <binding name="value" property-path="attributes.email"/>
+    <binding name="value" expression="attributes.email"/>
     <static-binding name="displayWidth">30</static-binding>
     <static-binding name="maximumLength">60</static-binding>
     <static-binding name="displayName">E-Mail</static-binding>
@@ -51,11 +54,11 @@
   </component>
 
   <component id="labelPassword1" type="FieldLabel">
-    <binding name="field" property-path="components.inputPassword1"/>
+    <binding name="field" expression="components.inputPassword1"/>
   </component>
 
   <component id="inputPassword1" type="ValidField">
-    <binding name="value" property-path="password1"/>
+    <binding name="value" expression="password1"/>
     <static-binding name="displayWidth">20</static-binding>
     <static-binding name="maximumLength">20</static-binding>
     <static-binding name="displayName">Password</static-binding>
@@ -64,11 +67,11 @@
   </component>
 
   <component id="labelPassword2" type="FieldLabel">
-    <binding name="field" property-path="components.inputPassword2"/>
+    <binding name="field" expression="components.inputPassword2"/>
   </component>
 
   <component id="inputPassword2" type="ValidField">
-    <binding name="value" property-path="password2"/>
+    <binding name="value" expression="password2"/>
     <static-binding name="displayWidth">20</static-binding>
     <static-binding name="maximumLength">20</static-binding>
     <static-binding name="displayName">Password (again)</static-binding>
@@ -76,4 +79,4 @@
     <field-binding name="hidden" field-name="Boolean.TRUE"/>
   </component>
   
-</specification>
+</page-specification>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC 
-  "-//Howard Ship//Tapestry Specification 1.1//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<!DOCTYPE page-specification PUBLIC 
+  "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
-<specification class="net.sf.tapestry.vlib.pages.admin.EditPublishers">
+<page-specification class="net.sf.tapestry.vlib.pages.admin.EditPublishers">
 
   <property name="page-type">admin</property>
   
@@ -18,22 +18,22 @@
   <component id="showError" type="ShowError"/>
   
   <component id="form" type="Form">
-    <binding name="listener" property-path="listeners.processForm"/>
+    <binding name="listener" expression="listeners.processForm"/>
   </component>
   
   <component id="e" type="ListEdit">
-  	<binding name="source" property-path="publisherIds"/>
-  	<binding name="value" property-path="publisherId"/>
+  	<binding name="source" expression="publisherIds"/>
+  	<binding name="value" expression="publisherId"/>
   </component>
   
   <component id="inputPublisherName" type="TextField">
-    <binding name="value" property-path="publisher.name"/>
+    <binding name="value" expression="publisher.name"/>
     <static-binding name="displayWidth">40</static-binding>
     <static-binding name="maximumLength">40</static-binding>
   </component>
   
   <component id="inputDelete" type="Checkbox">
-    <binding name="selected" property-path="deletedPublisher"/>
+    <binding name="selected" expression="deletedPublisher"/>
   </component>
   
-</specification>
+</page-specification>

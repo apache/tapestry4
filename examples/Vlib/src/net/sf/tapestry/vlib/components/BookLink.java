@@ -81,7 +81,7 @@ public class BookLink extends BaseComponent
 
     private static final long ONE_WEEK_MILLIS = 1000l * 60l * 60l * 24l * 7l;
 
-    public boolean isNew()
+    public boolean isNewlyAdded()
     {
         IEngine engine = getPage().getEngine();
         Visit visit = (Visit) engine.getVisit();
