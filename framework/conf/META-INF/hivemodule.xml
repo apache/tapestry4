@@ -17,7 +17,7 @@
 
 <module id="tapestry" version="3.1.0">
 
-  The master module for the Tapestry web application framework.
+  The master module for the Apache Tapestry web application framework.
   
   <service-point id="MasterInitializer" interface="org.apache.tapestry.services.ApplicationInitializer">
     
@@ -143,11 +143,23 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.LocaleExtractorImpl">
         <set-service property="request" service-id="HttpServletRequest"/>
-        <set-service property="cookieSource" service-id="XXXX"/>
+        <set-service property="cookieSource" service-id="CookieSource"/>
       </construct>
     </invoke-factory>
   </service-point>
   
+  
+  <service-point id="CookieSource" interface="org.apache.tapestry.services.CookieSource">
+    
+    Allows access to incoming HTTP cookie values for the active (per-thread) request.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.CookieSourceImpl">
+        <set-service property="request" service-id="HttpServletRequest"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
   <service-point id="EngineManager" interface="org.apache.tapestry.services.EngineManager">
     Obtains an IEngine implementation for the current request, either from a pool of
     such engine instance, from a factory, or from the HttpSession.
@@ -194,6 +206,7 @@
   <configuration-point id="RequestServicerPipeline" schema-id="hivemind.lib.Pipeline">
     
     A pipeline for processing an incoming request.
+    
   </configuration-point>
   
   <contribution configuration-id="RequestServicerPipeline">
