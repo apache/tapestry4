@@ -109,7 +109,7 @@ public class LoginDelegate extends VlibDelegate
 	private final static int ONE_WEEK = 7 * 24 * 60 * 60;
 	 
 	private transient String error;
-	private transient String defaultEmail;
+	private transient String email;
 	
 	/**
 	 *  Object to be invoked once the login is complete.
@@ -128,9 +128,9 @@ public class LoginDelegate extends VlibDelegate
 		error = value;
 	}
 	
-	public String getDefaultEmail()
+	public String getEmail()
 	{
-		return defaultEmail;
+		return email;
 	}
 	
 	public void setCallback(ILoginCallback value)
@@ -158,10 +158,16 @@ public class LoginDelegate extends VlibDelegate
 				if (attemptLogin(context))
 					return;
 			}
+			else
+            {
+                // On the first time to the page, set the email property
+                // to the default, stored in a cookie.  This default
+                // is updated after the user successfully logs in.
+
+			    email = context.getCookieValue(COOKIE_NAME);
+            }
 			
-			setDefaultEmail(context);
-			
-			// Default ... show the Login page.
+			// Default action ... show the Login page.
 			
 			forward("/jsp/Login.jsp", "Login", null, context);
 		}
@@ -181,13 +187,11 @@ public class LoginDelegate extends VlibDelegate
 	
 	private void setDefaultEmail(RequestContext context)
 	{
-		defaultEmail = context.getCookieValue(COOKIE_NAME);
 	}
 
 	private boolean attemptLogin(RequestContext context)
 	throws ServletException, IOException
 	{
-		String email;
 		String password;
 		IPersonHome personHome;
 		IPerson person;
@@ -195,6 +199,18 @@ public class LoginDelegate extends VlibDelegate
 		email = context.getParameter(EMAIL_NAME);
 		password = context.getParameter(PASSWORD_NAME);
 		
+        if (isNull(email))
+        {
+            setError("You must enter a value for E-Mail.");
+            return false;
+        }
+
+        if (isNull(password))
+        {
+            setError("You must enter a password.");
+            return false;
+        }
+
 		try
 		{
 			personHome = application.getPersonHome();
@@ -277,4 +293,12 @@ public class LoginDelegate extends VlibDelegate
 		return true;
 		
 	}	
+
+    private boolean isNull(String value)
+    {
+        if (value == null)
+            return true;
+
+        return value.trim().length() == 0;
+    }
 }

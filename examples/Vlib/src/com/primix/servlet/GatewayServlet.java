@@ -94,14 +94,18 @@ abstract public class GatewayServlet extends HttpServlet
 
 			delegate.service(context);
 		}
-		catch (ServletException e)
+		catch (ServletException ex)
 		{
-			handleServletException(context, delegate, e);
+			handleServletException(context, delegate, ex);
 		}
-		catch (IOException e)
+		catch (IOException ex)
 		{
-			handleIOException(context, delegate, e);
+			handleIOException(context, delegate, ex);
 		}
+        catch (Exception ex)
+        {
+            handleOtherException(context, delegate, ex);
+        }
 		finally
 		{
 			if (debugEnabled)
@@ -138,18 +142,18 @@ abstract public class GatewayServlet extends HttpServlet
 	abstract protected IService getDelegate(RequestContext context);
 	
 	/**
-	 *  Invoked if an {@link  ServletException} is thrown by the delegate.
+	 *  Invoked if an{@link  ServletException} is thrown by the delegate.
 	 *  This implementation logs the exception and re-throws it.
 	 *
 	 */
 	 
 	protected void handleServletException(RequestContext context,IService delegate,
-		ServletException e)
+		ServletException ex)
 	throws IOException, ServletException
 	{
-		log("Exception", e);
+		log("Exception", ex);
 		
-		throw e;
+		throw ex;
 	}
 	
 	/**
@@ -159,12 +163,29 @@ abstract public class GatewayServlet extends HttpServlet
 	 */
 	 
 	protected void handleIOException(RequestContext context, IService delegate,
-		IOException e)
+		IOException ex)
 	throws IOException, ServletException
 	{
-		log("Exception", e);
+		log("Exception", ex);
 		
-		throw e;
+		throw ex;
+	}
+
+	/**
+	 *  Invoked if an {@link  Exception} (presumably, a {@link RuntimeException}
+	 *  is thrown by the delegate.
+	 *  This implementation logs the exception and re-throws it, wrapped
+     *  in a {@link ServletException}.
+	 *
+	 */
+	 
+	protected void handleOtherException(RequestContext context,IService delegate,
+		Exception ex)
+	throws IOException, ServletException
+	{
+		log("Exception", ex);
+		
+		throw new ServletException(ex);
 	}
 
 }

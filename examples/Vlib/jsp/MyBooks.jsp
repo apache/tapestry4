@@ -1,6 +1,5 @@
 <%-- $Id$ --%>
-<%@ page import="com.primix.vlib.ejb.*" %>
-<%@ include file="Border.jsp"%>
+<%@ include file="Border.jsp" %>
 
 <%
 	MyBooksDelegate delegate = MyBooksDelegate.get(context);
@@ -14,7 +13,7 @@
 		writer.print(value);
 		writer.end();
 	}
-	
+
 	value = delegate.getMessage();
 	
 	if (value != null)
@@ -23,15 +22,13 @@
 <p><font size=+1><% writer.print(value); %></font>
 <% 
 	}
-	
+
 	Book[] books = delegate.getBooks();
-	for (int i = 0; i < books.length; i++)
+
+	if (books.length > 0)
 	{
-		Book book = books[i];
-		
-		if (i == 0)
-		{
 %>
+
 <table>
   <tr>
     <th>Title</th>
@@ -41,8 +38,14 @@
 	<th></th>
 	<th></th>
   </tr>
+
 <%
-		}
+	}
+
+	for (int i = 0; i < books.length; i++)
+	{
+		Book book = books[i];
+		
 %>
   <tr>
      <td><% writer.print(book.getTitle()); %></td>
@@ -50,25 +53,32 @@
 	 <td><% writer.print(book.getPublisherName()); %></td>
 	 <td>
 <%
-	if (application.showHolder(book))
+	if (vlib.getShowHolder(book))
 		PersonServlet.writeLink(context, writer,
 				book.getHolderPrimaryKey(),
 				book.getHolderName());
 %>
 	 </td>
-	 <td><a href="<%= response.encodeURL("/edit/" + book.getPrimaryKey()) %>">[Edit]</a></td>
-	 <td><a href="<%= response.encodeURL("/delete/" + book.getPrimaryKey()) %>">[Delete]</a></td>
+	 <td>
+	 <% VlibServlet.writeNYILink(context, writer, "[Edit]"); %>
+	 </td>
+	 <td>
+	 <% VlibServlet.writeNYILink(context, writer, "[Delete]"); %>
+	 </td>
   </tr>
+
 <%
-	if (i + 1 == books.length)
+	}
+
+	if (books.length > 0)
 	{
 %>
 </table>
 <%
 	}
-	}
 %>
 
-<a href="<%= response.encodeURL("/add-book") %>">[Add new Book]</a>
-<a href="<%= response.encodeURL("/edit-profile") %>">[Edit User Profile]</a>
+<% VlibServlet.writeNYILink(context, writer, "[Add new Book]"); %>
+<% VlibServlet.writeNYILink(context, writer, "[Edit User Profile]"); %>
+
 <%@ include file="Border-trailer.jsp" %>

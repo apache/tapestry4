@@ -41,6 +41,7 @@ import javax.servlet.*;
  */
  
 public interface ILoginCallback
+extends Serializable
 {
 	/**
 	 *  Method invoked by the {@link LoginDelegate} after the user

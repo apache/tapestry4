@@ -59,4 +59,9 @@ public class LoginServlet extends VlibServlet
 	{
 		writeLink(context, writer, "/login", "[Login]");
 	}
+
+    public static String getLoginFormURL(RequestContext context)
+    {
+        return buildURL(context, "/login/submit");
+    }
 }

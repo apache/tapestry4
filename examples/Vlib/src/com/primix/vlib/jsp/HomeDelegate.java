@@ -110,7 +110,8 @@ public class HomeDelegate extends BookQueryDelegate
 		return result;	
 	}
 	
-	public void service(RequestContext context) throws ServletException, IOException
+	public void service(RequestContext context)
+	throws ServletException, IOException
 	{
 		String action;
 		
@@ -126,6 +127,9 @@ public class HomeDelegate extends BookQueryDelegate
 				return;
 			}
 			
+            if (action.equals("borrow"))
+                borrow(context);
+
 			// Default .. .show the Home page.
 			
 			display(context);
@@ -192,9 +196,48 @@ public class HomeDelegate extends BookQueryDelegate
 		finally
 		{
 			matches = null;
+            application.cleanup();
 		}
 		
 	}
+
+    private void borrow(RequestContext context)
+    throws ServletException, IOException
+    {
+    	IOperations bean;
+    	IBook book;
+        Integer bookPK;
+        Integer userPK;
+
+        userPK = application.getUserPK() ;
+        if (userPK == null)
+        {
+            context.getRequest().setAttribute("error",
+                "You may only borrow books once you are logged in.");
+            return;
+        }
+
+        bookPK = new Integer(context.getPathInfo(1));
+
+    	bean = application.getOperations();				
+
+    	try
+    	{
+    		book = bean.borrowBook(bookPK, application.getUserPK());
+
+    		context.getRequest().setAttribute("message", "Borrowed: " + book.getTitle());
+    	}
+    	catch (FinderException ex)
+    	{
+    		throw new ServletException(
+    			"Unable to find book or user. ", ex);
+    	}
+    	catch (RemoteException ex)
+    	{
+    		throw new ServletException(ex);
+    	}
+    }
+
 
 	public Book[] getMatches()
 	{
@@ -253,23 +296,6 @@ public class HomeDelegate extends BookQueryDelegate
 		writer.end();
 		
 	}
+
 	
-	/**
-	 *  Checks the book to see if the [Borrow] button should be
-	 *  enabled.  Returns true if the user has logged in, and isn't
-	 *  already the holder of the book.
-	 *
-	 */
-	 
-	public boolean getEnableBorrow(Book book)
-	{
-		if (!application.isUserLoggedIn())
-			return false;
-
-		// Otherwise, can only borrow it if not already holding it.
-
-		return ! application.isLoggedInUser(book.getHolderPrimaryKey());
-		
-	}
-
 }

@@ -1,7 +1,6 @@
 <%-- $Id$ --%>
-<%@ include file="Border.jsp"%>
+<%@ include file="Border.jsp" %>
 <%
-
 	HomeDelegate delegate = HomeDelegate.get(context);
 
 	value = (String)request.getAttribute("error");
@@ -54,15 +53,12 @@
 
 	if (isLoggedIn)
 	{
-		writer.begin("a");
-		writer.attribute("href", "/add");
-		writer.closeTag();
+		VlibServlet.writeNYILink(context, writer, "[Add new Book]");
 	}
-	
-	writer.print("[Add new Book]");
-
-	if (isLoggedIn)
-		writer.end();
+	else
+	{
+		writer.print("[Add new Book]");
+	}
 %>
 <%@ include file="Border-trailer.jsp" %>
 
