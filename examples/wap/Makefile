@@ -25,11 +25,11 @@ include $(SYS_MAKEFILE_DIR)/War.mk
 EXEC_CLASSPATH = \
 	$(FINAL_SOURCE_DIR) \
 	$(PROJ_CLASSPATH) \
-	$(INSTALL_DIR)/com.mortbay.jetty.jar 
+	$(INSTALL_DIR)/org.mortbay.jetty.jar 
 
 run: war
 	$(call NOTE, Running Jetty for wap ...)
 	$(call EXEC_JAVA,$(EXEC_CLASSPATH), \
 		-showversion \
-		com.mortbay.Jetty.Server jetty.xml)
+		org.mortbay.jetty.Server jetty.xml)
 

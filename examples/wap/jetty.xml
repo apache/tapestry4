@@ -3,10 +3,10 @@
 <!-- $Id$ -->
 <!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure 1.0//EN"
  "http://jetty.mortbay.com/configure_1_0.dtd">
-<Configure class="com.mortbay.HTTP.HttpServer">
+<Configure class="org.mortbay.http.HttpServer">
 	<Call name="addListener">
 		<Arg>
-			<New class="com.mortbay.HTTP.SocketListener">
+			<New class="org.mortbay.http.SocketListener">
 				<Set name="Port">8080</Set>
 				<Set name="MinThreads">5</Set>
 				<Set name="MaxThreads">255</Set>
@@ -17,7 +17,7 @@
 	<!-- This writes a log of each incoming request to the default output, which makes
        it easier to see what Tapestry and Jetty are up to. -->
 	<Set name="LogSink">
-		<New class="com.mortbay.Util.WriterLogSink"/>
+		<New class="org.mortbay.util.WriterLogSink"/>
 	</Set>
 	<Call name="addWebApplication">
 		<Arg>/wap/*</Arg>

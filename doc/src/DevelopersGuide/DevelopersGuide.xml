@@ -5610,7 +5610,8 @@ including everything that has need for dynamic scripting.
 <title>The Body component</title>
 <para>
 The &Body; component provides a number of services to the components it wraps.  It handles preloading of
-images.  It provides the ability to add arbitrary JavaScript to the page, or to the
+images.  It provides the ability to add arbitrary JavaScript to the page, to include an external static
+JavaScript document, or to the
 <sgmltag class="starttag">body</sgmltag> element's onload event handler.  Finally, it provides an easy way 
 to generate unique identifiers needed for things like image names.
 </para>
@@ -5628,11 +5629,12 @@ on it.  These methods are used to define preloaded images, and add JavaScript co
 </mediaobject>
 </figure>
 <para>
-When rendering is complete, the &Body; component will have produced three distinct portions of the
+When rendering is complete, the &Body; component will have produced four distinct portions of the
 HTML response:
 </para>
 <informalexample>
 <programlisting>
+&lt;script language="JavaScript" src="..."&gt;&lt;/script&gt; <co id="script.body.include"/>
 &lt;script language="JavaScript"&gt;&lt;!-- <co id="script.body.script"/>
 
 ...
@@ -5652,6 +5654,9 @@ function onload_body()  <co id="script.body.onload"/>
 </informalexample>
 <para>
 <calloutlist>
+<callout arearefs="script.body.include">
+<para>Any number of included static scripts may be added to the page.</para>
+</callout>
 <callout arearefs="script.body.script">
 <para>
   This script block is only emitted when necessary; that is, because some component
@@ -5713,7 +5718,7 @@ of a <sgmltag class="starttag">script</sgmltag> element.
 ]]>
 
 &lt;script&gt;
-
+  [ &lt;<link linkend="script.spec.include-script">include-script</link> ... /&gt; ... ] <co id="script.dtd.script.include-script"/>
   [ &lt;<link linkend="script.spec.let">let</link> ...&gt; ...] <co id="script.dtd.script.let"/>
   [ &lt;<link linkend="script.spec.body">body</link>&gt; ] <co id="script.dtd.script.body"/>
   [ &lt;<link linkend="script.spec.initialization">initialization</link>&gt; ] <co id="script.dtd.script.initialization"/>
@@ -5723,6 +5728,11 @@ of a <sgmltag class="starttag">script</sgmltag> element.
 </figure>
 <para>
 <calloutlist>
+<callout arearefs="script.dtd.script.include-script">
+<para>
+Any number of other scripts may be included.
+</para>
+</callout>
 <callout arearefs="script.dtd.script.let">
 <para>
   The <sgmltag class="starttag">script</sgmltag> may contain any number of 
@@ -5745,6 +5755,22 @@ of a <sgmltag class="starttag">script</sgmltag> element.
   </para>
 </callout>
 </calloutlist>
+</para>
+</section>
+<section id="script.spec.include-script">
+<title>
+<sgmltag class="starttag">include-script</sgmltag> element</title>
+<figure>
+<title>Script document: <sgmltag class="starttag">include-script</sgmltag> element</title>
+<programlisting>
+&lt;include-script resource-path="<replaceable>path</replaceable>" /&gt;
+</programlisting>
+</figure>
+<para>
+This element is used to include external, static, JavaScript scripts on the rendered page.
+This is useful to in cases where large parts of the JavaScript do not depend on any dynamic symbols.
+The path is to a resource on the class path, much like
+a <link linkend="components.spec.assets">private asset</link>.
 </para>
 </section>
 <section id="script.spec.let">

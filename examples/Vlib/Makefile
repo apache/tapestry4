@@ -40,7 +40,7 @@ EXEC_CLASSPATH := \
 	$(PROJ_CLASSPATH) \
 	$(INSTALL_DIR)/javax.xml.jaxp.jar \
 	$(INSTALL_DIR)/org.apache.crimson.jar \
-	$(INSTALL_DIR)/com.mortbay.jetty.jar \
+	$(INSTALL_DIR)/org.mortbay.jetty.jar \
 	$(INSTALL_DIR)/log4j-core.jar \
 	$(JBOSS_DIR)/client/jboss-client.jar \
 	$(JBOSS_DIR)/client/jbosssx-client.jar \
@@ -68,7 +68,7 @@ run: default $(LOCAL_JNDI_PROPS)
 		-Dcom.primix.vlib.debug-enabled=true \
 		-Dcom.primix.tapestry.enable-reset-service=true \
 		$(OTHER_VLIB_OPTS) \
-		com.mortbay.Jetty.Server jetty.xml)
+		org.mortbay.jetty.Server jetty.xml)
 
 run-debug:
 		@$(RECURSE) run OTHER_EXEC_OPTS="-Dcom.primix.vlib.debug-enabled=true"

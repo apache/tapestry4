@@ -36,7 +36,7 @@ include $(SYS_MAKEFILE_DIR)/War.mk
 EXEC_CLASSPATH = \
 	$(FINAL_SOURCE_DIR) \
 	$(PROJ_CLASSPATH) \
-	$(INSTALL_DIR)/com.mortbay.jetty.jar \
+	$(INSTALL_DIR)/org.mortbay.jetty.jar \
 	$(INSTALL_DIR)/ejb.jar
 
 run: war
@@ -44,5 +44,5 @@ run: war
 	$(call EXEC_JAVA,$(EXEC_CLASSPATH), \
 		-showversion \
 		$(OTHER_TUTORIAL_JAVA_OPT) \
-		com.mortbay.Jetty.Server jetty.xml)
+		org.mortbay.jetty.Server jetty.xml)
 
