@@ -997,4 +997,32 @@ public abstract class AbstractComponent implements IComponent
         _namespace = namespace;
     }
 
+    /**
+     *  Returns the body of the component, the element (which may be static HTML or components)
+     *  that the component immediately wraps.  May return null.  Do not modify the returned
+     *  array.  The array may be padded with nulls.
+     * 
+     *  @since 2.3
+     *  @see #getBodyCount()
+     * 
+     **/
+
+    public IRender[] getBody()
+    {
+        return _body;
+    }
+
+    /**
+     *  Returns the active number of elements in the the body, which may be zero.
+     * 
+     *  @since 2.3
+     *  @see #getBody()
+     * 
+     **/
+    
+    public int getBodyCount()
+    {
+        return _bodyCount;
+    }
+
 }
