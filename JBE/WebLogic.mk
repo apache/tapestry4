@@ -38,7 +38,7 @@
 # Overrides a number of local- rules: local-clean, module-install
 #
 #
-# You may specify options for ejbc using SITE_EJBC_OPT or EJBC_OPT.
+# You may specify options for ejbc using LOCAL_EJBC_OPT or EJBC_OPT.
 # -keepgenerated is pretty useful.
 
 # WebLogic should always be compiled using Sun's JDK 1.2.2
@@ -81,9 +81,9 @@ WEBLOGIC_CLASSPATH := \
 
 MOD_CLASSPATH := $(WEBLOGIC_CLASSPATH)
 
-EJBC_CLASSPATH = $(WEBLOGIC_CLASSPATH) $(SITE_CLASSPATH) $(LOCAL_CLASSPATH)
+EJBC_CLASSPATH = $(WEBLOGIC_CLASSPATH) $(LOCAL_CLASSPATH)
 
-FINAL_EJBC_OPT := $(strip $(SITE_EJBC_OPT) $(EJBC_OPT))
+FINAL_EJBC_OPT := $(strip $(LOCAL_EJBC_OPT) $(EJBC_OPT))
 
 # After building the initial Jar, build the deployment jar too.
 

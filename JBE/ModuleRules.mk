@@ -65,7 +65,8 @@ DUMMY_FILE := $(SYS_BUILD_DIR_NAME)/dummy
 	
 ifdef POST_SETUP
 
-# Build the compile-time classpath
+# Build the compile-time classpath.  We need the canonical versions of two
+# relative pathnames, but we only want to execute  JBE_CANONICALIZE once.
 
 _ABSOLUTE_DIRS := $(call JBE_CANONICALIZE,$(MOD_BUILD_DIR) $(MOD_CLASS_DIR))
 
@@ -73,7 +74,7 @@ ABSOLUTE_MOD_BUILD_DIR := $(word 1,$(_ABSOLUTE_DIRS))
 ABSOLUTE_CLASS_DIR := $(word 2,$(_ABSOLUTE_DIRS))
 
 FINAL_CLASSPATH = $(call JBE_CANONICALIZE, -classpath \
-	$(FINAL_SOURCE_DIR) $(MOD_CLASS_DIR) $(MOD_CLASSPATH) $(SITE_CLASSPATH) $(LOCAL_CLASSPATH))
+	$(FINAL_SOURCE_DIR) $(MOD_CLASS_DIR) $(MOD_CLASSPATH) $(LOCAL_CLASSPATH))
 	
 FINAL_CLASSPATH_OPTION = -classpath "$(FINAL_CLASSPATH)"
 	
@@ -81,14 +82,12 @@ FINAL_JAVAC_OPT = $(strip \
 	-d $(ABSOLUTE_CLASS_DIR) \
 	$(FINAL_CLASSPATH_OPTION) \
 	$(MOD_JAVAC_OPT) \
-	$(SITE_JAVAC_OPT) \
 	$(LOCAL_JAVAC_OPT) \
 	$(JAVAC_OPT))
 	
 FINAL_RMIC_OPT = $(strip \
 	$(FINAL_JAVAC_OPT) \
 	$(MOD_RMIC_OPT) \
-	$(SITE_RMIC_OPT) \
 	$(LOCAL_RMIC_OPT) \
 	$(RMIC_OPT))
 	

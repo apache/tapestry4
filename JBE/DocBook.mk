@@ -75,9 +75,9 @@ FINAL_STYLESHEET = $(firstword $(STYLESHEET) $(DOCBOOK_DSSSL_DIR)/html/docbook.d
 
 html: initialize $(DOCUMENT_RESOURCE_STAMP_FILE)
 	$(call NOTE, Generating HTML documentation from $(MAIN_DOCUMENT) ...)
-	SGML_CATALOG_FILES="$(call JBE_CANONICALIZE, -classpath $(SGML_CATALOG_FILES))" \
-	$(OPENJADE) -t sgml -d $(FINAL_STYLESHEET) \
+	$(OPENJADE) -t sgml -d $(FINAL_STYLESHEET) $(OPENJADE_OPT) \
 	$(foreach vardef,$(FINAL_VARIABLE_DEFS),-V $(vardef)) \
+	$(foreach cat,$(SGML_CATALOG_FILES),-c $(cat)) \
 	$(MAIN_DOCUMENT)
 
 
