@@ -46,7 +46,6 @@ public class SimpleTableColumnComponent
 	extends BaseComponent
 	implements ISimpleTableColumnRenderer, PageDetachListener
 {
-
 	// transient
 	private SimpleTableColumn m_objColumn;
 	private ITableModelSource m_objModelSource;
@@ -56,6 +55,9 @@ public class SimpleTableColumnComponent
 		init();
 	}
 
+	/**
+	 * @see net.sf.tapestry.event.PageDetachListener#pageDetached(PageEvent)
+	 */
 	public void pageDetached(PageEvent arg0)
 	{
 		init();
@@ -67,12 +69,18 @@ public class SimpleTableColumnComponent
 		m_objModelSource = null;
 	}
 
+	/**
+	 * @see net.sf.tapestry.AbstractComponent#finishLoad()
+	 */
 	protected void finishLoad()
 	{
 		super.finishLoad();
 		getPage().addPageDetachListener(this);
 	}
 
+	/**
+	 * @see net.sf.tapestry.contrib.table.model.simple.ISimpleTableColumnRenderer#initializeColumnRenderer(SimpleTableColumn, ITableModel)
+	 */
 	public void initializeColumnRenderer(
 		SimpleTableColumn objColumn,
 		ITableModelSource objSource)
@@ -136,6 +144,9 @@ public class SimpleTableColumnComponent
 			objState.setSortColumn(
 				strColumnName,
 				ITableSortingState.SORT_ASCENDING);
+
+        // ensure that the change is saved
+        objSource.fireObservedStateChange();
 	}
 
 }
