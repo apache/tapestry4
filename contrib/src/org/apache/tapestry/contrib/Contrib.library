@@ -31,6 +31,7 @@
   <component-type type="TableRows" specification-path="table/components/TableRows.jwc"/>
   <component-type type="TableValues" specification-path="table/components/TableValues.jwc"/>
   <component-type type="TableView" specification-path="table/components/TableView.jwc"/>
+  <component-type type="FormTable" specification-path="table/components/FormTable.jwc"/>
   <component-type type="TableFormRows" specification-path="table/components/TableFormRows.jwc"/>
   <component-type type="TableFormPages" specification-path="table/components/TableFormPages.jwc"/>
 

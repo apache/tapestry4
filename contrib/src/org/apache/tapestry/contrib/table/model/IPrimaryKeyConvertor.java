@@ -53,44 +53,32 @@
  *
  */
 
-package org.apache.tapestry.contrib.table.example.minimal;
-
-import java.util.Locale;
-
-import org.apache.tapestry.contrib.table.model.ITableColumnModel;
-import org.apache.tapestry.contrib.table.model.ITableModel;
-import org.apache.tapestry.contrib.table.model.ognl.ExpressionTableColumnModel;
-import org.apache.tapestry.contrib.table.model.simple.SimpleTableModel;
-import org.apache.tapestry.html.BasePage;
+package org.apache.tapestry.contrib.table.model;
 
 /**
- * @author mindbridge
+ * An interface for converting an object to its primary key and back. 
+ * Typically used to determine how to store a given object as a hidden 
+ * value when rendering a form.
+ * 
  * @version $Id$
- *
+ * @author mb
+ * @since 3.0
  */
-public class Home extends BasePage
+public interface IPrimaryKeyConvertor
 {
-    // Return the model of the table
-	public ITableModel getTableModel()
-	{
-		// Generate the list of data
-		Locale[] arrLocales = Locale.getAvailableLocales();
-        
-        // Generate a simple sorting column model that uses OGNL to get the column data.
-        // The columns are defined using pairs of strings.
-        // The first string in the pair is the column name.
-        // The second is an OGNL expression used to obtain the column value.
-        ITableColumnModel objColumnModel = 
-            new ExpressionTableColumnModel(new String[] {
-                "Locale", "toString()",
-                "Language", "language",
-                "Country", "country",
-                "Variant", "variant",
-                "ISO Language", "ISO3Language",
-                "ISO Country", "ISO3Country"
-            }, true);
-
-		// Create the table model and return it
-		return new SimpleTableModel(arrLocales, objColumnModel);
-	}
+    /**
+     * Gets the serializable primary key of the given value
+     * 
+     * @param objValue the value for which a primary key needs to be extracted
+     * @return the serializable primary key of the value
+     */
+    Object getPrimaryKey(Object objValue);
+    
+    /**
+     * Gets the value corresponding the given primary key 
+     *  
+     * @param objPrimaryKey the primary key for which a value needs to be generated
+     * @return the generated value corresponding to the given primary key
+     */
+    Object getValue(Object objPrimaryKey); 
 }

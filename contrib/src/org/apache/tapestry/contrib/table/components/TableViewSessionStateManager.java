@@ -62,8 +62,9 @@ import org.apache.tapestry.contrib.table.model.ITableSessionStateManager;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
 
 /**
- *  Acts like {@link FullSessionStateManager} if the model is provided via the
- *  tableModel parameter; saves only the model state otherwise. 
+ *  Acts like {@link org.apache.tapestry.contrib.table.model.common.FullTableSessionStateManager} 
+ *  if the model is provided via the tableModel parameter; 
+ *  saves only the model state otherwise. 
  * 
  *  @author mindbridge
  *  @version $Id$

@@ -78,6 +78,18 @@ import org.apache.tapestry.valid.RenderString;
  */
 public class AbstractTableColumn implements ITableColumn, Serializable
 {
+    /**
+     *  The suffix of the name of the Block that will be used as the column renderer
+     *  for this column 
+     */
+    public final static String COLUMN_RENDERER_BLOCK_SUFFIX = "ColumnHeader";
+
+    /**
+     *  The suffix of the name of the Block that will be used as the value renderer 
+     *  for this column 
+     */
+    public final static String VALUE_RENDERER_BLOCK_SUFFIX = "ColumnValue";
+    
 	private String m_strColumnName;
 	private boolean m_bSortable;
 	private Comparator m_objComparator;
@@ -223,7 +235,8 @@ public class AbstractTableColumn implements ITableColumn, Serializable
 
 	/**
 	 * Returns the valueRendererSource.
-	 * @return ITableValueRendererSource
+     * 
+	 * @return the valueRendererSource of this column
 	 */
 	public ITableRendererSource getValueRendererSource()
 	{
@@ -232,6 +245,7 @@ public class AbstractTableColumn implements ITableColumn, Serializable
 
 	/**
 	 * Sets the valueRendererSource.
+     * 
 	 * @param valueRendererSource The valueRendererSource to set
 	 */
 	public void setValueRendererSource(ITableRendererSource valueRendererSource)
@@ -243,15 +257,15 @@ public class AbstractTableColumn implements ITableColumn, Serializable
      *  Use the column name to get the column and renderer sources 
      *  from the provided component.
      *   
-     *  @param objRendererSourceContainer the component from which to get the settings 
+     *  @param objSettingsContainer the component from which to get the settings 
      */
     public void loadSettings(IComponent objSettingsContainer)
     {
-        IComponent objColumnRendererSource = (IComponent) objSettingsContainer.getComponents().get(getColumnName() + "ColumnRenderer");
+        IComponent objColumnRendererSource = (IComponent) objSettingsContainer.getComponents().get(getColumnName() + COLUMN_RENDERER_BLOCK_SUFFIX);
         if (objColumnRendererSource != null && objColumnRendererSource instanceof Block)
             setColumnRendererSource(new BlockTableRendererSource((Block) objColumnRendererSource));
 
-        IComponent objValueRendererSource = (IComponent) objSettingsContainer.getComponents().get(getColumnName() + "ValueRenderer");
+        IComponent objValueRendererSource = (IComponent) objSettingsContainer.getComponents().get(getColumnName() + VALUE_RENDERER_BLOCK_SUFFIX);
         if (objValueRendererSource != null && objValueRendererSource instanceof Block)
             setValueRendererSource(new BlockTableRendererSource((Block) objValueRendererSource));
     }
