@@ -4,7 +4,8 @@
 	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
 	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 
-<specification class="net.sf.tapestry.components.Delegator" 
+<specification class="net.sf.tapestry.components.Delegator"
+    allow-body="no" 
 	allow-informal-parameters="no">
 
   <description>

@@ -40,44 +40,8 @@ import net.sf.tapestry.form.IFormComponent;
  *  to hard code the label in a page's HTML template (this also helps
  *  with localization).
  *
- *  <p>The {@link IValidationDelegate delegate} may
- *  also modify the formatting of the label to match the state of the
- *  field (i.e., if the field is required or in error).
- *
- *
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction</td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- * <tr>
- *  <td>field</td>
- *  <td>{@link IFormComponent}</td>
- *  <td>in</td>
- *  <td>yes</td>
- *  <td>&nbsp;</td>
- *  <td>The field to be labeled.</td>
- * </tr>
- * 
- *  <tr>
- * 		<td>displayName</td>
- * 		<td>{@link String}</td>
- * 		<td>R</td> <td>no</td> <td>&nbsp;</td>
- * 		<td>
- * 	Allows the display name to be overriden from the value supplied by a {@link IFormComponent}.
- *  Most implementation of {@link IFormComponent} provide a null displayName, and it
- *  is necessary to set one using this parameter.
- * 	</td>
- *  </tr>
- *
- *  </table>
- *
- * <p>Informal parameters are not allowed.  A body is not allowed.
+ *  [<a href="../../../../../ComponentReference/FieldLabel.html">Component Reference</a>]
+
  *
  *  @author Howard Lewis Lewis Ship
  *  @version $Id$
@@ -86,8 +50,8 @@ import net.sf.tapestry.form.IFormComponent;
 
 public class FieldLabel extends AbstractComponent
 {
-    private IFormComponent field;
-    private String displayName;
+    private IFormComponent _field;
+    private String _displayName;
 
     /**
      *  Gets the {@link IField} 
@@ -103,40 +67,40 @@ public class FieldLabel extends AbstractComponent
         if (cycle.isRewinding())
             return;
 
-        String finalDisplayName = (displayName != null) ? displayName : field.getDisplayName();
+        String finalDisplayName = (_displayName != null) ? _displayName : _field.getDisplayName();
 
         if (finalDisplayName == null)
             throw new RequestCycleException(
-                Tapestry.getString("FieldLabel.no-display-name", field.getExtendedId()),
+                Tapestry.getString("FieldLabel.no-display-name", _field.getExtendedId()),
                 this);
 
         IValidationDelegate delegate = Form.get(cycle).getDelegate();
 
-        delegate.writeLabelPrefix(field, writer, cycle);
+        delegate.writeLabelPrefix(_field, writer, cycle);
 
         writer.print(finalDisplayName);
 
-        delegate.writeLabelSuffix(field, writer, cycle);
+        delegate.writeLabelSuffix(_field, writer, cycle);
     }
 
     public String getDisplayName()
     {
-        return displayName;
+        return _displayName;
     }
 
     public void setDisplayName(String displayName)
     {
-        this.displayName = displayName;
+        _displayName = displayName;
     }
 
     public IFormComponent getField()
     {
-        return field;
+        return _field;
     }
 
     public void setField(IFormComponent field)
     {
-        this.field = field;
+        _field = field;
     }
 
 }

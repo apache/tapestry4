@@ -2,6 +2,7 @@
 <!-- $Id$ --> 
 <html>
 <head>
+<title>Conditional</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
@@ -15,8 +16,7 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/components/Conditional.html">
-		 net.sf.tapestry.components.Conditional</a>
+		 <a href="../api/net/sf/tapestry/components/Conditional.html">net.sf.tapestry.components.Conditional</a>
 		</td>
 	 </tr>
   </table>
@@ -114,7 +114,7 @@ John Smith is a Manager with <font color="red"><b>no</b></font> staff.
 &lt;span jwcid="insertName"/&gt;
 &lt;span jwcid="<span class="jwcid">ifManager</span>"&gt; is a Manager
  &lt;span jwcid="<span class="jwcid">ifHasStaff</span>"&gt; with staff.&lt;/span&gt;
- &lt;span jwcid="<span class="jwcid">ifNoHasStaff</span>"&gt;
+ &lt;span jwcid="<span class="jwcid">ifNotHasStaff</span>"&gt;
   with &lt;font color="red"&gt;&lt;b&gt;no&lt;/b&gt;&lt;/font&gt; staff.&lt;/span&gt;
 &lt;/span&gt;
 &lt;span jwcid="<span class="jwcid">ifNotManager</span>"&gt; is not a Manager.&lt;/span&gt;
@@ -138,7 +138,7 @@ John Smith is a Manager with <font color="red"><b>no</b></font> staff.
    &lt;static-binding name="invert"&gt;true&lt;/static-binding&gt;
 &lt;/component&gt;
 
-&lt;component id="<span class="jwcid">ifHasNoStaff</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
+&lt;component id="<span class="jwcid">ifNotHasStaff</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
    &lt;binding name="condition" property-path="staffList.empty"/&gt;
 &lt;/component&gt;
 
