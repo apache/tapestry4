@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -61,8 +60,6 @@ import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
-
-import com.sun.jndi.ldap.pool.Pool;
 
 /**
  * Basis for building real Tapestry applications. Immediate subclasses provide different strategies
@@ -453,8 +450,9 @@ public abstract class AbstractEngine implements IEngine, Externalizable, HttpSes
     public boolean service(RequestContext context) throws ServletException, IOException
     {
         IRequestCycle cycle = null;
-        ResponseOutputStream output = null;
         IMonitor monitor = null;
+        IEngineService service = null;
+        ResponseOutputStream output = null;
 
         if (_infrastructure == null)
             _infrastructure = (Infrastructure) context.getAttribute(Constants.INFRASTRUCTURE_KEY);
@@ -462,8 +460,6 @@ public abstract class AbstractEngine implements IEngine, Externalizable, HttpSes
         try
         {
             setupForRequest(context);
-
-            monitor = getMonitor(context);
 
             output = new ResponseOutputStream(context.getResponse());
         }
@@ -474,33 +470,14 @@ public abstract class AbstractEngine implements IEngine, Externalizable, HttpSes
             throw new ServletException(ex.getMessage(), ex);
         }
 
-        IEngineService service = null;
-
         try
         {
             try
             {
-                try
-                {
-                    String serviceName = extractServiceName(context);
+                cycle = _infrastructure.getRequestCycleFactory().newRequestCycle(this, context);
 
-                    if (Tapestry.isBlank(serviceName))
-                        serviceName = Tapestry.HOME_SERVICE;
-
-                    // Must have a service to create the request cycle.
-                    // Must have a request cycle to report an exception.
-
-                    service = getService(serviceName);
-                }
-                catch (Exception ex)
-                {
-                    service = getService(Tapestry.HOME_SERVICE);
-                    cycle = createRequestCycle(context, service, monitor);
-
-                    throw ex;
-                }
-
-                cycle = createRequestCycle(context, service, monitor);
+                monitor = cycle.getMonitor();
+                service = cycle.getService();
 
                 monitor.serviceBegin(service.getName(), context.getRequestURI());
 
@@ -660,20 +637,6 @@ public abstract class AbstractEngine implements IEngine, Externalizable, HttpSes
         output.reset();
 
         renderResponse(cycle, output);
-    }
-
-    /**
-     * Invoked from {@link #service(RequestContext)}to create an instance of {@link IRequestCycle}
-     * for the current request. This implementation creates an returns an instance of
-     * {@link RequestCycle}.
-     * 
-     * @since 3.0
-     */
-
-    protected IRequestCycle createRequestCycle(RequestContext context, IEngineService service,
-            IMonitor monitor)
-    {
-        return new RequestCycle(this, context, service, monitor);
     }
 
     /**
@@ -1065,46 +1028,6 @@ public abstract class AbstractEngine implements IEngine, Externalizable, HttpSes
     public DataSqueezer getDataSqueezer()
     {
         return _infrastructure.getDataSqueezer();
-    }
-
-    /**
-     * Invoked from {@link #service(RequestContext)}to extract, from the URL, the name of the
-     * service. The current implementation expects the first pathInfo element to be the service
-     * name. At some point in the future, the method of constructing and parsing URLs may be
-     * abstracted into a developer-selected class.
-     * <p>
-     * Subclasses may override this method if the application defines specific services with unusual
-     * URL encoding rules.
-     * <p>
-     * This implementation simply extracts the value for query parameter
-     * {@link Tapestry#SERVICE_QUERY_PARAMETER_NAME}and extracts the service name from that.
-     * <p>
-     * For supporting the JSP tags, this method first checks for attribute
-     * {@link Tapestry#TAG_SUPPORT_SERVICE_ATTRIBUTE}. If non-null, then
-     * {@link Tapestry#TAGSUPPORT_SERVICE}is returned.
-     * 
-     * @since 2.2
-     */
-
-    protected String extractServiceName(RequestContext context)
-    {
-        if (context.getRequest().getAttribute(Tapestry.TAG_SUPPORT_SERVICE_ATTRIBUTE) != null)
-            return Tapestry.TAGSUPPORT_SERVICE;
-
-        String serviceData = context.getParameter(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
-
-        if (serviceData == null)
-            return Tapestry.HOME_SERVICE;
-
-        // The service name is anything before the first slash,
-        // if there is one.
-
-        int slashx = serviceData.indexOf('/');
-
-        if (slashx < 0)
-            return serviceData;
-
-        return serviceData.substring(0, slashx);
     }
 
     /** @since 2.3 */

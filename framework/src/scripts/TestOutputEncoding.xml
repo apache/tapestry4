@@ -17,7 +17,9 @@
 <mock-test>
     <context name="c28" root="context28"/>
 
-  	<servlet name="latin1" class="org.apache.tapestry.ApplicationServlet"/>
+  	<servlet name="latin1" class="org.apache.tapestry.ApplicationServlet">
+      <init-parameter name="org.apache.tapestry.servlet-path" value="/latin1"/>
+  	</servlet>
 
 	<request>
 		<parameter name="service" value="direct"/>

@@ -305,8 +305,51 @@ in a set of .properties files), and the <code>message:</code> prefix allows acce
 to the localized messages stored in the files.
 </p>
 
+<p>
+Several additional prefixes are available:
+</p>
+
+<table>
+  <tr>
+    <th>Prefix</th>
+    <th>Description</th>
+    <th>Example</th>
+  </tr>
+  
+  <tr>
+    <td>asset</td>
+    <td>References an asset of the component.</td>
+    <td>asset:stylesheet </td>
+  </tr>
+  
+  <tr>
+    <td>bean</td>
+    <td>References a named bean (defined by a &spec.bean; element).</td>
+    <td>bean:validationDelegate</td>
+  </tr>
+  
+  <tr>
+    <td>literal</td>
+    <td>Used to "escape" a binding prefix, marking the suffix as a literal value.</td>
+    <td>literal:ognl:not-an-expression</td>
+  </tr>
+  
+  <tr>
+    <td>message</td>
+    <td>References a localized message from the component's message catalog.</td>
+    <td>message:page-title</td>
+  </tr>
+  
+  <tr>
+    <td>ognl</td>
+    <td>An OGNL expression to be evaluated.</td>
+    <td>ognl:engine.visit.admin</td>    
+  </tr>
+  
+</table>
+
 <note>
-Additional prefixes will be available in Tapestry 3.1, and it will also be possible to define your own prefixes.
+  You can define your own prefixes by contributing into the tapestry.bindings.BindingFactories configuration point.
 </note>
 
 <section>

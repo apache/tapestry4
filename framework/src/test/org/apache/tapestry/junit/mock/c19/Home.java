@@ -22,7 +22,6 @@ import org.apache.tapestry.request.IUploadFile;
  * Used in tests of upload and the {@link org.apache.tapestry.form.Upload}component.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

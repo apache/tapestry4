@@ -36,6 +36,7 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.ObservedChangeEvent;
 import org.apache.tapestry.request.RequestContext;
+import org.apache.tapestry.util.QueryParameterMap;
 
 /**
  * Provides the logic for processing a single request cycle. Provides access to the
@@ -50,15 +51,24 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
     private IPage _page;
 
-    private IEngine _engine;
+    private final IEngine _engine;
 
-    private IEngineService _service;
+    private final IEngineService _service;
 
-    private RequestContext _requestContext;
+    private final RequestContext _requestContext;
 
-    private IMonitor _monitor;
+    private final IMonitor _monitor;
 
     private HttpServletResponse _response;
+
+    /**
+     * Contains parameters extracted from the request context, plus any decoded by any
+     * {@link ServiceEncoder}s.
+     * 
+     * @since 3.1
+     */
+
+    private/* final */QueryParameterMap _parameters;
 
     /**
      * A mapping of pages loaded during the current request cycle. Key is the page name, value is
@@ -92,11 +102,12 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
      * Standard constructor used to render a response page.
      */
 
-    public RequestCycle(IEngine engine, RequestContext requestContext, IEngineService service,
+    public RequestCycle(IEngine engine, RequestContext requestContext, QueryParameterMap parameters, IEngineService service,
             IMonitor monitor)
     {
         _engine = engine;
         _requestContext = requestContext;
+        _parameters = parameters;
         _service = service;
         _monitor = monitor;
     }
@@ -666,13 +677,13 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     /** @since 3.1 */
     public String getParameter(String name)
     {
-        return _requestContext.getParameter(name);
+        return _parameters.getParameterValue(name);
     }
 
     /** @since 3.1 */
     public String[] getParameters(String name)
     {
-        return _requestContext.getParameters(name);
+        return _parameters.getParameterValues(name);
     }
 
     /**

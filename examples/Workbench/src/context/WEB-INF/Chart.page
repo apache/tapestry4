@@ -32,12 +32,12 @@
   </bean>
 
   <component id="showError" type="ShowError">
-     <binding name="delegate" value="ognl:beans.delegate"/>
+     <binding name="delegate" value="bean:delegate"/>
   </component>
 
   <component id="form" type="Form">
     <binding name="listener" value="ognl:listeners.submit"/>
-    <binding name="delegate" value="ognl:beans.delegate"/>
+    <binding name="delegate" value="bean:delegate"/>
   </component>
 
   <component id="plotValues" type="Foreach">

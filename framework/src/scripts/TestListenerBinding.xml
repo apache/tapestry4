@@ -17,7 +17,9 @@
 <mock-test>
     <context name="c7" root="context7"/>
 
-  	<servlet name="lb" class="org.apache.tapestry.ApplicationServlet"/>
+  	<servlet name="lb" class="org.apache.tapestry.ApplicationServlet">
+      <init-parameter name="org.apache.tapestry.servlet-path" value="/lb"/>
+  	</servlet>
   	
 
 	<request>

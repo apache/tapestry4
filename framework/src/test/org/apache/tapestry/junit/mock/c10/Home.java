@@ -21,7 +21,6 @@ import org.apache.tapestry.html.BasePage;
  * Provides an empty listener method; the tests it is used in are checking how links render.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

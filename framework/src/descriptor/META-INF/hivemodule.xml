@@ -33,6 +33,7 @@
   <sub-module descriptor="tapestry.ognl.xml"/>
   <sub-module descriptor="tapestry.coerce.xml"/>
   <sub-module descriptor="tapestry.url.xml"/>
+  <sub-module descriptor="tapestry.monitor.xml"/>
   
   <service-point id="ClasspathResourceFactory" interface="org.apache.tapestry.services.ClasspathResourceFactory">
   
@@ -67,6 +68,7 @@
         <set-service property="requestExceptionReporter" service-id="RequestExceptionReporter"/>
         <set-service property="responseRenderer" service-id="tapestry.request.ResponseRenderer"/>
         <set-service property="linkFactory" service-id="tapestry.url.LinkFactory"/>
+        <set-service property="requestCycleFactory" service-id="tapestry.request.RequestCycleFactory"/>
       </construct>
     </invoke-factory>
     
@@ -83,6 +85,7 @@
       <element name="lookup">
         
         <attribute name="extension-name" required="true"/>
+        <attribute name="default" translator="object"/>
         
         <conversion class="org.apache.tapestry.services.impl.ExtensionLookupParameter"/>
         
@@ -148,6 +151,7 @@
     
   </service-point>
   
+  
   <contribution configuration-id="hivemind.ObjectProviders">
     <provider prefix="infrastructure" service-id="InfrastructureObjectProvider"/>
   </contribution>
@@ -191,4 +195,6 @@
   <service-point id="InjectedValueProvider" interface="org.apache.tapestry.services.InjectedValueProvider">
     <invoke-factory service-id="InjectedValueProviderFactory"/>
   </service-point>
+  
+
 </module>

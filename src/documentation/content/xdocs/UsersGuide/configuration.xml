@@ -158,8 +158,8 @@ rather than when the first application request arrives.
 	
 	<p>
 	Using /app as the URL is a common convention when creating
-	Tapestry applications, but is not a requirement. The framework will adapt to whatever mapping
-	you select.
+	Tapestry applications, but is not a requirement. If you choose an alternate URL,
+  you must override the <code>org.apache.tapestry.servlet-path</code> configuration property.
 	</p>
 
 <p>
@@ -286,6 +286,17 @@ currently used in Tapestry:
   <tr>
     <th>Property</th>
     <th>Description</th>
+  </tr>
+  
+  <tr>
+    <td>org.apache.tapestry.servlet-path</td>
+    <td>
+    Defines the servlet path used when constructing URLs. The default value is <code>/app</code>.   Note that this is just
+    the <em>servlet path</em>.  In many cases, the application will be inside a context; Tapestry will automatically prefix this
+    value with the correct value for the context.  For example, workbench.war will by default be deployed with a context path of /workbench, and Tapestry will build URLs as
+    /context/app.
+    </td>
+    
   </tr>
   <tr>
 	<td>org.apache.tapestry.template-extension</td>

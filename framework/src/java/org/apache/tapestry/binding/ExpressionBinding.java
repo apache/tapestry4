@@ -245,7 +245,7 @@ public class ExpressionBinding extends AbstractBinding
     }
 
     /** @since 3.1 */
-    protected Object getComponent()
+    public Object getComponent()
     {
         return _root;
     }

@@ -22,7 +22,6 @@ import org.apache.tapestry.junit.mock.lib.Dumper;
  * Part of the Mock application test suite.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  */
 
 public class Home extends BasePage

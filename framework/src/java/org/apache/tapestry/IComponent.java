@@ -335,4 +335,12 @@ public interface IComponent extends IRender, LocationHolder
      */
 
     public void enterActiveState();
+    
+    /**
+     * Returns a {@link IBeanProvider}&nbsp;from which managed beans can be obtained.
+     * 
+     * @since 3.1
+     */
+    
+    public IBeanProvider getBeans();
 }

@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.engine.ServiceEncoder;
 
 /**
  * A source of {@link org.apache.tapestry.engine.ILink}instances. This is primarily used by
@@ -56,4 +57,11 @@ public interface LinkFactory
      */
 
     public Object[] extractServiceParameters(IRequestCycle cycle);
+
+    /**
+     * Returns an array of {@link org.apache.tapestry.engine.ServiceEncoder}, ordering into
+     * execution order. May return an empty array, but won't return null.
+     */
+
+    public ServiceEncoder[] getServiceEncoders();
 }

@@ -15,22 +15,22 @@
    limitations under the License.
 -->
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <page-specification class="org.apache.tapestry.workbench.localization.LocalizationChange">
 
   <component id="insertLocaleName" type="Insert">
-    <binding name="value" expression="localeName"/>
+    <binding name="value" value="ognl:localeName"/>
   </component>
   
   <component id="back" type="PageLink">
-    <static-binding name="page">Localization</static-binding>
+    <binding name="page" value="localization/Localization"/>
   </component>
   
   <component id="chooseAgainImage" type="Rollover">
-    <binding name="image" expression="assets.back"/>
-    <binding name="focus" expression="assets.backFocus"/>
+    <binding name="image" value="asset:back"/>
+    <binding name="focus" value="asset:backFocus"/>
   </component>
   
   <context-asset name="back" path="images/Back.gif"/>

@@ -26,6 +26,7 @@ import org.apache.hivemind.impl.BaseLocatable;
 public class ExtensionLookupParameter extends BaseLocatable
 {
 	private String _extensionName;
+    private Object _default; 
 	
     public String getExtensionName()
     {
@@ -37,4 +38,13 @@ public class ExtensionLookupParameter extends BaseLocatable
         _extensionName = string;
     }
 
+    public Object getDefault()
+    {
+        return _default;
+    }
+    
+    public void setDefault(Object defaultValue)
+    {
+        _default = defaultValue;
+    }
 }

@@ -18,7 +18,6 @@ package org.apache.tapestry.junit.spec;
  * Tests that immediate extensions are, in fact, instantiated immediately.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.2
  */
 

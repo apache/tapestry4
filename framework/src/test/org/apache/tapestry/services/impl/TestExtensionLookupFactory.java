@@ -35,9 +35,15 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
 {
     private List createParameters(String extensionName)
     {
+        return createParameters(extensionName, null);
+    }
+
+    private List createParameters(String extensionName, Object defaultValue)
+    {
         ExtensionLookupParameter p = new ExtensionLookupParameter();
 
         p.setExtensionName(extensionName);
+        p.setDefault(defaultValue);
 
         return Collections.singletonList(p);
     }
@@ -79,7 +85,7 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testDefault()
+    public void testSyntheticDefault()
     {
         MockControl specControl = newControl(IApplicationSpecification.class);
         IApplicationSpecification spec = (IApplicationSpecification) specControl.getMock();
@@ -112,6 +118,40 @@ public class TestExtensionLookupFactory extends HiveMindTestCase
         ExtensionLookupFactory f = new ExtensionLookupFactory();
         f.setSpecification(spec);
         f.setDefaultBuilder(dib);
+
+        Object actual = f.createCoreServiceImplementation(fp);
+
+        assertSame(r, actual);
+
+        verifyControls();
+    }
+
+    public void testConfigurationDefault()
+    {
+        MockControl specControl = newControl(IApplicationSpecification.class);
+        IApplicationSpecification spec = (IApplicationSpecification) specControl.getMock();
+
+        Runnable r = (Runnable) newMock(Runnable.class);
+
+        MockControl fpc = newControl(ServiceImplementationFactoryParameters.class);
+        ServiceImplementationFactoryParameters fp = (ServiceImplementationFactoryParameters) fpc
+                .getMock();
+
+        // Training
+
+        fp.getParameters();
+        fpc.setReturnValue(createParameters("foo.bar", r));
+
+        fp.getServiceInterface();
+        fpc.setReturnValue(Runnable.class);
+
+        spec.checkExtension("foo.bar");
+        specControl.setReturnValue(false);
+
+        replayControls();
+
+        ExtensionLookupFactory f = new ExtensionLookupFactory();
+        f.setSpecification(spec);
 
         Object actual = f.createCoreServiceImplementation(fp);
 

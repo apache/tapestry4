@@ -21,6 +21,11 @@
     <service object="service:Chart"/>
   </contribution>
   
+  <contribution configuration-id="tapestry.url.ServiceEncoders">
+    <path-encoder id="direct" extension="direct" service="direct"/>
+    <path-encoder id="page" extension="page" service="page"/>
+  </contribution>
+  
   <service-point id="Chart" interface="org.apache.tapestry.engine.IEngineService">
     <invoke-factory model="primitive">
       <construct class="org.apache.tapestry.workbench.chart.ChartService">

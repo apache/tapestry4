@@ -172,7 +172,7 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
 
     /** @since 3.1 */
 
-    protected Object getComponent()
+    public Object getComponent()
     {
         return _component;
     }

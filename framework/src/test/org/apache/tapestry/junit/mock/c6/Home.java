@@ -22,7 +22,6 @@ import org.apache.tapestry.html.BasePage;
  * Used for testing page property persistance.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

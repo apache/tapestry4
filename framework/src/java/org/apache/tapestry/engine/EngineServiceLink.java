@@ -15,10 +15,6 @@
 package org.apache.tapestry.engine;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.net.URLCodec;
@@ -27,6 +23,7 @@ import org.apache.hivemind.Defense;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
+import org.apache.tapestry.util.QueryParameterMap;
 
 /**
  * A EngineServiceLink represents a possible action within the client web browser; either clicking a
@@ -44,17 +41,17 @@ public class EngineServiceLink implements ILink
 {
     private static final int DEFAULT_HTTP_PORT = 80;
 
-    private IRequestCycle _cycle;
+    private final IRequestCycle _cycle;
 
-    private String _servletPath;
+    private final String _servletPath;
 
-    private URLCodec _codec;
+    private final URLCodec _codec;
 
     private String _encoding;
 
     private boolean _stateful;
 
-    private Map _parameters = new HashMap(3);
+    private final QueryParameterMap _parameters;
 
     /**
      * Creates a new EngineServiceLink.
@@ -88,7 +85,7 @@ public class EngineServiceLink implements ILink
         _servletPath = servletPath;
         _encoding = encoding;
         _codec = codec;
-        _parameters = parameters;
+        _parameters = new QueryParameterMap(parameters);
         _stateful = stateful;
     }
 
@@ -202,25 +199,11 @@ public class EngineServiceLink implements ILink
 
     public String[] getParameterNames()
     {
-        List list = new ArrayList(_parameters.keySet());
-
-        Collections.sort(list);
-
-        return (String[]) list.toArray(new String[list.size()]);
+        return _parameters.getParameterNames();
     }
 
     public String[] getParameterValues(String name)
     {
-        Object value = _parameters.get(name);
-
-        // Null and array of string pass through as-is
-
-        if (value == null || value instanceof String[])
-            return (String[]) value;
-
-        // Solo strings are wrapped into an array of string
-
-        return new String[]
-        { (String) value };
+        return _parameters.getParameterValues(name);
     }
 }

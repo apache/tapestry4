@@ -55,6 +55,31 @@
     
   </service-point>
   
+
+  <service-point id="AssetBindingFactory" interface="org.apache.tapestry.services.BindingFactory">
+    
+    Creates bindings where the path is the name of an asset of the component.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.AssetBindingFactory">
+        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+      </construct>
+    </invoke-factory>    
+    
+  </service-point>
+
+  <service-point id="BeanBindingFactory" interface="org.apache.tapestry.services.BindingFactory">
+    
+    Creates bindings where the path is the name of a managed bean defined by the component.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.BeanBindingFactory">
+        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+      </construct>
+    </invoke-factory>    
+    
+  </service-point>
+
   
   <configuration-point id="BindingFactories">
     
@@ -79,10 +104,13 @@
     </schema>
   </configuration-point>
   
+  
   <contribution configuration-id="BindingFactories">
     <binding prefix="ognl" service-id="OGNLBindingFactory"/>
     <binding prefix="message" service-id="MessageBindingFactory"/>
     <binding prefix="literal" service-id="LiteralBindingFactory"/>
+    <binding prefix="asset" service-id="AssetBindingFactory"/>
+    <binding prefix="bean" service-id="BeanBindingFactory"/>
   </contribution>
   
   <service-point id="BindingSource" interface="org.apache.tapestry.services.BindingSource">

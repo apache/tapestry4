@@ -44,7 +44,7 @@ public class StringBinding extends AbstractBinding
         _key = key;
     }
 
-    protected Object getComponent()
+    public Object getComponent()
     {
         return _component;
     }

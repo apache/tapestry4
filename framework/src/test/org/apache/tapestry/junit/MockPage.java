@@ -22,6 +22,7 @@ import java.util.Map;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
@@ -39,7 +40,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * Fake implementation of {@link IPage}used during unit testing.
- * 
  * <p>
  * TODO: Update tests that use this to use an EasyMock instead.
  * 
@@ -345,5 +345,11 @@ public class MockPage extends BaseLocatable implements IPage
     /** @since 3.1 */
     public void enterActiveState()
     {
+    }
+
+    /** @since 3.1 */
+    public IBeanProvider getBeans()
+    {
+        return null;
     }
 }

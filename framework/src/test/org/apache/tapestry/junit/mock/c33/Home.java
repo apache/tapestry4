@@ -21,7 +21,6 @@ import org.apache.tapestry.html.BasePage;
  * Used to test expression binding optimization.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  */
 public class Home extends BasePage
 {

@@ -26,9 +26,84 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.LinkFactoryImpl">
         <set-object property="dataSqueezer" value="infrastructure:dataSqueezer"/>
+        <set-configuration property="contributions" configuration-id="ServiceEncoders"/>
+        <set-object property="servletPath" value="app-property:org.apache.tapestry.servlet-path"/>
+        <set-object property="contextPath" value="service-property:tapestry.globals.HttpServletRequest:contextPath"/>
       </construct>
     </invoke-factory>
     
   </service-point>
+  
+  <contribution configuration-id="hivemind.FactoryDefaults">
+    <default symbol="org.apache.tapestry.servlet-path" value="/app"/>
+  </contribution>
 
+  <configuration-point id="ServiceEncoders">
+    
+    Defines a number of encoders that can encode and decode service requests.
+    
+    <schema>
+      
+      <element name="encoder">
+        
+        A flexible encoder provided as an object.
+        
+        <attribute name="id" required="true" unique="true">
+          Unique id for this encoder, used when ordering encoder order.
+        </attribute>
+        <attribute name="before">
+          List of ids of encoders that must come before this encoder.
+        </attribute>
+        <attribute name="after">
+          List of ids of encoders that must follow this encoder.
+        </attribute>
+        <attribute name="object" required="true" translator="object">
+          The object that implements the ServiceEncoder interface.
+        </attribute>
+        
+        <conversion class="org.apache.tapestry.services.impl.ServiceEncoderContribution">
+          <map attribute="object" property="encoder"/>
+        </conversion>
+      </element>
+      
+      
+      <element name="path-encoder">
+        
+        An encoder that identifies the service as a pathname extension, and encodes the page as the
+        servlet path.
+        
+        <attribute name="id" required="true" unique="true">
+          Unique id for this encoder, used when ordering encoder order.
+        </attribute>
+        <attribute name="before">
+          List of ids of encoders that must come before this encoder.
+        </attribute>
+        <attribute name="after">
+          List of ids of encoders that must follow this encoder.
+        </attribute>
+        <attribute name="extension" required="true">
+          The extension used to represent the service, i.e., "html".
+        </attribute>
+        <attribute name="service" required="true">
+          The name of the service mapped to the extension, i.e., "page".
+        </attribute>
+        
+        <rules>
+          <create-object class="org.apache.tapestry.services.impl.ServiceEncoderContribution"/>
+          <read-attribute attribute="id" property="id"/>
+          <read-attribute attribute="before" property="before"/>
+          <read-attribute attribute="after" property="after"/>
+          <invoke-parent method="addElement"/>
+          
+          <create-object class="org.apache.tapestry.engine.encoders.ServicePathEncoder"/>
+          <read-attribute attribute="extension" property="extension"/>
+          <read-attribute attribute="service" property="serviceName"/>
+          <invoke-parent method="setEncoder"/>          
+        </rules>
+        
+      </element>
+      
+    </schema>
+    
+  </configuration-point>
 </module>

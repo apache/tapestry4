@@ -15,23 +15,23 @@
    limitations under the License.
 -->
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <page-specification class="org.apache.tapestry.workbench.localization.Localization">
 
   <component id="form" type="Form">
-    <binding name="listener" expression="listeners.formSubmit"/>
-    <binding name="stateful" expression="false"/>
+    <binding name="listener" value="ognl:listeners.formSubmit"/>
+    <binding name="stateful" value="ognl:false"/>
   </component>
   
   <component id="inputLocale" type="PropertySelection">
-    <binding name="value" expression="page.engine.locale"/>
-    <binding name="model" expression="localeModel"/>
+    <binding name="value" value="ognl:page.engine.locale"/>
+    <binding name="model" value="ognl:localeModel"/>
   </component>
   
   <component id="changeButton" type="ImageSubmit">
-    <binding name="image" expression="assets.changeButton"/>
+    <binding name="image" value="asset:changeButton"/>
   </component>
   
   <context-asset name="changeButton" path="images/Change.gif"/>
