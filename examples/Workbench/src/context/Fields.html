@@ -11,7 +11,7 @@ is part of a framework that allows for complex validation of user input
 as well as presentation of errors.
 
 <p>
-<form jwcid="@Form" listener="clientValidationChanged">
+<form jwcid="valid@Form" listener="clientValidationChanged">
 <input jwcid="inputEnabled"/> Enable Client Side Validation
 </form>
 
@@ -22,7 +22,7 @@ doesn't support JavaScript).
 
 <span jwcid="showError"/>
 
-<form jwcid="@Form" listener="formSubmit" delegate="bean:delegate">
+<form jwcid="form@Form" listener="formSubmit" delegate="bean:delegate">
 
 <table class="form">
 	<tr>

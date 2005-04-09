@@ -51,7 +51,6 @@
 		<parameter name="service" value="direct"/>
     <parameter name="page" value="Home"/>
     <parameter name="component" value="$Form"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="$RadioGroup" value="2"/>
 		<parameter name="formids" value="$RadioGroup"/>
 		
@@ -84,7 +83,6 @@
 		<parameter name="service" value="direct"/>
     <parameter name="page" value="Home"/>
     <parameter name="component" value="$Form"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="formids" value="$RadioGroup"/>
 		
 		<assert-output name="Page Title">
@@ -116,7 +114,6 @@
 		<parameter name="service" value="direct"/>
     <parameter name="page" value="Home"/>
     <parameter name="component" value="$Form"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="$RadioGroup" value="3"/>
 		<parameter name="formids" value="$RadioGroup"/>
 		
@@ -150,7 +147,6 @@
     <parameter name="page" value="Home"/>
     <parameter name="action" value="1"/>
     <parameter name="component" value="dummy"/>
-    <parameter name="sp" value="S0"/>
 		<parameter name="formids" value=""/>
 		
 		<assert-output name="Page Title">
@@ -211,7 +207,6 @@
 		<parameter name="service" value="direct"/>
     <parameter name="page" value="Home"/>
     <parameter name="component" value="$Form"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="$RadioGroup" value="2"/>
 		<parameter name="formids" value="$RadioGroup"/>
 		
@@ -346,7 +341,6 @@ Framework: []
     <parameter name="session" value="T"/>
     <parameter name="page" value="NullSelection"/>
     <parameter name="component" value="$Form"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="formids" value="group"/>
 		<parameter name="group" value="1"/>
 		
@@ -377,7 +371,6 @@ Framework: [tapestry]
     <parameter name="session" value="T"/>
     <parameter name="page" value="NullSelection"/>
     <parameter name="component" value="$Form"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="formids" value="group"/>	
 
 			<assert-output name="No Choice">
@@ -428,7 +421,6 @@ Framework: []
       <parameter name="session" value="T"/>
       <parameter name="page" value="LanguageSelection"/>
       <parameter name="component" value="form"/>      
-			<parameter name="sp" value="S0"/>
 			<parameter name="formids" value="group"/>
 			<parameter name="group" value="2"/>
 			

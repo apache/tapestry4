@@ -39,6 +39,7 @@ import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
+import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.util.QueryParameterMap;
 
 /**
@@ -118,6 +119,10 @@ public class RequestCycle implements IRequestCycle
     private ErrorLog _log;
 
     private RequestContext _requestContext;
+
+    /** @since 3.1 */
+
+    private IdAllocator _idAllocator = new IdAllocator();
 
     /**
      * Standard constructor used to render a response page.
@@ -365,9 +370,7 @@ public class RequestCycle implements IRequestCycle
         }
         finally
         {
-            _actionId = 0;
-            _targetActionId = 0;
-            _attributes.clear();
+            reset();
         }
 
         _monitor.pageRenderEnd(pageName);
@@ -375,18 +378,30 @@ public class RequestCycle implements IRequestCycle
     }
 
     /**
+     * Resets all internal state after a render or a rewind.
+     */
+
+    private void reset()
+    {
+        _actionId = 0;
+        _targetActionId = 0;
+        _attributes.clear();
+        _idAllocator.clear();
+    }
+
+    /**
      * Rewinds an individual form by invoking {@link IForm#rewind(IMarkupWriter, IRequestCycle)}.
      * <p>
      * The process is expected to end with a {@link RenderRewoundException}. If the entire page is
      * renderred without this exception being thrown, it means that the target action id was not
-     * valid, and a {@link ApplicationRuntimeException}is thrown.
+     * valid, and a {@link ApplicationRuntimeException}&nbsp;is thrown.
      * <p>
      * This clears all attributes.
      * 
      * @since 1.0.2
      */
 
-    public void rewindForm(IForm form, String targetActionId)
+    public void rewindForm(IForm form)
     {
         IPage page = form.getPage();
         String pageName = page.getPageName();
@@ -396,9 +411,13 @@ public class RequestCycle implements IRequestCycle
         _monitor.pageRewindBegin(pageName);
 
         // Fake things a little for getNextActionId() / isRewound()
+        // This used to be more involved (and include service parameters, and a parameter
+        // to this method), when the actionId was part of the Form name. That's not longer
+        // necessary (no service parameters), and we can fake things here easily enough with
+        // fixed actionId of 0.
 
-        _targetActionId = Integer.parseInt(targetActionId, 16);
-        _actionId = _targetActionId - 1;
+        _targetActionId = 0;
+        _actionId = -1;
 
         _targetComponent = form;
 
@@ -432,17 +451,12 @@ public class RequestCycle implements IRequestCycle
         }
         finally
         {
-            _actionId = 0;
-            _targetActionId = 0;
-            _targetComponent = null;
-
             page.endPageRender();
 
             _monitor.pageRewindEnd(pageName);
 
+            reset();
             _rewinding = false;
-
-            _attributes.clear();
         }
     }
 
@@ -498,16 +512,11 @@ public class RequestCycle implements IRequestCycle
         }
         finally
         {
-
-            _actionId = 0;
-            _targetActionId = 0;
-            _targetComponent = null;
-
             _monitor.pageRewindEnd(pageName);
 
             _rewinding = false;
 
-            _attributes.clear();
+            reset();
         }
 
     }
@@ -660,5 +669,12 @@ public class RequestCycle implements IRequestCycle
     public RequestContext getRequestContext()
     {
         return _requestContext;
+    }
+
+    /** @since 3.1 */
+
+    public String getUniqueId(String baseId)
+    {
+        return _idAllocator.allocateId(baseId);
     }
 }

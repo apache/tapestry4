@@ -35,15 +35,13 @@
  		
 		<assert-output name="Initialization Scripting">
 <![CDATA[
-document.Form0.inputFirstName.focus();
-document.Form0.inputFirstName.select();
-document.Form0.onsubmit = function ()
+document.form.inputFirstName.focus();
+document.form.inputFirstName.select();
+document.form.onsubmit = function ()
 {
-
   return validate_inputFirstName() &&
     validate_inputLastName();
 }
-
 ]]>
 		</assert-output>
 		
@@ -51,22 +49,20 @@ document.Form0.onsubmit = function ()
 <![CDATA[
 <input type="hidden" name="(.*?)" value="(.*?)"/>
 ]]>
+			<match>formids</match>
       <match>component</match>
       <match>page</match>
 			<match>service</match>
-			<match>sp</match>
-			<match>formids</match>
 		</assert-output-matches>
 				
 		<assert-output-matches name="Hidden Fields - Values" subgroup="2">
 <![CDATA[
 <input type="hidden" name="(.*?)" value="(.*?)"/>
 ]]>
+			<match>inputFirstName,inputLastName,inputSex,inputAgeRange</match>
       <match>form</match>
       <match>Register</match>
 			<match>direct</match>
-			<match>S0</match>
-			<match>inputFirstName,inputLastName,inputSex,inputAgeRange</match>
 		</assert-output-matches>
 			 	
 		<assert-output-matches name="Text Fields" subgroup="1">
@@ -131,7 +127,6 @@ document.Form0.onsubmit = function ()
       <parameter name="component" value="form"/>
       <parameter name="page" value="Register"/>
   		<parameter name="service" value="direct"/>
-  		<parameter name="sp" value="S0"/>
   		<parameter name="inputFirstName" value="Suzy"/>
   		<parameter name="inputLastName" value=""/>
   		<parameter name="inputSex" value="1"/>
@@ -155,8 +150,8 @@ document.Form0.onsubmit = function ()
 		
  		<assert-output name="Default Field">
 <![CDATA[
-document.Form0.inputLastName.focus();
-document.Form0.inputLastName.select();		 				
+document.form.inputLastName.focus();
+document.form.inputLastName.select();		 				
 ]]>  		
  		</assert-output>
  		 				
@@ -196,7 +191,6 @@ document.Form0.inputLastName.select();
       <parameter name="page" value="Register"/>
       <parameter name="component" value="form"/>
   		<parameter name="service" value="direct"/>
-  		<parameter name="sp" value="S0"/>
   		<parameter name="inputFirstName" value="Suzy"/>
   		<parameter name="inputLastName" value="Lewis Ship"/>
   		<parameter name="inputSex" value="1"/>

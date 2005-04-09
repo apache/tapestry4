@@ -86,12 +86,13 @@ public class TestTapestryUtils extends HiveMindTestCase
 
     public void testGetPageRenderSupportSuccess()
     {
+        IComponent component = (IComponent) newMock(IComponent.class);
         PageRenderSupport support = (PageRenderSupport) newMock(PageRenderSupport.class);
         IRequestCycle cycle = newCycle(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, support);
 
         replayControls();
 
-        PageRenderSupport actual = TapestryUtils.getPageRenderSupport(cycle, null);
+        PageRenderSupport actual = TapestryUtils.getPageRenderSupport(cycle, component);
 
         assertSame(support, actual);
 
@@ -100,23 +101,71 @@ public class TestTapestryUtils extends HiveMindTestCase
 
     public void testGetPageRenderSupportFailure()
     {
-        Location l = fabricateLocation(22);
+        Location l = newLocation();
+        MockControl control = newControl(IComponent.class);
+        IComponent component = (IComponent) control.getMock();
+
+        component.getExtendedId();
+        control.setReturnValue("Foo/bar", 1);
+
+        component.getLocation();
+        control.setReturnValue(l);
+
+        component.getExtendedId();
+        control.setReturnValue("Foo/bar", 1);
+
         IRequestCycle cycle = newCycle(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, null);
 
         replayControls();
 
         try
         {
-            TapestryUtils.getPageRenderSupport(cycle, l);
+            TapestryUtils.getPageRenderSupport(cycle, component);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(TapestryMessages.noPageRenderSupport(), ex.getMessage());
+            assertEquals(TapestryMessages.noPageRenderSupport(component), ex.getMessage());
             assertSame(l, ex.getLocation());
         }
 
         verifyControls();
+    }
+
+    public void testSplitBlank()
+    {
+        assertListsEqual(new String[0], TapestryUtils.split(null));
+        assertListsEqual(new String[0], TapestryUtils.split(""));
+    }
+
+    public void testSplitWithDelimiter()
+    {
+        assertListsEqual(new String[]
+        { "fred", "barney" }, TapestryUtils.split("fred|barney", '|'));
+    }
+
+    public void testSplitNormal()
+    {
+        assertListsEqual(new String[]
+        { "fred", "barney" }, TapestryUtils.split("fred,barney"));
+    }
+
+    public void testSplitNoDelimiter()
+    {
+        assertListsEqual(new String[]
+        { "no-delimiter" }, TapestryUtils.split("no-delimiter"));
+    }
+
+    public void testTrailingDelimiter()
+    {
+        assertListsEqual(new String[]
+        { "fred", "barney", "" }, TapestryUtils.split("fred,barney,"));
+    }
+
+    public void testEveryDelimiterCounts()
+    {
+        assertListsEqual(new String[]
+        { "", "fred", "", "barney", "", "" }, TapestryUtils.split(",fred,,barney,,"));
     }
 
 }

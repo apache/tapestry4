@@ -52,7 +52,6 @@
 		<parameter name="service" value="direct"/>
     <parameter name="page" value="Home"/>
     <parameter name="component" value="$Form"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="hidden" value="updated-1234567890"/>
 		<parameter name="hiddenWithID" value="updated-1234567890-with id"/>
 		<parameter name="hiddenWithEncoding" value="Supdated-1234567890-with encoding"/>
@@ -77,20 +76,4 @@ HiddenID: [0987654321]
 HiddenWithEncoding: [updated-1234567890-with encoding]
 		</assert-output>
 	</request>
-	
-	<!--request>
-		<parameter name="service" value="direct/0/Home/$Form"/>
-		<parameter name="sp" value="S0"/>
-		<parameter name="hidden" value="updated-1234567890"/>
-		<parameter name="hiddenWithID" value="updated-1234567890-with id"/>
-		<parameter name="hiddenWithEncoding" value="Supdated-1234567890-with encoding"/>
-		<parameter name="hiddenBoolean" value="123"/>
-		<parameter name="formids" value="hidden,hiddenWithID,hiddenWithEncoding,hiddenBoolean"/>
-		
-		<assert-output name="Page Title">
-<![CDATA[
-<title>Exception</title>
-]]>
-		</assert-output>
-	</request-->
 </mock-test>

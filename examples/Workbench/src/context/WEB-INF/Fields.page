@@ -25,52 +25,52 @@
 
   <bean name="dateValidator" lifecycle="render" class="org.apache.tapestry.valid.DateValidator">
   	<set name="required" value="true"/>
-  	<set name="clientScriptingEnabled" value="ognl:clientValidationEnabled"/>
+  	<set name="clientScriptingEnabled" value="clientValidationEnabled"/>
   </bean>
 
   <bean name="intValidator" lifecycle="render" class="org.apache.tapestry.valid.NumberValidator">
   	<set name="required" value="true"/>
-  	<set name="minimum" value="ognl:@org.apache.tapestry.workbench.fields.Fields@INT_MIN"/>
-  	<set name="maximum" value="ognl:@org.apache.tapestry.workbench.fields.Fields@INT_MAX"/>
-  	<set name="clientScriptingEnabled" value="ognl:clientValidationEnabled"/>
-  	<set name="valueType" value="int"/>
+  	<set name="minimum" value="@org.apache.tapestry.workbench.fields.Fields@INT_MIN"/>
+  	<set name="maximum" value="@org.apache.tapestry.workbench.fields.Fields@INT_MAX"/>
+  	<set name="clientScriptingEnabled" value="clientValidationEnabled"/>
+  	<set name="valueType" value="'int'"/>
   </bean>
 
   <bean name="doubleValidator" lifecycle="render" class="org.apache.tapestry.valid.NumberValidator">
   	<set name="required" value="true"/>
-  	<set name="minimum" value="ognl:@org.apache.tapestry.workbench.fields.Fields@DOUBLE_MIN"/>
-  	<set name="maximum" value="ognl:@org.apache.tapestry.workbench.fields.Fields@DOUBLE_MAX"/>
-  	<set name="clientScriptingEnabled" value="ognl:clientValidationEnabled"/>
-  	<set name="valueType" value="double"/>
+  	<set name="minimum" value="@org.apache.tapestry.workbench.fields.Fields@DOUBLE_MIN"/>
+  	<set name="maximum" value="@org.apache.tapestry.workbench.fields.Fields@DOUBLE_MAX"/>
+  	<set name="clientScriptingEnabled" value="clientValidationEnabled"/>
+  	<set name="valueType" value="'double'"/>
   </bean>
 
 
   <bean name="bigDecimalValidator" lifecycle="render" class="org.apache.tapestry.valid.NumberValidator">
   	<set name="required" value="true"/>
-  	<set name="minimum" value="ognl:@org.apache.tapestry.workbench.fields.Fields@DECIMAL_MIN"/>
-  	<set name="maximum" value="ognl:@org.apache.tapestry.workbench.fields.Fields@DECIMAL_MAX"/>
+  	<set name="minimum" value="@org.apache.tapestry.workbench.fields.Fields@DECIMAL_MIN"/>
+  	<set name="maximum" value="@org.apache.tapestry.workbench.fields.Fields@DECIMAL_MAX"/>
   	<set name="clientScriptingEnabled" value="clientValidationEnabled"/>
-  	<set name="valueType" value="java.math.BigDecimal"/>
+  	<set name="valueType" value="'java.math.BigDecimal'"/>
   </bean>
 
   <bean name="longValidator" lifecycle="render" class="org.apache.tapestry.valid.NumberValidator">
   	<set name="required" value="true"/>
-  	<set name="minimum" value="ognl:@org.apache.tapestry.workbench.fields.Fields@LONG_MIN"/>
-  	<set name="maximum" value="ognl:@org.apache.tapestry.workbench.fields.Fields@LONG_MAX"/>
-  	<set name="clientScriptingEnabled" value="ognl:clientValidationEnabled"/>
-  	<set name="valueType" value="long"/>
+  	<set name="minimum" value="@org.apache.tapestry.workbench.fields.Fields@LONG_MIN"/>
+  	<set name="maximum" value="@org.apache.tapestry.workbench.fields.Fields@LONG_MAX"/>
+  	<set name="clientScriptingEnabled" value="clientValidationEnabled"/>
+  	<set name="valueType" value="'long'"/>
   </bean>
 
   <bean name="stringValidator" lifecycle="render" class="org.apache.tapestry.valid.StringValidator">
   	<set name="required" value="true"/>
-  	<set name="minimumLength" value="ognl:@org.apache.tapestry.workbench.fields.Fields@STRING_MIN_LENGTH"/>
-  	<set name="clientScriptingEnabled" value="ognl:clientValidationEnabled"/>
+  	<set name="minimumLength" value="@org.apache.tapestry.workbench.fields.Fields@STRING_MIN_LENGTH"/>
+  	<set name="clientScriptingEnabled" value="clientValidationEnabled"/>
   </bean>
 
   <bean name="emailValidator" lifecycle="render" class="org.apache.tapestry.valid.EmailValidator">
   	<set name="required" value="true"/>
   	<set name="minimumLength" value="6"/>
-  	<set name="clientScriptingEnabled" value="ognl:clientValidationEnabled"/>
+  	<set name="clientScriptingEnabled" value="clientValidationEnabled"/>
   </bean>
   
   <component id="inputEnabled" type="Checkbox">
@@ -85,7 +85,7 @@
   </component>
 
   <component id="inputDate" type="ValidField">
-    <binding name="validator" value="dateValidator"/>
+    <binding name="validator" value="bean:dateValidator"/>
     <binding name="value" value="visit.dateValue"/>
     <binding name="displayName" value="Date Field"/>
   </component>

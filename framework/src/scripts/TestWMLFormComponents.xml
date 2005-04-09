@@ -80,19 +80,18 @@
             <![CDATA[
             <postfield name="(.*?)".*?/>
             ]]>
+            <match>formids</match>
             <match>component</match>
             <match>page</match>
             <match>service</match>
-            <match>sp</match>
-            <match>formids</match>
             <match>u</match>
             
+            <match>formids</match>          
             <match>action</match>
             <match>component</match>
             <match>page</match>
             <match>service</match>
-            <match>formids</match>
-            <match>formids</match>
+            <match>reservedids</match>
             <match>v</match>
         </assert-output-matches>
 
@@ -100,18 +99,17 @@
             <![CDATA[
             <postfield .*?value="(.*?)"/>
             ]]>
+            <match>u</match>
             <match>g</match>
             <match>Rewind</match>            
             <match>direct</match>
-            <match>S0</match>
-            <match>u</match>
             <match>$(u)</match>
             
+            <match>v</match>
             <match>1</match>
             <match>h</match>
             <match>Rewind</match>
             <match>action</match>
-            <match>v</match>
             <match>action</match>
             <match>$(v)</match>
         </assert-output-matches>
@@ -123,11 +121,8 @@
         <parameter name="page" value="Rewind"/>
         <parameter name="action" value="1"/>
         <parameter name="component" value="h"/>
-
-        <parameter name="formids">
-          <value>v</value>
-          <value>action</value>
-        </parameter>
+        <parameter name="formids" value="v"/>
+        <parameter name="reservedids" value="action"/>
         <parameter name="v" value="VVV"/>
 
         <assert-output name="Card">
@@ -151,7 +146,6 @@
         <parameter name="page" value="Rewind"/>
         <parameter name="component" value="g"/>
 
-        <parameter name="sp" value="S0"/>
         <parameter name="formids" value="v"/>
         <parameter name="u" value="VVV"/>
 

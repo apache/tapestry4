@@ -30,7 +30,7 @@
 		
 		<assert-output name="Form">
 <![CDATA[
-<form method="post" name="Form0" action="/selopt/app">
+<form method="post" action="/selopt/app" name="$Form">
 ]]>
 		</assert-output>
 		
@@ -38,11 +38,10 @@
 <![CDATA[			
 <input type="hidden" (name="(.*?)" value="(.*?)")/>
 ]]>
+			<match>name="formids" value="$Select"</match>
       <match>name="component" value="$Form"</match>
       <match>name="page" value="Home"</match>
 			<match>name="service" value="direct"</match>
-			<match>name="sp" value="S0"</match>
-			<match>name="formids" value="$Select"</match>
 		</assert-output-matches>
 
 		<assert-regexp name="Select Tag">
@@ -68,7 +67,6 @@
 		<parameter name="service" value="direct"/>
     <parameter name="page" value="Home"/>
     <parameter name="component" value="$Form"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="formids" value="$Select"/>
 		
 		<assert-output name="Page Title">
@@ -89,7 +87,6 @@ Selections: none.
 		<parameter name="service" value="direct"/>
     <parameter name="page" value="Home"/>
     <parameter name="component" value="$Form"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="formids" value="$Select"/>
 		<parameter name="$Select" value="1"/>
 		
@@ -120,7 +117,7 @@ Selections: vegetable.
 		
 		<assert-output name="Form">
 <![CDATA[
-<form method="post" name="Form0" action="/selopt/app">
+<form method="post" action="/selopt/app" name="$Form">
 ]]>
 		</assert-output>
 		
@@ -128,11 +125,10 @@ Selections: vegetable.
 <![CDATA[			
 <input type="hidden" (name="(.*?)" value="(.*?)")/>
 ]]>
+			<match>name="formids" value="$Select"</match>
       <match>name="component" value="$Form"</match>
       <match>name="page" value="Two"</match>
 			<match>name="service" value="direct"</match>
-			<match>name="sp" value="S0"</match>
-			<match>name="formids" value="$Select"</match>
 		</assert-output-matches>
 
 		<assert-output name="Select Tag">
@@ -160,7 +156,6 @@ Selections: vegetable.
 		<parameter name="service" value="direct"/>
     <parameter name="page" value="Two"/>
     <parameter name="component" value="$Form"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="formids" value="$Select"/>
 		<parameter name="$Select">
 				<value>1</value>
@@ -216,7 +211,7 @@ Selections: vegetable, mineral.
 		
 		<assert-output name="Form">
 <![CDATA[
-<form method="post" name="Form0" action="/selopt/app">
+<form method="post" action="/selopt/app" name="$Form">
 ]]>
 		</assert-output>
 		
@@ -227,12 +222,11 @@ Selections: vegetable, mineral.
 
 			<!-- Remember the persistent properties?  Those made the app go stateful. -->
 
+			<match>name="formids" value="$Select"</match>
       <match>name="component" value="$Form"</match>
       <match>name="page" value="Three"</match>
 			<match>name="service" value="direct"</match>
       <match>name="session" value="T"</match>
-			<match>name="sp" value="S0"</match>
-			<match>name="formids" value="$Select"</match>
 		</assert-output-matches>
 
 		<assert-output name="Select Tag">
@@ -260,7 +254,6 @@ Selections: vegetable, mineral.
     <parameter name="session" value="T"/>
     <parameter name="page" value="Three"/>
     <parameter name="component" value="$Form"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="formids" value="$Select"/>
 		<parameter name="$Select" value="1"/>
 		
@@ -291,7 +284,7 @@ Selections: none.
 		
 		<assert-output name="Second Form">
 <![CDATA[
-<form method="post" name="Form1" action="/selopt/app">
+<form method="post" action="/selopt/app" name="Form1">
 ]]>	
 		</assert-output>
 	</request>

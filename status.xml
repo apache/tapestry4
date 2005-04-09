@@ -63,6 +63,7 @@
       <action type="update" dev="HLS"> Add an extra level of indirection, so that engine services can be wired together using the engine-service: object provider. </action>
       <action type="add" dev="HLS"> Add methods to IMarkupWriter that allow filtering to be specified using a parameter. </action>
       <action type="add" dev="HLS" fixes-bug="TAPESTRY-291"> Allow component parameters to have a default binding type. </action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-285,TAPESTRY-293"> Set form name from component id, and disallow name as an informal parameter. </action>
     </release>
     <release version="3.0.3" date="Mar 26 2005">
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>

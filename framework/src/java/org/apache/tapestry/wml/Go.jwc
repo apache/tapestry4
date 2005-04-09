@@ -40,7 +40,8 @@
 
     <parameter name="stateful" default-value="true">
         <description>
-            If true (the default), then an active HttpSession is required.
+            If true (the default), then an active session is required when the Go
+            is submitted, if a session was active when the Go was rendered.
         </description>
     </parameter>
 
@@ -52,6 +53,7 @@
     </parameter>
 
     <reserved-parameter name="href"/>
+    <reserved-parameter name="name"/>
 
   <inject property="directService" object="engine-service:direct"/>	
   <inject property="actionService" object="engine-service:action"/>

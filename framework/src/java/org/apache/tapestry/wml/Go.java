@@ -15,58 +15,33 @@
 package org.apache.tapestry.wml;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.tapestry.FormSupport;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.form.Form;
 import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
- *  The go element declares a go task, indicating navigation to a URI. If the URI
- *  names a WML card or deck, it is displayed. 
- *
- *  @author David Solis
- *  @since 3.0
- *
- **/
+ * The go element declares a go task, indicating navigation to a URI. If the URI names a WML card or
+ * deck, it is displayed.
+ * 
+ * @author David Solis
+ * @since 3.0
+ */
 
 public abstract class Go extends Form
 {
-
-    /** @since 3.0 **/
-
-    protected void writeAttributes(IMarkupWriter writer, ILink link)
-    {
-        String method = getMethod();
-
-        writer.begin(getTag());
-        writer.attribute("method", (method == null) ? "post" : method);
-        writer.attribute("href", link.getURL(null, false));
-    }
-
-    /** @since 3.0 **/
-
-    protected void writeHiddenField(IMarkupWriter writer, String name, String value)
-    {
-        writer.beginEmpty("postfield");
-        writer.attribute("name", name);
-        writer.attribute("value", value);
-        writer.println();
-    }
-
     /**
-     *  This component doesn't support event handlers.
-     *
-     **/
+     * This component doesn't support event handlers.
+     */
     protected void emitEventHandlers(IMarkupWriter writer, IRequestCycle cycle)
     {
     }
 
     /**
-     *  This component doesn't support delegate.
-     *
-     **/
+     * This component doesn't support delegate.
+     */
     public IValidationDelegate getDelegate()
     {
         return null;
@@ -74,18 +49,19 @@ public abstract class Go extends Form
 
     public void setDelegate(IValidationDelegate delegate)
     {
-        throw new ApplicationRuntimeException(
-            Tapestry.format("unsupported-property", this, "delegate"));
+        throw new ApplicationRuntimeException(Tapestry.format(
+                "unsupported-property",
+                this,
+                "delegate"));
     }
 
-    protected String getTag()
+    protected String constructFormNameForActionService(String actionId)
     {
-        return "go";
+        return "Go" + actionId;
     }
 
-
-    protected String getDisplayName()
+    protected FormSupport newFormSupport(IMarkupWriter writer, IRequestCycle cycle)
     {
-        return "Go";
+        return new GoFormSupportImpl(writer, cycle, this);
     }
 }
