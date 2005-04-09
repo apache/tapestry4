@@ -188,11 +188,13 @@ public interface IRequestCycle
     /**
      * Used by {@link IForm forms}to perform a <em>partial</em> rewind so as to respond to the
      * form submission (using the direct service).
+     * <p>
+     * Note: the targetActionId parameter was removed in release 3.1.
      * 
      * @since 1.0.2
      */
 
-    public void rewindForm(IForm form, String targetActionId);
+    public void rewindForm(IForm form);
 
     /**
      * Much like {@link #forgetPage(String)}, but the page stays active and can even record
@@ -306,9 +308,19 @@ public interface IRequestCycle
     /**
      * Returns the {@link RequestContext}. This is provided to ease the upgrade from Tapestry 3.0.
      * 
-     * @since 3.1
      * @deprecated To be removed in 3.2.
      */
 
     public RequestContext getRequestContext();
+
+    /**
+     * Returns the provided string, possibly modified (with an appended suffix) to make it unique.
+     * 
+     * @param baseId
+     *            the base id from which to generate the unique string.
+     * @return baseId, or baseId with a suffix appended (if the method has been previously invoked
+     *         with the same baseId).
+     */
+
+    public String getUniqueId(String baseId);
 }

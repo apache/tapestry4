@@ -107,12 +107,12 @@
             <![CDATA[
             <postfield name="(.*?)".*?/>
             ]]>
+            <match>formids</match>
             <match>action</match>
             <match>component</match>
             <match>page</match>
             <match>service</match>
-            <match>formids</match>
-            <match>formids</match>            
+            <match>reservedids</match>            
             <match>u</match>
             <match>l</match>
         </assert-output-matches>
@@ -121,11 +121,11 @@
             <![CDATA[
             <postfield .*?value="(.*?)"/>
             ]]>
+            <match>u,l</match>
             <match>0</match>
             <match>go</match>
             <match>Home</match>
             <match>action</match>
-            <match>u,l</match>
             <match>action</match>
             <match>$(username)</match>
             <match>$(l)</match>
@@ -138,10 +138,8 @@
         <parameter name="page" value="Home"/>
         <parameter name="action" value="0"/>
         <parameter name="component" value="go"/>
-        <parameter name="formids">
-          <value>u,l</value>
-          <value>action</value>
-        </parameter>
+        <parameter name="formids" value="u,l"/>
+        <parameter name="reservedids" value="action"/>
         <parameter name="u" value="newbie"/>
         <parameter name="l" value="0"/>
 

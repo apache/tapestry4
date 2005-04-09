@@ -14,6 +14,9 @@
 
 package org.apache.tapestry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.util.Defense;
@@ -56,7 +59,7 @@ public class TapestryUtils
         cycle.setAttribute(key, object);
     }
 
-    static final String PAGE_RENDER_SUPPORT_ATTRIBUTE = "org.apache.tapestry.PageRenderSupport";
+    public static final String PAGE_RENDER_SUPPORT_ATTRIBUTE = "org.apache.tapestry.PageRenderSupport";
 
     /**
      * Stores the support object using {@link #storeUniqueAttribute(IRequestCycle, String, Object)}.
@@ -72,22 +75,23 @@ public class TapestryUtils
      * 
      * @param cycle
      *            the request cycle storing the support object
-     * @param caller
-     *            the caller of this method (used in exception messages)
+     * @param component
+     *            the component which requires the support (used to report exceptions)
      * @throws ApplicationRuntimeException
      *             if no support object has been stored
      */
 
-    public static PageRenderSupport getPageRenderSupport(IRequestCycle cycle, Object caller)
+    public static PageRenderSupport getPageRenderSupport(IRequestCycle cycle, IComponent component)
     {
         Defense.notNull(cycle, "cycle");
+        Defense.notNull(component, "component");
 
         PageRenderSupport result = (PageRenderSupport) cycle
                 .getAttribute(PAGE_RENDER_SUPPORT_ATTRIBUTE);
 
         if (result == null)
-            throw new ApplicationRuntimeException(TapestryMessages.noPageRenderSupport(), HiveMind
-                    .getLocation(caller), null);
+            throw new ApplicationRuntimeException(TapestryMessages.noPageRenderSupport(component),
+                    component.getLocation(), null);
 
         return result;
     }
@@ -107,5 +111,64 @@ public class TapestryUtils
     public static PageRenderSupport getOptionalPageRenderSupport(IRequestCycle cycle)
     {
         return (PageRenderSupport) cycle.getAttribute(PAGE_RENDER_SUPPORT_ATTRIBUTE);
+    }
+
+    /**
+     * Splits a string using the default delimiter of ','.
+     */
+
+    public static String[] split(String input)
+    {
+        return split(input, ',');
+    }
+
+    /**
+     * Splits a single string into an array of strings, using a specific delimiter character.
+     */
+
+    public static String[] split(String input, char delimiter)
+    {
+        if (HiveMind.isBlank(input))
+            return new String[0];
+
+        List strings = new ArrayList();
+
+        char[] buffer = input.toCharArray();
+
+        int start = 0;
+        int length = 0;
+
+        for (int i = 0; i < buffer.length; i++)
+        {
+            if (buffer[i] != delimiter)
+            {
+                length++;
+                continue;
+            }
+
+            // Consecutive delimiters will result in a sequence
+            // of empty strings.
+
+            String token = new String(buffer, start, length);
+            strings.add(token);
+
+            start = i + 1;
+            length = 0;
+        }
+
+        // If the string contains no delimiters, then
+        // wrap it an an array and return it.
+
+        if (start == 0 && length == buffer.length)
+        {
+            return new String[]
+            { input };
+        }
+
+        // The final token.
+        String token = new String(buffer, start, length);
+        strings.add(token);
+
+        return (String[]) strings.toArray(new String[strings.size()]);
     }
 }

@@ -48,7 +48,6 @@
 		<parameter name="service" value="direct"/>
     <parameter name="page" value="Home"/>
     <parameter name="component" value="main"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="text" value="One &lt;&gt; zero."/>
 		<parameter name="mode" value="0"/>
 		<parameter name="formids" value="text,mode"/>
@@ -73,7 +72,6 @@ Text:\[\s*One &lt;&gt; zero.\s*\]
     <parameter name="session" value="T"/>
     <parameter name="page" value="Home"/>
     <parameter name="component" value="main"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="text" value="Alpha&#010;Beta&#010;Gamma"/>
 		<parameter name="mode" value="0"/>
 		<parameter name="formids" value="text,mode"/>
@@ -96,7 +94,6 @@ Text:\[\s*One &lt;&gt; zero.\s*\]
     <parameter name="session" value="T"/>
     <parameter name="page" value="Home"/>
     <parameter name="component" value="main"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="text" value="Moe&#010;Larry&#010;Curly"/>
 		<parameter name="mode" value="1"/>
 		<parameter name="formids" value="text,mode"/>
@@ -143,7 +140,6 @@ Text:\[\s+<p>Moe</p><p>Larry</p><p>Curly</p>\s+\]
     <parameter name="session" value="T"/>
     <parameter name="page" value="Home"/>
     <parameter name="component" value="main"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="mode" value="1"/>
 		<parameter name="formids" value="text,mode"/>
 		
@@ -187,7 +183,6 @@ Text:\[\s+\]
     <parameter name="session" value="T"/>
     <parameter name="page" value="Home"/>
     <parameter name="component" value="main"/>
-		<parameter name="sp" value="S0"/>
 		<parameter name="text" value="Peter&#010;Paul&#010;Mary"/>
 		<parameter name="mode" value="1"/>
 		<parameter name="formids" value="text,mode"/>

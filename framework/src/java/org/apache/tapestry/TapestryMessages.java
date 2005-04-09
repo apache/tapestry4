@@ -46,9 +46,9 @@ final class TapestryMessages
         return _formatter.format("non-unique-attribute", newInstance, key, existingInstance);
     }
 
-    static String noPageRenderSupport()
+    static String noPageRenderSupport(IComponent component)
     {
-        return _formatter.getMessage("no-page-render-support");
+        return _formatter.format("no-page-render-support", component.getExtendedId());
     }
 
     static String providedByEnhancement(String methodName)
