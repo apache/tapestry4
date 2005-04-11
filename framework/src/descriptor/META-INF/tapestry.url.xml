@@ -30,6 +30,7 @@
         <set-object property="servletPath" value="app-property:org.apache.tapestry.servlet-path"/>
         <set-object property="contextPath" value="infrastructure:contextPath"/>
 		    <set-object property="request" value="infrastructure:request"/>
+        <set-service property="persistenceStrategySource" service-id="tapestry.persist.PropertyPersistenceStrategySource"/>
       </construct>
     </invoke-factory>
     

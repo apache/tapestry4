@@ -99,11 +99,11 @@ public class TestPageRenderSupport extends HiveMindTestCase
     public void testGetLocation()
     {
         IEngineService service = newService();
-        Location l = fabricateLocation(99);
+        Location l = newLocation();
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, "", l);
 
         assertSame(l, prs.getLocation());
 
@@ -113,13 +113,13 @@ public class TestPageRenderSupport extends HiveMindTestCase
     public void testGetPreloadedImageReference()
     {
         IEngineService service = newService();
-        Location l = fabricateLocation(99);
+        Location l = newLocation();
         IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, "", l);
 
         assertEquals("tapestry_preload[0].src", prs.getPreloadedImageReference("/foo/bar.gif"));
         assertEquals("tapestry_preload[1].src", prs.getPreloadedImageReference("/zip/zap.png"));
@@ -141,16 +141,40 @@ public class TestPageRenderSupport extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testAddBodyScript()
+    public void testPreloadedImagesInNamespace()
     {
         IEngineService service = newService();
-        Location l = fabricateLocation(99);
+        Location l = newLocation();
         IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, "NAMESPACE", l);
+
+        assertEquals("NAMESPACE_preload[0].src", prs.getPreloadedImageReference("/foo/bar.gif"));
+
+        prs.writeBodyScript(writer, cycle);
+
+        assertOutput(new String[]
+        { "<script language=\"JavaScript\" type=\"text/javascript\"><!--", "",
+                "var NAMESPACE_preload = new Array();", "if (document.images)", "{",
+                "  NAMESPACE_preload[0] = new Image();",
+                "  NAMESPACE_preload[0].src = \"/foo/bar.gif\";", "}", "", "", "// --></script>" });
+
+        verifyControls();
+    }
+
+    public void testAddBodyScript()
+    {
+        IEngineService service = newService();
+        Location l = newLocation();
+        IRequestCycle cycle = newCycle();
+        IMarkupWriter writer = newWriter();
+
+        replayControls();
+
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, "", l);
 
         prs.addBodyScript("myBodyScript();");
 
@@ -163,14 +187,14 @@ public class TestPageRenderSupport extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testGetUniqueValue()
+    public void testGetUniqueString()
     {
         IEngineService service = newService();
-        Location l = fabricateLocation(99);
+        Location l = newLocation();
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, "", l);
 
         assertEquals("foo", prs.getUniqueString("foo"));
         assertEquals("foo$0", prs.getUniqueString("foo"));
@@ -180,15 +204,33 @@ public class TestPageRenderSupport extends HiveMindTestCase
         verifyControls();
     }
 
+    
+    public void testGetUniqueStringWithNamespace()
+    {
+        IEngineService service = newService();
+        Location l = newLocation();
+
+        replayControls();
+
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, "NAMESPACE", l);
+
+        assertEquals("fooNAMESPACE", prs.getUniqueString("foo"));
+        assertEquals("fooNAMESPACE$0", prs.getUniqueString("foo"));
+        assertEquals("barNAMESPACE", prs.getUniqueString("bar"));
+        assertEquals("fooNAMESPACE$1", prs.getUniqueString("foo"));
+
+        verifyControls();
+    }
+
     public void testAddInitializationScript()
     {
         IEngineService service = newService();
-        Location l = fabricateLocation(99);
+        Location l = newLocation();
         IMarkupWriter writer = newWriter();
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, "", l);
 
         prs.addInitializationScript("myInitializationScript1();");
         prs.addInitializationScript("myInitializationScript2();");
@@ -206,7 +248,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
     {
         String newline = System.getProperty("line.separator");
 
-        Location l = fabricateLocation(22);
+        Location l = newLocation();
         ClassResolver resolver = new DefaultClassResolver();
         Resource filea = new ClasspathResource(resolver, "org/apache/tapestry/utils/filea.txt");
         Resource fileb = new ClasspathResource(resolver, "org/apache/tapestry/utils/fileb.txt");
@@ -226,7 +268,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(assetService, l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(assetService, "", l);
 
         prs.addExternalScript(filea);
         prs.addExternalScript(fileb);

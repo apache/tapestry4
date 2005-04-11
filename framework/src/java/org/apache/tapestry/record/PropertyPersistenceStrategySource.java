@@ -17,6 +17,7 @@ package org.apache.tapestry.record;
 import java.util.Collection;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.ServiceEncoding;
 
 /**
  * A source for {@link org.apache.tapestry.record.PropertyPersistenceStrategy}s.
@@ -37,7 +38,7 @@ public interface PropertyPersistenceStrategySource
     public PropertyPersistenceStrategy getStrategy(String name);
 
     /**
-     * Returns all changes ({@link IPageChange}) collected by any persistence strategy for the
+     * Returns all changes ({@link PropertyChange}) collected by any persistence strategy for the
      * page. May return an empty list.
      * 
      * @see PropertyPersistenceStrategy#getStoredChanges(String, IRequestCycle)
@@ -50,4 +51,19 @@ public interface PropertyPersistenceStrategySource
      */
 
     public void discardAllStoredChanged(String pageName, IRequestCycle cycle);
+
+    /**
+     * Invoked by a {@link org.apache.tapestry.services.LinkFactory}&nbsp;, the parameters may be
+     * modified (added to) to store information related to persistent properties. This method is
+     * forwarded to all {@link PropertyPersistenceStrategy}s.
+     * 
+     * @param encoding
+     *            Service encoding, which indentifies the URL and the query parameters from which
+     *            the {@link org.apache.tapestry.engine.ILink}&nbsp;will be created.
+     * @param cycle
+     *            The current request cycle.
+     * @see PropertyPersistenceStrategySource
+     */
+
+    public void addParametersForPersistentProperties(ServiceEncoding encoding, IRequestCycle cycle);
 }

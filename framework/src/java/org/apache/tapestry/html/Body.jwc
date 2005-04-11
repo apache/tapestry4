@@ -35,5 +35,6 @@
   <reserved-parameter name="onload"/>
   
   <inject property="assetService" object="engine-service:asset"/>
-    
+  <inject property="response" object="infrastructure:response"/>
+      
 </component-specification>

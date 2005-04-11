@@ -26,7 +26,6 @@ import org.apache.tapestry.util.IdAllocator;
 
 public class TestIdAllocator extends TapestryTestCase
 {
-
     public void testSimple()
     {
         IdAllocator a = new IdAllocator();
@@ -35,6 +34,22 @@ public class TestIdAllocator extends TapestryTestCase
 
         for (int i = 0; i < 10; i++)
             assertEquals("name$" + i, a.allocateId("name"));
+    }
+
+    public void testSimpleNamespace()
+    {
+        IdAllocator a = new IdAllocator("_NS");
+
+        assertEquals("name_NS", a.allocateId("name"));
+
+        for (int i = 0; i < 10; i++)
+            assertEquals("name_NS$" + i, a.allocateId("name"));
+
+        // This is current behavior, but is probably something
+        // that could be improved.
+
+        assertEquals("foo_NS_NS", a.allocateId("foo_NS"));
+        assertEquals("foo_NS_NS$0", a.allocateId("foo_NS"));
     }
 
     public void testDegenerate()
@@ -51,6 +66,25 @@ public class TestIdAllocator extends TapestryTestCase
         assertEquals("d$1$0", a.allocateId("d$1"));
     }
 
+    public void testDegenerateNamespace()
+    {
+        IdAllocator a = new IdAllocator("_NS");
+
+        assertEquals("d$1_NS", a.allocateId("d$1"));
+
+        assertEquals("d_NS", a.allocateId("d"));
+        assertEquals("d_NS$0", a.allocateId("d"));
+        assertEquals("d_NS$1", a.allocateId("d"));
+        assertEquals("d_NS$2", a.allocateId("d"));
+        assertEquals("d_NS$3", a.allocateId("d"));
+
+        assertEquals("d$1_NS$0", a.allocateId("d$1"));
+
+        // This is very degenerate, and maybe something that needs fixing.
+
+        assertEquals("d$1_NS_NS", a.allocateId("d$1_NS"));
+    }
+
     public void testClear()
     {
         IdAllocator a = new IdAllocator();
@@ -63,4 +97,5 @@ public class TestIdAllocator extends TapestryTestCase
         assertEquals("foo", a.allocateId("foo"));
         assertEquals("foo_0", a.allocateId("foo_0"));
     }
+
 }

@@ -11,7 +11,7 @@ is part of a framework that allows for complex validation of user input
 as well as presentation of errors.
 
 <p>
-<form jwcid="valid@Form" listener="clientValidationChanged">
+<form jwcid="valid@Form">
 <input jwcid="inputEnabled"/> Enable Client Side Validation
 </form>
 
@@ -58,7 +58,17 @@ doesn't support JavaScript).
 
   <tr>
   	<td></td>
-  	<td><input jwcid="@ImageSubmit" image="continue"/> <a jwcid="@LinkSubmit">continue -&gt;</a></td>
+  	<td><input jwcid="@ImageSubmit" image="continue"/></td>
+  </tr>    
+    
+  <tr>
+      	<td></td>
+  		<td>
+      	Or, use a LinkSubmit component:   
+      	<a jwcid="@LinkSubmit">Continue</a>
+        </td>
+  </tr>
+  
 </table>
 
 </form>

@@ -58,6 +58,11 @@ public interface ServiceEncoding
 
     /**
      * Sets the value for the named query parameter to the provided string.
+     * 
+     * @param name
+     *            the name of the parameter to set.
+     * @param value
+     *            the new value, which may be null.
      */
     public void setParameterValue(String name, String value);
 
@@ -75,6 +80,7 @@ public interface ServiceEncoding
 
     /**
      * Returns an array of parameter names. The names are returned in alphabetically sorted order.
+     * This list includes all parameter names, even those for which the stored value is null.
      */
 
     public String[] getParameterNames();

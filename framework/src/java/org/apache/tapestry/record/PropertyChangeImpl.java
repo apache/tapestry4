@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.record;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.hivemind.util.Defense;
 
@@ -23,7 +24,7 @@ import org.apache.hivemind.util.Defense;
  * @author Howard Lewis Ship
  */
 
-public class PageChange implements IPageChange
+public class PropertyChangeImpl implements PropertyChange
 {
     private String _componentPath;
 
@@ -31,10 +32,10 @@ public class PageChange implements IPageChange
 
     private Object _newValue;
 
-    public PageChange(String componentPath, String propertyName, Object newValue)
+    public PropertyChangeImpl(String componentPath, String propertyName, Object newValue)
     {
         Defense.notNull(propertyName, "propertyName");
-        
+
         // TODO: This breaks some tests, but those tests are wrong.
         // Defense.notNull(newValue, "newValue");
 
@@ -79,5 +80,24 @@ public class PageChange implements IPageChange
         builder.append("newValue", _newValue);
 
         return builder.toString();
+    }
+
+    public boolean equals(Object object)
+    {
+        if (this == object)
+            return true;
+
+        if (object == null || object.getClass() != this.getClass())
+            return false;
+
+        PropertyChangeImpl other = (PropertyChangeImpl) object;
+
+        EqualsBuilder builder = new EqualsBuilder();
+
+        builder.append(_componentPath, other._componentPath);
+        builder.append(_propertyName, other._propertyName);
+        builder.append(_newValue, other._newValue);
+
+        return builder.isEquals();
     }
 }

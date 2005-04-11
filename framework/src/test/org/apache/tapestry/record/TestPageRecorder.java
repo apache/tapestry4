@@ -192,7 +192,7 @@ public class TestPageRecorder extends HiveMindTestCase
         PropertyPersistenceStrategySource source = (PropertyPersistenceStrategySource) sourcec
                 .getMock();
 
-        IPageChange pc = new PageChange(null, "cartoonName", "Dexter's Laboratory");
+        PropertyChange pc = new PropertyChangeImpl(null, "cartoonName", "Dexter's Laboratory");
 
         source.getAllStoredChanges("MyPage", cycle);
         sourcec.setReturnValue(Collections.singletonList(pc));
@@ -222,7 +222,7 @@ public class TestPageRecorder extends HiveMindTestCase
         PropertyPersistenceStrategySource source = (PropertyPersistenceStrategySource) sourcec
                 .getMock();
 
-        IPageChange pc = new PageChange("fred.barney", "id", "ziff");
+        PropertyChange pc = new PropertyChangeImpl("fred.barney", "id", "ziff");
 
         source.getAllStoredChanges("MyPage", cycle);
         sourcec.setReturnValue(Collections.singletonList(pc));

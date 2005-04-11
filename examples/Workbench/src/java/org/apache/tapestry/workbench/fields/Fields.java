@@ -17,7 +17,6 @@ package org.apache.tapestry.workbench.fields;
 import java.math.BigDecimal;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.workbench.WorkbenchValidationDelegate;
 
@@ -47,23 +46,8 @@ public abstract class Fields extends BasePage
 
     public static final int STRING_MIN_LENGTH = 3;
 
-    private boolean _clientValidationEnabled = true;
-
-    public void detach()
-    {
-        _clientValidationEnabled = true;
-
-        super.detach();
-    }
-
-    public void clientValidationChanged(IRequestCycle cycle)
-    {
-        // Do nothing.
-    }
-
     public void formSubmit(IRequestCycle cycle)
     {
-
         WorkbenchValidationDelegate delegate = (WorkbenchValidationDelegate) getBeans().getBean(
                 "delegate");
 
@@ -74,18 +58,4 @@ public abstract class Fields extends BasePage
         if (!delegate.getHasErrors())
             cycle.activate("FieldsResults");
     }
-
-    public boolean isClientValidationEnabled()
-    {
-        return _clientValidationEnabled;
-    }
-
-    public void setClientValidationEnabled(boolean clientValidationEnabled)
-    {
-        _clientValidationEnabled = clientValidationEnabled;
-
-        Tapestry.fireObservedChange(this, "clientValidationEnabled", new Boolean(
-                _clientValidationEnabled));
-    }
-
 }

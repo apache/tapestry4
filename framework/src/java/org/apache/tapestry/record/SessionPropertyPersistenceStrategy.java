@@ -21,7 +21,8 @@ import java.util.Iterator;
 
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.util.StringSplitter;
+import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
 
@@ -41,8 +42,6 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
     private String _applicationId;
 
     private WebRequest _request;
-
-    private StringSplitter _splitter = new StringSplitter(',');
 
     public void store(String pageName, String idPath, String propertyName, Object newValue)
     {
@@ -91,7 +90,7 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
 
             if (key.startsWith(prefix))
             {
-                IPageChange change = buildChange(key, session.getAttribute(key));
+                PropertyChange change = buildChange(key, session.getAttribute(key));
 
                 result.add(change);
             }
@@ -100,9 +99,9 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
         return result;
     }
 
-    private IPageChange buildChange(String key, Object value)
+    private PropertyChange buildChange(String key, Object value)
     {
-        String[] tokens = _splitter.splitToArray(key);
+        String[] tokens = TapestryUtils.split(key);
 
         // Either app-name,page-name,id-path,property
         // or app-name,page-name,property
@@ -110,7 +109,7 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
         String idPath = (tokens.length == 4) ? tokens[2] : null;
         String propertyName = tokens[tokens.length - 1];
 
-        return new PageChange(idPath, propertyName, value);
+        return new PropertyChangeImpl(idPath, propertyName, value);
     }
 
     public void discardStoredChanges(String pageName, IRequestCycle cycle)
@@ -132,6 +131,14 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
             if (key.startsWith(prefix))
                 session.setAttribute(key, null);
         }
+    }
+
+    /**
+     * Does nothing; session persistence does not make use of query parameters.
+     */
+
+    public void addParametersForPersistentProperties(ServiceEncoding encoding, IRequestCycle cycle)
+    {
     }
 
     public void setApplicationId(String applicationName)

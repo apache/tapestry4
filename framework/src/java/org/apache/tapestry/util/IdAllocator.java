@@ -17,6 +17,8 @@ package org.apache.tapestry.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.hivemind.util.Defense;
+
 /**
  * Used to "uniquify" names within a given context. A base name is passed in, and the return value
  * is the base name, or the base name extended with a suffix to make it unique.
@@ -27,11 +29,13 @@ import java.util.Map;
 
 public class IdAllocator
 {
-    private Map _generatorMap = new HashMap();
+    private final Map _generatorMap = new HashMap();
+
+    private final String _namespace;
 
     private static class NameGenerator
     {
-        private String _baseId;
+        private final String _baseId;
 
         private int _index;
 
@@ -46,6 +50,18 @@ public class IdAllocator
         }
     }
 
+    public IdAllocator()
+    {
+        this("");
+    }
+
+    public IdAllocator(String namespace)
+    {
+        Defense.notNull(namespace, "namespace");
+
+        _namespace = namespace;
+    }
+
     /**
      * Allocates the id. Repeated calls for the same name will return "name", "name$0", "name$1",
      * etc.
@@ -53,13 +69,15 @@ public class IdAllocator
 
     public String allocateId(String name)
     {
-        NameGenerator g = (NameGenerator) _generatorMap.get(name);
+        String key = name + _namespace;
+
+        NameGenerator g = (NameGenerator) _generatorMap.get(key);
         String result = null;
 
         if (g == null)
         {
-            g = new NameGenerator(name);
-            result = name;
+            g = new NameGenerator(key);
+            result = key;
         }
         else
             result = g.nextId();

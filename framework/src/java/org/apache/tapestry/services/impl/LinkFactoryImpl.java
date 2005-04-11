@@ -32,6 +32,7 @@ import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.engine.ServiceEncoder;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.engine.ServiceEncodingImpl;
+import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
@@ -64,6 +65,8 @@ public class LinkFactoryImpl implements LinkFactory
     private URLCodec _codec = new URLCodec();
 
     private WebRequest _request;
+
+    private PropertyPersistenceStrategySource _persistenceStrategySource;
 
     public void initializeService()
     {
@@ -102,6 +105,12 @@ public class LinkFactoryImpl implements LinkFactory
         IEngine engine = cycle.getEngine();
 
         ServiceEncoding serviceEncoding = createServiceEncoding(parameters);
+
+        // Give persistent property strategies a chance to store extra data
+        // into the link.
+
+        if (stateful)
+            _persistenceStrategySource.addParametersForPersistentProperties(serviceEncoding, cycle);
 
         String fullServletPath = _contextPath + serviceEncoding.getServletPath();
 
@@ -202,5 +211,18 @@ public class LinkFactoryImpl implements LinkFactory
     public void setRequest(WebRequest request)
     {
         _request = request;
+    }
+
+    /**
+     * This is kind of limiting; it's possible that other things beyond persistence strategies will
+     * want to have a hand at encoding data into URLs. If that comes to pass, we'll need to
+     * implement an event coordinator/listener combo to let implementations know about links being
+     * generated.
+     */
+
+    public void setPersistenceStrategySource(
+            PropertyPersistenceStrategySource persistenceStrategySource)
+    {
+        _persistenceStrategySource = persistenceStrategySource;
     }
 }

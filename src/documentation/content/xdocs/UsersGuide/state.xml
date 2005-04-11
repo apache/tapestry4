@@ -202,23 +202,12 @@ a later request, even though the request may use a different page instance (from
 </p>
 
 <p>
-Each persistent page property is stored individually as an HttpSession attribute. 
-When the property is changed, its value is stored
-as a session attribute.
-As with any other kind of HttpSession attribute,  persistent properties work best with immutable objects
-such as String and Integer.  For mutable objects (including List and Map and other collections, or any objects you
-create yourself), you must
-be careful <em>not</em> to change the internal state of a persistent property value after invoking the
-setter method.
+Tapestry is flexible about how these properties are ultimately stored. Tapestry 3.0 and earlier were less so ... persistent page properties
+were always stored in the HttpSession.  Starting in release 3.1, persistent page properties may be stored in the session, or on the client.
 </p>
 
-<note>
-Starting with Tapestry 3.1, persistence strategies are pluggable. In theory, properties can be stored 
-can be stored in query parameters or HTTP cookies, or by other means. The persist attribute of the
-&spec.property; element defines the stategy used, but only the "session" strategy is provided with
-the framework.
-</note>
-
+<section id="state.page-properties.using">
+  <title>Using Persistent Page Properties</title>
 
 <p>
 Persistent properties make use of a &spec.property; element in the
@@ -228,7 +217,7 @@ methods and whatever extra initialization or cleanup is required.
 </p>
 
 <p>
-You may also, optionally, make your class abstract, and define abstract accessor methods that will
+You may also, optionally, make your page or component class abstract, and define abstract accessor methods that will
 be filled in by Tapestry in the fabricated subclass.  This allows you to read and update properties inside
 your Java code, such as inside listener methods.
 </p>
@@ -316,7 +305,8 @@ the &spec.property; element.
 <p>
 When an initial-value is provided, it is evaluated once inside <code>finishLoad()</code>, but
 then again every time the page is detached (returned to pristine state) before being stored into
-the page pool for later re-use.
+the page pool for later re-use.  By default, it is an &OGNL; expression, but this can be
+overriden by providing a &binding-reference; prefix.
 </p>
 
 
@@ -327,9 +317,47 @@ don't attempt to update the property from <code>initialize()</code> ... the orde
 when the page detaches is not defined and is subject to change.
 </p>
 
+<warning>
+If the values stored as a persistent property is <em>mutable</em>   (for example, a List, or a Map, or some custom Java class), you should
+<em>not</em> modify its internal state once it has been stored into the persistent page property.  Changes to internal state of a persistent
+property, after it has been stored, may <em>not</em> be propogated to other servers in the cluster (this is really a function of how
+session replication is implemented by the application server, it has very little to do with Tapestry). Similar problems concerning mis-matched state can occur
+with client persistence.
+</warning>
 
+</section> <!-- state.page-properties.using -->
 
-	
+<section id="state.page-properties.types">
+  <title>Persistence Types</title>
+  
+<p>
+Tapestry defines two basic types of property persistence.  The type of persistence (internally known as the <em>property persistence strategy</em>) is
+defined by the value of the persist attribute (in the &spec.property; element).  Omitting the persist attribute, or not providing a &spec.property;
+element, indicates a <em>transient</em> page property, one which does not persist from request to request.
+</p>  
+
+<dl>
+  <dt>client</dt>
+  <dd>
+    Client properties are stored on the client, in the form of query parameters.  All persistent properties for each page
+    are encoded into a single query parameter, named <code>state:</code><em>PageName</em>.  The query parameter value is
+    a MIME encoded byte stream.  This can get quite long if there are many client persistent properties on the page ... which
+    may quickly run into limitations on the maximum size of a URL (approximately 4000 characters is a good guideline).  This is less
+    a problem for forms.
+  </dd>
+  <dt>session</dt>
+  <dd>
+  The traditional style of property persistence (and the only kind available in Tapestry 3.0 and earlier). Each persistent property
+  is mapped to a HttpSession attribute.
+  </dd>
+</dl>
+
+<p>
+More such stategies are expected; these will give more control over the lifecycle of the page property.
+</p>
+  
+</section> <!-- state.page-properties.types -->
+
 </section> <!-- state.page-properties -->
 
 <section id="state.aso">
@@ -459,11 +487,11 @@ portions of a page if a particular ASO does not already exist; this allows you t
 creation on first reference.
 </p>
 
-<note>
-There are plans for Tapestry 3.1 to allow some persistent state to be stored as HTTP cookies or in hidden form fields (and as query parameters
-inside URLs). In these cases, a web application would be "stateful" without necessarily using an HttpSession. What remains to be seen
-is whether this will be practical.
-</note>
+<p>
+The application may be <em>stateless</em> even when it has persistent page properties, if those properties use the
+<em>client</em> persistence strategy (which encodes pesistent page data into URLs as query parameters). This can be a 
+very powerful approach.
+</p>
 	
 </section> <!-- state.stateless -->
 
