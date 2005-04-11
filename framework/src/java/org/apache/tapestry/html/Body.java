@@ -22,6 +22,7 @@ import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.util.PageRenderSupportImpl;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  * The body of a Tapestry page. This is used since it allows components on the page access to an
@@ -115,7 +116,8 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
     {
         super.prepareForRender(cycle);
 
-        _pageRenderSupport = new PageRenderSupportImpl(getAssetService(), getLocation());
+        _pageRenderSupport = new PageRenderSupportImpl(getAssetService(), getResponse()
+                .getNamespace(), getLocation());
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -165,11 +167,21 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
     public abstract String getElement();
 
     public abstract void setElement(String element);
-    
-    /** Injected
+
+    /**
+     * Injected
+     * 
      * @since 3.1
      */
     public abstract IEngineService getAssetService();
+
+    /**
+     * Injected
+     * 
+     * @since 3.1
+     */
+
+    public abstract WebResponse getResponse();
 
     /**
      * Sets the element parameter property to its default, "body".

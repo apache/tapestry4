@@ -21,8 +21,10 @@
 
 <page-specification class="org.apache.tapestry.workbench.fields.Fields">
 
+  <property name="clientValidationEnabled" persist="client" initial-value="true"/>
+  
   <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
-
+  
   <bean name="dateValidator" lifecycle="render" class="org.apache.tapestry.valid.DateValidator">
   	<set name="required" value="true"/>
   	<set name="clientScriptingEnabled" value="clientValidationEnabled"/>

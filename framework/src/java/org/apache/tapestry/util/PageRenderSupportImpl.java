@@ -70,14 +70,19 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
     private List _externalScripts;
 
-    private IdAllocator _idAllocator;
+    private final IdAllocator _idAllocator;
 
-    public PageRenderSupportImpl(IEngineService assetService, Location location)
+    private final String _preloadName;
+
+    public PageRenderSupportImpl(IEngineService assetService, String namespace, Location location)
     {
         Defense.notNull(assetService, "assetService");
 
         _assetService = assetService;
         _location = location;
+        _idAllocator = new IdAllocator(namespace);
+
+        _preloadName = (namespace.equals("") ? "tapestry" : namespace) + "_preload";
     }
 
     /**
@@ -100,7 +105,7 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         if (reference == null)
         {
             int count = _imageMap.size();
-            String varName = "tapestry_preload[" + count + "]";
+            String varName = _preloadName + "[" + count + "]";
             reference = varName + ".src";
 
             if (_imageInitializations == null)
@@ -161,9 +166,6 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
     public String getUniqueString(String baseValue)
     {
-        if (_idAllocator == null)
-            _idAllocator = new IdAllocator();
-
         return _idAllocator.allocateId(baseValue);
     }
 
@@ -217,7 +219,7 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
         if (any(_imageInitializations))
         {
-            writer.printRaw("\n\nvar tapestry_preload = new Array();\n");
+            writer.printRaw("\n\nvar " + _preloadName + " = new Array();\n");
             writer.printRaw("if (document.images)\n");
             writer.printRaw("{\n");
             writer.printRaw(_imageInitializations.toString());

@@ -53,7 +53,7 @@ public class TestPortletWebResponse extends BasePortletWebTestCase
         verifyControls();
     }
 
-    public void testGetNamespaceUnsupported() throws Exception
+    public void testGetNamespace() throws Exception
     {
         PortletResponse response = newResponse();
 
@@ -61,15 +61,7 @@ public class TestPortletWebResponse extends BasePortletWebTestCase
 
         PortletWebResponse pwr = new PortletWebResponse(response);
 
-        try
-        {
-            pwr.getNamespace();
-            unreachable();
-        }
-        catch (UnsupportedOperationException ex)
-        {
-            // Expected.
-        }
+        assertEquals("", pwr.getNamespace());
 
         verifyControls();
     }

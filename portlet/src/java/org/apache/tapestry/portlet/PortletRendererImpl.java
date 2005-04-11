@@ -21,7 +21,6 @@ import java.util.Date;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.IEngineService;
@@ -60,7 +59,9 @@ public class PortletRendererImpl implements PortletRenderer
 
         IMarkupWriter writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
 
-        PageRenderSupportImpl support = new PageRenderSupportImpl(_assetService, null);
+        String namespace = _response.getNamespace();
+
+        PageRenderSupportImpl support = new PageRenderSupportImpl(_assetService, namespace, null);
 
         TapestryUtils.storePageRenderSupport(cycle, support);
 
@@ -68,7 +69,7 @@ public class PortletRendererImpl implements PortletRenderer
 
         cycle.renderPage(nested);
 
-        String id = "Tapestry Portlet " + _applicationId + " " + _response.getNamespace();
+        String id = "Tapestry Portlet " + _applicationId + " " + namespace;
 
         writer.comment("BEGIN " + id);
         writer.comment("Page: " + page.getPageName());

@@ -76,13 +76,13 @@ public class PageRecorderImpl implements IPageRecorder
 
         while (i.hasNext())
         {
-            IPageChange change = (IPageChange) i.next();
+            PropertyChange change = (PropertyChange) i.next();
 
             applyChange(page, change);
         }
     }
 
-    private void applyChange(IPage page, IPageChange change)
+    private void applyChange(IPage page, PropertyChange change)
     {
         String idPath = change.getComponentPath();
 

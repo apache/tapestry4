@@ -189,7 +189,7 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
         assertEquals(1, actual.size());
 
-        IPageChange pc = (IPageChange) actual.iterator().next();
+        PropertyChange pc = (PropertyChange) actual.iterator().next();
 
         assertNull(pc.getComponentPath());
         assertEquals("bar", pc.getPropertyName());
@@ -214,7 +214,7 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
         assertEquals(1, actual.size());
 
-        IPageChange pc = (IPageChange) actual.iterator().next();
+        PropertyChange pc = (PropertyChange) actual.iterator().next();
 
         assertEquals("zap.biff", pc.getComponentPath());
         assertEquals("bar", pc.getPropertyName());

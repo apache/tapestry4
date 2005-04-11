@@ -19,7 +19,6 @@ import java.util.ResourceBundle;
 
 import org.apache.commons.lang.enum.Enum;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.EnumPropertySelectionModel;
 import org.apache.tapestry.form.IPropertySelectionModel;
@@ -32,23 +31,11 @@ import org.apache.tapestry.html.BasePage;
 
 public abstract class Palette extends BasePage
 {
-    private List _selectedColors;
+    public abstract List getSelectedColors();
 
-    private SortMode _sort = SortMode.USER;
+    public abstract SortMode getSort();
 
     private IPropertySelectionModel _sortModel;
-
-    public void initialize()
-    {
-        _sort = SortMode.USER;
-        _selectedColors = null;
-    }
-
-    public void formSubmit(IRequestCycle cycle)
-    {
-        // Does nothing ... may be invoked because
-        // the user changed the sort
-    }
 
     /**
      * Invoked before {@link #formSubmit(IRequestCycle)}if the user clicks the "advance" button.
@@ -62,7 +49,7 @@ public abstract class Palette extends BasePage
 
         PaletteResults results = (PaletteResults) cycle.getPage("PaletteResults");
 
-        results.setSelectedColors(_selectedColors);
+        results.setSelectedColors(getSelectedColors());
 
         cycle.activate(results);
     }
@@ -78,18 +65,6 @@ public abstract class Palette extends BasePage
             colorModel = new StringPropertySelectionModel(colors);
 
         return colorModel;
-    }
-
-    public void setSort(SortMode value)
-    {
-        _sort = value;
-
-        Tapestry.fireObservedChange(this, "sort", value);
-    }
-
-    public SortMode getSort()
-    {
-        return _sort;
     }
 
     public IPropertySelectionModel getSortModel()
@@ -108,15 +83,4 @@ public abstract class Palette extends BasePage
 
         return _sortModel;
     }
-
-    public List getSelectedColors()
-    {
-        return _selectedColors;
-    }
-
-    public void setSelectedColors(List selectedColors)
-    {
-        _selectedColors = selectedColors;
-    }
-
 }

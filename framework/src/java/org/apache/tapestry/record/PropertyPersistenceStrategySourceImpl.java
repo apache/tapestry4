@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.ServiceEncoding;
 
 /**
  * @author Howard M. Lewis Ship
@@ -79,6 +80,18 @@ public class PropertyPersistenceStrategySourceImpl implements PropertyPersistenc
             PropertyPersistenceStrategy s = (PropertyPersistenceStrategy) i.next();
 
             s.discardStoredChanges(pageName, cycle);
+        }
+    }
+
+    public void addParametersForPersistentProperties(ServiceEncoding encoding, IRequestCycle cycle)
+    {
+        Iterator i = _strategies.values().iterator();
+
+        while (i.hasNext())
+        {
+            PropertyPersistenceStrategy s = (PropertyPersistenceStrategy) i.next();
+
+            s.addParametersForPersistentProperties(encoding, cycle);
         }
     }
 

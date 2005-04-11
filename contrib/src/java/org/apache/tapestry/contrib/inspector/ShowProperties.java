@@ -23,7 +23,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.engine.IPageRecorder;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
-import org.apache.tapestry.record.IPageChange;
+import org.apache.tapestry.record.PropertyChange;
 
 /**
  * Component of the {@link Inspector}page used to display the persisent properties of the page.
@@ -35,7 +35,7 @@ public abstract class ShowProperties extends BaseComponent implements PageRender
 {
     private List _properties;
 
-    private IPageChange _change;
+    private PropertyChange _change;
 
     private IPage _inspectedPage;
 
@@ -88,7 +88,7 @@ public abstract class ShowProperties extends BaseComponent implements PageRender
     }
 
     /**
-     * Returns a {@link List}of {@link IPageChange}objects.
+     * Returns a {@link List}of {@link PropertyChange}objects.
      * <p>
      * Sort order is not defined.
      */
@@ -101,12 +101,12 @@ public abstract class ShowProperties extends BaseComponent implements PageRender
         return _properties;
     }
 
-    public void setChange(IPageChange value)
+    public void setChange(PropertyChange value)
     {
         _change = value;
     }
 
-    public IPageChange getChange()
+    public PropertyChange getChange()
     {
         return _change;
     }

@@ -70,11 +70,13 @@ public class PortletWebResponse implements WebResponse
         unsupported("setContentLength");
     }
 
+    /**
+     * Returns the empty string. The {@link RenderWebResponse}&nbsp;subclass actually provides a
+     * real value here.
+     */
     public String getNamespace()
     {
-        unsupported("getNamespace");
-        
-        return null;
+        return "";
     }
 
     protected final void unsupported(String methodName)

@@ -89,7 +89,7 @@ public class TestPortletRenderer extends HiveMindTestCase
 
         page.getResponseContentType();
         control.setReturnValue(contentType);
-        
+
         page.getPageName();
         control.setReturnValue("ZePage");
 
@@ -109,8 +109,10 @@ public class TestPortletRenderer extends HiveMindTestCase
         cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
         control.setReturnValue(null);
 
+        // We can check that an instance of PageRenderSupport is passed in, but
+        // we can't (easily) check thta it's configured the way we want.
         cycle.setAttribute("org.apache.tapestry.PageRenderSupport", new PageRenderSupportImpl(
-                newAssetService(), null));
+                newAssetService(), "", null));
         control.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
         { null, new TypeMatcher() }));
 
@@ -140,17 +142,16 @@ public class TestPortletRenderer extends HiveMindTestCase
 
         writer.comment("BEGIN Tapestry Portlet appId NAMESPACE");
         writer.comment("Page: ZePage");
-        
+
         writer.comment("Generated:.*");
-        control.setMatcher(new AggregateArgumentsMatcher(new RegexpMatcher()));
-     
+        control.setMatcher(new RegexpMatcher());
+
         writer.comment("Framework version:.*");
-        
-        
+
         nested.close();
- 
+
         writer.comment("END Tapestry Portlet appId NAMESPACE");
-        
+
         writer.close();
 
         replayControls();

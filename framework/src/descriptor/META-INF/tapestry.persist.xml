@@ -39,20 +39,30 @@
     </schema>
     
   </configuration-point>
-  
-  <contribution configuration-id="PersistenceStrategy">
-    <strategy name="session" object="service:SessionPropertyPersistenceStrategy"/>
-  </contribution>
+
   
   <service-point id="SessionPropertyPersistenceStrategy" interface="PropertyPersistenceStrategy">
     
     The standard persistence strategy, mapped to the name "session". Simply stores each property as
     an HttpSession attribute.
     
-    <invoke-factory>
+    <invoke-factory model="primitive">
       <construct class="SessionPropertyPersistenceStrategy">
         <set-object property="request" value="infrastructure:request"/>
         <set-object property="applicationId" value="infrastructure:applicationId"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="ClientPropertyPersistenceStrategy" interface="PropertyPersistenceStrategy">
+    
+    Stores persistent properties on the client, as either hidden form fields, or as
+    query parameters. Persistent data for each page is stored in a seperate query parameter.
+    
+    <invoke-factory model="primitive">
+      <construct class="ClientPropertyPersistenceStrategy">
+        <set-object property="request" value="infrastructure:request"/>
       </construct>
     </invoke-factory>
     
@@ -62,7 +72,7 @@
     
     Used by other services to locate persistence strategies and run certain operations across all strategies.
     
-    <invoke-factory>
+    <invoke-factory model="primitive">
       <construct class="PropertyPersistenceStrategySourceImpl">
         <set-configuration property="contributions" configuration-id="PersistenceStrategy"/>
       </construct>
@@ -70,4 +80,8 @@
     
   </service-point>
 
+  <contribution configuration-id="PersistenceStrategy">
+    <strategy name="session" object="service:SessionPropertyPersistenceStrategy"/>
+    <strategy name="client" object="service:ClientPropertyPersistenceStrategy"/>
+  </contribution>
 </module>

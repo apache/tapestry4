@@ -231,5 +231,6 @@
   
 	<contribution configuration-id="tapestry.describe.DescribableStrategies">
     <strategy class="javax.portlet.PortletSession" object="instance:PortletSessionDescribableStrategy"/>
+    <strategy class="javax.portlet.PortletConfig" object="instance:PortletConfigStrategy"/>
   </contribution>    
 </module>

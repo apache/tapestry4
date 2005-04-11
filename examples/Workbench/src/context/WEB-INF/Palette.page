@@ -21,9 +21,12 @@
 	
 <page-specification class="org.apache.tapestry.workbench.palette.Palette">
   
+    <property name="sort" persist="client" 
+        initial-value="@org.apache.tapestry.contrib.palette.SortMode@USER"/>
+    
   <component id="inputColorSort" type="PropertySelection">
-  	<binding name="value" value="ognl:sort"/>
-  	<binding name="model" value="ognl:sortModel"/>
+  	<binding name="value" value="sort"/>
+  	<binding name="model" value="sortModel"/>
   </component>
   
   <component id="inputColor" type="contrib:Palette">

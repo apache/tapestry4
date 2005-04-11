@@ -21,6 +21,7 @@ import java.util.List;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.ServiceEncoding;
 import org.easymock.MockControl;
 
 /**
@@ -34,6 +35,11 @@ public class TestPropertyPersistenceStrategySource extends HiveMindTestCase
     private PropertyPersistenceStrategy newStrategy()
     {
         return (PropertyPersistenceStrategy) newMock(PropertyPersistenceStrategy.class);
+    }
+
+    private IRequestCycle newCycle()
+    {
+        return (IRequestCycle) newMock(IRequestCycle.class);
     }
 
     private List newContributions(String name, PropertyPersistenceStrategy strategy)
@@ -83,7 +89,7 @@ public class TestPropertyPersistenceStrategySource extends HiveMindTestCase
         MockControl control = newControl(PropertyPersistenceStrategy.class);
         PropertyPersistenceStrategy strategy = (PropertyPersistenceStrategy) control.getMock();
 
-        IPageChange change = (IPageChange) newMock(IPageChange.class);
+        PropertyChange change = (PropertyChange) newMock(PropertyChange.class);
 
         strategy.getStoredChanges("MyPage", cycle);
         control.setReturnValue(Collections.singleton(change));
@@ -102,9 +108,23 @@ public class TestPropertyPersistenceStrategySource extends HiveMindTestCase
         verifyControls();
     }
 
-    private IRequestCycle newCycle()
+    public void testAddParameters()
     {
-        return (IRequestCycle) newMock(IRequestCycle.class);
+        IRequestCycle cycle = newCycle();
+        PropertyPersistenceStrategy strategy = newStrategy();
+        ServiceEncoding encoding = (ServiceEncoding) newMock(ServiceEncoding.class);
+
+        strategy.addParametersForPersistentProperties(encoding, cycle);
+
+        replayControls();
+
+        PropertyPersistenceStrategySourceImpl source = new PropertyPersistenceStrategySourceImpl();
+        source.setContributions(newContributions("whatever", strategy));
+        source.initializeService();
+
+        source.addParametersForPersistentProperties(encoding, cycle);
+
+        verifyControls();
     }
 
     public void testDiscardStoredChanges()
@@ -121,7 +141,7 @@ public class TestPropertyPersistenceStrategySource extends HiveMindTestCase
         source.initializeService();
 
         source.discardAllStoredChanged("Home", cycle);
-        
+
         verifyControls();
     }
 }

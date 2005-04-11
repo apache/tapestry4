@@ -15,6 +15,7 @@
 package org.apache.tapestry.services.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,8 @@ import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.engine.ServiceEncoder;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.engine.encoders.PageServiceEncoder;
+import org.apache.tapestry.record.PropertyPersistenceStrategy;
+import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.io.DataSqueezerImpl;
 import org.apache.tapestry.web.WebRequest;
@@ -63,6 +66,31 @@ public class TestLinkFactory extends HiveMindTestCase
         {
             //
         }
+    }
+
+    private static class MockSource implements PropertyPersistenceStrategySource
+    {
+
+        public PropertyPersistenceStrategy getStrategy(String name)
+        {
+            return null;
+        }
+
+        public Collection getAllStoredChanges(String pageName, IRequestCycle cycle)
+        {
+            return null;
+        }
+
+        public void discardAllStoredChanged(String pageName, IRequestCycle cycle)
+        {
+        }
+
+        public void addParametersForPersistentProperties(ServiceEncoding encoding,
+                IRequestCycle cycle)
+        {
+            encoding.setParameterValue("foo", "bar");
+        }
+
     }
 
     private ServiceEncoderContribution newContribution(String id, ServiceEncoder encoder)
@@ -118,6 +146,48 @@ public class TestLinkFactory extends HiveMindTestCase
         verifyControls();
 
         assertEquals("/context/app?service=myservice", link.getURL());
+    }
+
+    public void testStatefulRequest()
+    {
+        ErrorLog log = newErrorLog();
+        WebRequest request = newRequest();
+        MockControl enginec = newControl(IEngine.class);
+        IEngine engine = (IEngine) enginec.getMock();
+
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+
+        cycle.getEngine();
+        cyclec.setReturnValue(engine);
+
+        engine.getOutputEncoding();
+        enginec.setReturnValue("utf-8");
+        
+        cycle.encodeURL("/context/app?foo=bar&service=myservice");
+        cyclec.setReturnValue("{encoded}");
+
+        replayControls();
+
+        LinkFactoryImpl lf = new LinkFactoryImpl();
+
+        lf.setContributions(Collections.EMPTY_LIST);
+        lf.setErrorLog(log);
+        lf.setContextPath("/context");
+        lf.setServletPath("/app");
+        lf.setRequest(request);
+        lf.setPersistenceStrategySource(new MockSource());
+
+        lf.initializeService();
+
+        Map parameters = new HashMap();
+        parameters.put(ServiceConstants.SERVICE, "myservice");
+
+        ILink link = lf.constructLink(cycle, parameters, true);
+
+        assertEquals("{encoded}", link.getURL());
+
+        verifyControls();
     }
 
     public void testNoopEncoders()

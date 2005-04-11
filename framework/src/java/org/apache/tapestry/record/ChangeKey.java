@@ -16,22 +16,26 @@ package org.apache.tapestry.record;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.hivemind.util.Defense;
 
 /**
- *  Used to identify a property change.
- *
- *  @author Howard Lewis Ship
+ * Used to identify a property change.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public class ChangeKey
 {
     private int _hashCode = -1;
+
     private String _componentPath;
+
     private String _propertyName;
 
     public ChangeKey(String componentPath, String propertyName)
     {
+        Defense.notNull(propertyName, "propertyName");
+
         _componentPath = componentPath;
         _propertyName = propertyName;
     }
@@ -68,11 +72,8 @@ public class ChangeKey
     }
 
     /**
-     *
-     *  Returns a hash code computed from the
-     *  property name and component path.
-     *
-     **/
+     * Returns a hash code computed from the property name and component path.
+     */
 
     public int hashCode()
     {
