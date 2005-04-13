@@ -194,7 +194,7 @@ public class TestDirectService extends ServiceTestCase
 
     public void testServiceSimple() throws Exception
     {
-        Object[] serviceParameters = new Object[0];
+        Object[] parameters = new Object[0];
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -228,10 +228,10 @@ public class TestDirectService extends ServiceTestCase
         MockControl lfc = newControl(LinkFactory.class);
         LinkFactory lf = (LinkFactory) lfc.getMock();
 
-        lf.extractServiceParameters(cycle);
-        lfc.setReturnValue(serviceParameters);
+        lf.extractListenerParameters(cycle);
+        lfc.setReturnValue(parameters);
 
-        cycle.setServiceParameters(serviceParameters);
+        cycle.setListenerParameters(parameters);
 
         d.trigger(cycle);
 
@@ -256,7 +256,7 @@ public class TestDirectService extends ServiceTestCase
      */
     public void testServiceComplex() throws Exception
     {
-        Object[] serviceParameters = new Object[0];
+        Object[] parameters = new Object[0];
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -296,10 +296,10 @@ public class TestDirectService extends ServiceTestCase
         MockControl lfc = newControl(LinkFactory.class);
         LinkFactory lf = (LinkFactory) lfc.getMock();
 
-        lf.extractServiceParameters(cycle);
-        lfc.setReturnValue(serviceParameters);
+        lf.extractListenerParameters(cycle);
+        lfc.setReturnValue(parameters);
 
-        cycle.setServiceParameters(serviceParameters);
+        cycle.setListenerParameters(parameters);
 
         d.trigger(cycle);
 
@@ -380,7 +380,7 @@ public class TestDirectService extends ServiceTestCase
 
     public void testSessionActiveAndRequired() throws Exception
     {
-        Object[] serviceParameters = new Object[0];
+        Object[] parameters = new Object[0];
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -420,10 +420,10 @@ public class TestDirectService extends ServiceTestCase
         MockControl lfc = newControl(LinkFactory.class);
         LinkFactory lf = (LinkFactory) lfc.getMock();
 
-        lf.extractServiceParameters(cycle);
-        lfc.setReturnValue(serviceParameters);
+        lf.extractListenerParameters(cycle);
+        lfc.setReturnValue(parameters);
 
-        cycle.setServiceParameters(serviceParameters);
+        cycle.setListenerParameters(parameters);
 
         d.trigger(cycle);
 

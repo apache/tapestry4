@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock.app;
-
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.html.BasePage;
-import org.apache.tapestry.junit.mock.lib.Dumper;
+package org.apache.tapestry.listener;
 
 /**
- * Part of the Mock application test suite.
+ * A service which provides access to {@link org.apache.tapestry.listener.ListenerMap}
+ * &nbsp;objects.
  * 
- * @author Howard Lewis Ship
+ * @author Howard M. Lewis Ship
+ * @since 3.1
  */
-
-public abstract class Home extends BasePage
+public interface ListenerMapSource
 {
-    public void linkClicked(IRequestCycle cycle)
-    {
-        Dumper dumper = (Dumper) cycle.getPage("lib:Dumper");
+    /**
+     * Constructs a listener map for the provided object, which must not be null.
+     * 
+     * @param object
+     *            the object to provide a map for
+     * @return a ListenerMap configured for the object
+     */
 
-        dumper.setObjects(cycle.getListenerParameters());
-
-        cycle.activate(dumper);
-    }
+    public ListenerMap getListenerMapForObject(Object object);
 }

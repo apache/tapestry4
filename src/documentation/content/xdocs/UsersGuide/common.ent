@@ -46,7 +46,7 @@
 <!ENTITY imageroot					'&projectroot;images/UsersGuide'>
 
 <!ENTITY binding-reference			'<link href="bindings.html">binding reference</link>'>
-<!ENTITY listener-method			'listener method'>
+<!ENTITY listener-method			'<link href="listenermethods.html">listener method</link>'>
 <!ENTITY hivemind-descriptor		'<link href="site:hivemind">HiveMind module deployment descriptor</link>'>
 
 <!ENTITY configuration-property		'<link href="configuration.html#configuration.properties">configuration property</link>'>

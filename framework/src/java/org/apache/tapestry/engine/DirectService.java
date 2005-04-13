@@ -125,9 +125,9 @@ public class DirectService implements IEngineService
                         componentPage);
         }
 
-        Object[] parameters = _linkFactory.extractServiceParameters(cycle);
+        Object[] parameters = _linkFactory.extractListenerParameters(cycle);
 
-        cycle.setServiceParameters(parameters);
+        cycle.setListenerParameters(parameters);
 
         direct.trigger(cycle);
 

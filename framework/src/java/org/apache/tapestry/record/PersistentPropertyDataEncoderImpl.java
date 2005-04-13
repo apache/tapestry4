@@ -19,6 +19,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.util.io.TeeOutputStream;
 
 /**
  * Responsible for converting lists of {@link org.apache.tapestry.record.PropertyChange}s back and
@@ -46,6 +48,17 @@ import org.apache.hivemind.util.Defense;
  */
 public class PersistentPropertyDataEncoderImpl implements PersistentPropertyDataEncoder
 {
+    /**
+     * Prefix on the MIME encoding that indicates that the encoded data is not encoded.
+     */
+
+    public static final String BYTESTREAM_PREFIX = "B";
+
+    /**
+     * Prefix on the MIME encoding that indicates that the encoded data is encoded with GZIP.
+     */
+
+    public static final String GZIP_BYTESTREAM_PREFIX = "Z";
 
     public String encodePageChanges(List changes)
     {
@@ -56,21 +69,32 @@ public class PersistentPropertyDataEncoderImpl implements PersistentPropertyData
 
         try
         {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            GZIPOutputStream gos = new GZIPOutputStream(bos);
-            ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(gos));
+            ByteArrayOutputStream bosPlain = new ByteArrayOutputStream();
+            ByteArrayOutputStream bosCompressed = new ByteArrayOutputStream();
+
+            GZIPOutputStream gos = new GZIPOutputStream(bosCompressed);
+
+            TeeOutputStream tos = new TeeOutputStream(bosPlain, gos);
+
+            ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(tos));
 
             writeChangesToStream(changes, oos);
 
             oos.close();
 
-            byte[] encoded = Base64.encodeBase64(bos.toByteArray());
+            boolean useCompressed = bosCompressed.size() < bosPlain.size();
 
-            return new String(encoded);
+            byte[] data = useCompressed ? bosCompressed.toByteArray() : bosPlain.toByteArray();
+
+            byte[] encoded = Base64.encodeBase64(data);
+
+            String prefix = useCompressed ? GZIP_BYTESTREAM_PREFIX : BYTESTREAM_PREFIX;
+
+            return prefix + new String(encoded);
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(ex);
+            throw new ApplicationRuntimeException(RecordMessages.encodeFailure(ex), ex);
         }
     }
 
@@ -79,13 +103,28 @@ public class PersistentPropertyDataEncoderImpl implements PersistentPropertyData
         if (HiveMind.isBlank(encoded))
             return Collections.EMPTY_LIST;
 
+        String prefix = encoded.substring(0, 1);
+
+        if (!(prefix.equals(BYTESTREAM_PREFIX) || prefix.equals(GZIP_BYTESTREAM_PREFIX)))
+            throw new ApplicationRuntimeException(RecordMessages.unknownPrefix(prefix));
+
         try
         {
-            byte[] decoded = Base64.decodeBase64(encoded.getBytes());
+            // Strip off the prefix, feed that in as a MIME stream.
 
-            ByteArrayInputStream bis = new ByteArrayInputStream(decoded);
-            GZIPInputStream gis = new GZIPInputStream(bis);
-            ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(gis));
+            byte[] decoded = Base64.decodeBase64(encoded.substring(1).getBytes());
+
+            InputStream is = new ByteArrayInputStream(decoded);
+
+            if (prefix.equals(GZIP_BYTESTREAM_PREFIX))
+                is = new GZIPInputStream(is);
+
+            // I believe this is more efficient; the buffered input stream should ask the
+            // GZIP stream for large blocks of un-gzipped bytes, with should be more efficient.
+            // The object input stream will probably be looking for just a few bytes at
+            // a time.
+
+            ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(is));
 
             List result = readChangesFromStream(ois);
 
@@ -95,7 +134,7 @@ public class PersistentPropertyDataEncoderImpl implements PersistentPropertyData
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(ex);
+            throw new ApplicationRuntimeException(RecordMessages.decodeFailure(ex), ex);
         }
     }
 

@@ -112,7 +112,7 @@ public class RequestCycle implements IRequestCycle
 
     /** @since 2.0.3 * */
 
-    private Object[] _serviceParameters;
+    private Object[] _listenerParameters;
 
     /** @since 3.1 */
 
@@ -567,14 +567,26 @@ public class RequestCycle implements IRequestCycle
 
     public Object[] getServiceParameters()
     {
-        return _serviceParameters;
+        return getListenerParameters();
     }
 
     /** @since 2.0.3 * */
 
     public void setServiceParameters(Object[] serviceParameters)
     {
-        _serviceParameters = serviceParameters;
+        setListenerParameters(serviceParameters);
+    }
+
+    /** @since 3.1 */
+    public Object[] getListenerParameters()
+    {
+        return _listenerParameters;
+    }
+
+    /** @since 3.1 */
+    public void setListenerParameters(Object[] parameters)
+    {
+        _listenerParameters = parameters;
     }
 
     /** @since 3.0 * */
@@ -629,7 +641,7 @@ public class RequestCycle implements IRequestCycle
         if (_service != null)
             b.append("service", _service);
 
-        b.append("serviceParameters", _serviceParameters);
+        b.append("serviceParameters", _listenerParameters);
 
         if (_loadedPages != null)
             b.append("loadedPages", _loadedPages.keySet());

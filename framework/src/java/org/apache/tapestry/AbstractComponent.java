@@ -542,7 +542,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     }
 
     /**
-     * Returns a {@link ListenerMap}for the component. A {@link ListenerMap}contains a number of
+     * Returns a {@link ListenerMap}&nbsp;for the component. A ListenerMap contains a number of
      * synthetic read-only properties that implement the {@link IActionListener}interface, but in
      * fact, cause public instance methods to be invoked.
      * 
@@ -551,8 +551,13 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     public ListenerMap getListeners()
     {
+        // This is what's called a violation of the Law of Demeter!
+        // This should probably be converted over to some kind of injection, as with
+        // getMessages(), etc.
+
         if (_listeners == null)
-            _listeners = new ListenerMap(this);
+            _listeners = getPage().getEngine().getInfrastructure().getListenerMapSource()
+                    .getListenerMapForObject(this);
 
         return _listeners;
     }

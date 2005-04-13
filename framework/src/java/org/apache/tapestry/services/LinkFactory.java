@@ -36,8 +36,8 @@ public interface LinkFactory
      *            the current request cycle
      * @param parameters
      *            A map; keys are strings and values are strings or string arrays (exception: key
-     *            {@link ServiceConstants#PARAMETER}is an array of objects. Certain keys, defined
-     *            in {@link ServiceConstants}&nbsp; may have special meaning. The map will
+     *            {@link ServiceConstants#PARAMETER}&nbsp;is an array of objects. Certain keys,
+     *            defined in {@link ServiceConstants}&nbsp;may have special meaning. The map will
      *            typically be modified internally. May not be null.
      * @param stateful
      *            If true, then the final URL should be encoded (with the session id) if necessary.
@@ -47,16 +47,17 @@ public interface LinkFactory
     public ILink constructLink(IRequestCycle cycle, Map parameters, boolean stateful);
 
     /**
-     * A secondary function of the service is to convert encoded (aka "squeezed") service parameters
-     * back into an array of Objects. This does makes sense .. the link factory is responsible for
-     * encoding the service parameters, it should be responsible for decoding them.
+     * A secondary function of the service is to convert encoded (aka "squeezed") listener
+     * parameters back into an array of Objects. This does (barely) makes sense .. the link factory
+     * is responsible for encoding the listener parameters, it should be responsible for decoding
+     * them.
      * 
      * @param cycle
      *            the current request cycle
      * @return an array of Object[]. May return an empty array, but won't return null.
      */
 
-    public Object[] extractServiceParameters(IRequestCycle cycle);
+    public Object[] extractListenerParameters(IRequestCycle cycle);
 
     /**
      * Returns an array of {@link org.apache.tapestry.engine.ServiceEncoder}, ordering into

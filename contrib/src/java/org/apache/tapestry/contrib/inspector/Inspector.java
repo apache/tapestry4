@@ -91,7 +91,7 @@ public abstract class Inspector extends BasePage
 
     public void selectComponent(IRequestCycle cycle)
     {
-        Object[] parameters = cycle.getServiceParameters();
+        Object[] parameters = cycle.getListenerParameters();
 
         String newIdPath;
 

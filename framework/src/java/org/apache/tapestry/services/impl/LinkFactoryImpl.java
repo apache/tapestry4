@@ -154,7 +154,7 @@ public class LinkFactoryImpl implements LinkFactory
         parameters.put(ServiceConstants.PARAMETER, squeezed);
     }
 
-    public Object[] extractServiceParameters(IRequestCycle cycle)
+    public Object[] extractListenerParameters(IRequestCycle cycle)
     {
         String[] squeezed = cycle.getParameters(ServiceConstants.PARAMETER);
 

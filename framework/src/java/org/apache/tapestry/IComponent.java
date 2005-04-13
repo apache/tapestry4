@@ -17,6 +17,7 @@ package org.apache.tapestry;
 import java.util.Collection;
 import java.util.Map;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.LocationHolder;
 import org.apache.hivemind.Messages;
 import org.apache.tapestry.engine.IPageLoader;
@@ -313,9 +314,9 @@ public interface IComponent extends IRender, LocationHolder
     public IBeanProvider getBeans();
 
     /**
-     * Returns a {@link ListenerMap}for the component. The map contains a number of synthetic
+     * Returns a {@link ListenerMap}&nbsp;for the component. The map contains a number of synthetic
      * read-only properties that implement the {@link IActionListener}&nbsp;interface, but in fact,
-     * cause public instance methods to be invoked.
+     * cause public instance methods to be invoked (via reflection).
      * 
      * @since 3.1
      */

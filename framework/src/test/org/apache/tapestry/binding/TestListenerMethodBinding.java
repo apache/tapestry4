@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.binding;
 
+import org.apache.hivemind.Location;
+import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.listener.ListenerMap;
@@ -35,7 +37,7 @@ public class TestListenerMethodBinding extends BindingTestCase
         MockControl lmc = newControl(ListenerMap.class);
         ListenerMap lm = (ListenerMap) lmc.getMock();
 
-        Object listener = "LISTENER";
+        IActionListener listener = (IActionListener) newMock(IActionListener.class);
 
         component.getListeners();
         cc.setReturnValue(lm);
@@ -45,10 +47,11 @@ public class TestListenerMethodBinding extends BindingTestCase
 
         ValueConverter vc = newValueConverter();
 
+        Location l = newLocation();
+
         replayControls();
 
-        ListenerMethodBinding b = new ListenerMethodBinding(component, "foo", "param", vc,
-                fabricateLocation(33));
+        ListenerMethodBinding b = new ListenerMethodBinding(component, "foo", "param", vc, l);
 
         assertSame(listener, b.getObject());
         assertSame(component, b.getComponent());

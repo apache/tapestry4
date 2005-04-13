@@ -20,24 +20,20 @@ import ognl.ObjectPropertyAccessor;
 import ognl.OgnlException;
 
 /**
- *  Exposes {@link org.apache.tapestry.IActionListener} listeners
- *  provided by the {@link ListenerMap} as read-only properties
- *  of the ListenerMap.
- *
- *  @author Howard Lewis Ship
- *  @since 2.2
- *
- **/
+ * Exposes {@link org.apache.tapestry.IActionListener}&nbsp;listeners provided by the
+ * {@link org.apache.tapestry.listener.ListenerMap}&nbsp;as read-only properties of the map.
+ * 
+ * @author Howard Lewis Ship
+ * @since 2.2
+ */
 
 public class ListenerMapPropertyAccessor extends ObjectPropertyAccessor
 {
     /**
-     *  Checks to see if the ListenerMap provides the named
-     *  listener, returning the listener if it does.  Otherwise,
-     *  invokes the super implementation.
-     * 
-     **/
-    
+     * Checks to see if the ListenerMapImpl provides the named listener, returning the listener if
+     * it does. Otherwise, invokes the super implementation.
+     */
+
     public Object getProperty(Map context, Object target, Object name) throws OgnlException
     {
         ListenerMap map = (ListenerMap) target;
@@ -48,12 +44,11 @@ public class ListenerMapPropertyAccessor extends ObjectPropertyAccessor
 
         return super.getProperty(context, target, name);
     }
-    
+
     /**
-     *  Returns true if the ListenerMap contains the named listener,
-     *  otherwise invokes super-implementation.
-     * 
-     **/
+     * Returns true if the ListenerMap contains the named listener, otherwise invokes
+     * super-implementation.
+     */
 
     public boolean hasGetProperty(Map context, Object target, Object oname) throws OgnlException
     {

@@ -17,8 +17,8 @@ package org.apache.tapestry.workbench.components;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.util.StringSplitter;
 import org.apache.tapestry.workbench.Visit;
 
@@ -29,7 +29,7 @@ import org.apache.tapestry.workbench.Visit;
  * @since 1.0.7
  */
 
-public abstract class Border extends BaseComponent implements PageRenderListener
+public abstract class Border extends BaseComponent implements PageBeginRenderListener
 {
 
     /**
@@ -107,11 +107,8 @@ public abstract class Border extends BaseComponent implements PageRenderListener
         return getAsset(name);
     }
 
-    public void selectPage(IRequestCycle cycle)
+    public void selectPage(IRequestCycle cycle, String newPageName)
     {
-        Object[] parameters = cycle.getServiceParameters();
-        String newPageName = (String) parameters[0];
-
         Visit visit = (Visit) getPage().getEngine().getVisit(cycle);
 
         visit.setActiveTabName(newPageName);

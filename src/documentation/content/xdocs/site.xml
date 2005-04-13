@@ -45,6 +45,7 @@
       <intro label="Introduction" href="index.html"/>
       <templates label="Page and component templates" href="template.html"/>
       <bindings label="Component parameter bindings" href="bindings.html"/>
+      <listenermethods label="Listener methods" href="listenermethods.html"/>
       <page-class label="Page  Classes" href="page-class.html"/>
       <components label="Creating Tapestry components" href="components.html"/>
       <localization label="Localization" href="localization.html"/>

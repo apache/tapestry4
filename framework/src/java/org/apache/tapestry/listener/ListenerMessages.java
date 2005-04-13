@@ -17,6 +17,7 @@ package org.apache.tapestry.listener;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.tapestry.Tapestry;
 
 /**
  * @author Howard M. Lewis Ship
@@ -27,13 +28,24 @@ class ListenerMessages
     private static final MessageFormatter _formatter = new MessageFormatter(ListenerMessages.class,
             "ListenerStrings");
 
-    public static String objectMissingMethod(Object target, String name)
+    static String objectMissingMethod(Object target, String name)
     {
         return _formatter.format("object-missing-method", target, name);
     }
 
-    public static String unableToInvokeMethod(Method method, Object target, Throwable ex)
+    static String unableToInvokeMethod(Method method, Object target, Throwable ex)
     {
         return _formatter.format("unable-to-invoke-method", method.getName(), target, ex);
+    }
+
+    static String listenerMethodFailure(Method m, Object target, Throwable cause)
+    {
+        return _formatter.format("listener-method-failure", m, target, cause);
+    }
+
+    static String noListenerMethodFound(String name, Object[] serviceParameters, Object target)
+    {
+        return _formatter.format("no-listener-method-found", name, new Integer(Tapestry
+                .size(serviceParameters)), target);
     }
 }

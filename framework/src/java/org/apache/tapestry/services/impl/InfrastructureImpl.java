@@ -34,6 +34,7 @@ import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.error.ExceptionPresenter;
 import org.apache.tapestry.error.RequestExceptionReporter;
+import org.apache.tapestry.listener.ListenerMapSource;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.ComponentPropertySource;
@@ -228,6 +229,11 @@ public class InfrastructureImpl implements Infrastructure
     public ExceptionPresenter getExceptionPresenter()
     {
         return (ExceptionPresenter) getProperty("exceptionPresenter");
+    }
+
+    public ListenerMapSource getListenerMapSource()
+    {
+        return (ListenerMapSource) getProperty("listenerMapSource");
     }
 
     public Object getProperty(String propertyName)

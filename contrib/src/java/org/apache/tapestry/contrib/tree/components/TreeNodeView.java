@@ -113,7 +113,7 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
      */
     public void nodeExpandCollaps(IRequestCycle cycle)
     {
-        Object context[] = cycle.getServiceParameters();
+        Object context[] = cycle.getListenerParameters();
         Object objValueUID = null;
         if (context != null && context.length > 0)
         {
@@ -147,7 +147,7 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
      */
     public void nodeSelect(IRequestCycle cycle)
     {
-        Object context[] = cycle.getServiceParameters();
+        Object context[] = cycle.getListenerParameters();
         Object objValueUID = null;
         if (context != null && context.length > 0)
         {

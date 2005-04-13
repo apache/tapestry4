@@ -107,7 +107,7 @@ public abstract class LocaleSelection extends BaseComponent implements ILocaleSe
      */
     public void deleteLocale(IRequestCycle objCycle)
     {
-        Object[] arrParams = objCycle.getServiceParameters();
+        Object[] arrParams = objCycle.getListenerParameters();
         Locale objLocale = new Locale(arrParams[0].toString(), arrParams[1].toString(),
                 arrParams[2].toString());
         getLocaleSet().remove(objLocale);

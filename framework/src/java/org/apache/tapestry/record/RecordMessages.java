@@ -41,4 +41,19 @@ class RecordMessages
     {
         return _formatter.format("recorder-locked", propertyName, component.getExtendedId());
     }
+
+    public static String decodeFailure(Throwable cause)
+    {
+        return _formatter.format("decode-failure", cause);
+    }
+
+    public static String encodeFailure(Throwable cause)
+    {
+        return _formatter.format("encode-failure", cause);
+    }
+
+    public static String unknownPrefix(String prefix)
+    {
+        return _formatter.format("unknown-prefix", prefix);
+    }
 }

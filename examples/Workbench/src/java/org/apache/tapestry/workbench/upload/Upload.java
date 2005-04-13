@@ -58,7 +58,7 @@ public abstract class Upload extends BasePage
 
         UploadResults results = (UploadResults) cycle.getPage("UploadResults");
 
-        results.activate(file, isShowAscii(), Integer.parseInt(getBytesPerLine()), cycle);
+        results.activate(file, isShowAscii(), Integer.parseInt(getBytesPerLine()));
     }
 
     public IPropertySelectionModel getBytesPerLineModel()

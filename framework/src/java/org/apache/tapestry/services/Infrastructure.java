@@ -26,6 +26,7 @@ import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.error.ExceptionPresenter;
 import org.apache.tapestry.error.RequestExceptionReporter;
+import org.apache.tapestry.listener.ListenerMapSource;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.web.WebRequest;
@@ -236,4 +237,11 @@ public interface Infrastructure
      */
 
     public ExceptionPresenter getExceptionPresenter();
+
+    /**
+     * The source for {@link org.apache.tapestry.listener.ListenerMap}s, for components or other
+     * objects.
+     */
+
+    public ListenerMapSource getListenerMapSource();
 }

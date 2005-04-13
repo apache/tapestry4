@@ -21,6 +21,7 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
+import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.WebRequestServicer;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
@@ -169,4 +170,13 @@ public interface IEngine extends WebRequestServicer
      */
 
     public String getOutputEncoding();
+
+    /**
+     * Returns the {@link org.apache.tapestry.services.Infrastructure}&nbsp;object, a central
+     * registry of key HiveMind services used by Tapestry.
+     * 
+     * @since 3.1
+     */
+
+    public Infrastructure getInfrastructure();
 }
