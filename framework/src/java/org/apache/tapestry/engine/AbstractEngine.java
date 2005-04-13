@@ -511,7 +511,7 @@ public abstract class AbstractEngine implements IEngine
     public ListenerMap getListeners()
     {
         if (_listeners == null)
-            _listeners = new ListenerMap(this);
+            _listeners = _infrastructure.getListenerMapSource().getListenerMapForObject(this);
 
         return _listeners;
     }

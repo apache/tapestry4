@@ -43,7 +43,6 @@
   </component>
 
   <component id="form" type="Form">
-    <binding name="listener" value="submit"/>
     <binding name="delegate" value="bean:delegate"/>
   </component>
 

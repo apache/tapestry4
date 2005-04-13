@@ -14,52 +14,40 @@
 
 package org.apache.tapestry.listener;
 
-import java.lang.reflect.Method;
-
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * @author Howard Lewis Ship
+ * Adapter class that combines a target object (typically, a component) with a
+ * {@link org.apache.tapestry.listener.ListenerMethodInvoker}. This is the bridge from listener
+ * method names to listener method invocations.
+ * <p>
+ * TODO: It would really be nice if we could get the location of the listener binding into thrown
+ * exceptions. As implemented, as best, it will be the location of the &lt;page-specification&gt;
+ * (or &lt;component&gt;) of the page (or component) containing the listener method.
+ * 
+ * @author Howard M. Lewis Ship
  * @since 3.1
  */
-
 public class SyntheticListener implements IActionListener
 {
-    private Object _target;
+    private final Object _target;
 
-    private Method _method;
+    private final ListenerMethodInvoker _invoker;
 
-    public SyntheticListener(Object target, Method method)
+    public SyntheticListener(Object target, ListenerMethodInvoker invoker)
     {
+        Defense.notNull(target, "target");
+        Defense.notNull(invoker, "invoker");
+
         _target = target;
-        _method = method;
-    }
-
-    private void invoke(IRequestCycle cycle)
-    {
-        Object[] args = new Object[]
-        { cycle };
-
-        ListenerMap.invokeTargetMethod(_target, _method, args);
+        _invoker = invoker;
     }
 
     public void actionTriggered(IComponent component, IRequestCycle cycle)
     {
-        invoke(cycle);
+        _invoker.invokeListenerMethod(_target, cycle);
     }
-
-    public String toString()
-    {
-        StringBuffer buffer = new StringBuffer("SyntheticListener[");
-
-        buffer.append(_target);
-        buffer.append(' ');
-        buffer.append(_method);
-        buffer.append(']');
-
-        return buffer.toString();
-    }
-
 }

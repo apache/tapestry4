@@ -14,34 +14,31 @@
 
 package org.apache.tapestry;
 
-
 /**
- *  Defines a page which may be referenced externally via a URL using the 
- *  {@link org.apache.tapestry.engine.ExternalService}. External pages may be bookmarked 
- *  via their URL for latter display. See the 
- *  {@link org.apache.tapestry.link.ExternalLink} for details on how to invoke
- *  <tt>IExternalPage</tt>s.
+ * Defines a page which may be referenced externally via a URL using the
+ * {@link org.apache.tapestry.engine.ExternalService}. External pages may be bookmarked via their
+ * URL for latter display. See the {@link org.apache.tapestry.link.ExternalLink}for details on how
+ * to invoke <tt>IExternalPage</tt>s.
  * 
- *  @see org.apache.tapestry.callback.ExternalCallback
- *  @see org.apache.tapestry.engine.ExternalService
- *
- *  @author Howard Lewis Ship
- *  @author Malcolm Edgar
- *  @since 2.2
- **/
+ * @see org.apache.tapestry.callback.ExternalCallback
+ * @see org.apache.tapestry.engine.ExternalService
+ * @author Howard Lewis Ship
+ * @author Malcolm Edgar
+ * @since 2.2
+ */
 
 public interface IExternalPage extends IPage
 {
     /**
-     *  Initialize the external page with the given array of parameters and
-     *  request cycle.
-     *  <p>
-     *  This method is invoked after {@link IPage#validate(IRequestCycle)}.
-     *
-     *  @param parameters the array of page parameters
-     *  @param cycle current request cycle
+     * Initialize the external page with the given array of parameters and request cycle.
+     * <p>
+     * This method is invoked after {@link IPage#validate(IRequestCycle)}.
      * 
-     **/
+     * @param parameters
+     *            the array of listener parameters
+     * @param cycle
+     *            current request cycle
+     */
 
     public void activateExternalPage(Object[] parameters, IRequestCycle cycle);
 }

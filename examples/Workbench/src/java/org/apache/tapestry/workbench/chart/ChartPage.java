@@ -21,8 +21,9 @@ import java.util.List;
 
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.event.PageBeginRenderListener;
+import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.jCharts.Chart;
@@ -42,7 +43,7 @@ import org.jCharts.test.TestDataGenerator;
  * @since 1.0.10
  */
 
-public abstract class ChartPage extends BasePage implements IChartProvider
+public abstract class ChartPage extends BasePage implements IChartProvider, PageBeginRenderListener
 {
 
     /**
@@ -50,7 +51,7 @@ public abstract class ChartPage extends BasePage implements IChartProvider
      * persistent values property is set <em>before</em> the page recorder is locked.
      */
 
-    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
+    public void pageBeginRender(PageEvent event)
     {
         if (getPlotValues() == null)
         {
@@ -115,18 +116,10 @@ public abstract class ChartPage extends BasePage implements IChartProvider
     }
 
     /**
-     * Form listener method; does nothing since we want to stay on this page.
-     */
-
-    public void submit(IRequestCycle cycle)
-    {
-    }
-
-    /**
      * Listener method for the add button, adds an additional (blank) plot value.
      */
 
-    public void add(IRequestCycle cycle)
+    public void add()
     {
         List plotValues = getPlotValues();
 
@@ -141,7 +134,7 @@ public abstract class ChartPage extends BasePage implements IChartProvider
      * @see #setMarkedForDeletion(boolean)
      */
 
-    public void delete(IRequestCycle cycle)
+    public void delete()
     {
         List removeValues = getRemoveValues();
 

@@ -209,7 +209,7 @@ public interface IRequestCycle
     public void discardPage(String name);
 
     /**
-     * Invoked by a {@link IEngineService service}to store an array of application-specific
+     * Invoked by a {@link IEngineService service}&nbsp;to store an array of application-specific
      * parameters. These can later be retrieved (typically, by an application-specific listener
      * method) by invoking {@link #getServiceParameters()}.
      * <p>
@@ -217,9 +217,20 @@ public interface IRequestCycle
      * 
      * @see org.apache.tapestry.engine.DirectService
      * @since 2.0.3
+     * @deprecated To be removed in 3.2. Use {@link #setListenerParameters(Object[])}instead.
      */
 
     public void setServiceParameters(Object[] parameters);
+
+    /**
+     * Invoked by a {@link IEngineService service}&nbsp;to store an array of application-specific
+     * parameters. These can later be retrieved (typically, by an application-specific listener
+     * method) by invoking {@link #getListenerParameters()}.
+     * 
+     * @see org.apache.tapestry.engine.DirectService
+     * @since 3.1
+     */
+    public void setListenerParameters(Object[] parameters);
 
     /**
      * Returns parameters previously stored by {@link #setServiceParameters(Object[])}.
@@ -227,9 +238,18 @@ public interface IRequestCycle
      * Through release 2.1, the return type was String[]. This is an incompatible change in 2.2.
      * 
      * @since 2.0.3
+     * @deprecated To be removed in 3.2. Use {@link #getListenerParameters()}instead.
      */
 
     public Object[] getServiceParameters();
+
+    /**
+     * Returns parameters previously stored by {@link #setListenerParameters(Object[])}.
+     * 
+     * @since 3.1
+     */
+
+    public Object[] getListenerParameters();
 
     /**
      * A convienience for invoking {@link #activate(IPage)}. Invokes {@link #getPage(String)}to

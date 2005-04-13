@@ -22,24 +22,24 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  Simple callback for re-invoking a {@link IDirect} component trigger..
- *
- *  @author Howard Lewis Ship
- *  @since 0.2.9
- *
- **/
+ * Simple callback for re-invoking a {@link IDirect}&nbsp;trigger.
+ * 
+ * @author Howard Lewis Ship
+ * @since 0.2.9
+ */
 
 public class DirectCallback implements ICallback
 {
     /**
-     *  @since 2.0.4
-     * 
-     **/
+     * @since 2.0.4
+     */
 
     private static final long serialVersionUID = -8888847655917503471L;
 
     private String _pageName;
+
     private String _componentIdPath;
+
     private Object[] _parameters;
 
     public String toString()
@@ -70,10 +70,9 @@ public class DirectCallback implements ICallback
     }
 
     /**
-     *  Creates a new DirectCallback for the component.  The parameters
-     *  (which may be null) is retained, not copied.
-     *
-     **/
+     * Creates a new DirectCallback for the component. The parameters (which may be null) is
+     * retained, not copied.
+     */
 
     public DirectCallback(IDirect component, Object[] parameters)
     {
@@ -83,13 +82,11 @@ public class DirectCallback implements ICallback
     }
 
     /**
-     *  Locates the {@link IDirect} component that was previously identified
-     *  (and whose page and id path were stored).
-     *  Invokes {@link IRequestCycle#setServiceParameters(Object[])} to
-     *  restore the service parameters, then
-     *  invokes {@link IDirect#trigger(IRequestCycle)} on the component.
-     *
-     **/
+     * Locates the {@link IDirect}component that was previously identified (and whose page and id
+     * path were stored). Invokes {@link IRequestCycle#setListenerParameters(Object[])(Object[])}to
+     * restore the service parameters, then invokes {@link IDirect#trigger(IRequestCycle)}on the
+     * component.
+     */
 
     public void performCallback(IRequestCycle cycle)
     {
@@ -103,14 +100,12 @@ public class DirectCallback implements ICallback
         }
         catch (ClassCastException ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("DirectCallback.wrong-type", component.getExtendedId()),
-                component,
-                null,
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "DirectCallback.wrong-type",
+                    component.getExtendedId()), component, null, ex);
         }
 
-        cycle.setServiceParameters(_parameters);
+        cycle.setListenerParameters(_parameters);
         direct.trigger(cycle);
     }
 }

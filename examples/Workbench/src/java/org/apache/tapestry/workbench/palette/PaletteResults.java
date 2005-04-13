@@ -25,21 +25,6 @@ import org.apache.tapestry.html.BasePage;
 
 public abstract class PaletteResults extends BasePage
 {
-    private List selectedColors;
-
-    public void initialize()
-    {
-        selectedColors = null;
-    }
-
-    public void setSelectedColors(List value)
-    {
-        selectedColors = value;
-    }
-
-    public List getSelectedColors()
-    {
-        return selectedColors;
-    }
+    public abstract void setSelectedColors(List value);
 
 }

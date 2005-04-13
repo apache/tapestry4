@@ -32,7 +32,7 @@ public abstract class ProtectedLink extends BasePage
 {
     public void linkClicked(IRequestCycle cycle)
     {
-        Object[] parameters = cycle.getServiceParameters();
+        Object[] parameters = cycle.getListenerParameters();
 
         Guard guard = (Guard) cycle.getPage("Guard");
 

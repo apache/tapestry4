@@ -169,7 +169,7 @@ public abstract class TablePages extends AbstractTableViewComponent
 
     public void changePage(IRequestCycle objCycle)
     {
-        Object[] arrParameters = objCycle.getServiceParameters();
+        Object[] arrParameters = objCycle.getListenerParameters();
         if (arrParameters.length != 2
             && !(arrParameters[0] instanceof ComponentAddress)
             && !(arrParameters[1] instanceof Integer))

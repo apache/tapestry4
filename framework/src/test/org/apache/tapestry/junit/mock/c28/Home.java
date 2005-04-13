@@ -22,12 +22,8 @@ import org.apache.tapestry.html.BasePage;
 
 public abstract class Home extends BasePage
 {
-    public void changeLocale(IRequestCycle cycle)
+    public void changeLocale(IRequestCycle cycle, String pageName, String localeName)
     {
-        Object[] params = cycle.getServiceParameters();
-        String pageName = (String) params[0];
-        String localeName = (String) params[1];
-
         String[] localeParts = new String[]
         { "", "", "" };
         StringTokenizer tokenizer = new StringTokenizer(localeName, "_");

@@ -140,7 +140,7 @@ public abstract class SimpleTableColumnComponent
 
 	public void columnSelected(IRequestCycle objCycle)
 	{
-		Object[] arrArgs = objCycle.getServiceParameters();
+		Object[] arrArgs = objCycle.getListenerParameters();
 		ComponentAddress objAddr = (ComponentAddress) arrArgs[0];
 		String strColumnName = (String) arrArgs[1];
 

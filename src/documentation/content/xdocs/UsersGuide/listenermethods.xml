@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+[
+	<!ENTITY projectroot '../'>
+	<!ENTITY % links.ent SYSTEM "../links.ent">
+  <!ENTITY % common.ent SYSTEM "common.ent">
+	%links.ent;
+  %common.ent;
+]>
+<document>
+  <header>
+    	<title>Listener Methods</title>
+  </header>
+
+
+<body>
+
+<p>
+Listener methods are the main approach by which you add application-specific behavior to your application.
+</p>  
+
+<p>
+Listener methods are a kind of call back; when a form is submitted, or a link is clicked.  The listener methods
+exist within your page and component classes.  Components such as &DirectLink; and &Form; take a listener parameter,
+and you can use a listener: &binding-reference; to use a listener method in your class as the listener.
+</p>
+
+<note>
+The parameter type for listeners is &IActionListener;.  Internally, Tapestry creates an object that implements
+that interface and uses reflection to invoke the corrsponding method  on your page or component instance. On rare
+occasions, it is useful to create objects that implement the interface directly.  For pages, components and the
+engine, there is a listeners property whose keys are the names of listener methods, but the listener: binding reference
+is easier to use.
+</note>
+
+<p>
+A listener method is a public void method. It may take parameters, or may not ... the rules are discussed below. 
+A simple listener method take no parameters, or takes a single parameter of type &IRequestCycle;.  
+When using the &DirectLink; component, you may specify additional <em>listener parameters</em>.  The listener parameters
+are encoded into the URL and will be available in a later request, when the listener is triggered.
+</p>
+
+<note>
+In Tapestry 3.0 and earlier, <em>listener parameters</em> were known as <em>service parameters</em>.  In addition,
+listener methods had to be in a very fixed form, taking exactly one parameter of type &IRequestCycle;.
+</note>
+
+<p>
+The listener can gain access these parameters in one of two ways:</p>
+
+<ul>
+  <li>By invoking the <code>getListenerParameters()</code> method of &IRequestCycle;</li>
+  <li>By declaring a method parameter for <em>each</em> listener parameter (in order)</li>  
+</ul>
+
+<p>
+Using the second method is usually the best way.  The link parameter values are <em>not</em> simply
+converted into strings, they are encoded as strings but maintain their type; therefore, the listener method
+parameters must be of the correct type.
+</p>
+
+<p>
+For example, suppose that the link encoded a String objectId and an integer index.  The component
+in the template names the listener method, and the two parameters are passed into the DirectLink as an OGNL
+list expression:
+</p>
+
+<source><![CDATA[
+<a jwcid="@DirectLink" listener="doClick" parameters="{ objectId, index }"> . . . </a>
+]]></source
+
+<p>
+In the Java class, the listener method might look like:
+</p>
+
+<source>
+public void doClick(String objectId, int index)
+{
+  . . .
+}
+</source>
+
+<p>
+Alternately, the listener method could look like:
+</p>
+
+<source>
+public void doClick(IRequestCycle cycle)
+{
+  Object[] parameters = cycle.getListenerParameters();
+  String objectId = (String)parameters[0];
+  int index = ((Integer)parameters[1]).intValue();
+  
+  . . .
+}
+</source>
+
+<p>
+This second case is maintained in Tapestry 3.1 mostly for backwards compatibility, or to handle the case
+where a single listener method must handle an indeterminate number of listener parameters.
+</p>
+
+<p>
+In fact, Tapestry does a search for the most appropriate method, given the number of listener parameters:
+</p>
+
+<ul>
+  <li>public void <em>method</em>(<em>parameters</em>)</li>
+  <li>public void <em>method</em>(IRequestCycle cycle, <em>parameters</em>)</li>
+  <li>public void <em>method</em>()</li>
+  <li>public void <em>method(IRequestCycle cycle)</em></li>
+</ul>
+
+<p>
+Tapestry 3.0 and earlier only accepted the final variation.  Don't get too tricky with multiple overloadings
+of the method; Tapestry doesn't attempt to match the listener parameter types to the method parameter types (it
+works just by comparing the <em>number</em> of parameters).  However, you can count on Java boxing and autoboxing
+the parameter values (so you can use <code>int</code> and <code>java.lang.Integer</code> interchangeably).
+</p>
+
+</body>
+</document>

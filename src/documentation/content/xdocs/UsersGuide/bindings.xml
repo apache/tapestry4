@@ -81,7 +81,7 @@ value is to be interprted.  The prefix identifies the <em>binding type</em>:
   
   <tr>
     <td>listener</td>
-    <td>The name of a listener method.</td>
+    <td>The name of a &listener-method;.</td>
     <td>listener:formSubmit</td>
     <td>ognl:listeners.formSubmit</td>
   </tr>

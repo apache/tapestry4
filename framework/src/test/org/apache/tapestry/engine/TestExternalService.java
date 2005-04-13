@@ -41,7 +41,7 @@ public class TestExternalService extends ServiceTestCase
         MockControl control = newControl(LinkFactory.class);
         LinkFactory lf = (LinkFactory) control.getMock();
 
-        lf.extractServiceParameters(cycle);
+        lf.extractListenerParameters(cycle);
         control.setReturnValue(serviceParameters);
 
         return lf;
@@ -85,7 +85,7 @@ public class TestExternalService extends ServiceTestCase
 
         IExternalPage page = (IExternalPage) newMock(IExternalPage.class);
 
-        Object[] serviceParameters = new Object[0];
+        Object[] parameters = new Object[0];
 
         cycle.getParameter(ServiceConstants.PAGE);
         cyclec.setReturnValue("ActivePage");
@@ -93,11 +93,11 @@ public class TestExternalService extends ServiceTestCase
         cycle.getPage("ActivePage");
         cyclec.setReturnValue(page);
 
-        LinkFactory lf = newLinkFactory(cycle, serviceParameters);
+        LinkFactory lf = newLinkFactory(cycle, parameters);
 
-        cycle.setServiceParameters(serviceParameters);
+        cycle.setListenerParameters(parameters);
         cycle.activate(page);
-        page.activateExternalPage(serviceParameters, cycle);
+        page.activateExternalPage(parameters, cycle);
 
         ResponseRenderer rr = (ResponseRenderer) newMock(ResponseRenderer.class);
 

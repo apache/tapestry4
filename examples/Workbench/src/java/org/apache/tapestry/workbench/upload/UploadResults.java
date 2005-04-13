@@ -38,7 +38,7 @@ public abstract class UploadResults extends BasePage
 
     public abstract void setFileDump(String fileDump);
 
-    public void activate(IUploadFile file, boolean showAscii, int bytesPerLine, IRequestCycle cycle)
+    public void activate(IUploadFile file, boolean showAscii, int bytesPerLine)
     {
         setFile(file);
 
@@ -90,7 +90,7 @@ public abstract class UploadResults extends BasePage
             close(writer);
         }
 
-        cycle.activate(this);
+        getRequestCycle().activate(this);
     }
 
     private void close(InputStream stream)

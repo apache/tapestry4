@@ -26,12 +26,12 @@ import org.apache.tapestry.html.BasePage;
 
 public abstract class Redirect extends BasePage
 {
-    public void redirectInternal(IRequestCycle cycle)
+    public void redirectInternal()
     {
         throw new RedirectException("redirect-target.html");
     }
 
-    public void redirectExternal(IRequestCycle cycle)
+    public void redirectExternal()
     {
         throw new RedirectException("http://jakarta.apache.org/tapestry");
     }

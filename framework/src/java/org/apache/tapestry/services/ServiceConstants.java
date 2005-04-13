@@ -35,7 +35,7 @@ public class ServiceConstants
 
     /**
      * The id path to the component within the page. By convention, this component is within the
-     * {@link #PAGE}, unless {@link #CONTAINER_PAGE}&nbsp; is specified.
+     * {@link #PAGE}, unless {@link #CONTAINER_PAGE}&nbsp;is specified.
      */
 
     public static final String COMPONENT = "component";
@@ -60,14 +60,17 @@ public class ServiceConstants
      * parameters is something of an entrenched misnomer, a better term would have been application
      * parameters). These parameters are typically objects that have been squeezed into strings by
      * {@link org.apache.tapestry.services.DataSqueezer}.
+     * <p>
+     * The value is currently "sp" for vaguely historical reasons ("service parameter"), though it
+     * would be better if it were "lp" (for "listener parameter"), or just "param" perhaps.
      */
 
     public static final String PARAMETER = "sp";
 
     /**
-     * A list of all the conttants defined by this class.
+     * A list of all the constants defined by this class.
      * 
-     * @see org.apache.tapestry.form.Form
+     * @see org.apache.tapestry.form.FormSupportImpl
      */
     public static final String[] RESERVED_IDS =
     { SERVICE, PAGE, COMPONENT, CONTAINER, SESSION, PARAMETER };
