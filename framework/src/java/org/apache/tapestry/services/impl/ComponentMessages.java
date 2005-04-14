@@ -19,104 +19,40 @@ import java.util.Locale;
 import java.util.Properties;
 
 import org.apache.hivemind.Messages;
+import org.apache.hivemind.impl.AbstractMessages;
+import org.apache.hivemind.util.Defense;
 
 /**
  * Implementation of {@link org.apache.hivemind.Messages}. This is basically a wrapper around an
  * instance of {@link Properties}. This ensures that the properties are, in fact, read-only (which
  * ensures that they don't have to be synchronized).
- * <p>
- * TODO: Merge this code with HiveMind's implemention.
  * 
  * @author Howard Lewis Ship
  * @since 2.0.4
  */
 
-public class ComponentMessages implements Messages
+public class ComponentMessages extends AbstractMessages
 {
-    private Properties _properties;
+    private final Properties _properties;
 
-    private Locale _locale;
+    private final Locale _locale;
 
     public ComponentMessages(Locale locale, Properties properties)
     {
+        Defense.notNull(locale, "locale");
+        Defense.notNull(properties, "properties");
+
         _locale = locale;
         _properties = properties;
     }
 
-    public String getMessage(String key, String defaultValue)
+    protected String findMessage(String key)
     {
-        return _properties.getProperty(key, defaultValue);
+        return _properties.getProperty(key);
     }
 
-    public String getMessage(String key)
+    protected Locale getLocale()
     {
-        String result = _properties.getProperty(key);
-
-        if (result == null)
-            result = "[" + key.toUpperCase() + "]";
-
-        return result;
+        return _locale;
     }
-
-    public String format(String key, Object argument1, Object argument2, Object argument3)
-    {
-        return format(key, new Object[]
-        { argument1, argument2, argument3 });
-    }
-
-    public String format(String key, Object argument1, Object argument2)
-    {
-        return format(key, new Object[]
-        { argument1, argument2 });
-    }
-
-    public String format(String key, Object argument)
-    {
-        return format(key, new Object[]
-        { argument });
-    }
-
-    public String format(String key, Object[] arguments)
-    {
-        String pattern = getMessage(key);
-
-        // This ugliness is mandated for JDK 1.3 compatibility, which has a bug
-        // in MessageFormat ... the
-        // pattern is applied in the constructor, using the system default Locale,
-        // regardless of what locale is later specified!
-        // It appears that the problem does not exist in JDK 1.4.
-
-        MessageFormat messageFormat = new MessageFormat("");
-        messageFormat.setLocale(_locale);
-        messageFormat.applyPattern(pattern);
-
-        convert(arguments);
-
-        return messageFormat.format(arguments);
-    }
-
-    private void convert(Object[] arguments)
-    {
-        if (arguments == null)
-            return;
-
-        for (int i = 0; i < arguments.length; i++)
-        {
-            if (arguments[i] == null)
-                continue;
-
-            if (arguments[i] instanceof Throwable)
-            {
-                Throwable t = (Throwable) arguments[i];
-
-                String message = t.getMessage();
-
-                if (message == null)
-                    message = t.getClass().getName();
-
-                arguments[i] = message;
-            }
-        }
-    }
-
 }
