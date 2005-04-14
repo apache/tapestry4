@@ -83,7 +83,7 @@ list expression:
 
 <source><![CDATA[
 <a jwcid="@DirectLink" listener="doClick" parameters="{ objectId, index }"> . . . </a>
-]]></source
+]]></source>
 
 <p>
 In the Java class, the listener method might look like:
