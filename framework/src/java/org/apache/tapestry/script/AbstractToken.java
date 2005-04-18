@@ -93,7 +93,7 @@ abstract class AbstractToken implements IScriptToken
     /**
      * Evaluates an expression and coerces the result to a boolean.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     protected boolean evaluateBoolean(String expression, ScriptSession session)

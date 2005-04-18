@@ -15,13 +15,13 @@
 package org.apache.tapestry.services;
 
 /**
- * Starting with 3.1, copmonents do not always have a zero-args constructor; the enhanced subclass
+ * Starting with 4.0, copmonents do not always have a zero-args constructor; the enhanced subclass
  * may take some parameters used to initialize instance variables. This interface represents a
  * wrapper around a constructor and an array of parameters that can be used to stamp out new
  * instances of a component.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ComponentConstructor
 {

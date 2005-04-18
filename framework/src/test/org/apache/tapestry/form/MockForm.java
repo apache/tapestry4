@@ -38,7 +38,7 @@ import org.apache.tapestry.valid.IValidationDelegate;
  * Mock object used by the {@link org.apache.tapestry.form.TestFormSupport}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class MockForm implements IForm
 {

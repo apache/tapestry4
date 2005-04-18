@@ -23,7 +23,7 @@ import org.apache.tapestry.coerce.ValueConverter;
  * A binding where the path is the id of a child component.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ComponentBinding extends AbstractBinding
 {

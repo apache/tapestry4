@@ -25,7 +25,7 @@ import org.apache.tapestry.IRequestCycle;
  * provides a good hook for creating a server-side log of exceptions.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  * @see RequestExceptionReporter
  */
 public interface ExceptionPresenter

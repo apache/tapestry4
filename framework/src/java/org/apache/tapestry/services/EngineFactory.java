@@ -22,7 +22,7 @@ import org.apache.tapestry.IEngine;
  * Responsible for creating new instance of {@link org.apache.tapestry.IEngine}.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface EngineFactory
 {

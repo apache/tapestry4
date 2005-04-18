@@ -22,7 +22,7 @@ import org.apache.hivemind.Locatable;
  * deferred or even avoided.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  * @see org.apache.tapestry.services.impl.DeferredObjectTranslator
  */
 public interface DeferredObject extends Locatable

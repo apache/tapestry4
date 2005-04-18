@@ -21,7 +21,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * Tests for {@link org.apache.tapestry.services.impl.ExpressionCacheImpl}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestExpressionCache extends HiveMindTestCase
 {

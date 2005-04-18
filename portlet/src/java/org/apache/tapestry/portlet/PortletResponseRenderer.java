@@ -28,7 +28,7 @@ import org.apache.tapestry.services.ServiceConstants;
  * active page.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PortletResponseRenderer implements ResponseRenderer
 {

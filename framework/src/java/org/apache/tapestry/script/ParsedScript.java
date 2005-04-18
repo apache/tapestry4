@@ -37,7 +37,7 @@ public class ParsedScript extends AbstractToken implements IScript
 
     private ExpressionEvaluator _evaluator;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ValueConverter _valueConverter;
 

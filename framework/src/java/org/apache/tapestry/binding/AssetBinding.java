@@ -25,7 +25,7 @@ import org.apache.tapestry.coerce.ValueConverter;
  * A binding that is connected to an asset provided by a component.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class AssetBinding extends AbstractBinding
 {

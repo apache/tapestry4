@@ -29,7 +29,7 @@ import org.apache.tapestry.IAsset;
  * Implementation of the {@link org.apache.tapestry.asset.AssetSource}service interface.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class AssetSourceImpl implements AssetSource
 {

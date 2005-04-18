@@ -24,7 +24,7 @@ import org.apache.tapestry.services.ServiceConstants;
  * low so that it doesn't prevent other encoders from doing their work.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ServiceExtensionEncoder implements ServiceEncoder
 {

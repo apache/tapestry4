@@ -18,7 +18,7 @@ package org.apache.tapestry.services;
  * Service used to construct absolute URLs (often used for redirects).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface AbsoluteURLBuilder
 {

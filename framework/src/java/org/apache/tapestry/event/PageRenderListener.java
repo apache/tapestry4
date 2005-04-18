@@ -21,7 +21,7 @@ package org.apache.tapestry.event;
  * 
  * @author Howard Lewis Ship
  * @since 1.0.5
- * @deprecated To be removed in 3.2. Use {@link org.apache.tapestry.event.PageBeginRenderListener}
+ * @deprecated To be removed in 4.1. Use {@link org.apache.tapestry.event.PageBeginRenderListener}
  *             and/or {@link org.apache.tapestry.event.PageEndRenderListener}.
  */
 

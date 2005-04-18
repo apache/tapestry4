@@ -47,10 +47,10 @@ public class PageSource implements IPageSource
     /** set by container */
     private ClassResolver _classResolver;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private PageSpecificationResolver _pageSpecificationResolver;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private IPageLoader _loader;
 
@@ -142,28 +142,28 @@ public class PageSource implements IPageSource
         _pool.store(buildKey(page), page);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setPool(ObjectPool pool)
     {
         _pool = pool;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setClassResolver(ClassResolver resolver)
     {
         _classResolver = resolver;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setPageSpecificationResolver(PageSpecificationResolver resolver)
     {
         _pageSpecificationResolver = resolver;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setLoader(IPageLoader loader)
     {

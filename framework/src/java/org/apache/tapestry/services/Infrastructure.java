@@ -37,7 +37,7 @@ import org.apache.tapestry.web.WebResponse;
  * instance.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface Infrastructure
 {

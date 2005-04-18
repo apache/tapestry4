@@ -18,7 +18,7 @@ import org.apache.tapestry.IRender;
 
 /**
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class RenderableAdapterFactoryImpl implements RenderableAdapterFactory
 {

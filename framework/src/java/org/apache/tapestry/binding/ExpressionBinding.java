@@ -64,12 +64,12 @@ public class ExpressionBinding extends AbstractBinding
     private boolean _initialized;
 
     /**
-     * @since 3.1
+     * @since 4.0
      */
 
     private ExpressionEvaluator _evaluator;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ExpressionCache _cache;
 
@@ -201,7 +201,7 @@ public class ExpressionBinding extends AbstractBinding
         return buffer.toString();
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public Object getComponent()
     {
         return _root;

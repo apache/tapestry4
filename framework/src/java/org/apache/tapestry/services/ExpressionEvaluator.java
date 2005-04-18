@@ -18,7 +18,7 @@ package org.apache.tapestry.services;
  * Wrapper around the OGNL library.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ExpressionEvaluator
 {

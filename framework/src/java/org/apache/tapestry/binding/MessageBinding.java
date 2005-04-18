@@ -22,7 +22,7 @@ import org.apache.tapestry.coerce.ValueConverter;
 /**
  * A binding that connects directly to a localized string for a component.
  * <p>
- * Note: Renamed from StringBinding to MessageBinding in release 3.1.
+ * Note: Renamed from StringBinding to MessageBinding in release 4.0.
  * 
  * @see IComponent#getString(String)
  * @author Howard Lewis Ship

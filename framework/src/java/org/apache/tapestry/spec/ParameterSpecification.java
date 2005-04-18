@@ -40,7 +40,7 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
     /** @since 3.0 */
     private String _defaultValue;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private String _defaultBindingType;
 
     /**

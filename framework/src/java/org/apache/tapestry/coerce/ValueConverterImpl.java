@@ -30,7 +30,7 @@ import org.apache.hivemind.util.Defense;
  * converter and delegates to it.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ValueConverterImpl implements ValueConverter
 {

@@ -18,7 +18,7 @@ package org.apache.tapestry.describe;
  * Catch-all implementation (for java.lang.Object) that does nothing.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class DefaultStrategy implements DescribableStrategy
 {

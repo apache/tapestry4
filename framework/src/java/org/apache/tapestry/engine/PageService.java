@@ -34,10 +34,10 @@ import org.apache.tapestry.services.ServiceConstants;
 
 public class PageService implements IEngineService
 {
-    /** @since 3.1 */
+    /** @since 4.0 */
     private ResponseRenderer _responseRenderer;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private LinkFactory _linkFactory;
 
     public ILink getLink(IRequestCycle cycle, Object parameter)
@@ -74,13 +74,13 @@ public class PageService implements IEngineService
         return Tapestry.PAGE_SERVICE;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setResponseRenderer(ResponseRenderer responseRenderer)
     {
         _responseRenderer = responseRenderer;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;

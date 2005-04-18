@@ -85,11 +85,11 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
 
     private ITemplateSourceDelegate _delegate;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ComponentSpecificationResolver _componentSpecificationResolver;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ComponentPropertySource _componentPropertySource;
 
@@ -199,10 +199,10 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
     private ComponentTemplate findPageTemplateInApplicationRoot(IRequestCycle cycle, IPage page,
             String templateExtension, Locale locale)
     {
-        // Note: a subtle change from release 3.0 to 3.1.
+        // Note: a subtle change from release 3.0 to 4.0.
         // In release 3.0, you could use a <page> element to define a page named Foo whose
         // specification was Bar.page. We would then search for /Bar.page. Confusing? Yes.
-        // In 3.1, we are more reliant on the page name, which may include a folder prefix (i.e.,
+        // In 4.0, we are more reliant on the page name, which may include a folder prefix (i.e.,
         // "admin/EditUser", so when we search it is based on the page name and not the
         // specification resource file name. We would search for Foo.html. Moral of the
         // story is to use the page name for the page specifiation and the template.
@@ -460,41 +460,41 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
                 TEMPLATE_ENCODING_PROPERTY_NAME);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setParser(ITemplateParser parser)
     {
         _parser = parser;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setLog(Log log)
     {
         _log = log;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setDelegate(ITemplateSourceDelegate delegate)
     {
         _delegate = delegate;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setComponentSpecificationResolver(ComponentSpecificationResolver resolver)
     {
         _componentSpecificationResolver = resolver;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setContextRoot(Resource contextRoot)
     {
         _contextRoot = contextRoot;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setComponentPropertySource(ComponentPropertySource componentPropertySource)
     {
         _componentPropertySource = componentPropertySource;

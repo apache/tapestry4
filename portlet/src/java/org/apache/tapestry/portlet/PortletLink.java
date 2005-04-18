@@ -25,7 +25,7 @@ import org.apache.tapestry.util.QueryParameterMap;
  * Wrapper around {@link javax.portlet.PortletURL}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PortletLink implements ILink
 {

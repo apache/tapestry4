@@ -138,7 +138,7 @@ public class SpecFactory
         return new ExpressionBeanInitializer(evaluator);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public BindingBeanInitializer createBindingBeanInitializer(BindingSource source)
     {
         return new BindingBeanInitializer(source);
@@ -178,13 +178,13 @@ public class SpecFactory
         return new PropertySpecification();
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public InjectSpecification createInjectSpecification()
     {
         return new InjectSpecificationImpl();
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public InjectStateSpecification createInjectStateSpecification()
     {
         return new InjectStateSpecificationImpl();

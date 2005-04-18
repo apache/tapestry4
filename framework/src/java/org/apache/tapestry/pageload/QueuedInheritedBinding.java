@@ -19,10 +19,10 @@ import org.apache.tapestry.IComponent;
 
 /**
  * Handles connecting an inherited binding.  These will be going away soon (if not in
- * release 3.1 itself).
+ * release 4.0 itself).
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 class QueuedInheritedBinding implements IQueuedInheritedBinding
 {

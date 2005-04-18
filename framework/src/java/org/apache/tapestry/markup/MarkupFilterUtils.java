@@ -24,7 +24,7 @@ import org.apache.tapestry.util.text.ICharacterTranslator;
  * handy methods for doing the grunt work.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class MarkupFilterUtils
 {

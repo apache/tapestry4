@@ -22,7 +22,7 @@ import org.apache.tapestry.IRequestCycle;
  * {@link org.apache.tapestry.IRender}).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface RenderStrategy
 {

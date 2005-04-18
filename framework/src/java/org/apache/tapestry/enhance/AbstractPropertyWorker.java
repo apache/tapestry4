@@ -26,7 +26,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * class and provides a concrete implementation for them in the enhanced class.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class AbstractPropertyWorker implements EnhancementWorker
 {

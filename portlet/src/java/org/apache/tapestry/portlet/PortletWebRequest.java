@@ -31,7 +31,7 @@ import org.apache.tapestry.web.WebUtils;
  * {@link PortletRequest).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PortletWebRequest implements WebRequest
 {

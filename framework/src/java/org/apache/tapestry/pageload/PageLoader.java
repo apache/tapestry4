@@ -66,23 +66,23 @@ public class PageLoader implements IPageLoader
 {
     private Log _log;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ComponentSpecificationResolver _componentResolver;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private String _defaultScriptLanguage;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private BindingSource _bindingSource;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ComponentTemplateLoader _componentTemplateLoader;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private BSFManagerFactory _managerFactory;
 
@@ -90,26 +90,26 @@ public class PageLoader implements IPageLoader
 
     private List _inheritedBindingQueue = new ArrayList();
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private IComponentVisitor _establishDefaultParameterValuesVisitor;
 
     private ComponentTreeWalker _establishDefaultParameterValuesWalker;
 
     private ComponentTreeWalker _verifyRequiredParametersWalker;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ComponentConstructorFactory _componentConstructorFactory;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ValueConverter _valueConverter;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private AssetSource _assetSource;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private PageClassProvider _pageClassProvider;
 
@@ -589,7 +589,7 @@ public class PageLoader implements IPageLoader
         return page;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void loadTemplateForComponent(IRequestCycle cycle, ITemplateComponent component)
     {
@@ -645,28 +645,28 @@ public class PageLoader implements IPageLoader
         return _assetSource.findAsset(location.getResource(), path, _locale, location);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setLog(Log log)
     {
         _log = log;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setComponentResolver(ComponentSpecificationResolver resolver)
     {
         _componentResolver = resolver;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setDefaultScriptLanguage(String string)
     {
         _defaultScriptLanguage = string;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setBindingSource(BindingSource bindingSource)
     {
@@ -674,46 +674,46 @@ public class PageLoader implements IPageLoader
     }
 
     /**
-     * @since 3.1
+     * @since 4.0
      */
     public void setComponentTemplateLoader(ComponentTemplateLoader componentTemplateLoader)
     {
         _componentTemplateLoader = componentTemplateLoader;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setEstablishDefaultParameterValuesVisitor(
             IComponentVisitor establishDefaultParameterValuesVisitor)
     {
         _establishDefaultParameterValuesVisitor = establishDefaultParameterValuesVisitor;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setComponentConstructorFactory(
             ComponentConstructorFactory componentConstructorFactory)
     {
         _componentConstructorFactory = componentConstructorFactory;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setValueConverter(ValueConverter valueConverter)
     {
         _valueConverter = valueConverter;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setAssetSource(AssetSource assetSource)
     {
         _assetSource = assetSource;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setManagerFactory(BSFManagerFactory managerFactory)
     {
         _managerFactory = managerFactory;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setPageClassProvider(PageClassProvider pageClassProvider)
     {
         _pageClassProvider = pageClassProvider;

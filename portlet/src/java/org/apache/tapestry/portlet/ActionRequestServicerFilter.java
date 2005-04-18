@@ -25,7 +25,7 @@ import javax.portlet.PortletException;
  * <code>tapestry.portlet.ActionRequestServicerPipeline</code> configuration.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  * @see org.apache.tapestry.portlet.ActionRequestServicer
  */
 public interface ActionRequestServicerFilter

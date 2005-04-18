@@ -56,7 +56,7 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
     /**
      * Injected
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public abstract String getTreeRootDir();

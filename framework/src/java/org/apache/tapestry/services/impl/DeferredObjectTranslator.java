@@ -27,7 +27,7 @@ import org.apache.hivemind.schema.Translator;
  * {@link org.apache.tapestry.services.impl.DeferredObjectImpl}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class DeferredObjectTranslator implements Translator
 {

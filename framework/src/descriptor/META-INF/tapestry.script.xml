@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.script" version="3.1.0" package="org.apache.tapestry.engine">
+<module id="tapestry.script" version="4.0.0" package="org.apache.tapestry.engine">
   
   Module focused on client-side Javascript templates.
   

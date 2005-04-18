@@ -24,7 +24,7 @@ import org.apache.tapestry.services.CookieSource;
  * Implementation of the {@link org.apache.tapestry.services.CookieSource}service interface.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class CookieSourceImpl implements CookieSource
 {

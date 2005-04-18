@@ -27,7 +27,7 @@ import org.apache.tapestry.INamespace;
  * properties.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ComponentPropertySource
 {

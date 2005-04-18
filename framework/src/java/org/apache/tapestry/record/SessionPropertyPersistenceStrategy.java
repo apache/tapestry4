@@ -31,7 +31,7 @@ import org.apache.tapestry.web.WebSession;
  * properties in the HttpSession as attributes.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class SessionPropertyPersistenceStrategy implements PropertyPersistenceStrategy
 {

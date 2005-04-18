@@ -35,14 +35,14 @@ import org.apache.tapestry.services.ServiceConstants;
 
 public class HomeService implements IEngineService
 {
-    /** @since 3.1 */
+    /** @since 4.0 */
     private ResponseRenderer _responseRenderer;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private LinkFactory _linkFactory;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private String _pageName;
 
@@ -70,25 +70,25 @@ public class HomeService implements IEngineService
         return Tapestry.HOME_SERVICE;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setResponseRenderer(ResponseRenderer responseRenderer)
     {
         _responseRenderer = responseRenderer;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setPageName(String pageName)
     {
         _pageName = pageName;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public String getPageName()
     {
         return _pageName;

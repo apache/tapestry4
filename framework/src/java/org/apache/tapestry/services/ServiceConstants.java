@@ -18,7 +18,7 @@ package org.apache.tapestry.services;
  * Defines constants for query parameters names commonly used by services.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ServiceConstants
 {

@@ -24,7 +24,7 @@ import org.apache.tapestry.engine.IEngineService;
  * specifications was used to define services. This is no longer supported.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ServiceMap
 {

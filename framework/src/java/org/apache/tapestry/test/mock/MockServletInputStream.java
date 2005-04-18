@@ -27,7 +27,7 @@ import javax.servlet.ServletInputStream;
  * invocations to the inner stream.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 
 public class MockServletInputStream extends ServletInputStream

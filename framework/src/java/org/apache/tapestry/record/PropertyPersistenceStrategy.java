@@ -24,7 +24,7 @@ import org.apache.tapestry.engine.ServiceEncoding;
  * persistent property into the session as a session attribute.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface PropertyPersistenceStrategy
 {

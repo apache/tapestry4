@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.page" version="3.1.0" package="org.apache.tapestry.pageload">
+<module id="tapestry.page" version="4.0.0" package="org.apache.tapestry.pageload">
   
   Module for services related to page loading and pooling.
   

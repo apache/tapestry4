@@ -28,7 +28,7 @@ import org.apache.tapestry.spec.InjectSpecification;
  * Adds read-only properties to the enhanced class that contain data injected from HiveMind.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class InjectWorker implements EnhancementWorker
 {

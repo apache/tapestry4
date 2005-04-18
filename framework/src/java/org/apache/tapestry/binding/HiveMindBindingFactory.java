@@ -23,7 +23,7 @@ import org.apache.tapestry.services.InjectedValueProvider;
  * Constructs instances of {@link HiveMindBinding}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class HiveMindBindingFactory extends AbstractBindingFactory
 {

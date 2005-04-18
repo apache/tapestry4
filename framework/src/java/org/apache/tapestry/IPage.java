@@ -223,7 +223,7 @@ public interface IPage extends IComponent
 
     /**
      * @since 1.0.5
-     * @deprecated To be removed in 3.2 Use
+     * @deprecated To be removed in 4.1 Use
      *             {@link #addPageBeginRenderListener(PageBeginRenderListener)}or
      *             {@link #addPageEndRenderListener(PageEndRenderListener)}.
      */
@@ -232,24 +232,24 @@ public interface IPage extends IComponent
 
     /**
      * @since 2.1
-     * @deprecated To be removed in 3.2. Use
+     * @deprecated To be removed in 4.1. Use
      *             {@link #removePageBeginRenderListener(PageBeginRenderListener)}or
      *             {@link #removePageEndRenderListener(PageEndRenderListener)}.
      */
 
     public void removePageRenderListener(PageRenderListener listener);
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void addPageBeginRenderListener(PageBeginRenderListener listener);
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void removePageBeginRenderListener(PageBeginRenderListener listener);
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void addPageEndRenderListener(PageEndRenderListener listener);
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void removePageEndRenderListener(PageEndRenderListener listener);
 
@@ -277,11 +277,11 @@ public interface IPage extends IComponent
 
     public void removePageValidateListener(PageValidateListener listener);
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void addPageAttachListener(PageAttachListener listener);
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void removePageAttachListener(PageAttachListener listener);
 }

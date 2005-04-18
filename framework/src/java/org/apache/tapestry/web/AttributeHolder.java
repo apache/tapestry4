@@ -23,7 +23,7 @@ import java.util.List;
  * changed once the response is committed).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface AttributeHolder
 {

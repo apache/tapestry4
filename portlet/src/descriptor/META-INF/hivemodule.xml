@@ -15,11 +15,11 @@
    limitations under the License.
 -->
 
-<module id="tapestry.portlet" version="3.1.0" package="org.apache.tapestry.portlet">
+<module id="tapestry.portlet" version="4.0.0" package="org.apache.tapestry.portlet">
   
   Add on for Tapestry that adds native Portlet support.
   
-  <dependency module-id="tapestry" version="3.1.0"/>
+  <dependency module-id="tapestry" version="4.0.0"/>
   <dependency module-id="hivemind.lib" version="1.1.0"/>
   
   <sub-module descriptor="tapestry.portlet.services.xml"/>

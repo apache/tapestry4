@@ -23,7 +23,7 @@ import org.apache.tapestry.engine.ServiceEncoding;
  * A source for {@link org.apache.tapestry.record.PropertyPersistenceStrategy}s.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface PropertyPersistenceStrategySource
 {

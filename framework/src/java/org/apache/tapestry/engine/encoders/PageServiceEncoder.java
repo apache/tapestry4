@@ -20,13 +20,13 @@ import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.services.ServiceConstants;
 
 /**
- * The canonical implementation of {@link org.apache.tapestry.engine.ServiceEncoder}, it
- * recognizes a service and a page. The page name becomes the servlet path, prefixed with "/" and
+ * The canonical implementation of {@link org.apache.tapestry.engine.ServiceEncoder}, it encodes
+ * page name and a service name. The page name becomes the servlet path, prefixed with "/" and
  * suffixed with a dot and a particular extension. In this way, "/app?service=page&amp;page=Home"
- * becomes simply "Home.html".
+ * becomes simply "Home.html". This is most suitable for the "page" and "external" services.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PageServiceEncoder implements ServiceEncoder
 {

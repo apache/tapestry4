@@ -24,7 +24,7 @@ import org.apache.tapestry.describe.Describable;
  * and attributes.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface WebRequest extends AttributeHolder, Describable
 {

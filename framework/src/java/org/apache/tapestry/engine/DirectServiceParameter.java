@@ -21,7 +21,7 @@ import org.apache.tapestry.IDirect;
  * Parameter object used by {@link org.apache.tapestry.engine.DirectService}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class DirectServiceParameter
 {

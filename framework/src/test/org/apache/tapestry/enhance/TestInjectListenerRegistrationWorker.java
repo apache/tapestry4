@@ -23,7 +23,7 @@ import org.easymock.MockControl;
  * Tests for {@link TestInjectListenerRegistrationWorker}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestInjectListenerRegistrationWorker extends HiveMindTestCase
 {

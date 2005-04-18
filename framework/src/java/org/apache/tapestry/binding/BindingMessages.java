@@ -20,7 +20,7 @@ import org.apache.tapestry.IComponent;
 
 /**
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 class BindingMessages
 {

@@ -20,7 +20,7 @@ import org.apache.tapestry.IMarkupWriter;
  * Service used to describe an object to a markup writer as HTML (typically, as a &lt;table&gt;).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface HTMLDescriber
 {

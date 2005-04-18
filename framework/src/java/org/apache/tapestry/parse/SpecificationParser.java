@@ -158,23 +158,23 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     public static final String LIBRARY_ID_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private final Log _log;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private final ErrorHandler _errorHandler;
 
     /**
-     * Set to true if parsing the 3.1 DTD.
+     * Set to true if parsing the 4.0 DTD.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
-    private boolean _DTD_3_1;
+    private boolean _DTD_4_0;
 
     /**
      * Perl5 pattern for page names. Page names appear in library and application specifications, in
-     * the &lt;page&gt; element. Starting with 3.1, the page name may look more like a path name,
+     * the &lt;page&gt; element. Starting with 4.0, the page name may look more like a path name,
      * consisting of a number of ids seperated by slashes. This is used to determine the folder
      * which contains the page specification or the page's template.
      * 
@@ -207,7 +207,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      * period.
      * 
      * @since 2.2
-     * @deprecated As of release 3.1, the &lt;service&gt; element (in 3.0 DTDs) is no longer
+     * @deprecated As of release 4.0, the &lt;service&gt; element (in 3.0 DTDs) is no longer
      *             supported.
      */
 
@@ -221,11 +221,11 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private static final int STATE_BEAN = 4;
 
-    /** Very different between 3.0 and 3.1 DTD */
+    /** Very different between 3.0 and 4.0 DTD */
 
     private static final int STATE_BINDING_3_0 = 7;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private static final int STATE_BINDING = 100;
 
@@ -266,9 +266,9 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     public static final String TAPESTRY_DTD_3_0_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Specification 3.0//EN";
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
-    public static final String TAPESTRY_DTD_3_1_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Specification 3.1//EN";
+    public static final String TAPESTRY_DTD_4_0_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Specification 4.0//EN";
 
     /**
      * The attributes of the current element, as a map (string keyed on string).
@@ -298,7 +298,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private final ClassResolver _resolver;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private BindingSource _bindingSource;
 
@@ -308,7 +308,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      */
     private Object _rootObject;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ValueConverter _valueConverter;
 
@@ -356,7 +356,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     /**
      * Create a new instance with resolver and a provided SpecFactory (used by Spindle).
      * 
-     * @deprecated to be removed in release 3.2
+     * @deprecated to be removed in release 4.1
      */
     public SpecificationParser(ClassResolver resolver, SpecFactory factory)
     {
@@ -472,7 +472,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void allowMetaData()
     {
-        if (_DTD_3_1)
+        if (_DTD_4_0)
         {
             if (_elementName.equals("meta"))
             {
@@ -539,7 +539,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void beginComponent()
     {
-        // <binding> has changed between 3.0 and 3.1
+        // <binding> has changed between 3.0 and 4.0
 
         if (_elementName.equals("binding"))
         {
@@ -694,11 +694,11 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             return;
         }
 
-        // <property-specification> in 3.0, <property> in 3.1
-        // Have to be careful, because <meta> in 3.1 was <property> in 3.0
+        // <property-specification> in 3.0, <property> in 4.0
+        // Have to be careful, because <meta> in 4.0 was <property> in 3.0
 
         if (_elementName.equals("property-specification")
-                || (_DTD_3_1 && _elementName.equals("property")))
+                || (_DTD_4_0 && _elementName.equals("property")))
         {
             enterProperty();
             return;
@@ -716,7 +716,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             return;
         }
 
-        // <asset> is new in 3.1
+        // <asset> is new in 4.0
 
         if (_elementName.equals("asset"))
         {
@@ -726,7 +726,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         // <context-asset>, <external-asset>, and <private-asset>
         // are all throwbacks to the 3.0 DTD and don't exist
-        // in the 3.1 DTD.
+        // in the 4.0 DTD.
 
         if (_elementName.equals("context-asset"))
         {
@@ -948,9 +948,9 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         String initialValue = getExtendedValue(ps.getInitialValue(), "initial-value", false);
 
         // In the 3.0 DTD, the initial value was always an OGNL expression.
-        // In the 3.1 DTD, it is a binding reference, qualified with a prefix.
+        // In the 4.0 DTD, it is a binding reference, qualified with a prefix.
 
-        if (initialValue != null && !_DTD_3_1)
+        if (initialValue != null && !_DTD_4_0)
             initialValue = BindingConstants.OGNL_PREFIX + ":" + initialValue;
 
         ps.setInitialValue(initialValue);
@@ -1027,13 +1027,13 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void enterBinding()
     {
-        if (!_DTD_3_1)
+        if (!_DTD_4_0)
         {
             enterBinding_3_0();
             return;
         }
 
-        // 3.1 stuff
+        // 4.0 stuff
 
         String name = getValidatedAttribute(
                 "name",
@@ -1164,10 +1164,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     }
 
     /**
-     * New in the 3.1 DTD. When using the 3.1 DTD, you must explicitly specify prefix if the asset
+     * New in the 4.0 DTD. When using the 4.0 DTD, you must explicitly specify prefix if the asset
      * is not stored in the same domain as the specification file.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     private void enterAsset()
@@ -1309,12 +1309,12 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         ps.setRequired(getBooleanAttribute("required", false));
 
         // In the 3.0 DTD, default-value was always an OGNL expression.
-        // Starting with 3.1, it's like a binding (prefixed). For a 3.0
+        // Starting with 4.0, it's like a binding (prefixed). For a 3.0
         // DTD, we supply the "ognl:" prefix.
 
         String defaultValue = getAttribute("default-value");
 
-        if (defaultValue != null && !_DTD_3_1)
+        if (defaultValue != null && !_DTD_4_0)
             defaultValue = BindingConstants.OGNL_PREFIX + ":" + defaultValue;
 
         ps.setDefaultValue(defaultValue);
@@ -1340,7 +1340,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         enterAsset("resource-path", "classpath:");
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private void enterMeta()
     {
         String key = getAttribute("key");
@@ -1366,7 +1366,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     }
 
     /**
-     * &tl;property&gt; in 3.1, or &lt;property-specification&gt; in 3.0
+     * &tl;property&gt; in 4.0, or &lt;property-specification&gt; in 3.0
      */
 
     private void enterProperty()
@@ -1376,7 +1376,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         String persistence = null;
 
-        if (_DTD_3_1)
+        if (_DTD_4_0)
             persistence = getAttribute("persist");
         else
             persistence = getBooleanAttribute("persistent", false) ? "session" : null;
@@ -1399,7 +1399,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     }
 
     /**
-     * @since 3.1
+     * @since 4.0
      */
 
     private void enterInject()
@@ -1741,7 +1741,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     protected void resetParser()
     {
         _rootObject = null;
-        _DTD_3_1 = false;
+        _DTD_4_0 = false;
 
         _attributes.clear();
     }
@@ -1752,10 +1752,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      */
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException
     {
-        if (TAPESTRY_DTD_3_1_PUBLIC_ID.equals(publicId))
+        if (TAPESTRY_DTD_4_0_PUBLIC_ID.equals(publicId))
         {
-            _DTD_3_1 = true;
-            return getDTDInputSource("Tapestry_3_1.dtd");
+            _DTD_4_0 = true;
+            return getDTDInputSource("Tapestry_4_0.dtd");
         }
 
         if (TAPESTRY_DTD_3_0_PUBLIC_ID.equals(publicId))
@@ -1765,13 +1765,13 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
                 new LocationImpl(getResource()), null);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setBindingSource(BindingSource bindingSource)
     {
         _bindingSource = bindingSource;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setValueConverter(ValueConverter valueConverter)
     {
         _valueConverter = valueConverter;

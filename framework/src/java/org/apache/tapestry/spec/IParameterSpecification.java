@@ -90,7 +90,7 @@ public interface IParameterSpecification extends LocationHolder
      * @see org.apache.tapestry.binding.BindingConstants
      * @see org.apache.tapestry.binding.BindingUtils#getDefaultBindingType(IComponentSpecification,
      *      String, String)
-     * @since 3.1
+     * @since 4.0
      */
 
     public void setDefaultBindingType(String bindingType);

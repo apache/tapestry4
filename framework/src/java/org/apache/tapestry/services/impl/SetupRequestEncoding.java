@@ -29,7 +29,7 @@ import org.apache.tapestry.services.ServletRequestServicerFilter;
  * Analyzes the incoming request to set the correct output encoding.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class SetupRequestEncoding implements ServletRequestServicerFilter
 {

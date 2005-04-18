@@ -27,7 +27,7 @@ import org.apache.tapestry.web.WebUtils;
  * Adapts a {@link javax.portlet.PortletConfig}&nbsp; as {@link org.apache.tapestry.web.WebActivator}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PortletWebActivator implements WebActivator
 {

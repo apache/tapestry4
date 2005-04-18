@@ -21,7 +21,7 @@ import javax.portlet.PortletConfig;
  * point, which is used by the application portlet to bootstrap the application.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface PortletApplicationInitializer
 {

@@ -22,7 +22,7 @@ import org.apache.tapestry.engine.IPageRecorder;
  * and specific to a single request.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface PageRecorderSource
 {

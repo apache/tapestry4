@@ -151,12 +151,12 @@ public abstract class Foreach extends AbstractComponent
         return _index;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public abstract void setIndexParameter(int value);
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public abstract void setValueParameter(Object value);
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public abstract ValueConverter getValueConverter();
 }

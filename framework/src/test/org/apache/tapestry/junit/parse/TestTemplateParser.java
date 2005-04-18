@@ -622,7 +622,7 @@ public class TestTemplateParser extends TestCase
     /**
      * Test ability to use a different attribute name than the default ("jwcid").
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void testOverrideDefaultAttributeName() throws Exception

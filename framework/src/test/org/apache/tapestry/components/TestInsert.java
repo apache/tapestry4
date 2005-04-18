@@ -32,7 +32,7 @@ import org.easymock.MockControl;
  * Tests for the {@link org.apache.tapestry.components.Insert}&nbsp; component.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestInsert extends BaseComponentTestCase
 {

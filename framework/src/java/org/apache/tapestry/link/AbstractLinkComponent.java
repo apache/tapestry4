@@ -189,7 +189,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
      * it.
      * 
      * @since 3.0
-     * @deprecated To be removed in 3.2; links may now have the necessary engine service injected.
+     * @deprecated To be removed in 4.1; links may now have the necessary engine service injected.
      */
 
     protected ILink getLink(IRequestCycle cycle, String serviceName, Object parameter)

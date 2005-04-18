@@ -29,7 +29,7 @@ import org.apache.tapestry.describe.DescriptionReceiver;
  * Adapts {@link javax.servlet.ServletContext}&nbsp;as {@link org.apache.tapestry.web.WebContext}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ServletWebContext implements WebContext
 {

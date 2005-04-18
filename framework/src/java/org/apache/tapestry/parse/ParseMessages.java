@@ -21,7 +21,7 @@ import org.apache.hivemind.impl.MessageFormatter;
  * Localized messages for the org.apache.tapestry.parse package.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 class ParseMessages
 {

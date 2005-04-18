@@ -21,7 +21,7 @@ import org.apache.tapestry.event.ResetEventListener;
  * to inform other services that they should discard any cached data.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ResetEventCoordinator
 {

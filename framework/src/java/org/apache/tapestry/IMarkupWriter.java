@@ -167,7 +167,7 @@ public interface IMarkupWriter
      *            number of characters to print
      * @param raw
      *            if true, filtering is disabled
-     * @since 3.1
+     * @since 4.0
      */
 
     public void print(char[] data, int offset, int length, boolean raw);

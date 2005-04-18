@@ -260,7 +260,7 @@ public interface IComponentSpecification extends IPropertyHolder, LocationHolder
     /**
      * Adds a {@link InjectSpecification}.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void addInjectSpecification(InjectSpecification spec);
@@ -269,7 +269,7 @@ public interface IComponentSpecification extends IPropertyHolder, LocationHolder
      * Returns the list of {@link InjectSpecification}. Will return an empty list if no
      * specifications have been added.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public List getInjectSpecifications();
@@ -277,7 +277,7 @@ public interface IComponentSpecification extends IPropertyHolder, LocationHolder
     /**
      * Adds a {@link org.apache.tapestry.spec.InjectStateSpecification}s.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void addInjectStateSpecification(InjectStateSpecification spec);
@@ -286,7 +286,7 @@ public interface IComponentSpecification extends IPropertyHolder, LocationHolder
      * Returns the list of {@link org.apache.tapestry.spec.InjectStateSpecification}s. Returns an
      * empty list if no specifications have been added.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public List getInjectStateSpecifications();

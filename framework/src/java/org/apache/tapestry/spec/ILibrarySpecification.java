@@ -80,7 +80,7 @@ public interface ILibrarySpecification extends IPropertyHolder, LocationHolder
 
     /**
      * @throws UnsupportedOperationException always
-     * @deprecated to be removed in release 3.2
+     * @deprecated to be removed in release 4.1
      */
     
     public String getServiceClassName(String name);
@@ -88,14 +88,14 @@ public interface ILibrarySpecification extends IPropertyHolder, LocationHolder
     /**
      * Returns a sorted list of service names (or an empty list, but not null).
      * 
-     * @returns an empty list (as of release 3.1)
-     * @deprecated to be removed in release 3.2
+     * @returns an empty list (as of release 4.0)
+     * @deprecated to be removed in release 4.1
      */
 
     public List getServiceNames();
 
     /**
-     * @deprecated To be removed in release 3.2.
+     * @deprecated To be removed in release 4.1.
      * @throws UnsupportedOperationException always
      */
     public void setServiceClassName(String name, String className);

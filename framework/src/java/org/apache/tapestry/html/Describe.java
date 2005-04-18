@@ -24,7 +24,7 @@ import org.apache.tapestry.describe.HTMLDescriber;
  * output that describes an object.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public abstract class Describe extends AbstractComponent
 {

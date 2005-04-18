@@ -33,7 +33,7 @@ import org.apache.tapestry.web.HttpServletWebActivator;
  * {@link org.apache.tapestry.services.ServletInfo}service about it.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ApplicationSpecificationInitializer implements ApplicationInitializer
 {

@@ -53,7 +53,7 @@ public class PropertySpecification extends BaseLocatable implements IPropertySpe
     /**
      * The type of property to create, or null if no type was specified. The value is the name of a
      * primitive type, a fully qualified class name, or an array name for either. Type is only
-     * specified for 3.0 DTDs, in 3.1 the only behavior is for the new property to match the type
+     * specified for 3.0 DTDs, in 4.0 the only behavior is for the new property to match the type
      * defined by an abstract accessor, or to be java.lang.Object.
      */
     public String getType()
@@ -81,13 +81,13 @@ public class PropertySpecification extends BaseLocatable implements IPropertySpe
         _type = type;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public String getPersistence()
     {
         return _persistence;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setPersistence(String persistence)
     {
         _persistence = persistence;

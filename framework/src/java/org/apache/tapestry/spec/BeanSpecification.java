@@ -35,7 +35,7 @@ public class BeanSpecification extends LocatablePropertyHolder implements IBeanS
     /** @since 1.0.9 * */
     private String description;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private String _propertyName;
 
@@ -123,13 +123,13 @@ public class BeanSpecification extends LocatablePropertyHolder implements IBeanS
         this.lifecycle = lifecycle;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public String getPropertyName()
     {
         return _propertyName;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setPropertyName(String propertyName)
     {
         _propertyName = propertyName;

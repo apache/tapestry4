@@ -18,7 +18,7 @@ import org.apache.hivemind.impl.BaseLocatable;
 
 /**
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class InjectStateSpecificationImpl extends BaseLocatable implements InjectStateSpecification
 {

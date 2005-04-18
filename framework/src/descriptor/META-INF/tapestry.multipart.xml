@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.multipart" version="3.1.0" package="org.apache.tapestry.multipart">
+<module id="tapestry.multipart" version="4.0.0" package="org.apache.tapestry.multipart">
   
   Support for multipart/form-data encoded requests used for file uploads.
   

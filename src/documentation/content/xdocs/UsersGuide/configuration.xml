@@ -31,7 +31,7 @@
 <body>
 
 <warning>
-  Configuration is the area of greatest change between Tapestry 3.0 and Tapestry 3.1. Tapestry 3.1 has been
+  Configuration is the area of greatest change between Tapestry 3.0 and Tapestry 4.0. Tapestry 4.0 has been
   restructured around &HiveMind;, which includes a very rich environment for services and
   configurations.
 </warning>	
@@ -180,7 +180,7 @@ applications can operate without an application specification.
 </p>
 
 <fixme author="HLS">
-This documentation is out of date with respect to &HiveMind;.  In 3.1, the servlet will create and initialize a HiveMind Registry.
+This documentation is out of date with respect to &HiveMind;.  In 4.0, the servlet will create and initialize a HiveMind Registry.
 </fixme>
 
 <p>
@@ -426,13 +426,13 @@ currently used in Tapestry:
 	<td>org.apache.tapestry.enhance.disable-abstract-method-validation</td>	
 	
   <td>
-	Used to trigger a work around for a bug in IBM's JDK 1.3.1. This particular JDK reports <em>all</em> methods
+	Used to trigger a work around for a bug in IBM's JDK 1.4.0. This particular JDK reports <em>all</em> methods
 	of an abstract class as abstract, even if they are, in fact, concrete. This causes spurious errors
 	about unimplemented abstract methods. Specifying true for this property
 	disables checks for unimplemented abstract methods.
   
   <warning>
-    Support for this property has been temporarily removed from release 3.1.
+    Support for this property has been temporarily removed from release 4.0.
   </warning>
   </td>
 </tr>
@@ -575,7 +575,7 @@ currently used in Tapestry:
 	</p>
 	
   <p>
-   This is something of a holdover from Tapestry 3.0; for Tapestry 3.1, you will likely want to
+   This is something of a holdover from Tapestry 3.0; for Tapestry 4.0, you will likely want to
    override the default visit &aso; (or simply add your own application state objects).
   </p>
   
@@ -600,7 +600,7 @@ currently used in Tapestry:
 	<title>Application extensions</title>
   
 <warning>
-  Application extensions are deprecated as of release 3.1.  The use of &HiveMind; services and
+  Application extensions are deprecated as of release 4.0.  The use of &HiveMind; services and
   contributions eliminates the need for extensions.
 </warning>  
 	

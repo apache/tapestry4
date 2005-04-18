@@ -23,7 +23,7 @@ import org.easymock.MockControl;
  * Base class for building tests for {@link org.apache.tapestry.IBinding}implementations.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class BindingTestCase extends HiveMindTestCase
 {

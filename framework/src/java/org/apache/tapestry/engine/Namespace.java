@@ -56,7 +56,7 @@ public class Namespace implements INamespace
 
     private boolean _applicationNamespace;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ClassResolver _resolver;
 
@@ -375,7 +375,7 @@ public class Namespace implements INamespace
      * Returns property values defined in the namespace's library specification.
      * 
      * @return the property, or null if not provided in the specification.
-     * @since 3.1
+     * @since 4.0
      */
 
     public String getPropertyValue(String propertyName)

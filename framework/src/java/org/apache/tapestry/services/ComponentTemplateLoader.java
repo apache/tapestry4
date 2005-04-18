@@ -22,7 +22,7 @@ import org.apache.tapestry.ITemplateComponent;
  * finding and integrating a component (or page) template with the component (or page) instance.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ComponentTemplateLoader
 {

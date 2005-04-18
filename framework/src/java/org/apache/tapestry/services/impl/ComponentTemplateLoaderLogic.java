@@ -51,7 +51,7 @@ import org.apache.tapestry.spec.IContainedComponent;
  * service must be re-entrant (because templates can contain components that have templates).
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ComponentTemplateLoaderLogic
 {

@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServlet;
  * servlet).
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ServletFixture extends HttpServlet
 {

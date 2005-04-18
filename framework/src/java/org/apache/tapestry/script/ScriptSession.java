@@ -25,7 +25,7 @@ import org.apache.tapestry.IScriptProcessor;
  * ScriptSession provides support
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ScriptSession extends IScriptProcessor
 {
@@ -56,7 +56,7 @@ public interface ScriptSession extends IScriptProcessor
     /**
      * Evaluates an expression and coerces the result to a particlar type.
      * 
-     * @since 3.1
+     * @since 4.0
      * @see org.apache.tapestry.coerce.ValueConverter
      */
 

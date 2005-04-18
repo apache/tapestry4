@@ -53,7 +53,7 @@
     -->
   </todo>
   <changes>
-    <release version="3.1-alpha-2" date="unreleased">
+    <release version="4.0-alpha-2" date="unreleased">
       <action type="update" dev="HLS"> Upgrade to HiveMind 1.1-alpha-4-snapshot. </action>
       <action type="update" dev="HLS"> Coordinate Locale changes with the hivemind.ThreadLocale service. </action>
       <action type="add" dev="HLS"> Add lookup mechanism to determine page class from page name. </action>
@@ -66,6 +66,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-285,TAPESTRY-293"> Set form name from component id, and disallow name as an informal parameter. </action>
       <action type="add" dev="HLS"> Add 'client' property persistence strategy. </action>
       <action type="add" dev="HLS"> Enhance listener methods, allowing them to include the request cycle optionally, and also optionally accept listener parameters. </action>
+      <action type="update" dev="HLS"> Replace references to release 3.1 with release 4.0. </action>
     </release>
     <release version="3.0.3" date="Mar 26 2005">
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>
@@ -236,8 +237,15 @@
     </release>
   </changes>
   <votes>
+    <vote title="Tapestry 4.0" dev="HLS">
+      <motion>The sentiment of the community seems to be that the next major release of Tapestry (i.e., HiveMind infrastructure, Portlet support, etc.) is too different from Tapestry 3.0 to be called "Tapestry 3.1". This release will only be largely backwards compatible; applications that sub-class BaseEngine or make use of custom Tapestry engine services will require some amount of re-work. In a small number of cases, component parameters (espcially those using direction "auto" or "custom") 
+        will not work exactly as before. I feel it is completely reasonable to not call this release 3.1, but to continue to bend over backwards for backwards compatibility. A +1 vote signals that you concur, and that the next release should be numbered 4.0. This will affect the code in a very limited way: Much code has been added with a @since 3.1 javadoc tag; this will change to @since 4.,0. Likewise, the 3.1 numbering is in documentation, and inside some of the specification DTDs; these will 
+        also change. </motion>
+      <response>HLS, GL, PF, EH, DS, RLS: +1</response>
+      <response>MB, HK, TSV: +0</response>
+    </vote>
     <vote title="Tapestry 3.0.3" date="Mar 26 2005" dev="PF">
-      <motion> I finished patching/fixing all of the big issues identified with the last release.  With any luck, this will be the last release for the 3.0 branch. This vote will run for one week.  A +1 vote is to release Tapestry 3.0.3.  I will be able to start the release once the votes are tallied. </motion>
+      <motion> I finished patching/fixing all of the big issues identified with the last release. With any luck, this will be the last release for the 3.0 branch. This vote will run for one week. A +1 vote is to release Tapestry 3.0.3. I will be able to start the release once the votes are tallied. </motion>
       <response> PF, HK, MB, HLS, TS, DS, EH, GL: +1 </response>
       <response> RLS: +0 </response>
     </vote>

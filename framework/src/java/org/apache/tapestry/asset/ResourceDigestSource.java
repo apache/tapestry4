@@ -20,7 +20,7 @@ package org.apache.tapestry.asset;
  * allowed access to a resource unless you can provide the correct digest value).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ResourceDigestSource
 {

@@ -289,7 +289,7 @@ page to render the response.  This new page will be loaded in the new locale.
 </p>
 
 <note>
-This may be addressed somewhat in Tapestry 3.1.  Two options are possible: a service for
+This may be addressed somewhat in Tapestry 4.0.  Two options are possible: a service for
 changing the locale before rendering a page, and a way to force Tapestry to re-load a page, in a new
 locale.
 </note>

@@ -25,7 +25,7 @@ import org.apache.tapestry.IAsset;
  * path may have a prefix that indicates its type, or it may be relative to some existing resource.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface AssetSource
 {

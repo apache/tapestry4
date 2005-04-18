@@ -461,7 +461,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
      * Returns the services.
      * 
      * @return Map of service class names.
-     * @deprecated To be removed in release 3.2.
+     * @deprecated To be removed in release 4.1.
      */
 
     protected Map getServices()
@@ -477,7 +477,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
      *            {@link org.apache.tapestry.engine.IEngineService}keyed on service id.
      *            <p>
      *            The map is retained, not copied.
-     * @deprecated To be removed in release 3.2.
+     * @deprecated To be removed in release 4.1.
      */
 
     protected void setServices(Map services)

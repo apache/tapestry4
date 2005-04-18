@@ -30,7 +30,7 @@ import org.apache.tapestry.web.WebResponse;
  * Responsible for rendering a response to the client.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ResponseRendererImpl implements ResponseRenderer
 {

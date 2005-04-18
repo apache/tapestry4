@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.ognl" version="3.1.0" package="org.apache.tapestry.services">
+<module id="tapestry.ognl" version="4.0.0" package="org.apache.tapestry.services">
 
   Wrappers around the Object Graph Navigation Library.
   

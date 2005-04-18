@@ -25,7 +25,7 @@ import org.apache.tapestry.services.ExpressionEvaluator;
  */
 public class OgnlTableColumnEvaluator implements ITableColumnEvaluator
 {
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ExpressionEvaluator _expressionEvaluator;
 

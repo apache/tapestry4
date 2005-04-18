@@ -34,7 +34,7 @@ import org.apache.tapestry.web.WebContextResource;
  * {@link org.apache.tapestry.web.WebActivator}&nbsp;and the {@link org.apache.tapestry.web.WebContext}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  * @see org.apache.tapestry.services.impl.ApplicationSpecificationInitializer
  */
 public class PortletApplicationSpecificationInitializer implements PortletApplicationInitializer

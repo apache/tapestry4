@@ -53,7 +53,7 @@ import org.apache.tapestry.web.WebResponse;
  * Basis for building real Tapestry applications. Immediate subclasses provide different strategies
  * for managing page state and other resources between request cycles.
  * <p>
- * Note: much of this description is <em>in transition</em> as part of Tapestry 3.1. All ad-hoc
+ * Note: much of this description is <em>in transition</em> as part of Tapestry 4.0. All ad-hoc
  * singletons and such are being replaced with HiveMind services.
  * <p>
  * Uses a shared instance of {@link ITemplateSource},{@link ISpecificationSource},
@@ -102,7 +102,7 @@ public abstract class AbstractEngine implements IEngine
     /**
      * The link to the world of HiveMind services.
      * 
-     * @since 3.1
+     * @since 4.0
      */
     private Infrastructure _infrastructure;
 
@@ -451,7 +451,7 @@ public abstract class AbstractEngine implements IEngine
      * {@link org.apache.tapestry.engine.state.ApplicationStateManager}, creating it if it does not
      * already exist.
      * <p>
-     * As of Tapestry 3.1, this will always create the visit object, possibly creating a new session
+     * As of Tapestry 4.0, this will always create the visit object, possibly creating a new session
      * in the process.
      */
 
@@ -572,7 +572,7 @@ public abstract class AbstractEngine implements IEngine
         return TapestryConstants.STALE_SESSION_PAGE;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public Infrastructure getInfrastructure()
     {
         return _infrastructure;

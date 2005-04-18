@@ -22,7 +22,7 @@ import org.apache.tapestry.services.ExpressionEvaluator;
  */
 public class ExpressionTableColumn extends SimpleTableColumn
 {
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public ExpressionTableColumn(String strColumnName, String strExpression,
             ExpressionEvaluator expressionEvaluator)

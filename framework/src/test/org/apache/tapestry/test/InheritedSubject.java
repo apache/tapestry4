@@ -18,7 +18,7 @@ package org.apache.tapestry.test;
  * Used by {@link org.apache.tapestry.test.TestCreator}.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public abstract class InheritedSubject extends IntSubject
 {

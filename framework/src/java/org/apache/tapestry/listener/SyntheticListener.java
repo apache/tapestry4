@@ -29,7 +29,7 @@ import org.apache.tapestry.IRequestCycle;
  * (or &lt;component&gt;) of the page (or component) containing the listener method.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class SyntheticListener implements IActionListener
 {

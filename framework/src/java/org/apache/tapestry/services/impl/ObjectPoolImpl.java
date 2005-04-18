@@ -31,7 +31,7 @@ import org.apache.tapestry.services.ObjectPool;
  * general cache cleaning.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ObjectPoolImpl implements ObjectPool, ResetEventListener
 {

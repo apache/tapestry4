@@ -24,7 +24,7 @@ import org.easymock.MockControl;
  * &lt;if-not&gt; elements.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestIfToken extends HiveMindTestCase
 {

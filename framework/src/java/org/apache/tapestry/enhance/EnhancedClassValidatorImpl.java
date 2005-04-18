@@ -28,7 +28,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * fact, implemented in the class.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class EnhancedClassValidatorImpl implements EnhancedClassValidator
 {

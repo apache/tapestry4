@@ -23,7 +23,7 @@ import org.apache.tapestry.coerce.ValueConverter;
  * Binding whose value is a named bean provided by a component.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class BeanBinding extends AbstractBinding
 {

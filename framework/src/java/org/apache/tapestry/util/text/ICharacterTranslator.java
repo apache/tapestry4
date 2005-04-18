@@ -18,7 +18,7 @@ package org.apache.tapestry.util.text;
  * An interface for translating a character into a string.
  * 
  * @author mb
- * @since 3.1
+ * @since 4.0
  */
 public interface ICharacterTranslator 
 {

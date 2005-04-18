@@ -25,7 +25,7 @@ import org.apache.tapestry.services.ExpressionEvaluator;
  * {@link org.apache.tapestry.binding.ExpressionBinding}instances.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class OGNLBindingFactory extends AbstractBindingFactory
 {

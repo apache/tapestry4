@@ -34,7 +34,7 @@ import org.apache.tapestry.request.IUploadFile;
  * 
  * @author Howard M. Lewis Ship
  * @author Joe Panico
- * @since 3.1
+ * @since 4.0
  */
 public class MultipartDecoderImpl implements MultipartDecoder
 {

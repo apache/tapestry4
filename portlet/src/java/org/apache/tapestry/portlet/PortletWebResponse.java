@@ -28,7 +28,7 @@ import org.apache.tapestry.web.WebResponse;
  * Adapts {@link javax.portlet.PortletResponse}. as {@link org.apache.tapestry.web.WebResponse}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PortletWebResponse implements WebResponse
 {

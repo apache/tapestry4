@@ -79,7 +79,7 @@ who wish to leverage Tapestry fully.
 </p>
 
 <p>
-Tapestry is currently in release 3.1, and has come a long way in the last couple
+Tapestry is currently in release 4.0, and has come a long way in the last couple
 of years.  Tapestry's focus is still on generating dynamic HTML pages, although there's plenty
 of support for XHTML, WML and other types of markup as well.
 </p>
@@ -290,7 +290,7 @@ Application Development) support in the form of <link href="template.html#templa
 </p>
 
 <p>
- At the time of this writing, Tapestry 3.1 is in an early alpha stage. It represents an even more radical
+ At the time of this writing, Tapestry 4.0 is in an early alpha stage. It represents an even more radical
  leap beyond 3.0 by introducing a new, sophisticated infrastructure on top of the 
  &HiveMind; microkernel.  This new backbone will provide the support necessary to meet the needs of Tapestry's
  much larger community ... including support for <em>prettier</em> URLs, integration of Tapestry and the Java Portlet API,
@@ -300,7 +300,7 @@ Application Development) support in the form of <link href="template.html#templa
 </p>
 
 <warning>
-The exact feature set for Tapestry 3.1, and its schedule, are most assuredly up in the air!
+The exact feature set for Tapestry 4.0, and its schedule, are most assuredly up in the air!
 </warning>
 
 <p>

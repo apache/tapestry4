@@ -46,14 +46,14 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements
 
     private boolean _immediate;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ClassResolver _resolver;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private ValueConverter _converter;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public ExtensionSpecification(ClassResolver resolver, ValueConverter valueConverter)
     {
         _resolver = resolver;

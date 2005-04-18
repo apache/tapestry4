@@ -34,7 +34,7 @@ import javax.servlet.ServletException;
  * Mock implementation of {@link javax.servlet.ServletContext}.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 
 public class MockContext extends AttributeHolder implements ServletContext, InitParameterHolder

@@ -29,7 +29,7 @@ import org.easymock.MockControl;
  * Tests {@link org.apache.tapestry.services.impl.ExtensionLookupFactory}.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestExtensionLookupFactory extends HiveMindTestCase
 {

@@ -18,7 +18,7 @@ package org.apache.tapestry;
  * Constant values used inside Tapestry. 
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public final class Constants
 {

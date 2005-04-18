@@ -30,7 +30,7 @@ import org.apache.hivemind.util.LocalizedResource;
  * {@link org.apache.tapestry.web.WebContext}.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 
 public class WebContextResource extends AbstractResource

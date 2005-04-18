@@ -80,13 +80,13 @@ public interface IContainedComponent extends IPropertyHolder, LocationHolder, Lo
      * Returns the name of the property to be created for this component,
      * or null if no property should be created.
      * 
-     * @since 3.1
+     * @since 4.0
      */
     public String getPropertyName();
     
     /**
      * 
-     * @since 3.1 
+     * @since 4.0 
      */
     
     public void setPropertyName(String propertyName);

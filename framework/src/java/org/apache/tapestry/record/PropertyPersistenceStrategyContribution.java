@@ -20,7 +20,7 @@ import org.apache.hivemind.impl.BaseLocatable;
  * A contribution to the <code>tapestry.persist.PersistenceStrategy</code> configuration.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PropertyPersistenceStrategyContribution extends BaseLocatable
 {

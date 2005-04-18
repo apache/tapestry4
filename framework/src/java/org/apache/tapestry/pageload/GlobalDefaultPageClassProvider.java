@@ -19,7 +19,7 @@ package org.apache.tapestry.pageload;
  * value for page class name.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class GlobalDefaultPageClassProvider implements PageClassProvider
 {

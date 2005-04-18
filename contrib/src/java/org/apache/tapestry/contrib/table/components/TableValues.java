@@ -106,7 +106,7 @@ public abstract class TableValues extends AbstractTableRowComponent
         return getTableColumn().getColumnName() + TABLE_VALUE_CSS_CLASS_SUFFIX;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
         super.cleanupAfterRender(cycle);
@@ -115,11 +115,11 @@ public abstract class TableValues extends AbstractTableRowComponent
 
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public abstract void setColumnParameter(ITableColumn column);
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public abstract String getCellClass();
 }

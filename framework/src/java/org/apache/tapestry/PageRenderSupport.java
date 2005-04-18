@@ -19,7 +19,7 @@ package org.apache.tapestry;
  * needed when rendering a page response.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  * @see org.apache.tapestry.html.Body
  * @see org.apache.tapestry.TapestryUtils#getPageRenderSupport(IRequestCycle, Object)
  */

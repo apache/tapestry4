@@ -33,7 +33,7 @@ import org.apache.tapestry.spec.IParameterSpecification;
  */
 public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
 {
-    /** @since 3.1 */
+    /** @since 4.0 */
     private BindingSource _bindingSource;
 
     /**
@@ -83,7 +83,7 @@ public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
         }
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setBindingSource(BindingSource bindingSource)
     {

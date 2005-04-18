@@ -24,7 +24,7 @@ import org.apache.hivemind.ServiceImplementationFactoryParameters;
  * with hivemind.BuilderFactory.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class SymbolSourcesPropertySourceFactory implements ServiceImplementationFactory
 {

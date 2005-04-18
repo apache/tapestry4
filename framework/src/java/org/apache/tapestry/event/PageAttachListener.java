@@ -24,7 +24,7 @@ import java.util.EventListener;
  * 
  * @see org.apache.tapestry.event.PageDetachListener
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface PageAttachListener extends EventListener
 {

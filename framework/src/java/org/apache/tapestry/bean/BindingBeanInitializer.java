@@ -28,7 +28,7 @@ import org.apache.tapestry.binding.BindingSource;
  * bean property.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class BindingBeanInitializer extends AbstractBeanInitializer
 {
@@ -36,10 +36,10 @@ public class BindingBeanInitializer extends AbstractBeanInitializer
 
     private String _bindingReference;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private IBinding _binding;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public BindingBeanInitializer(BindingSource source)
     {
         Defense.notNull(source, "source");
@@ -48,14 +48,14 @@ public class BindingBeanInitializer extends AbstractBeanInitializer
     }
 
     /**
-     * @since 3.1
+     * @since 4.0
      */
     public void setBindingReference(String bindingReference)
     {
         _bindingReference = bindingReference;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public String getBindingReference()
     {
         return _bindingReference;

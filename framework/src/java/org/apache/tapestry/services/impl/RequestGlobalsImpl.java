@@ -26,7 +26,7 @@ import org.apache.tapestry.web.WebResponse;
  * Servlet API info.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class RequestGlobalsImpl implements RequestGlobals
 {

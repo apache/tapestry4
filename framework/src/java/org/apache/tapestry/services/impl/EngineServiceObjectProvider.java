@@ -24,7 +24,7 @@ import org.apache.tapestry.services.ServiceMap;
  * of an engine service.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class EngineServiceObjectProvider implements ObjectProvider
 {

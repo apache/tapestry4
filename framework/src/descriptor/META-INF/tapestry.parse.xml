@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.parse" version="3.1.0" package="org.apache.tapestry.parse">
+<module id="tapestry.parse" version="4.0.0" package="org.apache.tapestry.parse">
   
   Template and specification parsers.
   

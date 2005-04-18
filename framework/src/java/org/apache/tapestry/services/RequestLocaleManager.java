@@ -22,7 +22,7 @@ import java.util.Locale;
  * Additionally, the "raw" value provided by the client may be filtered down.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface RequestLocaleManager
 {

@@ -23,7 +23,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * Tests for {@link org.apache.tapestry.util.QueryParameterMap}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestQueryParameterMap extends HiveMindTestCase
 {

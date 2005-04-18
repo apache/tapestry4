@@ -31,7 +31,7 @@ import org.apache.tapestry.web.WebUtils;
  * Adapts {@link javax.portlet.PortletContext}as {@link org.apache.tapestry.web.WebContext}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PortletWebContext implements WebContext
 {

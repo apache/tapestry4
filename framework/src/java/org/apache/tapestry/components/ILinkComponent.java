@@ -53,7 +53,7 @@ public interface ILinkComponent extends IComponent
      * Returns the name of the target window or frame for this link,
      * or null if current window or frame is to be used.
      * 
-     * @since 3.1
+     * @since 4.0
      */
     public String getTarget();
     

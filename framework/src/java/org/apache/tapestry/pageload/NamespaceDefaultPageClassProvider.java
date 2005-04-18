@@ -21,7 +21,7 @@ import org.apache.tapestry.TapestryConstants;
  * {@link org.apache.tapestry.TapestryConstants#PAGE_CLASS_NAME}&nbsp;key.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class NamespaceDefaultPageClassProvider implements PageClassProvider
 {

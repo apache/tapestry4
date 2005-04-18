@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.coerce" version="3.1.0" package="org.apache.tapestry.coerce">
+<module id="tapestry.coerce" version="4.0.0" package="org.apache.tapestry.coerce">
   
   Module used to coerce data types from one type to another. This is used primarily to convert strings
   into other types (numbers, booleans, etc.) or to convert various types into booleans (to be used

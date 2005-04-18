@@ -24,7 +24,7 @@ import org.apache.tapestry.util.QueryParameterMap;
  * determine when the encoding has been modified.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ServiceEncodingImpl implements ServiceEncoding
 {

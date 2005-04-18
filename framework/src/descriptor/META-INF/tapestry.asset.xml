@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.asset" version="3.1.0" package="org.apache.tapestry.asset">
+<module id="tapestry.asset" version="4.0.0" package="org.apache.tapestry.asset">
   
   Factories for creating IAsset instances.
   

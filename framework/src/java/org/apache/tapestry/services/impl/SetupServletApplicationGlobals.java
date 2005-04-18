@@ -25,7 +25,7 @@ import org.apache.tapestry.services.ApplicationInitializer;
  * {@link org.apache.tapestry.services.Infrastructure tapestry.infrastructure}&nbsp;service.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class SetupServletApplicationGlobals extends AbstractSetupApplicationGlobals implements
         ApplicationInitializer

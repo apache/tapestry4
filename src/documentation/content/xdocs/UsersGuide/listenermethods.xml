@@ -112,7 +112,7 @@ public void doClick(IRequestCycle cycle)
 </source>
 
 <p>
-This second case is maintained in Tapestry 3.1 mostly for backwards compatibility, or to handle the case
+This second case is maintained in Tapestry 4.0 mostly for backwards compatibility, or to handle the case
 where a single listener method must handle an indeterminate number of listener parameters.
 </p>
 

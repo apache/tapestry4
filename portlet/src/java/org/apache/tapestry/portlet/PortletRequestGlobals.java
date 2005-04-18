@@ -23,7 +23,7 @@ import javax.portlet.RenderResponse;
  * Stores the current Portlet request and response, for access by other services.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface PortletRequestGlobals
 {

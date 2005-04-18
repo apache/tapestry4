@@ -128,13 +128,13 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * 
      * @see #prepareForRender(IRequestCycle)
      * @see #cleanupAfterRender(IRequestCycle)
-     * @since 3.1
+     * @since 4.0
      */
 
     private boolean _rendering;
 
     /**
-     * @since 3.1
+     * @since 4.0
      */
 
     private boolean _active;
@@ -285,7 +285,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private boolean isFormalParameter(String name)
     {
         Defense.notNull(name, "name");
@@ -298,7 +298,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * <p>
      * In Tapestry 3.0, it was possible to force a binding to be stored in a component property by
      * defining a concrete or abstract property named "nameBinding" of type {@link IBinding}. This
-     * has been removed in release 3.1 and bindings are always stored inside a Map of the component.
+     * has been removed in release 4.0 and bindings are always stored inside a Map of the component.
      * 
      * @see #setBinding(String,IBinding)
      */
@@ -316,7 +316,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     /**
      * Returns true if the specified parameter is bound.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public boolean isParameterBound(String parameterName)
@@ -723,7 +723,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     }
 
     /**
-     * @since 3.1
+     * @since 4.0
      */
 
     public boolean isRendering()
@@ -735,7 +735,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * Returns true if the component has been transitioned into its active state by invoking
      * {@link #enterActiveState()}
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     protected boolean isInActiveState()
@@ -743,13 +743,13 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
         return _active;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void enterActiveState()
     {
         _active = true;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     protected void checkActiveLock()
     {

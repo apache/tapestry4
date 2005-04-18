@@ -22,7 +22,7 @@ import org.apache.tapestry.engine.IEngineService;
  * {@link org.apache.tapestry.engine.IEngineService#getName()}&nbsp;method must match.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class EngineServiceContribution extends BaseLocatable
 {

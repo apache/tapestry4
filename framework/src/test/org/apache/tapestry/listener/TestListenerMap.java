@@ -27,7 +27,7 @@ import org.apache.tapestry.IRequestCycle;
  * Tests for {@link org.apache.tapestry.listener.ListenerMapImpl}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestListenerMap extends HiveMindTestCase
 {

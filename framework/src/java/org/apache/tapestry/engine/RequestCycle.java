@@ -61,15 +61,15 @@ public class RequestCycle implements IRequestCycle
 
     private IMonitor _monitor;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private PropertyPersistenceStrategySource _strategySource;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private IPageSource _pageSource;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private Infrastructure _infrastructure;
 
@@ -77,12 +77,12 @@ public class RequestCycle implements IRequestCycle
      * Contains parameters extracted from the request context, plus any decoded by any
      * {@link ServiceEncoder}s.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     private QueryParameterMap _parameters;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private AbsoluteURLBuilder _absoluteURLBuilder;
 
@@ -114,13 +114,13 @@ public class RequestCycle implements IRequestCycle
 
     private Object[] _listenerParameters;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ErrorLog _log;
 
     private RequestContext _requestContext;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private IdAllocator _idAllocator = new IdAllocator();
 
@@ -152,7 +152,7 @@ public class RequestCycle implements IRequestCycle
     /**
      * Alternate constructor used <b>only for testing purposes </b>.
      * 
-     * @since 3.1
+     * @since 4.0
      */
     public RequestCycle()
     {
@@ -282,7 +282,7 @@ public class RequestCycle implements IRequestCycle
     }
 
     /**
-     * Returns the page recorder for the named page. Starting with Tapestry 3.1, page recorders are
+     * Returns the page recorder for the named page. Starting with Tapestry 4.0, page recorders are
      * shortlived objects managed exclusively by the request cycle.
      */
 
@@ -553,7 +553,7 @@ public class RequestCycle implements IRequestCycle
     }
 
     /**
-     * As of 3.1, just a synonym for {@link #forgetPage(String)}.
+     * As of 4.0, just a synonym for {@link #forgetPage(String)}.
      * 
      * @since 2.0.2
      */
@@ -577,13 +577,13 @@ public class RequestCycle implements IRequestCycle
         setListenerParameters(serviceParameters);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public Object[] getListenerParameters()
     {
         return _listenerParameters;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setListenerParameters(Object[] parameters)
     {
         _listenerParameters = parameters;
@@ -617,13 +617,13 @@ public class RequestCycle implements IRequestCycle
         _page = page;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public String getParameter(String name)
     {
         return _parameters.getParameterValue(name);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public String[] getParameters(String name)
     {
         return _parameters.getParameterValues(name);
@@ -653,7 +653,7 @@ public class RequestCycle implements IRequestCycle
         return b.toString();
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public String getAbsoluteURL(String partialURL)
     {
@@ -662,7 +662,7 @@ public class RequestCycle implements IRequestCycle
         return _absoluteURLBuilder.constructURL(contextPath + partialURL);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void forgetPage(String pageName)
     {
@@ -671,7 +671,7 @@ public class RequestCycle implements IRequestCycle
         _strategySource.discardAllStoredChanged(pageName, this);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public Infrastructure getInfrastructure()
     {
@@ -683,7 +683,7 @@ public class RequestCycle implements IRequestCycle
         return _requestContext;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public String getUniqueId(String baseId)
     {

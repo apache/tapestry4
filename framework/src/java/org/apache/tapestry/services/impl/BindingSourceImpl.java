@@ -29,7 +29,7 @@ import org.apache.tapestry.binding.BindingSource;
  * Implementation of the <code>tapestry.bindings.BindingSource</code> service.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class BindingSourceImpl implements BindingSource
 {

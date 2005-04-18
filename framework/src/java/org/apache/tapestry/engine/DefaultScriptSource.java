@@ -40,10 +40,10 @@ public class DefaultScriptSource implements IScriptSource, ResetEventListener
 {
     private ClassResolver _classResolver;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private ExpressionEvaluator _expressionEvaluator;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private ValueConverter _valueConverter;
 
     private Map _cache = new HashMap();
@@ -89,13 +89,13 @@ public class DefaultScriptSource implements IScriptSource, ResetEventListener
         _classResolver = classResolver;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator)
     {
         _expressionEvaluator = expressionEvaluator;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setValueConverter(ValueConverter valueConverter)
     {
         _valueConverter = valueConverter;

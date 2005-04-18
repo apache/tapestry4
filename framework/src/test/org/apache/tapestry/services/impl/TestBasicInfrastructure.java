@@ -50,7 +50,7 @@ import org.easymock.MockControl;
  * </ul>
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestBasicInfrastructure extends HiveMindTestCase
 {

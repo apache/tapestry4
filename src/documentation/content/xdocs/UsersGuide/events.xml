@@ -90,7 +90,7 @@ multiple interfaces.
     
 <note>
   Tapestry 3.0 defined a single &PageRenderListener; interface instead of
-  &PageBeginRenderListener; and &PageEndRenderListener;. This is still supported in 3.1 (it
+  &PageBeginRenderListener; and &PageEndRenderListener;. This is still supported in 4.0 (it
   has been redefined as extending the other two interfaces), but will likely be removed
   in a future release.
 </note>

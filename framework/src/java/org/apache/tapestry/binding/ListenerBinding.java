@@ -45,7 +45,7 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
 
     private final IComponent _component;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private BSFManagerFactory _managerFactory;
 
@@ -117,7 +117,7 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
         }
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public Object getComponent()
     {

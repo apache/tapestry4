@@ -24,7 +24,7 @@ import org.apache.tapestry.engine.IPageRecorder;
  * Used by {@link org.apache.tapestry.services.impl.TestEngineFactory}.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class EngineFixture extends AbstractEngine
 {

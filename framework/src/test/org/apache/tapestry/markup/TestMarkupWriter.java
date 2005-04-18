@@ -25,7 +25,7 @@ import org.apache.tapestry.IMarkupWriter;
  * Tests for {@link org.apache.tapestry.markup.MarkupWriterImpl}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestMarkupWriter extends HiveMindTestCase
 {

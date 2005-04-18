@@ -31,7 +31,7 @@ import org.apache.tapestry.web.WebUtils;
  * session, servlet context and servlet object for the current request.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public abstract class RequestDisplay extends BaseComponent
 {

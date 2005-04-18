@@ -20,7 +20,7 @@ package org.apache.tapestry.test;
  * response content for particular literal values or regular expressions.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ResponseAssertion
 {

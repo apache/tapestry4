@@ -25,7 +25,7 @@ import org.apache.tapestry.services.ResetEventCoordinator;
  * service.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ResetEventCoordinatorImpl implements ResetEventCoordinator
 {

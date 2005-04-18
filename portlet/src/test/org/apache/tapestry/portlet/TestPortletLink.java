@@ -33,7 +33,7 @@ import org.easymock.MockControl;
  * Tests for {@link org.apache.tapestry.portlet.PortletLink}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestPortletLink extends HiveMindTestCase
 {

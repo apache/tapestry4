@@ -28,7 +28,7 @@ import org.easymock.MockControl;
  * Tests for {@link org.apache.tapestry.services.impl.BindingSourceImpl}.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestBindingSource extends HiveMindTestCase
 {

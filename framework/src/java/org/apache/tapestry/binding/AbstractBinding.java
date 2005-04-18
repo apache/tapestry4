@@ -28,11 +28,11 @@ import org.apache.tapestry.coerce.ValueConverter;
 
 public abstract class AbstractBinding implements IBinding
 {
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private final String _description;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private final ValueConverter _valueConverter;
 
@@ -102,7 +102,7 @@ public abstract class AbstractBinding implements IBinding
      * Returns the component to which this binding is connected; this is currently only used when
      * building certain exceptions. This implementation returns null.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public Object getComponent()
@@ -117,7 +117,7 @@ public abstract class AbstractBinding implements IBinding
         return new BindingException(BindingMessages.readOnlyBinding(binding), binding);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public String getDescription()
     {

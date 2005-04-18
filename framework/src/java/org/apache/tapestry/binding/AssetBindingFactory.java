@@ -22,7 +22,7 @@ import org.apache.tapestry.IComponent;
  * Factory for instances of {@link org.apache.tapestry.binding.AssetBinding}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class AssetBindingFactory extends AbstractBindingFactory
 {

@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.url" version="3.1.0" package="org.apache.tapestry.services">
+<module id="tapestry.url" version="4.0.0" package="org.apache.tapestry.services">
 
   Control over constructing and recognizing URLs for Tapestry engine services.
   

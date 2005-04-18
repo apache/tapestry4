@@ -27,7 +27,7 @@ import org.apache.tapestry.IMarkupWriter;
  * {@link org.apache.tapestry.describe.HTMLDescriberImpl}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
 {

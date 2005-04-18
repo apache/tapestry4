@@ -35,7 +35,7 @@ import org.apache.tapestry.web.WebResponse;
  * {@link org.apache.tapestry.portlet.PortletHomeService}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PortletRendererImpl implements PortletRenderer
 {

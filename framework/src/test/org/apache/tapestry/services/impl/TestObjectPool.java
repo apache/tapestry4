@@ -24,7 +24,7 @@ import org.apache.tapestry.services.ObjectPool;
  * Tests for {@link org.apache.tapestry.services.impl.ObjectPoolImpl}.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestObjectPool extends HiveMindTestCase
 {

@@ -24,11 +24,11 @@ import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
  * Standard implementation of {@link org.apache.tapestry.services.EngineFactory} service.
- * This should do for most purposes, since a major focus of Tapestry 3.1 is to no longer
+ * This should do for most purposes, since a major focus of Tapestry 4.0 is to no longer
  * require subclassing of {@link org.apache.tapestry.engine.BaseEngine}.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class EngineFactoryImpl implements EngineFactory
 {

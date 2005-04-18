@@ -20,7 +20,7 @@ import java.util.Collections;
  * Converts a lone object into an Iterator over a list of the one object.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ObjectToIteratorConverter implements TypeConverter
 {

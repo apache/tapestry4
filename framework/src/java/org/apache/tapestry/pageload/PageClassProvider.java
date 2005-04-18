@@ -19,7 +19,7 @@ package org.apache.tapestry.pageload;
  * {@link org.apache.tapestry.pageload.PageClassProviderContext}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface PageClassProvider
 {

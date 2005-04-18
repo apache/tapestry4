@@ -20,7 +20,7 @@ import java.util.Map;
  * Converts a Map to a Boolean; a non-empty Map is true.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class MapToBooleanConverter implements TypeConverter
 {

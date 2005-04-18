@@ -24,7 +24,7 @@ import org.apache.tapestry.IMarkupWriter;
  * {@link java.io.CharArrayWriter}, and prints the content (raw) on {@link #close()}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class NestedMarkupWriterImpl extends MarkupWriterImpl
 {

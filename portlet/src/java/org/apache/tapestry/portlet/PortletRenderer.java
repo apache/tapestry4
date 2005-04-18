@@ -22,7 +22,7 @@ import org.apache.tapestry.IRequestCycle;
  * Service used to render a page within a portlet.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface PortletRenderer
 {

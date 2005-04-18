@@ -203,7 +203,7 @@ a later request, even though the request may use a different page instance (from
 
 <p>
 Tapestry is flexible about how these properties are ultimately stored. Tapestry 3.0 and earlier were less so ... persistent page properties
-were always stored in the HttpSession.  Starting in release 3.1, persistent page properties may be stored in the session, or on the client.
+were always stored in the HttpSession.  Starting in release 4.0, persistent page properties may be stored in the session, or on the client.
 </p>
 
 <section id="state.page-properties.using">
@@ -266,8 +266,8 @@ in the page's specification:
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 	
 <page-specification class="mypackage.MyPage">
 
@@ -291,7 +291,7 @@ always include both a getter and a setter.
 In Tapestry 3.0, many users were frustrated that they had to specify the type of property
 in both the Java code and in the page specification. This is a violation of the
 <link href="http://c2.com/cgi/wiki?DontRepeatYourself">Dont Repeat Yourself</link> principal -- requiring
-coordination is just an inviation for the two sides to get out of synchronization. Starting with Tapestry 3.1,
+coordination is just an inviation for the two sides to get out of synchronization. Starting with Tapestry 4.0,
 there is no type attribute on the &spec.property; element; instead Tapestry matches the type to the
 property type of any existing accessor methods, and simply uses Object when there are no accessor methods.  In
 this example, the persistent itemsPerPage property will be type int, because of the abstract accessor methods.
@@ -376,8 +376,8 @@ the session</link>).  ASOs in the application scope are available to any and all
 
 <note>
 Tapestry 3.0 had a more limited form of ASO:  The Visit object and the Global object. The Visit object is session scope, the Global object is
-application scope. This concept has been extended in Tapestry 3.1 to allow any number of ASOs with any desired scope, and lots
-of flexibility on how ASOs get created. The Visit and Global still exist in 3.1, as default ASOs you can use or override.
+application scope. This concept has been extended in Tapestry 4.0 to allow any number of ASOs with any desired scope, and lots
+of flexibility on how ASOs get created. The Visit and Global still exist in 4.0, as default ASOs you can use or override.
 </note>
 
 <section id="state.aso.defining">

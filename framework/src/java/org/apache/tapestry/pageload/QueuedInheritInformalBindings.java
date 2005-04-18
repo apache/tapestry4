@@ -24,7 +24,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * Used to defer connection of inherited informal bindings.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 class QueuedInheritInformalBindings implements IQueuedInheritedBinding
 {

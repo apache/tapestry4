@@ -23,7 +23,7 @@ import org.easymock.MockControl;
  * Tests for {@link org.apache.tapestry.portlet.PortletWebResponse}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestPortletWebResponse extends BasePortletWebTestCase
 {

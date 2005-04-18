@@ -18,7 +18,7 @@ import org.apache.hivemind.impl.MessageFormatter;
 
 /**
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 final class TapestryMessages
 {

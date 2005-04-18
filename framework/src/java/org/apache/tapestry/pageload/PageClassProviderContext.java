@@ -22,7 +22,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * Contains information needed when trying to determine the name of a page class.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PageClassProviderContext
 {

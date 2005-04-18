@@ -190,18 +190,18 @@ public abstract class Shell extends AbstractComponent
 
     public abstract boolean getRenderContentType();
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public abstract ValueConverter getValueConverter();
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public abstract IEngineService getPageService();
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public abstract IApplicationSpecification getApplicationSpecification();
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public abstract IRender getBaseTagWriter();
 }

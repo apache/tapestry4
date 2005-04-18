@@ -24,7 +24,7 @@ import org.apache.hivemind.schema.Translator;
  * {@link org.apache.hivemind.Module}which is normally not visible.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class InjectedValueProviderFactory implements ServiceImplementationFactory
 {

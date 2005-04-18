@@ -37,7 +37,7 @@ import org.apache.tapestry.engine.IEngineService;
  * {@link org.apache.tapestry.html.Body}&nbsp;component uses an instance of this class.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 {

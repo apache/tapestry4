@@ -27,7 +27,7 @@ import org.apache.tapestry.spec.IContainedComponent;
  * specified. This makes it easier to reference a particular component from Java code.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class InjectComponentWorker implements EnhancementWorker
 {

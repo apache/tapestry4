@@ -25,7 +25,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * 
  * @author Howard Lewis Ship
  * @since 3.0
- * @deprecated To be removed in 3.2
+ * @deprecated To be removed in 4.1
  * @see org.apache.tapestry.services.ComponentConstructorFactory
  */
 

@@ -29,7 +29,7 @@ import org.easymock.MockControl;
  * Tests for {@link org.apache.tapestry.enhance.InjectSpecificationWorker}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestInjectSpecificationWorker extends HiveMindTestCase
 {

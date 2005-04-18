@@ -95,7 +95,7 @@ public class TestRegexpMatcher extends TapestryTestCase
         assertEquals(m.getEscapedPatternString("^\\d$"), "\\^\\\\d\\$");
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void testGetMatches()
     {
@@ -107,7 +107,7 @@ public class TestRegexpMatcher extends TapestryTestCase
         { "57", "232", "89", "147" }, matches);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void testGetMatchesNoMatch()
     {
@@ -118,7 +118,7 @@ public class TestRegexpMatcher extends TapestryTestCase
         assertEquals(0, matches.length);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void testGetMatchesSubgroup()
     {
