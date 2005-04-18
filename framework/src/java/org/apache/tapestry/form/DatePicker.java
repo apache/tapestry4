@@ -90,7 +90,7 @@ public abstract class DatePicker extends AbstractFormComponent
     /**
      * Injected
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public abstract IScriptSource getScriptSource();

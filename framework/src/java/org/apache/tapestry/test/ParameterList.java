@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * {@link org.apache.tapestry.test.RequestDescriptor}.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ParameterList
 {

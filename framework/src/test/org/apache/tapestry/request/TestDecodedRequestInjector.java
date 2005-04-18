@@ -30,7 +30,7 @@ import org.easymock.MockControl;
  * Tests for {@link org.apache.tapestry.request.DecodedRequestInjector}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestDecodedRequestInjector extends HiveMindTestCase
 {

@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.props" version="3.1.0" package="org.apache.tapestry.engine">
+<module id="tapestry.props" version="4.0.0" package="org.apache.tapestry.engine">
   
   Defines services for locating configuration data that may be stored in the web application
   deployment descriptor, the application specification, or elsewhere.

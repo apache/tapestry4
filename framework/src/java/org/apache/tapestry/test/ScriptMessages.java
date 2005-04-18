@@ -29,7 +29,7 @@ import org.apache.hivemind.service.ClassFabUtils;
  * well.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public final class ScriptMessages
 {

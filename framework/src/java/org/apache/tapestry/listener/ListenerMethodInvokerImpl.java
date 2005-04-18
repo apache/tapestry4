@@ -29,7 +29,7 @@ import org.apache.tapestry.Tapestry;
  * method).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
 {

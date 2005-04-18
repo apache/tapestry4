@@ -53,7 +53,7 @@ public class TapestryTestCase extends HiveMindTestCase
 
     private ClassResolver _resolver = new DefaultClassResolver();
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private ValueConverter _valueConverter = new ValueConverter()
     {
         public Object coerceValue(Object value, Class desiredType)
@@ -62,7 +62,7 @@ public class TapestryTestCase extends HiveMindTestCase
         }
     };
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private class BindingSourceFixture implements BindingSource
     {
 

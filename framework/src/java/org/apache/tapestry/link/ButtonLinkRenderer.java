@@ -26,7 +26,7 @@ import org.apache.tapestry.engine.ILink;
  * This is particularly useful for implementing cancel buttons.
  * 
  * @author Paul Ferraro
- * @since 3.1
+ * @since 4.0
  */
 public class ButtonLinkRenderer implements ILinkRenderer
 {

@@ -26,7 +26,7 @@ package org.apache.tapestry.engine;
  * that may have been nulled out by the encoding are restored.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  * @see org.apache.tapestry.services.ServiceConstants
  */
 public interface ServiceEncoding

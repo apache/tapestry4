@@ -43,10 +43,10 @@ public class ScriptSessionImpl implements ScriptSession
 
     private Map _symbols;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private ExpressionEvaluator _evaluator;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private ValueConverter _valueConverter;
 
     public ScriptSessionImpl(Resource scriptTemplateResource, IRequestCycle cycle,

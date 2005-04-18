@@ -47,7 +47,7 @@ public class ComponentTemplateLoaderImpl implements ComponentTemplateLoader
 
     private TemplateSource _templateSource;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private BindingSource _bindingSource;
 
@@ -61,14 +61,14 @@ public class ComponentTemplateLoaderImpl implements ComponentTemplateLoader
         logic.loadTemplate(requestCycle, loadComponent, template);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setPageLoader(IPageLoader pageLoader)
     {
         _pageLoader = pageLoader;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setLog(Log log)
     {
@@ -76,7 +76,7 @@ public class ComponentTemplateLoaderImpl implements ComponentTemplateLoader
     }
 
     /**
-     * @since 3.1
+     * @since 4.0
      */
 
     public void setTemplateSource(TemplateSource templateSource)
@@ -85,7 +85,7 @@ public class ComponentTemplateLoaderImpl implements ComponentTemplateLoader
     }
 
     /**
-     * @since 3.1
+     * @since 4.0
      */
 
     public void setBindingSource(BindingSource bindingSource)

@@ -32,7 +32,7 @@ import org.easymock.MockControl;
  * Common utilities for building tests for {@link org.apache.tapestry.engine.IEngineService}s.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public abstract class ServiceTestCase extends HiveMindTestCase
 {

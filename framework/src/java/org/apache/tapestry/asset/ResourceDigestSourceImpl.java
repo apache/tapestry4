@@ -33,7 +33,7 @@ import org.apache.tapestry.event.ResetEventListener;
  * DIGEST checksum digest and converts it to a string of hex digits.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ResourceDigestSourceImpl implements ResourceDigestSource, ResetEventListener
 {

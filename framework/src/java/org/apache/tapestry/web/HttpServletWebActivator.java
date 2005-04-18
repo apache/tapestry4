@@ -25,7 +25,7 @@ import org.apache.tapestry.describe.DescriptionReceiver;
  * {@link org.apache.tapestry.web.WebActivator}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class HttpServletWebActivator implements WebActivator
 {

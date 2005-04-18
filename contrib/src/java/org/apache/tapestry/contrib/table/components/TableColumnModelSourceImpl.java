@@ -35,10 +35,10 @@ import org.apache.tapestry.services.ExpressionEvaluator;
  */
 public class TableColumnModelSourceImpl implements TableColumnModelSource
 {
-    /** @since 3.1 */
+    /** @since 4.0 */
     private ExpressionEvaluator _expressionEvaluator;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator)
     {

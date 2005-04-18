@@ -32,7 +32,7 @@ import org.apache.tapestry.util.ContentType;
  * Mock implementation of {@link javax.servlet.http.HttpServletResponse}.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 
 public class MockResponse implements HttpServletResponse

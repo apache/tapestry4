@@ -28,7 +28,7 @@ import org.apache.tapestry.engine.IEngineService;
  * classpath: resources.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ClasspathAssetFactory implements AssetFactory
 {

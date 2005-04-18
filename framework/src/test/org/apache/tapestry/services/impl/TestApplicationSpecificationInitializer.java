@@ -40,7 +40,7 @@ import org.easymock.MockControl;
  * Tests for the {@link org.apache.tapestry.services.impl.ApplicationSpecificationInitializer}.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 {

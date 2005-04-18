@@ -28,7 +28,7 @@ import javax.servlet.ServletResponse;
  * Used to enable mock testing of internal request forwarding.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class MockRequestDispatcher implements RequestDispatcher
 {	

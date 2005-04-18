@@ -20,7 +20,7 @@ import org.apache.tapestry.describe.Describable;
  * Primarily concerned with maintaining server-side state as attributes.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface WebSession extends AttributeHolder, Describable
 {

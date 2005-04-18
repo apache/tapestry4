@@ -26,7 +26,7 @@ import org.easymock.MockControl;
 
 /**
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestPageService extends ServiceTestCase
 {

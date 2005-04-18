@@ -21,7 +21,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
  * specification.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ComponentNotFoundException extends ApplicationRuntimeException
 {

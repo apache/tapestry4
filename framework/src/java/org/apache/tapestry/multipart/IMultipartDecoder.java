@@ -68,7 +68,7 @@ public interface IMultipartDecoder
     /**
      * Returns the names of all parameters whose type is string (not file upload).
      * 
-     * @since 3.1
+     * @since 4.0
      */
     public String[] getStringParameterNames(HttpServletRequest request);
 }

@@ -83,7 +83,7 @@ public abstract class ShowProperties extends BaseComponent implements PageRender
         _properties = Collections.EMPTY_LIST;
 
         // The getChanges() method was removed
-        // from IPageRecorder in release 3.1
+        // from IPageRecorder in release 4.0
         // new ArrayList(recorder.getChanges());
     }
 

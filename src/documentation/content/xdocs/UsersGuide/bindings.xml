@@ -123,7 +123,7 @@ value is to be interprted.  The prefix identifies the <em>binding type</em>:
   <title>Binding Type Defaults</title>
   
 <p>
-Tapestry 3.1 introduces a new idea: <em>default binding types</em>.  Each component parameter may
+Tapestry 4.0 introduces a new idea: <em>default binding types</em>.  Each component parameter may
 define a default binding type (using the default-binding attribute of the &spec.parameter; element).
 </p>  
 

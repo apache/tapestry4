@@ -34,7 +34,7 @@ import org.apache.tapestry.util.PropertyHolderPropertySource;
  * TODO: Figure out a testing strategy for this beast!
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ComponentPropertySourceImpl implements ComponentPropertySource, ResetEventListener
 {

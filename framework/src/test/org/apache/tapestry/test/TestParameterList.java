@@ -20,7 +20,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * Tests for the {@link org.apache.tapestry.test.ParameterList}class.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestParameterList extends HiveMindTestCase
 {

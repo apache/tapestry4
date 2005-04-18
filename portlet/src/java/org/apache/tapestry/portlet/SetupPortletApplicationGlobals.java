@@ -23,7 +23,7 @@ import org.apache.tapestry.services.impl.AbstractSetupApplicationGlobals;
  * Portlets and the <code>tapestry.portlet.services.FactoryServices</code> configuration point.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class SetupPortletApplicationGlobals extends AbstractSetupApplicationGlobals implements
         PortletApplicationInitializer

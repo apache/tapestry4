@@ -69,12 +69,12 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Tests the new style &lt;binding&gt; element in 3.1 DTD.
+     * Tests the new style &lt;binding&gt; element in 4.0 DTD.
      */
 
-    public void testBinding31() throws Exception
+    public void testBinding40() throws Exception
     {
-        IComponentSpecification spec = parseComponent("Binding31.jwc");
+        IComponentSpecification spec = parseComponent("Binding40.jwc");
         IContainedComponent cc = spec.getComponent("component");
 
         IBindingSpecification bs = cc.getBinding("simple");
@@ -519,7 +519,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("persistent", false, ps.isPersistent());
         assertNull("type", ps.getType());
 
-        // Starting with release 3.1, the initial value is a binding reference
+        // Starting with release 4.0, the initial value is a binding reference
         // with an appropriate prefix. In 3.0 it was always an OGNL expression.
 
         assertEquals("initialValue", "ognl:pageName", ps.getInitialValue());
@@ -592,7 +592,7 @@ public class TestSpecificationParser extends TapestryTestCase
     /**
      * Tests the DTD 3.0 <set-property>element
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void testExpressionBeanInitializer() throws Exception
@@ -612,7 +612,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("ognl:flintstone", i.getBindingReference());
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void testBeanSet() throws Exception
     {
@@ -637,7 +637,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals(textField.getInheritInformalParameters(), true);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void testConfigureExtension() throws Exception
     {
@@ -662,7 +662,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("my-value", es.getProperty("my-property"));
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void testComponentProperty() throws Exception
     {
@@ -673,7 +673,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("my-value", cc.getProperty("my-property"));
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void testComponentInjectProperty() throws Exception
     {
@@ -688,7 +688,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertNull(cc.getPropertyName());
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void testBeanDescription() throws Exception
     {
@@ -699,7 +699,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertNotNull(bs.getLocation());
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void testBeanProperty() throws Exception
     {
@@ -710,7 +710,7 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * @since 3.1
+     * @since 4.0
      */
 
     public void testBeanInject() throws Exception
@@ -720,7 +720,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("myProperty", bs.getPropertyName());
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void testLibraryDescription() throws Exception
     {
@@ -729,7 +729,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("Often, these are just placeholders.", ls.getDescription());
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void testPageDescription() throws Exception
     {
@@ -741,7 +741,7 @@ public class TestSpecificationParser extends TapestryTestCase
     /**
      * Excercies the check that the correct root element is used.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void testRootElementMismatch() throws Exception
@@ -763,7 +763,7 @@ public class TestSpecificationParser extends TapestryTestCase
      * Checks to make sure that a application or library may not defined a lbirary with id
      * 'framework'.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void testLibraryFrameworkNamespace() throws Exception
@@ -782,7 +782,7 @@ public class TestSpecificationParser extends TapestryTestCase
     /**
      * Tests that a &lt;component&gt; element may not have both type and copy-of attributes.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void testComponentWithTypeAndCopyOf() throws Exception
@@ -801,7 +801,7 @@ public class TestSpecificationParser extends TapestryTestCase
     /**
      * Tests that &lt;component&gt; must have either type or copy-of attribute.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void testComponentWithoutType() throws Exception
@@ -822,7 +822,7 @@ public class TestSpecificationParser extends TapestryTestCase
     /**
      * Tests the use of copy-of attribute inside &lt;component&gt;.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void testComponentCopyOf() throws Exception
@@ -859,7 +859,7 @@ public class TestSpecificationParser extends TapestryTestCase
     /**
      * And here's what happens when copy-of doesn't match a known component.
      * 
-     * @since 3.1
+     * @since 4.0
      */
     public void testComponentBadCopy()
     {
@@ -877,7 +877,7 @@ public class TestSpecificationParser extends TapestryTestCase
     /**
      * Check that &lt;service&gt; elements are ignored properly.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void testServiceElement() throws Exception
@@ -889,7 +889,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertLoggedMessagePattern("The <service> element is no longer supported");
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void testMeta() throws Exception
     {
         ILibrarySpecification spec = parseLib("Meta.library");
@@ -898,7 +898,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("long value", spec.getProperty("long"));
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void testInject() throws Exception
     {
         IComponentSpecification spec = parseComponent("Inject.jwc");
@@ -923,7 +923,7 @@ public class TestSpecificationParser extends TapestryTestCase
      * Test that the new &lt;property&gt; element (was &lt;property-specification&gt; in release
      * 3.0) works correctly.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void testProperty() throws Exception
@@ -937,7 +937,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("name", "bool", ps.getName());
         assertEquals("persistent", false, ps.isPersistent());
 
-        // In a 3.1 DTD, type is always null.
+        // In a 4.0 DTD, type is always null.
         assertNull("type", ps.getType());
 
         // Note that no prefix is added. Initial value will be a string literal,
@@ -970,7 +970,7 @@ public class TestSpecificationParser extends TapestryTestCase
     /**
      * Tests parameters specification from a 3.0 DTD
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void testParameter_3_0() throws Exception
@@ -1005,7 +1005,7 @@ public class TestSpecificationParser extends TapestryTestCase
      * Tests the new way default-value is interpreted (as a binding-like value, prefixed to indicate
      * type).
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void testParameters() throws Exception
@@ -1034,7 +1034,7 @@ public class TestSpecificationParser extends TapestryTestCase
      * Tests that assets read using the 3.0 DTD are converted properly into paths with the proper
      * prefix.
      * 
-     * @since 3.1
+     * @since 4.0
      */
     public void testAssets_3_0() throws Exception
     {
@@ -1056,7 +1056,7 @@ public class TestSpecificationParser extends TapestryTestCase
         { "mycontext", "myexternal", "myprivate" }, cs.getAssetNames());
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void testAssets() throws Exception
     {
@@ -1068,7 +1068,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("myProperty", as.getPropertyName());
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void testInjectState() throws Exception
     {

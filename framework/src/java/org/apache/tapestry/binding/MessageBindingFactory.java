@@ -22,7 +22,7 @@ import org.apache.tapestry.IComponent;
  * Constructs instances of {@link org.apache.tapestry.binding.MessageBinding}.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class MessageBindingFactory extends AbstractBindingFactory
 {

@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.portlet.services" version="3.1.0" package="org.apache.tapestry.portlet">
+<module id="tapestry.portlet.services" version="4.0.0" package="org.apache.tapestry.portlet">
 
   Defines engine services used by Tapestry portlet support.
   

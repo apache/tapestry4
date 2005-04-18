@@ -25,7 +25,7 @@ import org.easymock.MockControl;
  * {@link org.apache.tapestry.binding.HiveMindBindingFactory}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestHiveMindBinding extends BindingTestCase
 {

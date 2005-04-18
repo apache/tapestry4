@@ -22,7 +22,7 @@ import org.apache.hivemind.HiveMind;
  * be bound to "false" instead of "ognl:false" and still operate as expected).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class StringToBooleanConverter implements TypeConverter
 {

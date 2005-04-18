@@ -22,7 +22,7 @@ import org.apache.tapestry.services.ClasspathResourceFactory;
  * Implementation of {@link org.apache.tapestry.services.ClasspathResourceFactory}.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ClasspathResourceFactoryImpl implements ClasspathResourceFactory
 {

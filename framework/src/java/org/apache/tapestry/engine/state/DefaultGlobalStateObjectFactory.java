@@ -24,7 +24,7 @@ import org.apache.hivemind.HiveMind;
  * synchronized HashMap, if no class name is specified. This duplicates behavior from Tapestry 3.0.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class DefaultGlobalStateObjectFactory extends NamedClassStateObjectFactory implements
         StateObjectFactory

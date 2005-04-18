@@ -23,7 +23,7 @@ import java.util.Map;
  * just using a Map.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ApplicationScopeManager implements StateObjectPersistenceManager
 {

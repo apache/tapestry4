@@ -40,7 +40,7 @@ public interface IBinding extends Locatable
     /**
      * Returns the value for the binding after performing some basic checks.
      * <p>
-     * Note: In release 3.1, the parameterName parameter was removed.
+     * Note: In release 4.0, the parameterName parameter was removed.
      * 
      * @param type
      *            if not null, the value must be assignable to the specific class
@@ -75,7 +75,7 @@ public interface IBinding extends Locatable
      * Returns a description of how the binding is used; this description
      * is localized and incorporated into some exception messages.
      * 
-     * @since 3.1
+     * @since 4.0
      */
     
     public String getDescription();

@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSessionContext;
  *
  *
  *  @author Howard Lewis Ship
- *  @since 3.1
+ *  @since 4.0
  */
 
 public class MockSession extends AttributeHolder implements HttpSession

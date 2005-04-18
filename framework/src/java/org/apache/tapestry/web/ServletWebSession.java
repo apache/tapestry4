@@ -26,7 +26,7 @@ import org.apache.tapestry.describe.DescriptionReceiver;
  * {@link org.apache.tapestry.web.WebSession}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ServletWebSession implements WebSession
 {

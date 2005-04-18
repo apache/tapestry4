@@ -23,7 +23,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * Messages for the resolver package.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 class ResolverMessages
 {

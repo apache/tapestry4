@@ -28,7 +28,7 @@ import org.apache.hivemind.util.Defense;
  * field values uploaded in a multipart request.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class UploadFormParametersWrapper extends HttpServletRequestWrapper
 {

@@ -34,7 +34,7 @@ public interface IEngineService
      * Builds a URL for a service. This is performed during the rendering phase of one request cycle
      * and bulds URLs that will invoke activity in a subsequent request cycle.
      * <p>
-     * <b>This method changed incompatibly between release 3.0 and release 3.1. </b>
+     * <b>This method changed incompatibly between release 3.0 and release 4.0. </b>
      * </p>
      * 
      * @param cycle

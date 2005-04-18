@@ -32,7 +32,7 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  * Tests {@link org.apache.tapestry.test.IntegrationTestScriptParser}.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestScriptParser extends TapestryTestCase
 {

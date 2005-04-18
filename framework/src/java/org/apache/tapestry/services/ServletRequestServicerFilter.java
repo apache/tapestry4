@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  * and services to "plug into" the pipeline.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ServletRequestServicerFilter
 {

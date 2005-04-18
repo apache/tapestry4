@@ -102,7 +102,7 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
      * components wrapped by the <code>Body</code> to locate it and access the services it
      * provides.
      * 
-     * @deprecated To be removed in 3.2. Use
+     * @deprecated To be removed in 4.1. Use
      *             {@link org.apache.tapestry.TapestryUtils#getPageRenderSupport(IRequestCycle)}
      *             instead.
      */
@@ -171,14 +171,14 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
     /**
      * Injected
      * 
-     * @since 3.1
+     * @since 4.0
      */
     public abstract IEngineService getAssetService();
 
     /**
      * Injected
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public abstract WebResponse getResponse();

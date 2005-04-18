@@ -22,7 +22,7 @@ import org.apache.tapestry.test.assertions.AssertOutput;
  * Test for the {@link org.apache.tapestry.test.assertions.AssertOutput}response assertion.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestAssertOutput extends TapestryTestCase
 {

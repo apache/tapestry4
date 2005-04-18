@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.services" version="3.1.0" package="org.apache.tapestry.engine">
+<module id="tapestry.services" version="4.0.0" package="org.apache.tapestry.engine">
 
   Contains the Tapestry engine services, and the configuration points for creating new
   ones (or overriding the factory defaults).

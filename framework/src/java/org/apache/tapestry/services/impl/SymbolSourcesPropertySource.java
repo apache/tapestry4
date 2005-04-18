@@ -21,7 +21,7 @@ import org.apache.tapestry.engine.IPropertySource;
  * Property source that bridges to HiveMind Symbol Sources.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class SymbolSourcesPropertySource implements IPropertySource
 {

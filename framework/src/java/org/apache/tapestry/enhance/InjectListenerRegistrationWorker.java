@@ -22,7 +22,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * finishLoad() method to register (with the page) for such notifications.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class InjectListenerRegistrationWorker implements EnhancementWorker
 {

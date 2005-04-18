@@ -19,7 +19,7 @@ package org.apache.tapestry.spec;
  * constructed from the specification can be injected into the component class.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface PropertyInjectable
 {

@@ -158,19 +158,19 @@ public class AbstractSpecificationResolver
         _specification = null;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setDelegate(ISpecificationResolverDelegate delegate)
     {
         _delegate = delegate;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setApplicationId(String applicationId)
     {
         _applicationId = applicationId;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setSpecificationSource(ISpecificationSource source)
     {
         _specificationSource = source;

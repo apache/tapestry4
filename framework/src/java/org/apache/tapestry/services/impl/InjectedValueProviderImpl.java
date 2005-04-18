@@ -21,7 +21,7 @@ import org.apache.tapestry.services.InjectedValueProvider;
 
 /**
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class InjectedValueProviderImpl implements InjectedValueProvider
 {

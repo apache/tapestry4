@@ -27,7 +27,7 @@ import org.apache.tapestry.engine.ILink;
  * proxy.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  * @see org.apache.tapestry.services.impl.EngineServiceOuterProxy
  */
 public class EngineServiceInnerProxy implements IEngineService

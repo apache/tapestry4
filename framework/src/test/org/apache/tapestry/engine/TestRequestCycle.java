@@ -27,11 +27,11 @@ import org.apache.tapestry.util.QueryParameterMap;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.engine.RequestCycle}. Mostly just tests changes for 3.1
+ * Tests for {@link org.apache.tapestry.engine.RequestCycle}. Mostly just tests changes for 4.0
  * (3.0 code is still mostly tested via the mock integration tests).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestRequestCycle extends HiveMindTestCase
 {

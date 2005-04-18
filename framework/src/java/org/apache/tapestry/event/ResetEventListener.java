@@ -22,7 +22,7 @@ import java.util.EventListener;
  * as every request in a development configuration).
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ResetEventListener extends EventListener
 {

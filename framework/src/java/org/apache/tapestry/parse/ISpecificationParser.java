@@ -31,7 +31,7 @@ import org.apache.tapestry.spec.ILibrarySpecification;
  * could keep its name. Otherwise, it makes Spindle support really, really ugly.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ISpecificationParser
 {

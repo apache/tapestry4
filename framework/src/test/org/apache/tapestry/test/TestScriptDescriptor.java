@@ -20,7 +20,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * Additional tests for {@link TestScriptDescriptor}.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestScriptDescriptor extends HiveMindTestCase
 {

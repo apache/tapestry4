@@ -25,7 +25,7 @@ import org.apache.tapestry.util.ContentType;
  * different content types;
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface MarkupWriterSource
 {

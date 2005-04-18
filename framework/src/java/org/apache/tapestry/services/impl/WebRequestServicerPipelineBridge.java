@@ -35,7 +35,7 @@ import org.apache.tapestry.web.WebResponse;
  * exceptions and throws them wrapped as {@link javax.servlet.ServletException}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class WebRequestServicerPipelineBridge implements ServletRequestServicer
 {

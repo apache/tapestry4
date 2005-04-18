@@ -23,12 +23,12 @@ import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IMarkupWriter;
 
 /**
- * Completely revised (for 3.1) implementation of {@link org.apache.tapestry.IMarkupWriter}. No
+ * Completely revised (for 4.0) implementation of {@link org.apache.tapestry.IMarkupWriter}. No
  * longer does internal buffering (since the servlet/portlet APIs support that natively) and wraps
  * around a {@link java.io.PrintWriter}&nbsp;(rather than an {@link java.io.OutputStream}).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class MarkupWriterImpl implements IMarkupWriter
 {

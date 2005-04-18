@@ -19,7 +19,7 @@ package org.apache.tapestry.error;
  * (and the normal Exception page can not be displayed).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  * @see org.apache.tapestry.error.ExceptionPresenter
  */
 public interface RequestExceptionReporter

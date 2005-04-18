@@ -44,7 +44,7 @@ import org.apache.tapestry.util.io.TeeOutputStream;
  * to decode).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PersistentPropertyDataEncoderImpl implements PersistentPropertyDataEncoder
 {

@@ -56,22 +56,22 @@ import org.apache.tapestry.web.WebResponse;
 public class AssetService implements IEngineService
 {
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private ClassResolver _classResolver;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private AssetExternalizer _assetExternalizer;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private LinkFactory _linkFactory;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private WebContext _context;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private WebResponse _response;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private ResourceDigestSource _digestSource;
 
     /**
@@ -94,14 +94,14 @@ public class AssetService implements IEngineService
 
     private static final int BUFFER_SIZE = 10240;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private RequestExceptionReporter _exceptionReporter;
 
     /**
      * Query parameter that stores the path to the resource (with a leading slash).
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public static final String PATH = "path";
@@ -110,7 +110,7 @@ public class AssetService implements IEngineService
      * Query parameter that stores the digest for the file; this is used to authenticate that the
      * client is allowed to access the file.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public static final String DIGEST = "digest";
@@ -252,44 +252,44 @@ public class AssetService implements IEngineService
         }
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setExceptionReporter(RequestExceptionReporter exceptionReporter)
     {
         _exceptionReporter = exceptionReporter;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setAssetExternalizer(AssetExternalizer assetExternalizer)
     {
         _assetExternalizer = assetExternalizer;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setClassResolver(ClassResolver classResolver)
     {
         _classResolver = classResolver;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setContext(WebContext context)
     {
         _context = context;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setResponse(WebResponse response)
     {
         _response = response;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setDigestSource(ResourceDigestSource md5Source)
     {
         _digestSource = md5Source;

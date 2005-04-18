@@ -46,7 +46,7 @@ import org.apache.tapestry.services.TemplateSource;
 
 public abstract class ShowTemplate extends BaseComponent implements IDirect
 {
-    /** @since 3.1 */
+    /** @since 4.0 */
     public abstract TemplateSource getTemplateSource();
 
     public boolean getHasTemplate()

@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.markup" version="3.1.0" package="org.apache.tapestry.markup">
+<module id="tapestry.markup" version="4.0.0" package="org.apache.tapestry.markup">
   
   Support for markup writers and filters.
   

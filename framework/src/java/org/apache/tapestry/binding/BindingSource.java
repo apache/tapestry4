@@ -22,7 +22,7 @@ import org.apache.tapestry.IComponent;
  * Used to convert a binding string (from a template or a specification) into an instance of
  * {@link IBinding}.
  * 
- * @since 3.1
+ * @since 4.0
  */
 public interface BindingSource
 {

@@ -31,7 +31,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * Convienience methods needed by various parts of the enhancement subsystem.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class EnhanceUtils
 {

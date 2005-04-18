@@ -18,7 +18,7 @@ package org.apache.tapestry.binding;
  * Constant values related to bindings.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class BindingConstants
 {

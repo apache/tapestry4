@@ -23,7 +23,7 @@ import org.apache.tapestry.test.assertions.RegexpMatch;
  * Tests for the {@link org.apache.tapestry.test.assertions.AssertRegexp}class.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestAssertRegexp extends TapestryTestCase
 {

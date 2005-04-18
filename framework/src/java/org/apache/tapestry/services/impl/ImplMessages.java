@@ -35,7 +35,7 @@ import org.apache.tapestry.spec.IContainedComponent;
 
 /**
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 final class ImplMessages
 {

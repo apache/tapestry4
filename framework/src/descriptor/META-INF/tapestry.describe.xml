@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.describe" version="3.1.0" package="org.apache.tapestry.describe">
+<module id="tapestry.describe" version="4.0.0" package="org.apache.tapestry.describe">
 	
 	Services and adaptors for "describing" various objects into an HTML representation.
 	

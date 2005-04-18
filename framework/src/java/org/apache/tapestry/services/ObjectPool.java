@@ -19,7 +19,7 @@ package org.apache.tapestry.services;
  * An pool for objects.  Objects may be stored in a Pool for later reuse.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ObjectPool
 {

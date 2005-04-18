@@ -31,11 +31,11 @@
 <body>
  
 <p>
-One goal of Tapestry 3.1 is to make upgrading from release 3.0 as painless as possible.  
+One goal of Tapestry 4.0 is to make upgrading from release 3.0 as painless as possible.  
 </p>
  
 <p>
-Tapestry 3.1 still supports the Tapestry 3.0 DTDs (with minor exceptions). 
+Tapestry 4.0 still supports the Tapestry 3.0 DTDs (with minor exceptions). 
 </p>
 
 
@@ -44,7 +44,7 @@ Tapestry 3.1 still supports the Tapestry 3.0 DTDs (with minor exceptions).
   
 <p>
 Tapestry 3.0 allowed engine services to be defined in the application specification using
-a &lt;service&gt; element. This is no longer supported in the 3.1 DTD.
+a &lt;service&gt; element. This is no longer supported in the 4.0 DTD.
 </p>
   
 <p>
@@ -66,14 +66,14 @@ custom engine services, you will have to make changes to your code.
   <title>Component Parameters</title>
   
 <p>
-Tapestry 3.1 has greatly streamlined  <link href="components.html#components.parameters">component parameters</link>.
+Tapestry 4.0 has greatly streamlined  <link href="components.html#components.parameters">component parameters</link>.
 </p>
 
 <section>
   <title>Parameter Type</title>
 
 <p>
-In Tapestry 3.0, the &spec.parameter; element included a type attribute. This has been removed in Tapestry 3.1.  
+In Tapestry 3.0, the &spec.parameter; element included a type attribute. This has been removed in Tapestry 4.0.  
 </p>
 
 <p>
@@ -82,7 +82,7 @@ The parameter type is now determined from the Java class, by examining the acces
 
 <p>
 Tapestry 3.0 required an exact match on values bound to parameters. The bound value had to be assignable to the parameter's type.
-In Tapestry 3.1, parameters include built-in <em>coercion</em>; Tapestry will attempt to coerce the value extracted from the bound property 
+In Tapestry 4.0, parameters include built-in <em>coercion</em>; Tapestry will attempt to coerce the value extracted from the bound property 
 into the correct type.
 This is especially useful when using literal bindings for numeric properties.  For example, an HTML template may specify a numeric value
 to an attribute as a simple string:
@@ -121,14 +121,14 @@ the <code>tapestry.coerce.ValueConverter</code> service.
 <p>
 In Tapestry 3.0, it was necessary to inform Tapestry of how and when a component parameter property was accessed -- this
 was parameter direction.
-Parameter direction is now ignored; Tapestry 3.1 now generates smart, caching accessor methods for parameter properties that work properly
+Parameter direction is now ignored; Tapestry 4.0 now generates smart, caching accessor methods for parameter properties that work properly
 in all cases.  In effect, all parameters are now of direction auto (but its a smarter, more flexible version of direction
 auto than was available in Tapestry 3.0).
 </p>
 
 <p>
 This may be of concern if your component used the custom parameter direction. In Tapestry 3.0, direction custom meant that your code
-would directly access the &IBinding; object for the parameter, and no property for the parameter would be created.  In Tapestry 3.1, 
+would directly access the &IBinding; object for the parameter, and no property for the parameter would be created.  In Tapestry 4.0, 
 a property <em>will</em> be created ... even if you continue to use the 3.0 DTD and specify direction custom.
 </p>
 
@@ -167,7 +167,7 @@ Then your 3.0 source code might look like:
 </source>
 
 <p>
-In Tapestry 3.1, the specification is much simpler:
+In Tapestry 4.0, the specification is much simpler:
 </p>
 
 <source><![CDATA[
@@ -225,18 +225,18 @@ Because of the other improvements to parameters, it is virtually never necessary
   
 <p>
 In the Tapestry 3.0 DTD, the optional default-value attribute was used to provide an OGNL expression to use for a parameter, if the
-parameter is not otherwise bound.  In the Tapestry 3.1 DTD, the default-value attribute is a &binding-reference;.  The following are
+parameter is not otherwise bound.  In the Tapestry 4.0 DTD, the default-value attribute is a &binding-reference;.  The following are
 equivalent:
 </p>
 
 <source><![CDATA[
   <parameter name="foo" type="int" default-value="bar.baz"/>  <!-- 3.0 -->
   
-  <parameter name="foo" default-value="ognl:bar.baz"/>        <!-- 3.1 -->]]>
+  <parameter name="foo" default-value="ognl:bar.baz"/>        <!-- 4.0 -->]]>
 </source>
   
 <p>
-The advantage in 3.1 is that it is easier to specify simple strings as defaults; it is also possible to use other binding prefixes
+The advantage in 4.0 is that it is easier to specify simple strings as defaults; it is also possible to use other binding prefixes
 (such as message:, or a user-supplied prefix).
 </p>
   
@@ -247,7 +247,7 @@ The advantage in 3.1 is that it is easier to specify simple strings as defaults;
   
 <p>
 Tapestry 3.0 included an &lt;inherited-binding&gt; element, this was a way to directly pass the &IBinding; object for a component parameter
-to a parameter of a nested component. This is no longer supported in Tapestry 3.1; instead, the property for the component parameter should be 
+to a parameter of a nested component. This is no longer supported in Tapestry 4.0; instead, the property for the component parameter should be 
 bound to the nested component parameter:
 </p>
 
@@ -261,7 +261,7 @@ bound to the nested component parameter:
     <inherited-binding name="count" parameter-name="itemCount"/>
   </component>
   
-  <!-- 3.1 -->
+  <!-- 4.0 -->
   
   <parameter name="itemCount"/>
   
@@ -280,7 +280,7 @@ bound to the nested component parameter:
   <title>Specified Properties</title>
   
 <p>
-Property specifications in Tapestry 3.1 have been simplified.  The specification element has changed
+Property specifications in Tapestry 4.0 have been simplified.  The specification element has changed
 from &lt;property-specification&gt; to the simpler, &spec.property;.
 </p>
 
@@ -303,7 +303,7 @@ may instead be specified as the enclosed character data of the &lt;property-spec
 </p>
 
 <p>
-Using the 3.1 DTDs, this is still true, but the initial-value attribute (or the enclosed character data) is a &binding-reference;. To get
+Using the 4.0 DTDs, this is still true, but the initial-value attribute (or the enclosed character data) is a &binding-reference;. To get
 the same behavior as the 3.0 DTD, it must be prefixed with "ognl:".
 </p>
   
@@ -318,7 +318,7 @@ elements to configure the properties of the bean.
 </p>
   
 <p>
-In Tapestry 3.1, these two elements have been replaced by the &spec.set; element, which uses a &binding-reference; to provide the 
+In Tapestry 4.0, these two elements have been replaced by the &spec.set; element, which uses a &binding-reference; to provide the 
 value.
 </p>
 
@@ -328,13 +328,13 @@ value.
   <title>Abstract classes</title>
   
 <p>
-In Tapestry 3.0, it was rare, put possible, for your page and component classes to be concrete (not abstract).  In Tapestry 3.1,
+In Tapestry 3.0, it was rare, put possible, for your page and component classes to be concrete (not abstract).  In Tapestry 4.0,
 that is no longer possible ... base classes such as &BasePage; are themselves abstract because key properties, such as <code>messages</code>
 are now injected into the classes, rather than inherited from base classes.
 </p>  
 
 <p>
-On upgrading from 3.0 to 3.1 and recompiling, you may see errors about "having to provide an implementation for method ..."; simply add the
+On upgrading from 3.0 to 4.0 and recompiling, you may see errors about "having to provide an implementation for method ..."; simply add the
 abstract keyword to your classes.  They <em>will</em> work at runtime.
 </p>
   

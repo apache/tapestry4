@@ -23,7 +23,7 @@ import org.apache.tapestry.request.IUploadFile;
  * Implementations of this service typically use the threaded service lifecycle model.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface MultipartDecoder
 {

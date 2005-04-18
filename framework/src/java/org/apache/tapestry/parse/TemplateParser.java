@@ -127,7 +127,7 @@ public class TemplateParser implements ITemplateParser
     /**
      * Attribute name used to identify components.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     private String _componentAttributeName;

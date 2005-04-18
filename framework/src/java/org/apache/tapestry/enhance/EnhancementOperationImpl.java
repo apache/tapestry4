@@ -46,7 +46,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * provide a {@link org.apache.tapestry.services.ComponentConstructor}from any enhancements.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class EnhancementOperationImpl implements EnhancementOperation
 {

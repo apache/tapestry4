@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.globals" version="3.1.0" package="org.apache.tapestry.services">
+<module id="tapestry.globals" version="4.0.0" package="org.apache.tapestry.services">
   
   Contains global information about the application and (inside threaded
   services) about the current request. In addition, services based

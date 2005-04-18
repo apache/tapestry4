@@ -82,7 +82,7 @@ Tapestry is distributed under the terms of the Apache Software License.
   <title>Status</title>
   
 <p>
-Work has begun on Tapestry 3.1, which is currently in an early alpha stage.  Documentation is being converted
+Work has begun on Tapestry 4.0, which is currently in an early alpha stage.  Documentation is being converted
 from the old DocBook format, to the new Forrest format, leaving many temporary gaps. Only the framework and the contrib
 library is being built, example code is not.
 </p>

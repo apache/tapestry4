@@ -21,7 +21,7 @@ import org.apache.tapestry.coerce.ValueConverter;
  * Stores a static (invariant) string as the value.
  * 
  * <p>
- * Note: renamed from StaticBinding to LiteralBinding in release 3.1.
+ * Note: renamed from StaticBinding to LiteralBinding in release 4.0.
  * 
  * @author Howard Lewis Ship
  */

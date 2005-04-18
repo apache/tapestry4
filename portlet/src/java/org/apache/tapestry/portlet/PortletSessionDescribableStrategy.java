@@ -27,7 +27,7 @@ import org.apache.tapestry.web.WebUtils;
  * Describes {@link javax.portlet.PortletSession}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PortletSessionDescribableStrategy implements DescribableStrategy
 {

@@ -25,7 +25,7 @@ import org.apache.tapestry.binding.BindingSource;
  * (with an initial value).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class InitialValueBindingCreator
 {

@@ -23,7 +23,7 @@ import org.apache.hivemind.impl.BaseLocatable;
  * for error reporting purposes.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class RegexpMatch extends BaseLocatable
 {

@@ -23,7 +23,7 @@ import org.apache.tapestry.web.WebResponse;
  * Filter interface for {@link org.apache.tapestry.services.WebRequestServicer}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface WebRequestServicerFilter
 {

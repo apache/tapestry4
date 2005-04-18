@@ -31,7 +31,7 @@ import org.apache.tapestry.spec.IParameterSpecification;
  * Responsible for creating properties for connected parameters.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ParameterPropertyWorker implements EnhancementWorker
 {
@@ -60,7 +60,7 @@ public class ParameterPropertyWorker implements EnhancementWorker
 
     /**
      * Performs the enhancement for a single parameter; this is about to change radically in release
-     * 3.1 but for the moment we're emulating 3.0 behavior.
+     * 4.0 but for the moment we're emulating 3.0 behavior.
      */
 
     private void performEnhancement(EnhancementOperation op, String parameterName,
@@ -71,7 +71,7 @@ public class ParameterPropertyWorker implements EnhancementWorker
         Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, ps.getType());
 
         // 3.0 would allow connected parameter properties to be fully implemented
-        // in the component class. This is not supported in 3.1 and an existing
+        // in the component class. This is not supported in 4.0 and an existing
         // property will be overwritten in the subclass.
 
         op.claimProperty(propertyName);

@@ -25,7 +25,7 @@ import org.apache.tapestry.engine.HomeService;
  * this can happen when a Portlet is first added to a Portal page.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PortletHomeService extends HomeService
 {

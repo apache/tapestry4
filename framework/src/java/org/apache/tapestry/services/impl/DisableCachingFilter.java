@@ -32,7 +32,7 @@ import org.apache.tapestry.web.WebResponse;
  * org.apache.tapestry.disable-caching system property is true.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class DisableCachingFilter implements WebRequestServicerFilter
 {

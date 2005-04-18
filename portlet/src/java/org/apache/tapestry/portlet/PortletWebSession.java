@@ -27,7 +27,7 @@ import org.apache.tapestry.web.WebUtils;
  * Adapts a {@link javax.portlet.PortletSession}as a {@link org.apache.tapestry.web.WebSession}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PortletWebSession implements WebSession
 {

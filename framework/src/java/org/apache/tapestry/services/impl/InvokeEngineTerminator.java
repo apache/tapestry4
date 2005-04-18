@@ -34,7 +34,7 @@ import org.apache.tapestry.web.WebResponse;
  * <li>Returning the engine instance to the pool at the end of the request. </ul
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class InvokeEngineTerminator implements WebRequestServicer
 {

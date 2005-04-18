@@ -19,7 +19,7 @@ package org.apache.tapestry.describe;
  * {@link org.apache.tapestry.describe.Describable}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class NativeStrategy implements DescribableStrategy
 {

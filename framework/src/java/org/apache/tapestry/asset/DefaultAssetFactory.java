@@ -25,7 +25,7 @@ import org.apache.tapestry.IAsset;
  * assumed that the prefix is, in fact, the scheme of an external URL.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class DefaultAssetFactory implements AssetFactory
 {

@@ -23,7 +23,7 @@ import org.apache.hivemind.util.LocalizedResource;
  * Finds localized resources within a {@link org.apache.tapestry.web.WebContext}..
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 
 public class LocalizedWebContextResourceFinder

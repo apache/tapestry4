@@ -38,7 +38,7 @@ public class ContainedComponent extends LocatablePropertyHolder implements ICont
 
     private static final int MAP_SIZE = 3;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private String _propertyName;
 
     /**
@@ -126,13 +126,13 @@ public class ContainedComponent extends LocatablePropertyHolder implements ICont
         inheritInformalParameters = value;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public String getPropertyName()
     {
         return _propertyName;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setPropertyName(String propertyName)
     {
         _propertyName = propertyName;

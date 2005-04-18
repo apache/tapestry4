@@ -22,7 +22,7 @@ import org.apache.tapestry.IComponent;
  * Creates a new instance of {@link org.apache.tapestry.IBinding}.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface BindingFactory
 {

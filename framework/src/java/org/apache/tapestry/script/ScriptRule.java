@@ -28,10 +28,10 @@ import org.xml.sax.Attributes;
  */
 public class ScriptRule extends BaseRule
 {
-    /** @since 3.1 */
+    /** @since 4.0 */
     private ExpressionEvaluator _evaluator;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private ValueConverter _valueConverter;
 
     public ScriptRule(ExpressionEvaluator evaluator, ValueConverter valueConverter)

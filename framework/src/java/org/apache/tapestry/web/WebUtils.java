@@ -23,7 +23,7 @@ import org.apache.hivemind.util.Defense;
 
 /**
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class WebUtils
 {

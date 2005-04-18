@@ -18,10 +18,10 @@ import org.apache.hivemind.test.HiveMindTestCase;
 
 /**
  * Tests a few new features of {@link org.apache.tapestry.AbstractComponent}&nbsp;added in release
- * 3.1.
+ * 4.0.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestAbstractComponent extends HiveMindTestCase
 {

@@ -18,7 +18,7 @@ package org.apache.tapestry.record;
  * Represents a change to a component on a page, this represents a datum of information stored by a
  * {@link org.apache.tapestry.engine.IPageRecorder}.
  * <p>
- * Renamed from IPageChange in release 3.1.
+ * Renamed from IPageChange in release 4.0.
  * 
  * @author Howard Lewis Ship
  */

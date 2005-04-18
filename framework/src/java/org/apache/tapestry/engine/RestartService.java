@@ -40,22 +40,22 @@ import org.apache.tapestry.services.ServiceConstants;
 
 public class RestartService implements IEngineService
 {
-    /** @since 3.1 */
+    /** @since 4.0 */
     private Log _log;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private HttpServletRequest _request;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private HttpServletResponse _response;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private AbsoluteURLBuilder _builder;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private LinkFactory _linkFactory;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private String _servletPath;
 
     public ILink getLink(IRequestCycle cycle, Object parameter)
@@ -98,37 +98,37 @@ public class RestartService implements IEngineService
         return Tapestry.RESTART_SERVICE;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setLog(Log log)
     {
         _log = log;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setRequest(HttpServletRequest request)
     {
         _request = request;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setBuilder(AbsoluteURLBuilder builder)
     {
         _builder = builder;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setResponse(HttpServletResponse response)
     {
         _response = response;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setServletPath(String servletPath)
     {
         _servletPath = servletPath;

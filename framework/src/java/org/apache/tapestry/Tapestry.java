@@ -129,7 +129,7 @@ public final class Tapestry
      * Query parameter that identfies the service for the request.
      * 
      * @since 1.0.3
-     * @deprecated To be removed in 3.2. Use
+     * @deprecated To be removed in 4.1. Use
      *             {@link org.apache.tapestry.services.ServiceConstants#SERVICE}instead.
      */
 
@@ -143,7 +143,7 @@ public final class Tapestry
      * earlier).
      * 
      * @since 1.0.3
-     * @deprecated To be removed in 3.2. Use
+     * @deprecated To be removed in 4.1. Use
      *             {@link org.apache.tapestry.services.ServiceConstants#PARAMETER}instead.
      */
 
@@ -746,7 +746,7 @@ public final class Tapestry
      * behavior between releases, it is smarter to just implement our own little method!
      * 
      * @since 3.0
-     * @deprecated To be removed in Tapestry 3.2. Use {@link HiveMind#isBlank(java.lang.String)}
+     * @deprecated To be removed in Tapestry 4.1. Use {@link HiveMind#isBlank(java.lang.String)}
      *             instead.
      */
 
@@ -759,7 +759,7 @@ public final class Tapestry
      * Returns true if the input is not null and not empty (or only whitespace).
      * 
      * @since 3.0
-     * @deprecated To be removed in Tapestry 3.2. Use {@link HiveMind#isNonBlank(java.lang.String)}
+     * @deprecated To be removed in Tapestry 4.1. Use {@link HiveMind#isNonBlank(java.lang.String)}
      *             instead.
      */
 

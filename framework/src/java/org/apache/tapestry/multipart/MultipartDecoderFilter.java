@@ -28,7 +28,7 @@ import org.apache.tapestry.services.ServletRequestServicerFilter;
  * {@link org.apache.tapestry.multipart.MultipartDecoder}&nbsp;to obtain form parameters.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class MultipartDecoderFilter implements ServletRequestServicerFilter
 {

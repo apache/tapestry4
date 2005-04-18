@@ -25,7 +25,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * Injects assets as component properties.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class InjectAssetWorker implements EnhancementWorker
 {

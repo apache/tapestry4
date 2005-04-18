@@ -28,7 +28,7 @@ import org.apache.tapestry.IMarkupWriter;
  * {@link #title(String)},{@link #property(String, Object)}, etc.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class HTMLDescriptionReceiver implements DescriptionReceiver
 {

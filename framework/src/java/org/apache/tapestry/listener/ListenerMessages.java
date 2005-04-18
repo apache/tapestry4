@@ -21,7 +21,7 @@ import org.apache.tapestry.Tapestry;
 
 /**
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 class ListenerMessages
 {

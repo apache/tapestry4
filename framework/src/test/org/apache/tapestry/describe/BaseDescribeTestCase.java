@@ -20,7 +20,7 @@ import org.apache.tapestry.IRequestCycle;
 
 /**
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class BaseDescribeTestCase extends HiveMindTestCase
 {

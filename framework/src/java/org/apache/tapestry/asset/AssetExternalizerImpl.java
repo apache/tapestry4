@@ -87,12 +87,12 @@ import org.apache.tapestry.util.StringSplitter;
 
 public class AssetExternalizerImpl implements AssetExternalizer
 {
-    /** @since 3.1 */
+    /** @since 4.0 */
     private Log _log;
 
     private ClassResolver _resolver;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private IPropertySource _propertySource;
 
     private File _assetDir;
@@ -271,19 +271,19 @@ public class AssetExternalizerImpl implements AssetExternalizer
         }
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setLog(Log log)
     {
         _log = log;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setClassResolver(ClassResolver resolver)
     {
         _resolver = resolver;
     }
 
-    /** since 3.1 */
+    /** since 4.0 */
     public void setPropertySource(IPropertySource propertySource)
     {
         _propertySource = propertySource;

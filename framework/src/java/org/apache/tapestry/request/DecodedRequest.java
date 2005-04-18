@@ -44,7 +44,7 @@ public class DecodedRequest
     /**
      * Initializes default values for the properties from the request provided.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public DecodedRequest(HttpServletRequest request)

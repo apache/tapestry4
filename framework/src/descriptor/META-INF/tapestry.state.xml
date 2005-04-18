@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.state" version="3.1.0" package="org.apache.tapestry.engine.state">
+<module id="tapestry.state" version="4.0.0" package="org.apache.tapestry.engine.state">
   
   Management of application state objects.
   

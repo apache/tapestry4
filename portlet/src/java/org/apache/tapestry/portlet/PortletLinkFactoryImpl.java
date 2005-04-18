@@ -30,7 +30,7 @@ import org.apache.tapestry.util.QueryParameterMap;
  * create generate Portlet URLs.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PortletLinkFactoryImpl extends LinkFactoryImpl
 {

@@ -24,7 +24,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * Tests for {@link org.apache.tapestry.engine.state.InstantiateClassStateObjectFactory}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestInstantiateClassStateObjectFactory extends HiveMindTestCase
 {

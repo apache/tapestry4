@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  * the tapestry.request.ServletRequestServicerPipeline configuration point.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ServletRequestServicer
 {

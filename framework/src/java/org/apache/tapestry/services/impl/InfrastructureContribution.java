@@ -26,7 +26,7 @@ import org.apache.hivemind.impl.BaseLocatable;
  * <code>tapestry.Infrastructure</code> and <code>tapestry.InfrastructureOverride</code>.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class InfrastructureContribution extends BaseLocatable
 {

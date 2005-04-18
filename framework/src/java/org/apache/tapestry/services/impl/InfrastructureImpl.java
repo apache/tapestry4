@@ -57,7 +57,7 @@ import org.apache.tapestry.web.WebResponse;
  * Allows access to selected HiveMind services.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class InfrastructureImpl implements Infrastructure
 {

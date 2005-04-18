@@ -40,7 +40,7 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  * a sequence of operations and assertions.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class IntegrationTestScriptParser extends AbstractParser
 {

@@ -21,7 +21,7 @@ import org.apache.tapestry.util.text.MarkupCharacterTranslator;
  * (they can pass right through).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class UTFMarkupFilter extends AbstractMarkupFilter
 {

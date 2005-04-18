@@ -243,7 +243,7 @@ public interface IComponent extends IRender, LocationHolder
             IComponentSpecification specification);
 
     /**
-     * Returns component strings for the component. Starting in release 3.1, this method is
+     * Returns component strings for the component. Starting in release 4.0, this method is
      * unimplemented (and is automatically injected into each component implementation).
      * 
      * @since 3.0
@@ -289,7 +289,7 @@ public interface IComponent extends IRender, LocationHolder
     /**
      * Returns true if the component is currently rendering.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public boolean isRendering();
@@ -300,7 +300,7 @@ public interface IComponent extends IRender, LocationHolder
      * difference concerns parameters, whose defaults values may be set from inside
      * {@link #finishLoad(IRequestCycle, IPageLoader, IComponentSpecification)}.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void enterActiveState();
@@ -308,7 +308,7 @@ public interface IComponent extends IRender, LocationHolder
     /**
      * Returns a {@link IBeanProvider}&nbsp;from which managed beans can be obtained.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public IBeanProvider getBeans();
@@ -318,7 +318,7 @@ public interface IComponent extends IRender, LocationHolder
      * read-only properties that implement the {@link IActionListener}&nbsp;interface, but in fact,
      * cause public instance methods to be invoked (via reflection).
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public ListenerMap getListeners();

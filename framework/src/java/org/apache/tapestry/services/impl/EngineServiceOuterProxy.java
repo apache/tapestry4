@@ -30,7 +30,7 @@ import org.apache.tapestry.engine.ILink;
  * extra layer of proxying resolves that issue.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class EngineServiceOuterProxy implements IEngineService
 {

@@ -28,7 +28,7 @@ import org.apache.tapestry.engine.IPropertySource;
  * allows the locale to be specified on a thread-safe, per-invocation basis.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class LocalizedPropertySource
 {

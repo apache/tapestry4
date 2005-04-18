@@ -26,7 +26,7 @@ import org.apache.tapestry.web.WebContext;
  * implementations differentiate themselves by storing different values into these properties.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ApplicationGlobals
 {

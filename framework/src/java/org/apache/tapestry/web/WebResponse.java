@@ -25,7 +25,7 @@ import org.apache.tapestry.util.ContentType;
  * print writer) to which content is sent.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface WebResponse
 {

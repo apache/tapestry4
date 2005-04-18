@@ -189,7 +189,7 @@ public interface IRequestCycle
      * Used by {@link IForm forms}to perform a <em>partial</em> rewind so as to respond to the
      * form submission (using the direct service).
      * <p>
-     * Note: the targetActionId parameter was removed in release 3.1.
+     * Note: the targetActionId parameter was removed in release 4.0.
      * 
      * @since 1.0.2
      */
@@ -203,7 +203,7 @@ public interface IRequestCycle
      * is being renderred "for the last time".
      * 
      * @since 2.0.2
-     * @deprecated To be removed in 3.2. Use {@link #forgetPage(String)}.
+     * @deprecated To be removed in 4.1. Use {@link #forgetPage(String)}.
      */
 
     public void discardPage(String name);
@@ -217,7 +217,7 @@ public interface IRequestCycle
      * 
      * @see org.apache.tapestry.engine.DirectService
      * @since 2.0.3
-     * @deprecated To be removed in 3.2. Use {@link #setListenerParameters(Object[])}instead.
+     * @deprecated To be removed in 4.1. Use {@link #setListenerParameters(Object[])}instead.
      */
 
     public void setServiceParameters(Object[] parameters);
@@ -228,7 +228,7 @@ public interface IRequestCycle
      * method) by invoking {@link #getListenerParameters()}.
      * 
      * @see org.apache.tapestry.engine.DirectService
-     * @since 3.1
+     * @since 4.0
      */
     public void setListenerParameters(Object[] parameters);
 
@@ -238,7 +238,7 @@ public interface IRequestCycle
      * Through release 2.1, the return type was String[]. This is an incompatible change in 2.2.
      * 
      * @since 2.0.3
-     * @deprecated To be removed in 3.2. Use {@link #getListenerParameters()}instead.
+     * @deprecated To be removed in 4.1. Use {@link #getListenerParameters()}instead.
      */
 
     public Object[] getServiceParameters();
@@ -246,7 +246,7 @@ public interface IRequestCycle
     /**
      * Returns parameters previously stored by {@link #setListenerParameters(Object[])}.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public Object[] getListenerParameters();
@@ -284,7 +284,7 @@ public interface IRequestCycle
      * Returns a query parameter value, or null if not provided in the request. If multiple values
      * are provided, returns the first value.
      * 
-     * @since 3.1
+     * @since 4.0
      */
     public String getParameter(String name);
 
@@ -292,7 +292,7 @@ public interface IRequestCycle
      * Returns all query parameter values for the given name. Returns null if no values were
      * provided.
      * 
-     * @since 3.1
+     * @since 4.0
      */
     public String[] getParameters(String name);
 
@@ -301,7 +301,7 @@ public interface IRequestCycle
      * path (if any), then expands it to a full URL by prepending with the scheme, server and port
      * (determined from the current {@link org.apache.tapestry.web.WebRequest request}.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public String getAbsoluteURL(String partialURL);
@@ -311,7 +311,7 @@ public interface IRequestCycle
      * rolled back) then the loaded page instance is not affected; if the page is only loaded
      * subsequently, the page instance will not see any persisted property changes.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void forgetPage(String name);
@@ -320,7 +320,7 @@ public interface IRequestCycle
      * Returns the central {@link org.apache.tapestry.services.Infrastructure}&nbsp;object used to
      * manage the processing of the request.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public Infrastructure getInfrastructure();
@@ -328,7 +328,7 @@ public interface IRequestCycle
     /**
      * Returns the {@link RequestContext}. This is provided to ease the upgrade from Tapestry 3.0.
      * 
-     * @deprecated To be removed in 3.2.
+     * @deprecated To be removed in 4.1.
      */
 
     public RequestContext getRequestContext();

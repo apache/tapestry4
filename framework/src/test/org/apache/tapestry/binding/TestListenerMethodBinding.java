@@ -25,7 +25,7 @@ import org.easymock.MockControl;
  * Test for {@link org.apache.tapestry.binding.ListenerMethodBinding}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class TestListenerMethodBinding extends BindingTestCase
 {

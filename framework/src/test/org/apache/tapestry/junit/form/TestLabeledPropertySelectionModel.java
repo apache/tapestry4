@@ -22,7 +22,7 @@ import org.apache.tapestry.junit.TapestryTestCase;
  * Test case for {@link org.apache.tapestry.form.LabeledPropertySelectionModel}.
  * 
  * @author Paul Ferraro
- * @since  3.1
+ * @since  4.0
  */
 public class TestLabeledPropertySelectionModel extends TapestryTestCase
 {

@@ -27,7 +27,7 @@ import org.apache.tapestry.services.ObjectPool;
  * Service point tapestry.request.EngineManager.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class EngineManagerImpl implements EngineManager
 {

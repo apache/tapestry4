@@ -27,7 +27,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * Default implementation of {@link org.apache.tapestry.parse.ITemplateParserDelegate}.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class DefaultParserDelegate implements ITemplateParserDelegate
 {

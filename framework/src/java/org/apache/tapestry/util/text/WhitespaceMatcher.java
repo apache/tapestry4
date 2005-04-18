@@ -18,7 +18,7 @@ package org.apache.tapestry.util.text;
  * Matches a whitespace character.
  * 
  * @author mb
- * @since 3.1
+ * @since 4.0
  */
 public class WhitespaceMatcher implements ICharacterMatcher 
 {

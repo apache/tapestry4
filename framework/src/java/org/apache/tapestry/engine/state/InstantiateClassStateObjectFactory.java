@@ -21,7 +21,7 @@ import org.apache.hivemind.impl.BaseLocatable;
  * Simple state object factory that instantiates an instance of a class.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class InstantiateClassStateObjectFactory extends BaseLocatable implements StateObjectFactory
 {

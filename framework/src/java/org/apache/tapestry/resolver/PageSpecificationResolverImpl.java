@@ -66,13 +66,13 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
     /** Set by resolve() */
     private String _simpleName;
 
-    /** @since 3.1 * */
+    /** @since 4.0 * */
     private INamespace _applicationNamespace;
 
-    /** @since 3.1 * */
+    /** @since 4.0 * */
     private INamespace _frameworkNamespace;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ComponentPropertySource _componentPropertySource;
 
@@ -278,14 +278,14 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
                 Tapestry.TEMPLATE_EXTENSION_PROPERTY);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setLog(Log log)
     {
         _log = log;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setComponentPropertySource(ComponentPropertySource componentPropertySource)
     {
         _componentPropertySource = componentPropertySource;

@@ -34,7 +34,7 @@ import org.apache.tapestry.spec.InjectStateSpecification;
  * local variable for efficiency, and clear out that variable at the end of the request.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class InjectStateWorker implements EnhancementWorker
 {

@@ -23,7 +23,7 @@ import org.apache.hivemind.service.MethodSignature;
  * {@link org.apache.tapestry.enhance.EnhancementWorker}objects that perform enhancements.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface EnhancementOperation
 {

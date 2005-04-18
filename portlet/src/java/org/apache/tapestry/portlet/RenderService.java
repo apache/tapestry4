@@ -26,7 +26,7 @@ import org.apache.tapestry.services.ServiceConstants;
  * stores the active page; this is the page that will be rendered.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  * @see org.apache.tapestry.services.impl.ResponseRendererImpl
  */
 public class RenderService implements IEngineService

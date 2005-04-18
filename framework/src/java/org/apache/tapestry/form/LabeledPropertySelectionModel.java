@@ -20,7 +20,7 @@ package org.apache.tapestry.form;
  * configurable.
  * 
  * @author Paul Ferraro
- * @since 3.1
+ * @since 4.0
  */
 public class LabeledPropertySelectionModel implements IPropertySelectionModel
 {

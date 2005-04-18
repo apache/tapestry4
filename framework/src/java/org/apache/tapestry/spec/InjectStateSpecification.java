@@ -21,7 +21,7 @@ import org.apache.hivemind.LocationHolder;
  * state object into a component class.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface InjectStateSpecification extends LocationHolder
 {

@@ -27,7 +27,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * Injects a property that will dynamically access a managed bean.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class InjectBeanWorker implements EnhancementWorker
 {

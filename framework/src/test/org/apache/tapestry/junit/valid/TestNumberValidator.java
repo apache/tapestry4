@@ -240,7 +240,7 @@ public class TestNumberValidator extends BaseValidatorTestCase
     public void testBigDecimal() throws ValidatorException
     {
         testPassThru(BigDecimal.class, new BigDecimal(
-                "-29574923857342908743.29058734289734907543289752345897234590872349085"));
+                "-29574923857342908744.19058734289734907543289752345897234590872349085"));
     }
 
     /** @since 3.0 * */

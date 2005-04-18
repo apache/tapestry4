@@ -47,8 +47,8 @@ used in Tapestry.  In all four cases, the same DOCTYPE is used:
 <source>
 <![CDATA[
 <!DOCTYPE ]]><em>root element</em> <![CDATA[PUBLIC
-  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 ]]></source>
  
 <p>
@@ -91,29 +91,29 @@ The <em>root element</em> is different for each of the four types of specificati
 </table>
 
 <note>
-A fifth type of specification, the Script specification, is described seperately.  In addition, in Tapestry 3.1, 
+A fifth type of specification, the Script specification, is described seperately.  In addition, in Tapestry 4.0, 
 part of an application's behavior is defined by its &HiveMind; module deployment descriptor.
 </note>
 
 <section id="spec.changes">
-   <title>Changes between releases 3.0 and 3.1</title>
+   <title>Changes between releases 3.0 and 4.0</title>
 
 <p>
 The specifications evolve over time, with each release providing an updated DTD allowing access to new features.
-Tapestry 3.1 supports the Tapestry 3.0 DTD (just be sure to use the matching public ID), and in most cases
-existing applications coded against release 3.0 will run unchanged under release 3.1 (though
+Tapestry 4.0 supports the Tapestry 3.0 DTD (just be sure to use the matching public ID), and in most cases
+existing applications coded against release 3.0 will run unchanged under release 4.0 (though
 it is expected that there will be some runtime warnings).
 </p>
 
-<p> The following features of the release 3.0 DTD are changed for release 3.1: </p>
+<p> The following features of the release 3.0 DTD are changed for release 4.0: </p>
 
 <ul>
   <li>The &lt;service&gt; element (inside &spec.application; or &spec.library-specification;) is no longer supported in 
-    release 3.1. 3.0 DTD specifications that use &lt;service&gt; will generate a warning. Use the 
+    release 4.0. 3.0 DTD specifications that use &lt;service&gt; will generate a warning. Use the 
     &tapestry.services.ApplicationServices; configuration point instead.</li>
   <li>
     In the 3.0 DTD, the &spec.binding; element was for specifying OGNL expressions only, and had an
-    expression attribute.  In the 3.1 DTD, it is used for setting all types of attributes, and has
+    expression attribute.  In the 4.0 DTD, it is used for setting all types of attributes, and has
     a value attribute.  The value is a &binding-reference;, which
     uses a prefix to determine which type of binding is to be used.
   </li>
@@ -136,7 +136,7 @@ it is expected that there will be some runtime warnings).
   <li>The &lt;set-property&gt; and &lt;set-message-property&gt; elements
     have been consolidated into &lt;set&gt;, which now uses a (wait for it)
     &binding-reference;.</li>
-  <li>The 3.1 DTD is more liberal about the order in which elements may be specified than the 3.0 DTD.</li>
+  <li>The 4.0 DTD is more liberal about the order in which elements may be specified than the 3.0 DTD.</li>
   <li>The &spec.inject-state; element has been added.</li>
   <li>Added the property attribute to the &spec.component; and &spec.bean; elements.</li>
   <li>Removed the type attribute from the &spec.configure; element.</li>
@@ -145,7 +145,7 @@ it is expected that there will be some runtime warnings).
 </ul>
 
 <p>
-More detailed notes on <link href="upgrade.html">upgrading from Tapestry 3.0 to Tapestry 3.1</link> are available.
+More detailed notes on <link href="upgrade.html">upgrading from Tapestry 3.0 to Tapestry 4.0</link> are available.
 </p>
 
 </section>  <!-- changes -->
@@ -529,7 +529,7 @@ interpreted.
 </table>
 
 <note>
-  More prefixes are forthcoming in release 3.1, and it is is also possible to define your own prefixes.
+  More prefixes are forthcoming in release 4.0, and it is is also possible to define your own prefixes.
 </note>
 
 
@@ -1391,7 +1391,7 @@ As with specified properties, you may define abstract accessor methods in you Ja
 <note>
 In Tapestry 3.0 and earlier, it was necesary to specify a <em>parameter direction</em>, which informed Tapestry about how the
 parameter was used by the component. This allowed Tapestry to properly control when values moved between a component and its
-container ... but was an awkward solution.  Tapestry 3.1 adds much more sophisticated runtime code generation for parameters so
+container ... but was an awkward solution.  Tapestry 4.0 adds much more sophisticated runtime code generation for parameters so
 they <em>just work</em>, regardless of whether you access a parameter property while the component is rendering, in a listener method,
 or at some other time entirely.
 </note>
@@ -1471,10 +1471,10 @@ itself.
 </table>
 
 <note> In the Tapestry 3.0 DTD, this element was named &lt;property-specification&gt; and had an additional attribute, 
-  type. In Tapestry 3.1, the type of the implemented property will simply match the type of any existing (abstract) 
-  property, or will default to Object. In addition, Tapestry 3.0 only had persistent or not persistent; Tapestry 3.1
+  type. In Tapestry 4.0, the type of the implemented property will simply match the type of any existing (abstract) 
+  property, or will default to Object. In addition, Tapestry 3.0 only had persistent or not persistent; Tapestry 4.0
   has different kinds of persistence, denoted by the different strategies.  Tapestry 3.0 persistence is equivalent
-  to Tapestry 3.1 "session" persistence.
+  to Tapestry 4.0 "session" persistence.
   </note>
 
 </section> <!-- spec.property -->

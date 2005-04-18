@@ -156,7 +156,7 @@ public class TestComponentMessages extends TapestryTestCase
         check(messages, "only-in-base", "BASE1");
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void testOnlyInNamespace()
     {
         Messages messages = createMessages(MOCK1, new Locale("en", "US"));
@@ -164,7 +164,7 @@ public class TestComponentMessages extends TapestryTestCase
         check(messages, "only-in-namespace", "LIBRARY_BASE.only-in-namespace");
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void testLocalizedInNamespace()
     {
         Messages messages = createMessages(MOCK1, new Locale("fr"));
@@ -172,7 +172,7 @@ public class TestComponentMessages extends TapestryTestCase
         check(messages, "localized-in-namespace", "LIBRARY_FR.localized-in-namespace");
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void testComponentOverridesNamespace()
     {
         Messages messages = createMessages(MOCK1, new Locale("en", "US"));
@@ -183,7 +183,7 @@ public class TestComponentMessages extends TapestryTestCase
                 "MOCKPAGE1_BASE.component-overrides-namespace");
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void testLocalizedComponentOverridesLocalizedNamespace()
     {
         Messages messages = createMessages(MOCK1, new Locale("fr"));

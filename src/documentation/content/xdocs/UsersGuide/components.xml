@@ -326,9 +326,9 @@ invoking setTitle() will use the binding for the title parameter to update the b
 <note>
 If you are upgrading from Tapestry 3.0, you may be wondering "how do I specify parameter direction now?".  Parameter direction was
 a hint you would provide to Tapestry that would tell Tapestry when it was appropriate to copy values into, or out of,  component
-parameter properties. This is no longer necessary in Tapestry 3.1 -- the runtime code generation for parameter properties is much
+parameter properties. This is no longer necessary in Tapestry 4.0 -- the runtime code generation for parameter properties is much
 more sophisticated.  All parameters are now similar to Tapestry 3.0's auto direction, but much smarter.  Tapestry 3.0 auto parameters
-were only useable with required parameters and were inefficient.  In Tapestry 3.1, parameter values are cached such that the OGNL expression
+were only useable with required parameters and were inefficient.  In Tapestry 4.0, parameter values are cached such that the OGNL expression
 does not have to be evaluated every time the parameter is accessed and things still work properly for optional parameters.
 </note>
 

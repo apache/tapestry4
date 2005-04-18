@@ -96,7 +96,7 @@ import org.apache.tapestry.event.PageEvent;
 public abstract class TableView extends BaseComponent implements PageDetachListener,
         PageBeginRenderListener, ITableModelSource
 {
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public abstract TableColumnModelSource getModelSource();
 

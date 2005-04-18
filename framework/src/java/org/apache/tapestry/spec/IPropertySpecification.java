@@ -55,7 +55,7 @@ public interface IPropertySpecification extends LocationHolder
     /**
      * A string indicating how the property is persisted.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     public void setPersistence(String persistence);
@@ -63,7 +63,7 @@ public interface IPropertySpecification extends LocationHolder
     /**
      * If null, then the property is not persistent.
      * 
-     * @since 3.1
+     * @since 4.0
      */
     public String getPersistence();
 

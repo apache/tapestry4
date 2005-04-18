@@ -43,16 +43,16 @@ import org.apache.tapestry.web.WebSession;
 
 public class ActionService implements IEngineService
 {
-    /** @since 3.1 */
+    /** @since 4.0 */
     private ResponseRenderer _responseRenderer;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private LinkFactory _linkFactory;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private static final String ACTION = "action";
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private WebRequest _request;
 
     public ILink getLink(IRequestCycle cycle, Object parameter)
@@ -139,19 +139,19 @@ public class ActionService implements IEngineService
         return Tapestry.ACTION_SERVICE;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setResponseRenderer(ResponseRenderer responseRenderer)
     {
         _responseRenderer = responseRenderer;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setRequest(WebRequest request)
     {
         _request = request;

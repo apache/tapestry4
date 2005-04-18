@@ -47,13 +47,13 @@ public class TestEngineServiceLink extends TapestryTestCase
         return result;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private WebRequest newRequest()
     {
         return (WebRequest) newMock(WebRequest.class);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void testGetURLWithParameters()
     {
         WebRequest request = newRequest();
@@ -95,7 +95,7 @@ public class TestEngineServiceLink extends TapestryTestCase
         verifyControls();
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void testGetURLSansParameters()
     {
@@ -117,7 +117,7 @@ public class TestEngineServiceLink extends TapestryTestCase
         verifyControls();
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void testGetURLWithAnchor()
     {

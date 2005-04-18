@@ -38,7 +38,7 @@ import javax.servlet.http.HttpSession;
  *
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 
 public class MockRequest extends AttributeHolder implements HttpServletRequest

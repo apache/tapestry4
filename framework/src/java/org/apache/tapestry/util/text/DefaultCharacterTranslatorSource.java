@@ -24,7 +24,7 @@ import java.util.Map;
  * if the encoding is a unicode one. 
  * 
  * @author mb
- * @since 3.1
+ * @since 4.0
  */
 public class DefaultCharacterTranslatorSource implements ICharacterTranslatorSource
 {

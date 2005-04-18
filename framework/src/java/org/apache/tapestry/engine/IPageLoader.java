@@ -70,7 +70,7 @@ public interface IPageLoader
      * the "outers" of the component being updated.
      * 
      * @see ITemplateComponent
-     * @since 3.1
+     * @since 4.0
      */
     public void loadTemplateForComponent(IRequestCycle cycle, ITemplateComponent component);
 }

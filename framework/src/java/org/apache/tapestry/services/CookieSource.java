@@ -18,7 +18,7 @@ package org.apache.tapestry.services;
  * Used by other services to obtain cookie values for the current request.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface CookieSource
 {

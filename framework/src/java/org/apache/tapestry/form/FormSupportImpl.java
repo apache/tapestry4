@@ -44,7 +44,7 @@ import org.apache.tapestry.util.IdAllocator;
  * Encapsulates most of the behavior of a Form component.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class FormSupportImpl implements FormSupport
 {

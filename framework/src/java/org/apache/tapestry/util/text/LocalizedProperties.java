@@ -31,7 +31,7 @@ import java.util.Map;
  * of the properties as defined in the file. 
  * 
  * @author mb
- * @since 3.1
+ * @since 4.0
  */
 public class LocalizedProperties
 {

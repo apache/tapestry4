@@ -22,7 +22,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * Service interface for locating a page specification given its name.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface PageSpecificationResolver
 {

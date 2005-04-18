@@ -32,7 +32,7 @@ import org.apache.tapestry.web.WebRequest;
  * Uses the threaded model.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  * @see org.apache.tapestry.engine.ILink
  */
 public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStrategy

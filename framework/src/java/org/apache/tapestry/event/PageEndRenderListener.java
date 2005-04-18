@@ -21,7 +21,7 @@ import java.util.EventListener;
  * less-interesting) end of page render event.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface PageEndRenderListener extends EventListener
 {

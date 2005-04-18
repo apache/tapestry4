@@ -27,7 +27,7 @@ import org.apache.tapestry.INamespace;
  * and possibly additional packages defined as meta-data within the namespace.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class NamespaceClassSearchPageClassProvider implements PageClassProvider
 {

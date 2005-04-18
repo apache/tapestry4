@@ -26,7 +26,7 @@ import org.apache.tapestry.engine.IPropertySource;
  * <code>tapestry.GlobalPropertySource</code> service.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PropertyObjectProvider implements ObjectProvider
 {

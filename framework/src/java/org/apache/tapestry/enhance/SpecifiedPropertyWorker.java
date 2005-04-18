@@ -34,7 +34,7 @@ import org.apache.tapestry.spec.IPropertySpecification;
  * component's specification.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class SpecifiedPropertyWorker implements EnhancementWorker
 {
@@ -87,7 +87,7 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         op.addField(field, propertyType);
 
         // Release 3.0 would squack a bit about overriding non-abstract methods
-        // if they exist. 3.1 is less picky ... it blindly adds new methods, possibly
+        // if they exist. 4.0 is less picky ... it blindly adds new methods, possibly
         // overwriting methods in the base component class.
 
         EnhanceUtils.createSimpleAccessor(op, field, propertyName, propertyType);

@@ -37,18 +37,18 @@ import org.apache.tapestry.services.ServiceConstants;
 
 public class ResetService implements IEngineService
 {
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ResponseRenderer _responseRenderer;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private ResetEventCoordinator _resetEventCoordinator;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private boolean _enabled;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     private LinkFactory _linkFactory;
 
@@ -84,27 +84,27 @@ public class ResetService implements IEngineService
         _responseRenderer.renderResponse(cycle);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setResponseRenderer(ResponseRenderer responseRenderer)
     {
         _responseRenderer = responseRenderer;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setResetEventCoordinator(ResetEventCoordinator resetEventCoordinator)
     {
         _resetEventCoordinator = resetEventCoordinator;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public void setEnabled(boolean enabled)
     {
         _enabled = enabled;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;

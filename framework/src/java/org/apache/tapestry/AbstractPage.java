@@ -151,7 +151,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      * Subclasses may override this implementation (which is empty).
      * 
      * @since 2.2
-     * @deprecated To be removed in 3.2 with no replacement.
+     * @deprecated To be removed in 4.1 with no replacement.
      * @see PageDetachListener
      * @see PageAttachListener
      */
@@ -308,7 +308,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     /**
      * Does nothing, subclasses may override as needed.
      * 
-     * @deprecated To be removed in 3.1. Implement {@link PageRenderListener}instead.
+     * @deprecated To be removed in 4.0. Implement {@link PageRenderListener}instead.
      */
 
     public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
@@ -372,32 +372,32 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         addPageEndRenderListener(listener);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void addPageBeginRenderListener(PageBeginRenderListener listener)
     {
         addListener(PageBeginRenderListener.class, listener);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void addPageEndRenderListener(PageEndRenderListener listener)
     {
         addListener(PageEndRenderListener.class, listener);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void removePageBeginRenderListener(PageBeginRenderListener listener)
     {
         removeListener(PageBeginRenderListener.class, listener);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void removePageEndRenderListener(PageEndRenderListener listener)
     {
         removeListener(PageEndRenderListener.class, listener);
     }
 
     /**
-     * @since 3.1
+     * @since 4.0
      */
 
     protected void firePageAttached()
@@ -546,13 +546,13 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         removeListener(PageValidateListener.class, listener);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void addPageAttachListener(PageAttachListener listener)
     {
         addListener(PageAttachListener.class, listener);
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void removePageAttachListener(PageAttachListener listener)
     {
         removeListener(PageAttachListener.class, listener);

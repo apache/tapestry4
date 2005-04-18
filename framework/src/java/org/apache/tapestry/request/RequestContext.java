@@ -39,12 +39,12 @@ import org.apache.tapestry.ApplicationServlet;
  * {@link org.apache.tapestry.web.WebRequest}injected into their pages, components, or services. It
  * will be removed in the next release of Tapestry.
  * <p>
- * Interestingly, with the Tapestry 3.1 architecture, a single instance of RequestContext can be
+ * Interestingly, with the Tapestry 4.0 architecture, a single instance of RequestContext can be
  * shared by all request cycles (that's because the request and response are, in fact, threaded
  * proxies).
  * 
  * @author Howard Lewis Ship
- * @deprecated To be removed in 3.2. Use injection to gain access to the necessary objects.
+ * @deprecated To be removed in 4.1. Use injection to gain access to the necessary objects.
  */
 
 public class RequestContext

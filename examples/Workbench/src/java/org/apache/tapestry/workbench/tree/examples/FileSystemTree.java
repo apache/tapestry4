@@ -49,7 +49,7 @@ public abstract class FileSystemTree extends BasePage implements ISelectedFolder
     /**
      * Injected
      * 
-     * @since 3.1
+     * @since 4.0
      */
     public abstract String getTreeRootDir();
 

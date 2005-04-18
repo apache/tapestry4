@@ -27,7 +27,7 @@ import javax.servlet.ServletContext;
  * for Mock testing. 
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 
 public class MockServletConfig implements ServletConfig, InitParameterHolder

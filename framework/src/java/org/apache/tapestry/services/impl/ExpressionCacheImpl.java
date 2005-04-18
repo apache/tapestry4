@@ -25,7 +25,7 @@ import org.apache.tapestry.services.ExpressionCache;
 
 /**
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener
 {

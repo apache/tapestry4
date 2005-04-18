@@ -158,23 +158,23 @@ public abstract class ListEdit extends AbstractFormComponent
         return false;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public abstract Iterator getSource();
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public abstract void setValue(Object value);
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public abstract void setIndex(int index);
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public abstract DataSqueezer getDataSqueezer();
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public abstract ValueConverter getValueConverter();
 }

@@ -24,7 +24,7 @@ import org.apache.tapestry.util.io.ISqueezeAdaptor;
  * in query parameters and hidden fields.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface DataSqueezer
 {

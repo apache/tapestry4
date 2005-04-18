@@ -27,7 +27,7 @@ import org.apache.tapestry.util.ContentType;
  * {@link org.apache.tapestry.portlet.PortletWebResponse}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class RenderWebResponse extends PortletWebResponse
 {

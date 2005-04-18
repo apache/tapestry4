@@ -18,7 +18,7 @@ package org.apache.tapestry.coerce;
  * Converts a value to a specific (implicit) type.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface TypeConverter
 {

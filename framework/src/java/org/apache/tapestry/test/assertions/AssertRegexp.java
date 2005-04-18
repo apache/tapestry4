@@ -29,7 +29,7 @@ import org.apache.tapestry.test.ScriptedTestSession;
  * list of matches of a regular expression within the response.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class AssertRegexp extends BaseLocatable implements ResponseAssertion
 {

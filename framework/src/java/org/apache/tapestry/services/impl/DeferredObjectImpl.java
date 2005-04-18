@@ -25,7 +25,7 @@ import org.apache.hivemind.schema.Translator;
  * or even avoided all together.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class DeferredObjectImpl implements DeferredObject
 {

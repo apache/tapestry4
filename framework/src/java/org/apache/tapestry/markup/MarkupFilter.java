@@ -24,7 +24,7 @@ import java.io.PrintWriter;
  * Implementations should be stateless and thread safe.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface MarkupFilter
 {

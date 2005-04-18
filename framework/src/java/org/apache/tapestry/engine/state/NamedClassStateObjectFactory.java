@@ -22,7 +22,7 @@ import org.apache.hivemind.impl.BaseLocatable;
  * Used to instantiate the a state object from a configurable class name.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class NamedClassStateObjectFactory extends BaseLocatable implements StateObjectFactory
 {

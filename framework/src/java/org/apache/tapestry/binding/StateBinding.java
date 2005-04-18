@@ -25,7 +25,7 @@ import org.apache.tapestry.engine.state.ApplicationStateManager;
  * exists without actually creating it (or creating a session).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class StateBinding extends AbstractBinding
 {

@@ -57,7 +57,7 @@ public abstract class Timer extends AbstractComponent
 
     public abstract String getName();
 
-    /** @since 3.1 */
+    /** @since 4.0 */
 
     public abstract String getValue();
 }

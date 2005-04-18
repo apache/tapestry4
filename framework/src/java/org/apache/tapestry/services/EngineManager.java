@@ -23,7 +23,7 @@ import org.apache.tapestry.IEngine;
  * HttpSession (if stateful) or back into the pool (if not stateful).
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface EngineManager
 {

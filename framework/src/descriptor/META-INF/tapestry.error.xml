@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.error" version="3.1.0" package="org.apache.tapestry.error">
+<module id="tapestry.error" version="4.0.0" package="org.apache.tapestry.error">
   
   Handling of common runtime errors.
   

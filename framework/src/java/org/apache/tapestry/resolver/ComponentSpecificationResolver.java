@@ -23,7 +23,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * Service interface for locating component specifications.
  *
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ComponentSpecificationResolver
 {

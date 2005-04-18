@@ -46,13 +46,13 @@ public class ChartService implements IEngineService
 {
     public static final String SERVICE_NAME = "chart";
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private RequestExceptionReporter _exceptionReporter;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private LinkFactory _linkFactory;
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     private WebResponse _response;
 
     public ILink getLink(IRequestCycle cycle, Object parameter)
@@ -117,19 +117,19 @@ public class ChartService implements IEngineService
         return SERVICE_NAME;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setExceptionReporter(RequestExceptionReporter exceptionReporter)
     {
         _exceptionReporter = exceptionReporter;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
     }
 
-    /** @since 3.1 */
+    /** @since 4.0 */
     public void setResponse(WebResponse response)
     {
         _response = response;

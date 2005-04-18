@@ -30,7 +30,7 @@ import org.apache.tapestry.spec.IApplicationSpecification;
  * application extensions (though those will be phased out in the future).
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ExtensionLookupFactory implements ServiceImplementationFactory
 {

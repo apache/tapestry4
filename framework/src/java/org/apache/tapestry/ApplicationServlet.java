@@ -68,7 +68,7 @@ import com.sun.jndi.ldap.pool.Pool;
  * done so that the {@link IEngine}can change locale <em>without</em> forcing the creation of a
  * session; this involves the servlet and the engine storing locale information in a {@link Cookie}.
  * <p>
- * As of release 3.1, this servlet will also create a HiveMind Registry and manage it.
+ * As of release 4.0, this servlet will also create a HiveMind Registry and manage it.
  * 
  * @author Howard Lewis Ship
  */
@@ -96,13 +96,13 @@ public class ApplicationServlet extends HttpServlet
     private ClassResolver _resolver;
 
     /**
-     * @since 3.1
+     * @since 4.0
      */
 
     private Registry _registry;
 
     /**
-     * @since 3.1
+     * @since 4.0
      */
     private ServletRequestServicer _requestServicer;
 
@@ -250,7 +250,7 @@ public class ApplicationServlet extends HttpServlet
      * This looks in the standard places (on the classpath), but also in the WEB-INF/name and
      * WEB-INF folders (where name is the name of the servlet).
      * 
-     * @since 3.1
+     * @since 4.0
      */
     protected Registry constructRegistry(ServletConfig config)
     {
@@ -271,7 +271,7 @@ public class ApplicationServlet extends HttpServlet
      * Looks for a file in the servlet context; if it exists, it is expected to be a HiveMind module
      * descriptor, and is added to the builder.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     protected void addModuleIfExists(RegistryBuilder builder, ServletContext context, String path)
@@ -289,7 +289,7 @@ public class ApplicationServlet extends HttpServlet
      * bootstrap the application via the <code>tapestry.MasterApplicationInitializer</code>
      * service.
      * 
-     * @since 3.1
+     * @since 4.0
      */
     protected void initializeApplication()
     {
@@ -309,7 +309,7 @@ public class ApplicationServlet extends HttpServlet
     /**
      * Returns the Registry used by the application.
      * 
-     * @since 3.1
+     * @since 4.0
      */
     public Registry getRegistry()
     {
@@ -319,7 +319,7 @@ public class ApplicationServlet extends HttpServlet
     /**
      * Shuts down the registry (if it exists).
      * 
-     * @since 3.1
+     * @since 4.0
      */
     public void destroy()
     {

@@ -144,7 +144,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
     /**
      * List of {@link InjectSpecification}.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     private List _injectSpecifications;
@@ -152,7 +152,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
     /**
      * List of {@link InjectStateSpecification}.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     private List _injectStateSpecifications;

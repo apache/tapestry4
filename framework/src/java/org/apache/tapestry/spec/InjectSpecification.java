@@ -18,7 +18,7 @@ import org.apache.hivemind.LocationHolder;
 
 /**
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface InjectSpecification extends LocationHolder
 {

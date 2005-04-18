@@ -24,7 +24,7 @@ import ognl.PropertyAccessor;
  * {@link ognl.OgnlRuntime#setPropertyAccessor(java.lang.Class, ognl.PropertyAccessor)}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class PropertyAccessorContribution extends BaseLocatable
 {

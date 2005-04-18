@@ -25,7 +25,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * Common code used when testing the various container adapters.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class BaseWebTestCase extends HiveMindTestCase
 {

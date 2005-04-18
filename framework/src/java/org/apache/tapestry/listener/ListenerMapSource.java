@@ -19,7 +19,7 @@ package org.apache.tapestry.listener;
  * &nbsp;objects.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ListenerMapSource
 {

@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="tapestry.contrib" version="3.1.0">
+<module id="tapestry.contrib" version="4.0.0">
   
   Support for the components and pages of the Tapestry contributions library.
   

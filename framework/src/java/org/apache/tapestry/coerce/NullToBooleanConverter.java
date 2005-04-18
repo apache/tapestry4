@@ -18,7 +18,7 @@ package org.apache.tapestry.coerce;
  * Converter from null to Boolean; always false.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class NullToBooleanConverter implements TypeConverter
 {

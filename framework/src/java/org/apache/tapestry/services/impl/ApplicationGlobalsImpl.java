@@ -25,7 +25,7 @@ import org.apache.tapestry.web.WebContext;
  * Implementation of {@link ApplicationGlobals}.
  * 
  * @author Howard Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ApplicationGlobalsImpl implements ApplicationGlobals
 {

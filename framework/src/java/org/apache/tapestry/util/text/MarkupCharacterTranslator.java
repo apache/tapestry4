@@ -20,7 +20,7 @@ package org.apache.tapestry.util.text;
  * encoding used in the HTML output.
  * 
  * @author mb
- * @since 3.1
+ * @since 4.0
  */
 public class MarkupCharacterTranslator implements ICharacterTranslator
 {

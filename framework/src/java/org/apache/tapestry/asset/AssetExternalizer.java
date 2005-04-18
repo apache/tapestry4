@@ -16,11 +16,11 @@ package org.apache.tapestry.asset;
 
 /**
  * <p>
- * Note: This was a class prior to 3.1, at which point it was split into a service interface and a
+ * Note: This was a class prior to 4.0, at which point it was split into a service interface and a
  * {@link org.apache.tapestry.asset.AssetExternalizerImpl service implementation}.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface AssetExternalizer
 {

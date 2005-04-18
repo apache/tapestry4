@@ -18,7 +18,7 @@ package org.apache.tapestry.engine;
  * Encapsulates the logic for encoding and decoding service requests.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public interface ServiceEncoder
 {

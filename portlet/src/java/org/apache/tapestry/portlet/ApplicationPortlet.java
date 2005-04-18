@@ -42,7 +42,7 @@ import org.apache.tapestry.web.WebContextResource;
  * <code>tapestry.portlet.RenderRequestServicer</code> services.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ApplicationPortlet implements Portlet
 {
@@ -118,7 +118,7 @@ public class ApplicationPortlet implements Portlet
      * Looks for a file in the context; if it exists, it is expected to be a HiveMind module
      * descriptor, and is added to the builder.
      * 
-     * @since 3.1
+     * @since 4.0
      */
 
     protected void addModuleIfExists(RegistryBuilder builder, ClassResolver resolver,

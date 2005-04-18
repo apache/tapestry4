@@ -24,7 +24,7 @@ import org.apache.hivemind.PoolManageable;
  * This implementation expects to be pooled.
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class ApplicationStateManagerImpl implements ApplicationStateManager, PoolManageable
 {

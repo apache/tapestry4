@@ -25,7 +25,7 @@ import org.apache.hivemind.util.Defense;
  * be simple strings or array of string (or null).
  * 
  * @author Howard M. Lewis Ship
- * @since 3.1
+ * @since 4.0
  */
 public class QueryParameterMap
 {
