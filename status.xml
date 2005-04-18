@@ -67,6 +67,7 @@
       <action type="add" dev="HLS"> Add 'client' property persistence strategy. </action>
       <action type="add" dev="HLS"> Enhance listener methods, allowing them to include the request cycle optionally, and also optionally accept listener parameters. </action>
       <action type="update" dev="HLS"> Replace references to release 3.1 with release 4.0. </action>
+      <action type="update" dev="HLS"> Upgrade to Javassist 3.0. </action>
     </release>
     <release version="3.0.3" date="Mar 26 2005">
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>
