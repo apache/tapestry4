@@ -18,7 +18,7 @@
 	<classpathentry exported="true" kind="lib" path="ext-package/lib/commons-lang-2.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="ext-package/lib/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/easymock-1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="ext-package/lib/javassist-3.0-rc-1.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/javassist-3.0.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/junit-3.8.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="ext-package/lib/log4j-1.2.8.jar"/>
