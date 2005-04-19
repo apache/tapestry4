@@ -23,8 +23,9 @@
   </contribution>
   
   <contribution configuration-id="tapestry.url.ServiceEncoders">
-    <page-service-encoder id="direct" extension="direct" service="direct"/>
+    <direct-service-encoder id="direct" stateless-extension="direct" stateful-extension="sdirect"/>
     <page-service-encoder id="page" extension="page" service="page"/>
+    <page-service-encoder id="external" extension="external" service="external"/>    
     <asset-encoder id="asset" path="/assets/"/>
     <extension-encoder id="ext" extension="svc" after="*"/>
   </contribution>

@@ -48,8 +48,18 @@
   
   <servlet-mapping>
     <servlet-name>workbench</servlet-name>
+    <url-pattern>*.external</url-pattern>
+  </servlet-mapping>
+    
+  <servlet-mapping>
+    <servlet-name>workbench</servlet-name>
     <url-pattern>*.direct</url-pattern>
   </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>workbench</servlet-name>
+    <url-pattern>*.sdirect</url-pattern>
+  </servlet-mapping>  
   
   <servlet-mapping>
     <servlet-name>workbench</servlet-name>

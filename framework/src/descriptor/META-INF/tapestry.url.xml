@@ -72,6 +72,41 @@
         </conversion>
       </element>
       
+      <element name="direct-service-encoder">
+        
+        An encoder specialized for the direct service; it encodes the page name
+        and the component id into the servlet path, and uses one of two
+        extensions to indicate whether the link is stateful or stateless.
+        
+        <attribute name="id" required="true" unique="true">
+          Unique id for this encoder, used when ordering encoder order.
+        </attribute>
+        <attribute name="before">
+          List of ids of encoders that must come before this encoder.
+        </attribute>
+        <attribute name="after">
+          List of ids of encoders that must follow this encoder.
+        </attribute>
+        <attribute name="stateless-extension" required="true">
+          The path extension to use for stateless links.
+        </attribute>
+        <attribute name="stateful-extension" required="true">
+          The path extension to use for stateful links.
+        </attribute>
+        
+        <rules>
+          <create-object class="impl.ServiceEncoderContribution"/>
+          <read-attribute attribute="id" property="id"/>
+          <read-attribute attribute="before" property="before"/>
+          <read-attribute attribute="after" property="after"/>
+          <invoke-parent method="addElement"/>
+          
+          <create-object class="org.apache.tapestry.engine.encoders.DirectServiceEncoder"/>
+          <read-attribute attribute="stateless-extension" property="statelessExtension"/>
+          <read-attribute attribute="stateful-extension" property="statefulExtension"/>
+          <invoke-parent method="setEncoder"/>          
+        </rules>        
+      </element>
       
       <element name="page-service-encoder">
         
