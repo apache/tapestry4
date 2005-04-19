@@ -61,7 +61,7 @@
     </p>
     
     <p>
-    Friendly URLs are divided into two aspects:
+    Friendly URLs are divided into two concerns:
     </p>
     
     <ul>
@@ -72,7 +72,7 @@
     <p>
       For example, the ugly URL <code>/app?page=news/Thread&amp;service=page</code> may be converted into
       the friendly URL <code>/news/Threads.html</code>.  In this case, the <code>page=news/Thread</code> query parameter
-      becamethe <code>news/Thread</code> portion of the URL, and the <code>service=page</code> query parameter
+      became the <code>news/Thread</code> portion of the URL, and the <code>service=page</code> query parameter
       became the <code>.html</code> extension to the URL.
     </p>
     
@@ -118,7 +118,7 @@
         
       </dt>
       <dd>
-        Stores service parameters passed in the URL (used by &DirectLink;).
+        Stores listener parameters passed in the URL (used by &DirectLink; and passed into &listener-method;s, the "sp" is a holdover from 3.0).
       </dd>
     </dl>
     
@@ -189,6 +189,46 @@
     </section>
     
     <section>
+      <title>direct-service-encoder</title>
+      
+      <p>A specialized encoder used <em>exclusively</em>
+        with the direct service. Encodes the page name into the 
+        servlet path, then a comma, then the nested id for the component.  One of two extensions
+        is used, depending on whether the URL is stateful (an HttpSession existed when the link was rendered), or
+        stateless.</p>
+        
+        <p>
+          A typical URL might be:
+          <code>/admin/Menu,border.link.direct</code>.  This indicates a page name of <code>admin/Menu</code> and
+          a component id of <code>border.link</code>.  By convention, the ".direct" extension is for stateless URLs.
+        </p>
+        
+        <p>The hivemodule.xml contribution:</p>
+        
+<source><![CDATA[
+<contribution configuration-id="tapestry.url.ServiceEncoders">
+  <direct-service-encoder id="direct" stateless-extension="direct" stateful-extension="sdirect"/>
+</contribution>
+]]></source>        
+
+<p>
+  In  addition, the <code>*.direct</code> and <code>*.sdirect</code> mappings must be added to web.xml:
+</p>
+
+<source><![CDATA[
+<servlet-mapping>
+  <servlet-name>myapp</servlet-name>
+  <url-pattern>*.direct</url-pattern>
+</servlet-mapping>
+  
+<servlet-mapping>
+  <servlet-name>myapp</servlet-name>
+  <url-pattern>*.sdirect</url-pattern>
+</servlet-mapping>  ]]></source>
+
+    </section>
+    
+    <section>
       <title>asset-encoder</title>
       
       <p>
@@ -210,9 +250,9 @@
       </p>
       
       <source><![CDATA[
-  <contribution configuration-id="tapestry.url.ServiceEncoders">
-    <asset-encoder id="asset" path="/assets/"/>
-  </contribution>]]></source>
+<contribution configuration-id="tapestry.url.ServiceEncoders">
+  <asset-encoder id="asset" path="/assets/"/>
+</contribution>]]></source>
       
       <p>
         This contribution will encode asset URLs using the given path.  The provided path, <code>/assets/</code> comes first,
@@ -223,10 +263,11 @@
         In addition you must add a mapping to web.xml:
       </p>
       
-<source><![CDATA[  <servlet-mapping>
-    <servlet-name>myapp</servlet-name>
-    <url-pattern>/assets/*</url-pattern>
-  </servlet-mapping>]]></source>      
+<source><![CDATA[
+<servlet-mapping>
+  <servlet-name>myapp</servlet-name>
+  <url-pattern>/assets/*</url-pattern>
+</servlet-mapping>]]></source>      
       
       
       <p>
