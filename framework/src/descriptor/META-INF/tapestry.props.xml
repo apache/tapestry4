@@ -192,7 +192,7 @@
     <default symbol="org.apache.tapestry.jwcid-attribute-name" value="jwcid"/> 
   </contribution>    
   
-  <!-- This may nedd to be converted into an IPropertySource and injected into the ApplicationPropertySources
+  <!-- This may need to be converted into an IPropertySource and injected into the ApplicationPropertySources
        chain. -->
   
   <contribution configuration-id="hivemind.SymbolSources">
