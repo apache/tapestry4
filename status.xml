@@ -69,6 +69,7 @@
       <action type="update" dev="HLS"> Replace references to release 3.1 with release 4.0. </action>
       <action type="update" dev="HLS"> Upgrade to Javassist 3.0. </action>
       <action type="add" dev="HLS"> Add DirectServiceEncoder. </action>
+      <action type="fix" dev="EH" fixes-bug="TAPESTRY-303">Add quotes around attribute values in contrib:Table &lt;table&gt; elements.</action>
     </release>
     <release version="3.0.3" date="Mar 26 2005">
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>
