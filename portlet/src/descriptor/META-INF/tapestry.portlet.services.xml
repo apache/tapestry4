@@ -33,7 +33,7 @@
     <service name="page" object="service:tapestry.services.Page"/>
     <service name="reset" object="service:tapestry.services.Reset"/>
     <service name="restart" object="service:tapestry.services.Restart"/>
-    <service name="asset" object="service:tapestry.services.Asset"/>
+    <service name="asset" object="service:PortletAsset"/>
 	  <service name="external" object="service:tapestry.services.External"/>
     
     <!-- Special one used for handling Portal RenderRequests -->
@@ -41,6 +41,24 @@
     <service name="render" object="service:Render"/>
   </contribution>    
   
+  <service-point id="PortletAsset" interface="org.apache.tapestry.engine.IEngineService">
+    
+    Specially wired version of the asset service that routes through the application servlet
+    (rather than the portlet).
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.asset.AssetService">
+        <set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
+        <set-service property="assetExternalizer" service-id="tapestry.asset.AssetExternalizer"/>
+        <!-- The big change: use the servlet LinkFactory, not the portlet LinkFactory. -->
+        <set-service property="linkFactory" service-id="tapestry.url.LinkFactory"/>
+        <set-service property="context" service-id="tapestry.globals.WebContext"/>
+        <set-object property="response" value="service:tapestry.globals.WebResponse"/>
+        <set-service property="digestSource" service-id="tapestry.asset.ResourceDigestSource"/>
+      </construct>
+    </invoke-factory>
+  </service-point>  
+ 
   <service-point id="PortletRenderer" interface="PortletRenderer">
     
     Service used to render a named page.
