@@ -35,36 +35,15 @@ import org.easymock.MockControl;
 
 public class TestValidationDelegate extends BaseValidatorTestCase
 {
-    private IForm newForm(int count)
-    {
-        MockControl control = newControl(IForm.class);
-
-        IForm form = (IForm) control.getMock();
-
-        form.getName();
-        control.setReturnValue("TheForm", count);
-
-        return form;
-    }
-
-    private IFormComponent newField(String displayName, String name, IForm form)
+    private IFormComponent newField(String name, int count)
     {
         MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent) control.getMock();
+        IFormComponent fc = (IFormComponent) control.getMock();
 
-        field.getForm();
-        control.setReturnValue(form);
+        fc.getName();
+        control.setReturnValue(name, count);
 
-        field.getName();
-        control.setReturnValue(name);
-
-        field.getDisplayName();
-        control.setReturnValue(displayName, 2);
-
-        field.getForm();
-        control.setReturnValue(form);
-
-        return field;
+        return fc;
     }
 
     private ValidationDelegate d = new ValidationDelegate();
@@ -81,22 +60,7 @@ public class TestValidationDelegate extends BaseValidatorTestCase
 
     public void testInvalidInput()
     {
-        IForm form = newForm(3);
-
-        MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent) control.getMock();
-
-        field.getForm();
-        control.setReturnValue(form, 2);
-
-        field.getName();
-        control.setReturnValue("testAdd");
-
-        field.getForm();
-        control.setReturnValue(form);
-
-        field.getName();
-        control.setReturnValue("testAdd");
+        IFormComponent field = newField("testAdd", 3);
 
         replayControls();
 
@@ -126,22 +90,7 @@ public class TestValidationDelegate extends BaseValidatorTestCase
 
     public void testValidatorErrorRenderer()
     {
-        IForm form = newForm(3);
-
-        MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent) control.getMock();
-
-        field.getForm();
-        control.setReturnValue(form, 2);
-
-        field.getName();
-        control.setReturnValue("testValidatorErrorRenderer");
-
-        field.getForm();
-        control.setReturnValue(form);
-
-        field.getName();
-        control.setReturnValue("testValidatorErrorRenderer");
+        IFormComponent field = newField("testValidatorErrorRenderer", 3);
 
         replayControls();
 
@@ -172,16 +121,7 @@ public class TestValidationDelegate extends BaseValidatorTestCase
 
     public void testNoError()
     {
-        IForm form = newForm(2);
-
-        MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent) control.getMock();
-
-        field.getForm();
-        control.setReturnValue(form, 2);
-
-        field.getName();
-        control.setReturnValue("input");
+        IFormComponent field = newField("input", 2);
 
         replayControls();
 
@@ -207,16 +147,7 @@ public class TestValidationDelegate extends BaseValidatorTestCase
 
     public void testUnassociatedErrors()
     {
-        IForm form = newForm(2);
-
-        MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent) control.getMock();
-
-        field.getForm();
-        control.setReturnValue(form, 2);
-
-        field.getName();
-        control.setReturnValue("input");
+        IFormComponent field = newField("input", 2);
 
         replayControls();
 
@@ -267,43 +198,8 @@ public class TestValidationDelegate extends BaseValidatorTestCase
 
     public void testMultipleInvalidInput()
     {
-        IForm form = newForm(6);
-
-        MockControl c1 = newControl(IFormComponent.class);
-        IFormComponent f1 = (IFormComponent) c1.getMock();
-
-        MockControl c2 = newControl(IFormComponent.class);
-        IFormComponent f2 = (IFormComponent) c2.getMock();
-
-        f1.getForm();
-        c1.setReturnValue(form, 2);
-
-        f1.getName();
-        c1.setReturnValue("monty");
-
-        f1.getForm();
-        c1.setReturnValue(form);
-
-        f1.getName();
-        c1.setReturnValue("monty");
-
-        f2.getForm();
-        c2.setReturnValue(form);
-
-        f2.getName();
-        c2.setReturnValue("python");
-
-        f2.getForm();
-        c2.setReturnValue(form);
-
-        f2.getName();
-        c2.setReturnValue("python");
-
-        f2.getForm();
-        c2.setReturnValue(form);
-
-        f2.getName();
-        c2.setReturnValue("python");
+        IFormComponent f1 = newField("monty", 3);
+        IFormComponent f2 = newField("python", 3);
 
         replayControls();
 
@@ -336,52 +232,8 @@ public class TestValidationDelegate extends BaseValidatorTestCase
 
     public void testReset()
     {
-        IForm form = newForm(8);
-
-        MockControl c1 = newControl(IFormComponent.class);
-        IFormComponent f1 = (IFormComponent) c1.getMock();
-
-        MockControl c2 = newControl(IFormComponent.class);
-        IFormComponent f2 = (IFormComponent) c2.getMock();
-
-        f1.getForm();
-        c1.setReturnValue(form, 2);
-
-        f1.getName();
-        c1.setReturnValue("monty");
-
-        f1.getForm();
-        c1.setReturnValue(form);
-
-        f1.getName();
-        c1.setReturnValue("monty");
-
-        f2.getForm();
-        c2.setReturnValue(form);
-
-        f2.getName();
-        c2.setReturnValue("python");
-
-        f2.getForm();
-        c2.setReturnValue(form);
-
-        f2.getName();
-        c2.setReturnValue("python");
-
-        f2.getForm();
-        c2.setReturnValue(form);
-
-        f2.getName();
-        c2.setReturnValue("python");
-
-        f1.getForm();
-        c1.setReturnValue(form);
-
-        f1.getName();
-        c1.setReturnValue("monty");
-
-        f1.getForm();
-        c1.setReturnValue(form);
+        IFormComponent f1 = newField("monty", 4);
+        IFormComponent f2 = newField("python", 3);
 
         replayControls();
 
@@ -414,49 +266,8 @@ public class TestValidationDelegate extends BaseValidatorTestCase
 
     public void testResetAll()
     {
-        IForm form = newForm(8);
-
-        MockControl c1 = newControl(IFormComponent.class);
-        IFormComponent f1 = (IFormComponent) c1.getMock();
-
-        MockControl c2 = newControl(IFormComponent.class);
-        IFormComponent f2 = (IFormComponent) c2.getMock();
-
-        f1.getForm();
-        c1.setReturnValue(form, 2);
-
-        f1.getName();
-        c1.setReturnValue("monty");
-
-        f1.getForm();
-        c1.setReturnValue(form);
-
-        f1.getName();
-        c1.setReturnValue("monty");
-
-        f2.getForm();
-        c2.setReturnValue(form);
-
-        f2.getName();
-        c2.setReturnValue("python");
-
-        f2.getForm();
-        c2.setReturnValue(form);
-
-        f2.getName();
-        c2.setReturnValue("python");
-
-        f2.getForm();
-        c2.setReturnValue(form);
-
-        f2.getName();
-        c2.setReturnValue("python");
-
-        f1.getForm();
-        c1.setReturnValue(form);
-
-        f2.getForm();
-        c2.setReturnValue(form);
+        IFormComponent f1 = newField("monty", 3);
+        IFormComponent f2 = newField("python", 3);
 
         replayControls();
 

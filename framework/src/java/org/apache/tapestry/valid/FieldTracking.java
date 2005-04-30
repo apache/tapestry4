@@ -14,43 +14,47 @@
 
 package org.apache.tapestry.valid;
 
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
- *  Default implementation of {@link IFieldTracking}.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.8
- *
- **/
+ * Default implementation of {@link IFieldTracking}.
+ * 
+ * @author Howard Lewis Ship
+ * @since 1.0.8
+ */
 
 public class FieldTracking implements IFieldTracking
 {
-    private IFormComponent _component;
+    private transient IFormComponent _component;
+
     private String _input;
+
     private IRender _renderer;
+
     private String _fieldName;
+
     private ValidationConstraint _constraint;
 
-	/**
-	 *  Constructor used for unassociated errors; errors that are not about any particular
-	 *  field within the form.
-	 * 
-	 **/
-	
+    /**
+     * Constructor used for unassociated errors; errors that are not about any particular field
+     * within the form.
+     */
+
     FieldTracking()
     {
     }
 
-	/**
-	 *  Standard constructor for a field (with the given name), rendered
-	 *  by the specified component.
-	 * 
-	 **/
-	
+    /**
+     * Standard constructor for a field (with the given name), rendered by the specified component.
+     */
+
     FieldTracking(String fieldName, IFormComponent component)
     {
+        Defense.notNull(fieldName, "fieldName");
+        Defense.notNull(component, "component");
+
         _fieldName = fieldName;
         _component = component;
     }
@@ -95,7 +99,7 @@ public class FieldTracking implements IFieldTracking
         _constraint = constraint;
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public boolean isInError()
     {
