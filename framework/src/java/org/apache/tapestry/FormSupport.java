@@ -16,11 +16,8 @@ package org.apache.tapestry;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.form.Form;
 import org.apache.tapestry.form.FormEventType;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.form.ImageSubmit;
-import org.apache.tapestry.form.Upload;
 
 /**
  * Interface for a utility object that encapsulates the majority of the
