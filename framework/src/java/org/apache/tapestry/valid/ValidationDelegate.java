@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
@@ -29,46 +28,43 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
- *  A base implementation of {@link IValidationDelegate} that can be used
- *  as a helper bean.  This class is often subclassed, typically to override presentation
- *  details.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.5
+ * A base implementation of {@link IValidationDelegate}that can be used as a managed bean. This
+ * class is often subclassed, typically to override presentation details.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 1.0.5
+ */
 
 public class ValidationDelegate implements IValidationDelegate
 {
-    private IFormComponent _currentComponent;
-    private List _trackings;
+    private transient IFormComponent _currentComponent;
 
     /**
-     *  A Map of Maps, keyed on the name of the Form.  Each inner map contains
-     *  the trackings for one form, keyed on component name.  Care must
-     *  be taken, because the inner Map is not always present.
-     * 
-     **/
+     * A list of {@link IFieldTracking}.
+     */
 
-    private Map _trackingMap;
+    private final List _trackings = new ArrayList();
+
+    /**
+     * A map of {@link IFieldTracking}, keyed on form element name.
+     */
+
+    private final Map _trackingMap = new HashMap();
 
     public void clear()
     {
         _currentComponent = null;
-        _trackings = null;
-        _trackingMap = null;
+        _trackings.clear();
+        _trackingMap.clear();
     }
 
     /**
-     *  If the form component is in error, places a &lt;font color="red"&lt; around it.
-     *  Note: this will only work on the render phase after a rewind, and will be
-     *  confused if components are inside any kind of loop.
-     **/
+     * If the form component is in error, places a &lt;font color="red"&lt; around it. Note: this
+     * will only work on the render phase after a rewind, and will be confused if components are
+     * inside any kind of loop.
+     */
 
-    public void writeLabelPrefix(
-        IFormComponent component,
-        IMarkupWriter writer,
-        IRequestCycle cycle)
+    public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
     {
         if (isInError(component))
         {
@@ -78,16 +74,12 @@ public class ValidationDelegate implements IValidationDelegate
     }
 
     /**
-     *  Closes the &lt;font&gt; element,started by
-     *  {@link #writeLabelPrefix(IFormComponent,IMarkupWriter,IRequestCycle)},
-     *  if the form component is in error.
-     *
-     **/
+     * Closes the &lt;font&gt; element,started by
+     * {@link #writeLabelPrefix(IFormComponent,IMarkupWriter,IRequestCycle)}, if the form component
+     * is in error.
+     */
 
-    public void writeLabelSuffix(
-        IFormComponent component,
-        IMarkupWriter writer,
-        IRequestCycle cycle)
+    public void writeLabelSuffix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
     {
         if (isInError(component))
         {
@@ -96,35 +88,22 @@ public class ValidationDelegate implements IValidationDelegate
     }
 
     /**
-     *  Returns the {@link IFieldTracking} for the current component, if any.
-     *  The {@link IFieldTracking} is usually created in 
-     *  {@link #record(String, ValidationConstraint)} or
-     *  in {@link #record(IRender, ValidationConstraint)}.
+     * Returns the {@link IFieldTracking}for the current component, if any. The
+     * {@link IFieldTracking}is usually created in {@link #record(String, ValidationConstraint)}or
+     * in {@link #record(IRender, ValidationConstraint)}.
+     * <p>
+     * Components may be rendered multiple times, with multiple names (provided by the
+     * {@link org.apache.tapestry.form.Form}, care must be taken that this method is invoked
+     * <em>after</em> the Form has provided a unique {@link IFormComponent#getName()}for the
+     * component.
      * 
-     *  <p>Components may be rendered multiple times, with multiple names (provided
-     *  by the {@link org.apache.tapestry.form.Form}, care must be taken that this method is invoked
-     *  <em>after</em> the Form has provided a unique 
-     *  {@link IFormComponent#getName()} for the component.
-     * 
-     *  @see #setFormComponent(IFormComponent)
-     * 
-     *  @return the {@link FieldTracking}, or null if the field has no tracking.
-     * 
-     **/
+     * @see #setFormComponent(IFormComponent)
+     * @return the {@link FieldTracking}, or null if the field has no tracking.
+     */
 
     protected FieldTracking getComponentTracking()
     {
-        if (_trackingMap == null)
-            return null;
-
-        String formName = _currentComponent.getForm().getName();
-
-        Map formMap = (Map) _trackingMap.get(formName);
-
-        if (formMap == null)
-            return null;
-
-        return (FieldTracking) formMap.get(_currentComponent.getName());
+        return (FieldTracking) _trackingMap.get(_currentComponent.getName());
     }
 
     public void setFormComponent(IFormComponent component)
@@ -147,9 +126,8 @@ public class ValidationDelegate implements IValidationDelegate
     }
 
     /**
-     *  Returns all the field trackings as an unmodifiable List.
-     * 
-     **/
+     * Returns all the field trackings as an unmodifiable List.
+     */
 
     public List getFieldTracking()
     {
@@ -166,23 +144,15 @@ public class ValidationDelegate implements IValidationDelegate
         if (tracking != null)
         {
             _trackings.remove(tracking);
-
-            String formName = tracking.getComponent().getForm().getName();
-
-            Map formMap = (Map) _trackingMap.get(formName);
-
-            if (formMap != null)
-                formMap.remove(tracking.getFieldName());
+            _trackingMap.remove(tracking.getFieldName());
         }
     }
 
     /**
-     *  Invokes {@link #record(String, ValidationConstraint)}, or
-     *  {@link #record(IRender, ValidationConstraint)} if the 
-     *  {@link ValidatorException#getErrorRenderer() error renderer property}
-     *  is not null.
-     * 
-     **/
+     * Invokes {@link #record(String, ValidationConstraint)}, or
+     * {@link #record(IRender, ValidationConstraint)}if the
+     * {@link ValidatorException#getErrorRenderer() error renderer property}is not null.
+     */
 
     public void record(ValidatorException ex)
     {
@@ -195,11 +165,9 @@ public class ValidationDelegate implements IValidationDelegate
     }
 
     /**
-     *  Invokes {@link #record(IRender, ValidationConstraint)}, after
-     *  wrapping the message parameter in a
-     *  {@link RenderString}.
-     * 
-     **/
+     * Invokes {@link #record(IRender, ValidationConstraint)}, after wrapping the message parameter
+     * in a {@link RenderString}.
+     */
 
     public void record(String message, ValidationConstraint constraint)
     {
@@ -207,21 +175,17 @@ public class ValidationDelegate implements IValidationDelegate
     }
 
     /**
-     *  Records error information about the currently selected component,
-     *  or records unassociated (with any field) errors.
+     * Records error information about the currently selected component, or records unassociated
+     * (with any field) errors.
+     * <p>
+     * Currently, you may have at most one error per <em>field</em> (note the difference between
+     * field and component), but any number of unassociated errors.
+     * <p>
+     * Subclasses may override the default error message (based on other factors, such as the field
+     * and constraint) before invoking this implementation.
      * 
-     *  <p>
-     *  Currently, you may have at most one error per <em>field</em>
-     *  (note the difference between field and component), but any number of
-     *  unassociated errors.
-     * 
-     *  <p>
-     *  Subclasses may override the default error message (based on other
-     *  factors, such as the field and constraint) before invoking this
-     *  implementation.
-     * 
-     *  @since 1.0.9
-     **/
+     * @since 1.0.9
+     */
 
     public void record(IRender errorRenderer, ValidationConstraint constraint)
     {
@@ -242,24 +206,15 @@ public class ValidationDelegate implements IValidationDelegate
     }
 
     /**
-     *  Finds or creates the field tracking for the
-     *  {@link #setFormComponent(IFormComponent)} current component.
-     *  If no current component, an unassociated error is created
-     *  and returned.
+     * Finds or creates the field tracking for the {@link #setFormComponent(IFormComponent)}current
+     * component. If no current component, an unassociated error is created and returned.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     protected FieldTracking findCurrentTracking()
     {
         FieldTracking result = null;
-
-        if (_trackings == null)
-            _trackings = new ArrayList();
-
-        if (_trackingMap == null)
-            _trackingMap = new HashMap();
 
         if (_currentComponent == null)
         {
@@ -276,22 +231,12 @@ public class ValidationDelegate implements IValidationDelegate
 
             if (result == null)
             {
-                String formName = _currentComponent.getForm().getName();
-
-                Map formMap = (Map) _trackingMap.get(formName);
-
-                if (formMap == null)
-                {
-                    formMap = new HashMap();
-                    _trackingMap.put(formName, formMap);
-                }
-
                 String fieldName = _currentComponent.getName();
 
                 result = new FieldTracking(fieldName, _currentComponent);
 
                 _trackings.add(result);
-                formMap.put(fieldName, result);
+                _trackingMap.put(fieldName, result);
             }
         }
 
@@ -299,44 +244,30 @@ public class ValidationDelegate implements IValidationDelegate
     }
 
     /**
-     *  Does nothing.  Override in a subclass to decoreate
-     *  fields.
-     * 
-     **/
+     * Does nothing. Override in a subclass to decoreate fields.
+     */
 
-    public void writePrefix(
-        IMarkupWriter writer,
-        IRequestCycle cycle,
-        IFormComponent component,
-        IValidator validator)
+    public void writePrefix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component,
+            IValidator validator)
     {
     }
 
     /**
-     *  Does nothing.  Override in a subclass to decorate fields.
-     * 
-     **/
+     * Does nothing. Override in a subclass to decorate fields.
+     */
 
-    public void writeAttributes(
-        IMarkupWriter writer,
-        IRequestCycle cycle,
-        IFormComponent component,
-        IValidator validator)
+    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle,
+            IFormComponent component, IValidator validator)
     {
     }
 
     /**
-     *  Default implementation; if the current field is in error,
-     *  then a suffix is written.  The suffix is:
-     *  <code>&amp;nbsp;&lt;font color="red"&gt;**&lt;/font&gt;</code>.
-     * 
-     **/
+     * Default implementation; if the current field is in error, then a suffix is written. The
+     * suffix is: <code>&amp;nbsp;&lt;font color="red"&gt;**&lt;/font&gt;</code>.
+     */
 
-    public void writeSuffix(
-        IMarkupWriter writer,
-        IRequestCycle cycle,
-        IFormComponent component,
-        IValidator validator)
+    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component,
+            IValidator validator)
     {
         if (isInError())
         {
@@ -354,11 +285,10 @@ public class ValidationDelegate implements IValidationDelegate
     }
 
     /**
-     *  A convienience, as most pages just show the first error on the page.
-     * 
-     *  <p>As of release 1.0.9, this returns an instance of {@link IRender}, not a {@link String}.
-     * 
-     **/
+     * A convienience, as most pages just show the first error on the page.
+     * <p>
+     * As of release 1.0.9, this returns an instance of {@link IRender}, not a {@link String}.
+     */
 
     public IRender getFirstError()
     {
@@ -379,44 +309,30 @@ public class ValidationDelegate implements IValidationDelegate
     }
 
     /**
-     *  Checks to see if the field is in error.  This will <em>not</em> work properly
-     *  in a loop, but is only used by {@link FieldLabel}.  Therefore, using {@link FieldLabel}
-     *  in a loop (where the {@link IFormComponent} is renderred more than once) will not provide
-     *  correct results.
-     * 
-     **/
+     * Checks to see if the field is in error. This will <em>not</em> work properly in a loop, but
+     * is only used by {@link FieldLabel}. Therefore, using {@link FieldLabel}in a loop (where the
+     * {@link IFormComponent}is renderred more than once) will not provide correct results.
+     */
 
     protected boolean isInError(IFormComponent component)
     {
-        if (_trackingMap == null)
-            return false;
+        // Get the name as most recently rendered.
 
-        IForm form = component.getForm();
-        // if there is no form, the component cannot have been rewound or rendered into a form yet
-        // so assume it cannot have errors.
-        if (form == null)
-            return false;
-        
-        String formName = form.getName();
-        Map formMap = (Map) _trackingMap.get(formName);
+        String fieldName = component.getName();
 
-        if (formMap == null)
-            return false;
-
-        IFieldTracking tracking = (IFieldTracking) formMap.get(component.getName());
+        IFieldTracking tracking = (IFieldTracking) _trackingMap.get(fieldName);
 
         return tracking != null && tracking.isInError();
     }
 
     /**
-     *  Returns a {@link List} of {@link IFieldTracking}s.  This is the master list
-     *  of trackings, except that it omits and trackings that are not associated
-     *  with a particular field.  May return an empty list, or null.
-     * 
-     *  <p>Order is not determined, though it is likely the order in which components
-     *  are laid out on in the template (this is subject to change).
-     * 
-     **/
+     * Returns a {@link List}of {@link IFieldTracking}s. This is the master list of trackings,
+     * except that it omits and trackings that are not associated with a particular field. May
+     * return an empty list, or null.
+     * <p>
+     * Order is not determined, though it is likely the order in which components are laid out on in
+     * the template (this is subject to change).
+     */
 
     public List getAssociatedTrackings()
     {
@@ -441,15 +357,13 @@ public class ValidationDelegate implements IValidationDelegate
     }
 
     /**
-     *  Like {@link #getAssociatedTrackings()}, but returns only the unassociated trackings.
-     *  Unassociated trackings are new (in release 1.0.9), and are why
-     *  interface {@link IFieldTracking} is not very well named.
-     * 
-     *  <p>The trackings are returned in an unspecified order, which (for the moment, anyway)
-     *  is the order in which they were added (this could change in the future, or become
-     *  more concrete).
-     * 
-     **/
+     * Like {@link #getAssociatedTrackings()}, but returns only the unassociated trackings.
+     * Unassociated trackings are new (in release 1.0.9), and are why interface
+     * {@link IFieldTracking}is not very well named.
+     * <p>
+     * The trackings are returned in an unspecified order, which (for the moment, anyway) is the
+     * order in which they were added (this could change in the future, or become more concrete).
+     */
 
     public List getUnassociatedTrackings()
     {
@@ -472,4 +386,4 @@ public class ValidationDelegate implements IValidationDelegate
 
         return result;
     }
-};
+}
