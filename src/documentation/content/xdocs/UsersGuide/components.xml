@@ -256,7 +256,8 @@ the page (and each other) via <em>parameters</em>.
 </p>
 
 <p>
-A component parameter has a unique name and a type (a Java class, interface, or primitive type name).	
+A formal component parameter has a unique name, and may be optional or required.  Optional parameters
+may have a default value.
 The &spec.parameter; component specification element is used to define formal component parameters.
 </p>
 
@@ -339,18 +340,20 @@ is, effectively, a binding to use if no binding is provided.
 </p>
 
 <source><![CDATA[
-  <parameter name="title" default-value="Link to current thread"/>]]>
+  <parameter name="title" default-binding="literal" default-value="Link to current thread"/>]]>
 </source>
 
 
 <p>
+Using a default-binding of "literal" means that, by default, bindings for the parameter (including
+the default-value), will be interpreted as literal strings. This can always be overriden using a binding prefix.
 Of course, the best practice for this type of example, where the value is a string that will be presented 
 to the user, is to store the message in the component's message catalog, and access it from there.  Default
 values are actually converted into bindings, and the value may be prefixed as with a binding:
 </p>
 
 <source><![CDATA[
-  <parameter name="title" default-value="message:link-title"/>]]>  
+  <parameter name="title" default-binding="literal" default-value="message:link-title"/>]]>  
 </source>
 
 <source>
@@ -424,6 +427,36 @@ public void renderComponent(&IMarkupWriter; writer, &IRequestCycle; cycle)
   . . .
 }
 </source>
+
+<p>
+When Tapestry enhances a class to add a component property, it (by default) caches the value of the binding for the duration of the component's render.
+That is, while a component is rendering, it will (at most) use the parameter's binding once, and store the result internally, clearing the cached value
+as the component finishes rendering.  The parameter property <em>can be accessed when the component is not rendering</em> (an important improvement 
+from Tapestry 3.0), the result simply is not cached (each access to the property when the component is not rendering is another access via the
+binding object).
+</p>
+
+<p>
+This caching behavior is not always desired; in some cases, the component operates best with caching disabled. The &spec.parameter; element's
+cache parameter can be set to "false" to defeat this caching.
+</p>
+
+
+<p>
+However, for the majority of binding types (most types except for "ognl"), the value obtained is invariant ... it will always be the same value. Values
+obtained from invariant bindings are <em>always</em> cached <em>indefinately</em> (not just for the component's render). In other words, literal string values,
+localized messages and so forth are accessed via the binding just once.
+</p>
+
+<p>
+On the other hand, <em>informal parameters</em> are not cached at all; the values for such parameters are always re-obtained from the
+binding object on each use.
+</p>
+
+<note>
+When using 3.0 DTDs with Tapestry 4.0, parameters with direction "auto" are <em>not cached</em>.  Other direction types (or no direction
+specified) are cached. There is no real support for direction "custom" in 4.0 ... all parameters will be realized as parameter properties.
+</note>
     
 </section> <!-- components.parameters -->
 

@@ -340,7 +340,51 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
                 boolean.class,
                 "_$fred",
                 "_$fred$Default",
-                "_$fred$Cached");
+                "_$fred$Cached",
+                true);
+
+        verifyControls();
+    }
+
+    public void testParameterCacheDisabled()
+    {
+        MockControl opc = newControl(EnhancementOperation.class);
+        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+
+        BodyBuilder builder = new BodyBuilder();
+        builder.begin();
+        builder.addln("if (_$fred$Cached) return _$fred;");
+        builder.addln("org.apache.tapestry.IBinding binding = getBinding(\"barney\");");
+        builder.addln("if (binding == null) return _$fred$Default;");
+        builder.add("boolean result = ");
+        builder.addln(EnhanceUtils.class.getName() + ".toBoolean(binding);");
+        builder.addln("if (binding.isInvariant())");
+        builder.begin();
+        builder.addln("_$fred = result;");
+        builder.addln("_$fred$Cached = true;");
+        builder.end();
+        builder.addln("return result;");
+        builder.end();
+
+        op.getAccessorMethodName("fred");
+        opc.setReturnValue("isFred");
+
+        op.addMethod(
+                Modifier.PUBLIC,
+                new MethodSignature(boolean.class, "isFred", null, null),
+                builder.toString());
+
+        replayControls();
+
+        new ParameterPropertyWorker().buildAccessor(
+                op,
+                "barney",
+                "fred",
+                boolean.class,
+                "_$fred",
+                "_$fred$Default",
+                "_$fred$Cached",
+                false);
 
         verifyControls();
     }

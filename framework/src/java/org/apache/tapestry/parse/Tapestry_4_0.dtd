@@ -35,14 +35,14 @@ The following changes have occured:
 - <property> persistent attribute is now called "persist", and is a string, not a boolean
 - Added <inject>
 - Removed the direction and type attributes from <parameter>
-- Consoliated <context-asset>, <private-asset> and <external-asset> into <asset>
+- Consolidated <context-asset>, <private-asset> and <external-asset> into <asset>
 - Consolidated <set-property> and <set-message-property> into <set>
 - More flexibility on the order of elements
 - Added <inject-state>
 - Added property attribute to <component>, <bean> and <asset>
 - Removed the type attribute from the <configure> element
-- Add many alternatives to 'yes' and 'no' for boolean attributes.
-- Add default-binding attribute to <parameter>
+- Added many alternatives to 'yes' and 'no' for boolean attributes.
+- Added default-binding and cache attributes to <parameter>
 -->
 <!-- =======================================================
 Entity: attribute-flag
@@ -407,9 +407,13 @@ Attributes:
     then the parameter is optional.
   property-name: The name to use, instead of the parameter name, for the
     JavaBean property connected to this parameter.
-  default-value: Specifies the default value for the parameter, if not bound.
+  default-value: Specifies the default value for the parameter, if not bound,
+  as a binding reference.
   default-binding: The default binding type for parameters (when a binding
    is specified without a parameter). 
+  cache: If true (the default), then the parameter property will cache the binding value
+  If false, then each access to the property will re-acquire the the current value
+  for the binding on each access (though invariant bindings may still be cached).
 -->
 <!ELEMENT parameter (description?)>
 <!ATTLIST parameter
@@ -418,6 +422,7 @@ Attributes:
 	property-name CDATA #IMPLIED
 	default-value CDATA #IMPLIED
   default-binding CDATA #IMPLIED
+  cache %attribute-flag; "yes"
 >
 <!-- =======================================================
 Element: property
