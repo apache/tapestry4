@@ -25,6 +25,7 @@
     <parameter name="literalDefault" default-value="literal-value"/>
     <parameter name="expressionDefault" default-value="ognl:an.expression"/>
     <parameter name="defaultBindingType" default-binding="ognl"/>
+    <parameter name="noCache" cache="false"/>
     
 </component-specification>
 

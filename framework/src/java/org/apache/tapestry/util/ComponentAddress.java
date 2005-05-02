@@ -16,38 +16,38 @@ package org.apache.tapestry.util;
 
 import java.io.Serializable;
 
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * The ComponentAddress class contains the path to a component, allowing it to  
- * locate an instance of that component in a different 
- * {@link org.apache.tapestry.IRequestCycle}.
- * 
- * <p>This class needs to be used mostly when working with components
- * accessed via the {@link org.apache.tapestry.IRender} interface. 
- * It allows those components to serialize and
- * pass as a service parameter information about what component they have to 
- * talk to if control returns back to them. 
- * 
- * <p>This situation often occurs when the component used via IRender contains
- * Direct or Action links.
+ * The ComponentAddress class contains the path to a component, allowing it to locate an instance of
+ * that component in a different {@link org.apache.tapestry.IRequestCycle}.
+ * <p>
+ * This class needs to be used mostly when working with components accessed via the
+ * {@link org.apache.tapestry.IRender}interface. It allows those components to serialize and pass
+ * as a service parameter information about what component they have to talk to if control returns
+ * back to them.
+ * <p>
+ * This situation often occurs when the component used via IRender contains Direct or Action links.
  * 
  * @author mindbridge
  * @since 2.2
- * 
  */
 public class ComponentAddress implements Serializable
 {
     private String _pageName;
+
     private String _idPath;
 
     /**
-     * Creates a new ComponentAddress object that carries the identification 
-     * information of the given component (the page name and the ID path).
-     * @param component the component to get the address of
+     * Creates a new ComponentAddress object that carries the identification information of the
+     * given component (the page name and the ID path).
+     * 
+     * @param component
+     *            the component to get the address of
      */
     public ComponentAddress(IComponent component)
     {
@@ -56,33 +56,41 @@ public class ComponentAddress implements Serializable
 
     /**
      * Creates a new ComponentAddress using the given Page Name and ID Path
-     * @param pageName the name of the page that contains the component
-     * @param idPath the ID Path of the component
+     * 
+     * @param pageName
+     *            the name of the page that contains the component
+     * @param idPath
+     *            the ID Path of the component (which may be null)
      */
     public ComponentAddress(String pageName, String idPath)
     {
+        Defense.notNull(pageName, "pageName");
+
         _pageName = pageName;
         _idPath = idPath;
     }
 
     /**
-     * Creates a new ComponentAddress using the given Page Name and ID Path
-     * relative on the provided Namespace
-     * @param namespace the namespace of the page that contains the component
-     * @param pageName the name of the page that contains the component
-     * @param idPath the ID Path of the component
+     * Creates a new ComponentAddress using the given Page Name and ID Path relative on the provided
+     * Namespace
+     * 
+     * @param namespace
+     *            the namespace of the page that contains the component
+     * @param pageName
+     *            the name of the page that contains the component
+     * @param idPath
+     *            the ID Path of the component
      */
-    public ComponentAddress(
-        INamespace namespace,
-        String pageName,
-        String idPath)
+    public ComponentAddress(INamespace namespace, String pageName, String idPath)
     {
         this(namespace.constructQualifiedName(pageName), idPath);
     }
 
     /**
      * Finds a component with the current address using the given RequestCycle.
-     * @param cycle the RequestCycle to use to locate the component
+     * 
+     * @param cycle
+     *            the RequestCycle to use to locate the component
      * @return IComponent a component that has been initialized for the given RequestCycle
      */
     public IComponent findComponent(IRequestCycle cycle)
@@ -93,7 +101,9 @@ public class ComponentAddress implements Serializable
 
     /**
      * Returns the idPath of the component.
-     * @return String the ID path of the component
+     * 
+     * @return String the ID path of the component, or null if the address references a page, not a
+     *         component within a page.
      */
     public String getIdPath()
     {
@@ -102,6 +112,7 @@ public class ComponentAddress implements Serializable
 
     /**
      * Returns the Page Name of the component.
+     * 
      * @return String the Page Name of the component
      */
     public String getPageName()
@@ -137,8 +148,7 @@ public class ComponentAddress implements Serializable
 
         String idPath1 = getIdPath();
         String idPath2 = objAddress.getIdPath();
-        return (idPath1 == idPath2)
-            || (idPath1 != null && idPath1.equals(idPath2));
+        return (idPath1 == idPath2) || (idPath1 != null && idPath1.equals(idPath2));
     }
 
 }

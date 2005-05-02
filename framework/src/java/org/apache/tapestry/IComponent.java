@@ -133,7 +133,9 @@ public interface IComponent extends IRender, LocationHolder
 
     /**
      * Returns a string identifying the name of the page and the id path of the reciever within the
-     * page. Pages simply return their name.
+     * page (seperated by a slash). Note that this extended id is indetned primarily for identifying
+     * the component to the user (since slashes are legal characters within page names). Pages
+     * simply return their name.
      * 
      * @see #getIdPath()
      */

@@ -144,10 +144,10 @@ public class TestDataSqueezer extends TestCase
     {
         ComponentAddress objAddress = new ComponentAddress("framework:DirectLink",
                 "component.subcomponent");
-        attempt(objAddress, "Aframework:DirectLink/component.subcomponent");
+        attempt(objAddress, "Aframework:DirectLink,component.subcomponent");
 
         objAddress = new ComponentAddress("framework:DirectLink", null);
-        attempt(objAddress, "Aframework:DirectLink/");
+        attempt(objAddress, "Aframework:DirectLink,");
     }
 
     public void testArray() throws IOException

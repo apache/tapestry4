@@ -30,5 +30,8 @@
     </parameter>
     <parameter name="altName" property-name="altNameParameter"/>
     
+    <parameter name="directionIn" direction="in"/>
+    <parameter name="directionAuto" direction="auto"/>
+    
 </component-specification>
 

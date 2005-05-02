@@ -17,35 +17,30 @@ package org.apache.tapestry.valid;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.BindingException;
+import org.apache.tapestry.FormSupport;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.Form;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
- *  Used to label an {@link IFormComponent}.  Because such fields
- *  know their displayName (user-presentable name), there's no reason
- *  to hard code the label in a page's HTML template (this also helps
- *  with localization).
- *
- *  [<a href="../../../../../ComponentReference/FieldLabel.html">Component Reference</a>]
-
- *
- *  @author Howard Lewis Lewis Ship
+ * Used to label an {@link IFormComponent}. Because such fields know their displayName
+ * (user-presentable name), there's no reason to hard code the label in a page's HTML template (this
+ * also helps with localization). [ <a
+ * href="../../../../../ComponentReference/FieldLabel.html">Component Reference </a>]
  * 
- **/
+ * @author Howard Lewis Lewis Ship
+ */
 
 public abstract class FieldLabel extends AbstractComponent
 {
     /**
-    *  Gets the {@link IFormComponent}
-    *  and {@link IValidationDelegate delegate},
-    *  then renders the label obtained from the field.  Does nothing
-    *  when rewinding.
-    *
-    **/
+     * Gets the {@link IFormComponent}and {@link IValidationDelegate delegate}, then renders the
+     * label obtained from the field. Does nothing when rewinding.
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -83,8 +78,8 @@ public abstract class FieldLabel extends AbstractComponent
 
         if (delegate == null)
         {
-            String msg =
-                Tapestry.format("FieldLabel.no-delegate", getExtendedId(), form.getExtendedId());
+            String msg = Tapestry.format("FieldLabel.no-delegate", getExtendedId(), form
+                    .getExtendedId());
 
             throw new ApplicationRuntimeException(msg, this, null, null);
         }

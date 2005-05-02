@@ -21,18 +21,18 @@ import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.ComponentAddress;
 
 /**
- *  Squeezes a org.apache.tapestry.ComponentAddress.
+ * Squeezes a org.apache.tapestry.ComponentAddress.
  * 
- *  @author mindbridge
- *  @since 2.2
- * 
- **/
+ * @author mindbridge
+ * @since 2.2
+ */
 
 public class ComponentAddressAdaptor implements ISqueezeAdaptor
 {
     private static final String PREFIX = "A";
-    private static final char SEPARATOR = '/';
-    
+
+    private static final char SEPARATOR = ',';
+
     public String squeeze(DataSqueezer squeezer, Object data) throws IOException
     {
         ComponentAddress address = (ComponentAddress) data;
@@ -40,7 +40,7 @@ public class ComponentAddressAdaptor implements ISqueezeAdaptor
         // a 'null' id path is encoded as an empty string
         String idPath = address.getIdPath();
         if (idPath == null)
-        	idPath = "";
+            idPath = "";
 
         return PREFIX + address.getPageName() + SEPARATOR + idPath;
     }
@@ -48,13 +48,13 @@ public class ComponentAddressAdaptor implements ISqueezeAdaptor
     public Object unsqueeze(DataSqueezer squeezer, String string) throws IOException
     {
         int separator = string.indexOf(SEPARATOR);
-        if (separator < 0) 
+        if (separator < 0)
             throw new IOException(Tapestry.getMessage("ComponentAddressAdaptor.no-separator"));
 
         String pageName = string.substring(1, separator);
         String idPath = string.substring(separator + 1);
         if (idPath.equals(""))
-        	idPath = null;
+            idPath = null;
 
         return new ComponentAddress(pageName, idPath);
     }

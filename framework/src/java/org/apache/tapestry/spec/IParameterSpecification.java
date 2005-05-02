@@ -95,6 +95,19 @@ public interface IParameterSpecification extends LocationHolder
 
     public void setDefaultBindingType(String bindingType);
 
+    /** @since 4.0 */
     public String getDefaultBindingType();
+
+    /**
+     * Returns true if the parameter proeprty should cache the result of the binding.
+     * 
+     * @since 4.0
+     */
+
+    public boolean getCache();
+
+    /** @since 4.0 */
+
+    public void setCache(boolean cache);
 
 }

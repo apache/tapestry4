@@ -21,10 +21,14 @@
   
 <component-specification class="org.apache.tapestry.form.Form">
 
+  <!-- Note: remember to keep Go.jwc synchronized with any changes here! -->  
+    
   <description>
   Used to implement an HTML form.
   </description>
 
+  <bean name="defaultDelegate" class="org.apache.tapestry.valid.ValidationDelegate"/>
+  
   <parameter name="method" default-value="post" default-binding="literal">
     <description>
     The method used by the form when it is submitted, defaults to POST.
@@ -53,9 +57,10 @@
     </description>
   </parameter>
   
-  <parameter name="delegate" default-binding="ognl">
+  <parameter name="delegate" default-binding="ognl" default-value="bean:defaultDelegate">
     <description>
-    Specifies the delegate to be used by fields to track input errors.
+    Specifies the delegate to be used by fields to track input errors. If not specified, the
+        Form provides a default instance of org.apache.tapestry.valid.ValidationDelegate.
     </description>
   </parameter>
 

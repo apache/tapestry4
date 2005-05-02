@@ -134,6 +134,7 @@
     
     <project label="Project">
         <item label="Mailing Lists"     href="http://jakarta.apache.org/site/mail2.html#tapestry"/>
+        <item label="Forums"            href="http://www.tapestryforums.com/"/>
         <item label="Bug Database"     href="http://issues.apache.org/jira/secure/BrowseProject.jspa?id=10573"/>
         <item label="CVS Access"      href="cvs.html"/>    
         <item label="Downloads" href="downloads.html"/>

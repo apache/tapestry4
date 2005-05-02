@@ -999,6 +999,12 @@ public class TestSpecificationParser extends TapestryTestCase
 
         ps = spec.getParameter("altName");
         assertEquals("altNameParameter", ps.getPropertyName());
+
+        ps = spec.getParameter("directionIn");
+        assertEquals(true, ps.getCache());
+
+        ps = spec.getParameter("directionAuto");
+        assertEquals(false, ps.getCache());
     }
 
     /**
@@ -1008,7 +1014,7 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 4.0
      */
 
-    public void testParameters() throws Exception
+    public void testParameter() throws Exception
     {
         IComponentSpecification spec = parseComponent("Parameter.jwc");
 
@@ -1016,6 +1022,7 @@ public class TestSpecificationParser extends TapestryTestCase
 
         assertNull(ps.getDefaultValue());
         assertNull(ps.getDefaultBindingType());
+        assertEquals(true, ps.getCache());
 
         ps = spec.getParameter("literalDefault");
 
@@ -1026,8 +1033,11 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("ognl:an.expression", ps.getDefaultValue());
 
         ps = spec.getParameter("defaultBindingType");
-        
+
         assertEquals("ognl", ps.getDefaultBindingType());
+
+        ps = spec.getParameter("noCache");
+        assertEquals(false, ps.getCache());
     }
 
     /**

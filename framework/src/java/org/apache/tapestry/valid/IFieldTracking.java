@@ -50,8 +50,10 @@ public interface IFieldTracking
     public IFormComponent getComponent();
 
     /**
-     * Returns an object that will render the error message.
+     * Returns an object that will render the error message. The renderer <em>must</em> implement
+     * a simple <code>toString()</code> that does not produce markup, but is a simple message.
      * 
+     * @see ValidatorException#ValidatorException(String, IRender, ValidationConstraint)
      * @since 1.0.9
      */
 

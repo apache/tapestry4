@@ -1321,6 +1321,17 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         ps.setDefaultBindingType(getAttribute("default-binding"));
 
+        if (!_DTD_4_0)
+        {
+            String direction = getAttribute("direction");
+            ps.setCache(!"auto".equals(direction));
+        }
+        else
+        {
+            boolean cache = getBooleanAttribute("cache", true);
+            ps.setCache(cache);
+        }
+
         // type will only be specified in a 3.0 DTD.
 
         String type = getAttribute("type");

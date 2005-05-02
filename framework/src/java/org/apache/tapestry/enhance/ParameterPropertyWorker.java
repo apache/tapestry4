@@ -94,7 +94,8 @@ public class ParameterPropertyWorker implements EnhancementWorker
                 propertyType,
                 fieldName,
                 defaultFieldName,
-                cachedFieldName);
+                cachedFieldName,
+                ps.getCache());
 
         buildMutator(
                 op,
@@ -205,7 +206,8 @@ public class ParameterPropertyWorker implements EnhancementWorker
     // Package private for testing
 
     void buildAccessor(EnhancementOperation op, String parameterName, String propertyName,
-            Class propertyType, String fieldName, String defaultFieldName, String cachedFieldName)
+            Class propertyType, String fieldName, String defaultFieldName, String cachedFieldName,
+            boolean cache)
     {
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
@@ -218,17 +220,20 @@ public class ParameterPropertyWorker implements EnhancementWorker
 
         String javaTypeName = ClassFabUtils.getJavaClassName(propertyType);
 
-        builder.addln("{0} result = {1};", javaTypeName, 
-                EnhanceUtils.createUnwrapExpression(
+        builder.addln("{0} result = {1};", javaTypeName, EnhanceUtils.createUnwrapExpression(
                 op,
                 "binding",
                 propertyType));
 
         // Values read via the binding are cached during the render of
-        // the component, or when the binding is invariant
-        // (such as a StringBinding or MessageBinding).
+        // the component (if the parameter defines cache to be true, which
+        // is the default), or any time the binding is invariant
+        // (such as most bindings besides ExpressionBinding.
 
-        builder.addln("if (isRendering() || binding.isInvariant())");
+        String expression = cache ? "isRendering() || binding.isInvariant()"
+                : "binding.isInvariant()";
+
+        builder.addln("if ({0})", expression);
         builder.begin();
         builder.addln("{0} = result;", fieldName);
         builder.addln("{0} = true;", cachedFieldName);

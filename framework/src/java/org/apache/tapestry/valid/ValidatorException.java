@@ -17,16 +17,16 @@ package org.apache.tapestry.valid;
 import org.apache.tapestry.IRender;
 
 /**
- *  Thrown by a {@link IValidator} when submitted input is not valid.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.8
- *
- **/
+ * Thrown by a {@link IValidator}when submitted input is not valid.
+ * 
+ * @author Howard Lewis Ship
+ * @since 1.0.8
+ */
 
 public class ValidatorException extends Exception
 {
     private IRender _errorRenderer;
+
     private ValidationConstraint _constraint;
 
     public ValidatorException(String errorMessage)
@@ -40,19 +40,23 @@ public class ValidatorException extends Exception
     }
 
     /**
-     *  Creates a new instance.
-     *  @param errorMessage the default error message to be used (this may be
-     *  overriden by the {@link IValidationDelegate})
-     *  @param errorRenderer to use to render the error message (may be null)
-     *  @param constraint a validation constraint that has been compromised, or
-     *  null if no constraint is applicable
+     * Creates a new instance.
      * 
-     **/
+     * @param errorMessage
+     *            the default error message to be used (this may be overriden by the
+     *            {@link IValidationDelegate})
+     * @param errorRenderer
+     *            to use to render the error message (may be null). This is used with custom
+     *            validators that create renderers that produce rich markup (such as icons or links
+     *            to help pages). Such renderes are expected to implement a <code>toString()</code>
+     *            that returns a simple error message (without any markup).
+     * @param constraint
+     *            a validation constraint that has been compromised, or null if no constraint is
+     *            applicable
+     */
 
-    public ValidatorException(
-        String errorMessage,
-        IRender errorRenderer,
-        ValidationConstraint constraint)
+    public ValidatorException(String errorMessage, IRender errorRenderer,
+            ValidationConstraint constraint)
     {
         super(errorMessage);
 
@@ -65,7 +69,11 @@ public class ValidatorException extends Exception
         return _constraint;
     }
 
-    /** @since 3.0 **/
+    /**
+     * Returns the error renderer for this exception, which may be null.
+     * 
+     * @since 3.0 *
+     */
 
     public IRender getErrorRenderer()
     {

@@ -141,7 +141,7 @@ it is expected that there will be some runtime warnings).
   <li>Added the property attribute to the &spec.component; and &spec.bean; elements.</li>
   <li>Removed the type attribute from the &spec.configure; element.</li>
   <li>Added many more options for <link href="#spec.boolean-types">boolean attributes</link>.</li>
-  <li>Added the default-binding attribute to the &spec.parameter; element.</li>
+  <li>Added the cache and default-binding attributes to the &spec.parameter; element.</li>
 </ul>
 
 <p>
@@ -1379,6 +1379,20 @@ Appears in: &spec.component-specification;
   is a <em>&binding-reference;</em>, exactly like
   a &spec.binding; element's value attribute.
 	</td>
+</tr>
+
+<tr>
+  <td>cache</td>
+  <td>boolean</td>
+  <td>no</td>
+  <td>true</td>
+  <td>
+    If true (the default), then the parameter property will cache the parameter property for the
+    duration of the components' render.  if false, then the parameter property will not cache the value, and each 
+    access to the property will result in re-obtaining the value via the binding object.
+    Note that invariant bindings (most bindings except for "ognl") will always be accessed just once
+    and cached.
+  </td>
 </tr>
 
 </table>

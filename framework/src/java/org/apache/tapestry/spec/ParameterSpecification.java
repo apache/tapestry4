@@ -43,6 +43,9 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
     /** @since 4.0 */
     private String _defaultBindingType;
 
+    /** @since 4.0 */
+    private boolean _cache = true;
+
     /**
      * Returns the class name of the expected type of the parameter. The default value is
      * <code>java.lang.Object</code> which matches anything.
@@ -134,15 +137,27 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
         _defaultValue = defaultValue;
     }
 
-    /** @since 1.1 */
+    /** @since 4.0 */
     public String getDefaultBindingType()
     {
         return _defaultBindingType;
     }
 
-    /** @since 1.1 */
+    /** @since 4.0 */
     public void setDefaultBindingType(String defaultBindingType)
     {
         _defaultBindingType = defaultBindingType;
+    }
+
+    /** @since 4.0 */
+    public boolean getCache()
+    {
+        return _cache;
+    }
+
+    /** @since 4.0 */
+    public void setCache(boolean cache)
+    {
+        _cache = cache;
     }
 }

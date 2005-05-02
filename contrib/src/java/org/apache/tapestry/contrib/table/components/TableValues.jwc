@@ -32,7 +32,7 @@
         <description>The current column being rendered</description>
     </parameter>
 
-	<parameter name="element" default-value="td">
+	<parameter name="element" default-value="literal:td">
         <description>The tag to use to wrap the values in, 'td' by default.</description>
     </parameter>
 

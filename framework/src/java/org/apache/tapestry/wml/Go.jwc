@@ -25,6 +25,8 @@
         The go element declares a go task, indicating navigation to a URI.
     </description>
 
+    <bean name="defaultDelegate" class="org.apache.tapestry.valid.ValidationDelegate"/>
+
     <parameter name="method" default-value="post" default-binding="literal">
         <description>
             The method used by the form when it is submitted, defaults to POST.
