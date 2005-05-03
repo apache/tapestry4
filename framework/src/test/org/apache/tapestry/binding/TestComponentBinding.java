@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.binding;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.easymock.MockControl;
@@ -38,13 +40,47 @@ public class TestComponentBinding extends BindingTestCase
 
         ValueConverter vc = newValueConverter();
 
+        Location l = newLocation();
+
         replayControls();
 
-        ComponentBinding b = new ComponentBinding("param", vc, fabricateLocation(2), component,
-                "foo");
+        ComponentBinding b = new ComponentBinding("param", vc, l, component, "foo");
 
         assertSame(component, b.getComponent());
         assertSame(nested, b.getObject());
+
+        verifyControls();
+    }
+
+    public void testGetObjectFailure()
+    {
+        MockControl cc = newControl(IComponent.class);
+        IComponent component = (IComponent) cc.getMock();
+
+        Throwable t = new ApplicationRuntimeException("No such component.");
+
+        component.getComponent("foo");
+        cc.setThrowable(t);
+
+        ValueConverter vc = newValueConverter();
+
+        Location l = newLocation();
+
+        replayControls();
+
+        ComponentBinding b = new ComponentBinding("param", vc, l, component, "foo");
+
+        try
+        {
+            b.getObject();
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(t.getMessage(), ex.getMessage());
+            assertSame(t, ex.getRootCause());
+            assertSame(l, ex.getLocation());
+        }
 
         verifyControls();
     }
