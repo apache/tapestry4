@@ -73,6 +73,7 @@
       <action type="update" dev="HLS"> Upgrade to HiveMind 1.0-beta-1. </action>
       <action type="add" dev="HLS">Add cache attribute to &lt;parameter&gt; element.</action>
       <action type="add" dev="HLS">Add AppFuse as a related project. </action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-259"> Validation error renderers should implement toString. </action>
     </release>
     <release version="3.0.3" date="Mar 26 2005">
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>
