@@ -24,33 +24,30 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  Implements a component that manages an HTML &lt;select&gt; form element.
- *  The most common situation, using a &lt;select&gt; to set a specific
- *  property of some object, is best handled using a {@link PropertySelection} component.
- *
- *  [<a href="../../../../../ComponentReference/Select.html">Component Reference</a>]
+ * Implements a component that manages an HTML &lt;select&gt; form element. The most common
+ * situation, using a &lt;select&gt; to set a specific property of some object, is best handled
+ * using a {@link PropertySelection}component. [ <a
+ * href="../../../../../ComponentReference/Select.html">Component Reference </a>]
+ * <p>
+ * Otherwise, this component is very similar to {@link RadioGroup}.
  * 
- *  <p>Otherwise, this component is very similar to {@link RadioGroup}.
- *
- *
- *  @author Howard Lewis Ship
- * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class Select extends AbstractFormComponent
 {
     private boolean _rewinding;
+
     private boolean _rendering;
 
     private Set _selections;
+
     private int _nextOptionId;
 
     /**
-     *  Used by the <code>Select</code> to record itself as a
-     *  {@link IRequestCycle} attribute, so that the
-     *  {@link Option} components it wraps can have access to it.
-     *
-     **/
+     * Used by the <code>Select</code> to record itself as a {@link IRequestCycle}attribute, so
+     * that the {@link Option}components it wraps can have access to it.
+     */
 
     private final static String ATTRIBUTE_NAME = "org.apache.tapestry.active.Select";
 
@@ -90,20 +87,20 @@ public abstract class Select extends AbstractFormComponent
     }
 
     /**
-     *  Renders the &lt;option&gt; element, or responds when the form containing the element
-     *  is submitted (by checking {@link IForm#isRewinding()}.
-     **/
+     * Renders the &lt;option&gt; element, or responds when the form containing the element is
+     * submitted (by checking {@link IForm#isRewinding()}.
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
 
+        if (form.wasPrerendered(writer, this))
+            return;
+
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("Select.may-not-nest"),
-                this,
-                null,
-                null);
+            throw new ApplicationRuntimeException(Tapestry.getMessage("Select.may-not-nest"), this,
+                    null, null);
 
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.
@@ -158,9 +155,8 @@ public abstract class Select extends AbstractFormComponent
     }
 
     /**
-     *  Cut-and-paste with {@link RadioGroup}!
-     *
-     **/
+     * Cut-and-paste with {@link RadioGroup}!
+     */
 
     private Set buildSelections(IRequestCycle cycle, String parameterName)
     {

@@ -15,9 +15,11 @@
 package org.apache.tapestry.form;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.FormSupport;
 import org.apache.tapestry.IActionListener;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
@@ -25,6 +27,7 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RenderRewoundException;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.ActionServiceParameter;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
@@ -73,6 +76,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      * Returns the currently active {@link IForm}, or null if no form is active. This is a
      * convienience method, the result will be null, or an instance of {@link IForm}, but not
      * necessarily a <code>Form</code>.
+     * 
+     * @deprecated Use {@link TapestryUtils#getForm(IRequestCycle, IComponent)}&nbsp;instead.
      */
 
     public static IForm get(IRequestCycle cycle)
@@ -189,17 +194,14 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     {
         super.prepareForRender(cycle);
 
-        if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(FormMessages.formsMayNotNest(), this, null, null);
-
-        cycle.setAttribute(ATTRIBUTE_NAME, this);
+        TapestryUtils.storeForm(cycle, this);
     }
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
         _formSupport = null;
 
-        cycle.removeAttribute(ATTRIBUTE_NAME);
+        TapestryUtils.removeForm(cycle);
 
         IValidationDelegate delegate = getDelegate();
 
@@ -333,16 +335,23 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         return getActionService().getLink(cycle, parameter);
     }
 
+    /** Injected */
+
     public abstract WebResponse getResponse();
+
+    /**
+     * delegate parameter, which has a default (starting in release 4.0).
+     */
 
     public abstract IValidationDelegate getDelegate();
 
-    public abstract void setDelegate(IValidationDelegate delegate);
-
+    /** listener parameter, may be null */
     public abstract IActionListener getListener();
 
+    /** method parameter */
     public abstract String getMethod();
 
+    /** stateful parameter */
     public abstract boolean isStateful();
 
     public void setEncodingType(String encodingType)
@@ -362,5 +371,15 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     public void addHiddenValue(String name, String id, String value)
     {
         _formSupport.addHiddenValue(name, id, value);
+    }
+
+    public void prerenderField(IMarkupWriter writer, IComponent field, Location location)
+    {
+        _formSupport.prerenderField(writer, field, location);
+    }
+
+    public boolean wasPrerendered(IMarkupWriter writer, IComponent field)
+    {
+        return _formSupport.wasPrerendered(writer, field);
     }
 }

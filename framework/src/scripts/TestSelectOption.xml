@@ -313,22 +313,7 @@ Second form triggered.
 	
 	<!-- And on to the degenerate cases. -->
 	
-	<!-- #1 Select not in a Form. -->
-	
-	<request>
-		<parameter name="service" value="page"/>
-    <parameter name="page" value="Five"/>
-		
-		<assert-output name="Page Title">
-<![CDATA[
-<title>Exception</title>
-]]>				
-		</assert-output>
-			
-		<assert-output name="Message">
-		This component must be contained within a Form.	
-		</assert-output>
-	</request>
+	<!-- #1 Select not in a Form (removed) -->
 	
 	<!-- #2 Nested Selects. -->
 	

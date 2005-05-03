@@ -51,6 +51,11 @@ final class TapestryMessages
         return _formatter.format("no-page-render-support", component.getExtendedId());
     }
 
+    static String noForm(IComponent component)
+    {
+        return _formatter.format("no-form", component.getExtendedId());
+    }
+
     static String providedByEnhancement(String methodName)
     {
         return _formatter.format("provided-by-enhancement", methodName);

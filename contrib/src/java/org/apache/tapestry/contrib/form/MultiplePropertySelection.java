@@ -122,6 +122,9 @@ public abstract class MultiplePropertySelection extends AbstractFormComponent
     {
         IForm form = getForm(cycle);
 
+        if (form.wasPrerendered(writer, this))
+            return;
+
         boolean rewinding = form.isRewinding();
 
         String name = form.getElementId(this);

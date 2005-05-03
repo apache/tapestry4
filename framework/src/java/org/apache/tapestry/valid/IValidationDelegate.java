@@ -225,4 +225,12 @@ public interface IValidationDelegate extends Serializable
      */
 
     public boolean getHasErrors();
+
+    /**
+     * Returns the {@link IFieldTracking}&nbsp;for the current component, if any. Useful when
+     * displaying error messages for individual fields.
+     * 
+     * @since 3.0.2
+     */
+    public IFieldTracking getCurrentFieldTracking();
 }

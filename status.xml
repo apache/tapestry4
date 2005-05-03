@@ -39,7 +39,6 @@
       <action context="code" dev="DS">Fix all the Component Reference pages to use the 3.0 syntax</action>
       <action context="script" dev="open">Improve the "include script" element to support relative scripts, scripts in context, script in classpath</action>
       <action context="code" dev="open">Intersertials</action>
-      <action context="code" dev="open">Extend listener methods to take parameters (matching service parameters to actual method parameters)</action>
     </actions>
     <!-- Add todo items. @context is an arbitrary string. Eg:
     <actions priority="high">
@@ -72,12 +71,16 @@
       <action type="fix" dev="EH" fixes-bug="TAPESTRY-303">Add quotes around attribute values in contrib:Table &lt;table&gt; elements.</action>
       <action type="update" dev="HLS"> Upgrade to HiveMind 1.0-beta-1. </action>
       <action type="add" dev="HLS">Add cache attribute to &lt;parameter&gt; element.</action>
-      <action type="add" dev="HLS">Add AppFuse as a related project. </action>
+      <action type="add" dev="HLS" fixes-bug="TAPESTRY-279"> Add Trails as a related project. </action>
+      <action type="add" dev="HLS"> Add AppFuse as a related project. </action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-259"> Validation error renderers should implement toString. </action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-246"> Roll IValidationDelegate change, adding getCurrentFieldTracking(), forward from 3.0.2 into 4.0.</action>
+      <action type="add" dev="HLS" fixes-bug="TAPESTRY-210"> Add methods to IMarkupWriter that allow filtering to be specified using a parameter. </action>
+      <action type="update" dev="HLS"> Changed FieldLabel to pre-render its associated field, so that decorations stay synchronized, even in a loop. </action>
     </release>
     <release version="3.0.3" date="Mar 26 2005">
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>
-      <action type="fix" dev="PF" fixes-bug="TAPESTRY-230"> JanitorThread now terminates explicitly when servlet is destroyed.  Interruption properly terminates thread during sweep operation. </action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-230"> JanitorThread now terminates explicitly when servlet is destroyed. Interruption properly terminates thread during sweep operation. </action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-238"> Fixed bug preventing DatePicker calendar window from closing automatically if onchange event handler is not specified. </action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-277"> DatePicker onchange event now only fires when date changes. </action>
       <action type="fix" dev="PF" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-255"> Patch for bad translation in ValidationStrings_zh_TW.properties </action>

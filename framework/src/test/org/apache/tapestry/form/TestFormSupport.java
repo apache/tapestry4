@@ -21,6 +21,7 @@ import org.apache.tapestry.FormSupport;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.NestedMarkupWriter;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.TapestryUtils;
@@ -93,12 +94,17 @@ public class TestFormSupport extends HiveMindTestCase
         return (IMarkupWriter) newMock(IMarkupWriter.class);
     }
 
+    private NestedMarkupWriter newNestedWriter()
+    {
+        return (NestedMarkupWriter) newMock(NestedMarkupWriter.class);
+    }
+
     public void testComplexRender()
     {
         MockControl writerc = newControl(IMarkupWriter.class);
         IMarkupWriter writer = (IMarkupWriter) writerc.getMock();
 
-        IMarkupWriter nested = newWriter();
+        NestedMarkupWriter nested = newNestedWriter();
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -207,7 +213,7 @@ public class TestFormSupport extends HiveMindTestCase
         MockControl writerc = newControl(IMarkupWriter.class);
         IMarkupWriter writer = (IMarkupWriter) writerc.getMock();
 
-        IMarkupWriter nested = newWriter();
+        NestedMarkupWriter nested = newNestedWriter();
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -286,7 +292,7 @@ public class TestFormSupport extends HiveMindTestCase
         MockControl writerc = newControl(IMarkupWriter.class);
         IMarkupWriter writer = (IMarkupWriter) writerc.getMock();
 
-        IMarkupWriter nested = newWriter();
+        NestedMarkupWriter nested = newNestedWriter();
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -358,7 +364,7 @@ public class TestFormSupport extends HiveMindTestCase
         MockControl writerc = newControl(IMarkupWriter.class);
         IMarkupWriter writer = (IMarkupWriter) writerc.getMock();
 
-        IMarkupWriter nested = newWriter();
+        NestedMarkupWriter nested = newNestedWriter();
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -433,7 +439,7 @@ public class TestFormSupport extends HiveMindTestCase
         MockControl writerc = newControl(IMarkupWriter.class);
         IMarkupWriter writer = (IMarkupWriter) writerc.getMock();
 
-        IMarkupWriter nested = newWriter();
+        NestedMarkupWriter nested = newNestedWriter();
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -497,7 +503,7 @@ public class TestFormSupport extends HiveMindTestCase
         MockControl writerc = newControl(IMarkupWriter.class);
         IMarkupWriter writer = (IMarkupWriter) writerc.getMock();
 
-        IMarkupWriter nested = newWriter();
+        NestedMarkupWriter nested = newNestedWriter();
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -568,7 +574,7 @@ public class TestFormSupport extends HiveMindTestCase
         MockControl writerc = newControl(IMarkupWriter.class);
         IMarkupWriter writer = (IMarkupWriter) writerc.getMock();
 
-        IMarkupWriter nested = newWriter();
+        NestedMarkupWriter nested = newNestedWriter();
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -840,7 +846,7 @@ public class TestFormSupport extends HiveMindTestCase
         MockControl writerc = newControl(IMarkupWriter.class);
         IMarkupWriter writer = (IMarkupWriter) writerc.getMock();
 
-        IMarkupWriter nested = newWriter();
+        NestedMarkupWriter nested = newNestedWriter();
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -943,7 +949,7 @@ public class TestFormSupport extends HiveMindTestCase
         MockControl writerc = newControl(IMarkupWriter.class);
         IMarkupWriter writer = (IMarkupWriter) writerc.getMock();
 
-        IMarkupWriter nested = newWriter();
+        NestedMarkupWriter nested = newNestedWriter();
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();

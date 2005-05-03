@@ -268,4 +268,13 @@ public class MockForm implements IForm
     {
         _body = body;
     }
+
+    public void prerenderField(IMarkupWriter writer, IComponent field, Location location)
+    {
+    }
+
+    public boolean wasPrerendered(IMarkupWriter writer, IComponent field)
+    {
+        return false;
+    }
 }

@@ -26,12 +26,15 @@ import java.util.Set;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.FormSupport;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.NestedMarkupWriter;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.Tapestry;
@@ -89,13 +92,19 @@ public class FormSupportImpl implements FormSupport
      * form renders, and is validated against when the form is rewound.
      */
 
-    private List _allocatedIds = new ArrayList();
+    private final List _allocatedIds = new ArrayList();
 
     private final IRequestCycle _cycle;
 
-    private IdAllocator _elementIdAllocator = new IdAllocator();
+    private final IdAllocator _elementIdAllocator = new IdAllocator();
 
     private String _encodingType;
+
+    /**
+     * Map keyed on extended component id, value is the pre-rendered markup for that component.
+     */
+
+    private final Map _prerenderMap = new HashMap();
 
     /**
      * {@link Map}, keyed on {@link FormEventType}. Values are either a String (the function name
@@ -107,7 +116,7 @@ public class FormSupportImpl implements FormSupport
 
     private final IForm _form;
 
-    private List _hiddenValues = new ArrayList();
+    private final List _hiddenValues = new ArrayList();
 
     private boolean _rewinding;
 
@@ -554,4 +563,37 @@ public class FormSupportImpl implements FormSupport
         writer.attribute("action", url);
     }
 
+    public void prerenderField(IMarkupWriter writer, IComponent field, Location location)
+    {
+        Defense.notNull(writer, "writer");
+        Defense.notNull(field, "field");
+
+        String key = field.getExtendedId();
+
+        if (_prerenderMap.containsKey(key))
+            throw new ApplicationRuntimeException(FormMessages.fieldAlreadyPrerendered(field),
+                    location, null);
+
+        NestedMarkupWriter nested = writer.getNestedWriter();
+
+        field.render(nested, _cycle);
+
+        _prerenderMap.put(key, nested.getBuffer());
+    }
+
+    public boolean wasPrerendered(IMarkupWriter writer, IComponent field)
+    {
+        String key = field.getExtendedId();
+
+        String buffer = (String) _prerenderMap.get(key);
+
+        if (buffer == null)
+            return false;
+
+        writer.printRaw(buffer);
+
+        _prerenderMap.remove(key);
+
+        return true;
+    }
 }

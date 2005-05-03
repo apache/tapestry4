@@ -137,10 +137,11 @@ public interface IMarkupWriter
 
     /**
      * Returns a nested writer, one that accumulates its changes in a buffer. When the nested writer
-     * is closed, it writes its buffer into its containing <code>IMarkupWriter</code>.
+     * is closed, it writes its buffer of markup into its containing <code>IMarkupWriter</code>
+     * using {@link #printRaw(String)}.
      */
 
-    public IMarkupWriter getNestedWriter();
+    public NestedMarkupWriter getNestedWriter();
 
     /**
      * Version of {@link #print(char[], int, int, boolean)}&nbsp;that assumes filter is

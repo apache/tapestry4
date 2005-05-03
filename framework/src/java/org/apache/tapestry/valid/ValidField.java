@@ -59,14 +59,11 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
+
+        if (form.wasPrerendered(writer, this))
+            return;
+
         IValidationDelegate delegate = form.getDelegate();
-
-        if (delegate == null)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "ValidField.no-delegate",
-                    getExtendedId(),
-                    getForm().getExtendedId()), this, null, null);
-
         IValidator validator = getValidator();
 
         if (validator == null)

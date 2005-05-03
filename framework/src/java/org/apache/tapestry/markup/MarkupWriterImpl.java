@@ -21,6 +21,7 @@ import java.util.List;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.NestedMarkupWriter;
 
 /**
  * Completely revised (for 4.0) implementation of {@link org.apache.tapestry.IMarkupWriter}. No
@@ -267,7 +268,7 @@ public class MarkupWriterImpl implements IMarkupWriter
         _writer.flush();
     }
 
-    public IMarkupWriter getNestedWriter()
+    public NestedMarkupWriter getNestedWriter()
     {
         return new NestedMarkupWriterImpl(this, _filter);
     }

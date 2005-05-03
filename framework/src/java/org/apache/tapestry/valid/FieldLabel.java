@@ -14,16 +14,13 @@
 
 package org.apache.tapestry.valid;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.BindingException;
-import org.apache.tapestry.FormSupport;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
-import org.apache.tapestry.form.Form;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
@@ -38,7 +35,7 @@ import org.apache.tapestry.form.IFormComponent;
 public abstract class FieldLabel extends AbstractComponent
 {
     /**
-     * Gets the {@link IFormComponent}and {@link IValidationDelegate delegate}, then renders the
+     * Gets the {@link IForm}&nbsp;and {@link IValidationDelegate delegate}, then renders the
      * label obtained from the field. Does nothing when rewinding.
      */
 
@@ -47,7 +44,13 @@ public abstract class FieldLabel extends AbstractComponent
         if (cycle.isRewinding())
             return;
 
+        IForm form = TapestryUtils.getForm(cycle, this);
+
         IFormComponent field = getField();
+
+        if (field != null)
+            form.prerenderField(writer, field, getLocation());
+
         String displayName = getDisplayName();
 
         if (displayName == null)
@@ -58,31 +61,11 @@ public abstract class FieldLabel extends AbstractComponent
             displayName = field.getDisplayName();
 
             if (displayName == null)
-            {
-                String msg = Tapestry.format("FieldLabel.no-display-name", field.getExtendedId());
-
-                throw new BindingException(msg, this, null, getBinding("field"), null);
-            }
-        }
-
-        IForm form = Form.get(cycle);
-
-        if (form == null)
-        {
-            String msg = Tapestry.getMessage("FieldLabel.must-be-contained-by-form");
-
-            throw new ApplicationRuntimeException(msg, this, null, null);
+                throw new BindingException(ValidMessages.noDisplayName(this, field), this, null,
+                        getBinding("field"), null);
         }
 
         IValidationDelegate delegate = form.getDelegate();
-
-        if (delegate == null)
-        {
-            String msg = Tapestry.format("FieldLabel.no-delegate", getExtendedId(), form
-                    .getExtendedId());
-
-            throw new ApplicationRuntimeException(msg, this, null, null);
-        }
 
         delegate.writeLabelPrefix(field, writer, cycle);
 
@@ -91,9 +74,12 @@ public abstract class FieldLabel extends AbstractComponent
         delegate.writeLabelSuffix(field, writer, cycle);
     }
 
+    /** displayName parameter */
     public abstract String getDisplayName();
 
+    /** field parameter */
     public abstract IFormComponent getField();
 
+    /** raw parameter */
     public abstract boolean getRaw();
 }

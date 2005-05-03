@@ -15,6 +15,7 @@
 package org.apache.tapestry.engine;
 
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.NestedMarkupWriter;
 
 /**
  * A {@link IMarkupWriter}that does absolutely <em>nothing</em>; this is used during the rewind
@@ -24,7 +25,7 @@ import org.apache.tapestry.IMarkupWriter;
  * @since 0.2.9
  */
 
-public class NullWriter implements IMarkupWriter
+public class NullWriter implements NestedMarkupWriter
 {
     private static IMarkupWriter shared;
 
@@ -34,6 +35,11 @@ public class NullWriter implements IMarkupWriter
             shared = new NullWriter();
 
         return shared;
+    }
+
+    public String getBuffer()
+    {
+        return null;
     }
 
     public void printRaw(char[] buffer, int offset, int length)
@@ -69,7 +75,7 @@ public class NullWriter implements IMarkupWriter
      * as another!.
      */
 
-    public IMarkupWriter getNestedWriter()
+    public NestedMarkupWriter getNestedWriter()
     {
         return this;
     }

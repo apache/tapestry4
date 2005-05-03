@@ -25,7 +25,7 @@
         The go element declares a go task, indicating navigation to a URI.
     </description>
 
-    <bean name="defaultDelegate" class="org.apache.tapestry.valid.ValidationDelegate"/>
+    <bean name="delegate" class="org.apache.tapestry.valid.ValidationDelegate" property="delegate"/>
 
     <parameter name="method" default-value="post" default-binding="literal">
         <description>

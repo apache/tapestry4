@@ -40,6 +40,9 @@ public abstract class Checkbox extends AbstractFormComponent
     {
         IForm form = getForm(cycle);
 
+        if (form.wasPrerendered(writer, this))
+            return;
+
         // Used whether rewinding or not.
 
         String name = form.getElementId(this);

@@ -27,6 +27,11 @@ import org.easymock.MockControl;
  */
 public class TestTapestryUtils extends HiveMindTestCase
 {
+    private IRequestCycle newCycle()
+    {
+        return (IRequestCycle) newMock(IRequestCycle.class);
+    }
+
     private IRequestCycle newCycle(String key, Object attribute)
     {
         MockControl control = newControl(IRequestCycle.class);
@@ -36,6 +41,21 @@ public class TestTapestryUtils extends HiveMindTestCase
         control.setReturnValue(attribute);
 
         return cycle;
+    }
+
+    private IForm newForm()
+    {
+        return (IForm) newMock(IForm.class);
+    }
+
+    private PageRenderSupport newPageRenderSupport()
+    {
+        return (PageRenderSupport) newMock(PageRenderSupport.class);
+    }
+
+    private IComponent newComponent()
+    {
+        return (IComponent) newMock(IComponent.class);
     }
 
     public void testStoreUniqueAttributeSuccess()
@@ -86,8 +106,8 @@ public class TestTapestryUtils extends HiveMindTestCase
 
     public void testGetPageRenderSupportSuccess()
     {
-        IComponent component = (IComponent) newMock(IComponent.class);
-        PageRenderSupport support = (PageRenderSupport) newMock(PageRenderSupport.class);
+        IComponent component = newComponent();
+        PageRenderSupport support = newPageRenderSupport();
         IRequestCycle cycle = newCycle(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, support);
 
         replayControls();
@@ -95,6 +115,47 @@ public class TestTapestryUtils extends HiveMindTestCase
         PageRenderSupport actual = TapestryUtils.getPageRenderSupport(cycle, component);
 
         assertSame(support, actual);
+
+        verifyControls();
+    }
+
+    public void testRemovePageRenderSupport()
+    {
+        IRequestCycle cycle = newCycle();
+
+        cycle.removeAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE);
+
+        replayControls();
+
+        TapestryUtils.removePageRenderSupport(cycle);
+
+        verifyControls();
+    }
+    
+    public void testRemoveForm()
+    {
+        IRequestCycle cycle = newCycle();
+
+        cycle.removeAttribute(TapestryUtils.FORM_ATTRIBUTE);
+
+        replayControls();
+
+        TapestryUtils.removeForm(cycle);
+
+        verifyControls(); 
+    }
+
+    public void testGetFormSuccess()
+    {
+        IComponent component = newComponent();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle(TapestryUtils.FORM_ATTRIBUTE, form);
+
+        replayControls();
+
+        IForm actual = TapestryUtils.getForm(cycle, component);
+
+        assertSame(form, actual);
 
         verifyControls();
     }
@@ -126,6 +187,39 @@ public class TestTapestryUtils extends HiveMindTestCase
         catch (ApplicationRuntimeException ex)
         {
             assertEquals(TapestryMessages.noPageRenderSupport(component), ex.getMessage());
+            assertSame(l, ex.getLocation());
+        }
+
+        verifyControls();
+    }
+
+    public void testGetFormFailure()
+    {
+        Location l = newLocation();
+        MockControl control = newControl(IComponent.class);
+        IComponent component = (IComponent) control.getMock();
+
+        component.getExtendedId();
+        control.setReturnValue("Foo/bar", 1);
+
+        component.getLocation();
+        control.setReturnValue(l);
+
+        component.getExtendedId();
+        control.setReturnValue("Foo/bar", 1);
+
+        IRequestCycle cycle = newCycle(TapestryUtils.FORM_ATTRIBUTE, null);
+
+        replayControls();
+
+        try
+        {
+            TapestryUtils.getForm(cycle, component);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(TapestryMessages.noForm(component), ex.getMessage());
             assertSame(l, ex.getLocation());
         }
 
