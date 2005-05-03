@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.binding;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
@@ -45,7 +46,14 @@ public class ComponentBinding extends AbstractBinding
 
     public Object getObject()
     {
-        return _component.getComponent(_componentId);
+        try
+        {
+            return _component.getComponent(_componentId);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(ex.getMessage(), getLocation(), ex);
+        }
     }
 
     public Object getComponent()
