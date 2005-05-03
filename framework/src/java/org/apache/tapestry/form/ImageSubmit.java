@@ -40,6 +40,9 @@ public abstract class ImageSubmit extends AbstractFormComponent
     {
         IForm form = getForm(cycle);
 
+        if (form.wasPrerendered(writer, this))
+            return;
+
         boolean rewinding = form.isRewinding();
 
         String nameOverride = getNameOverride();

@@ -28,12 +28,12 @@ class MarkupMessages
     private static final MessageFormatter _formatter = new MessageFormatter(MarkupMessages.class,
             "MarkupStrings");
 
-    public static String tagNotOpen()
+    static String tagNotOpen()
     {
         return _formatter.getMessage("tag-not-open");
     }
 
-    public static String elementNotOnStack(String name, List activeElementStack)
+    static String elementNotOnStack(String name, List activeElementStack)
     {
         StringBuffer buffer = new StringBuffer();
 
@@ -50,13 +50,18 @@ class MarkupMessages
         return _formatter.format("element-not-on-stack", name, buffer.toString());
     }
 
-    public static String endWithEmptyStack()
+    static String endWithEmptyStack()
     {
         return _formatter.getMessage("end-with-empty-stack");
     }
 
-    public static String noFilterMatch(ContentType contentType)
+    static String noFilterMatch(ContentType contentType)
     {
         return _formatter.format("no-filter-match", contentType);
+    }
+
+    static String closeOnce()
+    {
+        return _formatter.getMessage("close-once");
     }
 }

@@ -20,30 +20,28 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
-
 /**
- *  Implements a component that manages an HTML &lt;input type=submit&gt; form element.
+ * Implements a component that manages an HTML &lt;input type=submit&gt; form element. [ <a
+ * href="../../../../../ComponentReference/Submit.html">Component Reference </a>]
+ * <p>
+ * This component is generally only used when the form has multiple submit buttons, and it is
+ * important for the application to know which one was pressed. You may also want to use
+ * {@link ImageSubmit}which accomplishes much the same thing, but uses a graphic image instead.
  * 
- *  [<a href="../../../../../ComponentReference/Submit.html">Component Reference</a>]
- *
- *  <p>This component is generally only used when the form has multiple
- *  submit buttons, and it is important for the application to know
- *  which one was pressed.  You may also want to use
- *  {@link ImageSubmit} which accomplishes much the same thing, but uses
- *  a graphic image instead.
- *
- *
- *  @author Howard Lewis Ship
- * 
- **/
+ * @author Howard Lewis Ship
+ */
 
-public abstract class Submit extends AbstractFormComponent{
+public abstract class Submit extends AbstractFormComponent
+{
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
 
         IForm form = getForm(cycle);
-		
+
+        if (form.wasPrerendered(writer, this))
+            return;
+
         boolean rewinding = form.isRewinding();
 
         String name = form.getElementId(this);
@@ -56,7 +54,7 @@ public abstract class Submit extends AbstractFormComponent{
                 return;
 
             // How to know which Submit button was actually
-            // clicked?  When submitted, it produces a request parameter
+            // clicked? When submitted, it produces a request parameter
             // with its name and value (the value serves double duty as both
             // the label on the button, and the parameter value).
 

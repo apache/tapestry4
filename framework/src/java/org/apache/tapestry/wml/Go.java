@@ -14,13 +14,10 @@
 
 package org.apache.tapestry.wml;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.FormSupport;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.Form;
-import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
  * The go element declares a go task, indicating navigation to a URI. If the URI names a WML card or
@@ -37,22 +34,6 @@ public abstract class Go extends Form
      */
     protected void emitEventHandlers(IMarkupWriter writer, IRequestCycle cycle)
     {
-    }
-
-    /**
-     * This component doesn't support delegate.
-     */
-    public IValidationDelegate getDelegate()
-    {
-        return null;
-    }
-
-    public void setDelegate(IValidationDelegate delegate)
-    {
-        throw new ApplicationRuntimeException(Tapestry.format(
-                "unsupported-property",
-                this,
-                "delegate"));
     }
 
     protected String constructFormNameForActionService(String actionId)

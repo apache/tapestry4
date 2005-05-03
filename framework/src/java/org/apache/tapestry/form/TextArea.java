@@ -19,28 +19,27 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  Implements a component that manages an HTML &lt;textarea&gt; form element.
- *
- *  [<a href="../../../../../ComponentReference/TextArea.html">Component Reference</a>]
- *
- *
- *  @author Howard Lewis Ship
+ * Implements a component that manages an HTML &lt;textarea&gt; form element. [ <a
+ * href="../../../../../ComponentReference/TextArea.html">Component Reference </a>]
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class TextArea extends AbstractFormComponent
 {
 
     /**
-     *  Renders the form element, or responds when the form containing the element
-     *  is submitted (by checking {@link Form#isRewinding()}.
-     *
-     **/
+     * Renders the form element, or responds when the form containing the element is submitted (by
+     * checking {@link Form#isRewinding()}.
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
-		
+
+        if (form.wasPrerendered(writer, this))
+            return;
+
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.
 
@@ -52,14 +51,14 @@ public abstract class TextArea extends AbstractFormComponent
 
         if (rewinding)
         {
-        	if (!isDisabled())
-	            setValue(cycle.getParameter(name));
+            if (!isDisabled())
+                setValue(cycle.getParameter(name));
 
             return;
         }
-        
+
         if (cycle.isRewinding())
-        	return;
+            return;
 
         writer.begin("textarea");
 

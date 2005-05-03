@@ -19,6 +19,7 @@ import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
@@ -45,21 +46,13 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
 
     public IForm getForm(IRequestCycle cycle)
     {
-        IForm result = Form.get(cycle);
-
-        if (result == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("AbstractFormComponent.must-be-contained-by-form"),
-                this,
-                null,
-                null);
+        IForm result = TapestryUtils.getForm(cycle, this);
 
         setForm(result);
 
         IValidationDelegate delegate = result.getDelegate();
 
-        if (delegate != null)
-            delegate.setFormComponent(this);
+        delegate.setFormComponent(this);
 
         return result;
     }

@@ -18,19 +18,28 @@ import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.NestedMarkupWriter;
 
 /**
  * Nested implementation of {@link org.apache.tapestry.IMarkupWriter}. Accumulates content in a
- * {@link java.io.CharArrayWriter}, and prints the content (raw) on {@link #close()}.
+ * {@link java.io.CharArrayWriter}, and prints the buffered content (raw) on {@link #close()}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
+ * @see org.apache.tapestry.IMarkupWriter#getNestedWriter()
  */
-public class NestedMarkupWriterImpl extends MarkupWriterImpl
+public class NestedMarkupWriterImpl extends MarkupWriterImpl implements NestedMarkupWriter
 {
-    private IMarkupWriter _parent;
+    private final IMarkupWriter _parent;
 
-    private CharArrayWriter _charArrayWriter;
+    private final CharArrayWriter _charArrayWriter;
+
+    private boolean _closed;
+
+    public String getBuffer()
+    {
+        return _charArrayWriter.toString();
+    }
 
     public NestedMarkupWriterImpl(IMarkupWriter parent, MarkupFilter filter)
     {
@@ -57,12 +66,15 @@ public class NestedMarkupWriterImpl extends MarkupWriterImpl
 
     public void close()
     {
+        if (_closed)
+            throw new IllegalStateException(MarkupMessages.closeOnce());
+
+        _closed = true;
+
         super.close();
 
-        String content = _charArrayWriter.toString();
+        String content = getBuffer();
 
         _parent.printRaw(content);
-
-        _charArrayWriter = null;
     }
 }

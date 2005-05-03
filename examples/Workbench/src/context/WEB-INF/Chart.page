@@ -35,7 +35,7 @@
       <!-- Property is a Number, so ensure that the value is an integer, not the string "0"
       (which leaves no way to convert to Number). -->
       
-  	<set name="minimum" value="ognl:0"/>
+  	<set name="minimum" value="0"/>
   </bean>
 
   <component id="showError" type="ShowError">

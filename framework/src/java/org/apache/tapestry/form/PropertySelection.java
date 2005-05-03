@@ -20,62 +20,50 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  A component used to render a drop-down list of options that
- *  the user may select.
+ * A component used to render a drop-down list of options that the user may select. [ <a
+ * href="../../../../../ComponentReference/PropertySelection.html">Component Reference </a>]
+ * <p>
+ * Earlier versions of PropertySelection (through release 2.2) were more flexible, they included a
+ * <b>renderer </b> property that controlled how the selection was rendered. Ultimately, this proved
+ * of little value and this portion of functionality was deprecated in 2.3 and will be removed in
+ * 2.3.
+ * <p>
+ * Typically, the values available to be selected are defined using an
+ * {@link org.apache.commons.lang.enum.Enum}. A PropertySelection is dependent on an
+ * {@link IPropertySelectionModel}to provide the list of possible values.
+ * <p>
+ * Often, this is used to select a particular {@link org.apache.commons.lang.enum.Enum}to assign to
+ * a property; the {@link EnumPropertySelectionModel}class simplifies this.
  * 
- *  [<a href="../../../../../ComponentReference/PropertySelection.html">Component Reference</a>]
- *
- *  <p>Earlier versions of PropertySelection (through release 2.2)
- *  were more flexible, they included a <b>renderer</b> property
- *  that controlled how the selection was rendered.  Ultimately,
- *  this proved of little value and this portion of
- *  functionality was deprecated in 2.3 and will be removed in 2.3.
- * 
- *  <p>Typically, the values available to be selected
- *  are defined using an {@link org.apache.commons.lang.enum.Enum}.
- *  A PropertySelection is dependent on
- *  an {@link IPropertySelectionModel} to provide the list of possible values.
- *
- *  <p>Often, this is used to select a particular 
- *  {@link org.apache.commons.lang.enum.Enum} to assign to a property; the
- *  {@link EnumPropertySelectionModel} class simplifies this.
- *
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class PropertySelection extends AbstractFormComponent
 {
     /**
-     *  A shared instance of {@link SelectPropertySelectionRenderer}.
-     *
-     * 
-     **/
+     * A shared instance of {@link SelectPropertySelectionRenderer}.
+     */
 
-    public static final IPropertySelectionRenderer DEFAULT_SELECT_RENDERER =
-        new SelectPropertySelectionRenderer();
+    public static final IPropertySelectionRenderer DEFAULT_SELECT_RENDERER = new SelectPropertySelectionRenderer();
 
     /**
-     *  A shared instance of {@link RadioPropertySelectionRenderer}.
-     *
-     * 
-     **/
+     * A shared instance of {@link RadioPropertySelectionRenderer}.
+     */
 
-    public static final IPropertySelectionRenderer DEFAULT_RADIO_RENDERER =
-        new RadioPropertySelectionRenderer();
+    public static final IPropertySelectionRenderer DEFAULT_RADIO_RENDERER = new RadioPropertySelectionRenderer();
 
     /**
-     *  Renders the component, much of which is the responsiblity
-     *  of the {@link IPropertySelectionRenderer renderer}.  The possible options,
-     *  thier labels, and the values to be encoded in the form are provided
-     *  by the {@link IPropertySelectionModel model}.
-     *
-     **/
+     * Renders the component, much of which is the responsiblity of the
+     * {@link IPropertySelectionRenderer renderer}. The possible options, thier labels, and the
+     * values to be encoded in the form are provided by the {@link IPropertySelectionModel model}.
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
+
+        if (form.wasPrerendered(writer, this))
+            return;
 
         boolean rewinding = form.isRewinding();
 
@@ -161,15 +149,12 @@ public abstract class PropertySelection extends AbstractFormComponent
     }
 
     /**
-     *  Renders the property selection using a {@link IPropertySelectionRenderer}.
-     *  Support for this will be removed in 2.3.
-     * 
-     **/
+     * Renders the property selection using a {@link IPropertySelectionRenderer}. Support for this
+     * will be removed in 2.3.
+     */
 
-    private void renderWithRenderer(
-        IMarkupWriter writer,
-        IRequestCycle cycle,
-        IPropertySelectionRenderer renderer)
+    private void renderWithRenderer(IMarkupWriter writer, IRequestCycle cycle,
+            IPropertySelectionRenderer renderer)
     {
         renderer.beginRender(this, writer, cycle);
 
@@ -225,22 +210,22 @@ public abstract class PropertySelection extends AbstractFormComponent
 
     public abstract IPropertySelectionRenderer getRenderer();
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     public abstract boolean getSubmitOnChange();
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     public abstract Object getValue();
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     public abstract void setValue(Object value);
 
     /**
-     *  Returns true if this PropertySelection's disabled parameter yields true.
-     *  The corresponding HTML control(s) should be disabled.
-     **/
+     * Returns true if this PropertySelection's disabled parameter yields true. The corresponding
+     * HTML control(s) should be disabled.
+     */
 
     public abstract boolean isDisabled();
 

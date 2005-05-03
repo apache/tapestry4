@@ -19,6 +19,7 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.AbstractFormComponent;
 
 /**
@@ -59,6 +60,9 @@ public abstract class AbstractPostfield extends AbstractFormComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
+
+        if (form.wasPrerendered(writer, this))
+            return;
 
         boolean rewinding = form.isRewinding();
 

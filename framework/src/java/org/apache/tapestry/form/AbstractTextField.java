@@ -35,9 +35,10 @@ public abstract class AbstractTextField extends AbstractFormComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        String value;
-
         IForm form = getForm(cycle);
+
+        if (form.wasPrerendered(writer, this))
+            return;
 
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.
@@ -58,7 +59,7 @@ public abstract class AbstractTextField extends AbstractFormComponent
         {
             if (!isDisabled())
             {
-                value = cycle.getParameter(name);
+                String value = cycle.getParameter(name);
 
                 updateValue(value);
             }
@@ -75,7 +76,7 @@ public abstract class AbstractTextField extends AbstractFormComponent
 
         writer.attribute("name", name);
 
-        value = readValue();
+        String value = readValue();
         if (value != null)
             writer.attribute("value", value);
 

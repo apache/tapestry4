@@ -25,6 +25,7 @@ import org.apache.hivemind.test.TypeMatcher;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.NestedMarkupWriter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.util.ContentType;
@@ -40,9 +41,9 @@ import org.easymock.MockControl;
  */
 public class TestPortletRenderer extends HiveMindTestCase
 {
-    private IMarkupWriter newWriter()
+    private NestedMarkupWriter newNestedWriter()
     {
-        return (IMarkupWriter) newMock(IMarkupWriter.class);
+        return (NestedMarkupWriter) newMock(NestedMarkupWriter.class);
     }
 
     private PrintWriter newPrintWriter()
@@ -124,7 +125,7 @@ public class TestPortletRenderer extends HiveMindTestCase
         ContentType ct = new ContentType("text/html");
         PrintWriter pw = newPrintWriter();
         WebResponse response = newWebResponse(ct, pw);
-        IMarkupWriter nested = newWriter();
+        IMarkupWriter nested = newNestedWriter();
 
         MockControl control = newControl(IMarkupWriter.class);
         IMarkupWriter writer = (IMarkupWriter) control.getMock();

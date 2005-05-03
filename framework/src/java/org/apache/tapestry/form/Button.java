@@ -19,22 +19,24 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  Implements a component that manages an HTML &lt;input type=button&gt; form element.
- *
- *  [<a href="../../../../../ComponentReference/Button.html">Component Reference</a>]
- *  
- *  <p>This component is useful for attaching JavaScript onclick event handlers.
- *
- *  @author Howard Lewis Ship
- *  @author Paul Geerts
- *  @author Malcolm Edgar
- **/
+ * Implements a component that manages an HTML &lt;input type=button&gt; form element. [ <a
+ * href="../../../../../ComponentReference/Button.html">Component Reference </a>]
+ * <p>
+ * This component is useful for attaching JavaScript onclick event handlers.
+ * 
+ * @author Howard Lewis Ship
+ * @author Paul Geerts
+ * @author Malcolm Edgar
+ */
 
 public abstract class Button extends AbstractFormComponent
 {
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
+
+        if (form.wasPrerendered(writer, this))
+            return;
 
         boolean rewinding = form.isRewinding();
 

@@ -61,6 +61,8 @@ public class TapestryUtils
 
     public static final String PAGE_RENDER_SUPPORT_ATTRIBUTE = "org.apache.tapestry.PageRenderSupport";
 
+    public static final String FORM_ATTRIBUTE = "org.apache.tapestry.Form";
+
     /**
      * Stores the support object using {@link #storeUniqueAttribute(IRequestCycle, String, Object)}.
      */
@@ -71,7 +73,16 @@ public class TapestryUtils
     }
 
     /**
-     * Gets the previously stored {@link org.apache.tapestry.PageRenderSupport}object.
+     * Store the IForm instance using {@link #storeUniqueAttribute(IRequestCycle, String, Object)}.
+     */
+
+    public static void storeForm(IRequestCycle cycle, IForm form)
+    {
+        storeUniqueAttribute(cycle, FORM_ATTRIBUTE, form);
+    }
+
+    /**
+     * Gets the previously stored {@link org.apache.tapestry.PageRenderSupport}&nbsp;object.
      * 
      * @param cycle
      *            the request cycle storing the support object
@@ -96,9 +107,38 @@ public class TapestryUtils
         return result;
     }
 
+    /**
+     * Gets the previously stored {@link IForm}&nbsp;object.
+     * 
+     * @param cycle
+     *            the request cycle storing the support object
+     * @param component
+     *            the component which requires the form (used to report exceptions)
+     * @throws ApplicationRuntimeException
+     *             if no form object has been stored
+     */
+    public static IForm getForm(IRequestCycle cycle, IComponent component)
+    {
+        Defense.notNull(cycle, "cycle");
+        Defense.notNull(component, "component");
+
+        IForm result = (IForm) cycle.getAttribute(FORM_ATTRIBUTE);
+
+        if (result == null)
+            throw new ApplicationRuntimeException(TapestryMessages.noForm(component), component
+                    .getLocation(), null);
+
+        return result;
+    }
+
     public static void removePageRenderSupport(IRequestCycle cycle)
     {
         cycle.removeAttribute(PAGE_RENDER_SUPPORT_ATTRIBUTE);
+    }
+
+    public static void removeForm(IRequestCycle cycle)
+    {
+        cycle.removeAttribute(FORM_ATTRIBUTE);
     }
 
     /**

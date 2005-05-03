@@ -21,9 +21,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.NestedMarkupWriter;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.IFormComponent;
 
@@ -137,6 +142,12 @@ public class ValidationDelegate implements IValidationDelegate
         return Collections.unmodifiableList(_trackings);
     }
 
+    /** @since 3.0.2 */
+    public IFieldTracking getCurrentFieldTracking()
+    {
+        return findCurrentTracking();
+    }
+
     public void reset()
     {
         IFieldTracking tracking = getComponentTracking();
@@ -206,8 +217,9 @@ public class ValidationDelegate implements IValidationDelegate
     }
 
     /**
-     * Finds or creates the field tracking for the {@link #setFormComponent(IFormComponent)}current
-     * component. If no current component, an unassociated error is created and returned.
+     * Finds or creates the field tracking for the {@link #setFormComponent(IFormComponent)}
+     * &nbsp;current component. If no current component, an unassociated error is created and
+     * returned.
      * 
      * @since 3.0
      */
@@ -386,4 +398,5 @@ public class ValidationDelegate implements IValidationDelegate
 
         return result;
     }
+
 }

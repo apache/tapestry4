@@ -169,35 +169,39 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *       
  *        
  *         
- *          TABLE.tapestry-palette TH
- *          {
- *            font-size: 9pt;
- *            font-weight: bold;
- *            color: white;
- *            background-color: #330066;
- *            text-align: center;
- *          }
- *         
- *          TD.available-cell SELECT
- *          {
- *            font-weight: normal;
- *            background-color: #FFFFFF;
- *            width: 200px;
- *          }
  *          
- *          TD.selected-cell SELECT
- *          {
- *            font-weight: normal;
- *            background-color: #FFFFFF;
- *            width: 200px;
- *          }
- *          
- *          TABLE.tapestry-palette TD.controls
- *          {
- *            text-align: center;
- *            vertical-align: middle;
- *            width: 60px;
- *          }
+ *           
+ *            TABLE.tapestry-palette TH
+ *            {
+ *              font-size: 9pt;
+ *              font-weight: bold;
+ *              color: white;
+ *              background-color: #330066;
+ *              text-align: center;
+ *            }
+ *           
+ *            TD.available-cell SELECT
+ *            {
+ *              font-weight: normal;
+ *              background-color: #FFFFFF;
+ *              width: 200px;
+ *            }
+ *            
+ *            TD.selected-cell SELECT
+ *            {
+ *              font-weight: normal;
+ *              background-color: #FFFFFF;
+ *              width: 200px;
+ *            }
+ *            
+ *            TABLE.tapestry-palette TD.controls
+ *            {
+ *              text-align: center;
+ *              vertical-align: middle;
+ *              width: 60px;
+ *            }
+ *     
+ *    
  *   
  *  
  * </pre>
@@ -238,18 +242,16 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        IForm form = Form.get(cycle);
+        IForm form = TapestryUtils.getForm(cycle, this);
 
-        if (form == null)
-            throw new ApplicationRuntimeException("Palette component must be wrapped by a Form.",
-                    this, null, null);
+        if (form.wasPrerendered(writer, this))
+            return;
 
         setForm(form);
 
         IValidationDelegate delegate = form.getDelegate();
 
-        if (delegate != null)
-            delegate.setFormComponent(this);
+        delegate.setFormComponent(this);
 
         setName(form.getElementId(this));
 
@@ -302,6 +304,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         if (_script == null)
         {
             IEngine engine = getPage().getEngine();
+            // Note: this should be injected ...
             IScriptSource source = engine.getScriptSource();
 
             Resource scriptResource = getSpecification().getSpecificationLocation()
@@ -478,7 +481,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
     public abstract IAsset getDownImage();
 
     public abstract IAsset getSelectDisabledImage();
-    
+
     public abstract IPropertySelectionModel getModel();
 
     public abstract int getRows();

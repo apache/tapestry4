@@ -109,6 +109,9 @@ public abstract class DatePicker extends AbstractFormComponent
     {
         IForm form = getForm(cycle);
 
+        if (form.wasPrerendered(writer, this))
+            return;
+
         String name = form.getElementId(this);
 
         String format = getFormat();

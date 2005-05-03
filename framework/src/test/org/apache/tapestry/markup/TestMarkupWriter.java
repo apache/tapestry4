@@ -624,6 +624,27 @@ public class TestMarkupWriter extends HiveMindTestCase
         assertOutput("</div>");
     }
 
+    public void testRepeatCloseOnNestedWriter()
+    {
+        MarkupFilter filter = new EchoMarkupFilter();
+        PrintWriter writer = newPrintWriter();
+
+        IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
+
+        IMarkupWriter nested = mw.getNestedWriter();
+
+        nested.close();
+
+        try
+        {
+            nested.close();
+        }
+        catch (IllegalStateException ex)
+        {
+            // Expected.
+        }
+    }
+
     public void testEndNamedNotOnStack()
     {
         MarkupFilter filter = new EchoMarkupFilter();

@@ -26,7 +26,7 @@ class FormMessages
     private static final MessageFormatter _formatter = new MessageFormatter(FormMessages.class,
             "FormStrings");
 
-    public static String formTooManyIds(IComponent form, int actualCount, IComponent component)
+    static String formTooManyIds(IComponent form, int actualCount, IComponent component)
     {
         return _formatter.format(
                 "form-too-many-ids",
@@ -35,7 +35,7 @@ class FormMessages
                 component.getExtendedId());
     }
 
-    public static String formIdMismatch(IComponent form, int mismatchIndex, String expectedId,
+    static String formIdMismatch(IComponent form, int mismatchIndex, String expectedId,
             String actualId, IComponent component)
     {
         return _formatter.format("form-id-mismatch", new Object[]
@@ -43,17 +43,13 @@ class FormMessages
                 component.getExtendedId() });
     }
 
-    public static String formsMayNotNest()
+    static String formTooFewIds(IComponent form, int remainingCount, String nextExpectedId)
     {
-        return _formatter.getMessage("forms-may-not-nest");
+        return _formatter.format("form-too-few-ids", form.getExtendedId(), new Integer(
+                remainingCount), nextExpectedId);
     }
 
-    public static String formTooFewIds(IComponent form, int remainingCount, String nextExpectedId)
-    {
-        return _formatter.format("form-too-few-ids", form.getExtendedId(), new Integer(remainingCount), nextExpectedId);
-    }
-
-    public static String encodingTypeContention(IComponent form, String establishedEncodingType,
+    static String encodingTypeContention(IComponent form, String establishedEncodingType,
             String newEncodingType)
     {
         return _formatter.format(
@@ -61,5 +57,10 @@ class FormMessages
                 form.getExtendedId(),
                 establishedEncodingType,
                 newEncodingType);
+    }
+
+    static String fieldAlreadyPrerendered(IComponent field)
+    {
+        return _formatter.format("field-already-prerenderer", field);
     }
 }

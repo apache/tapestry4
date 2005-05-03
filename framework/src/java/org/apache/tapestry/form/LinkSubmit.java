@@ -49,8 +49,11 @@ public abstract class LinkSubmit extends AbstractFormComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-
         IForm form = getForm(cycle);
+
+        if (form.wasPrerendered(writer, this))
+            return;
+
         String formName = form.getName();
 
         boolean rewinding = form.isRewinding();
