@@ -19,8 +19,8 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * A wrapper around {@link String}that allows the String to be renderred. This is primarily used to
- * present error messages.
+ * A wrapper around {@link String}&nbsp;that allows the String to be renderred. This is primarily
+ * used to present error messages.
  * 
  * @author Howard Lewis Ship
  */
@@ -74,7 +74,9 @@ public class RenderString implements IRender
     }
 
     /**
-     * Returns the string that would be rendered.
+     * Returns the string that would be rendered. This is part of the contract for error renderers
+     * used with validation ... must provide a user-presentable toString() that does not include any
+     * markup.
      */
 
     public String toString()
