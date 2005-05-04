@@ -24,7 +24,7 @@
 	allow-informal-parameters="no">
 
   <description>
-  Labels a ValidField.
+  Labels a ValidField of other form element component.
   </description>
 
   <parameter name="field" required="yes" default-binding="component"/>

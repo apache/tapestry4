@@ -22,9 +22,22 @@ public class PortletConstants
 {
     /**
      * Name of the render service, whose job is to render a page. The page to render is identified
-     * in the {@link org.apache.tapestry.services.ServiceConstants#PAGE}parameter.
+     * in the {@link org.apache.tapestry.services.ServiceConstants#PAGE}&nbsp;parameter.
      */
     public static final String RENDER_SERVICE = "render";
+
+    /**
+     * Name of the exception service, which renders stored exception markup.
+     */
+
+    public static final String EXCEPTION_SERVICE = "exception";
+
+    /**
+     * Session attribute key used to store markup generated during an action request, so that it can
+     * be displayed during a later render request.
+     */
+
+    public static final String PORTLET_EXCEPTION_MARKUP_ATTRIBUTE = "org.apache.tapestry.portlet.PortletExceptionMarkup";
 
     private PortletConstants()
     {

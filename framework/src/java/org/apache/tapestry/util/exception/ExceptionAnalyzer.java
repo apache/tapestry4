@@ -29,29 +29,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  Analyzes an exception, creating one or more 
- *  {@link ExceptionDescription}s
- *  from it.
- *
- *  @author Howard Lewis Ship
+ * Analyzes an exception, creating one or more {@link ExceptionDescription}s from it.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public class ExceptionAnalyzer
 {
-    private List exceptionDescriptions;
-    private List propertyDescriptions;
-    private CharArrayWriter writer;
+    private final List exceptionDescriptions = new ArrayList();
 
-    private static final int LIST_SIZE = 3;
+    private final List propertyDescriptions = new ArrayList();
+
+    private final CharArrayWriter writer = new CharArrayWriter();
 
     private boolean exhaustive = false;
 
     /**
-     *  If true, then stack trace is extracted for each exception.  If false,
-     *  the default, then stack trace is extracted for only the deepest exception.
-     *
-     **/
+     * If true, then stack trace is extracted for each exception. If false, the default, then stack
+     * trace is extracted for only the deepest exception.
+     */
 
     public boolean isExhaustive()
     {
@@ -64,54 +60,43 @@ public class ExceptionAnalyzer
     }
 
     /**
-     *  Analyzes the exceptions.  This builds an {@link ExceptionDescription} for the
-     *  exception.  It also looks for a non-null {@link Throwable}
-     *  property.  If one exists, then a second {@link ExceptionDescription} 
-     *  is created.  This continues until no more nested exceptions can be found.
-     *
-     *  <p>The description includes a set of name/value properties 
-     *  (as {@link ExceptionProperty}) object.  This list contains all
-     *  non-null properties that are not, themselves, {@link Throwable}.
-     *
-     *  <p>The name is the display name (not the logical name) of the property.  The value
-     *  is the <code>toString()</code> value of the property.
-     *
-     *  Only properties defined in subclasses of {@link Throwable} are included.
-     *
-     *  <p>A future enhancement will be to alphabetically sort the properties by name.
-     **/
+     * Analyzes the exceptions. This builds an {@link ExceptionDescription}for the exception. It
+     * also looks for a non-null {@link Throwable}property. If one exists, then a second
+     * {@link ExceptionDescription}is created. This continues until no more nested exceptions can
+     * be found.
+     * <p>
+     * The description includes a set of name/value properties (as {@link ExceptionProperty})
+     * object. This list contains all non-null properties that are not, themselves,
+     * {@link Throwable}.
+     * <p>
+     * The name is the display name (not the logical name) of the property. The value is the
+     * <code>toString()</code> value of the property. Only properties defined in subclasses of
+     * {@link Throwable}are included.
+     * <p>
+     * A future enhancement will be to alphabetically sort the properties by name.
+     */
 
     public ExceptionDescription[] analyze(Throwable exception)
     {
-        ExceptionDescription[] result;
-
-        if (writer == null)
-            writer = new CharArrayWriter();
-
-        if (propertyDescriptions == null)
-            propertyDescriptions = new ArrayList(LIST_SIZE);
-
-        if (exceptionDescriptions == null)
-            exceptionDescriptions = new ArrayList(LIST_SIZE);
-
-        while (exception != null)
+        try
         {
-            exception = buildDescription(exception);
+
+            while (exception != null)
+            {
+                exception = buildDescription(exception);
+            }
+
+            ExceptionDescription[] result = new ExceptionDescription[exceptionDescriptions.size()];
+
+            return (ExceptionDescription[]) exceptionDescriptions.toArray(result);
         }
+        finally
+        {
+            exceptionDescriptions.clear();
+            propertyDescriptions.clear();
 
-        result = new ExceptionDescription[exceptionDescriptions.size()];
-        result = (ExceptionDescription[]) exceptionDescriptions.toArray(result);
-
-        exceptionDescriptions.clear();
-        propertyDescriptions.clear();
-
-        writer.reset();
-
-        // We never actually close() the writer which is bad ... I'm expecting that
-        // the finalize() method will close them, or that they don't need to
-        // close.
-
-        return result;
+            writer.reset();
+        }
     }
 
     protected Throwable buildDescription(Throwable exception)
@@ -177,7 +162,7 @@ public class ExceptionAnalyzer
                 continue;
 
             // Skip Throwables ... but the first non-null
-            // found is the next exception.  We kind of count
+            // found is the next exception. We kind of count
             // on there being no more than one Throwable
             // property per Exception.
 
@@ -209,14 +194,10 @@ public class ExceptionAnalyzer
 
         properties = new ExceptionProperty[propertyDescriptions.size()];
 
-        ExceptionProperty[] propArray =
-            (ExceptionProperty[]) propertyDescriptions.toArray(properties);
+        ExceptionProperty[] propArray = (ExceptionProperty[]) propertyDescriptions
+                .toArray(properties);
 
-        description =
-            new ExceptionDescription(
-                exceptionClass.getName(),
-                message,
-                propArray,
+        description = new ExceptionDescription(exceptionClass.getName(), message, propArray,
                 stackTrace);
 
         exceptionDescriptions.add(description);
@@ -225,21 +206,17 @@ public class ExceptionAnalyzer
     }
 
     /**
-     *  Gets the stack trace for the exception, and converts it into an array of strings.
-     *
-     *  <p>This involves parsing the 
-     *   string generated indirectly from
-     *  <code>Throwable.printStackTrace(PrintWriter)</code>.  This method can get confused
-     *  if the message (presumably, the first line emitted by printStackTrace())
-     *  spans multiple lines.
-     *
-     *  <p>Different JVMs format the exception in different ways.
-     *
-     *  <p>A possible expansion would be more flexibility in defining the pattern
-     *  used.  Hopefully all 'mainstream' JVMs are close enough for this to continue
-     *  working.
-     *
-     **/
+     * Gets the stack trace for the exception, and converts it into an array of strings.
+     * <p>
+     * This involves parsing the string generated indirectly from
+     * <code>Throwable.printStackTrace(PrintWriter)</code>. This method can get confused if the
+     * message (presumably, the first line emitted by printStackTrace()) spans multiple lines.
+     * <p>
+     * Different JVMs format the exception in different ways.
+     * <p>
+     * A possible expansion would be more flexibility in defining the pattern used. Hopefully all
+     * 'mainstream' JVMs are close enough for this to continue working.
+     */
 
     protected String[] getStackTrace(Throwable exception)
     {
@@ -293,15 +270,15 @@ public class ExceptionAnalyzer
     }
 
     private static final int SKIP_LEADING_WHITESPACE = 0;
+
     private static final int SKIP_T = 1;
+
     private static final int SKIP_OTHER_WHITESPACE = 2;
 
     /**
-     *  Sun's JVM prefixes each line in the stack trace
-     *  with "<tab>at ", other JVMs don't.  This method
-     *  looks for and strips such stuff.
-     *
-     **/
+     * Sun's JVM prefixes each line in the stack trace with " <tab>at ", other JVMs don't. This
+     * method looks for and strips such stuff.
+     */
 
     private String stripFrame(String frame)
     {
@@ -313,7 +290,7 @@ public class ExceptionAnalyzer
 
         while (more)
         {
-            // Ran out of characters to skip?  Return the empty string.
+            // Ran out of characters to skip? Return the empty string.
 
             if (i == array.length)
                 return "";
@@ -324,7 +301,7 @@ public class ExceptionAnalyzer
             {
                 // Ignore whitespace at the start of the line.
 
-                case SKIP_LEADING_WHITESPACE :
+                case SKIP_LEADING_WHITESPACE:
 
                     if (Character.isWhitespace(ch))
                     {
@@ -343,9 +320,9 @@ public class ExceptionAnalyzer
                     more = false;
                     break;
 
-                    // Skip over the 't' after an 'a'
+                // Skip over the 't' after an 'a'
 
-                case SKIP_T :
+                case SKIP_T:
 
                     if (ch == 't')
                     {
@@ -360,9 +337,9 @@ public class ExceptionAnalyzer
                     more = false;
                     break;
 
-                    // Skip whitespace between 'at' and the name of the class
+                // Skip whitespace between 'at' and the name of the class
 
-                case SKIP_OTHER_WHITESPACE :
+                case SKIP_OTHER_WHITESPACE:
 
                     if (Character.isWhitespace(ch))
                     {
@@ -386,9 +363,8 @@ public class ExceptionAnalyzer
     }
 
     /**
-     *  Produces a text based exception report to the provided stream.
-     *
-     **/
+     * Produces a text based exception report to the provided stream.
+     */
 
     public void reportException(Throwable exception, PrintStream stream)
     {
@@ -408,14 +384,13 @@ public class ExceptionAnalyzer
             if (message == null)
                 stream.println(descriptions[i].getExceptionClassName());
             else
-                stream.println(
-                    descriptions[i].getExceptionClassName() + ": " + descriptions[i].getMessage());
+                stream.println(descriptions[i].getExceptionClassName() + ": "
+                        + descriptions[i].getMessage());
 
             properties = descriptions[i].getProperties();
 
             for (j = 0; j < properties.length; j++)
-                stream.println(
-                    "   " + properties[j].getName() + ": " + properties[j].getValue());
+                stream.println("   " + properties[j].getName() + ": " + properties[j].getValue());
 
             // Just show the stack trace on the deepest exception.
 
