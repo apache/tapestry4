@@ -24,7 +24,7 @@
   <parameter name="title" required="yes" default-binding="literal"/>
 	
   <component id="shell" type="Shell">
-    <binding name="title" value="title"/>
+    <binding name="title" value="ognl:title"/>
     <binding name="stylesheet" value="asset:style"/>
   </component>
   

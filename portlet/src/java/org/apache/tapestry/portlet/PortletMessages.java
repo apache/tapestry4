@@ -27,23 +27,28 @@ class PortletMessages
     private static final MessageFormatter _formatter = new MessageFormatter(PortletMessages.class,
             "PortletStrings");
 
-    public static String unsupportedMethod(String methodName)
+    static String unsupportedMethod(String methodName)
     {
         return _formatter.format("unsupported-method", methodName);
     }
 
-    public static String errorGettingResource(String path, Throwable cause)
+    static String errorGettingResource(String path, Throwable cause)
     {
         return _formatter.format("error-getting-resource", path, cause);
     }
 
-    public static String errorProcessingAction(Throwable cause)
+    static String errorProcessingAction(Throwable cause)
     {
         return _formatter.format("error-processing-action", cause);
     }
 
-    public static String errorProcessingRender(Throwable cause)
+    static String errorProcessingRender(Throwable cause)
     {
         return _formatter.format("error-processing-render", cause);
+    }
+
+    static String errorReportingException(Throwable cause)
+    {
+        return _formatter.format("error-reporting-exception", cause);
     }
 }

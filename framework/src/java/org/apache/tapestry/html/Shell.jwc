@@ -26,6 +26,7 @@
   </description>
 
   <parameter name="title" 
+    default-binding="literal"
   	required="yes">
     <description>
     The title for the page.
@@ -45,6 +46,7 @@
   </parameter>
 
   <parameter name="doctype"
+    default-binding="literal"
   	default-value='HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"'>
     <description>
     Used to specify the full definition of the DOCTYPE element in the response page,
@@ -61,6 +63,7 @@
   
   <parameter 
   	name="renderContentType"
+    default-binding="ognl"
   	default-value="true">
     <description>
     Determines whether to render an http-equiv element with the Content Type of this response.
@@ -68,14 +71,16 @@
   </parameter>
   
   <parameter 
-  	name="refresh">
+  	name="refresh"
+    default-binding="ognl">
     <description>
     If specified, the page will refresh itself after the specified delay (in seconds).
     </description>
   </parameter>
   
   <parameter 
-  	name="delegate">
+  	name="delegate"
+    default-binding="ognl">
     <description>
     If specified, the delegate is rendered before the close of the &lt;head&gt;
     tag (typically used to provide &lt;meta&gt; tags).

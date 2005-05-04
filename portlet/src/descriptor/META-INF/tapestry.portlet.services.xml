@@ -35,11 +35,26 @@
     <service name="restart" object="service:tapestry.services.Restart"/>
     <service name="asset" object="service:PortletAsset"/>
 	  <service name="external" object="service:tapestry.services.External"/>
+    <service name="exception" object="service:Exception"/>
     
     <!-- Special one used for handling Portal RenderRequests -->
     
     <service name="render" object="service:Render"/>
   </contribution>    
+  
+  <service-point id="Exception" interface="org.apache.tapestry.engine.IEngineService">
+    
+    Renders a pre-generated exception, stored in the session.
+    
+    <invoke-factory model="primitive">
+      <construct class="ExceptionService">
+        <set-object property="request" value="infrastructure:request"/>
+        <set-object property="response" value="infrastructure:response"/>
+        <set-service property="globals" service-id="tapestry.portlet.PortletRequestGlobals"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
   
   <service-point id="PortletAsset" interface="org.apache.tapestry.engine.IEngineService">
     

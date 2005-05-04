@@ -28,11 +28,20 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> A FieldLabel works with a &ValidField; or other form element component (such as &TextField;, &TextArea;,
+  &Checkbox;, etc.), labeling the field with the <code>displayName</code> property of the field.  The FieldLabel
+  may also be <em>decorated</em> by the validation delegate (to highlight when the corresponding field
+  is in error).
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  The body of the component is discarded, but often has a provisional label (for WYSIWYG).  The actual value
+  is typically provided by the field (so that it may be localized just once).
+</p>
+
+<p>
+  <strong>See also: <link href="&apiroot;/valid/FieldLabel.html">org.apache.tapestry.valid.FieldLabel</link>,
+    &IValidationDelegate;</strong> 
 </p>
 
 <section>
@@ -45,17 +54,59 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
+    <th>Default Binding</th>    
     <th>Description</th>
+  </tr>
+  
+  <tr>
+    <td>field</td>
+    <td>&IFormComponent;</td>
+    <td>in</td>
+    <td>yes</td>
+    <td>&nbsp;</td>
+    <td>component</td>
+    <td>
+      The component to be labeled.  The component will be <em>pre-rendered</em> by the FieldLabel, and
+      its displayName property used as the label string (note that most form element components return null
+      for displayName).
+    </td>
+  </tr>
+  
+  <tr>
+    <td>displayName</td>
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>literal</td>
+    <td>
+      Overrides the displayName provided by the component (if a &ValidField;), or supplies a displayName for components
+      (such as &TextField;, etc.) that don't provide one.  A runtime exception occurs if displayName is null
+      and not supplied by the component.
+    </td>
+  </tr>
+  
+  <tr>
+    <td>raw</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+    <td>&nbsp;</td>
+    <td>
+      If true, then the displayName is printed "raw" (without filtering), which is appropriate when
+      the displayName includes markup text.
+    </td>
   </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>forbidden</strong>
 </p>
 
 <p>
@@ -66,6 +117,31 @@
 
 <section>
   <title>Examples</title>
+
+<p>
+FieldLabel components are simple, and generally expressed entirely in the HTML template.  Here we see a
+&TextField; being labeled (and the displayName being provided as a FieldLabel parameter), and
+a &ValidField; being labeled (with the displayName being provided by the ValidField, from its parameter).
+</p>
+
+<source><![CDATA[
+<tr>
+  <th>
+    <span jwcid="@FieldLabel" field="textField" displayName="message:textfield-label">Text Field</span>:
+  </th>
+  <td>
+    <input jwcid="textField@TextField" . . . />
+  </td>
+</tr>
+<tr>
+  <th>
+    <span jwcid="@FieldLabel" field="validField">Valid Field</span>:
+  </th>
+  <td>
+    <input jwcid="validField@ValidField" displayName="message:validfield-label" . . . />
+  </td>
+</tr>
+]]></source>
 
 </section>
 </body>

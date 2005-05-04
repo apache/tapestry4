@@ -209,6 +209,7 @@
   <contribution configuration-id="tapestry.Infrastructure">
     <property name="linkFactory" mode="portlet" object="service:PortletLinkFactory"/>
     <property name="HTMLDescriber" mode="portlet" object="service:PortletHTMLDescriber"/>
+    <property name="exceptionPresenter" mode="portlet" object="service:PortletExceptionPresenter" />
   </contribution>
    
  <contribution configuration-id="PortletApplicationInitializers">
@@ -228,6 +229,25 @@
 			</construct>
 		</invoke-factory>
 	</service-point>
+  
+  <service-point id="PortletExceptionPresenter" interface="org.apache.tapestry.error.ExceptionPresenter">
+    
+    Displays stack trace and other information when a runtime exception is thrown.
+    If the exception occurs during an action request, the markup rendered and stored
+    in the session until a later render request (using the exception service).
+    
+    <invoke-factory>
+      <construct class="PortletExceptionPresenter">
+        <set-service property="globals" service-id="PortletRequestGlobals"/>
+        <set-object property="request" value="infrastructure:request"/>
+        <set-object property="response" value="infrastructure:response"/>
+        <set-object property="requestExceptionReporter"
+                       value="infrastructure:requestExceptionReporter"/>   
+        <set-object property="renderStrategy" value="service:tapestry.describe.RenderStrategy"/>
+     </construct>
+    </invoke-factory>
+    
+  </service-point>
   
 	<contribution configuration-id="tapestry.describe.DescribableStrategies">
     <strategy class="javax.portlet.PortletSession" object="instance:PortletSessionDescribableStrategy"/>
