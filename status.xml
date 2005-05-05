@@ -52,7 +52,7 @@
     -->
   </todo>
   <changes>
-    <release version="4.0-alpha-2" date="unreleased">
+    <release version="4.0-alpha-2" date="May 5 2005">
       <action type="update" dev="HLS"> Upgrade to HiveMind 1.1-alpha-4-snapshot. </action>
       <action type="update" dev="HLS"> Coordinate Locale changes with the hivemind.ThreadLocale service. </action>
       <action type="add" dev="HLS"> Add lookup mechanism to determine page class from page name. </action>
@@ -247,7 +247,11 @@
     </release>
   </changes>
   <votes>
-    <vote title="Tapestry 4.0" dev="HLS">
+    <vote title="Tapestry 4.0-alpha-2" date="May 5 2005" dev="HLS">
+      <motion> Now that HiveMind 1.1 has entered beta, I believe it's time to release a new alpha of Tapestry 4.0 (Picasso). This will give people a chance to see more of the (incomplete) Portlet support and many of the other recent fixes and improvements. </motion>
+      <response>HLS, RLS, EH, TSV, DS, PF, GL, MB: +1</response>
+    </vote>
+    <vote title="Tapestry 4.0" date="Apr 15 2005" dev="HLS">
       <motion>The sentiment of the community seems to be that the next major release of Tapestry (i.e., HiveMind infrastructure, Portlet support, etc.) is too different from Tapestry 3.0 to be called "Tapestry 3.1". This release will only be largely backwards compatible; applications that sub-class BaseEngine or make use of custom Tapestry engine services will require some amount of re-work. In a small number of cases, component parameters (espcially those using direction "auto" or "custom") 
         will not work exactly as before. I feel it is completely reasonable to not call this release 3.1, but to continue to bend over backwards for backwards compatibility. A +1 vote signals that you concur, and that the next release should be numbered 4.0. This will affect the code in a very limited way: Much code has been added with a @since 3.1 javadoc tag; this will change to @since 4.,0. Likewise, the 3.1 numbering is in documentation, and inside some of the specification DTDs; these will 
         also change. </motion>
