@@ -30,7 +30,7 @@ with separate binary and source distributions.
 
 <p>
 Tapestry distributions are available from the
-<fork href="http://jakarta.apache.org/site/binindex.cgi#tapestry-current">Apache Mirrors</fork>.  
+<fork href="http://jakarta.apache.org/site/downloads/downloads_tapestry.cgi">Apache Mirrors</fork>.  
 Tapestry is packaged somewhat differently than most other Apache projects, in that the main
 distribution includes binary <em>and</em> source, but that documentation is seperate:
 </p>
