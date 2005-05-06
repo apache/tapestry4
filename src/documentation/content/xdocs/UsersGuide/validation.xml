@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+[
+	<!ENTITY projectroot '../'>
+	<!ENTITY % links.ent SYSTEM "../links.ent">
+  <!ENTITY % common.ent SYSTEM "common.ent">
+	%links.ent;
+  %common.ent;
+]>
+<document>
+  <header>
+    <title>Input Validation</title>
+  </header>
+
+<body>
+
+<p>
+  Coming soon ...
+</p>
+
+<section id="validation.validfield">
+  <title>ValidField component</title>
+  
+</section> <!-- validation.validfield -->
+
+<section id="validation.fieldlabel">
+  <title>FieldLabel component</title>
+  
+</section> <!-- validation.fieldlabel -->
+
+<section id="validation.validators">
+  <title>Validators</title>
+  
+</section> <!-- validation.validators -->
+
+<section id="validation.validator-binding">
+  <title>validator: binding prefix </title>
+  
+<p>The validator: <link href="bindings.html">binding prefix</link> is a powerful shorthand for specifying validators.
+  The string provided does two things:  it identifies (by a short logical name) the Java class of the validator to create, and
+  it specifies (as a comma seperated list) the properties of the validator to set.   The form of the string is:
+  </p>
+  
+  <source>
+validator:<em>name</em>[,<em>property</em>[=<em>value</em>]]*
+  </source>
+  
+<p>
+The name corresponds to contributions to the tapestry.valid.Validators configuration point.  After the name is a list of properties to set.
+A simple conversion from string value to actual data type is performed.  For boolean properties, the value can be skipped and will default to true. 
+Alternatly, the value can be prefixed with an exclamation point, and the property will be set to false.  Example:
+</p>
+
+<source>
+validator:string,required,minimumLength=5
+</source> 
+
+<p>
+In some cases, this is insufficiently powerful to set the properties of the validator instance, in which case the &spec.bean; element can be used
+instead.
+</p> 
+
+<p>
+The following validator names are defined:
+</p>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>&IValidator; implementation class</th>
+  </tr>
+  <tr>
+    <td>string</td> <td><link href="&apiroot;/valid/StringValidator.html">StringValidator</link></td>
+  </tr>
+  <tr>
+    <td>date</td>
+    <td><link href="&apiroot;/valid/DateValidator.html">DateValidator</link></td>
+  </tr>
+  <tr>
+    <td>email</td>
+    <td><link href="&apiroot;/valid/EmailValidator.html">EmailValidator</link></td>
+  </tr>
+  <tr>
+    <td>url</td> 
+    <td><link href="&apiroot;/valid/UrlValidator.html">UrlValidator</link></td>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td><link href="&apiroot;/valid/IntValidator.html">IntValidator</link></td>
+  </tr>
+</table>
+  
+</section>
+</body>
+</document>

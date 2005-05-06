@@ -22,6 +22,7 @@ import java.util.Map;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.lib.util.StrategyRegistry;
 import org.apache.hivemind.lib.util.StrategyRegistryImpl;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -35,7 +36,7 @@ import org.apache.tapestry.form.IFormComponent;
  * @since 1.0.8
  */
 
-public class NumberValidator extends BaseValidator
+public class NumberValidator extends AbstractNumericValidator
 {
     private static final Map TYPES = new HashMap();
 
@@ -71,23 +72,9 @@ public class NumberValidator extends BaseValidator
 
     private Class _valueTypeClass = int.class;
 
-    private boolean _zeroIsNull;
-
     private Number _minimum;
 
     private Number _maximum;
-
-    private String _scriptPath = "/org/apache/tapestry/valid/NumberValidator.script";
-
-    private String _invalidNumericFormatMessage;
-
-    private String _invalidIntegerFormatMessage;
-
-    private String _numberTooSmallMessage;
-
-    private String _numberTooLargeMessage;
-
-    private String _numberRangeMessage;
 
     private static StrategyRegistry _numberAdaptors = new StrategyRegistryImpl();
 
@@ -284,12 +271,28 @@ public class NumberValidator extends BaseValidator
         _numberAdaptors.register(BigInteger.class, new BigIntegerAdaptor());
     }
 
+    public NumberValidator()
+    {
+
+    }
+
+    /**
+     * Initializes the NumberValidator with properties defined by the initializer.
+     * 
+     * @since 4.0
+     */
+
+    public NumberValidator(String initializer)
+    {
+        PropertyUtils.configureProperties(this, initializer);
+    }
+
     public String toString(IFormComponent field, Object value)
     {
         if (value == null)
             return null;
 
-        if (_zeroIsNull)
+        if (getZeroIsNull())
         {
             Number number = (Number) value;
 
@@ -348,11 +351,11 @@ public class NumberValidator extends BaseValidator
         }
 
         if (_minimum != null && adaptor.compare(result, _minimum) < 0)
-            throw new ValidatorException(buildNumberTooSmallMessage(field),
+            throw new ValidatorException(buildNumberTooSmallMessage(field, _minimum),
                     ValidationConstraint.TOO_SMALL);
 
         if (_maximum != null && adaptor.compare(result, _maximum) > 0)
-            throw new ValidatorException(buildNumberTooLargeMessage(field),
+            throw new ValidatorException(buildNumberTooLargeMessage(field, _maximum),
                     ValidationConstraint.TOO_LARGE);
 
         return result;
@@ -389,21 +392,6 @@ public class NumberValidator extends BaseValidator
     }
 
     /**
-     * If true, then when rendering, a zero is treated as a non-value, and null is returned. If
-     * false, the default, then zero is rendered as zero.
-     */
-
-    public boolean getZeroIsNull()
-    {
-        return _zeroIsNull;
-    }
-
-    public void setZeroIsNull(boolean zeroIsNull)
-    {
-        _zeroIsNull = zeroIsNull;
-    }
-
-    /**
      * @since 2.2
      */
 
@@ -427,43 +415,9 @@ public class NumberValidator extends BaseValidator
             symbols.put("formatMessage", buildInvalidNumericFormatMessage(field));
 
         if (_minimum != null || _maximum != null)
-            symbols.put("rangeMessage", buildRangeMessage(field));
+            symbols.put("rangeMessage", buildRangeMessage(field, _minimum, _maximum));
 
-        processValidatorScript(_scriptPath, cycle, field, symbols);
-    }
-
-    private String buildRangeMessage(IFormComponent field)
-    {
-        if (_minimum != null && _maximum != null)
-            return buildNumberRangeMessage(field);
-
-        if (_maximum != null)
-            return buildNumberTooLargeMessage(field);
-
-        return buildNumberTooSmallMessage(field);
-    }
-
-    /**
-     * @since 2.2
-     */
-
-    public String getScriptPath()
-    {
-        return _scriptPath;
-    }
-
-    /**
-     * Allows a developer to use the existing validation logic with a different client-side script.
-     * This is often sufficient to allow application-specific error presentation (perhaps by using
-     * DHTML to update the content of a &lt;span&gt; tag, or to use a more sophisticated pop-up
-     * window than <code>window.alert()</code>).
-     * 
-     * @since 2.2
-     */
-
-    public void setScriptPath(String scriptPath)
-    {
-        _scriptPath = scriptPath;
+        processValidatorScript(getScriptPath(), cycle, field, symbols);
     }
 
     /**
@@ -506,152 +460,6 @@ public class NumberValidator extends BaseValidator
 
     /** @since 3.0 */
 
-    public String getInvalidNumericFormatMessage()
-    {
-        return _invalidNumericFormatMessage;
-    }
-
-    /** @since 3.0 */
-
-    public String getInvalidIntegerFormatMessage()
-    {
-        return _invalidIntegerFormatMessage;
-    }
-
-    /** @since 3.0 */
-
-    public String getNumberRangeMessage()
-    {
-        return _numberRangeMessage;
-    }
-
-    /** @since 3.0 */
-
-    public String getNumberTooLargeMessage()
-    {
-        return _numberTooLargeMessage;
-    }
-
-    /** @since 3.0 */
-
-    public String getNumberTooSmallMessage()
-    {
-        return _numberTooSmallMessage;
-    }
-
-    /**
-     * Overrides the <code>invalid-numeric-format</code> bundle key. Parameter {0} is the display
-     * name of the field.
-     * 
-     * @since 3.0
-     */
-
-    public void setInvalidNumericFormatMessage(String string)
-    {
-        _invalidNumericFormatMessage = string;
-    }
-
-    /**
-     * Overrides the <code>invalid-int-format</code> bundle key. Parameter {0} is the display name
-     * of the field.
-     * 
-     * @since 3.0
-     */
-
-    public void setInvalidIntegerFormatMessage(String string)
-    {
-        _invalidIntegerFormatMessage = string;
-    }
-
-    /** @since 3.0 */
-
-    protected String buildInvalidNumericFormatMessage(IFormComponent field)
-    {
-        String pattern = getPattern(
-                getInvalidNumericFormatMessage(),
-                "invalid-numeric-format",
-                field.getPage().getLocale());
-
-        return formatString(pattern, field.getDisplayName());
-    }
-
-    /** @since 3.0 */
-
-    protected String buildInvalidIntegerFormatMessage(IFormComponent field)
-    {
-        String pattern = getPattern(getInvalidIntegerFormatMessage(), "invalid-int-format", field
-                .getPage().getLocale());
-
-        return formatString(pattern, field.getDisplayName());
-    }
-
-    /**
-     * Overrides the <code>number-range</code> bundle key. Parameter [0} is the display name of
-     * the field. Parameter {1} is the minimum value. Parameter {2} is the maximum value.
-     * 
-     * @since 3.0
-     */
-
-    public void setNumberRangeMessage(String string)
-    {
-        _numberRangeMessage = string;
-    }
-
-    protected String buildNumberRangeMessage(IFormComponent field)
-    {
-        String pattern = getPattern(_numberRangeMessage, "number-range", field.getPage()
-                .getLocale());
-
-        return formatString(pattern, new Object[]
-        { field.getDisplayName(), _minimum, _maximum });
-    }
-
-    /**
-     * Overrides the <code>number-too-large</code> bundle key. Parameter {0} is the display name
-     * of the field. Parameter {1} is the maximum allowed value.
-     * 
-     * @since 3.0
-     */
-
-    public void setNumberTooLargeMessage(String string)
-    {
-        _numberTooLargeMessage = string;
-    }
-
-    /** @since 3.0 */
-
-    protected String buildNumberTooLargeMessage(IFormComponent field)
-    {
-        String pattern = getPattern(_numberTooLargeMessage, "number-too-large", field.getPage()
-                .getLocale());
-
-        return formatString(pattern, field.getDisplayName(), _maximum);
-    }
-
-    /**
-     * Overrides the <code>number-too-small</code> bundle key. Parameter {0} is the display name
-     * of the field. Parameter {1} is the minimum allowed value.
-     * 
-     * @since 3.0
-     */
-
-    public void setNumberTooSmallMessage(String string)
-    {
-        _numberTooSmallMessage = string;
-    }
-
-    /** @since 3.0 */
-
-    protected String buildNumberTooSmallMessage(IFormComponent field)
-    {
-        String pattern = getPattern(_numberTooSmallMessage, "number-too-small", field.getPage()
-                .getLocale());
-
-        return formatString(pattern, field.getDisplayName(), _minimum);
-    }
-
-    /** @since 3.0 */
-
     public boolean isIntegerNumber()
     {
         NumberStrategy strategy = (NumberStrategy) _numberAdaptors.getStrategy(_valueTypeClass);
@@ -659,5 +467,10 @@ public class NumberValidator extends BaseValidator
             return false;
 
         return strategy.getNumberType() == NUMBER_TYPE_INTEGER;
+    }
+
+    protected String getDefaultScriptPath()
+    {
+        return "/org/apache/tapestry/valid/NumberValidator.script";
     }
 }

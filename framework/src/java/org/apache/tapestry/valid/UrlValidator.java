@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IFormComponent;
@@ -48,6 +49,17 @@ public class UrlValidator extends BaseValidator
 
     public UrlValidator()
     {
+    }
+
+    /**
+     * Initializes the UrlValidator with properties defined by the initializer.
+     * 
+     * @since 4.0
+     */
+
+    public UrlValidator(String initializer)
+    {
+        super(initializer);
     }
 
     public String toString(IFormComponent field, Object value)
@@ -275,22 +287,10 @@ public class UrlValidator extends BaseValidator
         if (override != null)
             return override;
 
-        ResourceBundle strings;
-        String string;
-        try
-        {
-            strings = ResourceBundle.getBundle("net.sf.cendil.tapestry.valid.ValidationStrings", //$NON-NLS-1$
-                    locale);
-            string = strings.getString(key);
-        }
-        catch (Exception exc)
-        {
-            strings = ResourceBundle.getBundle("org.apache.tapestry.valid.ValidationStrings", //$NON-NLS-1$
-                    locale);
-            string = strings.getString(key);
-        }
-
-        return string;
+        ResourceBundle strings = ResourceBundle.getBundle(
+                "org.apache.tapestry.valid.ValidationStrings",
+                locale);
+        return strings.getString(key);
     }
 
     /**

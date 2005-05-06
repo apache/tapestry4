@@ -47,6 +47,7 @@
       <bindings label="Component parameter bindings" href="bindings.html"/>
       <listenermethods label="Listener methods" href="listenermethods.html"/>
       <page-class label="Page  Classes" href="page-class.html"/>
+      <validation label="Input Validation" href="validation.html"/>
       <components label="Creating Tapestry components" href="components.html"/>
       <localization label="Localization" href="localization.html"/>
       <state label="Managing server-side state" href="state.html"/>

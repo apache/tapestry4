@@ -16,30 +16,21 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 
 <page-specification class="org.apache.tapestry.junit.mock.c29.Two">
-    <property-specification name="intValue" type="int" initial-value="0"/>
-    <property-specification name="intValue2" type="int" initial-value="0"/>
-    <property-specification name="flag" type="boolean"/>
-    
-    <bean name="delegate" class="org.apache.tapestry.valid.ValidationDelegate"/>
-
-    <bean name="intValidator" lifecycle="render" class="org.apache.tapestry.valid.NumberValidator">
-        <set-property name="valueType">"int"</set-property>
-    </bean>
     
     <component id="field" type="ValidField">
-        <binding name="validator" expression="beans.intValidator"/>
-        <binding name="value" expression="intValue"/>
-        <static-binding name="displayName">int</static-binding>
+        <binding name="validator" value="int"/>
+        <binding name="value" value="intValue"/>
+        <binding name="displayName" value="int"/>
     </component>
 
     <component id="field2" type="ValidField">
-        <binding name="validator" expression="beans.intValidator"/>
-        <binding name="value" expression="intValue2"/>
-        <static-binding name="displayName">int2</static-binding>
+        <binding name="validator" value="int"/>
+        <binding name="value" value="intValue2"/>
+      <binding name="displayName" value="int2"/>
     </component>
 
 </page-specification>

@@ -24,19 +24,6 @@
   <property name="plotValues" persist="session"/>
   
   <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
-  
-	<bean name="required" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
-	  <set name="required" value="true"/>
-	</bean>
-
-  <bean name="intValidator" class="org.apache.tapestry.valid.NumberValidator" lifecycle="page">
-  	<set name="required" value="true"/>
-      
-      <!-- Property is a Number, so ensure that the value is an integer, not the string "0"
-      (which leaves no way to convert to Number). -->
-      
-  	<set name="minimum" value="0"/>
-  </bean>
 
   <component id="showError" type="ShowError">
      <binding name="delegate" value="bean:delegate"/>
@@ -55,14 +42,13 @@
   <component id="inputName" type="ValidField">
   	<binding name="displayName" value="Name"/>
   	<binding name="value" value="plotValue.name"/>
-  	<binding name="validator" value="bean:required"/>
+  	<binding name="validator" value="string,required,clientScriptingEnabled"/>
   </component>
 
   <component id="inputValue" type="ValidField">	
   	<binding name="displayName" value="Value"/>
   	<binding name="value" value="plotValue.value"/>
-  	<binding name="validator" value="bean:intValidator"/>
-  	<binding name="type" value="int"/>
+  	<binding name="validator" value="int,required,clientScriptingEnabled,minimum=0"/>
   </component>
   
   <component id="inputMarked" type="Checkbox">

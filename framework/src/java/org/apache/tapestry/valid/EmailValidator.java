@@ -44,6 +44,17 @@ public class EmailValidator extends BaseValidator
     {
     }
 
+    /**
+     * Initializes the EmailValidator with properties defined by the initializer.
+     * 
+     * @since 4.0
+     */
+
+    public EmailValidator(String initializer)
+    {
+        super(initializer);
+    }
+
     public String toString(IFormComponent field, Object value)
     {
         if (value == null)

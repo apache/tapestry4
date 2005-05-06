@@ -14,18 +14,20 @@
 
 package org.apache.tapestry.junit.mock.c29;
 
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
 
 public abstract class Two extends BasePage
 {
+    public abstract int getIntValue();
+
+    public abstract int getIntValue2();
 
     public abstract void setFlag(boolean value);
 
     public abstract boolean isFlag();
 
-    public void submit(IRequestCycle cycle)
+    public void submit()
     {
-        this.setFlag(!this.isFlag());
+        setFlag(!isFlag());
     }
 }

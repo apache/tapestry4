@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE script PUBLIC
+	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+	
+<!-- 
+
+  Creates a script for validating that an integer field is required and/or has a minimum
+  field length.
+  
+  Input symbols:
+     field, form, validator:  As normal for a validation script.
+     minimum, maximum: Optional, set the range.
+     formatMessage: Message displayed if the input is not valid.
+	   requiredMessage: Message to display if the field is required yet blank.
+	   rangeMessage: Message to display if the field is not in the expected range. 
+     formatExpression: Regular expression for the field.
+-->
+	
+<script>
+
+<include-script resource-path="/org/apache/tapestry/valid/Validator.js"/>
+
+<input-symbol key="field" class="org.apache.tapestry.valid.ValidField" required="yes"/>
+<input-symbol key="form" class="org.apache.tapestry.IForm" required="yes"/>
+<input-symbol key="validator" class="org.apache.tapestry.valid.IValidator" required="yes"/>
+<input-symbol key="minimum" class="java.lang.Number"/>
+<input-symbol key="maximum" class="java.lang.Number"/>
+<input-symbol key="formatMessage" class="java.lang.String" required="yes"/>
+<input-symbol key="requiredMessage" class="java.lang.String"/>
+<input-symbol key="rangeMessage" class="java.lang.String"/>
+
+<let key="function" unique="yes">
+validate_${field.name}
+</let>
+
+<body>
+function ${function}()
+{
+  var field = document.${form.name}.${field.name}; 
+  var stringValue = field.value;  
+<if expression="validator.required">
+  if (stringValue.length == 0)
+     return validator_invalid_field(field, "${requiredMessage}");
+</if>
+<if-not expression="validator.required">
+  if (stringValue.length == 0)
+     return true;
+</if-not>
+  var value = stringValue * 1;
+  if (isNaN(value))
+      return validator_invalid_field(field, "${formatMessage}");
+  var regex = /\./;
+  if (stringValue.search(regex) != -1)
+      return validator_invalid_field(field, "${formatMessage}");
+<if expression="minimum != null">
+  if (value &lt; ${minimum})
+     return validator_invalid_field(field, "${rangeMessage}");
+</if>
+<if expression="maximum != null">
+  if (value &gt; ${maximum})
+     return validator_invalid_field(field, "${rangeMessage}");
+</if>
+  return true;
+}
+</body>
+
+</script>

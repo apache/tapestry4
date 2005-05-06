@@ -24,6 +24,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
@@ -102,6 +103,16 @@ public abstract class BaseValidator implements IValidator
 
     public BaseValidator()
     {
+    }
+
+    /**
+     * Allow the validator to be initialized with a property initialization string.
+     * 
+     * @since 4.0
+     */
+    public BaseValidator(String initializer)
+    {
+        PropertyUtils.configureProperties(this, initializer);
     }
 
     protected BaseValidator(boolean required)
