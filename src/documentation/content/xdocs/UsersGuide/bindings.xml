@@ -113,11 +113,24 @@ value is to be interprted.  The prefix identifies the <em>binding type</em>:
     <td>state:visit</td>
     <td></td>
   </tr>
+  
+  <tr>
+    <td>validator</td>
+    <td>Initializer used to obtain and configure an &IValidator; instance.</td>
+    <td>validator:string,required,minimumLength=5</td>
+    <td></td>
+  </tr>
 </table>
+
+<p>
+ Most of these are quite straight forward; the <link href="validation.html#validation.validator-binding">validator:</link> prefix
+ requires some additional description.
+</p>
 
 <note>
   You can define your own prefixes by contributing into the tapestry.bindings.BindingFactories configuration point.
 </note>  
+  
   
 <section id="bindings.default-binding-type">
   <title>Binding Type Defaults</title>
@@ -158,7 +171,8 @@ be overriden with an explicit binding type prefix.
 </p>
 
 <p>
-What about parameters that don't defined a default binding type, or informal parameters?  For those, it
+What about parameters that don't define a default binding type?  The answer to this question (which
+includes  all informal parameters), is that it
 depends on whether the parameter is bound in an HTML template, or in a page or component specification.
 In an HTML template, the default binding type is "literal".    In a specification, the default binding
 type is "ognl".

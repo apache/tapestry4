@@ -59,6 +59,22 @@ public class DateValidator extends BaseValidator
 
     private String _invalidDateFormatMessage;
 
+    public DateValidator()
+    {
+
+    }
+
+    /**
+     * Initializes the DateValidator with properties defined by the initializer.
+     * 
+     * @since 4.0
+     */
+
+    public DateValidator(String initializer)
+    {
+        super(initializer);
+    }
+
     public void setFormat(DateFormat value)
     {
         _format = value;

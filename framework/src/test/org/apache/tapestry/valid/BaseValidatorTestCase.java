@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.valid;
+package org.apache.tapestry.valid;
 
 import java.util.Locale;
 
@@ -37,32 +37,50 @@ public class BaseValidatorTestCase extends TapestryTestCase
 
     protected IFormComponent newField(String displayName)
     {
-        return newField(displayName, Locale.ENGLISH);
+        return newField(displayName, 1);
+    }
+
+    protected IFormComponent newField(String displayName, int count)
+    {
+        return newField(displayName, Locale.ENGLISH, count);
     }
 
     protected IFormComponent newField(String displayName, Locale locale)
     {
-        IPage page = newPage(locale);
+        return newField(displayName, locale, 1);
+    }
+
+    protected IFormComponent newField(String displayName, Locale locale, int count)
+    {
+        IPage page = newPage(locale, count);
 
         MockControl control = newControl(IFormComponent.class);
         IFormComponent component = (IFormComponent) control.getMock();
 
-        component.getPage();
-        control.setReturnValue(page);
+        for (int i = 0; i < count; i++)
+        {
+            component.getPage();
+            control.setReturnValue(page);
 
-        component.getDisplayName();
-        control.setReturnValue(displayName);
+            component.getDisplayName();
+            control.setReturnValue(displayName);
+        }
 
         return component;
     }
 
     protected IPage newPage(Locale locale)
     {
+        return newPage(locale, 1);
+    }
+
+    protected IPage newPage(Locale locale, int count)
+    {
         MockControl pagec = newControl(IPage.class);
         IPage page = (IPage) pagec.getMock();
 
         page.getLocale();
-        pagec.setReturnValue(locale);
+        pagec.setReturnValue(locale, count);
 
         return page;
     }

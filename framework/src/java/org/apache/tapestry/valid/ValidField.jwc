@@ -31,7 +31,7 @@
   
   <parameter name="hidden" default-binding="ognl"/>
     
-  <parameter name="validator" required="yes" default-binding="ognl">
+  <parameter name="validator" required="yes" default-binding="validator">
     <description>
     Converts value to a string and parses strings back into object values.
     </description>

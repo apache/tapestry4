@@ -1,7 +1,7 @@
 two
-<form jwcid="@Form" delegate="bean:delegate" listener="listener:submit">
+<form jwcid="@Form" listener="submit">
 <input type="text" jwcid="field"/>
 <span jwcid="@Conditional" condition="ognl:flag">
-<span jwcid="@FieldLabel" field="ognl:components.field2"/>: <input type="text" jwcid="field2"/>
+<span jwcid="@FieldLabel" field="field2"/>: <input type="text" jwcid="field2"/>
 </span>
 </form>

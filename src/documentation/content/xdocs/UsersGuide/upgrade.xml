@@ -303,8 +303,8 @@ may instead be specified as the enclosed character data of the &lt;property-spec
 </p>
 
 <p>
-Using the 4.0 DTDs, this is still true, but the initial-value attribute (or the enclosed character data) is a &binding-reference;. To get
-the same behavior as the 3.0 DTD, it must be prefixed with "ognl:".
+Using the 4.0 DTDs, this is still true, but the initial-value attribute (or the enclosed character data) is a &binding-reference; with
+a default prefix of "ognl:".
 </p>
   
 </section> <!-- upgrade.property -->
@@ -324,20 +324,5 @@ value.
 
 </section>  <!-- upgrade.bean -->
 
-<section id="upgrade.abstract">
-  <title>Abstract classes</title>
-  
-<p>
-In Tapestry 3.0, it was rare, put possible, for your page and component classes to be concrete (not abstract).  In Tapestry 4.0,
-that is no longer possible ... base classes such as &BasePage; are themselves abstract because key properties, such as <code>messages</code>
-are now injected into the classes, rather than inherited from base classes.
-</p>  
-
-<p>
-On upgrading from 3.0 to 4.0 and recompiling, you may see errors about "having to provide an implementation for method ..."; simply add the
-abstract keyword to your classes.  They <em>will</em> work at runtime.
-</p>
-  
-</section> <!-- upgrade.abstract -->
 </body>
 </document>

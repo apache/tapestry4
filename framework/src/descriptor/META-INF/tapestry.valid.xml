@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry.valid" version="4.0.0" package="org.apache.tapestry.valid">
+  
+  Support for input validation subsystem (centered around
+  the ValidField component).
+  
+  <configuration-point id="Validators" schema-id="hivemind.lib.BeanFactoryContribution"/>
+  
+  <contribution configuration-id="Validators">
+    <bean name="string" class="StringValidator"/>
+    <bean name="date" class="DateValidator"/>
+    <bean name="email" class="EmailValidator"/>
+    <bean name="url" class="UrlValidator"/>
+    <bean name="int" class="IntValidator"/>
+  </contribution>
+  
+  <service-point id="ValidatorBeanFactory" interface="org.apache.hivemind.lib.BeanFactory">
+    <invoke-factory service-id="hivemind.lib.BeanFactoryBuilder">
+      <factory vend-class="IValidator" configuration-id="Validators"/>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="ValidatorBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
+    
+    Creates bindings that provide access to validators defined
+    by the tapestry.valid.Validators configuration point.
+    
+    <invoke-factory>
+      <construct class="ValidatorBindingFactory">
+        <set-service property="validatorBeanFactory" service-id="ValidatorBeanFactory"/>
+        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+      </construct>
+    </invoke-factory>
+  </service-point>  
+  
+  <contribution configuration-id="tapestry.bindings.BindingFactories">
+    <binding prefix="validator" service-id="ValidatorBindingFactory"/>
+  </contribution>
+  
+  
+</module>

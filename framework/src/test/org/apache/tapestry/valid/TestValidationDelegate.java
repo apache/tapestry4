@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.valid;
+package org.apache.tapestry.valid;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ import org.easymock.MockControl;
 
 public class TestValidationDelegate extends BaseValidatorTestCase
 {
-    private IFormComponent newField(String name, int count)
+    protected IFormComponent newField(String name, int count)
     {
         MockControl control = newControl(IFormComponent.class);
         IFormComponent fc = (IFormComponent) control.getMock();

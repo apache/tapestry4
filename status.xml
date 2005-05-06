@@ -52,8 +52,10 @@
     -->
   </todo>
   <changes>
+    <release version="4.0-alpha-3-snapshot" date="unrelease">
+      <action type="add" dev="HLS">Add initial support for the validator: binding prefix.</action>
+    </release>
     <release version="4.0-alpha-2" date="May 5 2005">
-      <action type="update" dev="HLS"> Upgrade to HiveMind 1.1-alpha-4-snapshot. </action>
       <action type="update" dev="HLS"> Coordinate Locale changes with the hivemind.ThreadLocale service. </action>
       <action type="add" dev="HLS"> Add lookup mechanism to determine page class from page name. </action>
       <action type="add" dev="HLS"> Allow the name of the initial page to be overriden using the org.apache.tapestry.home-page application property. </action>

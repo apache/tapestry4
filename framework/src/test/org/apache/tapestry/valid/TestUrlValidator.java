@@ -12,40 +12,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.valid;
+package org.apache.tapestry.valid;
 
+import java.util.Locale;
+
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.valid.EmailValidator;
+import org.apache.tapestry.valid.UrlValidator;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
+import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.valid.EmailValidator}.
  * 
- * @author Howard Lewis Ship
+ * @author Tsvetelin Saykov
+ * @author Jimmy Dyson
  * @since 3.0
  */
 
-public class TestEmailValidator extends BaseValidatorTestCase
+public class TestUrlValidator extends BaseValidatorTestCase
 {
-    private EmailValidator v = new EmailValidator();
+    private UrlValidator v = new UrlValidator();
 
-    public void testValidEmail() throws ValidatorException
+    public void testValidUrl() throws ValidatorException
     {
         IFormComponent field = newField();
 
         replayControls();
 
-        Object result = v.toObject(field, "foo@bar.com");
-
-        assertEquals("foo@bar.com", result);
+        Object result = v.toObject(field, "http://www.google.com");
+        assertEquals("http://www.google.com", result);
 
         verifyControls();
     }
 
-    public void testInvalidEmail()
+    public void testInvalidUrl()
     {
-        IFormComponent field = newField("email");
+        IFormComponent field = newField("url");
 
         replayControls();
 
@@ -56,22 +60,20 @@ public class TestEmailValidator extends BaseValidatorTestCase
         }
         catch (ValidatorException ex)
         {
-            assertEquals(ValidationConstraint.EMAIL_FORMAT, ex.getConstraint());
-            assertEquals("Invalid email format for email.  Format is user@hostname.", ex
-                    .getMessage());
+            assertEquals(ValidationConstraint.URL_FORMAT, ex.getConstraint());
+            assertEquals("Invalid URL.", ex.getMessage());
         }
 
         verifyControls();
     }
 
-    public void testOverrideInvalidEmailFormatMessage()
+    public void testOverrideInvalidUrlFormatMessage()
     {
-        IFormComponent field = newField("email");
+        IFormComponent field = newField("url");
 
         replayControls();
 
-        v
-                .setInvalidEmailFormatMessage("Try a valid e-mail address (for {0}), like ''dick@wad.com.''");
+        v.setInvalidUrlFormatMessage("Try a valid URL (for {0}), like \"http://www.google.com\"");
 
         try
         {
@@ -80,7 +82,7 @@ public class TestEmailValidator extends BaseValidatorTestCase
         }
         catch (ValidatorException ex)
         {
-            assertEquals("Try a valid e-mail address (for email), like 'dick@wad.com.'", ex
+            assertEquals("Try a valid URL (for url), like \"http://www.google.com\"", ex
                     .getMessage());
         }
 
@@ -97,7 +99,7 @@ public class TestEmailValidator extends BaseValidatorTestCase
 
         try
         {
-            v.toObject(field, "foo@bar.com");
+            v.toObject(field, "http://www.test.com");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -116,16 +118,43 @@ public class TestEmailValidator extends BaseValidatorTestCase
         replayControls();
 
         v.setMinimumLength(20);
-        v.setMinimumLengthMessage("E-mail addresses must be at least 20 characters.");
+        v.setMinimumLengthMessage("URLs must be at least 20 characters.");
 
         try
         {
-            v.toObject(field, "foo@bar.com");
+            v.toObject(field, "http://www.test.com");
             unreachable();
         }
         catch (ValidatorException ex)
         {
-            assertEquals("E-mail addresses must be at least 20 characters.", ex.getMessage());
+            assertEquals("URLs must be at least 20 characters.", ex.getMessage());
+        }
+
+        verifyControls();
+    }
+
+    public void testDisallowedProtocol()
+    {
+        IPage page = newPage(Locale.ENGLISH);
+        MockControl control = newControl(IFormComponent.class);
+        IFormComponent field = (IFormComponent) control.getMock();
+
+        field.getPage();
+        control.setReturnValue(page);
+
+        replayControls();
+
+        v.setAllowedProtocols("http,https");
+
+        try
+        {
+            v.toObject(field, "ftp://ftp.test.com");
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals(ValidationConstraint.DISALLOWED_PROTOCOL, ex.getConstraint());
+            assertEquals("Disallowed protocol - protocol must be http or https.", ex.getMessage());
         }
 
         verifyControls();

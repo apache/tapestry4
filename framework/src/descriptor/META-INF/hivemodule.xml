@@ -44,6 +44,7 @@
   <sub-module descriptor="tapestry.describe.xml"/>
   <sub-module descriptor="tapestry.markup.xml"/>
   <sub-module descriptor="tapestry.error.xml"/>
+  <sub-module descriptor="tapestry.valid.xml"/>
     
   <service-point id="ClasspathResourceFactory">
   

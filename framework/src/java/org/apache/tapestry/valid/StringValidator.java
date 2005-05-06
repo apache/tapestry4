@@ -43,6 +43,17 @@ public class StringValidator extends BaseValidator
     {
     }
 
+    /**
+     * Initializes the StringValidator with properties defined by the initializer.
+     * 
+     * @since 4.0
+     */
+
+    public StringValidator(String initializer)
+    {
+        super(initializer);
+    }
+
     public String toString(IFormComponent field, Object value)
     {
         if (value == null)
