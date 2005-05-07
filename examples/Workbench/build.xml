@@ -21,32 +21,32 @@
   <property name="javadoc.package" value="org.apache.tapestry.workbench.*"/>
     
   <property name="root.dir" value="../.."/>
-	<property file="${root.dir}/config/build.properties"/>
-	<property file="${root.dir}/config/common.properties"/>
+  <property file="${root.dir}/config/build.properties"/>
+  <property file="${root.dir}/config/common.properties"/>
   
-	<import file="${hivebuild.dir}/war-module.xml"/>
-	<import file="${hivebuild.dir}/javadoc-report.xml"/>
+  <import file="${hivebuild.dir}/war-module.xml"/>
+  <import file="${hivebuild.dir}/javadoc-report.xml"/>
   
-	<target name="compile-dependencies">
+  <target name="compile-dependencies">
     <project-dependency artifact="tapestry"            use="run"/>
     <project-dependency artifact="tapestry-contrib"    use="run"/>
 
     <ibiblio-dependency artifact="bsf"                version="${bsf.version}"      group="bsf"               use="run"/>
     <ibiblio-dependency artifact="commons-codec"      version="${codec.version}"    group="commons-codec"     use="run"/>
-		<ibiblio-dependency artifact="commons-fileupload" version="${fileupload.version}" group="commons-fileupload" use="run"/>        
+    <ibiblio-dependency artifact="commons-fileupload" version="${fileupload.version}" group="commons-fileupload" use="run"/>        
     <ibiblio-dependency artifact="commons-lang"       version="${lang.version}"     group="commons-lang"      use="run"/>
     <ibiblio-dependency artifact="commons-logging"    version="${logging.version}"  group="commons-logging"   use="run"/>
     
     <ibiblio-dependency artifact="hivemind"           version="${hivemind.version}" group="hivemind"          use="run"/>
     <ibiblio-dependency artifact="hivemind-lib"       version="${hivemind.version}" group="hivemind"          use="run"/>
-		<ibiblio-dependency artifact="javassist"          version="${javassist.version}"  group="jboss"           use="run"/>
-		<ibiblio-dependency artifact="log4j"              version="${log4j.version}"    group="log4j"             use="test"/>
-    <ibiblio-dependency artifact="ognl"               version="${ognl.version}"     group="ognl"/>
+    <ibiblio-dependency artifact="javassist"          version="${javassist.version}"  group="jboss"           use="run"/>
+    <ibiblio-dependency artifact="log4j"              version="${log4j.version}"    group="log4j"             use="test"/>
+    <ibiblio-dependency artifact="ognl"               version="${ognl.version}"     group="ognl"              use="run"/>
     <ibiblio-dependency artifact="oro"                version="${oro.version}"      group="oro"               use="run"/>
-		<ibiblio-dependency artifact="servletapi"         version="${servlet.version}"  group="servletapi"/>
+    <ibiblio-dependency artifact="servletapi"         version="${servlet.version}"  group="servletapi"/>
 
- 
+
     <ibiblio-dependency artifact="jcharts"            version="0.6.0"               group="jcharts"           use="run"/>
-	</target>	
+  </target>	
   
 </project>
