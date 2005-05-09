@@ -16,9 +16,7 @@ package org.apache.tapestry.form;
 
 import java.awt.Point;
 
-import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -34,7 +32,7 @@ import org.apache.tapestry.Tapestry;
  * @author Howard Lewis Ship
  */
 
-public abstract class ImageSubmit extends AbstractFormComponent
+public abstract class ImageSubmit extends Submit
 {
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -51,6 +49,8 @@ public abstract class ImageSubmit extends AbstractFormComponent
                 this,
                 nameOverride);
 
+        setName(name);
+
         if (rewinding)
         {
             // If disabled, do nothing.
@@ -65,41 +65,8 @@ public abstract class ImageSubmit extends AbstractFormComponent
 
             String value = cycle.getParameter(parameterName);
 
-            if (value == null)
-                return;
-
-            // The point parameter is not really used, unless the
-            // ImageButton is used for its original purpose (as a kind
-            // of image map). In modern usage, we only care about
-            // whether the user clicked on the image (and thus submitted
-            // the form), not where in the image the user actually clicked.
-
-            IBinding pointBinding = getBinding("point");
-
-            if (pointBinding != null)
-            {
-                int x = Integer.parseInt(value);
-
-                parameterName = name + ".y";
-                value = cycle.getParameter(parameterName);
-
-                int y = Integer.parseInt(value);
-
-                pointBinding.setObject(new Point(x, y));
-            }
-
-            // Notify the application, by setting the select parameter
-            // to the tag parameter.
-
-            IBinding selectedBinding = getBinding("selected");
-
-            if (selectedBinding != null)
-                selectedBinding.setObject(getTag());
-
-            IActionListener listener = getListener();
-
-            if (listener != null)
-                listener.actionTriggered(this, cycle);
+            if (value != null)
+                handleClick(cycle, form);
 
             return;
         }
@@ -132,17 +99,36 @@ public abstract class ImageSubmit extends AbstractFormComponent
         writer.closeTag();
     }
 
-    public abstract boolean isDisabled();
+    void handleClick(IRequestCycle cycle, IForm form)
+    {
+        // The point parameter is not really used, unless the
+        // ImageButton is used for its original purpose (as a kind
+        // of image map). In modern usage, we only care about
+        // whether the user clicked on the image (and thus submitted
+        // the form), not where in the image the user actually clicked.
 
+        if (isParameterBound("point"))
+        {
+            int x = Integer.parseInt(cycle.getParameter(getName() + ".x"));
+            int y = Integer.parseInt(cycle.getParameter(getName() + ".y"));
+
+            setPoint(new Point(x, y));
+        }
+
+        super.handleClick(cycle, form);
+    }
+
+    /** parameter */
     public abstract IAsset getDisabledImage();
 
+    /** parameter */
     public abstract IAsset getImage();
 
-    public abstract IActionListener getListener();
-
-    public abstract Object getTag();
-
+    /** parameter */
     public abstract String getNameOverride();
+
+    /** parameter */
+    public abstract void setPoint(Point point);
 
     protected void prepareForRender(IRequestCycle cycle)
     {

@@ -22,7 +22,7 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class BaseDescribeTestCase extends HiveMindTestCase
+public abstract class BaseDescribeTestCase extends HiveMindTestCase
 {
 
     protected IMarkupWriter newWriter()

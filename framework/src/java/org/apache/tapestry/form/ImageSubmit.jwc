@@ -61,6 +61,15 @@
   	</description>
   </parameter>
   
+  <parameter name="defer" default-binding="ognl" default-value="true">
+      <description>
+          If true (the default), then the listener (if any)
+          is not notified until just before the form's listener,
+          after all components enclosed by the Form have had
+          a chance to update properties.
+       </description>
+  </parameter>
+  
   <reserved-parameter name="type"/>
   <reserved-parameter name="src"/>
   <reserved-parameter name="border"/>

@@ -25,7 +25,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class BindingTestCase extends HiveMindTestCase
+public abstract class BindingTestCase extends HiveMindTestCase
 {
 
     protected IComponent newComponent()

@@ -27,7 +27,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class BaseWebTestCase extends HiveMindTestCase
+public abstract class BaseWebTestCase extends HiveMindTestCase
 {
 
     protected Enumeration newEnumeration()

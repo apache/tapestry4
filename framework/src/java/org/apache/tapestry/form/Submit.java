@@ -15,7 +15,6 @@
 package org.apache.tapestry.form;
 
 import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -36,7 +35,6 @@ public abstract class Submit extends AbstractFormComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-
         IForm form = getForm(cycle);
 
         if (form.wasPrerendered(writer, this))
@@ -45,6 +43,8 @@ public abstract class Submit extends AbstractFormComponent
         boolean rewinding = form.isRewinding();
 
         String name = form.getElementId(this);
+
+        setName(name);
 
         if (rewinding)
         {
@@ -66,15 +66,7 @@ public abstract class Submit extends AbstractFormComponent
             if (value == null)
                 return;
 
-            IBinding selectedBinding = getBinding("selected");
-
-            if (selectedBinding != null)
-                selectedBinding.setObject(getTag());
-
-            IActionListener listener = getListener();
-
-            if (listener != null)
-                listener.actionTriggered(this, cycle);
+            handleClick(cycle, form);
 
             return;
         }
@@ -96,12 +88,52 @@ public abstract class Submit extends AbstractFormComponent
         writer.closeTag();
     }
 
+    void handleClick(final IRequestCycle cycle, IForm form)
+    {
+        if (isParameterBound("selected"))
+            setSelected(getTag());
+
+        final IActionListener listener = getListener();
+
+        if (listener == null)
+            return;
+
+        // Have a listener; notify it now, or defer for later?
+
+        Runnable notify = new Runnable()
+        {
+            public void run()
+            {
+                listener.actionTriggered(Submit.this, cycle);
+            }
+        };
+
+        if (getDefer())
+            form.addDeferredRunnable(notify);
+        else
+            notify.run();
+    }
+
+    /** parameter */
+
     public abstract String getLabel();
+
+    /** parameter */
 
     public abstract boolean isDisabled();
 
+    /** parameter */
+
     public abstract IActionListener getListener();
+
+    /** parameter */
 
     public abstract Object getTag();
 
+    /** parameter */
+
+    public abstract void setSelected(Object tag);
+
+    /** parameter */
+    public abstract boolean getDefer();
 }

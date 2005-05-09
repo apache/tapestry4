@@ -30,7 +30,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class AbstractSpecificationResolverTestCase extends HiveMindTestCase
+public abstract class AbstractSpecificationResolverTestCase extends HiveMindTestCase
 {
 
     protected IComponentSpecification newSpecification()

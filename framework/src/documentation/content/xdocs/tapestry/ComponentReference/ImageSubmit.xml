@@ -28,11 +28,14 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> A component that generates a clickable image that will cause the enclosing form to submit.  The &lt;input type="image"&gt; form element
+  was originally designed for use as a way to select a pixel within an image that was presumable a map; it has been co-opted by web applications
+  as a way to decorate a form submit button using a custom image instead of ordinary clickable buttons.  This component is simply an enhanced version of the &Submit; component that will display an image
+  instead of a text label.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &Form;, &Submit;</strong> 
 </p>
 
 <section>
@@ -45,21 +48,140 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
+    <th>Default Binding</th>
     <th>Description</th>
   </tr>
 
+  <tr>
+    <td>image</td>
+    <td>&IAsset;</td>
+    <td>in</td>
+    <td>yes</td>
+    <td>&nbsp;</td>
+    <td>asset</td>
+    <td>
+      The normal image to display for the button.
+    </td>
+  </tr>
+  
+  <tr>
+    <td>name</td>
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>literal</td>
+    <td>
+      Overrides the default mechanism for selecting the form element id; this allows the name attribute of the rendered
+      &lt;input&gt; tag to be controlled, which is necessary is some browsers to control the tooltip help message for the
+      control.
+    </td>
+  </tr>
+
+  <tr>
+	  <td>disabled</td>
+	  <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+	  <td>false</td>
+    <td>ognl</td>
+    <td>
+    If set to true, the button will be disabled (will not respond to
+    the mouse); the browser should provide a "greyed out" appearance.
+    </td> 
+   </tr>
+      
+  <tr>
+    <td>disabledImage</td>
+    <td>&IAsset;</td>
+    <td>in</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>asset</td>
+    <td>
+      If specified, and if the component is disabled, then this image is used rather than the normal image
+      parameter. This allows an alternate image to be used to indicate to the user that the option is not available.
+    </td>
+  </tr>    
+  
+  <tr>
+    <td>point</td>
+    <td>java.awt.Point</td>
+    <td>out</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>ognl</td>
+    <td>
+      Set to the coordinates of the clicked point within the image.
+    </td>
+  </tr>
+  
+  <tr>
+    <td>selected</td>
+    <td>Object</td>
+    <td>out</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>ognl</td>
+    <td>
+    This parameter is bound to a property that is updated when the submit 
+    button is clicked by the user. The property is updated to match the tag 
+    parameter.
+    </td>
+   </tr>     
+  <tr>
+    <td>tag</td>
+    <td>Object</td>
+    <td>in</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>ognl</td>
+    <td>
+    Tag used with the selected parameter to indicate which Submit button
+    on a form was clicked.
+    </td>
+   </tr>    
+   
+ <tr>
+ 		<td>listener</td>
+ 		<td>
+    &IActionListener;
+    </td>
+ 		<td>in</td>
+ 		<td>no</td>
+ 		<td>&nbsp;</td>
+    <td>listener</td>
+ 		<td>
+    An optional listener (typically specified as the name of a listener method), notified
+    when the Submit is triggered.
+ 		</td>
+   </tr>   
+   <tr>
+    <td>defer</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>true</td>
+    <td>ognl</td>
+    <td>
+      If true (the default), then the listener (if any) will not
+      be notified immediately but will be notified just
+      before the enclosing &Form;'s listener.
+    </td>
+   </tr>
+   
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: <em>type, src, border</em>
 </p>
 
 </section>
@@ -67,6 +189,49 @@
 <section>
   <title>Examples</title>
 
+<p>
+HTML template:
+</p>
+
+<source><![CDATA[
+<form jwcid="form@Form" listener="doSubmit">
+<table>
+  <tr>
+    <th>User name:</th>
+    <td><input jwcid="userName@TextField" value="userName" size="12"/></td>
+  </tr>
+  <tr>
+    <th>Password:</th>
+    <td><input jwcid="password@TextField" value="password" hidden="true" size="12"/></td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <input type="image" src="images/login.png"/>
+      <input type="image" jwcid="help@ImageSubmit" listener="doHelp" image="help/>
+    </td>
+  </tr>
+</table>
+</form>]]></source>
+
+<p>
+Page specification:
+</p>
+
+<source><![CDATA[
+
+. . .
+
+  <asset name="help" path="images/help.png"/>
+
+. . .
+
+]]></source>
+
+
+<p>
+This is a variation of the example for the &Submit; component; it uses images instead of ordinary clickable buttons for the
+help and login actions.
+</p>
 </section>
 </body>
 </document>

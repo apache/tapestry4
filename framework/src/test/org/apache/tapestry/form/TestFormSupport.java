@@ -911,6 +911,96 @@ public class TestFormSupport extends HiveMindTestCase
         verifyControls();
     }
 
+    public void testSimpleRenderWithDeferredRunnable()
+    {
+        MockControl writerc = newControl(IMarkupWriter.class);
+        IMarkupWriter writer = (IMarkupWriter) writerc.getMock();
+
+        NestedMarkupWriter nested = newNestedWriter();
+
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+
+        MockForm form = new MockForm();
+
+        cycle.isRewound(form);
+        cyclec.setReturnValue(false);
+
+        replayControls();
+
+        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+
+        verifyControls();
+
+        IRender body = new IRender()
+        {
+
+            public void render(final IMarkupWriter writer, IRequestCycle cycle)
+            {
+                fs.addDeferredRunnable(new Runnable()
+                {
+
+                    public void run()
+                    {
+                        writer.print("DEFERRED");
+                    }
+
+                });
+            }
+
+        };
+
+        form.setBody(body);
+
+        MockControl linkc = newControl(ILink.class);
+        ILink link = (ILink) linkc.getMock();
+
+        IRender render = (IRender) newMock(IRender.class);
+
+        link.getParameterNames();
+        linkc.setReturnValue(new String[]
+        { "service" });
+
+        link.getParameterValues("service");
+        linkc.setReturnValue(new String[]
+        { "fred" });
+
+        writer.getNestedWriter();
+        writerc.setReturnValue(nested);
+
+        link.getURL(null, false);
+        linkc.setReturnValue("/app");
+
+        writer.begin("form");
+        writer.attribute("method", "post");
+        writer.attribute("action", "/app");
+
+        writer.attribute("name", "myform");
+
+        render.render(writer, cycle);
+
+        writer.println();
+
+        trainHidden(writer, "formids", "");
+        trainHidden(writer, "service", "fred");
+
+        // EasyMock can't fully verify that this gets called at the right moment, nor can we truly
+        // prove (well, except by looking at the code), that the deferred runnables execute at the
+        // right time.
+
+        nested.print("DEFERRED");
+
+        nested.close();
+
+        writer.end();
+
+        replayControls();
+
+        fs.render("post", render, link);
+
+        verifyControls();
+    }
+
     public void testSimpleRewind()
     {
         IMarkupWriter writer = newWriter();
@@ -938,6 +1028,55 @@ public class TestFormSupport extends HiveMindTestCase
         form.setBody(body);
 
         replayControls();
+
+        fs.rewind();
+
+        verifyControls();
+    }
+
+    public void testSimpleRewindWithDeferredRunnable()
+    {
+        IMarkupWriter writer = newWriter();
+
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+
+        MockForm form = new MockForm();
+
+        cycle.isRewound(form);
+        cyclec.setReturnValue(true);
+
+        replayControls();
+
+        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+
+        verifyControls();
+
+        trainCycleForRewind(cyclec, cycle, "", null);
+
+        writer.print("DEFERRED");
+
+        replayControls();
+
+        IRender body = new IRender()
+        {
+
+            public void render(final IMarkupWriter writer, IRequestCycle cycle)
+            {
+                fs.addDeferredRunnable(new Runnable()
+                {
+
+                    public void run()
+                    {
+                        writer.print("DEFERRED");
+                    }
+
+                });
+            }
+
+        };
+
+        form.setBody(body);
 
         fs.rewind();
 

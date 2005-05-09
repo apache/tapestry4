@@ -131,6 +131,7 @@
 <!ENTITY Hidden 			'<link href="site:Hidden">Hidden</link>'>
 <!ENTITY ListEdit 			'<link href="site:ListEdit">ListEdit</link>'>
 <!ENTITY Image 				'<link href="site:Image">Image</link>'>
+<!ENTITY ImageSubmit		'<link href="site:ImageSubmit">ImageSubmit</link>'>
 <!ENTITY Insert 			'<link href="site:Insert">Insert</link>'>
 <!ENTITY InsertText 		'<link href="site:InsertText">InsertText</link>'>
 <!ENTITY InspectorButton	'<link href="site:InspectorButton">InspectorButton</link>'>
