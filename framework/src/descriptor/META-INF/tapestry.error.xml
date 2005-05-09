@@ -21,10 +21,15 @@
   
   <service-point id="ExceptionPresenter">
     
+    Handler for uncaught exceptions inside the main request
+    processing code path; the default implementation
+    displays the exception page to report the
+    exception.
+    
     <invoke-factory>
       <construct class="ExceptionPresenterImpl">
         <set-object property="exceptionPageName" 
-                       value="app-property:org.apache.tapestry.exception-page-name"/>
+                       value="infrastructure:exceptionPageName"/>
         <set-object property="requestExceptionReporter"
                        value="infrastructure:requestExceptionReporter"/>
         <set-object property="responseRenderer"
@@ -34,8 +39,27 @@
     
   </service-point>
   
+  <service-point id="StaleSessionExceptionPresenter">
+    
+    Handler for StaleSessionExceptions, which indicate that
+    the session has expired between the time a link or form
+    was rendered, and the time it was triggered in a new request.
+    
+    <invoke-factory>
+      <construct class="StaleSessionExceptionPresenterImpl">
+        <set-object property="pageName" 
+                       value="infrastructure:staleSessionPageName"/>
+        <set-object property="requestExceptionReporter"
+                       value="infrastructure:requestExceptionReporter"/>
+        <set-object property="responseRenderer"
+                      value="infrastructure:responseRenderer"/>
+      </construct>
+    </invoke-factory>    
+  </service-point>
+  
   <contribution configuration-id="hivemind.FactoryDefaults">
     <default symbol="org.apache.tapestry.exception-page-name" value="Exception"/>
+    <default symbol="org.apache.tapestry.stale-session-page-name" value="StaleSession"/>
   </contribution>
   
   
@@ -52,8 +76,15 @@
   </service-point>  
   
   <contribution configuration-id="tapestry.Infrastructure">
-    <property name="requestExceptionReporter" object="service:RequestExceptionReporter"/>\    
+    <property name="exceptionPageName" value="Exception"/>
+    <property name="exceptionPageName" mode="wml" value="WMLException"/>
+    
+    <property name="staleSessionPageName" value="StaleSession"/>
+    <property name="staleSessionPageName" mode="wml" value="WMLStaleSession"/>
+    
+    <property name="requestExceptionReporter" object="service:RequestExceptionReporter"/>    
     <property name="exceptionPresenter" object="service:ExceptionPresenter"/>
+    <property name="staleSessionExceptionPresenter" object="service:StaleSessionExceptionPresenter"/>
   </contribution>  
   
 </module>

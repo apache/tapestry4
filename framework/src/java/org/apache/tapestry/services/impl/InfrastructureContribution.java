@@ -41,6 +41,11 @@ public class InfrastructureContribution extends BaseLocatable
         _deferredObject = deferredObject;
     }
 
+    public void setValue(String value)
+    {
+        _deferredObject = new LiteralDeferredObject(value, getLocation());
+    }
+
     /**
      * The object which should be exposed as the given Infrastructure property.
      */

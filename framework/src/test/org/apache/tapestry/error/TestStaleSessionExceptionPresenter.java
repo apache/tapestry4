@@ -15,57 +15,47 @@
 package org.apache.tapestry.error;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.error.ExceptionPresenterImpl;
-import org.apache.tapestry.html.BasePage;
+import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.services.ResponseRenderer;
 
 /**
- * Tests for {@link org.apache.tapestry.error.ExceptionPresenterImpl}.
+ * Tests for {@link org.apache.tapestry.error.StaleSessionExceptionPresenterImpl}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestExceptionPresenter extends BaseErrorTestCase
+public class TestStaleSessionExceptionPresenter extends BaseErrorTestCase
 {
-    public abstract static class ExceptionFixture extends BasePage
-    {
-        public abstract void setException(Throwable exception);
-    }
-
     public void testSuccess() throws Exception
     {
-        Throwable cause = new IllegalArgumentException();
         IPage page = newPage();
-
-        IRequestCycle cycle = newCycle("Exception", page);
+        IRequestCycle cycle = newCycle("StaleSession", page);
         ResponseRenderer renderer = newRenderer(cycle, null);
 
         cycle.activate(page);
 
         replayControls();
 
-        ExceptionPresenterImpl ep = new ExceptionPresenterImpl();
-        ep.setExceptionPageName("Exception");
-        ep.setResponseRenderer(renderer);
+        StaleSessionExceptionPresenterImpl presenter = new StaleSessionExceptionPresenterImpl();
 
-        ep.presentException(cycle, cause);
+        presenter.setPageName("StaleSession");
+        presenter.setResponseRenderer(renderer);
+
+        presenter.presentStaleSessionException(cycle, new StaleSessionException());
 
         verifyControls();
-
-        assertSame(cause, page.getProperty("exception"));
     }
 
     public void testFailure() throws Exception
     {
-        Throwable cause = new IllegalArgumentException();
+        StaleSessionException cause = new StaleSessionException();
         Throwable renderCause = new ApplicationRuntimeException("Some failure.");
 
         IPage page = newPage();
 
-        IRequestCycle cycle = newCycle("Exception", page);
+        IRequestCycle cycle = newCycle("StaleSession", page);
         ResponseRenderer renderer = newRenderer(cycle, renderCause);
         RequestExceptionReporter reporter = newReporter();
 
@@ -78,14 +68,14 @@ public class TestExceptionPresenter extends BaseErrorTestCase
 
         replayControls();
 
-        ExceptionPresenterImpl ep = new ExceptionPresenterImpl();
-        ep.setExceptionPageName("Exception");
-        ep.setResponseRenderer(renderer);
-        ep.setRequestExceptionReporter(reporter);
+        StaleSessionExceptionPresenterImpl presenter = new StaleSessionExceptionPresenterImpl();
+        presenter.setPageName("StaleSession");
+        presenter.setResponseRenderer(renderer);
+        presenter.setRequestExceptionReporter(reporter);
 
         try
         {
-            ep.presentException(cycle, cause);
+            presenter.presentStaleSessionException(cycle, cause);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -94,7 +84,5 @@ public class TestExceptionPresenter extends BaseErrorTestCase
         }
 
         verifyControls();
-
-        assertSame(cause, page.getProperty("exception"));
     }
 }

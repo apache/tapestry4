@@ -16,7 +16,6 @@ package org.apache.tapestry.engine;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,7 +38,6 @@ import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.RedirectException;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.StaleSessionException;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.request.RequestContext;
@@ -143,10 +141,13 @@ public abstract class AbstractEngine implements IEngine
 
     /**
      * Invoked at the end of the request cycle to release any resources specific to the request
-     * cycle.
+     * cycle. This implementation does nothing and may be overriden freely.
      */
 
-    protected abstract void cleanupAfterRequest(IRequestCycle cycle);
+    protected void cleanupAfterRequest(IRequestCycle cycle)
+    {
+
+    }
 
     /**
      * Returns the locale for the engine. This is initially set by the {@link ApplicationServlet}
@@ -234,8 +235,7 @@ public abstract class AbstractEngine implements IEngine
                 monitor.serviceBegin(service.getName(), _infrastructure.getRequest()
                         .getRequestURI());
 
-                // Invoke the service, which returns true if it may have changed
-                // the state of the engine (most do return true).
+                // Let the service handle the rest of the request.
 
                 service.service(cycle);
 
@@ -263,7 +263,7 @@ public abstract class AbstractEngine implements IEngine
             monitor.serviceException(ex);
 
             // Attempt to switch to the exception page. However, this may itself
-            // fail for a number of reasons, in which case a ApplicationRuntimeException is
+            // fail for a number of reasons, in which case an ApplicationRuntimeException is
             // thrown.
 
             if (LOG.isDebugEnabled())
@@ -283,7 +283,7 @@ public abstract class AbstractEngine implements IEngine
             }
             catch (Exception ex)
             {
-                reportException(Tapestry.getMessage("AbstractEngine.exception-during-cleanup"), ex);
+                reportException(EngineMessages.exceptionDuringCleanup(ex), ex);
             }
         }
     }
@@ -309,25 +309,9 @@ public abstract class AbstractEngine implements IEngine
         {
             if (pageNames.contains(pageName))
             {
-                // Add the offending page to pageNames so it shows in the
-                // list.
-
                 pageNames.add(pageName);
 
-                StringBuffer buffer = new StringBuffer();
-                int count = pageNames.size();
-
-                for (int i = 0; i < count; i++)
-                {
-                    if (i > 0)
-                        buffer.append("; ");
-
-                    buffer.append(pageNames.get(i));
-                }
-
-                throw new ApplicationRuntimeException(Tapestry.format(
-                        "AbstractEngine.validate-cycle",
-                        buffer.toString()));
+                throw new ApplicationRuntimeException(EngineMessages.validateCycle(pageNames));
             }
 
             // Record that this page has been a target.
@@ -393,9 +377,10 @@ public abstract class AbstractEngine implements IEngine
      */
 
     protected void handleStaleSessionException(IRequestCycle cycle, StaleSessionException exception)
-            throws IOException
     {
-        redirect(getStaleSessionPageName(), cycle, exception);
+        _infrastructure.getStaleSessionExceptionPresenter().presentStaleSessionException(
+                cycle,
+                exception);
     }
 
     /**
@@ -438,13 +423,6 @@ public abstract class AbstractEngine implements IEngine
 
         return builder.toString();
     }
-
-    /**
-     * Implemented by subclasses to return the names of the active pages (pages for which recorders
-     * exist). May return the empty list, but should not return null.
-     */
-
-    abstract public Collection getActivePageNames();
 
     /**
      * Gets the visit object from the
@@ -553,23 +531,9 @@ public abstract class AbstractEngine implements IEngine
 
     /** @since 3.0 */
 
-    protected String getExceptionPageName()
-    {
-        return TapestryConstants.EXCEPTION_PAGE;
-    }
-
-    /** @since 3.0 */
-
     protected String getStaleLinkPageName()
     {
         return TapestryConstants.STALE_LINK_PAGE;
-    }
-
-    /** @since 3.0 */
-
-    protected String getStaleSessionPageName()
-    {
-        return TapestryConstants.STALE_SESSION_PAGE;
     }
 
     /** @since 4.0 */

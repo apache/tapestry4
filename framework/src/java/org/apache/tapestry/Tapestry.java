@@ -31,6 +31,7 @@ import java.util.Set;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.ObservedChangeEvent;
 import org.apache.tapestry.services.ServiceConstants;
@@ -49,7 +50,7 @@ public final class Tapestry
 {
     /**
      * The name ("action") of a service that allows behavior to be associated with an
-     * {@link IAction}component, such as {@link org.apache.tapestry.link.ActionLink}or
+     * {@link IAction} component, such as {@link org.apache.tapestry.link.ActionLink }or
      * {@link org.apache.tapestry.form.Form}.
      * <p>
      * This service is used with actions that are tied to the dynamic state of the page, and which
@@ -66,27 +67,27 @@ public final class Tapestry
      * page the was the action service does, which is more efficient but less powerful.
      * <p>
      * An array of String parameters may be included with the service URL; these will be made
-     * available to the {@link org.apache.tapestry.link.DirectLink}component's listener.
+     * available to the {@link org.apache.tapestry.link.DirectLink} component's listener.
      */
 
     public final static String DIRECT_SERVICE = "direct";
 
     /**
-     * The name ("external") of a service that a allows {@link IExternalPage}to be selected.
-     * Associated with a {@link org.apache.tapestry.link.ExternalLink}component.
+     * The name ("external") of a service that a allows {@link IExternalPage} to be selected.
+     * Associated with a {@link org.apache.tapestry.link.ExternalLink} component.
      * <p>
      * This service enables {@link IExternalPage}s to be accessed via a URL. External pages may be
      * booked marked using their URL for future reference.
      * <p>
      * An array of Object parameters may be included with the service URL; these will be passed to
-     * the {@link IExternalPage#activateExternalPage(Object[], IRequestCycle)}method.
+     * the {@link IExternalPage#activateExternalPage(Object[], IRequestCycle)} method.
      */
 
     public final static String EXTERNAL_SERVICE = "external";
 
     /**
      * The name ("page") of a service that allows a new page to be selected. Associated with a
-     * {@link org.apache.tapestry.link.PageLink}component.
+     * {@link org.apache.tapestry.link.PageLink} component.
      * <p>
      * The service requires a single parameter: the name of the target page.
      */
@@ -130,7 +131,7 @@ public final class Tapestry
      * 
      * @since 1.0.3
      * @deprecated To be removed in 4.1. Use
-     *             {@link org.apache.tapestry.services.ServiceConstants#SERVICE}instead.
+     *             {@link org.apache.tapestry.services.ServiceConstants#SERVICE} instead.
      */
 
     public static final String SERVICE_QUERY_PARAMETER_NAME = ServiceConstants.SERVICE;
@@ -138,13 +139,13 @@ public final class Tapestry
     /**
      * The query parameter for application specific parameters to the service (this is used with the
      * direct service). Each of these values is encoded with
-     * {@link java.net.URLEncoder#encode(String)}before being added to the URL. Multiple values are
+     * {@link java.net.URLEncoder#encode(String)} before being added to the URL. Multiple values are
      * handle by repeatedly establishing key/value pairs (this is a change from behavior in 2.1 and
      * earlier).
      * 
      * @since 1.0.3
      * @deprecated To be removed in 4.1. Use
-     *             {@link org.apache.tapestry.services.ServiceConstants#PARAMETER}instead.
+     *             {@link org.apache.tapestry.services.ServiceConstants#PARAMETER} instead.
      */
 
     public static final String PARAMETERS_QUERY_PARAMETER_NAME = ServiceConstants.PARAMETER;
@@ -161,8 +162,8 @@ public final class Tapestry
     public static final String TEMPLATE_EXTENSION_PROPERTY = "org.apache.tapestry.template-extension";
 
     /**
-     * The name of an {@link org.apache.tapestry.IRequestCycle}attribute in which the currently
-     * rendering {@link org.apache.tapestry.components.ILinkComponent}is stored. Link components do
+     * The name of an {@link org.apache.tapestry.IRequestCycle} attribute in which the currently
+     * rendering {@link org.apache.tapestry.components.ILinkComponent} is stored. Link components do
      * not nest.
      */
 
@@ -188,7 +189,7 @@ public final class Tapestry
 
     /**
      * Name of optional application extension for the multipart decoder used by the application. The
-     * extension must implement {@link org.apache.tapestry.multipart.IMultipartDecoder}(and is
+     * extension must implement {@link org.apache.tapestry.multipart.IMultipartDecoder} (and is
      * generally a configured instance of
      * {@link org.apache.tapestry.multipart.DefaultMultipartDecoder}).
      * 
@@ -198,7 +199,7 @@ public final class Tapestry
     public static final String MULTIPART_DECODER_EXTENSION_NAME = "org.apache.tapestry.multipart-decoder";
 
     /**
-     * Method id used to check that {@link IPage#validate(IRequestCycle)}is invoked.
+     * Method id used to check that {@link IPage#validate(IRequestCycle)} is invoked.
      * 
      * @see #checkMethodInvocation(Object, String, Object)
      * @since 3.0
@@ -207,7 +208,7 @@ public final class Tapestry
     public static final String ABSTRACTPAGE_VALIDATE_METHOD_ID = "AbstractPage.validate()";
 
     /**
-     * Method id used to check that {@link IPage#detach()}is invoked.
+     * Method id used to check that {@link IPage#detach()} is invoked.
      * 
      * @see #checkMethodInvocation(Object, String, Object)
      * @since 3.0
@@ -538,11 +539,11 @@ public final class Tapestry
     }
 
     /**
-     * Converts a {@link Map}to an even-sized array of key/value pairs. This may be useful when
+     * Converts a {@link Map} to an even-sized array of key/value pairs. This may be useful when
      * using a Map as service parameters (with {@link org.apache.tapestry.link.DirectLink}.
      * Assuming the keys and values are simple objects (String, Boolean, Integer, etc.), then the
      * representation as an array will encode more efficiently (via
-     * {@link org.apache.tapestry.util.io.DataSqueezerImpl}than serializing the Map and its
+     * {@link org.apache.tapestry.util.io.DataSqueezerImpl} than serializing the Map and its
      * contents.
      * 
      * @return the array of keys and values, or null if the input Map is null or empty
@@ -606,14 +607,12 @@ public final class Tapestry
      * or Array type.
      * 
      * @since 3.0
+     * @deprecated To be removed in 4.1.
      */
 
     public static String getClassName(Class subject)
     {
-        if (subject.isArray())
-            return getClassName(subject.getComponentType()) + "[]";
-
-        return subject.getName();
+        return ClassFabUtils.getJavaClassName(subject);
     }
 
     /**
@@ -694,11 +693,11 @@ public final class Tapestry
      * (usually a String). The methodName and object are used to create an error message.
      * <p>
      * The caller should invoke {@link #clearMethodInvocations()}, then invoke a method on the
-     * object. The super-class implementation should invoke {@link #addMethodInvocation(Object)}to
-     * indicate that it was, in fact, invoked. The caller then invokes this method to vlaidate that
+     * object. The super-class implementation should invoke {@link #addMethodInvocation(Object)} to
+     * indicate that it was, in fact, invoked. The caller then invokes this method to validate that
      * the super-class implementation was invoked.
      * <p>
-     * The list of method invocations is stored in a {@link ThreadLocal}variable.
+     * The list of method invocations is stored in a {@link ThreadLocal} variable.
      * 
      * @since 3.0
      */
