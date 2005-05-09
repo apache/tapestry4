@@ -12,27 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry;
+package org.apache.tapestry.error;
+
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.StaleLinkException;
+import org.apache.tapestry.StaleSessionException;
 
 /**
+ * Service interface for informing the user about a {@link org.apache.tapestry.StaleLinkException}.
+ * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TapestryConstants
+public interface StaleLinkExceptionPresenter
 {
     /**
-     * Name of the cookie written to the client web browser to identify the locale.
+     * Reports the stale link exception.
+     * 
+     * @param cycle
+     *            the current request cycle
+     * @param cause
+     *            the exception that was caught
      */
-
-    public static final String LOCALE_COOKIE_NAME = "org.apache.tapestry.locale";
-
-    /**
-     * Name of the meta data property used as a default for page class names.
-     */
-
-    public static final String PAGE_CLASS_NAME = "org.apache.tapestry.default-page-class";
-
-    private TapestryConstants()
-    {
-    }
+    public void presentStaleLinkException(IRequestCycle cycle, StaleLinkException cause);
 }

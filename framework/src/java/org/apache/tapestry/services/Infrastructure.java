@@ -26,6 +26,7 @@ import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.error.ExceptionPresenter;
 import org.apache.tapestry.error.RequestExceptionReporter;
+import org.apache.tapestry.error.StaleLinkExceptionPresenter;
 import org.apache.tapestry.error.StaleSessionExceptionPresenter;
 import org.apache.tapestry.listener.ListenerMapSource;
 import org.apache.tapestry.markup.MarkupWriterSource;
@@ -251,4 +252,10 @@ public interface Infrastructure
      */
 
     public StaleSessionExceptionPresenter getStaleSessionExceptionPresenter();
+
+    /**
+     * The service responsible for reporting {@link org.apache.tapestry.StaleLinkException}s.
+     */
+
+    public StaleLinkExceptionPresenter getStaleLinkExceptionPresenter();
 }

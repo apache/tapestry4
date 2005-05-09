@@ -19,9 +19,7 @@
   "-//Apache Software Foundation//Tapestry Specification 4.0//EN"
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 
-<application name="JUnit Mock WML Application" engine-class="org.apache.tapestry.wml.WMLEngine">
-
-    <meta key="org.apache.tapestry.exception-page-name" value="WMLException"/>
+<application name="JUnit Mock WML Application">
 	
     <meta key="org.apache.tapestry.template-extension" value="wml"/>
 
