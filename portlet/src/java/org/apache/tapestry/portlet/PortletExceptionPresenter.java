@@ -27,8 +27,7 @@ import org.apache.tapestry.describe.RenderStrategy;
 import org.apache.tapestry.error.ErrorMessages;
 import org.apache.tapestry.error.ExceptionPresenter;
 import org.apache.tapestry.error.RequestExceptionReporter;
-import org.apache.tapestry.markup.AsciiMarkupFilter;
-import org.apache.tapestry.markup.MarkupWriterImpl;
+import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
@@ -59,6 +58,8 @@ public class PortletExceptionPresenter implements ExceptionPresenter
     private RequestExceptionReporter _requestExceptionReporter;
 
     private WebResponse _response;
+
+    private MarkupWriterSource _markupWriterSource;
 
     public void presentException(IRequestCycle cycle, Throwable cause)
     {
@@ -94,7 +95,8 @@ public class PortletExceptionPresenter implements ExceptionPresenter
         CharArrayWriter caw = new CharArrayWriter();
         PrintWriter pw = new PrintWriter(caw);
 
-        IMarkupWriter writer = new MarkupWriterImpl("text/html", pw, new AsciiMarkupFilter());
+        IMarkupWriter writer = _markupWriterSource
+                .newMarkupWriter(pw, new ContentType("text/html"));
 
         writeException(writer, cycle, cause);
 
@@ -116,7 +118,8 @@ public class PortletExceptionPresenter implements ExceptionPresenter
     {
         PrintWriter pw = _response.getPrintWriter(new ContentType("text/html"));
 
-        IMarkupWriter writer = new MarkupWriterImpl("text/html", pw, new AsciiMarkupFilter());
+        IMarkupWriter writer = _markupWriterSource
+                .newMarkupWriter(pw, new ContentType("text/html"));
 
         writeException(writer, cycle, cause);
     }
@@ -144,6 +147,11 @@ public class PortletExceptionPresenter implements ExceptionPresenter
     public void setResponse(WebResponse response)
     {
         _response = response;
+    }
+
+    public void setMarkupWriterSource(MarkupWriterSource markupWriterSource)
+    {
+        _markupWriterSource = markupWriterSource;
     }
 
     private void writeException(IMarkupWriter writer, IRequestCycle cycle,

@@ -76,8 +76,12 @@
         Infrastructure mode.
       </attribute>
       
-      <attribute name="object" required="true" translator="deferred-object">
+      <attribute name="object"  translator="deferred-object">
         The object to be contributed into the Infrastructure property.
+      </attribute>
+      
+      <attribute name="value">
+        A literal value for the property.  Either value or object should be provided.
       </attribute>
       
       <conversion class="impl.InfrastructureContribution">

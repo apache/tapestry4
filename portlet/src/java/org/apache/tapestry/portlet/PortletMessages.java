@@ -51,4 +51,9 @@ class PortletMessages
     {
         return _formatter.format("error-reporting-exception", cause);
     }
+
+    static String staleSession()
+    {
+        return _formatter.getMessage("sale-session");
+    }
 }

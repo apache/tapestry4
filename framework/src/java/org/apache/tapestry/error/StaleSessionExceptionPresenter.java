@@ -15,30 +15,23 @@
 package org.apache.tapestry.error;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.StaleSessionException;
 
 /**
- * Invoked by the {@link org.apache.tapestry.IEngine} if there's an uncaught exception
- * (checked or runtime) processing a request. The ExceptionPresenter is responsible for presenting a
- * exception message (or description) to the user. The default implementation activates the
- * "Exception" page, but it is common to override this to do something application specific
- * (typically, return to the Home page and display an error message there). This service also
- * provides a good hook for creating a server-side log of exceptions.
+ * Interface for a service used to report stale session exceptions.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
- * @see RequestExceptionReporter
  */
-public interface ExceptionPresenter
+public interface StaleSessionExceptionPresenter
 {
     /**
-     * Report the exception and provide some response to the user in lieu of the expected result
-     * page.
+     * Reports the stale session exception.
      * 
      * @param cycle
      *            the current request cycle
      * @param cause
      *            the exception that was caught
      */
-
-    public void presentException(IRequestCycle cycle, Throwable cause);
+    public void presentStaleSessionException(IRequestCycle cycle, StaleSessionException ex);
 }

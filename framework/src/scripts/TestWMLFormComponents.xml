@@ -22,6 +22,8 @@
         <init-parameter
             name="org.apache.tapestry.application-specification"
             value="/org/apache/tapestry/junit/mock/wml/Mock.application"/>
+        <init-parameter
+            name="org.apache.tapestry.application-mode" value="wml"/>                 
     </servlet>
 
     <request>

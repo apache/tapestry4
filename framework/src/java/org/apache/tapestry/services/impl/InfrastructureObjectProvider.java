@@ -58,8 +58,11 @@ public class InfrastructureObjectProvider implements ObjectProvider
     Object readProperty(String locator, Location location)
     {
         try
-        {
-            return PropertyUtils.read(_infrastructure, locator);
+        {            
+            if (PropertyUtils.isReadable(_infrastructure, locator))
+                return PropertyUtils.read(_infrastructure, locator);
+
+            return _infrastructure.getProperty(locator);
         }
         catch (Throwable ex)
         {

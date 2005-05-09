@@ -68,7 +68,7 @@ public interface IEngine extends WebRequestServicer
     /**
      * Returns the application specification that defines the application and its pages.
      * 
-     * @deprecated To be removed in 4.1. This value can be injected.
+     * @deprecated To be removed in 4.1. This value can be injected as "infrastructure:applicationSpecification".
      */
 
     public IApplicationSpecification getSpecification();
@@ -78,7 +78,7 @@ public interface IEngine extends WebRequestServicer
      * between sessions.
      * 
      * @see org.apache.tapestry.engine.AbstractEngine#createSpecificationSource(RequestContext)
-     * @deprecated To be removed in 4.1. This value can be injected.
+     * @deprecated To be removed in 4.1. This value can be injected as "infrastructure:specificationSource".
      */
 
     public ISpecificationSource getSpecificationSource();
@@ -138,7 +138,7 @@ public interface IEngine extends WebRequestServicer
      * between all sessions.
      * 
      * @since 1.0.2
-     * @deprecated To be removed in 4.1. This value can now be injected.
+     * @deprecated To be removed in 4.1. This value can now be injected as "infrastructure:scriptSource".
      */
 
     public IScriptSource getScriptSource();
@@ -158,7 +158,7 @@ public interface IEngine extends WebRequestServicer
      * 
      * @since 2.3
      * @see org.apache.tapestry.engine.AbstractEngine#createPropertySource(RequestContext)
-     * @deprecated To be removed in 4.1. This value can now be injected.
+     * @deprecated To be removed in 4.1. This value can now be injected as "infrastructure:applicationPropertySource".
      */
 
     public IPropertySource getPropertySource();

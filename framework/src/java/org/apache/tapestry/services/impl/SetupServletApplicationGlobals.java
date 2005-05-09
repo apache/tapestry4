@@ -22,7 +22,10 @@ import org.apache.tapestry.services.ApplicationInitializer;
  * Stores services and configurations into the
  * {@link org.apache.tapestry.services.ApplicationGlobals tapestry.globals.ApplicationGlobals}
  * service, which is used to see the
- * {@link org.apache.tapestry.services.Infrastructure tapestry.infrastructure}&nbsp;service.
+ * {@link org.apache.tapestry.services.Infrastructure tapestry.infrastructure} service. The mode to
+ * use is normally "servlet", but this can be overriden by setting the
+ * org.apache.tapestry.application-mode initialization parameter. WML applications should use the
+ * mode "wml".
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -32,6 +35,8 @@ public class SetupServletApplicationGlobals extends AbstractSetupApplicationGlob
 {
     public void initialize(HttpServlet servlet)
     {
-        initialize("servlet");
+        String mode = servlet.getInitParameter("org.apache.tapestry.application-mode");
+
+        initialize(mode == null ? "servlet" : mode);
     }
 }

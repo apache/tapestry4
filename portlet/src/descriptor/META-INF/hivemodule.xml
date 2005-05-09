@@ -244,7 +244,22 @@
         <set-object property="requestExceptionReporter"
                        value="infrastructure:requestExceptionReporter"/>   
         <set-object property="renderStrategy" value="service:tapestry.describe.RenderStrategy"/>
+        <set-object property="markupWriterSource" value="infrastructure:markupWriterSource"/>
      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="PortletStaleSessionExceptionPresenter" interface="org.apache.tapestry.error.StaleSessionExceptionPresenter">
+    
+    Displays a short message announcing that the session has expired.
+    
+    <invoke-factory>
+      <construct class="PortletStaleSessionExceptionPresenter">
+        <set-service property="globals" service-id="PortletRequestGlobals"/>
+        <set-object property="requestExceptionReporter"
+                       value="infrastructure:requestExceptionReporter"/>   
+      </construct>
     </invoke-factory>
     
   </service-point>
