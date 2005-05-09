@@ -14,7 +14,10 @@
 
 package org.apache.tapestry.form;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.Location;
@@ -45,6 +48,8 @@ public class MockForm implements IForm
     private Location _location;
 
     private IRender _body;
+
+    private List _deferredRunnable = new ArrayList();
 
     public MockForm()
     {
@@ -276,5 +281,21 @@ public class MockForm implements IForm
     public boolean wasPrerendered(IMarkupWriter writer, IComponent field)
     {
         return false;
+    }
+
+    public void addDeferredRunnable(Runnable runnable)
+    {
+        _deferredRunnable.add(runnable);
+    }
+
+    void runDeferred()
+    {
+        Iterator i = _deferredRunnable.iterator();
+        while (i.hasNext())
+        {
+            Runnable r = (Runnable) i.next();
+
+            r.run();
+        }
     }
 }

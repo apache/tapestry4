@@ -129,4 +129,16 @@ public interface FormBehavior
      *         false if the field should continue as normal.
      */
     public boolean wasPrerendered(IMarkupWriter writer, IComponent field);
+
+    /**
+     * Adds a deferred runnable, an object to be executed either before the &lt;/form&gt; tag is
+     * rendered (when rendering), or before the form's listener is invoked (when rewinding).
+     * Runnables are executed in the order in which they are added.
+     * 
+     * @param runnable
+     *            the object to execute (which may not be null)
+     */
+
+    public void addDeferredRunnable(Runnable runnable);
+
 }

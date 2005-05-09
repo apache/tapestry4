@@ -46,7 +46,7 @@ import org.apache.tapestry.util.IPropertyHolder;
  * @since 2.2
  */
 
-public class TapestryTestCase extends HiveMindTestCase
+public abstract class TapestryTestCase extends HiveMindTestCase
 {
     protected static final boolean IS_JDK13 = System.getProperty("java.specification.version")
             .equals("1.3");

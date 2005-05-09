@@ -27,7 +27,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class BaseValidatorTestCase extends TapestryTestCase
+public abstract class BaseValidatorTestCase extends TapestryTestCase
 {
 
     protected IFormComponent newField()

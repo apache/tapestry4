@@ -26,10 +26,35 @@
   </description>
 
   <parameter name="label" default-binding="literal"/>
-  <parameter name="disabled" default-binding="ognl"/>
-  <parameter name="selected" default-binding="ognl"/>
-  <parameter name="tag" default-binding="ognl"/>
-  <parameter name="listener" default-binding="listener"/>
+  <parameter name="disabled" default-binding="ognl">
+      <description>
+          If true, then the component is disabled, which will be reflected in the
+          output submit element. Additionally, the component will not respond
+          during the form submission.
+      </description>
+  </parameter>
+  <parameter name="selected" default-binding="ognl">
+      <description>
+          If bound, then this parameter will be updated with the value of the
+          tag parameter, if the Submit is triggered.
+       </description>
+  </parameter>
+  <parameter name="tag" default-binding="ognl">
+      <description>
+          A tag value used to identify this Submit as the triggered component.
+      </description>
+  <parameter>
+  <parameter name="listener" default-binding="listener">
+      <description>
+          A listener that is notified if this component is triggered.
+      </description>
+  </parameter>
+  <parameter name="defer" default-binding="ognl" default-value="true">
+      <description>
+          If true (the default), then any listener notification is deferred
+          until just before the form's listener is invoked.
+      </description>
+  </parameter>
   
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>

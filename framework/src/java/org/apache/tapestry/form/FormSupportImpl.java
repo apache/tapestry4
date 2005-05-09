@@ -100,6 +100,8 @@ public class FormSupportImpl implements FormSupport
 
     private String _encodingType;
 
+    private final List _deferredRunnables = new ArrayList();
+
     /**
      * Map keyed on extended component id, value is the pre-rendered markup for that component.
      */
@@ -445,6 +447,8 @@ public class FormSupportImpl implements FormSupport
 
         _form.renderBody(nested, _cycle);
 
+        runDeferredRunnables();
+        
         writeTag(_writer, method, link.getURL(null, false));
 
         _writer.attribute("name", _form.getName());
@@ -492,6 +496,19 @@ public class FormSupportImpl implements FormSupport
 
             throw new StaleLinkException(FormMessages.formTooFewIds(_form, expected
                     - _allocatedIdIndex, nextExpectedId), _form);
+        }
+
+        runDeferredRunnables();
+    }
+
+    private void runDeferredRunnables()
+    {
+        Iterator i = _deferredRunnables.iterator();
+        while (i.hasNext())
+        {
+            Runnable r = (Runnable) i.next();
+
+            r.run();
         }
     }
 
@@ -595,5 +612,12 @@ public class FormSupportImpl implements FormSupport
         _prerenderMap.remove(key);
 
         return true;
+    }
+
+    public void addDeferredRunnable(Runnable runnable)
+    {
+        Defense.notNull(runnable, "runnable");
+
+        _deferredRunnables.add(runnable);
     }
 }
