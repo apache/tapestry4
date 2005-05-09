@@ -39,6 +39,27 @@
     
   </service-point>
   
+  <service-point id="WMLExceptionPresenter" interface="ExceptionPresenter">
+    
+    Handler for uncaught exceptions inside the main request
+    processing code path for WML application; the default implementation
+    displays the exception page to report the
+    exception but verbose reports (to the console) the root exception as well.
+    
+    <invoke-factory>
+      <construct class="ExceptionPresenterImpl">
+        <set property="verbose" value="true"/>
+        <set-object property="exceptionPageName" 
+                       value="infrastructure:exceptionPageName"/>
+        <set-object property="requestExceptionReporter"
+                       value="infrastructure:requestExceptionReporter"/>
+        <set-object property="responseRenderer"
+                      value="infrastructure:responseRenderer"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>  
+  
   <service-point id="StaleSessionExceptionPresenter">
     
     Handler for StaleSessionExceptions, which indicate that
@@ -57,10 +78,24 @@
     </invoke-factory>    
   </service-point>
   
-  <contribution configuration-id="hivemind.FactoryDefaults">
-    <default symbol="org.apache.tapestry.exception-page-name" value="Exception"/>
-    <default symbol="org.apache.tapestry.stale-session-page-name" value="StaleSession"/>
-  </contribution>
+  <service-point id="StaleLinkExceptionPresenter">
+    
+    Handler for StaleSessionExceptions, which indicate that
+    the session has expired between the time a link or form
+    was rendered, and the time it was triggered in a new request.
+    
+    <invoke-factory>
+      <construct class="StaleLinkExceptionPresenterImpl">
+        <set-object property="pageName" 
+                       value="infrastructure:staleLinkPageName"/>
+        <set-object property="requestExceptionReporter"
+                       value="infrastructure:requestExceptionReporter"/>
+        <set-object property="responseRenderer"
+                      value="infrastructure:responseRenderer"/>
+      </construct>
+    </invoke-factory>    
+  </service-point>  
+  
   
   
   <service-point id="RequestExceptionReporter" interface="RequestExceptionReporter">
@@ -82,9 +117,15 @@
     <property name="staleSessionPageName" value="StaleSession"/>
     <property name="staleSessionPageName" mode="wml" value="WMLStaleSession"/>
     
+    <property name="staleLinkPageName" value="StaleLink"/>
+    <property name="staleLinkPageName" mode="wml" value="WMLStaleLink"/>
+    
     <property name="requestExceptionReporter" object="service:RequestExceptionReporter"/>    
     <property name="exceptionPresenter" object="service:ExceptionPresenter"/>
+    <property name="exceptionPresenter" mode="wml" object="service:WMLExceptionPresenter"/>
+    
     <property name="staleSessionExceptionPresenter" object="service:StaleSessionExceptionPresenter"/>
+    <property name="staleLinkExceptionPresenter" object="service:StaleLinkExceptionPresenter"/>
   </contribution>  
   
 </module>

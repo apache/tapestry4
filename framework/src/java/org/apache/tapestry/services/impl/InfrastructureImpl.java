@@ -34,6 +34,7 @@ import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.error.ExceptionPresenter;
 import org.apache.tapestry.error.RequestExceptionReporter;
+import org.apache.tapestry.error.StaleLinkExceptionPresenter;
 import org.apache.tapestry.error.StaleSessionExceptionPresenter;
 import org.apache.tapestry.listener.ListenerMapSource;
 import org.apache.tapestry.markup.MarkupWriterSource;
@@ -240,6 +241,11 @@ public class InfrastructureImpl implements Infrastructure
     public StaleSessionExceptionPresenter getStaleSessionExceptionPresenter()
     {
         return (StaleSessionExceptionPresenter) getProperty("staleSessionExceptionPresenter");
+    }
+
+    public StaleLinkExceptionPresenter getStaleLinkExceptionPresenter()
+    {
+        return (StaleLinkExceptionPresenter) getProperty("staleLinkExceptionPresenter");
     }
 
     public Object getProperty(String propertyName)

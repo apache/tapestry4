@@ -289,9 +289,9 @@ public abstract class AbstractEngine implements IEngine
     }
 
     /**
-     * Handles {@link PageRedirectException}&nbsp;which involves executing
-     * {@link IPage#validate(IRequestCycle)}on the target page (of the exception), until either a
-     * loop is found, or a page succesfully validates and can be activated.
+     * Handles {@link PageRedirectException} which involves executing
+     * {@link IRequestCycle#activate(IPage)} on the target page (of the exception), until either a
+     * loop is found, or a page succesfully activates.
      * <p>
      * This should generally not be overriden in subclasses.
      * 
@@ -299,7 +299,7 @@ public abstract class AbstractEngine implements IEngine
      */
 
     protected void handlePageRedirectException(IRequestCycle cycle, PageRedirectException exception)
-            throws IOException, ServletException
+            throws IOException
     {
         List pageNames = new ArrayList();
 
@@ -326,9 +326,9 @@ public abstract class AbstractEngine implements IEngine
 
                 break;
             }
-            catch (PageRedirectException ex2)
+            catch (PageRedirectException secondRedirectException)
             {
-                pageName = ex2.getTargetPageName();
+                pageName = secondRedirectException.getTargetPageName();
             }
         }
 
@@ -336,19 +336,22 @@ public abstract class AbstractEngine implements IEngine
     }
 
     /**
-     * Invoked by {@link #service(RequestContext)}if a {@link StaleLinkException}is thrown by the
-     * {@link IEngineService service}. This implementation sets the message property of the
-     * StaleLink page to the message provided in the exception, then invokes
-     * {@link #redirect(String, IRequestCycle, ApplicationRuntimeException)}to render the StaleLink
+     * Invoked by {@link #service(WebRequest, WebResponse)} if a {@link StaleLinkException} is
+     * thrown by the {@link IEngineService service}. This implementation sets the message property
+     * of the StaleLink page to the message provided in the exception, then invokes
+     * {@link #redirect(String, IRequestCycle, ApplicationRuntimeException)} to render the StaleLink
      * page.
      * <p>
-     * Subclasses may overide this method (without invoking this implementation). A common practice
-     * is to present an error message on the application's Home page.
+     * Subclasses may overide this method (without invoking this implementation). A better practice
+     * is to contribute an alternative implementation of
+     * {@link org.apache.tapestry.error.StaleLinkExceptionPresenter} to the
+     * tapestry.InfrastructureOverrides configuration point.
      * <p>
-     * Alternately, the application may provide its own version of the StaleLink page, overriding
-     * the framework's implementation (probably a good idea, because the default page hints at
-     * "application errors" and isn't localized). The overriding StaleLink implementation must
-     * implement a message property of type String.
+     * A common practice is to present an error message on the application's Home page. Alternately,
+     * the application may provide its own version of the StaleLink page, overriding the framework's
+     * implementation (probably a good idea, because the default page hints at "application errors"
+     * and isn't localized). The overriding StaleLink implementation must implement a message
+     * property of type String.
      * 
      * @since 0.2.10
      */
@@ -356,22 +359,19 @@ public abstract class AbstractEngine implements IEngine
     protected void handleStaleLinkException(IRequestCycle cycle, StaleLinkException exception)
             throws IOException
     {
-        String staleLinkPageName = getStaleLinkPageName();
-        IPage page = cycle.getPage(staleLinkPageName);
-
-        page.setProperty("message", exception.getMessage());
-
-        redirect(staleLinkPageName, cycle, exception);
+        _infrastructure.getStaleLinkExceptionPresenter()
+                .presentStaleLinkException(cycle, exception);
     }
 
     /**
-     * Invoked by {@link #service(RequestContext)}if a {@link StaleSessionException}is thrown by
-     * the {@link IEngineService service}. This implementation invokes
-     * {@link #redirect(String, IRequestCycle, ApplicationRuntimeException)}to render the
-     * StaleSession page.
+     * Invoked by {@link #service(WebRequest, WebResponse)} if a {@link StaleSessionException} is
+     * thrown by the {@link IEngineService service}. This implementation uses the
+     * {@link org.apache.tapestry.error.StaleSessionExceptionPresenter} to render the StaleSession
+     * page.
      * <p>
-     * Subclasses may overide this method (without invoking this implementation). A common practice
-     * is to present an eror message on the application's Home page.
+     * Subclasses may overide this method (without invoking this implementation), but it is better
+     * to override the tapestry.error.StaleSessionExceptionReporter service instead (or contribute a
+     * replacement to the tapestry.InfrastructureOverrides configuration point).
      * 
      * @since 0.2.10
      */
@@ -495,7 +495,7 @@ public abstract class AbstractEngine implements IEngine
     }
 
     /**
-     * Invoked when a {@link RedirectException}is thrown during the processing of a request.
+     * Invoked when a {@link RedirectException} is thrown during the processing of a request.
      * 
      * @throws ApplicationRuntimeException
      *             if an {@link IOException},{@link ServletException}is thrown by the redirect,
@@ -503,9 +503,9 @@ public abstract class AbstractEngine implements IEngine
      * @since 2.2
      */
 
-    protected void handleRedirectException(IRequestCycle cycle, RedirectException ex)
+    protected void handleRedirectException(IRequestCycle cycle, RedirectException redirectException)
     {
-        String location = ex.getRedirectLocation();
+        String location = redirectException.getRedirectLocation();
 
         if (LOG.isDebugEnabled())
             LOG.debug("Redirecting to: " + location);
@@ -527,13 +527,6 @@ public abstract class AbstractEngine implements IEngine
     public IPropertySource getPropertySource()
     {
         return _infrastructure.getApplicationPropertySource();
-    }
-
-    /** @since 3.0 */
-
-    protected String getStaleLinkPageName()
-    {
-        return TapestryConstants.STALE_LINK_PAGE;
     }
 
     /** @since 4.0 */

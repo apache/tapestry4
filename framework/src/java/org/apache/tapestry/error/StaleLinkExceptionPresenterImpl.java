@@ -17,29 +17,32 @@ package org.apache.tapestry.error;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.services.ResponseRenderer;
 
 /**
+ * Implementation of {@link org.apache.tapestry.error.StaleLinkExceptionPresenter} that uses a page
+ * to present the exception. The page must implement a property named "message" of type String and
+ * should present that message to the user.
+ * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class ExceptionPresenterImpl implements ExceptionPresenter
+public class StaleLinkExceptionPresenterImpl implements StaleLinkExceptionPresenter
 {
     private RequestExceptionReporter _requestExceptionReporter;
 
     private ResponseRenderer _responseRenderer;
 
-    private String _exceptionPageName;
+    private String _pageName;
 
-    private boolean _verbose;
-
-    public void presentException(IRequestCycle cycle, Throwable cause)
+    public void presentStaleLinkException(IRequestCycle cycle, StaleLinkException cause)
     {
         try
         {
-            IPage exceptionPage = cycle.getPage(_exceptionPageName);
+            IPage exceptionPage = cycle.getPage(_pageName);
 
-            exceptionPage.setProperty("exception", cause);
+            exceptionPage.setProperty("message", cause.getMessage());
 
             cycle.activate(exceptionPage);
 
@@ -64,14 +67,11 @@ public class ExceptionPresenterImpl implements ExceptionPresenter
             throw new ApplicationRuntimeException(ex.getMessage(), ex);
         }
 
-        if (_verbose)
-            _requestExceptionReporter.reportRequestException(ErrorMessages
-                    .unableToProcessClientRequest(cause), cause);
     }
 
-    public void setExceptionPageName(String exceptionPageName)
+    public void setPageName(String pageName)
     {
-        _exceptionPageName = exceptionPageName;
+        _pageName = pageName;
     }
 
     public void setRequestExceptionReporter(RequestExceptionReporter requestExceptionReporter)
@@ -84,13 +84,4 @@ public class ExceptionPresenterImpl implements ExceptionPresenter
         _responseRenderer = responseRenderer;
     }
 
-    public boolean isVerbose()
-    {
-        return _verbose;
-    }
-
-    public void setVerbose(boolean verbose)
-    {
-        _verbose = verbose;
-    }
 }

@@ -209,7 +209,9 @@
   <contribution configuration-id="tapestry.Infrastructure">
     <property name="linkFactory" mode="portlet" object="service:PortletLinkFactory"/>
     <property name="HTMLDescriber" mode="portlet" object="service:PortletHTMLDescriber"/>
-    <property name="exceptionPresenter" mode="portlet" object="service:PortletExceptionPresenter" />
+    <property name="exceptionPresenter" mode="portlet" object="service:PortletExceptionPresenter"/>
+    <property name="staleLinkExceptionPresenter" mode="portlet" object="service:PortletStaleLinkExceptionPresenter"/>
+    <property name="staleSessionExceptionPresenter" mode="portlet" object="service:PortletStaleSessionExceptionPresenter"/>
   </contribution>
    
  <contribution configuration-id="PortletApplicationInitializers">
@@ -263,6 +265,20 @@
     </invoke-factory>
     
   </service-point>
+  
+  <service-point id="PortletStaleLinkExceptionPresenter" interface="org.apache.tapestry.error.StaleLinkExceptionPresenter">
+    
+    Displays the stale link exception's message.
+    
+    <invoke-factory>
+      <construct class="PortletStaleLinkExceptionPresenter">
+        <set-service property="globals" service-id="PortletRequestGlobals"/>
+        <set-object property="requestExceptionReporter"
+                       value="infrastructure:requestExceptionReporter"/>   
+      </construct>
+    </invoke-factory>
+    
+  </service-point>  
   
 	<contribution configuration-id="tapestry.describe.DescribableStrategies">
     <strategy class="javax.portlet.PortletSession" object="instance:PortletSessionDescribableStrategy"/>
