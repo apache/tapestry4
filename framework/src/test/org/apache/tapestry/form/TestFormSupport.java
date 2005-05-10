@@ -26,6 +26,7 @@ import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.valid.IValidationDelegate;
 import org.easymock.MockControl;
 
 /**
@@ -87,6 +88,11 @@ public class TestFormSupport extends HiveMindTestCase
         componentc.setReturnValue(location);
 
         return component;
+    }
+
+    private IValidationDelegate newDelegate()
+    {
+        return (IValidationDelegate) newMock(IValidationDelegate.class);
     }
 
     private IMarkupWriter newWriter()
@@ -179,7 +185,9 @@ public class TestFormSupport extends HiveMindTestCase
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
-        MockForm form = new MockForm();
+        IValidationDelegate delegate = newDelegate();
+
+        MockForm form = new MockForm(delegate);
 
         cycle.isRewound(form);
         cyclec.setReturnValue(true);
@@ -189,6 +197,8 @@ public class TestFormSupport extends HiveMindTestCase
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
         verifyControls();
+
+        delegate.clear();
 
         trainCycleForRewind(cyclec, cycle, "barney,wilma,barney$0", null);
 
@@ -653,8 +663,9 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IValidationDelegate delegate = newDelegate();
 
-        MockForm form = new MockForm();
+        MockForm form = new MockForm(delegate);
 
         cycle.isRewound(form);
         cyclec.setReturnValue(true);
@@ -664,6 +675,8 @@ public class TestFormSupport extends HiveMindTestCase
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
         verifyControls();
+
+        delegate.clear();
 
         trainCycleForRewind(cyclec, cycle, "action$0", "action");
 
@@ -688,7 +701,9 @@ public class TestFormSupport extends HiveMindTestCase
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
-        MockForm form = new MockForm();
+        IValidationDelegate delegate = newDelegate();
+
+        MockForm form = new MockForm(delegate);
 
         cycle.isRewound(form);
         cyclec.setReturnValue(true);
@@ -700,6 +715,8 @@ public class TestFormSupport extends HiveMindTestCase
         verifyControls();
 
         Location l = newLocation();
+
+        delegate.clear();
 
         // So, the scenario here is that component "pebbles" was inside
         // some kind of conditional that evaluated to true during the render,
@@ -742,7 +759,9 @@ public class TestFormSupport extends HiveMindTestCase
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
-        MockForm form = new MockForm();
+        IValidationDelegate delegate = newDelegate();
+
+        MockForm form = new MockForm(delegate);
 
         cycle.isRewound(form);
         cyclec.setReturnValue(true);
@@ -754,6 +773,8 @@ public class TestFormSupport extends HiveMindTestCase
         verifyControls();
 
         Location l = newLocation();
+
+        delegate.clear();
 
         // So, the scenario here is that component "barney" was inside
         // some kind of loop that executed once on the render, but twice
@@ -797,7 +818,9 @@ public class TestFormSupport extends HiveMindTestCase
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
-        MockForm form = new MockForm(l);
+        IValidationDelegate delegate = newDelegate();
+
+        MockForm form = new MockForm(delegate, l);
 
         cycle.isRewound(form);
         cyclec.setReturnValue(true);
@@ -807,6 +830,8 @@ public class TestFormSupport extends HiveMindTestCase
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
         verifyControls();
+
+        delegate.clear();
 
         // So, the scenario here is that component "barney" was inside
         // some kind of loop that executed twice on the render, but only once
@@ -1008,7 +1033,9 @@ public class TestFormSupport extends HiveMindTestCase
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
-        MockForm form = new MockForm();
+        IValidationDelegate delegate = newDelegate();
+
+        MockForm form = new MockForm(delegate);
 
         cycle.isRewound(form);
         cyclec.setReturnValue(true);
@@ -1018,6 +1045,8 @@ public class TestFormSupport extends HiveMindTestCase
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
 
         verifyControls();
+
+        delegate.clear();
 
         trainCycleForRewind(cyclec, cycle, "barney", null);
 
@@ -1041,7 +1070,9 @@ public class TestFormSupport extends HiveMindTestCase
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
-        MockForm form = new MockForm();
+        IValidationDelegate delegate = newDelegate();
+
+        MockForm form = new MockForm(delegate);
 
         cycle.isRewound(form);
         cyclec.setReturnValue(true);
@@ -1052,6 +1083,8 @@ public class TestFormSupport extends HiveMindTestCase
 
         verifyControls();
 
+        delegate.clear();
+        
         trainCycleForRewind(cyclec, cycle, "", null);
 
         writer.print("DEFERRED");
@@ -1065,7 +1098,6 @@ public class TestFormSupport extends HiveMindTestCase
             {
                 fs.addDeferredRunnable(new Runnable()
                 {
-
                     public void run()
                     {
                         writer.print("DEFERRED");
