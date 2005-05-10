@@ -16,12 +16,13 @@ package org.apache.tapestry.portlet;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 /**
- * Implementation of the <code>tapestry.portlet.PortletRequestGlobals</code> service, which uses
- * the threaded service lifecycle model.
+ * Implementation of the tapestry.portlet.PortletRequestGlobals service, which uses the threaded
+ * service lifecycle model.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -36,15 +37,21 @@ public class PortletRequestGlobalsImpl implements PortletRequestGlobals
 
     private RenderRequest _renderRequest;
 
+    private PortletRequest _portletRequest;
+
     public void store(ActionRequest request, ActionResponse response)
     {
         _actionRequest = request;
+        _portletRequest = request;
+
         _actionResponse = response;
     }
 
     public void store(RenderRequest request, RenderResponse response)
     {
         _renderRequest = request;
+        _portletRequest = request;
+
         _renderResponse = response;
     }
 
@@ -71,5 +78,10 @@ public class PortletRequestGlobalsImpl implements PortletRequestGlobals
     public boolean isRenderRequest()
     {
         return _renderRequest != null;
+    }
+
+    public PortletRequest getPortletRequest()
+    {
+        return _portletRequest;
     }
 }

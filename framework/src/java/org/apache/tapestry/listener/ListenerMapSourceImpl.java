@@ -132,12 +132,23 @@ public class ListenerMapSourceImpl implements ListenerMapSource, ResetEventListe
 
             Method[] methods = convertMethodListToArray(methodList);
 
-            ListenerMethodInvoker invoker = new ListenerMethodInvokerImpl(name, methods);
+            ListenerMethodInvoker invoker = createListenerMethodInvoker(name, methods);
 
             result.put(name, invoker);
         }
 
         return result;
+    }
+
+    /**
+     * This implementation returns a new
+     * {@link org.apache.tapestry.listener.ListenerMethodInvokerImpl}. Subclasses can override to
+     * provide their own implementation.
+     */
+
+    protected ListenerMethodInvokerImpl createListenerMethodInvoker(String name, Method[] methods)
+    {
+        return new ListenerMethodInvokerImpl(name, methods);
     }
 
     private Method[] convertMethodListToArray(List methodList)

@@ -16,6 +16,7 @@ package org.apache.tapestry.portlet;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -44,4 +45,9 @@ public interface PortletRequestGlobals
      * otherwise.
      */
     public boolean isRenderRequest();
+
+    /**
+     * Returns whatever is available; the ActionRequest or the PortletRequest.
+     */
+    public PortletRequest getPortletRequest();
 }

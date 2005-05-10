@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.valid;
 
+import java.io.Serializable;
+
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
@@ -25,8 +27,10 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard Lewis Ship
  */
 
-public class RenderString implements IRender
+public class RenderString implements IRender, Serializable
 {
+    private static final long serialVersionUID = 6215074338439140780L;
+
     private String _string;
 
     private boolean _raw = false;

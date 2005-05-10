@@ -24,12 +24,12 @@ import org.apache.tapestry.IPage;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class EngineMessages
+public class EngineMessages
 {
     private static final MessageFormatter _formatter = new MessageFormatter(EngineMessages.class,
             "EngineStrings");
 
-    static String serviceNoParameter(IEngineService service)
+    public static String serviceNoParameter(IEngineService service)
     {
         return _formatter.format("service-no-parameter", service.getName());
     }
@@ -67,7 +67,7 @@ class EngineMessages
 
             buffer.append(pageNames.get(i));
         }
-        
+
         return _formatter.format("validate-cycle", buffer);
     }
 }

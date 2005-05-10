@@ -148,7 +148,7 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
 
         try
         {
-            listenerMethod.invoke(target, parameters);
+            invokeTargetMethod(target, listenerMethod, parameters);
         }
         catch (InvocationTargetException ex)
         {
@@ -170,5 +170,16 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
                     ex), target, null, ex);
 
         }
+    }
+
+    /**
+     * Provided as a hook so that subclasses can perform any additional work before or after
+     * invoking the listener method.
+     */
+
+    protected void invokeTargetMethod(Object target, Method listenerMethod, Object[] parameters)
+            throws IllegalAccessException, InvocationTargetException
+    {
+        listenerMethod.invoke(target, parameters);
     }
 }

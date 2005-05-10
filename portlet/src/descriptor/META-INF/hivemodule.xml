@@ -23,6 +23,7 @@
   <dependency module-id="hivemind.lib" version="1.1.0"/>
   
   <sub-module descriptor="tapestry.portlet.services.xml"/>
+  <sub-module descriptor="tapestry.portlet.resolver.xml"/>
   
   <configuration-point id="PortletApplicationInitializers" schema-id="hivemind.lib.ChainContribution">
     
@@ -159,6 +160,17 @@
     </invoke-factory>
     
   </service-point>
+  
+  <service-point id="PortletRequest" interface="javax.portlet.PortletRequest">
+    
+    The PortletRequest for the current request. This may be either an ActionRequest
+    or a RenderRequest.
+    
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory" model="primitive">
+      <construct service-id="PortletRequestGlobals" property="portletRequest"/>
+    </invoke-factory>
+    
+  </service-point>  
   
   <service-point id="RenderResponse" interface="javax.portlet.RenderResponse">
     

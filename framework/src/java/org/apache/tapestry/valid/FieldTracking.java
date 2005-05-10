@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.valid;
 
+import java.io.Serializable;
+
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.form.IFormComponent;
@@ -25,8 +27,10 @@ import org.apache.tapestry.form.IFormComponent;
  * @since 1.0.8
  */
 
-public class FieldTracking implements IFieldTracking
+public class FieldTracking implements IFieldTracking, Serializable
 {
+    private static final long serialVersionUID = -5397563163968532716L;
+
     private transient IFormComponent _component;
 
     private String _input;

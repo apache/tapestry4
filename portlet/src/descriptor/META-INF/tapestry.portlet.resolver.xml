@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry.portlet.resolver" version="4.0.0" package="org.apache.tapestry.portlet">
+
+  Controls the resolution, based on portlet mode and window state, to a page.
+  This is all used by the Portlet's home engine service.
+
+  <service-point id="PortletPageResolver">
+    
+    A chain of command for determing the correct page.
+    
+    <invoke-factory service-id="hivemind.lib.ChainFactory" model="primitive">
+      <construct configuration-id="PageResolvers"/>
+    </invoke-factory>
+    
+  </service-point>
+
+  <configuration-point id="PageResolvers" schema-id="hivemind.lib.ChainContribution">
+    
+    Defines the series of command steps to try and resolve the page name for
+    the request.
+    
+  </configuration-point>
+  
+  <contribution configuration-id="PageResolvers">
+    <command id="matcher" object="service:MatchingPortletPageResolver"/>
+    <command id="default" after="*" object="service:DefaultPortletPageResolver"/>
+  </contribution>
+  
+  <service-point id="MatchingPortletPageResolver" interface="PortletPageResolver">
+    
+    Uses the PageResolverRules configuration point to find a match
+    against the current request's mime type, portlet mode and/or
+    window state. Best match that corresponds to an actual page wins.
+    
+    <invoke-factory model="primitive">
+      <construct class="MatchingPortletPageResolver">
+        <set-object property="request" value="service:tapestry.portlet.PortletRequest"/>
+        <set-object property="contributions" value="configuration:PageResolverRules"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="DefaultPortletPageResolver" interface="PortletPageResolver">
+    
+    <invoke-factory model="primitive">
+      <construct class="DefaultPortletPageResolver">
+        <set-object property="pageName" value="app-property:org.apache.tapestry.portlet.home-page"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  <configuration-point id="PageResolverRules">
+    
+    Identifies rules for matching an incoming request to a 
+    named page.
+    <schema>
+      <element name="match">
+        <attribute name="portlet-mode">
+          
+          The name of a portlet mode to match against.
+          
+        </attribute>
+        
+        <attribute name="window-state">
+          
+          The name of a window state to match against.
+          
+        </attribute>
+        
+        <attribute name="mime-type">
+          
+          The mime type to match against.
+          
+        </attribute>
+        
+        <attribute name="page" required="true">
+          
+          The name of the page to use. If such a page exists (it may not), it will
+          be activated to render the response.
+          
+        </attribute>
+        
+        <conversion class="PageResolverContribution">
+          <map property="pageName" attribute="page"/>
+        </conversion>
+        
+      </element>
+    </schema>
+    
+  </configuration-point>
+  
+  <contribution configuration-id="PageResolverRules">
+    <match portlet-mode="edit" page="Edit"/>
+    <match portlet-mode="help" page="Help"/>
+  </contribution>
+  
+</module>

@@ -15,9 +15,17 @@
 package org.apache.tapestry.portlet;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.engine.HomeService;
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.engine.EngineMessages;
+import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.services.LinkFactory;
+import org.apache.tapestry.services.ResponseRenderer;
+import org.apache.tapestry.services.ServiceConstants;
 
 /**
  * Replacement for the standard home service, used by Portlets. This exists to handle the special
@@ -27,24 +35,58 @@ import org.apache.tapestry.engine.HomeService;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class PortletHomeService extends HomeService
+public class PortletHomeService implements IEngineService
 {
     private PortletRenderer _portletRenderer;
 
     private PortletRequestGlobals _requestGlobals;
 
+    private ResponseRenderer _responseRenderer;
+
+    private LinkFactory _linkFactory;
+
+    private PortletPageResolver _pageResolver;
+
+    public String getName()
+    {
+        return Tapestry.HOME_SERVICE;
+    }
+
+    public ILink getLink(IRequestCycle cycle, Object parameter)
+    {
+        if (parameter != null)
+            throw new IllegalArgumentException(EngineMessages.serviceNoParameter(this));
+
+        Map parameters = new HashMap();
+
+        parameters.put(ServiceConstants.SERVICE, Tapestry.HOME_SERVICE);
+
+        return _linkFactory.constructLink(cycle, parameters, true);
+    }
+
+    public void setLinkFactory(LinkFactory linkFactory)
+    {
+        _linkFactory = linkFactory;
+    }
+
+    public void setResponseRenderer(ResponseRenderer responseRenderer)
+    {
+        _responseRenderer = responseRenderer;
+    }
+
     public void service(IRequestCycle cycle) throws IOException
     {
+        String pageName = _pageResolver.getPageNameForRequest(cycle);
+
         if (_requestGlobals.isRenderRequest())
         {
-            String pageName = getPageName();
-
             _portletRenderer.renderPage(cycle, pageName);
-
             return;
         }
 
-        super.service(cycle);
+        cycle.activate(pageName);
+
+        _responseRenderer.renderResponse(cycle);
     }
 
     public void setPortletRenderer(PortletRenderer portletRenderer)
@@ -55,5 +97,10 @@ public class PortletHomeService extends HomeService
     public void setRequestGlobals(PortletRequestGlobals requestGlobals)
     {
         _requestGlobals = requestGlobals;
+    }
+
+    public void setPageResolver(PortletPageResolver pageResolver)
+    {
+        _pageResolver = pageResolver;
     }
 }
