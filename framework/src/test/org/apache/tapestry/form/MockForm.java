@@ -51,12 +51,26 @@ public class MockForm implements IForm
 
     private List _deferredRunnable = new ArrayList();
 
+    private IValidationDelegate _delegate;
+
     public MockForm()
     {
+        this(null, null);
     }
 
     public MockForm(Location location)
     {
+        this(null, location);
+    }
+
+    public MockForm(IValidationDelegate delegate)
+    {
+        this(delegate, null);
+    }
+
+    public MockForm(IValidationDelegate delegate, Location location)
+    {
+        _delegate = delegate;
         _location = location;
     }
 
@@ -90,7 +104,7 @@ public class MockForm implements IForm
 
     public IValidationDelegate getDelegate()
     {
-        return null;
+        return _delegate;
     }
 
     public void setEncodingType(String encodingType)

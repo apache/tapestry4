@@ -482,6 +482,8 @@ public class FormSupportImpl implements FormSupport
     {
         reinitializeIdAllocatorForRewind();
 
+        _form.getDelegate().clear();
+        
         _form.renderBody(_writer, _cycle);
 
         int expected = _allocatedIds.size();
