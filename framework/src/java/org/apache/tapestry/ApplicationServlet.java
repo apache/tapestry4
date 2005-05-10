@@ -75,6 +75,16 @@ import com.sun.jndi.ldap.pool.Pool;
 
 public class ApplicationServlet extends HttpServlet
 {
+    /**
+     * Prefix used to store the HiveMind Registry into the ServletContext. This string is suffixed
+     * with the servlet name (in case multiple Tapestry applications are executing within a single
+     * web application).
+     * 
+     * @since 4.0
+     */
+
+    private static final String REGISTRY_KEY_PREFIX = "org.apache.tapestry.Registry:";
+
     private static final Log LOG = LogFactory.getLog(ApplicationServlet.class);
 
     /**
@@ -94,6 +104,14 @@ public class ApplicationServlet extends HttpServlet
      */
 
     private ClassResolver _resolver;
+
+    /**
+     * The key used to store the registry into the ServletContext.
+     * 
+     * @since 4.0
+     */
+
+    private String _registryKey;
 
     /**
      * @since 4.0
@@ -121,7 +139,7 @@ public class ApplicationServlet extends HttpServlet
         try
         {
             _registry.setupThread();
-            
+
             _requestServicer.service(request, response);
         }
         catch (ServletException ex)
@@ -182,6 +200,8 @@ public class ApplicationServlet extends HttpServlet
     {
         String name = config.getServletName();
 
+        _registryKey = REGISTRY_KEY_PREFIX + name;
+
         long startTime = System.currentTimeMillis();
         long elapsedToRegistry = 0;
 
@@ -191,12 +211,13 @@ public class ApplicationServlet extends HttpServlet
 
         try
         {
-
             _registry = constructRegistry(config);
 
             elapsedToRegistry = System.currentTimeMillis() - startTime;
 
             initializeApplication();
+
+            config.getServletContext().setAttribute(_registryKey, _registry);
         }
         catch (Exception ex)
         {
@@ -224,23 +245,6 @@ public class ApplicationServlet extends HttpServlet
     protected ClassResolver createClassResolver() throws ServletException
     {
         return new DefaultClassResolver();
-    }
-
-    /**
-     * Closes the stream, ignoring any exceptions.
-     */
-
-    protected void close(InputStream stream)
-    {
-        try
-        {
-            if (stream != null)
-                stream.close();
-        }
-        catch (IOException ex)
-        {
-            // Ignore it.
-        }
     }
 
     /**
@@ -307,27 +311,18 @@ public class ApplicationServlet extends HttpServlet
     }
 
     /**
-     * Returns the Registry used by the application.
-     * 
-     * @since 4.0
-     */
-    public Registry getRegistry()
-    {
-        return _registry;
-    }
-
-    /**
      * Shuts down the registry (if it exists).
      * 
      * @since 4.0
      */
     public void destroy()
     {
+        getServletContext().removeAttribute(_registryKey);
+
         if (_registry != null)
         {
             _registry.shutdown();
             _registry = null;
         }
     }
-
 }

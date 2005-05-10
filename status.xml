@@ -57,6 +57,7 @@
       <action type="add" dev="PF" fixes-bug="TAPESTRY-317">Fixed workbench build script so that generated war file will include the required ognl jar.</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-166">Allow Submits to defer invoking their listener.</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-320"> Property seperate data from different users stored using the tapestry.persist.ClientPropertyPersistenceStrategy service.</action>
+      <action type="add" dev="HLS"> Store the Registry as a ServletContext attribute, so that it may be accessed from other servlets. </action>
     </release>
     <release version="4.0-alpha-2" date="May 5 2005">
       <action type="update" dev="HLS"> Coordinate Locale changes with the hivemind.ThreadLocale service. </action>
