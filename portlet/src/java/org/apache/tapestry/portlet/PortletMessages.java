@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.portlet;
 
-import java.net.MalformedURLException;
-
 import org.apache.hivemind.impl.MessageFormatter;
 
 /**
@@ -54,6 +52,6 @@ class PortletMessages
 
     static String staleSession()
     {
-        return _formatter.getMessage("sale-session");
+        return _formatter.getMessage("stale-session");
     }
 }
