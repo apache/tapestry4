@@ -27,7 +27,8 @@ import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.web.WebRequest;
 
 /**
- * Encodes persistent page properties on the client as query parameters.
+ * Service tapestry.persist.ClientPropertyPersistenceStrategy. Encodes persistent page properties on
+ * the client as query parameters.
  * <p>
  * Uses the threaded model.
  * 
@@ -64,7 +65,15 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
         _encoder = encoder;
     }
 
-    public void initializeForService()
+    /**
+     * Initializer for this service, invoked every time a service instance is created. This
+     * initializer pulls out of the request and query parameters whose prefix is "client:" and
+     * expects them to be encoded {@link PersistentPropertyData}, which are stored internally.
+     * Because the service model is threaded, this information is specific to a single request, and
+     * will be discarded at the end of the request.
+     */
+
+    public void initializeService()
     {
         List names = _request.getParameterNames();
         Iterator i = names.iterator();

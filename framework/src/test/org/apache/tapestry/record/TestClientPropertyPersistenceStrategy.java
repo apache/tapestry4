@@ -58,7 +58,7 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
         ClientPropertyPersistenceStrategy strategy = new ClientPropertyPersistenceStrategy(encoder);
         strategy.setRequest(request);
 
-        strategy.initializeForService();
+        strategy.initializeService();
 
         assertSame(changes, strategy.getStoredChanges("MyPage", null));
 
@@ -109,7 +109,7 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
         ClientPropertyPersistenceStrategy strategy = new ClientPropertyPersistenceStrategy();
         strategy.setRequest(request);
 
-        strategy.initializeForService();
+        strategy.initializeService();
 
         strategy.addParametersForPersistentProperties(encoding, cycle);
 

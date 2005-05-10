@@ -26,7 +26,12 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ServiceEncoding;
 
 /**
+ * Implementation of the <code>tapestry.persist.PropertyPersistenceStrategySource</code> service.
+ * Allows access to other services, that implement the
+ * {@link org.apache.tapestry.record.PropertyPersistenceStrategy} interface.
+ * 
  * @author Howard M. Lewis Ship
+ * @since 4.0
  */
 public class PropertyPersistenceStrategySourceImpl implements PropertyPersistenceStrategySource
 {
