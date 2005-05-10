@@ -106,7 +106,7 @@
         <set-object property="linkFactory" value="infrastructure:linkFactory"/>
         <set-service property="requestGlobals" service-id="tapestry.portlet.PortletRequestGlobals"/>
         <set-service property="portletRenderer" service-id="PortletRenderer"/>
-        <set-object property="pageName" value="app-property:org.apache.tapestry.portlet.home-page"/>
+        <set-service property="pageResolver" service-id="tapestry.portlet.resolver.PortletPageResolver"/>
       </construct>
     </invoke-factory>
   </service-point> 

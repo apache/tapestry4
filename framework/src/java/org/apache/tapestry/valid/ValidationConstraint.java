@@ -17,113 +17,98 @@ package org.apache.tapestry.valid;
 import org.apache.commons.lang.enum.Enum;
 
 /**
- *  Defines an enumeration of different types of validation constraints
- *  that may be violated.
- *
- *  @author Howard Lewis Ship
+ * Defines an enumeration of different types of validation constraints that may be violated.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public class ValidationConstraint extends Enum
 {
+    private static final long serialVersionUID = 371593028205311930L;
+
     /**
-     *  Indicates that no value (or a value consisting only of white space) was
-     *  provided for a field that requires a non-null value.
-     *
-     **/
+     * Indicates that no value (or a value consisting only of white space) was provided for a field
+     * that requires a non-null value.
+     */
 
     public static final ValidationConstraint REQUIRED = new ValidationConstraint("REQUIRED");
 
     /**
-     *  Indicates that a non-null value was provided, but that (after removing
-     *  leading and trailing whitespace), the value was not long enough.
-     *
-     **/
+     * Indicates that a non-null value was provided, but that (after removing leading and trailing
+     * whitespace), the value was not long enough.
+     */
 
-    public static final ValidationConstraint MINIMUM_WIDTH =
-        new ValidationConstraint("MINUMUM_WIDTH");
+    public static final ValidationConstraint MINIMUM_WIDTH = new ValidationConstraint(
+            "MINUMUM_WIDTH");
 
     /**
-     *  Indicates a general error in converting a String into a Date.
-     *
-     **/
+     * Indicates a general error in converting a String into a Date.
+     */
 
     public static final ValidationConstraint DATE_FORMAT = new ValidationConstraint("DATE_FORMAT");
 
     /**
-     *  Indicates a general error in the format of a string that is
-     *  to be interpreted as a email.
-     *
-     **/
+     * Indicates a general error in the format of a string that is to be interpreted as a email.
+     */
 
-    public static final ValidationConstraint EMAIL_FORMAT =
-        new ValidationConstraint("EMAIL_FORMAT");
+    public static final ValidationConstraint EMAIL_FORMAT = new ValidationConstraint("EMAIL_FORMAT");
 
     /**
-     *  Indicates a general error in the format of a string that is
-     *  to be interpreted as a number.
-     *
-     **/
+     * Indicates a general error in the format of a string that is to be interpreted as a number.
+     */
 
-    public static final ValidationConstraint NUMBER_FORMAT =
-        new ValidationConstraint("NUMBER_FORMAT");
+    public static final ValidationConstraint NUMBER_FORMAT = new ValidationConstraint(
+            "NUMBER_FORMAT");
 
     /**
-     *  Indicates that the value was too small (for a Date, too early).
-     *
-     **/
+     * Indicates that the value was too small (for a Date, too early).
+     */
 
     public static final ValidationConstraint TOO_SMALL = new ValidationConstraint("TOO_SMALL");
 
     /**
-     *  Indicates that the value was too large (for a Date, too late).
-     *
-     **/
+     * Indicates that the value was too large (for a Date, too late).
+     */
 
     public static final ValidationConstraint TOO_LARGE = new ValidationConstraint("TOO_LARGE");
 
     /**
-     *  Indicates an error in a string that does not fulfill a pattern.
+     * Indicates an error in a string that does not fulfill a pattern.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
-    public static final ValidationConstraint PATTERN_MISMATCH =
-        new ValidationConstraint("PATTERN_MISMATCH");
+    public static final ValidationConstraint PATTERN_MISMATCH = new ValidationConstraint(
+            "PATTERN_MISMATCH");
 
     /**
-     *  Indicates a consistency error, usually between too different fields.
+     * Indicates a consistency error, usually between too different fields.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     public static final ValidationConstraint CONSISTENCY = new ValidationConstraint("CONSISTENCY");
 
-	/**
-	 *  Indicates that a URL is not of the correct format
-	 * 
-	 * @since 3.0
-	 */
-	
-	public static final ValidationConstraint URL_FORMAT = new ValidationConstraint("URL_FORMAT");
+    /**
+     * Indicates that a URL is not of the correct format
+     * 
+     * @since 3.0
+     */
 
-	/**
-	 *  Indicates that the URL does not use one of the specified protocols
-	 * 
-	 * @since 3.0
-	 */
+    public static final ValidationConstraint URL_FORMAT = new ValidationConstraint("URL_FORMAT");
 
-	public static final ValidationConstraint DISALLOWED_PROTOCOL = new ValidationConstraint("DISALLOWED_PROTOCOL");
+    /**
+     * Indicates that the URL does not use one of the specified protocols
+     * 
+     * @since 3.0
+     */
 
+    public static final ValidationConstraint DISALLOWED_PROTOCOL = new ValidationConstraint(
+            "DISALLOWED_PROTOCOL");
 
-
-	/**
-	 *  Protected constructor, which allows new constraints to be created
-	 *  as subclasses.
-	 * 
-	 **/
+    /**
+     * Protected constructor, which allows new constraints to be created as subclasses.
+     */
 
     protected ValidationConstraint(String name)
     {

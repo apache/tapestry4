@@ -14,9 +14,16 @@
 
 package org.apache.tapestry.portlet;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
+import org.apache.tapestry.services.ServiceConstants;
 import org.easymock.MockControl;
 
 /**
@@ -53,18 +60,30 @@ public class TestPortletHomeService extends HiveMindTestCase
         return (PortletRenderer) newMock(PortletRenderer.class);
     }
 
+    private PortletPageResolver newResolver(IRequestCycle cycle, String pageName)
+    {
+        MockControl control = newControl(PortletPageResolver.class);
+        PortletPageResolver resolver = (PortletPageResolver) control.getMock();
+
+        resolver.getPageNameForRequest(cycle);
+        control.setReturnValue(pageName);
+
+        return resolver;
+    }
+
     public void testIsRenderRequest() throws Exception
     {
         IRequestCycle cycle = newCycle();
         PortletRequestGlobals globals = newRequestGlobals(true);
         PortletRenderer renderer = newPortletRenderer();
+        PortletPageResolver resolver = newResolver(cycle, "ZePage");
 
         renderer.renderPage(cycle, "ZePage");
 
         replayControls();
 
         PortletHomeService phs = new PortletHomeService();
-        phs.setPageName("ZePage");
+        phs.setPageResolver(resolver);
         phs.setPortletRenderer(renderer);
         phs.setRequestGlobals(globals);
 
@@ -78,6 +97,7 @@ public class TestPortletHomeService extends HiveMindTestCase
         IRequestCycle cycle = newCycle();
         PortletRequestGlobals globals = newRequestGlobals(false);
         ResponseRenderer renderer = newResponseRenderer();
+        PortletPageResolver resolver = newResolver(cycle, "ZePage");
 
         cycle.activate("ZePage");
         renderer.renderResponse(cycle);
@@ -87,10 +107,47 @@ public class TestPortletHomeService extends HiveMindTestCase
         PortletHomeService phs = new PortletHomeService();
         phs.setResponseRenderer(renderer);
         phs.setRequestGlobals(globals);
-        phs.setPageName("ZePage");
+        phs.setPageResolver(resolver);
 
         phs.service(cycle);
 
         verifyControls();
+    }
+
+    public void testGetLink()
+    {
+        Map parameters = new HashMap();
+        parameters.put(ServiceConstants.SERVICE, Tapestry.HOME_SERVICE);
+
+        MockControl factoryc = newControl(LinkFactory.class);
+        LinkFactory factory = (LinkFactory) factoryc.getMock();
+
+        ILink link = (ILink) newMock(ILink.class);
+        IRequestCycle cycle = newCycle();
+
+        factory.constructLink(cycle, parameters, true);
+        factoryc.setReturnValue(link);
+
+        replayControls();
+
+        PortletHomeService phs = new PortletHomeService();
+        phs.setLinkFactory(factory);
+
+        assertSame(link, phs.getLink(cycle, null));
+
+        verifyControls();
+    }
+
+    public void testGetLinkWithParameter()
+    {
+        try
+        {
+            new PortletHomeService().getLink(null, "PARAMETER");
+            unreachable();
+        }
+        catch (IllegalArgumentException ex)
+        {
+            assertEquals("The home service does not require a parameter object.", ex.getMessage());
+        }
     }
 }

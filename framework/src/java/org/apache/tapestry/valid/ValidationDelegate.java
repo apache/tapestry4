@@ -21,14 +21,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.Location;
-import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.NestedMarkupWriter;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.IFormComponent;
 
@@ -42,6 +37,8 @@ import org.apache.tapestry.form.IFormComponent;
 
 public class ValidationDelegate implements IValidationDelegate
 {
+    private static final long serialVersionUID = 6215074338439140780L;
+
     private transient IFormComponent _currentComponent;
 
     /**
