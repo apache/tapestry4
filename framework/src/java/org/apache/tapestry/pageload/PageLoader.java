@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.AbstractComponent;
@@ -136,6 +137,10 @@ public class PageLoader implements IPageLoader
      */
 
     private int _maxDepth;
+
+    /** @since 4.0 */
+
+    private ClassResolver _classResolver;
 
     public void initializeService()
     {
@@ -463,30 +468,28 @@ public class PageLoader implements IPageLoader
     private IComponent instantiateComponent(IPage page, IComponent container, String id,
             IComponentSpecification spec, INamespace namespace, Location location)
     {
-        IComponent result = null;
         String className = spec.getComponentClassName();
 
         if (HiveMind.isBlank(className))
             className = BaseComponent.class.getName();
+        else
+        {
+            Class componentClass = _classResolver.findClass(className);
+
+            if (!IComponent.class.isAssignableFrom(componentClass))
+                throw new ApplicationRuntimeException(PageloadMessages
+                        .classNotComponent(componentClass), container, spec.getLocation(), null);
+
+            if (IPage.class.isAssignableFrom(componentClass))
+                throw new ApplicationRuntimeException(PageloadMessages.pageNotAllowed(id),
+                        container, spec.getLocation(), null);
+        }
 
         ComponentConstructor cc = _componentConstructorFactory.getComponentConstructor(
                 spec,
                 className);
 
-        try
-        {
-            result = (IComponent) cc.newInstance();
-
-        }
-        catch (ClassCastException ex)
-        {
-            throw new ApplicationRuntimeException(PageloadMessages.classNotComponent(cc
-                    .getComponentClass()), container, spec.getLocation(), ex);
-        }
-
-        if (result instanceof IPage)
-            throw new ApplicationRuntimeException(PageloadMessages.pageNotAllowed(result), result,
-                    null, null);
+        IComponent result = (IComponent) cc.newInstance();
 
         result.setNamespace(namespace);
         result.setPage(page);
@@ -515,33 +518,29 @@ public class PageLoader implements IPageLoader
 
     private IPage instantiatePage(String name, INamespace namespace, IComponentSpecification spec)
     {
-        IPage result = null;
-
+        Location location = spec.getLocation();
         PageClassProviderContext context = new PageClassProviderContext(name, spec, namespace);
         String className = _pageClassProvider.providePageClassName(context);
 
+        Class pageClass = _classResolver.findClass(className);
+
+        if (!IPage.class.isAssignableFrom(pageClass))
+            throw new ApplicationRuntimeException(PageloadMessages.classNotPage(pageClass),
+                    location, null);
+
         String pageName = namespace.constructQualifiedName(name);
-        Location location = spec.getLocation();
 
         ComponentConstructor cc = _componentConstructorFactory.getComponentConstructor(
                 spec,
                 className);
 
-        try
-        {
-            result = (IPage) cc.newInstance();
+        IPage result = (IPage) cc.newInstance();
 
-            result.setNamespace(namespace);
-            result.setPageName(pageName);
-            result.setPage(result);
-            result.setLocale(_locale);
-            result.setLocation(location);
-        }
-        catch (ClassCastException ex)
-        {
-            throw new ApplicationRuntimeException(PageloadMessages.classNotPage(cc
-                    .getComponentClass()), location, ex);
-        }
+        result.setNamespace(namespace);
+        result.setPageName(pageName);
+        result.setPage(result);
+        result.setLocale(_locale);
+        result.setLocation(location);
 
         return result;
     }
@@ -717,5 +716,11 @@ public class PageLoader implements IPageLoader
     public void setPageClassProvider(PageClassProvider pageClassProvider)
     {
         _pageClassProvider = pageClassProvider;
+    }
+
+    /** @since 4.0 */
+    public void setClassResolver(ClassResolver classResolver)
+    {
+        _classResolver = classResolver;
     }
 }
