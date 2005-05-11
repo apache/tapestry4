@@ -26,6 +26,7 @@ import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.service.ThreadLocale;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.describe.HTMLDescriber;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
@@ -246,6 +247,11 @@ public class InfrastructureImpl implements Infrastructure
     public StaleLinkExceptionPresenter getStaleLinkExceptionPresenter()
     {
         return (StaleLinkExceptionPresenter) getProperty("staleLinkExceptionPresenter");
+    }
+
+    public ValueConverter getValueConverter()
+    {
+        return (ValueConverter) getProperty("valueConverter");
     }
 
     public Object getProperty(String propertyName)

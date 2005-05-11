@@ -44,7 +44,7 @@
     <invoke-factory>
       <construct class="ValidatorBindingFactory">
         <set-service property="validatorBeanFactory" service-id="ValidatorBeanFactory"/>
-        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
       </construct>
     </invoke-factory>
   </service-point>  

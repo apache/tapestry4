@@ -123,4 +123,10 @@ public abstract class AbstractBinding implements IBinding
     {
         return _description;
     }
+
+    /** @since 4.0 */
+    public ValueConverter getValueConverter()
+    {
+        return _valueConverter;
+    }
 }

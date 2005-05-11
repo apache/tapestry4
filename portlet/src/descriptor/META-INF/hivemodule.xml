@@ -24,6 +24,7 @@
   
   <sub-module descriptor="tapestry.portlet.services.xml"/>
   <sub-module descriptor="tapestry.portlet.resolver.xml"/>
+  <sub-module descriptor="tapestry.portlet.bindings.xml"/>
   
   <configuration-point id="PortletApplicationInitializers" schema-id="hivemind.lib.ChainContribution">
     

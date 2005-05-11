@@ -27,7 +27,7 @@
       <construct class="OGNLBindingFactory">
         <set-service property="expressionEvaluator" service-id="tapestry.ognl.ExpressionEvaluator"/>
         <set-service property="expressionCache" service-id="tapestry.ognl.ExpressionCache"/>
-        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -38,7 +38,7 @@
     
     <invoke-factory>
       <construct class="MessageBindingFactory">
-        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>  
+        <set-object property="valueConverter" value="infrastructure:valueConverter"/>  
       </construct>
     </invoke-factory>
     
@@ -50,7 +50,7 @@
     
     <invoke-factory>
       <construct class="LiteralBindingFactory">
-        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>  
+        <set-object property="valueConverter" value="infrastructure:valueConverter"/>  
       </construct>
     </invoke-factory> 
     
@@ -63,7 +63,7 @@
     
     <invoke-factory>
       <construct class="AssetBindingFactory">
-        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
       </construct>
     </invoke-factory>    
     
@@ -75,7 +75,7 @@
     
     <invoke-factory>
       <construct class="BeanBindingFactory">
-        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
       </construct>
     </invoke-factory>    
     
@@ -87,7 +87,7 @@
     
     <invoke-factory>
       <construct class="ListenerBindingFactory">
-        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
       </construct>
     </invoke-factory>    
     
@@ -99,7 +99,7 @@
     
     <invoke-factory>
       <construct class="ComponentBindingFactory">
-        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
       </construct>
     </invoke-factory>    
     
@@ -111,7 +111,7 @@
     
     <invoke-factory>
       <construct class="StateBindingFactory">
-        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
         <set-object property="applicationStateManager" object="infrastructure:applicationStateManager"/> 
       </construct>
     </invoke-factory>    
@@ -124,7 +124,7 @@
     
     <invoke-factory>
       <construct class="HiveMindBindingFactory">
-        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
         <set-service property="injectedValueProvider" service-id="tapestry.InjectedValueProvider"/>
       </construct>
     </invoke-factory>
