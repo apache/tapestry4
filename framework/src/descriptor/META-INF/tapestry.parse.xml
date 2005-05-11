@@ -32,6 +32,9 @@
         <class-resolver/>
         <object> instance:org.apache.tapestry.spec.SpecFactory </object>
         
+        <!-- Can't use infrastructure:valueConverter, because SpecificationParser will be created earlier than
+             tapestry.Infrastructure -->
+             
         <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
         <set-service property="bindingSource" service-id="tapestry.bindings.BindingSource"/>
       </construct>

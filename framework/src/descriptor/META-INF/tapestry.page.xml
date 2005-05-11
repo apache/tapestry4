@@ -43,7 +43,7 @@
           service-id="EstablishDefaultParameterValuesVisitor"/>
         <set-object property="defaultScriptLanguage"
                        value="app-property:org.apache.tapestry.default-script-language"/>
-        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
         <set-service property="assetSource" service-id="tapestry.asset.AssetSource"/>
         <set-service property="managerFactory" service-id="BSFManagerFactory"/>
         <set-service property="pageClassProvider" service-id="PageClassProvider"/>

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <!-- 
-   Copyright 2004, 2005 The Apache Software Foundation
+   Copyright 2005 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -15,23 +15,22 @@
    limitations under the License.
 -->
 
-<module id="tapestry.script" version="4.0.0" package="org.apache.tapestry.engine">
+<module id="tapestry.portlet.bindings" version="4.0.0" package="org.apache.tapestry.portlet.bindings">
   
-  Module focused on client-side Javascript templates.
-  
-  <service-point id="ScriptSource" interface="IScriptSource">
+  <service-point id="UserAttributeBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
+    
+    Creates new bindings for Portlet user attributes.
     
     <invoke-factory>
-      <construct class="DefaultScriptSource">
-        <set-service property="expressionEvaluator" service-id="tapestry.ognl.ExpressionEvaluator"/>
+      <construct class="UserAttributeBindingFactory">
+        <set-object property="request" value="service:tapestry.portlet.PortletRequest"/>
         <set-object property="valueConverter" value="infrastructure:valueConverter"/>
-        <event-listener service-id="tapestry.ResetEventCoordinator"/>
       </construct>
     </invoke-factory>
+    
   </service-point>
   
-  <contribution configuration-id="tapestry.Infrastructure">
-    <property name="scriptSource" object="service:ScriptSource"/>    
+  <contribution configuration-id="tapestry.bindings.BindingFactories">
+    <binding prefix="user" service-id="UserAttributeBindingFactory"/>
   </contribution>
-
 </module>

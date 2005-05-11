@@ -18,6 +18,7 @@ import java.util.Locale;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.describe.HTMLDescriber;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
@@ -258,4 +259,11 @@ public interface Infrastructure
      */
 
     public StaleLinkExceptionPresenter getStaleLinkExceptionPresenter();
+    
+    /**
+     * Service used to convert and coerce types.
+     * 
+     */
+    
+    public ValueConverter getValueConverter();
 }

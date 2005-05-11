@@ -107,4 +107,8 @@
     
   </service-point>
   
+  <contribution configuration-id="tapestry.Infrastructure">
+    <property name="valueConverter" object="service:ValueConverter"/>
+  </contribution>
+  
 </module>
