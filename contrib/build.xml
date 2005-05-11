@@ -53,6 +53,7 @@
   
   <target name="run-reports">
     <javadoc-report/>
+	<clover-report/>  	
     <hivedoc-report/>    
   </target> 
     
