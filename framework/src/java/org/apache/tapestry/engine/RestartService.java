@@ -88,7 +88,7 @@ public class RestartService implements IEngineService
             }
         }
 
-        String url = _builder.constructURL(_servletPath);
+        String url = _builder.constructURL(cycle.getAbsoluteURL(_servletPath));
 
         _response.sendRedirect(url);
     }
