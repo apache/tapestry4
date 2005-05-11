@@ -84,9 +84,9 @@ class PageloadMessages
         return _formatter.format("unable-to-instantiate", className, cause);
     }
 
-    public static String pageNotAllowed(IComponent component)
+    public static String pageNotAllowed(String componentId)
     {
-        return _formatter.format("page-not-allowed", component.getExtendedId());
+        return _formatter.format("page-not-allowed", componentId);
     }
 
     public static String classNotPage(Class componentClass)

@@ -30,10 +30,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.ErrorHandler;
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.impl.RegistryBuilder;
+import org.apache.hivemind.impl.StrictErrorHandler;
 import org.apache.hivemind.impl.XmlModuleDescriptorProvider;
 import org.apache.hivemind.util.ContextResource;
 import org.apache.tapestry.services.ApplicationInitializer;
@@ -258,7 +260,9 @@ public class ApplicationServlet extends HttpServlet
      */
     protected Registry constructRegistry(ServletConfig config)
     {
-        RegistryBuilder builder = new RegistryBuilder();
+        ErrorHandler errorHandler = constructErrorHandler(config);
+
+        RegistryBuilder builder = new RegistryBuilder(errorHandler);
 
         builder.addModuleDescriptorProvider(new XmlModuleDescriptorProvider(_resolver));
 
@@ -269,6 +273,19 @@ public class ApplicationServlet extends HttpServlet
         addModuleIfExists(builder, context, "/WEB-INF/hivemodule.xml");
 
         return builder.constructRegistry(Locale.getDefault());
+    }
+
+    /**
+     * Invoked by {@link #constructRegistry(ServletConfig)} to create and return an
+     * {@link ErrorHandler} instance to be used when constructing the Registry (and then to handle
+     * any runtime exceptions). This implementation returns a new instance of
+     * {@link org.apache.hivemind.impl.StrictErrorHandler}.
+     * 
+     * @since 4.0
+     */
+    protected ErrorHandler constructErrorHandler(ServletConfig config)
+    {
+        return new StrictErrorHandler();
     }
 
     /**
