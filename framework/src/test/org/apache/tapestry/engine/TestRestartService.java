@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
-import org.apache.tapestry.engine.RestartService;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.easymock.MockControl;
@@ -42,12 +42,18 @@ public class TestRestartService extends TapestryTestCase
         MockControl builderControl = newControl(AbsoluteURLBuilder.class);
         AbsoluteURLBuilder builder = (AbsoluteURLBuilder) builderControl.getMock();
 
+        MockControl cycleControl = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cycleControl.getMock();
+
         // Training
 
         request.getSession();
         requestControl.setReturnValue(null);
 
-        builder.constructURL("/app");
+        cycle.getAbsoluteURL("/app");
+        cycleControl.setReturnValue("http://myserver/app");
+
+        builder.constructURL("http://myserver/app");
         builderControl.setReturnValue("http://myserver/app");
 
         response.sendRedirect("http://myserver/app");
@@ -60,7 +66,7 @@ public class TestRestartService extends TapestryTestCase
         s.setResponse(response);
         s.setServletPath("/app");
 
-        s.service(null);
+        s.service(cycle);
 
         verifyControls();
     }
@@ -75,6 +81,9 @@ public class TestRestartService extends TapestryTestCase
         MockControl builderControl = newControl(AbsoluteURLBuilder.class);
         AbsoluteURLBuilder builder = (AbsoluteURLBuilder) builderControl.getMock();
 
+        MockControl cycleControl = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cycleControl.getMock();
+
         HttpSession session = (HttpSession) newMock(HttpSession.class);
 
         // Training
@@ -84,7 +93,10 @@ public class TestRestartService extends TapestryTestCase
 
         session.invalidate();
 
-        builder.constructURL("/tap");
+        cycle.getAbsoluteURL("/tap");
+        cycleControl.setReturnValue("http://myserver/tap");
+
+        builder.constructURL("http://myserver/tap");
         builderControl.setReturnValue("http://myserver/tap");
 
         response.sendRedirect("http://myserver/tap");
@@ -97,7 +109,7 @@ public class TestRestartService extends TapestryTestCase
         s.setResponse(response);
         s.setServletPath("/tap");
 
-        s.service(null);
+        s.service(cycle);
 
         verifyControls();
     }
@@ -115,6 +127,9 @@ public class TestRestartService extends TapestryTestCase
         MockControl sessionControl = newControl(HttpSession.class);
         HttpSession session = (HttpSession) sessionControl.getMock();
 
+        MockControl cycleControl = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cycleControl.getMock();
+
         Log log = (Log) newMock(Log.class);
 
         IllegalStateException ex = new IllegalStateException();
@@ -129,7 +144,10 @@ public class TestRestartService extends TapestryTestCase
 
         log.warn("Exception thrown invalidating HttpSession.", ex);
 
-        builder.constructURL("/app");
+        cycle.getAbsoluteURL("/app");
+        cycleControl.setReturnValue("http://myserver/app");
+
+        builder.constructURL("http://myserver/app");
         builderControl.setReturnValue("http://myserver/app");
 
         response.sendRedirect("http://myserver/app");
@@ -143,7 +161,7 @@ public class TestRestartService extends TapestryTestCase
         s.setLog(log);
         s.setServletPath("/app");
 
-        s.service(null);
+        s.service(cycle);
 
         verifyControls();
     }
