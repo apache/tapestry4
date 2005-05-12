@@ -24,6 +24,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -58,13 +59,15 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     private ClassFab _classFab;
 
-    private Set _claimedProperties = new HashSet();
+    private final Set _claimedProperties = new HashSet();
 
-    private JavaClassMapping _javaClassMapping = new JavaClassMapping();
+    private final JavaClassMapping _javaClassMapping = new JavaClassMapping();
 
-    private List _constructorTypes = new ArrayList();
+    private final List _constructorTypes = new ArrayList();
 
-    private List _constructorArguments = new ArrayList();
+    private final List _constructorArguments = new ArrayList();
+
+    private final Map _finalFields = new IdentityHashMap();
 
     /**
      * Set of interfaces added to the enhanced class.
@@ -77,12 +80,6 @@ public class EnhancementOperationImpl implements EnhancementOperation
      */
 
     private Map _incompleteMethods = new HashMap();
-
-    /**
-     * Keyed on class to instance variable name.
-     */
-
-    private Map _classReferences = new HashMap();
 
     /**
      * Map of property names to {@link PropertyDescriptor}.
@@ -227,13 +224,38 @@ public class EnhancementOperationImpl implements EnhancementOperation
         _classFab.addField(name, type);
     }
 
-    public void addField(String name, Class type, Object value)
+    public String addFinalField(String fieldName, Object value)
     {
-        _classFab.addField(name, type);
+        Defense.notNull(fieldName, "fieldName");
+        Defense.notNull(value, "value");
 
-        int x = addConstructorParameter(type, value);
+        String existing = (String) _finalFields.get(value);
 
-        constructorBuilder().addln("{0} = ${1};", name, Integer.toString(x));
+        // See if this object has been previously added.
+
+        if (existing != null)
+            return existing;
+
+        // TODO: Should be ensure that the name is unique?
+
+        // Add a new field using the object's actual type.
+
+        Class type = value.getClass();
+
+        // ClassFab doesn't have an option for saying the field should be final, just private.
+        // Doesn't make a huge difference.
+
+        _classFab.addField(fieldName, type);
+
+        int parameterIndex = addConstructorParameter(type, value);
+
+        constructorBuilder().addln("{0} = ${1};", fieldName, Integer.toString(parameterIndex));
+
+        // Remember the mapping from the value to the field name.
+
+        _finalFields.put(value, fieldName);
+
+        return fieldName;
     }
 
     public Class convertTypeName(String type)
@@ -314,7 +336,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
     {
         Defense.notNull(clazz, "clazz");
 
-        String result = (String) _classReferences.get(clazz);
+        String result = (String) _finalFields.get(clazz);
 
         if (result == null)
             result = addClassReference(clazz);
@@ -338,11 +360,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         String fieldName = buffer.toString();
 
-        addField(fieldName, Class.class, clazz);
-
-        _classReferences.put(clazz, fieldName);
-
-        return fieldName;
+        return addFinalField(fieldName, clazz);
     }
 
     /**

@@ -59,6 +59,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-320"> Property seperate data from different users stored using the tapestry.persist.ClientPropertyPersistenceStrategy service.</action>
       <action type="add" dev="HLS"> Store the Registry as a ServletContext attribute, so that it may be accessed from other servlets. </action>
       <action type="add" dev="HLS" fixes-bug="TAPESTRY-323"> Allow control over the ErrorHandler used when building the HiveMind Registry. </action>
+      <action type="update" dev="HLS"> Remove &lt;inject-state&gt;, and add type attribute to &lt;inject&gt;.</action>
     </release>
     <release version="4.0-alpha-2" date="May 5 2005">
       <action type="update" dev="HLS"> Coordinate Locale changes with the hivemind.ThreadLocale service. </action>

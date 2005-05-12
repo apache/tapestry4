@@ -131,8 +131,7 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         InitialValueBindingCreator creator = new InitialValueBindingCreator(_bindingSource,
                 description, initialValue, location);
 
-        String creatorField = fieldName + "$initialValueBindingCreator";
-        op.addField(creatorField, InitialValueBindingCreator.class, creator);
+        String creatorField = op.addFinalField(fieldName + "$initialValueBindingCreator", creator);
 
         String bindingField = fieldName + "$initialValueBinding";
         op.addField(bindingField, IBinding.class);

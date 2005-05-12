@@ -307,6 +307,8 @@ The exact feature set for Tapestry 4.0, and its schedule, are most assuredly up 
   A further future direction, in the Tapestry 4.0 timeframe (the far future), is to rethink the component object model
   such that the classes <em>you</em> write do not sub-class Tapestry base classes. Page and component Java classes will
   be simple POJOs (Plain Old Java Objects) and will have any Tapestry dependencies <em>injected</em> into them.
+  Also on the table is sidelining or entirely eliminating the XML page and component specifications in favor
+  of Java annotations.
 </p>
   
 </section>

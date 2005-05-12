@@ -183,10 +183,10 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[]
         { List.class }, null), "{\n  _$fred = $1;\n}\n");
 
-        op.addField(
-                "_$fred$initialValueBindingCreator",
-                InitialValueBindingCreator.class,
-                expectedCreator);
+        op.addFinalField("_$fred$initialValueBindingCreator",
+
+        expectedCreator);
+        opc.setReturnValue("_$fred$initialValueBindingCreator");
         op.addField("_$fred$initialValueBinding", IBinding.class);
         op
                 .extendMethodImplementation(

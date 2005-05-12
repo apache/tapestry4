@@ -409,7 +409,7 @@ the &StateObjectFactory; interface.
 
 <note>
   The two default ASOs, "visit" and "global", are defined in the hivemind.state.FactoryObjects configuration point. Definitions
-  in the ApplicationObjects configuration point override the definitions in FactoryObjects.
+  in the ApplicationObjects configuration point override definitions in FactoryObjects with the same name.
 </note>
   
 </section> <!-- state.aso.defining -->
@@ -418,7 +418,7 @@ the &StateObjectFactory; interface.
   <title>Accessing Application State Objects</title>
   
 <p>
-Tapestry provides an &spec.inject-state; element to support access to the application state objects. This
+Tapestry provides an &spec.inject; element to support access to the application state objects. This
 element can be used in any page or component specification to create a new property.  Reading the property
 will obtain the corresponding state object (which will be created if necessary).  The property may be updated,
 which will store a new application state object, overwriting the automatically created one.  
@@ -429,7 +429,7 @@ For example:
 </p>
 
 <source><![CDATA[
-<inject-state name="registration" object="registration-data"/>
+<inject name="registration" type="state" object="registration-data"/>
 ]]></source>
 
 <p>
@@ -490,9 +490,15 @@ creation on first reference.
 <p>
 The application may be <em>stateless</em> even when it has persistent page properties, if those properties use the
 <em>client</em> persistence strategy (which encodes pesistent page data into URLs as query parameters). This can be a 
-very powerful approach.
+very powerful approach, though it introduces its own problems:
 </p>
-	
+
+<ul>
+  <li>The query parameters are an encoding of Java objects, and could be decoded to expose
+    privileged information.</li>
+  <li>The encoding of page state can result in very long strings included as part of URLs, possibly extending beyond the 3000 to 4000 character effective maximum
+    URL length.</li>
+</ul>	
 </section> <!-- state.stateless -->
 
 </body>

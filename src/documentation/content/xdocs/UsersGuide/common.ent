@@ -31,7 +31,6 @@
 <!ENTITY spec.description			'<link href="spec.html#spec.description">&lt;description&gt;</link>'>
 <!ENTITY spec.extension				'<link href="spec.html#spec.extension">&lt;extension&gt;</link>'>
 <!ENTITY spec.inject				'<link href="spec.html#spec.inject">&lt;inject&gt;</link>'>
-<!ENTITY spec.inject-state				'<link href="spec.html#spec.inject-state">&lt;inject-state&gt;</link>'>
 <!ENTITY spec.library				'<link href="spec.html#spec.library">&lt;library&gt;</link>'>
 <!ENTITY spec.library-specification	'<link href="spec.html#spec.library-specification">&lt;library-specification&gt;</link>'>
 <!ENTITY spec.listener-binding		'<link href="spec.html#spec.listener-binding">&lt;listener-binding&gt;</link>'>

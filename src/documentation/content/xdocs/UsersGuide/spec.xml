@@ -137,7 +137,6 @@ it is expected that there will be some runtime warnings).
     have been consolidated into &lt;set&gt;, which now uses a (wait for it)
     &binding-reference;.</li>
   <li>The 4.0 DTD is more liberal about the order in which elements may be specified than the 3.0 DTD.</li>
-  <li>The &spec.inject-state; element has been added.</li>
   <li>Added the property attribute to the &spec.component; and &spec.bean; elements.</li>
   <li>Removed the type attribute from the &spec.configure; element.</li>
   <li>Added many more options for <link href="#spec.boolean-types">boolean attributes</link>.</li>
@@ -154,7 +153,7 @@ More detailed notes on <link href="upgrade.html">upgrading from Tapestry 3.0 to 
   <title>Property Injection</title>
   
 <p>
-Several of the specification elements are concerned with <em>property injection</em>.  For &spec.inject; and &spec.inject-state;,
+Several of the specification elements are concerned with <em>property injection</em>.  For &spec.inject;,
 the entire element exists to describe a property injection; in others (&spec.component;, &spec.bean; and &spec.asset;),
 the injection is just one piece of the behavior defined using the element.
 </p>
@@ -929,81 +928,55 @@ a global service to the application.
 </tr>
 
 <tr>
+  <td>property</td>
+  <td>string</td>
+  <td>yes</td>
+  <td/>
+  <td>
+    The name of the property to be created.  If the class provides an abstract accessor method, then that method defines
+    the type of the property; otherwise java.lang.Object will be used.
+  </td>
+</tr>
+
+<tr>
+  <td>type</td>
+  <td>string</td>
+  <td>no</td>
+  <td>object</td>
+  <td>
+    The type of injection, which determines how the object attribute is interpreted.
+  </td>
+</tr>
+
+<tr>
   <td>object</td>
   <td>string</td>
   <td>yes</td>
   <td/>
   <td>
-    The <em>object reference</em> for the object to be injected.  An object
-    reference contains a prefix, such as "service:", which defines the
-    type of object to locate.  The string following the prefix locates the specific object to be returned.
-    &HiveMind; provides a 
-    <link href="http://jakarta.apache.org/hivemind/hivemind/ObjectProviders.html">basic set of prefixes</link>;
-    Tapestry adds <link href="hivemind.html#hivemind.inject">several additional prefixes</link>.
+    The <em>object reference</em> for the object to be injected.  
     
   </td>
 </tr>
 
-<tr>
-  <td>property</td>
-  <td>string</td>
-  <td>yes</td>
-  <td/>
-  <td>
-    The name of the property to be created.  If the class provides an abstract accessor method, then that method defines
-    the type of the property; otherwise java.lang.Object will be used.
-  </td>
-</tr>
   </table>
   
-</section>
+<p>
+For object injection, the object attribute is a reference to a HiveMind object.
+Such an object  contains a prefix, such as "service:", which defines the
+    type of object to locate within the HiveMind Registry.  The string following the prefix locates the specific object to be returned.
+    &HiveMind; provides a 
+    <link href="http://jakarta.apache.org/hivemind/hivemind/ObjectProviders.html">basic set of prefixes</link>;
+    Tapestry adds <link href="hivemind.html#hivemind.inject">several additional prefixes</link>.  This 
+    style of injection results in a read-only property.
+</p>
 
+<p>
+For state injection, the object attribute is the name of the &aso; to inject. This injection
+will result in a read/write property.
+</p>
+</section>  <!-- spec.inject -->
 
-<section id="spec.inject-state">
-  <title>&lt;inject-state&gt; element</title>
-  
-  <p>
-    Appears in: &spec.component-specification; and &spec.page-specification;.
-  </p>
-  
-  <p>
-  <em>Injects</em> an &aso; into a component as a property. Reading the property will obtain the state object
-  from the application state manager (this may cause the object to be created). Updating the property
-  will store a new value into the application state manager (overwriting the initially created one).
-  </p>
-  
-  <table>
-<tr>
-  <th>Name</th>
-  <th>Type</th>
-  <th>Required ?</th>
-  <th>Default Value</th>
-  <th>Description</th>
-</tr>
-
-<tr>
-  <td>object</td>
-  <td>string</td>
-  <td>yes</td>
-  <td/>
-  <td>
-    The object name of the &aso;    
-  </td>
-</tr>
-
-<tr>
-  <td>property</td>
-  <td>string</td>
-  <td>yes</td>
-  <td/>
-  <td>
-    The name of the property to be created.  If the class provides an abstract accessor method, then that method defines
-    the type of the property; otherwise java.lang.Object will be used.
-  </td>
-</tr>
-  </table>
-  
-</section>
 
 <section id="spec.library">
 	<title>&lt;library&gt; element</title>

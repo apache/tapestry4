@@ -33,6 +33,7 @@ import org.apache.tapestry.enhance.EnhancementOperationImpl;
 import org.apache.tapestry.enhance.InjectMessagesWorker;
 import org.apache.tapestry.enhance.InjectSpecificationWorker;
 import org.apache.tapestry.html.BasePage;
+import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.services.impl.ComponentMessagesSourceImpl;
 import org.apache.tapestry.spec.ComponentSpecification;
@@ -115,14 +116,18 @@ public class TestComponentMessages extends TapestryTestCase
      * much as the full framework would do at runtime.
      */
 
-    private IPage newPage(IComponentSpecification specification, Locale locale)
+    private IPage newPage(IComponentSpecification specification, ComponentMessagesSource source, Locale locale)
     {
         ClassFactory classFactory = new ClassFactoryImpl();
 
         EnhancementOperationImpl op = new EnhancementOperationImpl(new DefaultClassResolver(),
                 specification, BasePage.class, classFactory);
 
-        new InjectMessagesWorker().performEnhancement(op, specification);
+        InjectMessagesWorker injectMessages = new InjectMessagesWorker();
+        injectMessages.setComponentMessagesSource(source);
+        
+        injectMessages.performEnhancement(op, specification);
+        
         new InjectSpecificationWorker().performEnhancement(op, specification);
             
         IPage result = (IPage) op.getConstructor().newInstance();
@@ -140,7 +145,7 @@ public class TestComponentMessages extends TapestryTestCase
 
         IComponentSpecification spec = newSpec(location);
 
-        IPage page = newPage(spec, locale);
+        IPage page = newPage(spec, source, locale);
 
         INamespace namespace = new Namespace(null, null, newLibrarySpec(), null, null);
 

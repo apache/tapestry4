@@ -31,11 +31,20 @@ public interface InjectSpecification extends LocationHolder
     public void setProperty(String property);
 
     /**
-     * Returns the object reference used to locate the HiveMind object to be injected into the
-     * enhanced class.
+     * Returns the type of injection. Different injection types interpret the
+     * {@link #getObject() object property} differently. Ultimately, the type is used to select the
+     * correct {@link org.apache.tapestry.enhance.InjectEnhancementWorker}.
      */
 
-    public String getObjectReference();
+    public String getType();
 
-    public void setObjectReference(String locator);
+    public void setType(String type);
+
+    /**
+     * Returns the string used to indentify a particular object.
+     */
+
+    public String getObject();
+
+    public void setObject(String object);
 }
