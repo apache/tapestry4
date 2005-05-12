@@ -24,7 +24,7 @@
     Performs enhancements on a component class as directed by the component's specification and the enhancement
     workers contributed to the tapestry.enhance.EnhancementWorkers configuration point.
     
-    <invoke-factory>
+    <invoke-factory model="primitive">
       <construct class="org.apache.tapestry.services.impl.ComponentConstructorFactoryImpl">
         <set-service property="classFactory" service-id="hivemind.ClassFactory"/>
         <event-listener service-id="tapestry.ResetEventCoordinator"/>
@@ -39,7 +39,7 @@
     
     The chain of enhancement workers built from the EnhancementWorkers configuration.
     
-    <invoke-factory service-id="hivemind.lib.ChainFactory">
+    <invoke-factory service-id="hivemind.lib.ChainFactory" model="primitive">
       <construct configuration-id="EnhancementWorkers"/>
     </invoke-factory>
     
@@ -50,7 +50,7 @@
     
     Validates that an enhanced class does implement all abstract methods inherited from super-classes.
     
-    <invoke-factory>
+    <invoke-factory model="primitive">
       <construct class="EnhancedClassValidatorImpl"/>
     </invoke-factory>
   </service-point>
@@ -69,8 +69,7 @@
     <command id="inject-specification" object="service:InjectSpecificationWorker" before="page-detach-listener"/>
     <command id="specified-property" object="service:SpecifiedPropertyWorker" before="page-detach-listener"/>
     <command id="parameter" object="service:ParameterPropertyWorker" before="page-detach-listener"/>
-    <command id="inject" object="service:InjectWorker" before="page-detach-listener"/>
-    <command id="inject-state" object="service:InjectStateWorker" before="page-detach-listener"/>
+    <command id="dispatch-inject" object="service:DispatchToInjectWorker" before="page-detach-listener"/>
     <command id="inject-component" object="service:InjectComponentWorker" before="page-detach-listener"/>
     <command id="inject-bean" object="service:InjectBeanWorker" before="page-detach-listener"/>
     <command id="inject-asset" object="service:InjectAssetWorker" before="page-detach-listener"/>
@@ -87,6 +86,45 @@
     <command id="abstract-property" object="service:AbstractPropertyWorker" after="*"/>
     
   </contribution>
+  
+  <configuration-point id="InjectWorkers">
+    
+    Maps injection types to InjectEnhancementWorker objects.
+    
+    <schema>
+      <element name="worker" key-attribute="type">
+        <attribute name="type">
+          The type of injection performed by this object. Matches against the type attribute of the
+          component specification's &lt;inject&gt; element.
+        </attribute>
+        <attribute name="object" required="true" translator="object">
+          The object implementing the InjectEnhancementWorker interface.
+        </attribute>
+        <rules>
+          <push-attribute attribute="object"/>
+          <invoke-parent method="addElement"/> 
+        </rules>
+      </element>
+    </schema>
+    
+  </configuration-point>
+  
+  <contribution configuration-id="InjectWorkers">
+    <worker type="object" object="service:InjectObjectWorker"/>
+    <worker type="state" object="service:InjectStateWorker"/>
+  </contribution>
+  
+  <service-point id="DispatchToInjectWorker" interface="EnhancementWorker">
+    
+    Dispatches to the correct InjectEnhancementWorker, based on the injection type.
+    
+    <invoke-factory model="primitive">
+      <construct class="DispatchToInjectWorker">
+        <set-object property="injectWorkers" value="configuration:InjectWorkers"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
   
   <service-point id="InjectMessagesWorker" interface="EnhancementWorker">
     
@@ -131,23 +169,23 @@
     
   </service-point>
   
-  <service-point id="InjectWorker" interface="EnhancementWorker">
+  <service-point id="InjectObjectWorker" interface="InjectEnhancementWorker">
     
     Injects objects obtained from HiveMind into properties of the enhanced class.
     
-    <invoke-factory>
-      <construct class="InjectWorker">
+    <invoke-factory model="primitive">
+      <construct class="InjectObjectWorker">
         <set-service property="provider" service-id="tapestry.InjectedValueProvider"/>
       </construct>
     </invoke-factory>
     
   </service-point>
   
-  <service-point id="InjectStateWorker" interface="EnhancementWorker">
+  <service-point id="InjectStateWorker" interface="InjectEnhancementWorker">
     
     Injects properties that reference application state objects.
     
-    <invoke-factory>
+    <invoke-factory model="primitive">
       <construct class="InjectStateWorker">
         <set-service property="applicationStateManager" service-id="tapestry.state.ApplicationStateManager"/>
       </construct>
@@ -159,7 +197,7 @@
     
     Injects contained components as properties of the containing component.
     
-    <invoke-factory>
+    <invoke-factory model="primitive">
       <construct class="InjectComponentWorker"/>
     </invoke-factory>
     
@@ -169,7 +207,7 @@
     
     Injects managed beans as properties of the containing component.
     
-    <invoke-factory>
+    <invoke-factory model="primitive">
       <construct class="InjectBeanWorker"/>
     </invoke-factory>
     
@@ -179,7 +217,7 @@
     
     Injects assets as properties of the containing component.
     
-    <invoke-factory>
+    <invoke-factory model="primitive">
       <construct class="InjectAssetWorker"/>
     </invoke-factory>
     
@@ -191,7 +229,7 @@
     Finds otherwise unclaimed abstract properties and converts them into concrete properties, as if
     they were defined in the specification.
     
-    <invoke-factory>
+    <invoke-factory model="primitive">
       <construct class="AbstractPropertyWorker"/>
     </invoke-factory>
   </service-point>
@@ -201,7 +239,7 @@
     Registers components as PageDetachListeners, if they implement
     the interface.
     
-    <invoke-factory>
+    <invoke-factory model="primitive">
       <construct class="InjectListenerRegistrationWorker">
         <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageDetachListener"/>
         <set property="registerMethodName" value="addPageDetachListener"/>
@@ -216,7 +254,7 @@
     Registers components as PageAttachListeners, if they implement
     the interface.
     
-    <invoke-factory>
+    <invoke-factory model="primitive">
       <construct class="InjectListenerRegistrationWorker">
         <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageAttachListener"/>
         <set property="registerMethodName" value="addPageAttachListener"/>
@@ -230,7 +268,7 @@
     Registers components as PageEndRenderListeners, if they implement
     the interface.
     
-    <invoke-factory>
+    <invoke-factory model="primitive">
       <construct class="InjectListenerRegistrationWorker">
         <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageEndRenderListener"/>
         <set property="registerMethodName" value="addPageEndRenderListener"/>
@@ -245,7 +283,7 @@
     Registers components as PageBeginRenderListeners, if they implement
     the interface.
     
-    <invoke-factory>
+    <invoke-factory model="primitive">
       <construct class="InjectListenerRegistrationWorker">
         <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageBeginRenderListener"/>
         <set property="registerMethodName" value="addPageBeginRenderListener"/>
@@ -259,7 +297,7 @@
     Registers components as PageValidateListeners, if they implement
     the interface.
     
-    <invoke-factory>
+    <invoke-factory model="primitive">
       <construct class="InjectListenerRegistrationWorker">
         <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageValidateListener"/>
         <set property="registerMethodName" value="addPageValidateListener"/>

@@ -15,22 +15,16 @@
 package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Modifier;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.event.PageDetachListener;
-import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.spec.InjectStateSpecification;
-import org.apache.tapestry.spec.InjectStateSpecificationImpl;
+import org.apache.tapestry.spec.InjectSpecification;
+import org.apache.tapestry.spec.InjectSpecificationImpl;
 import org.easymock.MockControl;
 
 /**
@@ -46,55 +40,33 @@ public class TestInjectStateWorker extends HiveMindTestCase
         return (ApplicationStateManager) newMock(ApplicationStateManager.class);
     }
 
-    private IComponentSpecification newSpecification(List injects)
+    private InjectSpecification newSpec(String propertyName, String objectName, Location l)
     {
-        MockControl control = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) control.getMock();
+        InjectSpecification spec = new InjectSpecificationImpl();
 
-        spec.getInjectStateSpecifications();
-        control.setReturnValue(injects);
+        spec.setProperty(propertyName);
+        spec.setObject(objectName);
+        spec.setLocation(l);
 
         return spec;
     }
 
-    private List newInjects(String propertyName, String objectName, Location l)
-    {
-        InjectStateSpecification spec = new InjectStateSpecificationImpl();
-
-        spec.setProperty(propertyName);
-        spec.setObjectName(objectName);
-        spec.setLocation(l);
-
-        return Collections.singletonList(spec);
-    }
-
-    public void testNoWorkToDo()
-    {
-        IComponentSpecification spec = newSpecification(Collections.EMPTY_LIST);
-        EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
-
-        replayControls();
-
-        new InjectStateWorker().performEnhancement(op, spec);
-
-        verifyControls();
-    }
-
     public void testSuccess()
     {
-        IComponentSpecification spec = newSpecification(newInjects("fred", "barney", null));
+        InjectSpecification spec = newSpec("fred", "barney", null);
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
         ApplicationStateManager asm = newASM();
-
-        op.addField("_$applicationStateManager", ApplicationStateManager.class, asm);
 
         op.getPropertyType("fred");
         opc.setReturnValue(Map.class);
 
         op.claimProperty("fred");
         op.addField("_$fred", Map.class);
+
+        op.addFinalField("_$applicationStateManager", asm);
+        opc.setReturnValue("_$applicationStateManager");
 
         op.getAccessorMethodName("fred");
         opc.setReturnValue("getFred");
@@ -132,43 +104,6 @@ public class TestInjectStateWorker extends HiveMindTestCase
 
         InjectStateWorker w = new InjectStateWorker();
         w.setApplicationStateManager(asm);
-
-        w.performEnhancement(op, spec);
-
-        verifyControls();
-    }
-
-    public void testFailure()
-    {
-        Throwable ex = new ApplicationRuntimeException(EnhanceMessages.claimedProperty("fred"));
-        Location l = fabricateLocation(22);
-
-        IComponentSpecification spec = newSpecification(newInjects("fred", "barney", l));
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
-
-        ErrorLog errorLog = (ErrorLog) newMock(ErrorLog.class);
-
-        ApplicationStateManager asm = newASM();
-
-        op.addField("_$applicationStateManager", ApplicationStateManager.class, asm);
-
-        op.getPropertyType("fred");
-        opc.setReturnValue(Map.class);
-
-        op.claimProperty("fred");
-        opc.setThrowable(ex);
-
-        op.getBaseClass();
-        opc.setReturnValue(BaseComponent.class);
-
-        errorLog.error(EnhanceMessages.errorAddingProperty("fred", BaseComponent.class, ex), l, ex);
-
-        replayControls();
-
-        InjectStateWorker w = new InjectStateWorker();
-        w.setApplicationStateManager(asm);
-        w.setErrorLog(errorLog);
 
         w.performEnhancement(op, spec);
 

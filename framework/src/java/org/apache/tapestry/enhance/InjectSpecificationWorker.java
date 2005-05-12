@@ -47,9 +47,7 @@ public class InjectSpecificationWorker implements EnhancementWorker
     {
         op.claimProperty(SPECIFICATION_PROPERTY_NAME);
 
-        String fieldName = "_$" + SPECIFICATION_PROPERTY_NAME;
-
-        op.addField(fieldName, IComponentSpecification.class, spec);
+        String fieldName = op.addFinalField("_$" + SPECIFICATION_PROPERTY_NAME, spec);
 
         EnhanceUtils.createSimpleAccessor(
                 op,

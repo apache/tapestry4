@@ -31,19 +31,19 @@ class EnhanceMessages
     private static final MessageFormatter _formatter = new MessageFormatter(EnhanceMessages.class,
             "EnhanceStrings");
 
-    public static String noImplForAbstractMethod(Method method, Class declareClass,
-            String className, Class enhancedClass)
+    static String noImplForAbstractMethod(Method method, Class declareClass, String className,
+            Class enhancedClass)
     {
         return _formatter.format("no-impl-for-abstract-method", new Object[]
         { method, declareClass.getName(), className, enhancedClass.getName() });
     }
 
-    public static String unabelToIntrospectClass(Class targetClass, Throwable cause)
+    static String unabelToIntrospectClass(Class targetClass, Throwable cause)
     {
         return _formatter.format("unable-to-introspect-class", targetClass.getName(), cause);
     }
 
-    public static String propertyTypeMismatch(Class componentClass, String propertyName,
+    static String propertyTypeMismatch(Class componentClass, String propertyName,
             Class actualPropertyType, Class expectedPropertyType)
     {
         return _formatter.format("property-type-mismatch", new Object[]
@@ -52,9 +52,7 @@ class EnhanceMessages
                 ClassFabUtils.getJavaClassName(expectedPropertyType) });
     }
 
-
-    public static String errorAddingProperty(String propertyName, Class componentClass,
-            Throwable cause)
+    static String errorAddingProperty(String propertyName, Class componentClass, Throwable cause)
     {
         return _formatter.format(
                 "error-adding-property",
@@ -63,29 +61,34 @@ class EnhanceMessages
                 cause);
     }
 
-    public static String claimedProperty(String propertyName)
+    static String claimedProperty(String propertyName)
     {
         return _formatter.format("claimed-property", propertyName);
     }
 
-    public static String instantiationFailure(Constructor c, Throwable cause)
+    static String instantiationFailure(Constructor c, Throwable cause)
     {
         return _formatter.format("instantiation-failure", c.getDeclaringClass().getName(), cause);
     }
 
-    public static String locatedValueIsNull(String objectReference)
+    static String locatedValueIsNull(String objectReference)
     {
         return _formatter.format("located-value-is-null", objectReference);
     }
 
-    public static String incompatibleInjectType(String locator, Object value, Class propertyType)
+    static String incompatibleInjectType(String locator, Object value, Class propertyType)
     {
         return _formatter.format("incompatible-inject-type", locator, value, ClassFabUtils
                 .getJavaClassName(propertyType));
     }
 
-    public static String initialValueForProperty(String propertyName)
+    static String initialValueForProperty(String propertyName)
     {
         return _formatter.format("initial-value-for-property", propertyName);
+    }
+
+    static String unknownInjectType(String propertyName, String injectType)
+    {
+        return _formatter.format("unknown-inject-type", propertyName, injectType);
     }
 }

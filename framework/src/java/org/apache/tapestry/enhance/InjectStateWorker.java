@@ -15,17 +15,13 @@
 package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Modifier;
-import java.util.Iterator;
-import java.util.List;
 
-import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.event.PageDetachListener;
-import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.spec.InjectStateSpecification;
+import org.apache.tapestry.spec.InjectSpecification;
 
 /**
  * Worker for injecting application state objects as properties of the component. These properties
@@ -36,54 +32,27 @@ import org.apache.tapestry.spec.InjectStateSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class InjectStateWorker implements EnhancementWorker
+public class InjectStateWorker implements InjectEnhancementWorker
 {
-    private ErrorLog _errorLog;
-
     private ApplicationStateManager _applicationStateManager;
 
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
+    public void performEnhancement(EnhancementOperation op, InjectSpecification spec)
     {
-        List injects = spec.getInjectStateSpecifications();
-
-        if (injects.isEmpty())
-            return;
-
-        // TODO: The EnhancementOperation should have a way of assigning non-conflicting
-        // attribute names. What if someone injects a property named "applicationStateManager"
-        // as well?
-
-        op.addField(
-                "_$applicationStateManager",
-                ApplicationStateManager.class,
-                _applicationStateManager);
-
-        Iterator i = injects.iterator();
-        while (i.hasNext())
-        {
-            InjectStateSpecification iss = (InjectStateSpecification) i.next();
-
-            try
-            {
-                injectState(op, iss.getProperty(), iss.getObjectName());
-            }
-            catch (Exception ex)
-            {
-                _errorLog.error(EnhanceMessages.errorAddingProperty(iss.getProperty(), op
-                        .getBaseClass(), ex), iss.getLocation(), ex);
-            }
-        }
+        injectState(op, spec.getProperty(), spec.getObject());
     }
 
     private void injectState(EnhancementOperation op, String propertyName, String objectName)
     {
-        Class propertyType =
-            EnhanceUtils.extractPropertyType(op, propertyName, null);
+        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, null);
         String fieldName = "_$" + propertyName;
 
         op.claimProperty(propertyName);
 
         op.addField(fieldName, propertyType);
+
+        String managerField = op.addFinalField(
+                "_$applicationStateManager",
+                _applicationStateManager);
 
         BodyBuilder builder = new BodyBuilder();
 
@@ -91,11 +60,8 @@ public class InjectStateWorker implements EnhancementWorker
 
         builder.begin();
         builder.addln("if ({0} == null)", fieldName);
-        builder.addln(
-                "  {0} = ({1}) _$applicationStateManager.get(\"{2}\");",
-                fieldName,
-                ClassFabUtils.getJavaClassName(propertyType),
-                objectName);
+        builder.addln("  {0} = ({1}) {2}.get(\"{3}\");", new Object[]
+        { fieldName, ClassFabUtils.getJavaClassName(propertyType), managerField, objectName });
         builder.addln("return {0};", fieldName);
         builder.end();
 
@@ -109,7 +75,7 @@ public class InjectStateWorker implements EnhancementWorker
 
         builder.clear();
         builder.begin();
-        builder.addln("_$applicationStateManager.store(\"{0}\", $1);", objectName);
+        builder.addln("{0}.store(\"{1}\", $1);", managerField, objectName);
         builder.addln("{0} = $1;", fieldName);
         builder.end();
 
@@ -130,10 +96,5 @@ public class InjectStateWorker implements EnhancementWorker
     public void setApplicationStateManager(ApplicationStateManager applicationStateManager)
     {
         _applicationStateManager = applicationStateManager;
-    }
-
-    public void setErrorLog(ErrorLog errorLog)
-    {
-        _errorLog = errorLog;
     }
 }

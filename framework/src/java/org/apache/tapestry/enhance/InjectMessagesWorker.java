@@ -18,6 +18,7 @@ import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Messages;
+import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -37,10 +38,6 @@ public class InjectMessagesWorker implements EnhancementWorker
 
     private ComponentMessagesSource _componentMessagesSource;
 
-    final String METHOD_CODE = "{\nif (_$messages == null)\n"
-            + "  _$messages = _$componentMessagesSource.getMessages(this);\n"
-            + "return _$messages;\n}\n";
-
     final MethodSignature METHOD_SIGNATURE = new MethodSignature(Messages.class, "getMessages",
             null, null);
 
@@ -50,13 +47,18 @@ public class InjectMessagesWorker implements EnhancementWorker
         {
             op.claimProperty(MESSAGES_PROPERTY);
 
-            op.addField(
-                    "_$componentMessagesSource",
-                    ComponentMessagesSource.class,
-                    _componentMessagesSource);
+            String sourceField = op.addFinalField("_$componentMessagesSource", _componentMessagesSource);
+
             op.addField("_$messages", Messages.class);
 
-            op.addMethod(Modifier.PUBLIC, METHOD_SIGNATURE, METHOD_CODE);
+            BodyBuilder builder = new BodyBuilder();
+            builder.begin();
+            builder.addln("if (_$messages == null)");
+            builder.addln("  _$messages = {0}.getMessages(this);", sourceField);
+            builder.addln("return _$messages;");
+            builder.end();
+
+            op.addMethod(Modifier.PUBLIC, METHOD_SIGNATURE, builder.toString());
         }
         catch (Exception ex)
         {

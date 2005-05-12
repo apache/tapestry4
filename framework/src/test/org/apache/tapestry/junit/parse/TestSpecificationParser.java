@@ -32,7 +32,6 @@ import org.apache.tapestry.spec.IListenerBindingSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.spec.InjectSpecification;
-import org.apache.tapestry.spec.InjectStateSpecification;
 import org.apache.tapestry.spec.ListenerBindingSpecification;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
@@ -910,12 +909,14 @@ public class TestSpecificationParser extends TapestryTestCase
         InjectSpecification i1 = (InjectSpecification) l.get(0);
 
         assertEquals("fred", i1.getProperty());
-        assertEquals("flintstone", i1.getObjectReference());
+        assertEquals("object", i1.getType());
+        assertEquals("flintstone", i1.getObject());
         assertNotNull(i1.getLocation());
 
         InjectSpecification i2 = (InjectSpecification) l.get(1);
         assertEquals("barney", i2.getProperty());
-        assertEquals("rubble", i2.getObjectReference());
+        assertEquals("state", i2.getType());
+        assertEquals("rubble", i2.getObject());
         assertNotNull(i2.getLocation());
     }
 
@@ -1076,21 +1077,5 @@ public class TestSpecificationParser extends TapestryTestCase
 
         assertEquals("path/to/asset", as.getPath());
         assertEquals("myProperty", as.getPropertyName());
-    }
-
-    /** @since 4.0 */
-
-    public void testInjectState() throws Exception
-    {
-        IComponentSpecification cs = parsePage("InjectState.page");
-
-        List l = cs.getInjectStateSpecifications();
-
-        assertEquals(1, l.size());
-
-        InjectStateSpecification s = (InjectStateSpecification) l.get(0);
-
-        assertEquals("fred", s.getProperty());
-        assertEquals("barney", s.getObjectName());
     }
 }

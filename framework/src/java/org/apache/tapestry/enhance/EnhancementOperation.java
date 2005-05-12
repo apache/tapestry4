@@ -54,10 +54,20 @@ public interface EnhancementOperation
 
     /**
      * Adds a field containing an initial value. The EnhancementOperation will ensure that the value
-     * is passed into the enhanced class' constructor and assigned.
+     * is passed into the enhanced class' constructor and assigned. This method may be called
+     * multiple times with the same value and will return the name variable name (an identity map is
+     * kept internally).
+     * 
+     * @param fieldName
+     *            The name of the field, used if a new field (and contructor argument) is being
+     *            created. Only used if a field for the value doesn't exist.
+     * @param value
+     *            the value to be referenced, which may not be null
+     * @return the name of the field (which may be fieldName, or maybe not, if some other
+     *         enhancement worker created the field first).
      */
 
-    public void addField(String name, Class type, Object value);
+    public String addFinalField(String fieldName, Object value);
 
     /**
      * Converts a type name (an object class name, a primtive name, or an array) into the
@@ -133,13 +143,12 @@ public interface EnhancementOperation
      */
     public void extendMethodImplementation(Class interfaceClass, MethodSignature methodSignature,
             String code);
-    
+
     /**
-     * Returns true if the class implements the specified interface.  Checks the base class
-     * (as identified in the specification), but <em>also</em> accounts for any additional
-     * interfaces that may be added by {@link #extendMethodImplementation(Class, MethodSignature, String)}.
-     * 
+     * Returns true if the class implements the specified interface. Checks the base class (as
+     * identified in the specification), but <em>also</em> accounts for any additional interfaces
+     * that may be added by {@link #extendMethodImplementation(Class, MethodSignature, String)}.
      */
-    
+
     public boolean implementsInterface(Class interfaceClass);
 }

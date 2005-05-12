@@ -15,53 +15,27 @@
 package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Modifier;
-import java.util.Iterator;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.services.InjectedValueProvider;
-import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 
 /**
- * Adds read-only properties to the enhanced class that contain data injected from HiveMind.
+ * Implementation for injection type "object" (the default). Adds read-only properties to the
+ * enhanced class that contain objects injected from HiveMind.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class InjectWorker implements EnhancementWorker
+public class InjectObjectWorker implements InjectEnhancementWorker
 {
-    private ErrorLog _errorLog;
-
     private InjectedValueProvider _provider;
 
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
-    {
-        Iterator i = spec.getInjectSpecifications().iterator();
-
-        while (i.hasNext())
-        {
-            InjectSpecification is = (InjectSpecification) i.next();
-
-            try
-            {
-                performEnhancement(op, is);
-            }
-            catch (Exception ex)
-            {
-                _errorLog.error(EnhanceMessages.errorAddingProperty(
-                        is.getProperty(),
-                        op.getBaseClass(),
-                        ex), is.getLocation(), ex);
-            }
-        }
-    }
-
-    private void performEnhancement(EnhancementOperation op, InjectSpecification is)
+    public void performEnhancement(EnhancementOperation op, InjectSpecification is)
     {
         String name = is.getProperty();
-        String objectReference = is.getObjectReference();
+        String objectReference = is.getObject();
 
         Class propertyType = op.getPropertyType(name);
         if (propertyType == null)
@@ -75,15 +49,15 @@ public class InjectWorker implements EnhancementWorker
 
         if (injectedValue == null)
             throw new ApplicationRuntimeException(EnhanceMessages
-                    .locatedValueIsNull(objectReference));
+                    .locatedValueIsNull(objectReference), is.getLocation(), null);
 
         if (!propertyType.isAssignableFrom(injectedValue.getClass()))
             throw new ApplicationRuntimeException(EnhanceMessages.incompatibleInjectType(
                     objectReference,
                     injectedValue,
-                    propertyType));
+                    propertyType), is.getLocation(), null);
 
-        op.addField(fieldName, propertyType, injectedValue);
+        op.addFinalField(fieldName, injectedValue);
 
         String methodName = EnhanceUtils.createAccessorMethodName(name);
 
@@ -91,11 +65,6 @@ public class InjectWorker implements EnhancementWorker
                 Modifier.PUBLIC,
                 new MethodSignature(propertyType, methodName, null, null),
                 "return " + fieldName + ";");
-    }
-
-    public void setErrorLog(ErrorLog errorLog)
-    {
-        _errorLog = errorLog;
     }
 
     public void setProvider(InjectedValueProvider provider)

@@ -19,6 +19,7 @@ import java.lang.reflect.Modifier;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Messages;
+import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.services.ComponentMessagesSource;
@@ -55,9 +56,18 @@ public class TestInjectMessagesWorker extends HiveMindTestCase
         EnhancementOperation op = (EnhancementOperation) control.getMock();
 
         op.claimProperty(w.MESSAGES_PROPERTY);
-        op.addField("_$componentMessagesSource", ComponentMessagesSource.class, source);
+        op.addFinalField("_$componentMessagesSource", source);
+        control.setReturnValue("fred");
+
+        BodyBuilder builder = new BodyBuilder();
+        builder.begin();
+        builder.addln("if (_$messages == null)");
+        builder.addln("  _$messages = fred.getMessages(this);");
+        builder.addln("return _$messages;");
+        builder.end();
+
         op.addField("_$messages", Messages.class);
-        op.addMethod(Modifier.PUBLIC, w.METHOD_SIGNATURE, w.METHOD_CODE);
+        op.addMethod(Modifier.PUBLIC, w.METHOD_SIGNATURE, builder.toString());
 
         replayControls();
 
