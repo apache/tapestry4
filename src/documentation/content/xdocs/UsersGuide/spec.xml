@@ -715,7 +715,7 @@ and elements related to parameters.
 <source>
   &spec.description; ?, 
   (&spec.parameter; | &spec.reserved-parameter; | &spec.meta; | &spec.bean; | 
-   &spec.component; | &spec.asset; | &spec.property; | &spec.inject; | &spec.inject-state;)*
+   &spec.component; | &spec.asset; | &spec.property; | &spec.inject;)*
 </source>
 
 
@@ -1274,7 +1274,7 @@ with attributes and entities related to parameters removed.
 <p>&lt;page-specification&gt; Elements</p>
 <source>
   &spec.description; ?, 
-  (&spec.meta; | &spec.bean; | &spec.component; | &spec.asset; | &spec.property; | &spec.inject; | &spec.inject-state;)*
+  (&spec.meta; | &spec.bean; | &spec.component; | &spec.asset; | &spec.property; | &spec.inject;)*
 </source>
 
 
