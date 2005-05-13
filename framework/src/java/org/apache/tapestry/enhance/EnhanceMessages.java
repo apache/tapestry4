@@ -28,7 +28,7 @@ import org.apache.hivemind.service.ClassFabUtils;
  */
 class EnhanceMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(EnhanceMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(EnhanceMessages.class,
             "EnhanceStrings");
 
     static String noImplForAbstractMethod(Method method, Class declareClass, String className,

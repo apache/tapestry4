@@ -31,9 +31,9 @@ import org.apache.hivemind.service.ClassFabUtils;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public final class ScriptMessages
+public class ScriptMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(ScriptMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(ScriptMessages.class,
             "ScriptStrings");
 
     public static String expectedSubstringMissing(String substring, Location location)
@@ -46,17 +46,17 @@ public final class ScriptMessages
         return _formatter.format("expected-regexp-missing", regexp, location);
     }
 
-    public static String unexpectedAttributeInElement(String attributeName, String elementName)
+    static String unexpectedAttributeInElement(String attributeName, String elementName)
     {
         return _formatter.format("unexpected-attribute-in-element", attributeName, elementName);
     }
 
-    public static String missingRequiredAttribute(String attributeName, String elementName)
+    static String missingRequiredAttribute(String attributeName, String elementName)
     {
         return _formatter.format("missing-required-attribute", attributeName, elementName);
     }
 
-    public static String invalidIntAttribute(String attributeName, String elementName,
+    static String invalidIntAttribute(String attributeName, String elementName,
             Location location, String attributeValue)
     {
         return _formatter.format("invalid-int-attribute", new Object[]
@@ -76,13 +76,13 @@ public final class ScriptMessages
         { pattern, location, new Integer(expectedCount), new Integer(actualCount) });
     }
 
-    public static String wrongTypeForEnhancement(Class type)
+    static String wrongTypeForEnhancement(Class type)
     {
         return _formatter
                 .format("wrong-type-for-enhancement", ClassFabUtils.getJavaClassName(type));
     }
 
-    public static String unableToInstantiate(Class abstractClass, Throwable cause)
+    static String unableToInstantiate(Class abstractClass, Throwable cause)
     {
         return _formatter.format("unable-to-instantiate", abstractClass.getName(), cause);
     }

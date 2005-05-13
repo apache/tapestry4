@@ -24,20 +24,20 @@ import org.apache.tapestry.IComponent;
  */
 class BindingMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(BindingMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(BindingMessages.class,
             "BindingStrings");
 
-    public static String convertObjectError(IBinding binding, Throwable cause)
+    static String convertObjectError(IBinding binding, Throwable cause)
     {
         return _formatter.format("convert-object-error", binding.getDescription(), cause);
     }
 
-    public static String readOnlyBinding(IBinding binding)
+    static String readOnlyBinding(IBinding binding)
     {
         return _formatter.format("read-only-binding", binding.getDescription(), binding);
     }
 
-    public static String missingAsset(IComponent component, String assetName)
+    static String missingAsset(IComponent component, String assetName)
     {
         return _formatter.format("missing-asset", component.getExtendedId(), assetName);
     }

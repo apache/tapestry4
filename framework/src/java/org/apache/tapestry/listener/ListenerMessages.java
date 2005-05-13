@@ -25,7 +25,7 @@ import org.apache.tapestry.Tapestry;
  */
 class ListenerMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(ListenerMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(ListenerMessages.class,
             "ListenerStrings");
 
     static String objectMissingMethod(Object target, String name)

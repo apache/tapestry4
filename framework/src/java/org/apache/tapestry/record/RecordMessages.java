@@ -23,36 +23,36 @@ import org.apache.tapestry.IComponent;
  */
 class RecordMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(RecordMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(RecordMessages.class,
             "RecordStrings");
 
-    public static String unknownPersistenceStrategy(String name)
+    static String unknownPersistenceStrategy(String name)
     {
         return _formatter.format("unknown-persistence-strategy", name);
     }
 
-    public static String missingPropertySpecification(String propertyName, IComponent component)
+    static String missingPropertySpecification(String propertyName, IComponent component)
     {
         return _formatter.format("missing-property-specification", propertyName, component
                 .getExtendedId(), component.getSpecification().getSpecificationLocation());
     }
 
-    public static String recorderLocked(String propertyName, IComponent component)
+    static String recorderLocked(String propertyName, IComponent component)
     {
         return _formatter.format("recorder-locked", propertyName, component.getExtendedId());
     }
 
-    public static String decodeFailure(Throwable cause)
+    static String decodeFailure(Throwable cause)
     {
         return _formatter.format("decode-failure", cause);
     }
 
-    public static String encodeFailure(Throwable cause)
+    static String encodeFailure(Throwable cause)
     {
         return _formatter.format("encode-failure", cause);
     }
 
-    public static String unknownPrefix(String prefix)
+    static String unknownPrefix(String prefix)
     {
         return _formatter.format("unknown-prefix", prefix);
     }

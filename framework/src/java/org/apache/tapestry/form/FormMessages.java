@@ -23,7 +23,7 @@ import org.apache.tapestry.IComponent;
  */
 class FormMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(FormMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(FormMessages.class,
             "FormStrings");
 
     static String formTooManyIds(IComponent form, int actualCount, IComponent component)

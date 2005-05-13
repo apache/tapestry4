@@ -23,10 +23,10 @@ import org.apache.tapestry.IComponent;
  */
 class ComponentMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(
-            ComponentMessages.class, "ComponentStrings");
+    protected static MessageFormatter _formatter = new MessageFormatter(ComponentMessages.class,
+            "ComponentStrings");
 
-    public static String unableToFormat(IComponent component, Object value, Throwable cause)
+    static String unableToFormat(IComponent component, Object value, Throwable cause)
     {
         return _formatter.format("unable-to-format", component.getExtendedId(), value, cause);
     }

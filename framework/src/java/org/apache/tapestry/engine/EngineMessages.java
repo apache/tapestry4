@@ -26,7 +26,7 @@ import org.apache.tapestry.IPage;
  */
 public class EngineMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(EngineMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(EngineMessages.class,
             "EngineStrings");
 
     public static String serviceNoParameter(IEngineService service)

@@ -23,40 +23,40 @@ import org.apache.tapestry.util.ContentType;
  */
 class WebMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(WebMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(WebMessages.class,
             "WebStrings");
 
-    public static String streamOpenError(ContentType contentType, Throwable cause)
+    static String streamOpenError(ContentType contentType, Throwable cause)
     {
         return _formatter.format("stream-open-error", contentType, cause);
     }
 
-    public static String errorGettingResource(String path, Throwable ex)
+    static String errorGettingResource(String path, Throwable ex)
     {
         return _formatter.format("error-getting-resource", path, ex);
     }
 
-    public static String unableToFindDispatcher(String url)
+    static String unableToFindDispatcher(String url)
     {
         return _formatter.format("unable-to-find-dispatcher", url);
     }
 
-    public static String unableToForward(String url, Throwable cause)
+    static String unableToForward(String url, Throwable cause)
     {
         return _formatter.format("unable-to-forward", url, cause);
     }
 
-    public static String unableToRedirect(String url, Throwable cause)
+    static String unableToRedirect(String url, Throwable cause)
     {
         return _formatter.format("unable-to-redirect", url, cause);
     }
 
-    public static String writerOpenError(ContentType contentType, Throwable cause)
+    static String writerOpenError(ContentType contentType, Throwable cause)
     {
         return _formatter.format("writer-open-error", contentType, cause);
     }
 
-    public static String resetFailed(Throwable cause)
+    static String resetFailed(Throwable cause)
     {
         return _formatter.format("reset-failed", cause);
     }

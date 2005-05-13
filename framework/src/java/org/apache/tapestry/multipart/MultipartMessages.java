@@ -24,25 +24,25 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 class MultipartMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(
-            MultipartMessages.class, "MultipartStrings");
+    protected static MessageFormatter _formatter = new MessageFormatter(MultipartMessages.class,
+            "MultipartStrings");
 
-    public static String unableToDecode(Throwable cause)
+    static String unableToDecode(Throwable cause)
     {
         return _formatter.format("unable-to-decode", cause);
     }
 
-    public static String unsupportedEncoding(String encoding, Throwable cause)
+    static String unsupportedEncoding(String encoding, Throwable cause)
     {
         return _formatter.format("unsupported-encoding", encoding, cause);
     }
 
-    public static String unableToOpenContentFile(UploadPart part, Throwable cause)
+    static String unableToOpenContentFile(UploadPart part, Throwable cause)
     {
         return _formatter.format("unable-to-open-content-file", part.getFilePath(), cause);
     }
 
-    public static String writeFailure(File file, Throwable cause)
+    static String writeFailure(File file, Throwable cause)
     {
         return _formatter.format("write-failure", file, cause);
     }
