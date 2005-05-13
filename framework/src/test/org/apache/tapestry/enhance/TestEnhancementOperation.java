@@ -15,6 +15,7 @@
 package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,6 +24,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.MethodSignature;
@@ -39,6 +41,7 @@ import org.apache.tapestry.link.ServiceLink;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.easymock.MockControl;
+import org.easymock.internal.ArrayMatcher;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.EnhancementOperationImpl}.
@@ -372,6 +375,60 @@ public class TestEnhancementOperation extends HiveMindTestCase
         verifyControls();
     }
 
+    public void testAddFinalField()
+    {
+        IComponentSpecification spec = newSpec();
+
+        MockControl cfc = newControl(ClassFactory.class);
+        ClassFactory cf = (ClassFactory) cfc.getMock();
+
+        MockControl fabc = newControl(ClassFab.class);
+        ClassFab fab = (ClassFab) fabc.getMock();
+
+        cf.newClass("$BaseComponent_97", BaseComponent.class);
+
+        cfc.setReturnValue(fab);
+
+        // String because "FRED_VALUE" is a String
+
+        fab.addField("fred", String.class);
+
+        replayControls();
+
+        EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
+                spec, BaseComponent.class, cf);
+
+        assertEquals("fred", eo.addFinalField("fred", "FRED_VALUE"));
+
+        verifyControls();
+
+        HashMap map = new HashMap();
+
+        fab.addField("fred$0", HashMap.class);
+
+        replayControls();
+
+        assertEquals("fred$0", eo.addFinalField("fred", map));
+
+        verifyControls();
+
+        BodyBuilder body = new BodyBuilder();
+        body.begin();
+        body.addln("fred = $1;");
+        body.addln("fred$0 = $2;");
+        body.end();
+
+        fab.addConstructor(new Class[]
+        { String.class, HashMap.class }, null, body.toString());
+        fabc.setMatcher(new ArrayMatcher());
+
+        replayControls();
+
+        eo.finalizeEnhancedClass();
+
+        verifyControls();
+    }
+
     public void testAddMethod()
     {
         Class baseClass = Insert.class;
@@ -429,7 +486,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
     public void testGetClassReference() throws Exception
     {
-        Location l = fabricateLocation(99);
+        Location l = newLocation();
         MockControl specControl = newControl(IComponentSpecification.class);
 
         IComponentSpecification spec = (IComponentSpecification) specControl.getMock();
@@ -487,7 +544,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
     public void testComponentConstructorFailure()
     {
-        Location l = fabricateLocation(13);
+        Location l = newLocation();
 
         ComponentConstructor cc = new ComponentConstructorImpl(BaseComponent.class
                 .getConstructors()[0], new Object[]

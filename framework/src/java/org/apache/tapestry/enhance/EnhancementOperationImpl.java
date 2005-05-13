@@ -41,6 +41,7 @@ import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.ToStringBuilder;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.util.IdAllocator;
 
 /**
  * Implementation of {@link org.apache.tapestry.enhance.EnhancementOperation}that knows how to
@@ -92,6 +93,12 @@ public class EnhancementOperationImpl implements EnhancementOperation
      */
 
     private BodyBuilder _constructorBuilder;
+
+    /**
+     * Makes sure that names created by {@link #addFinalField(String, Object)} have unique names.
+     */
+
+    private final IdAllocator _idAllocator = new IdAllocator();
 
     public EnhancementOperationImpl(ClassResolver classResolver,
             IComponentSpecification specification, Class baseClass, ClassFactory classFactory)
@@ -237,25 +244,29 @@ public class EnhancementOperationImpl implements EnhancementOperation
             return existing;
 
         // TODO: Should be ensure that the name is unique?
-
         // Add a new field using the object's actual type.
 
         Class type = value.getClass();
 
+        // Make sure that the field has a unique name (at least, among anything added
+        // via addFinalField().
+
+        String uniqueName = _idAllocator.allocateId(fieldName);
+
         // ClassFab doesn't have an option for saying the field should be final, just private.
         // Doesn't make a huge difference.
 
-        _classFab.addField(fieldName, type);
+        _classFab.addField(uniqueName, type);
 
         int parameterIndex = addConstructorParameter(type, value);
 
-        constructorBuilder().addln("{0} = ${1};", fieldName, Integer.toString(parameterIndex));
+        constructorBuilder().addln("{0} = ${1};", uniqueName, Integer.toString(parameterIndex));
 
         // Remember the mapping from the value to the field name.
 
-        _finalFields.put(value, fieldName);
+        _finalFields.put(value, uniqueName);
 
-        return fieldName;
+        return uniqueName;
     }
 
     public Class convertTypeName(String type)
@@ -403,7 +414,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
         return new ComponentConstructorImpl(c, params, _specification.getLocation());
     }
 
-    private void finalizeEnhancedClass()
+    void finalizeEnhancedClass()
     {
         finalizeIncompleteMethods();
 
