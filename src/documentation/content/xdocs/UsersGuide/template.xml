@@ -289,7 +289,7 @@ the component with new ids.
 		<title>Specifying parameters</title>
 		
 <p>
-Components are configured by <em><link href="binding.html">binding</link></em> their parameters.  In
+Components are configured by <em><link href="bindings.html">binding</link></em> their parameters.  In
 a page or component specification, the &spec.binding; element is used to
 bind component parameters.
 </p>

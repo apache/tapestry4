@@ -38,6 +38,22 @@ One goal of Tapestry 4.0 is to make upgrading from release 3.0 as painless as po
 Tapestry 4.0 still supports the Tapestry 3.0 DTDs (with minor exceptions). 
 </p>
 
+<section id="upgrade.servlet-path">
+  <title>Defining the servlet path</title>
+  
+<p>
+In Tapestry 3.0, the framework could automatically determine the servlet path (used when constructing new URLs), because there was only a
+single mapping.  The convention was to map the servlet to "/app", but any path-based mapping would automatically work.
+</p>  
+
+<p>
+Because of <link href="friendly-urls.html">friendly URLs</link>, there are any number of
+possible servlet mappings in Tapestry 4.0, so you must inform Tapestry what the correct
+mapping is.  It is necessary to define, to Tapestry, what this mapping is,
+using the org.apache.tapestry.servlet-path &configuration-property;.
+</p>
+  
+</section> <!-- upgrade.servlet-path -->
 
 <section id="upgrade.service">
   <title>Defining Engine Services</title>
@@ -49,15 +65,37 @@ a &lt;service&gt; element. This is no longer supported in the 4.0 DTD.
   
 <p>
 Engine services are now defined using HiveMind, in the <code>tapestry.services.ApplicationServices</code> configuration point.
+The following is the chart service from the Workbench example:
 </p>
 
+<source><![CDATA[
+  <contribution configuration-id="tapestry.services.ApplicationServices">
+    <service name="chart" object="service:Chart"/>
+  </contribution>
+
+  <service-point id="Chart" interface="org.apache.tapestry.engine.IEngineService">
+    <invoke-factory>
+      <construct class="chart.ChartService">
+        <set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
+        <set-object property="response" value="infrastructure:response"/>
+        <set-object property="linkFactory" value="infrastructure:linkFactory"/>
+      </construct>
+    </invoke-factory>
+  </service-point>]]>
+</source>
+
 <p>
-The &lt;service&gt; element in a Tapestry 3.0 DTD is now ignored.
+The &lt;service&gt; element in a Tapestry 3.0 DTD is now <strong>ignored</strong>.
 </p>
 
 <p>
 The &IEngineService; interface has changed in non-backwards compatible ways. If your application created
-custom engine services, you will have to make changes to your code.
+custom engine services, you will have to make changes to your code. If your custom service was
+based on the <code>org.apache.tapestry.engine.AbstractService</code> class, that class has been removed
+so you will have significant rewrites. As a suggested course of action, find the service
+that the original service was based on, and build a new service based on that Tapestry service.
+For example, if the original service was based on <code>org.apache.tapestry.asset.AssetService</code>, then
+get the source for the AssetService, and model your service after the new implementation.
 </p>
 
 </section>  <!-- upgrade.service -->
@@ -236,9 +274,28 @@ equivalent:
 </source>
   
 <p>
-The advantage in 4.0 is that it is easier to specify simple strings as defaults; it is also possible to use other binding prefixes
-(such as message:, or a user-supplied prefix).
+  If you <em>don't</em> specify a prefix, then the default-binding (if any) for the parameter is used as the prefix for the default-value,
+  just as it would be for any binding of the parameter. If the default-binding attribute
+  is not set, then no prefix will be interpreted as an OGNL expression (so, really, the "ognl:" could be omitted in the example above).
+  All of this comes in handy for more a more complex example:
 </p>
+
+<source><![CDATA[
+  <parameter name="bar" type="java.lang.String" 
+    default-value="messages.getMessage('default-bar')"/>      <!-- 3.0 -->
+  
+  <parameter name="bar" default-value="message:default-bar"/> <!-- 4.0 --> 
+  
+  
+  <parameter name="baz" type="org.apache.tapestry.IAsset"
+    default-value="assets.defaultBaz"/>                       <!-- 3.0 -->
+    
+  <parameter name="baz" default-binding="asset"
+    default-value="defaultBaz"/>                              <!-- 4.0 -->
+]]></source>
+  
+  
+  
   
 </section>
 
