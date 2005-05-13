@@ -43,7 +43,7 @@
       <description>
           A tag value used to identify this Submit as the triggered component.
       </description>
-  <parameter>
+  </parameter>
   <parameter name="listener" default-binding="listener">
       <description>
           A listener that is notified if this component is triggered.
