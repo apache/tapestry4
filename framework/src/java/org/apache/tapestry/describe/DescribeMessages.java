@@ -22,20 +22,20 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 class DescribeMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(DescribeMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(DescribeMessages.class,
             "DescribeStrings");
 
-    public static String mustSetTitleBeforeSection()
+    static String mustSetTitleBeforeSection()
     {
         return _formatter.getMessage("must-set-title-before-section");
     }
 
-    public static String setTitleOnce()
+    static String setTitleOnce()
     {
         return _formatter.getMessage("set-title-once");
     }
 
-    public static String mustSetTitleBeforeProperty()
+    static String mustSetTitleBeforeProperty()
     {
         return _formatter.getMessage("must-set-title-before-property");
     }

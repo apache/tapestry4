@@ -22,25 +22,25 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 class StateMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(StateMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(StateMessages.class,
             "StateStrings");
 
-    public static String unknownStateObjectName(String objectName)
+    static String unknownStateObjectName(String objectName)
     {
         return _formatter.format("unknown-state-object-name", objectName);
     }
 
-    public static String unableToInstantiateObject(Class objectClass, Throwable cause)
+    static String unableToInstantiateObject(Class objectClass, Throwable cause)
     {
         return _formatter.format("unable-to-instantiate-object", objectClass, cause);
     }
 
-    public static String unableToInstantiateObject(String className, Throwable cause)
+    static String unableToInstantiateObject(String className, Throwable cause)
     {
         return _formatter.format("unable-to-instantiate-object", className, cause);
     }
 
-    public static String unknownScope(String objectName, String scope)
+    static String unknownScope(String objectName, String scope)
     {
         return _formatter.format("unknown-scope", objectName, scope);
     }

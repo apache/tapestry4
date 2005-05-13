@@ -24,32 +24,32 @@ import org.apache.tapestry.IComponent;
  */
 class TableMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(TableMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(TableMessages.class,
             "TableStrings");
 
-    public static String notAColumn(IComponent component, String expression)
+    static String notAColumn(IComponent component, String expression)
     {
         return _formatter.format("not-a-column", component.getExtendedId(), expression);
     }
 
-    public static String invalidTableSource(IComponent component, Object sourceValue)
+    static String invalidTableSource(IComponent component, Object sourceValue)
     {
         return _formatter.format("invalid-table-source", component.getExtendedId(), ClassFabUtils
                 .getJavaClassName(sourceValue.getClass()));
     }
 
-    public static String invalidTableColumns(IComponent component, Object columnSource)
+    static String invalidTableColumns(IComponent component, Object columnSource)
     {
         return _formatter.format("invalid-table-column", component.getExtendedId(), ClassFabUtils
                 .getJavaClassName(columnSource.getClass()));
     }
 
-    public static String missingTableModel(IComponent component)
+    static String missingTableModel(IComponent component)
     {
         return _formatter.format("missing-table-model", component.getExtendedId());
     }
 
-    public static String columnsOnlyPlease(IComponent component)
+    static String columnsOnlyPlease(IComponent component)
     {
         return _formatter.format("columns-only-please", component.getExtendedId());
     }

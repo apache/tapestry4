@@ -25,7 +25,7 @@ import org.apache.tapestry.util.ContentType;
  */
 class MarkupMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(MarkupMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(MarkupMessages.class,
             "MarkupStrings");
 
     static String tagNotOpen()

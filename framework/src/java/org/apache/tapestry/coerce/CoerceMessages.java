@@ -23,16 +23,15 @@ import org.apache.hivemind.service.ClassFabUtils;
  */
 class CoerceMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(CoerceMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(CoerceMessages.class,
             "CoerceStrings");
 
-    public static String noConverter(Class desiredType)
+    static String noConverter(Class desiredType)
     {
         return _formatter.format("no-converter", ClassFabUtils.getJavaClassName(desiredType));
     }
 
-    public static String stringToNumberConversionError(String value, Class targetClass,
-            Throwable cause)
+    static String stringToNumberConversionError(String value, Class targetClass, Throwable cause)
     {
         return _formatter.format(
                 "string-to-number-conversion-error",

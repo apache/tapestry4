@@ -22,10 +22,10 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 class BeanMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(BeanMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(BeanMessages.class,
             "BeanStrings");
 
-    public static String propertyInitializerName(String propertyName)
+    static String propertyInitializerName(String propertyName)
     {
         return _formatter.format("property-initializer-name", propertyName);
     }

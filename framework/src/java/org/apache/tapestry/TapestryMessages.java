@@ -20,9 +20,9 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-final class TapestryMessages
+class TapestryMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(TapestryMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(TapestryMessages.class,
             "TapestryStrings2");
 
     static String servletInitFailure(Throwable cause)

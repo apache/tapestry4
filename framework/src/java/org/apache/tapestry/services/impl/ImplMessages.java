@@ -37,9 +37,9 @@ import org.apache.tapestry.spec.IContainedComponent;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-final class ImplMessages
+class ImplMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(ImplMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(ImplMessages.class,
             "ImplStrings");
 
     static String initializerContribution()
@@ -237,8 +237,6 @@ final class ImplMessages
     {
         return _formatter.format("service-name-mismatch", service, expectedName, actualName);
     }
-
-
 
     static String infrastructureAlreadyInitialized(String newMode, String initializedMode)
     {

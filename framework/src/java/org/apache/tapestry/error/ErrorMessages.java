@@ -20,9 +20,9 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public final class ErrorMessages
+public class ErrorMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(ErrorMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(ErrorMessages.class,
             "ErrorStrings");
 
     public static String unableToProcessClientRequest(Throwable cause)

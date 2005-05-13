@@ -27,7 +27,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  */
 class ResolverMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(ResolverMessages.class,
+    protected static MessageFormatter _formatter = new MessageFormatter(ResolverMessages.class,
             "ResolverStrings");
 
     static String noSuchComponentType(String type, INamespace namespace)
