@@ -42,7 +42,7 @@
   
    <Call name="addContext">
     <Arg>/private/*</Arg>
-    <Set name="ResourceBase">private</Set>
+    <Set name="ResourceBase">target/private</Set>
     
     <Call name="addHandler">
       <Arg><New class="org.mortbay.http.handler.ResourceHandler"/></Arg>
