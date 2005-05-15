@@ -70,5 +70,6 @@
   <inject property="directService" object="engine-service:direct"/>
   <inject property="actionService" object="engine-service:action"/>
   <inject property="response" object="infrastructure:response"/>
+  <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
 
 </component-specification>

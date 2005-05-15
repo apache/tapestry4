@@ -24,6 +24,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.AbstractFormComponent;
+import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.services.DataSqueezer;
 
 /**
@@ -56,10 +57,7 @@ public abstract class FormConditional extends AbstractFormComponent
 
         boolean condition = getCondition(cycle, form, name);
 
-        // call listener
-        IActionListener listener = getListener();
-        if (listener != null)
-            listener.actionTriggered(this, cycle);
+        getListenerInvoker().invokeListener(getListener(), this, cycle);
 
         // render the component body only if the condition is true
         if (condition)
@@ -151,5 +149,13 @@ public abstract class FormConditional extends AbstractFormComponent
     public abstract String getElement();
 
     public abstract IActionListener getListener();
+
+    /**
+     * Injected.
+     * 
+     * @since 4.0
+     */
+
+    public abstract ListenerInvoker getListenerInvoker();
 
 }

@@ -37,6 +37,7 @@ import org.apache.tapestry.error.ExceptionPresenter;
 import org.apache.tapestry.error.RequestExceptionReporter;
 import org.apache.tapestry.error.StaleLinkExceptionPresenter;
 import org.apache.tapestry.error.StaleSessionExceptionPresenter;
+import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.listener.ListenerMapSource;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.services.ComponentMessagesSource;
@@ -252,6 +253,11 @@ public class InfrastructureImpl implements Infrastructure
     public ValueConverter getValueConverter()
     {
         return (ValueConverter) getProperty("valueConverter");
+    }
+
+    public ListenerInvoker getListenerInvoker()
+    {
+        return (ListenerInvoker) getProperty("listenerInvoker");
     }
 
     public Object getProperty(String propertyName)

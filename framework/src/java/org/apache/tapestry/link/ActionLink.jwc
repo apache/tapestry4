@@ -40,4 +40,6 @@
   
   <reserved-parameter name="href"/>
   
+  <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
+  
 </component-specification>

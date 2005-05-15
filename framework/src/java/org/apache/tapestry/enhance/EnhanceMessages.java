@@ -91,4 +91,11 @@ class EnhanceMessages
     {
         return _formatter.format("unknown-inject-type", propertyName, injectType);
     }
+
+    static String wrongTypeForProperty(String propertyName, Class propertyType, Class requiredType)
+    {
+        return _formatter.format("wrong-type-for-property", propertyName, ClassFabUtils
+                .getJavaClassName(propertyType), ClassFabUtils.getJavaClassName(requiredType));
+    }
+
 }

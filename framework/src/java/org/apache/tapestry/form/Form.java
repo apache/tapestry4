@@ -32,6 +32,7 @@ import org.apache.tapestry.engine.ActionServiceParameter;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.web.WebResponse;
 
@@ -221,10 +222,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         {
             _formSupport.rewind();
 
-            IActionListener listener = getListener();
-
-            if (listener != null)
-                listener.actionTriggered(this, cycle);
+            getListenerInvoker().invokeListener(getListener(), this, cycle);
 
             // Abort the rewind render.
 
@@ -389,4 +387,12 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     {
         _formSupport.addDeferredRunnable(runnable);
     }
+
+    /**
+     * Injected
+     * 
+     * @since 4.0
+     */
+
+    public abstract ListenerInvoker getListenerInvoker();
 }

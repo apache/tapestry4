@@ -61,6 +61,8 @@
       <action type="add" dev="HLS" fixes-bug="TAPESTRY-323"> Allow control over the ErrorHandler used when building the HiveMind Registry. </action>
       <action type="update" dev="HLS"> Remove &lt;inject-state&gt;, and add type attribute to &lt;inject&gt;.</action>
       <action type="fix" due-to="Richard Hensley">Fix some problems with the TestRestartService test suite.</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-294"> Make it possible to add behavior before and/or after invoking listener methods. </action>
+      <action type="add" dev="HLS"> Added meta and script injection types.</action>
       <action type="add" dev="RLS" fixes-bug="TAPESTRY-325">Added defer parameters parameter to LinkSubmit.</action>
       <action type="add" dev="RLS" fixes-bug="TAPESTRY-326">Added listener parameters to Form submitting components.</action>
     </release>

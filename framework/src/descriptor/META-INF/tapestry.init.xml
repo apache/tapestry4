@@ -24,7 +24,7 @@
     Master startup for the application; invokes an ordered series of other ApplicationInitializer instances contributed to
     the ApplicationInitializers configuration point.
     
-    <invoke-factory service-id="hivemind.lib.ChainFactory" model="primitive">
+    <invoke-factory service-id="hivemind.lib.ChainFactory">
       <construct configuration-id="ApplicationInitializers"/>
     </invoke-factory>
   </service-point>
@@ -39,7 +39,7 @@
     
     Locates and parses the application specification and informs the ApplicationGlobals service about it.
     
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="impl.ApplicationSpecificationInitializer">
         <set-service property="classpathResourceFactory" service-id="tapestry.ClasspathResourceFactory"/>
         <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
@@ -53,7 +53,7 @@
     Creates and stores the WebContext (wrapper around the ServletContext)
     into ApplicationGlobals.
     
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="impl.WebContextInitializer">
         <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
       </construct>

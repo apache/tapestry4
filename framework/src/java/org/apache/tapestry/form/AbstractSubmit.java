@@ -1,4 +1,4 @@
-//Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,31 +20,36 @@ import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.listener.ListenerInvoker;
 
 /**
  * Superclass for components submitting their form.
+ * 
  * @author Richard Lewis-Shell
  * @since 4.0
  */
 
-abstract class AbstractSubmit extends AbstractFormComponent {
+abstract class AbstractSubmit extends AbstractFormComponent
+{
 
-	/**
-	 * Determine if this submit component was clicked.
-	 * @param cycle
-	 * @param name
-	 * @return true if this submit was clicked
-	 */
-	protected abstract boolean isClicked(IRequestCycle cycle, String name);
-	
-	/**
-	 * Write the tag (and any nested content) for this submit component.
-	 * @param writer
-	 * @param cycle
-	 * @param name 
-	 */
-	protected abstract void writeTag(IMarkupWriter writer, IRequestCycle cycle, String name);
-	
+    /**
+     * Determine if this submit component was clicked.
+     * 
+     * @param cycle
+     * @param name
+     * @return true if this submit was clicked
+     */
+    protected abstract boolean isClicked(IRequestCycle cycle, String name);
+
+    /**
+     * Write the tag (and any nested content) for this submit component.
+     * 
+     * @param writer
+     * @param cycle
+     * @param name
+     */
+    protected abstract void writeTag(IMarkupWriter writer, IRequestCycle cycle, String name);
+
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
@@ -65,7 +70,7 @@ abstract class AbstractSubmit extends AbstractFormComponent {
                 return;
 
             if (isClicked(cycle, name))
-            	handleClick(cycle, form);
+                handleClick(cycle, form);
 
             return;
         }
@@ -83,24 +88,29 @@ abstract class AbstractSubmit extends AbstractFormComponent {
         if (listener == null)
             return;
 
+        final ListenerInvoker listenerInvoker = getListenerInvoker();
+
         Object parameters = getParameters();
-    	if (parameters != null)
+        if (parameters != null)
         {
-        	if (parameters instanceof Collection) {
-        		cycle.setListenerParameters(((Collection)parameters).toArray());
-        	}
-            else {
-            	cycle.setListenerParameters(new Object[] {parameters});        	
+            if (parameters instanceof Collection)
+            {
+                cycle.setListenerParameters(((Collection) parameters).toArray());
+            }
+            else
+            {
+                cycle.setListenerParameters(new Object[]
+                { parameters });
             }
         }
-        
+
         // Have a listener; notify it now, or defer for later?
 
         Runnable notify = new Runnable()
         {
             public void run()
             {
-                listener.actionTriggered(AbstractSubmit.this, cycle);
+                listenerInvoker.invokeListener(listener, AbstractSubmit.this, cycle);
             }
         };
 
@@ -124,7 +134,10 @@ abstract class AbstractSubmit extends AbstractFormComponent {
 
     /** parameter */
     public abstract boolean getDefer();
-    
+
     /** parameter */
     public abstract Object getParameters();
+
+    /** Injected */
+    public abstract ListenerInvoker getListenerInvoker();
 }

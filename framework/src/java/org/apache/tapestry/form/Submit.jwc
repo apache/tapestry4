@@ -65,5 +65,7 @@
   
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>
+
+  <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
   
 </component-specification>
