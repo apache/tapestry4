@@ -39,6 +39,7 @@
   
   <inject property="dataSqueezer" object="infrastructure:dataSqueezer"/>
   <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
+  <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
   
 </component-specification>
 

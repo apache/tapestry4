@@ -49,6 +49,7 @@
       <page-class label="Page  Classes" href="page-class.html"/>
       <validation label="Input Validation" href="validation.html"/>
       <components label="Creating Tapestry components" href="components.html"/>
+      <injection label="Property Injection" href="injection.html"/>
       <localization label="Localization" href="localization.html"/>
       <state label="Managing server-side state" href="state.html"/>
       <hivemind label="HiveMind Integration" href="hivemind.html"/>

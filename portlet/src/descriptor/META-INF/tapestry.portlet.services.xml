@@ -46,7 +46,7 @@
     
     Renders a pre-generated exception, stored in the session.
     
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="ExceptionService">
         <set-object property="request" value="infrastructure:request"/>
         <set-object property="response" value="infrastructure:response"/>
@@ -92,7 +92,7 @@
   
   The single service that should be referenced by a Portlet render request.
   
-  <invoke-factory model="primitive">
+  <invoke-factory>
     <construct class="RenderService">
       <set-service property="portletRenderer" service-id="PortletRenderer"/>
     </construct>
@@ -100,7 +100,7 @@
  </service-point>
  
   <service-point id="Home" interface="org.apache.tapestry.engine.IEngineService">
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="PortletHomeService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
         <set-object property="linkFactory" value="infrastructure:linkFactory"/>
@@ -116,7 +116,7 @@
   Portal specific implementation of ResponseRender that builds a 
   Portlet Render URL that references the render engine service.
   
-  <invoke-factory model="primitive">
+  <invoke-factory>
     <construct class="PortletResponseRenderer">
       <set-service property="response" service-id="tapestry.portlet.ActionResponse"/>
     </construct>

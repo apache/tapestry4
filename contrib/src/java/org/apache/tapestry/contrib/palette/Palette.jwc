@@ -100,4 +100,6 @@
   <asset name="Down" path="move_down.gif"/>
   <asset name="DownDisabled" path="move_down_off.gif"/>
   
+  <inject property="script" type="script" object="Palette.script"/>
+  
 </component-specification>

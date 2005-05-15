@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry.listener" version="4.0.0" package="org.apache.tapestry.listener">
+  
+  Mappings from listener methods to IActionListener instances.
+  
+  <service-point id="ListenerMapSource" interface="ListenerMapSource">
+    
+    A source for listener maps, which map a listener 
+    method name to the invocation of a public instance method with
+    the same name.
+    
+    <invoke-factory>
+      <construct class="ListenerMapSourceImpl">
+        <event-listener service-id="tapestry.ResetEventCoordinator"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>  
+  
+  <configuration-point id="ListenerInvoker" schema-id="hivemind.lib.Pipeline">
+    
+    Defines filters that may be applied whenever a listener object is invoked.
+    Listener objects are typically, but not always, wrappers around listener methods.
+    
+  </configuration-point>
+  
+  <service-point id="ListenerInvoker">
+    
+    Service used to invoke listener objects. The final service may include
+    filters contributed to the InvokeListener configuration point.
+    
+    <invoke-factory service-id="hivemind.lib.PipelineFactory">
+      <create-pipeline 
+        filter-interface="ListenerInvokerFilter" 
+        configuration-id="ListenerInvoker" 
+        terminator="instance:ListenerInvokerTerminator"/>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <contribution configuration-id="tapestry.Infrastructure">
+    <property name="listenerMapSource" object="service:ListenerMapSource"/>
+    <property name="listenerInvoker" object="service:ListenerInvoker"/>
+  </contribution>  
+</module>

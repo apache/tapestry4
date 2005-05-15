@@ -134,5 +134,45 @@ works just by comparing the <em>number</em> of parameters).  However, you can co
 the parameter values (so you can use <code>int</code> and <code>java.lang.Integer</code> interchangeably).
 </p>
 
+
+<p>
+When creating components that accept a listener as a parameter, you should not invoke the
+&IActionListener; directly, instead, you should inject the infrastructure:ListenerInvoker service 
+into your component, and have it invoke the listener.  The ListenerInvoker is extensible, and 
+application logic may depend on ListenerInvoker's behavior.
+</p>
+
+<p>
+In your component specification:
+</p>
+
+<source><![CDATA[
+  <parameter name="listener" required="yes" default-binding="listener"/>
+
+  <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
+]]></source>
+
+<p>
+In your source code:
+</p>
+
+<source>
+  public abstract IActionListener getListener();
+  
+  public abstract ListenerInvoker getListenerInvoker();
+  
+  . . .
+  
+  IActionListener listener = getListener();
+  ListenerInvoker invoker = getListenerInvoker();
+  
+  invoker.invokeListener(listener, this, cycle);
+</source>
+
+<p>
+It is acceptible to pass null as the listener; this saves you the necessity of checking for null
+when the listener is an optional parameter.
+</p>
+
 </body>
 </document>

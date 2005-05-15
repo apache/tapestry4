@@ -59,7 +59,7 @@
     
     Locates and parses the application specification and informs the ApplicationGlobals service about it.
     
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="PortletApplicationSpecificationInitializer">
         <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
         <set-service property="parser" service-id="tapestry.parse.SpecificationParser"/>
@@ -84,7 +84,7 @@
     Service for handling Portlet action requests, built around
     the ActionRequestServicerPipeline configuration.
     
-    <invoke-factory service-id="hivemind.lib.PipelineFactory" model="primitive">
+    <invoke-factory service-id="hivemind.lib.PipelineFactory">
       <create-pipeline filter-interface="ActionRequestServicerFilter"
         configuration-id="ActionRequestServicerPipeline"/>
     </invoke-factory>  
@@ -95,7 +95,7 @@
     Bridge from the ActionRequestServicerPipeline to
     the tapestry.request.WebRequestServicer pipeline.
     
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="ActionRequestServicerToWebRequestServicerBridge">
         <set-service property="portletRequestGlobals" service-id="PortletRequestGlobals"/>
         <set-service property="webRequestServicer" service-id="tapestry.request.WebRequestServicer"/>
@@ -119,7 +119,7 @@
     Service for handling Portlet action requests, built around
     the RenderRequestServicerPipeline configuration.
     
-    <invoke-factory service-id="hivemind.lib.PipelineFactory" model="primitive">
+    <invoke-factory service-id="hivemind.lib.PipelineFactory">
       <create-pipeline filter-interface="RenderRequestServicerFilter"
         configuration-id="RenderRequestServicerPipeline"/>
     </invoke-factory>  
@@ -130,7 +130,7 @@
     Bridge from the RenderRequestServicerPipeline to
     the tapestry.request.WebRequestServicer pipeline.
     
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="RenderRequestServicerToWebRequestServicerBridge">
         <set-service property="portletRequestGlobals" service-id="PortletRequestGlobals"/>
         <set-service property="webRequestServicer" service-id="tapestry.request.WebRequestServicer"/>
@@ -156,7 +156,7 @@
     
     The ActionResponse for the current request.
     
-    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory" model="primitive">
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
       <construct service-id="PortletRequestGlobals" property="actionResponse"/>
     </invoke-factory>
     
@@ -167,7 +167,7 @@
     The PortletRequest for the current request. This may be either an ActionRequest
     or a RenderRequest.
     
-    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory" model="primitive">
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
       <construct service-id="PortletRequestGlobals" property="portletRequest"/>
     </invoke-factory>
     
@@ -177,7 +177,7 @@
     
     The RenderResponse for the current request.
     
-    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory" model="primitive">
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
       <construct service-id="PortletRequestGlobals" property="renderResponse"/>
     </invoke-factory>
   </service-point>
@@ -187,7 +187,7 @@
        This may break some tests when running JUnit inside Eclipse. -->
        
   <implementation service-id="tapestry.request.CookieSource">
-    <invoke-factory service-id="hivemind.lib.PlaceholderFactory" model="primitive"/>
+    <invoke-factory service-id="hivemind.lib.PlaceholderFactory"/>
   </implementation>
   
   <service-point id="PortletLinkFactory" interface="org.apache.tapestry.services.LinkFactory">
@@ -210,7 +210,7 @@
   to install the servlet-specific framework services and configurations into the
   tapestry.globals.ApplicationGlobals service.
   
-  <invoke-factory model="primitive">
+  <invoke-factory>
     <construct class="SetupPortletApplicationGlobals">
       <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
       <set-configuration property="factoryServices" configuration-id="tapestry.portlet.services.FactoryServices"/>

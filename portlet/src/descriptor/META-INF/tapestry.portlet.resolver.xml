@@ -24,7 +24,7 @@
     
     A chain of command for determing the correct page.
     
-    <invoke-factory service-id="hivemind.lib.ChainFactory" model="primitive">
+    <invoke-factory service-id="hivemind.lib.ChainFactory">
       <construct configuration-id="PageResolvers"/>
     </invoke-factory>
     
@@ -48,7 +48,7 @@
     against the current request's mime type, portlet mode and/or
     window state. Best match that corresponds to an actual page wins.
     
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="MatchingPortletPageResolver">
         <set-object property="request" value="service:tapestry.portlet.PortletRequest"/>
         <set-object property="contributions" value="configuration:PageResolverRules"/>
@@ -59,7 +59,7 @@
   
   <service-point id="DefaultPortletPageResolver" interface="PortletPageResolver">
     
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="DefaultPortletPageResolver">
         <set-object property="pageName" value="app-property:org.apache.tapestry.portlet.home-page"/>
       </construct>

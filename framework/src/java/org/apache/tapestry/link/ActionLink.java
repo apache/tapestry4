@@ -22,6 +22,7 @@ import org.apache.tapestry.RenderRewoundException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ActionServiceParameter;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.listener.ListenerInvoker;
 
 /**
  * A component for creating a link that is handled using the action service. [ <a
@@ -53,7 +54,7 @@ public abstract class ActionLink extends AbstractLinkComponent implements IActio
 
         if (cycle.isRewound(this))
         {
-            getListener().actionTriggered(this, cycle);
+            getListenerInvoker().invokeListener(getListener(), this, cycle);
 
             throw new RenderRewoundException(this);
         }
@@ -62,4 +63,6 @@ public abstract class ActionLink extends AbstractLinkComponent implements IActio
     }
 
     public abstract IActionListener getListener();
+
+    public abstract ListenerInvoker getListenerInvoker();
 }

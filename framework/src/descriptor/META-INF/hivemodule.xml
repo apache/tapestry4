@@ -45,6 +45,7 @@
   <sub-module descriptor="tapestry.markup.xml"/>
   <sub-module descriptor="tapestry.error.xml"/>
   <sub-module descriptor="tapestry.valid.xml"/>
+  <sub-module descriptor="tapestry.listener.xml"/>
     
   <service-point id="ClasspathResourceFactory">
   
@@ -131,8 +132,7 @@
     <property name="componentMessagesSource" object="service:ComponentMessagesSource"/>
     <property name="resetEventCoordinator" object="service:ResetEventCoordinator"/>
     <property name="objectPool" object="service:GlobalObjectPool"/>
-    <property name="listenerMapSource" object="service:ListenerMapSource"/>
-  </contribution>
+   </contribution>
   
   <service-point id="ExtensionLookupFactory" interface="org.apache.hivemind.ServiceImplementationFactory">
     
@@ -237,7 +237,7 @@
     Translator that works with ObjectProviders to find or create objects.  This is a duplicate
     of the HiveMind service (which is also private).
       
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct
         class="org.apache.hivemind.service.impl.ObjectTranslator">
         <set-configuration configuration-id="hivemind.ObjectProviders" property="contributions"/>
@@ -261,18 +261,6 @@
     <invoke-factory service-id="InjectedValueProviderFactory"/>
   </service-point>
   
-  <service-point id="ListenerMapSource" interface="org.apache.tapestry.listener.ListenerMapSource">
-    
-    A source for listener maps, which map a listener 
-    method name to the invocation of a public instance method
-    on a particular object.
-    
-    <invoke-factory model="primitive">
-      <construct class="org.apache.tapestry.listener.ListenerMapSourceImpl">
-        <event-listener service-id="ResetEventCoordinator"/>
-      </construct>
-    </invoke-factory>
-    
-  </service-point>
+
 
 </module>

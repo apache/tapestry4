@@ -29,6 +29,7 @@ import org.apache.tapestry.error.ExceptionPresenter;
 import org.apache.tapestry.error.RequestExceptionReporter;
 import org.apache.tapestry.error.StaleLinkExceptionPresenter;
 import org.apache.tapestry.error.StaleSessionExceptionPresenter;
+import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.listener.ListenerMapSource;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -259,11 +260,17 @@ public interface Infrastructure
      */
 
     public StaleLinkExceptionPresenter getStaleLinkExceptionPresenter();
-    
+
     /**
      * Service used to convert and coerce types.
-     * 
+     */
+
+    public ValueConverter getValueConverter();
+
+    /**
+     * Service (possibly a pipeline) that will invoke {@link org.apache.tapestry.IActionListener}
+     * objects.
      */
     
-    public ValueConverter getValueConverter();
+    public ListenerInvoker getListenerInvoker();
 }

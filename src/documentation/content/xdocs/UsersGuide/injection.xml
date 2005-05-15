@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd" [
+  <!ENTITY projectroot '../'>
+  <!ENTITY % links.ent SYSTEM "../links.ent">
+  <!ENTITY % common.ent SYSTEM "common.ent">
+  %links.ent;
+  %common.ent;
+  ]>
+<document>
+  <header>
+    <title>Property Injection</title>
+  </header>
+  <body>
+    
+<p>
+Tapestry 4.0 introduces an entirely new concept into Tapestry application development: property injection.
+By use of the &spec.inject; element in page and component specifications, it is possible
+to add new properties to pages or components.
+</p>    
+
+<p>
+The new properties that are created often are more than just wrappers around an instance variable; in many cases
+they create complex synthetic accessor methods.
+</p>
+
+<p>
+There are four types of property injection built into Tapestry.  These types correspond to the
+type attribute of the &spec.inject; element:
+</p>
+
+<dl>
+  <dt>object</dt>
+  <dd>
+    Injects <link href="hivemind.html">objects defined by the HiveMind Registry</link>.
+  </dd>
+  <dt>state</dt>
+  <dd>
+    Creates a property providing access to an &aso;.
+  </dd>
+  <dt>meta</dt>
+  <dd>
+    Creates properties that allow access to component meta-data properties, and can automatically
+    convert values from strings to other types.
+  </dd>
+  <dt>script</dt>
+  <dd>
+    Creates a property containing a parsed &IScript;, ready to execute.
+  </dd>
+</dl>
+
+<p>
+Like so much in Tapestry, this list is open to extension.  The tapestry.enhance.InjectWorkers configuration point
+defines new types, and the HiveMind services that implement those types.
+</p>
+
+<section id="injection.meta">
+  <title>meta injection</title>
+  
+<p>
+The meta injection type provides a page or component with access to its meta data.  Meta data for a component is primarily provided as
+&spec.meta; tags in the component or page specification.
+</p>
+  
+<p>
+However, meta-data may be specified elsewhere; the search starts in the component (or page) specification, but if not defined there, the
+search continues inside the component's namespace (its application or library specification).  If no value is found there,
+the search continues in the list of application property sources.  In other words, there are multiple places to set defaults, which can
+be overridden.
+</p>
+  
+<p>
+  Beyond wide searching, the other added value for the meta property injection is <em>type coercion</em>.  Meta data always
+  starts as simple strings, but your properties may be of any type.  Tapestry will attempt to coerce the string value to your desired
+  type.
+</p>
+
+<p>
+For example, perhaps you want to use meta-data to control the number of items from some large list that is displayed on a single page.
+You can define the meta-data, and the property in your page or component specification:
+</p>
+  
+<source><![CDATA[
+
+  <meta key="page.size" value="15"/>
+  
+  <inject property="pageSize" type="meta" object="page.size"/>
+
+]]></source>  
+  
+<p>
+You can access the this meta data value in code by defining a property:
+</p>
+
+<source>
+  
+  public abstract int getPageSize();
+  
+</source>
+  
+</section> <!-- injection.meta -->
+
+<section id="injection.script">
+  <title>script injection</title>
+  
+<p>
+Tapestry includes extensive support for creating client-side JavaScript. At the core of this are specialized script templates. These templates
+must be parsed into &IScript; objects in order to be used.  The script injection type hides the details of this process, and simply represents
+the parsed script template as a read-only property.
+</p>
+  
+<p>
+The object is the relative path to the script template; it is evaluated relative to the page or component specification (typically, it is another
+file in the same folder).  
+</p>
+
+<p>
+This example is from the Palette component:
+</p>
+
+<source><![CDATA[
+  <inject property="script" type="script" object="Palette.script"/>
+]]></source>
+
+<p>
+The script can then be executed from the Java code:
+</p>
+
+<source>
+  public abstract IScript getScript();
+
+  . . .   
+  
+  PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
+  
+  getScript().execute(cycle, pageRenderSupport, _symbols);
+</source>
+
+</section>
+    
+  </body>
+</document>

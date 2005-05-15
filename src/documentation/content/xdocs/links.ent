@@ -37,6 +37,7 @@
 <!ENTITY BaseComponent 				'<link href="&apiroot;/BaseComponent.html">BaseComponent</link>'>
 <!ENTITY BaseEngine 				'<link href="&apiroot;/engine/BaseEngine.html">BaseEngine</link>'>
 <!ENTITY BasePage 					'<link href="&apiroot;/html/BasePage.html">BasePage</link>'>
+<!ENTITY ComponentPropertySource	'<link href="&apiroot;/services/ComponentPropertySource.html">ComponentPropertySource</link>'>
 <!ENTITY DataSqueezer 				'<link href="&apiroot;/util/io/DataSqueezer.html">DataSqueezer</link>'>
 <!ENTITY Default 					'<link href="&apiroot;/bean/Default.html">Default</link>'>
 <!ENTITY DefaultMonitorFactory 		'<link href="&apiroot;/engine/DefaultMonitorFactory.html">DefaultMonitorFactory</link>'>

@@ -93,7 +93,7 @@
     
     A pipeline for handling each request.
     
-    <invoke-factory service-id="hivemind.lib.PipelineFactory" model="primitive">
+    <invoke-factory service-id="hivemind.lib.PipelineFactory">
       <create-pipeline filter-interface="ServletRequestServicerFilter"
         configuration-id="ServletRequestServicerPipeline"/>
     </invoke-factory>    
@@ -106,7 +106,7 @@
   </contribution> 
   
   <service-point id="WebRequestServicerPipelineBridge" interface="ServletRequestServicer">
-    <invoke-factory model="primitive">
+    <invoke-factory>
 		  <construct class="impl.WebRequestServicerPipelineBridge">
 			  <set-service property="webRequestServicer" service-id="WebRequestServicer"/>
 			  <set-service property="requestGlobals" service-id="tapestry.globals.RequestGlobals"/>
@@ -126,7 +126,7 @@
 	A secondary pipeline for handling each requests wrapped in the WebRequest abstraction
 	layer.
     
-    <invoke-factory service-id="hivemind.lib.PipelineFactory" model="primitive">
+    <invoke-factory service-id="hivemind.lib.PipelineFactory">
       <create-pipeline filter-interface="WebRequestServicerFilter"
         configuration-id="WebRequestServicerPipeline"/>
     </invoke-factory>    
@@ -141,7 +141,7 @@
     Terminator service for the WebRequestServicerPipeline. This locates an IEngine instance that
     can take control of the remainder of the request.
     
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="impl.InvokeEngineTerminator">
         <set-service property="engineManager" service-id="EngineManager"/>
         <set-service property="infrastructure" service-id="tapestry.Infrastructure"/>
@@ -158,7 +158,7 @@
     application extension).  If the extension exists, then a different HttpServletRequest
     is substituted.
     
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="org.apache.tapestry.request.DecodedRequestInjector">
         <set-object property="applicationSpecification" value="infrastructure:applicationSpecification"/>
       </construct>
@@ -219,7 +219,7 @@
 	
 	Sets the output encoding for the request.
 	
-	<invoke-factory model="primitive">
+	<invoke-factory>
 		<construct class="impl.SetupRequestEncoding">
 			<set-object property="outputEncoding"	value="app-property:org.apache.tapestry.output-encoding"/>
 		</construct>
@@ -231,7 +231,7 @@
 	Uses the ResetEventCoordinator to reset any cached data at the end of the request.
 	Only used during development, not in production.
 	
-	  <invoke-factory model="primitive">
+	  <invoke-factory>
 		  <construct class="impl.DisableCachingFilter">
 			  <set-object property="resetEventCoordinator" value="infrastructure:resetEventCoordinator"/>
 		  </construct>

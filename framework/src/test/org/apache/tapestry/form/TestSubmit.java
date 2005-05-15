@@ -23,6 +23,7 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.listener.ListenerInvokerTerminator;
 import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.easymock.MockControl;
@@ -304,7 +305,7 @@ public class TestSubmit extends BaseFormComponentTest
 
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
-        { "listener", listener });
+        { "listener", listener, "listenerInvoker", new ListenerInvokerTerminator() });
 
         listener.actionTriggered(submit, cycle);
 
@@ -323,7 +324,8 @@ public class TestSubmit extends BaseFormComponentTest
 
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
-        { "listener", listener, "defer", Boolean.TRUE });
+        { "listener", listener, "defer", Boolean.TRUE, "listenerInvoker",
+                new ListenerInvokerTerminator() });
 
         replayControls();
 
@@ -345,16 +347,18 @@ public class TestSubmit extends BaseFormComponentTest
         IActionListener listener = newListener();
         MockForm form = new MockForm();
         MockControl cycleControl = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle)cycleControl.getMock();
+        IRequestCycle cycle = (IRequestCycle) cycleControl.getMock();
 
         Object parameter = new Object();
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
-        { "listener", listener, "defer", Boolean.TRUE, "parameters", parameter });
+        { "listener", listener, "defer", Boolean.TRUE, "parameters", parameter, "listenerInvoker",
+                new ListenerInvokerTerminator() });
 
-        cycle.setListenerParameters(new Object[] { parameter });
+        cycle.setListenerParameters(new Object[]
+        { parameter });
         cycleControl.setMatcher(MockControl.ARRAY_MATCHER);
-        
+
         replayControls();
 
         submit.handleClick(cycle, form);
@@ -375,19 +379,21 @@ public class TestSubmit extends BaseFormComponentTest
         IActionListener listener = newListener();
         MockForm form = new MockForm();
         MockControl cycleControl = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle)cycleControl.getMock();
+        IRequestCycle cycle = (IRequestCycle) cycleControl.getMock();
 
         Collection parameters = new LinkedList();
         parameters.add("p1");
         parameters.add("p2");
-        
+
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
-        { "listener", listener, "defer", Boolean.TRUE, "parameters", parameters });
+        { "listener", listener, "defer", Boolean.TRUE, "parameters", parameters, "listenerInvoker",
+                new ListenerInvokerTerminator() });
 
-        cycle.setListenerParameters(new Object[] { "p1", "p2" });
+        cycle.setListenerParameters(new Object[]
+        { "p1", "p2" });
         cycleControl.setMatcher(MockControl.ARRAY_MATCHER);
-        
+
         replayControls();
 
         submit.handleClick(cycle, form);

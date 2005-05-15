@@ -22,6 +22,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.listener.ListenerInvoker;
 
 /**
  * A component for creating a link using the direct service; used for actions that are not dependant
@@ -101,10 +102,18 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
         if (listener == null)
             throw Tapestry.createRequiredParameterException(this, "listener");
 
-        listener.actionTriggered(this, cycle);
+        getListenerInvoker().invokeListener(listener, this, cycle);
     }
 
     /** @since 2.2 * */
 
     public abstract Object getParameters();
+
+    /**
+     * Injected.
+     * 
+     * @since 4.0
+     */
+
+    public abstract ListenerInvoker getListenerInvoker();
 }

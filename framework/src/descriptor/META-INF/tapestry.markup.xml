@@ -58,7 +58,7 @@
     Source for markup writer instances, used when rendering page-oriented
     responses to the client.
     
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="MarkupWriterSourceImpl">
         <set-configuration property="contributions" configuration-id="MarkupFilters"/>
       </construct>

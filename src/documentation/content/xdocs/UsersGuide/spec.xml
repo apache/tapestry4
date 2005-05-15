@@ -153,7 +153,7 @@ More detailed notes on <link href="upgrade.html">upgrading from Tapestry 3.0 to 
   <title>Property Injection</title>
   
 <p>
-Several of the specification elements are concerned with <em>property injection</em>.  For &spec.inject;,
+Several of the specification elements are concerned with <link href="injection.html">property injection</link>.  For &spec.inject;,
 the entire element exists to describe a property injection; in others (&spec.component;, &spec.bean; and &spec.asset;),
 the injection is just one piece of the behavior defined using the element.
 </p>
@@ -914,8 +914,9 @@ a global service to the application.
   </p>
   
   <p>
-  <em>Injects</em> an object from the &HiveMind; Registry as a read-only property
-  of the page or component.
+  <link href="injection.html">Injects</link> an object into the page or component as a
+  property.  Frequently used to inject <link href="hivemind.xml">HiveMind services</link>
+  into a page or component, but has other uses as well.
   </p>
   
   <table>
@@ -961,20 +962,6 @@ a global service to the application.
 
   </table>
   
-<p>
-For object injection, the object attribute is a reference to a HiveMind object.
-Such an object  contains a prefix, such as "service:", which defines the
-    type of object to locate within the HiveMind Registry.  The string following the prefix locates the specific object to be returned.
-    &HiveMind; provides a 
-    <link href="http://jakarta.apache.org/hivemind/hivemind/ObjectProviders.html">basic set of prefixes</link>;
-    Tapestry adds <link href="hivemind.html#hivemind.inject">several additional prefixes</link>.  This 
-    style of injection results in a read-only property.
-</p>
-
-<p>
-For state injection, the object attribute is the name of the &aso; to inject. This injection
-will result in a read/write property.
-</p>
 </section>  <!-- spec.inject -->
 
 

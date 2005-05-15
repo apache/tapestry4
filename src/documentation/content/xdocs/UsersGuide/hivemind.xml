@@ -135,6 +135,7 @@ public abstract class MyPage extends BasePage
       
     </section>
     <!-- hivemind.inject -->
+     
     <section id="hivemind.bootstrap">
       <title>Bootstrapping the Registry</title>
       <p> The &ApplicationServlet; is responsible for initializing HiveMind's Registry on startup. </p>

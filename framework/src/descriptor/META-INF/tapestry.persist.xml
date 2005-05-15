@@ -46,7 +46,7 @@
     The standard persistence strategy, mapped to the name "session". Simply stores each property as
     an HttpSession attribute.
     
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="SessionPropertyPersistenceStrategy">
         <set-object property="request" value="infrastructure:request"/>
         <set-object property="applicationId" value="infrastructure:applicationId"/>
@@ -73,7 +73,7 @@
     
     Used by other services to locate persistence strategies and run certain operations across all strategies.
     
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="PropertyPersistenceStrategySourceImpl">
         <set-configuration property="contributions" configuration-id="PersistenceStrategy"/>
       </construct>

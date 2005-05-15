@@ -18,6 +18,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.util.Defense;
@@ -205,6 +206,8 @@ public class EnhanceUtils
 
     public static String getUnwrapperMethodName(Class type)
     {
+        Defense.notNull(type, "type");
+
         return (String) _unwrappers.get(type);
     }
 
@@ -224,6 +227,10 @@ public class EnhanceUtils
     public static String createUnwrapExpression(EnhancementOperation op, String bindingName,
             Class valueType)
     {
+        Defense.notNull(op, "op");
+        Defense.notNull(bindingName, "bindingName");
+        Defense.notNull(valueType, "valueType");
+
         StringBuffer buffer = new StringBuffer();
 
         String unwrapper = getUnwrapperMethodName(valueType);
@@ -253,4 +260,39 @@ public class EnhanceUtils
         return buffer.toString();
     }
 
+    /**
+     * Verifies that a property type can be assigned a particular type of value.
+     * 
+     * @param op
+     *            the enhancement operation
+     * @param propertyName
+     *            the name of the property to check
+     * @param requiredType
+     *            the type of value that will be assigned to the property
+     * @return the property type, or java.lang.Object if the class does not define the property
+     */
+    public static Class verifyPropertyType(EnhancementOperation op, String propertyName,
+            Class requiredType)
+    {
+        Defense.notNull(op, "op");
+        Defense.notNull(propertyName, "propertyName");
+        Defense.notNull(requiredType, "requiredType");
+
+        Class propertyType = op.getPropertyType(propertyName);
+
+        // When the property type is not defined, it will end up being
+        if (propertyType == null)
+            return Object.class;
+
+        // Make sure that an object of the required type is assignable
+        // to the property type.
+
+        if (!propertyType.isAssignableFrom(requiredType))
+            throw new ApplicationRuntimeException(EnhanceMessages.wrongTypeForProperty(
+                    propertyName,
+                    propertyType,
+                    requiredType));
+
+        return propertyType;
+    }
 }

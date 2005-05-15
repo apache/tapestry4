@@ -16,7 +16,10 @@ package org.apache.tapestry.enhance;
 
 import java.util.Map;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IRender;
 import org.easymock.MockControl;
 
 /**
@@ -106,6 +109,77 @@ public class TestEnhanceUtils extends HiveMindTestCase
         assertEquals("(java.lang.String) thebinding.getObject(_$class$String)", result);
 
         verifyControls();
+    }
+
+    public void testVerifyPropertyTypeNoProperty()
+    {
+        MockControl opc = newControl(EnhancementOperation.class);
+        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+
+        op.getPropertyType("foo");
+        opc.setReturnValue(null);
+
+        replayControls();
+
+        assertEquals(Object.class, EnhanceUtils.verifyPropertyType(op, "foo", String.class));
+
+        verifyControls();
+    }
+
+    public void testVerifyPropertyTypeSuccess()
+    {
+        MockControl opc = newControl(EnhancementOperation.class);
+        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+
+        op.getPropertyType("foo");
+        opc.setReturnValue(Object.class);
+
+        replayControls();
+
+        assertEquals(Object.class, EnhanceUtils.verifyPropertyType(op, "foo", String.class));
+
+        verifyControls();
+    }
+
+    public void testVerifyPropertyTypeWithDeclaredPropertyType()
+    {
+        MockControl opc = newControl(EnhancementOperation.class);
+        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+
+        op.getPropertyType("foo");
+        opc.setReturnValue(IRender.class);
+
+        replayControls();
+
+        assertEquals(IRender.class, EnhanceUtils.verifyPropertyType(op, "foo", IComponent.class));
+
+        verifyControls();
 
     }
+
+    public void testVerifyPropertyTypeFailure()
+    {
+        MockControl opc = newControl(EnhancementOperation.class);
+        EnhancementOperation op = (EnhancementOperation) opc.getMock();
+
+        op.getPropertyType("foo");
+        opc.setReturnValue(String.class);
+
+        replayControls();
+
+        try
+        {
+            EnhanceUtils.verifyPropertyType(op, "foo", IComponent.class);
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Property foo is type java.lang.String, which is not compatible with org.apache.tapestry.IComponent.",
+                    ex.getMessage());
+        }
+
+        verifyControls();
+
+    }
+
 }

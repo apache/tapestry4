@@ -21,6 +21,7 @@ import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.services.DataSqueezer;
 
 /**
@@ -97,10 +98,7 @@ public abstract class Hidden extends AbstractFormComponent
 
         setValue(value);
 
-        IActionListener listener = getListener();
-
-        if (listener != null)
-            listener.actionTriggered(this, cycle);
+        getListenerInvoker().invokeListener(getListener(), this, cycle);
     }
 
     public abstract String getElementId();
@@ -114,6 +112,14 @@ public abstract class Hidden extends AbstractFormComponent
     public abstract void setValue(Object value);
 
     public abstract IActionListener getListener();
+
+    /**
+     * Injected.
+     * 
+     * @since 4.0
+     */
+
+    public abstract ListenerInvoker getListenerInvoker();
 
     /**
      * Returns false. Hidden components are never disabled.

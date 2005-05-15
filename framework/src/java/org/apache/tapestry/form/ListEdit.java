@@ -24,6 +24,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.services.DataSqueezer;
 
 /**
@@ -76,7 +77,6 @@ public abstract class ListEdit extends AbstractFormComponent
 
         int index = 0;
 
-        IActionListener listener = getListener();
         String element = getElement();
 
         while (i.hasNext())
@@ -96,8 +96,7 @@ public abstract class ListEdit extends AbstractFormComponent
 
             setValue(value);
 
-            if (listener != null)
-                listener.actionTriggered(this, cycle);
+            getListenerInvoker().invokeListener(getListener(), this, cycle);
 
             if (element != null)
             {
@@ -177,4 +176,12 @@ public abstract class ListEdit extends AbstractFormComponent
     /** @since 4.0 */
 
     public abstract ValueConverter getValueConverter();
+
+    /**
+     * Injected.
+     * 
+     * @since 4.0
+     */
+
+    public abstract ListenerInvoker getListenerInvoker();
 }

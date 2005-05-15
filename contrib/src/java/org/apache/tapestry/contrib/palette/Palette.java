@@ -21,11 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.Resource;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -34,12 +31,9 @@ import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.components.Block;
-import org.apache.tapestry.engine.IScriptSource;
-import org.apache.tapestry.form.Form;
 import org.apache.tapestry.form.FormEventType;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.IPropertySelectionModel;
-import org.apache.tapestry.html.Body;
 import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
@@ -160,50 +154,35 @@ import org.apache.tapestry.valid.IValidationDelegate;
  * use to format the palette component:
  * 
  * <pre>
- * 
- *  
- *   
- *    
- *     
- *      
- *       
- *        
- *         
- *          
- *           
- *            TABLE.tapestry-palette TH
- *            {
- *              font-size: 9pt;
- *              font-weight: bold;
- *              color: white;
- *              background-color: #330066;
- *              text-align: center;
- *            }
- *           
- *            TD.available-cell SELECT
- *            {
- *              font-weight: normal;
- *              background-color: #FFFFFF;
- *              width: 200px;
- *            }
- *            
- *            TD.selected-cell SELECT
- *            {
- *              font-weight: normal;
- *              background-color: #FFFFFF;
- *              width: 200px;
- *            }
- *            
- *            TABLE.tapestry-palette TD.controls
- *            {
- *              text-align: center;
- *              vertical-align: middle;
- *              width: 60px;
- *            }
- *     
- *    
- *   
- *  
+ *                 TABLE.tapestry-palette TH
+ *                 {
+ *                   font-size: 9pt;
+ *                   font-weight: bold;
+ *                   color: white;
+ *                   background-color: #330066;
+ *                   text-align: center;
+ *                 }
+ *                
+ *                 TD.available-cell SELECT
+ *                 {
+ *                   font-weight: normal;
+ *                   background-color: #FFFFFF;
+ *                   width: 200px;
+ *                 }
+ *                 
+ *                 TD.selected-cell SELECT
+ *                 {
+ *                   font-weight: normal;
+ *                   background-color: #FFFFFF;
+ *                   width: 200px;
+ *                 }
+ *                 
+ *                 TABLE.tapestry-palette TD.controls
+ *                 {
+ *                   text-align: center;
+ *                   vertical-align: middle;
+ *                   width: 60px;
+ *                 }
  * </pre>
  * 
  * @author Howard Lewis Ship
@@ -219,12 +198,6 @@ public abstract class Palette extends BaseComponent implements IFormComponent
      */
 
     private Map _symbols;
-
-    /**
-     * A cached copy of the script used with the component.
-     */
-
-    private IScript _script;
 
     /** @since 3.0 * */
     public abstract void setAvailableColumn(PaletteColumn column);
@@ -298,21 +271,6 @@ public abstract class Palette extends BaseComponent implements IFormComponent
      */
     private void runScript(IRequestCycle cycle)
     {
-        // Get the script, if not already gotten. Scripts are re-entrant, so it is
-        // safe to share this between instances of Palette.
-
-        if (_script == null)
-        {
-            IEngine engine = getPage().getEngine();
-            // Note: this should be injected ...
-            IScriptSource source = engine.getScriptSource();
-
-            Resource scriptResource = getSpecification().getSpecificationLocation()
-                    .getRelativeResource("Palette.script");
-
-            _script = source.getScript(scriptResource);
-        }
-
         PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
 
         setImage(pageRenderSupport, cycle, "selectImage", getSelectImage());
@@ -330,7 +288,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
         _symbols.put("palette", this);
 
-        _script.execute(cycle, pageRenderSupport, _symbols);
+        getScript().execute(cycle, pageRenderSupport, _symbols);
     }
 
     /**
@@ -515,4 +473,11 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
     public abstract void setSelected(List selected);
 
+    /**
+     * Injected.
+     * 
+     * @since 4.0
+     */
+
+    public abstract IScript getScript();
 }
