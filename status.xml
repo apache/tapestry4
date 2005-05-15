@@ -61,6 +61,8 @@
       <action type="add" dev="HLS" fixes-bug="TAPESTRY-323"> Allow control over the ErrorHandler used when building the HiveMind Registry. </action>
       <action type="update" dev="HLS"> Remove &lt;inject-state&gt;, and add type attribute to &lt;inject&gt;.</action>
       <action type="fix" due-to="Richard Hensley">Fix some problems with the TestRestartService test suite.</action>
+      <action type="add" dev="RLS" fixes-bug="TAPESTRY-325">Added defer parameters parameter to LinkSubmit.</action>
+      <action type="add" dev="RLS" fixes-bug="TAPESTRY-326">Added listener parameters to Form submitting components.</action>
     </release>
     <release version="4.0-alpha-2" date="May 5 2005">
       <action type="update" dev="HLS"> Coordinate Locale changes with the hivemind.ThreadLocale service. </action>

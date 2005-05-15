@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.form;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IBinding;
@@ -322,6 +325,69 @@ public class TestSubmit extends BaseFormComponentTest
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
         { "listener", listener, "defer", Boolean.TRUE });
 
+        replayControls();
+
+        submit.handleClick(cycle, form);
+
+        verifyControls();
+
+        listener.actionTriggered(submit, cycle);
+
+        replayControls();
+
+        form.runDeferred();
+
+        verifyControls();
+    }
+
+    public void testTriggerWithDeferredListenerAndSingleParameter()
+    {
+        IActionListener listener = newListener();
+        MockForm form = new MockForm();
+        MockControl cycleControl = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle)cycleControl.getMock();
+
+        Object parameter = new Object();
+        Creator creator = new Creator();
+        Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
+        { "listener", listener, "defer", Boolean.TRUE, "parameters", parameter });
+
+        cycle.setListenerParameters(new Object[] { parameter });
+        cycleControl.setMatcher(MockControl.ARRAY_MATCHER);
+        
+        replayControls();
+
+        submit.handleClick(cycle, form);
+
+        verifyControls();
+
+        listener.actionTriggered(submit, cycle);
+
+        replayControls();
+
+        form.runDeferred();
+
+        verifyControls();
+    }
+
+    public void testTriggerWithDeferredListenerAndMultipleParameters()
+    {
+        IActionListener listener = newListener();
+        MockForm form = new MockForm();
+        MockControl cycleControl = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle)cycleControl.getMock();
+
+        Collection parameters = new LinkedList();
+        parameters.add("p1");
+        parameters.add("p2");
+        
+        Creator creator = new Creator();
+        Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
+        { "listener", listener, "defer", Boolean.TRUE, "parameters", parameters });
+
+        cycle.setListenerParameters(new Object[] { "p1", "p2" });
+        cycleControl.setMatcher(MockControl.ARRAY_MATCHER);
+        
         replayControls();
 
         submit.handleClick(cycle, form);

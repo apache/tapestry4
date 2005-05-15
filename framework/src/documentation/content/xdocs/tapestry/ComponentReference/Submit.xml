@@ -150,6 +150,30 @@ is notified.
       before the enclosing &Form;'s listener.
     </td>
    </tr>
+   <tr>
+    <td>parameters</td>
+    <td>Object</td>
+    <td>in</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>ognl</td>
+    <td>
+      Parameter(s) gathered at the time the button is triggered, 
+      supplied as listener parameters in the IRequestCycle
+      available to the listener.  
+      <p>
+      If the parameter is a Collection, it will be converted to
+      an Object array (to match the IRequestCycle getListenerParameters()
+      signature).
+      </p>
+      <p>
+      Allows deferred listeners 
+      (defer = true) access to any rewind state not conveniently
+      placed using tag/selected (e.g. when there are multiple objects
+      to select as might happen with a nested Foreach).
+      </p>
+    </td>
+   </tr>
 	</table>
   
 <p>
