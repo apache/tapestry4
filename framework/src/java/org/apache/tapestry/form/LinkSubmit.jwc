@@ -25,19 +25,28 @@
   Creates a hyperlink that submits its enclosing form using JavaScript.
   </description>
 
-  <parameter name="listener">
-  	<description>
-	    The listener is invoked during the rewind as the link component is encountered.  This is
-	    both attractive and dangerous when combined with a form.  When the listener is
-	    invoked, the form has not completely rewound, so not all form values have necessarily
-	    been processed, so the listener might be performing its logic based on inconsistent
-	    data.
-  	</description>
-  </parameter>
-  	
   <parameter name="disabled"/>
   <parameter name="selected"/>
   <parameter name="tag"/>
+  
+  <parameter name="listener" default-binding="listener">
+      <description>
+          A listener that is notified if this component is triggered.
+      </description>
+  </parameter>
+  <parameter name="defer" default-binding="ognl" default-value="true">
+      <description>
+          If true (the default), then any listener notification is deferred
+          until just before the form's listener is invoked.
+      </description>
+  </parameter>
+  <parameter name="parameters" default-binding="ognl">
+    <description>
+    An object, or list of objects, gathered when the link is triggered and 
+    made available as listener parameters in the request cycle, making
+    the parameters available to a deferred listener.
+    </description>
+  </parameter>
 
   <reserved-parameter name="name"/>
   <reserved-parameter name="href"/>

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+//Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
@@ -30,48 +28,22 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard Lewis Ship
  */
 
-public abstract class Submit extends AbstractFormComponent
+public abstract class Submit extends AbstractSubmit
 {
+	protected boolean isClicked(IRequestCycle cycle, String name)
+	{
+        // How to know which Submit button was actually
+        // clicked? When submitted, it produces a request parameter
+        // with its name and value (the value serves double duty as both
+        // the label on the button, and the parameter value).
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-    {
-        IForm form = getForm(cycle);
-
-        if (form.wasPrerendered(writer, this))
-            return;
-
-        boolean rewinding = form.isRewinding();
-
-        String name = form.getElementId(this);
-
-        setName(name);
-
-        if (rewinding)
-        {
-            // Don't bother doing anything if disabled.
-
-            if (isDisabled())
-                return;
-
-            // How to know which Submit button was actually
-            // clicked? When submitted, it produces a request parameter
-            // with its name and value (the value serves double duty as both
-            // the label on the button, and the parameter value).
-
-            String value = cycle.getParameter(name);
-
-            // If the value isn't there, then this button wasn't
-            // selected.
-
-            if (value == null)
-                return;
-
-            handleClick(cycle, form);
-
-            return;
-        }
-
-        writer.beginEmpty("input");
+        // If the value isn't there, then this button wasn't
+        // selected.
+        return cycle.getParameter(name) != null;
+	}
+	
+    protected void writeTag(IMarkupWriter writer, IRequestCycle cycle, String name) {
+		writer.beginEmpty("input");
         writer.attribute("type", "submit");
         writer.attribute("name", name);
 
@@ -86,54 +58,9 @@ public abstract class Submit extends AbstractFormComponent
         renderInformalParameters(writer, cycle);
 
         writer.closeTag();
-    }
-
-    void handleClick(final IRequestCycle cycle, IForm form)
-    {
-        if (isParameterBound("selected"))
-            setSelected(getTag());
-
-        final IActionListener listener = getListener();
-
-        if (listener == null)
-            return;
-
-        // Have a listener; notify it now, or defer for later?
-
-        Runnable notify = new Runnable()
-        {
-            public void run()
-            {
-                listener.actionTriggered(Submit.this, cycle);
-            }
-        };
-
-        if (getDefer())
-            form.addDeferredRunnable(notify);
-        else
-            notify.run();
-    }
+	}
 
     /** parameter */
-
     public abstract String getLabel();
 
-    /** parameter */
-
-    public abstract boolean isDisabled();
-
-    /** parameter */
-
-    public abstract IActionListener getListener();
-
-    /** parameter */
-
-    public abstract Object getTag();
-
-    /** parameter */
-
-    public abstract void setSelected(Object tag);
-
-    /** parameter */
-    public abstract boolean getDefer();
 }

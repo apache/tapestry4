@@ -55,6 +55,13 @@
           until just before the form's listener is invoked.
       </description>
   </parameter>
+  <parameter name="parameters" default-binding="ognl">
+    <description>
+    An object, or list of objects, gathered when the button is triggered and 
+    made available as listener parameters in the request cycle, making
+    the parameters available to a deferred listener.
+    </description>
+  </parameter>
   
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>
