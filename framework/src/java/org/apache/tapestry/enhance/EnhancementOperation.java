@@ -53,21 +53,20 @@ public interface EnhancementOperation
     public void addField(String name, Class type);
 
     /**
-     * Adds a field containing an initial value. The EnhancementOperation will ensure that the value
-     * is passed into the enhanced class' constructor and assigned. This method may be called
-     * multiple times with the same value and will return the name variable name (an identity map is
-     * kept internally).
+     * Adds a field containing an initial value, which is injected into the class via its fabricated
+     * constructor. This method may be called multiple times with the same value and will return the
+     * same variable name (an identity map is kept internally).
      * 
      * @param fieldName
-     *            The name of the field, used if a new field (and contructor argument) is being
-     *            created. Only used if a field for the value doesn't exist.
+     *            The default name for the field, used if a new field (and contructor argument) is
+     *            being created. Only used if a field for the value doesn't exist.
      * @param value
      *            the value to be referenced, which may not be null
-     * @return the name of the field (which may be fieldName, or maybe not, if some other
-     *         enhancement worker created the field first).
+     * @return the name of the field containing the value. This may or may not match fieldName. The
+     *         provided fieldName may be modified to prevent naming conflicts.
      */
 
-    public String addFinalField(String fieldName, Object value);
+    public String addInjectedField(String fieldName, Object value);
 
     /**
      * Converts a type name (an object class name, a primtive name, or an array) into the

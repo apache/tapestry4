@@ -48,7 +48,7 @@ public class InjectScriptWorker implements InjectEnhancementWorker
 
         DeferredScript script = new DeferredScriptImpl(resource, _source, spec.getLocation());
 
-        String fieldName = op.addFinalField("_$script", script);
+        String fieldName = op.addInjectedField("_$script", script);
 
         MethodSignature sig = new MethodSignature(propertyType, methodName, null, null);
 
