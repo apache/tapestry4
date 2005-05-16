@@ -154,12 +154,6 @@
         <item label="Tapestry and HiveMind Blog"
         	href="http://howardlewisship.com/blog/"/>
     </info>
-
-    
-	<!-- complete-site label="Complete Site">
-		<complete-html label="HTML" href="site.html"/>
-		<complete-pdf label="PDF" href="site.pdf"/>
-	</complete-site -->    
     
     <related label="Related Projects">
       <appfuse label="AppFuse" href="https://appfuse.dev.java.net/"/> 
