@@ -78,6 +78,7 @@
 <!ENTITY IResourceResolver 			'<link href="&apiroot;/IResourceResolver.html">IResourceResolver</link>'>
 <!ENTITY IRequestCycle 				'<link href="&apiroot;/IRequestCycle.html">IRequestCycle</link>'>
 <!ENTITY IRequestDecoder 			'<link href="&apiroot;/request/IRequestDecoder.html">IRequestDecoder</link>'>
+<!ENTITY IScript					'<link href="&apiroot;/IScript.html">IScript</link>'>
 <!ENTITY IScriptSource 				'<link href="&apiroot;/engine/IScriptSource.html">IScriptSource</link>'>
 <!ENTITY ISpecificationSource 		'<link href="&apiroot;/engine/ISpecificationSource.html">ISpecificationSource</link>'>
 <!ENTITY ISpecificationResolverDelegate
