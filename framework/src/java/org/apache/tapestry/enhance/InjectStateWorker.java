@@ -50,7 +50,7 @@ public class InjectStateWorker implements InjectEnhancementWorker
 
         op.addField(fieldName, propertyType);
 
-        String managerField = op.addFinalField(
+        String managerField = op.addInjectedField(
                 "_$applicationStateManager",
                 _applicationStateManager);
 

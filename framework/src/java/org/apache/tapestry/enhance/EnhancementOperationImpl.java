@@ -95,7 +95,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
     private BodyBuilder _constructorBuilder;
 
     /**
-     * Makes sure that names created by {@link #addFinalField(String, Object)} have unique names.
+     * Makes sure that names created by {@link #addInjectedField(String, Object)} have unique names.
      */
 
     private final IdAllocator _idAllocator = new IdAllocator();
@@ -231,7 +231,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
         _classFab.addField(name, type);
     }
 
-    public String addFinalField(String fieldName, Object value)
+    public String addInjectedField(String fieldName, Object value)
     {
         Defense.notNull(fieldName, "fieldName");
         Defense.notNull(value, "value");
@@ -371,7 +371,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         String fieldName = buffer.toString();
 
-        return addFinalField(fieldName, clazz);
+        return addInjectedField(fieldName, clazz);
     }
 
     /**

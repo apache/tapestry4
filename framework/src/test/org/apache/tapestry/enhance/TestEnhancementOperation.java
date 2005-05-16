@@ -375,7 +375,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testAddFinalField()
+    public void testAddInjectedField()
     {
         IComponentSpecification spec = newSpec();
 
@@ -398,7 +398,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
                 spec, BaseComponent.class, cf);
 
-        assertEquals("fred", eo.addFinalField("fred", "FRED_VALUE"));
+        assertEquals("fred", eo.addInjectedField("fred", "FRED_VALUE"));
 
         verifyControls();
 
@@ -408,7 +408,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         replayControls();
 
-        assertEquals("fred$0", eo.addFinalField("fred", map));
+        assertEquals("fred$0", eo.addInjectedField("fred", map));
 
         verifyControls();
 

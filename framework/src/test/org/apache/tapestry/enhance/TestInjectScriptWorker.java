@@ -57,7 +57,7 @@ public class TestInjectScriptWorker extends HiveMindTestCase
         op.getAccessorMethodName("foo");
         opc.setReturnValue("getFoo");
 
-        op.addFinalField("_$script", new DeferredScriptImpl(scriptResource, source,
+        op.addInjectedField("_$script", new DeferredScriptImpl(scriptResource, source,
                 injectSpecLocation));
         opc.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
         { null, new ArgumentMatcher()

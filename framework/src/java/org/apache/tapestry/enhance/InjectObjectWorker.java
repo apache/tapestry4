@@ -57,7 +57,7 @@ public class InjectObjectWorker implements InjectEnhancementWorker
                     injectedValue,
                     propertyType), is.getLocation(), null);
 
-        op.addFinalField(fieldName, injectedValue);
+        op.addInjectedField(fieldName, injectedValue);
 
         String methodName = EnhanceUtils.createAccessorMethodName(name);
 

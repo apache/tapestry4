@@ -64,7 +64,7 @@ public class TestInjectMetaWorker extends HiveMindTestCase
 
         MethodSignature sig = new MethodSignature(int.class, "getFooBar", null, null);
 
-        op.addFinalField(InjectMetaWorker.SOURCE_NAME, source);
+        op.addInjectedField(InjectMetaWorker.SOURCE_NAME, source);
         control.setReturnValue("_source");
 
         op.getAccessorMethodName("fooBar");
@@ -105,7 +105,7 @@ public class TestInjectMetaWorker extends HiveMindTestCase
 
         MethodSignature sig = new MethodSignature(char.class, "getFooBar", null, null);
 
-        op.addFinalField(InjectMetaWorker.SOURCE_NAME, source);
+        op.addInjectedField(InjectMetaWorker.SOURCE_NAME, source);
         control.setReturnValue("_source");
 
         op.getAccessorMethodName("fooBar");
@@ -147,13 +147,13 @@ public class TestInjectMetaWorker extends HiveMindTestCase
 
         MethodSignature sig = new MethodSignature(Object.class, "getFooBar", null, null);
 
-        op.addFinalField(InjectMetaWorker.SOURCE_NAME, source);
+        op.addInjectedField(InjectMetaWorker.SOURCE_NAME, source);
         control.setReturnValue("_source");
 
         op.getAccessorMethodName("fooBar");
         control.setReturnValue("getFooBar");
 
-        op.addFinalField("_$valueConverter", converter);
+        op.addInjectedField("_$valueConverter", converter);
         control.setReturnValue("vc");
 
         op.getClassReference(Object.class);

@@ -65,7 +65,7 @@ public class TestInjectStateWorker extends HiveMindTestCase
         op.claimProperty("fred");
         op.addField("_$fred", Map.class);
 
-        op.addFinalField("_$applicationStateManager", asm);
+        op.addInjectedField("_$applicationStateManager", asm);
         opc.setReturnValue("_$applicationStateManager");
 
         op.getAccessorMethodName("fred");
