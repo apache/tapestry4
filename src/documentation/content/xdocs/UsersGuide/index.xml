@@ -57,7 +57,7 @@ with the objects.
 
 <p>
 This can take some getting used to. You don't write servlets in Tapestry, you write
-<em>listener methods</em>.  You don't build URLs to servlets either -- you
+&listener-method;s.  You don't build URLs to servlets either -- you
 use an existing component (such as &DirectLink;) and configure its <code>listener</code> parameter
 to invoke your listener method.  What does a listener method do? It interacts with backend systems (often,
 stateless session EJBs) or does other bookkeeping related to the request and selects a new page to provide

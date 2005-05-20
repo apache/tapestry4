@@ -28,11 +28,13 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> Generates the &lt;body&gt; element for the page, and is involved in generating and organizing the JavaScript on
+  the page. You should always use the Body component for your &lt;body&gt; tag, since you can never
+  know which components within the page will require the services it provides.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/html/Body.html">org.apache.tapestry.html.Body</link>, &Rollover;, &Script;</strong> 
 </p>
 
 <section>
@@ -45,17 +47,28 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
+    <th>Default Binding</th>
     <th>Description</th>
+  </tr>
+
+  <tr>
+    <td>element</td>
+    <td>string</td>
+    <td>in</td>
+    <td>no</td>
+    <td>body</td>
+    <td>literal</td>
+    <td>The element to use; this can be overriden, for example, when the Body component is used to generate a &lt;frameset&gt;.</td>
   </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
@@ -64,9 +77,5 @@
 
 </section>
 
-<section>
-  <title>Examples</title>
-
-</section>
 </body>
 </document>

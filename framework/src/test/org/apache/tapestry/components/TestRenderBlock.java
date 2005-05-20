@@ -19,7 +19,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.components.RenderBlock}&nbsp;component.
+ * Tests for {@link org.apache.tapestry.components.RenderBlock} component.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -31,7 +31,7 @@ public class TestRenderBlock extends BaseComponentTestCase
         RenderBlock rb = (RenderBlock) newInstance(RenderBlock.class);
 
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newRequestCycle();
+        IRequestCycle cycle = newCycle();
 
         replayControls();
 
@@ -49,49 +49,13 @@ public class TestRenderBlock extends BaseComponentTestCase
         { "block", b });
 
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newRequestCycle();
+        IRequestCycle cycle = newCycle();
 
-        b.getInserter();
-        bc.setReturnValue(null);
-
-        b.setInserter(rb);
-
-        b.renderBody(writer, cycle);
-
-        b.setInserter(null);
+        b.renderForComponent(writer, cycle, rb);
 
         replayControls();
 
         rb.render(writer, cycle);
-
-        verifyControls();
-    }
-
-    public void testSecondInserter()
-    {
-        MockControl bc = newControl(Block.class);
-        Block b = (Block) bc.getMock();
-
-        RenderBlock rb1 = (RenderBlock) newInstance(RenderBlock.class, new Object[]
-        { "block", b });
-
-        RenderBlock rb2 = (RenderBlock) newInstance(RenderBlock.class);
-
-        IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newRequestCycle();
-
-        b.getInserter();
-        bc.setReturnValue(rb2);
-
-        b.setInserter(rb1);
-
-        b.renderBody(writer, cycle);
-
-        b.setInserter(rb2);
-
-        replayControls();
-
-        rb1.render(writer, cycle);
 
         verifyControls();
     }

@@ -14,9 +14,13 @@
 
 package org.apache.tapestry.components;
 
+import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IBinding;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IPage;
+import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
@@ -49,18 +53,29 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         return getCreator().newInstance(componentClass, properties);
     }
 
-    protected IRequestCycle newRequestCycle()
+    protected IRequestCycle newCycle()
     {
         return (IRequestCycle) newMock(IRequestCycle.class);
     }
 
-    protected IRequestCycle newRequestCycle(boolean rewinding)
+    protected IRequestCycle newCycle(boolean rewinding)
     {
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) control.getMock();
 
         cycle.isRewinding();
         control.setReturnValue(rewinding);
+
+        return cycle;
+    }
+
+    protected IRequestCycle newCycle(String pageName, IPage page)
+    {
+        MockControl control = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) control.getMock();
+
+        cycle.getPage(pageName);
+        control.setReturnValue(page);
 
         return cycle;
     }
@@ -74,22 +89,57 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     {
         MockControl control = newControl(IBinding.class);
         IBinding binding = (IBinding) control.getMock();
-    
+
         binding.getObject();
         control.setReturnValue(value);
-    
+
         return binding;
+    }
+
+    protected IComponent newComponent(String extendedId, Location location)
+    {
+        MockControl control = newControl(IComponent.class);
+        IComponent component = (IComponent) control.getMock();
+
+        component.getExtendedId();
+        control.setReturnValue(extendedId);
+
+        component.getLocation();
+        control.setReturnValue(location);
+
+        return component;
     }
 
     protected IComponentSpecification newSpec(String parameterName, IParameterSpecification pspec)
     {
         MockControl control = newControl(IComponentSpecification.class);
         IComponentSpecification spec = (IComponentSpecification) control.getMock();
-    
+
         spec.getParameter(parameterName);
         control.setReturnValue(pspec);
-    
+
         return spec;
+    }
+
+    protected IRender newRender()
+    {
+        return (IRender) newMock(IRender.class);
+    }
+
+    protected IPage newPage()
+    {
+        return (IPage) newMock(IPage.class);
+    }
+
+    protected IPage newPage(String name)
+    {
+        MockControl control = newControl(IPage.class);
+        IPage page = (IPage) control.getMock();
+
+        page.getPageName();
+        control.setReturnValue(name);
+
+        return page;
     }
 
 }

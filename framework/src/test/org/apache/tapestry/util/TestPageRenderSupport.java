@@ -17,15 +17,13 @@ package org.apache.tapestry.util;
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 
-import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.markup.AsciiMarkupFilter;
 import org.apache.tapestry.markup.MarkupWriterImpl;
@@ -39,14 +37,30 @@ import org.easymock.MockControl;
  */
 public class TestPageRenderSupport extends HiveMindTestCase
 {
-    private IEngineService newService()
+    private AssetFactory newAssetFactory()
     {
-        return (IEngineService) newMock(IEngineService.class);
+        return (AssetFactory) newMock(AssetFactory.class);
     }
 
     private IRequestCycle newCycle()
     {
         return (IRequestCycle) newMock(IRequestCycle.class);
+    }
+
+    private Resource newResource()
+    {
+        return (Resource) newMock(Resource.class);
+    }
+
+    private IAsset newAsset(IRequestCycle cycle, String url)
+    {
+        MockControl control = newControl(IAsset.class);
+        IAsset asset = (IAsset) control.getMock();
+
+        asset.buildURL(cycle);
+        control.setReturnValue(url);
+
+        return asset;
     }
 
     private ILink newLink(String URL)
@@ -98,12 +112,12 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
     public void testGetLocation()
     {
-        IEngineService service = newService();
+        AssetFactory factory = newAssetFactory();
         Location l = newLocation();
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, "", l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l);
 
         assertSame(l, prs.getLocation());
 
@@ -112,14 +126,14 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
     public void testGetPreloadedImageReference()
     {
-        IEngineService service = newService();
+        AssetFactory factory = newAssetFactory();
         Location l = newLocation();
         IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, "", l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l);
 
         assertEquals("tapestry_preload[0].src", prs.getPreloadedImageReference("/foo/bar.gif"));
         assertEquals("tapestry_preload[1].src", prs.getPreloadedImageReference("/zip/zap.png"));
@@ -143,14 +157,14 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
     public void testPreloadedImagesInNamespace()
     {
-        IEngineService service = newService();
+        AssetFactory factory = newAssetFactory();
         Location l = newLocation();
         IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, "NAMESPACE", l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "NAMESPACE", l);
 
         assertEquals("NAMESPACE_preload[0].src", prs.getPreloadedImageReference("/foo/bar.gif"));
 
@@ -167,14 +181,14 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
     public void testAddBodyScript()
     {
-        IEngineService service = newService();
+        AssetFactory factory = newAssetFactory();
         Location l = newLocation();
         IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, "", l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l);
 
         prs.addBodyScript("myBodyScript();");
 
@@ -189,12 +203,12 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
     public void testGetUniqueString()
     {
-        IEngineService service = newService();
+        AssetFactory factory = newAssetFactory();
         Location l = newLocation();
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, "", l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l);
 
         assertEquals("foo", prs.getUniqueString("foo"));
         assertEquals("foo$0", prs.getUniqueString("foo"));
@@ -204,15 +218,14 @@ public class TestPageRenderSupport extends HiveMindTestCase
         verifyControls();
     }
 
-    
     public void testGetUniqueStringWithNamespace()
     {
-        IEngineService service = newService();
+        AssetFactory factory = newAssetFactory();
         Location l = newLocation();
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, "NAMESPACE", l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "NAMESPACE", l);
 
         assertEquals("fooNAMESPACE", prs.getUniqueString("foo"));
         assertEquals("fooNAMESPACE$0", prs.getUniqueString("foo"));
@@ -224,13 +237,13 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
     public void testAddInitializationScript()
     {
-        IEngineService service = newService();
+        AssetFactory factory = newAssetFactory();
         Location l = newLocation();
         IMarkupWriter writer = newWriter();
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(service, "", l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l);
 
         prs.addInitializationScript("myInitializationScript1();");
         prs.addInitializationScript("myInitializationScript2();");
@@ -248,39 +261,38 @@ public class TestPageRenderSupport extends HiveMindTestCase
     {
         String newline = System.getProperty("line.separator");
 
-        Location l = newLocation();
-        ClassResolver resolver = new DefaultClassResolver();
-        Resource filea = new ClasspathResource(resolver, "org/apache/tapestry/utils/filea.txt");
-        Resource fileb = new ClasspathResource(resolver, "org/apache/tapestry/utils/fileb.txt");
-
-        MockControl assetServicec = newControl(IEngineService.class);
-        IEngineService assetService = (IEngineService) assetServicec.getMock();
-
         IRequestCycle cycle = newCycle();
-
-        assetService.getLink(cycle, "org/apache/tapestry/utils/filea.txt");
-        assetServicec.setReturnValue(newLink("/app?filea.txt"));
-
-        assetService.getLink(cycle, "org/apache/tapestry/utils/fileb.txt");
-        assetServicec.setReturnValue(newLink("/app?fileb.txt"));
 
         IMarkupWriter writer = newWriter();
 
+        MockControl assetFactoryc = newControl(AssetFactory.class);
+        AssetFactory assetFactory = (AssetFactory) assetFactoryc.getMock();
+
+        Resource script1 = newResource();
+        IAsset asset1 = newAsset(cycle, "/script1.js");
+        Resource script2 = newResource();
+        IAsset asset2 = newAsset(cycle, "/script2.js");
+
+        assetFactory.createAsset(script1, null);
+        assetFactoryc.setReturnValue(asset1);
+
+        assetFactory.createAsset(script2, null);
+        assetFactoryc.setReturnValue(asset2);
+
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(assetService, "", l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(assetFactory, "", null);
 
-        prs.addExternalScript(filea);
-        prs.addExternalScript(fileb);
-        prs.addExternalScript(filea);
+        prs.addExternalScript(script1);
+        prs.addExternalScript(script2);
+        prs.addExternalScript(script1);
 
         prs.writeBodyScript(writer, cycle);
 
         // PageRenderSupport is a little sloppy about using \n for a newline, vs. using
         // the property line seperator sequence and it bites us right here.
 
-        assertOutput(scriptTagFor("/app?filea.txt") + newline + scriptTagFor("/app?fileb.txt")
-                + newline);
+        assertOutput(scriptTagFor("/script1.js") + newline + scriptTagFor("/script2.js") + newline);
 
         verifyControls();
     }

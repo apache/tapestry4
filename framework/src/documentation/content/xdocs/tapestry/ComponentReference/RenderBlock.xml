@@ -28,11 +28,19 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> Renders the body of a &Block; component, which may be selected dynamically.  The &Block; may be on the same page as the RenderBlock or on another page
+  entirely.
 </p>
 
+<warning>
+The &PageBeginRenderListener; (and &PageEndRenderListener;) event notications only go to the <em>active page</em> (the active
+page is the page that renders the response).  It is possible to pass
+a &Block; from an entirely different page to a RenderBlock, but render listeners of both types on the non-active pages will <em>not</em> be
+notified.
+</warning>
+
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/components/RenderBlock.html">org.apache.tapestry.components.RenderBlock</link>, &Block;</strong> 
 </p>
 
 <section>
@@ -45,27 +53,257 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
+    <th>Default binding</th>
     <th>Description</th>
+  </tr>
+  
+  <tr>
+    <td>block</td>
+    <td>&Block;</td>
+    <td>in</td>
+    <td>yes</td>
+    <td>&nbsp;</td>
+    <td>component</td>
+    <td>The &Block; to render. </td>
   </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
   Reserved parameters: <em>none</em>
 </p>
 
+<p>
+Informal parameters are allowed, but are not used by the RenderBlock component.  Instead, they are used to pass information to the &Block;
+itself.  The Block's invoker property will be the &RenderBlock; that invokes it (in 3.0, this property was called "inserter", which is
+maintained for backwards compatibility).  The parameters of the RenderBlock are available via the getParameter() method of &Block;.  This is most useful when
+the RenderBlock and Block are contained within different components or even different pages.
+</p>
+
 </section>
 
 <section>
-  <title>Examples</title>
+  <title>Example</title>
+
+<p>
+   This example shows a page with a custom TabPanel component. When a user selects a tab, TabPanel switches content. Each tab content is defined by a Block.
+   The final result shows a tab view that highlights the currently selected tab:
+   
+</p>
+
+<figure src="&projectroot;/images/tapestry/ComponentReference/RenderBlock.png"/>
+    
+<p>
+First we'll show a page that makes use of the TabPanel component.
+</p>    
+    
+<p>TabTest.html:</p>    
+
+<source><![CDATA[
+<html jwcid="@Shell" title="TabPanel Test">
+  <body>
+  <span jwcid="@TabPanel" blockNames="{'berlin', 'rome', 'tokyo'}" selectColor="#FFFF00" unSelectColor="#CCFFFF" borderColor="#00CC33"/>
+
+  <span jwcid="berlin@Block">
+    <h1>Berlin</h1>
+  </span>
+
+  <span jwcid="rome@Block">
+    <h1>Rome</h1>
+  </span>
+
+  <span jwcid="tokyo@Block">
+    <h1>Tokyo</h1>
+  </span>
+  </body>
+</html>
+]]></source>   
+
+<p>
+For simplicity, this example uses an <em>engineered naming coincidence</em>: the names of the &Block; components matches the 
+localized message key used to obtain the title.  In this case, the Blocks contain just a snippet of HTML ... but they could contain
+any valid markup, including components, links, forms, or other complex components.  The use of &OGNL; makes it easy to assemble a list
+of strings, the component ids for the Blocks, and pass that list into the TabPanel component.
+</p> 
+  
+<p>
+TabTest.properties:
+</p>
+
+<source>
+berlin=Berlin
+rome=Rome
+tokyo=Tokyo
+</source>
+
+<p>
+Most of the interesting parts, including the use of the RenderBlock component, occurs inside the TabPanel component specification and template.
+</p>
+
+<p>TabPanel.html:</p>
+
+<source><![CDATA[
+<table border="0" width="50%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="10">&nbsp;</td>
+    <td>
+      <table border="0" cellspacing="0" cellpadding="5">
+        <tr>
+          <span jwcid="loop">
+            <td jwcid="tab">
+              <a jwcid="link">
+                <span jwcid="@Insert" value="container.messages.getMessage(blockId)">Tab Title</span>
+              </a>
+            </td>
+            <td width="1"></td>
+          </span>
+        </tr>
+      </table>
+    </td>
+    <td width="10">&nbsp;</td>
+  </tr>
+  <tr>
+    <td jwcid="@Any" height="5" bgcolor="ognl:borderColor" colspan="3">&nbsp;</td>
+  </tr>
+  <tr>
+    <td jwcid="@Any" width="10" bgcolor="ognl:borderColor">&nbsp;</td>
+    <td align="center">
+      <span jwcid="@RenderBlock" block="ognl:selectedBlock">Page content goes here</span>
+    </td>
+    <td jwcid="@Any" width="10" bgcolor="ognl:borderColor">&nbsp;</td>
+  </tr>
+  <tr>
+    <td jwcid="@Any" height="5" bgcolor="ognl:borderColor" colspan="3">&nbsp;</td>
+  </tr>
+</table>
+]]></source>
+
+<p>
+The key concepts shown here are:
+</p>
+
+<ul>
+  <li>The loop component, which iterates over the blockIds parameter (a List of strings), setting the blockId property on each pass</li>
+  <li>The @&Insert; component, which users the current blockId to look up a localized message in the TabPanel component's container (the TabTest page)</li>
+  <li>The RenderBlock component, which uses the component's selectedBlock property to determine what &Block; to actually render</li>
+  <li>The use of the @&Any; component to render several &lt;td&gt; elements with the current bgcolor attribute.</li>
+</ul>
+
+<p>
+Several of the details are filled out in the component specification.
+</p>
+
+<p>
+TabPanel.jwc:
+</p>
+
+<source><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component-specification
+  PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.0//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+
+<component-specification class="com.example.components.TabPanel" allow-body="no" allow-informal-parameters="no">
+
+  <property name="selectedBlockId" persist="session"/>
+
+  <parameter name="blockIds" default-binding="ognl" required="yes"/>
+  <parameter name="borderColor" default-binding="literal" required="yes"/>
+  <parameter name="selectColor" default-binding="literal" default-value="#7D000D"/>
+  <parameter name="unSelectColor" default-binding="literal" default-value="#C0C0C0"/>
+
+  <component id="loop" type="Foreach">
+    <binding name="source" value="blockIds"/>
+    <binding name="value" value="blockId"/>
+  </component>
+  
+  <component id="tab" type="Any">
+    <binding name="bgcolor">
+      tabSelected ? selectColor : unSelectColor
+    </binding>
+  </component>
+      
+  <component id="link" type="DirectLink">
+    <binding name="listener" value="doClick"/>
+    <binding name="parameters" value="blockId"/>
+    <binding name="disabled" value="tabSelected"/>
+  </component>
+</component-specification>
+
+
+]]></source>
+
+<p>
+Several bindings in the specification depend on the tabSelected property, which is a synthetic property calculated in Java code.
+In addition, the @&DirectLink; component is configured to pass the block id in the URL as a listener parameter.
+</p>
+
+<p>TabPanel.java:</p>
+
+<source>
+package com.example.components;
+
+import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.components.Block;
+
+import java.util.List;
+
+public abstract class TabPanel extends BaseComponent
+{
+    // Persistent
+    public abstract String getSelectedBlockId();
+    public abstract void setSelectedBlockId(String id);
+
+    public abstract List getBlockIds();
+
+    // Current block id within the loop
+    public abstract String getBlockId();
+    
+    public Block getSelectedBlock()
+    {
+      String selectedId = getSelectedBlockId();
+      
+      if (selectedId == null)
+        selectedId = (String) getBlockNames().get(0);
+        
+      return (Block) getContainer().getComponent(selectedId);   
+    }
+
+    public boolean isTabSelected()
+    {
+      String selectedId = getSelectedBlockId();
+      
+      if (selectedId == null)
+        selectedId = (String) getBlockNames().get(0);
+        
+      return getBlockId().equals(selectedId);
+    }
+
+    public void doClick(String selectedId) 
+    {
+      setSelectedBlockId(selectedId);
+    }
+}
+</source>
+
+<p>
+The only major trick here is that initially the persistent selectedBlockId property will be null, and we have to work around it by treating
+the first element in the blockIds parameter as the default selectedBlockId.  The doClick() listener method is very simple; the blockId that was passed 
+in the URL is obtained and used to update the selectedBlockId property, which was declared persistent in the specification.
+</p>
+
+<p>
+Note that we don't store the &Block; <em>instance</em> as a persistent property ... components are not serializable and should never be stored
+as persistent properties.  We store the id needed to locate the &Block;.
+</p>
 
 </section>
 </body>

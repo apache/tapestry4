@@ -44,9 +44,8 @@ import org.apache.tapestry.IRequestCycle;
 public abstract class RenderBlock extends AbstractComponent
 {
     /**
-     * If block is not null, then the block's inserter is set (to this),
-     * {@link org.apache.tapestry.IComponent#renderBody(IMarkupWriter, IRequestCycle)}is invoked on
-     * it, and the Block's inserter is set back to its previous state.
+     * If block is not null, then
+     * {@link Block#renderForComponent(IMarkupWriter, IRequestCycle, IComponent)} is invoked.
      */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -56,17 +55,7 @@ public abstract class RenderBlock extends AbstractComponent
         if (block == null)
             return;
 
-        IComponent previousInserter = block.getInserter();
-
-        try
-        {
-            block.setInserter(this);
-            block.renderBody(writer, cycle);
-        }
-        finally
-        {
-            block.setInserter(previousInserter);
-        }
+        block.renderForComponent(writer, cycle, this);
     }
 
     public abstract Block getBlock();

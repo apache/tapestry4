@@ -396,4 +396,21 @@ public class ValidationDelegate implements IValidationDelegate
         return result;
     }
 
+    public List getErrorRenderers()
+    {
+        List result = new ArrayList();
+
+        Iterator i = _trackings.iterator();
+        while (i.hasNext())
+        {
+            IFieldTracking tracking = (IFieldTracking) i.next();
+
+            IRender errorRenderer = tracking.getErrorRenderer();
+
+            if (errorRenderer != null)
+                result.add(errorRenderer);
+        }
+
+        return result;
+    }
 }

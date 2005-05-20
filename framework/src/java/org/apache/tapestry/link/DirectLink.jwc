@@ -31,7 +31,8 @@
   <parameter name="parameters" default-binding="ognl">
     <description>
     An object, or list of objects, encoded into the URL
-    as service parameters.
+    as listener parameters (and made available to the ulimate listener object
+        or method).
     </description>
   </parameter>
      

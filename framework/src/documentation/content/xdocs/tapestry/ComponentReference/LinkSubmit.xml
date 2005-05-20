@@ -32,7 +32,7 @@
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/form/LinkSubmit.html">org.apache.tapestry.form.LinkSubmit</link>, &Form;, &ImageSubmit;, &Submit;</strong> 
 </p>
 
 <section>
@@ -45,6 +45,7 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
+    <th>Default Binding</th>
     <th>Description</th>
   </tr>
 
@@ -61,6 +62,14 @@
 <p>
   Reserved parameters: <em>none</em>
 </p>
+
+<warning>
+  In Tapestry 3.0, the behavior of the LinkSubmit was <em>undeferred</em>, the equivalent of setting the defer parameter to false.
+  The default for the defer parameter in 4.0 is <strong>true</strong>, which may in rare cases, cause problems when upgrading
+  an applicaton from 3.0 to 4.0.
+</warning>
+
+
 
 </section>
 

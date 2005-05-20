@@ -233,4 +233,14 @@ public interface IValidationDelegate extends Serializable
      * @since 3.0.2
      */
     public IFieldTracking getCurrentFieldTracking();
+
+    /**
+     * Returns a list of {@link org.apache.tapestry.IRender} objects, each of which will render on
+     * error message for a field tracked by the delegate, plus any unassociated (with any field)
+     * errors. These objects can be rendered or converted to a string (via toString()).
+     * 
+     * @return non-empty List of {@link org.apache.tapestry.IRender}.
+     */
+
+    public List getErrorRenderers();
 }

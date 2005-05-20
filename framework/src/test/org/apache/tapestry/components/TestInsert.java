@@ -47,7 +47,11 @@ public class TestInsert extends BaseComponentTestCase
         return binding;
     }
 
-    private IPage newPage(String name)
+    /**
+     * Returns a new page instance (not a mock page).
+     */
+
+    private IPage newBasePage(String name)
     {
         BasePage page = (BasePage) newInstance(BasePage.class);
 
@@ -58,7 +62,7 @@ public class TestInsert extends BaseComponentTestCase
 
     public void testRewinding()
     {
-        IRequestCycle cycle = newRequestCycle(true);
+        IRequestCycle cycle = newCycle(true);
 
         replayControls();
 
@@ -71,7 +75,7 @@ public class TestInsert extends BaseComponentTestCase
 
     public void testNullValue()
     {
-        IRequestCycle cycle = newRequestCycle(false);
+        IRequestCycle cycle = newCycle(false);
 
         replayControls();
 
@@ -85,7 +89,7 @@ public class TestInsert extends BaseComponentTestCase
 
     public void testNoFormat()
     {
-        IRequestCycle cycle = newRequestCycle(false);
+        IRequestCycle cycle = newCycle(false);
         IMarkupWriter writer = newWriter();
 
         writer.print("42", false);
@@ -102,7 +106,7 @@ public class TestInsert extends BaseComponentTestCase
 
     public void testFormat()
     {
-        IRequestCycle cycle = newRequestCycle(false);
+        IRequestCycle cycle = newCycle(false);
         IMarkupWriter writer = newWriter();
 
         Date date = new Date();
@@ -129,10 +133,10 @@ public class TestInsert extends BaseComponentTestCase
 
         Format format = DateFormat.getInstance();
 
-        IRequestCycle cycle = newRequestCycle(false);
+        IRequestCycle cycle = newCycle(false);
         IMarkupWriter writer = newWriter();
 
-        IPage page = newPage("Flintstone");
+        IPage page = newBasePage("Flintstone");
 
         replayControls();
 
@@ -162,7 +166,7 @@ public class TestInsert extends BaseComponentTestCase
 
     public void testRaw()
     {
-        IRequestCycle cycle = newRequestCycle(false);
+        IRequestCycle cycle = newCycle(false);
         IMarkupWriter writer = newWriter();
 
         writer.print("42", true);
@@ -181,7 +185,7 @@ public class TestInsert extends BaseComponentTestCase
     {
         IBinding informal = newBinding("informal-value");
 
-        IRequestCycle cycle = newRequestCycle(false);
+        IRequestCycle cycle = newCycle(false);
         IMarkupWriter writer = newWriter();
         IComponentSpecification spec = newSpec("informal", null);
 

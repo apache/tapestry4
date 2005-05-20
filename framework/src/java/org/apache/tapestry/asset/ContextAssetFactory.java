@@ -55,6 +55,11 @@ public class ContextAssetFactory implements AssetFactory
         return new ContextAsset(_contextPath, localized, location);
     }
 
+    public IAsset createAsset(Resource resource, Location location)
+    {
+        return new ContextAsset(resource.getPath(), resource, location);
+    }
+
     public void setContext(WebContext context)
     {
         _context = context;

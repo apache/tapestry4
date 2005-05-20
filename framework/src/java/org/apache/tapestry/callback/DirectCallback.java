@@ -15,6 +15,7 @@
 package org.apache.tapestry.callback;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IPage;
@@ -52,14 +53,10 @@ public class DirectCallback implements ICallback
 
         if (_parameters != null)
         {
-            String sep = " ";
-
             for (int i = 0; i < _parameters.length; i++)
             {
-                buffer.append(sep);
+                buffer.append(i == 0 ? " " : ", ");
                 buffer.append(_parameters[i]);
-
-                sep = ", ";
             }
         }
 
@@ -76,6 +73,8 @@ public class DirectCallback implements ICallback
 
     public DirectCallback(IDirect component, Object[] parameters)
     {
+        Defense.notNull(component, "component");
+
         _pageName = component.getPage().getPageName();
         _componentIdPath = component.getIdPath();
         _parameters = parameters;
@@ -100,9 +99,8 @@ public class DirectCallback implements ICallback
         }
         catch (ClassCastException ex)
         {
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "DirectCallback.wrong-type",
-                    component.getExtendedId()), component, null, ex);
+            throw new ApplicationRuntimeException(CallbackMessages.componentNotDirect(component),
+                    component, null, ex);
         }
 
         cycle.setListenerParameters(_parameters);

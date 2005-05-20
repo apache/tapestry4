@@ -24,8 +24,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
-import org.apache.tapestry.Tapestry;
 
 /**
  * A specification for a component, as read from an XML specification file.
@@ -33,13 +34,14 @@ import org.apache.tapestry.Tapestry;
  * A specification consists of
  * <ul>
  * <li>An implementing class
- * <li>An optional template
  * <li>An optional description
  * <li>A set of contained components
  * <li>Bindings for the properties of each contained component
  * <li>A set of named assets
- * <li>Definitions for helper beans
+ * <li>Definitions for managed beans
  * <li>Any reserved names (used for HTML attributes)
+ * <li>Declared properties
+ * <li>Property injections
  * </ul>
  * <p>
  * From this information, an actual component may be instantiated and initialized. Instantiating a
@@ -150,7 +152,16 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
     private List _injectSpecifications;
 
     /**
-     * @throws IllegalArgumentException
+     * Keyed on property name, value is some other object (such as an IAssetSpecification) that has
+     * claimed a property of the page.
+     * 
+     * @since 4.0
+     */
+
+    private Map _claimedProperties;
+
+    /**
+     * @throws ApplicationRuntimeException
      *             if the name already exists.
      */
 
@@ -159,17 +170,20 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
         if (_assets == null)
             _assets = new HashMap();
 
-        if (_assets.containsKey(name))
-            throw new IllegalArgumentException(Tapestry.format(
-                    "ComponentSpecification.duplicate-asset",
-                    this,
-                    name));
+        IAssetSpecification existing = (IAssetSpecification) _assets.get(name);
+
+        if (existing != null)
+            throw new ApplicationRuntimeException(SpecMessages.duplicateAsset(name, existing),
+                    asset.getLocation(), null);
+
+        claimProperty(asset.getPropertyName(), asset);
 
         _assets.put(name, asset);
+
     }
 
     /**
-     * @throws IllegalArgumentException
+     * @throws ApplicationRuntimeException
      *             if the id is already defined.
      */
 
@@ -178,19 +192,21 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
         if (_components == null)
             _components = new HashMap();
 
-        if (_components.containsKey(id))
-            throw new IllegalArgumentException(Tapestry.format(
-                    "ComponentSpecification.duplicate-component",
-                    this,
-                    id));
+        IContainedComponent existing = (IContainedComponent) _components.get(id);
+
+        if (existing != null)
+            throw new ApplicationRuntimeException(SpecMessages.duplicateComponent(id, existing),
+                    component.getLocation(), null);
 
         _components.put(id, component);
+
+        claimProperty(component.getPropertyName(), component);
     }
 
     /**
      * Adds the parameter. The name is added as a reserved name.
      * 
-     * @throws IllegalArgumentException
+     * @throws ApplicationRuntimeException
      *             if the name already exists.
      */
 
@@ -199,13 +215,15 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
         if (_parameters == null)
             _parameters = new HashMap();
 
-        if (_parameters.containsKey(name))
-            throw new IllegalArgumentException(Tapestry.format(
-                    "ComponentSpecification.duplicate-parameter",
-                    this,
-                    name));
+        IParameterSpecification existing = (IParameterSpecification) _parameters.get(name);
+
+        if (existing != null)
+            throw new ApplicationRuntimeException(SpecMessages.duplicateParameter(name, existing),
+                    spec.getLocation(), null);
 
         _parameters.put(name, spec);
+
+        claimProperty(spec.getPropertyName(), spec);
 
         addReservedParameterName(name);
     }
@@ -329,7 +347,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
 
     /**
      * @since 1.0.4
-     * @throws IllegalArgumentException
+     * @throws ApplicationRuntimeException
      *             if the bean already has a specification.
      */
 
@@ -338,11 +356,13 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
         if (_beans == null)
             _beans = new HashMap();
 
-        else if (_beans.containsKey(name))
-            throw new IllegalArgumentException(Tapestry.format(
-                    "ComponentSpecification.duplicate-bean",
-                    this,
-                    name));
+        IBeanSpecification existing = (IBeanSpecification) _beans.get(name);
+
+        if (existing != null)
+            throw new ApplicationRuntimeException(SpecMessages.duplicateBean(name, existing),
+                    specification.getLocation(), null);
+
+        claimProperty(specification.getPropertyName(), specification);
 
         _beans.put(name, specification);
     }
@@ -356,10 +376,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
 
     public IBeanSpecification getBeanSpecification(String name)
     {
-        if (_beans == null)
-            return null;
-
-        return (IBeanSpecification) _beans.get(name);
+        return (IBeanSpecification) get(_beans, name);
     }
 
     /**
@@ -535,12 +552,14 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
             _propertySpecifications = new HashMap();
 
         String name = spec.getName();
+        IPropertySpecification existing = (IPropertySpecification) _propertySpecifications
+                .get(name);
 
-        if (_propertySpecifications.containsKey(name))
-            throw new IllegalArgumentException(Tapestry.format(
-                    "ComponentSpecification.duplicate-property-specification",
-                    this,
-                    name));
+        if (existing != null)
+            throw new ApplicationRuntimeException(SpecMessages.duplicateProperty(name, existing),
+                    spec.getLocation(), null);
+
+        claimProperty(name, spec);
 
         _propertySpecifications.put(name, spec);
     }
@@ -575,8 +594,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
         if (_injectSpecifications == null)
             _injectSpecifications = new ArrayList();
 
-        // Note: we could check for property name collisions here, but since properties, parameters
-        // and injects can all collide, best to do that inside the component class enhancer.
+        claimProperty(spec.getProperty(), spec);
 
         _injectSpecifications.add(spec);
     }
@@ -592,5 +610,23 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
             return Collections.EMPTY_LIST;
 
         return Collections.unmodifiableList(input);
+    }
+
+    private void claimProperty(String propertyName, Object subSpecification)
+    {
+        if (propertyName == null)
+            return;
+
+        if (_claimedProperties == null)
+            _claimedProperties = new HashMap();
+
+        Object existing = _claimedProperties.get(propertyName);
+
+        if (existing != null)
+            throw new ApplicationRuntimeException(SpecMessages.claimedProperty(
+                    propertyName,
+                    existing), HiveMind.getLocation(subSpecification), null);
+
+        _claimedProperties.put(propertyName, subSpecification);
     }
 }

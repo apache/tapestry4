@@ -98,7 +98,6 @@ public class TestListEditMap extends TapestryTestCase
 
     public void testMarkAlreadyDeleted()
     {
-
         ListEditMap m = create();
 
         m.setKey("page");
@@ -140,6 +139,35 @@ public class TestListEditMap extends TapestryTestCase
 
         checkList("undeleted values", new Object[]
         { BeanLifecycle.REQUEST, BeanLifecycle.PAGE }, m.getValues());
+    }
+
+    /** @since 4.0 */
+
+    public void testPurgeDeletedKeys()
+    {
+        ListEditMap m = create();
+
+        m.setKey("render");
+        m.setDeleted(true);
+
+        checkList("deleted keys before purge", new Object[]
+        { "render" }, m.getDeletedKeys());
+
+        m.purgeDeletedKeys();
+
+        checkList("all values after purge", new Object[]
+        { BeanLifecycle.REQUEST, BeanLifecycle.PAGE }, m.getAllValues());
+        checkList("keys after purge", new Object[]
+        { "request", "page" }, m.getKeys());
+
+        assertNull(m.getDeletedKeys());
+
+        m.purgeDeletedKeys();
+
+        checkList("all values after second purge", new Object[]
+        { BeanLifecycle.REQUEST, BeanLifecycle.PAGE }, m.getAllValues());
+        checkList("keys after second purge", new Object[]
+        { "request", "page" }, m.getKeys());
     }
 
 }

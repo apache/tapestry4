@@ -28,44 +28,52 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> Contains markup and other components, and defers rendering of its body until invoked by a &RenderBlock;.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/components/Block.html">org.apache.tapestry.components.Block</link>, &RenderBlock;</strong> 
 </p>
 
 <section>
   <title>Parameters</title>
-  
-<table>
-  <tr> 
-    <th>Name</th>
-    <th>Type</th>
-	  <th>Direction</th>
-    <th>Required</th> 
-    <th>Default</th>
-    <th>Description</th>
-  </tr>
 
-	</table>
+<p>
+  <em>No parameters</em>
+</p>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>forbidden</strong>
 </p>
 
 <p>
   Reserved parameters: <em>none</em>
 </p>
 
+
+<p>
+When a &Block; component renders normally, it does absolutely nothing.  It doesn't render any tag, or render its body.  However,
+a &RenderBlock; component can be passed a Block instance, which will trigger the Block to render its body.
+</p>
+
+<p>
+The parameters of the &RenderBlock;, including informal parameters, are indirectly available to the Block component.  The OGNL expression
+components.<em>block</em>.getParameter("<em>name</em>") returns the value of a parameter bound to the &RenderBlock; which invoked 
+the rendering of the Block's body.
+</p>
+
 </section>
 
 <section>
-  <title>Examples</title>
+  <title>Example</title>
+
+<p>
+  The &RenderBlock; component has an extensive example.
+</p>
 
 </section>
 </body>

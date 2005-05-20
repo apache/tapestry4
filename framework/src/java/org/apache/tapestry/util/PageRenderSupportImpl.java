@@ -19,18 +19,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.util.ClasspathResource;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.asset.PrivateAsset;
-import org.apache.tapestry.engine.IEngineService;
 
 /**
  * Implementation of {@link org.apache.tapestry.PageRenderSupport}. The
@@ -41,7 +40,7 @@ import org.apache.tapestry.engine.IEngineService;
  */
 public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 {
-    private final IEngineService _assetService;
+    private final AssetFactory _assetFactory;
 
     private final Location _location;
 
@@ -74,11 +73,11 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
     private final String _preloadName;
 
-    public PageRenderSupportImpl(IEngineService assetService, String namespace, Location location)
+    public PageRenderSupportImpl(AssetFactory assetFactory, String namespace, Location location)
     {
-        Defense.notNull(assetService, "assetService");
+        Defense.notNull(assetFactory, "assetService");
 
-        _assetService = assetService;
+        _assetFactory = assetFactory;
         _location = location;
         _idAllocator = new IdAllocator(namespace);
 
@@ -151,14 +150,7 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         if (_externalScripts.contains(scriptLocation))
             return;
 
-        // Alas, this won't give a good Location for the actual problem.
-
-        if (!(scriptLocation instanceof ClasspathResource))
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "Body.include-classpath-script-only",
-                    scriptLocation), this, null, null);
-
-        // Record the URL so we don't include it twice.
+        // Record the Resource so we don't include it twice.
 
         _externalScripts.add(scriptLocation);
 
@@ -174,11 +166,10 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         int count = Tapestry.size(_externalScripts);
         for (int i = 0; i < count; i++)
         {
-            ClasspathResource scriptLocation = (ClasspathResource) _externalScripts.get(i);
+            Resource scriptLocation = (Resource) _externalScripts.get(i);
 
-            // This is still very awkward! Should move the code inside PrivateAsset somewhere
-            // else, so that an asset does not have to be created to to build the URL.
-            PrivateAsset asset = new PrivateAsset(scriptLocation, _assetService, null);
+            IAsset asset = _assetFactory.createAsset(scriptLocation, null);
+
             String url = asset.buildURL(cycle);
 
             // Note: important to use begin(), not beginEmpty(), because browser don't

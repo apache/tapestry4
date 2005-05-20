@@ -26,6 +26,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.NestedMarkupWriter;
+import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.util.ContentType;
@@ -51,9 +52,9 @@ public class TestPortletRenderer extends HiveMindTestCase
         return new PrintWriter(new CharArrayWriter());
     }
 
-    private IEngineService newAssetService()
+    private AssetFactory newAssetFactory()
     {
-        return (IEngineService) newMock(IEngineService.class);
+        return (AssetFactory) newMock(AssetFactory.class);
     }
 
     private WebResponse newWebResponse(ContentType contentType, PrintWriter writer)
@@ -113,7 +114,7 @@ public class TestPortletRenderer extends HiveMindTestCase
         // We can check that an instance of PageRenderSupport is passed in, but
         // we can't (easily) check thta it's configured the way we want.
         cycle.setAttribute("org.apache.tapestry.PageRenderSupport", new PageRenderSupportImpl(
-                newAssetService(), "", null));
+                newAssetFactory(), "", null));
         control.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
         { null, new TypeMatcher() }));
 
@@ -135,7 +136,7 @@ public class TestPortletRenderer extends HiveMindTestCase
 
         MarkupWriterSource source = newSource(pw, ct, writer);
         IPage page = newPage(ct);
-        IEngineService assetService = newAssetService();
+        AssetFactory assetFactory = newAssetFactory();
 
         IRequestCycle cycle = newCycle("ZePage", page);
 
@@ -160,7 +161,7 @@ public class TestPortletRenderer extends HiveMindTestCase
         PortletRendererImpl r = new PortletRendererImpl();
         r.setMarkupWriterSource(source);
         r.setResponse(response);
-        r.setAssetService(assetService);
+        r.setAssetFactory(assetFactory);
         r.setApplicationId("appId");
 
         r.renderPage(cycle, "ZePage");

@@ -55,7 +55,7 @@ is notified.
   
 
 <p>
-  <strong>See also: &Form;, &ImageSubmit;</strong> 
+  <strong>See also: <link href="&apiroot;/form/Submit.html">org.apache.tapestry.form.Submit</link>, &Form;, &ImageSubmit;, &LinkSubmit;</strong> 
 </p>
 
 <section>
@@ -187,6 +187,12 @@ is notified.
 <p>
   Reserved parameters: <em>name, type</em>
 </p>
+
+<warning>
+  In Tapestry 3.0, the behavior of the Submit was <em>undeferred</em>, the equivalent of setting the defer parameter to false.
+  The default for the defer parameter in 4.0 is <strong>true</strong>, which may in rare cases, cause problems when upgrading
+  an applicaton from 3.0 to 4.0.
+</warning>
 
 </section>
 

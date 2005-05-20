@@ -541,22 +541,6 @@ public class TestSpecificationParser extends TapestryTestCase
 
     /** @since 3.0 * */
 
-    public void testDuplicatePropertySpecification() throws Exception
-    {
-        try
-        {
-            parsePage("DuplicatePropertySpecification.page");
-
-            unreachable();
-        }
-        catch (DocumentParseException ex)
-        {
-            checkException(ex, "already contains property specification for property 'bool'");
-        }
-    }
-
-    /** @since 3.0 * */
-
     public void testMissingRequiredExtendedAttribute() throws Exception
     {
         try
