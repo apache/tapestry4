@@ -21,13 +21,11 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  A component that can substitute for any HTML element.  
- *
- *  [<a href="../../../../../ComponentReference/Any.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship
+ * A component that can substitute for any HTML element. [<a
+ * href="../../../../../ComponentReference/Any.html">Component Reference</a>]
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class Any extends AbstractComponent
 {
@@ -36,13 +34,12 @@ public abstract class Any extends AbstractComponent
         String element = getElement();
 
         if (element == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("Any.element-not-defined"),
-                this,
-                null,
-                null);
+            throw new ApplicationRuntimeException(ComponentMessages.anyElementNotDefined(), this,
+                    null, null);
 
-        if (!cycle.isRewinding())
+        boolean rewinding = cycle.isRewinding();
+
+        if (!rewinding)
         {
             writer.begin(element);
 
@@ -51,7 +48,7 @@ public abstract class Any extends AbstractComponent
 
         renderBody(writer, cycle);
 
-        if (!cycle.isRewinding())
+        if (!rewinding)
         {
             writer.end(element);
         }

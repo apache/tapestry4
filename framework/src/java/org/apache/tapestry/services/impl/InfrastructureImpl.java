@@ -26,6 +26,7 @@ import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.service.ThreadLocale;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.describe.HTMLDescriber;
 import org.apache.tapestry.engine.IPageSource;
@@ -258,6 +259,11 @@ public class InfrastructureImpl implements Infrastructure
     public ListenerInvoker getListenerInvoker()
     {
         return (ListenerInvoker) getProperty("listenerInvoker");
+    }
+
+    public AssetFactory getAssetFactory()
+    {
+        return (AssetFactory) getProperty("assetFactory");
     }
 
     public Object getProperty(String propertyName)

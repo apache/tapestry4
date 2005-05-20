@@ -66,7 +66,7 @@
       
       <index label="Overview" href="index.html"/>
       
-      <ComponentReference label="ComponentReference" href="ComponentReference/">
+      <ComponentReference label="Components" href="ComponentReference/">
         <ActionLink label="ActionLink" href="ActionLink.html"/>
         <Any label="Any" href="Any.html"/>
         <Block label="Block" href="Block.html"/>
@@ -85,6 +85,7 @@
         <Frame label="Frame" href="Frame.html"/>
         <GenericLink label="GenericLink" href="GenericLink.html"/>
         <Hidden label="Hidden" href="Hidden.html"/>
+        <InvokeListener label="InvokeListener" href="InvokeListener.html"/>
         <Image label="Image" href="Image.html"/>
         <ImageSubmit label="ImageSubmit" href="ImageSubmit.html"/>
         <Insert label="Insert" href="Insert.html"/>

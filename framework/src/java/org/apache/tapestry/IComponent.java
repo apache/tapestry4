@@ -308,7 +308,7 @@ public interface IComponent extends IRender, LocationHolder
     public void enterActiveState();
 
     /**
-     * Returns a {@link IBeanProvider}&nbsp;from which managed beans can be obtained.
+     * Returns a {@link IBeanProvider} from which managed beans can be obtained.
      * 
      * @since 4.0
      */
@@ -316,8 +316,8 @@ public interface IComponent extends IRender, LocationHolder
     public IBeanProvider getBeans();
 
     /**
-     * Returns a {@link ListenerMap}&nbsp;for the component. The map contains a number of synthetic
-     * read-only properties that implement the {@link IActionListener}&nbsp;interface, but in fact,
+     * Returns a {@link ListenerMap} for the component. The map contains a number of synthetic
+     * read-only properties that implement the {@link IActionListener} interface, but in fact,
      * cause public instance methods to be invoked (via reflection).
      * 
      * @since 4.0

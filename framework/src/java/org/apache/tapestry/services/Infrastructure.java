@@ -18,6 +18,7 @@ import java.util.Locale;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
+import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.describe.HTMLDescriber;
 import org.apache.tapestry.engine.IPageSource;
@@ -273,4 +274,11 @@ public interface Infrastructure
      */
     
     public ListenerInvoker getListenerInvoker();
+    
+    /**
+     * Service that is used to convert {@link org.apache.hivemind.Resource}s into
+     * {@link org.apache.tapestry.IAsset}s.
+     */
+    
+    public AssetFactory getAssetFactory();
 }

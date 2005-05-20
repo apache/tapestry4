@@ -215,6 +215,9 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
+        // Next few lines of code is similar to AbstractFormComponent (which, alas, extends from
+        // AbstractComponent, not from BaseComponent).
+        
         IForm form = TapestryUtils.getForm(cycle, this);
 
         if (form.wasPrerendered(writer, this))

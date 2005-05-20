@@ -55,7 +55,7 @@ public class TestConditional extends BaseComponentTestCase
 
     public void testRenderSimple()
     {
-        IRequestCycle cycle = newRequestCycle(false);
+        IRequestCycle cycle = newCycle(false);
         IMarkupWriter writer = newWriter();
         IRender body = newRender(writer, cycle);
 
@@ -72,7 +72,7 @@ public class TestConditional extends BaseComponentTestCase
 
     public void testIgnoreElementWhenRewinding()
     {
-        IRequestCycle cycle = newRequestCycle(true);
+        IRequestCycle cycle = newCycle(true);
         IMarkupWriter writer = newWriter();
         IRender body = newRender(writer, cycle);
 
@@ -92,7 +92,7 @@ public class TestConditional extends BaseComponentTestCase
         IBinding informal = newBinding("informal-value");
         IComponentSpecification spec = newSpec("informal", null);
 
-        IRequestCycle cycle = newRequestCycle(false);
+        IRequestCycle cycle = newCycle(false);
         IMarkupWriter writer = newWriter();
         IRender body = newRender(writer, cycle);
 

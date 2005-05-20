@@ -23,6 +23,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.util.ContentType;
@@ -43,7 +44,7 @@ public class PortletRendererImpl implements PortletRenderer
 
     private MarkupWriterSource _markupWriterSource;
 
-    private IEngineService _assetService;
+    private AssetFactory _assetFactory;
 
     private String _applicationId;
 
@@ -61,7 +62,7 @@ public class PortletRendererImpl implements PortletRenderer
 
         String namespace = _response.getNamespace();
 
-        PageRenderSupportImpl support = new PageRenderSupportImpl(_assetService, namespace, null);
+        PageRenderSupportImpl support = new PageRenderSupportImpl(_assetFactory, namespace, null);
 
         TapestryUtils.storePageRenderSupport(cycle, support);
 
@@ -99,9 +100,9 @@ public class PortletRendererImpl implements PortletRenderer
         _response = response;
     }
 
-    public void setAssetService(IEngineService assetService)
+    public void setAssetFactory(AssetFactory assetFactory)
     {
-        _assetService = assetService;
+        _assetFactory = assetFactory;
     }
 
     public void setApplicationId(String applicationId)

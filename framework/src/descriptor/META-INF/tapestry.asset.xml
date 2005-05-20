@@ -83,11 +83,11 @@
   <configuration-point id="AssetFactoryStrategies" schema-id="hivemind.lib.StrategyRegistry"/>
   
   <contribution configuration-id="AssetFactoryStrategies">
-    <strategy class="org.apache.hivemind.util.ContextResource" 
-            object="service:ContextAssetFactory"/>
+    <strategy class="org.apache.tapestry.web.WebContextResource" object="service:ContextAssetFactory"/>
             
-    <strategy class="org.apache.hivemind.util.ClasspathResource"
-            object="service:ClasspathAssetFactory"/>
+    <strategy class="org.apache.hivemind.util.ClasspathResource" object="service:ClasspathAssetFactory"/>
+            
+    <strategy class="ExternalResource" object="service:DefaultAssetFactory"/>
             
   </contribution>
   
@@ -101,6 +101,7 @@
       <construct configuration-id="AssetFactoryStrategies"/>
     </invoke-factory>
   </service-point>
+  
   
   <service-point id="AssetSource">
     
@@ -139,4 +140,7 @@
     
   </service-point>
   
+  <contribution configuration-id="tapestry.Infrastructure">
+    <property name="assetFactory" object="service:LookupAssetFactory"/>
+  </contribution>
 </module>

@@ -46,6 +46,13 @@ public class ClasspathAssetFactory implements AssetFactory
         return new PrivateAsset((ClasspathResource) localized, _assetService, location);
     }
 
+    public IAsset createAsset(Resource resource, Location location)
+    {
+        ClasspathResource cr = (ClasspathResource) resource;
+
+        return new PrivateAsset(cr, _assetService, location);
+    }
+
     public void setAssetService(IEngineService assetService)
     {
         _assetService = assetService;

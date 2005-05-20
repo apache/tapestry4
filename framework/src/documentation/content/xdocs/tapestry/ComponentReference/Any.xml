@@ -28,11 +28,13 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>A "Swiss Army Knife" component that can emulate any tag whatsoever.  The Any component renders the tag for its element
+  in the template, plus any informal parameters, and its body. This is typically used to make certain attributes of a tag
+  dynamic without having to write an entire component for that single purpose.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/components/Any.html">org.apache.tapestry.components.Any</link>, &Conditional;, &Foreach;</strong> 
 </p>
 
 <section>
@@ -45,27 +47,85 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
+    <th>Default Binding</th>
     <th>Description</th>
+  </tr>
+
+  <tr>
+    <td>element</td>
+    <td>string</td>
+    <td>in</td>
+    <td>no</td>
+    <td><em>From the HTML template</em></td>
+    <td>literal</td>
+    <td>
+      The element to render.
+    </td>
   </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed </strong>
 </p>
 
 <p>
   Reserved parameters: <em>none</em>
 </p>
 
+<p>
+Certain other components, including &Conditional; and &Foreach;, can behave much like an Any component, in addition to their normal behavior,
+by specifying a value for their element parameter.
+</p>
+
 </section>
 
 <section>
-  <title>Examples</title>
+  <title>Example</title>
+
+<p>
+In this example, the Any component is emulating an &lt;img&gt; element, and is dynamically calculating the URL, width, height, and title
+from data (presumably obtained from a database).
+</p>
+
+<source><![CDATA[
+  
+<h2>Thumbails:</h2>
+
+<span jwcid="loop">
+  <p>
+    <img jwcid="@Any" src="ognl:image.thumbURL" width="ognl:image.thumbWidth" height="ognl:image.thumbHeight"
+    alt="ognl:image.title"/>
+    <br/>
+    <span jwcid="@Insert" value="ognl:image.title"/>
+  </p>
+</span>
+]]></source>
+
+<p>
+This template is complemented by some details in the specification:
+</p>
+
+<source><![CDATA[
+  . . .
+  
+  <property name="image"/>
+  
+  <component id="loop" type="Foreach">
+    <binding name="source" value="thumbnails"/>
+    <binding name="value" value="image"/>
+  </component>
+  
+  . . .
+]]></source>
+
+<p>
+The &RenderBody; component contains an extensive example that includes the use of the Any component.
+</p>
 
 </section>
 </body>

@@ -20,7 +20,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
-import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.web.WebResponse;
 
@@ -116,7 +116,7 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
     {
         super.prepareForRender(cycle);
 
-        _pageRenderSupport = new PageRenderSupportImpl(getAssetService(), getResponse()
+        _pageRenderSupport = new PageRenderSupportImpl(getAssetFactory(), getResponse()
                 .getNamespace(), getLocation());
     }
 
@@ -164,16 +164,17 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
         TapestryUtils.removePageRenderSupport(cycle);
     }
 
+    /**
+     * Parameter.
+     */
     public abstract String getElement();
-
-    public abstract void setElement(String element);
 
     /**
      * Injected
      * 
      * @since 4.0
      */
-    public abstract IEngineService getAssetService();
+    public abstract AssetFactory getAssetFactory();
 
     /**
      * Injected
@@ -182,16 +183,6 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
      */
 
     public abstract WebResponse getResponse();
-
-    /**
-     * Sets the element parameter property to its default, "body".
-     * 
-     * @since 3.0
-     */
-    protected void finishLoad()
-    {
-        setElement("body");
-    }
 
     /** @since 3.0 */
 

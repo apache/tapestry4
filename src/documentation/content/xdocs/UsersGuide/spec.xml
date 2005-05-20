@@ -587,11 +587,11 @@ the OGNL expression components.<em>id</em>.
 
 <tr>
 	<td>inherit-informal-parameters</td>	
-	<td>yes|no</td>
+	<td>boolean</td>
 	<td>no</td>
-	<td>no</td>
+	<td>false</td>
 	<td>
-	If yes, then any informal parameters of the containing
+	If true, then any informal parameters of the containing
 	component will be copied into this component.
 	</td>
 </tr>
@@ -679,31 +679,32 @@ and elements related to parameters.
 </tr>
 <tr>
 	<td>allow-body</td>
-	<td>yes|no</td>
+	<td>boolean</td>
 	<td>no</td>
-	<td>yes</td>
+	<td>true</td>
 	<td>
-	<p>If yes, then any body for this component, from its
+	<p>If true, then any body for this component, from its
 	containing page or component's template, is retained and may be 
-	produced using a &RenderBody; component.
+	rendered using a &RenderBody; component.
 	</p>
-	<p>If no, then any body for this component is
-	discarded.
+	<p>If false, then any body for this component is
+	discarded, and it is not allowed for the body to contain
+  components.
 	</p>	
 	</td>
 </tr>
 <tr>
 	<td>allow-informal-parameters</td>
-	<td>yes|no </td>
+	<td>boolean</td>
 	<td>no</td>
-	<td>yes</td>
+	<td>true</td>
 	<td>
-	<p>If yes, then any informal parameters
+	<p>If true, then any informal parameters
 	(bindings that don't match a formal parameter) specified here, or in
 	the component's tag within its container's template, are retained.
 	Typically, they are converted into additional HTML attributes.
 	</p>
-	<p>If no, then informal parameters
+	<p>If false, then informal parameters
 	are not allowed in the specification, and discarded if in the template.
 	</p>
 	</td>
@@ -887,11 +888,11 @@ a global service to the application.
 </tr>
 <tr>
 	<td>immediate</td>
-	<td>yes|no</td>
+	<td>boolean</td>
 	<td>no</td>
-	<td>no</td>
-	<td>If yes, the extension is instantiated when the specification is read.  If 
-	no, then the extension is not created until first needed.
+	<td>false</td>
+	<td>If true, the extension is instantiated when the specification is read.  If 
+	false, then the extension is not created until first needed.
 	</td>
 </tr>
 
@@ -1298,10 +1299,10 @@ Appears in: &spec.component-specification;
   
 <tr>
   <td>required</td>
-  <td>yes|no</td>
+  <td>boolean</td>
   <td>no</td>
-  <td>no</td>
-  <td>If yes, then the parameter must be
+  <td>false</td>
+  <td>If true, then the parameter must be
   bound (though it is possible that the binding's value
   will still be null).
  </td>

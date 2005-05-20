@@ -16,14 +16,8 @@ package org.apache.tapestry.valid;
 
 import java.util.List;
 
-import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.valid.IFieldTracking;
-import org.apache.tapestry.valid.RenderString;
-import org.apache.tapestry.valid.ValidationConstraint;
-import org.apache.tapestry.valid.ValidationDelegate;
-import org.apache.tapestry.valid.ValidatorException;
 import org.easymock.MockControl;
 
 /**
@@ -290,6 +284,35 @@ public class TestValidationDelegate extends BaseValidatorTestCase
 
         assertEquals(false, d.getHasErrors());
         assertNull(d.getFirstError());
+
+        verifyControls();
+    }
+
+    /** @since 4.0 */
+    
+    public void testGetErrorRenderers()
+    {
+        List l = d.getErrorRenderers();
+
+        assertEquals(true, l.isEmpty());
+
+        IFormComponent f1 = newField("monty", 2);
+        IFormComponent f2 = newField("python", 3);
+
+        IRender f2ErrorRenderer = (IRender) newMock(IRender.class);
+
+        replayControls();
+
+        d.setFormComponent(f1);
+        d.recordFieldInputValue("f1 input");
+
+        d.setFormComponent(f2);
+        d.recordFieldInputValue("f2 input");
+        d.record(f2ErrorRenderer, null);
+
+        l = d.getErrorRenderers();
+        assertEquals(1, l.size());
+        assertSame(f2ErrorRenderer, l.get(0));
 
         verifyControls();
     }

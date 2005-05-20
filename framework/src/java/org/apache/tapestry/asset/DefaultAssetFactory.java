@@ -35,4 +35,9 @@ public class DefaultAssetFactory implements AssetFactory
         return new ExternalAsset(path, location);
     }
 
+    public IAsset createAsset(Resource resource, Location location)
+    {
+        return new ExternalAsset(resource.getPath(), location);
+    }
+
 }

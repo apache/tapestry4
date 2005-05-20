@@ -23,6 +23,6 @@
 	allow-body="no" 
 	allow-informal-parameters="yes">
 	
-  <parameter name="block" default-binding="component"/>
+  <parameter name="block" required="yes" default-binding="component"/>
   	
 </component-specification>

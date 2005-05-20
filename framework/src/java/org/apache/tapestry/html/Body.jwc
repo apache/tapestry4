@@ -26,15 +26,13 @@
   forms of support to all components it wraps.
   </description>
 
-  <parameter name="element">
+  <parameter name="element" default-binding="literal" default-value="body">
   	<description>
   	Name of element to use, defaults to "body".
   	</description>
   </parameter>
  
-  <reserved-parameter name="onload"/>
-  
-  <inject property="assetService" object="engine-service:asset"/>
+  <inject property="assetFactory" object="infrastructure:assetFactory"/>
   <inject property="response" object="infrastructure:response"/>
       
 </component-specification>

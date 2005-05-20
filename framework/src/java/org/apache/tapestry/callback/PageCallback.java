@@ -14,72 +14,74 @@
 
 package org.apache.tapestry.callback;
 
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  Simple callback for returning to a page.
- *  <p>
- *  Example usage of <tt>PageCallback</tt>:
- *  <p>
- *  The Home page ensure a user is 
- *  authenticated in the {@link org.apache.tapestry.IPage#validate(IRequestCycle)} 
- *  method.  If the user is not authenticated, they are redirected to the Login 
- *  page, after setting a callback in the Login page.
- *  <p>
- *  The Login page <tt>formSubmit()</tt> {@link org.apache.tapestry.IActionListener} 
- *  authenticates the user and then invokes {@link ICallback#performCallback(IRequestCycle)} 
- *  to the Home page.
- *  <pre>
- *  public class Home extends BasePage {
+ * Simple callback for returning to a page.
+ * <p>
+ * Example usage of <tt>PageCallback</tt>:
+ * <p>
+ * The Home page ensure a user is authenticated in the
+ * {@link org.apache.tapestry.IPage#validate(IRequestCycle)} method. If the user is not
+ * authenticated, they are redirected to the Login page, after setting a callback in the Login page.
+ * <p>
+ * The Login page <tt>formSubmit()</tt> {@link org.apache.tapestry.IActionListener} authenticates
+ * the user and then invokes {@link ICallback#performCallback(IRequestCycle)} to the Home page.
  * 
- *      public void validate(IRequestCycle cycle) {            
- *          Visit visit = (Visit) getVisit();
- *      
- *          if (!visit.isAuthenticated()) {
- *              Login login = (Login) cycle.getPage("Login");
- *
- *              login.setCallback(new PageCallback(this));
- *              
- *              throw new PageRedirectException(login);
- *          }            
- *      }
- *  }
- *
- *  public Login extends BasePage {
+ * <pre>
  * 
- *      private ICallback _callback;
- *
- *      public void setCallback(ICallback _callback) {
- *          _callback = callback;
- *      }
- *
- *      public void formSubmit(IRequestCycle cycle) {
- *          // Authentication code
- *          ..
- *   
- *          Visit visit = (Visit) getVisit();
- *
- *          visit.setAuthenticated(true);
  *  
- *          if (_callback != null) {
- *              _callback.performCallback(cycle);
- *          }
- *      }
- *  }    
- *  </pre>
- *
- *  @author Howard Lewis Ship
- *  @since 0.2.9
- *
- **/
+ *    public class Home extends BasePage {
+ *   
+ *        public void validate(IRequestCycle cycle) {            
+ *            Visit visit = (Visit) getVisit();
+ *        
+ *            if (!visit.isAuthenticated()) {
+ *                Login login = (Login) cycle.getPage(&quot;Login&quot;);
+ *  
+ *                login.setCallback(new PageCallback(this));
+ *                
+ *                throw new PageRedirectException(login);
+ *            }            
+ *        }
+ *    }
+ *  
+ *    public Login extends BasePage {
+ *   
+ *        private ICallback _callback;
+ *  
+ *        public void setCallback(ICallback _callback) {
+ *            _callback = callback;
+ *        }
+ *  
+ *        public void formSubmit(IRequestCycle cycle) {
+ *            // Authentication code
+ *            ..
+ *     
+ *            Visit visit = (Visit) getVisit();
+ *  
+ *            visit.setAuthenticated(true);
+ *    
+ *            if (_callback != null) {
+ *                _callback.performCallback(cycle);
+ *            }
+ *        }
+ *    }    
+ *    
+ *  
+ * </pre>
+ * 
+ * @author Howard Lewis Ship
+ * @since 0.2.9
+ */
 
 public class PageCallback implements ICallback
 {
     /**
-     *  @since 2.0.4
-     * 
-     **/
+     * @since 2.0.4
+     */
 
     private static final long serialVersionUID = -3286806776105690068L;
 
@@ -87,12 +89,15 @@ public class PageCallback implements ICallback
 
     public PageCallback(String pageName)
     {
+        Defense.notNull(pageName, "pageName");
         _pageName = pageName;
     }
 
     public PageCallback(IPage page)
     {
-        this(page.getPageName());
+        Defense.notNull(page, "page");
+
+        _pageName = page.getPageName();
     }
 
     public String toString()
@@ -101,13 +106,14 @@ public class PageCallback implements ICallback
     }
 
     /**
-     *  Invokes {@link IRequestCycle#activate(String)} to select the previously
-     *  identified page as the response page.
-     *
-     **/
+     * Invokes {@link IRequestCycle#activate(String)} to select the previously identified page as
+     * the response page.
+     */
 
     public void performCallback(IRequestCycle cycle)
     {
+        Defense.notNull(cycle, "cycle");
+
         cycle.activate(_pageName);
     }
 }

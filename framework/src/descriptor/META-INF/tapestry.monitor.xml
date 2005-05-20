@@ -17,6 +17,8 @@
 
 <module id="tapestry.monitor" version="4.0.0" package="org.apache.tapestry.engine">
 
+  Support for monitoring requests.
+
   <service-point id="DefaultMonitorFactory" interface="IMonitorFactory">
     
     Default implemenation of IMonitorFactory, which returns a NullMonitor instance (which

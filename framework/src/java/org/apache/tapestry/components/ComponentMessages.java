@@ -30,4 +30,9 @@ class ComponentMessages
     {
         return _formatter.format("unable-to-format", component.getExtendedId(), value, cause);
     }
+
+    static String anyElementNotDefined()
+    {
+        return _formatter.getMessage("any-element-not-defined");
+    }
 }
