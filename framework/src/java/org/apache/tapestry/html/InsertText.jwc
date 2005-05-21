@@ -28,17 +28,25 @@
   markup to delimit lines.
   </description>
   
-  <parameter name="value">
+  <parameter name="value" default-binding="ognl" required="yes">
     <description>
   	The text to insert.
     </description>
   </parameter>
 
-  <parameter name="mode">
+  <parameter name="mode" default-binding="ognl">
     <description>
     Determines which mode to use: breaks after each line, or wrap each line
     as a paragraph.  The default is breaks.
     </description>
   </parameter>
+  
+  <parameter name="raw" default-binding="ognl">
+      <description>
+          If false (the default), then the rendered text is filtered. If true,
+          then the text is not filtered (appropriate when the value
+          parameter contains markup).
+      </description>
+   </parameter>
 
 </component-specification>

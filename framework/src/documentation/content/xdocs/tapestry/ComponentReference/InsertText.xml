@@ -28,11 +28,14 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> Inserts multi-line text, breaking it into individual lines according to a mode. Commonly used to properly display the
+  data provided by a user via the &TextArea; component.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/html/InsertText.html">org.apache.tapestry.html.InsertText</link>, 
+    <link href="&apiroot;/html/InsertTextMode.html">org.apache.tapestry.html.InsertTextMode</link>,
+    &TextArea;</strong> 
 </p>
 
 <section>
@@ -45,28 +48,66 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
+    <th>Default Binding</th>
     <th>Description</th>
   </tr>
 
+  <tr>
+    <td>value</td>
+    <td>string</td>
+    <td>in</td>
+    <td>yes</td>
+    <td>&nbsp;</td>
+    <td>ognl</td>
+    <td>The multi-line string to render.</td>
+  </tr>
+  
+  <tr>
+    <td>mode</td>
+    <td><link href="&apiroot;/html/InsertTextMode.html">InsertTextMode</link></td>
+    <td>in</td>
+    <td>no</td>
+    <td>BREAK</td>
+    <td>ognl</td>
+    <td>Controls how each line is rendered.</td>
+  </tr>
+  
+  <tr>
+    <td>raw</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+    <td>ognl</td>
+    <td>If true, then output is not filtered for HTML entities.  Used when the value parameter contains markup that should
+      be rendered as-is.</td>
+  </tr>
+  
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>forbidden</strong>
 </p>
 
 <p>
   Reserved parameters: <em>none</em>
 </p>
 
+<p>
+  The value parameter is split into multiple lines, and each line is printed.
+  The default <em>mode</em> renders a &lt;br/&gt; tag between lines (that is, before each line after the first line output).
+  The alternate mode renders &lt;p&gt; and &lt;/p&gt; tags around each line.
+</p>
 </section>
 
-<section>
-  <title>Examples</title>
+<p>
+The OGNL expression <code>@org.apache.tapestry.html.InsertTextMode@PARAGRAPH</code> can be used to specify paragraph rendering mode.
+</p>
 
-</section>
+
 </body>
 </document>

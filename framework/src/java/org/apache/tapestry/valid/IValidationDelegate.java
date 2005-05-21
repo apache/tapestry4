@@ -80,8 +80,7 @@ public interface IValidationDelegate extends Serializable
 {
     /**
      * Invoked before other methods to configure the delegate for the given form component. Sets the
-     * current field based on the {@link IFormComponent#getName() name}of the form component (which
-     * is almost always a {@link ValidField}).
+     * current field based on the {@link IFormComponent#getName() name} of the form component.
      * <p>
      * The caller should invoke this with a parameter of null to record unassociated global errors
      * (errors not associated with any particular field).
@@ -92,8 +91,8 @@ public interface IValidationDelegate extends Serializable
     public void setFormComponent(IFormComponent component);
 
     /**
-     * Returns true if the current component is in error (that is, had bad input submitted by the
-     * end user).
+     * Returns true if the current field is in error (that is, had bad input submitted by the end
+     * user).
      * 
      * @since 1.0.8
      */
@@ -109,7 +108,7 @@ public interface IValidationDelegate extends Serializable
     public String getFieldInputValue();
 
     /**
-     * Returns a {@link List}of {@link IFieldTracking}, in default order (the order in which
+     * Returns a {@link List} of {@link IFieldTracking}, in default order (the order in which
      * fields are renderred). A caller should not change the values (the List is immutable). May
      * return null if no fields are in error.
      * 
@@ -184,6 +183,16 @@ public interface IValidationDelegate extends Serializable
     /**
      * Invoked before the field is rendered. If the field is in error, the delegate may decorate the
      * field in some way (to highlight its error state).
+     * 
+     * @param writer
+     *            the writer to which output should be sent
+     * @param cycle
+     *            the active request cycle
+     * @param component
+     *            the component being decorated
+     * @param validator
+     *            the validator for the component, or null if the component does have (or doesn't
+     *            support) a validator
      */
 
     public void writePrefix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component,
@@ -192,8 +201,17 @@ public interface IValidationDelegate extends Serializable
     /**
      * Invoked just before the &lt;input&gt; element is closed. The delegate can write additional
      * attributes. This is often used to set the CSS class of the field so that it can be displayed
-     * differently, if in error (or required).
+     * differently, if in error (or required). *
      * 
+     * @param writer
+     *            the writer to which output should be sent
+     * @param cycle
+     *            the active request cycle
+     * @param component
+     *            the component being decorated
+     * @param validator
+     *            the validator for the component, or null if the component does have (or doesn't
+     *            support) a validator
      * @since 1.0.5
      */
 
@@ -202,20 +220,30 @@ public interface IValidationDelegate extends Serializable
 
     /**
      * Invoked after the form component is rendered, so that the delegate may decorate the form
-     * component (if it is in error).
+     * component (if it is in error). *
+     * 
+     * @param writer
+     *            the writer to which output should be sent
+     * @param cycle
+     *            the active request cycle
+     * @param component
+     *            the component being decorated
+     * @param validator
+     *            the validator for the component, or null if the component does have (or doesn't
+     *            support) a validator
      */
 
     public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component,
             IValidator validator);
 
     /**
-     * Invoked by a {@link FieldLabel}just before writing the name of the form component.
+     * Invoked by a {@link FieldLabel} just before writing the name of the form component.
      */
 
     public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle);
 
     /**
-     * Invoked by a {@link FieldLabel}just after writing the name of the form component.
+     * Invoked by a {@link FieldLabel} just after writing the name of the form component.
      */
 
     public void writeLabelSuffix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle);

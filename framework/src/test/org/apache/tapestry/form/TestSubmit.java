@@ -48,7 +48,7 @@ public class TestSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
@@ -76,7 +76,7 @@ public class TestSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
@@ -116,7 +116,7 @@ public class TestSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
@@ -157,7 +157,7 @@ public class TestSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
@@ -198,7 +198,7 @@ public class TestSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
@@ -232,7 +232,7 @@ public class TestSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
@@ -272,7 +272,7 @@ public class TestSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);

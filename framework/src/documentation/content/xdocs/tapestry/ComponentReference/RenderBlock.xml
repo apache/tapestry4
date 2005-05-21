@@ -99,7 +99,7 @@ the RenderBlock and Block are contained within different components or even diff
    
 </p>
 
-<figure src="&projectroot;/images/tapestry/ComponentReference/RenderBlock.png"/>
+<figure src="&projectroot;/images/tapestry/ComponentReference/RenderBlock.png" alt="RenderBlock Screen Shot"/>
     
 <p>
 First we'll show a page that makes use of the TabPanel component.

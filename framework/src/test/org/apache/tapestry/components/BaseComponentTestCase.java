@@ -48,6 +48,12 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         return newInstance(componentClass, null);
     }
 
+    protected Object newInstance(Class componentClass, String propertyName, Object propertyValue)
+    {
+        return getCreator().newInstance(componentClass, new Object[]
+        { propertyName, propertyValue });
+    }
+
     protected Object newInstance(Class componentClass, Object[] properties)
     {
         return getCreator().newInstance(componentClass, properties);
@@ -63,10 +69,15 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) control.getMock();
 
-        cycle.isRewinding();
-        control.setReturnValue(rewinding);
+        trainIsRewinding(control, cycle, rewinding);
 
         return cycle;
+    }
+
+    protected void trainIsRewinding(MockControl control, IRequestCycle cycle, boolean rewinding)
+    {
+        cycle.isRewinding();
+        control.setReturnValue(rewinding);
     }
 
     protected IRequestCycle newCycle(String pageName, IPage page)

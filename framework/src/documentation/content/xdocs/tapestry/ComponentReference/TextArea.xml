@@ -28,11 +28,11 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> A form element control that renders an HTML &lt;textarea&gt;, a multi-line text input.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/form/TextArea.html">org.apache.tapestry.form.TextArea</link>, &InsertText;, &TextField;</strong> 
 </p>
 
 <section>
@@ -45,28 +45,64 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
+    <th>Default Binding</th>
     <th>Description</th>
+  </tr>
+
+  <tr>
+    <td>value</td>
+    <td>string</td>
+    <td>in / out</td>
+    <td>yes</td>
+    <td>&nbsp;</td>
+    <td>ognl</td>
+    <td>The value to read and update (unless the disabled parameters is true).</td>
+  </tr>
+  
+  <tr>
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+    <td>ognl</td>
+    <td>
+      If true, then the &lt;textarea&gt; will be written with a disabled attribute (preventing user interaction
+      in the client web browser).  In addition, when the form is submitted, the component will not update
+      its value parameter.
+    </td>
+  </tr>
+  
+  <tr>
+    <td>displayName</td>
+    <td>string</td>
+    <td>in</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>literal</td>
+    <td>
+      A name for the field, which may be used by the &FieldLabel; component connected to the TextArea.
+    </td>
   </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: name
 </p>
 
-</section>
-
-<section>
-  <title>Examples</title>
+<p> TextArea components may not have a validator, but they will be decorated by a &IValidationDelegate; if in error.  Since there is
+  no validator, such errors would be set within a listener method. </p>
 
 </section>
+
 </body>
 </document>
