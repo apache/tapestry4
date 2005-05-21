@@ -17,6 +17,7 @@ package org.apache.tapestry.form;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
  * Implements a component that manages an HTML &lt;textarea&gt; form element. [ <a
@@ -60,6 +61,10 @@ public abstract class TextArea extends AbstractFormComponent
         if (cycle.isRewinding())
             return;
 
+        IValidationDelegate delegate = form.getDelegate();
+
+        delegate.writePrefix(writer, cycle, this, null);
+
         writer.begin("textarea");
 
         writer.attribute("name", name);
@@ -69,6 +74,8 @@ public abstract class TextArea extends AbstractFormComponent
 
         renderInformalParameters(writer, cycle);
 
+        delegate.writeAttributes(writer, cycle, this, null);
+
         String value = getValue();
 
         if (value != null)
@@ -76,6 +83,7 @@ public abstract class TextArea extends AbstractFormComponent
 
         writer.end();
 
+        delegate.writeSuffix(writer, cycle, this, null);
     }
 
     public abstract boolean isDisabled();

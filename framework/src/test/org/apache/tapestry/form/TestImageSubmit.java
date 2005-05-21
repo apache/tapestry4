@@ -57,7 +57,7 @@ public class TestImageSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
@@ -87,7 +87,7 @@ public class TestImageSubmit extends BaseFormComponentTest
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class, new Object[]
         { "image", image });
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
@@ -130,7 +130,7 @@ public class TestImageSubmit extends BaseFormComponentTest
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class, new Object[]
         { "disabledImage", image, "disabled", Boolean.TRUE });
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
@@ -174,7 +174,7 @@ public class TestImageSubmit extends BaseFormComponentTest
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class, new Object[]
         { "image", image, "disabled", Boolean.TRUE });
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
@@ -218,7 +218,7 @@ public class TestImageSubmit extends BaseFormComponentTest
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class, new Object[]
         { "image", image, "nameOverride", "barney" });
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
@@ -261,7 +261,7 @@ public class TestImageSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
@@ -295,7 +295,7 @@ public class TestImageSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
@@ -335,7 +335,7 @@ public class TestImageSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
@@ -382,7 +382,7 @@ public class TestImageSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        train(cyclec, cycle, form);
+        trainGetForm(cyclec, cycle, form);
 
         form.getDelegate();
         formc.setReturnValue(delegate);

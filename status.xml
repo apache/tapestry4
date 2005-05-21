@@ -57,6 +57,8 @@
        <action type="add" dev="HLS">Add getErrorRenderers() method to IValidationDelegate.</action>
        <action type="add" dev="HLS">Add purgeDeletedKeys() method to ListEditMap.</action>
        <action type="add" dev="HLS">Add checks for multiple specification elements "claiming" the same injected property. </action>
+       <action type="add" dev="HLS">Add support for validation decoration to TextArea.</action>
+       <action type="add" dev="HLS">Add raw parameter to InsertText.</action>
     </release>
     <release version="4.0-alpha-3" date="May 16 2005">
       <action type="add" dev="HLS">Add initial support for the validator: binding prefix.</action>

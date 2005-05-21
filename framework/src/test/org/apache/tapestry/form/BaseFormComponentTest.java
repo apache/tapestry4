@@ -14,13 +14,14 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IBinding;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.components.BaseComponentTestCase;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.easymock.MockControl;
 
@@ -30,7 +31,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class BaseFormComponentTest extends HiveMindTestCase
+public abstract class BaseFormComponentTest extends BaseComponentTestCase
 {
 
     protected IValidationDelegate newDelegate()
@@ -43,15 +44,16 @@ public abstract class BaseFormComponentTest extends HiveMindTestCase
         return (IForm) newMock(IForm.class);
     }
 
-    protected IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
-    }
-
-    protected void train(MockControl control, IRequestCycle cycle, IForm form)
+    protected void trainGetForm(MockControl control, IRequestCycle cycle, IForm form)
     {
         cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
         control.setReturnValue(form);
+    }
+
+    protected void trainGetDelegate(MockControl control, IForm form, IValidationDelegate delegate)
+    {
+        form.getDelegate();
+        control.setReturnValue(delegate);
     }
 
     protected void train(MockControl control, IRequestCycle cycle, String parameterName,
@@ -62,9 +64,9 @@ public abstract class BaseFormComponentTest extends HiveMindTestCase
     }
 
     protected void trainWasPrerendered(MockControl control, IForm form, IMarkupWriter writer,
-            Submit submit, boolean wasPrerendered)
+            IComponent component, boolean wasPrerendered)
     {
-        form.wasPrerendered(writer, submit);
+        form.wasPrerendered(writer, component);
         control.setReturnValue(wasPrerendered);
     }
 
@@ -79,11 +81,6 @@ public abstract class BaseFormComponentTest extends HiveMindTestCase
     {
         form.getElementId(component);
         control.setReturnValue(name);
-    }
-
-    protected IMarkupWriter newWriter()
-    {
-        return (IMarkupWriter) newMock(IMarkupWriter.class);
     }
 
     protected IBinding newBinding()

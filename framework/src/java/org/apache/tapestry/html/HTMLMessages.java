@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,21 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock.c20;
+package org.apache.tapestry.html;
 
-import org.apache.tapestry.html.BasePage;
-import org.apache.tapestry.html.InsertTextMode;
+import org.apache.hivemind.impl.MessageFormatter;
 
 /**
- * Used to display results of form containing a {@link org.apache.tapestry.form.TextArea}.
- * 
- * @author Howard Lewis Ship
- * @since 3.0
+ * @author Howard M. Lewis Ship
+ * @since 4.0
  */
-
-public abstract class Two extends BasePage
+class HTMLMessages
 {
-    public abstract void setText(String text);
+    private static final MessageFormatter _formatter = new MessageFormatter(HTMLMessages.class,
+            "HTMLStrings");
 
-    public abstract void setMode(InsertTextMode mode);
+    static String textConversionError(Throwable cause)
+    {
+        return _formatter.format("text-conversion-error", cause);
+    }
 }
