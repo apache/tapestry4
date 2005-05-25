@@ -39,6 +39,13 @@ public abstract class BaseFormComponentTest extends BaseComponentTestCase
         return (IValidationDelegate) newMock(IValidationDelegate.class);
     }
 
+    protected void trainIsInError(MockControl control, IValidationDelegate delegate,
+            boolean isInError)
+    {
+        delegate.isInError();
+        control.setReturnValue(isInError);
+    }
+
     protected IForm newForm()
     {
         return (IForm) newMock(IForm.class);
@@ -56,8 +63,8 @@ public abstract class BaseFormComponentTest extends BaseComponentTestCase
         control.setReturnValue(delegate);
     }
 
-    protected void train(MockControl control, IRequestCycle cycle, String parameterName,
-            String parameterValue)
+    protected void trainGetParameter(MockControl control, IRequestCycle cycle,
+            String parameterName, String parameterValue)
     {
         cycle.getParameter(parameterName);
         control.setReturnValue(parameterValue);

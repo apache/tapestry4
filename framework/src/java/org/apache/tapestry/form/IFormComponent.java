@@ -59,7 +59,8 @@ public interface IFormComponent extends IComponent
      *  for a form component.
      * 
      *  @since 3.0
-     * 
+     *
+     * @see org.apache.tapestry.FormBehavior#getElementId(IFormComponent)
      **/
     
     public void setName(String name);

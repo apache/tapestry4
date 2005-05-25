@@ -111,8 +111,6 @@ public class TestImageSubmit extends BaseFormComponentTest
 
         submit.renderComponent(writer, cycle);
 
-        assertEquals("fred", submit.getName());
-
         verifyControls();
     }
 
@@ -154,8 +152,6 @@ public class TestImageSubmit extends BaseFormComponentTest
         replayControls();
 
         submit.renderComponent(writer, cycle);
-
-        assertEquals("fred", submit.getName());
 
         verifyControls();
     }
@@ -199,8 +195,6 @@ public class TestImageSubmit extends BaseFormComponentTest
 
         submit.renderComponent(writer, cycle);
 
-        assertEquals("fred", submit.getName());
-
         verifyControls();
     }
 
@@ -243,8 +237,6 @@ public class TestImageSubmit extends BaseFormComponentTest
 
         submit.renderComponent(writer, cycle);
 
-        assertEquals("barney$0", submit.getName());
-
         verifyControls();
     }
 
@@ -278,8 +270,6 @@ public class TestImageSubmit extends BaseFormComponentTest
 
         submit.renderComponent(writer, cycle);
 
-        assertEquals("fred", submit.getName());
-
         verifyControls();
     }
 
@@ -308,13 +298,11 @@ public class TestImageSubmit extends BaseFormComponentTest
 
         trainGetElementId(formc, form, submit, "fred");
 
-        train(cyclec, cycle, "fred.x", null);
+        trainGetParameter(cyclec, cycle, "fred.x", null);
 
         replayControls();
 
         submit.renderComponent(writer, cycle);
-
-        assertEquals("fred", submit.getName());
 
         verifyControls();
     }
@@ -348,13 +336,12 @@ public class TestImageSubmit extends BaseFormComponentTest
 
         trainGetElementId(formc, form, submit, "fred");
 
-        train(cyclec, cycle, "fred.x", "33");
+        trainGetParameter(cyclec, cycle, "fred.x", "33");
 
         replayControls();
 
         submit.renderComponent(writer, cycle);
 
-        assertEquals("fred", submit.getName());
         assertEquals("clicked", PropertyUtils.read(submit, "selected"));
 
         // Note: we rely on the fact that ImageSubmit subclasses
@@ -367,9 +354,11 @@ public class TestImageSubmit extends BaseFormComponentTest
 
     public void testRewindTriggeredWithPointBound()
     {
+        // Note: because there isn't a real Form to set the name, we'll do it here.
+
         Creator creator = new Creator();
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class, new Object[]
-        { "tag", "clicked" });
+        { "tag", "clicked", "name", "fred" });
 
         IBinding binding = newBinding();
         submit.setBinding("selected", binding);
@@ -395,15 +384,14 @@ public class TestImageSubmit extends BaseFormComponentTest
 
         trainGetElementId(formc, form, submit, "fred");
 
-        train(cyclec, cycle, "fred.x", "33");
-        train(cyclec, cycle, "fred.x", "33");
-        train(cyclec, cycle, "fred.y", "19");
+        trainGetParameter(cyclec, cycle, "fred.x", "33");
+        trainGetParameter(cyclec, cycle, "fred.x", "33");
+        trainGetParameter(cyclec, cycle, "fred.y", "19");
 
         replayControls();
 
         submit.renderComponent(writer, cycle);
 
-        assertEquals("fred", submit.getName());
         assertEquals("clicked", PropertyUtils.read(submit, "selected"));
         assertEquals(new Point(33, 19), PropertyUtils.read(submit, "point"));
 

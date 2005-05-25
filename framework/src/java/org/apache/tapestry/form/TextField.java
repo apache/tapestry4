@@ -24,11 +24,27 @@ package org.apache.tapestry.form;
 
 public abstract class TextField extends AbstractTextField
 {
-    /** @since 4.0 */
+    /**
+     * Parameter.
+     * 
+     * @since 4.0
+     */
     public abstract String getValue();
 
-    /** @since 4.0 */
+    /**
+     * Parameter.
+     * 
+     * @since 4.0
+     */
     public abstract void setValue(String value);
+
+    /**
+     * Parameter.
+     * 
+     * @since 4.0
+     */
+
+    public abstract String getDisplayName();
 
     public String readValue()
     {

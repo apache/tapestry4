@@ -49,8 +49,6 @@ public abstract class ImageSubmit extends Submit
                 this,
                 nameOverride);
 
-        setName(name);
-
         if (rewinding)
         {
             // If disabled, do nothing.

@@ -17,6 +17,7 @@ package org.apache.tapestry.form;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
  * Base class for implementing various types of text input fields. This includes {@link TextField}
@@ -67,6 +68,10 @@ public abstract class AbstractTextField extends AbstractFormComponent
             return;
         }
 
+        IValidationDelegate delegate = form.getDelegate();
+
+        delegate.writePrefix(writer, cycle, this, null);
+
         writer.beginEmpty("input");
 
         writer.attribute("type", isHidden() ? "password" : "text");
@@ -82,14 +87,18 @@ public abstract class AbstractTextField extends AbstractFormComponent
 
         renderInformalParameters(writer, cycle);
 
+        delegate.writeAttributes(writer, cycle, this, null);
+
         beforeCloseTag(writer, cycle);
 
         writer.closeTag();
+
+        delegate.writeSuffix(writer, cycle, this, null);
     }
 
     /**
-     * Invoked from {@link #render(IMarkupWriter, IRequestCycle)}just before the tag is closed.
-     * This implementation does nothing, subclasses may override.
+     * Invoked from {@link #renderComponent(IMarkupWriter, IRequestCycle)} just before the tag is
+     * closed. This implementation does nothing, subclasses may override.
      */
 
     protected void beforeCloseTag(IMarkupWriter writer, IRequestCycle cycle)

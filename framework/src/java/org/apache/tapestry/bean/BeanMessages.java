@@ -15,6 +15,7 @@
 package org.apache.tapestry.bean;
 
 import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.tapestry.IComponent;
 
 /**
  * @author Howard M. Lewis Ship
@@ -30,4 +31,15 @@ class BeanMessages
         return _formatter.format("property-initializer-name", propertyName);
     }
 
+    static String beanNotDefined(IComponent component, String name)
+    {
+        return _formatter.format("bean-not-defined", component.getExtendedId(), name);
+    }
+
+    static String instantiationError(String name, IComponent component, String className,
+            Throwable cause)
+    {
+        return _formatter.format("instantiation-error", new Object[]
+        { name, component.getExtendedId(), className, cause });
+    }
 }

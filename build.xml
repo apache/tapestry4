@@ -33,10 +33,14 @@
   </target>
 
   <path id="jetty.classpath">
+    <pathelement location="config"/>
     <fileset dir="${jetty.dir}">
         <include name="ext/*.jar"/>
         <include name="lib/*.jar"/>
     </fileset>
+  	<fileset dir="ext-package/lib">
+  		<include name="log4j*.jar"/>
+ 	</fileset>
   </path>
 
   <available property="available.workbench.war" file="target/workbench.war"/>
@@ -57,7 +61,7 @@
 			</classpath>
 			<arg value="config/jetty-workbench.xml"/>
 			<!-- Enable debugging when running the Workbench -->
-			<jvmarg line="-showversion -Xdebug -Xnoagent"/>
+			<jvmarg line="-showversion -Xdebug -Xnoagent -XX:+UseParallelGC -XX:PermSize=20M -XX:MaxNewSize=10M -XX:NewSize=10M -Xmx600m -Xms32m"/>
 			<jvmarg
 				line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"
 				/>

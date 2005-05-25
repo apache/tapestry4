@@ -14,96 +14,25 @@
 
 package org.apache.tapestry.valid;
 
-import java.io.CharArrayWriter;
-import java.io.PrintWriter;
-
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.form.BaseFormComponentTest;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.markup.AsciiMarkupFilter;
-import org.apache.tapestry.markup.MarkupWriterImpl;
-import org.apache.tapestry.test.Creator;
-import org.apache.tapestry.valid.FieldLabel;
-import org.apache.tapestry.valid.IValidationDelegate;
 import org.easymock.MockControl;
 
 /**
- * Tests for the {@link org.apache.tapestry.valid.FieldLabel}&nbsp;component. TODO: Test that
- * proves the raw parameter is honored.
+ * Tests for the {@link org.apache.tapestry.valid.FieldLabel} component.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestFieldLabel extends HiveMindTestCase
+public class TestFieldLabel extends BaseFormComponentTest
 {
-    private Creator _creator = new Creator();
-
-    private static CharArrayWriter _writer;
-
-    private PrintWriter newPrintWriter()
-    {
-        _writer = new CharArrayWriter();
-
-        return new PrintWriter(_writer);
-    }
-
-    private IMarkupWriter newWriter()
-    {
-        return new MarkupWriterImpl("text/html", newPrintWriter(), new AsciiMarkupFilter());
-
-    }
-
-    protected void tearDown() throws Exception
-    {
-        _writer = null;
-
-        super.tearDown();
-    }
-
-    private void assertOutput(String expected)
-    {
-        assertEquals(expected, _writer.toString());
-
-        _writer.reset();
-    }
-
-    private IBinding newBinding(Location l)
-    {
-        MockControl control = newControl(IBinding.class);
-        IBinding binding = (IBinding) control.getMock();
-
-        binding.getLocation();
-        control.setReturnValue(l);
-
-        return binding;
-    }
-
-    private IRequestCycle newCycle(IForm form)
-    {
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
-
-        cycle.isRewinding();
-        control.setReturnValue(false);
-
-        cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
-        control.setReturnValue(form);
-
-        return cycle;
-    }
-
-    private IForm newForm()
-    {
-        return (IForm) newMock(IForm.class);
-    }
-
     private IForm newForm(IValidationDelegate delegate)
     {
         MockControl control = newControl(IForm.class);
@@ -115,7 +44,7 @@ public class TestFieldLabel extends HiveMindTestCase
         return form;
     }
 
-    private IPage newPage()
+    private IPage newFred()
     {
         MockControl control = newControl(IPage.class);
         IPage page = (IPage) control.getMock();
@@ -150,7 +79,7 @@ public class TestFieldLabel extends HiveMindTestCase
 
         replayControls();
 
-        FieldLabel fl = (FieldLabel) _creator.newInstance(FieldLabel.class);
+        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class);
 
         fl.render(null, cycle);
 
@@ -161,17 +90,44 @@ public class TestFieldLabel extends HiveMindTestCase
     {
         IValidationDelegate delegate = new MockDelegate();
         IForm form = newForm(delegate);
-        IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(form);
+        IMarkupWriter writer = newBufferWriter();
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+
+        trainIsRewinding(cyclec, cycle, false);
+        trainGetForm(cyclec, cycle, form);
 
         replayControls();
 
-        FieldLabel fl = (FieldLabel) _creator.newInstance(FieldLabel.class, new Object[]
+        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
         { "displayName", "FredFlintstone" });
 
         fl.render(writer, cycle);
 
-        assertOutput("{LABEL-PREFIX}FredFlintstone{LABEL-SUFFIX}");
+        assertBuffer("{LABEL-PREFIX}FredFlintstone{LABEL-SUFFIX}");
+
+        verifyControls();
+    }
+
+    public void testNoFieldRaw()
+    {
+        IValidationDelegate delegate = new MockDelegate();
+        IForm form = newForm(delegate);
+        IMarkupWriter writer = newBufferWriter();
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+
+        trainIsRewinding(cyclec, cycle, false);
+        trainGetForm(cyclec, cycle, form);
+
+        replayControls();
+
+        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
+        { "displayName", "<b>FredFlintstone</b>", "raw", Boolean.TRUE });
+
+        fl.render(writer, cycle);
+
+        assertBuffer("{LABEL-PREFIX}<b>FredFlintstone</b>{LABEL-SUFFIX}");
 
         verifyControls();
     }
@@ -179,15 +135,20 @@ public class TestFieldLabel extends HiveMindTestCase
     public void testNoFieldOrDisplayName()
     {
         IForm form = newForm();
-        IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(form);
+        IMarkupWriter writer = newBufferWriter();
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+
         Location l = newLocation();
         IBinding binding = newBinding(l);
-        IPage page = newPage();
+        IPage page = newFred();
+
+        trainIsRewinding(cyclec, cycle, false);
+        trainGetForm(cyclec, cycle, form);
 
         replayControls();
 
-        FieldLabel fl = (FieldLabel) _creator.newInstance(FieldLabel.class, new Object[]
+        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
         { "id", "label", "page", page, "container", page });
 
         fl.setBinding("field", binding);
@@ -216,12 +177,17 @@ public class TestFieldLabel extends HiveMindTestCase
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
 
-        IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(form);
+        IMarkupWriter writer = newBufferWriter();
         IFormComponent field = newField("MyLabel");
         Location l = newLocation();
 
-        FieldLabel fl = (FieldLabel) _creator.newInstance(FieldLabel.class, new Object[]
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+
+        trainIsRewinding(cyclec, cycle, false);
+        trainGetForm(cyclec, cycle, form);
+
+        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
         { "location", l, "field", field });
 
         form.prerenderField(writer, field, l);
@@ -233,7 +199,7 @@ public class TestFieldLabel extends HiveMindTestCase
 
         fl.render(writer, cycle);
 
-        assertOutput("{LABEL-PREFIX}MyLabel{LABEL-SUFFIX}");
+        assertBuffer("{LABEL-PREFIX}MyLabel{LABEL-SUFFIX}");
 
         verifyControls();
     }
@@ -243,17 +209,21 @@ public class TestFieldLabel extends HiveMindTestCase
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
 
-        IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(form);
+        IMarkupWriter writer = newBufferWriter();
 
         MockControl fieldc = newControl(IFormComponent.class);
-
         IFormComponent field = (IFormComponent) fieldc.getMock();
 
-        Location l = newLocation();
-        IPage page = newPage();
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
-        FieldLabel fl = (FieldLabel) _creator.newInstance(FieldLabel.class, new Object[]
+        trainIsRewinding(cyclec, cycle, false);
+        trainGetForm(cyclec, cycle, form);
+
+        Location l = newLocation();
+        IPage page = newFred();
+
+        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
         { "id", "label", "location", l, "field", field, "page", page, "container", page });
 
         form.prerenderField(writer, field, l);

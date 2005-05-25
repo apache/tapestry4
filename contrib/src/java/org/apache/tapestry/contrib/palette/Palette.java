@@ -154,35 +154,37 @@ import org.apache.tapestry.valid.IValidationDelegate;
  * use to format the palette component:
  * 
  * <pre>
- *                 TABLE.tapestry-palette TH
- *                 {
- *                   font-size: 9pt;
- *                   font-weight: bold;
- *                   color: white;
- *                   background-color: #330066;
- *                   text-align: center;
- *                 }
- *                
- *                 TD.available-cell SELECT
- *                 {
- *                   font-weight: normal;
- *                   background-color: #FFFFFF;
- *                   width: 200px;
- *                 }
+ * 
+ *                  TABLE.tapestry-palette TH
+ *                  {
+ *                    font-size: 9pt;
+ *                    font-weight: bold;
+ *                    color: white;
+ *                    background-color: #330066;
+ *                    text-align: center;
+ *                  }
  *                 
- *                 TD.selected-cell SELECT
- *                 {
- *                   font-weight: normal;
- *                   background-color: #FFFFFF;
- *                   width: 200px;
- *                 }
- *                 
- *                 TABLE.tapestry-palette TD.controls
- *                 {
- *                   text-align: center;
- *                   vertical-align: middle;
- *                   width: 60px;
- *                 }
+ *                  TD.available-cell SELECT
+ *                  {
+ *                    font-weight: normal;
+ *                    background-color: #FFFFFF;
+ *                    width: 200px;
+ *                  }
+ *                  
+ *                  TD.selected-cell SELECT
+ *                  {
+ *                    font-weight: normal;
+ *                    background-color: #FFFFFF;
+ *                    width: 200px;
+ *                  }
+ *                  
+ *                  TABLE.tapestry-palette TD.controls
+ *                  {
+ *                    text-align: center;
+ *                    vertical-align: middle;
+ *                    width: 60px;
+ *                  }
+ *  
  * </pre>
  * 
  * @author Howard Lewis Ship
@@ -217,7 +219,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
     {
         // Next few lines of code is similar to AbstractFormComponent (which, alas, extends from
         // AbstractComponent, not from BaseComponent).
-        
+
         IForm form = TapestryUtils.getForm(cycle, this);
 
         if (form.wasPrerendered(writer, this))
@@ -229,7 +231,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
         delegate.setFormComponent(this);
 
-        setName(form.getElementId(this));
+        form.getElementId(this);
 
         if (form.isRewinding())
             handleSubmission(cycle);

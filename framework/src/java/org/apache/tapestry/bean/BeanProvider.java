@@ -30,7 +30,6 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEndRenderListener;
 import org.apache.tapestry.event.PageEvent;
@@ -39,7 +38,7 @@ import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- * Basic implementation of the {@link IBeanProvider}interface.
+ * Basic implementation of the {@link IBeanProvider} interface.
  * 
  * @author Howard Lewis Ship
  * @since 1.0.4
@@ -90,7 +89,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageEndR
 
     public BeanProvider(IComponent component)
     {
-        this._component = component;
+        _component = component;
         IEngine engine = component.getPage().getEngine();
         _resolver = engine.getClassResolver();
 
@@ -127,6 +126,9 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageEndR
 
     public Object getBean(String name)
     {
+        if (LOG.isDebugEnabled())
+            LOG.debug("getBean(" + name + ")");
+
         Object bean = null;
 
         if (_beans != null)
@@ -138,10 +140,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageEndR
         IBeanSpecification spec = _component.getSpecification().getBeanSpecification(name);
 
         if (spec == null)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "BeanProvider.bean-not-defined",
-                    _component.getExtendedId(),
-                    name));
+            throw new ApplicationRuntimeException(BeanMessages.beanNotDefined(_component, name));
 
         bean = instantiateBean(name, spec);
 
@@ -195,12 +194,11 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageEndR
         }
         catch (Exception ex)
         {
-
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "BeanProvider.instantiation-error",
-                    new Object[]
-                    { beanName, _component.getExtendedId(), className, ex.getMessage() }), spec
-                    .getLocation(), ex);
+            throw new ApplicationRuntimeException(BeanMessages.instantiationError(
+                    beanName,
+                    _component,
+                    className,
+                    ex), spec.getLocation(), ex);
         }
 
         // OK, have the bean, have to initialize it.

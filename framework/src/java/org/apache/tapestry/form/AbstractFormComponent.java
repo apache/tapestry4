@@ -23,26 +23,23 @@ import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
- *  A base class for building components that correspond to HTML form elements.
- *  All such components must be wrapped (directly or indirectly) by
- *  a {@link Form} component.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.3
+ * A base class for building components that correspond to HTML form elements. All such components
+ * must be wrapped (directly or indirectly) by a {@link Form} component.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 1.0.3
+ */
 
 public abstract class AbstractFormComponent extends AbstractComponent implements IFormComponent
 {
     /**
-     *  Returns the {@link Form} wrapping this component.  Invokes
-     *  {@link #setForm(IForm)} (so that the component may know, later, what the
-     *  form is).  Also, if the form has a delegate, 
-     *  then {@link IValidationDelegate#setFormComponent(IFormComponent)} is invoked.
-     *
-     *  @throws ApplicationRuntimeException if the component is not wrapped by a {@link Form}.
-     *
-     **/
+     * Returns the {@link Form} wrapping this component. Invokes {@link #setForm(IForm)} (so that
+     * the component may know, later, what the form is). Also, if the form has a delegate, then
+     * {@link IValidationDelegate#setFormComponent(IFormComponent)} is invoked.
+     * 
+     * @throws ApplicationRuntimeException
+     *             if the component is not wrapped by a {@link Form}.
+     */
 
     public IForm getForm(IRequestCycle cycle)
     {
@@ -58,20 +55,10 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
     }
 
     public abstract IForm getForm();
+
     public abstract void setForm(IForm form);
 
     public abstract String getName();
+
     public abstract void setName(String name);
-
-    /**
-     *  Implemented in some subclasses to provide a display name (suitable
-     *  for presentation to the user as a label or error message).  This implementation
-     *  return null.
-     * 
-     **/
-
-    public String getDisplayName()
-    {
-        return null;
-    }
 }

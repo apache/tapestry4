@@ -25,11 +25,32 @@
   A text input field.
   </description>
   
-  <parameter name="value" required="yes" default-binding="ognl"/>
+  <parameter name="value" required="yes" default-binding="ognl">
+      <description>
+          The text string to be read and updated.
+      </description>
+  </parameter>
   
-  <parameter name="disabled" default-binding="ognl"/>
+  <parameter name="disabled" default-binding="ognl">
+      <description>
+      If true, then the disabled attribute will be written on render, and the
+      TextField will not update its value parameter when the form is submitted.
+      </description>
+  </parameter>
+
+  <parameter name="displayName" default-binding="literal">
+      <description>
+          The name of the field, which may be used by a FieldLabel.
+      </description>
+  </parameter>
   
-  <parameter name="hidden" default-binding="ognl"/>
+    
+  <parameter name="hidden" default-binding="ognl">
+      <description>
+          If true, then the TextField will render itself as a password field (that hides the
+          content entered by the user).
+      </description>
+  </parameter>
   
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>
