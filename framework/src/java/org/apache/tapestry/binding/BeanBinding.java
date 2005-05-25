@@ -43,6 +43,17 @@ public class BeanBinding extends AbstractBinding
         _beanName = beanName;
     }
 
+    /**
+     * Beans obtained via the binding should *not* be cached by the component because beans may be
+     * discarded inside the {@link org.apache.tapestry.bean.BeanProvider} based on the life cycle of
+     * the bean.  The BeanProvider caches beans as well.
+     */
+
+    public boolean isInvariant()
+    {
+        return false;
+    }
+
     public Object getComponent()
     {
         return _component;

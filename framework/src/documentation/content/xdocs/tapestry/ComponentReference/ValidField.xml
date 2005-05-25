@@ -28,11 +28,12 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> An extended version of &TextField; that renders an &lt;input&gt; form element but allows for pluggable <em>validation</em>, both on the
+  server (at form submission time) and actively on the client.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/valid/ValidField.html">org.apache.tapestry.valid.ValidField</link>, &FieldLabel;, &Form;, &TextField;</strong> 
 </p>
 
 <section>
@@ -45,28 +46,223 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
+    <th>Default Binding</th>
     <th>Description</th>
   </tr>
+  
+ <tr>
+    <td>value</td>
+    <td>java.lang.Object</td>
+    <td>in / out</td>
+    <td>yes</td>
+    <td>&nbsp;</td>
+    <td>ognl</td>
+    <td>The value to be edited which may be any reasonable type.  The validator is responsible for
+      converting back and forth between server-side data types (such as int, long, Date, BigDecimal, etc.) and
+      client-side representation (as a simple string).</td>
+  </tr>
+  
+  <tr>
+    <td>validator</td>
+    <td>&IValidator;</td>
+    <td>int</td>
+    <td>yes</td>
+    <td>&nbsp;</td>
+    <td>validator</td>
+    <td>
+    The validator object for this field.  Validators are stateless and, therefore, highly sharable.  The
+    validator binding allows validator type and configuration to be specified succinctly; where more control
+    is necessary, validators will often be defined as managed beans.
+    </td>
+  </tr>
+  
+  <tr>
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+    <td>ognl</td>
+    <td>If true, then a disabled attribute will be rendered as part of the &lt;input&gt; tag, and the component will not
+      update its value parameter when the form is submitted.</td>
+  </tr>
+  
+  <tr>
+    <td>displayName</td>
+    <td>string</td>
+    <td>in</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>literal</td>
+    <td>The user-presentable name for the component, which will be used by a &FieldLabel; connected to the component. This name is also
+      used by the validator, when creating client- or server-side error messages.</td>
+  </tr>
+  
+  <tr>
+    <td>hidden</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+    <td>ognl</td>
+    <td>If true, then the type attribute will be "password", not "text", and user input in the browser will be masked. </td>
+  </tr>  
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: name, type, value
 </p>
 
 </section>
 
 <section>
-  <title>Examples</title>
+  <title>Example</title>
 
+<p>
+This example shows the usage of a number of ValidField components, each configured differently.
+</p>
+
+<p>EnterBid.html</p>
+
+<source><![CDATA[
+<form jwcid="form@Form" delegate="bean:delegate">
+  <table>
+    <tr>
+       <td colspan="2"><span class="title">Regal Auctions Bid Page</span></td>
+    </tr>
+    <tr>
+      <td colspan="2"><hr></td>
+    </tr>
+    <tr>
+      <td colspan="2"><span jwcid="@ShowError" delegate="beans.delegate"/></td>
+    </tr>
+    <tr>
+      <td><span jwcid="@FieldLabel" field="lotNoField">Lot Number</span></td>
+      <td><input jwcid="lotNoField" type="text" size="4" maxlength="4"/></td> 
+    </tr>
+    <tr>
+      <td><span jwcid="@FieldLabel" field="bidAmountField">Bid Amount</span></td>
+      <td><input jwcid="bidAmountField" type="text" size="7" maxlength="7"/></td>
+    </tr>
+    <tr>
+      <td><span jwcid="@FieldLabel" field="fullNameField">Full Name</span></td>
+      <td><input jwcid="fullNameField" type="text" size="25" maxlength="30"/></td>
+    </tr>
+    <tr>
+      <td><span jwcid="@FieldLabel" field="emailField">Email</span></td>
+      <td><input jwcid="emailField" type="text" size="25" maxlength="30"/></td>
+    </tr>
+    <tr>
+      <td><span jwcid="@FieldLabel" field="telephoneField">Telephone</span></td>
+      <td><input jwcid="telephoneField" type="text" size="25" maxlength="30"/></td>
+    </tr>
+   <tr>
+     <td colspan="2" align="right">
+       <input jwcid="@Submit" listener="doSubmit" type="Submit" value="   OK   "/>
+       <input jwcid="@Submit" listener="doCancel" onclick="javascript:form.onsubmit = null;"/>
+     </td>
+   </tr>
+  </table>
+</form>]]></source>
+
+<p>
+Because of the number of parameters for ValidField, they are traditionally defined in the
+specification.
+</p>
+
+<p>EnterBid.page (partial):</p>
+
+<source><![CDATA[
+
+<bean name="delegate" class="org.apache.tapestry.valid.ValidationDelegate" property="delegate"/>
+
+<bean name="lotNoValidator" class="org.apache.tapestry.valid.NumberValidator">
+    <set name="required" value="true"/>
+    <set name="minimum" value="1"/>
+    <set name="maximum" value="auctionDetails.numberLots"/>
+    <set name="valueType">"int"</set>
+</bean>
+
+<bean name="bidAmountValidator" class="org.apache.tapestry.valid.NumberValidator">
+    <set name="required" value="true"/>
+    <set name="minimum" value="auctionDetails.minBid"/>
+    <set name="maximum" value="auctionDetails.maxBid"/>
+    <set name="valueType">"float"</set>    
+</bean>
+
+<component id="lotNoField" type="ValidField">
+    <binding name="value" value="lotBid.lotNo"/>
+    <binding name="validator" value="bean:lotNoValidator"/>
+    <binding name="displayName" value="Lot Number"/>
+</component>
+
+<component id="bidAmountField" type="ValidField">
+    <binding name="value" value="lotBid.bidAmount"/>
+    <value name="validator" value="bean:bidAmountNoValidator"/>
+    <value name="displayName" value="Bid Amount"/>
+</component>
+
+<component id="fullNameField" type="ValidField">
+    <binding name="value" value="lotBid.bidderName"/>
+    <binding name="validator" value="string,required,minimumLength=3"/>
+    <binding name="displayName" value="Full Name"/>
+</component>
+
+<component id="emailField" type="ValidField">
+    <binding name="value" value="lotBid.bidderEmail"/>
+    <binding name="validator" value="string,required,minimumLength=12"/>
+    <binding name="displayName" value="Email"/>
+</component>
+
+<component id="telephoneField" type="ValidField">
+    <binding name="value" value="lotBid.bidderTelephone"/>
+    <binding name="validator" value="string,required,minimumLength=11"/>
+    <binding name="displayName" value="Telephone"/>;
+</component>
+]]></source>
+
+<p>
+EnterBid.java:
+</p>
+
+<source><![CDATA[
+public abstract class EnterBid extends BasePage {
+    public abstract LotBid getLotBid();
+
+    public abstract void setLotBid(LotBid value);
+    public asbtract AuctionDetails getAuctionDetails();
+
+    public abstract void setAuctionDetails(AuctionDetails value);
+    
+    public abstract IValidationDelegate getDelegate();
+
+    public void doSubmit(IRequestCycle cycle) {
+        IValidationDelegate delegate = getDelegate();
+
+        // If no errors process the bid, otherwise stay on this page and 
+        // let the fields show their errors.
+        if (!delegate.getHasErrors())
+            // Save the lot bid to the database.
+            ..
+            
+            // Go to the confirmation page.
+            cycle.activate("BidConfirmPage");
+        }
+    }
+    
+    public void doCancel(IRequestCycle cycle) {
+        cycle.activate("AuctionListPage");
+    }
+}]]></source>
 </section>
 </body>
 </document>

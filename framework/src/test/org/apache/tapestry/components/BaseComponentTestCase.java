@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.components;
 
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
+
 import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IBinding;
@@ -22,6 +25,8 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.markup.AsciiMarkupFilter;
+import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.test.Creator;
@@ -41,6 +46,25 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
             _creator = new Creator();
 
         return _creator;
+    }
+
+    protected CharArrayWriter _charArrayWriter;
+
+    protected IMarkupWriter newBufferWriter()
+    {
+        _charArrayWriter = new CharArrayWriter();
+        PrintWriter pw = new PrintWriter(_charArrayWriter);
+
+        return new MarkupWriterImpl("text/html", pw, new AsciiMarkupFilter());
+    }
+
+    protected void assertBuffer(String expected)
+    {
+        String actual = _charArrayWriter.toString();
+
+        assertEquals("Buffered markup writer content.", expected, actual);
+
+        _charArrayWriter.reset();
     }
 
     protected Object newInstance(Class componentClass)
@@ -103,6 +127,17 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
         binding.getObject();
         control.setReturnValue(value);
+
+        return binding;
+    }
+
+    protected IBinding newBinding(Location location)
+    {
+        MockControl control = newControl(IBinding.class);
+        IBinding binding = (IBinding) control.getMock();
+
+        binding.getLocation();
+        control.setReturnValue(location);
 
         return binding;
     }

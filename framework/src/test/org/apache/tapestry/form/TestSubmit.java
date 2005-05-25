@@ -98,8 +98,6 @@ public class TestSubmit extends BaseFormComponentTest
 
         submit.renderComponent(writer, cycle);
 
-        assertEquals("fred", submit.getName());
-
         verifyControls();
     }
 
@@ -138,8 +136,6 @@ public class TestSubmit extends BaseFormComponentTest
         replayControls();
 
         submit.renderComponent(writer, cycle);
-
-        assertEquals("fred", submit.getName());
 
         verifyControls();
     }
@@ -180,8 +176,6 @@ public class TestSubmit extends BaseFormComponentTest
 
         submit.renderComponent(writer, cycle);
 
-        assertEquals("fred", submit.getName());
-
         verifyControls();
     }
 
@@ -215,8 +209,6 @@ public class TestSubmit extends BaseFormComponentTest
 
         submit.renderComponent(writer, cycle);
 
-        assertEquals("fred", submit.getName());
-
         verifyControls();
     }
 
@@ -245,13 +237,11 @@ public class TestSubmit extends BaseFormComponentTest
 
         trainGetElementId(formc, form, submit, "fred");
 
-        train(cyclec, cycle, "fred", null);
+        trainGetParameter(cyclec, cycle, "fred", null);
 
         replayControls();
 
         submit.renderComponent(writer, cycle);
-
-        assertEquals("fred", submit.getName());
 
         verifyControls();
     }
@@ -285,13 +275,12 @@ public class TestSubmit extends BaseFormComponentTest
 
         trainGetElementId(formc, form, submit, "fred");
 
-        train(cyclec, cycle, "fred", "flintstone");
+        trainGetParameter(cyclec, cycle, "fred", "flintstone");
 
         replayControls();
 
         submit.renderComponent(writer, cycle);
 
-        assertEquals("fred", submit.getName());
         assertEquals("clicked", PropertyUtils.read(submit, "selected"));
 
         verifyControls();

@@ -61,8 +61,6 @@ abstract class AbstractSubmit extends AbstractFormComponent
 
         String name = form.getElementId(this);
 
-        setName(name);
-
         if (rewinding)
         {
             // Don't bother doing anything if disabled.

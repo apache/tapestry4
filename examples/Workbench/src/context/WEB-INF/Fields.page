@@ -23,7 +23,7 @@
 
   <property name="clientValidationEnabled" persist="client" initial-value="true"/>
   
-  <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
+  <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate" property="delegate"/>
   
   <bean name="dateValidator" lifecycle="render" class="org.apache.tapestry.valid.DateValidator">
   	<set name="required" value="true"/>

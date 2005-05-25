@@ -17,8 +17,6 @@ package org.apache.tapestry.valid;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.valid.IValidator;
-import org.apache.tapestry.valid.ValidationDelegate;
 
 /**
  * Mock implementation of {@link org.apache.tapestry.valid.IValidationDelegate}used to test

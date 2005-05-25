@@ -14,25 +14,23 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.form.TextArea}.
+ * Tests for {@link org.apache.tapestry.form.TextField}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestTextArea extends BaseFormComponentTest
+public class TestTextField extends BaseFormComponentTest
 {
     public void testWasPrerendered()
     {
-        TextArea component = (TextArea) newInstance(TextArea.class);
+        TextField component = (TextField) newInstance(TextField.class);
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -58,9 +56,14 @@ public class TestTextArea extends BaseFormComponentTest
         verifyControls();
     }
 
-    public void testRewindNotForm()
+    /**
+     * Check when the form is not rewinding, but the cycle is rewinding (a whole page rewind care of
+     * the action service).
+     */
+
+    public void testFormNotRewinding()
     {
-        TextArea component = (TextArea) newInstance(TextArea.class);
+        TextField component = (TextField) newInstance(TextField.class);
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -79,7 +82,6 @@ public class TestTextArea extends BaseFormComponentTest
 
         trainWasPrerendered(formc, form, writer, component, false);
         trainIsRewinding(formc, form, false);
-        trainGetElementId(formc, form, component, "barney");
         trainIsRewinding(cyclec, cycle, true);
 
         replayControls();
@@ -89,9 +91,9 @@ public class TestTextArea extends BaseFormComponentTest
         verifyControls();
     }
 
-    public void testRewindingForm()
+    public void testRewind()
     {
-        TextArea component = (TextArea) newInstance(TextArea.class);
+        TextField component = (TextField) newInstance(TextField.class);
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -110,54 +112,23 @@ public class TestTextArea extends BaseFormComponentTest
 
         trainWasPrerendered(formc, form, writer, component, false);
         trainIsRewinding(formc, form, true);
-        trainGetElementId(formc, form, component, "barney");
-        trainGetParameter(cyclec, cycle, "barney", "submitted value");
+
+        trainGetElementId(formc, form, component, "fred");
+
+        trainGetParameter(cyclec, cycle, "fred", "fred-value");
 
         replayControls();
 
         component.render(writer, cycle);
 
-        assertEquals("submitted value", component.getProperty("value"));
-
         verifyControls();
-    }
 
-    public void testRewindFormDisabled()
-    {
-        TextArea component = (TextArea) newInstance(TextArea.class, "disabled", Boolean.TRUE);
-
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-
-        IMarkupWriter writer = newWriter();
-
-        IValidationDelegate delegate = newDelegate();
-
-        trainGetForm(cyclec, cycle, form);
-        trainGetDelegate(formc, form, delegate);
-
-        delegate.setFormComponent(component);
-
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainIsRewinding(formc, form, true);
-        trainGetElementId(formc, form, component, "barney");
-
-        replayControls();
-
-        component.render(writer, cycle);
-
-        assertNull(component.getProperty("value"));
-
-        verifyControls();
+        assertEquals("fred-value", component.getProperty("value"));
     }
 
     public void testRender()
     {
-        TextArea component = (TextArea) newInstance(TextArea.class, new Object[]
-        { "value", "text area value" });
+        TextField component = (TextField) newInstance(TextField.class, "value", "field value");
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -174,8 +145,10 @@ public class TestTextArea extends BaseFormComponentTest
 
         trainWasPrerendered(formc, form, writer, component, false);
         trainIsRewinding(formc, form, false);
-        trainGetElementId(formc, form, component, "fred");
         trainIsRewinding(cyclec, cycle, false);
+
+        trainGetElementId(formc, form, component, "fred");
+
         trainGetDelegate(formc, form, delegate);
 
         replayControls();
@@ -184,15 +157,50 @@ public class TestTextArea extends BaseFormComponentTest
 
         verifyControls();
 
-        assertEquals(component, delegate.getFormComponent());
+        assertSame(component, delegate.getFormComponent());
+        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"field value\" class=\"validation-delegate\"/></span>");
+    }
 
-        assertBuffer("<span class=\"prefix\"><textarea name=\"fred\" class=\"validation-delegate\">text area value</textarea></span>");
+    public void testRenderHidden()
+    {
+        TextField component = (TextField) newInstance(TextField.class, new Object[]
+        { "value", "field value", "hidden", Boolean.TRUE });
+
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+
+        MockControl formc = newControl(IForm.class);
+        IForm form = (IForm) formc.getMock();
+
+        IMarkupWriter writer = newBufferWriter();
+
+        MockDelegate delegate = new MockDelegate();
+
+        trainGetForm(cyclec, cycle, form);
+        trainGetDelegate(formc, form, delegate);
+
+        trainWasPrerendered(formc, form, writer, component, false);
+        trainIsRewinding(formc, form, false);
+        trainIsRewinding(cyclec, cycle, false);
+
+        trainGetElementId(formc, form, component, "fred");
+
+        trainGetDelegate(formc, form, delegate);
+
+        replayControls();
+
+        component.render(writer, cycle);
+
+        verifyControls();
+
+        assertSame(component, delegate.getFormComponent());
+        assertBuffer("<span class=\"prefix\"><input type=\"password\" name=\"fred\" value=\"field value\" class=\"validation-delegate\"/></span>");
     }
 
     public void testRenderDisabled()
     {
-        TextArea component = (TextArea) newInstance(TextArea.class, new Object[]
-        { "value", "text area value", "disabled", Boolean.TRUE });
+        TextField component = (TextField) newInstance(TextField.class, new Object[]
+        { "value", "field value", "disabled", Boolean.TRUE });
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -209,8 +217,10 @@ public class TestTextArea extends BaseFormComponentTest
 
         trainWasPrerendered(formc, form, writer, component, false);
         trainIsRewinding(formc, form, false);
-        trainGetElementId(formc, form, component, "fred");
         trainIsRewinding(cyclec, cycle, false);
+
+        trainGetElementId(formc, form, component, "fred");
+
         trainGetDelegate(formc, form, delegate);
 
         replayControls();
@@ -219,19 +229,13 @@ public class TestTextArea extends BaseFormComponentTest
 
         verifyControls();
 
-        assertEquals(component, delegate.getFormComponent());
-
-        assertBuffer("<span class=\"prefix\"><textarea name=\"fred\" disabled=\"disabled\" class=\"validation-delegate\">text area value</textarea></span>");
+        assertSame(component, delegate.getFormComponent());
+        assertBuffer("<span class=\"prefix\"><input type=\"text\" disabled=\"disabled\" name=\"fred\" value=\"field value\" class=\"validation-delegate\"/></span>");
     }
 
-    public void testRenderWithInformalParameters()
+    public void testRenderNull()
     {
-        IBinding binding = newBinding("informal-value");
-
-        TextArea component = (TextArea) newInstance(TextArea.class, new Object[]
-        { "value", "text area value", "specification", new ComponentSpecification() });
-
-        component.setBinding("informal", binding);
+        TextField component = (TextField) newInstance(TextField.class);
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -246,12 +250,12 @@ public class TestTextArea extends BaseFormComponentTest
         trainGetForm(cyclec, cycle, form);
         trainGetDelegate(formc, form, delegate);
 
-        delegate.setFormComponent(component);
-
         trainWasPrerendered(formc, form, writer, component, false);
         trainIsRewinding(formc, form, false);
-        trainGetElementId(formc, form, component, "fred");
         trainIsRewinding(cyclec, cycle, false);
+
+        trainGetElementId(formc, form, component, "fred");
+
         trainGetDelegate(formc, form, delegate);
 
         replayControls();
@@ -260,43 +264,7 @@ public class TestTextArea extends BaseFormComponentTest
 
         verifyControls();
 
-        assertEquals(component, delegate.getFormComponent());
-
-        assertBuffer("<span class=\"prefix\"><textarea name=\"fred\" informal=\"informal-value\" "
-                + "class=\"validation-delegate\">text area value</textarea></span>");
-
-    }
-
-    public void testRenderNullValue()
-    {
-        TextArea component = (TextArea) newInstance(TextArea.class);
-
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-
-        IMarkupWriter writer = newBufferWriter();
-
-        MockDelegate delegate = new MockDelegate();
-
-        trainGetForm(cyclec, cycle, form);
-        trainGetDelegate(formc, form, delegate);
-
-
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainIsRewinding(formc, form, false);
-        trainGetElementId(formc, form, component, "fred");
-        trainIsRewinding(cyclec, cycle, false);
-        trainGetDelegate(formc, form, delegate);
-
-        replayControls();
-
-        component.render(writer, cycle);
-
-        verifyControls();
-        
-        assertBuffer("<span class=\"prefix\"><textarea name=\"fred\" class=\"validation-delegate\"></textarea></span>");
+        assertSame(component, delegate.getFormComponent());
+        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" class=\"validation-delegate\"/></span>");
     }
 }

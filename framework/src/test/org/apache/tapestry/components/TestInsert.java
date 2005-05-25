@@ -36,17 +36,6 @@ import org.easymock.MockControl;
  */
 public class TestInsert extends BaseComponentTestCase
 {
-    private IBinding newBinding(Location location)
-    {
-        MockControl control = newControl(IBinding.class);
-        IBinding binding = (IBinding) control.getMock();
-
-        binding.getLocation();
-        control.setReturnValue(location);
-
-        return binding;
-    }
-
     /**
      * Returns a new page instance (not a mock page).
      */

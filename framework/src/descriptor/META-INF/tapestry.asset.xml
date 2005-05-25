@@ -83,6 +83,8 @@
   <configuration-point id="AssetFactoryStrategies" schema-id="hivemind.lib.StrategyRegistry"/>
   
   <contribution configuration-id="AssetFactoryStrategies">
+    <strategy class="org.apache.hivemind.util.ContextResource" object="service:ContextAssetFactory"/>
+    
     <strategy class="org.apache.tapestry.web.WebContextResource" object="service:ContextAssetFactory"/>
             
     <strategy class="org.apache.hivemind.util.ClasspathResource" object="service:ClasspathAssetFactory"/>

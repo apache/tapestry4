@@ -25,15 +25,23 @@
   A multi-line text area.
   </description>
   
-  <parameter name="value" default-binding="ognl" required="yes"/>
+  <parameter name="value" default-binding="ognl" required="yes">
+      <description>
+          The multi-line string to be read and updated.
+      </description>
+  </parameter>
   
   <parameter name="disabled" default-binding="ognl">
+      <description>
       If true, then the disabled attribute will be written on render, and the
       TextArea will not update its value parameter when the form is submitted.
+      </description>
   </parameter>
   
   <parameter name="displayName" default-binding="literal">
-      The name of the field, which may be used by a FieldLabel.
+      <description>
+          The name of the field, which may be used by a FieldLabel.
+      </description>
   </parameter>
   
   <reserved-parameter name="name"/>

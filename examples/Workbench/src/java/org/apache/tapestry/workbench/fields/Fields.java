@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
-import org.apache.tapestry.workbench.WorkbenchValidationDelegate;
+import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
  * @author Howard Lewis Ship
@@ -48,8 +48,7 @@ public abstract class Fields extends BasePage
 
     public void formSubmit(IRequestCycle cycle)
     {
-        WorkbenchValidationDelegate delegate = (WorkbenchValidationDelegate) getBeans().getBean(
-                "delegate");
+        IValidationDelegate delegate = getDelegate();
 
         // If no error message, advance to the Results page,
 
@@ -58,4 +57,11 @@ public abstract class Fields extends BasePage
         if (!delegate.getHasErrors())
             cycle.activate("FieldsResults");
     }
+
+    /**
+     * Injected.
+     * 
+     * @since 4.0
+     */
+    public abstract IValidationDelegate getDelegate();
 }
