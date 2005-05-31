@@ -21,14 +21,15 @@
   <property name="javadoc.package" value="org.apache.tapestry.portlet.*"/>
     
   <property name="root.dir" value=".."/>
-	<property file="${root.dir}/config/build.properties"/>
-	<property file="${root.dir}/config/common.properties"/>
+  <property file="${root.dir}/config/build.properties"/>
+  <property file="${root.dir}/config/common.properties"/>
   
-	<import file="${hivebuild.dir}/jar-module.xml"/>
+  <import file="${hivebuild.dir}/jar-module.xml"/>
   <import file="${hivebuild.dir}/javadoc-report.xml"/>
   <import file="${hivebuild.dir}/clover-report.xml"/>  
   <import file="${hivebuild.dir}/hivedoc-report.xml"/>  
-  
+  <import file="${hivebuild.dir}/junit-report.xml"/> 
+	
 	<target name="compile-dependencies">
     <project-dependency artifact="tapestry"/>
 
@@ -51,9 +52,10 @@
 	</target>	
   
   <target name="run-reports">
+    <hivedoc-report/>    	
     <javadoc-report/>
-    <clover-report/>
-    <hivedoc-report/>    
+  	<junit-report/>
+	<clover-report/>     
   </target>  
   
 </project>

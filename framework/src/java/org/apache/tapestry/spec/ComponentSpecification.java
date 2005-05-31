@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -210,11 +211,28 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
      *             if the name already exists.
      */
 
-    public void addParameter(String name, IParameterSpecification spec)
+    public void addParameter(IParameterSpecification spec)
     {
         if (_parameters == null)
             _parameters = new HashMap();
 
+        String name = spec.getParameterName();
+
+        addParameterByName(name, spec);
+
+        Iterator i = spec.getAliasNames().iterator();
+        while (i.hasNext())
+        {
+            String alias = (String) i.next();
+
+            addParameterByName(alias, spec);
+        }
+
+        claimProperty(spec.getPropertyName(), spec);
+    }
+
+    private void addParameterByName(String name, IParameterSpecification spec)
+    {
         IParameterSpecification existing = (IParameterSpecification) _parameters.get(name);
 
         if (existing != null)
@@ -222,8 +240,6 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
                     spec.getLocation(), null);
 
         _parameters.put(name, spec);
-
-        claimProperty(spec.getPropertyName(), spec);
 
         addReservedParameterName(name);
     }

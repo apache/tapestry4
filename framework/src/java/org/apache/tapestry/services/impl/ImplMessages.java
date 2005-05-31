@@ -29,6 +29,7 @@ import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.parse.OpenToken;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
@@ -261,5 +262,12 @@ class ImplMessages
     static String missingInfrastructureProperty(String propertyName)
     {
         return _formatter.format("missing-infrastructure-property", propertyName);
+    }
+
+    public static String usedTemplateParameterAlias(OpenToken token, String attributeName,
+            String parameterName)
+    {
+        return _formatter.format("used-template-parameter-alias", new Object[]
+        { HiveMind.getLocationString(token), token.getType(), attributeName, parameterName });
     }
 }

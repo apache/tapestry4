@@ -30,6 +30,7 @@
   <import file="${hivebuild.dir}/javadoc-report.xml"/>
   <import file="${hivebuild.dir}/clover-report.xml"/>  
   <import file="${hivebuild.dir}/hivedoc-report.xml"/>  
+  <import file="${hivebuild.dir}/junit-report.xml"/>  
   
   <target name="compile-dependencies">
     <ibiblio-dependency artifact="bsf"                version="${bsf.version}"      group="bsf"/>
@@ -59,9 +60,10 @@
   </target>	
   
   <target name="run-reports">
+    <hivedoc-report/>    	
     <javadoc-report/>
-    <clover-report/>
-    <hivedoc-report/>    
+  	<junit-report/>
+	<clover-report/>  
   </target>
   
   <target name="marshall-documentation">

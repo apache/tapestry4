@@ -22,11 +22,11 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 
 /**
- *  Verify whether all required parameters in the examined component are bound,
- *  and if they are not, throw an exception.
+ * Verify whether all required parameters in the examined component are bound, and if they are not,
+ * throw an exception.
  * 
- *  @author mindbridge
- *  @since 3.0
+ * @author mindbridge
+ * @since 3.0
  */
 public class VerifyRequiredParametersVisitor implements IComponentVisitor
 {
@@ -44,12 +44,20 @@ public class VerifyRequiredParametersVisitor implements IComponentVisitor
             String name = (String) i.next();
             IParameterSpecification parameterSpec = spec.getParameter(name);
 
-            if (parameterSpec.isRequired() && component.getBinding(name) == null)
-                throw new ApplicationRuntimeException(
-                    PageloadMessages.requiredParameterNotBound(name, component),
-                    component,
-                    component.getLocation(),
-                    null);
+            if (!parameterSpec.isRequired())
+                continue;
+
+            // The names include aliases, but the aliases are translated to primary names
+            // as they are bound. The pspec will be keyed under both the alias name
+            // and the primary name, so the check only should apply to the primary name.
+
+            if (!name.equals(parameterSpec.getParameterName()))
+                continue;
+
+            if (component.getBinding(name) == null)
+                throw new ApplicationRuntimeException(PageloadMessages.requiredParameterNotBound(
+                        name,
+                        component), component, component.getLocation(), null);
         }
     }
 
