@@ -140,7 +140,7 @@ it is expected that there will be some runtime warnings).
   <li>Added the property attribute to the &spec.component; and &spec.bean; elements.</li>
   <li>Removed the type attribute from the &spec.configure; element.</li>
   <li>Added many more options for <link href="#spec.boolean-types">boolean attributes</link>.</li>
-  <li>Added the cache and default-binding attributes to the &spec.parameter; element.</li>
+  <li>Added the aliases, cache and default-binding attributes to the &spec.parameter; element.</li>
 </ul>
 
 <p>
@@ -1353,6 +1353,18 @@ Appears in: &spec.component-specification;
     access to the property will result in re-obtaining the value via the binding object.
     Note that invariant bindings (most bindings except for "ognl") will always be accessed just once
     and cached.
+  </td>
+</tr>
+  
+<tr>
+  <td>aliases</td>
+  <td>string</td>
+  <td>no</td>
+  <td/>
+  <td>
+    An optional, comma-seperated list of alises for the parameter.  Aliases are used to maintain
+    backwards compatibility when a parameter name is changed. A parameter may be bound using 
+    an aliased name, but a warning will be logged.
   </td>
 </tr>
 

@@ -44,6 +44,7 @@ import org.apache.tapestry.parse.TokenType;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
+import org.apache.tapestry.spec.IParameterSpecification;
 
 /**
  * Contains the logic from {@link org.apache.tapestry.services.impl.ComponentTemplateLoaderImpl},
@@ -261,7 +262,7 @@ public class ComponentTemplateLoaderLogic
      * Adds bindings based on attributes in the template.
      */
 
-    private void addTemplateBindings(IComponent component, OpenToken token)
+    void addTemplateBindings(IComponent component, OpenToken token)
     {
         IComponentSpecification spec = component.getSpecification();
 
@@ -275,10 +276,19 @@ public class ComponentTemplateLoaderLogic
             {
                 Map.Entry entry = (Map.Entry) i.next();
 
-                String name = (String) entry.getKey();
+                String attributeName = (String) entry.getKey();
                 String value = (String) entry.getValue();
 
-                String description = ImplMessages.templateParameterName(name);
+                IParameterSpecification pspec = spec.getParameter(attributeName);
+                String parameterName = pspec == null ? attributeName : pspec.getParameterName();
+
+                if (!attributeName.equals(parameterName))
+                    _log.error(ImplMessages.usedTemplateParameterAlias(
+                            token,
+                            attributeName,
+                            parameterName));
+
+                String description = ImplMessages.templateParameterName(parameterName);
 
                 // For informal parameters, or formal parameters that don't define a default binding
                 // type,
@@ -286,7 +296,7 @@ public class ComponentTemplateLoaderLogic
 
                 String defaultBindingType = BindingUtils.getDefaultBindingType(
                         spec,
-                        name,
+                        parameterName,
                         BindingConstants.LITERAL_PREFIX);
 
                 IBinding binding = _bindingSource.createBinding(
@@ -296,7 +306,7 @@ public class ComponentTemplateLoaderLogic
                         defaultBindingType,
                         token.getLocation());
 
-                addBinding(component, spec, name, binding);
+                addBinding(component, spec, parameterName, binding);
             }
         }
 

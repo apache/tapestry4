@@ -67,7 +67,7 @@ public interface IComponentSpecification extends IPropertyHolder, LocationHolder
      * @throws IllegalArgumentException
      *             if the name already exists.
      */
-    public void addParameter(String name, IParameterSpecification spec);
+    public void addParameter(IParameterSpecification spec);
 
     /**
      * Returns true if the component is allowed to wrap other elements (static HTML or other

@@ -14,8 +14,12 @@
 
 package org.apache.tapestry.pageload;
 
+import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.spec.IContainedComponent;
 
 /**
  * Messages for the pageload package
@@ -107,6 +111,19 @@ class PageloadMessages
     static String parameterName(String name)
     {
         return _formatter.format("parameter-name", name);
+    }
+
+    static String duplicateParameter(String parameterName, IBinding binding)
+    {
+        return _formatter.format("duplicate-parameter", parameterName, HiveMind
+                .getLocationString(binding));
+    }
+
+    public static String usedParameterAlias(IContainedComponent contained, String name,
+            String parameterName, Location bindingLocation)
+    {
+        return _formatter.format("used-parameter-alias", new Object[]
+        { HiveMind.getLocationString(bindingLocation), contained.getType(), name, parameterName });
     }
 
 }

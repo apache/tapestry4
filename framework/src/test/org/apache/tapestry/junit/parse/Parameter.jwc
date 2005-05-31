@@ -26,6 +26,7 @@
     <parameter name="expressionDefault" default-value="ognl:an.expression"/>
     <parameter name="defaultBindingType" default-binding="ognl"/>
     <parameter name="noCache" cache="false"/>
+    <parameter name="withAliases" aliases="fred,barney"/>
     
 </component-specification>
 

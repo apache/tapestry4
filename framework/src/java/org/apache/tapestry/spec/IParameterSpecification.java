@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.spec;
 
+import java.util.Collection;
+
 import org.apache.hivemind.LocationHolder;
 
 /**
@@ -99,7 +101,7 @@ public interface IParameterSpecification extends LocationHolder
     public String getDefaultBindingType();
 
     /**
-     * Returns true if the parameter proeprty should cache the result of the binding.
+     * Returns true if the parameter property should cache the result of the binding.
      * 
      * @since 4.0
      */
@@ -110,4 +112,36 @@ public interface IParameterSpecification extends LocationHolder
 
     public void setCache(boolean cache);
 
+    /**
+     * Returns the (primary) name of the parameter.
+     * 
+     * @since 4.0
+     */
+
+    public String getParameterName();
+
+    /**
+     * @since 4.0
+     */
+
+    public void setParameterName(String name);
+
+    /**
+     * Returns a non-null collection of strings for the aliases of the parameter. This is usually an
+     * empty list.
+     * 
+     * @since 4.0
+     */
+
+    public Collection getAliasNames();
+
+    /**
+     * Sets the list of aliases as a comma-seperated list.
+     * 
+     * @param nameList
+     *            a comma seperated list of names, which may be null or empty
+     * @since 4.0
+     */
+
+    public void setAliases(String nameList);
 }

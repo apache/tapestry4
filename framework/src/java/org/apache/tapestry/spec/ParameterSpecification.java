@@ -14,7 +14,14 @@
 
 package org.apache.tapestry.spec;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
+import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.impl.BaseLocatable;
+import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.TapestryUtils;
 
 /**
  * Defines a formal parameter to a component. A <code>IParameterSpecification</code> is contained
@@ -45,6 +52,12 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
 
     /** @since 4.0 */
     private boolean _cache = true;
+
+    /** @since 4.0 */
+    private Collection _aliasNames = Collections.EMPTY_LIST;
+
+    /** @since 4.0 */
+    private String _parameterName;
 
     /**
      * Returns the class name of the expected type of the parameter. The default value is
@@ -160,4 +173,36 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
     {
         _cache = cache;
     }
+
+    /** @since 4.0 */
+    public Collection getAliasNames()
+    {
+        return _aliasNames;
+    }
+
+    /** @since 4.0 */
+    public String getParameterName()
+    {
+        return _parameterName;
+    }
+
+    /** @since 4.0 */
+    public void setAliases(String nameList)
+    {
+        if (HiveMind.isNonBlank(nameList))
+        {
+            String[] names = TapestryUtils.split(nameList);
+
+            _aliasNames = Arrays.asList(names);
+        }
+    }
+
+    /** @since 4.0 */
+    public void setParameterName(String name)
+    {
+        Defense.notNull(name, "name");
+
+        _parameterName = name;
+    }
+
 }

@@ -1297,6 +1297,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         if (propertyName == null)
             propertyName = name;
 
+        ps.setParameterName(name);
         ps.setPropertyName(propertyName);
 
         ps.setRequired(getBooleanAttribute("required", false));
@@ -1332,9 +1333,15 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         if (type != null)
             ps.setType(type);
 
+        // aliases is new in the 4.0 DTD
+
+        String aliases = getAttribute("aliases");
+
+        ps.setAliases(aliases);
+
         IComponentSpecification cs = (IComponentSpecification) peekObject();
 
-        cs.addParameter(name, ps);
+        cs.addParameter(ps);
 
         push(_elementName, ps, STATE_ALLOW_DESCRIPTION);
     }

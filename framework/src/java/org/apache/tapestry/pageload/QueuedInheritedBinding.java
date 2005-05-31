@@ -18,22 +18,21 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 
 /**
- * Handles connecting an inherited binding.  These will be going away soon (if not in
- * release 4.0 itself).
- *
+ * Handles connecting an inherited binding. These will be going away soon (if not in release 4.0
+ * itself).
+ * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 class QueuedInheritedBinding implements IQueuedInheritedBinding
 {
     private IComponent _component;
+
     private String _containerParameterName;
+
     private String _parameterName;
 
-    QueuedInheritedBinding(
-        IComponent component,
-        String containerParameterName,
-        String parameterName)
+    QueuedInheritedBinding(IComponent component, String containerParameterName, String parameterName)
     {
         _component = component;
         _containerParameterName = containerParameterName;
@@ -47,6 +46,6 @@ class QueuedInheritedBinding implements IQueuedInheritedBinding
         if (binding == null)
             return;
 
-        _component.setBinding(_parameterName, binding);
+        PageLoader.addBindingToComponent(_component, _parameterName, binding);
     }
 }

@@ -54,6 +54,7 @@ import org.apache.tapestry.spec.IBindingSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.spec.IListenerBindingSpecification;
+import org.apache.tapestry.spec.IParameterSpecification;
 
 /**
  * Runs the process of building the component hierarchy for an entire page.
@@ -174,13 +175,10 @@ public class PageLoader implements IPageLoader
      *            {@link IComponentSpecification}).
      */
 
-    private void bind(IComponent container, IComponent component, IContainedComponent contained)
+    void bind(IComponent container, IComponent component, IContainedComponent contained)
     {
         IComponentSpecification spec = component.getSpecification();
         boolean formalOnly = !spec.getAllowInformalParameters();
-
-        IComponentSpecification containerSpec = container.getSpecification();
-        boolean containerFormalOnly = !containerSpec.getAllowInformalParameters();
 
         if (contained.getInheritInformalParameters())
         {
@@ -189,7 +187,9 @@ public class PageLoader implements IPageLoader
                         .inheritInformalInvalidComponentFormalOnly(component), component, contained
                         .getLocation(), null);
 
-            if (containerFormalOnly)
+            IComponentSpecification containerSpec = container.getSpecification();
+
+            if (!containerSpec.getAllowInformalParameters())
                 throw new ApplicationRuntimeException(PageloadMessages
                         .inheritInformalInvalidContainerFormalOnly(container, component),
                         component, contained.getLocation(), null);
@@ -204,7 +204,11 @@ public class PageLoader implements IPageLoader
         {
             String name = (String) i.next();
 
-            boolean isFormal = spec.getParameter(name) != null;
+            IParameterSpecification pspec = spec.getParameter(name);
+
+            boolean isFormal = pspec != null;
+
+            String parameterName = isFormal ? pspec.getParameterName() : name;
 
             IBindingSpecification bspec = contained.getBinding(name);
 
@@ -222,6 +226,13 @@ public class PageLoader implements IPageLoader
 
             if (!isFormal && spec.isReservedParameterName(name))
                 continue;
+
+            if (isFormal && !name.equals(parameterName))
+                _log.error(PageloadMessages.usedParameterAlias(
+                        contained,
+                        name,
+                        parameterName,
+                        bspec.getLocation()));
 
             // The type determines how to interpret the value:
             // As a simple static String
@@ -241,14 +252,17 @@ public class PageLoader implements IPageLoader
             if (type == BindingType.INHERITED)
             {
                 QueuedInheritedBinding queued = new QueuedInheritedBinding(component, bspec
-                        .getValue(), name);
+                        .getValue(), parameterName);
                 _inheritedBindingQueue.add(queued);
                 continue;
             }
 
             if (type == BindingType.LISTENER)
             {
-                constructListenerBinding(component, name, (IListenerBindingSpecification) bspec);
+                constructListenerBinding(
+                        component,
+                        parameterName,
+                        (IListenerBindingSpecification) bspec);
                 continue;
             }
 
@@ -259,13 +273,40 @@ public class PageLoader implements IPageLoader
 
             String defaultBindingType = BindingUtils.getDefaultBindingType(
                     spec,
-                    name,
+                    parameterName,
                     BindingConstants.OGNL_PREFIX);
 
             IBinding binding = convert(container, description, defaultBindingType, bspec);
 
-            component.setBinding(name, binding);
+            addBindingToComponent(component, parameterName, binding);
         }
+    }
+
+    /**
+     * Adds a binding to the component, checking to see if there's a name conflict (an existing
+     * binding for the same parameter ... possibly because parameter names can be aliased.
+     * 
+     * @param component
+     *            to which the binding should be added
+     * @param parameterName
+     *            the name of the parameter to bind, which should be a true name, not an alias
+     * @param binding
+     *            the binding to add
+     * @throws ApplicationRuntimeException
+     *             if a binding already exists
+     * @since 4.0
+     */
+
+    static void addBindingToComponent(IComponent component, String parameterName, IBinding binding)
+    {
+        IBinding existing = component.getBinding(parameterName);
+
+        if (existing != null)
+            throw new ApplicationRuntimeException(PageloadMessages.duplicateParameter(
+                    parameterName,
+                    existing), component, binding.getLocation(), null);
+
+        component.setBinding(parameterName, binding);
     }
 
     private IBinding convert(IComponent container, String description, String defaultBindingType,
@@ -308,7 +349,7 @@ public class PageLoader implements IPageLoader
         IBinding binding = new ListenerBinding(description, _valueConverter, spec.getLocation(),
                 component.getContainer(), language, spec.getScript(), _managerFactory);
 
-        component.setBinding(parameterName, binding);
+        addBindingToComponent(component, parameterName, binding);
     }
 
     /**

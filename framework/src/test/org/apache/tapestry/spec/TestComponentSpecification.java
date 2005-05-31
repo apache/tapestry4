@@ -134,18 +134,20 @@ public class TestComponentSpecification extends HiveMindTestCase
         Location l2 = fabricateLocation(97);
 
         ParameterSpecification p1 = new ParameterSpecification();
+        p1.setParameterName("dino");
         p1.setLocation(l1);
 
         ParameterSpecification p2 = new ParameterSpecification();
+        p2.setParameterName("dino");
         p2.setLocation(l2);
 
         ComponentSpecification cs = new ComponentSpecification();
 
-        cs.addParameter("dino", p1);
+        cs.addParameter(p1);
 
         try
         {
-            cs.addParameter("dino", p2);
+            cs.addParameter(p2);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)

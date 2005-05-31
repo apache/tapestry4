@@ -52,7 +52,7 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Test new (in 3.0) &lt;message-binding&gt; element.
+     * Test 3.0 &lt;message-binding&gt; element.
      */
 
     public void tesMessageBinding() throws Exception
@@ -68,7 +68,7 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Tests the new style &lt;binding&gt; element in 4.0 DTD.
+     * Tests the 4.0 style &lt;binding&gt; element.
      */
 
     public void testBinding40() throws Exception
@@ -965,12 +965,14 @@ public class TestSpecificationParser extends TapestryTestCase
         IParameterSpecification ps = spec.getParameter("noDefault");
 
         assertEquals("noDefault", ps.getPropertyName());
+        assertEquals("noDefault", ps.getParameterName());
         assertEquals(true, ps.isRequired());
         assertEquals("bar", ps.getType());
         assertNull(ps.getDefaultValue());
         assertNull(ps.getDefaultBindingType());
 
         ps = spec.getParameter("withDefault");
+        assertEquals("withDefault", ps.getParameterName());
         assertNull(ps.getType());
         assertEquals(false, ps.isRequired());
 
@@ -1008,6 +1010,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertNull(ps.getDefaultValue());
         assertNull(ps.getDefaultBindingType());
         assertEquals(true, ps.getCache());
+        assertTrue(ps.getAliasNames().isEmpty());
 
         ps = spec.getParameter("literalDefault");
 
@@ -1023,6 +1026,13 @@ public class TestSpecificationParser extends TapestryTestCase
 
         ps = spec.getParameter("noCache");
         assertEquals(false, ps.getCache());
+
+        ps = spec.getParameter("withAliases");
+        assertListsEqual(new String[]
+        { "fred", "barney" }, ps.getAliasNames().toArray());
+
+        assertSame(ps, spec.getParameter("fred"));
+        assertSame(ps, spec.getParameter("barney"));
     }
 
     /**
