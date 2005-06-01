@@ -53,7 +53,7 @@
       <localization label="Localization" href="localization.html"/>
       <state label="Managing server-side state" href="state.html"/>
       <hivemind label="HiveMind Integration" href="hivemind.html"/>
-      <friend-urls label="Friendly URLs" href="friendly-urls.html"/>
+      <friendly-urls label="Friendly URLs" href="friendly-urls.html"/>
       <events label="Page Events" href="events.html"/>
       <configuration label="Configuring Tapestry" href="configuration.html"/>
       <proprties label="Tapestry Object Properties" href="properties.html"/>
@@ -129,6 +129,8 @@
    <portlet label="Portlet Support" tab="portlet" href="tapestry-portlet/">
       
       <index label="Overview" href="index.html"/>
+      <configuration label="Configuration" href="configuration.html"/>
+      <coding-issues label="Coding Issues" href="coding-issues.html"/>
     
       <reports label="Reports">
         &tapestry-portlet-report-menu.ent;

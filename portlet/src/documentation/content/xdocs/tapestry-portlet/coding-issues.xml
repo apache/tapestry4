@@ -1,0 +1,292 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+[
+	<!ENTITY projectroot '../'>
+	<!ENTITY % links.ent SYSTEM "../links.ent">
+	%links.ent;
+]>
+<document>
+  <header>
+    <title>Coding Issues</title>
+  </header>
+
+<body>
+  
+<section>
+  <title>Loss of Transient State</title>
+  
+<p>
+For developers experienced at servlet Tapestry, this one issue takes quite some getting used to.
+</p>
+
+<p>
+In servlet Tapestry, a request comes in (such as a form submission).  As part of processing the request,
+pages will be obtained from the page pool and will have persistent state rolled back.  Other page
+and component properties will contain <em>transient</em> state; information that will be discarded
+at the end of the request ... but that's ok, because a response page will be rendered before
+that information is lost.
+</p>
+
+<p>
+In portlet Tapestry, much is the same, <em>except for transient state</em>.  The Portlet API
+splits the scenario into two completely distrinct parts: the action request and the render request. These
+are two completely seperate requests, and all transient state will be lost between them.  Further,
+the render request may occur many times. This is because a single portlet within a page <em>may</em>
+(depending on the Portlet container and configuration of the portlet) have to re-render itself due
+to an action request for some entirely different portlet.</p>
+  
+<p>
+The solution is to define more properties as <em>persistent</em>.  This is done using the &lt;property&gt; element
+of the page and component specifications, such as:
+</p>
+
+<source><![CDATA[
+  <property name="itemId" persist="session"/>
+]]></source>
+  
+<p>
+Commonly, the &PageBeginRenderListener; interface is used to obtain a database object, bootstrapping
+from an id stored as a persistent property:
+</p>  
+
+<source><![CDATA[
+public abstract class MyPage
+  extends BasePage
+  implements PageBeginRenderListener
+{
+  /** Persistent */
+  public abstract long getItemId();
+  public abstract void setItemId(long itemId);
+  
+  /** Transient */
+  public abstract Item getItem();
+  public abstract void setItem(Item item);
+  
+  /** Injected */
+  public abstract ItemSource getItemSource();
+  
+  public void pageBeginRender(PageEvent event)
+  {
+    long itemId = getItemId();
+    
+    Item item = getItemSource().findItemById(itemId);
+    
+    setItem(item);
+  }
+}
+]]>
+</source>
+ 
+<p>
+One of the most common problems related to loss of transient state concerns
+<link href="site:validation">user input validation</link>.  By <em>default</em>,
+validation data is stored transiently. The end result is that when a validated form
+is submitted with errors and re-rendered, the error messages and field decorations do not appear!
+</p>
+
+<p>
+A good technique for handling this properly is to make the validation delegate
+an <link href="site:state">application state object</link> that persists in the session,
+and then <em>inject</em>
+that ASO into each page that contains a form.
+</p>
+
+<p>
+Start by defining an ASO for the validation delegate.  The goes into your application's
+hivemodule.xml module descriptor:
+</p>
+  
+<source><![CDATA[
+<contribution configuration-id="hivemind.state.ApplicationObjects">
+  <state-object name="validation-delegate" scope="session">
+    <create-instance class="org.apache.tapestry.valid.ValidationDelegate"/>
+  </state-object>  
+</contribution>
+]]></source>  
+
+<p>
+Next, in each page that needs the validation delegate, inject it as a property.  This is done
+in the page's specification:
+</p>
+
+<source><![CDATA[
+<inject name="delegate" type="state" object="validation-delegate"/>
+]]></source>
+
+<p>
+When using a &Form; component, override the default validation delegate:
+</p>
+
+<source><![CDATA[
+  <component id="form" type="Form">
+    <binding name="delegate" value="delegate"/>
+    <binding name="listener" value="doSubmit"/>
+  </component>
+]]></source>
+
+<p>
+The delegate parameter's default binding prefix is "ognl", so <code>value="delegate"</code> refers
+to the delegate property of the page, a read-only property created by the &lt;inject&gt; element.
+</p>
+
+<p>
+And that's it ... the validation delegate will be created when first needed. A single instance will be shared
+by many pages.  It will be necessary to invoke the clear() method on the validation delegate when switching pages
+(otherwise, you could see decorations one one page that are really caused by form input errors on some
+other page). This is an extra step to be done inside your listener methods.
+</p>
+  
+</section>
+
+<section>
+  <title>Partial Pages</title>
+  
+<p>
+A fundamental part of developing Portlets (with our without Tapestry) is that each Portlet within a Portal Page
+produces just a portion of the HTML. This means you will not, and should not, use the &Shell; or &Body;
+components. 
+</p>
+
+<p>
+The latter seems problematic ... no &Body; component normally means no client-side JavaScript!  Fortunately,
+your components can still create JavaScript, using Tapestry script templates, and the JavaScript
+will still be collected as if there was a &Body; component.  You may also see the namespace, provided by the
+portlet container, integrated into the names of client-side variables and methods ... this prevents any name collisions
+when multiple Tapestry portlets exist on the same page.
+</p>
+  
+</section>
+
+<section>
+  <title>Accessing the Portlet API</title>
+  
+<p>
+In very rare circumstances, you may need to directly access the PortletRequest object. For example,
+you may make part of your page conditional based on the current window mode.
+</p>  
+
+<p>
+If you are just interseted in query parameters, you can access those via the &IRequestCycle; object.
+</p>
+
+<p>
+Most other standard information can be injected as the infrastructure:request object.  This object
+is API neutral (neither servlet nor portlet, but a kind of least-common-denominator abstraction). It
+can easily be injected into any page or component using the specification's &lt;inject&gt; element:
+</p>
+
+<source><![CDATA[
+  <inject property="request" object="infrastructure:request"/>
+]]></source>
+
+
+<p>
+The type of object injected will be &WebRequest;.  There's also an infrastructure:response object
+that implements the &WebResponse; interface.
+</p>
+
+<note>
+This may look odd; you are injecting something that looks like an application global.  Don't worry ... what's
+actually injected is a proxy object that implements the &WebRequest; interface, but ultimately
+delegates all of its behavior to a per-request (and therefore, per-thread) object. It just works.
+</note>
+  
+<p>
+Properties such as portletMode or windowState are <em>not</em> part of &WebRequest;, you'll want to
+inject a portlet-specific object instead:
+</p>  
+
+<table>
+  <tr>
+    <th>Object</th> <th>Interface</th>
+  </tr>
+  <tr>
+    <td>service:tapestry.portlet.ActionResponse</td>
+    <td>javax.portlet.ActionResponse</td>
+  </tr>  
+  <tr>
+    <td>service:tapestry.portlet.PortletRequest</td>
+    <td>javax.portlet.PortletRequest</td>
+  </tr>
+  <tr>
+    <td>service:tapestry.portlet.RenderResponse</td>
+    <td>javax.portlet.RenderResponse</td>
+  </tr>
+
+</table>
+
+<p>
+Care should be taken to only invoke methods on the ActionResponse and RenderResponse  objects when
+in the correct phase.
+</p>
+  
+</section>
+
+<section>
+  <title>User Attributes</title>
+  
+<p>
+  Part of the &lt;portlet&gt; definition within the portlet.xml deployment descriptor is a definition
+  of user attributes.  User attributes are configuration data stored for each user (this is part of the
+  infrastructure provided by the Portal: user authentication and attributes). User attribute names are strings, usually
+  in the form of a dotted sequence of terms (such as "user.name.given").  User attribute values are simple strings.
+</p>
+
+<p>
+  User attributes are stored persistently in a database; values will be available in later sessions,
+  not just later requests.
+</p>
+
+<p>
+A special binding prefix, "user:", is used to access user attributes.  
+</p>
+  
+<p>
+So, a particular portlet may define an attribute:
+</p>
+
+<source><![CDATA[
+  <user-attribute>
+    <description>User Given Name</description>
+    <name>user.name.given</name>
+  </user-attribute>
+]]></source>
+
+<p>
+Inside a page template, this value can be read and displayed:
+</p>
+
+<source><![CDATA[
+  <span jwcid="@Insert" value="user:user.name.given">User Name</span>
+]]></source>
+  
+<p>
+These values can just as easily be used with form element components, such as &ValidField;,
+ to read <em>and update</em> attributes:
+</p>
+
+<source><![CDATA[
+  <input jwcid="userName@ValidField" value="user:user.name.given" 
+    displayName="User Name" validator="string,required"/>
+]]></source>
+  
+</section>
+
+</body>
+</document>

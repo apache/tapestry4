@@ -39,7 +39,7 @@
     <invoke-factory model="threaded">
       <construct class="impl.RequestLocaleManagerImpl">
         <set-service property="request" service-id="tapestry.globals.WebRequest"/>
-        <set-service property="cookieSource" service-id="CookieSource"/>
+        <set-object property="cookieSource" value="infrastructure:cookieSource"/>
         <set-service property="threadLocale" service-id="hivemind.ThreadLocale"/>
       </construct>
     </invoke-factory>
@@ -181,6 +181,7 @@
   <contribution configuration-id="tapestry.Infrastructure">
     <property name="responseRenderer" object="service:ResponseRenderer"/>
     <property name="requestCycleFactory" object="service:RequestCycleFactory"/>
+    <property name="cookieSource" object="service:CookieSource"/>
   </contribution>
   
   <service-point id="AbsoluteURLBuilder">

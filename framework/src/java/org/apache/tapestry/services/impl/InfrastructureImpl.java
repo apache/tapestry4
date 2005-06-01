@@ -43,6 +43,7 @@ import org.apache.tapestry.listener.ListenerMapSource;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.ComponentPropertySource;
+import org.apache.tapestry.services.CookieSource;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.LinkFactory;
@@ -264,6 +265,11 @@ public class InfrastructureImpl implements Infrastructure
     public AssetFactory getAssetFactory()
     {
         return (AssetFactory) getProperty("assetFactory");
+    }
+    
+    public CookieSource getCookieSource()
+    {
+        return (CookieSource) getProperty("cookieSource");
     }
 
     public Object getProperty(String propertyName)
