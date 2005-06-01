@@ -1,0 +1,271 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+[
+	<!ENTITY projectroot '../'>
+	<!ENTITY % links.ent SYSTEM "../links.ent">
+	%links.ent;
+]>
+<document>
+  <header>
+    <title>Configuration</title>
+  </header>
+  
+  <body>
+  
+<p>
+Configuration for Tapestry portlet applications is quite similar to configuration of Tapestry
+servlet applications.  In both cases, the WEB-INF/lib folder of the web application should include
+the Tapestry libraries and dependencies.  For portlet applications, WEB-INB/lib should also include the 
+tapestry-portlet-<em>x.y</em>.jar library.
+</p>  
+  
+  
+<section>
+  <title>portlet.xml</title>
+  
+<p>
+The file WEB-INF/portlet.xml define the portlets packaged inside a web application.  As with servlet Tapestry,
+we will use a framework-supplied Portlet class:
+</p>
+
+<source><![CDATA[
+<portlet-app version="1.0"
+  xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd">
+  <portlet>
+    <description xml:lang="EN"></description>
+    <portlet-name>myportlet</portlet-name>
+    <display-name xml:lang="EN">My Tapestry Portlet</display-name>
+    <portlet-class>org.apache.tapestry.portlet.ApplicationPortlet</portlet-class>
+    <expiration-cache>-1</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+      <portlet-mode>help</portlet-mode>
+      <portlet-mode>edit</portlet-mode>
+    </supports>
+    <supported-locale>en</supported-locale>
+    <portlet-info>
+      <title>My Tapestry Portlet</title>
+      <short-title>tapestry-portlet</short-title>
+      <keywords></keywords>
+    </portlet-info>
+  </portlet>
+</portlet-app>
+]]></source>
+  
+ 
+  
+<p>
+The class <code>org.apache.tapestry.portlet.ApplicationPortlet</code> is always the class for Tapestry Portlets.
+</p>  
+
+<p>
+Tapestry applications can support any reasonable &lt;mime-type&gt;, though the available components make HTML and WML
+the most likely candidates.
+</p>
+
+<p>
+Different portlet containers interpret the &lt;portlet-mode&gt; element differently.  For example, &eXo; assumes that 
+every Portlet will support the "view" mode, and adding such an entry will result in a confusing duplication of the 
+view icons on the Portlet's control tab.  On the other hand, &Jetspeed; makes no assumptions, so you really
+should provide the "view" mode.
+</p>
+
+<p>
+Later, we'll see how the combination of mime-type and portlet mode is used to select a Tapestry page.
+</p>
+
+<p>
+Tapestry supports the other &lt;portlet&gt; elements, such as &lt;portlet-preferences&gt; and
+&lt;user-attribute&gt;.
+</p>
+
+  
+</section> 
+
+<section>
+  <title>hivemodule.xml</title>
+  
+<p>
+Each Tapestry portlet application within a web application will construct its <em>own</em> &HiveMind; Registry
+on initialization.  The Registry will reflect all the libraries on the portlet's classpath (that is,
+including the Tapestry and HiveMind JARs in WEB-INF/lib). In addition, two <em>optional</em> module
+descriptors will be parsed and used, if present:
+</p>  
+
+<ul>
+  <li>WEB-INF/<em>name</em>/hivemodule.xml</li>
+  <li>WEB-INF/hivemodule.xml</li>
+</ul>
+
+<p>
+The <em>name</em>, in the above, is the portlet name, from the &lt;portlet-name&gt; element of the
+portlet.xml descriptor. This allows different Tapestry portlets, even within the same WAR, to
+precisely control their individual configuration.
+</p>
+
+<p>
+The two primary reasons for a Tapestry portlet application to have its own hivemodule.xml are:
+</p>
+
+<ul>
+  <li>To control the mapping of requests to Tapestry pages</li>
+  <li>To define portlet-specific services needed by the portlet application</li>
+</ul>
+  
+</section>
+
+<section>
+  <title>web.xml</title>
+  
+
+<p>
+By specification, portlet applications are a specialized kind of web application; as such, they require
+a web.xml as well as a portlet.xml.
+</p>
+
+<p>
+For Tapestry, it is necessary to define a single Tapestry application servlet for each WAR.  
+</p>
+
+<source><![CDATA[
+<!DOCTYPE web-app
+  PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+  "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+  <display-name>app</display-name>
+  <servlet>
+    <servlet-name>ApplicationServlet</servlet-name>
+    <servlet-class>org.apache.tapestry.ApplicationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ApplicationServlet</servlet-name>
+    <url-pattern>/app</url-pattern>
+  </servlet-mapping>
+</web-app>
+]]></source>
+
+<note>
+Some portals, such as &eXo;, require additional configuration in the web.xml deployment
+descriptor.
+</note>
+
+<p>
+Note that just <em>one</em> ApplicationServlet is needed, regardless of the number of Tapestry portlet applications
+within the WAR.  This Tapestry servlet instance is primarily needed to support the use of the
+asset service, which is the mechanism by which private assets stored within the framework's JARs (such
+as images and stylesheets) can be provided to client web browsers.
+</p>
+
+
+<p>
+In the above example, the default servlet mapping, to the /app URL, was used. You may use alternate
+mappings, but additional <link href="site:friendly-urls">configuration</link> is needed.
+</p>
+
+</section>
+
+<section>
+  <title>Mapping Requests to Pages</title>
+  
+<p>
+Tapestry has to bridge between the operation-centric organization of Portlets, and the page/component-centric
+organization of Tapestry itself. This is most visible when the a Tapestry Portlet first starts up, or when a
+user changes the window state or portlet mode by using the portlet's toolbar (to be specific: the toolbar
+provided by the Portal page).
+</p>  
+  
+<p>
+  In all these cases, a request is recieved by the Tapestry ApplicationPortlet that includes no real information
+  in the request, just an indication of the desired window state and portlet mode.
+</p>  
+
+<p>
+Tapestry uses a set of <em>rules</em> to determine what to do in these cases.  Each rule
+identifies <em>up-to</em> three <em>factors</em> used to select a page. These factors are
+mime-type, portlet-mode, and window-state.
+</p>
+
+<p>
+The rules are sorted and consulted in order. The first match defines the page to activate and render.  Omitting
+a factor means that the factor is not used when checking a rule against an incoming request.
+</p>
+
+<p>
+The rules are defined by the configuration point <code>tapestry.portlet.resolver.PageResolverRules</code>.  Contributions
+to this configuration point consist of &lt;match&gt; elements:
+</p>
+
+<source><![CDATA[
+<match [portlet-mode="..."] [mime-type="..."] [window-state="..."] page="..."/>
+]]></source>
+
+<p>
+The default rules are:
+</p>
+
+<source><![CDATA[
+  <match portlet-mode="edit" page="Edit"/>
+  <match portlet-mode="help" page="Help"/>
+]]></source>
+
+<p>
+Any rules you define will be mixed in with these two default rules.
+</p>
+
+<p>
+So, by contributing additional &lt;match&gt; rules to this configuration point, it is possible
+to precisely control which page should be rendered for each request; for example, you could
+have different pages for the "edit" portlet-mode, depending on whether the window state was
+normal or maximized:
+</p>
+
+<source>
+<![CDATA[
+<contribution configuration-id="tapestry.portlet.resolver.PageResolverRules">
+  <match portlet-mode="edit" window-state="maximized" page="EditLarge"/>
+</contribution>
+]]>
+</source>
+
+<p>
+Here, the Edit page would be used (as per the default rules) unless the window state was maximized,
+in which case the EditLarge page would be used.
+</p>
+  
+<p>
+What happens when none of the rules match?  In that case, the View page is activated and
+rendered.  The View page, in portlet Tapestry, is the equivalent of the Home page, in servlet Tapestry.
+</p>  
+
+<p>
+<strong>For advanced developers</strong>: the process for determing the page for a request is ultimately based on
+a extensible chain of command.  The <code>tapestry.portlet.resolver.PageResolvers</code> configuration
+point defines the commands in the chain; by providing services that implement the 
+<link href="apidocs/org/apache/tapestry/portlet/PortletPageResolver.html">PortletPageResolver</link> interfaces,
+you can add even more sophisticated and precise control over the mapping between requests and pages.
+</p>
+
+  
+</section>
+  
+  </body>
+</document>

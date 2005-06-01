@@ -272,13 +272,20 @@ public interface Infrastructure
      * Service (possibly a pipeline) that will invoke {@link org.apache.tapestry.IActionListener}
      * objects.
      */
-    
+
     public ListenerInvoker getListenerInvoker();
-    
+
     /**
      * Service that is used to convert {@link org.apache.hivemind.Resource}s into
      * {@link org.apache.tapestry.IAsset}s.
      */
-    
+
     public AssetFactory getAssetFactory();
+
+    /**
+     * Service used to access HTTP Cookies. This is only available for Servlet Tapestry; a
+     * placeholder will be provided for Portlet Tapestry.
+     */
+
+    public CookieSource getCookieSource();
 }

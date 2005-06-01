@@ -23,7 +23,20 @@
 	</header>
 	
   <body>
-<p> An add-on module for Tapestry that enables the use of Tapestry to create <link href="http://www.jcp.org/en/jsr/detail?id=168">JSR-168 Portlets</link>. </p>
+<p> An add-on module for Tapestry that enables the use of Tapestry to create <link href="http://www.jcp.org/en/jsr/detail?id=168">JSR-168 Portlets</link>. 
+  Portlet support is new in Tapestry 4.0. To a large degree, Tapestry has been re-architected to support portlets.</p>
+
+<p>
+Portlet support in Tapestry is <em>native</em>.  This means that Tapestry is, under the covers, using the true Portlet API
+as it is intended to be used.  Some portal services support bridging ... allowing servlet applications to operate as 
+portlet applications unchanged; such an approach is possible as well, but is not necessary.
+</p>
+
+<p>
+The pattern of development for Tapestry portlet applications is to create a (generally) small application,
+consisting of just a few pages.  Each Tapestry portlet within a portal page will be a completely separate
+instance of not just the portlet, but all the Tapestry services behind it.
+</p>
     
   </body>
 </document>

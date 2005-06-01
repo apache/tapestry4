@@ -181,14 +181,13 @@
       <construct service-id="PortletRequestGlobals" property="renderResponse"/>
     </invoke-factory>
   </service-point>
-  
-  <!-- There's nothing in the Portlet API to support cookies, so override
-       the default (servlet) implementation with an empty placeholder. 
-       This may break some tests when running JUnit inside Eclipse. -->
-       
-  <implementation service-id="tapestry.request.CookieSource">
+         
+  <service-point id="PortletCookieSource" interface="org.apache.tapestry.services.CookieSource">
+    
+    A "default" (no-op) implementation of the CookieSource interface.
+    
     <invoke-factory service-id="hivemind.lib.PlaceholderFactory"/>
-  </implementation>
+  </service-point>
   
   <service-point id="PortletLinkFactory" interface="org.apache.tapestry.services.LinkFactory">
     Implementation of LinkFactory for portlets that builds links using
@@ -225,6 +224,7 @@
     <property name="exceptionPresenter" mode="portlet" object="service:PortletExceptionPresenter"/>
     <property name="staleLinkExceptionPresenter" mode="portlet" object="service:PortletStaleLinkExceptionPresenter"/>
     <property name="staleSessionExceptionPresenter" mode="portlet" object="service:PortletStaleSessionExceptionPresenter"/>
+    <property name="cookieSource" mode="portlet" object="service:PortletCookieSource"/>
   </contribution>
    
  <contribution configuration-id="PortletApplicationInitializers">

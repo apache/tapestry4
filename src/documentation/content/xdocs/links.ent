@@ -111,6 +111,8 @@
 <!ENTITY StateObjectFactory			'<link href="&apiroot;/engine/state/StateObjectFactory.html">StateObjectFactory</link>'>
 <!ENTITY Tapestry 					'<link href="&apiroot;/Tapestry.html">Tapestry</link>'>
 <!ENTITY ValidationDelegate 		'<link href="&apiroot;/valid/ValidationDelegate.html">ValidationDelegate</link>'>
+<!ENTITY WebRequest					'<link href="&apiroot;/web/WebRequest.html">WebRequest</link>'>
+<!ENTITY WebResponse			    '<link href="&apiroot;/web/WebResponse.html">WebResponse</link>'>
 
 <!-- Links to Component Reference -->
 
@@ -164,11 +166,13 @@
 <!ENTITY BSF 			'<link href="http://jakarta.apache.org/bsf/">BSF</link>'>
 <!ENTITY BCEL 			'<link href="http://jakarta.apache.org/bcel/">BCEL</link>'>
 <!ENTITY Eclipse 		'<link href="http://www.eclipse.org">Eclipse</link>'>
+<!ENTITY eXo			'<link href="http://www.exoplatform.com/">eXo platform</link>'>
 <!ENTITY HiveMind		'<link href="http://jakarta.apache.org/hivemind/">HiveMind</link>'>
 <!ENTITY Log4J 			'<link href="http://jakarta.apache.org/log4j/">Log4J</link>'>
 <!ENTITY Jakarta		'<link href="http://jakarta.apache.org">Jakarta</link>'>
 <!ENTITY Javassist 		'<link href="http://jboss.org/developers/projects/javassist.html">Javassist</link>'>
 <!ENTITY JBoss 			'<link href="http://www.jboss.org">JBoss</link>'>
+<!ENTITY Jetspeed		'<link href="http://portals.apache.org/jetspeed-2/">Jetspeed 2</link>'>
 <!ENTITY Jetty 			'<link href="http://sf.net/projects/jetty/">Jetty</link>'>
 <!ENTITY JUnit 			'<link href="http://www.junit.org">JUnit</link>'>
 <!ENTITY Jython	  		'<link href="http://www.jython.org">Jython</link>'>
