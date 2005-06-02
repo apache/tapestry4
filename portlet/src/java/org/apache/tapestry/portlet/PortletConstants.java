@@ -39,6 +39,20 @@ public class PortletConstants
 
     public static final String PORTLET_EXCEPTION_MARKUP_ATTRIBUTE = "org.apache.tapestry.portlet.PortletExceptionMarkup";
 
+    /**
+     * Render parameter name storing the portlet mode at the time the render URL was created. This
+     * is necessary for determining when the mode has changed.
+     */
+
+    public static final String PORTLET_MODE = "portlet-mode";
+
+    /**
+     * Render parameter name storing the window state at the time the render URL was created. Again,
+     * this is necessary for determining when the window state has changed.
+     */
+
+    public static final String WINDOW_STATE = "window-state";
+
     private PortletConstants()
     {
         // Prevent instantiation

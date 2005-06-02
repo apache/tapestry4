@@ -50,6 +50,11 @@ public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
             String name = (String) i.next();
             IParameterSpecification parameterSpec = spec.getParameter(name);
 
+            // Skip aliases
+            
+            if (! name.equals(parameterSpec.getParameterName()))
+                continue;
+            
             String defaultValue = parameterSpec.getDefaultValue();
             if (defaultValue == null)
                 continue;
@@ -61,7 +66,7 @@ public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
                         .getLocation(), null);
 
             // if there is no binding for this parameter, bind it to the default value.
-            // In 3.0, default-value as always an OGNL expression, but now its a locator.
+            // In 3.0, default-value was always an OGNL expression, but now its a binding reference.
 
             if (component.getBinding(name) == null)
             {

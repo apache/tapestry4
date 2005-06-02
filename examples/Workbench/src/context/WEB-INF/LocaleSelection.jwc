@@ -61,7 +61,7 @@
         <binding name="row" value="ognl:currentLocale"/>
         
         <!-- Each rendered row will be given the CSS class of 'tableRowsClass' -->
-		<binding name="rowsClass" value="tableRowsClass"/>
+		<binding name="rowsClass" value="literal:tableRowsClass"/>
         
 	</component>
 	

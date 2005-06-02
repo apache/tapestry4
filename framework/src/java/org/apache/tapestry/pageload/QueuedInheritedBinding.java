@@ -46,6 +46,12 @@ class QueuedInheritedBinding implements IQueuedInheritedBinding
         if (binding == null)
             return;
 
-        PageLoader.addBindingToComponent(_component, _parameterName, binding);
+        // In many cases, a default parameter binding will have been set on the child component
+        // parameter, which
+        // gets overwritten by this inherited binding. There's still a lot of ambiquity concerning
+        // binding
+        // an alias this way.
+
+        _component.setBinding(_parameterName, binding);
     }
 }

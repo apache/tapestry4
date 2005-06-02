@@ -60,6 +60,11 @@
        <action type="add" dev="HLS">Add support for validation decoration to TextArea.</action>
        <action type="add" dev="HLS">Add raw parameter to InsertText.</action>
        <action type="add" dev="HLS">Add aliases attribute to &lt;parmeter&gt; element, to allow parameters to be renamed.</action>
+       <action type="fix" dev="HLS">Properly wire the assetFactory property of the tapestry.portlet.services.PortletRenderer service.</action>
+       <action type="fix" dev="HLS">Fix some missing default bindings for the Table component (and subcomponents).</action>
+       <action type="add" dev="HLS">Add getRequiredParameters() method to IComponentSpecification. </action>
+       <action type="fix" dev="HLS">Make inherited bindings (a holdover from the 3.0 DTDs) override (quietly) default parameter bindings.</action>
+       <action type="fix" dev="HLS">Properly identify when portal mode or window state has changed.</action>
     </release>
     <release version="4.0-alpha-3" date="May 16 2005">
       <action type="add" dev="HLS">Add initial support for the validator: binding prefix.</action>

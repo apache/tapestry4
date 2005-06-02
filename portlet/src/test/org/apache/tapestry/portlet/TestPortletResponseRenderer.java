@@ -15,6 +15,9 @@
 package org.apache.tapestry.portlet;
 
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletMode;
+import javax.portlet.PortletRequest;
+import javax.portlet.WindowState;
 
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IPage;
@@ -61,15 +64,28 @@ public class TestPortletResponseRenderer extends HiveMindTestCase
     {
         IPage page = newPage("Frodo");
         IRequestCycle cycle = newCycle(page);
+
+        MockControl requestc = newControl(PortletRequest.class);
+        PortletRequest request = (PortletRequest) requestc.getMock();
+
+        request.getPortletMode();
+        requestc.setReturnValue(PortletMode.VIEW);
+
+        request.getWindowState();
+        requestc.setReturnValue(WindowState.NORMAL);
+
         ActionResponse response = newResponse();
 
         response.setRenderParameter(ServiceConstants.SERVICE, PortletConstants.RENDER_SERVICE);
         response.setRenderParameter(ServiceConstants.PAGE, "Frodo");
+        response.setRenderParameter(PortletConstants.PORTLET_MODE, "view");
+        response.setRenderParameter(PortletConstants.WINDOW_STATE, "normal");
 
         replayControls();
 
         PortletResponseRenderer renderer = new PortletResponseRenderer();
         renderer.setResponse(response);
+        renderer.setRequest(request);
 
         renderer.renderResponse(cycle);
 

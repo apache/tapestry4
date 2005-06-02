@@ -335,6 +335,32 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
         return (IParameterSpecification) get(_parameters, name);
     }
 
+    public Collection getRequiredParameters()
+    {
+        if (_parameters == null)
+            return Collections.EMPTY_LIST;
+
+        Collection result = new ArrayList();
+
+        Iterator i = _parameters.entrySet().iterator();
+        while (i.hasNext())
+        {
+            Map.Entry entry = (Map.Entry) i.next();
+            String name = (String) entry.getKey();
+            IParameterSpecification spec = (IParameterSpecification) entry.getValue();
+
+            if (!spec.isRequired())
+                continue;
+
+            if (!name.equals(spec.getParameterName()))
+                continue;
+
+            result.add(spec);
+        }
+
+        return result;
+    }
+
     /**
      * Returns a List of of String names of all parameters. This list is in alphabetical order.
      * 
