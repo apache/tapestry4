@@ -62,7 +62,8 @@ public interface IComponentSpecification extends IPropertyHolder, LocationHolder
     public void addComponent(String id, IContainedComponent component);
 
     /**
-     * Adds the parameter. The name is added as a reserved name.
+     * Adds the parameter. The parameter name and aliases are added as a reserved name. The code
+     * assumes that the parameter specification will <strong>not</strong> be subsequently changed.
      * 
      * @throws IllegalArgumentException
      *             if the name already exists.
@@ -134,6 +135,15 @@ public interface IComponentSpecification extends IPropertyHolder, LocationHolder
      */
     public IParameterSpecification getParameter(String name);
 
+    /**
+     * Returns an unordered collection of {@link IParameterSpecification}, for all parameters that
+     * are required. This includes only "real" parameters, not aliases.
+     * 
+     * @since 4.0
+     */
+    
+    public Collection getRequiredParameters();
+    
     /**
      * Returns a List of of String names of all parameters. This list is in alphabetical order.
      * 

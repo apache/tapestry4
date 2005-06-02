@@ -82,7 +82,7 @@
       <construct class="PortletRendererImpl">
         <set-object property="markupWriterSource" value="infrastructure:markupWriterSource"/>
         <set-object property="response" value="infrastructure:response"/>       
-        <set-object property="assetService" value="engine-service:asset"/>
+        <set-object property="assetFactory" value="infrastructure:assetFactory"/>
         <set-object property="applicationId" value="infrastructure:applicationId"/>
       </construct>
     </invoke-factory>
@@ -118,6 +118,7 @@
   
   <invoke-factory>
     <construct class="PortletResponseRenderer">
+      <set-service property="request" service-id="tapestry.portlet.PortletRequest"/>
       <set-service property="response" service-id="tapestry.portlet.ActionResponse"/>
     </construct>
   </invoke-factory>

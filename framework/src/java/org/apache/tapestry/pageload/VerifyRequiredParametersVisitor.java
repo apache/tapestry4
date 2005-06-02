@@ -37,22 +37,13 @@ public class VerifyRequiredParametersVisitor implements IComponentVisitor
     {
         IComponentSpecification spec = component.getSpecification();
 
-        Iterator i = spec.getParameterNames().iterator();
+        Iterator i = spec.getRequiredParameters().iterator();
 
         while (i.hasNext())
         {
-            String name = (String) i.next();
-            IParameterSpecification parameterSpec = spec.getParameter(name);
+            IParameterSpecification parameterSpec = (IParameterSpecification) i.next();
 
-            if (!parameterSpec.isRequired())
-                continue;
-
-            // The names include aliases, but the aliases are translated to primary names
-            // as they are bound. The pspec will be keyed under both the alias name
-            // and the primary name, so the check only should apply to the primary name.
-
-            if (!name.equals(parameterSpec.getParameterName()))
-                continue;
+            String name = parameterSpec.getParameterName();
 
             if (component.getBinding(name) == null)
                 throw new ApplicationRuntimeException(PageloadMessages.requiredParameterNotBound(

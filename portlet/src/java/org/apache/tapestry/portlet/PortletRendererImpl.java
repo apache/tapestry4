@@ -32,7 +32,7 @@ import org.apache.tapestry.web.WebResponse;
 
 /**
  * The guts of rendering a page as a portlet response; used by
- * {@link org.apache.tapestry.portlet.RenderService}&nbsp;and
+ * {@link org.apache.tapestry.portlet.RenderService} and
  * {@link org.apache.tapestry.portlet.PortletHomeService}.
  * 
  * @author Howard M. Lewis Ship

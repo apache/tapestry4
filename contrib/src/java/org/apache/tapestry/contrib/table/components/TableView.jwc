@@ -102,7 +102,7 @@
         </description>
     </parameter>
     
-    <parameter name="element" default-value="table">
+    <parameter name="element" default-value="table" default-binding="literal"> 
         <description>
             The tag with which the component will be inserted in the generated content.
         </description>

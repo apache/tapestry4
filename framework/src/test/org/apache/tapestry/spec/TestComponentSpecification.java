@@ -182,6 +182,40 @@ public class TestComponentSpecification extends HiveMindTestCase
             assertEquals(SpecMessages.duplicateBean("wilma", b1), ex.getMessage());
             assertSame(l2, ex.getLocation());
         }
+    }
 
+    public void testGetRequiredParametersNone()
+    {
+        ComponentSpecification cs = new ComponentSpecification();
+
+        assertTrue(cs.getRequiredParameters().isEmpty());
+    }
+
+    public void testGetRequiredParametersOptional()
+    {
+        ComponentSpecification cs = new ComponentSpecification();
+
+        ParameterSpecification ps = new ParameterSpecification();
+        ps.setParameterName("fred");
+        ps.setAliases("barney");
+
+        cs.addParameter(ps);
+
+        assertTrue(cs.getRequiredParameters().isEmpty());
+    }
+
+    public void testGetRequiredParametersFiltersAliases()
+    {
+        ComponentSpecification cs = new ComponentSpecification();
+
+        ParameterSpecification ps = new ParameterSpecification();
+        ps.setParameterName("fred");
+        ps.setAliases("barney");
+        ps.setRequired(true);
+
+        cs.addParameter(ps);
+
+        assertListsEqual(new Object[]
+        { ps }, cs.getRequiredParameters().toArray());
     }
 }
