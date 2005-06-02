@@ -95,6 +95,8 @@
   <invoke-factory>
     <construct class="RenderService">
       <set-service property="portletRenderer" service-id="PortletRenderer"/>
+      <set-service property="request" service-id="tapestry.portlet.PortletRequest"/>
+      <set-service property="pageResolver" service-id="tapestry.portlet.resolver.PortletPageResolver"/>
     </construct>
   </invoke-factory>  
  </service-point>
