@@ -204,7 +204,7 @@ public class TestDateTranslator extends TranslatorTestCase
         }
     }
     
-    public void testContributeFormEvents()
+    public void testRenderContribution()
     {
         replay();
         
@@ -213,7 +213,7 @@ public class TestDateTranslator extends TranslatorTestCase
         verify();
     }
     
-    public void testTrimContributeFormEvents()
+    public void testTrimRenderContribution()
     {
         _translator.setTrim(true);
         trim();

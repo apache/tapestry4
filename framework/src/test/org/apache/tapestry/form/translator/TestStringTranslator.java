@@ -132,7 +132,7 @@ public class TestStringTranslator extends TranslatorTestCase
         }
     }
     
-    public void testContributeFormEvents()
+    public void testRenderContribution()
     {
         replay();
         
@@ -141,7 +141,7 @@ public class TestStringTranslator extends TranslatorTestCase
         verify();
     }
     
-    public void testTrimContributeFormEvents()
+    public void testTrimRenderContribution()
     {
         _translator.setTrim(true);
         trim();
