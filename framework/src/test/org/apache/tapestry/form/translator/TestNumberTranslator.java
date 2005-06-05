@@ -159,7 +159,7 @@ public class TestNumberTranslator extends TranslatorTestCase
         }
     }
     
-    public void testContributeFormEvents()
+    public void testRenderContribution()
     {
         addScript("/org/apache/tapestry/form/translator/NumberTranslator.js");
         
@@ -191,7 +191,7 @@ public class TestNumberTranslator extends TranslatorTestCase
         verify();
     }
     
-    public void testMessageContributeFormEvents()
+    public void testMessageRenderContribution()
     {
         _translator.setMessage("You entered a bunk value for {0}. I should look like {1}.");
         
@@ -225,7 +225,7 @@ public class TestNumberTranslator extends TranslatorTestCase
         verify();
     }
     
-    public void testTrimContributeFormEvents()
+    public void testTrimRenderContribution()
     {
         _translator.setTrim(true);
         trim();
