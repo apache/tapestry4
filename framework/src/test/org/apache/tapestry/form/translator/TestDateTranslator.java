@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -195,6 +196,7 @@ public class TestDateTranslator extends TranslatorTestCase
         catch (ValidatorException e)
         {
             assertEquals(message, e.getMessage());
+            assertEquals(ValidationConstraint.DATE_FORMAT, e.getConstraint());
         }
         finally
         {
