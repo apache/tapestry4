@@ -17,6 +17,7 @@ package org.apache.tapestry.form.translator;
 import java.util.Locale;
 
 import org.apache.tapestry.form.FormEventType;
+import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
 
 public class TestNumberTranslator extends TranslatorTestCase
@@ -150,6 +151,7 @@ public class TestNumberTranslator extends TranslatorTestCase
         catch (ValidatorException e)
         {
             assertEquals(message, e.getMessage());
+            assertEquals(ValidationConstraint.NUMBER_FORMAT, e.getConstraint());
         }
         finally
         {
