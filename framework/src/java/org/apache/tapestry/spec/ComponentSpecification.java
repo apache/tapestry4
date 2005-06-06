@@ -162,6 +162,12 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
     private Map _claimedProperties;
 
     /**
+     * @since 4.0
+     */
+
+    private boolean _deprecated = false;
+
+    /**
      * @throws ApplicationRuntimeException
      *             if the name already exists.
      */
@@ -670,5 +676,17 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
                     existing), HiveMind.getLocation(subSpecification), null);
 
         _claimedProperties.put(propertyName, subSpecification);
+    }
+
+    /** @since 4.0 */
+    public boolean isDeprecated()
+    {
+        return _deprecated;
+    }
+
+    /** @since 4.0 */
+    public void setDeprecated(boolean deprecated)
+    {
+        _deprecated = deprecated;
     }
 }

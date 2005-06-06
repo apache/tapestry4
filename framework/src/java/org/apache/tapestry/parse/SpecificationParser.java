@@ -601,6 +601,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         cs.setAllowBody(getBooleanAttribute("allow-body", true));
         cs.setAllowInformalParameters(getBooleanAttribute("allow-informal-parameters", true));
+        cs.setDeprecated(getBooleanAttribute("deprecated", false));
 
         String className = getAttribute("class");
 
@@ -1338,6 +1339,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         String aliases = getAttribute("aliases");
 
         ps.setAliases(aliases);
+        ps.setDeprecated(getBooleanAttribute("deprecated", false));
 
         IComponentSpecification cs = (IComponentSpecification) peekObject();
 

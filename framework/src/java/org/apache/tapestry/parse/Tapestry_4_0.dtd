@@ -42,6 +42,7 @@ The following changes have occured:
 - Removed the type attribute from the <configure> element
 - Added many alternatives to 'yes' and 'no' for boolean attributes.
 - Added aliases, default-binding and cache attributes to <parameter>
+- Added deprecated to <component-specification>
 -->
 <!-- =======================================================
 Entity: attribute-flag
@@ -221,12 +222,15 @@ Attributes:
   allow-body:  If yes (the default), the component may wrap other elements (have a body).
   allow-informal-parameters:  If yes (the default), informal parameters (parameters that are not
     explictily defined) are allowed.
+  deprecated: If yes, then using the component will generate a warning, advising the user
+    to find a different component. The default is no.
 -->
 <!ELEMENT component-specification (description?, (parameter | reserved-parameter | meta | bean | component | asset | property | inject )*)>
 <!ATTLIST component-specification
 	class CDATA #IMPLIED
 	allow-body %attribute-flag; "yes"
 	allow-informal-parameters %attribute-flag; "yes"
+  deprecated %attribute-flag; "no"
 >
 <!-- =======================================================
 Element: description
@@ -401,6 +405,7 @@ Attributes:
    for the binding on each access (though invariant bindings may still be cached).
   aliases: An optional, comma-seperated list of aliases for the parameter. Used to allow
     compatibility when parameter names are changed.
+  deprecated: If true, then using the parameter will generate a runtime warning.
 -->
 <!ELEMENT parameter (description?)>
 <!ATTLIST parameter
@@ -411,6 +416,7 @@ Attributes:
   default-binding CDATA #IMPLIED
   cache %attribute-flag; "yes"
   aliases CDATA #IMPLIED
+  deprecated %attribute-flag; "no"
 >
 <!-- =======================================================
 Element: property

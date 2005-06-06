@@ -59,6 +59,9 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
     /** @since 4.0 */
     private String _parameterName;
 
+    /** @since 4.0 */
+    private boolean _deprecated = false;
+
     /**
      * Returns the class name of the expected type of the parameter. The default value is
      * <code>java.lang.Object</code> which matches anything.
@@ -203,6 +206,18 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
         Defense.notNull(name, "name");
 
         _parameterName = name;
+    }
+
+    /** @since 4.0 */
+    public boolean isDeprecated()
+    {
+        return _deprecated;
+    }
+
+    /** @since 4.0 */
+    public void setDeprecated(boolean deprecated)
+    {
+        _deprecated = deprecated;
     }
 
 }

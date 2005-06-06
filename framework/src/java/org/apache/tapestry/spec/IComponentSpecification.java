@@ -141,9 +141,9 @@ public interface IComponentSpecification extends IPropertyHolder, LocationHolder
      * 
      * @since 4.0
      */
-    
+
     public Collection getRequiredParameters();
-    
+
     /**
      * Returns a List of of String names of all parameters. This list is in alphabetical order.
      * 
@@ -283,4 +283,19 @@ public interface IComponentSpecification extends IPropertyHolder, LocationHolder
      */
 
     public List getInjectSpecifications();
+
+    /**
+     * Returns true if the component is deprecated. Deprecated components generate a warning when
+     * used.
+     * 
+     * @since 4.0
+     */
+
+    public boolean isDeprecated();
+
+    /**
+     * @since 4.0
+     */
+
+    public void setDeprecated(boolean deprecated);
 }

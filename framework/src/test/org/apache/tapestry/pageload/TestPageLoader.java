@@ -38,17 +38,6 @@ import org.easymock.MockControl;
  */
 public class TestPageLoader extends HiveMindTestCase
 {
-    private IComponentSpecification newSpec(boolean allowInformalParameters)
-    {
-        MockControl control = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) control.getMock();
-
-        spec.getAllowInformalParameters();
-        control.setReturnValue(allowInformalParameters);
-
-        return spec;
-    }
-
     public IComponent newComponent(IComponentSpecification spec)
     {
         MockControl control = newControl(IComponent.class);
@@ -76,7 +65,7 @@ public class TestPageLoader extends HiveMindTestCase
         return binding;
     }
 
-    public void testaddDuplicateBindingFails()
+    public void testAddDuplicateBindingFails()
     {
         MockControl componentc = newControl(IComponent.class);
         IComponent component = (IComponent) componentc.getMock();
@@ -146,6 +135,65 @@ public class TestPageLoader extends HiveMindTestCase
         BindingSource source = (BindingSource) sourcec.getMock();
 
         source.createBinding(container, "parameter barney", "an-expression", "ognl", l);
+        sourcec.setReturnValue(binding);
+
+        component.getBinding("fred");
+        componentc.setReturnValue(null);
+
+        component.setBinding("fred", binding);
+
+        replayControls();
+
+        PageLoader loader = new PageLoader();
+        loader.setLog(log);
+        loader.setBindingSource(source);
+
+        loader.bind(container, component, contained);
+
+        verifyControls();
+    }
+
+    public void testBindDeprecated()
+    {
+        MockControl containerc = newControl(IComponent.class);
+        IComponent container = (IComponent) containerc.getMock();
+
+        MockControl componentc = newControl(IComponent.class);
+        IComponent component = (IComponent) componentc.getMock();
+
+        ParameterSpecification pspec = new ParameterSpecification();
+        pspec.setParameterName("fred");
+        pspec.setDeprecated(true);
+
+        Location l = newLocation();
+
+        BindingSpecification bspec = new BindingSpecification();
+        bspec.setType(BindingType.PREFIXED);
+        bspec.setValue("an-expression");
+        bspec.setLocation(l);
+
+        ContainedComponent contained = new ContainedComponent();
+        contained.setBinding("fred", bspec);
+        contained.setType("FredComponent");
+
+        IComponentSpecification spec = new ComponentSpecification();
+        spec.addParameter(pspec);
+
+        component.getSpecification();
+        componentc.setReturnValue(spec);
+
+        Log log = (Log) newMock(Log.class);
+
+        log
+                .error("Parameter fred (at classpath:/org/apache/tapestry/pageload/TestPageLoader, line 1) has been deprecated, "
+                        + "and may be removed in a future release. Consult the documentation for component FredComponent to "
+                        + "determine an appropriate replacement.");
+
+        IBinding binding = newBinding();
+        MockControl sourcec = newControl(BindingSource.class);
+        BindingSource source = (BindingSource) sourcec.getMock();
+
+        source.createBinding(container, "parameter fred", "an-expression", "ognl", l);
         sourcec.setReturnValue(binding);
 
         component.getBinding("fred");

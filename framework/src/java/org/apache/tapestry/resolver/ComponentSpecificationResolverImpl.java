@@ -96,6 +96,11 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         }
         else
             resolve(cycle, containerNamespace, null, type, location);
+
+        IComponentSpecification spec = getSpecification();
+
+        if (spec.isDeprecated())
+            _log.error(ResolverMessages.componentIsDeprecated(type, location));
     }
 
     /**
@@ -191,9 +196,9 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         if (framework.containsComponentType(_type))
         {
             setSpecification(framework.getComponentSpecification(_type));
-            
+
             install();
-            
+
             return;
         }
 
@@ -201,7 +206,7 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
                 cycle,
                 namespace,
                 _type);
-        
+
         setSpecification(specification);
     }
 
