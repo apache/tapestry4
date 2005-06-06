@@ -39,8 +39,16 @@ public class ValidationConstraint extends Enum
      */
 
     public static final ValidationConstraint MINIMUM_WIDTH = new ValidationConstraint(
-            "MINUMUM_WIDTH");
+            "MINIMUM_WIDTH");
 
+    /**
+     * Indicates that a non-null value was provided, but that (after removing leading and trailing
+     * whitespace), the value was too long.
+     */
+
+    public static final ValidationConstraint MAXIMUM_WIDTH = new ValidationConstraint(
+            "MAXIMUM_WIDTH");
+    
     /**
      * Indicates a general error in converting a String into a Date.
      */
