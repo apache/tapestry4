@@ -141,6 +141,7 @@ it is expected that there will be some runtime warnings).
   <li>Removed the type attribute from the &spec.configure; element.</li>
   <li>Added many more options for <link href="#spec.boolean-types">boolean attributes</link>.</li>
   <li>Added the aliases, cache and default-binding attributes to the &spec.parameter; element.</li>
+  <li>Added the deprecated attribute to &spec.component-specification; and &spec.parameter;.</li>
 </ul>
 
 <p>
@@ -708,6 +709,18 @@ and elements related to parameters.
 	are not allowed in the specification, and discarded if in the template.
 	</p>
 	</td>
+</tr>
+
+<tr>
+  <td>deprecated</td>
+  <td>boolean</td>
+  <td>no</td>
+  <td>false</td>
+  <td>
+    If true, then using the component will generate a warning. This is used
+    to mark obsolete components.  The component's documentation should indicate
+    what component replaces the deprecated component.
+  </td>
 </tr>
 
 </table>
@@ -1366,6 +1379,15 @@ Appears in: &spec.component-specification;
     backwards compatibility when a parameter name is changed. A parameter may be bound using 
     an aliased name, but a warning will be logged.
   </td>
+</tr>
+
+<tr>
+  <td>deprecated</td>
+  <td>boolean</td>
+  <td>no</td>
+  <td>false</td>
+  <td>If true, then binding the parameter will generate a runtime warning.  This is used when a parameter is being
+    removed entirely in a later release.</td>
 </tr>
 
 </table>

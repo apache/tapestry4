@@ -32,6 +32,13 @@ import org.easymock.MockControl;
  */
 public class TestComponentSpecificationResolver extends AbstractSpecificationResolverTestCase
 {
+    private void trainIsDeprecated(MockControl control, IComponentSpecification spec,
+            boolean isDeprecated)
+    {
+        spec.isDeprecated();
+        control.setReturnValue(isDeprecated);
+    }
+
     protected ISpecificationSource newSource(Resource resource, IComponentSpecification spec)
     {
         MockControl control = newControl(ISpecificationSource.class);
@@ -70,8 +77,10 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
     public void testFoundInNamespace()
     {
         IRequestCycle cycle = newCycle();
-        Location l = fabricateLocation(13);
-        IComponentSpecification spec = newSpecification();
+        Location l = newLocation();
+
+        MockControl specc = newControl(IComponentSpecification.class);
+        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
 
         MockControl control = newControl(INamespace.class);
         INamespace namespace = (INamespace) control.getMock();
@@ -81,6 +90,8 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
 
         namespace.getComponentSpecification("MyComponent");
         control.setReturnValue(spec);
+
+        trainIsDeprecated(specc, spec, false);
 
         replayControls();
 
@@ -94,11 +105,49 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         verifyControls();
     }
 
+    public void testDeprecated()
+    {
+        IRequestCycle cycle = newCycle();
+        Location l = newLocation();
+
+        MockControl specc = newControl(IComponentSpecification.class);
+        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
+
+        MockControl control = newControl(INamespace.class);
+        INamespace namespace = (INamespace) control.getMock();
+
+        namespace.containsComponentType("MyComponent");
+        control.setReturnValue(true);
+
+        namespace.getComponentSpecification("MyComponent");
+        control.setReturnValue(spec);
+
+        trainIsDeprecated(specc, spec, true);
+
+        Log log = (Log) newMock(Log.class);
+        
+        log.error("Component 'MyComponent' (at classpath:/org/apache/tapestry/resolver/TestComponentSpecificationResolver, line 1) is deprecated, and will likely be removed in a later release. Consult its documentation to find a replacement component.");
+
+        replayControls();
+
+        ComponentSpecificationResolverImpl resolver = new ComponentSpecificationResolverImpl();
+        resolver.setLog(log);
+
+        resolver.resolve(cycle, namespace, "MyComponent", l);
+
+        assertSame(spec, resolver.getSpecification());
+        assertSame(namespace, resolver.getNamespace());
+
+        verifyControls();
+    }
+
     public void testFoundInChildNamespace()
     {
         IRequestCycle cycle = newCycle();
-        Location l = fabricateLocation(13);
-        IComponentSpecification spec = newSpecification();
+        Location l = newLocation();
+
+        MockControl specc = newControl(IComponentSpecification.class);
+        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
 
         MockControl namespacec = newControl(INamespace.class);
         INamespace namespace = (INamespace) namespacec.getMock();
@@ -115,6 +164,8 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         library.getComponentSpecification("MyComponent");
         libraryc.setReturnValue(spec);
 
+        trainIsDeprecated(specc, spec, false);
+
         replayControls();
 
         ComponentSpecificationResolverImpl resolver = new ComponentSpecificationResolverImpl();
@@ -130,8 +181,10 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
     public void testSearchFoundRelative()
     {
         IRequestCycle cycle = newCycle();
-        Location l = fabricateLocation(13);
-        IComponentSpecification spec = newSpecification();
+        Location l = newLocation();
+
+        MockControl specc = newControl(IComponentSpecification.class);
+        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
 
         MockControl logc = newControl(Log.class);
         Log log = (Log) logc.getMock();
@@ -157,6 +210,8 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
 
         namespace.installComponentSpecification("MyComponent", spec);
 
+        trainIsDeprecated(specc, spec, false);
+
         replayControls();
 
         ComponentSpecificationResolverImpl resolver = new ComponentSpecificationResolverImpl();
@@ -174,8 +229,10 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
     public void testFoundInFrameworkNamespace()
     {
         IRequestCycle cycle = newCycle();
-        Location l = fabricateLocation(13);
-        IComponentSpecification spec = newSpecification();
+        Location l = newLocation();
+
+        MockControl specc = newControl(IComponentSpecification.class);
+        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
 
         MockControl logc = newControl(Log.class);
         Log log = (Log) logc.getMock();
@@ -214,6 +271,8 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
                 .installingComponent("FrameworkComponent", namespace, spec));
         namespace.installComponentSpecification("FrameworkComponent", spec);
 
+        trainIsDeprecated(specc, spec, false);
+
         replayControls();
 
         ComponentSpecificationResolverImpl resolver = new ComponentSpecificationResolverImpl();
@@ -231,8 +290,10 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
     public void testProvidedByDelegate()
     {
         IRequestCycle cycle = newCycle();
-        Location l = fabricateLocation(13);
-        IComponentSpecification spec = newSpecification();
+        Location l = newLocation();
+
+        MockControl specc = newControl(IComponentSpecification.class);
+        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
 
         MockControl logc = newControl(Log.class);
         Log log = (Log) logc.getMock();
@@ -266,6 +327,8 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         framework.containsComponentType("DelegateComponent");
         frameworkc.setReturnValue(false);
 
+        trainIsDeprecated(specc, spec, false);
+
         replayControls();
 
         ComponentSpecificationResolverImpl resolver = new ComponentSpecificationResolverImpl();
@@ -284,7 +347,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
     public void testNotFound()
     {
         IRequestCycle cycle = newCycle();
-        Location l = fabricateLocation(13);
+        Location l = newLocation();
 
         MockControl logc = newControl(Log.class);
         Log log = (Log) logc.getMock();
@@ -349,8 +412,10 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
     public void testFoundInAppFolder()
     {
         IRequestCycle cycle = newCycle();
-        Location l = fabricateLocation(13);
-        IComponentSpecification spec = newSpecification();
+        Location l = newLocation();
+
+        MockControl specc = newControl(IComponentSpecification.class);
+        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
 
         MockControl logc = newControl(Log.class);
         Log log = (Log) logc.getMock();
@@ -384,6 +449,8 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
 
         namespace.installComponentSpecification("MyAppComponent", spec);
 
+        trainIsDeprecated(specc, spec, false);
+
         replayControls();
 
         ComponentSpecificationResolverImpl resolver = new ComponentSpecificationResolverImpl();
@@ -404,8 +471,10 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
     public void testFoundInWebInfFolder()
     {
         IRequestCycle cycle = newCycle();
-        Location l = fabricateLocation(13);
-        IComponentSpecification spec = newSpecification();
+        Location l = newLocation();
+
+        MockControl specc = newControl(IComponentSpecification.class);
+        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
 
         MockControl logc = newControl(Log.class);
         Log log = (Log) logc.getMock();
@@ -441,6 +510,8 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
 
         namespace.installComponentSpecification("MyWebInfComponent", spec);
 
+        trainIsDeprecated(specc, spec, false);
+
         replayControls();
 
         ComponentSpecificationResolverImpl resolver = new ComponentSpecificationResolverImpl();
@@ -461,8 +532,10 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
     public void testFoundInContextRoot()
     {
         IRequestCycle cycle = newCycle();
-        Location l = fabricateLocation(13);
-        IComponentSpecification spec = newSpecification();
+        Location l = newLocation();
+
+        MockControl specc = newControl(IComponentSpecification.class);
+        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
 
         MockControl logc = newControl(Log.class);
         Log log = (Log) logc.getMock();
@@ -500,6 +573,8 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
                 "ContextRootComponent",
                 namespace,
                 spec));
+
+        trainIsDeprecated(specc, spec, false);
 
         namespace.installComponentSpecification("ContextRootComponent", spec);
 

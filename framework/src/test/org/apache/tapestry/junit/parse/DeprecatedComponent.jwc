@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- 
-   Copyright 2004, 2005 The Apache Software Foundation
+   Copyright 2005 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -19,15 +19,4 @@
   "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
      	
-<component-specification>
-
-    <parameter name="noDefault" required="yes"/>
-    <parameter name="literalDefault" default-value="literal-value"/>
-    <parameter name="expressionDefault" default-value="ognl:an.expression"/>
-    <parameter name="defaultBindingType" default-binding="ognl"/>
-    <parameter name="noCache" cache="false"/>
-    <parameter name="withAliases" aliases="fred,barney"/>
-    <parameter name="deprecated" deprecated="aye"/>
-    
-</component-specification>
-
+<component-specification deprecated="true"/>

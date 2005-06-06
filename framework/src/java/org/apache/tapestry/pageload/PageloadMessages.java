@@ -126,4 +126,11 @@ class PageloadMessages
         { HiveMind.getLocationString(bindingLocation), contained.getType(), name, parameterName });
     }
 
+    public static String deprecatedParameter(String parameterName, Location location,
+            String componentType)
+    {
+        return _formatter.format("deprecated-parameter", parameterName, HiveMind
+                .getLocationString(location), componentType);
+    }
+
 }

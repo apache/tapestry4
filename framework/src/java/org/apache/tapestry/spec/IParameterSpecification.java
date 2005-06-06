@@ -144,4 +144,20 @@ public interface IParameterSpecification extends LocationHolder
      */
 
     public void setAliases(String nameList);
+
+    /**
+     * Returns true if the parameter is deprecated. Deprecated parameter generate a warning when
+     * bound.
+     * 
+     * @since 4.0
+     */
+
+    public boolean isDeprecated();
+
+    /**
+     * @since 4.0
+     */
+
+    public void setDeprecated(boolean deprecated);
+
 }

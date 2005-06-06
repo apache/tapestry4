@@ -357,6 +357,8 @@ public class TestSpecificationParser extends TapestryTestCase
 
         assertEquals(false, spec.isPageSpecification());
         assertNotNull(spec.getSpecificationLocation());
+
+        assertEquals(false, spec.isDeprecated());
     }
 
     /**
@@ -970,6 +972,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("bar", ps.getType());
         assertNull(ps.getDefaultValue());
         assertNull(ps.getDefaultBindingType());
+        assertEquals(false, ps.isDeprecated());
 
         ps = spec.getParameter("withDefault");
         assertEquals("withDefault", ps.getParameterName());
@@ -1011,6 +1014,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertNull(ps.getDefaultBindingType());
         assertEquals(true, ps.getCache());
         assertTrue(ps.getAliasNames().isEmpty());
+        assertEquals(false, ps.isDeprecated());
 
         ps = spec.getParameter("literalDefault");
 
@@ -1033,6 +1037,9 @@ public class TestSpecificationParser extends TapestryTestCase
 
         assertSame(ps, spec.getParameter("fred"));
         assertSame(ps, spec.getParameter("barney"));
+
+        ps = spec.getParameter("deprecated");
+        assertEquals(true, ps.isDeprecated());
     }
 
     /**
@@ -1071,5 +1078,14 @@ public class TestSpecificationParser extends TapestryTestCase
 
         assertEquals("path/to/asset", as.getPath());
         assertEquals("myProperty", as.getPropertyName());
+    }
+
+    /** @since 4.0 */
+
+    public void testDeprecatedComponent() throws Exception
+    {
+        IComponentSpecification cs = parseComponent("DeprecatedComponent.jwc");
+
+        assertEquals(true, cs.isDeprecated());
     }
 }

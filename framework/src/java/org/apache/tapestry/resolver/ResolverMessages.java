@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.resolver;
 
+import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.INamespace;
@@ -75,5 +77,11 @@ class ResolverMessages
     static String foundHTMLTemplate(Resource resource)
     {
         return _formatter.format("found-html-template", resource);
+    }
+
+    public static String componentIsDeprecated(String componentType, Location location)
+    {
+        return _formatter.format("component-is-deprecated", componentType, HiveMind
+                .getLocationString(location));
     }
 }

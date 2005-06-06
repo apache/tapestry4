@@ -227,12 +227,22 @@ public class PageLoader implements IPageLoader
             if (!isFormal && spec.isReservedParameterName(name))
                 continue;
 
-            if (isFormal && !name.equals(parameterName))
-                _log.error(PageloadMessages.usedParameterAlias(
-                        contained,
-                        name,
-                        parameterName,
-                        bspec.getLocation()));
+            if (isFormal)
+            {
+                if (!name.equals(parameterName))
+                {
+                    _log.error(PageloadMessages.usedParameterAlias(
+                            contained,
+                            name,
+                            parameterName,
+                            bspec.getLocation()));
+                }
+                else if (pspec.isDeprecated())
+                    _log.error(PageloadMessages.deprecatedParameter(
+                            name,
+                            bspec.getLocation(),
+                            contained.getType()));
+            }
 
             // The type determines how to interpret the value:
             // As a simple static String
