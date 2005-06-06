@@ -63,7 +63,14 @@
         Form provides a default instance of org.apache.tapestry.valid.ValidationDelegate.
     </description>
   </parameter>
-
+  
+  <parameter name="clientValidationEnabled" default-binding="ognl">
+    <description>
+    If true (the default) then client-side validation will be generated upon render for any
+        required or validating fields.
+	</description>
+  </parameter>
+  
   <reserved-parameter name="action"/>
   <reserved-parameter name="name"/>
   
