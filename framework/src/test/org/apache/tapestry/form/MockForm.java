@@ -312,4 +312,9 @@ public class MockForm implements IForm
             r.run();
         }
     }
+
+    public boolean isClientValidationEnabled()
+    {
+        return false;
+    }
 }

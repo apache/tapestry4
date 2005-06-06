@@ -63,4 +63,11 @@ public interface IForm extends IAction, FormBehavior
      */
 
     public IValidationDelegate getDelegate();
+    
+    /**
+     * Indicates whether or not client-side validation will be generated during render.
+     * @return true, if client-side validation is enabled, false otherwise
+     * @since 4.0
+     */
+    public boolean isClientValidationEnabled();
 }
