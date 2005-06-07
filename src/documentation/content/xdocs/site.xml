@@ -143,6 +143,7 @@
         <item label="Bug Database"     href="http://issues.apache.org/jira/secure/BrowseProject.jspa?id=10573"/>
         <item label="CVS Access"      href="cvs.html"/>    
         <item label="Downloads" href="downloads.html"/>
+        <item label="Voting History" href="votes.html"/>
     
         <reports label="Reports">
           &project-report-menu.ent;
