@@ -56,7 +56,7 @@ public class TestInjectMessagesWorker extends HiveMindTestCase
         EnhancementOperation op = (EnhancementOperation) control.getMock();
 
         op.claimProperty(w.MESSAGES_PROPERTY);
-        op.addInjectedField("_$componentMessagesSource", source);
+        op.addInjectedField("_$componentMessagesSource", ComponentMessagesSource.class, source);
         control.setReturnValue("fred");
 
         BodyBuilder builder = new BodyBuilder();

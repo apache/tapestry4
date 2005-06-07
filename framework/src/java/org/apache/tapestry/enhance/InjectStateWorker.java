@@ -52,6 +52,7 @@ public class InjectStateWorker implements InjectEnhancementWorker
 
         String managerField = op.addInjectedField(
                 "_$applicationStateManager",
+                ApplicationStateManager.class,
                 _applicationStateManager);
 
         BodyBuilder builder = new BodyBuilder();

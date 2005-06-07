@@ -398,17 +398,17 @@ public class TestEnhancementOperation extends HiveMindTestCase
         EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
                 spec, BaseComponent.class, cf);
 
-        assertEquals("fred", eo.addInjectedField("fred", "FRED_VALUE"));
+        assertEquals("fred", eo.addInjectedField("fred", String.class, "FRED_VALUE"));
 
         verifyControls();
 
         HashMap map = new HashMap();
 
-        fab.addField("fred$0", HashMap.class);
+        fab.addField("fred$0", Map.class);
 
         replayControls();
 
-        assertEquals("fred$0", eo.addInjectedField("fred", map));
+        assertEquals("fred$0", eo.addInjectedField("fred", Map.class, map));
 
         verifyControls();
 
@@ -419,7 +419,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         body.end();
 
         fab.addConstructor(new Class[]
-        { String.class, HashMap.class }, null, body.toString());
+        { String.class, Map.class }, null, body.toString());
         fabc.setMatcher(new ArrayMatcher());
 
         replayControls();
