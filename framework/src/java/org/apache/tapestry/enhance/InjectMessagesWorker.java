@@ -47,7 +47,10 @@ public class InjectMessagesWorker implements EnhancementWorker
         {
             op.claimProperty(MESSAGES_PROPERTY);
 
-            String sourceField = op.addInjectedField("_$componentMessagesSource", _componentMessagesSource);
+            String sourceField = op.addInjectedField(
+                    "_$componentMessagesSource",
+                    ComponentMessagesSource.class,
+                    _componentMessagesSource);
 
             op.addField("_$messages", Messages.class);
 

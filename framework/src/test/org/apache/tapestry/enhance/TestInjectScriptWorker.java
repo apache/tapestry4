@@ -22,7 +22,6 @@ import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.test.AggregateArgumentsMatcher;
 import org.apache.hivemind.test.ArgumentMatcher;
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.hivemind.test.TypeMatcher;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
@@ -57,10 +56,10 @@ public class TestInjectScriptWorker extends HiveMindTestCase
         op.getAccessorMethodName("foo");
         opc.setReturnValue("getFoo");
 
-        op.addInjectedField("_$script", new DeferredScriptImpl(scriptResource, source,
-                injectSpecLocation));
+        op.addInjectedField("_$script", IScript.class, new DeferredScriptImpl(scriptResource,
+                source, injectSpecLocation));
         opc.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, new ArgumentMatcher()
+        { null, null, new ArgumentMatcher()
         {
 
             public boolean compareArguments(Object expected, Object actual)

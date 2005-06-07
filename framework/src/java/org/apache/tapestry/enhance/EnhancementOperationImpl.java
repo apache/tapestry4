@@ -231,9 +231,10 @@ public class EnhancementOperationImpl implements EnhancementOperation
         _classFab.addField(name, type);
     }
 
-    public String addInjectedField(String fieldName, Object value)
+    public String addInjectedField(String fieldName, Class fieldType, Object value)
     {
         Defense.notNull(fieldName, "fieldName");
+        Defense.notNull(fieldType, "fieldType");
         Defense.notNull(value, "value");
 
         String existing = (String) _finalFields.get(value);
@@ -244,9 +245,6 @@ public class EnhancementOperationImpl implements EnhancementOperation
             return existing;
 
         // TODO: Should be ensure that the name is unique?
-        // Add a new field using the object's actual type.
-
-        Class type = value.getClass();
 
         // Make sure that the field has a unique name (at least, among anything added
         // via addFinalField().
@@ -256,9 +254,9 @@ public class EnhancementOperationImpl implements EnhancementOperation
         // ClassFab doesn't have an option for saying the field should be final, just private.
         // Doesn't make a huge difference.
 
-        _classFab.addField(uniqueName, type);
+        _classFab.addField(uniqueName, fieldType);
 
-        int parameterIndex = addConstructorParameter(type, value);
+        int parameterIndex = addConstructorParameter(fieldType, value);
 
         constructorBuilder().addln("{0} = ${1};", uniqueName, Integer.toString(parameterIndex));
 
@@ -371,7 +369,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         String fieldName = buffer.toString();
 
-        return addInjectedField(fieldName, clazz);
+        return addInjectedField(fieldName, Class.class, clazz);
     }
 
     /**

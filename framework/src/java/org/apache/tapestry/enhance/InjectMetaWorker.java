@@ -59,7 +59,8 @@ public class InjectMetaWorker implements InjectEnhancementWorker
 
         op.claimProperty(propertyName);
 
-        String sourceName = op.addInjectedField(SOURCE_NAME, _source);
+        String sourceName = op
+                .addInjectedField(SOURCE_NAME, ComponentPropertySource.class, _source);
 
         MethodSignature sig = new MethodSignature(propertyType, op
                 .getAccessorMethodName(propertyName), null, null);
@@ -115,7 +116,10 @@ public class InjectMetaWorker implements InjectEnhancementWorker
     private void addObject(EnhancementOperation op, InjectSpecification spec, String propertyName,
             Class propertyType, MethodSignature sig, String sourceName)
     {
-        String valueConverterName = op.addInjectedField("_$valueConverter", _valueConverter);
+        String valueConverterName = op.addInjectedField(
+                "_$valueConverter",
+                ValueConverter.class,
+                _valueConverter);
         String classRef = op.getClassReference(propertyType);
 
         BodyBuilder builder = new BodyBuilder();

@@ -68,7 +68,7 @@ public class TestInjectObjectWorker extends HiveMindTestCase
 
         pc.setReturnValue(injectedValue);
 
-        op.addInjectedField("_$fred", injectedValue);
+        op.addInjectedField("_$fred", Object.class, injectedValue);
         opc.setReturnValue("_$fred");
 
         op.addMethod(
@@ -107,7 +107,7 @@ public class TestInjectObjectWorker extends HiveMindTestCase
         p.obtainValue("service:betty", l);
         pc.setReturnValue(injectedValue);
 
-        op.addInjectedField("_$wilma", injectedValue);
+        op.addInjectedField("_$wilma", IEngineService.class, injectedValue);
         opc.setReturnValue("_$wilma");
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(IEngineService.class, "getWilma", null,

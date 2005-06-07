@@ -47,7 +47,7 @@ public class TestInjectSpecificationWorker extends HiveMindTestCase
 
         op.claimProperty("specification");
 
-        op.addInjectedField("_$specification",  spec);
+        op.addInjectedField("_$specification", IComponentSpecification.class, spec);
         control.setReturnValue("_$specification");
 
         op.getAccessorMethodName("specification");

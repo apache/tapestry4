@@ -60,13 +60,15 @@ public interface EnhancementOperation
      * @param fieldName
      *            The default name for the field, used if a new field (and contructor argument) is
      *            being created. Only used if a field for the value doesn't exist.
+     * @param fieldType
+     *            The type of the field to be created.
      * @param value
      *            the value to be referenced, which may not be null
      * @return the name of the field containing the value. This may or may not match fieldName. The
      *         provided fieldName may be modified to prevent naming conflicts.
      */
 
-    public String addInjectedField(String fieldName, Object value);
+    public String addInjectedField(String fieldName, Class fieldType, Object value);
 
     /**
      * Converts a type name (an object class name, a primtive name, or an array) into the
