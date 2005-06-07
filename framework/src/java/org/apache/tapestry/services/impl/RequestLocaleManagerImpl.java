@@ -14,19 +14,23 @@
 
 package org.apache.tapestry.services.impl;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.hivemind.service.ThreadLocale;
 import org.apache.tapestry.TapestryConstants;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.services.CookieSource;
 import org.apache.tapestry.services.RequestLocaleManager;
-import org.apache.tapestry.util.StringSplitter;
 import org.apache.tapestry.web.WebRequest;
 
 /**
- * Identifies the Locale provided by the client (either in a Tapestry-specific cookie, or
- * interpolated from the HTTP header. TODO: Add the ability to "filter down" Locales down to a
- * predifined set (specified using some form of HiveMInd configuration).
+ * Service tapestry.request.RequestLocaleManager. Identifies the Locale provided by the client
+ * (either in a Tapestry-specific cookie, or interpolated from the HTTP header.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
@@ -47,15 +51,83 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
 
     private ThreadLocale _threadLocale;
 
+    /**
+     * Set from symbol org.apache.tapestry.accepted-locales, a comma-seperated list of locale names.
+     * The first name is the default for requests that can't be matched against the other locale
+     * names. May also be blank, in which case, whatever locale was provided in the request is
+     * accepted (which is Tapestry 3.0 behavior).
+     */
+
+    private String _acceptedLocales;
+
+    private Locale _defaultLocale;
+
+    /**
+     * Set of locale names. Incoming requests will be matched to one of these locales.
+     */
+
+    private Set _acceptedLocaleNamesSet = new HashSet();
+
+    /**
+     * Cache of Locales, keyed on locale name.
+     */
+
+    private Map _localeCache = new HashMap();
+
+    public void initializeService()
+    {
+        String[] names = TapestryUtils.split(_acceptedLocales);
+
+        if (names.length == 0)
+            return;
+
+        _defaultLocale = getLocale(names[0]);
+
+        _acceptedLocaleNamesSet.addAll(Arrays.asList(names));
+
+    }
+
     public Locale extractLocaleForCurrentRequest()
     {
         String localeName = _cookieSource.readCookieValue(TapestryConstants.LOCALE_COOKIE_NAME);
 
-        _requestLocale = (localeName != null) ? getLocale(localeName) : _request.getLocale();
+        String requestedLocale = (localeName != null) ? localeName : _request.getLocale()
+                .toString();
+
+        _requestLocale = filterRequestedLocale(requestedLocale);
 
         _threadLocale.setLocale(_requestLocale);
 
         return _requestLocale;
+    }
+
+    /**
+     * Converts the request locale name into a Locale instance; applies filters (based on
+     * acceptedLocales) if enabled.
+     */
+
+    Locale filterRequestedLocale(String localeName)
+    {
+        if (_acceptedLocaleNamesSet.isEmpty())
+            return getLocale(localeName);
+
+        while (true)
+        {
+            if (_acceptedLocaleNamesSet.contains(localeName))
+                return getLocale(localeName);
+
+            localeName = stripTerm(localeName);
+
+            if (localeName.length() == 0)
+                return _defaultLocale;
+        }
+    }
+
+    private String stripTerm(String localeName)
+    {
+        int scorex = localeName.lastIndexOf('_');
+
+        return scorex < 0 ? "" : localeName.substring(0, scorex);
     }
 
     public void persistLocale()
@@ -68,20 +140,22 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
         _cookieSource.writeCookieValue(TapestryConstants.LOCALE_COOKIE_NAME, locale.toString());
     }
 
-    private Locale getLocale(String name)
+    Locale getLocale(String name)
     {
-        // There used to be a cache of Locale (keyed on name), but since this service is
-        // threaded, there's no point (short of making it static, which is too ugly for words).
-        // Instead, we should have a LocaleCache service for that purpose. Have to balance
-        // cost of invoking that service vs. the cost of creating new Locale instances all the time.
+        Locale result = (Locale) _localeCache.get(name);
 
-        return constructLocale(name);
+        if (result == null)
+        {
+            result = constructLocale(name);
+            _localeCache.put(name, result);
+        }
+
+        return result;
     }
 
     private Locale constructLocale(String name)
     {
-        StringSplitter splitter = new StringSplitter('_');
-        String[] terms = splitter.splitToArray(name);
+        String[] terms = TapestryUtils.split(name, '_');
 
         switch (terms.length)
         {
@@ -114,5 +188,10 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
     public void setThreadLocale(ThreadLocale threadLocale)
     {
         _threadLocale = threadLocale;
+    }
+
+    public void setAcceptedLocales(String acceptedLocales)
+    {
+        _acceptedLocales = acceptedLocales;
     }
 }

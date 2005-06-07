@@ -36,14 +36,19 @@
     
     Encapsulates the logic for extracting the locale for the current request.
     
-    <invoke-factory model="threaded">
+    <invoke-factory model="pooled">
       <construct class="impl.RequestLocaleManagerImpl">
         <set-service property="request" service-id="tapestry.globals.WebRequest"/>
         <set-object property="cookieSource" value="infrastructure:cookieSource"/>
         <set-service property="threadLocale" service-id="hivemind.ThreadLocale"/>
+        <set-object property="acceptedLocales" value="app-property:org.apache.tapestry.accepted-locales"/>
       </construct>
     </invoke-factory>
   </service-point>  
+  
+  <contribution configuration-id="hivemind.FactoryDefaults">
+    <default symbol="org.apache.tapestry.accepted-locales" value=""/>
+  </contribution>
   
   <service-point id="CookieSource">
     
