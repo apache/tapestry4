@@ -295,5 +295,39 @@ locale.
 </note>
       
     </section>
+    
+<section id="localization.accepted-locales">
+  <title>Limiting accepted locales</title>
+  
+<p>
+By default, Tapestry accepts incoming locales (as specified in the request HTTP header) as-is. The requested
+locale is used as-is.  This has some implications, primarily in terms of resource usage.  
+</p>  
+
+<p>
+Imagine an application that is being accessed by users in the US, the UK and in Canada. The incoming request
+locales will be "en_US", "en_UK" and "en_CA" (respectively). However, it is likely that you will only have
+created a single localization, for English in general (locale "en").  Despite this, there will be several different
+versions of each page in the page pool: one for each of the above locales, even though they will be functionally identical.
+</p>
+
+<p>
+Ideally, what we want is to limit incoming requests so that all of the listed locales ("en_US", "en_UK" and "en_CA") will
+be 'filtered down' to just "en".
+</p>
+
+<p>
+That functionality is controlled by the org.apache.tapestry.accepted-locales &configuration-property;. By setting
+this property to a comma-seperated list of local names, incoming requests will be converted
+to the closest match.  For example, the the property could be configured to "en,fr,de" to support English, French and German.
+</p>
+
+<p>
+Matching takes place by stripping off "terms" (the locale variant, then the locale country code) from the locale name.  So "en_US" would be stripped to "en" (which would match).
+When no match can be found, the <em>first</em> locale in the list is treated as the default.  In the prior example, Russian users
+would be matched to the "en" locale.
+</p>
+
+</section>    
   </body>
 </document>

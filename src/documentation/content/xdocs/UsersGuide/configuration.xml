@@ -325,6 +325,16 @@ currently used in Tapestry:
   </tr>
   
   <tr>
+    <td>org.apache.tapestry.accepted-locales</td>
+    <td>
+    Controls which locales are supported by the application; see the
+    documentation on
+    <link href="localization.html#localization.accepted-locales">limiting accepted locales</link>
+    for details.
+    </td>
+  </tr>
+  
+  <tr>
   	<td>org.apache.tapestry.asset.dir, org.apache.tapestry.asset.URL</td>
 	
   <td>

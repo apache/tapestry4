@@ -66,6 +66,7 @@
        <action type="fix" dev="HLS">Make inherited bindings (a holdover from the 3.0 DTDs) override (quietly) default parameter bindings.</action>
        <action type="fix" dev="HLS">Properly identify when portal mode or window state has changed.</action>
        <action type="add" dev="HLS">Add deprecated attribute to &lt;component-specification&gt; and &lt;parameter&gt;.</action>
+       <action type="add" dev="HLS">Add configuration property org.apache.tapestry.accepted-locales, used to limit localization to a finite set of locales.</action>
     </release>
     <release version="4.0-alpha-3" date="May 16 2005">
       <action type="add" dev="HLS">Add initial support for the validator: binding prefix.</action>

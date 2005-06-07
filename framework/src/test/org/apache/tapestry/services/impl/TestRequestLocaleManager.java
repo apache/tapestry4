@@ -76,7 +76,7 @@ public class TestRequestLocaleManager extends HiveMindTestCase
 
         Locale actual = manager.extractLocaleForCurrentRequest();
 
-        assertSame(Locale.JAPANESE, actual);
+        assertEquals(Locale.JAPANESE, actual);
 
         verifyControls();
     }
@@ -175,7 +175,7 @@ public class TestRequestLocaleManager extends HiveMindTestCase
 
         Locale actual = manager.extractLocaleForCurrentRequest();
 
-        assertSame(Locale.JAPANESE, actual);
+        assertEquals(Locale.JAPANESE, actual);
 
         verifyControls();
 
@@ -189,5 +189,48 @@ public class TestRequestLocaleManager extends HiveMindTestCase
         manager.persistLocale();
 
         verifyControls();
+    }
+
+    public void testGetLocaleValuesAreCached()
+    {
+        RequestLocaleManagerImpl manager = new RequestLocaleManagerImpl();
+
+        Locale l1 = manager.getLocale("en");
+        Locale l2 = manager.getLocale("en");
+
+        assertSame(l1, l2);
+    }
+
+    /**
+     * Test when filtering of incoming locales is disabled.
+     */
+
+    public void testFilterDisabled()
+    {
+        RequestLocaleManagerImpl manager = new RequestLocaleManagerImpl();
+
+        Locale l = manager.filterRequestedLocale("en");
+
+        assertEquals(Locale.ENGLISH, l);
+    }
+
+    /**
+     * Test with filtering enabled.
+     */
+
+    public void testFilterEnabled()
+    {
+        RequestLocaleManagerImpl manager = new RequestLocaleManagerImpl();
+        manager.setAcceptedLocales("en,fr");
+        manager.initializeService();
+
+        assertEquals(Locale.ENGLISH, manager.filterRequestedLocale("en"));
+        assertEquals(Locale.ENGLISH, manager.filterRequestedLocale("en_US"));
+        assertEquals(Locale.FRENCH, manager.filterRequestedLocale("fr"));
+        assertEquals(Locale.FRENCH, manager.filterRequestedLocale("fr_FR"));
+
+        // Unrecognized locales filter to the first accepted locale.
+
+        assertEquals(Locale.ENGLISH, manager.filterRequestedLocale("foo_bar_BAZ"));
     }
 }
