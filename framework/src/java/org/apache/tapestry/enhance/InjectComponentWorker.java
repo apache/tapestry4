@@ -18,6 +18,7 @@ import java.util.Iterator;
 
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.service.ClassFabUtils;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
@@ -60,8 +61,12 @@ public class InjectComponentWorker implements EnhancementWorker
         }
     }
 
-    private void injectComponent(EnhancementOperation op, String componentId, String propertyName)
+    public void injectComponent(EnhancementOperation op, String componentId, String propertyName)
     {
+        Defense.notNull(op, "op");
+        Defense.notNull(componentId, "componentId");
+        Defense.notNull(propertyName, "propertyName");
+
         Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, null);
 
         op.claimProperty(propertyName);

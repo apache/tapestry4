@@ -77,8 +77,17 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         Defense.notNull(ps, "ps");
 
         String propertyName = ps.getName();
+        String specifiedType = ps.getType();
+        boolean persistent = ps.isPersistent();
+        String initialValue = ps.getInitialValue();
+        Location location = ps.getLocation();
 
-        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, ps.getType());
+        addProperty(op, propertyName, specifiedType, persistent, initialValue, location);
+    }
+
+    public void addProperty(EnhancementOperation op, String propertyName, String specifiedType, boolean persistent, String initialValue, Location location)
+    {
+        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, specifiedType);
 
         op.claimProperty(propertyName);
 
@@ -92,14 +101,12 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
 
         EnhanceUtils.createSimpleAccessor(op, field, propertyName, propertyType);
 
-        addMutator(op, propertyName, propertyType, field, ps.isPersistent());
-
-        String initialValue = ps.getInitialValue();
+        addMutator(op, propertyName, propertyType, field, persistent);
 
         if (initialValue == null)
             addReinitializer(op, propertyType, field);
         else
-            addInitialValue(op, propertyName, propertyType, field, initialValue, ps.getLocation());
+            addInitialValue(op, propertyName, propertyType, field, initialValue, location);
     }
 
     private void addReinitializer(EnhancementOperation op, Class propertyType, String fieldName)
@@ -131,7 +138,10 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         InitialValueBindingCreator creator = new InitialValueBindingCreator(_bindingSource,
                 description, initialValue, location);
 
-        String creatorField = op.addInjectedField(fieldName + "$initialValueBindingCreator", InitialValueBindingCreator.class, creator);
+        String creatorField = op.addInjectedField(
+                fieldName + "$initialValueBindingCreator",
+                InitialValueBindingCreator.class,
+                creator);
 
         String bindingField = fieldName + "$initialValueBinding";
         op.addField(bindingField, IBinding.class);

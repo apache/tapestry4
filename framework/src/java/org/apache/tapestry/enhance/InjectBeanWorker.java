@@ -20,6 +20,7 @@ import java.util.Iterator;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -59,8 +60,12 @@ public class InjectBeanWorker implements EnhancementWorker
         }
     }
 
-    private void injectBean(EnhancementOperation op, String beanName, String propertyName)
+    public void injectBean(EnhancementOperation op, String beanName, String propertyName)
     {
+        Defense.notNull(op, "op");
+        Defense.notNull(beanName, "beanName");
+        Defense.notNull(propertyName, "propertyName");
+
         op.claimProperty(propertyName);
 
         Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, null);

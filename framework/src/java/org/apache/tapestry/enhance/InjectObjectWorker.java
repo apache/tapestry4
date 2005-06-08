@@ -17,7 +17,9 @@ package org.apache.tapestry.enhance;
 import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.services.InjectedValueProvider;
 import org.apache.tapestry.spec.InjectSpecification;
 
@@ -36,6 +38,17 @@ public class InjectObjectWorker implements InjectEnhancementWorker
     {
         String name = is.getProperty();
         String objectReference = is.getObject();
+        Location location = is.getLocation();
+
+        injectObject(op, name, objectReference, location);
+    }
+
+    public void injectObject(EnhancementOperation op, String name, String objectReference,
+            Location location)
+    {
+        Defense.notNull(op, "op");
+        Defense.notNull(name, "name");
+        Defense.notNull(objectReference, "objectReference");
 
         Class propertyType = op.getPropertyType(name);
         if (propertyType == null)
@@ -45,17 +58,17 @@ public class InjectObjectWorker implements InjectEnhancementWorker
 
         op.claimProperty(name);
 
-        Object injectedValue = _provider.obtainValue(objectReference, is.getLocation());
+        Object injectedValue = _provider.obtainValue(objectReference, location);
 
         if (injectedValue == null)
             throw new ApplicationRuntimeException(EnhanceMessages
-                    .locatedValueIsNull(objectReference), is.getLocation(), null);
+                    .locatedValueIsNull(objectReference), location, null);
 
         if (!propertyType.isAssignableFrom(injectedValue.getClass()))
             throw new ApplicationRuntimeException(EnhanceMessages.incompatibleInjectType(
                     objectReference,
                     injectedValue,
-                    propertyType), is.getLocation(), null);
+                    propertyType), location, null);
 
         op.addInjectedField(fieldName, propertyType, injectedValue);
 

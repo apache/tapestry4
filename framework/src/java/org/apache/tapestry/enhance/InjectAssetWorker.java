@@ -17,6 +17,7 @@ package org.apache.tapestry.enhance;
 import java.util.Iterator;
 
 import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -57,8 +58,12 @@ public class InjectAssetWorker implements EnhancementWorker
         }
     }
 
-    private void injectAsset(EnhancementOperation op, String assetName, String propertyName)
+    public void injectAsset(EnhancementOperation op, String assetName, String propertyName)
     {
+        Defense.notNull(op, "op");
+        Defense.notNull(assetName, "assetName");
+        Defense.notNull(propertyName, "propertyName");
+
         Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, null);
 
         // TODO: Should be compatible with IAsset.
@@ -72,7 +77,7 @@ public class InjectAssetWorker implements EnhancementWorker
         EnhanceUtils.createSimpleAccessor(op, fieldName, propertyName, propertyType);
 
         // i.e. _$fred = getAsset("barney");
-        
+
         String code = fieldName + " = getAsset(\"" + assetName + "\");";
 
         op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE, code);

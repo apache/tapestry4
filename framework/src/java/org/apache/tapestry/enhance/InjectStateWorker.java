@@ -19,6 +19,7 @@ import java.lang.reflect.Modifier;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.spec.InjectSpecification;
@@ -41,8 +42,12 @@ public class InjectStateWorker implements InjectEnhancementWorker
         injectState(op, spec.getProperty(), spec.getObject());
     }
 
-    private void injectState(EnhancementOperation op, String propertyName, String objectName)
+    public void injectState(EnhancementOperation op, String propertyName, String objectName)
     {
+        Defense.notNull(op, "op");
+        Defense.notNull(propertyName, "propertyName");
+        Defense.notNull(objectName, "objectName");
+
         Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, null);
         String fieldName = "_$" + propertyName;
 
