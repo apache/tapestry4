@@ -20,6 +20,7 @@ import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -45,29 +46,36 @@ public class InjectMessagesWorker implements EnhancementWorker
     {
         try
         {
-            op.claimProperty(MESSAGES_PROPERTY);
-
-            String sourceField = op.addInjectedField(
-                    "_$componentMessagesSource",
-                    ComponentMessagesSource.class,
-                    _componentMessagesSource);
-
-            op.addField("_$messages", Messages.class);
-
-            BodyBuilder builder = new BodyBuilder();
-            builder.begin();
-            builder.addln("if (_$messages == null)");
-            builder.addln("  _$messages = {0}.getMessages(this);", sourceField);
-            builder.addln("return _$messages;");
-            builder.end();
-
-            op.addMethod(Modifier.PUBLIC, METHOD_SIGNATURE, builder.toString());
+            injectMessages(op);
         }
         catch (Exception ex)
         {
             _errorLog.error(EnhanceMessages.errorAddingProperty(MESSAGES_PROPERTY, op
                     .getBaseClass(), ex), null, ex);
         }
+    }
+
+    public void injectMessages(EnhancementOperation op)
+    {
+        Defense.notNull(op, "op");
+
+        op.claimProperty(MESSAGES_PROPERTY);
+
+        String sourceField = op.addInjectedField(
+                "_$componentMessagesSource",
+                ComponentMessagesSource.class,
+                _componentMessagesSource);
+
+        op.addField("_$messages", Messages.class);
+
+        BodyBuilder builder = new BodyBuilder();
+        builder.begin();
+        builder.addln("if (_$messages == null)");
+        builder.addln("  _$messages = {0}.getMessages(this);", sourceField);
+        builder.addln("return _$messages;");
+        builder.end();
+
+        op.addMethod(Modifier.PUBLIC, METHOD_SIGNATURE, builder.toString());
     }
 
     public void setComponentMessagesSource(ComponentMessagesSource componentMessagesSource)

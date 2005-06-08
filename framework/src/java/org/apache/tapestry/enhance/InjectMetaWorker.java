@@ -21,6 +21,7 @@ import java.util.Map;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.spec.InjectSpecification;
@@ -55,6 +56,17 @@ public class InjectMetaWorker implements InjectEnhancementWorker
     public void performEnhancement(EnhancementOperation op, InjectSpecification spec)
     {
         String propertyName = spec.getProperty();
+        String metaKey = spec.getObject();
+
+        injectMetaValue(op, propertyName, metaKey);
+    }
+
+    public void injectMetaValue(EnhancementOperation op, String propertyName, String metaKey)
+    {
+        Defense.notNull(op, "op");
+        Defense.notNull(propertyName, "propertyName");
+        Defense.notNull(metaKey, "metaKey");
+
         Class propertyType = op.getPropertyType(propertyName);
 
         op.claimProperty(propertyName);
@@ -69,36 +81,35 @@ public class InjectMetaWorker implements InjectEnhancementWorker
 
         if (parser != null)
         {
-            addPrimitive(op, spec, propertyName, sig, sourceName, parser);
+            addPrimitive(op, metaKey, propertyName, sig, sourceName, parser);
             return;
         }
 
         if (propertyType == char.class)
         {
-            addCharacterPrimitive(op, spec, propertyName, sig, sourceName);
+            addCharacterPrimitive(op, metaKey, propertyName, sig, sourceName);
             return;
         }
 
-        addObject(op, spec, propertyName, propertyType, sig, sourceName);
-
+        addObject(op, metaKey, propertyName, propertyType, sig, sourceName);
     }
 
-    private void addPrimitive(EnhancementOperation op, InjectSpecification spec,
-            String propertyName, MethodSignature sig, String sourceName, String parser)
+    private void addPrimitive(EnhancementOperation op, String metaKey, String propertyName,
+            MethodSignature sig, String sourceName, String parser)
     {
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
         builder.addln(
                 "java.lang.String meta = {0}.getComponentProperty(this, \"{1}\");",
                 sourceName,
-                spec.getObject());
+                metaKey);
         builder.addln("return {0}(meta);", parser);
         builder.end();
 
         op.addMethod(Modifier.PUBLIC, sig, builder.toString());
     }
 
-    private void addCharacterPrimitive(EnhancementOperation op, InjectSpecification spec,
+    private void addCharacterPrimitive(EnhancementOperation op, String metaKey,
             String propertyName, MethodSignature sig, String sourceName)
     {
         BodyBuilder builder = new BodyBuilder();
@@ -106,14 +117,14 @@ public class InjectMetaWorker implements InjectEnhancementWorker
         builder.addln(
                 "java.lang.String meta = {0}.getComponentProperty(this, \"{1}\");",
                 sourceName,
-                spec.getObject());
+                metaKey);
         builder.addln("return meta.charAt(0);");
         builder.end();
 
         op.addMethod(Modifier.PUBLIC, sig, builder.toString());
     }
 
-    private void addObject(EnhancementOperation op, InjectSpecification spec, String propertyName,
+    private void addObject(EnhancementOperation op, String metaKey, String propertyName,
             Class propertyType, MethodSignature sig, String sourceName)
     {
         String valueConverterName = op.addInjectedField(
@@ -127,7 +138,7 @@ public class InjectMetaWorker implements InjectEnhancementWorker
         builder.addln(
                 "java.lang.String meta = {0}.getComponentProperty(this, \"{1}\");",
                 sourceName,
-                spec.getObject());
+                metaKey);
         builder.addln("return ({0}) {1}.coerceValue(meta, {2});", ClassFabUtils
                 .getJavaClassName(propertyType), valueConverterName, classRef);
         builder.end();

@@ -22,6 +22,7 @@ import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -67,8 +68,38 @@ public class ParameterPropertyWorker implements EnhancementWorker
             IParameterSpecification ps)
     {
         String propertyName = ps.getPropertyName();
+        String specifiedType = ps.getType();
+        boolean cache = ps.getCache();
 
-        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, ps.getType());
+        addParameter(op, parameterName, propertyName, specifiedType, cache);
+    }
+
+    /**
+     * Adds a parameter as a (very smart) property.
+     * 
+     * @param op
+     *            the enhancement operation
+     * @param parameterName
+     *            the name of the parameter (used to access the binding)
+     * @param propertyName
+     *            the name of the property to create (usually, but not always, matches the
+     *            parameterName)
+     * @param specifiedType
+     *            the type declared in the DTD (only 3.0 DTD supports this), may be null (always
+     *            null for 4.0 DTD)
+     * @param cache
+     *            if true, then the value should be cached while the component renders; false (a
+     *            much less common case) means that every access will work through binding object.
+     */
+
+    public void addParameter(EnhancementOperation op, String parameterName, String propertyName,
+            String specifiedType, boolean cache)
+    {
+        Defense.notNull(op, "op");
+        Defense.notNull(parameterName, "parameterName");
+        Defense.notNull(propertyName, "propertyName");
+
+        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, specifiedType);
 
         // 3.0 would allow connected parameter properties to be fully implemented
         // in the component class. This is not supported in 4.0 and an existing
@@ -95,7 +126,7 @@ public class ParameterPropertyWorker implements EnhancementWorker
                 fieldName,
                 defaultFieldName,
                 cachedFieldName,
-                ps.getCache());
+                cache);
 
         buildMutator(
                 op,

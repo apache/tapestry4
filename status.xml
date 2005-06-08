@@ -278,7 +278,7 @@
     </release>
   </changes>
   <votes>
-    <vote title="Tapestry 4.0-alpha-2" date="May 12 2005" dev="HLS">
+    <vote title="Tapestry 4.0-alpha-3" date="May 12 2005" dev="HLS">
       <motion>Although it hasn't been long since alpha-2, I'd like to release the next alpha of Tapestry 4.0. Why? A few things have settled down, some bugs have been fixed, a few really key features have been added, and I think the Portlet support is now complete.</motion>
       <response>HLS, PF, HK, EH, RLS, DS, GL, TSV: +1</response>
     </vote>

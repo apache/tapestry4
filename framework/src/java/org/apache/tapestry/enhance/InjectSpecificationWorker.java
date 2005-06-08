@@ -15,6 +15,7 @@
 package org.apache.tapestry.enhance;
 
 import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
@@ -43,8 +44,11 @@ public class InjectSpecificationWorker implements EnhancementWorker
         }
     }
 
-    private void injectSpecification(EnhancementOperation op, IComponentSpecification spec)
+    public void injectSpecification(EnhancementOperation op, IComponentSpecification spec)
     {
+        Defense.notNull(op, "op");
+        Defense.notNull(spec, "spec");
+
         op.claimProperty(SPECIFICATION_PROPERTY_NAME);
 
         String fieldName = op.addInjectedField(

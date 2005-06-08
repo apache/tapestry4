@@ -16,8 +16,10 @@ package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Modifier;
 
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.service.MethodSignature;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.spec.InjectSpecification;
@@ -35,6 +37,33 @@ public class InjectScriptWorker implements InjectEnhancementWorker
     public void performEnhancement(EnhancementOperation op, InjectSpecification spec)
     {
         String propertyName = spec.getProperty();
+        String scriptName = spec.getObject();
+        Location location = spec.getLocation();
+
+        injectScript(op, propertyName, scriptName, location);
+    }
+
+    /**
+     * Injects a compiled script.
+     * 
+     * @param op
+     *            the enhancement operation
+     * @param propertyName
+     *            the name of the property to inject
+     * @param scriptName
+     *            the name of the script (relative to the location)
+     * @param location
+     *            the location of the specification; primarily used as the base location for finding
+     *            the script.
+     */
+
+    public void injectScript(EnhancementOperation op, String propertyName, String scriptName,
+            Location location)
+    {
+        Defense.notNull(op, "op");
+        Defense.notNull(propertyName, "propertyName");
+        Defense.notNull(scriptName, "scriptName");
+        Defense.notNull(location, "location");
 
         op.claimProperty(propertyName);
 
@@ -44,9 +73,9 @@ public class InjectScriptWorker implements InjectEnhancementWorker
 
         String methodName = op.getAccessorMethodName(propertyName);
 
-        Resource resource = spec.getLocation().getResource().getRelativeResource(spec.getObject());
+        Resource resource = location.getResource().getRelativeResource(scriptName);
 
-        DeferredScript script = new DeferredScriptImpl(resource, _source, spec.getLocation());
+        DeferredScript script = new DeferredScriptImpl(resource, _source, location);
 
         String fieldName = op.addInjectedField("_$script", IScript.class, script);
 
