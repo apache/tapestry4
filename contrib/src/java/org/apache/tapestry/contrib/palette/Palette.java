@@ -82,7 +82,7 @@ import org.apache.tapestry.valid.IValidationDelegate;
  * </tr>
  * <tr>
  * <td>sort</td>
- * <td>{@link SortMode}</td>
+ * <td>string</td>
  * <td>in</td>
  * <td>no</td>
  * <td>{@link SortMode#NONE}</td>
@@ -155,35 +155,45 @@ import org.apache.tapestry.valid.IValidationDelegate;
  * 
  * <pre>
  * 
- *                  TABLE.tapestry-palette TH
- *                  {
- *                    font-size: 9pt;
- *                    font-weight: bold;
- *                    color: white;
- *                    background-color: #330066;
- *                    text-align: center;
- *                  }
- *                 
- *                  TD.available-cell SELECT
- *                  {
- *                    font-weight: normal;
- *                    background-color: #FFFFFF;
- *                    width: 200px;
- *                  }
- *                  
- *                  TD.selected-cell SELECT
- *                  {
- *                    font-weight: normal;
- *                    background-color: #FFFFFF;
- *                    width: 200px;
- *                  }
- *                  
- *                  TABLE.tapestry-palette TD.controls
- *                  {
- *                    text-align: center;
- *                    vertical-align: middle;
- *                    width: 60px;
- *                  }
+ *  
+ *   
+ *    
+ *     
+ *      
+ *                       TABLE.tapestry-palette TH
+ *                       {
+ *                         font-size: 9pt;
+ *                         font-weight: bold;
+ *                         color: white;
+ *                         background-color: #330066;
+ *                         text-align: center;
+ *                       }
+ *                      
+ *                       TD.available-cell SELECT
+ *                       {
+ *                         font-weight: normal;
+ *                         background-color: #FFFFFF;
+ *                         width: 200px;
+ *                       }
+ *                       
+ *                       TD.selected-cell SELECT
+ *                       {
+ *                         font-weight: normal;
+ *                         background-color: #FFFFFF;
+ *                         width: 200px;
+ *                       }
+ *                       
+ *                       TABLE.tapestry-palette TD.controls
+ *                       {
+ *                         text-align: center;
+ *                         vertical-align: middle;
+ *                         width: 60px;
+ *                       }
+ *       
+ *      
+ *     
+ *    
+ *   
  *  
  * </pre>
  * 
@@ -326,9 +336,9 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         if (selected == null)
             selected = Collections.EMPTY_LIST;
 
-        SortMode sortMode = getSort();
+        String sortMode = getSort();
 
-        boolean sortUser = sortMode == SortMode.USER;
+        boolean sortUser = sortMode.equals(SortMode.USER);
 
         List selectedOptions = null;
 
@@ -382,12 +392,12 @@ public abstract class Palette extends BaseComponent implements IFormComponent
             }
         }
 
-        if (sortMode == SortMode.VALUE)
+        if (sortMode.equals(SortMode.VALUE))
         {
             availableColumn.sortByValue();
             selectedColumn.sortByValue();
         }
-        else if (sortMode == SortMode.LABEL)
+        else if (sortMode.equals(SortMode.LABEL))
         {
             availableColumn.sortByLabel();
             selectedColumn.sortByLabel();
@@ -453,7 +463,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
     public abstract IAsset getSelectImage();
 
-    public abstract SortMode getSort();
+    public abstract String getSort();
 
     public abstract IAsset getUpDisabledImage();
 

@@ -41,9 +41,9 @@ public abstract class Inspector extends BasePage
         _blocks.put(View.PROPERTIES, getComponent("propertiesBlock"));
     }
 
-    public abstract View getView();
+    public abstract String getView();
 
-    public abstract void setView(View value);
+    public abstract void setView(String value);
 
     public abstract String getInspectedPageName();
     

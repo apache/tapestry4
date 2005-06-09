@@ -14,54 +14,36 @@
 
 package org.apache.tapestry.contrib.inspector;
 
-import org.apache.commons.lang.enum.Enum;
-
 /**
- *  Identifies different views for the inspector.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Identifies different views for the inspector.
+ * 
+ * @author Howard Lewis Ship
+ */
 
-public class View extends Enum
+public class View
 {
     /**
-     *  View that displays the basic specification information, plus
-     *  formal and informal parameters (and related bindings), and 
-     *  assets.
-     *
-     **/
+     * View that displays the basic specification information, plus formal and informal parameters
+     * (and related bindings), and assets.
+     */
 
-    public static final View SPECIFICATION = new View("SPECIFICATION");
+    public static final String SPECIFICATION = "SPECIFICATION";
 
     /**
-     *  View that displays the HTML template for the component, if one
-     *  exists.
-     *
-     **/
+     * View that displays the HTML template for the component, if one exists.
+     */
 
-    public static final View TEMPLATE = new View("TEMPLATE");
+    public static final String TEMPLATE = "TEMPLATE";
 
     /**
-     *  View that shows the persistent properties of the page containing
-     *  the inspected component.
-     *
-     **/
+     * View that shows the persistent properties of the page containing the inspected component.
+     */
 
-    public static final View PROPERTIES = new View("PROPERTIES");
+    public static final String PROPERTIES = "PROPERTIES";
 
     /**
-     *  View that shows information about the 
-     *  {@link org.apache.tapestry.IEngine}.
-     *
-     **/
+     * View that shows information about the {@link org.apache.tapestry.IEngine}.
+     */
 
-    public static final View ENGINE = new View("ENGINE");
-
-
-    private View(String name)
-    {
-        super(name);
-    }
-
+    public static final String ENGINE = "ENGINE";
 }

@@ -20,9 +20,7 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
 	
 <component-specification class="org.apache.tapestry.contrib.inspector.ViewTabs">
-  
-  <property-specification name="view" type="org.apache.tapestry.contrib.inspector.View"/>
-  
+    
   <private-asset name="SPECIFICATION" resource-path="Specification_Np1.gif"/>
   <private-asset name="SPECIFICATION_selected" resource-path="Specification_Hp3.gif"/>
   <private-asset name="SPECIFICATION_focus" resource-path="Specification_NRp2.gif"/>

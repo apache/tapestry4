@@ -16,16 +16,14 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 	
 <page-specification class="org.apache.tapestry.contrib.inspector.Inspector">
 
-  <property-specification name="view" type="org.apache.tapestry.contrib.inspector.View"
-  		persistent="yes"
-  		initial-value="@org.apache.tapestry.contrib.inspector.View@SPECIFICATION"/>
-  <property-specification name="inspectedPageName" type="java.lang.String" persistent="yes"/>
-  <property-specification name="inspectedIdPath" type="java.lang.String" persistent="yes"/>
+  <property-specification name="view" persist="session" initial-value="@org.apache.tapestry.contrib.inspector.View@SPECIFICATION"/>
+  <property-specification name="inspectedPageName" persist="session"/>
+  <property-specification name="inspectedIdPath" persist="session"/>
   
   <private-asset name="stylesheet" resource-path="Inspector.css"/>
 
