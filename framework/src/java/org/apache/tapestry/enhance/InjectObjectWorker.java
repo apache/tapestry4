@@ -40,23 +40,23 @@ public class InjectObjectWorker implements InjectEnhancementWorker
         String objectReference = is.getObject();
         Location location = is.getLocation();
 
-        injectObject(op, name, objectReference, location);
+        injectObject(op, objectReference, name, location);
     }
 
-    public void injectObject(EnhancementOperation op, String name, String objectReference,
+    public void injectObject(EnhancementOperation op, String objectReference, String propertyName,
             Location location)
     {
         Defense.notNull(op, "op");
-        Defense.notNull(name, "name");
+        Defense.notNull(propertyName, "propertyName");
         Defense.notNull(objectReference, "objectReference");
 
-        Class propertyType = op.getPropertyType(name);
+        Class propertyType = op.getPropertyType(propertyName);
         if (propertyType == null)
             propertyType = Object.class;
 
-        String fieldName = "_$" + name;
+        String fieldName = "_$" + propertyName;
 
-        op.claimProperty(name);
+        op.claimProperty(propertyName);
 
         Object injectedValue = _provider.obtainValue(objectReference, location);
 
@@ -72,7 +72,7 @@ public class InjectObjectWorker implements InjectEnhancementWorker
 
         op.addInjectedField(fieldName, propertyType, injectedValue);
 
-        String methodName = EnhanceUtils.createAccessorMethodName(name);
+        String methodName = EnhanceUtils.createAccessorMethodName(propertyName);
 
         op.addMethod(
                 Modifier.PUBLIC,

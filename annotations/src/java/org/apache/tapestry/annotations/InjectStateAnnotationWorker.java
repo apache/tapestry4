@@ -18,48 +18,39 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.apache.tapestry.enhance.EnhancementOperation;
-import org.apache.tapestry.enhance.InjectObjectWorker;
-import org.apache.tapestry.services.InjectedValueProvider;
+import org.apache.tapestry.enhance.InjectStateWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- * Performs injection of objects, in much the same way as the &lt;inject&gt; element in a
- * specification.
+ * Injects an Application State Object.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
- * @see org.apache.tapestry.enhance.InjectObjectWorker
- * @see org.apache.tapestry.annotations.InjectObject
+ * @see org.apache.tapestry.annotations.InjectState
+ * @see org.apache.tapestry.enhance.InjectStateWorker
  */
-
-public class InjectObjectAnnotationWorker implements MethodAnnotationEnhancementWorker
+public class InjectStateAnnotationWorker implements MethodAnnotationEnhancementWorker
 {
-    final InjectObjectWorker _delegate;
+    final InjectStateWorker _delegate;
 
-    public InjectObjectAnnotationWorker()
-    {
-        this(new InjectObjectWorker());
-    }
-
-    InjectObjectAnnotationWorker(InjectObjectWorker delegate)
+    InjectStateAnnotationWorker(InjectStateWorker delegate)
     {
         _delegate = delegate;
+    }
+
+    public InjectStateAnnotationWorker()
+    {
+        this(new InjectStateWorker());
     }
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
             Annotation annotation, Method method)
     {
-        InjectObject io = (InjectObject) annotation;
+        InjectState is = (InjectState) annotation;
 
-        String object = io.value();
+        String propertyName = AnnotationUtils.getPropertyName(method);
 
-        String name = AnnotationUtils.getPropertyName(method);
-
-        _delegate.injectObject(op, object, name, null);
+        _delegate.injectState(op, propertyName, is.value());
     }
 
-    public void setProvider(InjectedValueProvider provider)
-    {
-        _delegate.setProvider(provider);
-    }
 }

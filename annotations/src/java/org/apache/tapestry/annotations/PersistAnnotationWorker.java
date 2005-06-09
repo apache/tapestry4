@@ -18,48 +18,35 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.apache.tapestry.enhance.EnhancementOperation;
-import org.apache.tapestry.enhance.InjectObjectWorker;
-import org.apache.tapestry.services.InjectedValueProvider;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IPropertySpecification;
+import org.apache.tapestry.spec.PropertySpecification;
 
 /**
- * Performs injection of objects, in much the same way as the &lt;inject&gt; element in a
- * specification.
+ * Allow a property to be marked as persistent, and (optionally) allows a strategy to be set. Works
+ * by adding a new {@link org.apache.tapestry.spec.IPropertySpecification} to the
+ * {@link org.apache.tapestry.spec.IComponentSpecification}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
- * @see org.apache.tapestry.enhance.InjectObjectWorker
- * @see org.apache.tapestry.annotations.InjectObject
+ * @see org.apache.tapestry.annotations.Persist
  */
-
-public class InjectObjectAnnotationWorker implements MethodAnnotationEnhancementWorker
+public class PersistAnnotationWorker implements MethodAnnotationEnhancementWorker
 {
-    final InjectObjectWorker _delegate;
-
-    public InjectObjectAnnotationWorker()
-    {
-        this(new InjectObjectWorker());
-    }
-
-    InjectObjectAnnotationWorker(InjectObjectWorker delegate)
-    {
-        _delegate = delegate;
-    }
-
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
             Annotation annotation, Method method)
     {
-        InjectObject io = (InjectObject) annotation;
+        Persist p = (Persist) annotation;
 
-        String object = io.value();
+        String propertyName = AnnotationUtils.getPropertyName(method);
+        String stategy = p.value();
 
-        String name = AnnotationUtils.getPropertyName(method);
+        IPropertySpecification pspec = new PropertySpecification();
 
-        _delegate.injectObject(op, object, name, null);
+        pspec.setName(propertyName);
+        pspec.setPersistence(stategy);
+
+        spec.addPropertySpecification(pspec);
     }
 
-    public void setProvider(InjectedValueProvider provider)
-    {
-        _delegate.setProvider(provider);
-    }
 }

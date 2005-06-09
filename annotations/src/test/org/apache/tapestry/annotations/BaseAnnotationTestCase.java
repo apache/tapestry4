@@ -17,6 +17,7 @@ package org.apache.tapestry.annotations;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
@@ -41,6 +42,11 @@ public abstract class BaseAnnotationTestCase extends HiveMindTestCase
     protected IComponentSpecification newSpec()
     {
         return (IComponentSpecification) newMock(IComponentSpecification.class);
+    }
+
+    protected EnhancementOperation newOp()
+    {
+        return (EnhancementOperation) newMock(EnhancementOperation.class);
     }
 
 }
