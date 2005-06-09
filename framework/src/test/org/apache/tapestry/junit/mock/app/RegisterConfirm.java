@@ -55,7 +55,7 @@ public abstract class RegisterConfirm extends BasePage
                     "org.apache.tapestry.junit.mock.app.AgeRangeStrings",
                     getLocale());
 
-        String key = _user.getAgeRange().getName();
+        String key = _user.getAgeRange();
 
         return _ageRangeStrings.getString(key);
     }

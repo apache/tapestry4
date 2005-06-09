@@ -17,7 +17,7 @@ package org.apache.tapestry.services.impl;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.hivemind.util.ToStringBuilder;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;

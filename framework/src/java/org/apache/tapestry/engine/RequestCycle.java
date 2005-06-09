@@ -18,13 +18,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.impl.ErrorLogImpl;
 import org.apache.hivemind.util.Defense;
+import org.apache.hivemind.util.ToStringBuilder;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
@@ -44,7 +44,7 @@ import org.apache.tapestry.util.QueryParameterMap;
 
 /**
  * Provides the logic for processing a single request cycle. Provides access to the
- * {@link IEngine engine}and the {@link RequestContext}.
+ * {@link IEngine engine} and the {@link RequestContext}.
  * 
  * @author Howard Lewis Ship
  */

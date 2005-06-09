@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,25 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock.c14;
+package org.apache.tapestry.junit.utils;
 
-public class Color
+import java.io.Serializable;
+
+public class StringHolder implements Serializable
 {
-    public static final String RED = "RED";
+    private String _string;
 
-    public static final String GREEN = "GREEN";
+    public StringHolder(String string)
+    {
+        _string = string;
+    }
 
-    public static final String BLUE = "BLUE";
+    public String getString()
+    {
+        return _string;
+    }
 
-    public static final String PUECE = "PUECE";
-
-    public static final String YELLOW = "YELLOW";
-
-    public static final String BLACK = "BLACK";
-
-    public static final String WHITE = "WHITE";
-
-    public static final String[] ALL_COLORS =
-    { RED, GREEN, BLUE, YELLOW, BLACK, WHITE, PUECE };
-
+    public boolean equals(Object other)
+    {
+        return ((StringHolder) other)._string.equals(_string);
+    }
 }

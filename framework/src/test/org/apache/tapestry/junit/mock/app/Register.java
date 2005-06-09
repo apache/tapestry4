@@ -14,11 +14,9 @@
 
 package org.apache.tapestry.junit.mock.app;
 
-import java.util.ResourceBundle;
-
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.form.EnumPropertySelectionModel;
 import org.apache.tapestry.form.IPropertySelectionModel;
+import org.apache.tapestry.form.StringPropertySelectionModel;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
 
@@ -36,8 +34,12 @@ public abstract class Register extends BasePage
     public IPropertySelectionModel getAgeRangeModel()
     {
         if (_ageRangeModel == null)
-            _ageRangeModel = new EnumPropertySelectionModel(AgeRange.getAllValues(), ResourceBundle
-                    .getBundle("org.apache.tapestry.junit.mock.app.AgeRangeStrings", getLocale()));
+            _ageRangeModel = new StringPropertySelectionModel(new String[]
+            {
+
+            AgeRange.CHILD, AgeRange.TEEN, AgeRange.ADULT, AgeRange.RETIREE, AgeRange.ELDERLY
+
+            });
 
         return _ageRangeModel;
     }

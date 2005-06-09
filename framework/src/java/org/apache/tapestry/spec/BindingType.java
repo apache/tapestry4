@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.spec;
 
-import org.apache.commons.lang.enum.Enum;
-
 /**
  * Defines the different types of bindings possible for a component. These are used in the
  * {@link IBindingSpecification} and ultimately used to create an instance of
@@ -24,11 +22,11 @@ import org.apache.commons.lang.enum.Enum;
  * @author Howard Lewis Ship
  */
 
-public final class BindingType extends Enum
+public final class BindingType
 {
     /**
-     * Indicates that the binding value is a prefixed locator, ready for use
-     * with {@link org.apache.tapestry.binding.BindingSource}.
+     * Indicates that the binding value is a prefixed locator, ready for use with
+     * {@link org.apache.tapestry.binding.BindingSource}.
      */
 
     public static final BindingType PREFIXED = new BindingType("PREFIXED");
@@ -46,9 +44,15 @@ public final class BindingType extends Enum
 
     public static final BindingType LISTENER = new BindingType("LISTENER");
 
+    private final String _name;
+
     private BindingType(String name)
     {
-        super(name);
+        _name = name;
     }
 
+    public String toString()
+    {
+        return "BindingType[" + _name + "]";
+    }
 }

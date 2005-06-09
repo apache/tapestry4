@@ -14,34 +14,33 @@
 
 package org.apache.tapestry.parse;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.util.ToStringBuilder;
 
 /**
- *  Represents the closing tag of a component element in the template.
- *
- *  @see TokenType#CLOSE
- *  @author Howard Lewis Ship
- *  @since 3.0
- *
- **/
+ * Represents the closing tag of a component element in the template.
+ * 
+ * @see TokenType#CLOSE
+ * @author Howard Lewis Ship
+ * @since 3.0
+ */
 
 public class CloseToken extends TemplateToken
 {
     private String _tag;
-    
+
     public CloseToken(String tag, Location location)
     {
         super(TokenType.CLOSE, location);
-        
+
         _tag = tag;
     }
-    
+
     public String getTag()
     {
         return _tag;
     }
-       
+
     protected void extendDescription(ToStringBuilder builder)
     {
         builder.append("tag", _tag);

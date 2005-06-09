@@ -14,60 +14,61 @@
 
 package org.apache.tapestry.parse;
 
-import org.apache.commons.lang.enum.Enum;
-
 /**
- * An {@link Enum} of the different possible token types.
- *
- * @see TemplateToken
- *
- * @author Howard Lewis Ship
+ * An enumeration of the different possible token types.
  * 
- **/
+ * @see TemplateToken
+ * @author Howard Lewis Ship
+ */
 
-public class TokenType extends Enum
+public class TokenType
 {
     /**
-     *  Raw HTML text.
+     * Raw HTML text.
      * 
-     *  @see TextToken
-     * 
-     *
-     **/
+     * @see TextToken
+     */
 
     public static final TokenType TEXT = new TokenType("TEXT");
 
     /**
-     *  The opening tag of an element.
+     * The opening tag of an element.
      * 
-     *  @see OpenToken
-     *
-     **/
+     * @see OpenToken
+     */
 
     public static final TokenType OPEN = new TokenType("OPEN");
 
     /**
-     *  The closing tag of an element.
+     * The closing tag of an element.
      * 
-     *  @see CloseToken
-     *
-     **/
+     * @see CloseToken
+     */
 
     public static final TokenType CLOSE = new TokenType("CLOSE");
 
     /**
+     * A reference to a localized string.
      * 
-     *  A reference to a localized string.
-     * 
-     *  @since 2.0.4
-     * 
-     **/
-    
+     * @since 2.0.4
+     */
+
     public static final TokenType LOCALIZATION = new TokenType("LOCALIZATION");
-    
+
+    private final String _name;
+
     private TokenType(String name)
     {
-        super(name);
+        _name = name;
     }
 
+    public String toString()
+    {
+        return "TokenType[" + _name + "]";
+    }
+
+    public String getName()
+    {
+        return _name;
+    }
 }

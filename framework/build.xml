@@ -36,7 +36,6 @@
     <ibiblio-dependency artifact="bsf"                version="${bsf.version}"      group="bsf"/>
     <ibiblio-dependency artifact="commons-codec"      version="${codec.version}"    group="commons-codec"/>
     <ibiblio-dependency artifact="commons-fileupload" version="${fileupload.version}" group="commons-fileupload"/>    
-    <ibiblio-dependency artifact="commons-lang"       version="${lang.version}"     group="commons-lang"/>
     <ibiblio-dependency artifact="commons-logging"    version="${logging.version}"  group="commons-logging"/>
     <ibiblio-dependency artifact="hivemind"           version="${hivemind.version}" group="hivemind"/>
     <ibiblio-dependency artifact="hivemind-lib"       version="${hivemind.version}" group="hivemind"/>

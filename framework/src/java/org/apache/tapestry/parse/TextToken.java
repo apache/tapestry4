@@ -14,9 +14,9 @@
 
 package org.apache.tapestry.parse;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.util.ToStringBuilder;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;

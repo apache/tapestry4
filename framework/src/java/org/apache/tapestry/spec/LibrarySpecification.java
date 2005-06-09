@@ -21,10 +21,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.util.ToStringBuilder;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -550,7 +550,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
         builder.append("instantiatedExtensions", _instantiatedExtensions);
         builder.append("libraries", _libraries);
         builder.append("pages", _pages);
-        builder.append("publicId", _publicId);        
+        builder.append("publicId", _publicId);
         builder.append("specificationLocation", _specificationLocation);
 
         extendDescription(builder);

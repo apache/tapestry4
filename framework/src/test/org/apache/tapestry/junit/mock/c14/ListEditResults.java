@@ -52,9 +52,9 @@ public abstract class ListEditResults extends BasePage
     public String getColorName()
     {
         String key = getColorKey();
-        Color color = (Color) getColorMap().get(key);
+        String color = (String) getColorMap().get(key);
 
-        return _colorStrings.getString(color.getName());
+        return _colorStrings.getString(color);
     }
 
     protected void finishLoad()

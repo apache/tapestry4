@@ -133,13 +133,6 @@ public class TestDataSqueezer extends TestCase
         attempt("So long, sucker!", "SSo long, sucker!");
     }
 
-    /** @since 3.0 * */
-
-    public void testEnum() throws IOException
-    {
-        attempt(BeanLifecycle.PAGE, "Eorg.apache.tapestry.spec.BeanLifecycle@PAGE");
-    }
-
     public void testComponentAddress() throws IOException
     {
         ComponentAddress objAddress = new ComponentAddress("framework:DirectLink",
@@ -198,7 +191,7 @@ public class TestDataSqueezer extends TestCase
         Map map = new HashMap();
 
         map.put("alpha", Boolean.TRUE);
-        map.put("beta", BeanLifecycle.NONE);
+        map.put("beta", new StringHolder("FredFlintstone"));
         map.put("gamma", new BigDecimal(
                 "2590742358742358972.234592348957230948578975248972390857490725"));
 
@@ -367,7 +360,7 @@ public class TestDataSqueezer extends TestCase
         // TODO: Change the build to download some JAR file,
         // and change this code to reference a class within that
         // JAR file.
-        
+
         File dir = new File(System.getProperty("PROJECT_ROOT", ".")
                 + "/examples/Workbench/target/classes");
 

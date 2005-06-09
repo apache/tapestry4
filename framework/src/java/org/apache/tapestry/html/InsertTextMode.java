@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.html;
 
-import org.apache.commons.lang.enum.Enum;
 import org.apache.tapestry.IMarkupWriter;
 
 /**
@@ -23,7 +22,7 @@ import org.apache.tapestry.IMarkupWriter;
  * @author Howard Lewis Ship
  */
 
-public abstract class InsertTextMode extends Enum
+public abstract class InsertTextMode
 {
     /**
      * Mode where each line (after the first) is preceded by a &lt;br&gt; tag.
@@ -37,9 +36,16 @@ public abstract class InsertTextMode extends Enum
 
     public static final InsertTextMode PARAGRAPH = new ParagraphMode();
 
+    private final String _name;
+
     protected InsertTextMode(String name)
     {
-        super(name);
+        _name = name;
+    }
+
+    public String toString()
+    {
+        return "InsertTextMode[" + _name + "]";
     }
 
     /**
