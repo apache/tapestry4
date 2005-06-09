@@ -381,5 +381,16 @@ value.
 
 </section>  <!-- upgrade.bean -->
 
+<section id="upgrade.dependencies">
+  <title>Dependency Changes</title>
+  
+<p>
+Part of the transition to Tapestry 4.0, and targetting (in a later release) a minimum JDK of 1.5, is the <em>removal</em> of support for the
+Jakarta commons-lang library.  commons-lang defined an Enum class that makes it impossible to compile code for JDK 1.5 ("enum" is a reserved word
+in JDK 1.5).  With the loss of that dependency, so goes org.apache.tapestry.form.EnumPropertySelectionModel, an &IPropertySelectionModel; implementation.
+</p>
+  
+</section>
+
 </body>
 </document>

@@ -91,6 +91,11 @@ library is being built, most example code is not.
 If you are using Tapestry in a production environment, it is recommended that you stick with Tapestry <strong>3.0.3</strong>,
 the latest stable release.
 </p>
+
+<p>
+Tapestry 4.0 now supports <link href="tapestry-annotations/index.html">JDK 1.5 annotations</link>, which can be used
+as an alternative to the XML page and component specifcations (in some cases).
+</p>
   
   
 </section>

@@ -28,5 +28,6 @@
   <tab label="Framework" dir="tapestry" id="tapestry"/>
   <tab label="Contrib Library" dir="tapestry-contrib" id="contrib"/>
   <tab label="Portlet Support" dir="tapestry-portlet" id="portlet"/>
+  <tab label="Annotations" dir="tapestry-annotations" id="annotations"/>
 
  </tabs>

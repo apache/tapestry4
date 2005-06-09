@@ -21,6 +21,7 @@
 <!ENTITY tapestry-report-menu.ent SYSTEM "tapestry-report-menu.ent">
 <!ENTITY tapestry-contrib-report-menu.ent SYSTEM "tapestry-contrib-report-menu.ent">
 <!ENTITY tapestry-portlet-report-menu.ent SYSTEM "tapestry-portlet-report-menu.ent">
+<!ENTITY tapestry-annotations-report-menu.ent SYSTEM "tapestry-annotations-report-menu.ent">
 ]
 >
 
@@ -136,6 +137,16 @@
         &tapestry-portlet-report-menu.ent;
       </reports>    
    </portlet>
+   
+   <annotations label="Annotations" tab="annotations" href="tapestry-annotations/">
+ 
+    <index label="Overview" href="index.html"/>
+  
+      <reports label="Reports">
+       &tapestry-annotations-report-menu.ent;
+      </reports>      
+    
+   </annotations>
     
     <project label="Project">
         <item label="Mailing Lists"     href="http://jakarta.apache.org/site/mail2.html#tapestry"/>

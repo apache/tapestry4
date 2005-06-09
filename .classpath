@@ -2,20 +2,22 @@
 <classpath>
 	<classpathentry kind="src" path="framework/src/java"/>
 	<classpathentry kind="src" path="framework/src/test"/>
-	<classpathentry kind="src" path="portlet/src/java"/>
-	<classpathentry kind="src" path="portlet/src/test"/>
 	<classpathentry kind="src" path="contrib/src/java"/>
 	<classpathentry kind="src" path="contrib/src/test"/>
+	<classpathentry kind="src" path="portlet/src/java"/>
+	<classpathentry kind="src" path="portlet/src/test"/>
+	<classpathentry kind="src" path="annotations/src/java"/>
+	<classpathentry kind="src" path="annotations/src/test"/>
 	<classpathentry kind="src" path="examples/Workbench/src/java"/>
 	<classpathentry kind="lib" path="config"/>
 	<classpathentry exported="true" kind="lib" path="framework/src/descriptor"/>
 	<classpathentry exported="true" kind="lib" path="portlet/src/descriptor"/>
 	<classpathentry exported="true" kind="lib" path="contrib/src/descriptor"/>
+	<classpathentry kind="lib" path="annotations/src/descriptor"/>
 	<classpathentry sourcepath="JRE_SRC" kind="var" path="JRE_LIB"/>
 	<classpathentry exported="true" kind="lib" path="ext-package/lib/bsf-2.3.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="ext-package/lib/commons-codec-1.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="ext-package/lib/commons-fileupload-1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="ext-package/lib/commons-lang-2.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="ext-package/lib/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/easymock-1.1.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/javassist-3.0.jar"/>
