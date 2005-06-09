@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<project name="Tapestry Annotations" default="jar">
+  
+  <property name="module.name" value="tapestry-annotations"/>
+  <property name="module.javac.target" value="1.5"/>
+  <property name="module.javac.source" value="1.5"/>
+	
+  <property name="javadoc.package" value="org.apache.tapestry.annotations.*"/>
+    
+  <property name="root.dir" value=".."/>
+	<property file="${root.dir}/config/build.properties"/>
+	<property file="${root.dir}/config/common.properties"/>
+  
+	<import file="${hivebuild.dir}/jar-module.xml"/>
+	<import file="${hivebuild.dir}/javadoc-report.xml"/>
+	<import file="${hivebuild.dir}/clover-report.xml"/>  
+	<import file="${hivebuild.dir}/hivedoc-report.xml"/>    
+	<import file="${hivebuild.dir}/junit-report.xml"/>    
+	
+	<target name="compile-dependencies">
+    <project-dependency artifact="tapestry"/>
+
+    <ibiblio-dependency artifact="commons-logging"    version="${logging.version}"  group="commons-logging"/>
+    <ibiblio-dependency artifact="hivemind"           version="${hivemind.version}" group="hivemind"/>
+    <ibiblio-dependency artifact="hivemind-lib"       version="${hivemind.version}" group="hivemind"/>
+    <ibiblio-dependency artifact="commons-codec"      version="${codec.version}"    group="commons-codec"/>
+    <ibiblio-dependency artifact="ognl"               version="${ognl.version}"     group="ognl"/>
+    <ibiblio-dependency artifact="oro"                version="${oro.version}"      group="oro"/>
+    
+    <ibiblio-dependency artifact="easymock"           version="1.1"                 group="easymock" use="test"/>
+    <ibiblio-dependency artifact="easymockclassextension" version="1.1"             group="easymock" use="test"/>
+    <ibiblio-dependency artifact="cglib-full"         version="2.0.1"               group="cglib"    use="test"/>
+    <ibiblio-dependency artifact="log4j"              version="${log4j.version}"    group="log4j"    use="test"/>
+		
+	</target>	
+  
+  <target name="run-reports">
+    <hivedoc-report/>    	
+    <javadoc-report/>
+  	<junit-report/>
+  	<!-- Clover doesn't seem ready for annotations! -->
+	<!-- clover-report/ -->  	  
+  </target> 
+    
+</project>
