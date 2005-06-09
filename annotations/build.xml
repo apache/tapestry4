@@ -54,8 +54,7 @@
     <hivedoc-report/>    	
     <javadoc-report/>
   	<junit-report/>
-  	<!-- Clover doesn't seem ready for annotations! -->
-	<!-- clover-report/ -->  	  
+    <clover-report/>  	  
   </target> 
     
 </project>

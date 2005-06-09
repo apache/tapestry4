@@ -40,6 +40,22 @@ public class TestAnnotationUtils extends BaseAnnotationTestCase
         assertEquals("booleanValue", attemptGetPropertyName(Target.class, "isBooleanValue"));
     }
 
+    public void testGetPropertyNameNotAGetter()
+    {
+        try
+        {
+            attemptGetPropertyName(Target.class, "notAGetter");
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Annotated method public abstract java.lang.String org.apache.tapestry.annotations.Target.notAGetter() "
+                            + "should be an accessor (no parameters), or a mutator (single parameter, returns void).",
+                    ex.getMessage());
+        }
+    }
+
     public void testGetPropertyNameSetterNoParameters()
     {
         try

@@ -33,7 +33,9 @@
   </service-point>
   
   <contribution configuration-id="tapestry.enhance.EnhancementWorkers">    
-    <command id="annotation-worker" object="service:AnnotationEnhancementWorker" before="tapestry.enhance.page-detach-listener"/>
+    <!-- Needs to come very much first, because some enhancements modify
+         the component specification, affecting what occurs in later commands. -->
+    <command id="annotation-worker" object="service:AnnotationEnhancementWorker" before="*"/>
   </contribution>
   
   <configuration-point id="MethodWorkers">
@@ -65,6 +67,10 @@
   <contribution configuration-id="MethodWorkers">
     
     <worker annotation="InjectObject" object="service:InjectObjectAnnotationWorker"/>
+    <worker annotation="InjectComponent" object="instance:InjectComponentAnnotationWorker"/>
+    <worker annotation="InjectState" object="instance:InjectStateAnnotationWorker"/>
+    <worker annotation="InjectAsset" object="instance:InjectAssetAnnotationWorker"/>
+    <worker annotation="Persist" object="instance:PersistAnnotationWorker"/>
     
   </contribution>
   

@@ -14,31 +14,25 @@
 
 package org.apache.tapestry.annotations;
 
-import org.apache.tapestry.IComponent;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Used by {@link org.apache.tapestry.annotations.TestAnnotationUtils}.
+ * Annotation for injecting an asset by its name.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class Target
-{
-    public abstract String getStringValue();
 
-    public abstract void setIntValue(int value);
+@Target(
+{ ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface InjectAsset {
 
-    public abstract boolean isBooleanValue();
-
-    public abstract void setNoParameters();
-
-    public abstract String setNonVoidMethod(String value);
-
-    public abstract String getHasParameters(String value);
-
-    public abstract void isVoidGetter();
-
-    public abstract String notAGetter();
-
-    public abstract IComponent getBarney();
+    /**
+     * The name of the asset to inject. The asset is defined in the page or component specification.
+     */
+    String value();
 }

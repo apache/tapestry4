@@ -35,25 +35,59 @@
         <p>
           The annotations are all in the package org.apache.tapestry.annotations.
         </p>
+            
+<p>
+ Remember that a property should only have, at most, one of these annotations!  Having multiple
+ annotations, or conflicts between annotations and directives in the specification, will result
+ in runtime exceptions.  In addition, annotations don't provide the kind of line precise location
+ data that the XML specifications or the templates do (but most exceptions will clearly identify the
+ class and method, which should be sufficient).
+</p>        
         
-  <table>
-    <tr>
-      <th>Annotation</th>
-      <th>Specification Equivalent</th>
-    </tr>
-    
-    <tr>
-      <td>
-        <link href="#ann.InjectObject">InjectObject</link>
-      </td>
-      <td>
-        <link href="&spec;#spec.inject">&lt;inject&gt;</link>
-      </td>
-    </tr>
-  </table>        
+<section>
+  <title>InjectAsset</title>
+  
+  <p>
+    The <link href="&javadoc;InjectAsset.html">InjectAsset</link> annotation
+    allows assets defined in the page or component specification to be exposed
+    as read-only properties.  It is attached to an accessor method:
+  </p>
+  
+<source>
+  @InjectAsset("stylesheet")
+  public abstract IAsset getStylesheet();
+</source>
+
+<p>
+This is equivalent to specifying the property attribute of the 
+<link href="&spec;#spec.asset">&lt;asset&gt;</link> element.
+</p>
+
+</section>   
+
+<section>
+  <title>InjectComponent</title>
+  
+  <p>
+    The <link href="&javadoc;/InjectComponent.html">InjectComponent</link> annotation
+    allows nested components  to be injected as read-only properties. It is attached
+    to an accessor method:
+   </p>
+      
+<source>
+  @InjectComponent("inputUserName")
+  public abstract TextField getUserInput();
+</source>    
+
+  <p>
+  This is functionally the same as providing the property attribute of the
+  <link href="&spec;#spec.component">&lt;component&gt;</link> element.
+  </p>
+  
+</section>
         
-        
-<section id="ann.InjectObject">
+
+<section>
   <title>InjectObject</title>
   
   <p>
@@ -71,7 +105,58 @@ The end result is the same as using the <link href="&spec;#spec.inject">&lt;inje
 with the default type of "object".
 </p>    
     
-</section>      
-        
+</section>    
+
+<section>
+  <title>InjectState</title>
+  
+  <p>
+    The <link href="&javadoc;/InjectState.html">InjectState</link> annotation
+    allows an Application State Object to be injected and a read/write property.  It
+    is attached to an accessor method:
+  </p>
+  
+<source>
+  @InjectState("visit")
+  public abstract MyAppVisit getVisit();
+</source>    
+  
+  <p>
+    The end result is equivalent to using the <link href="&spec;#spec.inject">&lt;inject&gt;</link> element,
+with  a type of "state".
+  </p>  
+    
+</section>
+
+<section>
+  <title>Persist</title>
+  
+  <p>
+    The <link href="&javadoc;/Persist.html">Persist</link> annotation allows a property to be
+    marked as persistent.  Remember that any otherwise unclaimed abstract property will become
+    a <em>transient</em> property automatically (in Tapestry 4.0), so Persist is only need
+    to mark a property as persistent.  
+  </p>
+  
+  <p>
+   The value of the Persist annotation defaults to "session":
+  </p>
+  
+<source>
+  @Persist
+  public abstract int getSessionPersistentProperty();
+  
+  @Persist("client")
+  public abstract double getClientPersistentProperty();
+</source>  
+
+<p>
+This annotation works exactly like a <link href="&spec;#spec.property">&lt;property&gt;</link>
+element, except that the initial-value attribute can't be specified.
+</p>
+
+</section>
+
+       
   </body>
 </document>

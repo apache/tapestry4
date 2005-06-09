@@ -38,9 +38,9 @@ public class TestInjectObjectAnnotationWorker extends BaseAnnotationTestCase
         assertNotNull(worker._delegate);
     }
 
-    public void testSuccess()
+    public void testDelegation()
     {
-        EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
+        EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
 
         InjectObjectWorker delegate = (InjectObjectWorker) newMock(InjectObjectWorker.class);
@@ -64,7 +64,7 @@ public class TestInjectObjectAnnotationWorker extends BaseAnnotationTestCase
 
         Method m = findMethod(Target.class, "getStringValue");
 
-        delegate.injectObject(op, "stringValue", "barney", null);
+        delegate.injectObject(op, "barney", "stringValue", null);
 
         replayControls();
 

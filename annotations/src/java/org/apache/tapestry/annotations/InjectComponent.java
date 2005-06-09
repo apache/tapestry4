@@ -14,31 +14,26 @@
 
 package org.apache.tapestry.annotations;
 
-import org.apache.tapestry.IComponent;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Used by {@link org.apache.tapestry.annotations.TestAnnotationUtils}.
+ * Annotation for injecting a nested component. The component must be defined in the template or
+ * specification; this is effectively a wrapper around
+ * {@link org.apache.tapestry.IComponent#getComponent(String)}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class Target
-{
-    public abstract String getStringValue();
+@Target(
+{ ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+public @interface InjectComponent {
 
-    public abstract void setIntValue(int value);
-
-    public abstract boolean isBooleanValue();
-
-    public abstract void setNoParameters();
-
-    public abstract String setNonVoidMethod(String value);
-
-    public abstract String getHasParameters(String value);
-
-    public abstract void isVoidGetter();
-
-    public abstract String notAGetter();
-
-    public abstract IComponent getBarney();
+    /**
+     * The value is the id of the component.
+     */
+    String value();
 }
