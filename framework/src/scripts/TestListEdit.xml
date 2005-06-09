@@ -48,9 +48,9 @@
 <![CDATA[
 <option value=".*?" selected="selected">.*?</option>
 ]]>
-			<match><![CDATA[ <option value="4" selected="selected">Black</option> ]]></match>
-			<match><![CDATA[ <option value="2" selected="selected">Blue</option> ]]></match>
-			<match><![CDATA[ <option value="0" selected="selected">Red</option> ]]></match>
+			<match><![CDATA[ <option value="4" selected="selected">BLACK</option> ]]></match>
+			<match><![CDATA[ <option value="2" selected="selected">BLUE</option> ]]></match>
+			<match><![CDATA[ <option value="0" selected="selected">RED</option> ]]></match>
 				
 		</assert-output-matches>
 	</request>

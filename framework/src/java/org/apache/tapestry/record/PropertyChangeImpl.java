@@ -14,9 +14,8 @@
 
 package org.apache.tapestry.record;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.hivemind.util.Defense;
+import org.apache.hivemind.util.ToStringBuilder;
 
 /**
  * Represents a change to a component on a page.
@@ -92,12 +91,12 @@ public class PropertyChangeImpl implements PropertyChange
 
         PropertyChangeImpl other = (PropertyChangeImpl) object;
 
-        EqualsBuilder builder = new EqualsBuilder();
+        return same(_componentPath, other._componentPath)
+                && same(_propertyName, other._propertyName) && same(_newValue, other._newValue);
+    }
 
-        builder.append(_componentPath, other._componentPath);
-        builder.append(_propertyName, other._propertyName);
-        builder.append(_newValue, other._newValue);
-
-        return builder.isEquals();
+    private boolean same(Object o1, Object o2)
+    {
+        return o1 == o2 || (o1 != null && o1.equals(o2));
     }
 }

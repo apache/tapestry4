@@ -14,14 +14,12 @@
 
 package org.apache.tapestry.junit.mock.c18;
 
-import org.apache.commons.lang.enum.Enum;
-
 /**
  * Identifies different computer languages.
  * 
  * @author Howard Lewis Ship
  */
-public class Language extends Enum
+public class Language
 {
     public static final Language JAVA = new Language("JAVA");
 
@@ -29,8 +27,15 @@ public class Language extends Enum
 
     public static final Language PYTHON = new Language("PYTHON");
 
+    private final String _name;
+
     private Language(String name)
     {
-        super(name);
+        _name = name;
+    }
+
+    public String toString()
+    {
+        return "Language[" + _name + "]";
     }
 }

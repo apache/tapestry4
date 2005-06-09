@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.valid;
 
-import org.apache.commons.lang.enum.Enum;
+import java.io.Serializable;
 
 /**
  * Defines an enumeration of different types of validation constraints that may be violated.
@@ -22,7 +22,7 @@ import org.apache.commons.lang.enum.Enum;
  * @author Howard Lewis Ship
  */
 
-public class ValidationConstraint extends Enum
+public class ValidationConstraint implements Serializable
 {
     private static final long serialVersionUID = 371593028205311930L;
 
@@ -48,7 +48,7 @@ public class ValidationConstraint extends Enum
 
     public static final ValidationConstraint MAXIMUM_WIDTH = new ValidationConstraint(
             "MAXIMUM_WIDTH");
-    
+
     /**
      * Indicates a general error in converting a String into a Date.
      */
@@ -114,13 +114,19 @@ public class ValidationConstraint extends Enum
     public static final ValidationConstraint DISALLOWED_PROTOCOL = new ValidationConstraint(
             "DISALLOWED_PROTOCOL");
 
+    private final String _name;
+
     /**
      * Protected constructor, which allows new constraints to be created as subclasses.
      */
 
     protected ValidationConstraint(String name)
     {
-        super(name);
+        _name = name;
     }
 
+    public String toString()
+    {
+        return "ValidationConstraint[" + _name + "]";
+    }
 }

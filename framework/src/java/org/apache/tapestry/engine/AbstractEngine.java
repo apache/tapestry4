@@ -23,12 +23,13 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.util.Defense;
+import org.apache.hivemind.util.ToStringBuilder;
 import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.Constants;
 import org.apache.tapestry.IEngine;

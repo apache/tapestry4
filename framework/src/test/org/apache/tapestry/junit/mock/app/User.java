@@ -29,9 +29,9 @@ public class User
 
     private boolean _male = true;
 
-    private AgeRange _ageRange = AgeRange.ADULT;
+    private String _ageRange = AgeRange.ADULT;
 
-    public AgeRange getAgeRange()
+    public String getAgeRange()
     {
         return _ageRange;
     }
@@ -51,7 +51,7 @@ public class User
         return _male;
     }
 
-    public void setAgeRange(AgeRange ageRange)
+    public void setAgeRange(String ageRange)
     {
         _ageRange = ageRange;
     }

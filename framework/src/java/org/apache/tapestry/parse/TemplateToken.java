@@ -14,23 +14,22 @@
 
 package org.apache.tapestry.parse;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.util.ToStringBuilder;
 
 /**
- *  Base class for a number of different types of tokens that can be extracted
- *  from a page/component template.  This class defines the
- *  type of the token,
- *  subclasses provide interpretations on the token.
- *
- *  @author Howard Lewis Ship
+ * Base class for a number of different types of tokens that can be extracted from a page/component
+ * template. This class defines the type of the token, subclasses provide interpretations on the
+ * token.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class TemplateToken implements Locatable
 {
     private TokenType _type;
+
     private Location _location;
 
     protected TemplateToken(TokenType type, Location location)
@@ -43,10 +42,10 @@ public abstract class TemplateToken implements Locatable
     {
         return _type;
     }
-    
+
     public Location getLocation()
     {
-    	return _location;
+        return _location;
     }
 
     public String toString()
@@ -62,13 +61,12 @@ public abstract class TemplateToken implements Locatable
     }
 
     /**
-     *  Overridden in subclasses to append additional fields (defined in the subclass)
-     *  to the description.  Subclasses may override this method without invoking
-     *  this implementation, which is empty.
+     * Overridden in subclasses to append additional fields (defined in the subclass) to the
+     * description. Subclasses may override this method without invoking this implementation, which
+     * is empty.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     protected void extendDescription(ToStringBuilder builder)
     {

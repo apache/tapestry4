@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.record;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.hivemind.util.Defense;
 
 /**
@@ -53,12 +51,13 @@ public class ChangeKey
 
         ChangeKey other = (ChangeKey) object;
 
-        EqualsBuilder builder = new EqualsBuilder();
+        return same(_propertyName, other._propertyName)
+                && same(_componentPath, other._componentPath);
+    }
 
-        builder.append(_propertyName, other._propertyName);
-        builder.append(_componentPath, other._componentPath);
-
-        return builder.isEquals();
+    private boolean same(String s1, String s2)
+    {
+        return s1 == s2 || (s1 != null && s1.equals(s2));
     }
 
     public String getComponentPath()
@@ -79,12 +78,10 @@ public class ChangeKey
     {
         if (_hashCode == -1)
         {
-            HashCodeBuilder builder = new HashCodeBuilder(257, 23); // Random
+            _hashCode = 31 * 27 + _propertyName.hashCode();
 
-            builder.append(_propertyName);
-            builder.append(_componentPath);
-
-            _hashCode = builder.toHashCode();
+            if (_componentPath != null)
+                _hashCode = 31 * _hashCode + _componentPath.hashCode();
         }
 
         return _hashCode;

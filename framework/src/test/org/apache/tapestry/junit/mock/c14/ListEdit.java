@@ -19,15 +19,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.form.EnumPropertySelectionModel;
 import org.apache.tapestry.form.IPropertySelectionModel;
+import org.apache.tapestry.form.StringPropertySelectionModel;
 import org.apache.tapestry.html.BasePage;
 
 /**
- * Page for testing the {@link org.apache.tapestry.form.ListEdit}component.
+ * Page for testing the {@link org.apache.tapestry.form.ListEdit} component.
  * 
  * @author Howard Lewis Ship
  * @since 3.0
@@ -53,11 +52,11 @@ public abstract class ListEdit extends BasePage
 
     private IPropertySelectionModel buildColorModel()
     {
-        ResourceBundle bundle = ResourceBundle.getBundle(
-                Color.class.getName() + "Strings",
-                getLocale());
+        // ResourceBundle bundle = ResourceBundle.getBundle(
+        // Color.class.getName() + "Strings",
+        // getLocale());
 
-        return new EnumPropertySelectionModel(Color.ALL_COLORS, bundle);
+        return new StringPropertySelectionModel(Color.ALL_COLORS);
     }
 
     public List getSortedColorKeys()
@@ -85,14 +84,14 @@ public abstract class ListEdit extends BasePage
      * Had to implement these cause I couldn't remember the OGNL syntax for accessing a Map key.
      */
 
-    public void setColor(Color color)
+    public void setColor(String color)
     {
         getColorMap().put(getColorKey(), color);
     }
 
-    public Color getColor()
+    public String getColor()
     {
-        return (Color) getColorMap().get(getColorKey());
+        return (String) getColorMap().get(getColorKey());
     }
 
     public void formSubmit(IRequestCycle cycle)

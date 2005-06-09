@@ -14,56 +14,58 @@
 
 package org.apache.tapestry.spec;
 
-import org.apache.commons.lang.enum.Enum;
-
-
 /**
- *  An {@link Enum} of the different possible lifecycles for a JavaBean.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.4
+ * An enumeration of the different possible lifecycles for a JavaBean.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 1.0.4
+ */
 
-public class BeanLifecycle extends Enum
+public class BeanLifecycle
 {
-	/**
-	 *  No lifecycle; the bean is created fresh on each reference and not retained.
-	 *
-	 **/
+    /**
+     * No lifecycle; the bean is created fresh on each reference and not retained.
+     */
 
-	public static final BeanLifecycle NONE = new BeanLifecycle("NONE");
-
-	/**
-	 * The standard lifecycle; the bean is retained for the
-	 * duration of the request cycle and is discarded at the end of the
-	 * request cycle.
-	 *
-	 **/
-
-	public static final BeanLifecycle REQUEST = new BeanLifecycle("REQUEST");
-
-	/**
-	 * The bean is created once and reused for the lifespan of the page
-	 * containing the component.
-	 *
-	 **/
-
-	public static final BeanLifecycle PAGE = new BeanLifecycle("PAGE");
+    public static final BeanLifecycle NONE = new BeanLifecycle("NONE");
 
     /**
-     *  The bean is create and reused until the end of the current render,
-     *  at which point it is discarded.
+     * The standard lifecycle; the bean is retained for the duration of the request cycle and is
+     * discarded at the end of the request cycle.
+     */
+
+    public static final BeanLifecycle REQUEST = new BeanLifecycle("REQUEST");
+
+    /**
+     * The bean is created once and reused for the lifespan of the page containing the component.
+     */
+
+    public static final BeanLifecycle PAGE = new BeanLifecycle("PAGE");
+
+    /**
+     * The bean is create and reused until the end of the current render, at which point it is
+     * discarded.
      * 
-     *  @since 2.2
-     * 
-     **/
-    
+     * @since 2.2
+     */
+
     public static final BeanLifecycle RENDER = new BeanLifecycle("RENDER");
-    
-	private BeanLifecycle(String name)
-	{
-		super(name);
-	}
+
+    private final String _name;
+
+    private BeanLifecycle(String name)
+    {
+        _name = name;
+    }
+
+    public String toString()
+    {
+        return "BeanLifecycle[" + _name + "]";
+    }
+
+    public String getName()
+    {
+        return _name;
+    }
 
 }

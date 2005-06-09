@@ -63,7 +63,7 @@
   
   <contribution configuration-id="EnhancementWorkers">
     
-    <!-- These can actually run in any order, so we don't specify before or after. -->
+    <!-- These can actually run in any order, as long as page-detach-listener runs later. -->
 
     <command id="inject-messages" object="service:InjectMessagesWorker" before="page-detach-listener"/>    
     <command id="inject-specification" object="service:InjectSpecificationWorker" before="page-detach-listener"/>

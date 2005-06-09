@@ -17,8 +17,8 @@ package org.apache.tapestry.parse;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.util.ToStringBuilder;
 
 /**
  * Token representing the open tag for a component. Components may be either specified or implicit.

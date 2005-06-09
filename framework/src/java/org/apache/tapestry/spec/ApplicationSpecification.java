@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.spec;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.hivemind.util.ToStringBuilder;
 
 /**
  *  Defines the configuration for a Tapestry application.  An ApplicationSpecification
