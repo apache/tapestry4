@@ -14,50 +14,37 @@
 
 package org.apache.tapestry.contrib.palette;
 
-import org.apache.commons.lang.enum.Enum;
-
 /**
- *  Defines different sorting strategies for the {@link Palette} component.
- *
- *  @author Howard Lewis Ship
+ * Defines different sorting strategies for the {@link Palette} component.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
-public class SortMode extends Enum
+public class SortMode
 {
     /**
-     *  Sorting is not relevant and no sort controls should be visible.
-     *
-     **/
+     * Sorting is not relevant and no sort controls should be visible.
+     */
 
-    public static final SortMode NONE = new SortMode("NONE");
+    public static final String NONE = "NONE";
 
     /**
      * Options should be sorted by their label.
-     *
-     **/
+     */
 
-    public static final SortMode LABEL = new SortMode("LABEL");
-
-    /**
-     *  Options should be sorted by thier value.
-     *
-     **/
-
-    public static final SortMode VALUE = new SortMode("VALUE");
+    public static final String LABEL = "LABEL";
 
     /**
-     *  The user controls sort order; additional controls are added
-     *  to allow the user to control the order of options in the
-     *  selected list.
-     *
-     **/
+     * Options should be sorted by thier value.
+     */
 
-    public static final SortMode USER = new SortMode("USER");
+    public static final String VALUE = "VALUE";
 
-    private SortMode(String name)
-    {
-        super(name);
-    }
+    /**
+     * The user controls sort order; additional controls are added to allow the user to control the
+     * order of options in the selected list.
+     */
+
+    public static final String USER = "USER";
 
 }

@@ -19,38 +19,34 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  Component of the {@link Inspector} page used to select the view.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Component of the {@link Inspector} page used to select the view.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public abstract class ViewTabs extends BaseComponent
 {
-    private static View[] _views =
-        {
-            View.SPECIFICATION,
-            View.TEMPLATE,
-            View.PROPERTIES,
-            View.ENGINE };
+    private static String[] _views =
+    { View.SPECIFICATION, View.TEMPLATE, View.PROPERTIES, View.ENGINE };
 
-     public View[] getViews()
+    public String[] getViews()
     {
         return _views;
     }
 
-    public abstract void setView(View value);
+    public abstract void setView(String value);
 
-    public abstract View getView();
+    public abstract String getView();
 
     private IAsset getImageForView(boolean focus)
     {
         Inspector inspector = (Inspector) getPage();
-		View view = getView();
-		
-        boolean selected = (view == inspector.getView());
 
-        StringBuffer buffer = new StringBuffer(view.getName());
+        String view = getView();
+
+        boolean selected = view.equals(inspector.getView());
+
+        StringBuffer buffer = new StringBuffer(view);
 
         if (selected)
             buffer.append("_selected");
@@ -75,9 +71,9 @@ public abstract class ViewTabs extends BaseComponent
 
     public IAsset getBannerImage()
     {
-         Inspector inspector = (Inspector) getPage();
-        View selectedView = inspector.getView();
-        String key = selectedView.getName() + "_banner";
+        Inspector inspector = (Inspector) getPage();
+        String selectedView = inspector.getView();
+        String key = selectedView + "_banner";
 
         return (IAsset) getAssets().get(key);
     }

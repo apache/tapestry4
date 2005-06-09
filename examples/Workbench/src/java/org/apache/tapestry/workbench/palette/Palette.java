@@ -15,12 +15,9 @@
 package org.apache.tapestry.workbench.palette;
 
 import java.util.List;
-import java.util.ResourceBundle;
 
-import org.apache.commons.lang.enum.Enum;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.palette.SortMode;
-import org.apache.tapestry.form.EnumPropertySelectionModel;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.form.StringPropertySelectionModel;
 import org.apache.tapestry.html.BasePage;
@@ -33,12 +30,12 @@ public abstract class Palette extends BasePage
 {
     public abstract List getSelectedColors();
 
-    public abstract SortMode getSort();
+    public abstract String getSort();
 
     private IPropertySelectionModel _sortModel;
 
     /**
-     * Invoked before {@link #formSubmit(IRequestCycle)}if the user clicks the "advance" button.
+     * Invoked before {@link #formSubmit(IRequestCycle)} if the user clicks the "advance" button.
      */
 
     public void advance(IRequestCycle cycle)
@@ -71,14 +68,10 @@ public abstract class Palette extends BasePage
     {
         if (_sortModel == null)
         {
-            ResourceBundle bundle = ResourceBundle.getBundle(
-                    "org.apache.tapestry.workbench.palette.SortModeStrings",
-                    getLocale());
-
-            Enum[] options = new Enum[]
+            String[] options = new String[]
             { SortMode.NONE, SortMode.LABEL, SortMode.VALUE, SortMode.USER };
 
-            _sortModel = new EnumPropertySelectionModel(options, bundle);
+            _sortModel = new StringPropertySelectionModel(options);
         }
 
         return _sortModel;
