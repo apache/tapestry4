@@ -28,27 +28,108 @@
 	</header>
 	
   <body>
-    <p> This library does not contain components; instead it provides <em>annotations</em>, 
+    <p> This library does not contain components; instead it provides
+      Tapestry specific <em>annotations</em> (annotations are a 
       a <link href="http://java.sun.com/j2se/1.5.0/docs/guide/language/annotations.html">new feature 
-        in JDK 1.5</link>. Annotations allow you to perform some operations inside Java code that otherwise would be specified in the page or component specification. This is very useful when using inheritance, because base classes can provide annotations that are inherited by subclasses. </p>
+        in JDK 1.5</link>). 
+        These annotations allow you to perform some operations inside Java code 
+        that otherwise would be specified in the page or component specification. This 
+        is very useful when using inheritance, because base classes can provide annotations that are 
+        inherited by subclasses. </p>
         
         <p>
           The annotations are all in the package org.apache.tapestry.annotations.
         </p>
             
 <p>
- Remember that a property should only have, at most, one of these annotations!  Having multiple
- annotations, or conflicts between annotations and directives in the specification, will result
+ Remember that a single method should only have, at most, one of these annotations!  Having multiple
+ annotations, or conflicts between method annotations and directives in the specification, will result
  in runtime exceptions.  In addition, annotations don't provide the kind of line precise location
  data that the XML specifications or the templates do (but most exceptions will clearly identify the
  class and method, which should be sufficient).
 </p>        
+
+<section>
+  <title>Asset</title>
+  
+  
+<p>The <link href="&javadoc;/Asset.html">Asset</link> annotation is the equivalent of the
+  <link href="&spec;#spec.asset">&lt;asset&gt;</link> element in a specification. The value attribute
+  is the path to the asset (possibly prefixed to indicate the domain for the path):</p>
+  
+<source>
+  @Asset("/style/global.css")
+  public abstract IAsset getGlobalStylesheet();
+</source>  
+
+<p>
+The asset will be avaialble using the property name using the "asset:" binding prefix.
+</p>
+  
+  
+</section>
+
+
+<section>
+  <title>Bean</title>
+  
+  <p>
+    The <link href="&javadoc;/Bean.html">Bean</link> annotation is the equivalent
+    of the <link href="&spec;#spec.bean">&lt;bean&gt;</link> element in a specification.
+  </p>
+  
+  <p>
+  The property type will be used as the Java class to instantiate for the bean; alternately,
+  the value attribute may be specified (this is useful when, for example, the property type
+  is an interface).
+  </p>
+
+<p>
+  The examples below both define a bean of type HashMap:
+</p>
+  
+<source>
+  @Bean
+  public abstract HashMap getHashMapBean();
+
+  @Bean(HashMap.class)
+  public abstract Map getMapBean();
+</source>  
+
+<p>
+A bean defined this way will be stored into the component's beans property, exactly as if specified
+using XML; its name will be the property name.
+</p>
+
+<p>
+An additional attribute, lifecycle, controls the bean's lifecycle.  The default is 
+<link href="&apidoc;/Lifecycle.html">Lifecycle</link>.REQUEST,
+and additional values are NONE, PAGE, and RENDER:
+</p>
+
+<source>
+  @Bean(lifecycle = Lifecycle.RENDER)
+  public abstract Map getRenderLifecycleBean();
+</source>
+
+<p>
+Lastly, for <em>simple</em> configuration of the bean, there's the initializer attribute.  This
+allows <em>lightweight initialization</em>, where the string is a series of name=value properties, seperated by
+commas (for boolean properties, the value is optional).
+</p>
+
+<source>
+  @Bean(initializer = "maxRetries=3")
+  public abstract LoginController getController();  
+</source>  
+  
+</section>
         
 <section>
   <title>InjectAsset</title>
   
   <p>
-    The <link href="&javadoc;InjectAsset.html">InjectAsset</link> annotation
+    The <link href="&javadoc;/InjectAsset.html">InjectAsset</link> annotation
     allows assets defined in the page or component specification to be exposed
     as read-only properties.  It is attached to an accessor method:
   </p>
@@ -129,12 +210,57 @@ with  a type of "state".
 </section>
 
 <section>
+  <title>Parameter</title>
+  
+<p>
+  The <link href="&javadoc;/Parameter.html">Parameter</link> annotation defines a new property,
+  as with <link href="&spec;#spec.parameter">&lt;parameter&gt;</link> element in an XML
+  component specification.
+</p>  
+
+<p>
+  This most simple use of this annotation is to simply mark a property as an optional parameter:
+</p>
+
+<source>
+  @Parameter
+  public abstract void MyType getMyParameter();
+</source>
+
+<p>
+ The parameter name will generally match the property name (as determined from the method to
+ which the annotation is attached). This can be overriden with the name attribute:
+</p>
+
+<source>
+  @Parameter(name="page")
+  public abstract String getTargetPage();
+</source>
+
+<p>
+ Parameters may be marked as deprecated if the method is marked deprecated (using the java.lang.Deprecated
+ annotation):
+</p>
+
+<source>
+  @Deprecated @Parameter
+  public abstract int getRows();
+</source>
+
+<p>
+The annotation supports several additional attributes, consult its <link href="&javadoc;/Parameter.html">JavaDoc</link>
+ for the full details.
+</p>
+  
+</section>
+
+<section>
   <title>Persist</title>
   
   <p>
     The <link href="&javadoc;/Persist.html">Persist</link> annotation allows a property to be
     marked as persistent.  Remember that any otherwise unclaimed abstract property will become
-    a <em>transient</em> property automatically (in Tapestry 4.0), so Persist is only need
+    a <em>transient</em> property automatically (in Tapestry 4.0), so Persist is only needed
     to mark a property as persistent.  
   </p>
   

@@ -14,6 +14,10 @@
 
 package org.apache.tapestry.annotations;
 
+import java.util.ArrayList;
+import java.util.Map;
+
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IComponent;
 
 /**
@@ -41,4 +45,10 @@ public abstract class Target
     public abstract String notAGetter();
 
     public abstract IComponent getBarney();
+
+    public abstract Map getMapBean();
+
+    public abstract ArrayList getArrayListBean();
+
+    public abstract IAsset getMyAsset();
 }

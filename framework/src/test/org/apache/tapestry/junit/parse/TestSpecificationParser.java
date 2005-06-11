@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.apache.hivemind.Locatable;
 import org.apache.tapestry.bean.BindingBeanInitializer;
+import org.apache.tapestry.bean.LightweightBeanInitializer;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -703,6 +704,21 @@ public class TestSpecificationParser extends TapestryTestCase
         IComponentSpecification cs = parseComponent("BeanInject.jwc");
         IBeanSpecification bs = cs.getBeanSpecification("bean");
         assertEquals("myProperty", bs.getPropertyName());
+    }
+
+    /**
+     * @since 4.0
+     */
+
+    public void testBeanInitializer() throws Exception
+    {
+        IComponentSpecification cs = parseComponent("BeanInitializer.jwc");
+        IBeanSpecification bs = cs.getBeanSpecification("bean");
+
+        List l = bs.getInitializers();
+        LightweightBeanInitializer lbi = (LightweightBeanInitializer) l.get(0);
+
+        assertEquals("foo=bar", lbi.getPropertyName());
     }
 
     /** @since 4.0 */

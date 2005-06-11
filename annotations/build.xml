@@ -54,7 +54,7 @@
     <hivedoc-report/>    	
     <javadoc-report/>
   	<junit-report/>
-    <clover-report/>  	  
+    <clover-report/>
   </target> 
     
 </project>

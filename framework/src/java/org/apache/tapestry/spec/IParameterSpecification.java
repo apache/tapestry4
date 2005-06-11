@@ -86,8 +86,9 @@ public interface IParameterSpecification extends LocationHolder
 
     /**
      * Sets the default binding type, used when a parameter is bound without specifying an explicit
-     * binding prefix. May be null, in which case the default binding type is determined by whether
-     * the parameter is bound in an HTML template or in a page or component specification.
+     * binding prefix. May be blank (null or empty string), in which case the default binding type
+     * is determined by whether the parameter is bound in an HTML template or in a page or component
+     * specification.
      * 
      * @see org.apache.tapestry.binding.BindingConstants
      * @see org.apache.tapestry.binding.BindingUtils#getDefaultBindingType(IComponentSpecification,

@@ -14,16 +14,75 @@
 
 package org.apache.tapestry.annotations;
 
+import java.lang.annotation.Target;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.tapestry.IAsset;
+import org.apache.tapestry.form.TextField;
 import org.apache.tapestry.html.BasePage;
 
 /**
- * Used by {@link org.apache.tapestry.annotations.TestAnnotationEnhancementWorker}.
+ * Used by {@link org.apache.tapestry.annotations.TestAnnotationEnhancementWorker}. Also a chance
+ * to try each of the annotations out.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public abstract class AnnotatedPage extends BasePage
 {
+    @Asset("/style/global.css")
+    public abstract IAsset getGlobalStylesheet();
+
     @InjectObject("barney")
     public abstract Object getInjectedObject();
+
+    @Bean
+    public abstract HashMap getHashMapBean();
+
+    @Bean(HashMap.class)
+    public abstract Map getMapBean();
+
+    @Bean(initializer = "intValue=10")
+    public abstract Target getTarget();
+
+    @Bean(lifecycle = Lifecycle.RENDER)
+    public abstract Map getRenderLifecycleBean();
+
+    @Persist
+    public abstract int getPersistentProperty();
+
+    @Persist("client")
+    public abstract String getClientPersistentProperty();
+
+    @InjectAsset("stylesheet")
+    public abstract IAsset getStylesheetAsset();
+
+    @InjectComponent("fred")
+    public abstract TextField getFredField();
+
+    @InjectState("barney")
+    public abstract Map getBarney();
+
+    @Parameter
+    public abstract String getSimpleParameter();
+
+    @Parameter(required = true)
+    public abstract String getRequiredParameter();
+
+    @Parameter(defaultBinding = "bean")
+    public abstract Object getBeanDefaultParameter();
+
+    @Parameter(cache = false)
+    public abstract Object getNonCachedParameter();
+
+    @Parameter(aliases = "fred")
+    public abstract String getAliasedParameter();
+
+    @Parameter
+    @Deprecated
+    public abstract int getDeprecatedParameter();
+
+    @Parameter(name = "fred")
+    public abstract double getNamedParameter();
 }
