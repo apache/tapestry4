@@ -16,18 +16,16 @@ package org.apache.tapestry.pageload;
 
 /**
  * Determines the name of a page class based on information inside a
- * {@link org.apache.tapestry.pageload.PageClassProviderContext}.
+ * {@link org.apache.tapestry.pageload.ComponentClassProviderContext}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public interface PageClassProvider
+public interface ComponentClassProvider
 {
     /**
-     * Return the page class name, or null if this provider can't 
-     * resolve it.
-     * 
+     * Return the component class name, or null if this provider can't resolve it.
      */
-    
-    public String providePageClassName(PageClassProviderContext context);
+
+    public String provideComponentClassName(ComponentClassProviderContext context);
 }

@@ -47,7 +47,7 @@
       <templates label="Page and component templates" href="template.html"/>
       <bindings label="Component parameter bindings" href="bindings.html"/>
       <listenermethods label="Listener methods" href="listenermethods.html"/>
-      <page-class label="Page  Classes" href="page-class.html"/>
+      <page-class label="Page Classes" href="page-class.html"/>
       <validation label="Input Validation" href="validation.html"/>
       <components label="Creating Tapestry components" href="components.html"/>
       <injection label="Property Injection" href="injection.html"/>
@@ -158,6 +158,7 @@
     
         <reports label="Reports">
           &project-report-menu.ent;
+          <fisheye label="Fisheye" href="http://fisheye.cenqua.com/viewrep/jakarta/jakarta-tapestry"/>
         </reports>        
     </project>
     

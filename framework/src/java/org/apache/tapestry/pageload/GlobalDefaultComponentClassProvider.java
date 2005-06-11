@@ -15,20 +15,23 @@
 package org.apache.tapestry.pageload;
 
 /**
- * Implementation of {@link org.apache.tapestry.pageload.PageClassProvider}&nbsp;that returns the
- * value from the specification.
+ * The final command in the tapestry.page.PageClassProviderChain configuration, returns a fixed
+ * value for page class name.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class SpecificationPageClassProvider implements PageClassProvider
+public class GlobalDefaultComponentClassProvider implements ComponentClassProvider
 {
+    private String _componentClassName;
 
-    public String providePageClassName(PageClassProviderContext context)
+    public void setComponentClassName(String componentClassName)
     {
-        // May return null when the spec doesn't indicate the class name.
-
-        return context.getPageSpecification().getComponentClassName();
+        _componentClassName = componentClassName;
     }
 
+    public String provideComponentClassName(ComponentClassProviderContext context)
+    {
+        return _componentClassName;
+    }
 }

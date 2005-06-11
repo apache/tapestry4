@@ -94,6 +94,28 @@ is the same, but it is the library's specification which is searched for the lis
 and later, for the default page class name.
 </p>
 
+<section id="page-class.component">
+  <title>Component Classes</title>
+  
+<p>
+A similar search occurs for components (again, with the express desire that the class attribute of the
+&spec.component-specification; <em>not</em> be used).  
+</p>
+
+<ul>
+  <li>As defined by the component specification</li>
+  <li>In any package defined by the containing namespace's org.apache.tapestry.component-class-packages
+    meta data property (if any)</li>
+  <li>In the default package</li>
+  <li>&BaseComponent; is the final default</li>
+</ul>
+
+<note>
+These steps are specified in the
+<link href="&hivedoc;/config/tapestry.page.ComponentClassProviderChain">tapestry.page.ComponentClassProviderChain</link>
+configuration point.
+</note>
+</section>
 
 </body>
 </document>

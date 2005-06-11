@@ -19,39 +19,39 @@ import org.apache.tapestry.INamespace;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- * Contains information needed when trying to determine the name of a page class.
+ * Contains information needed when trying to determine the name of a page or component class.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class PageClassProviderContext
+public class ComponentClassProviderContext
 {
-
     private INamespace _namespace;
 
-    private String _pageName;
+    private String _name;
 
-    private IComponentSpecification _pageSpecification;
+    private IComponentSpecification _specification;
 
-    public PageClassProviderContext(String pageName, IComponentSpecification pageSpecification,
-            INamespace namespace)
+    public ComponentClassProviderContext(String pageName,
+            IComponentSpecification pageSpecification, INamespace namespace)
     {
         Defense.notNull(pageName, "pageName");
         Defense.notNull(pageSpecification, "pageSpecification");
         Defense.notNull(namespace, "namespace");
 
-        _pageName = pageName;
-        _pageSpecification = pageSpecification;
+        _name = pageName;
+        _specification = pageSpecification;
         _namespace = namespace;
     }
 
     /**
-     * Returns the simple, unqualifed name of the page (that is, with no namespace prefix).
+     * Returns the simple, unqualifed name of the page, or the type of the component. There will not
+     * be a namespace prefix, but there may be one or more folders (i.e., "admin/Menu").
      */
 
-    public String getPageName()
+    public String getName()
     {
-        return _pageName;
+        return _name;
     }
 
     /**
@@ -66,9 +66,9 @@ public class PageClassProviderContext
     /**
      * Returns the specification defining the page.
      */
-    public IComponentSpecification getPageSpecification()
+    public IComponentSpecification getSpecification()
     {
-        return _pageSpecification;
+        return _specification;
     }
 
 }

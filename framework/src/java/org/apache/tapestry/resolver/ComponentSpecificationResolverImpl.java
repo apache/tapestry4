@@ -236,6 +236,11 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         namespace.installComponentSpecification(_type, specification);
     }
 
+    public String getType()
+    {
+        return _type;
+    }
+
     public void setLog(Log log)
     {
         _log = log;
