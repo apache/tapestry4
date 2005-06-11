@@ -21,64 +21,63 @@ import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * Service interface for locating component specifications.
- *
+ * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public interface ComponentSpecificationResolver
 {
     /**
-     *  Passed the namespace of a container (to resolve the type in)
-     *  and the type to resolve, performs the processing.  A "bare type"
-     *  (without a library prefix) may be in the containerNamespace,
-     *  or the framework namespace
-     *  (a search occurs in that order).
+     * Passed the namespace of a container (to resolve the type in) and the type to resolve,
+     * performs the processing. A "bare type" (without a library prefix) may be in the
+     * containerNamespace, or the framework namespace (a search occurs in that order).
      * 
-     *  @param cycle current request cycle
-     *  @param containerNamespace namespace that may contain
-     *  a library referenced in the type
-     *  @param type the component specification
-     *  to  find, either a simple name, or prefixed with a library id
-     *  (defined for the container namespace)
-     * 
-     *  @see #getNamespace()
-     *  @see #getSpecification()
-     * 
+     * @param cycle
+     *            current request cycle
+     * @param containerNamespace
+     *            namespace that may contain a library referenced in the type
+     * @param type
+     *            the component specification to find, either a simple name, or prefixed with a
+     *            library id (defined for the container namespace)
+     * @see #getNamespace()
+     * @see #getSpecification()
      */
-    public void resolve(
-        IRequestCycle cycle,
-        INamespace containerNamespace,
-        String type,
-        Location location);
+    public void resolve(IRequestCycle cycle, INamespace containerNamespace, String type,
+            Location location);
 
     /**
-     *  Like {@link #resolve(org.apache.tapestry.IRequestCycle, org.apache.tapestry.INamespace, java.lang.String, org.apache.tapestry.ILocation)},
-     *  but used when the type has already been parsed into a library id and a simple type.
+     * Like
+     * {@link #resolve(org.apache.tapestry.IRequestCycle, org.apache.tapestry.INamespace, java.lang.String, org.apache.tapestry.ILocation)},
+     * but used when the type has already been parsed into a library id and a simple type.
      * 
-     *  @param cycle current request cycle
-     *  @param containerNamespace namespace that may contain
-     *  a library referenced in the type
-     *  @param libraryId the library id within the container namespace, or null
-     *  @param type the component specification
-     *  to  find as a simple name (without a library prefix)
-     *  @param location of reference to be resolved
-     *  @throws ApplicationRuntimeException if the type cannot be resolved
-     * 
+     * @param cycle
+     *            current request cycle
+     * @param containerNamespace
+     *            namespace that may contain a library referenced in the type
+     * @param libraryId
+     *            the library id within the container namespace, or null
+     * @param type
+     *            the component specification to find as a simple name (without a library prefix)
+     * @param location
+     *            of reference to be resolved
+     * @throws ApplicationRuntimeException
+     *             if the type cannot be resolved
      */
-    public void resolve(
-        IRequestCycle cycle,
-        INamespace containerNamespace,
-        String libraryId,
-        String type,
-        Location location);
+    public void resolve(IRequestCycle cycle, INamespace containerNamespace, String libraryId,
+            String type, Location location);
 
     /**
      * The specification resolved by the resolve() method.
      */
     public IComponentSpecification getSpecification();
 
-	/**
-	 * The namespace containing the resolved component.
-	 */
+    /**
+     * The namespace containing the resolved component.
+     */
     public INamespace getNamespace();
+
+    /**
+     * Returns the unqualified type of the component (i.e., with any namespace prefix stripped off).
+     */
+    public String getType();
 }

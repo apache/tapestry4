@@ -111,9 +111,22 @@ public class PageLoader implements IPageLoader
 
     private AssetSource _assetSource;
 
-    /** @since 4.0 */
+    /**
+     * Used to find the correct Java component class for a page.
+     * 
+     * @since 4.0
+     */
 
-    private PageClassProvider _pageClassProvider;
+    private ComponentClassProvider _pageClassProvider;
+
+    /**
+     * Used to find the correct Java component class for a component (a similar process to resolving
+     * a page, but with slightly differen steps and defaults).
+     * 
+     * @since 4.0
+     */
+
+    private ComponentClassProvider _componentClassProvider;
 
     /**
      * The locale of the application, which is also the locale of the page being loaded.
@@ -422,6 +435,7 @@ public class PageLoader implements IPageLoader
                         container,
                         id,
                         componentSpecification,
+                        _componentResolver.getType(),
                         componentNamespace,
                         location);
 
@@ -497,6 +511,7 @@ public class PageLoader implements IPageLoader
                 container,
                 componentId,
                 spec,
+                _componentResolver.getType(),
                 componentNamespace,
                 location);
 
@@ -517,9 +532,13 @@ public class PageLoader implements IPageLoader
      */
 
     private IComponent instantiateComponent(IPage page, IComponent container, String id,
-            IComponentSpecification spec, INamespace namespace, Location location)
+            IComponentSpecification spec, String type, INamespace namespace, Location location)
     {
-        String className = spec.getComponentClassName();
+        ComponentClassProviderContext context = new ComponentClassProviderContext(type, spec,
+                namespace);
+        String className = _componentClassProvider.provideComponentClassName(context);
+
+        // String className = spec.getComponentClassName();
 
         if (HiveMind.isBlank(className))
             className = BaseComponent.class.getName();
@@ -570,8 +589,9 @@ public class PageLoader implements IPageLoader
     private IPage instantiatePage(String name, INamespace namespace, IComponentSpecification spec)
     {
         Location location = spec.getLocation();
-        PageClassProviderContext context = new PageClassProviderContext(name, spec, namespace);
-        String className = _pageClassProvider.providePageClassName(context);
+        ComponentClassProviderContext context = new ComponentClassProviderContext(name, spec,
+                namespace);
+        String className = _pageClassProvider.provideComponentClassName(context);
 
         Class pageClass = _classResolver.findClass(className);
 
@@ -764,7 +784,7 @@ public class PageLoader implements IPageLoader
     }
 
     /** @since 4.0 */
-    public void setPageClassProvider(PageClassProvider pageClassProvider)
+    public void setPageClassProvider(ComponentClassProvider pageClassProvider)
     {
         _pageClassProvider = pageClassProvider;
     }
@@ -773,5 +793,13 @@ public class PageLoader implements IPageLoader
     public void setClassResolver(ClassResolver classResolver)
     {
         _classResolver = classResolver;
+    }
+
+    /**
+     * @since 4.0
+     */
+    public void setComponentClassProvider(ComponentClassProvider componentClassProvider)
+    {
+        _componentClassProvider = componentClassProvider;
     }
 }

@@ -23,24 +23,24 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.pageload.NamespaceClassSearchPageClassProvider}.
+ * Tests for {@link org.apache.tapestry.pageload.NamespaceClassSearchComponentClassProvider}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestNamespaceClassSearchPageClassProvider extends HiveMindTestCase
+public class TestNamespaceClassSearchComponentClassProvider extends HiveMindTestCase
 {
     private IComponentSpecification newSpec()
     {
         return (IComponentSpecification) newMock(IComponentSpecification.class);
     }
 
-    private INamespace newNamespace(String prefixes)
+    private INamespace newNamespace(String key, String prefixes)
     {
         MockControl control = newControl(INamespace.class);
         INamespace namespace = (INamespace) control.getMock();
 
-        namespace.getPropertyValue(NamespaceClassSearchPageClassProvider.PACKAGES_NAME);
+        namespace.getPropertyValue(key);
         control.setReturnValue(prefixes);
 
         return namespace;
@@ -48,12 +48,14 @@ public class TestNamespaceClassSearchPageClassProvider extends HiveMindTestCase
 
     public void testDefaultSearchList()
     {
-        INamespace namespace = newNamespace(null);
+        INamespace namespace = newNamespace("foo", null);
 
         replayControls();
 
-        List prefixes = new NamespaceClassSearchPageClassProvider()
-                .buildPackageSearchList(namespace);
+        NamespaceClassSearchComponentClassProvider p = new NamespaceClassSearchComponentClassProvider();
+        p.setPackagesName("foo");
+
+        List prefixes = p.buildPackageSearchList(namespace);
 
         assertListsEqual(new String[]
         { "" }, prefixes);
@@ -63,12 +65,14 @@ public class TestNamespaceClassSearchPageClassProvider extends HiveMindTestCase
 
     public void testSearchListWithPrefixes()
     {
-        INamespace namespace = newNamespace("org.foo,org.bar.baz");
+        INamespace namespace = newNamespace("foo", "org.foo,org.bar.baz");
 
         replayControls();
 
-        List prefixes = new NamespaceClassSearchPageClassProvider()
-                .buildPackageSearchList(namespace);
+        NamespaceClassSearchComponentClassProvider p = new NamespaceClassSearchComponentClassProvider();
+        p.setPackagesName("foo");
+
+        List prefixes = p.buildPackageSearchList(namespace);
 
         assertListsEqual(new String[]
         { "org.foo.", "org.bar.baz.", "" }, prefixes);
@@ -78,7 +82,7 @@ public class TestNamespaceClassSearchPageClassProvider extends HiveMindTestCase
 
     public void testFound()
     {
-        INamespace namespace = newNamespace("org.foo");
+        INamespace namespace = newNamespace("zip", "org.foo");
 
         MockControl crc = newControl(ClassResolver.class);
         ClassResolver cr = (ClassResolver) crc.getMock();
@@ -90,19 +94,21 @@ public class TestNamespaceClassSearchPageClassProvider extends HiveMindTestCase
 
         replayControls();
 
-        PageClassProviderContext context = new PageClassProviderContext("bar/Baz", spec, namespace);
+        ComponentClassProviderContext context = new ComponentClassProviderContext("bar/Baz", spec,
+                namespace);
 
-        NamespaceClassSearchPageClassProvider provider = new NamespaceClassSearchPageClassProvider();
+        NamespaceClassSearchComponentClassProvider provider = new NamespaceClassSearchComponentClassProvider();
         provider.setClassResolver(cr);
+        provider.setPackagesName("zip");
 
-        assertEquals("org.foo.bar.Baz", provider.providePageClassName(context));
+        assertEquals("org.foo.bar.Baz", provider.provideComponentClassName(context));
 
         verifyControls();
     }
 
     public void testNotFound()
     {
-        INamespace namespace = newNamespace("org.foo");
+        INamespace namespace = newNamespace("zap", "org.foo");
 
         MockControl crc = newControl(ClassResolver.class);
         ClassResolver cr = (ClassResolver) crc.getMock();
@@ -117,12 +123,14 @@ public class TestNamespaceClassSearchPageClassProvider extends HiveMindTestCase
 
         replayControls();
 
-        PageClassProviderContext context = new PageClassProviderContext("bar/Baz", spec, namespace);
+        ComponentClassProviderContext context = new ComponentClassProviderContext("bar/Baz", spec,
+                namespace);
 
-        NamespaceClassSearchPageClassProvider provider = new NamespaceClassSearchPageClassProvider();
+        NamespaceClassSearchComponentClassProvider provider = new NamespaceClassSearchComponentClassProvider();
         provider.setClassResolver(cr);
+        provider.setPackagesName("zap");
 
-        assertNull(provider.providePageClassName(context));
+        assertNull(provider.provideComponentClassName(context));
 
         verifyControls();
     }

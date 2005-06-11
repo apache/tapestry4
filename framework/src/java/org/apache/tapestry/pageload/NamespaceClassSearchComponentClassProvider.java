@@ -29,21 +29,20 @@ import org.apache.tapestry.INamespace;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class NamespaceClassSearchPageClassProvider implements PageClassProvider
+public class NamespaceClassSearchComponentClassProvider implements ComponentClassProvider
 {
-    private ClassResolver _classResolver;
-
     /**
      * Property, defined as meta data of the containing namespace, that defines a comma-seperated
-     * list of packages to search for page classes within.
+     * list of packages to search for page or component classes within.
      */
+    private String _packagesName;
 
-    public static final String PACKAGES_NAME = "org.apache.tapestry.page-class-packages";
+    private ClassResolver _classResolver;
 
-    public String providePageClassName(PageClassProviderContext context)
+    public String provideComponentClassName(ComponentClassProviderContext context)
     {
         List packages = buildPackageSearchList(context.getNamespace());
-        String pageClassName = context.getPageName().replace('/', '.');
+        String pageClassName = context.getName().replace('/', '.');
 
         Iterator i = packages.iterator();
         while (i.hasNext())
@@ -69,7 +68,7 @@ public class NamespaceClassSearchPageClassProvider implements PageClassProvider
     {
         List result = new ArrayList();
 
-        String packages = namespace.getPropertyValue(PACKAGES_NAME);
+        String packages = namespace.getPropertyValue(_packagesName);
 
         if (packages != null)
         {
@@ -93,5 +92,10 @@ public class NamespaceClassSearchPageClassProvider implements PageClassProvider
     public void setClassResolver(ClassResolver classResolver)
     {
         _classResolver = classResolver;
+    }
+
+    public void setPackagesName(String packagesName)
+    {
+        _packagesName = packagesName;
     }
 }

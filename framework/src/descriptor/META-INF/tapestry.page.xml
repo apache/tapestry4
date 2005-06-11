@@ -47,6 +47,7 @@
         <set-service property="assetSource" service-id="tapestry.asset.AssetSource"/>
         <set-service property="managerFactory" service-id="BSFManagerFactory"/>
         <set-service property="pageClassProvider" service-id="PageClassProvider"/>
+        <set-service property="componentClassProvider" service-id="ComponentClassProvider"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -136,12 +137,12 @@
   
   <configuration-point id="PageClassProviderChain" schema-id="hivemind.lib.ChainContribution">
     
-    Chain of objects implementing PageClassProvider that are used to locate  the page class
+    Chain of objects implementing ComponentClassProvider that are used to locate  the page class
     for a particular page.
     
   </configuration-point>
   
-  <service-point id="PageClassProvider">
+  <service-point id="PageClassProvider" interface="ComponentClassProvider">
     
     Chain built around thePgaeClassProviderChain configuration point, used to determine
     the class to instantiate for a particular page (within a namespace).
@@ -152,34 +153,72 @@
   </service-point>
   
   <contribution configuration-id="PageClassProviderChain">
-    <command id="specification" before="*" object="instance:SpecificationPageClassProvider"/>
+    <command id="specification" before="*" object="instance:SpecificationComponentClassProvider"/>
     <command id="namespace-class-search" object="service:NamespaceClassSearchPageClassProvider"/>
     <command id="namespace-default" object="instance:NamespaceDefaultPageClassProvider" after="namespace-class-search"/>
     <command id="global-default" object="service:GlobalDefaultPageClassProvider" after="*"/>
   </contribution>
   
-  <service-point id="NamespaceClassSearchPageClassProvider" interface="PageClassProvider">
+  <service-point id="NamespaceClassSearchPageClassProvider" interface="ComponentClassProvider">
     
     Searches for a class with a name matching the page name in the default package
     (and in packages defined by the namespace's org.apache.tapestry.page-class-packages meta property).
     
     <invoke-factory>
-      <construct class="NamespaceClassSearchPageClassProvider"/>
+      <construct class="NamespaceClassSearchComponentClassProvider">
+        <set property="packagesName" value="org.apache.tapestry.page-class-packages"/>
+      </construct>
     </invoke-factory>    
     
   </service-point>
   
-  <service-point id="GlobalDefaultPageClassProvider" interface="PageClassProvider">
+  <service-point id="GlobalDefaultPageClassProvider" interface="ComponentClassProvider">
     
     Final command in the chain; returns a fixed value based on a global property.
     
     <invoke-factory>
-      <construct class="GlobalDefaultPageClassProvider">
-        <set-object property="pageClassName" value="global-property:org.apache.tapestry.default-page-class"/>        
+      <construct class="GlobalDefaultComponentClassProvider">
+        <set-object property="componentClassName" value="global-property:org.apache.tapestry.default-page-class"/>        
       </construct>
     </invoke-factory>
   </service-point>
   
+  <configuration-point id="ComponentClassProviderChain" schema-id="hivemind.lib.ChainContribution">
+    
+    Chain of objects implement ComponentClassProvider that are used to locate the
+    component class for a particular component.
+  </configuration-point>
+  
+  <service-point id="ComponentClassProvider">
+    
+    Chain built around ComponentClassProviderChain configuration point, used to
+    determine the class to instantiate for a particular component (within a namespace).
+    
+    <invoke-factory service-id="hivemind.lib.ChainFactory">
+      <construct configuration-id="ComponentClassProviderChain"/>
+    </invoke-factory>
+        
+  </service-point>
+    
+  <contribution configuration-id="ComponentClassProviderChain">
+    <command id="specification" before="*" object="instance:SpecificationComponentClassProvider"/>
+    <command id="namespace-class-search" object="service:NamespaceClassSearchComponentClassProvider"/>
+    <command id="global-default" object="instance:GlobalDefaultComponentClassProvider,componentClassName=org.apache.tapestry.BaseComponent" after="*"/>
+  </contribution>  
+  
+  <service-point id="NamespaceClassSearchComponentClassProvider" interface="ComponentClassProvider">
+    
+    Searches for a class with a name matching the component type in the default package
+    (and in packages defined by the namespace's org.apache.tapestry.component-class-packages meta property).
+    
+    <invoke-factory>
+      <construct class="NamespaceClassSearchComponentClassProvider">
+        <set property="packagesName" value="org.apache.tapestry.component-class-packages"/>
+      </construct>
+    </invoke-factory>    
+    
+  </service-point>
+    
   <contribution configuration-id="tapestry.Infrastructure">
     <property name="pageSource" object="service:PageSource"/>    
   </contribution>

@@ -18,16 +18,18 @@ import org.apache.tapestry.TapestryConstants;
 
 /**
  * Returns the namespace property for the
- * {@link org.apache.tapestry.TapestryConstants#PAGE_CLASS_NAME}&nbsp;key.
+ * {@link org.apache.tapestry.TapestryConstants#PAGE_CLASS_NAME} key.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class NamespaceDefaultPageClassProvider implements PageClassProvider
+public class NamespaceDefaultPageClassProvider implements ComponentClassProvider
 {
 
-    public String providePageClassName(PageClassProviderContext context)
+    public String provideComponentClassName(ComponentClassProviderContext context)
     {
+        // This may be null, if the namespace fails to define this meta data value.
+
         return context.getNamespace().getPropertyValue(TapestryConstants.PAGE_CLASS_NAME);
     }
 

@@ -352,6 +352,16 @@ currently used in Tapestry:
   
   
   <tr>
+  <td>org.apache.tapestry.component-class-packages</td>
+  <td>
+    A comma-seperated list of package names, used when
+    <link href="page-class.html#page-class.component">searching for the component class</link>.  These must
+    appear as &spec.meta; tags in the application or library specification
+    containing the component
+  </td>  
+</tr>
+
+  <tr>
 
 	<td>org.apache.tapestry.default-page-class</td>
 	
@@ -509,6 +519,9 @@ currently used in Tapestry:
   </td>
 
 </tr>
+
+
+
 
 <tr>
   <td>org.apache.tapestry.page-class-packages</td>
