@@ -38,6 +38,7 @@ import org.apache.hivemind.parse.AbstractParser;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.bean.BindingBeanInitializer;
+import org.apache.tapestry.bean.LightweightBeanInitializer;
 import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.coerce.ValueConverter;
@@ -997,7 +998,15 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     private void enterBean()
     {
         String name = getValidatedAttribute("name", BEAN_NAME_PATTERN, "invalid-bean-name");
-        String className = getAttribute("class");
+
+        String classAttribute = getAttribute("class");
+
+        // Look for the lightweight initialization
+
+        int commax = classAttribute.indexOf(',');
+
+        String className = commax < 0 ? classAttribute : classAttribute.substring(0, commax);
+
         BeanLifecycle lifecycle = (BeanLifecycle) getConvertedAttribute(
                 "lifecycle",
                 BeanLifecycle.REQUEST);
@@ -1011,6 +1020,12 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         bs.setClassName(className);
         bs.setLifecycle(lifecycle);
         bs.setPropertyName(propertyName);
+
+        if (commax > 0)
+        {
+            String initializer = classAttribute.substring(commax + 1);
+            bs.addInitializer(new LightweightBeanInitializer(initializer));
+        }
 
         IComponentSpecification cs = (IComponentSpecification) peekObject();
 
