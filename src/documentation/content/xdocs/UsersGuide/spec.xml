@@ -353,10 +353,11 @@ Appears in:
 A &bean; is used to add behaviors to a page or component via aggregation.
 Each &bean; defines a named JavaBean that is instantiated on demand.
 Such managed beans are accessed through the OGNL expression beans.<em>name</em>
-or via the beans: &binding-reference;.
+or via the bean: &binding-reference;.
 </p>
 
 <p>
+  Beans are only instantiated one demand, typically by using a bean: &binding-reference;.
 Once a bean is instantiated and initialized, it will be retained by the page or component
 for some period of time, specified by the bean's lifecycle.
 </p>
@@ -375,7 +376,7 @@ for some period of time, specified by the bean's lifecycle.
   <dt>render</dt>
   <dd>
 			The bean is retained until the current render operation completes.
-			This will discard the bean when a page or form finishes rewinding.
+			This will also discard the bean when a page or form finishes rewinding.
       This is the default lifecycle.
   </dd>
 		
@@ -419,14 +420,14 @@ may be configured nested &spec.set; elements.
 	<td>string</td>
 	<td>yes</td>
 	<td/>
-	<td>The name of the class to instantiate.</td>
+	<td>The name of the class to instantiate.  May optionally include <em>lightweight initialization</em> (see below).</td>
 </tr>
 <tr>
 	<td>lifecycle</td>
 	<td>none|page|render|request</td>
 	<td>no</td>
 	<td>request</td>
-	<td>As described above; duration that bean is retained.</td>
+	<td>As described above; duration that bean is retained once instantiated.</td>
 </tr>
 <tr>
   <td>property</td>
@@ -443,6 +444,16 @@ may be configured nested &spec.set; elements.
 
 </table>
 
+
+<p>
+<em>Lightweight intialization:</em>  A concept borrowed from HiveMind where simple properties of the
+bean can be configured in-line, as a comma-separated list of property=value pairs. The values are converted to appropriate types
+automatically.  For boolean values, the value may be omitted.  Example:
+</p>
+
+<source>
+  &lt;bean name="validator" class="org.apache.tapestry.valid.StringValidator,required,minimumLength=10"/&gt;
+</source>
 
 
 <p>&bean; Elements:</p>

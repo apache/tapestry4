@@ -104,7 +104,7 @@ Attributes:
   	"none" no lifecycle, the bean is created and returned, but not stored
   	"request" the bean is retained until the end of the request cycle
   	"page" the bean is retained for the lifespan of the page
-  	"render" the bean is retained until the end of the current page render
+  	"render" (default) the bean is retained until the end of the current page render
   property: if specified, then a read-ony property is created in the component
     to access the bean.
     

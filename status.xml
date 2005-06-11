@@ -69,8 +69,7 @@
        <action type="add" dev="HLS">Add configuration property org.apache.tapestry.accepted-locales, used to limit localization to a finite set of locales.</action>
        <action type="fix" dev="HLS" fixes-bug="TAPESTRY-335">Injection uses actual type of injected object, which may not be available (due to AOP, or due to use of JDK Proxies).</action>
        <action type="add" dev="HLS">Add page listing the project voting history.</action>
-       <action type="add" dev="HLS">Add InjectObject annotation and basic annotation support (in tapestry-annotation module).</action>
-       <action type="add" dev="HLS">Add more annotations: InjectAsset, InjectComponent, InjectState and Persist</action>
+       <action type="add" dev="HLS">Add annotation support (in tapestry-annotation module).</action>
     </release>
     <release version="4.0-alpha-3" date="May 16 2005">
       <action type="add" dev="HLS">Add initial support for the validator: binding prefix.</action>

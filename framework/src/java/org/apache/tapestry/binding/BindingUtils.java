@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.binding;
 
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 
@@ -34,7 +35,7 @@ public class BindingUtils
      *            the name of the parameter to bind which may be either the name of a formal or
      *            informal parameter
      * @returns the default binding type defined by the matching {@link IParameterSpecification},
-     *          or {@link BindingConstants.LITERAL_PREFIX}&nbsp;for informal parameters.
+     *          or {@link BindingConstants.LITERAL_PREFIX} for informal parameters.
      */
     public static String getDefaultBindingType(IComponentSpecification specification,
             String parameterName, String metaDefaultBindingType)
@@ -46,7 +47,7 @@ public class BindingUtils
         if (ps != null)
             result = ps.getDefaultBindingType();
 
-        if (result == null)
+        if (HiveMind.isBlank(result))
             result = metaDefaultBindingType;
 
         return result;

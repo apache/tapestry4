@@ -71,6 +71,9 @@
     <worker annotation="InjectState" object="instance:InjectStateAnnotationWorker"/>
     <worker annotation="InjectAsset" object="instance:InjectAssetAnnotationWorker"/>
     <worker annotation="Persist" object="instance:PersistAnnotationWorker"/>
+    <worker annotation="Bean" object="instance:BeanAnnotationWorker"/>
+    <worker annotation="Asset" object="instance:AssetAnnotationWorker"/>
+    <worker annotation="Parameter" object="instance:ParameterAnnotationWorker"/>
     
   </contribution>
   
