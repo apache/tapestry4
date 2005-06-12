@@ -207,7 +207,12 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
                 namespace,
                 _type);
 
-        setSpecification(specification);
+        if (specification != null)
+        {
+            setSpecification(specification);
+            install();
+            return;
+        }
     }
 
     private boolean found(Resource resource)

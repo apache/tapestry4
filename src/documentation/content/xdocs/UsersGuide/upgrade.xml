@@ -392,5 +392,19 @@ in JDK 1.5).  With the loss of that dependency, so goes org.apache.tapestry.form
   
 </section>
 
+<section id="upgrade.other-changes">
+  <title>Other code changes</title>
+  
+<p>
+A number of more subtle, and more rarely used, changes exist between the 3.0 and 4.0 releases.
+</p>  
+
+<p>
+The contract for &ISpecificationResolverDelegate; has changed.  The specifications returned by the delegate are now cached by Tapestry
+exactly as if they had been read from files on the classpath or web context.
+</p>
+  
+</section>
+
 </body>
 </document>

@@ -24,6 +24,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.service.ThreadLocale;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
@@ -59,7 +60,7 @@ import org.apache.tapestry.spec.IParameterSpecification;
 /**
  * Runs the process of building the component hierarchy for an entire page.
  * <p>
- * This implementation is not threadsafe, therefore the threaded service model must be used.
+ * This implementation is not threadsafe, therefore the pooled service model must be used.
  * 
  * @author Howard Lewis Ship
  */
@@ -87,8 +88,6 @@ public class PageLoader implements IPageLoader
     /** @since 4.0 */
 
     private BSFManagerFactory _managerFactory;
-
-    private IEngine _engine;
 
     private List _inheritedBindingQueue = new ArrayList();
 
@@ -127,6 +126,14 @@ public class PageLoader implements IPageLoader
      */
 
     private ComponentClassProvider _componentClassProvider;
+
+    /**
+     * Tracks the current locale into which pages are loaded.
+     * 
+     * @since 4.0
+     */
+
+    private ThreadLocale _threadLocale;
 
     /**
      * The locale of the application, which is also the locale of the page being loaded.
@@ -307,7 +314,7 @@ public class PageLoader implements IPageLoader
 
     /**
      * Adds a binding to the component, checking to see if there's a name conflict (an existing
-     * binding for the same parameter ... possibly because parameter names can be aliased.
+     * binding for the same parameter ... possibly because parameter names can be aliased).
      * 
      * @param component
      *            to which the binding should be added
@@ -347,7 +354,7 @@ public class PageLoader implements IPageLoader
     }
 
     /**
-     * Construct a {@link ListenerBinding}for the component, and add it.
+     * Construct a {@link ListenerBinding} for the component, and add it.
      * 
      * @since 3.0
      */
@@ -621,13 +628,11 @@ public class PageLoader implements IPageLoader
     {
         IPage page = null;
 
-        _engine = cycle.getEngine();
-
-        _locale = _engine.getLocale();
-
         _count = 0;
         _depth = 0;
         _maxDepth = 0;
+
+        _locale = _threadLocale.getLocale();
 
         try
         {
@@ -648,7 +653,6 @@ public class PageLoader implements IPageLoader
         finally
         {
             _locale = null;
-            _engine = null;
             _inheritedBindingQueue.clear();
         }
 
@@ -801,5 +805,11 @@ public class PageLoader implements IPageLoader
     public void setComponentClassProvider(ComponentClassProvider componentClassProvider)
     {
         _componentClassProvider = componentClassProvider;
+    }
+
+    /** @since 4.0 */
+    public void setThreadLocale(ThreadLocale threadLocale)
+    {
+        _threadLocale = threadLocale;
     }
 }
