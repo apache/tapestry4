@@ -19,53 +19,47 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- *  Delegate interface used when a page or component specification
- *  can not be found by the normal means.  This allows hooks
- *  to support specifications from unusual locations, or generated
- *  on the fly.
+ * Delegate interface used when a page or component specification can not be found by the normal
+ * means. This allows hooks to support specifications from unusual locations, or generated on the
+ * fly.
+ * <p>
+ * The delegate must be coded in a threadsafe manner.
  * 
- *  <p>The delegate must be coded in a threadsafe manner.
- * 
- *  @author Howard Lewis Ship
- *  @since 3.0
- *
- **/
+ * @author Howard Lewis Ship
+ * @since 3.0
+ */
 
 public interface ISpecificationResolverDelegate
 {
     /**
-     *  Invoked by {@link PageSpecificationResolver} to find the indicated
-     *  page specification.  Returns
-     *  the specification, or null.  The specification, if returned, is not cached by Tapestry
-     *  (it is up to the delegate to cache the specification if desired).
+     * Invoked by {@link PageSpecificationResolver} to find the indicated page specification.
+     * Returns the specification, or null. The specification, if returned, <em>will be cached</em>
+     * (this represents a change from release 3.0 to release 4.0).
      * 
-     *  @param cycle used to gain access to framework and Servlet API objects
-     *  @param namespace the namespace containing the page
-     *  @param simplePageName the name of the page (without any namespace prefix)
-     * 
-     **/
+     * @param cycle
+     *            used to gain access to framework and Servlet API objects
+     * @param namespace
+     *            the namespace containing the page
+     * @param simplePageName
+     *            the name of the page (without any namespace prefix)
+     */
 
-    public IComponentSpecification findPageSpecification(
-        IRequestCycle cycle,
-        INamespace namespace,
-        String simplePageName);
+    public IComponentSpecification findPageSpecification(IRequestCycle cycle, INamespace namespace,
+            String simplePageName);
 
     /**
-     *  Invoked by {@link PageSpecificationResolver} to find the indicated
-     *  component specification.  Returns
-     *  the specification, or null.  The specification, if returned, is not cached by Tapestry
-     *  (it is up to the delegate to cache the specification if desired).
+     * Invoked by {@link PageSpecificationResolver} to find the indicated component specification.
+     * Returns the specification, or null. The specification <em>will be cached</em> (this
+     * represents a change from release 3.0 to release 4.0).
      * 
-     *  <p>The delegate must be coded in a threadsafe manner.
-     * 
-     *  @param cycle used to gain access to framework and Servlet API objects
-     *  @param namespace the namespace containing the component
-     *  @param type the component type (without any namespace prefix)
-     * 
-     **/
+     * @param cycle
+     *            used to gain access to framework and Servlet API objects
+     * @param namespace
+     *            the namespace containing the component
+     * @param type
+     *            the component type (without any namespace prefix)
+     */
 
-    public IComponentSpecification findComponentSpecification(
-        IRequestCycle cycle,
-        INamespace namespace,
-        String type);
+    public IComponentSpecification findComponentSpecification(IRequestCycle cycle,
+            INamespace namespace, String type);
 }

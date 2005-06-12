@@ -219,7 +219,11 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
                 namespace,
                 _simpleName);
 
-        setSpecification(specification);
+        if (specification != null)
+        {
+            setSpecification(specification);
+            install();
+        }
     }
 
     private void setupImplicitPage(Resource resource)

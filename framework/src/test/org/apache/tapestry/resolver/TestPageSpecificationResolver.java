@@ -313,15 +313,13 @@ public class TestPageSpecificationResolver extends AbstractSpecificationResolver
         ISpecificationSource source = newSource(application, framework, resource, spec);
         IRequestCycle cycle = newCycle();
 
-        application.containsPage("NamespacePage");
-        applicationc.setReturnValue(false);
+        trainContainsPage(applicationc, application, "NamespacePage", false);
 
         train(log, logc, ResolverMessages.resolvingPage("NamespacePage", application));
 
         // Pretend the app spec is in the WEB-INF folder
 
-        application.getSpecificationLocation();
-        applicationc.setReturnValue(contextRoot.getRelativeResource("WEB-INF/"));
+        trainGetSpecLocation(applicationc, application, contextRoot, "WEB-INF/");
 
         train(log, logc, ResolverMessages.checkingResource(resource));
 
@@ -346,6 +344,12 @@ public class TestPageSpecificationResolver extends AbstractSpecificationResolver
         verifyControls();
     }
 
+    private void trainGetSpecLocation(MockControl control, INamespace namespace, Resource root, String path)
+    {
+        namespace.getSpecificationLocation();
+        control.setReturnValue(root.getRelativeResource(path));
+    }
+
     public void testFoundInWebInfAppFolder()
     {
         MockControl logc = newControl(Log.class);
@@ -363,21 +367,18 @@ public class TestPageSpecificationResolver extends AbstractSpecificationResolver
         ISpecificationSource source = newSource(application, framework, resource, spec);
         IRequestCycle cycle = newCycle();
 
-        application.containsPage("MyAppPage");
-        applicationc.setReturnValue(false);
+        trainContainsPage(applicationc, application, "MyAppPage", false);
 
         train(log, logc, ResolverMessages.resolvingPage("MyAppPage", application));
 
         // Pretend the app spec is in the WEB-INF folder
 
-        application.getSpecificationLocation();
-        applicationc.setReturnValue(contextRoot.getRelativeResource("WEB-INF/"));
-
+        trainGetSpecLocation(applicationc, application, contextRoot, "WEB-INF/");
+        
         train(log, logc, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("WEB-INF/MyAppPage.page")));
 
-        application.isApplicationNamespace();
-        applicationc.setReturnValue(true);
+        trainIsApplicationNamespace(applicationc, application, true);
 
         train(log, logc, ResolverMessages.checkingResource(resource));
 
@@ -402,6 +403,12 @@ public class TestPageSpecificationResolver extends AbstractSpecificationResolver
         assertSame(application, resolver.getNamespace());
 
         verifyControls();
+    }
+
+    private void trainIsApplicationNamespace(MockControl control, INamespace namespace, boolean isApplicationNamespace)
+    {
+        namespace.isApplicationNamespace();
+        control.setReturnValue(isApplicationNamespace);
     }
 
     public void testFoundInWebInfFolder()
@@ -484,21 +491,18 @@ public class TestPageSpecificationResolver extends AbstractSpecificationResolver
         ISpecificationSource source = newSource(application, framework, resource, spec);
         IRequestCycle cycle = newCycle();
 
-        application.containsPage("ContextRootPage");
-        applicationc.setReturnValue(false);
+        trainContainsPage(applicationc, application, "ContextRootPage", false);
 
         train(log, logc, ResolverMessages.resolvingPage("ContextRootPage", application));
 
         // Pretend the app spec is in the WEB-INF folder
 
-        application.getSpecificationLocation();
-        applicationc.setReturnValue(contextRoot.getRelativeResource("WEB-INF/"));
-
+        trainGetSpecLocation(applicationc, application, contextRoot, "WEB-INF/");
+        
         train(log, logc, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("WEB-INF/ContextRootPage.page")));
 
-        application.isApplicationNamespace();
-        applicationc.setReturnValue(true);
+        trainIsApplicationNamespace(applicationc, application, true);
 
         train(log, logc, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("WEB-INF/myapp/ContextRootPage.page")));
@@ -527,6 +531,12 @@ public class TestPageSpecificationResolver extends AbstractSpecificationResolver
         assertSame(application, resolver.getNamespace());
 
         verifyControls();
+    }
+
+    private void trainContainsPage(MockControl control, INamespace namespace, String pageName, boolean containsPage)
+    {
+        namespace.containsPage(pageName);
+        control.setReturnValue(containsPage);
     }
 
     public void testFoundAsTemplate()
@@ -570,8 +580,7 @@ public class TestPageSpecificationResolver extends AbstractSpecificationResolver
         // The toString() on ComponentSpecification means we can't predict
         // what the string would be.
 
-        log.isDebugEnabled();
-        logc.setReturnValue(false);
+        trainIsDebugEnabled(logc, log, false);
 
         replayControls();
 
@@ -600,6 +609,12 @@ public class TestPageSpecificationResolver extends AbstractSpecificationResolver
         verifyControls();
     }
 
+    private void trainIsDebugEnabled(MockControl control, Log log, boolean isDebugEnabled)
+    {
+        log.isDebugEnabled();
+        control.setReturnValue(isDebugEnabled);
+    }
+
     public void testFoundInFramework()
     {
         MockControl logc = newControl(Log.class);
@@ -617,21 +632,18 @@ public class TestPageSpecificationResolver extends AbstractSpecificationResolver
         ISpecificationSource source = newSource(application, framework);
         IRequestCycle cycle = newCycle();
 
-        application.containsPage("FrameworkPage");
-        applicationc.setReturnValue(false);
+        trainContainsPage(applicationc, application, "FrameworkPage", false);
 
         train(log, logc, ResolverMessages.resolvingPage("FrameworkPage", application));
 
         // Pretend the app spec is in the WEB-INF folder
 
-        application.getSpecificationLocation();
-        applicationc.setReturnValue(contextRoot.getRelativeResource("WEB-INF/"));
-
+        trainGetSpecLocation(applicationc, application, contextRoot, "WEB-INF/");
+        
         train(log, logc, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("WEB-INF/FrameworkPage.page")));
 
-        application.isApplicationNamespace();
-        applicationc.setReturnValue(true);
+        trainIsApplicationNamespace(applicationc, application, true);
 
         train(log, logc, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("WEB-INF/myapp/FrameworkPage.page")));
@@ -679,16 +691,14 @@ public class TestPageSpecificationResolver extends AbstractSpecificationResolver
         ISpecificationSource source = newSource(application, framework);
         IRequestCycle cycle = newCycle();
 
-        application.containsPage("DelegatePage");
-        applicationc.setReturnValue(false);
+        trainContainsPage(applicationc, application, "DelegatePage", false);
 
         train(log, logc, ResolverMessages.resolvingPage("DelegatePage", application));
 
         // Pretend the app spec is in the WEB-INF folder
 
-        application.getSpecificationLocation();
-        applicationc.setReturnValue(contextRoot.getRelativeResource("WEB-INF/"));
-
+        trainGetSpecLocation(applicationc, application, contextRoot, "WEB-INF/");
+        
         train(log, logc, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("WEB-INF/DelegatePage.page")));
 
@@ -701,6 +711,10 @@ public class TestPageSpecificationResolver extends AbstractSpecificationResolver
 
         delegate.findPageSpecification(cycle, application, "DelegatePage");
         delegatec.setReturnValue(spec);
+        
+        trainIsDebugEnabled(logc, log, false);
+        
+        application.installPageSpecification("DelegatePage", spec);
 
         replayControls();
 
@@ -736,18 +750,16 @@ public class TestPageSpecificationResolver extends AbstractSpecificationResolver
         ISpecificationSource source = newSource(application, framework);
         IRequestCycle cycle = newCycle();
 
-        application.containsPage("DelegatePage");
-        applicationc.setReturnValue(false);
+        trainContainsPage(applicationc, application, "MissingPage", false);
 
-        train(log, logc, ResolverMessages.resolvingPage("DelegatePage", application));
+        train(log, logc, ResolverMessages.resolvingPage("MissingPage", application));
 
         // Pretend the app spec is in the WEB-INF folder
 
-        application.getSpecificationLocation();
-        applicationc.setReturnValue(contextRoot.getRelativeResource("WEB-INF/"));
-
+        trainGetSpecLocation(applicationc, application, contextRoot, "WEB-INF/");
+        
         train(log, logc, ResolverMessages.checkingResource(contextRoot
-                .getRelativeResource("WEB-INF/DelegatePage.page")));
+                .getRelativeResource("WEB-INF/MissingPage.page")));
 
         application.isApplicationNamespace();
         applicationc.setReturnValue(false);
@@ -756,7 +768,7 @@ public class TestPageSpecificationResolver extends AbstractSpecificationResolver
         ISpecificationResolverDelegate delegate = (ISpecificationResolverDelegate) delegatec
                 .getMock();
 
-        delegate.findPageSpecification(cycle, application, "DelegatePage");
+        delegate.findPageSpecification(cycle, application, "MissingPage");
         delegatec.setReturnValue(null);
 
         application.getNamespaceId();
@@ -775,12 +787,12 @@ public class TestPageSpecificationResolver extends AbstractSpecificationResolver
 
         try
         {
-            resolver.resolve(cycle, "DelegatePage");
+            resolver.resolve(cycle, "MissingPage");
             unreachable();
         }
         catch (PageNotFoundException ex)
         {
-            assertEquals("Page 'DelegatePage' not found in <application namespace>.", ex
+            assertEquals("Page 'MissingPage' not found in <application namespace>.", ex
                     .getMessage());
         }
 

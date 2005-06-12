@@ -327,6 +327,11 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         framework.containsComponentType("DelegateComponent");
         frameworkc.setReturnValue(false);
 
+        log.isDebugEnabled();
+        logc.setReturnValue(false);
+        
+        namespace.installComponentSpecification("DelegateComponent", spec);
+        
         trainIsDeprecated(specc, spec, false);
 
         replayControls();

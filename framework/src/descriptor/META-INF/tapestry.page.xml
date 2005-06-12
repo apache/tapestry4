@@ -33,7 +33,7 @@
   
   <service-point id="PageLoader" interface="org.apache.tapestry.engine.IPageLoader">
     
-    <invoke-factory model="threaded">
+    <invoke-factory model="pooled">
       <construct class="PageLoader">
         <set-service property="componentConstructorFactory" service-id="tapestry.enhance.ComponentConstructorFactory"/>
         <set-service property="componentResolver" service-id="ComponentSpecificationResolver"/>      
@@ -48,6 +48,7 @@
         <set-service property="managerFactory" service-id="BSFManagerFactory"/>
         <set-service property="pageClassProvider" service-id="PageClassProvider"/>
         <set-service property="componentClassProvider" service-id="ComponentClassProvider"/>
+        <set-service property="threadLocale" service-id="hivemind.ThreadLocale"/>
       </construct>
     </invoke-factory>
   </service-point>
