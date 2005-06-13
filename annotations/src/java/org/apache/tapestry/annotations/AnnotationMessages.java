@@ -59,4 +59,14 @@ class AnnotationMessages
     {
         return _formatter.format("failure-processing-annotation", annotation, method, cause);
     }
+
+    public static String failureProcessingClassAnnotation(Annotation annotation, Class clazz,
+            Throwable cause)
+    {
+        return _formatter.format(
+                "failure-processing-class-annotation",
+                annotation,
+                clazz.getName(),
+                cause);
+    }
 }

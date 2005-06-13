@@ -15,33 +15,36 @@
 package org.apache.tapestry.annotations;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- * Defines workers that perform annotation enhancements at the method level.
+ * Sets properties of the {@link org.apache.tapestry.spec.IComponentSpecification} based on the
+ * {@link org.apache.tapestry.annotations.Component} annotation. In addition, marks the component as
+ * deprecated if the {@link java.lang.Deprecated} annotation is present on the class.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public interface MethodAnnotationEnhancementWorker
+public class ComponentAnnotationWorker implements ClassAnnotationEnhancementWorker
 {
-    /**
-     * Performs a particular enhancement based on a registered annotation. Exception reporting is
-     * the responsibility of the caller.
-     * 
-     * @param op
-     *            the enhancement operaration
-     * @param spec
-     *            the specification of the component for which a class is being enhanced
-     * @param annotation
-     *            the annotation that will guide the enhancement
-     * @param method
-     *            the method to which the annotation is attached
-     */
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Annotation annotation, Method method);
+            Annotation annotation)
+    {
+        Component component = (Component) annotation;
+
+        spec.setAllowBody(component.allowBody());
+        spec.setAllowInformalParameters(component.allowInformalParameters());
+
+        String[] names = TapestryUtils.split(component.reservedParameters());
+        for (String name : names)
+            spec.addReservedParameterName(name);
+
+        if (op.getBaseClass().isAnnotationPresent(Deprecated.class))
+            spec.setDeprecated(true);
+    }
+
 }

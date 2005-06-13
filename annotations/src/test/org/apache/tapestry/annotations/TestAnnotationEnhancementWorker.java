@@ -44,7 +44,7 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         return op;
     }
 
-    protected Map newMap(Class annotationClass, MethodAnnotationEnhancementWorker worker)
+    protected Map newMap(Class annotationClass, Object worker)
     {
         return Collections.singletonMap(annotationClass, worker);
     }
@@ -113,7 +113,7 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
     public void testAnnotationFailure()
     {
-        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+        ErrorLog log = newLog();
         Throwable t = new RuntimeException("Woops!");
 
         EnhancementOperation op = newOp(AnnotatedPage.class);
@@ -142,6 +142,82 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setMethodWorkers(newMap(InjectObject.class, methodWorker));
         worker.setErrorLog(log);
+
+        worker.performEnhancement(op, spec);
+
+        verifyControls();
+    }
+
+    private ErrorLog newLog()
+    {
+        return (ErrorLog) newMock(ErrorLog.class);
+    }
+
+    public void testClassAnnotation()
+    {
+        EnhancementOperation op = newOp(DeprecatedBean.class);
+        IComponentSpecification spec = newSpec();
+
+        ClassAnnotationEnhancementWorker classWorker = (ClassAnnotationEnhancementWorker) newMock(ClassAnnotationEnhancementWorker.class);
+
+        Annotation a = DeprecatedBean.class.getAnnotation(Deprecated.class);
+
+        classWorker.performEnhancement(op, spec, a);
+
+        replayControls();
+
+        AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
+        worker.setClassWorkers(newMap(Deprecated.class, classWorker));
+
+        worker.performEnhancement(op, spec);
+
+        verifyControls();
+    }
+
+    public void testClassAnnotationFailure()
+    {
+        ErrorLog log = newLog();
+        EnhancementOperation op = newOp(DeprecatedBean.class);
+        IComponentSpecification spec = newSpec();
+
+        MockControl classWorkerc = newControl(ClassAnnotationEnhancementWorker.class);
+        ClassAnnotationEnhancementWorker classWorker = (ClassAnnotationEnhancementWorker) classWorkerc
+                .getMock();
+
+        Throwable t = new RuntimeException("Simulated failure.");
+
+        Annotation a = DeprecatedBean.class.getAnnotation(Deprecated.class);
+
+        classWorker.performEnhancement(op, spec, a);
+        classWorkerc.setThrowable(t);
+
+        log
+                .error(
+                        "An error occured processing annotation @java.lang.Deprecated() of "
+                                + "class org.apache.tapestry.annotations.DeprecatedBean: Simulated failure.",
+                        null,
+                        t);
+
+        replayControls();
+
+        AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
+        worker.setClassWorkers(newMap(Deprecated.class, classWorker));
+        worker.setErrorLog(log);
+
+        worker.performEnhancement(op, spec);
+
+        verifyControls();
+    }
+
+    public void testClassAnnotationNoMatch()
+    {
+        EnhancementOperation op = newOp(DeprecatedBean.class);
+        IComponentSpecification spec = newSpec();
+
+        replayControls();
+
+        AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
+        worker.setClassWorkers(Collections.EMPTY_MAP);
 
         worker.performEnhancement(op, spec);
 
