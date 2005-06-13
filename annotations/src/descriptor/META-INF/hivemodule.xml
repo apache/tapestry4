@@ -27,6 +27,7 @@
     <invoke-factory>
       <construct class="AnnotationEnhancementWorker">
         <set-configuration property="methodWorkers" configuration-id="MethodWorkers"/>
+        <set-configuration property="classWorkers" configuration-id="ClassWorkers"/>
       </construct>
     </invoke-factory>
     
@@ -36,6 +37,36 @@
     <!-- Needs to come very much first, because some enhancements modify
          the component specification, affecting what occurs in later commands. -->
     <command id="annotation-worker" object="service:AnnotationEnhancementWorker" before="*"/>
+  </contribution>
+  
+  <configuration-point id="ClassWorkers">
+    
+    Maps from a specific Annotation class, to a particular ClassAnnotationEnhancementWorker (typically,
+    a service).
+    <schema>
+      <element name="worker" key-attribute="annotation">
+        
+        <attribute name="annotation" translator="class">
+          The name of an Annotation class which triggers the enhancement worker's behavior.
+        </attribute>
+        
+        <attribute name="object" translator="object">
+          
+          An object that implements the ClassAnnotationEnhancementWorker interface.
+        </attribute>
+        
+        <rules>
+          <push-attribute attribute="object"/>
+          <invoke-parent method="addElement"/>
+        </rules>
+        
+      </element>
+    </schema>
+    
+  </configuration-point>
+  
+  <contribution configuration-id="ClassWorkers">
+    <worker annotation="Component" object="instance:ComponentAnnotationWorker"/>
   </contribution>
   
   <configuration-point id="MethodWorkers">

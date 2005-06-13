@@ -103,7 +103,7 @@ using XML; its name will be the property name.
 
 <p>
 An additional attribute, lifecycle, controls the bean's lifecycle.  The default is 
-<link href="&apidoc;/Lifecycle.html">Lifecycle</link>.REQUEST,
+<link href="&javadoc;/Lifecycle.html">Lifecycle</link>.REQUEST,
 and additional values are NONE, PAGE, and RENDER:
 </p>
 
@@ -122,6 +122,63 @@ commas (for boolean properties, the value is optional).
   @Bean(initializer = "maxRetries=3")
   public abstract LoginController getController();  
 </source>  
+  
+</section>
+
+<section>
+  <title>Component</title>
+  
+  <p>
+    
+   The <link href="&javadoc;/Component.html">Component</link> annotation is used
+    to mark a Java class as a component, and allows several properties normally specified
+    using the <link href="&spec;#spec.component-specification">&lt;component-specification&gt;</link> element.
+  </p>
+  
+<source>
+@Component
+public abstract class MyComponent extends BaseComponent
+{
+...
+</source>  
+
+<p>
+  The defaults for allowBody and allowInformalParameters are true; components may override:
+</p>
+
+<source>
+@Component(allowBody=false, allowInformalParameters=false)
+{
+...
+</source>
+  
+<p>
+Note that simply having a @Component annotation will <em>override</em> those two properties.
+</p>
+
+<p>
+If a component has reserved parameters, they can be specified as well:
+</p>
+
+<source>
+@Component(reservedParameters="href,name")
+public abstract class LinkWriter extends BaseComponent
+{
+...
+</source>
+
+<p>
+Finally, the presence of the @Deprecated annotation will mark the component as deprecated (and cause
+a warning to be output whenever the component is referenced):
+</p>
+
+<source>
+@Component @Deprecated
+public abstact class YeOldeComponent extends AbstractComponent
+{
+...
+</source>
+
   
 </section>
         

@@ -24,9 +24,10 @@ import org.apache.tapestry.enhance.EnhancementWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- * Implementation of {@link org.apache.tapestry.enhance.EnhancementWorker} that finds annotations on
- * methods and delegates out to specific
- * {@link org.apache.tapestry.annotations.MethodAnnotationEnhancementWorker}s.
+ * Implementation of {@link org.apache.tapestry.enhance.EnhancementWorker} that finds class and
+ * method annotations and delegates out to specific
+ * {@link org.apache.tapestry.annotations.ClassAnnotationEnhancementWorker} and
+ * {@link org.apache.tapestry.annotations.MethodAnnotationEnhancementWorker} instances.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -37,44 +38,81 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
 
     private Map _methodWorkers;
 
+    private Map _classWorkers;
+
+    public void setClassWorkers(Map classWorkers)
+    {
+        _classWorkers = classWorkers;
+    }
+
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
     {
         Class clazz = op.getBaseClass();
 
+        for (Annotation a : clazz.getAnnotations())
+        {
+            performClassEnhancement(op, spec, clazz, a);
+        }
+
         for (Method m : clazz.getMethods())
         {
-            performEnhancement(op, spec, m);
+            performMethodEnhancement(op, spec, m);
         }
     }
 
-    void performEnhancement(EnhancementOperation op, IComponentSpecification spec, Method method)
+    void performClassEnhancement(EnhancementOperation op, IComponentSpecification spec,
+            Class clazz, Annotation annotation)
+    {
+        ClassAnnotationEnhancementWorker worker = (ClassAnnotationEnhancementWorker) _classWorkers
+                .get(annotation.annotationType());
+
+        if (worker == null)
+            return;
+
+        try
+        {
+            worker.performEnhancement(op, spec, annotation);
+        }
+        catch (Exception ex)
+        {
+            _errorLog.error(AnnotationMessages.failureProcessingClassAnnotation(
+                    annotation,
+                    clazz,
+                    ex), null, ex);
+        }
+
+    }
+
+    void performMethodEnhancement(EnhancementOperation op, IComponentSpecification spec,
+            Method method)
     {
         for (Annotation a : method.getAnnotations())
         {
-            performEnhancement(op, spec, method, a);
+            performMethodEnhancement(op, spec, method, a);
         }
     }
 
-    void performEnhancement(EnhancementOperation op, IComponentSpecification spec, Method method,
-            Annotation annotation)
+    void performMethodEnhancement(EnhancementOperation op, IComponentSpecification spec,
+            Method method, Annotation annotation)
     {
         MethodAnnotationEnhancementWorker worker = (MethodAnnotationEnhancementWorker) _methodWorkers
                 .get(annotation.annotationType());
 
-        if (worker != null)
+        if (worker == null)
+            return;
+
+        try
         {
-            try
-            {
-                worker.performEnhancement(op, spec, annotation, method);
-            }
-            catch (Exception ex)
-            {
-                _errorLog.error(AnnotationMessages.failureProcessingAnnotation(
-                        annotation,
-                        method,
-                        ex), null, ex);
-            }
+            worker.performEnhancement(op, spec, annotation, method);
         }
+        catch (Exception ex)
+        {
+            _errorLog.error(
+                    AnnotationMessages.failureProcessingAnnotation(annotation, method, ex),
+                    null,
+                    ex);
+        }
+
     }
 
     public void setMethodWorkers(Map methodWorkers)
