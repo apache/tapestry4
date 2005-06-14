@@ -39,7 +39,7 @@ public class NumberTranslator extends FormatTranslator
      */
     protected String defaultScript()
     {
-        return "/org/apache/tapestry/form/translator/DecimalTranslator.js";
+        return "/org/apache/tapestry/form/translator/NumberTranslator.js";
     }
     
     /**
