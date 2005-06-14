@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form;
 
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IPage;
@@ -58,6 +59,7 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
         _cycleControl.reset();
         _formControl.reset();
         _engineControl.reset();
+        _pageRenderSupportControl.reset();
         
         super.tearDown();
     }
@@ -69,6 +71,7 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
         _cycleControl.replay();
         _formControl.replay();
         _engineControl.replay();
+        _pageRenderSupportControl.replay();
     }
     
     protected void verify()
@@ -78,6 +81,7 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
         _cycleControl.verify();
         _formControl.verify();
         _engineControl.verify();
+        _pageRenderSupportControl.verify();
     }
     
     protected void addScript(String script)
@@ -90,5 +94,8 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
         
         _cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
         _cycleControl.setReturnValue(_pageRenderSupport);
+        
+        _pageRenderSupport.addExternalScript(new ClasspathResource(null, script));
+        _pageRenderSupportControl.setVoidCallable();
     }
 }
