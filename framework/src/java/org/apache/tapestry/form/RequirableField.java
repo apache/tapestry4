@@ -20,7 +20,7 @@ import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Implemented by form components that can be marked as required.  The form rewind
- * will record validation errors a required field for which a value was not submitted.
+ * will record validation errors for required fields for which a value was not submitted.
  * 
  * @author Paul Ferraro
  * @since 4.0
@@ -43,11 +43,13 @@ public interface RequirableField extends IFormComponent
     
     /**
      * Called on the field if the required field check succeeds.
-     * @param writer
-     * @param cycle
-     * @throws ValidatorException
+     * @throws ValidatorException if required field check fails.
      */
     public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException;
     
+    /**
+     * Retrieves a simplified view of the value submitted for this component.  Used to during
+     * required field checking.
+     */
     public String getSubmittedValue(IRequestCycle cycle);
 }

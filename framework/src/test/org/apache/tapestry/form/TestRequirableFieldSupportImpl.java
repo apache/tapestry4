@@ -14,14 +14,11 @@
 
 package org.apache.tapestry.form;
 
-import java.text.MessageFormat;
-
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
 import org.easymock.MockControl;
 
@@ -47,7 +44,7 @@ public class TestRequirableFieldSupportImpl extends TapestryTestCase
     private MockControl _formControl = MockControl.createControl(IForm.class);
     private IForm _form = (IForm) _formControl.getMock();
     
-    private MockControl _delegateControl = MockControl.createControl(IValidationDelegate.class);
+    private MockControl _delegateControl = MockControl.createNiceControl(IValidationDelegate.class);
     private IValidationDelegate _delegate = (IValidationDelegate) _delegateControl.getMock();
     
     /**
@@ -59,6 +56,7 @@ public class TestRequirableFieldSupportImpl extends TapestryTestCase
         _writerControl.reset();
         _cycleControl.reset();
         _formControl.reset();
+        _delegateControl.reset();
         
         super.tearDown();
     }
@@ -69,6 +67,7 @@ public class TestRequirableFieldSupportImpl extends TapestryTestCase
         _writerControl.replay();
         _cycleControl.replay();
         _formControl.replay();
+        _delegateControl.replay();
     }
 
     private void verify()
@@ -77,6 +76,7 @@ public class TestRequirableFieldSupportImpl extends TapestryTestCase
         _writerControl.verify();
         _cycleControl.verify();
         _formControl.verify();
+        _delegateControl.verify();
     }
     
     public void testNotRequiredRender()
@@ -181,24 +181,19 @@ public class TestRequirableFieldSupportImpl extends TapestryTestCase
         _componentControl.setReturnValue(true);
 
         String pattern = "You must enter a value for {0}.";
+        String displayName = "Field Name";
         
         _component.getRequiredMessage();
         _componentControl.setReturnValue(pattern);
         
-        String displayName = "Field Name";
         _component.getDisplayName();
         _componentControl.setReturnValue(displayName);
 
-        String message = MessageFormat.format(pattern, new Object[] { displayName });
-        
         _component.getForm();
         _componentControl.setReturnValue(_form);
         
         _form.getDelegate();
         _formControl.setReturnValue(_delegate);
-        
-        _delegate.record(new ValidatorException(message, ValidationConstraint.REQUIRED));
-        _delegateControl.setVoidCallable();
         
         replay();
         

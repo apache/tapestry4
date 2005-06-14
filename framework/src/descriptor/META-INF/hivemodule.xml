@@ -46,7 +46,8 @@
   <sub-module descriptor="tapestry.error.xml"/>
   <sub-module descriptor="tapestry.valid.xml"/>
   <sub-module descriptor="tapestry.listener.xml"/>
-    
+  <sub-module descriptor="tapestry.form.xml"/>
+  
   <service-point id="ClasspathResourceFactory">
   
     Constructs new instances of ClasspathResource.
