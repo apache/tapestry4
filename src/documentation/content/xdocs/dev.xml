@@ -40,12 +40,14 @@ Tapestry Developers plan features, discuss and vote  on the
 <section>
 		<title>Mind Bridge</title>
 
-            <p>Mind Bridge has been a long term contributor to Tapestry.</p>
+            <p>Mind Bridge has been a long term contributor to Tapestry, and is the creator of the
+              invaluable Table component.</p>
 </section>
 
 <section>
     <title>Paul Ferraro</title>
-    <p>Paul has been an avid Tapestry user since 2002, and created the original friendly URLs patch for Tapestry 3.0</p>
+    <p>Paul has been an avid Tapestry user since 2002, and created the original friendly URLs patch for Tapestry 3.0.  He's responsible
+      for the new and improved validation subsystem.</p>
 </section>
 
 <section>
@@ -60,8 +62,7 @@ Tapestry Developers plan features, discuss and vote  on the
 <section>
 		<title>Harish Krishnaswamy</title>
 		
-		 	<p>Harish is a Tapestry enthusiast and is also becoming a HiveMind enthusiast. Hopefully 
- 	he will help integrate the two.</p>
+		 	<p>Harish is a Tapestry enthusiast and is also becoming a HiveMind enthusiast. </p>
  	
 </section>
 
@@ -74,7 +75,7 @@ Tapestry Developers plan features, discuss and vote  on the
  
 <section>
 	<title>Howard Lewis Ship</title>	
-	   <p>Howard started the Tapestry project in early 2000.</p>
+	   <p>Howard started the Tapestry project in early 2000 and guides its development and evolution.</p>
 </section>
 
 <section>
