@@ -17,6 +17,7 @@ package org.apache.tapestry.workbench.components;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.util.StringSplitter;
@@ -39,9 +40,12 @@ public abstract class Border extends BaseComponent implements PageBeginRenderLis
 
     private static String[] _tabOrder;
 
+    @InjectState("visit")
+    public abstract Visit getVisit();
+    
     public void pageBeginRender(PageEvent event)
     {
-        Visit visit = (Visit) getPage().getEngine().getVisit(event.getRequestCycle());
+        Visit visit = getVisit();
 
         setActivePageName(visit.getActiveTabName());
 
@@ -109,7 +113,7 @@ public abstract class Border extends BaseComponent implements PageBeginRenderLis
 
     public void selectPage(IRequestCycle cycle, String newPageName)
     {
-        Visit visit = (Visit) getPage().getEngine().getVisit(cycle);
+        Visit visit = getVisit();
 
         visit.setActiveTabName(newPageName);
 

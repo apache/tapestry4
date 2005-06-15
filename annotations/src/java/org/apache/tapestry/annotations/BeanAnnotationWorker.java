@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.annotations;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.HiveMind;
@@ -34,9 +33,9 @@ import org.apache.tapestry.spec.IComponentSpecification;
 public class BeanAnnotationWorker implements MethodAnnotationEnhancementWorker
 {
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Annotation annotation, Method method)
+            Method method)
     {
-        Bean bean = (Bean) annotation;
+        Bean bean = method.getAnnotation(Bean.class);
         String propertyName = AnnotationUtils.getPropertyName(method);
 
         Class beanClass = bean.value();

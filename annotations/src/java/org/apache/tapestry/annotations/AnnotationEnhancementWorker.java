@@ -71,7 +71,7 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
 
         try
         {
-            worker.performEnhancement(op, spec, annotation);
+            worker.performEnhancement(op, spec, clazz);
         }
         catch (Exception ex)
         {
@@ -103,7 +103,7 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
 
         try
         {
-            worker.performEnhancement(op, spec, annotation, method);
+            worker.performEnhancement(op, spec, method);
         }
         catch (Exception ex)
         {

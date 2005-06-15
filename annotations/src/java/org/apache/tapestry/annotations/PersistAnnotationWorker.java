@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.annotations;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.apache.tapestry.enhance.EnhancementOperation;
@@ -34,9 +33,9 @@ import org.apache.tapestry.spec.PropertySpecification;
 public class PersistAnnotationWorker implements MethodAnnotationEnhancementWorker
 {
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Annotation annotation, Method method)
+            Method method)
     {
-        Persist p = (Persist) annotation;
+        Persist p = method.getAnnotation(Persist.class);
 
         String propertyName = AnnotationUtils.getPropertyName(method);
         String stategy = p.value();

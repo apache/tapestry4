@@ -14,10 +14,10 @@
 
 package org.apache.tapestry.annotations;
 
+import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectStateWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.InjectStateAnnotationWorker}.
@@ -42,21 +42,31 @@ public class TestInjectStateAnnotationWorker extends BaseAnnotationTestCase
 
         InjectStateWorker delegate = (InjectStateWorker) newMock(InjectStateWorker.class);
 
-        MockControl isc = newControl(InjectState.class);
-        InjectState is = (InjectState) isc.getMock();
-
-        is.value();
-        isc.setReturnValue("wilma");
-
-        delegate.injectState(op, "barney", "wilma");
+        delegate.injectState(op, "barneyASO", "barney");
 
         replayControls();
 
         InjectStateAnnotationWorker worker = new InjectStateAnnotationWorker(delegate);
 
-        worker.performEnhancement(op, spec, is, findMethod(Target.class, "getBarney"));
+        worker.performEnhancement(op, spec, findMethod(AnnotatedPage.class, "getBarney"));
 
         verifyControls();
     }
 
+    public void testConfigure()
+    {
+        ApplicationStateManager manager = (ApplicationStateManager) newMock(ApplicationStateManager.class);
+
+        InjectStateWorker delegate = (InjectStateWorker) newMock(InjectStateWorker.class);
+
+        delegate.setApplicationStateManager(manager);
+
+        replayControls();
+
+        InjectStateAnnotationWorker worker = new InjectStateAnnotationWorker(delegate);
+
+        worker.setApplicationStateManager(manager);
+
+        verifyControls();
+    }
 }

@@ -15,10 +15,8 @@
 package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.tapestry.bean.LightweightBeanInitializer;
 import org.apache.tapestry.enhance.EnhancementOperation;
@@ -42,18 +40,11 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
 
-        MockControl beanc = newControl(Bean.class);
-        Bean bean = (Bean) beanc.getMock();
-
-        Method m = findMethod(Target.class, "getMapBean");
-
-        trainBeanClass(beanc, bean, HashMap.class);
-        trainLifecycle(beanc, bean, Lifecycle.RENDER);
-        trainInitializer(beanc, bean, "");
+        Method m = findMethod(AnnotatedPage.class, "getMapBean");
 
         replayControls();
 
-        new BeanAnnotationWorker().performEnhancement(op, spec, bean, m);
+        new BeanAnnotationWorker().performEnhancement(op, spec, m);
 
         verifyControls();
 
@@ -61,93 +52,80 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
 
         assertEquals("mapBean", bs.getPropertyName());
         assertEquals(HashMap.class.getName(), bs.getClassName());
-        assertEquals(BeanLifecycle.RENDER, bs.getLifecycle());
+        assertEquals(BeanLifecycle.REQUEST, bs.getLifecycle());
         assertNull(bs.getLocation());
         assertNull(bs.getInitializers());
     }
 
-    public void testBeanClassNotSpecified()
+    private EnhancementOperation newOp(String propertyName, Class propertyType)
     {
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
+        op.getPropertyType(propertyName);
+        opc.setReturnValue(propertyType);
+
+        return op;
+    }
+
+    public void testBeanClassNotSpecified()
+    {
+        EnhancementOperation op = newOp("hashMapBean", HashMap.class);
         IComponentSpecification spec = new ComponentSpecification();
 
-        MockControl beanc = newControl(Bean.class);
-        Bean bean = (Bean) beanc.getMock();
-
-        Method m = findMethod(Target.class, "getArrayListBean");
-
-        trainBeanClass(beanc, bean, Object.class);
-
-        op.getPropertyType("arrayListBean");
-        opc.setReturnValue(ArrayList.class);
-
-        trainLifecycle(beanc, bean, Lifecycle.RENDER);
-        trainInitializer(beanc, bean, "");
+        Method m = findMethod(AnnotatedPage.class, "getHashMapBean");
 
         replayControls();
 
-        new BeanAnnotationWorker().performEnhancement(op, spec, bean, m);
+        new BeanAnnotationWorker().performEnhancement(op, spec, m);
 
         verifyControls();
 
-        IBeanSpecification bs = spec.getBeanSpecification("arrayListBean");
+        IBeanSpecification bs = spec.getBeanSpecification("hashMapBean");
 
-        assertEquals("arrayListBean", bs.getPropertyName());
-        assertEquals(ArrayList.class.getName(), bs.getClassName());
-        assertEquals(BeanLifecycle.RENDER, bs.getLifecycle());
+        assertEquals("hashMapBean", bs.getPropertyName());
+        assertEquals(HashMap.class.getName(), bs.getClassName());
+        assertEquals(BeanLifecycle.REQUEST, bs.getLifecycle());
         assertNull(bs.getLocation());
         assertNull(bs.getInitializers());
     }
 
     public void testInitializer()
     {
-        EnhancementOperation op = newOp();
+        EnhancementOperation op = newOp("beanWithInitializer", Target.class);
         IComponentSpecification spec = new ComponentSpecification();
 
-        MockControl beanc = newControl(Bean.class);
-        Bean bean = (Bean) beanc.getMock();
-
-        Method m = findMethod(Target.class, "getMapBean");
-
-        trainBeanClass(beanc, bean, HashMap.class);
-        trainLifecycle(beanc, bean, Lifecycle.PAGE);
-        trainInitializer(beanc, bean, "foo,bar=baz");
+        Method m = findMethod(AnnotatedPage.class, "getBeanWithInitializer");
 
         replayControls();
 
-        new BeanAnnotationWorker().performEnhancement(op, spec, bean, m);
+        new BeanAnnotationWorker().performEnhancement(op, spec, m);
 
         verifyControls();
 
-        IBeanSpecification bs = spec.getBeanSpecification("mapBean");
-
-        assertEquals("mapBean", bs.getPropertyName());
-        assertEquals(BeanLifecycle.PAGE, bs.getLifecycle());
-        assertNull(bs.getLocation());
+        IBeanSpecification bs = spec.getBeanSpecification("beanWithInitializer");
 
         List l = bs.getInitializers();
         LightweightBeanInitializer lbi = (LightweightBeanInitializer) l.get(0);
 
-        assertEquals("foo,bar=baz", lbi.getPropertyName());
+        assertEquals("intValue=10", lbi.getPropertyName());
     }
 
-    private void trainInitializer(MockControl control, Bean bean, String initializer)
+    public void testLifecycle()
     {
-        bean.initializer();
-        control.setReturnValue(initializer);
-    }
+        EnhancementOperation op = newOp();
+        IComponentSpecification spec = new ComponentSpecification();
 
-    private void trainLifecycle(MockControl control, Bean bean, Lifecycle lifecycle)
-    {
-        bean.lifecycle();
-        control.setReturnValue(lifecycle);
-    }
+        Method m = findMethod(AnnotatedPage.class, "getRenderLifecycleBean");
 
-    private void trainBeanClass(MockControl beanc, Bean bean, Class beanClass)
-    {
-        bean.value();
-        beanc.setReturnValue(beanClass);
+        replayControls();
+
+        new BeanAnnotationWorker().performEnhancement(op, spec, m);
+
+        verifyControls();
+
+        IBeanSpecification bs = spec.getBeanSpecification("renderLifecycleBean");
+
+        assertEquals(BeanLifecycle.RENDER, bs.getLifecycle());
     }
 }

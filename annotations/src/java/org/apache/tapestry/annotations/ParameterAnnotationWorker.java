@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.annotations;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.HiveMind;
@@ -35,9 +34,10 @@ public class ParameterAnnotationWorker implements MethodAnnotationEnhancementWor
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Annotation annotation, Method method)
+            Method method)
     {
-        Parameter parameter = (Parameter) annotation;
+        Parameter parameter = method.getAnnotation(Parameter.class);
+
         String propertyName = AnnotationUtils.getPropertyName(method);
 
         boolean deprecated = method.isAnnotationPresent(Deprecated.class);
@@ -53,8 +53,13 @@ public class ParameterAnnotationWorker implements MethodAnnotationEnhancementWor
 
         ps.setAliases(parameter.aliases());
         ps.setCache(parameter.cache());
-        ps.setDefaultBindingType(parameter.defaultBinding());
-        ps.setDefaultValue(parameter.defaultValue());
+
+        if (HiveMind.isNonBlank(parameter.defaultBinding()))
+            ps.setDefaultBindingType(parameter.defaultBinding());
+
+        if (HiveMind.isNonBlank(parameter.defaultValue()))
+            ps.setDefaultValue(parameter.defaultValue());
+
         ps.setDeprecated(deprecated);
         ps.setParameterName(parameterName);
         ps.setPropertyName(propertyName);

@@ -17,7 +17,6 @@ package org.apache.tapestry.annotations;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectComponentWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.InjectComponentAnnotationWorker}.
@@ -42,19 +41,13 @@ public class TestInjectComponentAnnotationWorker extends BaseAnnotationTestCase
 
         InjectComponentWorker delegate = (InjectComponentWorker) newMock(InjectComponentWorker.class);
 
-        MockControl icc = newControl(InjectComponent.class);
-        InjectComponent ic = (InjectComponent) icc.getMock();
-
-        ic.value();
-        icc.setReturnValue("wilma");
-
-        delegate.injectComponent(op, "wilma", "barney");
+        delegate.injectComponent(op, "fred", "fredField");
 
         replayControls();
 
         InjectComponentAnnotationWorker worker = new InjectComponentAnnotationWorker(delegate);
 
-        worker.performEnhancement(op, spec, ic, findMethod(Target.class, "getBarney"));
+        worker.performEnhancement(op, spec, findMethod(AnnotatedPage.class, "getFredField"));
 
         verifyControls();
     }

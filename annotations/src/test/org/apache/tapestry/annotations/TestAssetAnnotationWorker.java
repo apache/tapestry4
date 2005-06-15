@@ -35,23 +35,17 @@ public class TestAssetAnnotationWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
 
-        MockControl assetc = newControl(Asset.class);
-        Asset asset = (Asset) assetc.getMock();
-
-        asset.value();
-        assetc.setReturnValue("/foo/bar.gif");
-
         replayControls();
 
-        Method m = findMethod(Target.class, "getMyAsset");
+        Method m = findMethod(AnnotatedPage.class, "getGlobalStylesheet");
 
-        new AssetAnnotationWorker().performEnhancement(op, spec, asset, m);
+        new AssetAnnotationWorker().performEnhancement(op, spec, m);
 
         verifyControls();
 
-        IAssetSpecification as = spec.getAsset("myAsset");
-        assertEquals("/foo/bar.gif", as.getPath());
+        IAssetSpecification as = spec.getAsset("globalStylesheet");
+        assertEquals("/style/global.css", as.getPath());
         assertNull(as.getLocation());
-        assertEquals("myAsset", as.getPropertyName());
+        assertEquals("globalStylesheet", as.getPropertyName());
     }
 }

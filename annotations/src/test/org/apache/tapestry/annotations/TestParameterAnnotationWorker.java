@@ -48,11 +48,9 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
 
         IComponentSpecification spec = new ComponentSpecification();
 
-        Parameter annotation = m.getAnnotation(Parameter.class);
-
         replayControls();
 
-        new ParameterAnnotationWorker().performEnhancement(op, spec, annotation, m);
+        new ParameterAnnotationWorker().performEnhancement(op, spec, m);
 
         verifyControls();
 
@@ -65,8 +63,8 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
 
         assertListsEqual(new Object[] {}, ps.getAliasNames().toArray());
         assertEquals(true, ps.getCache());
-        assertEquals("", ps.getDefaultBindingType());
-        assertEquals("", ps.getDefaultValue());
+        assertEquals(null, ps.getDefaultBindingType());
+        assertEquals(null, ps.getDefaultValue());
         assertEquals(null, ps.getDescription());
         assertNull(ps.getLocation());
         assertEquals("simpleParameter", ps.getParameterName());

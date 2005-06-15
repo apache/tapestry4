@@ -75,9 +75,8 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         MethodAnnotationEnhancementWorker methodWorker = (MethodAnnotationEnhancementWorker) newMock(MethodAnnotationEnhancementWorker.class);
 
         Method m = findMethod(AnnotatedPage.class, "getInjectedObject");
-        Annotation a = m.getAnnotations()[0];
 
-        methodWorker.performEnhancement(op, spec, a, m);
+        methodWorker.performEnhancement(op, spec, m);
 
         replayControls();
 
@@ -97,9 +96,8 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         MethodAnnotationEnhancementWorker methodWorker = (MethodAnnotationEnhancementWorker) newMock(MethodAnnotationEnhancementWorker.class);
 
         Method m = findMethod(AnnotatedPageSubclass.class, "getInjectedObject");
-        Annotation a = m.getAnnotations()[0];
 
-        methodWorker.performEnhancement(op, spec, a, m);
+        methodWorker.performEnhancement(op, spec, m);
 
         replayControls();
 
@@ -124,9 +122,8 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
                 .getMock();
 
         Method m = findMethod(AnnotatedPage.class, "getInjectedObject");
-        Annotation a = m.getAnnotations()[0];
 
-        methodWorker.performEnhancement(op, spec, a, m);
+        methodWorker.performEnhancement(op, spec, m);
         methodWorkerc.setThrowable(t);
 
         log
@@ -160,9 +157,7 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
         ClassAnnotationEnhancementWorker classWorker = (ClassAnnotationEnhancementWorker) newMock(ClassAnnotationEnhancementWorker.class);
 
-        Annotation a = DeprecatedBean.class.getAnnotation(Deprecated.class);
-
-        classWorker.performEnhancement(op, spec, a);
+        classWorker.performEnhancement(op, spec, DeprecatedBean.class);
 
         replayControls();
 
@@ -186,9 +181,8 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
         Throwable t = new RuntimeException("Simulated failure.");
 
-        Annotation a = DeprecatedBean.class.getAnnotation(Deprecated.class);
 
-        classWorker.performEnhancement(op, spec, a);
+        classWorker.performEnhancement(op, spec, DeprecatedBean.class);
         classWorkerc.setThrowable(t);
 
         log

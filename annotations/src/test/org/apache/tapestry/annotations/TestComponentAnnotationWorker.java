@@ -42,14 +42,12 @@ public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
 
     private IComponentSpecification attempt(Class baseClass)
     {
-        EnhancementOperation op = newOp(baseClass);
+        EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
-
-        Annotation a = baseClass.getAnnotation(Component.class);
 
         replayControls();
 
-        new ComponentAnnotationWorker().performEnhancement(op, spec, a);
+        new ComponentAnnotationWorker().performEnhancement(op, spec, baseClass);
 
         verifyControls();
 

@@ -14,10 +14,11 @@
 
 package org.apache.tapestry.annotations;
 
+import java.lang.reflect.Method;
+
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectAssetWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.InjectAssetAnnotationWorker}.
@@ -41,19 +42,15 @@ public class TestInjectAssetAnnotationWorker extends BaseAnnotationTestCase
 
         InjectAssetWorker delegate = (InjectAssetWorker) newMock(InjectAssetWorker.class);
 
-        MockControl iac = newControl(InjectAsset.class);
-        InjectAsset ia = (InjectAsset) iac.getMock();
+        Method m = findMethod(AnnotatedPage.class, "getStylesheetAsset");
 
-        ia.value();
-        iac.setReturnValue("wilma");
-
-        delegate.injectAsset(op, "wilma", "barney");
+        delegate.injectAsset(op, "stylesheet", "stylesheetAsset");
 
         replayControls();
 
         InjectAssetAnnotationWorker worker = new InjectAssetAnnotationWorker(delegate);
 
-        worker.performEnhancement(op, spec, ia, findMethod(Target.class, "getBarney"));
+        worker.performEnhancement(op, spec, m);
 
         verifyControls();
     }

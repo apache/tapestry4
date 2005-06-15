@@ -22,9 +22,6 @@
 <component-specification class="org.apache.tapestry.workbench.table.LocaleList" 
 	allow-body="no" allow-informal-parameters="yes">
 
-	<parameter name="localeSelectionListener"
-		required="yes"/>
-
     <bean name="rowClass" class="org.apache.tapestry.bean.EvenOdd"/>
 
     
