@@ -18,6 +18,8 @@
 <project name="Tapestry Workbench" default="war">
   
   <property name="module.name" value="workbench"/>
+  <property name="module.javac.target" value="1.5"/>
+  <property name="module.javac.source" value="1.5"/>  
   <property name="javadoc.package" value="org.apache.tapestry.workbench.*"/>
     
   <property name="root.dir" value="../.."/>
