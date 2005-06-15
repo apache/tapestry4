@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.annotations;
 
-import java.lang.annotation.Annotation;
-
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -32,9 +30,9 @@ public class ComponentAnnotationWorker implements ClassAnnotationEnhancementWork
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Annotation annotation)
+            Class baseClass)
     {
-        Component component = (Component) annotation;
+        Component component = (Component) baseClass.getAnnotation(Component.class);
 
         spec.setAllowBody(component.allowBody());
         spec.setAllowInformalParameters(component.allowInformalParameters());
@@ -43,7 +41,7 @@ public class ComponentAnnotationWorker implements ClassAnnotationEnhancementWork
         for (String name : names)
             spec.addReservedParameterName(name);
 
-        if (op.getBaseClass().isAnnotationPresent(Deprecated.class))
+        if (baseClass.isAnnotationPresent(Deprecated.class))
             spec.setDeprecated(true);
     }
 

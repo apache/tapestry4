@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.annotations;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.apache.tapestry.enhance.EnhancementOperation;
@@ -34,9 +33,9 @@ public class AssetAnnotationWorker implements MethodAnnotationEnhancementWorker
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Annotation annotation, Method method)
+            Method method)
     {
-        Asset asset = (Asset) annotation;
+        Asset asset = method.getAnnotation(Asset.class);
         String propertyName = AnnotationUtils.getPropertyName(method);
 
         IAssetSpecification as = new AssetSpecification();

@@ -97,10 +97,16 @@
   
   <contribution configuration-id="MethodWorkers">
     
+    <!-- These instantiate the corresponding enhancement worker, and delegate to it. -->
     <worker annotation="InjectObject" object="service:InjectObjectAnnotationWorker"/>
     <worker annotation="InjectComponent" object="instance:InjectComponentAnnotationWorker"/>
-    <worker annotation="InjectState" object="instance:InjectStateAnnotationWorker"/>
+    <worker annotation="InjectState" object="service:InjectStateAnnotationWorker"/>
     <worker annotation="InjectAsset" object="instance:InjectAssetAnnotationWorker"/>
+    
+    <!-- These update the component specification with new sub-elements. Later, the 
+         existing annotation workers perform the work, as if the sub-elements were
+         specified in the XML. -->
+         
     <worker annotation="Persist" object="instance:PersistAnnotationWorker"/>
     <worker annotation="Bean" object="instance:BeanAnnotationWorker"/>
     <worker annotation="Asset" object="instance:AssetAnnotationWorker"/>
@@ -118,6 +124,17 @@
       </construct>
     </invoke-factory>
     
+  </service-point>
+  
+  <service-point id="InjectStateAnnotationWorker" interface="MethodAnnotationEnhancementWorker">
+    
+    Injects an application state object, based on the InjectState annotation.
+    
+    <invoke-factory>
+      <construct class="InjectStateAnnotationWorker">
+        <set-service property="applicationStateManager" service-id="tapestry.state.ApplicationStateManager"/> 
+      </construct>
+    </invoke-factory>
   </service-point>
   
 </module>

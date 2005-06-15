@@ -56,19 +56,13 @@ public class TestInjectObjectAnnotationWorker extends BaseAnnotationTestCase
 
         verifyControls();
 
-        MockControl ioc = newControl(InjectObject.class);
-        InjectObject io = (InjectObject) ioc.getMock();
+        Method m = findMethod(AnnotatedPage.class, "getInjectedObject");
 
-        io.value();
-        ioc.setReturnValue("barney");
-
-        Method m = findMethod(Target.class, "getStringValue");
-
-        delegate.injectObject(op, "barney", "stringValue", null);
+        delegate.injectObject(op, "barney", "injectedObject", null);
 
         replayControls();
 
-        worker.performEnhancement(op, spec, io, m);
+        worker.performEnhancement(op, spec, m);
 
         verifyControls();
     }

@@ -44,9 +44,9 @@ public abstract class AnnotatedPage extends BasePage
     public abstract Map getMapBean();
 
     @Bean(initializer = "intValue=10")
-    public abstract Target getTarget();
+    public abstract Target getBeanWithInitializer();
 
-    @Bean(lifecycle = Lifecycle.RENDER)
+    @Bean(value=HashMap.class, lifecycle = Lifecycle.RENDER)
     public abstract Map getRenderLifecycleBean();
 
     @Persist
@@ -61,7 +61,7 @@ public abstract class AnnotatedPage extends BasePage
     @InjectComponent("fred")
     public abstract TextField getFredField();
 
-    @InjectState("barney")
+    @InjectState("barneyASO")
     public abstract Map getBarney();
 
     @Parameter

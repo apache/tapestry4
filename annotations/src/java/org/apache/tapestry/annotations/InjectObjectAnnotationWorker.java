@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.annotations;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.apache.tapestry.enhance.EnhancementOperation;
@@ -47,15 +46,15 @@ public class InjectObjectAnnotationWorker implements MethodAnnotationEnhancement
     }
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Annotation annotation, Method method)
+            Method method)
     {
-        InjectObject io = (InjectObject) annotation;
+        InjectObject io = method.getAnnotation(InjectObject.class);
 
         String object = io.value();
 
-        String name = AnnotationUtils.getPropertyName(method);
+        String propertyName = AnnotationUtils.getPropertyName(method);
 
-        _delegate.injectObject(op, object, name, null);
+        _delegate.injectObject(op, object, propertyName, null);
     }
 
     public void setProvider(InjectedValueProvider provider)

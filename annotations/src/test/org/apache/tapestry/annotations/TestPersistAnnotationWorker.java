@@ -35,22 +35,17 @@ public class TestPersistAnnotationWorker extends TestAnnotationEnhancementWorker
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
 
-        MockControl pc = newControl(Persist.class);
-        Persist p = (Persist) pc.getMock();
-
-        p.value();
-        pc.setReturnValue("client");
-
         replayControls();
 
-        Method m = findMethod(Target.class, "getBarney");
+        Method m = findMethod(AnnotatedPage.class, "getClientPersistentProperty");
 
-        new PersistAnnotationWorker().performEnhancement(op, spec, p, m);
+        new PersistAnnotationWorker().performEnhancement(op, spec, m);
 
         verifyControls();
 
-        IPropertySpecification ps = spec.getPropertySpecification("barney");
+        IPropertySpecification ps = spec.getPropertySpecification("clientPersistentProperty");
 
         assertEquals("client", ps.getPersistence());
+        assertEquals("clientPersistentProperty", ps.getName());
     }
 }

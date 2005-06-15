@@ -39,14 +39,14 @@ public class InjectStateWorker implements InjectEnhancementWorker
 
     public void performEnhancement(EnhancementOperation op, InjectSpecification spec)
     {
-        injectState(op, spec.getProperty(), spec.getObject());
+        injectState(op, spec.getObject(), spec.getProperty());
     }
 
-    public void injectState(EnhancementOperation op, String propertyName, String objectName)
+    public void injectState(EnhancementOperation op, String objectName, String propertyName)
     {
         Defense.notNull(op, "op");
-        Defense.notNull(propertyName, "propertyName");
         Defense.notNull(objectName, "objectName");
+        Defense.notNull(propertyName, "propertyName");
 
         Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, null);
         String fieldName = "_$" + propertyName;

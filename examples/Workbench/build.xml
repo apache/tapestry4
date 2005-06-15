@@ -30,6 +30,7 @@
   <target name="compile-dependencies">
     <project-dependency artifact="tapestry"            use="run"/>
     <project-dependency artifact="tapestry-contrib"    use="run"/>
+    <project-dependency artifact="tapestry-annotations" use="run"/>
 
     <ibiblio-dependency artifact="bsf"                version="${bsf.version}"      group="bsf"               use="run"/>
     <ibiblio-dependency artifact="commons-codec"      version="${codec.version}"    group="commons-codec"     use="run"/>

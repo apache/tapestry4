@@ -20,7 +20,9 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor;
 
 /**
@@ -28,6 +30,10 @@ import org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor;
  */
 public abstract class LocaleList extends BaseComponent
 {
+
+    @Parameter(required = true)
+    public abstract ILocaleSelectionListener getLocaleSelectionListener();
+
     // immutable values
     private IPrimaryKeyConvertor m_objLocaleConvertor;
 
@@ -94,8 +100,8 @@ public abstract class LocaleList extends BaseComponent
         Locale[] arrLocales = new Locale[setSelectedLocales.size()];
         setSelectedLocales.toArray(arrLocales);
 
-        ILocaleSelectionListener objListener = (ILocaleSelectionListener) getBinding(
-                "localeSelectionListener").getObject();
+        ILocaleSelectionListener objListener = getLocaleSelectionListener();
+
         objListener.localesSelected(arrLocales);
 
         // clear selection

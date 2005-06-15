@@ -14,9 +14,9 @@
 
 package org.apache.tapestry.annotations;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectStateWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -44,13 +44,17 @@ public class InjectStateAnnotationWorker implements MethodAnnotationEnhancementW
     }
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Annotation annotation, Method method)
+            Method method)
     {
-        InjectState is = (InjectState) annotation;
+        InjectState is = method.getAnnotation(InjectState.class);
 
         String propertyName = AnnotationUtils.getPropertyName(method);
 
-        _delegate.injectState(op, propertyName, is.value());
+        _delegate.injectState(op, is.value(), propertyName);
     }
 
+    public void setApplicationStateManager(ApplicationStateManager applicationStateManager)
+    {
+        _delegate.setApplicationStateManager(applicationStateManager);
+    }
 }

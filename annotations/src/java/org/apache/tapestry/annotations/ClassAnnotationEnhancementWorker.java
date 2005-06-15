@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.annotations;
 
-import java.lang.annotation.Annotation;
-
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -35,11 +33,11 @@ public interface ClassAnnotationEnhancementWorker
      *            the enhancement operaration
      * @param spec
      *            the specification of the component for which a class is being enhanced
-     * @param annotation
-     *            the annotation that will guide the enhancement
+     * @param baseClass
+     *            the class containing the annotation
      */
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Annotation annotation);
+            Class baseClass);
 
 }
