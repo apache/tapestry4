@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd">
+<document>
+  <header>
+    <title>Library Dependencies</title>
+  </header>
+  
+<body>
+<p>
+  Tapestry is a quite comprehensive framework, but it gets a lot of support from other
+  open-source frameworks.  The following libraries, in addition to the Tapestry libraries
+  themselves, must be in the web application classpath (typically, by copying them into the
+  WEB-INF/libs directory of the WAR file).
+</p>
+
+<p>
+The Ant build script for Tapestry will automatically download dependencies.
+</p>
+
+<table>
+  <tr>
+    <th>Library</th>
+    <th>Version</th>
+    <th>License</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>bsf</td> <td>2.3.0</td> <td>ASL</td>
+    <td>
+  Bean Script Framework.      Used to support creation of listeners as scripts in Jython or other
+      BSF-supported languages.
+    </td>
+  </tr>
+    <tr>
+    <td>commons-codec</td>
+    <td>1.3</td> <td>ASL</td>
+    <td>
+      Used to encode and decode URL information.
+    </td>
+  </tr>
+  
+  <tr>
+    <td>commons-fileupload</td> <td>1.0</td> <td>ASL</td>
+    <td>File upload support.</td>
+  </tr>
+  
+  <tr>
+    <td>
+      commons-logging
+    </td>
+    <td>
+      1.0.4
+    </td>
+    <td>
+      ASL
+    </td>
+    <td>
+      Logging framework that acts as a wrapper around JDK 1.4 logging, Log4J or others.
+    </td>
+  </tr>
+  
+  <tr>
+    <td>
+      hivemind
+    </td>
+    <td>
+      1.1
+    </td>
+    <td>
+      ASL
+    </td>
+    <td>
+      Services and configuration microkernel; provides service infrastructure for the framework.
+    </td>
+  </tr>
+  
+  <tr>
+    <td>hivemind-lib</td> <td>1.1</td> <td>ASL</td>
+    <td>
+      Library of additional HiveMind services.
+    </td>
+  </tr>
+  
+  <tr>
+    <td>javassist</td> <td>3.0</td> <td>MPL</td>
+    <td>
+      Runtime bytecode enhancement library.
+    </td>
+  </tr>
+  
+  <tr>
+    <td>ognl</td> <td>2.6.7</td> <td>BSD</td>
+    <td>Object Graph Navigation Langage; expression language used throughout Tapestry.</td>
+  </tr>
+  
+  <tr>
+    <td>oro</td> <td>2.0.8</td> <td>ASL</td>
+    <td>Regular expression matching library.</td>
+  </tr>
+ 
+  
+</table>
+
+<p>
+Tapestry is expressly designed to be source compatible with <strong>JDK 1.3</strong> and <strong>Servlet API 2.2</strong>.  It does use a few features
+of Servlet API 2.3 if available. 
+</p>
+
+<p>
+  The <link href="tapestry-annotations/index.html">JDK 1.5 annotation support</link> does require JDK 1.5 to run.  The Workbench 
+  example makes use of some of the annnotations, so it also requires JDK 1.5 to operate.
+</p>
+
+</body>  
+  
+</document>

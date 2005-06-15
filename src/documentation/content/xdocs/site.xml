@@ -36,6 +36,8 @@
       <changes label="Change Log" href="changes.html"/>
       <wiki label="Wiki" href="http://wiki.apache.org/jakarta-tapestry/"/>
       <dev label="Developers" href="dev.html"/>
+      <dependencies label="Dependencies" href="dependencies.html"/>
+      
     </project>
     
     <QuickStart label="Quick Start" tab="quick-start" href="QuickStart/">
