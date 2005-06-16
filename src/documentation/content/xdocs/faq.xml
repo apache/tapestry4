@@ -154,7 +154,7 @@ is a Tapestry plugin
               allow you to modularize your application across multiple folders in a more traditional manner.
 
             </answer>
-        </faq>\
+        </faq>
         <faq>
             <question>
                 What is the <link href="tapestry/ComponentReference/Script.html">Script</link> component? Why is it needed and how does it work?
