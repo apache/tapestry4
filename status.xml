@@ -74,7 +74,7 @@
        <action type="add" dev="HLS">Add a command chain for resolving component classes.</action>
        <action type="update" dev="HLS">Cache specification provided by the specification resolver delegate.</action>
        <action type="fix" dev="HLS" fixes-bug="TAPESTRY-342">@Parameter does not work for required</action>
-       <action type="add" dev="HLS">Add a page explicitly discussing JDK and library dependencies.</action>
+       <action type="add" dev="HLS" fixes-bug="TAPESTRY-96">Add a page explicitly discussing JDK and library dependencies.</action>
        <action type="fix" dev="HLS" fixes-bug="TAPESTRY-337">Incorrect link to Spring integration docs in FAQ</action>
        <action type="fix" dev="HLS" fixes-bug="TAPESTRY-304">Non thread safe documentation example</action>
        <action type="fix" dev="HLS" fixes-bug="TAPESTRY-261">ListEditMap can return null from getDeletedKeys()</action>
@@ -116,7 +116,8 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-259"> Validation error renderers should implement toString. </action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-246"> Roll IValidationDelegate change, adding getCurrentFieldTracking(), forward from 3.0.2 into 4.0.</action>
       <action type="add" dev="HLS" fixes-bug="TAPESTRY-210"> Add methods to IMarkupWriter that allow filtering to be specified using a parameter. </action>
-      <action type="update" dev="HLS"> Change FieldLabel to pre-render its associated field, so that decorations stay synchronized, even in a loop. </action>
+      <action type="update" dev="HLS" fixes-bug="TAPESTRY-108"> Change FieldLabel to pre-render its associated field, so that decorations stay synchronized, even in a loop. </action>
+      <action type="add" dev="HLS" fixes-bug="TAPESTRY-181">Add PageAttachListener event interface.</action>
     </release>
     <release version="3.0.3" date="Mar 26 2005">
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fix security flaw in asset service. </action>
