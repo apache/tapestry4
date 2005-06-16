@@ -45,7 +45,8 @@ import org.apache.tapestry.util.IdAllocator;
 
 /**
  * Implementation of {@link org.apache.tapestry.enhance.EnhancementOperation}that knows how to
- * provide a {@link org.apache.tapestry.services.ComponentConstructor}from any enhancements.
+ * collect class changes from enhancements. The method {@link #getConstructor()} finalizes the
+ * enhancement into a {@link org.apache.tapestry.services.ComponentConstructor}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -409,7 +410,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         Object[] params = _constructorArguments.toArray();
 
-        return new ComponentConstructorImpl(c, params, _specification.getLocation());
+        return new ComponentConstructorImpl(c, params, _classFab.toString(), _specification
+                .getLocation());
     }
 
     void finalizeEnhancedClass()

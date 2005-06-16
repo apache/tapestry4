@@ -548,7 +548,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         ComponentConstructor cc = new ComponentConstructorImpl(BaseComponent.class
                 .getConstructors()[0], new Object[]
-        { "unexpected" }, l);
+        { "unexpected" }, "<classfab>", l);
 
         try
         {

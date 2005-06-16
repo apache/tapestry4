@@ -18,6 +18,7 @@ import java.lang.reflect.Constructor;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.services.ComponentConstructor;
 
 /**
@@ -32,19 +33,29 @@ public class ComponentConstructorImpl implements ComponentConstructor
 
     private Object[] _parameters;
 
+    private String _classFabString;
+
     /**
      * News instance of this class.
      * 
-     * @param c
+     * @param constructor
      *            the constructor method to invoke
      * @param parameters
      *            the parameters to pass to the constructor. These are retained, not copied.
+     * @param classFabString
+     *            a string representing the generated class information, used for exception
+     *            reporting
+     * @param location
+     *            the location, used for exception reporting
      */
 
-    public ComponentConstructorImpl(Constructor c, Object[] parameters, Location location)
+    public ComponentConstructorImpl(Constructor constructor, Object[] parameters,
+            String classFabString, Location location)
     {
-        _constructor = c;
+        Defense.notNull(constructor, "constructor");
+        _constructor = constructor;
         _parameters = parameters;
+        _classFabString = classFabString;
         _location = location;
     }
 
@@ -57,12 +68,21 @@ public class ComponentConstructorImpl implements ComponentConstructor
     {
         try
         {
-            return _constructor.newInstance(_parameters);
+            Object result = _constructor.newInstance(_parameters);
+
+            // Unlikely to generate an error if we can get through it once, so it's
+            // safe to release the big classFabString
+
+            _classFabString = null;
+
+            return result;
         }
         catch (Throwable ex)
         {
             throw new ApplicationRuntimeException(EnhanceMessages.instantiationFailure(
                     _constructor,
+                    _parameters,
+                    _classFabString,
                     ex), null, _location, ex);
         }
     }
