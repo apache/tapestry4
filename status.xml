@@ -77,6 +77,7 @@
        <action type="add" dev="HLS">Add a page explicitly discussing JDK and library dependencies.</action>
        <action type="fix" dev="HLS" fixes-bug="TAPESTRY-337">Incorrect link to Spring integration docs in FAQ</action>
        <action type="fix" dev="HLS" fixes-bug="TAPESTRY-304">Non thread safe documentation example</action>
+       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-261">ListEditMap can return null from getDeletedKeys()</action>
     </release>
     <release version="4.0-alpha-3" date="May 16 2005">
       <action type="add" dev="HLS">Add initial support for the validator: binding prefix.</action>

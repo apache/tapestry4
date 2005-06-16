@@ -15,6 +15,7 @@
 package org.apache.tapestry.form;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -191,7 +192,8 @@ public class ListEditMap
     }
 
     /**
-     * Returns the deleted keys in an unspecified order. May return null if no keys are deleted.
+     * Returns the deleted keys in an unspecified order. Returns a List, which may be empty if no
+     * keys have been deleted.
      */
 
     public List getDeletedKeys()
@@ -219,10 +221,18 @@ public class ListEditMap
         _deletedKeys = null;
     }
 
+    /**
+     * Invoked to convert a set into a List.
+     * 
+     * @param set
+     *            a set (which may be empty or null)
+     * @return a list (possibly empty) of the items in the set
+     */
+
     protected List convertSetToList(Set set)
     {
         if (Tapestry.isEmpty(set))
-            return null;
+            return Collections.EMPTY_LIST;
 
         return new ArrayList(set);
     }

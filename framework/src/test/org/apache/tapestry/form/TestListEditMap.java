@@ -52,7 +52,7 @@ public class TestListEditMap extends TapestryTestCase
         checkList("all values", new Object[]
         { BeanLifecycle.REQUEST, BeanLifecycle.PAGE, BeanLifecycle.RENDER }, m.getValues());
 
-        assertNull(m.getDeletedKeys());
+        assertTrue(m.getDeletedKeys().isEmpty());
     }
 
     public void testGet()
@@ -160,7 +160,7 @@ public class TestListEditMap extends TapestryTestCase
         checkList("keys after purge", new Object[]
         { "request", "page" }, m.getKeys());
 
-        assertNull(m.getDeletedKeys());
+        assertTrue(m.getDeletedKeys().isEmpty());
 
         m.purgeDeletedKeys();
 
