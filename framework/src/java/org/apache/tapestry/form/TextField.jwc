@@ -22,38 +22,48 @@
 <component-specification class="org.apache.tapestry.form.TextField" allow-body="no">
 
   <description>
-  A text input field.
+    A text input field.
   </description>
+
+  <bean name="stringTranslator" class="org.apache.tapestry.form.translator.StringTranslator"></bean>
   
   <parameter name="value" required="yes" default-binding="ognl">
-      <description>
-          The text string to be read and updated.
-      </description>
+    <description>
+      The text string to be read and updated.
+    </description>
   </parameter>
   
   <parameter name="disabled" default-binding="ognl">
-      <description>
+    <description>
       If true, then the disabled attribute will be written on render, and the
       TextField will not update its value parameter when the form is submitted.
-      </description>
+    </description>
   </parameter>
 
   <parameter name="displayName" default-binding="literal">
-      <description>
-          The name of the field, which may be used by a FieldLabel.
-      </description>
+    <description>
+      The name of the field, which may be used by a FieldLabel.
+    </description>
   </parameter>
   
     
   <parameter name="hidden" default-binding="ognl">
-      <description>
-          If true, then the TextField will render itself as a password field (that hides the
-          content entered by the user).
-      </description>
+    <description>
+      If true, then the TextField will render itself as a password field (that hides the
+      content entered by the user).
+    </description>
   </parameter>
+  
+  <parameter name="required" default-binding="ognl"/>
+  <parameter name="requiredMessage" default-binding="literal"/>
+  <parameter name="translator" default-binding="ognl" default-value="bean:stringTranslator"/>
+  <parameter name="validators" default-binding="ognl"/>
   
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>
-  
+
+  <inject property="requirableFieldSupport" object="service:tapestry.form.RequirableFieldSupport"/>
+  <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
+    
 </component-specification>

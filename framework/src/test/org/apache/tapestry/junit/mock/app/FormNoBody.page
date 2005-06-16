@@ -19,31 +19,12 @@
   "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
 	
-<page-specification class="org.apache.tapestry.junit.mock.app.ValidFieldNoBody">
+<page-specification>
 
-  <bean name="delegate" class="org.apache.tapestry.valid.ValidationDelegate"/>
-
-  <bean name="intValidator" lifecycle="render" class="org.apache.tapestry.valid.NumberValidator">
-  	<set-property name="required" expression="true"/>
-  	<set-property name="clientScriptingEnabled" expression="true"/>
-  </bean>
-  
   <component id="Shell" type="Shell">
-  	<static-binding name="title">ValidField w/o Body Test Page</static-binding>
+    <static-binding name="title">Form w/o Body Test Page</static-binding>
   </component>
 
-  <component id="form" type="Form">
-  	<binding name="delegate" expression="beans.delegate"/>
-  </component>
-  
-
-  <component id="inputNumber" type="ValidField">
-    <binding name="validator" expression="beans.intValidator"/>
-    <binding name="value" expression="intValue"/>
-    <static-binding name="displayName">Integer Field</static-binding>
-    <static-binding name="type">Integer</static-binding>
-  </component>  
-  
-  
+  <component id="form" type="Form"></component>
 
 </page-specification>	

@@ -34,10 +34,15 @@
   </parameter>
 
   <parameter name="disabled" default-binding="ognl"/>
+
+  <parameter name="displayName" default-binding="literal"/>
+  <parameter name="required" default-binding="ognl"/>
+  <parameter name="requiredMessage" default-binding="literal"/>
  
   <reserved-parameter name="type"/>
   <reserved-parameter name="name"/>
   
   <inject property="decoder" object="service:tapestry.multipart.MultipartDecoder"/>
+  <inject property="requirableFieldSupport" object="service:tapestry.form.RequirableFieldSupport"/>
   
 </component-specification>

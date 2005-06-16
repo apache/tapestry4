@@ -56,83 +56,86 @@ public abstract class LinkSubmit extends AbstractSubmit
         return value != null && value.equals(name);
 	}
     
-	protected void writeTag(IMarkupWriter writer, IRequestCycle cycle, String name)
-	{
-		boolean disabled = isDisabled();
-		
-		IMarkupWriter wrappedWriter;
-		
-		if (!disabled)
-		{
-	        PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(
-	                cycle,
-	                this);
-	
-	        // make sure the submit function is on the page (once)
-	        if (cycle.getAttribute(ATTRIBUTE_FUNCTION_NAME) == null)
-	        {
-	            pageRenderSupport
-	                    .addBodyScript("function submitLink(form, elementId) { form._linkSubmit.value = elementId; if (form.onsubmit == null || form.onsubmit()) form.submit(); }");
-	            cycle.setAttribute(ATTRIBUTE_FUNCTION_NAME, this);
-	        }
-	
-	        IForm form = getForm(cycle);
-	        String formName = form.getName();
+	/**
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        boolean disabled = isDisabled();
+        
+        IMarkupWriter wrappedWriter;
+        
+        if (!disabled)
+        {
+            PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(
+                    cycle,
+                    this);
+    
+            // make sure the submit function is on the page (once)
+            if (cycle.getAttribute(ATTRIBUTE_FUNCTION_NAME) == null)
+            {
+                pageRenderSupport
+                        .addBodyScript("function submitLink(form, elementId) { form._linkSubmit.value = elementId; if (form.onsubmit == null || form.onsubmit()) form.submit(); }");
+                cycle.setAttribute(ATTRIBUTE_FUNCTION_NAME, this);
+            }
+    
+            IForm form = getForm();
+            String formName = form.getName();
 
             // one hidden field per form:
-	        String formHiddenFieldAttributeName = ATTRIBUTE_FUNCTION_NAME + formName;
-	        if (cycle.getAttribute(formHiddenFieldAttributeName) == null)
-	        {
-	            writer.beginEmpty("input");
-	            writer.attribute("type", "hidden");
-	            writer.attribute("name", "_linkSubmit");
-	            cycle.setAttribute(formHiddenFieldAttributeName, this);
-	        }
-		    
-		    writer.begin("a");
-		    writer.attribute("href", "javascript:submitLink(document." + formName + ",\"" + name
-		            + "\");");
-		
-		    // Allow the wrapped components a chance to render.
-		    // Along the way, they may interact with this component
-		    // and cause the name variable to get set.
-		    wrappedWriter = writer.getNestedWriter();
-		}
-		else
-			wrappedWriter = writer;
+            String formHiddenFieldAttributeName = ATTRIBUTE_FUNCTION_NAME + formName;
+            if (cycle.getAttribute(formHiddenFieldAttributeName) == null)
+            {
+                writer.beginEmpty("input");
+                writer.attribute("type", "hidden");
+                writer.attribute("name", "_linkSubmit");
+                cycle.setAttribute(formHiddenFieldAttributeName, this);
+            }
+            
+            writer.begin("a");
+            writer.attribute("href", "javascript:submitLink(document." + formName + ",\"" + getName()
+                    + "\");");
+        
+            // Allow the wrapped components a chance to render.
+            // Along the way, they may interact with this component
+            // and cause the name variable to get set.
+            wrappedWriter = writer.getNestedWriter();
+        }
+        else
+            wrappedWriter = writer;
 
         renderBody(wrappedWriter, cycle);
 
-		if (!disabled)
-		{
-		    // Generate additional attributes from informal parameters.		
-		    renderInformalParameters(writer, cycle);
-		
-		    // Dump in HTML provided by wrapped components
-		    wrappedWriter.close();
-		
-		    // Close the <a> tag
-		    writer.end();
-		}
+        if (!disabled)
+        {
+            // Generate additional attributes from informal parameters.     
+            renderInformalParameters(writer, cycle);
+        
+            // Dump in HTML provided by wrapped components
+            wrappedWriter.close();
+        
+            // Close the <a> tag
+            writer.end();
+        }
+    }
 
-	}
-	
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    /**
+     * @see org.apache.tapestry.AbstractComponent#prepareForRender(org.apache.tapestry.IRequestCycle)
+     */
+    protected void prepareForRender(IRequestCycle cycle)
     {
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
             throw new ApplicationRuntimeException(Tapestry.getMessage("LinkSubmit.may-not-nest"),
                     this, null, null);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
-
-        try 
-		{
-        	super.renderComponent(writer, cycle);
-		}
-        finally
-		{
-            cycle.removeAttribute(ATTRIBUTE_NAME);        	
-		}
     }
 
+    /**
+     * @see org.apache.tapestry.AbstractComponent#cleanupAfterRender(org.apache.tapestry.IRequestCycle)
+     */
+    protected void cleanupAfterRender(IRequestCycle cycle)
+    {
+        cycle.removeAttribute(ATTRIBUTE_NAME);          
+    }
 }

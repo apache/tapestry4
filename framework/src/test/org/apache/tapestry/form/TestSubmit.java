@@ -41,7 +41,6 @@ public class TestSubmit extends BaseFormComponentTest
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class);
 
-        IValidationDelegate delegate = newDelegate();
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
         MockControl cyclec = newControl(IRequestCycle.class);
@@ -49,11 +48,6 @@ public class TestSubmit extends BaseFormComponentTest
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cyclec, cycle, form);
-
-        form.getDelegate();
-        formc.setReturnValue(delegate);
-
-        delegate.setFormComponent(submit);
 
         trainWasPrerendered(formc, form, writer, submit, true);
 
@@ -69,7 +63,8 @@ public class TestSubmit extends BaseFormComponentTest
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class);
 
-        IValidationDelegate delegate = newDelegate();
+        MockControl delegatec = newControl(IValidationDelegate.class);
+        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
         MockControl cyclec = newControl(IRequestCycle.class);
@@ -78,22 +73,26 @@ public class TestSubmit extends BaseFormComponentTest
 
         trainGetForm(cyclec, cycle, form);
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
-
-        delegate.setFormComponent(submit);
-
         trainWasPrerendered(formc, form, writer, submit, false);
 
-        trainIsRewinding(formc, form, false);
+        trainGetDelegate(formc, form, delegate);
+
+        delegate.setFormComponent(submit);
+        delegatec.setVoidCallable();
 
         trainGetElementId(formc, form, submit, "fred");
 
+        trainIsRewinding(formc, form, false);
+
+        trainIsRewinding(cyclec, cycle, false);
+        
         writer.beginEmpty("input");
         writer.attribute("type", "submit");
         writer.attribute("name", "fred");
         writer.closeTag();
 
+        trainIsInError(delegatec, delegate, false);
+        
         replayControls();
 
         submit.renderComponent(writer, cycle);
@@ -107,7 +106,8 @@ public class TestSubmit extends BaseFormComponentTest
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
         { "disabled", Boolean.TRUE });
 
-        IValidationDelegate delegate = newDelegate();
+        MockControl delegatec = newControl(IValidationDelegate.class);
+        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
         MockControl cyclec = newControl(IRequestCycle.class);
@@ -116,23 +116,27 @@ public class TestSubmit extends BaseFormComponentTest
 
         trainGetForm(cyclec, cycle, form);
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
-
-        delegate.setFormComponent(submit);
-
         trainWasPrerendered(formc, form, writer, submit, false);
 
-        trainIsRewinding(formc, form, false);
+        trainGetDelegate(formc, form, delegate);
+
+        delegate.setFormComponent(submit);
+        delegatec.setVoidCallable();
 
         trainGetElementId(formc, form, submit, "fred");
 
+        trainIsRewinding(formc, form, false);
+
+        trainIsRewinding(cyclec, cycle, false);
+        
         writer.beginEmpty("input");
         writer.attribute("type", "submit");
         writer.attribute("name", "fred");
         writer.attribute("disabled", "disabled");
         writer.closeTag();
 
+        trainIsInError(delegatec, delegate, false);
+        
         replayControls();
 
         submit.renderComponent(writer, cycle);
@@ -146,7 +150,8 @@ public class TestSubmit extends BaseFormComponentTest
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
         { "label", "flintstone" });
 
-        IValidationDelegate delegate = newDelegate();
+        MockControl delegatec = newControl(IValidationDelegate.class);
+        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
         MockControl cyclec = newControl(IRequestCycle.class);
@@ -155,23 +160,27 @@ public class TestSubmit extends BaseFormComponentTest
 
         trainGetForm(cyclec, cycle, form);
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
-
-        delegate.setFormComponent(submit);
-
         trainWasPrerendered(formc, form, writer, submit, false);
 
-        trainIsRewinding(formc, form, false);
+        trainGetDelegate(formc, form, delegate);
+
+        delegate.setFormComponent(submit);
+        delegatec.setVoidCallable();
 
         trainGetElementId(formc, form, submit, "fred");
 
+        trainIsRewinding(formc, form, false);
+
+        trainIsRewinding(cyclec, cycle, false);
+        
         writer.beginEmpty("input");
         writer.attribute("type", "submit");
         writer.attribute("name", "fred");
         writer.attribute("value", "flintstone");
         writer.closeTag();
 
+        trainIsInError(delegatec, delegate, false);
+        
         replayControls();
 
         submit.renderComponent(writer, cycle);
@@ -194,16 +203,49 @@ public class TestSubmit extends BaseFormComponentTest
 
         trainGetForm(cyclec, cycle, form);
 
+        trainWasPrerendered(formc, form, writer, submit, false);
+
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainGetElementId(formc, form, submit, "fred");
 
         trainIsRewinding(formc, form, true);
 
+        replayControls();
+
+        submit.renderComponent(writer, cycle);
+
+        verifyControls();
+    }
+
+    public void testRewindNotForm()
+    {
+        Creator creator = new Creator();
+        Submit submit = (Submit) creator.newInstance(Submit.class);
+
+        IValidationDelegate delegate = newDelegate();
+        MockControl formc = newControl(IForm.class);
+        IForm form = (IForm) formc.getMock();
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IMarkupWriter writer = newWriter();
+
+        trainGetForm(cyclec, cycle, form);
+
+        trainWasPrerendered(formc, form, writer, submit, false);
+
+        form.getDelegate();
+        formc.setReturnValue(delegate);
+
+        delegate.setFormComponent(submit);
+
         trainGetElementId(formc, form, submit, "fred");
+
+        trainIsRewinding(formc, form, false);
+        trainIsRewinding(cyclec, cycle, true);
 
         replayControls();
 
@@ -226,16 +268,16 @@ public class TestSubmit extends BaseFormComponentTest
 
         trainGetForm(cyclec, cycle, form);
 
+        trainWasPrerendered(formc, form, writer, submit, false);
+
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainGetElementId(formc, form, submit, "fred");
 
         trainIsRewinding(formc, form, true);
-
-        trainGetElementId(formc, form, submit, "fred");
 
         trainGetParameter(cyclec, cycle, "fred", null);
 
@@ -264,16 +306,16 @@ public class TestSubmit extends BaseFormComponentTest
 
         trainGetForm(cyclec, cycle, form);
 
+        trainWasPrerendered(formc, form, writer, submit, false);
+
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainGetElementId(formc, form, submit, "fred");
 
         trainIsRewinding(formc, form, true);
-
-        trainGetElementId(formc, form, submit, "fred");
 
         trainGetParameter(cyclec, cycle, "fred", "flintstone");
 

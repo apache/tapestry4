@@ -24,14 +24,14 @@
   <description>
   Implements a checkbox within a Form.
   </description>
-  
+
   <parameter name="selected" required="yes" default-binding="ognl">
     <description>
     The property read and updated by the Checkbox.
     </description>
   </parameter>
   
-  <parameter name="disabled">
+  <parameter name="disabled" default-binding="ognl">
     <description>
     If true, then the checkbox will be disabled and any input from the checkbox
     will be ignored.

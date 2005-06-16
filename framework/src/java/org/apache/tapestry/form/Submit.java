@@ -42,10 +42,14 @@ public abstract class Submit extends AbstractSubmit
         return cycle.getParameter(name) != null;
 	}
 	
-    protected void writeTag(IMarkupWriter writer, IRequestCycle cycle, String name) {
-		writer.beginEmpty("input");
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        writer.beginEmpty("input");
         writer.attribute("type", "submit");
-        writer.attribute("name", name);
+        writer.attribute("name", getName());
 
         if (isDisabled())
             writer.attribute("disabled", "disabled");
@@ -58,7 +62,7 @@ public abstract class Submit extends AbstractSubmit
         renderInformalParameters(writer, cycle);
 
         writer.closeTag();
-	}
+    }
 
     /** parameter */
     public abstract String getLabel();

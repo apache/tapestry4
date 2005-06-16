@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.wml;
 
+import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IPropertySelectionModel;
 
@@ -26,7 +27,10 @@ import org.apache.tapestry.form.IPropertySelectionModel;
  */
 public abstract class SelectionField extends AbstractPostfield
 {
-    protected void rewind(IRequestCycle cycle)
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String optionValue = cycle.getParameter(getName());
         IPropertySelectionModel model = getModel();

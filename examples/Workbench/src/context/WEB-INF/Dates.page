@@ -21,9 +21,28 @@
 
 <page-specification>
 	
+  <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
+  
+  <property name="clientValidationEnabled" persist="client" initial-value="true"/>
 	<property name="includeWeek" persist="client"/>
-    <property name="startDate" persist="client"/>
-    <property name="endDate" persist="client"/>
-	
+  <property name="startDate" persist="client"/>
+  <property name="endDate" persist="client"/>
+
+  <bean name="maxDateValidator" class="org.apache.tapestry.form.validator.DateValidator">
+    <set name="max" value="new java.util.Date()"></set>
+  </bean>
+  <bean name="minDateValidator" class="org.apache.tapestry.form.validator.DateValidator">
+    <set name="min" value="new java.util.Date()"></set>
+  </bean>
+  
+  <component id="inputEnabled" type="Checkbox">
+    <binding name="selected" value="clientValidationEnabled"/> 
+    <binding name="onchange" value="'this.form.submit()'"/>
+  </component>
+  
+  <component id="showError" type="ShowError">
+     <binding name="delegate" value="bean:delegate"/>
+  </component>
+
 </page-specification>
 

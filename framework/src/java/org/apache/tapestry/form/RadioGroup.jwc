@@ -25,8 +25,14 @@
   Groups together a number of Radio components.
   </description>
   
-  <parameter name="selected" required="yes"/>
+  <parameter name="selected" default-binding="ognl" required="yes"/>
   
-  <parameter name="disabled"/>
+  <parameter name="disabled" default-binding="ognl"/>
   
+  <parameter name="displayName" default-binding="literal"/>
+  <parameter name="required" default-binding="ognl"/>
+  <parameter name="requiredMessage" default-binding="literal"/>
+  
+  <inject property="requirableFieldSupport" object="service:tapestry.form.RequirableFieldSupport"/>
+    
 </component-specification>

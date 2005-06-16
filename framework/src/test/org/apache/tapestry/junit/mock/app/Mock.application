@@ -36,7 +36,7 @@
 
 	<page name="Stale" specification-path="Stale.page"/>
 
-	<page name="ValidFieldNoBody" specification-path="ValidFieldNoBody.page"/>
+	<page name="FormNoBody" specification-path="FormNoBody.page"/>
 
 	<page name="TemplateExpr" specification-path="expr/TemplateExpr.page"/>
 	<page name="TemplateExprConflict" specification-path="expr/TemplateExprConflict.page"/>

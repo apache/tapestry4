@@ -59,11 +59,7 @@
         </assert-output>
 
         <assert-output name="Exception Messge">
-        This postfield must be contained within a Go.
-        </assert-output>
-
-        <assert-output name="Component Id">
-        [NoGo/orphan]
+		Component NoGo/orphan must be enclosed by a form, but no Form component has been stored into the request cycle.
         </assert-output>
 
     </request>

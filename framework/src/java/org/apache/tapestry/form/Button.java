@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
@@ -27,48 +26,35 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard Lewis Ship
  * @author Paul Geerts
  * @author Malcolm Edgar
+ * @author Paul Ferraro
  */
-
 public abstract class Button extends AbstractFormComponent
 {
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        IForm form = getForm(cycle);
-
-        if (form.wasPrerendered(writer, this))
-            return;
-
-        boolean rewinding = form.isRewinding();
-
-        String name = form.getElementId(this);
-
-        if (rewinding)
-        {
-            return;
-        }
-
-        writer.beginEmpty("input");
+        writer.beginEmpty("button");
         writer.attribute("type", "button");
-        writer.attribute("name", name);
+        writer.attribute("name", getName());
 
         if (isDisabled())
         {
             writer.attribute("disabled", "disabled");
         }
 
+        renderInformalParameters(writer, cycle);
+
         String label = getLabel();
 
         if (label != null)
-        {
-            writer.attribute("value", label);
-        }
-
-        renderInformalParameters(writer, cycle);
-
+            writer.print(label);
+        else
+            renderBody(writer, cycle);
+        
         writer.closeTag();
     }
 
     public abstract String getLabel();
-
-    public abstract boolean isDisabled();
 }

@@ -14,17 +14,11 @@
 
 package org.apache.tapestry.valid;
 
-import org.apache.hivemind.HiveMind;
-import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryUtils;
-import org.apache.tapestry.form.AbstractTextField;
+import org.apache.tapestry.form.AbstractFormComponent;
 import org.apache.tapestry.form.Form;
-import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.html.Body;
 
 /**
  * A {@link Form}component that creates a text field that allows for validation of user input and
@@ -39,8 +33,12 @@ import org.apache.tapestry.html.Body;
  * @author Howard Lewis Ship
  */
 
-public abstract class ValidField extends AbstractTextField implements IFormComponent
+public abstract class ValidField extends AbstractFormComponent
 {
+    public abstract boolean isHidden();
+
+    public abstract boolean isDisabled();
+
     public abstract Object getValue();
 
     public abstract void setValue(Object value);
@@ -50,84 +48,51 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
     public abstract String getDisplayName();
 
     /**
-     * Renders the component, which involves the {@link IValidationDelegate delegate}.
-     * <p>
-     * During a render, the <em>first</em> field rendered that is either in error, or required but
-     * null gets special treatment. JavaScript is added to select that field (such that the cursor
-     * jumps right to the field when the page loads).
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        super.renderComponent(writer, cycle);
+        IValidationDelegate delegate = getForm().getDelegate();
 
-        // If rendering and there's either an error in the field,
-        // then we may have identified the default field (which will
-        // automatically receive focus).
+        delegate.writePrefix(writer, cycle, this, null);
 
-        if (getForm().getDelegate().isInError())
-            addSelect(cycle);
+        writer.beginEmpty("input");
 
-        // That's OK, but an ideal situation would know about non-validating
-        // text fields, and also be able to put the cursor in the
-        // first field, period (even if there are no required or error fields).
-        // Still, this pretty much rocks!
+        writer.attribute("type", isHidden() ? "password" : "text");
 
-    }
+        if (isDisabled())
+            writer.attribute("disabled", "disabled");
 
-    /**
-     * Invokes
-     * {@link IValidationDelegate#writeAttributes(IMarkupWriter,IRequestCycle, IFormComponent,IValidator)}.
-     */
+        writer.attribute("name", getName());
 
-    protected void beforeCloseTag(IMarkupWriter writer, IRequestCycle cycle)
-    {
+        String value = readValue();
+        if (value != null)
+            writer.attribute("value", value);
+
+        renderInformalParameters(writer, cycle);
+
+        delegate.writeAttributes(writer, cycle, this, null);
+
         IValidator validator = getValidator();
 
         if (validator == null)
             throw Tapestry.createRequiredParameterException(this, "validator");
 
         validator.renderValidatorContribution(this, writer, cycle);
+
+        writer.closeTag();
+
+        delegate.writeSuffix(writer, cycle, this, null);
     }
 
-     static final String SELECTED_ATTRIBUTE_NAME = "org.apache.tapestry.component.html.valid.SelectedFieldSet";
-
     /**
-     * Creates JavaScript to set the cursor on the first required or error field encountered while
-     * rendering. This only works if the text field is wrapped by a {@link Body}&nbsp;component
-     * (which is almost always true).
-     * <p>
-     * TODO: This logic needs to move into the validation delegate; further, it should be smarter
-     * about choosing the "right" field, and it should be easy to disable.
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
-
-    protected void addSelect(IRequestCycle cycle)
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        // If some other field has taken the honors, then let it.
+        String value = cycle.getParameter(getName());
 
-        if (cycle.isRewinding() || cycle.getAttribute(SELECTED_ATTRIBUTE_NAME) != null)
-            return;
-
-        PageRenderSupport pageRenderSupport = TapestryUtils.getOptionalPageRenderSupport(cycle);
-
-        // If not wrapped by a Body, then do nothing.
-
-        if (pageRenderSupport == null)
-            return;
-
-        IForm form = getForm();
-
-        String formName = form.getName();
-        String textFieldName = getName();
-
-        String fullName = "document." + formName + "." + textFieldName;
-
-        pageRenderSupport.addInitializationScript(fullName + ".focus();");
-        pageRenderSupport.addInitializationScript(fullName + ".select();");
-
-        // Put a marker in, indicating that the selected field is known.
-
-        cycle.setAttribute(SELECTED_ATTRIBUTE_NAME, Boolean.TRUE);
+        updateValue(value);
     }
 
     protected String readValue()
@@ -144,9 +109,6 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
         Object value = getValue();
         
         String result = validator.toString(this, value);
-
-        if (HiveMind.isBlank(result) && validator.isRequired())
-            addSelect(getPage().getRequestCycle());
 
         return result;
     }

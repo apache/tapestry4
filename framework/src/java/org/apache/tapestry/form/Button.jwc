@@ -18,15 +18,15 @@
 <!DOCTYPE component-specification PUBLIC 
   "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
-  
-<component-specification class="org.apache.tapestry.form.Button" allow-body="no">
+
+<component-specification class="org.apache.tapestry.form.Button">
 
   <description>
   Creates a labeled button within a form.
   </description>
 
-  <parameter name="label"/>
-  <parameter name="disabled"/>
+  <parameter name="label" default-binding="static"/>
+  <parameter name="disabled" default-binding="ognl"/>
   
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>

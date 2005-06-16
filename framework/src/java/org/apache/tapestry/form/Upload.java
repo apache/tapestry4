@@ -19,59 +19,74 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.multipart.MultipartDecoder;
 import org.apache.tapestry.request.IUploadFile;
+import org.apache.tapestry.valid.ValidationStrings;
+import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * Form element used to upload files. For the momement, it is necessary to explicitly set the form's
- * enctype to "multipart/form-data". [ <a
- * href="../../../../../ComponentReference/Upload.html">Component Reference </a>]
+ * Form element used to upload files.
+ * [ <a href="../../../../../ComponentReference/Upload.html">Component Reference </a>]
+ * 
+ * As of 4.0, the Upload field can indicate that it is required.
  * 
  * @author Howard Lewis Ship
+ * @author Paul Ferraro
  * @since 1.0.8
  */
 
-public abstract class Upload extends AbstractFormComponent
+public abstract class Upload extends AbstractRequirableField
 {
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    /**
+     * @see org.apache.tapestry.form.validator.AbstractRequirableField#bind(org.apache.tapestry.IRequestCycle)
+     */
+    public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException
     {
-        IForm form = getForm(cycle);
-
-        if (form.wasPrerendered(writer, this))
-            return;
-
-        String name = form.getElementId(this);
-
-        if (form.isRewinding())
-        {
-            if (!isDisabled())
-            {
-                IUploadFile file = getDecoder().getFileUpload(name);
-
-                setFile(file);
-            }
-
-            return;
-        }
-
-        // Force the form to use the correct encoding type for
-        // file uploads.
-
-        form.setEncodingType("multipart/form-data");
-
-        writer.beginEmpty("input");
-        writer.attribute("type", "file");
-        writer.attribute("name", name);
-
-        if (isDisabled())
-            writer.attribute("disabled", "disabled");
-
-        // Size, width, etc. can be specified as informal parameters
-        // (Not making the same mistake here that was made with TextField
-        // and friends).
-
-        renderInformalParameters(writer, cycle);
+        setFile(getUploadFile());
     }
 
-    public abstract boolean isDisabled();
+    /**
+     * @see org.apache.tapestry.AbstractComponent#finishLoad()
+     */
+    protected void finishLoad()
+    {
+        setRequiredMessage(ValidationStrings.getMessagePattern(ValidationStrings.REQUIRED_FILE_FIELD, getPage().getLocale()));
+    }
+
+    private IUploadFile getUploadFile()
+    {
+        return getDecoder().getFileUpload(getName());
+    }
+    
+    public String getSubmittedValue(IRequestCycle cycle)
+    {
+        return getUploadFile().getFilePath();
+    }
+
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        super.renderFormComponent(writer, cycle);
+        
+        // Force the form to use the correct encoding type for file uploads.
+        IForm form = getForm();
+        
+        form.setEncodingType("multipart/form-data");
+
+        renderDelegatePrefix(writer, cycle);
+        
+        writer.beginEmpty("input");
+        writer.attribute("type", "file");
+        writer.attribute("name", getName());
+
+        if (isDisabled())
+        {
+            writer.attribute("disabled", "disabled");
+        }
+
+        form.getDelegate().writeAttributes(writer, cycle, this, null);
+        
+        renderDelegateAttributes(writer, cycle);
+        
+        renderDelegateSuffix(writer, cycle);
+    }
 
     public abstract void setFile(IUploadFile file);
 

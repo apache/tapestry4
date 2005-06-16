@@ -26,7 +26,7 @@
   <description>
   Creates an HTML select to choose a single property from a list of options.
   </description>
-  
+
   <parameter name="value" required="yes" default-binding="ognl"/>
   
   <parameter name="model" required="yes" default-binding="ognl"/>
@@ -44,7 +44,13 @@
   	Enables logic to submit containing form when value changes.
   	</description>
   </parameter>
-  	
+  
+  <parameter name="displayName" default-binding="literal"/>
+  <parameter name="required" default-binding="ognl"/>
+  <parameter name="requiredMessage" default-binding="literal"/>
+  
   <reserved-parameter name="name"/>
+
+  <inject property="requirableFieldSupport" object="service:tapestry.form.RequirableFieldSupport"/>
     
 </component-specification>

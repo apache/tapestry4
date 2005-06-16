@@ -14,15 +14,12 @@
 
 package org.apache.tapestry.workbench.upload;
 
-import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.form.StringPropertySelectionModel;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.request.IUploadFile;
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.apache.tapestry.valid.ValidationConstraint;
 
 /**
  * Contains a form, including an {@link org.apache.tapestry.form.Upload}component.
@@ -45,16 +42,11 @@ public abstract class Upload extends BasePage
 
     public void formSubmit(IRequestCycle cycle)
     {
+        IValidationDelegate delegate = (IValidationDelegate) getBeans().getBean("delegate");
+
+        if (delegate.getHasErrors()) return;
+        
         IUploadFile file = getFile();
-
-        if (HiveMind.isBlank(file.getFileName()))
-        {
-            IValidationDelegate delegate = (IValidationDelegate) getBeans().getBean("delegate");
-
-            delegate.setFormComponent((IFormComponent) getComponent("inputFile"));
-            delegate.record("You must specify a file to upload.", ValidationConstraint.REQUIRED);
-            return;
-        }
 
         UploadResults results = (UploadResults) cycle.getPage("UploadResults");
 

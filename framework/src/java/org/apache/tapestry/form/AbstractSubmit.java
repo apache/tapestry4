@@ -31,7 +31,6 @@ import org.apache.tapestry.listener.ListenerInvoker;
 
 abstract class AbstractSubmit extends AbstractFormComponent
 {
-
     /**
      * Determine if this submit component was clicked.
      * 
@@ -42,38 +41,12 @@ abstract class AbstractSubmit extends AbstractFormComponent
     protected abstract boolean isClicked(IRequestCycle cycle, String name);
 
     /**
-     * Write the tag (and any nested content) for this submit component.
-     * 
-     * @param writer
-     * @param cycle
-     * @param name
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
-    protected abstract void writeTag(IMarkupWriter writer, IRequestCycle cycle, String name);
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        IForm form = getForm(cycle);
-
-        if (form.wasPrerendered(writer, this))
-            return;
-
-        boolean rewinding = form.isRewinding();
-
-        String name = form.getElementId(this);
-
-        if (rewinding)
-        {
-            // Don't bother doing anything if disabled.
-            if (isDisabled())
-                return;
-
-            if (isClicked(cycle, name))
-                handleClick(cycle, form);
-
-            return;
-        }
-
-        writeTag(writer, cycle, name);
+        if (isClicked(cycle, getName()))
+            handleClick(cycle, getForm());
     }
 
     void handleClick(final IRequestCycle cycle, IForm form)
@@ -117,9 +90,6 @@ abstract class AbstractSubmit extends AbstractFormComponent
         else
             notify.run();
     }
-
-    /** parameter */
-    public abstract boolean isDisabled();
 
     /** parameter */
     public abstract IActionListener getListener();

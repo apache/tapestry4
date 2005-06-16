@@ -34,43 +34,25 @@ import org.apache.tapestry.Tapestry;
 
 public abstract class ImageSubmit extends Submit
 {
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#setName(org.apache.tapestry.IForm)
+     */
+    protected void setName(IForm form)
     {
-        IForm form = getForm(cycle);
-
-        if (form.wasPrerendered(writer, this))
-            return;
-
-        boolean rewinding = form.isRewinding();
-
         String nameOverride = getNameOverride();
 
-        String name = nameOverride == null ? form.getElementId(this) : form.getElementId(
-                this,
-                nameOverride);
+        setName((nameOverride == null) ? form.getElementId(this) : form.getElementId(this, nameOverride));
+    }
 
-        if (rewinding)
-        {
-            // If disabled, do nothing.
+    protected boolean isClicked(IRequestCycle cycle, String name)
+    {
+        String parameterName = name + ".x";
 
-            if (isDisabled())
-                return;
-
-            // Image clicks get submitted as two request parameters:
-            // foo.x and foo.y
-
-            String parameterName = name + ".x";
-
-            String value = cycle.getParameter(parameterName);
-
-            if (value != null)
-                handleClick(cycle, form);
-
-            return;
-        }
-
-        // Not rewinding, do the real render
-
+        return (cycle.getParameter(parameterName) != null);
+    }
+    
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
         boolean disabled = isDisabled();
         IAsset disabledImage = getDisabledImage();
 
@@ -80,7 +62,7 @@ public abstract class ImageSubmit extends Submit
 
         writer.beginEmpty("input");
         writer.attribute("type", "image");
-        writer.attribute("name", name);
+        writer.attribute("name", getName());
 
         if (disabled)
             writer.attribute("disabled", "disabled");
@@ -135,5 +117,4 @@ public abstract class ImageSubmit extends Submit
         if (getImage() == null)
             throw Tapestry.createRequiredParameterException(this, "image");
     }
-
 }

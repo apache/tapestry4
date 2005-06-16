@@ -14,81 +14,67 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
- * Implements a component that manages an HTML &lt;textarea&gt; form element. [ <a
- * href="../../../../../ComponentReference/TextArea.html">Component Reference </a>]
- * 
+ * Implements a component that manages an HTML &lt;textarea&gt; form element.
+ *
+ * [<a href="../../../../../ComponentReference/TextArea.html">Component Reference</a>]
+ *
+ * As of 4.0, TextField can indicate that it is required, use a custom translator, 
+ * and perform validation on the submitted text.
+ *
  * @author Howard Lewis Ship
+ * @author Paul Ferraro
  */
-
-public abstract class TextArea extends AbstractFormComponent
+public abstract class TextArea extends AbstractValidatableField
 {
-
+    public abstract String getValue();
+    
+    public abstract void setValue(String value);
+    
     /**
-     * Renders the form element, or responds when the form containing the element is submitted (by
-     * checking {@link Form#isRewinding()}.
+     * @see org.apache.tapestry.form.validator.AbstractValidatableField#render(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, java.lang.String)
      */
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    public void render(IMarkupWriter writer, IRequestCycle cycle, String value)
     {
-        IForm form = getForm(cycle);
-
-        if (form.wasPrerendered(writer, this))
-            return;
-
-        // It isn't enough to know whether the cycle in general is rewinding, need to know
-        // specifically if the form which contains this component is rewinding.
-
-        boolean rewinding = form.isRewinding();
-
-        // Used whether rewinding or not.
-
-        String name = form.getElementId(this);
-
-        if (rewinding)
-        {
-            if (!isDisabled())
-                setValue(cycle.getParameter(name));
-
-            return;
-        }
-
-        if (cycle.isRewinding())
-            return;
-
-        IValidationDelegate delegate = form.getDelegate();
-
-        delegate.writePrefix(writer, cycle, this, null);
-
+        renderDelegatePrefix(writer, cycle);
+        
         writer.begin("textarea");
 
-        writer.attribute("name", name);
+        writer.attribute("name", getName());
 
         if (isDisabled())
             writer.attribute("disabled", "disabled");
 
+        renderDelegateAttributes(writer, cycle);
+        
+        renderContributions(writer, cycle);
+        
         renderInformalParameters(writer, cycle);
-
-        delegate.writeAttributes(writer, cycle, this, null);
-
-        String value = getValue();
 
         if (value != null)
             writer.print(value);
 
         writer.end();
-
-        delegate.writeSuffix(writer, cycle, this, null);
+        
+        renderDelegateSuffix(writer, cycle);
     }
-
-    public abstract boolean isDisabled();
-
-    public abstract String getValue();
-
-    public abstract void setValue(String value);
+    
+    /**
+     * @see org.apache.tapestry.form.ValidatableField#writeValue(java.lang.Object)
+     */
+    public void writeValue(Object value)
+    {
+        setValue((String) value);
+    }
+    
+    /**
+     * @see org.apache.tapestry.form.ValidatableField#readValue()
+     */
+    public Object readValue()
+    {
+        return getValue();
+    }
 }

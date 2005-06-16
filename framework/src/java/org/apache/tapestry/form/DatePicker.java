@@ -15,7 +15,6 @@
 package org.apache.tapestry.form;
 
 import java.text.DateFormatSymbols;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,27 +22,30 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.IScriptSource;
+import org.apache.tapestry.form.translator.DateTranslator;
 
 /**
  * Provides a Form <tt>java.util.Date</tt> field component for selecting dates. [ <a
  * href="../../../../../ComponentReference/DatePicker.html">Component Reference </a>]
  * 
+ * As of 4.0, DatePicker can indicate that it is required, use a custom translator (e.g. for java.sql.Date),
+ * and perform validation on the submitted date.
+ * 
  * @author Paul Geerts
  * @author Malcolm Edgar
+ * @author Paul Ferraro
  * @since 2.2
  */
 
-public abstract class DatePicker extends AbstractFormComponent
+public abstract class DatePicker extends AbstractValidatableField
 {
     public abstract String getFormat();
 
@@ -83,20 +85,20 @@ public abstract class DatePicker extends AbstractFormComponent
 
     private static final String SYM_BUTTONONCLICKHANDLER = "buttonOnclickHandler";
 
-    // Output symbol
-
-    private static final String SYM_BUTTONNAME = "buttonName";
-
     /**
      * Injected
      * 
      * @since 4.0
      */
-
     public abstract IScriptSource getScriptSource();
 
+    /**
+     * @see org.apache.tapestry.AbstractComponent#finishLoad()
+     */
     protected void finishLoad()
     {
+        super.finishLoad();
+        
         IScriptSource source = getScriptSource();
 
         Resource location = getSpecification().getSpecificationLocation().getRelativeResource(
@@ -105,106 +107,93 @@ public abstract class DatePicker extends AbstractFormComponent
         _script = source.getScript(location);
     }
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    /**
+     * @see org.apache.tapestry.form.validator.AbstractValidatableField#render(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, java.lang.String)
+     */
+    public void render(IMarkupWriter writer, IRequestCycle cycle, String value)
     {
-        IForm form = getForm(cycle);
-
-        if (form.wasPrerendered(writer, this))
-            return;
-
-        String name = form.getElementId(this);
-
-        String format = getFormat();
-
-        if (format == null)
-            format = "dd MMM yyyy";
-
-        SimpleDateFormat formatter = new SimpleDateFormat(format, getPage().getLocale());
+        PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
 
         boolean disabled = isDisabled();
+        DateTranslator translator = (DateTranslator) getTranslator();
+        Locale locale = getPage().getLocale();
+        SimpleDateFormat format = translator.getDateFormat(locale);
 
-        if (!cycle.isRewinding())
+        DateFormatSymbols dfs = format.getDateFormatSymbols();
+        Calendar cal = Calendar.getInstance(locale);
+
+        String name = getName();
+
+        Map symbols = new HashMap();
+
+        symbols.put(SYM_NAME, name);
+        symbols.put(SYM_FORMAT, format.toPattern());
+        symbols.put(SYM_INCL_WEEK, getIncludeWeek() ? Boolean.TRUE : Boolean.FALSE);
+
+        symbols.put(SYM_MONTHNAMES, makeStringList(dfs.getMonths(), 0, 12));
+        symbols.put(SYM_SHORT_MONTHNAMES, makeStringList(dfs.getShortMonths(), 0, 12));
+        symbols.put(SYM_WEEKDAYNAMES, makeStringList(dfs.getWeekdays(), 1, 8));
+        symbols.put(SYM_SHORT_WEEKDAYNAMES, makeStringList(dfs.getShortWeekdays(), 1, 8));
+        symbols.put(SYM_FIRSTDAYINWEEK, new Integer(cal.getFirstDayOfWeek() - 1));
+        symbols.put(SYM_MINDAYSINFIRSTWEEK, new Integer(cal.getMinimalDaysInFirstWeek()));
+        symbols.put(SYM_FORMNAME, getForm().getName());
+        symbols.put(SYM_VALUE, getValue());
+
+        _script.execute(cycle, pageRenderSupport, symbols);
+
+        renderDelegatePrefix(writer, cycle);
+        
+        writer.beginEmpty("input");
+        writer.attribute("type", "text");
+        writer.attribute("name", name);
+        writer.attribute("value", value);
+        writer.attribute("title", format.toLocalizedPattern());
+
+        if (disabled)
+            writer.attribute("disabled", "disabled");
+
+        renderDelegateAttributes(writer, cycle);
+        
+        renderContributions(writer, cycle);
+        
+        renderInformalParameters(writer, cycle);
+
+        writer.printRaw("&nbsp;");
+
+        if (!disabled)
         {
-            PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
-
-            Locale locale = getPage().getLocale();
-            DateFormatSymbols dfs = new DateFormatSymbols(locale);
-            Calendar cal = Calendar.getInstance(locale);
-
-            Date value = getValue();
-
-            Map symbols = new HashMap();
-
-            symbols.put(SYM_NAME, name);
-            symbols.put(SYM_FORMAT, format);
-            symbols.put(SYM_INCL_WEEK, getIncludeWeek() ? Boolean.TRUE : Boolean.FALSE);
-
-            symbols.put(SYM_MONTHNAMES, makeStringList(dfs.getMonths(), 0, 12));
-            symbols.put(SYM_SHORT_MONTHNAMES, makeStringList(dfs.getShortMonths(), 0, 12));
-            symbols.put(SYM_WEEKDAYNAMES, makeStringList(dfs.getWeekdays(), 1, 8));
-            symbols.put(SYM_SHORT_WEEKDAYNAMES, makeStringList(dfs.getShortWeekdays(), 1, 8));
-            symbols.put(SYM_FIRSTDAYINWEEK, new Integer(cal.getFirstDayOfWeek() - 1));
-            symbols.put(SYM_MINDAYSINFIRSTWEEK, new Integer(cal.getMinimalDaysInFirstWeek()));
-            symbols.put(SYM_FORMNAME, form.getName());
-            symbols.put(SYM_VALUE, value);
-
-            _script.execute(cycle, pageRenderSupport, symbols);
-
-            writer.beginEmpty("input");
-            writer.attribute("type", "text");
-            writer.attribute("name", name);
-            writer.attribute("title", formatter.toLocalizedPattern());
-
-            if (value != null)
-                writer.attribute("value", formatter.format(value));
-
-            if (disabled)
-                writer.attribute("disabled", "disabled");
-
-            renderInformalParameters(writer, cycle);
-
-            writer.printRaw("&nbsp;");
-
-            if (!disabled)
-            {
-                writer.begin("a");
-                writer.attribute("href", (String) symbols.get(SYM_BUTTONONCLICKHANDLER));
-            }
-
-            IAsset icon = getIcon();
-
-            writer.beginEmpty("img");
-            writer.attribute("src", icon.buildURL(cycle));
-            writer.attribute("border", 0);
-
-            if (!disabled)
-                writer.end(); // <a>
-
+            writer.begin("a");
+            writer.attribute("href", (String) symbols.get(SYM_BUTTONONCLICKHANDLER));
         }
 
-        if (form.isRewinding())
-        {
-            if (disabled)
-                return;
+        IAsset icon = getIcon();
 
-            String textValue = cycle.getParameter(name);
+        writer.beginEmpty("img");
+        writer.attribute("src", icon.buildURL(cycle));
+        writer.attribute("border", 0);
 
-            if (HiveMind.isBlank(textValue))
-                return;
+        if (!disabled)
+            writer.end();
+        
+        renderDelegateSuffix(writer, cycle);
+	}
 
-            try
-            {
-                Date value = formatter.parse(textValue);
-
-                setValue(value);
-            }
-            catch (ParseException ex)
-            {
-            }
-        }
-
+    /**
+     * @see org.apache.tapestry.form.AbstractValidatableField#readValue()
+     */
+    public Object readValue()
+    {
+        return getValue();
     }
-
+    
+    /**
+     * @see org.apache.tapestry.form.AbstractValidatableField#updateValue(java.lang.Object)
+     */
+    public void writeValue(Object value)
+    {
+        setValue((Date) value);
+    }
+	
     /**
      * Create a list of quoted strings. The list is suitable for initializing a JavaScript array.
      */
