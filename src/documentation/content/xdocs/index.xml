@@ -109,7 +109,8 @@ as an alternative to the XML page and component specifcations (in some cases).
 	Tapestry in Action
 is now available from
 <link href="http://www.manning.com/lewisship/index.html">Manning Publications</link>. It is the
-definitive introduction to Tapestry written by Howard Lewis Ship, the creator of Tapestry.
+definitive introduction to Tapestry written by Howard Lewis Ship, the creator of Tapestry. Tapestry In Action
+covers Tapestry 3.0, but is still broadly useful in the wake of the 4.0 release.
 </p>
 
 <figure src="images/tapestry-german-cover.gif" alt="Tapestry Webanwendungen mit dem Apache Framework"/>
@@ -118,7 +119,7 @@ definitive introduction to Tapestry written by Howard Lewis Ship, the creator of
 <link href="http://entwickler.com/sus/sus_buch/psecom,id,60,nodeid,8,_language,uk.html">Tapestry Webanwendungen mit dem Apache Framework</link> is a fast-paced guide to using
 Tapestry, focusing on combining Tapestry with other open-source frameworks, as well as developing Tapestry applications using
 <link href="http://spindle.sourceforge.net/">Spindle</link>. The book is written in German, and authored by
-Stefan Edlich and Patrick Kunert.
+Stefan Edlich and Patrick Kunert.  Covers Tapestry 3.0.
 </p>
 
 <p>Tapestry has also  been described in the print journal 
