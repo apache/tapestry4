@@ -115,6 +115,13 @@ value is to be interprted.  The prefix identifies the <em>binding type</em>:
   </tr>
   
   <tr>
+    <td>translator</td>
+    <td>Initializer used to obtain and configure a &Translator; instance.</td>
+    <td>translator:number,pattern=#</td>
+    <td></td>
+  </tr>
+  
+  <tr>
     <td>validator</td>
     <td>Initializer used to obtain and configure an &IValidator; instance.</td>
     <td>validator:string,required,minimumLength=5</td>
@@ -123,13 +130,39 @@ value is to be interprted.  The prefix identifies the <em>binding type</em>:
 </table>
 
 <p>
- Most of these are quite straight forward; the <link href="validation.html#validation.validator-binding">validator:</link> prefix
- requires some additional description.
+ Most of these are quite straight forward; the 
+  <link href="validation.html#validation.validator-binding">validator and translator</link> prefixes
+ require some additional description.
 </p>
 
 <note>
   You can define your own prefixes by contributing into the tapestry.bindings.BindingFactories configuration point.
 </note>  
+
+<p>
+  Many of the bindings are driven by a HiveMind configuration; the configuration will
+  define the available values, and contributing the configuration allows
+  new values to be defined.
+</p>
+
+<table>
+  <tr>
+    <th>Binding Prefix</th>
+    <th>Configuration</th>
+  </tr>
+  <tr>
+    <td>translator</td>
+    <td><link href="&hivedoc;/config/tapestry.form.translator.Translators.html">tapestry.form.translator.Translators</link></td>
+  </tr>
+  <tr>
+    <td>state</td>
+    <td><link href="&hivedoc;/config/tapestry.state.ApplicationObjects.html">tapestry.state.ApplicationObjects</link></td>
+  </tr>
+  <tr>
+    <td>validator</td>
+    <td><link href="&hivedoc;/config/tapestry.valid.Validators.html">tapestry.valid.Validators</link></td>
+  </tr>
+</table>
   
   
 <section id="bindings.default-binding-type">

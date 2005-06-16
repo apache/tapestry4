@@ -16,6 +16,7 @@ package org.apache.tapestry.form;
 
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -31,6 +32,16 @@ import org.apache.tapestry.TapestryUtils;
 public abstract class AbstractFormComponentContributor implements FormComponentContributor
 {
     private String _script = defaultScript();
+    
+    public AbstractFormComponentContributor()
+    {        
+    }
+    
+    // Needed until HIVEMIND-134 fix is available
+    public AbstractFormComponentContributor(String initializer)
+    {
+        PropertyUtils.configureProperties(this, initializer);
+    }
     
     /**
      * Defines the default JavaScript file used by this contributor

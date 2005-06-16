@@ -24,9 +24,7 @@
   <description>
     A text input field.
   </description>
-
-  <bean name="stringTranslator" class="org.apache.tapestry.form.translator.StringTranslator"></bean>
-  
+ 
   <parameter name="value" required="yes" default-binding="ognl">
     <description>
       The text string to be read and updated.
@@ -56,7 +54,7 @@
   
   <parameter name="required" default-binding="ognl"/>
   <parameter name="requiredMessage" default-binding="literal"/>
-  <parameter name="translator" default-binding="ognl" default-value="bean:stringTranslator"/>
+  <parameter name="translator" default-binding="translator" default-value="string"/>
   <parameter name="validators" default-binding="ognl"/>
   
   <reserved-parameter name="name"/>

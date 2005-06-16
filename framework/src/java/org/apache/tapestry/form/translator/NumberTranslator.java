@@ -34,6 +34,17 @@ import org.apache.tapestry.valid.ValidationStrings;
  */
 public class NumberTranslator extends FormatTranslator
 {
+
+    public NumberTranslator()
+    {
+    }
+
+    // Needed until HIVEMIND-134 fix is available
+    public NumberTranslator(String initializer)
+    {
+        super(initializer);
+    }
+
     /**
      * @see org.apache.tapestry.form.AbstractFormComponentContributor#defaultScript()
      */
@@ -41,7 +52,7 @@ public class NumberTranslator extends FormatTranslator
     {
         return "/org/apache/tapestry/form/translator/NumberTranslator.js";
     }
-    
+
     /**
      * @see org.apache.tapestry.form.translator.FormatTranslator#defaultPattern()
      */
@@ -62,7 +73,7 @@ public class NumberTranslator extends FormatTranslator
     {
         return new DecimalFormat(getPattern(), new DecimalFormatSymbols(locale));
     }
-    
+
     /**
      * @see org.apache.tapestry.form.translator.FormatTranslator#getMessageKey()
      */
@@ -70,28 +81,32 @@ public class NumberTranslator extends FormatTranslator
     {
         return ValidationStrings.INVALID_NUMBER;
     }
-    
+
     /**
-     * @see org.apache.tapestry.form.translator.AbstractTranslator#getMessageParameters(java.util.Locale, java.lang.String)
+     * @see org.apache.tapestry.form.translator.AbstractTranslator#getMessageParameters(java.util.Locale,
+     *      java.lang.String)
      */
     protected Object[] getMessageParameters(Locale locale, String label)
     {
         String pattern = getDecimalFormat(locale).toLocalizedPattern();
-        
-        return new Object[] { label, pattern };
+
+        return new Object[]
+        { label, pattern };
     }
 
     /**
-     * @see org.apache.tapestry.form.FormComponentContributor#renderContribution(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, org.apache.tapestry.form.IFormComponent)
+     * @see org.apache.tapestry.form.FormComponentContributor#renderContribution(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle, org.apache.tapestry.form.IFormComponent)
      */
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle, IFormComponent field)
     {
         super.renderContribution(writer, cycle, field);
-        
+
         String message = buildMessage(field, getMessageKey());
         IForm form = field.getForm();
-        
-        addSubmitHandler(form, "validate_number(event, document." + form.getName() + "." + field.getName() + ",'" + message + "')");
+
+        addSubmitHandler(form, "validate_number(event, document." + form.getName() + "."
+                + field.getName() + ",'" + message + "')");
     }
 
     /**

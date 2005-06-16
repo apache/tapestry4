@@ -24,9 +24,7 @@
   <description>
   A multi-line text area.
   </description>
-  
-  <bean name="stringTranslator" class="org.apache.tapestry.form.translator.StringTranslator"></bean>
-  
+    
   <parameter name="value" default-binding="ognl" required="yes">
       <description>
           The multi-line string to be read and updated.
@@ -48,7 +46,7 @@
 
   <parameter name="required" default-binding="ognl"/>
   <parameter name="requiredMessage" default-binding="literal"/>
-  <parameter name="translator" default-binding="ognl" default-value="bean:stringTranslator"/>
+  <parameter name="translator" default-binding="translator" default-value="string"/>
   <parameter name="validators" default-binding="ognl"/>
 
   <reserved-parameter name="name"/>

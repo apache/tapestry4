@@ -17,11 +17,13 @@
 
 <module id="tapestry.form" version="4.0.0" package="org.apache.tapestry.form">
   
+  <sub-module descriptor="tapestry.form.translator.xml"/>
+  
   Support for form components.
 
   <service-point id="RequirableFieldSupport" interface="org.apache.tapestry.form.RequirableFieldSupport">
     <invoke-factory>
-      <construct class="RequirableFieldSupportImpl"></construct>
+      <construct class="RequirableFieldSupportImpl"/>
     </invoke-factory>
   </service-point>
 
@@ -32,5 +34,5 @@
       </construct>
     </invoke-factory>
   </service-point>
-    
+  
 </module>

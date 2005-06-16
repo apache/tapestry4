@@ -17,18 +17,31 @@ package org.apache.tapestry.form.translator;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
- * A trivial {@link Translator} implementation.  By default, empty text submissions
- * are interpretted as null.
+ * A trivial {@link Translator} implementation. By default, empty text submissions are interpretted
+ * as null.
  * 
  * @author Paul Ferraro
  * @since 4.0
  */
 public class StringTranslator extends AbstractTranslator
 {
+
     private String _empty = null;
-    
+
+    public StringTranslator()
+    {
+    }
+
+    // Needed until HIVEMIND-134 fix is available
+
+    public StringTranslator(String initializer)
+    {
+        super(initializer);
+    }
+
     /**
-     * @see org.apache.tapestry.form.translator.AbstractTranslator#parseText(org.apache.tapestry.form.IFormComponent, java.lang.String)
+     * @see org.apache.tapestry.form.translator.AbstractTranslator#parseText(org.apache.tapestry.form.IFormComponent,
+     *      java.lang.String)
      */
     protected Object parseText(IFormComponent field, String text)
     {
@@ -36,20 +49,22 @@ public class StringTranslator extends AbstractTranslator
     }
 
     /**
-     * @see org.apache.tapestry.form.translator.AbstractTranslator#formatObject(org.apache.tapestry.form.IFormComponent, java.lang.Object)
+     * @see org.apache.tapestry.form.translator.AbstractTranslator#formatObject(org.apache.tapestry.form.IFormComponent,
+     *      java.lang.Object)
      */
     protected String formatObject(IFormComponent field, Object object)
     {
         return object.toString();
     }
-    
+
     public Object getEmpty()
     {
         return _empty;
     }
-    
+
     public void setEmpty(String empty)
     {
         _empty = empty;
     }
+
 }

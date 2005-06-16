@@ -20,10 +20,6 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 
 <component-specification class="org.apache.tapestry.form.DatePicker" allow-body="no">
-
-  <bean name="translator" class="org.apache.tapestry.form.translator.DateTranslator">
-    <set name="pattern" value="'dd MMM yyyy'"/>
-  </bean>
   
   <parameter name="value" required="yes" default-binding="ognl"/>
   <parameter name="format" required="no" default-binding="ognl"/>
@@ -34,7 +30,7 @@
   <parameter name="displayName" default-binding="literal"/>
   <parameter name="required" default-binding="ognl"/>
   <parameter name="requiredMessage" default-binding="literal"/>
-  <parameter name="translator" default-binding="ognl" default-value="bean:translator"/>
+  <parameter name="translator" default-binding="translator" default-value="date,pattern=dd MMM yyyy"/>
   <parameter name="validators" default-binding="ognl"/>
 
   <asset name="defaultIcon" path="DatePickerIcon.png"/>

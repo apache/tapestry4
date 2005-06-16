@@ -25,21 +25,8 @@
   
   <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate" property="delegate"/>
 
-  <bean name="dateTranslator" lifecycle="render" class="org.apache.tapestry.form.translator.DateTranslator">
-    <set name="pattern" value="'MM-dd-yyyy'"/>
-  </bean>
-
   <bean name="dateValidator" lifecycle="render" class="org.apache.tapestry.form.validator.DateValidator">
     <set name="min" value="new java.util.Date()"/>
-  </bean>
-  
-  <!--bean name="dateValidator" lifecycle="render" class="org.apache.tapestry.valid.DateValidator">
-  	<set name="required" value="true"/>
-  	<set name="clientScriptingEnabled" value="ognl:clientValidationEnabled"/>
-  </bean-->
-
-  <bean name="intTranslator" lifecycle="render" class="org.apache.tapestry.form.translator.NumberTranslator">
-    <set name="pattern" value="'#'"/>
   </bean>
   
   <bean name="intValidator" lifecycle="render" class="org.apache.tapestry.form.validator.NumberValidator">
@@ -47,74 +34,26 @@
     <set name="max" value="@org.apache.tapestry.workbench.fields.Fields@INT_MAX"/>
   </bean>
   
-  <!--bean name="intValidator" lifecycle="render" class="org.apache.tapestry.valid.NumberValidator">
-  	<set name="required" value="true"/>
-  	<set name="minimum" value="ognl:@org.apache.tapestry.workbench.fields.Fields@INT_MIN"/>
-  	<set name="maximum" value="ognl:@org.apache.tapestry.workbench.fields.Fields@INT_MAX"/>
-  	<set name="clientScriptingEnabled" value="ognl:clientValidationEnabled"/>
-  	<set name="valueType" value="int"/>
-  </bean-->
-
-  <bean name="decimalTranslator" lifecycle="render" class="org.apache.tapestry.form.translator.NumberTranslator">
-    <set name="pattern" value="'#.#'"/>
-  </bean>
-  
   <bean name="doubleValidator" lifecycle="render" class="org.apache.tapestry.form.validator.NumberValidator">
     <set name="min" value="@org.apache.tapestry.workbench.fields.Fields@DOUBLE_MIN"/>
     <set name="max" value="@org.apache.tapestry.workbench.fields.Fields@DOUBLE_MAX"/>
   </bean>
-
-  <!--bean name="doubleValidator" lifecycle="render" class="org.apache.tapestry.valid.NumberValidator">
-  	<set name="required" value="true"/>
-  	<set name="minimum" value="ognl:@org.apache.tapestry.workbench.fields.Fields@DOUBLE_MIN"/>
-  	<set name="maximum" value="ognl:@org.apache.tapestry.workbench.fields.Fields@DOUBLE_MAX"/>
-  	<set name="clientScriptingEnabled" value="ognl:clientValidationEnabled"/>
-  	<set name="valueType" value="double"/>
-  </bean-->
   
   <bean name="bigDecimalValidator" lifecycle="render" class="org.apache.tapestry.form.validator.NumberValidator">
     <set name="min" value="@org.apache.tapestry.workbench.fields.Fields@DECIMAL_MIN"/>
     <set name="max" value="@org.apache.tapestry.workbench.fields.Fields@DECIMAL_MAX"/>
   </bean>
 
-  <!--bean name="bigDecimalValidator" lifecycle="render" class="org.apache.tapestry.valid.NumberValidator">
-  	<set name="required" value="true"/>
-  	<set name="minimum" value="@org.apache.tapestry.workbench.fields.Fields@DECIMAL_MIN"/>
-  	<set name="maximum" value="@org.apache.tapestry.workbench.fields.Fields@DECIMAL_MAX"/>
-  	<set name="clientScriptingEnabled" value="clientValidationEnabled"/>
-  	<set name="valueType" value="java.math.BigDecimal"/>
-  </bean-->
-
   <bean name="longValidator" lifecycle="render" class="org.apache.tapestry.form.validator.NumberValidator">
     <set name="min" value="@org.apache.tapestry.workbench.fields.Fields@LONG_MIN"/>
     <set name="max" value="@org.apache.tapestry.workbench.fields.Fields@LONG_MAX"/>
   </bean>
 
-  <!--bean name="longValidator" lifecycle="render" class="org.apache.tapestry.valid.NumberValidator">
-  	<set name="required" value="true"/>
-  	<set name="minimum" value="ognl:@org.apache.tapestry.workbench.fields.Fields@LONG_MIN"/>
-  	<set name="maximum" value="ognl:@org.apache.tapestry.workbench.fields.Fields@LONG_MAX"/>
-  	<set name="clientScriptingEnabled" value="ognl:clientValidationEnabled"/>
-  	<set name="valueType" value="long"/>
-  </bean-->
-
   <bean name="stringValidator" lifecycle="render" class="org.apache.tapestry.form.validator.StringValidator">
   	<set name="minLength" value="@org.apache.tapestry.workbench.fields.Fields@STRING_MIN_LENGTH"/>
   </bean>
 
-  <!--bean name="stringValidator" lifecycle="render" class="org.apache.tapestry.valid.StringValidator">
-  	<set name="required" value="true"/>
-  	<set name="minimumLength" value="ognl:@org.apache.tapestry.workbench.fields.Fields@STRING_MIN_LENGTH"/>
-  	<set name="clientScriptingEnabled" value="ognl:clientValidationEnabled"/>
-  </bean-->
-
   <bean name="emailValidator" lifecycle="render" class="org.apache.tapestry.form.validator.EmailValidator"></bean>
-
-  <!--bean name="emailValidator" lifecycle="render" class="org.apache.tapestry.valid.EmailValidator">
-  	<set name="required" value="true"/>
-  	<set name="minimumLength" value="6"/>
-  	<set name="clientScriptingEnabled" value="ognl:clientValidationEnabled"/>
-  </bean-->
 
   <component id="inputEnabled" type="Checkbox">
     <binding name="selected" value="clientValidationEnabled"/> 
@@ -127,7 +66,7 @@
 
   <component id="inputDate" type="TextField">
     <binding name="value" value="visit.dateValue"/>
-    <binding name="translator" value="bean:dateTranslator"/>
+    <binding name="translator" value="date,pattern=MM-dd-yyyy"/>
     <binding name="required" value="true"/>
     <binding name="validators" value="bean:dateValidator"/>
     <binding name="displayName" value="Date Field"/>
@@ -141,7 +80,7 @@
 
   <component id="inputInt" type="TextField">
     <binding name="value" value="ognl:visit.intValue"/>
-    <binding name="translator" value="bean:intTranslator"/>
+    <binding name="translator" value="number,pattern=#"/>
     <binding name="required" value="true"/>
     <binding name="displayName" value="Integer Field"/>
     <binding name="validators" value="bean:intValidator"/>
@@ -155,35 +94,23 @@
 
   <component id="inputDouble" type="TextField">
     <binding name="value" value="ognl:visit.doubleValue"/>
-    <binding name="translator" value="bean:decimalTranslator"/>
+    <binding name="translator" value="number,pattern=#.#"/>
     <binding name="required" value="true"/>
     <binding name="validators" value="bean:doubleValidator"/>
     <binding name="displayName" value="Double Field"/>
   </component>
 
-  <!--component id="inputDouble" type="ValidField">
-    <binding name="validator" value="bean:doubleValidator"/>
-    <binding name="value" value="visit.doubleValue"/>
-    <binding name="displayName" value="Double Field"/>
-  </component-->
-
   <component id="inputBigDecimal" type="TextField">
     <binding name="value" value="ognl:visit.bigDecimalValue"/>
-    <binding name="translator" value="bean:decimalTranslator"/>
+    <binding name="translator" value="number,pattern=#.#"/>
     <binding name="required" value="true"/>
     <binding name="validators" value="bean:bigDecimalValidator"/>
     <binding name="displayName" value="Big Decimal Field"/>
   </component>
 
-  <!--component id="inputBigDecimal" type="ValidField">
-    <binding name="value" value="visit.bigDecimalValue"/>
-    <binding name="validator" value="bean:bigDecimalValidator"/>
-    <binding name="displayName" value="Big Decimal Field"/>
-  </component-->
-
   <component id="inputLong" type="TextField">
     <binding name="value" value="ognl:visit.longValue"/>
-    <binding name="translator" value="bean:intTranslator"/>
+    <binding name="translator" value="number,pattern=#"/>
     <binding name="required" value="true"/>
     <binding name="validators" value="bean:longValidator"/>
     <binding name="displayName" value="Long Field"/>

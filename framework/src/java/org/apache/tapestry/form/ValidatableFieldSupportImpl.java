@@ -33,12 +33,7 @@ import org.apache.tapestry.valid.ValidatorException;
 public class ValidatableFieldSupportImpl implements ValidatableFieldSupport
 {
     private ValueConverter _converter;
-    
-    public ValueConverter getValueConverter()
-    {
-        return _converter;
-    }
-    
+
     public void setValueConverter(ValueConverter converter)
     {
         _converter = converter;
