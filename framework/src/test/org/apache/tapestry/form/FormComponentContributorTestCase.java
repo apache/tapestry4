@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,6 +31,13 @@ import org.easymock.MockControl;
  */
 public abstract class FormComponentContributorTestCase extends TapestryTestCase
 {
+    // Paul,
+    //
+    // Think you missed the newControl() and newMock() methods inherited from HiveMindTestCase.
+    // Those exist to eliminate the need for all this stuff.  Instead, you create newFoo() methods that
+    // create and initialize a Foo instance.
+    // -- Howard
+    
     protected MockControl _componentControl = MockControl.createControl(IFormComponent.class);
     protected IFormComponent _component = (IFormComponent) _componentControl.getMock();
 
