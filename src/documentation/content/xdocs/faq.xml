@@ -41,7 +41,7 @@ applications developed with other popular frameworks. This is
 because the Tapestry framework takes responsibility for many 
 important tasks, such as maintaining server-side state and 
 dispatching incoming requests to appropriate objects and methods.</p>
-                <p>The many new features of release 3.0 mean that Tapestry is not 
+                <p>The many new features of release 4.0 mean that Tapestry is not 
 only the most powerful web application framework available, it is 
 also the fastest and easiest to adopt, regardless of whether your 
 background is Java, Perl, XML or PHP!</p>
@@ -60,8 +60,16 @@ background is Java, Perl, XML or PHP!</p>
 	curves for equivalent Tapestry and JSP applications are identical.
                 </p>
 
-                <p>Don't think about the performance of 
-            Tapestry; think about the performance of your Java developers.</p>
+<p>
+Tapestry has a performance advantage in that it uses a very coarse-grained pooling strategy (pooling entire pages), whereas
+JSPs burn a fair number of cycles pooling individual JSP tags.  Tapestry 4.0 trades slightly longer start up time for improved
+runtime performance, since it makes much less use of Java reflection.
+</p>
+
+<p>
+  Except in the most extreme cases, application performance is gated by the database.  Tapestry gives your developers the time
+  they need to analyze and fix those kinds of problems, rather than getting bogged down in the user interface layer.
+</p>
 
             </answer>
         </faq>
@@ -70,17 +78,14 @@ background is Java, Perl, XML or PHP!</p>
             <question>Is Tapestry a JSP tag library?</question>
 
             <answer>
-                <p>	Tapestry is
-                    <em>not</em> a JSP tag library; Tapestry builds on the 
-            servlet API, but doesn't use JSPs in any way.&nbsp; It uses it own 
+                <p>	Tapestry is most explicitly
+                    <strong>not</strong> a JSP tag library; Tapestry builds on the 
+            servlet API, but doesn't use JSPs in any way.  Tapestry uses it own 
             HTML template format and its own rendering engine.
                 </p>
 
 
-                <p>
-	Starting with release 3.0, Tapestry includes a simple JSP tag library
-	to allow JSP pages to create links to Tapestry pages.	
-                </p>
+
             </answer>
         </faq>
 
@@ -144,131 +149,34 @@ is a Tapestry plugin
                 How do I integrate a Tapestry application with J2EE declarative security/JAAS?
             </question>
             <answer>
-                <p>In web.xml:</p>
-
-
-                <p>add an additional servlet mapping for your tapestry application to /admin, and add the following:</p>
-
-                <source><![CDATA[
-<security-constraint>
- <web-resource-collection>
-  <url-pattern>/admin/*</url-pattern>
- </web-resource-collection>
- <auth-constraint>
-   <role-name>ADMIN</role-name>
- </auth-constraint>
-</security-constraint>
-                    ]]></source>
-                <p>In your base class for protected pages:</p>
-
-
-                <source><![CDATA[
-public void validate(IRequestCycle cycle) throws RequestCycleException {
-
-  boolean isAdmin = getRequestCycle().getRequestContext().getRequest().isUserInRole("ADMIN");
-  if (!isAdmin) {
-    // not in right role
-    throw new PageRedirectException.......
-  }
-
-}
-                ]]></source>
-
-                <p>you can have a number of mappings for the same app-servlet to
-                 different URIs, that way you can rely a bit more on the
-                 declarative security.. not perfect, but works.. :)</p>
-
-
-                <p>ViktorSzathmary</p>
+              In Tapestry 3.0, this could be a problem, because of the way Tapestry generated URLs.
+              Tapestry 4.0 adds native support for <link href="UsersGuide/friendly-urls.html">friendly URLs</link> which
+              allow you to modularize your application across multiple folders in a more traditional manner.
 
             </answer>
-        </faq>
+        </faq>\
         <faq>
             <question>
-            How do I Write Components?
+                What is the <link href="tapestry/ComponentReference/Script.html">Script</link> component? Why is it needed and how does it work?
             </question>
             <answer>
-
-
-                <p>1.</p>
-
-
-                <p>Retrieving bound properties : When writting a component,
-                 you often require various properties to be supplied by
-                 the component user. At some point during rendering,
-                 you will want to use the value of this property.</p>
-
-                <p>You can do this by accessing the Binding. Assume we
-                 have a component with one property called 'values'.
-                 Our component will use this list in its preRenderCommponent()
-                 method to setup some model, for use elsewhere.</p>
-
-
-                <source><![CDATA[
-.... if(getValues() == null) {
-
-  IBinding binding = getBindings("values"); if(binding.getObject() == null) {
-
-      throw new RequestCycleException("The value for 'values' cannot be null", this);
-
-  } setValues((List)values.getObject());
-
-}
-                ]]></source>
-                <p>The binding itself will ensure that the object value is
-                the correct type (assuming of course, it's been setup right).</p>
-
-                <p>2.</p>
-
-
-                <p>Performing Lazy Instantiation of state based upon component
-                 properties : In some cases, the output of a component may be
-                 based upon the state of some other property of the same
-                 component. For example, imagine a form where the user can
-                 choose the type of product to view. When they choose a
-                 product, the form makes a query to the database for
-                 products matching this type, and reshows the list
-                 on the same page. (the list would be included outside
-                 of the form element itself).</p>
-
-                <p>Lets assume that the page object exposes it's products
-                via a getProductModel() - which is an instance of
-                IPropertySelectionModel.</p>
-
-                <p>We will also assume that the remainder of the page has the
-                 other components necessary to render correct HTML, using the
-                 value supplied by the getProductModel() result.</p>
-
-                <p>
-                Here, it is helpful to know when in the rendering process
-                you can rely on the value of selectedProduct to be set correctly,
-                so that you can instantiate a ProductModel based on the provided
-                value, for use in the form rendering.
-                The best place to setup state is in the preRenderComponent()
-                method. This is called by Tapestry just before it renders any component,
-                but AFTER it has set component properties.
-                So, we might write:
-                </p>
-
-                <source><![CDATA[
-protected void preRenderComponent() {
-
-  String selected = getSelectedProduct();
-  List products = getMatchingProducts(selectedProduct);
-  productModel = new ProductModel(products);
-  .. other initialization code ...
-
-}
-]]></source>
-
-            </answer>
-        </faq>
-        <faq>
-            <question>
-                @Script - Why is it needed and how does it work?
-            </question>
-            <answer>
-                <p>IMO, the script framework is an effective means to bundle
+              
+              <p>
+                One of the challenges in building a component framework for the web is
+                addressing client-side scripting. In the Tapestry world, a component may
+                be used multiple times within a single page, or even rendered multiple times within a loop.
+                This creates issues when that component is expected to have client-side behavior because
+                the same component will render out as many HTML elements with different names, and
+                naming conflicts could break the behavior on the client side.
+              </p>
+              
+              <p>
+                The challenge is to adapt the JavaScript to the particular names related to a
+                specific component. This requires a special templating language just for generating
+                JavaScript.
+              </p>
+              
+                <p>IMO, this script templating framework is an effective means to bundle
                  scripts in components. It provides scripts with the advantages
                  of components. It can now be reused like a component and not
                  have to worry about renaming field names or the wiring between
@@ -332,8 +240,8 @@ protected void preRenderComponent() {
                 <source><![CDATA[
 <component id="myScript" type="Script">
 
-    <static-binding name="script" value="ScriptSpecificationName.script"/>
-    <binding name="select" expression="components.somePropertySelection"/>
+    <binding name="script" value="ScriptSpecificationName.script"/>
+    <binding name="select" value="components.somePropertySelection"/>
 
 </component>
                 ]]></source>
@@ -370,9 +278,12 @@ protected void preRenderComponent() {
 </initialization>
                 ]]></source>
 
-                <p>As you can see in the rendered page all scripts are aggregated at the top
-                 of the page body, there are no more scripts all over the page. Even event
-                 handlers are attached to form objects in the initialization block.</p>
+<p>
+  The JavaScript generated inside the &lt;body&gt; element (of the script template) is ultimately
+  rendered into a single JavaScript block located just inside the HTML &lt;body&gt; tag.  The
+  &lt;intialization&gt; content is placed in a second JavaScript block, just before the
+  HTML &lt;/body&gt; tag.
+</p>
 
 
                 <p>One more thing to remember, scripts being components, and components by
@@ -399,10 +310,6 @@ protected void preRenderComponent() {
 
                 <p>That's all there is to it!</p>
 
-
-                <p>* HarishKrishnaswamy</p>
-
-
             </answer>
         </faq>
         <faq>
@@ -417,40 +324,38 @@ protected void preRenderComponent() {
         </faq>
         <faq>
             <question>
-                How do I do page navigation like struts?
+                How do I do page navigation like Struts?
             </question>
             <answer>
-                <p>Usage page properties:</p>
+                <p>Usage page meta-data:</p>
 
 
                 <source><![CDATA[
 Page1.page
-<page-specification class="xyz.Action">
+<page-specification>
 ...
-        <property name="success" value="Home" />
-        <property name="error" value="Error" />
+        <meta key="success" value="Home" />
+        <meta key="error" value="Error" />
 
 
 </page-specification>
 
 
 Page2.page
-<page-specification class="xyz.Action">
+<page-specification>
 ...
-        <property name="success" value="Home2" />
-        <property name="error" value="Error2" />
+        <meta key="success" value="ClientInfo" />
+        <meta key="error" value="SecurityCheck" />
 
 </page-specification>
 
-xyz.Action.java
-...
+
 public void submitListener(IRequestCycle cycle)
 {
-    if (success)
-        cycle.activate(getSpecification().getProperty("success"));
-
-    if (error)
-        cycle.activate(getSpecification().getProperty("error"));
+  String key = ifSuccess() ? "succes" : "error";
+  String pageName = getSpecification().getProperty(key);
+  
+  cycle.activate(pageName);
 }
 ]]></source>
 
@@ -469,7 +374,7 @@ public void submitListener(IRequestCycle cycle)
 
         <faq>
             <question>
-                How do I stream a file to the user from tapestry?
+                How do I stream a file to the user from Tapestry?
             </question>
             <answer>
                 <p>Make a method like the following a a listener, such as from a DirectLink or whatever.</p>
@@ -510,8 +415,15 @@ public void downloadAction(IRequestCycle cycle)
 }
                 ]]></source>
 
-
+<warning>
+This is not sanctioned by Howard. The correct approach is to define a new engine service for
+accessing the content, and build a URL to that content, possibly sending a redirect to the
+client to load that content. This approach has not be verified to work in Tapestry 4.0
+</warning> 
             </answer>
+            
+           
+            
         </faq>
 
         <faq>
@@ -526,14 +438,26 @@ public void downloadAction(IRequestCycle cycle)
 
 
                 <source><![CDATA[
-cycle.getEngine()
-    .getService( Tapestry.EXTERNAL_SERVICE )
-    .getLink( cycle, cycle.getPage(), new Object[]{
-        "MyPageName",
-        param1,
-        param2} )
-    .getURL()
+
+// Add <inject property="externalService" object="engine-service:external"> to specification
+// or use @InjectObject("engine-service:external")
+public abstract IEngineService getExternalService();
+
+public String getURL(IRequestCycle cycle, String pageName, Object[] parameters)
+{
+  IEngineService service = getExternalService();
+  ExternalServiceParameter parameter = new ExternalServiceParameter(pageName, parameters);
+  ILink link = service.getLink(cycle, parameter);
+  
+  return link.getURL();
+}
+
                 ]]></source>
+                
+                <p>
+                  Different engine services take different types of objects as that final
+                  parameter.
+                </p>
             </answer>
         </faq>
 
@@ -543,13 +467,25 @@ cycle.getEngine()
                 button are two separate listeners. Which is invoked first?
             </question>
             <answer>
-                <p>The button's listener should get invoked when the form
-                encounters your button during the rewind. the form's
-                submitListener should get invoked after the form has completed
-                its rewind, and thus after all other listeners have been
-                invoked. note - this can mean that the listener for a button can be invoked
-                BEFORE the form has 'submitted' all its values - it depends
-                where your input fields are relative to your button.</p>
+              
+              <p>
+               The listener for the Submit (or ImageSubmit, or LinkSubmit) component
+               will always trigger first; the Form's listener always triggers last.
+              </p>
+              
+              <p>
+               The timing on the Submit listener can be confusing.  In Tapestry 3.0,
+               the Submit listener would be invoked in the middle of the
+               form's "rewind"; and in some cases, properties (set by components
+               "further down" the form) would not have been set yet.
+              </p>
+              
+              <p>
+                In Tapestry 4.0, the execution of the listener method is deferred until
+                just before the form's listener by default.  This can be turned off
+                using the Submit's defer parameter.
+              </p>
+              
             </answer>
         </faq>
 
@@ -573,6 +509,10 @@ protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle){
                     <code>org.apache.tapestry.contrib.palette.Palette</code> can be used for detailed example.
                 </p>
 
+<warning>
+  This is about to change significantly for Tapestry 4.0, with the bulk of the client-side event handling
+  moving to the client side.
+</warning>
             </answer>
         </faq>
 
@@ -583,13 +523,17 @@ protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle){
             <answer>
                 <p>Events will trigger in the following order:</p>
 
+<ul>
+  <li>initialize()</li>
+  <li>pageBeginRender() ("rewind")</li>
+  <li>rewind of the form / setting of properties</li>
+  <li>Deferred listeners (for Submit components)</li>
+  <li>Form's listener</li>
+  <li>pageEndRender() ("rewind")</li>
+  <li>pageBeginRender() (normal)</li>
+  <li>pageEndRender() (normal)</li>
+</ul>
 
-                <source><![CDATA[
-initialize()
-pageBeginRender()
-formListenerMethod()
-pageBeginRender()
-                ]]></source>
 
                 <p>The form "rewind" cycle is nothing more than a render cycle
 where the output is buffered and scrapped rather than written
@@ -610,7 +554,7 @@ two render cycles.</p>
 
                 <source><![CDATA[
 <component id="valueInsert" type="Insert" >
-   <binding name="value" expression="getValueAt( rowIndex, columnIndex )" />
+   <binding name="value" value="getValueAt( rowIndex, columnIndex )" />
 </component>
 
 <component id="valueInsert1" copy-of="valueInsert"/>
@@ -661,12 +605,11 @@ Start your servlet container with the JVM system parameter
 		file and location.
                 </p>
 
-<!--
+
                 <jump href="images/LinePrecise.png">
                     <img src="images/LinePrecise_thumb.png" alt="Line Precise"/>
                 </jump>
                 <caption>	Tapestry exception report (click for larger image).</caption>
--->
 
                 <p>
 		For example; say you bind a parameter of a component that expects
@@ -699,7 +642,8 @@ Start your servlet container with the JVM system parameter
             <answer>
 <p>	<link href="http://www.springframework.org/">Spring</link> is a popular
 		service framework. There is an 
-                <link href="http://www.springframework.org/docs/reference/view.html#view-tapestry">integration section</link> in Spring Reference Documentation about how to integrate these two open-source frameworks together.
+                <link href="http://www.springframework.org/docs/reference/webintegration.html#view-tapestry">integration section</link> in Spring Reference Documentation about how to integrate these two open-source frameworks together.
+                This documentation refers to Tapestry 3.0, however.  The Tapestry 4.0 story is much cleaner, but still evolving.
 </p>
             </answer>
         </faq>
