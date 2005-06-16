@@ -78,6 +78,8 @@
        <action type="fix" dev="HLS" fixes-bug="TAPESTRY-337">Incorrect link to Spring integration docs in FAQ</action>
        <action type="fix" dev="HLS" fixes-bug="TAPESTRY-304">Non thread safe documentation example</action>
        <action type="fix" dev="HLS" fixes-bug="TAPESTRY-261">ListEditMap can return null from getDeletedKeys()</action>
+       <action type="fix" dev="HLS">Fix injection problems; InjectScriptWorker injects a DeferredScript, not an IScript. Add super-verbose exception output when there's 
+        a failure instantiating a component class. </action>
     </release>
     <release version="4.0-alpha-3" date="May 16 2005">
       <action type="add" dev="HLS">Add initial support for the validator: binding prefix.</action>

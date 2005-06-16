@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.hivemind.service.ClassFabUtils;
+import org.apache.tapestry.Tapestry;
 
 /**
  * Messages for this package.
@@ -66,9 +67,22 @@ class EnhanceMessages
         return _formatter.format("claimed-property", propertyName);
     }
 
-    static String instantiationFailure(Constructor c, Throwable cause)
+    static String instantiationFailure(Constructor c, Object[] parameters, String classFab,
+            Throwable cause)
     {
-        return _formatter.format("instantiation-failure", c.getDeclaringClass().getName(), cause);
+        int count = Tapestry.size(parameters);
+        StringBuffer buffer = new StringBuffer("[");
+        for (int i = 0; i < count; i++)
+        {
+            if (i > 0)
+                buffer.append(", ");
+            buffer.append(parameters[i]);
+        }
+
+        buffer.append("]");
+
+        return _formatter.format("instantiation-failure", new Object[]
+        { c.getDeclaringClass().getName(), c, buffer.toString(), classFab, cause });
     }
 
     static String locatedValueIsNull(String objectReference)
