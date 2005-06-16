@@ -15,11 +15,11 @@
 function validate_min_length(event, field, min, message)
 {
     if (field.value.length < min)
-      handle_invalid_field(field, message)
+      handle_invalid_field(event, field, message)
 }
 
 function validate_max_length(event, field, max, message)
 {
     if (field.value.length > max)
-      handle_invalid_field(field, message)
+      handle_invalid_field(event, field, message)
 }

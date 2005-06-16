@@ -6,16 +6,11 @@ and writing properties when the form is submitted; it is never necesssary to wri
 code to directly read HTTP parameters.
 
 <p>
-In addition, Tapestry includes the ValidField component which
-is part of a framework that allows for complex validation of user input
-as well as presentation of errors.
-
-<p>
 <form jwcid="valid@Form">
 <input jwcid="inputEnabled"/> Enable Client Side Validation
 </form>
 
-<p>ValidField components can perform validations on the client-side, triggered
+<p>Input field components can perform validations on the client-side, triggered
 by the user submitting the form.  The checkbox above enables or disables
 this feature.  Input is always rechecked on the server-side (in case the client
 doesn't support JavaScript).
@@ -63,14 +58,14 @@ doesn't support JavaScript).
 
   <tr>
   	<td></td>
-  	<td><input jwcid="@ImageSubmit" image="continue"/></td>
+  	<td><input jwcid="continue@ImageSubmit" image="continue"/></td>
   </tr>    
     
   <tr>
       	<td></td>
   		<td>
       	Or, use a LinkSubmit component:   
-      	<a jwcid="@LinkSubmit">Continue</a>
+      	<a jwcid="continueLink@LinkSubmit">Continue</a>
         </td>
   </tr>
   

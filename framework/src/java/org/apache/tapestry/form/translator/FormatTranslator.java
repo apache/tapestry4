@@ -81,4 +81,14 @@ public abstract class FormatTranslator extends AbstractTranslator
     {
         _pattern = pattern;
     }
+
+    public FormatTranslator()
+    {
+    }
+
+    // Needed until HIVEMIND-134 fix is available
+    public FormatTranslator(String initializer)
+    {
+        super(initializer);
+    }
 }

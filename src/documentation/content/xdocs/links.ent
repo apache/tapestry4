@@ -110,6 +110,7 @@
 <!ENTITY StaleLinkException 		'<link href="&apiroot;/StaleLinkException.html">StaleLinkException</link>'>
 <!ENTITY StateObjectFactory			'<link href="&apiroot;/engine/state/StateObjectFactory.html">StateObjectFactory</link>'>
 <!ENTITY Tapestry 					'<link href="&apiroot;/Tapestry.html">Tapestry</link>'>
+<!ENTITY Translator					'<link href="&apiroot;/form/translator/Translator.html">Translator</link>'>
 <!ENTITY ValidationDelegate 		'<link href="&apiroot;/valid/ValidationDelegate.html">ValidationDelegate</link>'>
 <!ENTITY WebRequest					'<link href="&apiroot;/web/WebRequest.html">WebRequest</link>'>
 <!ENTITY WebResponse			    '<link href="&apiroot;/web/WebResponse.html">WebResponse</link>'>

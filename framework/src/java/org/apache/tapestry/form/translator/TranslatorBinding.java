@@ -12,42 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.valid;
+package org.apache.tapestry.form.translator;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.binding.AbstractBinding;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.tapestry.valid.IValidator;
 
 /**
- * Implementation of {@link IBinding} that provides {@link org.apache.tapestry.valid.IValidator}
- * &nbsp;instances based on a validator bean descriptor. The descriptor is of the form
- * "type[,properties]". The types are values such as "string", "date" or "number" defined in the
- * tapestry.valid.Validators configuration point. The properties are a properties initialization
- * string.
+ * Implementation of {@link org.apache.tapestry.IBinding} that wraps around a
+ * {@link org.apache.tapestry.form.translator.Translator}.
  * 
- * @author Howard M. Lewis Ship
+ * @author Howard Lewis Ship
  * @since 4.0
- * @see org.apache.hivemind.util.PropertyUtils#configureProperties(java.lang.Object,
- *      java.lang.String)
  */
-public class ValidatorBinding extends AbstractBinding
+public class TranslatorBinding extends AbstractBinding
 {
-    private final IValidator _validator;
+    private final Translator _translator;
 
-    public ValidatorBinding(String description, ValueConverter valueConverter, Location location,
-            IValidator validator)
+    public TranslatorBinding(String description, ValueConverter valueConverter, Location location,
+            Translator translator)
     {
         super(description, valueConverter, location);
 
-        Defense.notNull(validator, "validator");
+        Defense.notNull(translator, "translator");
 
-        _validator = validator;
+        _translator = translator;
     }
+
+    /**
+     * Returns the translator.
+     */
 
     public Object getObject()
     {
-        return _validator;
+        return _translator;
     }
 
 }

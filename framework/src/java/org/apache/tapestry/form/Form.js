@@ -30,12 +30,10 @@ function handle_invalid_field(event, field, message)
 
 function focus(field)
 {
-    field.focus();
+ 	field.focus();
     
     if (field.select)
-    {
         field.select();
-    }
 }
 
 function trim(field)
@@ -157,7 +155,7 @@ FormEventManager.prototype.cancel = function()
 	
 	if (event.abort == false)
 	{
-	  this.form.mode.value = "cancel";
+	  // this.form.mode.value = "cancel";
 	  this.form.onsubmit = null;
 	  this.form.submit();
 	}
@@ -192,7 +190,7 @@ FormEventManager.prototype.submit = function()
 	if (event.abort)
       return false;
 	  
-	this.form.mode.value = "submit";
+	// this.form.mode.value = "submit";
 	
 	return true;
 }
@@ -228,7 +226,7 @@ FormEventManager.prototype.refresh = function()
 	if (event.abort)
 	  return;
 	  
-    this.form.mode.value = "refresh";
+    // this.form.mode.value = "refresh";
 	this.form.onsubmit = null;
 	this.form.submit();
 }
