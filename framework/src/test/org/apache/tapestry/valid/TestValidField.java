@@ -48,9 +48,6 @@ public class TestValidField extends BaseFormComponentTest
 
         IMarkupWriter writer = newWriter();
 
-        MockControl delegatec = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
-
         trainGetForm(cyclec, cycle, form);
 
         ValidField component = (ValidField) newInstance(ValidField.class);
