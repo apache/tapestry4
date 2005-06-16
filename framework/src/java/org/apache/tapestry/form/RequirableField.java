@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * Implemented by form components that can be marked as required.  The form rewind
- * will record validation errors for required fields for which a value was not submitted.
+ * Implemented by form components that can be marked as required. The form rewind will record
+ * validation errors for required fields for which a value was not submitted.
  * 
  * @author Paul Ferraro
  * @since 4.0
@@ -29,27 +29,30 @@ public interface RequirableField extends IFormComponent
 {
     /**
      * Indicates whether or not this field is required.
+     * 
      * @return true, if this field is required, false otherwise.
      */
     public boolean isRequired();
-    
+
     /**
-     * Returns the custom validation message pattern that overrides the default one.
-     * This value may include {@link MessageFormat} parameters, the context of which is 
-     * specific to this field.
+     * Returns the custom validation message pattern that overrides the default one. This value may
+     * include {@link MessageFormat} parameters, the context of which is specific to this field.
+     * 
      * @return a custom validation message
      */
     public String getRequiredMessage();
-    
+
     /**
      * Called on the field if the required field check succeeds.
-     * @throws ValidatorException if required field check fails.
+     * 
+     * @throws ValidatorException
+     *             if required field check fails.
      */
     public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException;
-    
+
     /**
-     * Retrieves a simplified view of the value submitted for this component.  Used to during
-     * required field checking.
+     * Retrieves a simplified view of the value submitted for this component. Used during required
+     * field checking.
      */
     public String getSubmittedValue(IRequestCycle cycle);
 }
