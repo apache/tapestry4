@@ -151,7 +151,7 @@
    </annotations>
     
     <project label="Project">
-        <item label="Mailing Lists"     href="http://jakarta.apache.org/site/mail2.html#tapestry"/>
+        <item label="Mailing Lists"     href="http://jakarta.apache.org/site/mail2.html#Tapestry"/>
         <item label="Forums"            href="http://www.tapestryforums.com/"/>
         <item label="Bug Database"     href="http://issues.apache.org/jira/secure/BrowseProject.jspa?id=10573"/>
         <item label="CVS Access"      href="cvs.html"/>    
