@@ -43,7 +43,7 @@ public abstract class FormConditional extends AbstractFormComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        IForm form = getForm(cycle);
+        IForm form = getForm();
 
         boolean cycleRewinding = cycle.isRewinding();
 

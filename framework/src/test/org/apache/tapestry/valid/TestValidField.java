@@ -52,15 +52,10 @@ public class TestValidField extends BaseFormComponentTest
         IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
 
         trainGetForm(cyclec, cycle, form);
-        trainGetDelegate(formc, form, delegate);
 
         ValidField component = (ValidField) newInstance(ValidField.class);
 
-        delegate.setFormComponent(component);
-
         trainWasPrerendered(formc, form, writer, component, true);
-        trainGetDelegate(formc, form, delegate);
-        trainIsInError(delegatec, delegate, false);
 
         replayControls();
 
@@ -90,16 +85,14 @@ public class TestValidField extends BaseFormComponentTest
         IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
 
         trainGetForm(cyclec, cycle, form);
+        trainWasPrerendered(formc, form, writer, component, false);
         trainGetDelegate(formc, form, delegate);
 
         delegate.setFormComponent(component);
 
-        trainWasPrerendered(formc, form, writer, component, false);
+        trainGetElementId(formc, form, component, "fred");
         trainIsRewinding(formc, form, false);
         trainIsRewinding(cyclec, cycle, true);
-
-        trainGetDelegate(formc, form, delegate);
-        trainIsInError(delegatec, delegate, false);
 
         replayControls();
 
@@ -118,7 +111,7 @@ public class TestValidField extends BaseFormComponentTest
 
     public void testRewind() throws Exception
     {
-        Object translatedValued = new Object();
+        Object translatedValue = new Object();
 
         MockControl validatorc = newControl(IValidator.class);
         IValidator validator = (IValidator) validatorc.getMock();
@@ -137,24 +130,21 @@ public class TestValidField extends BaseFormComponentTest
         IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
 
         trainGetForm(cyclec, cycle, form);
+        trainWasPrerendered(formc, form, writer, component, false);
         trainGetDelegate(formc, form, delegate);
 
         delegate.setFormComponent(component);
 
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainIsRewinding(formc, form, true);
-
         trainGetElementId(formc, form, component, "fred");
+        trainIsRewinding(formc, form, true);
 
         trainGetParameter(cyclec, cycle, "fred", "fred-value");
 
-        trainToObject(validatorc, validator, component, "fred-value", translatedValued);
+        trainGetDelegate(formc, form, delegate);
 
         delegate.recordFieldInputValue("fred-value");
 
-        trainGetDelegate(formc, form, delegate);
-        trainGetDelegate(formc, form, delegate);
-        trainIsInError(delegatec, delegate, false);
+        trainToObject(validatorc, validator, component, "fred-value", translatedValue);
 
         replayControls();
 
@@ -162,7 +152,7 @@ public class TestValidField extends BaseFormComponentTest
 
         verifyControls();
 
-        assertSame(translatedValued, component.getProperty("value"));
+        assertSame(translatedValue, component.getProperty("value"));
     }
 
     public void testRewindNoValidator()
@@ -191,14 +181,13 @@ public class TestValidField extends BaseFormComponentTest
         IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
 
         trainGetForm(cyclec, cycle, form);
+        trainWasPrerendered(formc, form, writer, component, false);
         trainGetDelegate(formc, form, delegate);
 
         delegate.setFormComponent(component);
 
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainIsRewinding(formc, form, true);
-
         trainGetElementId(formc, form, component, "fred");
+        trainIsRewinding(formc, form, true);
 
         trainGetParameter(cyclec, cycle, "fred", "fred-value");
 
@@ -241,13 +230,12 @@ public class TestValidField extends BaseFormComponentTest
         MockDelegate delegate = new MockDelegate();
 
         trainGetForm(cyclec, cycle, form);
+        trainWasPrerendered(formc, form, writer, component, false);
         trainGetDelegate(formc, form, delegate);
 
-        trainWasPrerendered(formc, form, writer, component, false);
+        trainGetElementId(formc, form, component, "fred");
         trainIsRewinding(formc, form, false);
         trainIsRewinding(cyclec, cycle, false);
-
-        trainGetElementId(formc, form, component, "fred");
 
         trainGetDelegate(formc, form, delegate);
         trainGetDelegate(formc, form, delegate);
@@ -257,8 +245,6 @@ public class TestValidField extends BaseFormComponentTest
         // Would be nice to have this do something so we could check the timing, but ...
 
         validator.renderValidatorContribution(component, writer, cycle);
-
-        trainGetDelegate(formc, form, delegate);
 
         replayControls();
 
@@ -300,32 +286,24 @@ public class TestValidField extends BaseFormComponentTest
         MockDelegate delegate = new MockDelegate();
 
         trainGetForm(cyclec, cycle, form);
+        trainWasPrerendered(formc, form, writer, component, false);
         trainGetDelegate(formc, form, delegate);
 
-        trainWasPrerendered(formc, form, writer, component, false);
+        trainGetElementId(formc, form, component, "fred");
         trainIsRewinding(formc, form, false);
         trainIsRewinding(cyclec, cycle, false);
-
-        trainGetElementId(formc, form, component, "fred");
 
         trainGetDelegate(formc, form, delegate);
         trainGetDelegate(formc, form, delegate);
 
         trainToString(validatorc, validator, component, null, null);
-        trainIsRequired(validatorc, validator, true);
 
         // Would be nice to have this do something so we could check the timing, but ...
 
         validator.renderValidatorContribution(component, writer, cycle);
 
-        trainGetDelegate(formc, form, delegate);
-
-        trainIsRewinding(cyclec, cycle, false);
-
         // Short cut this here, so that it appears some other field is
         // taking the honors ...
-
-        trainGetAttribute(cyclec, cycle, ValidField.SELECTED_ATTRIBUTE_NAME, "whatever");
 
         replayControls();
 
@@ -357,8 +335,7 @@ public class TestValidField extends BaseFormComponentTest
         MockControl validatorc = newControl(IValidator.class);
         IValidator validator = (IValidator) validatorc.getMock();
 
-        ValidField component = (ValidField) newInstance(ValidField.class, new Object[]
-        { "value", value, "validator", validator });
+        PageRenderSupport support = (PageRenderSupport) newMock(PageRenderSupport.class);
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -366,19 +343,21 @@ public class TestValidField extends BaseFormComponentTest
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
 
+        ValidField component = (ValidField) newInstance(ValidField.class, new Object[]
+        { "value", value, "validator", validator, "form", form, "name", "fred" });
+
         IMarkupWriter writer = newBufferWriter();
 
         MockDelegate delegate = new MockDelegate(true);
         delegate.recordFieldInputValue("recorded field value");
 
         trainGetForm(cyclec, cycle, form);
+        trainWasPrerendered(formc, form, writer, component, false);
         trainGetDelegate(formc, form, delegate);
 
-        trainWasPrerendered(formc, form, writer, component, false);
+        trainGetElementId(formc, form, component, "fred");
         trainIsRewinding(formc, form, false);
         trainIsRewinding(cyclec, cycle, false);
-
-        trainGetElementId(formc, form, component, "fred");
 
         trainGetDelegate(formc, form, delegate);
         trainGetDelegate(formc, form, delegate);
@@ -387,13 +366,15 @@ public class TestValidField extends BaseFormComponentTest
 
         validator.renderValidatorContribution(component, writer, cycle);
 
-        trainGetDelegate(formc, form, delegate);
+        trainGetAttribute(cyclec, cycle, "org.apache.tapestry.form.SelectedField", null);
 
-        trainIsRewinding(cyclec, cycle, false);
+        trainGetAttribute(cyclec, cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, support);
 
-        trainGetAttribute(cyclec, cycle, ValidField.SELECTED_ATTRIBUTE_NAME, null);
+        trainGetName(formc, form, "zeform");
 
-        trainGetAttribute(cyclec, cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, null);
+        support.addInitializationScript("focus(document.zeform.fred)");
+
+        cycle.setAttribute("org.apache.tapestry.form.SelectedField", Boolean.TRUE);
 
         replayControls();
 
@@ -410,8 +391,6 @@ public class TestValidField extends BaseFormComponentTest
         Object value = new Object();
         MockControl validatorc = newControl(IValidator.class);
         IValidator validator = (IValidator) validatorc.getMock();
-
-        PageRenderSupport support = (PageRenderSupport) newMock(PageRenderSupport.class);
 
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
@@ -430,13 +409,12 @@ public class TestValidField extends BaseFormComponentTest
         delegate.recordFieldInputValue("recorded field value");
 
         trainGetForm(cyclec, cycle, form);
+        trainWasPrerendered(formc, form, writer, component, false);
         trainGetDelegate(formc, form, delegate);
 
-        trainWasPrerendered(formc, form, writer, component, false);
+        trainGetElementId(formc, form, component, "fred");
         trainIsRewinding(formc, form, false);
         trainIsRewinding(cyclec, cycle, false);
-
-        trainGetElementId(formc, form, component, "fred");
 
         trainGetDelegate(formc, form, delegate);
         trainGetDelegate(formc, form, delegate);
@@ -445,20 +423,9 @@ public class TestValidField extends BaseFormComponentTest
 
         validator.renderValidatorContribution(component, writer, cycle);
 
-        trainGetDelegate(formc, form, delegate);
+        trainGetAttribute(cyclec, cycle, "org.apache.tapestry.form.SelectedField", null);
 
-        trainIsRewinding(cyclec, cycle, false);
-
-        trainGetAttribute(cyclec, cycle, ValidField.SELECTED_ATTRIBUTE_NAME, null);
-
-        trainGetAttribute(cyclec, cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, support);
-
-        trainGetName(formc, form, "zeform");
-
-        support.addInitializationScript("document.zeform.fred.focus();");
-        support.addInitializationScript("document.zeform.fred.select();");
-
-        cycle.setAttribute(ValidField.SELECTED_ATTRIBUTE_NAME, Boolean.TRUE);
+        trainGetAttribute(cyclec, cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, null);
 
         replayControls();
 

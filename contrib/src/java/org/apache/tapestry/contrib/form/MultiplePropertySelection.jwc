@@ -16,24 +16,27 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 	
 <component-specification class="org.apache.tapestry.contrib.form.MultiplePropertySelection" 
 	allow-body="no" allow-informal-parameters="no">
 	
-  <parameter name="model" 
-  	type="org.apache.tapestry.form.IPropertySelectionModel" required="yes" direction="in"/>
+  <parameter name="model" required="yes"/>
   	
-  <parameter name="selectedList" type="java.util.List" required="yes"/>
+  <parameter name="selectedList" required="yes"/>
   
-  <parameter name="disabled" type="boolean" direction="in"/>
+  <parameter name="disabled"/>
   
-  <parameter name="renderer" 
-  	type="org.apache.tapestry.contrib.form.IMultiplePropertySelectionRenderer"
-  	direction="in"/>
-  	
-  <property-specification name="name" type="java.lang.String"/>
-  <property-specification name="form" type="org.apache.tapestry.IForm"/>
+  <parameter name="renderer"/>
+
+  <parameter name="displayName" default-binding="literal"/>
+  <parameter name="required" default-binding="ognl"/>
+  <parameter name="requiredMessage" default-binding="literal"/>
+      	
+  <property name="name"/>
+  <property name="form"/>
   
+  <inject property="requirableFieldSupport" object="service:tapestry.form.RequirableFieldSupport"/>
+    
 </component-specification>

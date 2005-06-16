@@ -18,10 +18,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.valid.ValidationStrings;
+import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Implements a component that manages an HTML &lt;select&gt; form element. The most common
@@ -31,10 +32,12 @@ import org.apache.tapestry.Tapestry;
  * <p>
  * Otherwise, this component is very similar to {@link RadioGroup}.
  * 
+ * As of 4.0, Select can indicate that it is required.
+ * 
  * @author Howard Lewis Ship
+ * @author Paul Ferraro
  */
-
-public abstract class Select extends AbstractFormComponent
+public abstract class Select extends AbstractRequirableField
 {
     private boolean _rewinding;
 
@@ -55,8 +58,6 @@ public abstract class Select extends AbstractFormComponent
     {
         return (Select) cycle.getAttribute(ATTRIBUTE_NAME);
     }
-
-    public abstract boolean isDisabled();
 
     public abstract boolean isMultiple();
 
@@ -87,93 +88,89 @@ public abstract class Select extends AbstractFormComponent
     }
 
     /**
-     * Renders the &lt;option&gt; element, or responds when the form containing the element is
-     * submitted (by checking {@link IForm#isRewinding()}.
+     * @see org.apache.tapestry.AbstractComponent#prepareForRender(org.apache.tapestry.IRequestCycle)
      */
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    protected void prepareForRender(IRequestCycle cycle)
     {
-        IForm form = getForm(cycle);
-
-        if (form.wasPrerendered(writer, this))
-            return;
-
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
             throw new ApplicationRuntimeException(Tapestry.getMessage("Select.may-not-nest"), this,
                     null, null);
-
-        // It isn't enough to know whether the cycle in general is rewinding, need to know
-        // specifically if the form which contains this component is rewinding.
-
-        _rewinding = form.isRewinding();
-
-        // Used whether rewinding or not.
-
-        String name = form.getElementId(this);
-
+        
         cycle.setAttribute(ATTRIBUTE_NAME, this);
-
-        if (_rewinding)
-        {
-            _selections = buildSelections(cycle, name);
-        }
-        else
-        {
-            writer.begin("select");
-
-            writer.attribute("name", name);
-
-            if (isMultiple())
-                writer.attribute("multiple", "multiple");
-
-            if (isDisabled())
-                writer.attribute("disabled", "disabled");
-
-            renderInformalParameters(writer, cycle);
-        }
 
         _rendering = true;
         _nextOptionId = 0;
-
-        renderBody(writer, cycle);
-
-        if (!_rewinding)
-        {
-            writer.end();
-        }
-
-        cycle.removeAttribute(ATTRIBUTE_NAME);
-
     }
 
+    /**
+     * @see org.apache.tapestry.AbstractComponent#cleanupAfterRender(org.apache.tapestry.IRequestCycle)
+     */
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
         _rendering = false;
         _selections = null;
-
-        super.cleanupAfterRender(cycle);
     }
 
     /**
-     * Cut-and-paste with {@link RadioGroup}!
+     * @see org.apache.tapestry.AbstractComponent#finishLoad()
      */
-
-    private Set buildSelections(IRequestCycle cycle, String parameterName)
+    protected void finishLoad()
     {
-        String[] parameters = cycle.getParameters(parameterName);
+        setRequiredMessage(ValidationStrings.getMessagePattern(ValidationStrings.REQUIRED_SELECT_FIELD, getPage().getLocale()));
+    }
 
-        if (parameters == null)
-            return null;
+    /**
+     * @see org.apache.tapestry.form.AbstractRequirableField#bind(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException
+    {
+        _selections = null;
+        _rewinding = true;
+        
+        String[] parameters = cycle.getParameters(getName());
 
-        int length = parameters.length;
+        if (parameters != null)
+        {
+            int length = parameters.length;
 
-        int size = (parameters.length > 30) ? 101 : 7;
+            _selections = new HashSet((length > 30) ? 101 : 7);
 
-        Set result = new HashSet(size);
+            for (int i = 0; i < length; i++)
+                _selections.add(parameters[i]);
+        }
+        
+        renderBody(writer, cycle);
+    }
 
-        for (int i = 0; i < length; i++)
-            result.add(parameters[i]);
+    /**
+     * @see org.apache.tapestry.form.AbstractRequirableField#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        super.renderFormComponent(writer, cycle);
 
-        return result;
+        _rewinding = false;
+        
+        renderDelegatePrefix(writer, cycle);
+
+        writer.begin("select");
+
+        writer.attribute("name", getName());
+
+        if (isMultiple())
+            writer.attribute("multiple", "multiple");
+
+        if (isDisabled())
+            writer.attribute("disabled", "disabled");
+
+        renderDelegateAttributes(writer, cycle);
+        
+        renderInformalParameters(writer, cycle);
+        
+        renderBody(writer, cycle);
+        
+        writer.end();
+        
+        renderDelegateSuffix(writer, cycle);
     }
 }

@@ -25,6 +25,8 @@ import java.util.Date;
 
 public class Visit implements Serializable
 {
+    private static final long serialVersionUID = -8506455811411321232L;
+
     /**
      * The name of the page for which the corresponding tab should be visibly active.
      */
@@ -57,6 +59,8 @@ public class Visit implements Serializable
 
     private String _emailValue;
 
+    private String _textValue;
+    
     public String getActiveTabName()
     {
         return _activeTabName;
@@ -157,4 +161,13 @@ public class Visit implements Serializable
         _disableInspector = disableInspector;
     }
 
+    public String getTextValue()
+    {
+        return _textValue;
+    }
+    
+    public void setTextValue(String value)
+    {
+        _textValue = value;
+    }
 }

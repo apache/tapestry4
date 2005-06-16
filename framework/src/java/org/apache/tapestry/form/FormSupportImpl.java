@@ -27,6 +27,8 @@ import java.util.Set;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.FormSupport;
 import org.apache.tapestry.IComponent;
@@ -67,6 +69,8 @@ public class FormSupportImpl implements FormSupport
 
     public static final String RESERVED_FORM_IDS = "reservedids";
 
+    public static final String SCRIPT = "/org/apache/tapestry/form/Form.js";
+    
     private final static Set _standardReservedIds;
 
     static
@@ -124,6 +128,8 @@ public class FormSupportImpl implements FormSupport
 
     private final IMarkupWriter _writer;
 
+    private final Resource _script;
+    
     public FormSupportImpl(IMarkupWriter writer, IRequestCycle cycle, IForm form)
     {
         Defense.notNull(writer, "writer");
@@ -136,6 +142,8 @@ public class FormSupportImpl implements FormSupport
 
         _rewinding = cycle.isRewound(form);
         _allocatedIdIndex = 0;
+        
+        _script = new ClasspathResource(cycle.getEngine().getClassResolver(), SCRIPT);
     }
 
     /**
@@ -147,35 +155,20 @@ public class FormSupportImpl implements FormSupport
         if (_events == null)
             _events = new HashMap();
 
-        Object value = _events.get(type);
+        List functionList = (List) _events.get(type);
 
         // The value can either be a String, or a List of String. Since
         // it is rare for there to be more than one event handling function,
         // we start with just a String.
 
-        if (value == null)
+        if (functionList == null)
         {
-            _events.put(type, functionName);
-            return;
+            functionList = new ArrayList();
+            
+            _events.put(type, functionList);
         }
-
-        // The second function added converts it to a List.
-
-        if (value instanceof String)
-        {
-            List list = new ArrayList();
-            list.add(value);
-            list.add(functionName);
-
-            _events.put(type, list);
-            return;
-        }
-
-        // The third and subsequent function just
-        // adds to the List.
-
-        List list = (List) value;
-        list.add(functionName);
+        
+        functionList.add(functionName);
     }
 
     /**
@@ -259,7 +252,7 @@ public class FormSupportImpl implements FormSupport
         return buffer.toString();
     }
 
-    private void emitEventHandlers()
+    private void emitEventHandlers(IMarkupWriter writer)
     {
         if (_events == null || _events.isEmpty())
             return;
@@ -269,9 +262,9 @@ public class FormSupportImpl implements FormSupport
         StringBuffer buffer = new StringBuffer();
 
         Iterator i = _events.entrySet().iterator();
+        
         while (i.hasNext())
         {
-
             Map.Entry entry = (Map.Entry) i.next();
             FormEventType type = (FormEventType) entry.getKey();
             Object value = entry.getValue();
@@ -282,55 +275,46 @@ public class FormSupportImpl implements FormSupport
             buffer.append(type.getPropertyName());
             buffer.append(" = ");
 
-            // The typical case; one event one event handler. Easy enough.
+            // Build a composite function in-place
 
-            if (value instanceof String)
+            buffer.append("function ()\n{");
+
+            boolean combineWithAnd = type.getCombineUsingAnd();
+
+            List l = (List) value;
+            int count = l.size();
+
+            for (int j = 0; j < count; j++)
             {
-                buffer.append(value.toString());
-                buffer.append(";");
-            }
-            else
-            {
-                // Build a composite function in-place
+                String functionName = (String) l.get(j);
 
-                buffer.append("function ()\n{");
-
-                boolean combineWithAnd = type.getCombineUsingAnd();
-
-                List l = (List) value;
-                int count = l.size();
-
-                for (int j = 0; j < count; j++)
+                if (j > 0)
                 {
-                    String functionName = (String) l.get(j);
-
-                    if (j > 0)
-                    {
-
-                        if (combineWithAnd)
-                            buffer.append(" &&");
-                        else
-                            buffer.append(";");
-                    }
-
-                    buffer.append("\n  ");
-
                     if (combineWithAnd)
-                    {
-                        if (j == 0)
-                            buffer.append("return ");
-                        else
-                            buffer.append("  ");
-                    }
-
-                    buffer.append(functionName);
-                    buffer.append("()");
+                        buffer.append(" &&");
+                    else
+                        buffer.append(";");
                 }
 
-                buffer.append(";\n}");
+                buffer.append("\n  ");
+
+                if (combineWithAnd)
+                {
+                    if (j == 0)
+                        buffer.append("return ");
+                    else
+                        buffer.append("  ");
+                }
+
+                buffer.append(functionName);
+
+                if (!functionName.endsWith(")"))
+                {
+                    buffer.append("()");
+                }
             }
 
-            buffer.append("\n");
+            buffer.append(";\n}\n");
         }
 
         pageRenderSupport.addInitializationScript(buffer.toString());
@@ -438,6 +422,8 @@ public class FormSupportImpl implements FormSupport
 
     public void render(String method, IRender informalParametersRenderer, ILink link)
     {
+        preRender();
+        
         // Convert the link's query parameters into a series of
         // hidden field values (that will be rendered later).
 
@@ -458,7 +444,7 @@ public class FormSupportImpl implements FormSupport
 
         // Write out event handlers collected during the rendering.
 
-        emitEventHandlers();
+        emitEventHandlers(_writer);
 
         informalParametersRenderer.render(_writer, _cycle);
 
@@ -478,6 +464,13 @@ public class FormSupportImpl implements FormSupport
         _writer.end();
     }
 
+    protected void preRender()
+    {
+        PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(_cycle, _form);
+        
+        pageRenderSupport.addExternalScript(_script);
+    }
+    
     public void rewind()
     {
         reinitializeIdAllocatorForRewind();

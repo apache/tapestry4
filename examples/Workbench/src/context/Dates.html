@@ -2,7 +2,13 @@
 
 This page is used to demonstrate the DatePicker component.
 
-<form jwcid="@Form">
+<form jwcid="valid@Form">
+<input jwcid="inputEnabled"/> Enable Client Side Validation
+</form>
+
+<span jwcid="showError"/>
+
+<form jwcid="@Form" delegate="bean:delegate" clientValidationEnabled="ognl:clientValidationEnabled">
 
 <table valign="middle">
  <tr>
@@ -13,12 +19,12 @@ This page is used to demonstrate the DatePicker component.
  		</td>
  	</tr>
  <tr>
-  <td>Start Date:</td>
-  <td><input jwcid="@DatePicker" includeWeek="includeWeek" value="startDate"/></td> 
+  <td><span jwcid="@FieldLabel" field="startDate"/>:</td>
+  <td><input jwcid="startDate@DatePicker" includeWeek="includeWeek" value="startDate" displayName="Start Date" required="true" validators="bean:maxDateValidator"/></td> 
  </tr>
  <tr>
-  <td>End Date:</td>
-  <td><input jwcid="@DatePicker" includeWeek="includeWeek" value="endDate"/></td>
+  <td><span jwcid="@FieldLabel" field="endDate"/>:</td>
+  <td><input jwcid="endDate@DatePicker" includeWeek="includeWeek" value="endDate" displayName="End Date" required="true" validators="bean:minDateValidator"/></td>
  </tr>
  <tr>
   <td></td>

@@ -14,10 +14,11 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.valid.ValidationStrings;
+import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * A component used to render a drop-down list of options that the user may select. [ <a
@@ -30,80 +31,64 @@ import org.apache.tapestry.Tapestry;
  * <p>
  * Typically, the values available to be selected are defined using an
  * {@link org.apache.commons.lang.enum.Enum}. A PropertySelection is dependent on an
- * {@link IPropertySelectionModel}to provide the list of possible values.
+ * {@link IPropertySelectionModel} to provide the list of possible values.
  * <p>
- * Often, this is used to select a particular {@link org.apache.commons.lang.enum.Enum}to assign to
- * a property; the {@link EnumPropertySelectionModel}class simplifies this.
+ * Often, this is used to select a particular {@link org.apache.commons.lang.enum.Enum} to assign to
+ * a property; the {@link EnumPropertySelectionModel} class simplifies this.
+ * 
+ * As of 4.0, PropertySelection can indicate that it is required.  Often, a drop-down list will 
+ * contain an initial option that serves both as a label and to represent that nothing is selected.
+ * This can behavior can easily be achieved by decorating an existing {@link IPropertySelectionModel} 
+ * with a {@link LabeledPropertySelectionModel}.
  * 
  * @author Howard Lewis Ship
+ * @author Paul Ferraro
  */
-
-public abstract class PropertySelection extends AbstractFormComponent
+public abstract class PropertySelection extends AbstractRequirableField
 {
     /**
-     * A shared instance of {@link SelectPropertySelectionRenderer}.
+     * @see org.apache.tapestry.form.validator.AbstractRequirableField#bind(org.apache.tapestry.IRequestCycle, java.lang.String)
      */
-
-    public static final IPropertySelectionRenderer DEFAULT_SELECT_RENDERER = new SelectPropertySelectionRenderer();
-
-    /**
-     * A shared instance of {@link RadioPropertySelectionRenderer}.
-     */
-
-    public static final IPropertySelectionRenderer DEFAULT_RADIO_RENDERER = new RadioPropertySelectionRenderer();
-
-    /**
-     * Renders the component, much of which is the responsiblity of the
-     * {@link IPropertySelectionRenderer renderer}. The possible options, thier labels, and the
-     * values to be encoded in the form are provided by the {@link IPropertySelectionModel model}.
-     */
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException
     {
-        IForm form = getForm(cycle);
+        if (isDisabled()) return;
 
-        if (form.wasPrerendered(writer, this))
-            return;
+        setValue(getModel().translateValue(getSubmittedValue(cycle)));
+    }
 
-        boolean rewinding = form.isRewinding();
-
-        String name = form.getElementId(this);
-
-        if (rewinding)
-        {
-            // If disabled, ignore anything that comes up from the client.
-
-            if (isDisabled())
-                return;
-
-            String optionValue = cycle.getParameter(name);
-
-            Object value = (optionValue == null) ? null : getModel().translateValue(optionValue);
-
-            setValue(value);
-
-            return;
-        }
-
-        IPropertySelectionRenderer renderer = getRenderer();
-
-        if (renderer != null)
-        {
-            renderWithRenderer(writer, cycle, renderer);
-            return;
-        }
-
+    /**
+     * @see org.apache.tapestry.AbstractComponent#finishLoad()
+     */
+    protected void finishLoad()
+    {
+        setRequiredMessage(ValidationStrings.getMessagePattern(ValidationStrings.REQUIRED_SELECT_FIELD, getPage().getLocale()));
+    }
+    
+    /**
+     * Renders the component.  The possible options,
+     * their labels, and the values to be encoded in the form are provided
+     * by the {@link IPropertySelectionModel model}.
+     * 
+     * @see org.apache.tapestry.form.validator.AbstractRequirableField#renderRequirableFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        super.renderFormComponent(writer, cycle);
+        
+        renderDelegatePrefix(writer, cycle);
+        
         writer.begin("select");
-        writer.attribute("name", name);
+        writer.attribute("name", getName());
 
         if (isDisabled())
             writer.attribute("disabled", "disabled");
 
         if (getSubmitOnChange())
-            writer.attribute("onchange", "javascript:this.form.submit();");
+            writer.attribute("onchange", "this.form.submit()");
 
+        renderDelegateAttributes(writer, cycle);
+        
         // Apply informal attributes.
-
         renderInformalParameters(writer, cycle);
 
         writer.println();
@@ -115,78 +100,32 @@ public abstract class PropertySelection extends AbstractFormComponent
 
         int count = model.getOptionCount();
         boolean foundSelected = false;
-        boolean selected = false;
         Object value = getValue();
 
         for (int i = 0; i < count; i++)
         {
             Object option = model.getOption(i);
 
-            if (!foundSelected)
-            {
-                selected = isEqual(option, value);
-                if (selected)
-                    foundSelected = true;
-            }
-
             writer.begin("option");
             writer.attribute("value", model.getValue(i));
 
-            if (selected)
+            if (!foundSelected && isEqual(option, value))
+            {
                 writer.attribute("selected", "selected");
+
+                foundSelected = true;
+            }
 
             writer.print(model.getLabel(i));
 
             writer.end();
 
             writer.println();
-
-            selected = false;
         }
 
         writer.end(); // <select>
-
-    }
-
-    /**
-     * Renders the property selection using a {@link IPropertySelectionRenderer}. Support for this
-     * will be removed in 2.3.
-     */
-
-    private void renderWithRenderer(IMarkupWriter writer, IRequestCycle cycle,
-            IPropertySelectionRenderer renderer)
-    {
-        renderer.beginRender(this, writer, cycle);
-
-        IPropertySelectionModel model = getModel();
-
-        int count = model.getOptionCount();
-
-        boolean foundSelected = false;
-        boolean selected = false;
-
-        Object value = getValue();
-
-        for (int i = 0; i < count; i++)
-        {
-            Object option = model.getOption(i);
-
-            if (!foundSelected)
-            {
-                selected = isEqual(option, value);
-                if (selected)
-                    foundSelected = true;
-            }
-
-            renderer.renderOption(this, writer, cycle, model, option, i, selected);
-
-            selected = false;
-        }
-
-        // A PropertySelection doesn't allow a body, so no need to worry about
-        // wrapped components.
-
-        renderer.endRender(this, writer, cycle);
+        
+        renderDelegateSuffix(writer, cycle);
     }
 
     private boolean isEqual(Object left, Object right)
@@ -208,25 +147,12 @@ public abstract class PropertySelection extends AbstractFormComponent
 
     public abstract IPropertySelectionModel getModel();
 
-    public abstract IPropertySelectionRenderer getRenderer();
-
-    /** @since 2.2 * */
-
+    /** @since 2.2 **/
     public abstract boolean getSubmitOnChange();
 
-    /** @since 2.2 * */
-
+    /** @since 2.2 **/
     public abstract Object getValue();
 
-    /** @since 2.2 * */
-
+    /** @since 2.2 **/
     public abstract void setValue(Object value);
-
-    /**
-     * Returns true if this PropertySelection's disabled parameter yields true. The corresponding
-     * HTML control(s) should be disabled.
-     */
-
-    public abstract boolean isDisabled();
-
 }

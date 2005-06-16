@@ -15,10 +15,11 @@
 package org.apache.tapestry.form;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.valid.ValidationStrings;
+import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * A special type of form component that is used to contain {@link Radio}components. The Radio and
@@ -26,10 +27,12 @@ import org.apache.tapestry.Tapestry;
  * a more flexible version of a {@link PropertySelection}. [ <a
  * href="../../../../../ComponentReference/RadioGroup.html">Component Reference </a>]
  * 
+ * As of 4.0, RadioGroup can indicate that it is required.
+ * 
  * @author Howard Lewis Ship
+ * @author Paul Ferraro
  */
-
-public abstract class RadioGroup extends AbstractFormComponent
+public abstract class RadioGroup extends AbstractRequirableField
 {
     // Cached copy of the value from the selectedBinding
     private Object _selection;
@@ -63,13 +66,6 @@ public abstract class RadioGroup extends AbstractFormComponent
 
         return _nextOptionId++;
     }
-
-    /**
-     * Used by {@link Radio}components wrapped by this <code>RadioGroup</code> to see if the
-     * group as a whole is disabled.
-     */
-
-    public abstract boolean isDisabled();
 
     public boolean isRewinding()
     {
@@ -118,62 +114,69 @@ public abstract class RadioGroup extends AbstractFormComponent
     }
 
     /**
-     * Doesn't actual render an HTML element as there is no direct equivalent for an HTML element. A
-     * <code>RadioGroup</code> component exists to organize the {@link Radio}components it wraps
-     * (directly or indirectly). A {@link Radio}can finds its {@link RadioGroup}as a
-     * {@link IRequestCycle}attribute.
+     * @see org.apache.tapestry.AbstractComponent#prepareForRender(org.apache.tapestry.IRequestCycle)
      */
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    protected void prepareForRender(IRequestCycle cycle)
     {
-        IForm form = getForm(cycle);
-
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
             throw new ApplicationRuntimeException(Tapestry.getMessage("RadioGroup.may-not-nest"),
                     this, null, null);
-
-        // It isn't enough to know whether the cycle in general is rewinding, need to know
-        // specifically if the form which contains this component is rewinding.
-
-        _rewinding = form.isRewinding();
-
-        // Used whether rewinding or not.
-
-        String name = form.getElementId(this);
-
+        
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
-        // When rewinding, find out which (if any) radio was selected by
-        // the user.
+        _rendering = true;
+        _nextOptionId = 0;
+    }
 
-        if (_rewinding)
-        {
-            String value = cycle.getParameter(name);
-            if (value == null)
-                _selectedOption = -1;
-            else
-                _selectedOption = Integer.parseInt(value);
-        }
-
-        try
-        {
-            _rendering = true;
-            _nextOptionId = 0;
-
-            // For rendering, the Radio components need to know what the current
-            // selection is, so that the correct one can mark itself 'checked'.
-
-            if (!_rewinding)
-                _selection = getBinding("selected").getObject();
-
-            renderBody(writer, cycle);
-        }
-        finally
-        {
-            _rendering = false;
-            _selection = null;
-        }
-
+    /**
+     * @see org.apache.tapestry.AbstractComponent#cleanupAfterRender(org.apache.tapestry.IRequestCycle)
+     */
+    protected void cleanupAfterRender(IRequestCycle cycle)
+    {
+        _rendering = false;
+        _selection = null;
+        
         cycle.removeAttribute(ATTRIBUTE_NAME);
+    }
+
+    /**
+     * @see org.apache.tapestry.AbstractComponent#finishLoad()
+     */
+    protected void finishLoad()
+    {
+        setRequiredMessage(ValidationStrings.getMessagePattern(ValidationStrings.REQUIRED_SELECT_FIELD, getPage().getLocale()));
+    }
+
+    /**
+     * @see org.apache.tapestry.form.AbstractRequirableField#bind(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException
+    {
+        String value = getSubmittedValue(cycle);
+        
+        if (value == null)
+            _selectedOption = -1;
+        else
+            _selectedOption = Integer.parseInt(value);
+        
+        _rewinding = true;
+        
+        renderBody(writer, cycle);
+    }
+
+    /**
+     * @see org.apache.tapestry.form.AbstractRequirableField#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        super.renderFormComponent(writer, cycle);
+
+        _rewinding = false;
+        
+        // For rendering, the Radio components need to know what the current
+        // selection is, so that the correct one can mark itself 'checked'.
+        _selection = getBinding("selected").getObject();
+        
+        renderBody(writer, cycle);
     }
 }

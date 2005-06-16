@@ -3,18 +3,22 @@
 <span jwcid="@Border">
 
 <p>The Upload component is used as a form element and allows files to be uploaded to Tapestry.  It can
-be freely mixed with other components in a form.
+be freely mixed with other components in a form.</p>
 
-<p>The following form allows you to upload a file and see a hexadecimal dump of it.
+<p>The following form allows you to upload a file and see a hexadecimal dump of it.</p>
+
+<form jwcid="valid@Form">
+<input jwcid="inputEnabled"/> Enable Client Side Validation
+</form>
 
 <span jwcid="@ShowError" delegate="bean:delegate"/>
 
-<form jwcid="@Form" listener="formSubmit">
+<form jwcid="@Form" listener="formSubmit" delegate="bean:delegate" clientValidationEnabled="ognl:clientValidationEnabled">
 
 <table class="form">
 	<tr>
-		<th>File:</th>
-		<td><input jwcid="inputFile@Upload" file="ognl:file" size="30"/></td>
+		<th><span jwcid="@FieldLabel" field="inputFile"/>:</th>
+		<td><input jwcid="inputFile@Upload" file="ognl:file" size="30" displayName="File" required="true"/></td>
 	</tr>
 	<tr>
 		<th>Options:</th>
@@ -29,6 +33,7 @@ be freely mixed with other components in a form.
 					<td>bytes per line</td>
 				</tr>
 			</table>
+    </td>
 	</tr>
 	
 	<tr>

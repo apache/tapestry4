@@ -50,7 +50,6 @@ public class TestImageSubmit extends BaseFormComponentTest
         Creator creator = new Creator();
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class);
 
-        IValidationDelegate delegate = newDelegate();
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
         MockControl cyclec = newControl(IRequestCycle.class);
@@ -58,11 +57,6 @@ public class TestImageSubmit extends BaseFormComponentTest
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cyclec, cycle, form);
-
-        form.getDelegate();
-        formc.setReturnValue(delegate);
-
-        delegate.setFormComponent(submit);
 
         trainWasPrerendered(formc, form, writer, submit, true);
 
@@ -75,7 +69,8 @@ public class TestImageSubmit extends BaseFormComponentTest
 
     public void testRender()
     {
-        IValidationDelegate delegate = newDelegate();
+        MockControl delegatec = newControl(IValidationDelegate.class);
+        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
         MockControl cyclec = newControl(IRequestCycle.class);
@@ -89,16 +84,18 @@ public class TestImageSubmit extends BaseFormComponentTest
 
         trainGetForm(cyclec, cycle, form);
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
+        trainWasPrerendered(formc, form, writer, submit, false);
+
+        trainGetDelegate(formc, form, delegate);
 
         delegate.setFormComponent(submit);
+        delegatec.setVoidCallable();
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainGetElementId(formc, form, submit, "fred");
 
         trainIsRewinding(formc, form, false);
 
-        trainGetElementId(formc, form, submit, "fred");
+        trainIsRewinding(cyclec, cycle, false);
 
         writer.beginEmpty("input");
         writer.attribute("type", "image");
@@ -107,6 +104,8 @@ public class TestImageSubmit extends BaseFormComponentTest
         writer.attribute("src", "image-url");
         writer.closeTag();
 
+        trainIsInError(delegatec, delegate, false);
+        
         replayControls();
 
         submit.renderComponent(writer, cycle);
@@ -116,7 +115,8 @@ public class TestImageSubmit extends BaseFormComponentTest
 
     public void testRenderDisabled()
     {
-        IValidationDelegate delegate = newDelegate();
+        MockControl delegatec = newControl(IValidationDelegate.class);
+        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
         MockControl cyclec = newControl(IRequestCycle.class);
@@ -130,16 +130,18 @@ public class TestImageSubmit extends BaseFormComponentTest
 
         trainGetForm(cyclec, cycle, form);
 
+        trainWasPrerendered(formc, form, writer, submit, false);
+
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainGetElementId(formc, form, submit, "fred");
 
         trainIsRewinding(formc, form, false);
 
-        trainGetElementId(formc, form, submit, "fred");
+        trainIsRewinding(cyclec, cycle, false);
 
         writer.beginEmpty("input");
         writer.attribute("type", "image");
@@ -148,6 +150,8 @@ public class TestImageSubmit extends BaseFormComponentTest
         writer.attribute("border", 0);
         writer.attribute("src", "disabled-image-url");
         writer.closeTag();
+
+        trainIsInError(delegatec, delegate, false);
 
         replayControls();
 
@@ -158,7 +162,8 @@ public class TestImageSubmit extends BaseFormComponentTest
 
     public void testRenderDisabledNoDisabledImage()
     {
-        IValidationDelegate delegate = newDelegate();
+        MockControl delegatec = newControl(IValidationDelegate.class);
+        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
         MockControl cyclec = newControl(IRequestCycle.class);
@@ -172,16 +177,18 @@ public class TestImageSubmit extends BaseFormComponentTest
 
         trainGetForm(cyclec, cycle, form);
 
+        trainWasPrerendered(formc, form, writer, submit, false);
+
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainGetElementId(formc, form, submit, "fred");
 
         trainIsRewinding(formc, form, false);
 
-        trainGetElementId(formc, form, submit, "fred");
+        trainIsRewinding(cyclec, cycle, false);
 
         writer.beginEmpty("input");
         writer.attribute("type", "image");
@@ -191,6 +198,8 @@ public class TestImageSubmit extends BaseFormComponentTest
         writer.attribute("src", "image-url");
         writer.closeTag();
 
+        trainIsInError(delegatec, delegate, false);
+        
         replayControls();
 
         submit.renderComponent(writer, cycle);
@@ -200,7 +209,8 @@ public class TestImageSubmit extends BaseFormComponentTest
 
     public void testRenderWithNameOverride()
     {
-        IValidationDelegate delegate = newDelegate();
+        MockControl delegatec = newControl(IValidationDelegate.class);
+        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
         MockControl cyclec = newControl(IRequestCycle.class);
@@ -214,18 +224,20 @@ public class TestImageSubmit extends BaseFormComponentTest
 
         trainGetForm(cyclec, cycle, form);
 
+        trainWasPrerendered(formc, form, writer, submit, false);
+
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
-
-        trainIsRewinding(formc, form, false);
-
         form.getElementId(submit, "barney");
         formc.setReturnValue("barney$0");
 
+        trainIsRewinding(formc, form, false);
+
+        trainIsRewinding(cyclec, cycle, false);
+        
         writer.beginEmpty("input");
         writer.attribute("type", "image");
         writer.attribute("name", "barney$0");
@@ -233,6 +245,8 @@ public class TestImageSubmit extends BaseFormComponentTest
         writer.attribute("src", "image-url");
         writer.closeTag();
 
+        trainIsInError(delegatec, delegate, false);
+        
         replayControls();
 
         submit.renderComponent(writer, cycle);
@@ -255,16 +269,16 @@ public class TestImageSubmit extends BaseFormComponentTest
 
         trainGetForm(cyclec, cycle, form);
 
+        trainWasPrerendered(formc, form, writer, submit, false);
+
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainGetElementId(formc, form, submit, "fred");
 
         trainIsRewinding(formc, form, true);
-
-        trainGetElementId(formc, form, submit, "fred");
 
         replayControls();
 
@@ -287,16 +301,16 @@ public class TestImageSubmit extends BaseFormComponentTest
 
         trainGetForm(cyclec, cycle, form);
 
+        trainWasPrerendered(formc, form, writer, submit, false);
+
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainGetElementId(formc, form, submit, "fred");
 
         trainIsRewinding(formc, form, true);
-
-        trainGetElementId(formc, form, submit, "fred");
 
         trainGetParameter(cyclec, cycle, "fred.x", null);
 
@@ -325,16 +339,16 @@ public class TestImageSubmit extends BaseFormComponentTest
 
         trainGetForm(cyclec, cycle, form);
 
+        trainWasPrerendered(formc, form, writer, submit, false);
+
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainGetElementId(formc, form, submit, "fred");
 
         trainIsRewinding(formc, form, true);
-
-        trainGetElementId(formc, form, submit, "fred");
 
         trainGetParameter(cyclec, cycle, "fred.x", "33");
 
@@ -373,16 +387,16 @@ public class TestImageSubmit extends BaseFormComponentTest
 
         trainGetForm(cyclec, cycle, form);
 
+        trainWasPrerendered(formc, form, writer, submit, false);
+
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainGetElementId(formc, form, submit, "fred");
 
         trainIsRewinding(formc, form, true);
-
-        trainGetElementId(formc, form, submit, "fred");
 
         trainGetParameter(cyclec, cycle, "fred.x", "33");
         trainGetParameter(cyclec, cycle, "fred.x", "33");

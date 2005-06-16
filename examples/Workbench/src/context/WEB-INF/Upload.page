@@ -23,8 +23,14 @@
 
   <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
   
+  <property name="clientValidationEnabled" persist="client" initial-value="true"/>
   <property name="showAscii" persist="session"/>
   <property name="bytesPerLine" persist="session"/>
+  
+  <component id="inputEnabled" type="Checkbox">
+    <binding name="selected" value="clientValidationEnabled"/> 
+    <binding name="onchange" value="'this.form.submit()'"/>
+  </component>
   
   <component id="inputWidth" type="PropertySelection">
   	<binding name="value" value="bytesPerLine"/>

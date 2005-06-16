@@ -14,12 +14,8 @@
 
 package org.apache.tapestry.wml;
 
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.AbstractFormComponent;
 
 /**
@@ -32,54 +28,15 @@ import org.apache.tapestry.form.AbstractFormComponent;
 
 public abstract class AbstractPostfield extends AbstractFormComponent
 {
-
     /**
-     * Returns the {@link org.apache.tapestry.wml.Go}wrapping this component.
-     * 
-     * @throws ApplicationRuntimeException
-     *             if the component is not wrapped by a {@link org.apache.tapestry.wml.Go}.
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
-
-    public IForm getForm(IRequestCycle cycle)
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        IForm result = Go.get(cycle);
-
-        if (result == null)
-            throw new ApplicationRuntimeException(Tapestry
-                    .getMessage("Postfield.must-be-contained-by-go"), this, null, null);
-
-        setForm(result);
-
-        return result;
-    }
-
-    /**
-     * @see org.apache.tapestry.AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
-     */
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-    {
-        IForm form = getForm(cycle);
-
-        if (form.wasPrerendered(writer, this))
-            return;
-
-        boolean rewinding = form.isRewinding();
-
-        if (!rewinding && cycle.isRewinding())
-            return;
-
-        String name = form.getElementId(this);
-
-        if (rewinding)
-        {
-            rewind(cycle);
-            return;
-        }
-
         writer.beginEmpty("postfield");
 
-        writer.attribute("name", name);
+        writer.attribute("name", getName());
+
         String varName = getVarName();
         writer.attributeRaw("value", varName != null ? getEncodedVarName(varName) : "");
 
@@ -87,8 +44,6 @@ public abstract class AbstractPostfield extends AbstractFormComponent
 
         writer.closeTag();
     }
-
-    protected abstract void rewind(IRequestCycle cycle);
 
     private String getEncodedVarName(String varName)
     {
@@ -106,12 +61,4 @@ public abstract class AbstractPostfield extends AbstractFormComponent
     {
         getBinding("value").setObject(value);
     }
-
-    public abstract IForm getForm();
-
-    public abstract void setForm(IForm form);
-
-    public abstract String getName();
-
-    public abstract void setName(String name);
 }

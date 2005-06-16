@@ -87,6 +87,7 @@ public abstract class BaseFormComponentTest extends BaseComponentTestCase
             String name)
     {
         form.getElementId(component);
+        component.setName(name);
         control.setReturnValue(name);
     }
 

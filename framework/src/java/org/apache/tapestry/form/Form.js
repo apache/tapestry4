@@ -40,10 +40,10 @@ function trim(field)
 
 function require(field, message)
 {
-    if (field.value && (field.value.length == 0))
+    if (field.value.length == 0)
     {
         return handle_invalid_field(field, message)
     }
-    
+
     return true
 }

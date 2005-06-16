@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.wml;
 
+import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
@@ -27,8 +28,10 @@ import org.apache.tapestry.IRequestCycle;
 
 public abstract class Postfield extends AbstractPostfield
 {
-
-    protected void rewind(IRequestCycle cycle)
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String value = cycle.getParameter(getName());
         updateValue(value);

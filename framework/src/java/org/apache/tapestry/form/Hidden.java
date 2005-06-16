@@ -29,69 +29,59 @@ import org.apache.tapestry.services.DataSqueezer;
  * href="../../../../../ComponentReference/Hidden.html">Component Reference </a>]
  * 
  * @author Howard Lewis Ship
+ * @author Paul Ferraro
  */
-
 public abstract class Hidden extends AbstractFormComponent
 {
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        IForm form = getForm(cycle);
-        boolean formRewound = form.isRewinding();
+        IForm form = getForm();
+        String externalValue = null;
 
-        String name = form.getElementId(this);
-
-        // If the form containing the Hidden isn't rewound, then render.
-
-        if (!formRewound)
+        if (getEncode())
         {
-            // Optimiziation: if the page is rewinding (some other action or
-            // form was submitted), then don't bother rendering.
+            Object value = getValue();
 
-            if (cycle.isRewinding())
-                return;
-
-            String externalValue = null;
-
-            if (getEncode())
+            try
             {
-                Object value = getValue();
-
-                try
-                {
-                    externalValue = getDataSqueezer().squeeze(value);
-                }
-                catch (IOException ex)
-                {
-                    throw new ApplicationRuntimeException(ex.getMessage(), this, null, ex);
-                }
+                externalValue = getDataSqueezer().squeeze(value);
             }
-            else
-                externalValue = (String) getBinding("value").getObject(String.class);
-
-            String id = getElementId();
-
-            form.addHiddenValue(name, id, externalValue);
-
-            return;
+            catch (IOException e)
+            {
+                throw new ApplicationRuntimeException(e.getMessage(), this, null, e);
+            }
         }
+        else
+            externalValue = (String) getBinding("value").getObject(String.class);
 
-        String externalValue = cycle.getParameter(name);
-        Object value = null;
+        String id = getElementId();
+
+        form.addHiddenValue(getName(), id, externalValue);
+    }
+    
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IRequestCycle)
+     */
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        String parameter = cycle.getParameter(getName());
+
+        Object value = parameter;
 
         if (getEncode())
         {
             try
             {
-                value = getDataSqueezer().unsqueeze(externalValue);
+                value = getDataSqueezer().unsqueeze(parameter);
             }
             catch (IOException ex)
             {
                 throw new ApplicationRuntimeException(ex.getMessage(), this, null, ex);
             }
         }
-        else
-            value = externalValue;
 
         // A listener is not always necessary ... it's easy to code
         // the synchronization as a side-effect of the accessor method.
@@ -104,7 +94,6 @@ public abstract class Hidden extends AbstractFormComponent
     public abstract String getElementId();
 
     /** @since 2.2 * */
-
     public abstract DataSqueezer getDataSqueezer();
 
     public abstract Object getValue();
@@ -126,7 +115,6 @@ public abstract class Hidden extends AbstractFormComponent
      * 
      * @since 2.2
      */
-
     public boolean isDisabled()
     {
         return false;
@@ -138,6 +126,5 @@ public abstract class Hidden extends AbstractFormComponent
      * 
      * @since 2.2
      */
-
     public abstract boolean getEncode();
 }

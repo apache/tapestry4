@@ -39,35 +39,26 @@ import org.apache.tapestry.services.DataSqueezer;
 
 public abstract class ListEdit extends AbstractFormComponent
 {
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        Iterator i = null;
+        this.render(writer, cycle, getSource());
+    }
 
-        IForm form = getForm(cycle);
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        String[] values = cycle.getParameters(getName());
+        
+        this.render(writer, cycle, (Iterator) getValueConverter().coerceValue(values, Iterator.class));
+    }
 
-        boolean cycleRewinding = cycle.isRewinding();
-
-        // If the cycle is rewinding, but not this particular form,
-        // then do nothing (don't even render the body).
-
-        if (cycleRewinding && !form.isRewinding())
-            return;
-
-        String name = form.getElementId(this);
-
-        boolean indexBound = isParameterBound("index");
-
-        if (!cycleRewinding)
-        {
-            i = getSource();
-        }
-        else
-        {
-            String[] submittedValues = cycle.getParameters(name);
-
-            i = (Iterator) getValueConverter().coerceValue(submittedValues, Iterator.class);
-        }
-
+    protected void render(IMarkupWriter writer, IRequestCycle cycle, Iterator i)
+    {
         // If the source (when rendering), or the submitted values (on submit)
         // are null, then skip the remainder (nothing to update, nothing to
         // render).
@@ -79,6 +70,8 @@ public abstract class ListEdit extends AbstractFormComponent
 
         String element = getElement();
 
+        boolean indexBound = isParameterBound("index");
+
         while (i.hasNext())
         {
             Object value = null;
@@ -86,12 +79,12 @@ public abstract class ListEdit extends AbstractFormComponent
             if (indexBound)
                 setIndex(index++);
 
-            if (cycleRewinding)
+            if (cycle.isRewinding())
                 value = convertValue((String) i.next());
             else
             {
                 value = i.next();
-                writeValue(form, name, value);
+                writeValue(getForm(), getName(), value);
             }
 
             setValue(value);
@@ -108,7 +101,6 @@ public abstract class ListEdit extends AbstractFormComponent
 
             if (element != null)
                 writer.end();
-
         }
     }
 

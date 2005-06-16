@@ -62,24 +62,26 @@
   </parameter>
   
   <parameter name="defer" default-binding="ognl" default-value="true">
-      <description>
-          If true (the default), then the listener (if any)
-          is not notified until just before the form's listener,
-          after all components enclosed by the Form have had
-          a chance to update properties.
-       </description>
+    <description>
+      If true (the default), then the listener (if any)
+      is not notified until just before the form's listener,
+      after all components enclosed by the Form have had
+      a chance to update properties.
+    </description>
   </parameter>
 
   <parameter name="parameters" default-binding="ognl">
     <description>
-    An object, or list of objects, gathered when the button is triggered and 
-    made available as listener parameters in the request cycle, making
-    the parameters available to a deferred listener.
+      An object, or list of objects, gathered when the button is triggered and 
+      made available as listener parameters in the request cycle, making
+      the parameters available to a deferred listener.
     </description>
   </parameter>
   
   <reserved-parameter name="type"/>
   <reserved-parameter name="src"/>
   <reserved-parameter name="border"/>
- 
+
+  <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
+
 </component-specification>

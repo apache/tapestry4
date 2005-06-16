@@ -59,4 +59,9 @@ public class GoFormSupportImpl extends FormSupportImpl
         throw new UnsupportedOperationException(
                 "addEventHandler() not supported for WML Go component.");
     }
+    
+    protected void preRender()
+    {
+        // Do nothing
+    }
 }
