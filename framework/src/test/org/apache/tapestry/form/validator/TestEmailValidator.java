@@ -50,14 +50,14 @@ public class TestEmailValidator extends TestRegExValidator
 
     public void testRenderContribution()
     {
-        testRenderContribution("validate_regex(document.formName.fieldName,'\\^\\\\w\\[\\-\\._\\\\w\\]\\*\\\\w\\@\\\\w\\[\\-\\._\\\\w\\]\\*\\\\w\\\\\\.\\\\w\\{2\\,3\\}\\$','Invalid email format for Field Label.  Format is user@hostname.')");
+        testRenderContribution("validate_regex(event, document.formName.fieldName,'\\^\\\\w\\[\\-\\._\\\\w\\]\\*\\\\w\\@\\\\w\\[\\-\\._\\\\w\\]\\*\\\\w\\\\\\.\\\\w\\{2\\,3\\}\\$','Invalid email format for Field Label.  Format is user@hostname.')");
     }
     
     public void testCustomRenderContribution()
     {
         _validator.setMessage("{0} is not a valid email address.");
         
-        testRenderContribution("validate_regex(document.formName.fieldName,'\\^\\\\w\\[\\-\\._\\\\w\\]\\*\\\\w\\@\\\\w\\[\\-\\._\\\\w\\]\\*\\\\w\\\\\\.\\\\w\\{2\\,3\\}\\$','Field Label is not a valid email address.')");
+        testRenderContribution("validate_regex(event, document.formName.fieldName,'\\^\\\\w\\[\\-\\._\\\\w\\]\\*\\\\w\\@\\\\w\\[\\-\\._\\\\w\\]\\*\\\\w\\\\\\.\\\\w\\{2\\,3\\}\\$','Field Label is not a valid email address.')");
     }
     
     private void testRenderContribution(String handler)

@@ -22,8 +22,8 @@ import org.apache.tapestry.form.FormEventType;
 import org.apache.tapestry.form.FormSupportImpl;
 
 /**
- * Subclass of {@link org.apache.tapestry.form.FormSupportImpl}&nbsp;that adjusts the output markup to
- * conform to WML.
+ * Subclass of {@link org.apache.tapestry.form.FormSupportImpl}&nbsp;that adjusts the output markup
+ * to conform to WML.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -45,23 +45,23 @@ public class GoFormSupportImpl extends FormSupportImpl
     protected void writeHiddenField(IMarkupWriter writer, String name, String id, String value)
     {
         writer.beginEmpty("postfield");
-        writer.attribute("name", name );
-        
+        writer.attribute("name", name);
+
         if (HiveMind.isNonBlank(id))
             writer.attribute("id", id);
-        
+
         writer.attribute("value", value);
         writer.println();
     }
-    
+
     public void addEventHandler(FormEventType type, String functionName)
     {
         throw new UnsupportedOperationException(
                 "addEventHandler() not supported for WML Go component.");
     }
-    
-    protected void preRender()
+
+    protected String emitEventManagerInitialization()
     {
-        // Do nothing
+        return null;
     }
 }

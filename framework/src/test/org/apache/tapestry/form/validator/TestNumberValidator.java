@@ -144,7 +144,7 @@ public class TestNumberValidator extends FormComponentContributorTestCase
     {
         _validator.setMin(new Integer(10));
         
-        testRenderContribution(new String[] { "validate_min_number(document.formName.fieldName,10,'Field Label must not be smaller than 10.')" });
+        testRenderContribution(new String[] { "validate_min_number(event, document.formName.fieldName,10,'Field Label must not be smaller than 10.')" });
     }
 
     public void testCustomMinRenderContribution()
@@ -152,14 +152,14 @@ public class TestNumberValidator extends FormComponentContributorTestCase
         _validator.setMin(new Integer(5));
         _validator.setTooSmallMessage("{0} must be greater than or equal to {1}.");
         
-        testRenderContribution(new String[] { "validate_min_number(document.formName.fieldName,5,'Field Label must be greater than or equal to 5.')" });
+        testRenderContribution(new String[] { "validate_min_number(event, document.formName.fieldName,5,'Field Label must be greater than or equal to 5.')" });
     }
 
     public void testMaxRenderContribution()
     {
         _validator.setMax(new Integer(100));
         
-        testRenderContribution(new String[] { "validate_max_number(document.formName.fieldName,100,'Field Label must not be larger than 100.')" });
+        testRenderContribution(new String[] { "validate_max_number(event, document.formName.fieldName,100,'Field Label must not be larger than 100.')" });
     }
 
     public void testCustomMaxRenderContribution()
@@ -167,7 +167,7 @@ public class TestNumberValidator extends FormComponentContributorTestCase
         _validator.setMax(new Integer(50));
         _validator.setTooLargeMessage("{0} must be less than or equal to {1}.");
         
-        testRenderContribution(new String[] { "validate_max_number(document.formName.fieldName,50,'Field Label must be less than or equal to 50.')" });
+        testRenderContribution(new String[] { "validate_max_number(event, document.formName.fieldName,50,'Field Label must be less than or equal to 50.')" });
     }
 
     public void testMinMaxRenderContribution()
@@ -176,8 +176,8 @@ public class TestNumberValidator extends FormComponentContributorTestCase
         _validator.setMax(new Integer(100));
         
         String[] handlers = new String[] {
-            "validate_min_number(document.formName.fieldName,10,'Field Label must not be smaller than 10.')",
-            "validate_max_number(document.formName.fieldName,100,'Field Label must not be larger than 100.')"
+            "validate_min_number(event, document.formName.fieldName,10,'Field Label must not be smaller than 10.')",
+            "validate_max_number(event, document.formName.fieldName,100,'Field Label must not be larger than 100.')"
         };
         
         testRenderContribution(handlers);
@@ -191,8 +191,8 @@ public class TestNumberValidator extends FormComponentContributorTestCase
         _validator.setTooLargeMessage("{0} must be less than or equal to {1}.");
         
         String[] handlers = new String[] {
-            "validate_min_number(document.formName.fieldName,5,'Field Label must be greater than or equal to 5.')",
-            "validate_max_number(document.formName.fieldName,50,'Field Label must be less than or equal to 50.')"
+            "validate_min_number(event, document.formName.fieldName,5,'Field Label must be greater than or equal to 5.')",
+            "validate_max_number(event, document.formName.fieldName,50,'Field Label must be less than or equal to 50.')"
         };
         
         testRenderContribution(handlers);

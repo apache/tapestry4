@@ -35,9 +35,6 @@
 
 -->
 <script>
-
-	<include-script resource-path="/org/apache/tapestry/valid/Validator.js" />
-
 	<input-symbol key="field" class="org.apache.tapestry.valid.ValidField" required="yes" />
 	<input-symbol key="form" class="org.apache.tapestry.IForm" required="yes" />
 	<input-symbol key="validator" class="org.apache.tapestry.valid.UrlValidator" required="yes" />
@@ -50,14 +47,22 @@
 	<let key="function" unique="yes">validate_${field.name}</let>
 
 	<body>
-		function ${function}() {
+    
+<unique>
+function regexpTestUrl(sUrl) {
+	var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+	return regexp.test(sUrl);
+}  
+</unique>    
+
+		function ${function}(event) {
 			var field = document.${form.name}.${field.name};
 			strValue = field.value.replace(/ /g,"");
 			field.value = strValue;
 
 		<if expression="validator.required">
 			if (strValue.length == 0)
-				return validator_invalid_field(field, "${requiredMessage}");
+				return handle_invalid_field(event, field, "${requiredMessage}");
 		</if>
 
 		<if-not expression="validator.required">
@@ -67,20 +72,22 @@
 
 		<if expression="validator.minimumLength">
 			if (strValue.length &lt; ${validator.minimumLength})
-				return validator_invalid_field(field, "${minimumLengthMessage}");
+				return handle_invalid_field(event, field, "${minimumLengthMessage}");
 		</if>
 
 			if(!regexpTestUrl(strValue))
-				return validator_invalid_field(field, "${urlFormatMessage}");
+				return handle_invalid_field(event, field, "${urlFormatMessage}");
 
 		<if expression="null != urlRegexpProtocols">
 			var protoRegExp = ${urlRegexpProtocols};
 			if(!protoRegExp.test(strValue))
-				return validator_invalid_field(field, "${urlDisallowedProtocolMessage}");
+				return handle_invalid_field(event, field, "${urlDisallowedProtocolMessage}");
 		</if>
-
-			return true;
 		}
 	</body>
+  
+<initialization>
+document.${form.name}.events.addSubmitListener(${function});
+</initialization>  
 
 </script>

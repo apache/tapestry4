@@ -33,8 +33,6 @@
 
 <script>
 
-<include-script resource-path="/org/apache/tapestry/valid/Validator.js"/>
-
 <input-symbol key="field" class="org.apache.tapestry.valid.ValidField" required="yes"/>
 <input-symbol key="form" class="org.apache.tapestry.IForm" required="yes"/>
 <input-symbol key="validator" class="org.apache.tapestry.valid.EmailValidator" required="yes"/>
@@ -47,7 +45,7 @@ validate_${field.name}
 </let>
 
 <body>
-function ${function}()
+function ${function}(event)
 {
   var field = document.${form.name}.${field.name};
 
@@ -57,25 +55,33 @@ function ${function}()
 
 <if expression="validator.required">
   if (strValue.length == 0)
-     return validator_invalid_field(field, "${requiredMessage}");
+  {
+    handle_invalid_field(event, field, "${requiredMessage}");
+    return;
+  }
 </if>
 
 <if-not expression="validator.required">
   if (strValue.length == 0)
-     return true;
+     return;
 </if-not>
 
 <if expression="validator.minimumLength">
   if (strValue.length &lt; ${validator.minimumLength})
-     return validator_invalid_field(field, "${minimumLengthMessage}");
+  {
+    handle_invalid_field(event, field, "${minimumLengthMessage}");
+    return;
+   }
 </if>
 
   atIndex = strValue.indexOf("@");
   if ((atIndex == -1) || (atIndex == 0) || (atIndex == strValue.length -1))
-     return validator_invalid_field(field, "${emailFormatMessage}");
-
-  return true;
+    handle_invalid_field(event, field, "${emailFormatMessage}");
 }
 </body>
+
+<initialization>
+document.${form.name}.events.addSubmitListener(${function});
+</initialization>
 
 </script>

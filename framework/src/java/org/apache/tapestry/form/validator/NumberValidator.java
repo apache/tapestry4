@@ -160,7 +160,7 @@ public class NumberValidator extends AbstractFormComponentContributor implements
         if (_min != null)
         {
             String message = buildTooSmallMessage(field);
-            String handler = "validate_min_number(document." + formName + "." + fieldName + "," + _min + ",'" + message + "')";
+            String handler = "validate_min_number(event, document." + formName + "." + fieldName + "," + _min + ",'" + message + "')";
             
             super.addSubmitHandler(form, handler);
         }
@@ -168,7 +168,7 @@ public class NumberValidator extends AbstractFormComponentContributor implements
         if (_max != null)
         {
             String message = buildTooLargeMessage(field);
-            String handler = "validate_max_number(document." + formName + "." + fieldName + "," + _max + ",'" + message + "')";
+            String handler = "validate_max_number(event, document." + formName + "." + fieldName + "," + _max + ",'" + message + "')";
             
             super.addSubmitHandler(form, handler);
         }

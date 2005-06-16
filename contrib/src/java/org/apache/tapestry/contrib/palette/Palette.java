@@ -160,35 +160,37 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *    
  *     
  *      
- *                       TABLE.tapestry-palette TH
- *                       {
- *                         font-size: 9pt;
- *                         font-weight: bold;
- *                         color: white;
- *                         background-color: #330066;
- *                         text-align: center;
- *                       }
- *                      
- *                       TD.available-cell SELECT
- *                       {
- *                         font-weight: normal;
- *                         background-color: #FFFFFF;
- *                         width: 200px;
- *                       }
+ *       
+ *                        TABLE.tapestry-palette TH
+ *                        {
+ *                          font-size: 9pt;
+ *                          font-weight: bold;
+ *                          color: white;
+ *                          background-color: #330066;
+ *                          text-align: center;
+ *                        }
  *                       
- *                       TD.selected-cell SELECT
- *                       {
- *                         font-weight: normal;
- *                         background-color: #FFFFFF;
- *                         width: 200px;
- *                       }
- *                       
- *                       TABLE.tapestry-palette TD.controls
- *                       {
- *                         text-align: center;
- *                         vertical-align: middle;
- *                         width: 60px;
- *                       }
+ *                        TD.available-cell SELECT
+ *                        {
+ *                          font-weight: normal;
+ *                          background-color: #FFFFFF;
+ *                          width: 200px;
+ *                        }
+ *                        
+ *                        TD.selected-cell SELECT
+ *                        {
+ *                          font-weight: normal;
+ *                          background-color: #FFFFFF;
+ *                          width: 200px;
+ *                        }
+ *                        
+ *                        TABLE.tapestry-palette TD.controls
+ *                        {
+ *                          text-align: center;
+ *                          vertical-align: middle;
+ *                          width: 60px;
+ *                        }
+ *        
  *       
  *      
  *     
@@ -256,14 +258,6 @@ public abstract class Palette extends BaseComponent implements IFormComponent
             _symbols = new HashMap(MAP_SIZE);
 
             runScript(cycle);
-
-            // Output symbol 'formSubmitFunctionName' is the name
-            // of a JavaScript function to execute when the form
-            // is submitted. This is also key to the operation
-            // of the PropertySelection.
-
-            form.addEventHandler(FormEventType.SUBMIT, (String) _symbols
-                    .get("formSubmitFunctionName"));
 
             constructColumns();
         }

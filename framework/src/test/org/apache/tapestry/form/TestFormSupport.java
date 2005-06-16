@@ -119,15 +119,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm();
 
         cycle.isRewound(form);
         cyclec.setReturnValue(false);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -153,13 +153,16 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl supportc = newControl(PageRenderSupport.class);
         PageRenderSupport support = (PageRenderSupport) supportc.getMock();
-        
+
         cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
         cyclec.setReturnValue(support);
-        
-        support.addExternalScript(new ClasspathResource(getClassResolver(), "/org/apache/tapestry/form/Form.js"));
-        supportc.setVoidCallable();
-        
+
+        support.addExternalScript(new ClasspathResource(getClassResolver(),
+                "/org/apache/tapestry/form/Form.js"));
+
+        support
+                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+
         link.getParameterNames();
         linkc.setReturnValue(new String[]
         { "service" });
@@ -209,15 +212,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm(delegate);
 
         cycle.isRewound(form);
         cyclec.setReturnValue(true);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -259,15 +262,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm();
 
         cycle.isRewound(form);
         cyclec.setReturnValue(false);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -294,13 +297,16 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl supportc = newControl(PageRenderSupport.class);
         PageRenderSupport support = (PageRenderSupport) supportc.getMock();
-        
+
         cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
         cyclec.setReturnValue(support);
-        
-        support.addExternalScript(new ClasspathResource(getClassResolver(), "/org/apache/tapestry/form/Form.js"));
-        supportc.setVoidCallable();
-        
+
+        support.addExternalScript(new ClasspathResource(getClassResolver(),
+                "/org/apache/tapestry/form/Form.js"));
+
+        support
+                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+
         link.getParameterNames();
         linkc.setReturnValue(new String[]
         { "service" });
@@ -335,7 +341,7 @@ public class TestFormSupport extends HiveMindTestCase
         trainForPageSupport(
                 cyclec,
                 cycle,
-                "document.myform.onsubmit = function ()\n{\n  return mySubmit1() &&\n    mySubmit2() &&\n    mySubmit3();\n}\n");
+                "myform_events.addSubmitListener(function (event)\n{\n  mySubmit1();\n  mySubmit2();\n  mySubmit3();\n});\n");
 
         replayControls();
 
@@ -356,15 +362,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm();
 
         cycle.isRewound(form);
         cyclec.setReturnValue(false);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -389,13 +395,16 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl supportc = newControl(PageRenderSupport.class);
         PageRenderSupport support = (PageRenderSupport) supportc.getMock();
-        
+
         cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
         cyclec.setReturnValue(support);
-        
-        support.addExternalScript(new ClasspathResource(getClassResolver(), "/org/apache/tapestry/form/Form.js"));
-        supportc.setVoidCallable();
-        
+
+        support.addExternalScript(new ClasspathResource(getClassResolver(),
+                "/org/apache/tapestry/form/Form.js"));
+
+        support
+                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+
         link.getParameterNames();
         linkc.setReturnValue(new String[]
         { "service" });
@@ -446,15 +455,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm();
 
         cycle.isRewound(form);
         cyclec.setReturnValue(false);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -480,13 +489,16 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl supportc = newControl(PageRenderSupport.class);
         PageRenderSupport support = (PageRenderSupport) supportc.getMock();
-        
+
         cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
         cyclec.setReturnValue(support);
-        
-        support.addExternalScript(new ClasspathResource(getClassResolver(), "/org/apache/tapestry/form/Form.js"));
-        supportc.setVoidCallable();
-        
+
+        support.addExternalScript(new ClasspathResource(getClassResolver(),
+                "/org/apache/tapestry/form/Form.js"));
+
+        support
+                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+
         link.getParameterNames();
         linkc.setReturnValue(new String[]
         { "service" });
@@ -539,15 +551,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm();
 
         cycle.isRewound(form);
         cyclec.setReturnValue(false);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -573,13 +585,16 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl supportc = newControl(PageRenderSupport.class);
         PageRenderSupport support = (PageRenderSupport) supportc.getMock();
-        
+
         cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
         cyclec.setReturnValue(support);
-        
-        support.addExternalScript(new ClasspathResource(getClassResolver(), "/org/apache/tapestry/form/Form.js"));
-        supportc.setVoidCallable();
-        
+
+        support.addExternalScript(new ClasspathResource(getClassResolver(),
+                "/org/apache/tapestry/form/Form.js"));
+
+        support
+                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+
         link.getParameterNames();
         linkc.setReturnValue(new String[]
         { "service" });
@@ -621,15 +636,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm();
 
         cycle.isRewound(form);
         cyclec.setReturnValue(false);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -652,13 +667,16 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl supportc = newControl(PageRenderSupport.class);
         PageRenderSupport support = (PageRenderSupport) supportc.getMock();
-        
+
         cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
         cyclec.setReturnValue(support);
-        
-        support.addExternalScript(new ClasspathResource(getClassResolver(), "/org/apache/tapestry/form/Form.js"));
-        supportc.setVoidCallable();
-        
+
+        support.addExternalScript(new ClasspathResource(getClassResolver(),
+                "/org/apache/tapestry/form/Form.js"));
+
+        support
+                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+
         link.getParameterNames();
         linkc.setReturnValue(new String[]
         { "action" });
@@ -710,15 +728,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm();
 
         cycle.isRewound(form);
         cyclec.setReturnValue(false);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -744,13 +762,16 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl supportc = newControl(PageRenderSupport.class);
         PageRenderSupport support = (PageRenderSupport) supportc.getMock();
-        
+
         cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
         cyclec.setReturnValue(support);
-        
-        support.addExternalScript(new ClasspathResource(getClassResolver(), "/org/apache/tapestry/form/Form.js"));
-        supportc.setVoidCallable();
-        
+
+        support.addExternalScript(new ClasspathResource(getClassResolver(),
+                "/org/apache/tapestry/form/Form.js"));
+
+        support
+                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+
         link.getParameterNames();
         linkc.setReturnValue(new String[]
         { "service" });
@@ -785,7 +806,7 @@ public class TestFormSupport extends HiveMindTestCase
         trainForPageSupport(
                 cyclec,
                 cycle,
-                "document.myform.onreset = function ()\n{\n  myReset1();\n  myReset2();\n}\n");
+                "myform_events.addResetListener(function (event)\n{\n  myReset1();\n  myReset2();\n});\n");
 
         replayControls();
 
@@ -804,15 +825,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm(delegate);
 
         cycle.isRewound(form);
         cyclec.setReturnValue(true);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -851,15 +872,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm(delegate);
 
         cycle.isRewound(form);
         cyclec.setReturnValue(true);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -918,15 +939,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm(delegate);
 
         cycle.isRewound(form);
         cyclec.setReturnValue(true);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -986,15 +1007,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm(delegate, l);
 
         cycle.isRewound(form);
         cyclec.setReturnValue(true);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -1051,15 +1072,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm();
 
         cycle.isRewound(form);
         cyclec.setReturnValue(false);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -1082,13 +1103,16 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl supportc = newControl(PageRenderSupport.class);
         PageRenderSupport support = (PageRenderSupport) supportc.getMock();
-        
+
         cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
         cyclec.setReturnValue(support);
-        
-        support.addExternalScript(new ClasspathResource(getClassResolver(), "/org/apache/tapestry/form/Form.js"));
-        supportc.setVoidCallable();
-        
+
+        support.addExternalScript(new ClasspathResource(getClassResolver(),
+                "/org/apache/tapestry/form/Form.js"));
+
+        support
+                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+
         link.getParameterNames();
         linkc.setReturnValue(new String[]
         { "service" });
@@ -1127,7 +1151,7 @@ public class TestFormSupport extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testSimpleRenderWithDeferredRunnable()
+public void testSimpleRenderWithDeferredRunnable()
     {
         MockControl writerc = newControl(IMarkupWriter.class);
         IMarkupWriter writer = (IMarkupWriter) writerc.getMock();
@@ -1139,15 +1163,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm();
 
         cycle.isRewound(form);
         cyclec.setReturnValue(false);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -1184,13 +1208,16 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl supportc = newControl(PageRenderSupport.class);
         PageRenderSupport support = (PageRenderSupport) supportc.getMock();
-        
+
         cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
         cyclec.setReturnValue(support);
+
+        support.addExternalScript(new ClasspathResource(getClassResolver(),
+                "/org/apache/tapestry/form/Form.js"));
         
-        support.addExternalScript(new ClasspathResource(getClassResolver(), "/org/apache/tapestry/form/Form.js"));
-        supportc.setVoidCallable();
-        
+        support
+                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+
         link.getParameterNames();
         linkc.setReturnValue(new String[]
         { "service" });
@@ -1233,9 +1260,7 @@ public class TestFormSupport extends HiveMindTestCase
         fs.render("post", render, link);
 
         verifyControls();
-    }
-
-    public void testSimpleRewind()
+    }    public void testSimpleRewind()
     {
         IMarkupWriter writer = newWriter();
 
@@ -1246,15 +1271,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm(delegate);
 
         cycle.isRewound(form);
         cyclec.setReturnValue(true);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -1292,15 +1317,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm(delegate);
 
         cycle.isRewound(form);
         cyclec.setReturnValue(true);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -1311,7 +1336,7 @@ public class TestFormSupport extends HiveMindTestCase
         verifyControls();
 
         delegate.clear();
-        
+
         trainCycleForRewind(cyclec, cycle, "", null);
 
         writer.print("DEFERRED");
@@ -1354,15 +1379,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl enginec = newControl(IEngine.class);
         IEngine engine = (IEngine) enginec.getMock();
-        
+
         MockForm form = new MockForm();
 
         cycle.isRewound(form);
         cyclec.setReturnValue(false);
-        
+
         cycle.getEngine();
         cyclec.setReturnValue(engine);
-        
+
         engine.getClassResolver();
         enginec.setReturnValue(getClassResolver());
 
@@ -1387,13 +1412,16 @@ public class TestFormSupport extends HiveMindTestCase
 
         MockControl supportc = newControl(PageRenderSupport.class);
         PageRenderSupport support = (PageRenderSupport) supportc.getMock();
-        
+
         cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
         cyclec.setReturnValue(support);
-        
-        support.addExternalScript(new ClasspathResource(getClassResolver(), "/org/apache/tapestry/form/Form.js"));
-        supportc.setVoidCallable();
-        
+
+        support.addExternalScript(new ClasspathResource(getClassResolver(),
+                "/org/apache/tapestry/form/Form.js"));
+
+        support
+                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+
         link.getParameterNames();
         linkc.setReturnValue(new String[]
         { "service" });
@@ -1425,7 +1453,10 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.end();
 
-        trainForPageSupport(cyclec, cycle, "document.myform.onsubmit = function ()\n{\n  return mySubmit();\n}\n");
+        trainForPageSupport(
+                cyclec,
+                cycle,
+                "myform_events.addSubmitListener(function (event)\n{\n  mySubmit();\n});\n");
         replayControls();
 
         fs.render("post", render, link);

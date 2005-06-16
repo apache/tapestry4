@@ -36,11 +36,14 @@ public class TestTextField extends BaseFormComponentTest
     {
         MockControl translatorc = newControl(Translator.class);
         Translator translator = (Translator) translatorc.getMock();
-        
+
         MockControl validatableFieldSupportc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc.getMock();
-        
-        TextField component = (TextField) newInstance(TextField.class, new Object[] { "translator", translator, "validatableFieldSupport", validatableFieldSupport, "name", "barney" });
+        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc
+                .getMock();
+
+        TextField component = (TextField) newInstance(TextField.class, new Object[]
+        { "translator", translator, "validatableFieldSupport", validatableFieldSupport, "name",
+                "barney" });
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -48,7 +51,7 @@ public class TestTextField extends BaseFormComponentTest
         IMarkupWriter writer = newWriter();
 
         trainGetParameter(cyclec, cycle, "barney", "value");
-        
+
         try
         {
             validatableFieldSupport.bind(component, writer, cycle, "value");
@@ -57,7 +60,7 @@ public class TestTextField extends BaseFormComponentTest
         {
             unreachable();
         }
-        
+
         replayControls();
 
         try
@@ -71,64 +74,46 @@ public class TestTextField extends BaseFormComponentTest
 
         verifyControls();
     }
-    
+
     public void testWriteValue()
     {
-        IBinding binding = newBinding();
-        
         TextField component = (TextField) newInstance(TextField.class);
 
-        component.setBinding("value", binding);
-        
-        binding.setObject(new Integer(10));
-        
-        replayControls();
-        
         component.writeValue(new Integer(10));
-        
-        verifyControls();
+
+        assertEquals(new Integer(10), component.getValue());
     }
-    
+
     public void testReadValue()
     {
-        MockControl bindingc = newControl(IBinding.class);
-        IBinding binding = (IBinding) bindingc.getMock();
-        
         TextField component = (TextField) newInstance(TextField.class);
 
-        component.setBinding("value", binding);
+        component.setValue(new Integer(10));
 
-        binding.getObject();
-        bindingc.setReturnValue(new Integer(10));
-        
-        replayControls();
-        
         Object value = component.readValue();
-        
-        verifyControls();
-        
+
         assertEquals(new Integer(10), value);
     }
 
     public void testGetSubmittedValue()
     {
         TextField component = (TextField) newInstance(TextField.class, "name", "fred");
-        
+
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-        
+
         cycle.getParameter("fred");
         cyclec.setReturnValue("10");
-        
+
         replayControls();
-        
+
         String value = component.getSubmittedValue(cycle);
-        
+
         verifyControls();
-        
+
         assertEquals("10", value);
     }
-    
+
     public void testWasPrerendered()
     {
         TextField component = (TextField) newInstance(TextField.class);
@@ -186,11 +171,13 @@ public class TestTextField extends BaseFormComponentTest
     {
         MockControl translatorc = newControl(Translator.class);
         Translator translator = (Translator) translatorc.getMock();
-        
+
         MockControl requirableFieldSupportc = newControl(RequirableFieldSupport.class);
-        RequirableFieldSupport requirableFieldSupport = (RequirableFieldSupport) requirableFieldSupportc.getMock();
-        
-        TextField component = (TextField) newInstance(TextField.class, new Object[] { "translator", translator, "requirableFieldSupport", requirableFieldSupport });
+        RequirableFieldSupport requirableFieldSupport = (RequirableFieldSupport) requirableFieldSupportc
+                .getMock();
+
+        TextField component = (TextField) newInstance(TextField.class, new Object[]
+        { "translator", translator, "requirableFieldSupport", requirableFieldSupport });
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -211,14 +198,14 @@ public class TestTextField extends BaseFormComponentTest
         trainGetElementId(formc, form, component, "barney");
         trainIsRewinding(formc, form, true);
         requirableFieldSupport.rewind(component, writer, cycle);
-        
+
         replayControls();
 
         component.render(writer, cycle);
 
         verifyControls();
     }
-    
+
     public void testRewindFormDisabled()
     {
         TextField component = (TextField) newInstance(TextField.class, "disabled", Boolean.TRUE);
@@ -255,22 +242,25 @@ public class TestTextField extends BaseFormComponentTest
     {
         MockControl translatorc = newControl(Translator.class);
         Translator translator = (Translator) translatorc.getMock();
-        
+
         MockControl requirableFieldSupportc = newControl(RequirableFieldSupport.class);
-        RequirableFieldSupport requirableFieldSupport = (RequirableFieldSupport) requirableFieldSupportc.getMock();
-        
+        RequirableFieldSupport requirableFieldSupport = (RequirableFieldSupport) requirableFieldSupportc
+                .getMock();
+
         MockControl validatableFieldSupportc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc.getMock();
-        
+        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc
+                .getMock();
+
         TextField component = (TextField) newInstance(TextField.class, new Object[]
-        { "value", "text area value", "translator", translator, "requirableFieldSupport", requirableFieldSupport, "validatableFieldSupport", validatableFieldSupport });
+        { "value", "text area value", "translator", translator, "requirableFieldSupport",
+                requirableFieldSupport, "validatableFieldSupport", validatableFieldSupport });
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
-        
+
         IMarkupWriter writer = newBufferWriter();
 
         MockDelegate delegate = new MockDelegate();
@@ -287,7 +277,7 @@ public class TestTextField extends BaseFormComponentTest
 
         validatableFieldSupport.render(component, writer, cycle);
         requirableFieldSupport.render(component, writer, cycle);
-        
+
         replayControls();
 
         component.render(writer, cycle);
@@ -299,37 +289,39 @@ public class TestTextField extends BaseFormComponentTest
     {
         MockControl translatorc = newControl(Translator.class);
         Translator translator = (Translator) translatorc.getMock();
-        
+
         MockControl validatableFieldSupportc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc.getMock();
+        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc
+                .getMock();
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
-        
+
         IMarkupWriter writer = newBufferWriter();
 
         MockDelegate delegate = new MockDelegate();
-        
+
         TextField component = (TextField) newInstance(TextField.class, new Object[]
-        { "name", "fred", "translator", translator, "validatableFieldSupport", validatableFieldSupport, "form", form });
+        { "name", "fred", "translator", translator, "validatableFieldSupport",
+                validatableFieldSupport, "form", form });
 
         delegate.setFormComponent(component);
-        
+
         trainGetDelegate(formc, form, delegate);
         trainGetDelegate(formc, form, delegate);
         trainGetDelegate(formc, form, delegate);
-        
+
         validatableFieldSupport.renderContributions(component, writer, cycle);
-        
+
         replayControls();
 
         component.render(writer, cycle, "10");
 
         verifyControls();
-        
+
         assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"10\" class=\"validation-delegate\"/></span>");
     }
 
@@ -337,37 +329,39 @@ public class TestTextField extends BaseFormComponentTest
     {
         MockControl translatorc = newControl(Translator.class);
         Translator translator = (Translator) translatorc.getMock();
-        
+
         MockControl validatableFieldSupportc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc.getMock();
+        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc
+                .getMock();
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
-        
+
         IMarkupWriter writer = newBufferWriter();
 
         MockDelegate delegate = new MockDelegate();
-        
+
         TextField component = (TextField) newInstance(TextField.class, new Object[]
-        { "name", "fred", "translator", translator, "validatableFieldSupport", validatableFieldSupport, "form", form, "hidden", Boolean.TRUE });
+        { "name", "fred", "translator", translator, "validatableFieldSupport",
+                validatableFieldSupport, "form", form, "hidden", Boolean.TRUE });
 
         delegate.setFormComponent(component);
-        
+
         trainGetDelegate(formc, form, delegate);
         trainGetDelegate(formc, form, delegate);
         trainGetDelegate(formc, form, delegate);
-        
+
         validatableFieldSupport.renderContributions(component, writer, cycle);
-        
+
         replayControls();
 
         component.render(writer, cycle, "10");
 
         verifyControls();
-        
+
         assertBuffer("<span class=\"prefix\"><input type=\"password\" name=\"fred\" value=\"10\" class=\"validation-delegate\"/></span>");
     }
 
@@ -375,37 +369,39 @@ public class TestTextField extends BaseFormComponentTest
     {
         MockControl translatorc = newControl(Translator.class);
         Translator translator = (Translator) translatorc.getMock();
-        
+
         MockControl validatableFieldSupportc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc.getMock();
+        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc
+                .getMock();
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
-        
+
         IMarkupWriter writer = newBufferWriter();
 
         MockDelegate delegate = new MockDelegate();
-        
+
         TextField component = (TextField) newInstance(TextField.class, new Object[]
-        { "name", "fred", "translator", translator, "validatableFieldSupport", validatableFieldSupport, "form", form, "disabled", Boolean.TRUE });
+        { "name", "fred", "translator", translator, "validatableFieldSupport",
+                validatableFieldSupport, "form", form, "disabled", Boolean.TRUE });
 
         delegate.setFormComponent(component);
-        
+
         trainGetDelegate(formc, form, delegate);
         trainGetDelegate(formc, form, delegate);
         trainGetDelegate(formc, form, delegate);
-        
+
         validatableFieldSupport.renderContributions(component, writer, cycle);
-        
+
         replayControls();
 
         component.render(writer, cycle, "10");
 
         verifyControls();
-        
+
         assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" disabled=\"disabled\" value=\"10\" class=\"validation-delegate\"/></span>");
     }
 
@@ -413,41 +409,44 @@ public class TestTextField extends BaseFormComponentTest
     {
         MockControl translatorc = newControl(Translator.class);
         Translator translator = (Translator) translatorc.getMock();
-        
+
         MockControl validatableFieldSupportc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc.getMock();
+        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc
+                .getMock();
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
-        
+
         IMarkupWriter writer = newBufferWriter();
 
         MockDelegate delegate = new MockDelegate();
-        
+
         IBinding binding = newBinding("informal-value");
-        
+
         TextField component = (TextField) newInstance(TextField.class, new Object[]
-        { "name", "fred", "translator", translator, "validatableFieldSupport", validatableFieldSupport, "form", form, "specification", new ComponentSpecification() });
+        { "name", "fred", "translator", translator, "validatableFieldSupport",
+                validatableFieldSupport, "form", form, "specification",
+                new ComponentSpecification() });
 
         component.setBinding("informal", binding);
-        
+
         delegate.setFormComponent(component);
-        
+
         trainGetDelegate(formc, form, delegate);
         trainGetDelegate(formc, form, delegate);
         trainGetDelegate(formc, form, delegate);
-        
+
         validatableFieldSupport.renderContributions(component, writer, cycle);
-        
+
         replayControls();
 
         component.render(writer, cycle, "10");
 
         verifyControls();
-        
+
         assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"10\" class=\"validation-delegate\" informal=\"informal-value\"/></span>");
     }
 
@@ -455,37 +454,39 @@ public class TestTextField extends BaseFormComponentTest
     {
         MockControl translatorc = newControl(Translator.class);
         Translator translator = (Translator) translatorc.getMock();
-        
+
         MockControl validatableFieldSupportc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc.getMock();
+        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc
+                .getMock();
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
         MockControl formc = newControl(IForm.class);
         IForm form = (IForm) formc.getMock();
-        
+
         IMarkupWriter writer = newBufferWriter();
 
         MockDelegate delegate = new MockDelegate();
-        
+
         TextField component = (TextField) newInstance(TextField.class, new Object[]
-        { "name", "fred", "translator", translator, "validatableFieldSupport", validatableFieldSupport, "form", form });
+        { "name", "fred", "translator", translator, "validatableFieldSupport",
+                validatableFieldSupport, "form", form });
 
         delegate.setFormComponent(component);
-        
+
         trainGetDelegate(formc, form, delegate);
         trainGetDelegate(formc, form, delegate);
         trainGetDelegate(formc, form, delegate);
-        
+
         validatableFieldSupport.renderContributions(component, writer, cycle);
-        
+
         replayControls();
 
         component.render(writer, cycle, null);
 
         verifyControls();
-        
+
         assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" class=\"validation-delegate\"/></span>");
     }
 }

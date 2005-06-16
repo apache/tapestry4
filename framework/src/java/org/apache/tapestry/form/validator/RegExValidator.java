@@ -90,7 +90,7 @@ public class RegExValidator extends AbstractFormComponentContributor implements 
         IForm form = field.getForm();
         String expression = _matcher.getEscapedPatternString(_expression);
         String message = buildMessage(field);
-        String handler = "validate_regex(document." + form.getName() + "." + field.getName() + ",'" + expression + "','" + message + "')";
+        String handler = "validate_regex(event, document." + form.getName() + "." + field.getName() + ",'" + expression + "','" + message + "')";
         
         addSubmitHandler(form, handler);
     }

@@ -36,6 +36,11 @@
   <strong>See also: <link href="&apiroot;/valid/ValidField.html">org.apache.tapestry.valid.ValidField</link>, &FieldLabel;, &Form;, &TextField;</strong> 
 </p>
 
+<warning>
+  This component has been deprecated; Tapestry 4.0 adds even better support for  validation to &TextField;, &TextArea; and most other
+  form element component.
+</warning>
+
 <section>
   <title>Parameters</title>
   
