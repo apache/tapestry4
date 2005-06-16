@@ -135,7 +135,7 @@ public class TestRequirableFieldSupportImpl extends TapestryTestCase
         _component.getDisplayName();
         _componentControl.setReturnValue("Field Name");
 
-        _form.addEventHandler(FormEventType.SUBMIT, "require(document.formName.fieldName,'You must enter a value for Field Name.')");
+        _form.addEventHandler(FormEventType.SUBMIT, "require(event, document.formName.fieldName,'You must enter a value for Field Name.')");
         _formControl.setVoidCallable();
         
         replay();

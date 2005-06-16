@@ -33,9 +33,6 @@
 -->
 	
 <script>
-
-<include-script resource-path="/org/apache/tapestry/valid/Validator.js"/>
-
 <input-symbol key="field" class="org.apache.tapestry.valid.ValidField" required="yes"/>
 <input-symbol key="form" class="org.apache.tapestry.IForm" required="yes"/>
 <input-symbol key="validator" class="org.apache.tapestry.valid.NumberValidator" required="yes"/>
@@ -48,13 +45,16 @@ validate_${field.name}
 </let>
 
 <body>
-function ${function}()
+function ${function}(event)
 {
   var field = document.${form.name}.${field.name}; 
   var stringValue = field.value;  
 <if expression="validator.required">
   if (stringValue.length == 0)
-     return validator_invalid_field(field, "${requiredMessage}");
+  {
+     handle_invalid_field(event, field, "${requiredMessage}");
+     return;
+  }
 </if>
 <if-not expression="validator.required">
   if (stringValue.length == 0)
@@ -62,22 +62,37 @@ function ${function}()
 </if-not>
   var value = stringValue * 1;
   if (isNaN(value))
-      return validator_invalid_field(field, "${formatMessage}");
+  {
+      handle_invalid_field(event, field, "${formatMessage}");
+      return;
+  }
 <if expression="validator.integerNumber">
   var regex = /\./;
   if (stringValue.search(regex) != -1)
-      return validator_invalid_field(field, "${formatMessage}");
+  {
+      handle_invalid_field(event, field, "${formatMessage}");
+      return;
+  }
 </if>
 <if expression="validator.minimum != null">
   if (value &lt; ${validator.minimum})
-     return validator_invalid_field(field, "${rangeMessage}");
+  {
+     handle_invalid_field(event, field, "${rangeMessage}");
+     return;
+  }
 </if>
 <if expression="validator.maximum != null">
   if (value &gt; ${validator.maximum})
-     return validator_invalid_field(field, "${rangeMessage}");
+  {
+     handle_invalid_field(event, field, "${rangeMessage}");
+     return;
+  }
 </if>
-  return true;
 }
 </body>
+
+<initialization>
+document.${form.name}.events.addSubmitListener(${function});
+</initialization>
 
 </script>

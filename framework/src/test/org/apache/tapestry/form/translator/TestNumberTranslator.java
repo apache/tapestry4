@@ -181,7 +181,7 @@ public class TestNumberTranslator extends TranslatorTestCase
         _component.getName();
         _componentControl.setReturnValue("fieldName");
         
-        _form.addEventHandler(FormEventType.SUBMIT, "validate_number(document.formName.fieldName,'Field Label must be a numeric value.')");
+        _form.addEventHandler(FormEventType.SUBMIT, "validate_number(event, document.formName.fieldName,'Field Label must be a numeric value.')");
         _formControl.setVoidCallable();
         
         replay();
@@ -215,7 +215,7 @@ public class TestNumberTranslator extends TranslatorTestCase
         _component.getName();
         _componentControl.setReturnValue("fieldName");
         
-        _form.addEventHandler(FormEventType.SUBMIT, "validate_number(document.formName.fieldName,'You entered a bunk value for Field Label. I should look like #.')");
+        _form.addEventHandler(FormEventType.SUBMIT, "validate_number(event, document.formName.fieldName,'You entered a bunk value for Field Label. I should look like #.')");
         _formControl.setVoidCallable();
         
         replay();
@@ -250,7 +250,7 @@ public class TestNumberTranslator extends TranslatorTestCase
         _component.getName();
         _componentControl.setReturnValue("fieldName");
         
-        _form.addEventHandler(FormEventType.SUBMIT, "validate_number(document.formName.fieldName,'Field Label must be a numeric value.')");
+        _form.addEventHandler(FormEventType.SUBMIT, "validate_number(event, document.formName.fieldName,'Field Label must be a numeric value.')");
         _formControl.setVoidCallable();
         
         replay();

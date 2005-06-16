@@ -41,7 +41,7 @@ public class RequirableFieldSupportImpl implements RequirableFieldSupport
         
         if (component.isRequired() && form.isClientValidationEnabled())
         {
-            String function = "require(document." + form.getName() + "." + component.getName() + ",'" + buildRequiredMessage(component) + "')";
+            String function = "require(event, document." + form.getName() + "." + component.getName() + ",'" + buildRequiredMessage(component) + "')";
             
             form.addEventHandler(FormEventType.SUBMIT, function);
         }

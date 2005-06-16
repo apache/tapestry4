@@ -72,7 +72,7 @@ public abstract class TextField extends AbstractValidatableField
      */
     public void writeValue(Object value)
     {
-        this.getBinding().setObject(value);
+        setValue(value);
     }
     
     /**
@@ -80,11 +80,6 @@ public abstract class TextField extends AbstractValidatableField
      */
     public Object readValue()
     {
-        return this.getBinding().getObject();
-    }
-    
-    private IBinding getBinding()
-    {
-        return this.getBinding("value");
+        return getValue();
     }
 }

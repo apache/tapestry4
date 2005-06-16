@@ -110,7 +110,7 @@ public class TestRegExValidator extends FormComponentContributorTestCase
     {
         _validator.setExpression("^\\w+$");
         
-        testRenderContribution("validate_regex(document.formName.fieldName,'\\^\\\\w\\+\\$','Field Label is invalid.')");
+        testRenderContribution("validate_regex(event, document.formName.fieldName,'\\^\\\\w\\+\\$','Field Label is invalid.')");
     }
     
     public void testCustomRenderContribution()
@@ -118,7 +118,7 @@ public class TestRegExValidator extends FormComponentContributorTestCase
         _validator.setExpression("^\\w+$");
         _validator.setMessage("{0} does not match the regular expression: {1}");
         
-        testRenderContribution("validate_regex(document.formName.fieldName,'\\^\\\\w\\+\\$','Field Label does not match the regular expression: ^\\w+$')");
+        testRenderContribution("validate_regex(event, document.formName.fieldName,'\\^\\\\w\\+\\$','Field Label does not match the regular expression: ^\\w+$')");
     }
     
     private void testRenderContribution(String handler)

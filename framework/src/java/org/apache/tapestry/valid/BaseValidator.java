@@ -292,10 +292,6 @@ public abstract class BaseValidator implements IValidator
         PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, field);
 
         script.execute(cycle, pageRenderSupport, finalSymbols);
-
-        String functionName = (String) finalSymbols.get(FUNCTION_SYMBOL);
-
-        form.addEventHandler(FormEventType.SUBMIT, functionName);
     }
 
     /**

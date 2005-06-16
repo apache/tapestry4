@@ -30,9 +30,6 @@
 -->
 	
 <script>
-
-<include-script resource-path="/org/apache/tapestry/valid/Validator.js"/>
-
 <input-symbol key="field" class="org.apache.tapestry.valid.ValidField" required="yes"/>
 <input-symbol key="form" class="org.apache.tapestry.IForm" required="yes"/>
 <input-symbol key="validator" class="org.apache.tapestry.valid.PatternValidator" required="yes"/>
@@ -50,18 +47,23 @@
 <body>
 var ${pattern} = new RegExp("${validator.escapedPatternString}");
 
-function ${function}()
+function ${function}(event)
 {
     var field = document.${form.name}.${field.name};
 <if expression="validator.required">
     if (field.value.length == 0)
-        return validator_invalid_field(field, "${requiredMessage}");
+    {
+        handle_invalid_field(event, field, "${requiredMessage}");
+        return;
+    }
 </if>
     if (field.value.length &gt; 0 &amp;&amp; !${pattern}.test(field.value))
-        return validator_invalid_field(field, "${patternNotMatchedMessage}");
-
-    return true;
+        handle_invalid_field(event, field, "${patternNotMatchedMessage}");
 }
 </body>
 
+
+<initialization>
+document.${form.name}.events.addSubmitListener(${function});
+</initialization>
 </script>

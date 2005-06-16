@@ -63,9 +63,9 @@ output symbols:
 
 <set key="formName" expression="palette.form.name"/>
 <set key="name" expression="palette.name"/>
-<set key="sortLabel" expression="palette.sort == @org.apache.tapestry.contrib.palette.SortMode@LABEL"/>
-<set key="sortValue" expression="palette.sort == @org.apache.tapestry.contrib.palette.SortMode@VALUE"/>
-<set key="sortUser" expression="palette.sort == @org.apache.tapestry.contrib.palette.SortMode@USER"/>
+<set key="sortLabel" expression="palette.sort eq @org.apache.tapestry.contrib.palette.SortMode@LABEL"/>
+<set key="sortValue" expression="palette.sort eq @org.apache.tapestry.contrib.palette.SortMode@VALUE"/>
+<set key="sortUser" expression="palette.sort eq @org.apache.tapestry.contrib.palette.SortMode@USER"/>
 
 
 <!-- baseName - base name from which other names are generated -->
@@ -306,12 +306,10 @@ function ${deselectFunctionName}()
   ${updateFunctionName}();  
 }
 
-function ${formSubmitFunctionName}()
+function ${formSubmitFunctionName}(event)
 {
   palette_clear_selections(${availablePath});
   palette_select_all(${selectedPath});
-  
-  return true;
 }
 <if expression="sortUser">
 function ${moveUpFunctionName}()
@@ -359,6 +357,7 @@ ${selectedPath}.onchange = ${selectedChangeFunctionName};
 ${selectedPath}.ondblclick = ${deselectFunctionName};
 ${availablePath}.onchange = ${availableChangeFunctionName};
 ${availablePath}.ondblclick = ${selectFunctionName};
+${formPath}.events.addRefreshListener(${formSubmitFunctionName});
 
 </initialization>
 </script>

@@ -70,7 +70,7 @@ public class FormSupportImpl implements FormSupport
     public static final String RESERVED_FORM_IDS = "reservedids";
 
     public static final String SCRIPT = "/org/apache/tapestry/form/Form.js";
-    
+
     private final static Set _standardReservedIds;
 
     static
@@ -129,7 +129,7 @@ public class FormSupportImpl implements FormSupport
     private final IMarkupWriter _writer;
 
     private final Resource _script;
-    
+
     public FormSupportImpl(IMarkupWriter writer, IRequestCycle cycle, IForm form)
     {
         Defense.notNull(writer, "writer");
@@ -142,7 +142,7 @@ public class FormSupportImpl implements FormSupport
 
         _rewinding = cycle.isRewound(form);
         _allocatedIdIndex = 0;
-        
+
         _script = new ClasspathResource(cycle.getEngine().getClassResolver(), SCRIPT);
     }
 
@@ -164,10 +164,10 @@ public class FormSupportImpl implements FormSupport
         if (functionList == null)
         {
             functionList = new ArrayList();
-            
+
             _events.put(type, functionList);
         }
-        
+
         functionList.add(functionName);
     }
 
@@ -252,7 +252,7 @@ public class FormSupportImpl implements FormSupport
         return buffer.toString();
     }
 
-    private void emitEventHandlers(IMarkupWriter writer)
+    private void emitEventHandlers(String eventManager)
     {
         if (_events == null || _events.isEmpty())
             return;
@@ -262,24 +262,20 @@ public class FormSupportImpl implements FormSupport
         StringBuffer buffer = new StringBuffer();
 
         Iterator i = _events.entrySet().iterator();
-        
+
         while (i.hasNext())
         {
             Map.Entry entry = (Map.Entry) i.next();
             FormEventType type = (FormEventType) entry.getKey();
             Object value = entry.getValue();
 
-            buffer.append("document.");
-            buffer.append(_form.getName());
+            buffer.append(eventManager);
             buffer.append(".");
-            buffer.append(type.getPropertyName());
-            buffer.append(" = ");
+            buffer.append(type.getAddListenerMethodName());
 
             // Build a composite function in-place
 
-            buffer.append("function ()\n{");
-
-            boolean combineWithAnd = type.getCombineUsingAnd();
+            buffer.append("(function (event)\n{");
 
             List l = (List) value;
             int count = l.size();
@@ -290,23 +286,14 @@ public class FormSupportImpl implements FormSupport
 
                 if (j > 0)
                 {
-                    if (combineWithAnd)
-                        buffer.append(" &&");
-                    else
-                        buffer.append(";");
+                    buffer.append(";");
                 }
 
                 buffer.append("\n  ");
-
-                if (combineWithAnd)
-                {
-                    if (j == 0)
-                        buffer.append("return ");
-                    else
-                        buffer.append("  ");
-                }
-
                 buffer.append(functionName);
+
+                // It's supposed to be function names, but some of Paul's validation code
+                // adds inline code to be executed instead.
 
                 if (!functionName.endsWith(")"))
                 {
@@ -314,7 +301,7 @@ public class FormSupportImpl implements FormSupport
                 }
             }
 
-            buffer.append(";\n}\n");
+            buffer.append(";\n});\n");
         }
 
         pageRenderSupport.addInitializationScript(buffer.toString());
@@ -422,8 +409,8 @@ public class FormSupportImpl implements FormSupport
 
     public void render(String method, IRender informalParametersRenderer, ILink link)
     {
-        preRender();
-        
+        String eventManager = emitEventManagerInitialization();
+
         // Convert the link's query parameters into a series of
         // hidden field values (that will be rendered later).
 
@@ -434,7 +421,7 @@ public class FormSupportImpl implements FormSupport
         _form.renderBody(nested, _cycle);
 
         runDeferredRunnables();
-        
+
         writeTag(_writer, method, link.getURL(null, false));
 
         _writer.attribute("name", _form.getName());
@@ -444,7 +431,7 @@ public class FormSupportImpl implements FormSupport
 
         // Write out event handlers collected during the rendering.
 
-        emitEventHandlers(_writer);
+        emitEventHandlers(eventManager);
 
         informalParametersRenderer.render(_writer, _cycle);
 
@@ -464,19 +451,35 @@ public class FormSupportImpl implements FormSupport
         _writer.end();
     }
 
-    protected void preRender()
+    /**
+     * Pre-renders the form, setting up some client-side form support. Returns the name of the
+     * client-side form event manager variable.
+     */
+    protected String emitEventManagerInitialization()
     {
-        PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(_cycle, _form);
-        
+        PageRenderSupport pageRenderSupport = TapestryUtils.getOptionalPageRenderSupport(_cycle);
+
+        if (pageRenderSupport == null)
+            return null;
+
         pageRenderSupport.addExternalScript(_script);
+
+        String formName = _form.getName();
+
+        String eventManager = formName + "_events";
+
+        pageRenderSupport.addInitializationScript("var " + eventManager
+                + " = new FormEventManager(document." + formName + ");");
+
+        return eventManager;
     }
-    
+
     public void rewind()
     {
         reinitializeIdAllocatorForRewind();
 
         _form.getDelegate().clear();
-        
+
         _form.renderBody(_writer, _cycle);
 
         int expected = _allocatedIds.size();

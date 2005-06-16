@@ -31,9 +31,7 @@
 -->
 	
 <script>
-
-<include-script resource-path="/org/apache/tapestry/valid/Validator.js"/>
-
+  
 <input-symbol key="field" class="org.apache.tapestry.valid.ValidField" required="yes"/>
 <input-symbol key="form" class="org.apache.tapestry.IForm" required="yes"/>
 <input-symbol key="validator" class="org.apache.tapestry.valid.DateValidator" required="yes"/>
@@ -44,15 +42,17 @@ validate_${field.name}
 </let>
 
 <body>
-function ${function}()
+function ${function}(event)
 {
   var field = document.${form.name}.${field.name}; 
 
   if (field.value.length == 0)
-     return validator_invalid_field(field, "${requiredMessage}");
-
-  return true;
+     handle_invalid_field(event, field, "${requiredMessage}");
 }
 </body>
+
+<initialization>
+document.${form.name}.events.addSubmitListener(${function});
+</initialization>
 
 </script>

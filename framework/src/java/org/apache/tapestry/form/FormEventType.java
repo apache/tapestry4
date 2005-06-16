@@ -20,6 +20,7 @@ package org.apache.tapestry.form;
  * 
  * @author Howard Lewis Ship
  * @since 1.0.2
+ * @deprecated Managing of form events is now done on the client side; this class may be removed in a future release of Tapestry.
  */
 
 public class FormEventType
@@ -32,23 +33,23 @@ public class FormEventType
      * are multiple event handlers for the form they will be combined using the binary and operator (<code>&amp;&amp;</code>).
      */
 
-    public static final FormEventType SUBMIT = new FormEventType("SUBMIT", "onsubmit");
+    public static final FormEventType SUBMIT = new FormEventType("SUBMIT", "addSubmitListener");
 
     /**
      * Form event triggered when the form is reset; this allows an event handler to deal with any
      * special cases related to resetting.
      */
 
-    public static final FormEventType RESET = new FormEventType("RESET", "onreset");
+    public static final FormEventType RESET = new FormEventType("RESET", "addResetListener");
 
     private final String _name;
 
-    private final String _propertyName;
+    private final String _addListenerMethodName;
 
-    private FormEventType(String name, String propertyName)
+    private FormEventType(String name, String addListenerMethodName)
     {
         _name = name;
-        _propertyName = propertyName;
+        _addListenerMethodName = addListenerMethodName;
     }
 
     public String toString()
@@ -61,19 +62,8 @@ public class FormEventType
      * scripting).
      */
 
-    public String getPropertyName()
+    public String getAddListenerMethodName()
     {
-        return _propertyName;
-    }
-
-    /**
-     * Returns true if multiple functions should be combined with the <code>&amp;&amp;</code>
-     * operator. Otherwise, the event handler functions are simply invoked sequentially (as a series
-     * of JavaScript statements).
-     */
-
-    public boolean getCombineUsingAnd()
-    {
-        return this == FormEventType.SUBMIT;
+        return _addListenerMethodName;
     }
 }

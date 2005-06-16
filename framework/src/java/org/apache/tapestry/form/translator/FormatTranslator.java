@@ -23,8 +23,7 @@ import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * Abstract {@link Translator} implementation for {@link java.text.Format}-based
- * translators.
+ * Abstract {@link Translator} implementation for {@link java.text.Format}-based translators.
  * 
  * @author Paul Ferraro
  * @since 4.0
@@ -32,26 +31,31 @@ import org.apache.tapestry.valid.ValidatorException;
 public abstract class FormatTranslator extends AbstractTranslator
 {
     private String _pattern = defaultPattern();
-    
+
     protected abstract String defaultPattern();
-    
+
     /**
-     * @see org.apache.tapestry.form.translator.AbstractTranslator#formatObject(org.apache.tapestry.form.IFormComponent, java.lang.Object)
+     * @see org.apache.tapestry.form.translator.AbstractTranslator#formatObject(org.apache.tapestry.form.IFormComponent,
+     *      java.lang.Object)
      */
     protected String formatObject(IFormComponent field, Object object)
     {
+        // Get a new format each time, because (a) have to account for locale and (b) formatters are
+        // not thread safe.
+
         Format format = getFormat(field.getPage().getLocale());
-        
+
         return format.format(object);
     }
 
     /**
-     * @see org.apache.tapestry.form.translator.AbstractTranslator#parseText(org.apache.tapestry.form.IFormComponent, java.lang.String)
+     * @see org.apache.tapestry.form.translator.AbstractTranslator#parseText(org.apache.tapestry.form.IFormComponent,
+     *      java.lang.String)
      */
     protected Object parseText(IFormComponent field, String text) throws ValidatorException
     {
         Format format = getFormat(field.getPage().getLocale());
-        
+
         try
         {
             return format.parseObject(text);
@@ -61,18 +65,18 @@ public abstract class FormatTranslator extends AbstractTranslator
             throw new ValidatorException(buildMessage(field, getMessageKey()), getConstraint());
         }
     }
-    
+
     protected abstract ValidationConstraint getConstraint();
-    
+
     protected abstract Format getFormat(Locale locale);
-    
+
     protected abstract String getMessageKey();
 
     public String getPattern()
     {
         return _pattern;
     }
-    
+
     public void setPattern(String pattern)
     {
         _pattern = pattern;

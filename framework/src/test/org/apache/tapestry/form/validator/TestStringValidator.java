@@ -144,7 +144,7 @@ public class TestStringValidator extends FormComponentContributorTestCase
     {
         _validator.setMinLength(10);
         
-        testRenderContribution(new String[] { "validate_min_length(document.formName.fieldName,10,'You must enter at least 10 characters for Field Label.')" });
+        testRenderContribution(new String[] { "validate_min_length(event, document.formName.fieldName,10,'You must enter at least 10 characters for Field Label.')" });
     }
 
     public void testCustomMinRenderContribution()
@@ -152,14 +152,14 @@ public class TestStringValidator extends FormComponentContributorTestCase
         _validator.setMinLength(5);
         _validator.setTooShortMessage("{1} should be at least {0} characters in length.");
         
-        testRenderContribution(new String[] { "validate_min_length(document.formName.fieldName,5,'Field Label should be at least 5 characters in length.')" });
+        testRenderContribution(new String[] { "validate_min_length(event, document.formName.fieldName,5,'Field Label should be at least 5 characters in length.')" });
     }
 
     public void testMaxRenderContribution()
     {
         _validator.setMaxLength(100);
         
-        testRenderContribution(new String[] { "validate_max_length(document.formName.fieldName,100,'You must enter no more than 100 characters for Field Label.')" });
+        testRenderContribution(new String[] { "validate_max_length(event, document.formName.fieldName,100,'You must enter no more than 100 characters for Field Label.')" });
     }
 
     public void testCustomMaxRenderContribution()
@@ -167,7 +167,7 @@ public class TestStringValidator extends FormComponentContributorTestCase
         _validator.setMaxLength(50);
         _validator.setTooLongMessage("{1} should be no more than {0} characters in length.");
         
-        testRenderContribution(new String[] { "validate_max_length(document.formName.fieldName,50,'Field Label should be no more than 50 characters in length.')" });
+        testRenderContribution(new String[] { "validate_max_length(event, document.formName.fieldName,50,'Field Label should be no more than 50 characters in length.')" });
     }
 
     public void testMinMaxRenderContribution()
@@ -176,8 +176,8 @@ public class TestStringValidator extends FormComponentContributorTestCase
         _validator.setMaxLength(100);
         
         String[] handlers = new String[] {
-            "validate_min_length(document.formName.fieldName,10,'You must enter at least 10 characters for Field Label.')",
-            "validate_max_length(document.formName.fieldName,100,'You must enter no more than 100 characters for Field Label.')"
+            "validate_min_length(event, document.formName.fieldName,10,'You must enter at least 10 characters for Field Label.')",
+            "validate_max_length(event, document.formName.fieldName,100,'You must enter no more than 100 characters for Field Label.')"
         };
         
         testRenderContribution(handlers);
@@ -191,8 +191,8 @@ public class TestStringValidator extends FormComponentContributorTestCase
         _validator.setTooLongMessage("{1} should be no more than {0} characters in length.");
         
         String[] handlers = new String[] {
-            "validate_min_length(document.formName.fieldName,5,'Field Label should be at least 5 characters in length.')",
-            "validate_max_length(document.formName.fieldName,50,'Field Label should be no more than 50 characters in length.')"
+            "validate_min_length(event, document.formName.fieldName,5,'Field Label should be at least 5 characters in length.')",
+            "validate_max_length(event, document.formName.fieldName,50,'Field Label should be no more than 50 characters in length.')"
         };
         
         testRenderContribution(handlers);

@@ -31,6 +31,9 @@ public interface FormBehavior
     /**
      * Adds an additional event handler. The type determines when the handler will be invoked,
      * {@link FormEventType#SUBMIT}is most typical.
+     * 
+     * @deprecated Wiring of form event handlers is now managed on the client side. This method
+     * may be removed in a future release of Tapestry.
      */
     public void addEventHandler(FormEventType type, String functionName);
 

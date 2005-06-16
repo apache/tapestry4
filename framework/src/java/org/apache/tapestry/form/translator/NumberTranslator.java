@@ -91,7 +91,7 @@ public class NumberTranslator extends FormatTranslator
         String message = buildMessage(field, getMessageKey());
         IForm form = field.getForm();
         
-        addSubmitHandler(form, "validate_number(document." + form.getName() + "." + field.getName() + ",'" + message + "')");
+        addSubmitHandler(form, "validate_number(event, document." + form.getName() + "." + field.getName() + ",'" + message + "')");
     }
 
     /**

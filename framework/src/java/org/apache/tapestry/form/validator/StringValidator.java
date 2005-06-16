@@ -133,7 +133,7 @@ public class StringValidator extends AbstractFormComponentContributor implements
         if (_minLength > 0)
         {
             String message = buildTooShortMessage(field);
-            String handler = "validate_min_length(document." + formName + "." + fieldName + "," + _minLength + ",'" + message + "')";
+            String handler = "validate_min_length(event, document." + formName + "." + fieldName + "," + _minLength + ",'" + message + "')";
             
             super.addSubmitHandler(form, handler);
         }
@@ -141,7 +141,7 @@ public class StringValidator extends AbstractFormComponentContributor implements
         if (_maxLength > 0)
         {
             String message = buildTooLongMessage(field);
-            String handler = "validate_max_length(document." + formName + "." + fieldName + "," + _maxLength + ",'" + message + "')";
+            String handler = "validate_max_length(event, document." + formName + "." + fieldName + "," + _maxLength + ",'" + message + "')";
             
             super.addSubmitHandler(form, handler);
         }

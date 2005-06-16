@@ -12,22 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function validate_min_length(field, min, message)
+function validate_min_length(event, field, min, message)
 {
     if (field.value.length < min)
-    {
-        return handle_invalid_field(field, message)
-    }
-    
-    return true
+      handle_invalid_field(field, message)
 }
 
-function validate_max_length(field, max, message)
+function validate_max_length(event, field, max, message)
 {
     if (field.value.length > max)
-    {
-        return handle_invalid_field(field, message)
-    }
-    
-    return true
+      handle_invalid_field(field, message)
 }

@@ -12,14 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function validate_regex(field, pattern, message)
+function validate_regex(event, field, pattern, message)
 {
     var regexp = new RegExp(pattern)
 
     if (!regexp.test(field.value))
-    {
-        return handle_invalid_field(field, message)
-    }
-
-    return true
+      handle_invalid_field(event, field, message)
 }
