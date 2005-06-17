@@ -69,6 +69,13 @@ public class FormSupportImpl implements FormSupport
 
     public static final String RESERVED_FORM_IDS = "reservedids";
 
+    /**
+     * Indicates why the form was submitted: whether for normal ("submit"), refresh, or because the
+     * form was canceled.
+     */
+
+    public static final String SUBMIT_MODE = "submitmode";
+
     public static final String SCRIPT = "/org/apache/tapestry/form/Form.js";
 
     private final static Set _standardReservedIds;
@@ -80,6 +87,7 @@ public class FormSupportImpl implements FormSupport
         set.addAll(Arrays.asList(ServiceConstants.RESERVED_IDS));
         set.add(FORM_IDS);
         set.add(RESERVED_FORM_IDS);
+        set.add(SUBMIT_MODE);
 
         _standardReservedIds = Collections.unmodifiableSet(set);
     }
@@ -416,6 +424,11 @@ public class FormSupportImpl implements FormSupport
 
         addHiddenFieldsForLinkParameters(link);
 
+        // Create a hidden field to store the submission mode, in case
+        // client-side JavaScript forces an update.
+
+        addHiddenValue(SUBMIT_MODE, null);
+
         IMarkupWriter nested = _writer.getNestedWriter();
 
         _form.renderBody(nested, _cycle);
@@ -531,7 +544,7 @@ public class FormSupportImpl implements FormSupport
         if (HiveMind.isNonBlank(id))
             writer.attribute("id", id);
 
-        writer.attribute("value", value);
+        writer.attribute("value", value == null ? "" : value);
         writer.println();
     }
 

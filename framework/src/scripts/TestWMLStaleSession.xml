@@ -63,6 +63,7 @@
             <match>component</match>
             <match>page</match>
             <match>service</match>
+            <match>submitmode</match>
         </assert-output-matches>
 
         <assert-output-matches name="Go Parameter Values" subgroup="1">
@@ -73,6 +74,7 @@
             <match>go</match>
             <match>Stale</match>
             <match>direct</match>
+            <match></match>
         </assert-output-matches>
 
     </request>
