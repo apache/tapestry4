@@ -21,7 +21,7 @@ import org.apache.tapestry.form.IFormComponent;
 
 /**
  * Common interface extended by {@link org.apache.tapestry.IForm}&nbsp;and
- * {@link org.apache.tapestry.FormSupport}.
+ * {@link org.apache.tapestry.form.FormSupport}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0

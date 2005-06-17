@@ -75,28 +75,101 @@ ensure that, when developing your applications, <em>the simplest approach is als
 </p>
 
 <p>
-Tapestry is distributed under the terms of the Apache Software License.
+Tapestry is distributed under the terms of the Apache Software License. It can be freely used, shared and modified with minimal
+constraints.
 </p>
+
+<section>
+  <title>Tapestry 4.0</title>
+  
+<p>
+Tapestry 4.0 is just overflowing with new features aimed at further enhancing 
+your productivity. Here's a few of our favorites:
+</p>  
+
+<ul>
+  <li>
+  The new 4.0 specification DTDs have been simplified.    
+  </li>
+  <li>
+    The syntax used for binding parameters inside an HTML template and inside
+    an XML specification is now consistent. Both make use of the binding prefixes.
+  </li>
+  <li>
+    "Friendly" URLs (that is, URLs that pack more information into the path and less into query
+    parameters) are built in. This makes it easy to divide your application across many folders (reducing
+    clutter),
+    and leverage J2EE declarative security along the way.
+  </li>
+  <li>
+    Component parameters now <em>just work</em>, without having to worry about
+    "direction". 
+  </li>
+  <li>
+    Applications can now have a global message catalog, in addition to per-page and per-component
+    message catalogs. Messages not found in the component message catalog are searched for in the 
+    application catalog.
+  </li>
+  <li>
+    Full, native support for <link href="tapestry-portlet/index.html">developing JSR-168 Portlets</link> has been added.
+  </li>
+  <li>
+    Tapestry 4.0 makes much less use of reflection and &OGNL; than Tapestry 3.0; partly
+    because there are many new <link href="UsersGuide/bindings.html">binding prefixes</link>.
+  </li>
+  <li>
+   HiveMind services and &Spring; beans to be directly injected
+    into page and component classes.
+  </li>
+  <li>
+    Tapestry 4.0 includes optional <link href="tapestry-annotations/index.html">JDK 1.5 annotation support</link> 
+    (but Tapestry still works with <link href="dependencies.html">JDK 1.3</link>).
+  </li>
+  <li>
+    Tapestry 4.0 debuts a new and much more sophisticated user input validation subsystem.  Thanks Paul!
+  </li>
+  <li>
+    Line precise error reporting can now display the contents of files containing errors.
+  </li>
+  <li>
+    Forms can now be canceled, bypassing client-side validation logic, and invoking an  alternate
+    listener on the server-side.
+  </li>
+  <li>
+    You are no longer limited to just Global and Visit; you can have 
+    <link href="UsersGuide/state.html#state.aso">application state objects</link> as you like.
+  </li>
+  <li>
+    The use of &HiveMind; under the covers means that Tapestry can be easily customized to fit your needs.
+  </li>
+  <li>
+    Page properties can now be persisted on the client, as well as in the session.
+  </li>
+</ul>
+
+<p>
+The complete list of changes is almost too numerous to list.  Suffice to say, everything is about
+getting more bang for less work, and reducing the amount of Java code, reducing the complexity
+of templates, and simplifying (or eliminating) XML files.
+</p>
+
+</section>
 
 <section>
   <title>Status</title>
   
 <p>
-Work has begun on Tapestry 4.0, which is currently in a late alpha stage.  Documentation is being converted
-from the old DocBook format, to the new Forrest format, leaving many temporary gaps. Only the framework and the contrib
-library is being built, most example code is not.
+Work on Tapestry 4.0 is in full swing.  Documentation is being converted
+from the old DocBook format, to the new Forrest format, leaving many temporary gaps. Only the 
+main code base and the Workbench example is being built, all other example code is not (this unfortunately
+includes the Virtual Library).
 </p>
 
 <p>
-If you are using Tapestry in a production environment, it is recommended that you stick with Tapestry <strong>3.0.3</strong>,
+Tapestry 4.0 should be production-ready soon.  It needs more exposure and more documentation. For the
+momement, it is still recommended that you stick with Tapestry <strong>3.0.3</strong>,
 the latest stable release.
 </p>
-
-<p>
-Tapestry 4.0 now supports <link href="tapestry-annotations/index.html">JDK 1.5 annotations</link>, which can be used
-as an alternative to the XML page and component specifcations (in some cases).
-</p>
-  
   
 </section>
 

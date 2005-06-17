@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry;
+package org.apache.tapestry.form;
 
+import org.apache.tapestry.FormBehavior;
+import org.apache.tapestry.IRender;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.form.Form;
 
 /**
  * Interface for a utility object that encapsulates the majority of the
@@ -29,7 +30,7 @@ public interface FormSupport extends FormBehavior
 
     /**
      * Invoked when the form is rendering. This should only be invoked by the {@link Form}
-     * &nbsp;component.
+     * component.
      * 
      * @param method
      *            the HTTP method ("get" or "post")
@@ -44,7 +45,10 @@ public interface FormSupport extends FormBehavior
     /**
      * Invoked to rewind the form, which renders the body of the form, allowing form element
      * components to pull data from the request and update page properties. This should only be
-     * invoked by the {@link Form}&nbsp;component.
+     * invoked by the {@link Form} component.
+     * 
+     * @return a code indicating why the form was submitted: {@link FormConstants#SUBMIT_NORMAL},
+     *         {@link FormConstants#SUBMIT_CANCEL} or {@link FormConstants#SUBMIT_REFRESH}.
      */
-    public void rewind();
+    public String rewind();
 }

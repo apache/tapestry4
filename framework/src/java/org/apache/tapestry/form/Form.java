@@ -17,7 +17,6 @@ package org.apache.tapestry.form;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.FormSupport;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IDirect;
@@ -53,6 +52,10 @@ import org.apache.tapestry.web.WebResponse;
  * Starting in release 1.0.2, a Form can use either the direct service or the action service. The
  * default is the direct service, even though in earlier releases, only the action service was
  * available.
+ * <p>
+ * Release 4.0 adds two new listener, {@link #getCancel()} and {@link #getRefresh()} and
+ * corresponding client-side behavior to force a form to refresh (update, bypassing input field
+ * validation) or cancel (update immediately).
  * 
  * @author Howard Lewis Ship, David Solis
  */
@@ -220,9 +223,11 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
         if (isRewinding())
         {
-            _formSupport.rewind();
+            String submitType = _formSupport.rewind();
 
-            getListenerInvoker().invokeListener(getListener(), this, cycle);
+            IActionListener listener = findListener(submitType);
+
+            getListenerInvoker().invokeListener(listener, this, cycle);
 
             // Abort the rewind render.
 
@@ -243,6 +248,25 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         ILink link = getLink(cycle, actionId);
 
         _formSupport.render(getMethod(), _renderInformalParameters, link);
+    }
+
+    IActionListener findListener(String mode)
+    {
+        IActionListener result = null;
+
+        if (mode.equals(FormConstants.SUBMIT_CANCEL))
+            result = getCancel();
+        else if (mode.equals(FormConstants.SUBMIT_REFRESH))
+            result = getRefresh();
+
+        // If not cancel or refresh, or the corresponding listener
+        // is itself null, then use the default listener
+        // (which may be null as well!).
+
+        if (result == null)
+            result = getListener();
+
+        return result;
     }
 
     /**
@@ -345,6 +369,12 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     /** listener parameter, may be null */
     public abstract IActionListener getListener();
+
+    /** cancel parameter, may be null */
+    public abstract IActionListener getCancel();
+
+    /** refresh parameter, may be null */
+    public abstract IActionListener getRefresh();
 
     /** method parameter */
     public abstract String getMethod();

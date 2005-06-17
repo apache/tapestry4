@@ -28,11 +28,17 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> A Form component must enclose the other form element components (such as &TextField; and &Checkbox;).
+  It manages the rendering of the form as well as processing when the form is submitted
+  (known as "rewinding" the form).  In traditional web applications, the developer is responsible
+  for providing a name for each form and each form control element; in Tapestry, the Form component
+  generates its own unique name, and unique names for each enclosed component ... this is necessary
+  to support advanced features such as loops within forms.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/form/Form.html">org.apache.tapestry.form.Form</link>,
+    &IValidationDelegate;</strong> 
 </p>
 
 <section>
@@ -45,28 +51,102 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
+    <th>Default Binding</th>
     <th>Description</th>
+  </tr>
+  
+  <tr>
+    <td>method</td> <td>string</td> <td>in</td> <td>no</td> <td>post</td> <td>literal</td>
+      <td>Method used by the form when it is submitted.</td>
+  </tr>
+
+  <tr>
+    <td>listener</td> <td>&IActionListener;</td> <td>in</td> <td>no</td>
+    <td/> <td>listener</td>
+    <td>Default listener to be invoked when the form is submitted. Invoked
+      after the form has rewond (all enclosed components have read query parameters
+      and updated server-side properties), and after any listeners related
+      to submit components (&Submit;, &ImageSubmit;, etc.) have been invoked.</td>
+  </tr>
+  
+  <tr>
+    <td>cancel</td> <td>&IActionListener;</td> <td>in</td> <td>no</td>
+    <td/> <td>listener</td>
+    <td>Listener used when a form is cancelled, overriding the default listener. Forms
+      are cancelled by invoking the client-side JavaScript function
+      document.<em>form-name</em>.events.cancel().  A cancelled form <em>does not</em> rewind.
+      If no cancel listener is provided, then the normal listener will be used.</td>
+  </tr>
+  
+  <tr>
+    <td>refresh</td>  <td>&IActionListener;</td> <td>in</td> <td>no</td>
+    <td/> <td>listener</td>
+    <td>
+      Listener used when a form is refreshed, overriding the default listener.  A refreshed form bypasses
+      input field validation  on the client side, though validation still
+      occurs on the server side. If no refresh listener is provided, then the normal listener
+      will be used.
+    </td>
+  </tr>
+  
+  <tr>
+    <td>stateful</td> <td>boolean</td> <td>in</td> <td>no</td> <td>true</td> <td>ognl</td>
+    <td>
+     If true (the default), then an active session is required when the
+        form is submitted, if there was an active session when the
+        form was rendered.
+    </td>
+  </tr>
+  
+  <tr>
+    <td>direct</td> <td>boolean</td> <td>in</td> <td>no</td> <td>true</td> <td>ognl</td>
+    <td>    If true (the default), then the more efficient direct service is used.
+    If false, then the action service is used.  The action service requires
+    rewinding of the entire page, and is rarely (if ever) used.</td>
+  </tr>
+  
+  <tr>
+    <td>delegate</td> <td>&IValidationDelegate;</td> <td>in</td> <td>no</td>
+    <td>default instance</td>
+    <td>ognl</td>
+    <td>
+      An object that tracks user input and input field errors, and decorates
+      fields and field labels. This is typically overriden to provide
+      an application-specific look and feel.
+    </td>
+  </tr>
+  
+  <tr>
+    <td>clientValidationEnabled</td>
+    <td>boolean</td> <td>in</td> <td>no</td> <td>false</td> <td>ognl</td>
+    <td>
+      If true, then client-side validation will be enabled for components 
+      that support it (such as &TextField;). 
+    </td>
   </tr>
 
 	</table>
   
+  
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: action, enctype, name, onsubmit, onreset
+</p>
+
+<p>
+A note about clientValidationEnabled: This refers to the revamped input validation support 
+that debuts in Tapestry 4.0.  The older validation system, centered around the &ValidField; component,
+still requires that clientScriptingEnabled be set on individual &IValidators;.
 </p>
 
 </section>
 
-<section>
-  <title>Examples</title>
-
-</section>
 </body>
 </document>
