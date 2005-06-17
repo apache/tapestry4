@@ -15,7 +15,11 @@
    limitations under the License.
 -->
 
-<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd">
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd" [
+
+<!ENTITY % links.ent SYSTEM "./links.ent">
+%links.ent;
+]>
 <document>
 
  <header>

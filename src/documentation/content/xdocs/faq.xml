@@ -149,10 +149,10 @@ is a Tapestry plugin
                 How do I integrate a Tapestry application with J2EE declarative security/JAAS?
             </question>
             <answer>
-              In Tapestry 3.0, this could be a problem, because of the way Tapestry generated URLs.
+              <p>In Tapestry 3.0, this could be a problem, because of the way Tapestry generated URLs.
               Tapestry 4.0 adds native support for <link href="UsersGuide/friendly-urls.html">friendly URLs</link> which
               allow you to modularize your application across multiple folders in a more traditional manner.
-
+            </p>
             </answer>
         </faq>
         <faq>
@@ -603,14 +603,15 @@ Start your servlet container with the JVM system parameter
 		Tapestry goes far beyond that!  It always relates runtime objects
 		back to the corresponding files so that even runtime errors report the
 		file and location.
-                </p>
+              
 
 
                 <jump href="images/LinePrecise.png">
                     <img src="images/LinePrecise_thumb.png" alt="Line Precise"/>
                 </jump>
-                <caption>	Tapestry exception report (click for larger image).</caption>
-
+             
+  </p>
+  
                 <p>
 		For example; say you bind a parameter of a component that expects
 		a non-null value, but the value ends up being null anyway, due to
