@@ -83,6 +83,7 @@
        <action type="add" dev="PF">Refactored and expanded validation functionality to include DatePicker, PropertySelection, RadioGroup, Select, TextArea, TextField, Upload, contrib:Palette, and contrib:MultiplePropertySelection.</action>		
        <action type="update" dev="HLS">Rework form event management to be primarily a client-side concern.</action>
        <action type="add" dev="HLS">Add translator binding prefix.</action>
+       <action type="add" dev="HLS">Add cancel and refresh listener parameters to Form.</action>
     </release>
     <release version="4.0-alpha-3" date="May 16 2005">
       <action type="add" dev="HLS">Add initial support for the validator: binding prefix.</action>

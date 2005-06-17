@@ -18,7 +18,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
-import org.apache.tapestry.FormSupport;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
@@ -246,7 +245,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         replayControls();
 
-        fs.rewind();
+        assertEquals(FormConstants.SUBMIT_NORMAL, fs.rewind());
 
         verifyControls();
     }
@@ -335,7 +334,7 @@ public class TestFormSupport extends HiveMindTestCase
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
-        
+
         nested.close();
 
         writer.end();
@@ -434,7 +433,7 @@ public class TestFormSupport extends HiveMindTestCase
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
-        
+
         nested.close();
 
         writer.end();
@@ -709,7 +708,7 @@ public class TestFormSupport extends HiveMindTestCase
         trainHidden(writer, "action", "fred");
         trainHidden(writer, "reservedids", "action");
         trainHidden(writer, "submitmode", "");
-        
+
         nested.close();
 
         writer.end();
@@ -804,7 +803,7 @@ public class TestFormSupport extends HiveMindTestCase
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
-        
+
         nested.close();
 
         writer.end();
@@ -861,7 +860,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         replayControls();
 
-        fs.rewind();
+        assertEquals(FormConstants.SUBMIT_NORMAL, fs.rewind());
 
         verifyControls();
     }
@@ -1146,7 +1145,7 @@ public class TestFormSupport extends HiveMindTestCase
         trainHidden(writer, "formids", "barney");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
-        
+
         nested.close();
 
         writer.end();
@@ -1158,7 +1157,7 @@ public class TestFormSupport extends HiveMindTestCase
         verifyControls();
     }
 
-public void testSimpleRenderWithDeferredRunnable()
+    public void testSimpleRenderWithDeferredRunnable()
     {
         MockControl writerc = newControl(IMarkupWriter.class);
         IMarkupWriter writer = (IMarkupWriter) writerc.getMock();
@@ -1221,7 +1220,7 @@ public void testSimpleRenderWithDeferredRunnable()
 
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
-        
+
         support
                 .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
 
@@ -1252,7 +1251,7 @@ public void testSimpleRenderWithDeferredRunnable()
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
-        
+
         // EasyMock can't fully verify that this gets called at the right moment, nor can we truly
         // prove (well, except by looking at the code), that the deferred runnables execute at the
         // right time.
@@ -1268,7 +1267,9 @@ public void testSimpleRenderWithDeferredRunnable()
         fs.render("post", render, link);
 
         verifyControls();
-    }    public void testSimpleRewind()
+    }
+
+    public void testSimpleRewind()
     {
         IMarkupWriter writer = newWriter();
 
@@ -1309,7 +1310,99 @@ public void testSimpleRenderWithDeferredRunnable()
 
         replayControls();
 
-        fs.rewind();
+        assertEquals(FormConstants.SUBMIT_NORMAL, fs.rewind());
+
+        verifyControls();
+    }
+
+    public void testRefreshRewind()
+    {
+        IMarkupWriter writer = newWriter();
+
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+
+        IValidationDelegate delegate = newDelegate();
+
+        MockControl enginec = newControl(IEngine.class);
+        IEngine engine = (IEngine) enginec.getMock();
+
+        MockForm form = new MockForm(delegate);
+
+        cycle.isRewound(form);
+        cyclec.setReturnValue(true);
+
+        cycle.getEngine();
+        cyclec.setReturnValue(engine);
+
+        engine.getClassResolver();
+        enginec.setReturnValue(getClassResolver());
+
+        replayControls();
+
+        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+
+        verifyControls();
+
+        delegate.clear();
+
+        trainCycleForRewind(cyclec, cycle, "refresh", "barney", null);
+
+        final IFormComponent component = newFormComponent("barney", "barney");
+
+        IRender body = newComponentRenderBody(fs, component, writer);
+
+        form.setBody(body);
+
+        replayControls();
+
+        assertEquals(FormConstants.SUBMIT_REFRESH, fs.rewind());
+
+        verifyControls();
+    }
+
+    public void testCancelRewind()
+    {
+        IMarkupWriter writer = newWriter();
+
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+
+        IValidationDelegate delegate = newDelegate();
+
+        MockControl enginec = newControl(IEngine.class);
+        IEngine engine = (IEngine) enginec.getMock();
+
+        MockForm form = new MockForm(delegate);
+
+        cycle.isRewound(form);
+        cyclec.setReturnValue(true);
+
+        cycle.getEngine();
+        cyclec.setReturnValue(engine);
+
+        engine.getClassResolver();
+        enginec.setReturnValue(getClassResolver());
+
+        replayControls();
+
+        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+
+        verifyControls();
+
+        delegate.clear();
+
+        trainGetParameter(cyclec, cycle, FormSupportImpl.SUBMIT_MODE, "cancel");
+
+        // Create a body, just to provie it doesn't get invoked.
+
+        IRender body = (IRender) newMock(IRender.class);
+
+        form.setBody(body);
+
+        replayControls();
+
+        assertEquals(FormConstants.SUBMIT_CANCEL, fs.rewind());
 
         verifyControls();
     }
@@ -1370,7 +1463,7 @@ public void testSimpleRenderWithDeferredRunnable()
 
         form.setBody(body);
 
-        fs.rewind();
+        assertEquals(FormConstants.SUBMIT_NORMAL, fs.rewind());
 
         verifyControls();
     }
@@ -1457,7 +1550,7 @@ public void testSimpleRenderWithDeferredRunnable()
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
-        
+
         nested.close();
 
         writer.end();
@@ -1476,11 +1569,22 @@ public void testSimpleRenderWithDeferredRunnable()
     private void trainCycleForRewind(MockControl cyclec, IRequestCycle cycle, String allocatedIds,
             String reservedIds)
     {
-        cycle.getParameter(FormSupportImpl.FORM_IDS);
-        cyclec.setReturnValue(allocatedIds);
+        trainCycleForRewind(cyclec, cycle, "submit", allocatedIds, reservedIds);
+    }
 
-        cycle.getParameter(FormSupportImpl.RESERVED_FORM_IDS);
-        cyclec.setReturnValue(reservedIds);
+    private void trainCycleForRewind(MockControl cyclec, IRequestCycle cycle, String submitMode,
+            String allocatedIds, String reservedIds)
+    {
+        trainGetParameter(cyclec, cycle, FormSupportImpl.SUBMIT_MODE, submitMode);
+        trainGetParameter(cyclec, cycle, FormSupportImpl.FORM_IDS, allocatedIds);
+        trainGetParameter(cyclec, cycle, FormSupportImpl.RESERVED_FORM_IDS, reservedIds);
+    }
+
+    private void trainGetParameter(MockControl cyclec, IRequestCycle cycle, String parameterName,
+            String value)
+    {
+        cycle.getParameter(parameterName);
+        cyclec.setReturnValue(value);
     }
 
     private void trainForPageSupport(MockControl cyclec, IRequestCycle cycle, String initialization)

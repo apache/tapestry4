@@ -14,10 +14,10 @@
 
 package org.apache.tapestry.wml;
 
-import org.apache.tapestry.FormSupport;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.Form;
+import org.apache.tapestry.form.FormSupport;
 
 /**
  * The go element declares a go task, indicating navigation to a URI. If the URI names a WML card or

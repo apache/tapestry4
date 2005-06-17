@@ -39,6 +39,22 @@
             to the submission.
         </description>
     </parameter>
+    
+  <parameter name="cancel" default-binding="listener">
+      <description>
+          Object invoked when the form is cancelled (a special type of form submission).
+          The oncancel listener (if any) overrides the standard listener. Other properties
+          will not be affected by the rewind.
+       </description>
+   </parameter>
+  
+  <parameter name="refresh" default-binding="listener">
+      <description>
+          Object invoked when the form is refreshed (a special type of form submission).
+          The onrefresh listener (if any) overrides the standard listener.
+          Other properties managed by enclosed components will be updated.
+      </description>
+  </parameter>    
 
     <parameter name="stateful" default-value="true">
         <description>

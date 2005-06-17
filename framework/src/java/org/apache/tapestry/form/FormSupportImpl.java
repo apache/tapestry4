@@ -30,7 +30,6 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.FormSupport;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
@@ -90,6 +89,18 @@ public class FormSupportImpl implements FormSupport
         set.add(SUBMIT_MODE);
 
         _standardReservedIds = Collections.unmodifiableSet(set);
+    }
+
+    private final static Set _submitModes;
+
+    static
+    {
+        Set set = new HashSet();
+        set.add(FormConstants.SUBMIT_CANCEL);
+        set.add(FormConstants.SUBMIT_NORMAL);
+        set.add(FormConstants.SUBMIT_REFRESH);
+
+        _submitModes = Collections.unmodifiableSet(set);
     }
 
     /**
@@ -487,11 +498,18 @@ public class FormSupportImpl implements FormSupport
         return eventManager;
     }
 
-    public void rewind()
+    public String rewind()
     {
-        reinitializeIdAllocatorForRewind();
-
         _form.getDelegate().clear();
+
+        String mode = _cycle.getParameter(SUBMIT_MODE);
+
+        // On a cancel, don't bother rendering the body or anything else at all.
+
+        if (FormConstants.SUBMIT_CANCEL.equals(mode))
+            return mode;
+
+        reinitializeIdAllocatorForRewind();
 
         _form.renderBody(_writer, _cycle);
 
@@ -510,6 +528,15 @@ public class FormSupportImpl implements FormSupport
         }
 
         runDeferredRunnables();
+
+        if (_submitModes.contains(mode))
+            return mode;
+
+        // Either something wacky on the client side, or a client without
+        // javascript enabled.
+
+        return FormConstants.SUBMIT_NORMAL;
+
     }
 
     private void runDeferredRunnables()
