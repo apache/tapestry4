@@ -234,7 +234,7 @@ public class TestScript extends TapestryTestCase
     {
         try
         {
-            execute("invalid-key-Set.script", new HashMap());
+            execute("invalid-key-set.script", new HashMap());
 
             unreachable();
         }
