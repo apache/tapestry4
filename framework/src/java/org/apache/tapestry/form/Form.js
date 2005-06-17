@@ -155,7 +155,7 @@ FormEventManager.prototype.cancel = function()
 	
 	if (event.abort == false)
 	{
-	  // this.form.mode.value = "cancel";
+	  this.form.submitmode.value = "cancel";
 	  this.form.onsubmit = null;
 	  this.form.submit();
 	}
@@ -190,7 +190,7 @@ FormEventManager.prototype.submit = function()
 	if (event.abort)
       return false;
 	  
-	// this.form.mode.value = "submit";
+	this.form.submitmode.value = "submit";
 	
 	return true;
 }
@@ -226,7 +226,7 @@ FormEventManager.prototype.refresh = function()
 	if (event.abort)
 	  return;
 	  
-    // this.form.mode.value = "refresh";
+    this.form.submitmode.value = "refresh";
 	this.form.onsubmit = null;
 	this.form.submit();
 }

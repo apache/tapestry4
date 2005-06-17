@@ -34,16 +34,16 @@
     </document>
   </xsl:template>
   <xsl:template match="vote">
-    <tr>
-      <td>
+    <tr class="section">
+      <th>
         <xsl:value-of select="@date"/>
-      </td>
-      <td>
+      </th>
+      <th>
         <xsl:value-of select="@title"/>
-      </td>
-      <td>
+      </th>
+      <th>
         <xsl:value-of select="@dev"/>
-      </td>
+      </th>
     </tr>
     <tr>
       <td/>

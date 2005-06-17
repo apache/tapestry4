@@ -38,6 +38,7 @@
 	    <match>name="component" value="form"</match>
       <match>name="page" value="ListEdit"</match>
 			<match>name="service" value="direct"</match>
+      <match>name="submitmode" value=""</match>
 			<match>name="e" value="SClothing"</match>
 			<match>name="e" value="SEye Color"</match>
 			<match>name="e" value="SFood"</match>
@@ -145,6 +146,7 @@
       <match>name="component" value="$ListEditForm.$Form"</match>
       <match>name="page" value="ListEditArray"</match>
 			<match>name="service" value="direct"</match>
+      <match>name="submitmode" value=""</match>
 			<match>name="e" value="SFred"</match>
 			<match>name="e" value="SDino"</match>
 			<match>name="e" value="SWilma"</match>
@@ -171,6 +173,7 @@
       <match>name="component" value="$ListEditForm.$Form"</match>
       <match>name="page" value="ListEditNull"</match>
 			<match>name="service" value="direct"</match>
+      <match>name="submitmode" value=""</match>
 		</assert-output-matches>			
 	</request>	
 </mock-test>

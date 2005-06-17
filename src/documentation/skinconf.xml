@@ -151,6 +151,15 @@
       padding: 2px;
       background-color: #ffffcc;
     }
+    
+    TR.section TH
+    {
+      color: black;
+      background-color: white;
+      text-align: left;
+      font-weight: bold;
+      white-space: nowrap;
+    }
   </extra-css>
 
   <colors>
