@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.form.validator;
 
-import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -25,71 +24,54 @@ import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * Validates that the value, a string, is of a minimum length.
+ * {@link org.apache.tapestry.form.validator.Validator} that ensures a value was supplied.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class MinLengthValidator implements Validator
+public class Required implements Validator
 {
-    private int _minLength;
-
     private String _message;
-
-    public MinLengthValidator()
-    {
-    }
-
-    public MinLengthValidator(String initializer)
-    {
-        PropertyUtils.configureProperties(this, initializer);
-    }
 
     public void setMessage(String message)
     {
         _message = message;
     }
 
-    public void setMinLength(int minLength)
-    {
-        _minLength = minLength;
-    }
-
     public boolean getAcceptsNull()
     {
-        return false;
+        return true;
     }
 
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
             throws ValidatorException
     {
-        String string = (String) object;
-
-        if (string.length() < _minLength)
-            throw new ValidatorException(buildMessage(messages, field),
-                    ValidationConstraint.MINIMUM_WIDTH);
+        if (object == null)
+        {
+            String message = buildMessage(messages, field);
+            throw new ValidatorException(message, ValidationConstraint.REQUIRED);
+        }
     }
 
-    protected String buildMessage(ValidationMessages messages, IFormComponent field)
+    private String buildMessage(ValidationMessages messages, IFormComponent field)
     {
         return messages.formatValidationMessage(
                 _message,
-                ValidationStrings.VALUE_TOO_SHORT,
+                ValidationStrings.REQUIRED_TEXT_FIELD,
                 new Object[]
-                { new Integer(_minLength), field.getDisplayName() });
+                { field.getDisplayName() });
     }
 
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
             FormComponentContributorContext context, IFormComponent field)
     {
-        StringBuffer buffer = new StringBuffer("function(event) { validate_min_length(event, ");
+        StringBuffer buffer = new StringBuffer("function(event) { require(event, ");
         buffer.append(context.getFieldDOM());
-        buffer.append(", ");
-        buffer.append(_minLength);
         buffer.append(", '");
         buffer.append(buildMessage(context, field));
         buffer.append("'); }");
 
         context.addSubmitListener(buffer.toString());
     }
+
 }

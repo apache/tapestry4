@@ -34,9 +34,8 @@ import org.apache.tapestry.form.translator.DateTranslator;
 
 /**
  * Provides a Form <tt>java.util.Date</tt> field component for selecting dates. [ <a
- * href="../../../../../ComponentReference/DatePicker.html">Component Reference </a>]
- * 
- * As of 4.0, DatePicker can indicate that it is required, use a custom translator (e.g. for java.sql.Date),
+ * href="../../../../../ComponentReference/DatePicker.html">Component Reference </a>] As of 4.0,
+ * DatePicker can indicate that it is required, use a custom translator (e.g. for java.sql.Date),
  * and perform validation on the submitted date.
  * 
  * @author Paul Geerts
@@ -98,7 +97,7 @@ public abstract class DatePicker extends AbstractValidatableField
     protected void finishLoad()
     {
         super.finishLoad();
-        
+
         IScriptSource source = getScriptSource();
 
         Resource location = getSpecification().getSpecificationLocation().getRelativeResource(
@@ -108,7 +107,8 @@ public abstract class DatePicker extends AbstractValidatableField
     }
 
     /**
-     * @see org.apache.tapestry.form.validator.AbstractValidatableField#render(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, java.lang.String)
+     * @see org.apache.tapestry.form.validator.AbstractValidatableField#render(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle, java.lang.String)
      */
     public void render(IMarkupWriter writer, IRequestCycle cycle, String value)
     {
@@ -142,7 +142,7 @@ public abstract class DatePicker extends AbstractValidatableField
         _script.execute(cycle, pageRenderSupport, symbols);
 
         renderDelegatePrefix(writer, cycle);
-        
+
         writer.beginEmpty("input");
         writer.attribute("type", "text");
         writer.attribute("name", name);
@@ -153,9 +153,9 @@ public abstract class DatePicker extends AbstractValidatableField
             writer.attribute("disabled", "disabled");
 
         renderDelegateAttributes(writer, cycle);
-        
+
         renderContributions(writer, cycle);
-        
+
         renderInformalParameters(writer, cycle);
 
         writer.printRaw("&nbsp;");
@@ -174,9 +174,9 @@ public abstract class DatePicker extends AbstractValidatableField
 
         if (!disabled)
             writer.end();
-        
+
         renderDelegateSuffix(writer, cycle);
-	}
+    }
 
     /**
      * @see org.apache.tapestry.form.AbstractValidatableField#readValue()
@@ -185,7 +185,7 @@ public abstract class DatePicker extends AbstractValidatableField
     {
         return getValue();
     }
-    
+
     /**
      * @see org.apache.tapestry.form.AbstractValidatableField#updateValue(java.lang.Object)
      */
@@ -193,7 +193,7 @@ public abstract class DatePicker extends AbstractValidatableField
     {
         setValue((Date) value);
     }
-	
+
     /**
      * Create a list of quoted strings. The list is suitable for initializing a JavaScript array.
      */

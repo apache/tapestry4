@@ -44,14 +44,11 @@
       </description>
   </parameter>
 
-  <parameter name="required" default-binding="ognl"/>
-  <parameter name="requiredMessage" default-binding="literal"/>
   <parameter name="translator" default-binding="translator" default-value="string"/>
   <parameter name="validators" default-binding="ognl"/>
 
   <reserved-parameter name="name"/>
 
-  <inject property="requirableFieldSupport" object="service:tapestry.form.RequirableFieldSupport"/>
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
     
 </component-specification>

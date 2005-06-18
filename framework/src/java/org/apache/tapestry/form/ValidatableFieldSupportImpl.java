@@ -17,6 +17,7 @@ package org.apache.tapestry.form;
 import java.util.Iterator;
 import java.util.Locale;
 
+import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.service.ThreadLocale;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -105,18 +106,20 @@ public class ValidatableFieldSupportImpl implements ValidatableFieldSupport
      *      org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, java.lang.String)
      */
     public void bind(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle,
-            String value) throws ValidatorException
+            String value)
     {
         IValidationDelegate delegate = component.getForm().getDelegate();
 
         delegate.recordFieldInputValue(value);
 
-        Object object = component.getTranslator().parse(component, value);
-
-        component.writeValue(object);
-
-        if (object != null)
+        try
         {
+            Object object = HiveMind.isBlank(value) ? null : component.getTranslator().parse(
+                    component,
+                    value);
+
+            boolean isNonNull = object != null;
+
             Iterator validators = getValidatorsIterator(component);
 
             ValidationMessages messages = new ValidationMessagesImpl(_threadLocale.getLocale());
@@ -125,8 +128,20 @@ public class ValidatableFieldSupportImpl implements ValidatableFieldSupport
             {
                 Validator validator = (Validator) validators.next();
 
-                validator.validate(component, messages, object);
+                if (isNonNull || validator.getAcceptsNull())
+                    validator.validate(component, messages, object);
             }
+
+            // Only get here if it translated OK and then validated OK.
+
+            // NOTE: May need to have the Translator implement a provideNullValue() method, i.e.,
+            // to return 0 if the translator is concerned with numbers.
+
+            component.writeValue(object);
+        }
+        catch (ValidatorException ex)
+        {
+            delegate.record(ex);
         }
     }
 }

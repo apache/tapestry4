@@ -28,15 +28,12 @@
   <parameter name="icon" default-value="defaultIcon" default-binding="asset"/>
   
   <parameter name="displayName" default-binding="literal"/>
-  <parameter name="required" default-binding="ognl"/>
-  <parameter name="requiredMessage" default-binding="literal"/>
   <parameter name="translator" default-binding="translator" default-value="date,pattern=dd MMM yyyy"/>
   <parameter name="validators" default-binding="ognl"/>
 
   <asset name="defaultIcon" path="DatePickerIcon.png"/>
        
   <inject property="scriptSource" object="infrastructure:scriptSource"/>
-  <inject property="requirableFieldSupport" object="service:tapestry.form.RequirableFieldSupport"/>
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
     
 </component-specification>

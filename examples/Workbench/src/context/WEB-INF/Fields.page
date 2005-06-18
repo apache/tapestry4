@@ -23,6 +23,7 @@
 
   <property name="clientValidationEnabled" persist="client" initial-value="true"/>
   
+  <bean name="required" class="org.apache.tapestry.form.validator.Required"/>
   <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate" property="delegate"/>
 
   <bean name="dateValidator" lifecycle="render" class="org.apache.tapestry.form.validator.DateValidator">
@@ -67,91 +68,54 @@
   <component id="inputDate" type="TextField">
     <binding name="value" value="visit.dateValue"/>
     <binding name="translator" value="date,pattern=MM-dd-yyyy"/>
-    <binding name="required" value="true"/>
-    <binding name="validators" value="bean:dateValidator"/>
+    <binding name="validators" value="ognl:{ beans.required, beans.dateValidator }"/>
     <binding name="displayName" value="Date Field"/>
   </component>
-  
-  <!--component id="inputDate" type="ValidField">
-    <binding name="validator" value="bean:dateValidator"/>
-    <binding name="value" value="visit.dateValue"/>
-    <binding name="displayName" value="Date Field"/>
-  </component-->
+ 
 
   <component id="inputInt" type="TextField">
     <binding name="value" value="ognl:visit.intValue"/>
     <binding name="translator" value="number,pattern=#"/>
-    <binding name="required" value="true"/>
     <binding name="displayName" value="Integer Field"/>
-    <binding name="validators" value="bean:intValidator"/>
+    <binding name="validators" value="ognl:{beans.required, beans.intValidator}"/>
   </component>
   
-  <!--component id="inputInt" type="ValidField">
-    <binding name="validator" value="bean:intValidator"/>
-    <binding name="value" value="visit.intValue"/>
-    <binding name="displayName" value="Integer Field"/>
-  </component-->
-
   <component id="inputDouble" type="TextField">
     <binding name="value" value="ognl:visit.doubleValue"/>
     <binding name="translator" value="number,pattern=#.#"/>
-    <binding name="required" value="true"/>
-    <binding name="validators" value="bean:doubleValidator"/>
+    <binding name="validators" value="ognl:{beans.required, beans.doubleValidator}"/>
     <binding name="displayName" value="Double Field"/>
   </component>
 
   <component id="inputBigDecimal" type="TextField">
     <binding name="value" value="ognl:visit.bigDecimalValue"/>
     <binding name="translator" value="number,pattern=#.#"/>
-    <binding name="required" value="true"/>
-    <binding name="validators" value="bean:bigDecimalValidator"/>
+    <binding name="validators" value="ognl:{beans.required, beans.bigDecimalValidator}"/>
     <binding name="displayName" value="Big Decimal Field"/>
   </component>
 
   <component id="inputLong" type="TextField">
     <binding name="value" value="ognl:visit.longValue"/>
     <binding name="translator" value="number,pattern=#"/>
-    <binding name="required" value="true"/>
-    <binding name="validators" value="bean:longValidator"/>
+    <binding name="validators" value="ognl:{beans.required, beans.longValidator}"/>
     <binding name="displayName" value="Long Field"/>
   </component>
-
-  <!--component id="inputLong" type="ValidField">
-    <binding name="value" value="visit.longValue"/>
-    <binding name="validator" value="bean:longValidator"/>
-    <binding name="displayName" value="Long Field"/>
-  </component-->
 
   <component id="inputString" type="TextField">
     <binding name="value" value="ognl:visit.stringValue"/>
-    <binding name="required" value="true"/>
-    <binding name="validators" value="bean:stringValidator"/>
+    <binding name="validators" value="ognl:{beans.required, beans.stringValidator}"/>
     <binding name="displayName" value="String Field"/>
   </component>
-
-  <!--component id="inputString" type="ValidField">
-    <binding name="value" value="visit.stringValue"/>
-    <binding name="validator" value="bean:stringValidator"/>
-    <binding name="displayName" value="String Field"/>
-  </component-->
 
   <component id="inputEmail" type="TextField">
     <binding name="value" value="ognl:visit.emailValue"/>
-    <binding name="required" value="true"/>
-    <binding name="validators" value="ognl:{beans.stringValidator,beans.emailValidator}"/>
+    <binding name="validators" value="ognl:{beans.required,beans.emailValidator}"/>
     <binding name="displayName" value="Email Field"/>
   </component>
-
-  <!--component id="inputEmail" type="ValidField">
-    <binding name="value" value="visit.emailValue"/>
-    <binding name="validator" value="bean:emailValidator"/>
-    <binding name="displayName" value="Email Field"/>
-  </component-->
-
+  
   <component id="textArea" type="TextArea">
     <binding name="value" value="ognl:visit.textValue"></binding>
-    <binding name="required" value="true"></binding>
-    <binding name="validators" value="bean:stringValidator"/>
+    <binding name="validators" value="ognl:{beans.required, beans.stringValidator}"/>
     <binding name="displayName" value="Text Field"/>
   </component>
   

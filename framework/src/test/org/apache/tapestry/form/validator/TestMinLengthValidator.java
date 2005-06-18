@@ -32,30 +32,6 @@ import org.easymock.MockControl;
  */
 public class TestMinLengthValidator extends BaseValidatorTestCase
 {
-    protected ValidationMessages newMessages()
-    {
-        return (ValidationMessages) newMock(ValidationMessages.class);
-    }
-
-    protected ValidationMessages newMessages(String messageOverride, String messageKey,
-            Object[] parameters, String result)
-    {
-        MockControl control = newControl(ValidationMessages.class);
-        ValidationMessages messages = (ValidationMessages) control.getMock();
-
-        trainFormatMessage(control, messages, messageOverride, messageKey, parameters, result);
-
-        return messages;
-    }
-
-    private void trainFormatMessage(MockControl control, ValidationMessages messages,
-            String messageOverride, String messageKey, Object[] parameters, String result)
-    {
-        messages.formatValidationMessage(messageOverride, messageKey, parameters);
-        control.setMatcher(MockControl.ARRAY_MATCHER);
-        control.setReturnValue(result);
-    }
-
     public void testOK() throws Exception
     {
         IFormComponent field = newField();

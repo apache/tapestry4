@@ -16,7 +16,6 @@ package org.apache.tapestry.form;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -26,7 +25,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Paul Ferraro
  * @since 4.0
  */
-public abstract class AbstractValidatableField extends AbstractRequirableField implements
+public abstract class AbstractValidatableField extends AbstractFormComponent implements
         ValidatableField
 {
     /**
@@ -40,32 +39,23 @@ public abstract class AbstractValidatableField extends AbstractRequirableField i
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        super.renderFormComponent(writer, cycle);
-
         getValidatableFieldSupport().render(this, writer, cycle);
+    }
+
+    protected String getSubmittedValue(IRequestCycle cycle)
+    {
+        return cycle.getParameter(getName());
+    }
+
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        String value = getSubmittedValue(cycle);
+
+        getValidatableFieldSupport().bind(this, writer, cycle, value);
     }
 
     protected void renderContributions(IMarkupWriter writer, IRequestCycle cycle)
     {
         getValidatableFieldSupport().renderContributions(this, writer, cycle);
-    }
-
-    /**
-     * @see org.apache.tapestry.form.RequirableField#bind(org.apache.tapestry.IMarkupWriter,
-     *      org.apache.tapestry.IRequestCycle)
-     */
-    public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException
-    {
-        getValidatableFieldSupport().bind(this, writer, cycle, getSubmittedValue(cycle));
-    }
-
-    /**
-     * @see org.apache.tapestry.AbstractComponent#finishLoad()
-     */
-    protected void finishLoad()
-    {
-        setRequiredMessage(ValidationStrings.getMessagePattern(
-                ValidationStrings.REQUIRED_TEXT_FIELD,
-                getPage().getLocale()));
     }
 }
