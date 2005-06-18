@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form.validator;
 
+import java.util.Date;
+
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -25,20 +27,23 @@ import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * {@link org.apache.tapestry.form.validator.Validator} that ensures a value was supplied.
+ * Expects the value to be a {@link Date}, and constrains the date to follow a particular date.
  * 
- * @author Howard Lewis Ship
+ * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class Required implements Validator
+
+public class MinDate implements Validator
 {
+    private Date _minDate;
+
     private String _message;
 
-    public Required()
+    public MinDate()
     {
     }
 
-    public Required(String initializer)
+    public MinDate(String initializer)
     {
         PropertyUtils.configureProperties(this, initializer);
     }
@@ -48,40 +53,40 @@ public class Required implements Validator
         _message = message;
     }
 
-    public boolean getAcceptsNull()
+    public void setMinDate(Date minDate)
     {
-        return true;
+        _minDate = minDate;
     }
 
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
             throws ValidatorException
     {
-        if (object == null)
-        {
-            String message = buildMessage(messages, field);
-            throw new ValidatorException(message, ValidationConstraint.REQUIRED);
-        }
+        Date date = (Date) object;
+
+        if (date.before(_minDate))
+            throw new ValidatorException(buildMessage(messages, field),
+                    ValidationConstraint.TOO_SMALL);
     }
 
     private String buildMessage(ValidationMessages messages, IFormComponent field)
     {
         return messages.formatValidationMessage(
                 _message,
-                ValidationStrings.REQUIRED_TEXT_FIELD,
+                ValidationStrings.DATE_TOO_EARLY,
                 new Object[]
-                { field.getDisplayName() });
+                { field.getDisplayName(), _minDate });
+    }
+
+    public boolean getAcceptsNull()
+    {
+        return false;
     }
 
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
             FormComponentContributorContext context, IFormComponent field)
     {
-        StringBuffer buffer = new StringBuffer("function(event) { require(event, ");
-        buffer.append(context.getFieldDOM());
-        buffer.append(", '");
-        buffer.append(buildMessage(context, field));
-        buffer.append("'); }");
-
-        context.addSubmitListener(buffer.toString());
+        // No implementation yet; validation is only on the server side,
+        // for some reason.
     }
 
 }

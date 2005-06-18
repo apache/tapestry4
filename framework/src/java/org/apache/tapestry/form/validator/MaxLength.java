@@ -25,22 +25,30 @@ import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * {@link org.apache.tapestry.form.validator.Validator} that ensures a value was supplied.
+ * Validator that ensures a string value does not exceed a maximum length.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class Required implements Validator
+public class MaxLength implements Validator
 {
+    private int _maxLength;
+
     private String _message;
 
-    public Required()
+    public MaxLength()
     {
+
     }
 
-    public Required(String initializer)
+    public MaxLength(String initializer)
     {
         PropertyUtils.configureProperties(this, initializer);
+    }
+
+    public void setMaxLength(int maxLength)
+    {
+        _maxLength = maxLength;
     }
 
     public void setMessage(String message)
@@ -48,35 +56,37 @@ public class Required implements Validator
         _message = message;
     }
 
-    public boolean getAcceptsNull()
-    {
-        return true;
-    }
-
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
             throws ValidatorException
     {
-        if (object == null)
-        {
-            String message = buildMessage(messages, field);
-            throw new ValidatorException(message, ValidationConstraint.REQUIRED);
-        }
+        String string = (String) object;
+
+        if (string.length() > _maxLength)
+            throw new ValidatorException(buildMessage(messages, field),
+                    ValidationConstraint.MAXIMUM_WIDTH);
     }
 
-    private String buildMessage(ValidationMessages messages, IFormComponent field)
+    protected String buildMessage(ValidationMessages messages, IFormComponent field)
     {
         return messages.formatValidationMessage(
                 _message,
-                ValidationStrings.REQUIRED_TEXT_FIELD,
+                ValidationStrings.VALUE_TOO_LONG,
                 new Object[]
-                { field.getDisplayName() });
+                { new Integer(_maxLength), field.getDisplayName() });
+    }
+
+    public boolean getAcceptsNull()
+    {
+        return false;
     }
 
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
             FormComponentContributorContext context, IFormComponent field)
     {
-        StringBuffer buffer = new StringBuffer("function(event) { require(event, ");
+        StringBuffer buffer = new StringBuffer("function(event) { validate_max_length(event, ");
         buffer.append(context.getFieldDOM());
+        buffer.append(", ");
+        buffer.append(_maxLength);
         buffer.append(", '");
         buffer.append(buildMessage(context, field));
         buffer.append("'); }");

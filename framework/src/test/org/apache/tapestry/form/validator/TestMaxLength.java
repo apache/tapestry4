@@ -24,73 +24,70 @@ import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
 import org.easymock.MockControl;
 
-/**
- * Tests for {@link org.apache.tapestry.form.validator.Required}.
- * 
- * @author Howard Lewis Ship
- * @since 4.0
- */
-public class TestRequired extends BaseValidatorTestCase
+public class TestMaxLength extends BaseValidatorTestCase
 {
-    public void testValidateNotNull() throws Exception
+
+    public void testOK() throws Exception
     {
         IFormComponent field = newField();
         ValidationMessages messages = newMessages();
 
+        String object = "short and sweet";
+
         replayControls();
 
-        new Required().validate(field, messages, "not null");
+        new MaxLength("maxLength=50").validate(field, messages, object);
 
         verifyControls();
     }
 
-    public void testValidateNull() throws Exception
+    public void testFail()
     {
-        IFormComponent field = newField("Fred");
+        IFormComponent field = newField("My Field");
         ValidationMessages messages = newMessages(
                 null,
-                ValidationStrings.REQUIRED_TEXT_FIELD,
+                ValidationStrings.VALUE_TOO_LONG,
                 new Object[]
-                { "Fred" },
-                "Default Message for Fred.");
+                { new Integer(10), "My Field" },
+                "Exception!");
 
         replayControls();
 
         try
         {
-            new Required().validate(field, messages, null);
-            unreachable();
+            new MaxLength("maxLength=10")
+                    .validate(field, messages, "brevity is the essence of wit");
         }
         catch (ValidatorException ex)
         {
-            assertEquals("Default Message for Fred.", ex.getMessage());
-            assertSame(ValidationConstraint.REQUIRED, ex.getConstraint());
+            assertEquals("Exception!", ex.getMessage());
+            assertEquals(ValidationConstraint.MAXIMUM_WIDTH, ex.getConstraint());
         }
     }
 
-    public void testValidateNullCustomMessage() throws Exception
+    public void testFailCustomMessage()
     {
-        IFormComponent field = newField("Fred");
+        IFormComponent field = newField("My Field");
         ValidationMessages messages = newMessages(
-                "custom",
-                ValidationStrings.REQUIRED_TEXT_FIELD,
+                "Too Long",
+                ValidationStrings.VALUE_TOO_LONG,
                 new Object[]
-                { "Fred" },
-                "Custom Message for Fred.");
+                { new Integer(10), "My Field" },
+                "Exception!");
 
         replayControls();
 
         try
         {
-            Required required = new Required("message=custom");
-
-            required.validate(field, messages, null);
-            unreachable();
+            new MaxLength("maxLength=10,message=Too Long").validate(
+                    field,
+                    messages,
+                    "this should be more than ten characters");
         }
         catch (ValidatorException ex)
         {
-            assertEquals("Custom Message for Fred.", ex.getMessage());
-            assertSame(ValidationConstraint.REQUIRED, ex.getConstraint());
+            assertEquals("Exception!", ex.getMessage());
+            assertEquals(ValidationConstraint.MAXIMUM_WIDTH, ex.getConstraint());
         }
     }
 
@@ -98,30 +95,24 @@ public class TestRequired extends BaseValidatorTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-
+        IFormComponent field = newField("My Field");
         MockControl contextc = newControl(FormComponentContributorContext.class);
         FormComponentContributorContext context = (FormComponentContributorContext) contextc
                 .getMock();
 
-        IFormComponent field = newField("Fred");
-
         context.getFieldDOM();
-        contextc.setReturnValue("document.fred.barney");
+        contextc.setReturnValue("document.myform.myfield");
 
-        trainFormatMessage(
-                contextc,
-                context,
-                null,
-                ValidationStrings.REQUIRED_TEXT_FIELD,
-                new Object[]
-                { "Fred" },
-                "Default Message for Fred.");
+        trainFormatMessage(contextc, context, null, ValidationStrings.VALUE_TOO_LONG, new Object[]
+        { new Integer(20), "My Field" }, "default message");
 
         context
-                .addSubmitListener("function(event) { require(event, document.fred.barney, 'Default Message for Fred.'); }");
+                .addSubmitListener("function(event) { validate_max_length(event, document.myform.myfield, 20, 'default message'); }");
 
         replayControls();
 
-        new Required().renderContribution(writer, cycle, context, field);
+        new MaxLength("maxLength=20").renderContribution(writer, cycle, context, field);
+
+        verifyControls();
     }
 }
