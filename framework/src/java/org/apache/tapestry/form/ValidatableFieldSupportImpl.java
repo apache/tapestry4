@@ -15,7 +15,9 @@
 package org.apache.tapestry.form;
 
 import java.util.Iterator;
+import java.util.Locale;
 
+import org.apache.hivemind.service.ThreadLocale;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.coerce.ValueConverter;
@@ -24,8 +26,8 @@ import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * Default {@link VadidatableFieldSupport} implementation.  This implementation generates
- * calls to a static javascript function during render if client-side validation is enabled.
+ * Default {@link VadidatableFieldSupport} implementation. This implementation generates calls to a
+ * static javascript function during render if client-side validation is enabled.
  * 
  * @author Paul Ferraro
  * @since 4.0
@@ -34,44 +36,59 @@ public class ValidatableFieldSupportImpl implements ValidatableFieldSupport
 {
     private ValueConverter _converter;
 
+    private ThreadLocale _threadLocale;
+
     public void setValueConverter(ValueConverter converter)
     {
         _converter = converter;
     }
-    
+
+    public void setThreadLocale(ThreadLocale threadLocale)
+    {
+        _threadLocale = threadLocale;
+    }
+
     protected Iterator getValidatorsIterator(ValidatableField component)
     {
         return (Iterator) _converter.coerceValue(component.getValidators(), Iterator.class);
     }
-    
+
     /**
-     * @see org.apache.tapestry.form.ValidatableFieldSupport#render(org.apache.tapestry.form.ValidatableField, org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.ValidatableFieldSupport#render(org.apache.tapestry.form.ValidatableField,
+     *      org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
     public void render(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle)
     {
         IValidationDelegate delegate = component.getForm().getDelegate();
-        
-        String value = delegate.isInError() ? delegate.getFieldInputValue() : getTranslatedValue(component);
-        
+
+        String value = delegate.isInError() ? delegate.getFieldInputValue()
+                : getTranslatedValue(component);
+
         component.render(writer, cycle, value);
     }
-    
+
     /**
-     * @see org.apache.tapestry.form.ValidatableFieldSupport#renderContributions(org.apache.tapestry.form.ValidatableField, org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.ValidatableFieldSupport#renderContributions(org.apache.tapestry.form.ValidatableField,
+     *      org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
-    public void renderContributions(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle)
+    public void renderContributions(ValidatableField component, IMarkupWriter writer,
+            IRequestCycle cycle)
     {
         if (component.getForm().isClientValidationEnabled())
         {
-            component.getTranslator().renderContribution(writer, cycle, component);
-            
+            Locale locale = component.getPage().getLocale();
+            FormComponentContributorContext context = new FormComponentContributorContextImpl(
+                    locale, cycle, component);
+
+            component.getTranslator().renderContribution(writer, cycle, context, component);
+
             Iterator validators = getValidatorsIterator(component);
-            
+
             while (validators.hasNext())
             {
                 Validator validator = (Validator) validators.next();
-                
-                validator.renderContribution(writer, cycle, component);
+
+                validator.renderContribution(writer, cycle, context, component);
             }
         }
     }
@@ -79,32 +96,36 @@ public class ValidatableFieldSupportImpl implements ValidatableFieldSupport
     protected String getTranslatedValue(ValidatableField component)
     {
         Object value = component.readValue();
-        
+
         return (value != null) ? component.getTranslator().format(component, value) : "";
     }
-    
+
     /**
-     * @see org.apache.tapestry.form.ValidatableFieldSupport#bind(org.apache.tapestry.form.ValidatableField, org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, java.lang.String)
+     * @see org.apache.tapestry.form.ValidatableFieldSupport#bind(org.apache.tapestry.form.ValidatableField,
+     *      org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, java.lang.String)
      */
-    public void bind(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle, String value) throws ValidatorException
+    public void bind(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle,
+            String value) throws ValidatorException
     {
         IValidationDelegate delegate = component.getForm().getDelegate();
-        
+
         delegate.recordFieldInputValue(value);
-        
+
         Object object = component.getTranslator().parse(component, value);
 
         component.writeValue(object);
-        
+
         if (object != null)
         {
             Iterator validators = getValidatorsIterator(component);
-            
+
+            ValidationMessages messages = new ValidationMessagesImpl(_threadLocale.getLocale());
+
             while (validators.hasNext())
             {
                 Validator validator = (Validator) validators.next();
-                
-                validator.validate(component, object);
+
+                validator.validate(component, messages, object);
             }
         }
     }

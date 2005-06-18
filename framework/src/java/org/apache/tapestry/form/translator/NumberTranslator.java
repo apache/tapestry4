@@ -22,6 +22,7 @@ import java.util.Locale;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
@@ -96,11 +97,11 @@ public class NumberTranslator extends FormatTranslator
 
     /**
      * @see org.apache.tapestry.form.FormComponentContributor#renderContribution(org.apache.tapestry.IMarkupWriter,
-     *      org.apache.tapestry.IRequestCycle, org.apache.tapestry.form.IFormComponent)
+     *      org.apache.tapestry.IRequestCycle, FormComponentContributorContext, org.apache.tapestry.form.IFormComponent)
      */
-    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle, IFormComponent field)
+    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle, FormComponentContributorContext context, IFormComponent field)
     {
-        super.renderContribution(writer, cycle, field);
+        super.renderContribution(writer, cycle, context, field);
 
         String message = buildMessage(field, getMessageKey());
         IForm form = field.getForm();

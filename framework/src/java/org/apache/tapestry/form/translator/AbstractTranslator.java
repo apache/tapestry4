@@ -22,6 +22,7 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.AbstractFormComponentContributor;
+import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
@@ -102,9 +103,9 @@ public abstract class AbstractTranslator extends AbstractFormComponentContributo
      * @see org.apache.tapestry.form.FormComponentContributor#renderContribution(org.apache.tapestry.IRequestCycle,
      *      org.apache.tapestry.form.IFormComponent)
      */
-    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle, IFormComponent field)
+    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle, FormComponentContributorContext context, IFormComponent field)
     {
-        super.renderContribution(writer, cycle, field);
+        super.renderContribution(writer, cycle, context, field);
 
         if (_trim)
         {

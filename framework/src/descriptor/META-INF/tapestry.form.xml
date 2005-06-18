@@ -31,6 +31,7 @@
     <invoke-factory>
       <construct class="ValidatableFieldSupportImpl">
         <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+        <set-service property="threadLocale" service-id="hivemind.ThreadLocale"/>
       </construct>
     </invoke-factory>
   </service-point>
