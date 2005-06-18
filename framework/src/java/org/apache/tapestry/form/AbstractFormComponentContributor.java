@@ -44,7 +44,8 @@ public abstract class AbstractFormComponentContributor implements FormComponentC
     }
     
     /**
-     * Defines the default JavaScript file used by this contributor
+     * Defines the default JavaScript file used by this contributor. Overriden by most subclasses
+     * that use JavaScript.
      */
     protected String defaultScript()
     {
@@ -62,12 +63,14 @@ public abstract class AbstractFormComponentContributor implements FormComponentC
     }
     
     /**
-     * @see org.apache.tapestry.form.FormComponentContributor#renderContribution(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, org.apache.tapestry.form.IFormComponent)
+     * @see org.apache.tapestry.form.FormComponentContributor#renderContribution(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, FormComponentContributorContext, org.apache.tapestry.form.IFormComponent)
      */
-    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle, IFormComponent field)
+    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle, FormComponentContributorContext context, IFormComponent field)
     {
         if (_script != null)
         {
+            // TODO:  cycle.getInfrastructure().getClassResolver()
+            
             Resource script = new ClasspathResource(cycle.getEngine().getClassResolver(), _script);
             
             TapestryUtils.getPageRenderSupport(cycle, field).addExternalScript(script);

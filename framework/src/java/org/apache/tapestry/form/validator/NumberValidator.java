@@ -21,7 +21,9 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.AbstractFormComponentContributor;
+import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
@@ -46,9 +48,9 @@ public class NumberValidator extends AbstractFormComponentContributor implements
     }
 
     /**
-     * @see org.apache.tapestry.form.validator.Validator#validate(org.apache.tapestry.form.IFormComponent, java.lang.Object)
+     * @see org.apache.tapestry.form.validator.Validator#validate(org.apache.tapestry.form.IFormComponent, ValidationMessages, java.lang.Object)
      */
-    public void validate(IFormComponent field, Object object) throws ValidatorException
+    public void validate(IFormComponent field, ValidationMessages messages, Object object) throws ValidatorException
     {
         Number value = (Number) object;
         
@@ -147,11 +149,11 @@ public class NumberValidator extends AbstractFormComponentContributor implements
     
 
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponentContributor#renderContribution(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, org.apache.tapestry.form.IFormComponent)
+     * @see org.apache.tapestry.form.AbstractFormComponentContributor#renderContribution(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, FormComponentContributorContext, org.apache.tapestry.form.IFormComponent)
      */
-    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle, IFormComponent field)
+    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle, FormComponentContributorContext context, IFormComponent field)
     {
-        super.renderContribution(writer, cycle, field);
+        super.renderContribution(writer, cycle, context, field);
         
         IForm form = field.getForm();
         String formName = form.getName();

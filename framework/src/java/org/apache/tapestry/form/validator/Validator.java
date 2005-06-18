@@ -16,13 +16,36 @@ package org.apache.tapestry.form.validator;
 
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.FormComponentContributor;
+import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * @author  Paul Ferraro
- * @since   4.0
+ * An object that can be "attached" to a {@link org.apache.tapestry.form.IFormComponent} to perform
+ * server-side validation ({@link #validate(IFormComponent, ValidationMessages, Object)}) as well
+ * as generate cleint-side validation (in the form of JavaScript submit listeners).
+ * 
+ * @author Paul Ferraro
+ * @since 4.0
  */
 public interface Validator extends FormComponentContributor
 {
-    public void validate(IFormComponent field, Object object) throws ValidatorException;
+    /**
+     * Invoked to validate input for the field. A
+     * {@link org.apache.tapestry.form.translator.Translator} will have already converted the
+     * submitted user input string into an object.
+     * 
+     * @param field
+     *            the form element component being validated, often used to determine the
+     *            {@link IFormComponent#getDisplayName() user presentable name} for the field, used
+     *            in error messages.
+     * @param messages
+     *            access to the pre-defined validation messages, in the appropriate locale
+     * @param object
+     *            the client-side representation of the field's data
+     * @throws ValidatorException
+     *             if the object violates the constraint represented by this Validator.
+     */
+
+    public void validate(IFormComponent field, ValidationMessages messages, Object object)
+            throws ValidatorException;
 }

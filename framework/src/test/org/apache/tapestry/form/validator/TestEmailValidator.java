@@ -87,7 +87,7 @@ public class TestEmailValidator extends TestRegExValidator
         
         replay();
         
-        _validator.renderContribution(null, _cycle, _component);
+        _validator.renderContribution(null, _cycle, null, _component);
         
         verify();
     }

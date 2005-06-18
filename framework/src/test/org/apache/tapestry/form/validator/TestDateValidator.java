@@ -59,7 +59,7 @@ public class TestDateValidator extends FormComponentContributorTestCase
         
         try
         {
-            _validator.validate(_component, buildDate(2005, Calendar.JUNE, 30));
+            _validator.validate(_component, null, buildDate(2005, Calendar.JUNE, 30));
         }
         catch (ValidatorException e)
         {
@@ -100,7 +100,7 @@ public class TestDateValidator extends FormComponentContributorTestCase
         
         try
         {
-            _validator.validate(_component, buildDate(2004, Calendar.DECEMBER, 31));
+            _validator.validate(_component, null, buildDate(2004, Calendar.DECEMBER, 31));
             
             unreachable();
         }
@@ -144,7 +144,7 @@ public class TestDateValidator extends FormComponentContributorTestCase
         
         try
         {
-            _validator.validate(_component, buildDate(2006, Calendar.JANUARY, 1));
+            _validator.validate(_component, null, buildDate(2006, Calendar.JANUARY, 1));
             
             unreachable();
         }
@@ -163,7 +163,7 @@ public class TestDateValidator extends FormComponentContributorTestCase
     {
         replay();
         
-        _validator.renderContribution(null, _cycle, _component);
+        _validator.renderContribution(null, _cycle, null, _component);
         
         verify();
     }

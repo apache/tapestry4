@@ -40,7 +40,7 @@ public class TestNumberValidator extends FormComponentContributorTestCase
         
         try
         {
-            _validator.validate(_component, new Integer(5));
+            _validator.validate(_component, null, new Integer(5));
         }
         catch (ValidatorException e)
         {
@@ -81,7 +81,7 @@ public class TestNumberValidator extends FormComponentContributorTestCase
         
         try
         {
-            _validator.validate(_component, new Integer(5));
+            _validator.validate(_component, null, new Integer(5));
             
             unreachable();
         }
@@ -125,7 +125,7 @@ public class TestNumberValidator extends FormComponentContributorTestCase
         
         try
         {
-            _validator.validate(_component, new Integer(20));
+            _validator.validate(_component, null, new Integer(20));
             
             unreachable();
         }
@@ -228,7 +228,7 @@ public class TestNumberValidator extends FormComponentContributorTestCase
         
         replay();
         
-        _validator.renderContribution(null, _cycle, _component);
+        _validator.renderContribution(null, _cycle, null, _component);
         
         verify();
     }

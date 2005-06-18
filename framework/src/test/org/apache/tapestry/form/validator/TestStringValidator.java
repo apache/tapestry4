@@ -40,7 +40,7 @@ public class TestStringValidator extends FormComponentContributorTestCase
         
         try
         {
-            _validator.validate(_component, "test");
+            _validator.validate(_component, null, "test");
         }
         catch (ValidatorException e)
         {
@@ -81,7 +81,7 @@ public class TestStringValidator extends FormComponentContributorTestCase
         
         try
         {
-            _validator.validate(_component, "test");
+            _validator.validate(_component, null, "test");
             
             unreachable();
         }
@@ -125,7 +125,7 @@ public class TestStringValidator extends FormComponentContributorTestCase
         
         try
         {
-            _validator.validate(_component, "abcdefghijklmnopqrstuvwxyz");
+            _validator.validate(_component, null, "abcdefghijklmnopqrstuvwxyz");
             
             unreachable();
         }
@@ -228,7 +228,7 @@ public class TestStringValidator extends FormComponentContributorTestCase
         
         replay();
         
-        _validator.renderContribution(null, _cycle, _component);
+        _validator.renderContribution(null, _cycle, null, _component);
         
         verify();
     }

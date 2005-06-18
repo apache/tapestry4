@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import org.apache.tapestry.form.AbstractFormComponentContributor;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
@@ -39,9 +40,9 @@ public class DateValidator extends AbstractFormComponentContributor implements V
     private String _tooLateMessage;
 
     /**
-     * @see org.apache.tapestry.form.validator.Validator#validate(org.apache.tapestry.form.IFormComponent, java.lang.Object)
+     * @see org.apache.tapestry.form.validator.Validator#validate(org.apache.tapestry.form.IFormComponent, ValidationMessages, java.lang.Object)
      */
-    public void validate(IFormComponent field, Object object) throws ValidatorException
+    public void validate(IFormComponent field, ValidationMessages messages, Object object) throws ValidatorException
     {
         Date date = (Date) object;
         

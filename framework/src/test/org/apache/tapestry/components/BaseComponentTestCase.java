@@ -188,4 +188,10 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         return page;
     }
 
+    protected void trainGetAttribute(MockControl cyclec, IRequestCycle cycle, String key, Object value)
+    {
+        cycle.getAttribute(key);
+        cyclec.setReturnValue(value);
+    }
+
 }

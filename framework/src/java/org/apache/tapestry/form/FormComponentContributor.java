@@ -26,10 +26,20 @@ import org.apache.tapestry.IRequestCycle;
 public interface FormComponentContributor
 {
     /**
-     * Invoked by a form component after it finishes rendering its tag (but before
-     * the tag is closed) to allow this object to contribute to the component's
-     * rendering process.  Typically used by Validators and Translators to add
-     * javascript methods to the form's submit event handler.
+     * Invoked by a form component after it finishes rendering its tag (but before the tag is
+     * closed) to allow this object to contribute to the component's rendering process. Typically
+     * used by Validators and Translators to add javascript methods to the form's submit event
+     * handler.
+     * 
+     * @param writer
+     *            allows contributor to write additional attributes into the component's tag
+     * @param cycle
+     *            for accessing request information
+     * @param context
+     *            utilities for genering messages and client-side validation
+     * @param field
+     *            the field for which contributions are being rendered
      */
-    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle, IFormComponent field);
+    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
+            FormComponentContributorContext context, IFormComponent field);
 }

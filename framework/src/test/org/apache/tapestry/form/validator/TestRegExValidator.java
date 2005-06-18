@@ -49,7 +49,7 @@ public class TestRegExValidator extends FormComponentContributorTestCase
         
         try
         {
-            _validator.validate(_component, value);
+            _validator.validate(_component, null, value);
         }
         catch (ValidatorException e)
         {
@@ -91,7 +91,7 @@ public class TestRegExValidator extends FormComponentContributorTestCase
         
         try
         {
-            _validator.validate(_component, value);
+            _validator.validate(_component, null, value);
             
             unreachable();
         }
@@ -148,7 +148,7 @@ public class TestRegExValidator extends FormComponentContributorTestCase
         
         replay();
         
-        _validator.renderContribution(null, _cycle, _component);
+        _validator.renderContribution(null, _cycle, null, _component);
         
         verify();
     }

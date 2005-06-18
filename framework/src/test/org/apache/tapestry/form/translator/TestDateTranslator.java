@@ -208,7 +208,7 @@ public class TestDateTranslator extends TranslatorTestCase
     {
         replay();
         
-        _translator.renderContribution(null, _cycle, _component);
+        _translator.renderContribution(null, _cycle, null, _component);
         
         verify();
     }
@@ -220,7 +220,7 @@ public class TestDateTranslator extends TranslatorTestCase
         
         replay();
         
-        _translator.renderContribution(null, _cycle, _component);
+        _translator.renderContribution(null, _cycle, null, _component);
         
         verify();
     }
