@@ -25,12 +25,12 @@ import org.apache.tapestry.valid.ValidatorException;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.form.validator.MinLengthValidator}.
+ * Tests for {@link org.apache.tapestry.form.validator.MinLength}.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestMinLengthValidator extends BaseValidatorTestCase
+public class TestMinLength extends BaseValidatorTestCase
 {
     public void testOK() throws Exception
     {
@@ -41,7 +41,7 @@ public class TestMinLengthValidator extends BaseValidatorTestCase
 
         replayControls();
 
-        new MinLengthValidator("minLength=5").validate(field, messages, object);
+        new MinLength("minLength=5").validate(field, messages, object);
 
         verifyControls();
     }
@@ -60,7 +60,7 @@ public class TestMinLengthValidator extends BaseValidatorTestCase
 
         try
         {
-            new MinLengthValidator("minLength=10").validate(field, messages, "short");
+            new MinLength("minLength=10").validate(field, messages, "short");
         }
         catch (ValidatorException ex)
         {
@@ -83,7 +83,7 @@ public class TestMinLengthValidator extends BaseValidatorTestCase
 
         try
         {
-            new MinLengthValidator("minLength=10,message=Too Short").validate(
+            new MinLength("minLength=10,message=Too Short").validate(
                     field,
                     messages,
                     "short");
@@ -115,7 +115,7 @@ public class TestMinLengthValidator extends BaseValidatorTestCase
 
         replayControls();
 
-        new MinLengthValidator("minLength=20").renderContribution(writer, cycle, context, field);
+        new MinLength("minLength=20").renderContribution(writer, cycle, context, field);
 
         verifyControls();
     }
@@ -146,7 +146,7 @@ public class TestMinLengthValidator extends BaseValidatorTestCase
 
         replayControls();
 
-        new MinLengthValidator("minLength=25,message=custom").renderContribution(
+        new MinLength("minLength=25,message=custom").renderContribution(
                 writer,
                 cycle,
                 context,

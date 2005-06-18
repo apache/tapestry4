@@ -30,17 +30,17 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class MinLengthValidator implements Validator
+public class MinLength implements Validator
 {
     private int _minLength;
 
     private String _message;
 
-    public MinLengthValidator()
+    public MinLength()
     {
     }
 
-    public MinLengthValidator(String initializer)
+    public MinLength(String initializer)
     {
         PropertyUtils.configureProperties(this, initializer);
     }
