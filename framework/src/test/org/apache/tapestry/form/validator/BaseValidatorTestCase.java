@@ -15,6 +15,7 @@
 package org.apache.tapestry.form.validator;
 
 import org.apache.tapestry.components.BaseComponentTestCase;
+import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
 import org.easymock.MockControl;
@@ -63,6 +64,11 @@ public abstract class BaseValidatorTestCase extends BaseComponentTestCase
         messages.formatValidationMessage(messageOverride, messageKey, parameters);
         control.setMatcher(MockControl.ARRAY_MATCHER);
         control.setReturnValue(result);
+    }
+
+    protected FormComponentContributorContext newContext()
+    {
+        return (FormComponentContributorContext) newMock(FormComponentContributorContext.class);
     }
 
 }
