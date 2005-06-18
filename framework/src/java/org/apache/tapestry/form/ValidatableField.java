@@ -19,9 +19,9 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.translator.Translator;
 
 /**
- * Implemented by form components that can need to be translated and validated.  During render
- * the translator is used to translated the value to a string.  During rewind, the submitted
- * value is translated back into an object by the translator and then validated.
+ * Implemented by form components that can need to be translated and validated. During render the
+ * translator is used to translated the value to a string. During rewind, the submitted value is
+ * translated back into an object by the translator and then validated.
  * 
  * @author Paul Ferraro
  * @since 4.0
@@ -32,22 +32,23 @@ public interface ValidatableField extends IFormComponent
      * Coerced into an Iterator of Validators
      */
     public Object getValidators();
-    
+
     /**
      * The Translator implementation used by this field.
      */
     public Translator getTranslator();
-    
+
     /**
      * Renders this form component using the specified value.
      */
     public void render(IMarkupWriter writer, IRequestCycle cycle, String value);
-    
+
     /**
-     * Called during rewind to bind the successfully translated value to the appropriate component parameter.
+     * Called during rewind to bind the successfully translated and validated value to the
+     * appropriate component parameter.
      */
     public void writeValue(Object value);
-    
+
     /**
      * Called during render to read the parameter that drives the value of is form component.
      */

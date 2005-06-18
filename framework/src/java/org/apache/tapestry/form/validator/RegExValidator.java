@@ -38,9 +38,9 @@ import org.apache.tapestry.valid.ValidatorException;
 public class RegExValidator extends AbstractFormComponentContributor implements Validator
 {
     private RegexpMatcher _matcher = new RegexpMatcher();
-    
+
     private String _expression = defaultExpression();
-    
+
     /**
      * A custom message in the event of a validation failure.
      */
@@ -55,48 +55,57 @@ public class RegExValidator extends AbstractFormComponentContributor implements 
     {
         return "";
     }
-    
+
     /**
-     * @see org.apache.tapestry.form.validator.Validator#validate(org.apache.tapestry.form.IFormComponent, ValidationMessages, java.lang.Object)
+     * @see org.apache.tapestry.form.validator.Validator#validate(org.apache.tapestry.form.IFormComponent,
+     *      ValidationMessages, java.lang.Object)
      */
-    public void validate(IFormComponent field, ValidationMessages messages, Object object) throws ValidatorException
+    public void validate(IFormComponent field, ValidationMessages messages, Object object)
+            throws ValidatorException
     {
         String string = (String) object;
-        
+
         if (!_matcher.contains(_expression, string))
         {
             throw new ValidatorException(buildMessage(field), ValidationConstraint.PATTERN_MISMATCH);
         }
     }
-    
+
     protected String buildMessage(IFormComponent field)
     {
         Locale locale = field.getPage().getLocale();
-        String message = (_message == null) ? ValidationStrings.getMessagePattern(getMessageKey(), locale) : _message;
-        
-        return MessageFormat.format(message, new Object[] { field.getDisplayName(), _expression });
+        String message = (_message == null) ? ValidationStrings.getMessagePattern(
+                getMessageKey(),
+                locale) : _message;
+
+        return MessageFormat.format(message, new Object[]
+        { field.getDisplayName(), _expression });
     }
-    
+
     protected String getMessageKey()
     {
         return ValidationStrings.REGEX_MISMATCH;
     }
 
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponentContributor#renderContribution(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, FormComponentContributorContext, org.apache.tapestry.form.IFormComponent)
+     * @see org.apache.tapestry.form.AbstractFormComponentContributor#renderContribution(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle, FormComponentContributorContext,
+     *      org.apache.tapestry.form.IFormComponent)
      */
-    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle, FormComponentContributorContext context, IFormComponent field)
+    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
+            FormComponentContributorContext context, IFormComponent field)
     {
         super.renderContribution(writer, cycle, context, field);
-        
+
         IForm form = field.getForm();
         String expression = _matcher.getEscapedPatternString(_expression);
         String message = buildMessage(field);
-        String handler = "validate_regex(event, document." + form.getName() + "." + field.getName() + ",'" + expression + "','" + message + "')";
-        
+        String handler = "validate_regex(event, document." + form.getName() + "." + field.getName()
+                + ",'" + expression + "','" + message + "')";
+
         addSubmitHandler(form, handler);
     }
-    
+
     /**
      * @return Returns the pattern.
      */
@@ -104,15 +113,16 @@ public class RegExValidator extends AbstractFormComponentContributor implements 
     {
         return _expression;
     }
-    
+
     /**
-     * @param pattern The pattern to set.
+     * @param pattern
+     *            The pattern to set.
      */
     public void setExpression(String expression)
     {
         _expression = expression;
     }
-    
+
     /**
      * @return Returns the patternNotMatchedMessage.
      */
@@ -120,12 +130,18 @@ public class RegExValidator extends AbstractFormComponentContributor implements 
     {
         return _message;
     }
-    
+
     /**
-     * @param patternNotMatchedMessage The patternNotMatchedMessage to set.
+     * @param patternNotMatchedMessage
+     *            The patternNotMatchedMessage to set.
      */
     public void setMessage(String message)
     {
         _message = message;
+    }
+
+    public boolean getAcceptsNull()
+    {
+        return false;
     }
 }

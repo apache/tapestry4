@@ -19,8 +19,8 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * Implements the logic used by {@link RequiredField}s for required field checking on rewind 
- * and generating client-side logic during render.
+ * Implements the logic used by {@link RequiredField}s for required field checking on rewind and
+ * generating client-side logic during render.
  * 
  * @author Paul Ferraro
  * @since 4.0
@@ -28,19 +28,25 @@ import org.apache.tapestry.valid.ValidatorException;
 public interface ValidatableFieldSupport
 {
     /**
-     * Called during render of the specified component. Determines form element value used to render element.
+     * Called during render of the specified component. Determines form element value used to render
+     * element.
      */
     public void render(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle);
 
     /**
-     * Called during render of the specified component. Renders any contributions from translator and validators.
+     * Called during render of the specified component. Renders any contributions from translator
+     * and validators.
      */
-    public void renderContributions(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle);
+    public void renderContributions(ValidatableField component, IMarkupWriter writer,
+            IRequestCycle cycle);
 
     /**
-     * Called during rewind of the specified component. Specified value is translated via the component's translator
-     * then validated using the component's validators.
-     * @throws ValidatorException if translation or validation fails
+     * Called during rewind of the specified component. Specified value is translated via the
+     * component's translator then validated using the component's validators.
+     * 
+     * @throws ValidatorException
+     *             if translation or validation fails
      */
-    public void bind(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle, String value) throws ValidatorException;
+    public void bind(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle,
+            String value);
 }

@@ -39,12 +39,17 @@ public class DateValidator extends AbstractFormComponentContributor implements V
     private String _tooEarlyMessage;
     private String _tooLateMessage;
 
+    public boolean getAcceptsNull()
+    {
+        return false;
+    }
+
     /**
      * @see org.apache.tapestry.form.validator.Validator#validate(org.apache.tapestry.form.IFormComponent, ValidationMessages, java.lang.Object)
      */
     public void validate(IFormComponent field, ValidationMessages messages, Object object) throws ValidatorException
     {
-        Date date = (Date) object;
+         Date date = (Date) object;
         
         if ((_min != null) && date.before(_min))
         {

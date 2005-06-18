@@ -32,18 +32,16 @@ import org.easymock.MockControl;
  */
 public class TestTextField extends BaseFormComponentTest
 {
-    public void testBind()
+    public void testRewind() throws Exception
     {
         MockControl translatorc = newControl(Translator.class);
         Translator translator = (Translator) translatorc.getMock();
 
-        MockControl validatableFieldSupportc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc
-                .getMock();
+        MockControl supportc = newControl(ValidatableFieldSupport.class);
+        ValidatableFieldSupport support = (ValidatableFieldSupport) supportc.getMock();
 
         TextField component = (TextField) newInstance(TextField.class, new Object[]
-        { "translator", translator, "validatableFieldSupport", validatableFieldSupport, "name",
-                "barney" });
+        { "translator", translator, "validatableFieldSupport", support, "name", "barney" });
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -52,25 +50,11 @@ public class TestTextField extends BaseFormComponentTest
 
         trainGetParameter(cyclec, cycle, "barney", "value");
 
-        try
-        {
-            validatableFieldSupport.bind(component, writer, cycle, "value");
-        }
-        catch (ValidatorException e)
-        {
-            unreachable();
-        }
+        support.bind(component, writer, cycle, "value");
 
         replayControls();
 
-        try
-        {
-            component.bind(writer, cycle);
-        }
-        catch (ValidatorException e)
-        {
-            unreachable();
-        }
+        component.rewindFormComponent(writer, cycle);
 
         verifyControls();
     }
@@ -172,12 +156,11 @@ public class TestTextField extends BaseFormComponentTest
         MockControl translatorc = newControl(Translator.class);
         Translator translator = (Translator) translatorc.getMock();
 
-        MockControl requirableFieldSupportc = newControl(RequirableFieldSupport.class);
-        RequirableFieldSupport requirableFieldSupport = (RequirableFieldSupport) requirableFieldSupportc
-                .getMock();
+        MockControl supportc = newControl(ValidatableFieldSupport.class);
+        ValidatableFieldSupport support = (ValidatableFieldSupport) supportc.getMock();
 
         TextField component = (TextField) newInstance(TextField.class, new Object[]
-        { "translator", translator, "requirableFieldSupport", requirableFieldSupport });
+        { "translator", translator, "validatableFieldSupport", support });
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -197,7 +180,10 @@ public class TestTextField extends BaseFormComponentTest
 
         trainGetElementId(formc, form, component, "barney");
         trainIsRewinding(formc, form, true);
-        requirableFieldSupport.rewind(component, writer, cycle);
+        
+        trainGetParameter(cyclec, cycle, "barney", "rubble");
+        
+        support.bind(component, writer, cycle, "rubble");
 
         replayControls();
 
@@ -243,17 +229,14 @@ public class TestTextField extends BaseFormComponentTest
         MockControl translatorc = newControl(Translator.class);
         Translator translator = (Translator) translatorc.getMock();
 
-        MockControl requirableFieldSupportc = newControl(RequirableFieldSupport.class);
-        RequirableFieldSupport requirableFieldSupport = (RequirableFieldSupport) requirableFieldSupportc
-                .getMock();
+        MockControl supportc = newControl(ValidatableFieldSupport.class);
+        ValidatableFieldSupport support = (ValidatableFieldSupport) supportc.getMock();
 
-        MockControl validatableFieldSupportc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport validatableFieldSupport = (ValidatableFieldSupport) validatableFieldSupportc
-                .getMock();
-
-        TextField component = (TextField) newInstance(TextField.class, new Object[]
-        { "value", "text area value", "translator", translator, "requirableFieldSupport",
-                requirableFieldSupport, "validatableFieldSupport", validatableFieldSupport });
+        TextField component = (TextField) newInstance(
+                TextField.class,
+                new Object[]
+                { "value", "text area value", "translator", translator, "validatableFieldSupport",
+                        support });
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -275,8 +258,7 @@ public class TestTextField extends BaseFormComponentTest
         trainIsRewinding(formc, form, false);
         trainIsRewinding(cyclec, cycle, false);
 
-        validatableFieldSupport.render(component, writer, cycle);
-        requirableFieldSupport.render(component, writer, cycle);
+        support.render(component, writer, cycle);
 
         replayControls();
 

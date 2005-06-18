@@ -19,8 +19,8 @@ import org.apache.tapestry.form.FormComponentContributor;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * Interface used by {@link ValidatableField}s to both format an object as text and 
- * translate submitted text into an appropriate object for a given field.
+ * Interface used by {@link ValidatableField}s to both format an object as text and translate
+ * submitted text into an appropriate object for a given field.
  * 
  * @author Paul Ferraro
  * @since 4.0
@@ -28,15 +28,18 @@ import org.apache.tapestry.valid.ValidatorException;
 public interface Translator extends FormComponentContributor
 {
     /**
-     * Invoked during rendering to format an object (which may be null) into a
-     * text value (which should not be null) appropriate for the specified field.
+     * Invoked during rendering to format an object (which may be null) into a text value (which
+     * should not be null) appropriate for the specified field.
      */
     public String format(IFormComponent field, Object object);
-    
+
     /**
-     * Invoked during rewind to parse a submitted input value into an object suitable
-     * for the specified component.
-     * @throws ValidatorException if the specified text could not be parsed into an object.
+     * Invoked during rewind to parse a submitted input value into an object suitable for the
+     * specified component.
+     * 
+     * @return the parsed object
+     * @throws ValidatorException
+     *             if the specified text could not be parsed into an object.
      */
     public Object parse(IFormComponent field, String value) throws ValidatorException;
 }

@@ -31,15 +31,17 @@ import org.apache.tapestry.valid.ValidatorException;
 /**
  * {@link Validator} implementation that validates a number against max and min values.
  * 
- * @author  Paul Ferraro
- * @since   4.0
+ * @author Paul Ferraro
+ * @since 4.0
  */
 public class NumberValidator extends AbstractFormComponentContributor implements Validator
 {
     private Number _min;
+
     private Number _max;
-    
+
     private String _tooSmallMessage;
+
     private String _tooLargeMessage;
 
     protected String defaultScript()
@@ -47,21 +49,30 @@ public class NumberValidator extends AbstractFormComponentContributor implements
         return "/org/apache/tapestry/form/validator/NumberValidator.js";
     }
 
+    public boolean getAcceptsNull()
+    {
+        return false;
+    }
+
     /**
-     * @see org.apache.tapestry.form.validator.Validator#validate(org.apache.tapestry.form.IFormComponent, ValidationMessages, java.lang.Object)
+     * @see org.apache.tapestry.form.validator.Validator#validate(org.apache.tapestry.form.IFormComponent,
+     *      ValidationMessages, java.lang.Object)
      */
-    public void validate(IFormComponent field, ValidationMessages messages, Object object) throws ValidatorException
+    public void validate(IFormComponent field, ValidationMessages messages, Object object)
+            throws ValidatorException
     {
         Number value = (Number) object;
-        
+
         if ((_min != null) && ((_min.doubleValue() - value.doubleValue()) > 0))
         {
-            throw new ValidatorException(buildTooSmallMessage(field), ValidationConstraint.TOO_SMALL);
+            throw new ValidatorException(buildTooSmallMessage(field),
+                    ValidationConstraint.TOO_SMALL);
         }
-        
+
         if ((_max != null) && ((_max.doubleValue() - value.doubleValue()) < 0))
         {
-            throw new ValidatorException(buildTooLargeMessage(field), ValidationConstraint.TOO_LARGE);
+            throw new ValidatorException(buildTooLargeMessage(field),
+                    ValidationConstraint.TOO_LARGE);
         }
     }
 
@@ -69,20 +80,24 @@ public class NumberValidator extends AbstractFormComponentContributor implements
     {
         return buildMessage(field, _tooSmallMessage, ValidationStrings.VALUE_TOO_SMALL, _min);
     }
-    
+
     protected String buildTooLargeMessage(IFormComponent field)
     {
         return buildMessage(field, _tooLargeMessage, ValidationStrings.VALUE_TOO_LARGE, _max);
     }
 
-    protected String buildMessage(IFormComponent field, String messageOverride, String key, Number object)
+    protected String buildMessage(IFormComponent field, String messageOverride, String key,
+            Number object)
     {
         Locale locale = field.getPage().getLocale();
-        String message = (messageOverride == null) ? ValidationStrings.getMessagePattern(key, locale) : messageOverride;
-        
-        return MessageFormat.format(message, new Object[] { field.getDisplayName(), object });
+        String message = (messageOverride == null) ? ValidationStrings.getMessagePattern(
+                key,
+                locale) : messageOverride;
+
+        return MessageFormat.format(message, new Object[]
+        { field.getDisplayName(), object });
     }
-    
+
     /**
      * @return Returns the max.
      */
@@ -90,15 +105,16 @@ public class NumberValidator extends AbstractFormComponentContributor implements
     {
         return _max;
     }
-    
+
     /**
-     * @param max The max to set.
+     * @param max
+     *            The max to set.
      */
     public void setMax(Number max)
     {
         _max = max;
     }
-    
+
     /**
      * @return Returns the min.
      */
@@ -106,15 +122,16 @@ public class NumberValidator extends AbstractFormComponentContributor implements
     {
         return _min;
     }
-    
+
     /**
-     * @param min The min to set.
+     * @param min
+     *            The min to set.
      */
     public void setMin(Number min)
     {
         _min = min;
     }
-    
+
     /**
      * @return Returns the numberTooLargeMessage.
      */
@@ -122,15 +139,16 @@ public class NumberValidator extends AbstractFormComponentContributor implements
     {
         return _tooLargeMessage;
     }
-    
+
     /**
-     * @param message The tooLargeMessage to set.
+     * @param message
+     *            The tooLargeMessage to set.
      */
     public void setTooLargeMessage(String message)
     {
         _tooLargeMessage = message;
     }
-    
+
     /**
      * @return Returns the tooSmallMessage.
      */
@@ -138,40 +156,45 @@ public class NumberValidator extends AbstractFormComponentContributor implements
     {
         return _tooSmallMessage;
     }
-    
+
     /**
-     * @param message The tooSmallMessage to set.
+     * @param message
+     *            The tooSmallMessage to set.
      */
     public void setTooSmallMessage(String message)
     {
         _tooSmallMessage = message;
     }
-    
 
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponentContributor#renderContribution(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, FormComponentContributorContext, org.apache.tapestry.form.IFormComponent)
+     * @see org.apache.tapestry.form.AbstractFormComponentContributor#renderContribution(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle, FormComponentContributorContext,
+     *      org.apache.tapestry.form.IFormComponent)
      */
-    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle, FormComponentContributorContext context, IFormComponent field)
+    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
+            FormComponentContributorContext context, IFormComponent field)
     {
         super.renderContribution(writer, cycle, context, field);
-        
+
         IForm form = field.getForm();
         String formName = form.getName();
         String fieldName = field.getName();
-        
+
         if (_min != null)
         {
             String message = buildTooSmallMessage(field);
-            String handler = "validate_min_number(event, document." + formName + "." + fieldName + "," + _min + ",'" + message + "')";
-            
+            String handler = "validate_min_number(event, document." + formName + "." + fieldName
+                    + "," + _min + ",'" + message + "')";
+
             super.addSubmitHandler(form, handler);
         }
-        
+
         if (_max != null)
         {
             String message = buildTooLargeMessage(field);
-            String handler = "validate_max_number(event, document." + formName + "." + fieldName + "," + _max + ",'" + message + "')";
-            
+            String handler = "validate_max_number(event, document." + formName + "." + fieldName
+                    + "," + _max + ",'" + message + "')";
+
             super.addSubmitHandler(form, handler);
         }
     }

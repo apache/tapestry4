@@ -382,7 +382,7 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         verify();
     }
 
-    public void testNullBind()
+    public void testNotNullNoValidatorsBind() throws Exception
     {
         _component.getForm();
         _componentControl.setReturnValue(_form);
@@ -395,30 +395,33 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         _component.getTranslator();
         _componentControl.setReturnValue(_translator);
 
-        try
-        {
-            _translator.parse(_component, "some value");
-            _translatorControl.setReturnValue(null);
+        Object object = new Object();
 
-            _component.writeValue(null);
-            _componentControl.setVoidCallable();
+        _translator.parse(_component, "some value");
+        _translatorControl.setReturnValue(object);
 
-            replay();
+        _component.writeValue(object);
+        _componentControl.setVoidCallable();
 
-            _support.bind(_component, _writer, _cycle, "some value");
-        }
-        catch (ValidatorException e)
-        {
-            unreachable();
-        }
-        finally
-        {
-            verify();
-        }
+        _component.getValidators();
+        _componentControl.setReturnValue(null);
+
+        _valueConverter.coerceValue(null, Iterator.class);
+        _valueConverterControl.setReturnValue(Collections.EMPTY_LIST.iterator());
+
+        _support.setThreadLocale(newThreadLocale());
+
+        replay();
+
+        _support.bind(_component, _writer, _cycle, "some value");
+
+        verify();
     }
 
-    public void testNotNullNoValidatorsBind()
+    public void testNotNullTranslateFailBind() throws Exception
     {
+        ValidatorException ex = new ValidatorException("Woops");
+
         _component.getForm();
         _componentControl.setReturnValue(_form);
 
@@ -430,69 +433,20 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         _component.getTranslator();
         _componentControl.setReturnValue(_translator);
 
-        try
-        {
-            Object object = new Object();
+        _translator.parse(_component, "some value");
+        _translatorControl.setThrowable(ex);
 
-            _translator.parse(_component, "some value");
-            _translatorControl.setReturnValue(object);
+        _delegate.record(ex);
 
-            _component.writeValue(object);
-            _componentControl.setVoidCallable();
+        replay();
 
-            _component.getValidators();
-            _componentControl.setReturnValue(null);
+        _support.bind(_component, _writer, _cycle, "some value");
 
-            _valueConverter.coerceValue(null, Iterator.class);
-            _valueConverterControl.setReturnValue(Collections.EMPTY_LIST.iterator());
+        verify();
 
-            _support.setThreadLocale(newThreadLocale());
-
-            replay();
-
-            _support.bind(_component, _writer, _cycle, "some value");
-        }
-        catch (ValidatorException e)
-        {
-            unreachable();
-        }
-        finally
-        {
-            verify();
-        }
     }
 
-    public void testNotNullTranslateFailBind()
-    {
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-
-        _form.getDelegate();
-        _formControl.setReturnValue(_delegate);
-
-        _delegate.recordFieldInputValue("some value");
-
-        _component.getTranslator();
-        _componentControl.setReturnValue(_translator);
-
-        try
-        {
-            _translator.parse(_component, "some value");
-            _translatorControl.setThrowable(new ValidatorException(""));
-
-            replay();
-
-            _support.bind(_component, _writer, _cycle, "some value");
-
-            unreachable();
-        }
-        catch (ValidatorException e)
-        {
-            verify();
-        }
-    }
-
-    public void testNotNullBind()
+    public void testNotNullBind() throws Exception
     {
         _component.getForm();
         _componentControl.setReturnValue(_form);
@@ -507,41 +461,31 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
 
         _support.setThreadLocale(newThreadLocale());
 
-        try
-        {
-            Object object = new Object();
+        Object object = new Object();
 
-            _translator.parse(_component, "some value");
-            _translatorControl.setReturnValue(object);
+        _translator.parse(_component, "some value");
+        _translatorControl.setReturnValue(object);
 
-            _component.writeValue(object);
-            _componentControl.setVoidCallable();
+        _component.getValidators();
+        _componentControl.setReturnValue(_validator);
 
-            _component.getValidators();
-            _componentControl.setReturnValue(_validator);
+        _valueConverter.coerceValue(_validator, Iterator.class);
+        _valueConverterControl.setReturnValue(Collections.singletonList(_validator).iterator());
 
-            _valueConverter.coerceValue(_validator, Iterator.class);
-            _valueConverterControl.setReturnValue(Collections.singletonList(_validator).iterator());
+        _validator.validate(_component, new ValidationMessagesImpl(Locale.ENGLISH), object);
+        _validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
+        { null, new TypeMatcher(), null }));
 
-            _validator.validate(_component, new ValidationMessagesImpl(Locale.ENGLISH), object);
-            _validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-            { null, new TypeMatcher(), null }));
+        _component.writeValue(object);
 
-            replay();
+        replay();
 
-            _support.bind(_component, _writer, _cycle, "some value");
-        }
-        catch (ValidatorException e)
-        {
-            unreachable();
-        }
-        finally
-        {
-            verify();
-        }
+        _support.bind(_component, _writer, _cycle, "some value");
+
+        verify();
     }
 
-    public void testNotNullValidateFailBind()
+    public void testNullBindValidatorAccepts() throws Exception
     {
         _component.getForm();
         _componentControl.setReturnValue(_form);
@@ -556,36 +500,106 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
 
         _support.setThreadLocale(newThreadLocale());
 
-        try
-        {
-            Object object = new Object();
+        _translator.parse(_component, "some value");
+        _translatorControl.setReturnValue(null);
 
-            _translator.parse(_component, "some value");
-            _translatorControl.setReturnValue(object);
+        _component.getValidators();
+        _componentControl.setReturnValue(_validator);
 
-            _component.writeValue(object);
-            _componentControl.setVoidCallable();
+        _valueConverter.coerceValue(_validator, Iterator.class);
+        _valueConverterControl.setReturnValue(Collections.singletonList(_validator).iterator());
 
-            _component.getValidators();
-            _componentControl.setReturnValue(_validator);
+        _validator.getAcceptsNull();
+        _validatorControl.setReturnValue(true);
 
-            _valueConverter.coerceValue(_validator, Iterator.class);
-            _valueConverterControl.setReturnValue(Collections.singletonList(_validator).iterator());
+        _validator.validate(_component, new ValidationMessagesImpl(Locale.ENGLISH), null);
+        _validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
+        { null, new TypeMatcher(), null }));
 
-            _validator.validate(_component, new ValidationMessagesImpl(Locale.ENGLISH), object);
-            _validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-            { null, new TypeMatcher(), null }));
-            _validatorControl.setThrowable(new ValidatorException(""));
+        _component.writeValue(null);
 
-            replay();
+        replay();
 
-            _support.bind(_component, _writer, _cycle, "some value");
+        _support.bind(_component, _writer, _cycle, "some value");
 
-            unreachable();
-        }
-        catch (ValidatorException e)
-        {
-            verify();
-        }
+        verify();
+    }
+
+    public void testNullBindValidatorRejects() throws Exception
+    {
+        _component.getForm();
+        _componentControl.setReturnValue(_form);
+
+        _form.getDelegate();
+        _formControl.setReturnValue(_delegate);
+
+        _delegate.recordFieldInputValue("some value");
+
+        _component.getTranslator();
+        _componentControl.setReturnValue(_translator);
+
+        _support.setThreadLocale(newThreadLocale());
+
+        _translator.parse(_component, "some value");
+        _translatorControl.setReturnValue(null);
+
+        _component.getValidators();
+        _componentControl.setReturnValue(_validator);
+
+        _valueConverter.coerceValue(_validator, Iterator.class);
+        _valueConverterControl.setReturnValue(Collections.singletonList(_validator).iterator());
+
+        _validator.getAcceptsNull();
+        _validatorControl.setReturnValue(false);
+
+        _component.writeValue(null);
+
+        replay();
+
+        _support.bind(_component, _writer, _cycle, "some value");
+
+        verify();
+    }
+
+    public void testNotNullValidateFailBind() throws Exception
+    {
+        _component.getForm();
+        _componentControl.setReturnValue(_form);
+
+        _form.getDelegate();
+        _formControl.setReturnValue(_delegate);
+
+        _delegate.recordFieldInputValue("some value");
+
+        _component.getTranslator();
+        _componentControl.setReturnValue(_translator);
+
+        _support.setThreadLocale(newThreadLocale());
+
+        ValidatorException ex = new ValidatorException("");
+
+        Object object = new Object();
+
+        _translator.parse(_component, "some value");
+        _translatorControl.setReturnValue(object);
+
+        _component.getValidators();
+        _componentControl.setReturnValue(_validator);
+
+        _valueConverter.coerceValue(_validator, Iterator.class);
+        _valueConverterControl.setReturnValue(Collections.singletonList(_validator).iterator());
+
+        _validator.validate(_component, new ValidationMessagesImpl(Locale.ENGLISH), object);
+        _validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
+        { null, new TypeMatcher(), null }));
+        _validatorControl.setThrowable(ex);
+
+        _delegate.record(ex);
+
+        replay();
+
+        _support.bind(_component, _writer, _cycle, "some value");
+
+        verify();
     }
 }

@@ -41,11 +41,21 @@ public interface Validator extends FormComponentContributor
      * @param messages
      *            access to the pre-defined validation messages, in the appropriate locale
      * @param object
-     *            the client-side representation of the field's data
+     *            the client-side representation of the field's data. May be null if the client did
+     *            not provide a value for the field (most Validators should check for null and
+     *            perform no check if null).
      * @throws ValidatorException
      *             if the object violates the constraint represented by this Validator.
      */
 
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
             throws ValidatorException;
+    
+    /**
+     * Returns true if this validator accepts null as the object parameter to validate(). When the object
+     * is null, validators that can't accept null are skipped.  It is rare for a validator to return true.
+     * 
+     */
+    
+    public boolean getAcceptsNull();
 }

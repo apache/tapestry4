@@ -34,12 +34,11 @@ import org.apache.tapestry.valid.ValidatorException;
  * {@link IPropertySelectionModel} to provide the list of possible values.
  * <p>
  * Often, this is used to select a particular {@link org.apache.commons.lang.enum.Enum} to assign to
- * a property; the {@link EnumPropertySelectionModel} class simplifies this.
- * 
- * As of 4.0, PropertySelection can indicate that it is required.  Often, a drop-down list will 
- * contain an initial option that serves both as a label and to represent that nothing is selected.
- * This can behavior can easily be achieved by decorating an existing {@link IPropertySelectionModel} 
- * with a {@link LabeledPropertySelectionModel}.
+ * a property; the {@link EnumPropertySelectionModel} class simplifies this. As of 4.0,
+ * PropertySelection can indicate that it is required. Often, a drop-down list will contain an
+ * initial option that serves both as a label and to represent that nothing is selected. This can
+ * behavior can easily be achieved by decorating an existing {@link IPropertySelectionModel} with a
+ * {@link LabeledPropertySelectionModel}.
  * 
  * @author Howard Lewis Ship
  * @author Paul Ferraro
@@ -47,11 +46,13 @@ import org.apache.tapestry.valid.ValidatorException;
 public abstract class PropertySelection extends AbstractRequirableField
 {
     /**
-     * @see org.apache.tapestry.form.validator.AbstractRequirableField#bind(org.apache.tapestry.IRequestCycle, java.lang.String)
+     * @see org.apache.tapestry.form.validator.AbstractRequirableField#bind(org.apache.tapestry.IRequestCycle,
+     *      java.lang.String)
      */
     public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException
     {
-        if (isDisabled()) return;
+        if (isDisabled())
+            return;
 
         setValue(getModel().translateValue(getSubmittedValue(cycle)));
     }
@@ -61,22 +62,24 @@ public abstract class PropertySelection extends AbstractRequirableField
      */
     protected void finishLoad()
     {
-        setRequiredMessage(ValidationStrings.getMessagePattern(ValidationStrings.REQUIRED_SELECT_FIELD, getPage().getLocale()));
+        setRequiredMessage(ValidationStrings.getMessagePattern(
+                ValidationStrings.REQUIRED_SELECT_FIELD,
+                getPage().getLocale()));
     }
-    
+
     /**
-     * Renders the component.  The possible options,
-     * their labels, and the values to be encoded in the form are provided
-     * by the {@link IPropertySelectionModel model}.
+     * Renders the component. The possible options, their labels, and the values to be encoded in
+     * the form are provided by the {@link IPropertySelectionModel model}.
      * 
-     * @see org.apache.tapestry.form.validator.AbstractRequirableField#renderRequirableFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.validator.AbstractRequirableField#renderRequirableFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         super.renderFormComponent(writer, cycle);
-        
+
         renderDelegatePrefix(writer, cycle);
-        
+
         writer.begin("select");
         writer.attribute("name", getName());
 
@@ -87,7 +90,7 @@ public abstract class PropertySelection extends AbstractRequirableField
             writer.attribute("onchange", "this.form.submit()");
 
         renderDelegateAttributes(writer, cycle);
-        
+
         // Apply informal attributes.
         renderInformalParameters(writer, cycle);
 
@@ -124,7 +127,7 @@ public abstract class PropertySelection extends AbstractRequirableField
         }
 
         writer.end(); // <select>
-        
+
         renderDelegateSuffix(writer, cycle);
     }
 
@@ -147,12 +150,12 @@ public abstract class PropertySelection extends AbstractRequirableField
 
     public abstract IPropertySelectionModel getModel();
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
     public abstract boolean getSubmitOnChange();
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
     public abstract Object getValue();
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
     public abstract void setValue(Object value);
 }
