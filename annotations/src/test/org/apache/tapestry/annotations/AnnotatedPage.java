@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.form.TextField;
 import org.apache.tapestry.html.BasePage;
 
@@ -46,7 +47,7 @@ public abstract class AnnotatedPage extends BasePage
     @Bean(initializer = "intValue=10")
     public abstract Target getBeanWithInitializer();
 
-    @Bean(value=HashMap.class, lifecycle = Lifecycle.RENDER)
+    @Bean(value = HashMap.class, lifecycle = Lifecycle.RENDER)
     public abstract Map getRenderLifecycleBean();
 
     @Persist
@@ -85,4 +86,7 @@ public abstract class AnnotatedPage extends BasePage
 
     @Parameter(name = "fred")
     public abstract double getNamedParameter();
+
+    @InjectPage("SomePageName")
+    public abstract IPage getMyPage();
 }

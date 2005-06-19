@@ -111,7 +111,7 @@
     <worker annotation="Bean" object="instance:BeanAnnotationWorker"/>
     <worker annotation="Asset" object="instance:AssetAnnotationWorker"/>
     <worker annotation="Parameter" object="instance:ParameterAnnotationWorker"/>
-    
+    <worker annotation="InjectPage" object="instance:InjectPageAnnotationWorker"/>
   </contribution>
   
   <service-point id="InjectObjectAnnotationWorker" interface="MethodAnnotationEnhancementWorker">
