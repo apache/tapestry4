@@ -112,4 +112,10 @@ class EnhanceMessages
                 .getJavaClassName(propertyType), ClassFabUtils.getJavaClassName(requiredType));
     }
 
+    public static String wrongTypeForPageInjection(String propertyName, Class propertyType)
+    {
+        return _formatter.format("wrong-type-for-page-injection", propertyName, ClassFabUtils
+                .getJavaClassName(propertyType));
+    }
+
 }

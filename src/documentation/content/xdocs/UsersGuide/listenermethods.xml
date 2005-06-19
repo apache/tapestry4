@@ -50,13 +50,32 @@ is easier to use.
 </note>
 
 <p>
-A listener method is a public method. It may take parameters, or may not ... the rules are discussed below. 
-A simple listener method take no parameters, or takes a single parameter of type &IRequestCycle;.  
-A listener method may return void, return a string (the name of a page), or return &IPage; (or an object 
-assignable to &IPage;).  In
-the latter two cases, the returned page  will be <em>activated</em> to render the response. This means that
-in the vast majority of cases, you can write listener methods <em>without</em> the &IRequestCycle; object.
+A listener method is always a public  instance method.   It may take parameters, or not, and may
+return void or certain other types.
 </p>
+
+<section id="listenermethods.return">
+  <title>Return Type</title>
+  
+<p>
+A listener method may return void, may return a string, or may return an object that implements &IPage;.
+The last two options are used to change the <em>active page</em>, the page which will render
+the response. Returning null will not change the active page (it defaults to the page containing the
+link or form components which invoked the listener method).
+</p>
+
+<p>
+This control over the returned page, especially when combined with
+<link href="injection.html#injection.page">page injection</link>, means that you will rarely
+need to access the &IRequestCycle; object.
+</p>
+
+</section> <!-- listenermethods.return -->
+
+
+
+<section id="listenermethods.parameters">
+  <title>Listener Method Parameters</title>
 
 <p>
 When using the &DirectLink; component, you may specify additional <em>listener parameters</em>.  The listener parameters
@@ -141,12 +160,18 @@ works just by comparing the <em>number</em> of parameters).  However, you can co
 the parameter values (so you can use <code>int</code> and <code>java.lang.Integer</code> interchangeably).
 </p>
 
+</section> <!-- listenermethods.parameters -->
+
+<section id="listenermethods.invoking">
+  <title>Invoking Listener Methods</title>
+
 
 <p>
 When creating components that accept a listener as a parameter, you should not invoke the
 &IActionListener; directly, instead, you should inject the infrastructure:ListenerInvoker service 
 into your component, and have it invoke the listener.  The ListenerInvoker is extensible, and 
-application logic may depend on ListenerInvoker's behavior.
+application logic may depend on ListenerInvoker's behavior (commonly, it is used to mark
+transactions boundaries).
 </p>
 
 <p>
@@ -181,5 +206,6 @@ It is acceptible to pass null as the listener; this saves you the necessity of c
 when the listener is an optional parameter.
 </p>
 
+</section> <!-- listenermethods.invoking -->
 </body>
 </document>

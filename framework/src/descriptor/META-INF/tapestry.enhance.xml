@@ -114,6 +114,7 @@
     <worker type="state" object="service:InjectStateWorker"/>
     <worker type="meta" object="service:InjectMetaWorker"/>
     <worker type="script" object="service:InjectScriptWorker"/>
+    <worker type="page" object="instance:InjectPageWorker"/>
   </contribution>
   
   <service-point id="DispatchToInjectWorker" interface="EnhancementWorker">

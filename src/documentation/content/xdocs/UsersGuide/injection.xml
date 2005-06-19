@@ -31,7 +31,8 @@
 <p>
 Tapestry 4.0 introduces an entirely new concept into Tapestry application development: property injection.
 By use of the &spec.inject; element in page and component specifications, it is possible
-to add new properties to pages or components.
+to add new properties to pages or components, using the &spec.inject; element in the page
+or component specification.
 </p>    
 
 <p>
@@ -40,34 +41,27 @@ they create complex synthetic accessor methods.
 </p>
 
 <p>
-There are four types of property injection built into Tapestry.  These types correspond to the
-type attribute of the &spec.inject; element:
+There are different <em>types</em> of injected properties, defined by the type attribute of the &spec.inject;
+element. The type determines how the object attribute is interpreted, and otherwise guides how code
+for the property is generated at runtime.  The default type is <strong>object</strong>.
 </p>
-
-<dl>
-  <dt>object</dt>
-  <dd>
-    Injects <link href="hivemind.html">objects defined by the HiveMind Registry</link>.
-  </dd>
-  <dt>state</dt>
-  <dd>
-    Creates a property providing access to an &aso;.
-  </dd>
-  <dt>meta</dt>
-  <dd>
-    Creates properties that allow access to component meta-data properties, and can automatically
-    convert values from strings to other types.
-  </dd>
-  <dt>script</dt>
-  <dd>
-    Creates a property containing a parsed &IScript;, ready to execute.
-  </dd>
-</dl>
 
 <p>
-Like so much in Tapestry, this list is open to extension.  The tapestry.enhance.InjectWorkers configuration point
-defines new types, and the HiveMind services that implement those types.
+Like so much in Tapestry, this list is open to extension.  The 
+<link href="&hivedoc;/config/tapestry.enhance.InjectWorkers.html">tapestry.enhance.InjectWorkers</link> configuration point
+defines the available types of injection.
+The <link href="&hivedoc;/config/tapestry.enhance.EnhancementWorkers.html">tapestry.enhance.EnhancementWorkers</link> configuration
+point defines an entire pipeline used to perform runtime code enhancement (of which property injection
+is a critical phase).
 </p>
+
+<p>
+In addition, many other elements support a property attribute; this is the name of a property to create
+that holds the corresponding object.  For example, the &spec.bean; element's property allows access
+to a managed bean; the bean is <em>still</em> created on first reference.  Components and assets
+may also be injected in this way.
+</p>
+
 
 <section id="injection.meta">
   <title>meta injection</title>
@@ -115,6 +109,62 @@ You can access the this meta data value in code by defining a property:
   
 </section> <!-- injection.meta -->
 
+<section id="injection.object">
+  <title>object injection</title>
+  
+<p>
+The most common kind of injection, because "object" is the default injection type. The object is a HiveMind object.
+The <link href="hivemind.html">HiveMind integration documentation</link> covers this type
+of injection in more detail.
+</p>
+
+<p>
+
+</p>
+
+</section> <!-- injection.object -->
+
+<section id="injection.page">
+  <title>page injection</title>
+  
+<p>
+Page injection allows a page to be injected into another page (or component). Beneather the covers,
+the logic simply accesses the &IRequestCycle; object and obtains the page from it, and adds a
+cast if necessary.
+</p>
+
+<p>
+The property type can be Object, &IPage;, or any type assignable to &IPage;.
+</p>
+
+<p>
+  This is often used with &listener-method;s.  For example:
+</p>
+
+<source><![CDATA[
+  <inject property="detailsPage" type="page" object="Details"/>
+]]></source>
+
+<source>
+  public abstract Details getDetailsPage();
+  
+  public IPage doShowDetails(long productId)
+  {
+    Details details = getDetailsPage();
+    
+    details.setProductId(productId);
+    
+    return details;
+  }
+</source>
+  
+<p>
+This is a common idiom: getting a page and casting it to its real type, invoking methods upon it,
+then returning it (from the listener method), so that it is activated to render the response.
+</p>
+  
+</section> <!-- injection.page -->
+
 <section id="injection.script">
   <title>script injection</title>
   
@@ -151,6 +201,16 @@ The script can then be executed from the Java code:
   getScript().execute(cycle, pageRenderSupport, _symbols);
 </source>
 
+</section> <!-- injection.script -->
+
+<section id="injection.state">
+  <title>state injection</title>
+  
+<p>
+This style of injection allows easy access to <link href="state.html#state.aso">Application State Objects</link>,
+objects which store various kinds of global information (information needed on many pages).
+</p>  
+  
 </section>
     
   </body>
