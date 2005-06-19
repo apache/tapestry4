@@ -14,8 +14,11 @@
 
 package org.apache.tapestry.listener;
 
+import java.lang.reflect.Method;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.easymock.MockControl;
 
@@ -37,6 +40,39 @@ public class TestListenerMapSource extends HiveMindTestCase
         control.setReturnValue(listenerParameters);
 
         return cycle;
+    }
+
+    private Method findMethod(Class clazz, String name)
+    {
+        Method[] methods = clazz.getMethods();
+
+        for (int i = 0; i < methods.length; i++)
+        {
+            if (methods[i].getName().equals(name))
+                return methods[i];
+        }
+
+        throw new IllegalArgumentException("No method '" + name + "' in " + clazz + ".");
+    }
+
+    private void attemptReturnType(boolean expected, Class clazz, String methodName)
+    {
+        Method m = findMethod(clazz, methodName);
+
+        ListenerMapSourceImpl lms = new ListenerMapSourceImpl();
+
+        assertEquals(expected, lms.isAcceptibleListenerMethodReturnType(m));
+    }
+
+    public void testAcceptibleListenerMethodReturnTypes()
+    {
+        Class clazz = ListenerMethodHolder.class;
+
+        attemptReturnType(true, clazz, "fred");
+        attemptReturnType(true, clazz, "returnsString");
+        attemptReturnType(true, clazz, "returnsBasePage");
+        attemptReturnType(false, clazz, "returnsObject");
+        attemptReturnType(false, clazz, "returnsInt");
     }
 
     public void testFoundWithParameters()
@@ -116,6 +152,43 @@ public class TestListenerMapSource extends HiveMindTestCase
         ListenerMap map = source.getListenerMapForObject(holder);
 
         map.getListener("pebbles").actionTriggered(null, cycle);
+
+        verifyControls();
+    }
+
+    public void testReturnPageName()
+    {
+        IRequestCycle cycle = newCycle(null);
+        ListenerMethodHolder holder = new ListenerMethodHolder("PageName");
+
+        cycle.activate("PageName");
+
+        replayControls();
+
+        ListenerMapSource source = new ListenerMapSourceImpl();
+
+        ListenerMap map = source.getListenerMapForObject(holder);
+
+        map.getListener("returnsPageName").actionTriggered(null, cycle);
+
+        verifyControls();
+    }
+
+    public void testReturnPageInstance()
+    {
+        IPage page = (IPage) newMock(IPage.class);
+        IRequestCycle cycle = newCycle(null);
+        ListenerMethodHolder holder = new ListenerMethodHolder(page);
+
+        cycle.activate(page);
+
+        replayControls();
+
+        ListenerMapSource source = new ListenerMapSourceImpl();
+
+        ListenerMap map = source.getListenerMapForObject(holder);
+
+        map.getListener("returnsPage").actionTriggered(null, cycle);
 
         verifyControls();
     }

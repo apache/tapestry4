@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
@@ -148,7 +149,24 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
 
         try
         {
-            invokeTargetMethod(target, listenerMethod, parameters);
+            Object methodResult = invokeTargetMethod(target, listenerMethod, parameters);
+
+            // void methods return null
+
+            if (methodResult == null)
+                return;
+
+            // The method scanner, inside ListenerMapSourceImpl,
+            // ensures that only methods that return void, String,
+            // or assignable to IPage are considered.
+
+            if (methodResult instanceof String)
+            {
+                cycle.activate((String) methodResult);
+                return;
+            }
+
+            cycle.activate((IPage) methodResult);
         }
         catch (InvocationTargetException ex)
         {
@@ -177,9 +195,9 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
      * invoking the listener method.
      */
 
-    protected void invokeTargetMethod(Object target, Method listenerMethod, Object[] parameters)
+    protected Object invokeTargetMethod(Object target, Method listenerMethod, Object[] parameters)
             throws IllegalAccessException, InvocationTargetException
     {
-        listenerMethod.invoke(target, parameters);
+        return listenerMethod.invoke(target, parameters);
     }
 }

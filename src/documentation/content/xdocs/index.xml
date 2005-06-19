@@ -106,6 +106,12 @@ your productivity. Here's a few of our favorites:
     and leverage J2EE declarative security along the way.
   </li>
   <li>
+    Listener methods are much easier and more flexible; listener parameters in the URL 
+    are automatically mapped to
+    listener method parameters, and listener methods can return the page name or page instance
+    to activate.
+  </li>
+  <li>
     Component parameters now <em>just work</em>, without having to worry about
     "direction". 
   </li>
