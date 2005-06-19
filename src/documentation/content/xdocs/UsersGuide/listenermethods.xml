@@ -50,15 +50,22 @@ is easier to use.
 </note>
 
 <p>
-A listener method is a public void method. It may take parameters, or may not ... the rules are discussed below. 
+A listener method is a public method. It may take parameters, or may not ... the rules are discussed below. 
 A simple listener method take no parameters, or takes a single parameter of type &IRequestCycle;.  
+A listener method may return void, return a string (the name of a page), or return &IPage; (or an object 
+assignable to &IPage;).  In
+the latter two cases, the returned page  will be <em>activated</em> to render the response. This means that
+in the vast majority of cases, you can write listener methods <em>without</em> the &IRequestCycle; object.
+</p>
+
+<p>
 When using the &DirectLink; component, you may specify additional <em>listener parameters</em>.  The listener parameters
 are encoded into the URL and will be available in a later request, when the listener is triggered.
 </p>
 
 <note>
 In Tapestry 3.0 and earlier, <em>listener parameters</em> were known as <em>service parameters</em>.  In addition,
-listener methods had to be in a very fixed form, taking exactly one parameter of type &IRequestCycle;.
+listener methods had to be in a very fixed form, taking exactly one parameter of type &IRequestCycle; and returning void.
 </note>
 
 <p>
@@ -121,14 +128,14 @@ In fact, Tapestry does a search for the most appropriate method, given the numbe
 </p>
 
 <ul>
-  <li>public void <em>method</em>(<em>parameters</em>)</li>
-  <li>public void <em>method</em>(IRequestCycle cycle, <em>parameters</em>)</li>
-  <li>public void <em>method</em>()</li>
-  <li>public void <em>method(IRequestCycle cycle)</em></li>
+  <li>public <em>type</em> <em>method</em>(<em>parameters</em>)</li>
+  <li>public <em>type</em> <em>method</em>(IRequestCycle cycle, <em>parameters</em>)</li>
+  <li>public <em>type</em> <em>method</em>()</li>
+  <li>public <em>type</em> <em>method(IRequestCycle cycle)</em></li>
 </ul>
 
 <p>
-Tapestry 3.0 and earlier only accepted the final variation.  Don't get too tricky with multiple overloadings
+Tapestry 3.0 and earlier only accepted the final variation (and it had to return void).  Don't get too tricky with multiple overloadings
 of the method; Tapestry doesn't attempt to match the listener parameter types to the method parameter types (it
 works just by comparing the <em>number</em> of parameters).  However, you can count on Java boxing and autoboxing
 the parameter values (so you can use <code>int</code> and <code>java.lang.Integer</code> interchangeably).

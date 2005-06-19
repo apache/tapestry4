@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.event.ResetEventListener;
 
 /**
@@ -88,7 +89,8 @@ public class ListenerMapSourceImpl implements ListenerMapSource, ResetEventListe
     private Map buildInvokerMapForClass(Class targetClass)
     {
         // map, keyed on method name, value is List of Method
-        // only public void methods go into this map.
+        // only methods that return void, return String, or return
+        // something assignable to IPage are kept.
 
         Map map = new HashMap();
 
@@ -104,7 +106,7 @@ public class ListenerMapSourceImpl implements ListenerMapSource, ResetEventListe
         {
             Method m = methods[i];
 
-            if (m.getReturnType() != void.class)
+            if (!isAcceptibleListenerMethodReturnType(m))
                 continue;
 
             if (Modifier.isStatic(m.getModifiers()))
@@ -116,6 +118,16 @@ public class ListenerMapSourceImpl implements ListenerMapSource, ResetEventListe
         }
 
         return convertMethodListMapToInvokerMap(map);
+    }
+
+    boolean isAcceptibleListenerMethodReturnType(Method m)
+    {
+        Class returnType = m.getReturnType();
+
+        if (returnType == void.class || returnType == String.class)
+            return true;
+
+        return IPage.class.isAssignableFrom(returnType);
     }
 
     private Map convertMethodListMapToInvokerMap(Map map)

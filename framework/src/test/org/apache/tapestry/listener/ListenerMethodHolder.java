@@ -16,7 +16,9 @@ package org.apache.tapestry.listener;
 
 import java.util.Map;
 
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.html.BasePage;
 
 /**
  * Used by {@link org.apache.tapestry.listener.TestListenerMapSource}.
@@ -27,6 +29,24 @@ import org.apache.tapestry.IRequestCycle;
 public class ListenerMethodHolder
 {
     private RuntimeException _exception;
+
+    private String _pageName;
+
+    private IPage _page;
+
+    public ListenerMethodHolder()
+    {
+    }
+
+    public ListenerMethodHolder(String pageName)
+    {
+        _pageName = pageName;
+    }
+
+    public ListenerMethodHolder(IPage page)
+    {
+        _page = page;
+    }
 
     public void wrongTypes(Map map)
     {
@@ -44,6 +64,36 @@ public class ListenerMethodHolder
     public void noMatch(String argument1, double argument2, long argument3)
     {
 
+    }
+
+    public String returnsString()
+    {
+        return null;
+    }
+
+    public BasePage returnsBasePage()
+    {
+        return null;
+    }
+
+    public IPage returnsPage()
+    {
+        return _page;
+    }
+
+    public String returnsPageName()
+    {
+        return _pageName;
+    }
+
+    public Object returnsObject()
+    {
+        return null;
+    }
+
+    public int returnsInt()
+    {
+        return 0;
     }
 
     /**
