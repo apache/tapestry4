@@ -246,6 +246,26 @@ with the default type of "object".
 </section>    
 
 <section>
+  <title>InjectPage</title>
+  
+<p>
+  The <link href="&javadoc;/InjectPage.html">InjectPage</link> annotation
+  allows a page to be injected into another page or component.  It is attached
+  to an accessor method:
+</p>
+
+<source>
+  @InjectPage("Details")
+  public abstract Details getDetailsPage();
+</source>
+
+<p>
+Injecting other pages is most commonly used as part of a listener method.
+</p>
+
+</section>
+
+<section>
   <title>InjectState</title>
   
   <p>
