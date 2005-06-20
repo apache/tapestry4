@@ -30,14 +30,12 @@ import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 
 /**
- *  Streamlines the interface to ORO by implicitly constructing the
- *  necessary compilers and matchers, and by
- *  caching compiled patterns.
- *
- *  @author Howard Lewis Ship
- *  @since 3.0
- *
- **/
+ * Streamlines the interface to ORO by implicitly constructing the necessary compilers and matchers,
+ * and by caching compiled patterns.
+ * 
+ * @author Howard Lewis Ship
+ * @since 3.0
+ */
 
 public class RegexpMatcher
 {
@@ -78,9 +76,8 @@ public class RegexpMatcher
     }
 
     /**
-     *  Clears any previously compiled patterns.
-     * 
-     **/
+     * Clears any previously compiled patterns.
+     */
 
     public void clear()
     {
@@ -126,11 +123,42 @@ public class RegexpMatcher
     /**
      * Given an input string, finds all matches in an input string for the pattern.
      * 
-     * @param pattern the regexp pattern for matching
-     * @param input the string to search for matches within
-     * @param subgroup the group (sub-expression) within the pattern to return as a match
-     * @return array (possibly empty) of matching strings
+     * @param pattern
+     *            the regexp pattern for matching
+     * @param input
+     *            the string to search for matches within
+     * @return array (possibly empty) of matches
+     * @since 4.0
+     */
+    public RegexpMatch[] getMatches(String pattern, String input)
+    {
+        Pattern compiledPattern = getCompiledPattern(pattern);
+
+        PatternMatcher matcher = getPatternMatcher();
+        PatternMatcherInput matcherInput = new PatternMatcherInput(input);
+
+        List matches = new ArrayList();
+
+        while (matcher.contains(matcherInput, compiledPattern))
+        {
+            MatchResult match = matcher.getMatch();
+
+            matches.add(new RegexpMatch(match));
+        }
+
+        return (RegexpMatch[]) matches.toArray(new RegexpMatch[matches.size()]);
+    }
+
+    /**
+     * Given an input string, finds all matches in an input string for the pattern.
      * 
+     * @param pattern
+     *            the regexp pattern for matching
+     * @param input
+     *            the string to search for matches within
+     * @param subgroup
+     *            the group (sub-expression) within the pattern to return as a match
+     * @return array (possibly empty) of matching strings
      */
     public String[] getMatches(String pattern, String input, int subgroup)
     {

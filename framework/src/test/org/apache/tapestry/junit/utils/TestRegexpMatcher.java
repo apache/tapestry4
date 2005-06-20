@@ -16,6 +16,7 @@ package org.apache.tapestry.junit.utils;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.junit.TapestryTestCase;
+import org.apache.tapestry.util.RegexpMatch;
 import org.apache.tapestry.util.RegexpMatcher;
 
 /**
@@ -105,6 +106,26 @@ public class TestRegexpMatcher extends TapestryTestCase
 
         assertListsEqual(new String[]
         { "57", "232", "89", "147" }, matches);
+    }
+
+    /** @since 4.0 */
+
+    public void testGetMatchesAsObjects()
+    {
+        RegexpMatcher m = new RegexpMatcher();
+
+        RegexpMatch[] matches = m.getMatches("\\w+(=(\\w+))?", "fred,barney=rubble;wilma=flintstone");
+
+        assertEquals(3, matches.length);
+        
+        assertEquals("fred", matches[0].getInput());
+        assertEquals("fred", matches[0].getGroup(0));
+        
+        assertEquals("barney=rubble", matches[1].getInput());
+        assertEquals("rubble", matches[1].getGroup(2));
+        
+        assertEquals("wilma=flintstone", matches[2].getInput());
+        assertEquals("flintstone", matches[2].getGroup(2));        
     }
 
     /** @since 4.0 */

@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.form.validator;
 
-import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -30,11 +29,9 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class MaxLength implements Validator
+public class MaxLength extends BaseValidator
 {
     private int _maxLength;
-
-    private String _message;
 
     public MaxLength()
     {
@@ -43,17 +40,12 @@ public class MaxLength implements Validator
 
     public MaxLength(String initializer)
     {
-        PropertyUtils.configureProperties(this, initializer);
+        super(initializer);
     }
 
     public void setMaxLength(int maxLength)
     {
         _maxLength = maxLength;
-    }
-
-    public void setMessage(String message)
-    {
-        _message = message;
     }
 
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
@@ -69,15 +61,10 @@ public class MaxLength implements Validator
     protected String buildMessage(ValidationMessages messages, IFormComponent field)
     {
         return messages.formatValidationMessage(
-                _message,
+                getMessage(),
                 ValidationStrings.VALUE_TOO_LONG,
                 new Object[]
                 { new Integer(_maxLength), field.getDisplayName() });
-    }
-
-    public boolean getAcceptsNull()
-    {
-        return false;
     }
 
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,

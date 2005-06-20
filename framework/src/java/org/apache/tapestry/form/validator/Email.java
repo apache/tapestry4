@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.form.validator;
 
-import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -32,7 +31,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class Email implements Validator
+public class Email extends BaseValidator
 {
     static final String PATTERN = "^\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,3}$";
 
@@ -41,15 +40,13 @@ public class Email implements Validator
     // will be too.
     private RegexpMatcher _matcher = new RegexpMatcher();
 
-    private String _message;
-
     public Email()
     {
     }
 
     public Email(String initializer)
     {
-        PropertyUtils.configureProperties(this, initializer);
+        super(initializer);
     }
 
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
@@ -65,16 +62,10 @@ public class Email implements Validator
     private String buildMessage(ValidationMessages messages, IFormComponent field)
     {
         return messages.formatValidationMessage(
-                _message,
+                getMessage(),
                 ValidationStrings.INVALID_EMAIL,
                 new Object[]
                 { field.getDisplayName() });
-    }
-
-    /** Returns false */
-    public boolean getAcceptsNull()
-    {
-        return false;
     }
 
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
@@ -95,10 +86,4 @@ public class Email implements Validator
 
         context.addSubmitListener(buffer.toString());
     }
-
-    public void setMessage(String message)
-    {
-        _message = message;
-    }
-
 }

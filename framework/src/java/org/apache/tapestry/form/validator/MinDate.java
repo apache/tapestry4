@@ -16,10 +16,6 @@ package org.apache.tapestry.form.validator;
 
 import java.util.Date;
 
-import org.apache.hivemind.util.PropertyUtils;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
@@ -33,11 +29,9 @@ import org.apache.tapestry.valid.ValidatorException;
  * @since 4.0
  */
 
-public class MinDate implements Validator
+public class MinDate extends BaseValidator
 {
     private Date _minDate;
-
-    private String _message;
 
     public MinDate()
     {
@@ -45,12 +39,7 @@ public class MinDate implements Validator
 
     public MinDate(String initializer)
     {
-        PropertyUtils.configureProperties(this, initializer);
-    }
-
-    public void setMessage(String message)
-    {
-        _message = message;
+        super(initializer);
     }
 
     public void setMinDate(Date minDate)
@@ -71,22 +60,10 @@ public class MinDate implements Validator
     private String buildMessage(ValidationMessages messages, IFormComponent field)
     {
         return messages.formatValidationMessage(
-                _message,
+                getMessage(),
                 ValidationStrings.DATE_TOO_EARLY,
                 new Object[]
                 { field.getDisplayName(), _minDate });
-    }
-
-    public boolean getAcceptsNull()
-    {
-        return false;
-    }
-
-    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
-            FormComponentContributorContext context, IFormComponent field)
-    {
-        // No implementation yet; validation is only on the server side,
-        // for some reason.
     }
 
 }

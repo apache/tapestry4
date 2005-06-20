@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.form.validator;
 
-import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -30,11 +29,9 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class MinLength implements Validator
+public class MinLength extends BaseValidator
 {
     private int _minLength;
-
-    private String _message;
 
     public MinLength()
     {
@@ -42,12 +39,7 @@ public class MinLength implements Validator
 
     public MinLength(String initializer)
     {
-        PropertyUtils.configureProperties(this, initializer);
-    }
-
-    public void setMessage(String message)
-    {
-        _message = message;
+        super(initializer);
     }
 
     public void setMinLength(int minLength)
@@ -55,9 +47,9 @@ public class MinLength implements Validator
         _minLength = minLength;
     }
 
-    public boolean getAcceptsNull()
+    public int getMinLength()
     {
-        return false;
+        return _minLength;
     }
 
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
@@ -73,7 +65,7 @@ public class MinLength implements Validator
     protected String buildMessage(ValidationMessages messages, IFormComponent field)
     {
         return messages.formatValidationMessage(
-                _message,
+                getMessage(),
                 ValidationStrings.VALUE_TOO_SHORT,
                 new Object[]
                 { new Integer(_minLength), field.getDisplayName() });
