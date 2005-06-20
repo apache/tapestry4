@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.form.validator;
 
-import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -32,7 +31,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @since 4.0
  * @see org.apache.tapestry.util.RegexpMatcher
  */
-public class Pattern implements Validator
+public class Pattern extends BaseValidator
 {
     // TODO: Possible thread safety issue if the validator
     // is shared across threads, because the matcher
@@ -41,15 +40,13 @@ public class Pattern implements Validator
 
     private String _pattern;
 
-    private String _message;
-
     public Pattern()
     {
     }
 
     public Pattern(String initializer)
     {
-        PropertyUtils.configureProperties(this, initializer);
+        super(initializer);
     }
 
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
@@ -65,15 +62,10 @@ public class Pattern implements Validator
     private String buildMessage(ValidationMessages messages, IFormComponent field)
     {
         return messages.formatValidationMessage(
-                _message,
+                getMessage(),
                 ValidationStrings.REGEX_MISMATCH,
                 new Object[]
                 { field.getDisplayName() });
-    }
-
-    public boolean getAcceptsNull()
-    {
-        return false;
     }
 
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
@@ -93,11 +85,6 @@ public class Pattern implements Validator
         buffer.append("'); }");
 
         context.addSubmitListener(buffer.toString());
-    }
-
-    public void setMessage(String message)
-    {
-        _message = message;
     }
 
     public void setPattern(String pattern)

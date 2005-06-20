@@ -30,22 +30,15 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class Required implements Validator
+public class Required extends BaseValidator
 {
-    private String _message;
-
     public Required()
     {
     }
 
     public Required(String initializer)
     {
-        PropertyUtils.configureProperties(this, initializer);
-    }
-
-    public void setMessage(String message)
-    {
-        _message = message;
+        super(initializer);
     }
 
     public boolean getAcceptsNull()
@@ -66,7 +59,7 @@ public class Required implements Validator
     private String buildMessage(ValidationMessages messages, IFormComponent field)
     {
         return messages.formatValidationMessage(
-                _message,
+                getMessage(),
                 ValidationStrings.REQUIRED_TEXT_FIELD,
                 new Object[]
                 { field.getDisplayName() });

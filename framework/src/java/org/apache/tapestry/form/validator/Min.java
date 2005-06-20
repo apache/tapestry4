@@ -30,11 +30,9 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class Min implements Validator
+public class Min extends BaseValidator
 {
     private double _min;
-
-    private String _message;
 
     public Min()
     {
@@ -42,7 +40,7 @@ public class Min implements Validator
 
     public Min(String initializer)
     {
-        PropertyUtils.configureProperties(this, initializer);
+        super(initializer);
     }
 
     /**
@@ -62,16 +60,10 @@ public class Min implements Validator
     private String buildMessage(ValidationMessages messages, IFormComponent field)
     {
         return messages.formatValidationMessage(
-                _message,
+                getMessage(),
                 ValidationStrings.VALUE_TOO_SMALL,
                 new Object[]
                 { field.getDisplayName(), new Double(_min) });
-    }
-
-    /** Returns false. */
-    public boolean getAcceptsNull()
-    {
-        return false;
     }
 
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
@@ -90,11 +82,6 @@ public class Min implements Validator
         buffer.append("'); }");
 
         context.addSubmitListener(buffer.toString());
-    }
-
-    public void setMessage(String message)
-    {
-        _message = message;
     }
 
     public void setMin(double min)

@@ -16,10 +16,6 @@ package org.apache.tapestry.form.validator;
 
 import java.util.Date;
 
-import org.apache.hivemind.util.PropertyUtils;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
@@ -32,10 +28,8 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class MaxDate implements Validator
+public class MaxDate extends BaseValidator
 {
-    private String _message;
-
     private Date _maxDate;
 
     public MaxDate()
@@ -44,13 +38,7 @@ public class MaxDate implements Validator
 
     public MaxDate(String initializer)
     {
-        PropertyUtils.configureProperties(this, initializer);
-    }
-
-    /** Returns false. */
-    public boolean getAcceptsNull()
-    {
-        return false;
+        super(initializer);
     }
 
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
@@ -67,24 +55,10 @@ public class MaxDate implements Validator
     private String buildMessage(ValidationMessages messages, IFormComponent field)
     {
         return messages.formatValidationMessage(
-                _message,
+                getMessage(),
                 ValidationStrings.DATE_TOO_LATE,
                 new Object[]
                 { field.getDisplayName(), _maxDate });
-    }
-
-    /**
-     * Does nothing.
-     */
-
-    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
-            FormComponentContributorContext context, IFormComponent field)
-    {
-    }
-
-    public void setMessage(String message)
-    {
-        _message = message;
     }
 
     public void setMaxDate(Date minDate)

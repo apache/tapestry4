@@ -18,6 +18,7 @@
 <module id="tapestry.form" version="4.0.0" package="org.apache.tapestry.form">
   
   <sub-module descriptor="tapestry.form.translator.xml"/>
+  <sub-module descriptor="tapestry.form.validator.xml"/>
   
   Support for form components.
 
