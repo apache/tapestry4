@@ -87,6 +87,8 @@
        <action type="add" dev="HLS">Listener methods may now return a page name, or a page instance, to activate and render the response.</action>
        <action type="add" dev="HLS">Add injection of pages.</action>
        <action type="add" dev="HLS">Add InjectPage annotation.</action>
+       <action type="add" dev="HLS">Add validators: binding prefix, which allows validators to be
+        specified as a succinct list.</action>
     </release>
     <release version="4.0-alpha-3" date="May 16 2005">
       <action type="add" dev="HLS">Add initial support for the validator: binding prefix.</action>

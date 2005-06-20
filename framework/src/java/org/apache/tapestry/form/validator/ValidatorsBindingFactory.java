@@ -12,45 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.form.translator;
+package org.apache.tapestry.form.validator;
+
+import java.util.List;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.lib.BeanFactory;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.AbstractBindingFactory;
 
-/**
- * Uses the tapestry.form.translator.TranslatorBeanFactory service to obtain configured
- * {@link org.apache.tapestry.form.translator.Translator} instances that are then wrapped as
- * {@link org.apache.tapestry.form.translator.TranslatorBinding}s.
- * 
- * @author Howard Lewis Ship
- * @since 4.0
- */
-public class TranslatorBindingFactory extends AbstractBindingFactory
+public class ValidatorsBindingFactory extends AbstractBindingFactory
 {
-    private BeanFactory _translatorBeanFactory;
+    private ValidatorFactory _validatorFactory;
+
+    public void setValidatorFactory(ValidatorFactory validatorFactory)
+    {
+        _validatorFactory = validatorFactory;
+    }
 
     public IBinding createBinding(IComponent root, String bindingDescription, String path,
             Location location)
     {
         try
         {
-            Translator translator = (Translator) _translatorBeanFactory.get(path);
+            List validators = _validatorFactory.constructValidatorList(path);
 
-            return new TranslatorBinding(bindingDescription, getValueConverter(), location,
-                    translator);
+            return new ValidatorsBinding(bindingDescription, getValueConverter(), location,
+                    validators);
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(ex.getMessage(), location, ex);
+            throw new ApplicationRuntimeException(ex.getMessage(), null, location, ex);
         }
-    }
-
-    public void setTranslatorBeanFactory(BeanFactory translatorBeanFactory)
-    {
-        _translatorBeanFactory = translatorBeanFactory;
     }
 }

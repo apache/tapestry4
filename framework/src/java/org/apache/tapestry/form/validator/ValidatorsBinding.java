@@ -14,47 +14,36 @@
 
 package org.apache.tapestry.form.validator;
 
+import java.util.List;
+
+import org.apache.hivemind.Location;
+import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.binding.AbstractBinding;
+import org.apache.tapestry.coerce.ValueConverter;
+
 /**
- * Contains information contributed to the tapestry.form.validator.Validators configuration point.
+ * Binding used to hold a list of {@link org.apache.tapestry.form.validator.Validator}s.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class ValidatorContribution
+public class ValidatorsBinding extends AbstractBinding
 {
-    private boolean _configurable = true;
+    private final List _validators;
 
-    private String _name;
-
-    private Class _validatorClass;
-
-    public String getName()
+    public ValidatorsBinding(String description, ValueConverter valueConverter, Location location,
+            List validators)
     {
-        return _name;
+        super(description, valueConverter, location);
+
+        Defense.notNull(validators, "validator");
+
+        _validators = validators;
     }
 
-    public Class getValidatorClass()
+    public Object getObject()
     {
-        return _validatorClass;
+        return _validators;
     }
 
-    public boolean isConfigurable()
-    {
-        return _configurable;
-    }
-
-    public void setConfigurable(boolean configurable)
-    {
-        _configurable = configurable;
-    }
-
-    public void setName(String name)
-    {
-        _name = name;
-    }
-
-    public void setValidatorClass(Class validatorClass)
-    {
-        _validatorClass = validatorClass;
-    }
 }
