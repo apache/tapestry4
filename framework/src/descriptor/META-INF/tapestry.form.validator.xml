@@ -39,5 +39,42 @@
     </schema>
     
   </configuration-point>
+  
+  <contribution configuration-id="Validators">
+    <validator name="email" configurable="false" class="Email"/>
+    <validator name="required" configurable="false" class="Required"/>
+    <validator name="max" class="Max"/>
+    <validator name="maxDate" class="MaxDate"/>
+    <validator name="maxLength" class="MaxLength"/>
+    <validator name="min" class="Min"/>
+    <validator name="minDate" class="MinDate"/>
+    <validator name="minLength" class="MinLength"/>
+    <validator name="pattern" class="Pattern"/>    
+  </contribution>
+  
+  <service-point id="ValidatorFactory">
     
+    <invoke-factory>
+      <construct class="ValidatorFactoryImpl">
+        <set-configuration property="validators" configuration-id="Validators"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+    
+  <service-point id="ValidatorsBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
+    
+    Factory for the "translator:" binding prefix.
+    
+    <invoke-factory>
+      <construct class="ValidatorsBindingFactory">
+        <set-service property="validatorFactory" service-id="ValidatorFactory"/>
+        <set-object property="valueConverter" value="infrastructure:valueConverter"/>  
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <contribution configuration-id="tapestry.bindings.BindingFactories">
+    <binding prefix="validators" service-id="ValidatorsBindingFactory"/>
+  </contribution>    
 </module>

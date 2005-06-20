@@ -123,15 +123,22 @@ value is to be interprted.  The prefix identifies the <em>binding type</em>:
   
   <tr>
     <td>validator</td>
-    <td>Initializer used to obtain and configure an &IValidator; instance.</td>
+    <td>Initializer used to obtain and configure an &IValidator; instance (used with &ValidField;).</td>
     <td>validator:string,required,minimumLength=5</td>
+    <td></td>
+  </tr>
+  
+  <tr>
+    <td>validators</td>
+    <td>List of configured &Validator; instances (used with &TextField; and others). </td>
+    <td>validators:email,required,minLength=10</td>
     <td></td>
   </tr>
 </table>
 
 <p>
  Most of these are quite straight forward; the 
-  <link href="validation.html#validation.validator-binding">validator and translator</link> prefixes
+  <link href="validation.html#validation.validator-binding">validator, validators and translator</link> prefixes
  require some additional description.
 </p>
 

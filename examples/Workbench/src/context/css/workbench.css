@@ -4,7 +4,7 @@ SPAN.label-error
 }
 
 
-INPUT.field-error
+.field-error
 {
   color: White;
   background-color: Red;

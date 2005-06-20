@@ -45,7 +45,7 @@
   </parameter>
 
   <parameter name="translator" default-binding="translator" default-value="string"/>
-  <parameter name="validators" default-binding="ognl"/>
+  <parameter name="validators" default-binding="validators"/>
 
   <reserved-parameter name="name"/>
 
