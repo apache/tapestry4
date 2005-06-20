@@ -66,6 +66,8 @@ public class TestRequired extends BaseValidatorTestCase
             assertEquals("Default Message for Fred.", ex.getMessage());
             assertSame(ValidationConstraint.REQUIRED, ex.getConstraint());
         }
+        
+        verifyControls();
     }
 
     public void testValidateNullCustomMessage() throws Exception
@@ -92,6 +94,8 @@ public class TestRequired extends BaseValidatorTestCase
             assertEquals("Custom Message for Fred.", ex.getMessage());
             assertSame(ValidationConstraint.REQUIRED, ex.getConstraint());
         }
+        
+        verifyControls();
     }
 
     public void testRenderContribution()
@@ -123,5 +127,7 @@ public class TestRequired extends BaseValidatorTestCase
         replayControls();
 
         new Required().renderContribution(writer, cycle, context, field);
+        
+        verifyControls();
     }
 }

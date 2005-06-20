@@ -18,6 +18,9 @@ package org.apache.tapestry.form;
  * Object that provides support to objects that implement
  * {@link org.apache.tapestry.form.FormComponentContributor}. For the moment, at least, this is all
  * about client-side JavaScript generation.
+ * <p>
+ * TODO: Having support for regular expressions might be useful (and would allow a single
+ * {@link RegexpMatcher to be shared).
  * 
  * @author Howard Lewis Ship
  * @since 4.0
