@@ -112,6 +112,7 @@
     <worker annotation="Asset" object="instance:AssetAnnotationWorker"/>
     <worker annotation="Parameter" object="instance:ParameterAnnotationWorker"/>
     <worker annotation="InjectPage" object="instance:InjectPageAnnotationWorker"/>
+    <worker annotation="Component" object="instance:ComponentAnnotationWorker"/>
   </contribution>
   
   <service-point id="InjectObjectAnnotationWorker" interface="MethodAnnotationEnhancementWorker">

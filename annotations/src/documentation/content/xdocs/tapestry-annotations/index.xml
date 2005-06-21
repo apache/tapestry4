@@ -126,6 +126,47 @@ commas (for boolean properties, the value is optional).
 </section>
 
 <section>
+  <title>Component</title>
+  
+  <p>
+    The <link href="&javadoc;/Component.html">Component</link> annotation is attached
+    to an  accessor method and allows a component type to be defined in place, as with
+    the <link href="&spec;#spec.component">&lt;component&gt;</link> element.
+  </p>
+  
+  <p>
+   The type must be specified.  By default, the component id will match the property name:
+  </p>
+  
+<source>
+    @Component(type = "TextField")
+    public abstract TextField getEmail();  
+</source>
+
+<p>
+ When the two must differ, then the id attibute can be specified:
+</p>
+
+
+<source>
+    @Component(id = "email" type = "TextField")
+    public abstract TextField getEmailField();  
+</source> 
+
+<p>
+Component bindings are specified with an array of strings.  This array must be an even length,
+as it consists of alternating parameter names and binding references:
+</p>
+
+<source>
+    @Component(type = "Conditional", bindings =
+    { "condition", "message", "element", "div" })
+    public abstract IComponent getIfMessage();  
+</source>
+  
+</section>
+
+<section>
   <title>ComponentClass</title>
   
   <p>
@@ -147,7 +188,7 @@ public abstract class MyComponent extends BaseComponent
 </p>
 
 <source>
-@ComponentClass(allowBody=false, allowInformalParameters=false)
+@ComponentClass(allowBody = false, allowInformalParameters = false)
 {
 ...
 </source>
@@ -161,7 +202,7 @@ If a component has reserved parameters, they can be specified as well:
 </p>
 
 <source>
-@ComponentClass(reservedParameters="href,name")
+@ComponentClass(reservedParameters = "href,name")
 public abstract class LinkWriter extends BaseComponent
 {
 ...
@@ -310,7 +351,7 @@ with  a type of "state".
 </p>
 
 <source>
-  @Parameter(name="page")
+  @Parameter(name = "page")
   public abstract String getTargetPage();
 </source>
 

@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.annotations;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Map;
@@ -180,7 +179,6 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
                 .getMock();
 
         Throwable t = new RuntimeException("Simulated failure.");
-
 
         classWorker.performEnhancement(op, spec, DeprecatedBean.class);
         classWorkerc.setThrowable(t);
