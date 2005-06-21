@@ -14,20 +14,18 @@
 
 package org.apache.tapestry.annotations;
 
-import java.lang.annotation.Annotation;
-
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.annotations.ComponentAnnotationWorker}.
+ * Tests for {@link org.apache.tapestry.annotations.ComponentClassAnnotationWorker}.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
+public class TestComponentClassAnnotationWorker extends BaseAnnotationTestCase
 {
     private EnhancementOperation newOp(Class componentClass)
     {
@@ -47,7 +45,7 @@ public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
 
         replayControls();
 
-        new ComponentAnnotationWorker().performEnhancement(op, spec, baseClass);
+        new ComponentClassAnnotationWorker().performEnhancement(op, spec, baseClass);
 
         verifyControls();
 

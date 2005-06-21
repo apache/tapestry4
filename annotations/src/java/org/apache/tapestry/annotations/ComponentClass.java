@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
 @Target(
 { ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Component {
+public @interface ComponentClass {
 
     /**
      * If true (the default), then the defined component will allow and use it's body. Otherwise the
