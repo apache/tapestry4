@@ -18,7 +18,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 
 /**
  * A component that can substitute for any HTML element. [<a
