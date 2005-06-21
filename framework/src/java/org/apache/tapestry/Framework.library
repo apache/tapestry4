@@ -45,10 +45,12 @@
     <component-type type="FieldLabel" specification-path="valid/FieldLabel.jwc"/>
     <component-type type="Foreach" specification-path="components/Foreach.jwc"/>
     <component-type type="Frame" specification-path="html/Frame.jwc"/>
+    <component-type type="Else" specification-path="components/Else.jwc"/>
     <component-type type="ExceptionDisplay" specification-path="html/ExceptionDisplay.jwc"/>
     <component-type type="Form" specification-path="form/Form.jwc"/>
     <component-type type="GenericLink" specification-path="link/GenericLink.jwc"/>
     <component-type type="Hidden" specification-path="form/Hidden.jwc"/>
+    <component-type type="If" specification-path="components/If.jwc"/>
     <component-type type="Image" specification-path="html/Image.jwc"/>
     <component-type type="ImageSubmit" specification-path="form/ImageSubmit.jwc"/>
 	<component-type type="Insert" specification-path="components/Insert.jwc"/>
@@ -73,7 +75,7 @@
     <component-type type="TextField" specification-path="form/TextField.jwc"/>
     <component-type type="Upload" specification-path="form/Upload.jwc"/>
     <component-type type="ValidField" specification-path="valid/ValidField.jwc"/>
-          
+
     <page name="StaleLink" specification-path="pages/StaleLink.page"/>
     <page name="StaleSession" specification-path="pages/StaleSession.page"/>
     <page name="Exception" specification-path="pages/Exception.page"/>

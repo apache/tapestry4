@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+
+<component-specification class="org.apache.tapestry.components.IfBean" allow-body="yes" allow-informal-parameters="yes">
+    
+  <description>
+  Conditionally emulates an element and its attributes and/or includes a block of content 
+  if a condition is met.
+  </description>
+  
+  <parameter name="condition" required="yes">
+    <description>
+    The condition to evaluate.
+    </description>
+  </parameter>
+  
+  <parameter name="conditionValue">
+    <description>
+    The value of the condition. During render this is obtained from
+    the condition parameter. During rewind it is the submitted condition.
+    </description>
+  </parameter>
+
+  <parameter name="listener"/>
+  
+  <parameter name="formless" default-value="false">
+    <description>
+    Determines whether to avoid creating hidden fields within a form.
+    </description>
+  </parameter>
+  
+  <parameter name="element" default-value="templateTag">
+  	<description>
+  	The element to emulate.
+  	</description>
+  </parameter>
+  
+  <parameter name="templateTag" default-value="null">
+    <description>
+    The tag with which the component was inserted in its parent template
+    This parameter will be bound automatically by the framework.
+    </description>
+  </parameter>
+  
+  <property name="name"/>
+  <property name="form"/>
+
+  <inject property="dataSqueezer" object="service:tapestry.data.DataSqueezer"/>
+  <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
+    
+</component-specification>
