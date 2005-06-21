@@ -69,4 +69,10 @@ class AnnotationMessages
                 clazz.getName(),
                 cause);
     }
+
+    public static String oddBindings(int length)
+    {
+        return _formatter.format("odd-bindings", new Integer(length));
+    }
+
 }

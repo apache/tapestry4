@@ -19,7 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
+import org.apache.tapestry.form.Checkbox;
 import org.apache.tapestry.form.TextField;
 import org.apache.tapestry.html.BasePage;
 
@@ -89,4 +91,21 @@ public abstract class AnnotatedPage extends BasePage
 
     @InjectPage("SomePageName")
     public abstract IPage getMyPage();
+
+    @Component(type = "TextField")
+    public abstract TextField getTextField();
+
+    @Component(type = "Checkbox", id = "email")
+    public abstract Checkbox getEmailField();
+
+    @Component(type = "TextField", inheritInformalParameters = true)
+    public abstract IComponent getInherit();
+
+    @Component(type = "Conditional", bindings =
+    { "condition", "message", "element", "div" })
+    public abstract IComponent getComponentWithBindings();
+
+    @Component(type = "Insert", bindings =
+    { "value" })
+    public abstract IComponent getOddBindingCount();
 }
