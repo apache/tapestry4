@@ -20,19 +20,19 @@ import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * Sets properties of the {@link org.apache.tapestry.spec.IComponentSpecification} based on the
- * {@link org.apache.tapestry.annotations.Component} annotation. In addition, marks the component as
+ * {@link org.apache.tapestry.annotations.ComponentClass} annotation. In addition, marks the component as
  * deprecated if the {@link java.lang.Deprecated} annotation is present on the class.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class ComponentAnnotationWorker implements ClassAnnotationEnhancementWorker
+public class ComponentClassAnnotationWorker implements ClassAnnotationEnhancementWorker
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
             Class baseClass)
     {
-        Component component = (Component) baseClass.getAnnotation(Component.class);
+        ComponentClass component = (ComponentClass) baseClass.getAnnotation(ComponentClass.class);
 
         spec.setAllowBody(component.allowBody());
         spec.setAllowInformalParameters(component.allowInformalParameters());

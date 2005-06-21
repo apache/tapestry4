@@ -126,17 +126,17 @@ commas (for boolean properties, the value is optional).
 </section>
 
 <section>
-  <title>Component</title>
+  <title>ComponentClass</title>
   
   <p>
     
-   The <link href="&javadoc;/Component.html">Component</link> annotation is used
+   The <link href="&javadoc;/ComponentClass.html">ComponentClass</link> annotation is used
     to mark a Java class as a component, and allows several properties normally specified
     using the <link href="&spec;#spec.component-specification">&lt;component-specification&gt;</link> element.
   </p>
   
 <source>
-@Component
+@ComponentClass
 public abstract class MyComponent extends BaseComponent
 {
 ...
@@ -147,13 +147,13 @@ public abstract class MyComponent extends BaseComponent
 </p>
 
 <source>
-@Component(allowBody=false, allowInformalParameters=false)
+@ComponentClass(allowBody=false, allowInformalParameters=false)
 {
 ...
 </source>
   
 <p>
-Note that simply having a @Component annotation will <em>override</em> those two properties.
+Note that simply having a @ComponentClass annotation will <em>override</em> those two properties.
 </p>
 
 <p>
@@ -161,7 +161,7 @@ If a component has reserved parameters, they can be specified as well:
 </p>
 
 <source>
-@Component(reservedParameters="href,name")
+@ComponentClass(reservedParameters="href,name")
 public abstract class LinkWriter extends BaseComponent
 {
 ...
@@ -173,7 +173,7 @@ a warning to be output whenever the component is referenced):
 </p>
 
 <source>
-@Component @Deprecated
+@ComponentClass @Deprecated
 public abstact class YeOldeComponent extends AbstractComponent
 {
 ...

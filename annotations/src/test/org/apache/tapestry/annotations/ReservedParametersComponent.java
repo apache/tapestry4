@@ -15,12 +15,12 @@
 package org.apache.tapestry.annotations;
 
 /**
- * Used by {@link org.apache.tapestry.annotations.TestComponentAnnotationWorker}.
+ * Used by {@link org.apache.tapestry.annotations.TestComponentClassAnnotationWorker}.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
-@Component(reservedParameters = "foo,bar,baz")
+@ComponentClass(reservedParameters = "foo,bar,baz")
 public class ReservedParametersComponent
 {
 

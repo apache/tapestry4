@@ -15,12 +15,12 @@
 package org.apache.tapestry.annotations;
 
 /**
- * Used by {@link org.apache.tapestry.annotations.TestComponentAnnotationWorker}.
+ * Used by {@link org.apache.tapestry.annotations.TestComponentClassAnnotationWorker}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@Component(allowBody = false, allowInformalParameters = false)
+@ComponentClass(allowBody = false, allowInformalParameters = false)
 public class FormalOnlyComponent
 {
 
