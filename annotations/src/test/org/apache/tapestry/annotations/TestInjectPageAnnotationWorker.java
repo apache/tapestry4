@@ -45,6 +45,7 @@ public class TestInjectPageAnnotationWorker extends BaseAnnotationTestCase
         InjectSpecification is = (InjectSpecification) spec.getInjectSpecifications().get(0);
 
         assertEquals("myPage", is.getProperty());
+        assertEquals("page", is.getType());
         assertEquals("SomePageName", is.getObject());
         assertNull(is.getLocation());
     }

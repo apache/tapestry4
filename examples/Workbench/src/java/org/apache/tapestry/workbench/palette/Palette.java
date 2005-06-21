@@ -16,7 +16,9 @@ package org.apache.tapestry.workbench.palette;
 
 import java.util.List;
 
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.form.StringPropertySelectionModel;
@@ -38,17 +40,20 @@ public abstract class Palette extends BasePage
      * Invoked before {@link #formSubmit(IRequestCycle)} if the user clicks the "advance" button.
      */
 
-    public void advance(IRequestCycle cycle)
+    @InjectPage("PaletteResults")
+    public abstract PaletteResults getResultsPage();
+
+    public IPage advance()
     {
         // Since Palette and palette.Results come from
         // a library now, we need to make sure
         // the namespace id is part of the name.
 
-        PaletteResults results = (PaletteResults) cycle.getPage("PaletteResults");
+        PaletteResults results = getResultsPage();
 
         results.setSelectedColors(getSelectedColors());
 
-        cycle.activate(results);
+        return results;
     }
 
     private IPropertySelectionModel colorModel;

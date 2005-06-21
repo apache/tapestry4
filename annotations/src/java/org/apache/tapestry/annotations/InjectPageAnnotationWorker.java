@@ -42,6 +42,7 @@ public class InjectPageAnnotationWorker implements MethodAnnotationEnhancementWo
         InjectSpecification is = new InjectSpecificationImpl();
 
         is.setProperty(propertyName);
+        is.setType("page");
         is.setObject(injectPage.value());
 
         spec.addInjectSpecification(is);
