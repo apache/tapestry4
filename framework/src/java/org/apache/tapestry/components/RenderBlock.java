@@ -27,10 +27,12 @@ import org.apache.tapestry.IRequestCycle;
  * page. This works, even when the Block contains links, forms and form components. The action and
  * direct services will create URLs that properly address this situation.
  * <p>
- * However, because the rendering page can't know ahead of time about these foriegn Blocks,
- * {@link org.apache.tapestry.event.PageRenderListener}methods (for components and objects of the
- * foriegn page) via RenderBlock will <em>not</em> be executed. This specifically affects the
- * methods of the {@link org.apache.tapestry.event.PageRenderListener}interface.
+ * However, because the rendering page can't know ahead of time about these foreign Blocks,
+ * {@link org.apache.tapestry.event.PageBeginRenderListener} and
+ * {@link org.apache.tapestry.event.PageEndRenderListener} methods (for components and objects of the
+ * foreign page) via RenderBlock will <em>not</em> be executed. This specifically affects the
+ * methods of the {@link org.apache.tapestry.event.PageBeginRenderListener} and
+ * {@link org.apache.tapestry.event.PageEndRenderListener} interfaces.
  * <p>
  * Before rendering its {@link Block}, RenderBlock will set itself as the Block's inserter, and
  * will reset the inserter after the {@link Block}is rendered. This gives the components contained
