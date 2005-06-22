@@ -17,10 +17,11 @@ package org.apache.tapestry.workbench.components;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.annotations.InjectState;
+import org.apache.tapestry.annotations.Message;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.util.StringSplitter;
 import org.apache.tapestry.workbench.Visit;
 
 /**
@@ -42,7 +43,10 @@ public abstract class Border extends BaseComponent implements PageBeginRenderLis
 
     @InjectState("visit")
     public abstract Visit getVisit();
-    
+
+    @Message
+    public abstract String getTabOrder();
+
     public void pageBeginRender(PageEvent event)
     {
         Visit visit = getVisit();
@@ -50,13 +54,7 @@ public abstract class Border extends BaseComponent implements PageBeginRenderLis
         setActivePageName(visit.getActiveTabName());
 
         if (_tabOrder == null)
-        {
-            String tabOrderValue = getMessages().getMessage("tabOrder");
-
-            StringSplitter splitter = new StringSplitter(' ');
-
-            _tabOrder = splitter.splitToArray(tabOrderValue);
-        }
+            _tabOrder = TapestryUtils.split(getTabOrder(), ' ');
     }
 
     /**

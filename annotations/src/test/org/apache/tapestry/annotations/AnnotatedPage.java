@@ -102,10 +102,24 @@ public abstract class AnnotatedPage extends BasePage
     public abstract IComponent getInherit();
 
     @Component(type = "Conditional", bindings =
-    { "condition", "message", "element", "div" })
+    { "condition=message", "element=div" })
     public abstract IComponent getComponentWithBindings();
 
-    @Component(type = "Insert", bindings =
-    { "value" })
-    public abstract IComponent getOddBindingCount();
+    @Message
+    public abstract String noArgsMessage();
+
+    @Message("message-key")
+    public abstract String messageWithSpecificKey();
+
+    @Message
+    public abstract String messageWithParameters(String foo, Map bar);
+
+    @Message
+    public abstract String messageWithPrimitives(int foo, double bar);
+
+    @Message
+    public abstract void voidMessage();
+
+    @Message
+    public abstract String getLikeGetter();
 }

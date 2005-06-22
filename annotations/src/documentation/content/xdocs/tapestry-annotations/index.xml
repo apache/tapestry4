@@ -63,7 +63,7 @@
 </source>  
 
 <p>
-The asset will be avaialble using the property name using the "asset:" binding prefix.
+The asset will be available using the property name using the "asset:" binding prefix.
 </p>
   
   
@@ -154,13 +154,13 @@ commas (for boolean properties, the value is optional).
 </source> 
 
 <p>
-Component bindings are specified with an array of strings.  This array must be an even length,
-as it consists of alternating parameter names and binding references:
+Component bindings are specified with an array of strings.  The individual strings
+identify the parameter name and the binding reference:
 </p>
 
 <source>
     @Component(type = "Conditional", bindings =
-    { "condition", "message", "element", "div" })
+    { "condition=message", "element=div" })
     public abstract IComponent getIfMessage();  
 </source>
   
@@ -325,6 +325,76 @@ Injecting other pages is most commonly used as part of a listener method.
 with  a type of "state".
   </p>  
     
+</section>
+
+<section>
+  <title>Message</title>
+  
+  <p>
+    The <link href="&javadoc;/Message.html">Message</link> annotation provides easy access to
+    localized messages.  It is attached to a method that returns a String, and takes any number
+    of parameters. In its most basic form, it is used alone:
+  </p>
+  
+<source>
+    @Message
+    public abstract getPageTitle();
+</source>
+
+<p>
+  As used here, the method name is converted into a message property key: <code>page-title</code>:
+</p>
+
+<ul>
+  <li>The prefix "get" is stripped off (if present)</li>
+  <li>The letter following "get" is converted to lower case</li>
+  <li>Other capitalized letters are converted to lower case and preceded with a dash ("-")</li>
+</ul>
+
+<p>
+  The end result is equivalent to:
+</p>
+
+<source>
+  public String getPageTitle()
+  {
+    return getMessages().getMessage("page-title");
+  }
+</source>
+
+<p>
+  When these method-name to property key conversion rules don't yield the correct key, it may be specified explicitly:
+</p>
+
+<source>
+  @Message("get-a-life")
+  public abstract String getALife();
+</source>
+
+<p>
+  The method may take parameters as well; these parameter will be converted into message arguments,
+  which can be referenced inside the message as {0}, {1}, etc.
+</p>
+
+<source>
+  @Message
+  public abstract String getLineTotal(BigDecimal total);
+</source>
+
+<p>
+This is equivalent to:
+</p>
+
+<source>
+  public String getLineTotal(BigDecimal total)
+  {
+    return getMessages().format("line-total", new Object[] { total });
+  }
+</source>
+
+<p>
+Primitive types passed in as parameters are automatically converted to wrapper types.
+</p>
 </section>
 
 <section>
