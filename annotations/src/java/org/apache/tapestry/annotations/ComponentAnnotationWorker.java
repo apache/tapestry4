@@ -50,8 +50,6 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
         cc.setType(component.type());
         cc.setPropertyName(propertyName);
 
-        String[] bindings = component.bindings();
-
         for (String binding : component.bindings())
         {
             addBinding(cc, binding);
@@ -75,8 +73,8 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
         if (equalsx + 1 >= binding.length())
             invalidBinding(binding);
 
-        String name = binding.substring(0, equalsx);
-        String value = binding.substring(equalsx);
+        String name = binding.substring(0, equalsx).trim();
+        String value = binding.substring(equalsx + 1).trim();
 
         IBindingSpecification bs = new BindingSpecification();
         bs.setType(BindingType.PREFIXED);

@@ -89,29 +89,16 @@ public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
         assertEquals("div", bs2.getValue());
     }
 
-    public void testOddBindingCount()
+    public void testBindingWhitespaceTrimmed()
     {
-        Method method = findMethod(AnnotatedPage.class, "getOddBindingCount");
+        IContainedComponent cc = run("whitespace", "getWhitespace");
 
-        EnhancementOperation op = newOp();
+        IBindingSpecification bs1 = cc.getBinding("value");
+        assertNull(bs1.getLocation());
+        assertEquals(BindingType.PREFIXED, bs1.getType());
+        assertEquals("email", bs1.getValue());
 
-        replayControls();
-
-        IComponentSpecification spec = new ComponentSpecification();
-
-        try
-        {
-            new ComponentAnnotationWorker().performEnhancement(op, spec, method);
-            unreachable();
-        }
-        catch (ApplicationRuntimeException ex)
-        {
-            assertEquals(
-                    "The list of bindings was length 1.  It should be an even length, consisting of alternating parameter names and binding references.",
-                    ex.getMessage());
-        }
-
-        verifyControls();
-
+        IBindingSpecification bs2 = cc.getBinding("displayName");
+        assertEquals("message:email-label", bs2.getValue());
     }
 }
