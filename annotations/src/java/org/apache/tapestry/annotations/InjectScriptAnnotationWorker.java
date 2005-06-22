@@ -17,36 +17,31 @@ package org.apache.tapestry.annotations;
 import java.lang.reflect.Method;
 
 import org.apache.tapestry.enhance.EnhancementOperation;
-import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
+import org.apache.tapestry.spec.InjectSpecificationImpl;
 
 /**
- * Test(s) for {@link org.apache.tapestry.annotations.InjectPageAnnotationWorker}.
- * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestInjectPageAnnotationWorker extends BaseAnnotationTestCase
+public class InjectScriptAnnotationWorker implements MethodAnnotationEnhancementWorker
 {
-    public void testSuccess()
+
+    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
+            Method method)
     {
-        EnhancementOperation op = newOp();
-        IComponentSpecification spec = new ComponentSpecification();
+        InjectScript annotation = method.getAnnotation(InjectScript.class);
 
-        Method method = findMethod(AnnotatedPage.class, "getMyPage");
+        String propertyName = AnnotationUtils.getPropertyName(method);
 
-        replayControls();
+        InjectSpecification is = new InjectSpecificationImpl();
 
-        new InjectPageAnnotationWorker().performEnhancement(op, spec, method);
+        is.setProperty(propertyName);
+        is.setType("script");
+        is.setObject(annotation.value());
 
-        verifyControls();
-
-        InjectSpecification is = (InjectSpecification) spec.getInjectSpecifications().get(0);
-
-        assertEquals("myPage", is.getProperty());
-        assertEquals("page", is.getType());
-        assertEquals("SomePageName", is.getObject());
-        assertNull(is.getLocation());
+        spec.addInjectSpecification(is);
     }
+
 }

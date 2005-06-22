@@ -90,8 +90,7 @@
        <action type="add" dev="HLS">Add validators: binding prefix, which allows validators to be
         specified as a succinct list.</action>
         <action type="add" dev="HLS">Rename Component annotation to ComponentClass.</action>
-        <action type="add" dev="HLS">Add Component annotation.</action>
-        <action type="add" dev="HLS">Add Message annotation.</action>
+        <action type="add" dev="HLS">Add Component, Message, InjectMeta and InjectScript annotations.</action>
     </release>
     <release version="4.0-alpha-3" date="May 16 2005">
       <action type="add" dev="HLS">Add initial support for the validator: binding prefix.</action>
