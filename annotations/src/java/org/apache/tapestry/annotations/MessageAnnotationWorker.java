@@ -15,11 +15,9 @@
 package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
-
-import javassist.Modifier;
+import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.Tapestry;
