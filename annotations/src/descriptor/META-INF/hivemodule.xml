@@ -105,8 +105,9 @@
     <worker annotation="Message" object="instance:MessageAnnotationWorker"/>
     
     <!-- These update the component specification with new sub-elements. Later, the 
-         existing annotation workers perform the work, as if the sub-elements were
-         specified in the XML. -->
+         existing enhancement workers perform the work, as if the sub-elements were
+         specified in the XML. This is actually a lot easier and just as powerful, and
+         the delegating style will probably go pretty soon.  -->
          
     <worker annotation="Persist" object="instance:PersistAnnotationWorker"/>
     <worker annotation="Bean" object="instance:BeanAnnotationWorker"/>
@@ -114,6 +115,8 @@
     <worker annotation="Parameter" object="instance:ParameterAnnotationWorker"/>
     <worker annotation="InjectPage" object="instance:InjectPageAnnotationWorker"/>
     <worker annotation="Component" object="instance:ComponentAnnotationWorker"/>
+    <worker annotation="InjectMeta" object="instance:InjectMetaAnnotationWorker"/>
+    <worker annotation="InjectScript" object="instance:InjectScriptAnnotationWorker"/>
   </contribution>
   
   <service-point id="InjectObjectAnnotationWorker" interface="MethodAnnotationEnhancementWorker">
