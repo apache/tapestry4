@@ -52,19 +52,9 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
 
         String[] bindings = component.bindings();
 
-        if (bindings.length % 2 != 0)
-            throw new ApplicationRuntimeException(AnnotationMessages.oddBindings(bindings.length));
-
-        for (int i = 0; i < bindings.length; i += 2)
+        for (String binding : component.bindings())
         {
-            String name = bindings[i];
-            String value = bindings[i + 1];
-
-            IBindingSpecification bs = new BindingSpecification();
-            bs.setType(BindingType.PREFIXED);
-            bs.setValue(value);
-
-            cc.setBinding(name, bs);
+            addBinding(cc, binding);
         }
 
         String id = component.id();
@@ -73,5 +63,30 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
             id = propertyName;
 
         spec.addComponent(id, cc);
+    }
+
+    void addBinding(IContainedComponent component, String binding)
+    {
+        int equalsx = binding.indexOf('=');
+
+        if (equalsx < 1)
+            invalidBinding(binding);
+
+        if (equalsx + 1 >= binding.length())
+            invalidBinding(binding);
+
+        String name = binding.substring(0, equalsx);
+        String value = binding.substring(equalsx);
+
+        IBindingSpecification bs = new BindingSpecification();
+        bs.setType(BindingType.PREFIXED);
+        bs.setValue(value);
+
+        component.setBinding(name, bs);
+    }
+
+    private void invalidBinding(String binding)
+    {
+        throw new ApplicationRuntimeException(AnnotationMessages.bindingWrongFormat(binding));
     }
 }

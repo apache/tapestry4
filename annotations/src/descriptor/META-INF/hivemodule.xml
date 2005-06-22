@@ -102,6 +102,7 @@
     <worker annotation="InjectComponent" object="instance:InjectComponentAnnotationWorker"/>
     <worker annotation="InjectState" object="service:InjectStateAnnotationWorker"/>
     <worker annotation="InjectAsset" object="instance:InjectAssetAnnotationWorker"/>
+    <worker annotation="Message" object="instance:MessageAnnotationWorker"/>
     
     <!-- These update the component specification with new sub-elements. Later, the 
          existing annotation workers perform the work, as if the sub-elements were

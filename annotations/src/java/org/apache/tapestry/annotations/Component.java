@@ -51,7 +51,10 @@ public @interface Component {
     boolean inheritInformalParameters() default false;
 
     /**
-     * Bindings for the component, as a list of
+     * Bindings for the component. Each binding string is of the format
+     * <code><em>name</em>=<em>binding refernce</em></code>, where the binding reference is
+     * the same kind of string (possibly with a prefix such as "ognl:" or "message:" as would appear
+     * in a specification.
      * 
      * @Binding annotations.
      */

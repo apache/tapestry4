@@ -18,6 +18,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.hivemind.service.ClassFabUtils;
 
 /**
  * @author Howard M. Lewis Ship
@@ -70,9 +71,14 @@ class AnnotationMessages
                 cause);
     }
 
-    public static String oddBindings(int length)
+    public static String returnStringOnly(Class returnType)
     {
-        return _formatter.format("odd-bindings", new Integer(length));
+        return _formatter.format("return-string-only", ClassFabUtils.getJavaClassName(returnType));
+    }
+
+    public static String bindingWrongFormat(String binding)
+    {
+        return _formatter.format("binding-wrong-format", binding);
     }
 
 }
