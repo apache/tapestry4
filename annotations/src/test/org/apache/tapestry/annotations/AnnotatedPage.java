@@ -21,6 +21,7 @@ import java.util.Map;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
+import org.apache.tapestry.IScript;
 import org.apache.tapestry.form.Checkbox;
 import org.apache.tapestry.form.TextField;
 import org.apache.tapestry.html.BasePage;
@@ -104,11 +105,11 @@ public abstract class AnnotatedPage extends BasePage
     @Component(type = "Conditional", bindings =
     { "condition=message", "element=div" })
     public abstract IComponent getComponentWithBindings();
-    
+
     @Component(type = "TextField", bindings =
     { "value = email", "displayName = message:email-label" })
-    public abstract IComponent getWhitespace();  
-    
+    public abstract IComponent getWhitespace();
+
     @Message
     public abstract String noArgsMessage();
 
@@ -126,4 +127,10 @@ public abstract class AnnotatedPage extends BasePage
 
     @Message
     public abstract String getLikeGetter();
+
+    @InjectMeta("fred")
+    public abstract String getMetaFred();
+
+    @InjectScript("foo.script")
+    public abstract IScript getScript();
 }
