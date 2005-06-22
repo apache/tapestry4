@@ -265,6 +265,26 @@ This is equivalent to specifying the property attribute of the
   
 </section>
         
+<section>
+  <title>InjectMeta</title>
+  
+  <p>
+    The <link href="&javadoc;/InjectMeta.html">InjectMeta</link> annotation
+    allows meta data from the specification 
+    (<link href="&spec;#spec.meta">&lt;meta&gt; elements)</link> to be
+    exposed as properties.  
+  </p>
+  
+<source>
+  @InjectMeta("page-title")
+  public abstract String getPageTitle();
+</source>  
+
+<p>
+  The new property does not have to be type String; an automatic type conversion takes place.
+</p>
+  
+</section>
 
 <section>
   <title>InjectObject</title>
@@ -303,6 +323,23 @@ with the default type of "object".
 <p>
 Injecting other pages is most commonly used as part of a listener method.
 </p>
+
+</section>
+
+<section>
+  <title>InjectScript</title>
+  
+  <p>
+    The <link href="&javadoc;/InjectScript.html">InjectScript</link> annotation allows
+    JavaScript templates to be exposed as properties. The annotation's value is the
+    path to the script (relative to the page or component specification, if it exists, or
+    relative to the template otherwise).
+  </p>
+  
+<source>
+  @InjectScript("scripts/VerifyAccountId.script")
+  public abstract IScript getVerifyAccountIdScript();
+</source>  
 
 </section>
 
