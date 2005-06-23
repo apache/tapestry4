@@ -237,6 +237,9 @@ Things that will cause you trouble when upgrading:
    <li>The Jakarta commons-lang library is no longer a dependency of Tapestry; this means
     that the EnumPropertySelectionModel class is no longer available (however, you can easily
     copy the source from Tapestry 3.0). </li>
+    <li>For the Submit component (as well as LinkSubmit and ImageSubmit), the invocation of the listener
+      is (by default) deferred until the end of the form submission, just before the Form's listener is invoked.  In Tapestry 3.0, the invocation was immediate. Deferred is better for most, but
+      not all, situations. </li>
 </ul>
 
 <note>
