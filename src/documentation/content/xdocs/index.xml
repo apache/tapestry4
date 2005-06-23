@@ -125,7 +125,8 @@ your productivity. Here's a few of our favorites:
   </li>
   <li>
     Tapestry 4.0 makes much less use of reflection and &OGNL; than Tapestry 3.0; partly
-    because there are many new <link href="UsersGuide/bindings.html">binding prefixes</link>.
+    because there are many new <link href="UsersGuide/bindings.html">binding prefixes</link> and largely
+    because of how parameters are now implemented.
   </li>
   <li>
    HiveMind services and &Spring; beans to be directly injected
@@ -155,6 +156,10 @@ your productivity. Here's a few of our favorites:
   <li>
     Page properties can now be persisted on the client, as well as in the session.
   </li>
+  <li>
+    Components and component parameters can now be marked as deprecated. Component parameters may
+    have aliases (used when renaming a parameter).
+  </li>
 </ul>
 
 <p>
@@ -180,6 +185,64 @@ Tapestry 4.0 should be production-ready soon.  It needs more exposure and more d
 momement, it is still recommended that you stick with Tapestry <strong>3.0.3</strong>,
 the latest stable release.
 </p>
+
+<warning>
+One new feature of Tapestry 4.0, default bindings for parameters, has proven to be quite controversial.
+This feature allows you to define a default binding prefix for a parameter as part of the &lt;parameter&gt; 
+element.  Then in your template, you can omit the prefix ... this allows you to say
+<code>value="userId"</code> rather than <code>value="ognl:userId"</code>,
+or <code>listener="doSubmit"</code> rather than <code>value="listener:doSubmit"</code>.
+The pros and cons are still being evaluated and exposure of the beta release may provoke a new discussion
+and possibly the removal of this feature. If you are intending to start work on a production application
+using Tapestry 4.0, you are advised to <em>always</em> use an explicit binding prefix.
+</warning>
+  
+</section>
+
+<section>
+  <title>Upgrading from Tapestry 3.0</title>
+  
+  
+<p>
+  Tapestry 4.0 features a large number of new features, and is some limited cases, backwards compatibility
+  has been compromised.  <link href="site:upgrade">Full details</link> are forthcoming, but in general:
+</p>  
+
+<ul>
+  <li>Tapestry 3.0 page and component specifications are still honored</li>
+  <li>Page and component templates have not changed</li>
+</ul>
+
+<p>
+Things that will cause you trouble when upgrading:
+</p>
+
+<ul>
+  <li>Defining engine services has changed entirely, as has the IEngineService API</li>
+  <li>Subclassing BaseEngine to override exception handling has changed; it is now about
+    creating and contributing new HiveMind services to override the default behavior.</li>
+  <li>
+    Parameter direction "custom" is no longer really supported. Defining a parameter
+    always creates a corresponding property.
+  </li>
+  <li>
+    The <em>parameterName</em>Binding property is no longer created for each parameter,
+    instead you must use the getBinding() method.
+  </li> 
+   <li>
+    The relationship between the page loader and the specification delegate has changed;
+    the specifications provided by the delegate are now cached by the loader (in 3.0,
+    the delegate was responsible for caching).
+   </li>
+   <li>The Jakarta commons-lang library is no longer a dependency of Tapestry; this means
+    that the EnumPropertySelectionModel class is no longer available (however, you can easily
+    copy the source from Tapestry 3.0). </li>
+</ul>
+
+<note>
+We apologize for any lack of documentation; the alpha period for Tapestry 4.0 has been marked by furious
+activity, the beta period is about bug fixing and catching up on the documentation.
+</note>
   
 </section>
 
