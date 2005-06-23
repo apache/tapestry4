@@ -58,13 +58,16 @@ public class TestFieldLabel extends BaseFormComponentTest
         return page;
     }
 
-    private IFormComponent newField(String displayName)
+    private IFormComponent newField(String displayName, String clientId)
     {
         MockControl control = newControl(IFormComponent.class);
         IFormComponent field = (IFormComponent) control.getMock();
 
         field.getDisplayName();
         control.setReturnValue(displayName);
+
+        field.getClientId();
+        control.setReturnValue(clientId);
 
         return field;
     }
@@ -104,7 +107,7 @@ public class TestFieldLabel extends BaseFormComponentTest
 
         fl.render(writer, cycle);
 
-        assertBuffer("{LABEL-PREFIX}FredFlintstone{LABEL-SUFFIX}");
+        assertBuffer("{LABEL-PREFIX}<label>FredFlintstone</label>{LABEL-SUFFIX}");
 
         verifyControls();
     }
@@ -127,7 +130,7 @@ public class TestFieldLabel extends BaseFormComponentTest
 
         fl.render(writer, cycle);
 
-        assertBuffer("{LABEL-PREFIX}<b>FredFlintstone</b>{LABEL-SUFFIX}");
+        assertBuffer("{LABEL-PREFIX}<label><b>FredFlintstone</b></label>{LABEL-SUFFIX}");
 
         verifyControls();
     }
@@ -178,7 +181,7 @@ public class TestFieldLabel extends BaseFormComponentTest
         IForm form = (IForm) formc.getMock();
 
         IMarkupWriter writer = newBufferWriter();
-        IFormComponent field = newField("MyLabel");
+        IFormComponent field = newField("MyLabel", null);
         Location l = newLocation();
 
         MockControl cyclec = newControl(IRequestCycle.class);
@@ -199,7 +202,41 @@ public class TestFieldLabel extends BaseFormComponentTest
 
         fl.render(writer, cycle);
 
-        assertBuffer("{LABEL-PREFIX}MyLabel{LABEL-SUFFIX}");
+        assertBuffer("{LABEL-PREFIX}<label>MyLabel</label>{LABEL-SUFFIX}");
+
+        verifyControls();
+    }
+
+    public void testFieldWithClientId()
+    {
+        IValidationDelegate delegate = new MockDelegate();
+
+        MockControl formc = newControl(IForm.class);
+        IForm form = (IForm) formc.getMock();
+
+        IMarkupWriter writer = newBufferWriter();
+        IFormComponent field = newField("MyLabel", "clientId");
+        Location l = newLocation();
+
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+
+        trainIsRewinding(cyclec, cycle, false);
+        trainGetForm(cyclec, cycle, form);
+
+        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
+        { "location", l, "field", field });
+
+        form.prerenderField(writer, field, l);
+
+        form.getDelegate();
+        formc.setReturnValue(delegate);
+
+        replayControls();
+
+        fl.render(writer, cycle);
+
+        assertBuffer("{LABEL-PREFIX}<label for=\"clientId\">MyLabel</label>{LABEL-SUFFIX}");
 
         verifyControls();
     }

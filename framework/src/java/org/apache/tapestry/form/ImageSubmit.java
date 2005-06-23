@@ -74,6 +74,8 @@ public abstract class ImageSubmit extends Submit
 
         writer.attribute("src", imageURL);
 
+        renderIdAttribute(writer, cycle);
+
         renderInformalParameters(writer, cycle);
 
         writer.closeTag();

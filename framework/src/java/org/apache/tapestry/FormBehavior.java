@@ -32,8 +32,8 @@ public interface FormBehavior
      * Adds an additional event handler. The type determines when the handler will be invoked,
      * {@link FormEventType#SUBMIT}is most typical.
      * 
-     * @deprecated Wiring of form event handlers is now managed on the client side. This method
-     * may be removed in a future release of Tapestry.
+     * @deprecated Wiring of form event handlers is now managed on the client side. This method may
+     *             be removed in a future release of Tapestry.
      */
     public void addEventHandler(FormEventType type, String functionName);
 
@@ -66,6 +66,10 @@ public interface FormBehavior
      * id, with an index number added to ensure uniqueness.
      * <p>
      * Simply invokes {@link #getElementId(IFormComponent, String)}with the component's id.
+     * <p>
+     * Note: yes, some confusion on naming here. This is the form element id, which should be (for
+     * Tapestry purposes) unique within the rendered form. The {@link IFormComponent#getClientId()}
+     * is different, and should be unique within the rendered page.
      */
 
     public String getElementId(IFormComponent component);

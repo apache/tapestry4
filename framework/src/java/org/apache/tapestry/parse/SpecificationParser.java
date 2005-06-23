@@ -1152,8 +1152,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void enterConfigure()
     {
+        String attributeName = _DTD_4_0 ? "property" : "property-name";
+
         String propertyName = getValidatedAttribute(
-                "property-name",
+                attributeName,
                 PROPERTY_NAME_PATTERN,
                 "invalid-property-name");
 
@@ -1305,8 +1307,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
                 PARAMETER_NAME_PATTERN,
                 "invalid-parameter-name");
 
+        String attributeName = _DTD_4_0 ? "property" : "property-name";
+
         String propertyName = getValidatedAttribute(
-                "property-name",
+                attributeName,
                 PROPERTY_NAME_PATTERN,
                 "invalid-property-name");
 

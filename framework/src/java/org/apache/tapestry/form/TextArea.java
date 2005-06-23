@@ -48,6 +48,8 @@ public abstract class TextArea extends AbstractValidatableField
         if (isDisabled())
             writer.attribute("disabled", "disabled");
 
+        renderIdAttribute(writer, cycle);
+
         renderDelegateAttributes(writer, cycle);
         
         renderContributions(writer, cycle);

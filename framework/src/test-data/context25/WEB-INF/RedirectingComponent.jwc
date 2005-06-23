@@ -21,6 +21,6 @@
 
 <component-specification class="org.apache.tapestry.junit.mock.c25.RedirectingComponent">
 
-	<parameter name="page" required="yes" property-name="targetPage"/>
+	<parameter name="page" required="yes" property="targetPage"/>
 
 </component-specification>

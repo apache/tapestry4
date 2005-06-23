@@ -47,7 +47,7 @@
 
 		<assert-regexp name="Select Tag">
 <![CDATA[
-<select name="\$Select">\s+<option/>
+<select name="\$Select" id="\$Select">\s+<option/>
 ]]>
 		</assert-regexp>
 
@@ -135,7 +135,7 @@ Selections: vegetable.
 
 		<assert-output name="Select Tag">
 <![CDATA[
-<select name="$Select" multiple="multiple">
+<select name="$Select" multiple="multiple" id="$Select">
 ]]>
 		</assert-output>
 
@@ -234,7 +234,7 @@ Selections: vegetable, mineral.
 
 		<assert-output name="Select Tag">
 <![CDATA[
-<select name="$Select" disabled="disabled">
+<select name="$Select" disabled="disabled" id="$Select">
 ]]>
 		</assert-output>
 

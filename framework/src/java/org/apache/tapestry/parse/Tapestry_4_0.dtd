@@ -394,7 +394,7 @@ Attributes:
   name: A unique name for the parameter.
   required: If yes, then the parameter must be bound.  If no (the default),
     then the parameter is optional.
-  property-name: The name to use, instead of the parameter name, for the
+  property: The name to use, instead of the parameter name, for the
     JavaBean property connected to this parameter.
   default-value: Specifies the default value for the parameter, if not bound,
     as a binding reference.
@@ -411,7 +411,7 @@ Attributes:
 <!ATTLIST parameter
 	name CDATA #REQUIRED
 	required %attribute-flag; "no"
-	property-name CDATA #IMPLIED
+	property CDATA #IMPLIED
 	default-value CDATA #IMPLIED
   default-binding CDATA #IMPLIED
   cache %attribute-flag; "yes"

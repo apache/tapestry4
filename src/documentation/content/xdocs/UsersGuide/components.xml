@@ -405,12 +405,12 @@ what isParameterBound() is for.
   
 <p>
 Note that you always pass the name of the <em>parameter</em> to the isParameterBound() method,
-even when you've used the property-name attribute of the &spec.parameter; element to
+even when you've used the property attribute of the &spec.parameter; element to
 use a different property name:
 </p>
 
 <source>
-<![CDATA[<parameter name="title" property-name="titleParameter"/>]]>  
+<![CDATA[<parameter name="title" property="titleParameter"/>]]>  
 </source>
 
 <source>

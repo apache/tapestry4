@@ -56,6 +56,8 @@ public abstract class TextField extends AbstractValidatableField
         if (value != null)
             writer.attribute("value", value);
 
+        renderIdAttribute(writer, cycle);
+
         renderDelegateAttributes(writer, cycle);
         
         renderContributions(writer, cycle);

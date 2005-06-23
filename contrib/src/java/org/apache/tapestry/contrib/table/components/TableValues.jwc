@@ -28,7 +28,7 @@
 	</description>
   
 	<parameter name="column" 
-        property-name="columnParameter">
+        property="columnParameter">
         <description>The current column being rendered</description>
     </parameter>
 
@@ -36,7 +36,7 @@
         <description>The tag to use to wrap the values in, 'td' by default.</description>
     </parameter>
 
-    <parameter name="class" property-name="cellClass">
+    <parameter name="class" property="cellClass">
         <description>The CSS class of the table values</description>
     </parameter>
     

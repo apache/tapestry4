@@ -34,6 +34,9 @@
   <parameter name="required" default-binding="ognl"/>
   <parameter name="requiredMessage" default-binding="literal"/>
       	
+  <parameter name="id" default-binding="literal" property="idParameter"
+  		default-value="ognl:id"/>
+        	
   <property name="name"/>
   <property name="form"/>
   

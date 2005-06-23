@@ -37,7 +37,9 @@
     will be ignored.
     </description>
   </parameter>
-  
+  <parameter name="id" default-binding="literal" property="idParameter"
+  		default-value="ognl:id"/>
+  		  
   <reserved-parameter name="type"/>
   <reserved-parameter name="checked"/>
   <reserved-parameter name="name"/>

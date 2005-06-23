@@ -25,7 +25,7 @@
   <description>
   A complex component used to manage multiple selection of items from a list.
   </description>
-  
+  		  
   <parameter name="selectedTitleBlock" 
     default-value="defaultSelectedTitleBlock"
     default-binding="component"/>

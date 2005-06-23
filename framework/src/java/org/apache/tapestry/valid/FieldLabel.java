@@ -67,9 +67,23 @@ public abstract class FieldLabel extends AbstractComponent
 
         IValidationDelegate delegate = form.getDelegate();
 
+        String id = field == null ? null : field.getClientId();
+
         delegate.writeLabelPrefix(field, writer, cycle);
 
+        writer.begin("label");
+
+        if (id != null)
+            writer.attribute("for", id);
+
+        // TODO: Introduce a IValidationDelegate decoration method for inside the
+        // <label> tag.
+
+        renderInformalParameters(writer, cycle);
+
         writer.print(displayName, getRaw());
+
+        writer.end();
 
         delegate.writeLabelSuffix(field, writer, cycle);
     }

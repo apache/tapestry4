@@ -31,7 +31,7 @@
   	</description>
   </parameter>
   	
-  <parameter name="name" property-name="nameOverride" default-binding="literal"/>
+  <parameter name="name" property="nameOverride" default-binding="literal"/>
   	
   <parameter name="disabledImage" default-binding="asset">
   	<description>
@@ -77,7 +77,10 @@
       the parameters available to a deferred listener.
     </description>
   </parameter>
-  
+  <parameter name="id" default-binding="literal" property="idParameter"
+  		default-value="ognl:id"/>
+
+  		  
   <reserved-parameter name="type"/>
   <reserved-parameter name="src"/>
   <reserved-parameter name="border"/>

@@ -57,7 +57,7 @@ public abstract class Hidden extends AbstractFormComponent
         else
             externalValue = (String) getBinding("value").getObject(String.class);
 
-        String id = getElementId();
+        String id = getClientId();
 
         form.addHiddenValue(getName(), id, externalValue);
     }
@@ -90,8 +90,6 @@ public abstract class Hidden extends AbstractFormComponent
 
         getListenerInvoker().invokeListener(getListener(), this, cycle);
     }
-
-    public abstract String getElementId();
 
     /** @since 2.2 * */
     public abstract DataSqueezer getDataSqueezer();

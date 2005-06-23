@@ -25,7 +25,7 @@
 
   <parameter name="page" 
   	required="yes" 
-  	property-name="targetPage"/>
+  	property="targetPage"/>
 
   <parameter name="parameters">
     <description>

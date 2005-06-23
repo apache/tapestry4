@@ -46,7 +46,9 @@
 
   <parameter name="translator" default-binding="translator" default-value="string"/>
   <parameter name="validators" default-binding="validators"/>
-
+  <parameter name="id" default-binding="literal" property="idParameter"
+  		default-value="ognl:id"/>
+  		
   <reserved-parameter name="name"/>
 
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>

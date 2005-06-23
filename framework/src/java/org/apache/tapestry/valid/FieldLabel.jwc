@@ -21,7 +21,7 @@
 
 <component-specification class="org.apache.tapestry.valid.FieldLabel"
 	allow-body="no"
-	allow-informal-parameters="no">
+	allow-informal-parameters="yes">
 
   <description>
   Labels a ValidField of other form element component.
@@ -32,6 +32,8 @@
   <parameter name="displayName" default-binding="literal">
     <description>
       Optional.  Defaults to the displayName of the associated field.
+      Used to override the field's displayName, or when there is no
+      field.
     </description>
   </parameter>
 
@@ -41,5 +43,7 @@
       true, then value is emitted exactly as is.
     </description>
   </parameter>
+  
+  <reserved-parameter name="for"/>
 
 </component-specification>

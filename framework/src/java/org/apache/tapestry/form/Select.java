@@ -30,9 +30,8 @@ import org.apache.tapestry.valid.ValidatorException;
  * using a {@link PropertySelection}component. [ <a
  * href="../../../../../ComponentReference/Select.html">Component Reference </a>]
  * <p>
- * Otherwise, this component is very similar to {@link RadioGroup}.
- * 
- * As of 4.0, Select can indicate that it is required.
+ * Otherwise, this component is very similar to {@link RadioGroup}. As of 4.0, Select can indicate
+ * that it is required.
  * 
  * @author Howard Lewis Ship
  * @author Paul Ferraro
@@ -95,7 +94,7 @@ public abstract class Select extends AbstractRequirableField
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
             throw new ApplicationRuntimeException(Tapestry.getMessage("Select.may-not-nest"), this,
                     null, null);
-        
+
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
         _rendering = true;
@@ -116,17 +115,20 @@ public abstract class Select extends AbstractRequirableField
      */
     protected void finishLoad()
     {
-        setRequiredMessage(ValidationStrings.getMessagePattern(ValidationStrings.REQUIRED_SELECT_FIELD, getPage().getLocale()));
+        setRequiredMessage(ValidationStrings.getMessagePattern(
+                ValidationStrings.REQUIRED_SELECT_FIELD,
+                getPage().getLocale()));
     }
 
     /**
-     * @see org.apache.tapestry.form.AbstractRequirableField#bind(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractRequirableField#bind(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException
     {
         _selections = null;
         _rewinding = true;
-        
+
         String[] parameters = cycle.getParameters(getName());
 
         if (parameters != null)
@@ -138,19 +140,20 @@ public abstract class Select extends AbstractRequirableField
             for (int i = 0; i < length; i++)
                 _selections.add(parameters[i]);
         }
-        
+
         renderBody(writer, cycle);
     }
 
     /**
-     * @see org.apache.tapestry.form.AbstractRequirableField#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractRequirableField#renderFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         super.renderFormComponent(writer, cycle);
 
         _rewinding = false;
-        
+
         renderDelegatePrefix(writer, cycle);
 
         writer.begin("select");
@@ -163,14 +166,16 @@ public abstract class Select extends AbstractRequirableField
         if (isDisabled())
             writer.attribute("disabled", "disabled");
 
+        renderIdAttribute(writer, cycle);
+
         renderDelegateAttributes(writer, cycle);
-        
+
         renderInformalParameters(writer, cycle);
-        
+
         renderBody(writer, cycle);
-        
+
         writer.end();
-        
+
         renderDelegateSuffix(writer, cycle);
     }
 }
