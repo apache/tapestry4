@@ -23,6 +23,7 @@ import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.form.StringPropertySelectionModel;
 import org.apache.tapestry.html.BasePage;
+import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
  * @author Howard Lewis Ship
@@ -45,6 +46,10 @@ public abstract class Palette extends BasePage
 
     public IPage advance()
     {
+        IValidationDelegate delegate = (IValidationDelegate) getBeans().getBean("delegate");
+        
+        if (delegate.getHasErrors()) return null;
+        
         // Since Palette and palette.Results come from
         // a library now, we need to make sure
         // the namespace id is part of the name.

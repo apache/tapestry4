@@ -69,7 +69,6 @@
   <parameter name="selectDisabledImage"
 	default-binding="asset"
 	default-value="SelectDisabled"/> 
-
   
   <parameter name="deselectDisabledImage"
   	default-binding="asset"
@@ -91,6 +90,10 @@
    	default-binding="asset"
     default-value="DownDisabled"/>    
   
+  <parameter name="displayName" default-binding="literal"/>
+  <parameter name="required" default-binding="ognl"/>
+  <parameter name="requiredMessage" default-binding="literal"/>
+
   <asset name="Select" path="select_right.gif"/>
   <asset name="SelectDisabled" path="select_right_off.gif"/>
   <asset name="Deselect" path="deselect_left.gif"/>
@@ -101,5 +104,6 @@
   <asset name="DownDisabled" path="move_down_off.gif"/>
   
   <inject property="script" type="script" object="Palette.script"/>
-  
+  <inject property="requirableFieldSupport" object="service:tapestry.form.RequirableFieldSupport"/>
+    
 </component-specification>

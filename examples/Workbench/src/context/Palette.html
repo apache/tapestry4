@@ -4,9 +4,15 @@
 in the left column (available) and moved to the right column (selected).  The component
 can be configured to keep the items sorted by their visible label, their
 hidden value, or manually sorted.  Items are moved between columns using the buttons,
-or by double clicking.
+or by double clicking.</p>
 
-<form jwcid="form@Form">
+<form jwcid="valid@Form">
+<input jwcid="inputEnabled"/> Enable Client Side Validation
+</form>
+
+<span jwcid="@ShowError" delegate="bean:delegate"/>
+
+<form jwcid="form@Form" delegate="bean:delegate" clientValidationEnabled="ognl:clientValidationEnabled">
 
 <table class="form">
 	<tr>
@@ -14,7 +20,7 @@ or by double clicking.
 		<td><input jwcid="inputColorSort"/></td>
 	</tr>
 	<tr>
-		<th>Colors:</th>
+		<th><span jwcid="@FieldLabel" field="inputColor"/>:</th>
 		<td><input jwcid="inputColor"/></td>
 	</tr>
 	<tr>
@@ -30,9 +36,9 @@ or by double clicking.
 Obviously, there's a whole lot of JavaScript running on the client side.  However, there
 are no arbitrary limits; you can have as many Palettes in a form as you want, or have multiple
 forms and multiple Palettes.  Tapestry uses a sophisticated method of generating custom JavaScript
-from a template.
-
+from a template.</p>
+  
 <p>You can also customize the images used for the buttons and the titles above the
-two selection columns.
+two selection columns.</p>
 
 </span>
