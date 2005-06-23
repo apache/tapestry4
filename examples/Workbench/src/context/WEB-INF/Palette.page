@@ -21,9 +21,16 @@
 	
 <page-specification class="org.apache.tapestry.workbench.palette.Palette">
   
-    <property name="sort" persist="client" 
-        initial-value="@org.apache.tapestry.contrib.palette.SortMode@USER"/>
-    
+  <property name="clientValidationEnabled" persist="client" initial-value="true"/>
+  <property name="sort" persist="client" initial-value="@org.apache.tapestry.contrib.palette.SortMode@USER"/>
+
+  <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
+  
+  <component id="inputEnabled" type="Checkbox">
+    <binding name="selected" value="clientValidationEnabled"/> 
+    <binding name="onchange" value="'this.form.submit()'"/>
+  </component>
+
   <component id="inputColorSort" type="PropertySelection">
   	<binding name="value" value="sort"/>
   	<binding name="model" value="sortModel"/>
@@ -34,6 +41,8 @@
     <binding name="selected" value="selectedColors"/>
     <binding name="sort" value="sort"/>
     <binding name="tableClass" value="palette"/>
+    <binding name="displayName" value="Colors"/>
+    <binding name="required" value="true"/>
   </component>
   
   <component id="update" type="ImageSubmit">
@@ -45,8 +54,8 @@
   	<binding name="listener" value="advance"/>
   </component>
  
-   <asset name="continue" path="images/Continue.gif"/>
-   <asset name="update" path="images/Update.gif"/>
+  <asset name="continue" path="images/Continue.gif"/>
+  <asset name="update" path="images/Update.gif"/>
   
 </page-specification>
 

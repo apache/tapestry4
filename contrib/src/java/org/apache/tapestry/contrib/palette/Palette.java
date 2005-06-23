@@ -31,10 +31,13 @@ import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.components.Block;
-import org.apache.tapestry.form.FormEventType;
-import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.IPropertySelectionModel;
+import org.apache.tapestry.form.RequirableField;
+import org.apache.tapestry.form.RequirableFieldSupport;
+import org.apache.tapestry.html.Body;
 import org.apache.tapestry.valid.IValidationDelegate;
+import org.apache.tapestry.valid.ValidationStrings;
+import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * A component used to make a number of selections from a list. The general look is a pair of
@@ -199,10 +202,12 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *  
  * </pre>
  * 
+ * As of 4.0, Palette can indicate that it is required.
+ * 
  * @author Howard Lewis Ship
  */
 
-public abstract class Palette extends BaseComponent implements IFormComponent
+public abstract class Palette extends BaseComponent implements RequirableField
 {
     private static final int MAP_SIZE = 7;
 
@@ -210,22 +215,20 @@ public abstract class Palette extends BaseComponent implements IFormComponent
      * A set of symbols produced by the Palette script. This is used to provide proper names for
      * some of the HTML elements (&lt;select&gt; and &lt;button&gt; elements, etc.).
      */
-
     private Map _symbols;
-
+    
     /** @since 3.0 * */
     public abstract void setAvailableColumn(PaletteColumn column);
 
     /** @since 3.0 * */
     public abstract void setSelectedColumn(PaletteColumn column);
 
-    public abstract String getName();
-
     public abstract void setName(String name);
 
-    public abstract IForm getForm();
-
     public abstract void setForm(IForm form);
+    
+    /** @since 4.0 */
+    public abstract void setRequiredMessage(String message);
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -245,8 +248,10 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
         form.getElementId(this);
 
+        RequirableFieldSupport requirableFieldSupport = getRequirableFieldSupport();
+        
         if (form.isRewinding())
-            handleSubmission(cycle);
+            requirableFieldSupport.rewind(this, writer, cycle);
 
         // Don't do any additional work if rewinding
         // (some other action or form on the page).
@@ -260,9 +265,35 @@ public abstract class Palette extends BaseComponent implements IFormComponent
             runScript(cycle);
 
             constructColumns();
+            
+            requirableFieldSupport.render(this, writer, cycle);
         }
 
         super.renderComponent(writer, cycle);
+    }
+
+    /**
+     * @see org.apache.tapestry.form.RequirableField#bind(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException
+    {
+        handleSubmission(cycle);
+    }
+
+    /**
+     * @see org.apache.tapestry.AbstractComponent#finishLoad()
+     */
+    protected void finishLoad()
+    {
+        setRequiredMessage(ValidationStrings.getMessagePattern(ValidationStrings.REQUIRED_SELECT_FIELD, getPage().getLocale()));
+    }
+
+    /**
+     * @see org.apache.tapestry.form.RequirableField#getSubmittedValue(org.apache.tapestry.IRequestCycle)
+     */
+    public String getSubmittedValue(IRequestCycle cycle)
+    {
+        return cycle.getParameter(getName());
     }
 
     protected void cleanupAfterRender(IRequestCycle cycle)
@@ -468,7 +499,6 @@ public abstract class Palette extends BaseComponent implements IFormComponent
      * 
      * @since 2.2
      */
-
     public boolean isDisabled()
     {
         return false;
@@ -484,9 +514,13 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
     /**
      * Injected.
-     * 
      * @since 4.0
      */
-
     public abstract IScript getScript();
+    
+    /**
+     * Injected.
+     * @since 4.0 
+     */
+    public abstract RequirableFieldSupport getRequirableFieldSupport();
 }
