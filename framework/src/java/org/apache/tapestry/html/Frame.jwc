@@ -27,7 +27,7 @@
   Identifies a page as the contents of a frame within a frameset.
   </description>
 
-  <parameter name="page" property-name="targetPage" required="yes">
+  <parameter name="page" property="targetPage" required="yes">
     <description>
 	The page to display in the frame.
     </description>

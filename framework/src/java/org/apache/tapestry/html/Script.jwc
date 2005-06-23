@@ -25,13 +25,13 @@
   Constructs dynamic JavaScript which is added to the page.
   </description>
   
-  <parameter name="script" property-name="scriptPath" required="yes">
+  <parameter name="script" property="scriptPath" required="yes">
     <description>
     The resource path of the script to execute.
     </description>
   </parameter>
 
-  <parameter name="symbols"	property-name="baseSymbols">
+  <parameter name="symbols"	property="baseSymbols">
     <description>
     Provides a base set of symbols to which, in a copy, are added
     any informal parameters.

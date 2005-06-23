@@ -152,6 +152,8 @@ public abstract class DatePicker extends AbstractValidatableField
         if (disabled)
             writer.attribute("disabled", "disabled");
 
+        renderIdAttribute(writer, cycle);
+
         renderDelegateAttributes(writer, cycle);
 
         renderContributions(writer, cycle);

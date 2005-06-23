@@ -89,6 +89,8 @@ public abstract class PropertySelection extends AbstractRequirableField
         if (getSubmitOnChange())
             writer.attribute("onchange", "this.form.submit()");
 
+        renderIdAttribute(writer, cycle);
+
         renderDelegateAttributes(writer, cycle);
 
         // Apply informal attributes.

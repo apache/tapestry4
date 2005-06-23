@@ -27,12 +27,12 @@
   
   <parameter name="page" 
   	required="yes" 
-  	property-name="targetPage"
+  	property="targetPage"
     default-binding="literal"/>
   
   <parameter name="namespace"  
   	required="no" 
-  	property-name="targetNamespace"/>
+  	property="targetNamespace"/>
   	  	
   <parameter name="disabled"/>
   	  	

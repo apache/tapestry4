@@ -43,7 +43,9 @@
     Name used by FieldLabel and when generating validation error messages.
     </description>
   </parameter>
-  
+  <parameter name="id" default-binding="literal" property="idParameter"
+  		default-value="ognl:id"/>
+  		  
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>
   <reserved-parameter name="name"/>

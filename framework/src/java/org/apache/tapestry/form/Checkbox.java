@@ -43,6 +43,8 @@ public abstract class Checkbox extends AbstractFormComponent
         if (isSelected())
             writer.attribute("checked", "checked");
 
+        renderIdAttribute(writer, cycle);
+
         renderInformalParameters(writer, cycle);
 
         writer.closeTag();

@@ -142,6 +142,7 @@ it is expected that there will be some runtime warnings).
   <li>Added many more options for <link href="#spec.boolean-types">boolean attributes</link>.</li>
   <li>Added the aliases, cache and default-binding attributes to the &spec.parameter; element.</li>
   <li>Added the deprecated attribute to &spec.component-specification; and &spec.parameter;.</li>
+  <li>Renamed property-name attribute to property (in several places)</li>
 </ul>
 
 <p>
@@ -818,7 +819,7 @@ to the property.
 </tr>
 
 <tr>
-	<td>property-name</td>
+	<td>property</td>
 	<td>string</td>
 	<td>yes</td>
 	<td/>
@@ -1333,7 +1334,7 @@ Appears in: &spec.component-specification;
 </tr>
 
 <tr>
-  <td>property-name</td>
+  <td>property</td>
   <td>string</td>
   <td>no</td>
   <td/>

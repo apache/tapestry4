@@ -28,7 +28,7 @@
   
   <body>
 
-<p> A FieldLabel works with a &ValidField; or other form element component (such as &TextField;, &TextArea;,
+<p> A FieldLabel works with a &ValidField; or other form element components (such as &TextField;, &TextArea;,
   &Checkbox;, etc.), labeling the field with the <code>displayName</code> property of the field.  The FieldLabel
   may also be <em>decorated</em> by the validation delegate (to highlight when the corresponding field
   is in error).
@@ -106,11 +106,11 @@
 </p>  
 
 <p>
-  Informal parameters: <strong>forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: <em>for</em>
 </p>
 
 </section>

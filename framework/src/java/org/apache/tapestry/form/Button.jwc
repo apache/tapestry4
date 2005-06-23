@@ -27,7 +27,9 @@
 
   <parameter name="label" default-binding="static"/>
   <parameter name="disabled" default-binding="ognl"/>
-  
+  <parameter name="id" default-binding="literal" property="idParameter"
+  		default-value="ognl:id"/>
+  		  
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>
 

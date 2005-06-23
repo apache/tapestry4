@@ -28,7 +28,7 @@
         TablePages and TableRows, as it provides the data they use.
     </description>
     
-    <parameter name="tableModel" property-name="tableModelValue">
+    <parameter name="tableModel" property="tableModelValue">
         <description>
             The model describing the data to be presented by the table components.
             This parameter is optional, but either the 'tableModel' or both

@@ -30,7 +30,9 @@
   <parameter name="displayName" default-binding="literal"/>
   <parameter name="translator" default-binding="translator" default-value="date,pattern=dd MMM yyyy"/>
   <parameter name="validators" default-binding="validators"/>
-
+  <parameter name="id" default-binding="literal" property="idParameter"
+  		default-value="ognl:id"/>
+  		
   <asset name="defaultIcon" path="DatePickerIcon.png"/>
        
   <inject property="scriptSource" object="infrastructure:scriptSource"/>

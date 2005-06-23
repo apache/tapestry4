@@ -32,6 +32,9 @@
   <parameter name="required" default-binding="ognl"/>
   <parameter name="requiredMessage" default-binding="literal"/>
   
+  <parameter name="id" default-binding="literal" property="idParameter"
+  		default-value="ognl:id"/>
+  		  
   <reserved-parameter name="name"/>
 
   <inject property="requirableFieldSupport" object="service:tapestry.form.RequirableFieldSupport"/>

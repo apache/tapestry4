@@ -29,12 +29,12 @@
             The source of values, a Java collection or array.
         </description>
     </parameter>
-    <parameter name="value" property-name="valueParameter" default-binding="ognl">
+    <parameter name="value" property="valueParameter" default-binding="ognl">
         <description>
             If provided, then on each iteration, the value property is updated.
         </description>
     </parameter>
-    <parameter name="index" property-name="indexParameter" default-binding="ognl">
+    <parameter name="index" property="indexParameter" default-binding="ognl">
         <description>
             If provided, then the index of the loop is set on each iteration.
         </description>

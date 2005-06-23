@@ -30,8 +30,8 @@ import org.apache.tapestry.IRequestCycle;
 
 public abstract class Submit extends AbstractSubmit
 {
-	protected boolean isClicked(IRequestCycle cycle, String name)
-	{
+    protected boolean isClicked(IRequestCycle cycle, String name)
+    {
         // How to know which Submit button was actually
         // clicked? When submitted, it produces a request parameter
         // with its name and value (the value serves double duty as both
@@ -40,10 +40,11 @@ public abstract class Submit extends AbstractSubmit
         // If the value isn't there, then this button wasn't
         // selected.
         return cycle.getParameter(name) != null;
-	}
-	
+    }
+
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -58,6 +59,8 @@ public abstract class Submit extends AbstractSubmit
 
         if (label != null)
             writer.attribute("value", label);
+
+        renderIdAttribute(writer, cycle);
 
         renderInformalParameters(writer, cycle);
 

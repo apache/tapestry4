@@ -31,7 +31,7 @@
 		
 		<assert-output name="Upload Field">
 <![CDATA[
-<input type="file" name="$Upload"/>
+<input type="file" name="$Upload" id="$Upload"/>
 ]]>	
 		</assert-output>
 	</request>
@@ -154,7 +154,7 @@
 		
 		<assert-output name="Upload Field">
 <![CDATA[
-<input type="file" name="$Upload" disabled="disabled"/>
+<input type="file" name="$Upload" disabled="disabled" id="$Upload"/>
 ]]>	
 		</assert-output>			
 	</request>

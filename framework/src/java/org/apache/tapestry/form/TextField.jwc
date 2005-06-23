@@ -54,7 +54,9 @@
   
   <parameter name="translator" default-binding="translator" default-value="string"/>
   <parameter name="validators" default-binding="validators"/>
-  
+  <parameter name="id" default-binding="literal" property="idParameter"
+  		default-value="ognl:id"/>
+  		  
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>

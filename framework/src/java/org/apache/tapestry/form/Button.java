@@ -31,7 +31,8 @@ import org.apache.tapestry.IRequestCycle;
 public abstract class Button extends AbstractFormComponent
 {
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -44,6 +45,8 @@ public abstract class Button extends AbstractFormComponent
             writer.attribute("disabled", "disabled");
         }
 
+        renderIdAttribute(writer, cycle);
+
         renderInformalParameters(writer, cycle);
 
         String label = getLabel();
@@ -52,7 +55,7 @@ public abstract class Button extends AbstractFormComponent
             writer.print(label);
         else
             renderBody(writer, cycle);
-        
+
         writer.closeTag();
     }
 

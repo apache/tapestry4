@@ -62,7 +62,10 @@
     the parameters available to a deferred listener.
     </description>
   </parameter>
-  
+  <parameter name="id" default-binding="literal" property="idParameter"
+  		default-value="ognl:id"/>
+
+  		  
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>
 

@@ -23,10 +23,9 @@ import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * Form element used to upload files.
- * [ <a href="../../../../../ComponentReference/Upload.html">Component Reference </a>]
- * 
- * As of 4.0, the Upload field can indicate that it is required.
+ * Form element used to upload files. [ <a
+ * href="../../../../../ComponentReference/Upload.html">Component Reference </a>] As of 4.0, the
+ * Upload field can indicate that it is required.
  * 
  * @author Howard Lewis Ship
  * @author Paul Ferraro
@@ -48,14 +47,16 @@ public abstract class Upload extends AbstractRequirableField
      */
     protected void finishLoad()
     {
-        setRequiredMessage(ValidationStrings.getMessagePattern(ValidationStrings.REQUIRED_FILE_FIELD, getPage().getLocale()));
+        setRequiredMessage(ValidationStrings.getMessagePattern(
+                ValidationStrings.REQUIRED_FILE_FIELD,
+                getPage().getLocale()));
     }
 
     private IUploadFile getUploadFile()
     {
         return getDecoder().getFileUpload(getName());
     }
-    
+
     public String getSubmittedValue(IRequestCycle cycle)
     {
         return getUploadFile().getFilePath();
@@ -64,14 +65,14 @@ public abstract class Upload extends AbstractRequirableField
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         super.renderFormComponent(writer, cycle);
-        
+
         // Force the form to use the correct encoding type for file uploads.
         IForm form = getForm();
-        
+
         form.setEncodingType("multipart/form-data");
 
         renderDelegatePrefix(writer, cycle);
-        
+
         writer.beginEmpty("input");
         writer.attribute("type", "file");
         writer.attribute("name", getName());
@@ -82,9 +83,11 @@ public abstract class Upload extends AbstractRequirableField
         }
 
         form.getDelegate().writeAttributes(writer, cycle, this, null);
-        
+
+        renderIdAttribute(writer, cycle);
+
         renderDelegateAttributes(writer, cycle);
-        
+
         renderDelegateSuffix(writer, cycle);
     }
 

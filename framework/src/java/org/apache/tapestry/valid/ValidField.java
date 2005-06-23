@@ -48,7 +48,8 @@ public abstract class ValidField extends AbstractFormComponent
     public abstract String getDisplayName();
 
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -69,6 +70,8 @@ public abstract class ValidField extends AbstractFormComponent
         if (value != null)
             writer.attribute("value", value);
 
+        renderIdAttribute(writer, cycle);
+
         renderInformalParameters(writer, cycle);
 
         delegate.writeAttributes(writer, cycle, this, null);
@@ -86,7 +89,8 @@ public abstract class ValidField extends AbstractFormComponent
     }
 
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -100,14 +104,14 @@ public abstract class ValidField extends AbstractFormComponent
         IValidator validator = getValidator();
         if (validator == null)
             throw Tapestry.createRequiredParameterException(this, "validator");
-        
+
         IValidationDelegate delegate = getForm().getDelegate();
 
         if (delegate.isInError())
             return delegate.getFieldInputValue();
 
         Object value = getValue();
-        
+
         String result = validator.toString(this, value);
 
         return result;
