@@ -52,7 +52,10 @@
     -->
   </todo>
   <changes>
-    <release version="4.0-alpha-4" date="Jun 24 2005">
+    <release version="4.0-beta-2" date="unreleased">
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-356">FormConditional extends BaseComponent but has no template</action>
+    </release>
+    <release version="4.0-beta-1" date="Jun 24 2005">
        <action type="add" dev="HLS">Add InvokeListener component.</action>
        <action type="add" dev="HLS">Add getErrorRenderers() method to IValidationDelegate.</action>
        <action type="add" dev="HLS">Add purgeDeletedKeys() method to ListEditMap.</action>

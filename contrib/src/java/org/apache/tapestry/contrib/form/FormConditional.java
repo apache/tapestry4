@@ -18,14 +18,13 @@ import java.io.IOException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
-import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
-import org.apache.tapestry.form.AbstractFormComponent;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.services.DataSqueezer;
@@ -41,13 +40,12 @@ import org.apache.tapestry.services.DataSqueezer;
  * @since 3.0
  */
 
-public abstract class FormConditional extends BaseComponent implements IFormComponent
+public abstract class FormConditional extends AbstractComponent implements IFormComponent
 {
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = TapestryUtils.getForm(cycle, this);
 
-        
         boolean cycleRewinding = cycle.isRewinding();
 
         // If the cycle is rewinding, but not this particular form,
