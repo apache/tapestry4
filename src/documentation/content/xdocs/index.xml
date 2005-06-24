@@ -182,7 +182,8 @@ includes the Virtual Library).
 
 <p>
 Tapestry 4.0 should be production-ready soon.  It needs more exposure and more documentation. For the
-momement, it is still recommended that you stick with Tapestry <strong>3.0.3</strong>,
+momement, it is still recommended that you stick with Tapestry 
+  <a href="http://jakarta.apache.org/tapestry/3.0.3/"><strong>3.0.3</strong></a>,
 the latest stable release.
 </p>
 
@@ -191,7 +192,7 @@ One new feature of Tapestry 4.0, default bindings for parameters, has proven to 
 This feature allows you to define a default binding prefix for a parameter as part of the &lt;parameter&gt; 
 element.  Then in your template, you can omit the prefix ... this allows you to say
 <code>value="userId"</code> rather than <code>value="ognl:userId"</code>,
-or <code>listener="doSubmit"</code> rather than <code>value="listener:doSubmit"</code>.
+or <code>listener="doSubmit"</code> rather than <code>listener="listener:doSubmit"</code>.
 The pros and cons are still being evaluated and exposure of the beta release may provoke a new discussion
 and possibly the removal of this feature. If you are intending to start work on a production application
 using Tapestry 4.0, you are advised to <em>always</em> use an explicit binding prefix.
