@@ -52,7 +52,7 @@
     -->
   </todo>
   <changes>
-    <release version="4.0-alpha-4" date="unreleased">
+    <release version="4.0-alpha-4" date="Jun 24 2005">
        <action type="add" dev="HLS">Add InvokeListener component.</action>
        <action type="add" dev="HLS">Add getErrorRenderers() method to IValidationDelegate.</action>
        <action type="add" dev="HLS">Add purgeDeletedKeys() method to ListEditMap.</action>
