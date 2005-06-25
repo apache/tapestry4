@@ -30,6 +30,8 @@ import org.apache.tapestry.contrib.table.model.common.AbstractTableDataModel;
  */
 public class SimpleSetTableDataModel extends AbstractTableDataModel implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
     private Set m_setRows;
 
     public SimpleSetTableDataModel(Set setRows)

@@ -35,11 +35,11 @@
 	
 	<property-specification name="selectedColumnName" type="java.lang.String"/>
 	
-	<component id="condSorted" type="FormConditional">
+	<component id="condSorted" type="If">
 		<binding name="condition" expression="columnSorted"/>
 	</component>
 	
-	<component id="condNotSorted" type="FormConditional">
+	<component id="condNotSorted" type="Else">
 		<binding name="condition" expression="!columnSorted"/>
 	</component>
 	
@@ -55,13 +55,14 @@
 		<binding name="listener" expression="listeners.columnSelected"/>
 		<binding name="tag" expression="tableColumn.columnName"/>
 		<binding name="selected" expression="selectedColumnName"/>
+        <binding name="defer" expression="false"/>
 	</component>
 	
 	<component id="imageSort" type="Image">
 		<binding name="image" expression="sortImage"/>
 	</component>
 	
-	<component id="condSort" type="FormConditional">
+	<component id="condSort" type="If">
 		<binding name="condition" expression="isSorted"/>
 	</component>
 	

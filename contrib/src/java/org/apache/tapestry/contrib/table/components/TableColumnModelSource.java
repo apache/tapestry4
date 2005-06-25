@@ -15,6 +15,7 @@
 package org.apache.tapestry.contrib.table.components;
 
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.contrib.table.model.IAdvancedTableColumnSource;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 
 /**
@@ -41,6 +42,6 @@ public interface TableColumnModelSource
      *            the component containing the column settings
      * @return a table column model based on the provided parameters
      */
-    public ITableColumnModel generateTableColumnModel(String strDesc, IComponent objComponent,
-            IComponent objColumnSettingsContainer);
+    public ITableColumnModel generateTableColumnModel(IAdvancedTableColumnSource objColumnSource,
+    		String strDesc, IComponent objComponent, IComponent objColumnSettingsContainer);
 }

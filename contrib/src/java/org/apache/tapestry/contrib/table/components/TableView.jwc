@@ -96,15 +96,15 @@
         </description>
     </parameter>
     
-    <parameter name="columnSettingsContainer" default-value="ognl:container">
-        <description>
-            The component where Block and messages are pulled from when using source/columns.
-        </description>
-    </parameter>
-    
     <parameter name="element" default-value="table" default-binding="literal"> 
         <description>
             The tag with which the component will be inserted in the generated content.
+        </description>
+    </parameter>
+    
+    <parameter name="columnSettingsContainer" default-value="ognl:container">
+        <description>
+            The component where Block and messages are pulled from when using source/columns.
         </description>
     </parameter>
     
@@ -117,5 +117,6 @@
     <component id="renderBody" type="RenderBody"/>
     
     <inject property="modelSource" object="service:tapestry.contrib.TableColumnModelSource"/>
+    <inject property="columnSource" object="service:tapestry.contrib.TableColumnSource"/>
     
 </component-specification>

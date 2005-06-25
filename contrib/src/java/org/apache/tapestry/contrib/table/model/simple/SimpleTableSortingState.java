@@ -27,6 +27,8 @@ import org.apache.tapestry.contrib.table.model.ITableSortingState;
 public class SimpleTableSortingState
 	implements ITableSortingState, Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	private String m_strSortColumn;
 	private boolean m_bSortOrder;
 

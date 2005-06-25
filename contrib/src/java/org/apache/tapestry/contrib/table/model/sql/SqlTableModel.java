@@ -56,6 +56,7 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
  */
 public class SqlTableModel extends AbstractTableModel 
 {
+	private static final long serialVersionUID = 1L;
 	private static final Log LOG = LogFactory.getLog(SqlTableModel.class);
 
 	private ISqlTableDataSource m_objDataSource;

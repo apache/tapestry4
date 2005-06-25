@@ -21,7 +21,7 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.components.Block;
-import org.apache.tapestry.contrib.table.model.ITableColumn;
+import org.apache.tapestry.contrib.table.model.IAdvancedTableColumn;
 import org.apache.tapestry.contrib.table.model.ITableModelSource;
 import org.apache.tapestry.contrib.table.model.ITableRendererSource;
 import org.apache.tapestry.valid.RenderString;
@@ -34,19 +34,21 @@ import org.apache.tapestry.valid.RenderString;
  * @author mindbridge
  * @since 2.3
  */
-public class AbstractTableColumn implements ITableColumn, Serializable
+public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
 {
-    /**
+	private static final long serialVersionUID = 1L;
+
+	/**
      *  The suffix of the name of the Block that will be used as the column renderer
      *  for this column 
      */
-    public final static String COLUMN_RENDERER_BLOCK_SUFFIX = "ColumnHeader";
+    public static final String COLUMN_RENDERER_BLOCK_SUFFIX = "ColumnHeader";
 
     /**
      *  The suffix of the name of the Block that will be used as the value renderer 
      *  for this column 
      */
-    public final static String VALUE_RENDERER_BLOCK_SUFFIX = "ColumnValue";
+    public static final String VALUE_RENDERER_BLOCK_SUFFIX = "ColumnValue";
     
 	private String m_strColumnName;
 	private boolean m_bSortable;
@@ -214,16 +216,21 @@ public class AbstractTableColumn implements ITableColumn, Serializable
     /**
      *  Use the column name to get the column and value renderer sources 
      *  from the provided component.
+     *  Use the column and value renderer sources for all columns if necessary.
      *   
      *  @param objSettingsContainer the component from which to get the settings 
      */
     public void loadSettings(IComponent objSettingsContainer)
     {
         IComponent objColumnRendererSource = (IComponent) objSettingsContainer.getComponents().get(getColumnName() + COLUMN_RENDERER_BLOCK_SUFFIX);
+        if (objColumnRendererSource == null) 
+        	objColumnRendererSource = (IComponent) objSettingsContainer.getComponents().get(COLUMN_RENDERER_BLOCK_SUFFIX);
         if (objColumnRendererSource != null && objColumnRendererSource instanceof Block)
-            setColumnRendererSource(new BlockTableRendererSource((Block) objColumnRendererSource));
+    		setColumnRendererSource(new BlockTableRendererSource((Block) objColumnRendererSource));
 
         IComponent objValueRendererSource = (IComponent) objSettingsContainer.getComponents().get(getColumnName() + VALUE_RENDERER_BLOCK_SUFFIX);
+        if (objValueRendererSource == null)
+        	objValueRendererSource = (IComponent) objSettingsContainer.getComponents().get(VALUE_RENDERER_BLOCK_SUFFIX);
         if (objValueRendererSource != null && objValueRendererSource instanceof Block)
             setValueRendererSource(new BlockTableRendererSource((Block) objValueRendererSource));
     }

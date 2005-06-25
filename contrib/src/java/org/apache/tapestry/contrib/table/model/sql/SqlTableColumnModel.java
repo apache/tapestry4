@@ -22,6 +22,8 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnModel;
  */
 public class SqlTableColumnModel extends SimpleTableColumnModel
 {
+	private static final long serialVersionUID = 1L;
+	
 	public SqlTableColumnModel(SqlTableColumn[] arrColumns)
 	{
 		super(arrColumns);

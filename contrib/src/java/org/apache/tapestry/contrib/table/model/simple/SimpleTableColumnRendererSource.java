@@ -35,6 +35,8 @@ import org.apache.tapestry.util.ComponentAddress;
  */
 public class SimpleTableColumnRendererSource implements ITableRendererSource
 {
+	private static final long serialVersionUID = 1L;
+	
 	private ComponentTableRendererSource m_objComponentRenderer;
 
 	public SimpleTableColumnRendererSource()

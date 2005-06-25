@@ -27,6 +27,7 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
  */
 public class SqlTableColumn extends SimpleTableColumn
 {
+	private static final long serialVersionUID = 1L;
 	private static final Log LOG = LogFactory.getLog(SqlTableColumn.class);
 
 	/**

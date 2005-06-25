@@ -17,7 +17,6 @@ package org.apache.tapestry.contrib.table.model.simple;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.contrib.table.model.ITableRendererSource;
 import org.apache.tapestry.contrib.table.model.common.AbstractTableColumn;
@@ -31,6 +30,8 @@ import org.apache.tapestry.contrib.table.model.common.AbstractTableColumn;
  */
 public class SimpleTableColumn extends AbstractTableColumn
 {
+	private static final long serialVersionUID = 1L;
+	
     public static final ITableRendererSource DEFAULT_COLUMN_RENDERER_SOURCE = new SimpleTableColumnRendererSource();
 
     public static final ITableRendererSource FORM_COLUMN_RENDERER_SOURCE = new SimpleTableColumnFormRendererSource();
@@ -229,6 +230,8 @@ public class SimpleTableColumn extends AbstractTableColumn
 
     public class DefaultTableComparator implements Comparator, Serializable
     {
+    	private static final long serialVersionUID = 1L;
+    	
         public int compare(Object objRow1, Object objRow2)
         {
             Object objValue1 = getColumnValue(objRow1);

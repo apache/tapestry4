@@ -31,6 +31,8 @@ import org.apache.tapestry.util.ComponentAddress;
  */
 public class BlockTableRendererSource implements ITableRendererSource
 {
+	private static final long serialVersionUID = 1L;
+	
 	private ComponentAddress m_objBlockAddress;
 	private ComponentAddress m_objListenerAddress;
 

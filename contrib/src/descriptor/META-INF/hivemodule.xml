@@ -31,4 +31,18 @@
     </invoke-factory>
     
   </service-point>
+
+    
+  <service-point id="TableColumnSource" interface="org.apache.tapestry.contrib.table.model.IAdvancedTableColumnSource">
+    
+    Generates a table column object given several parameters.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.contrib.table.components.DefaultTableColumnSource">
+        <set-service property="expressionEvaluator" service-id="tapestry.ognl.ExpressionEvaluator"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
 </module>

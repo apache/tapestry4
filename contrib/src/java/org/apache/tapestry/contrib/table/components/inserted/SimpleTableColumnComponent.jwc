@@ -25,11 +25,11 @@
 	<description>
 	</description>
 	
-	<component id="condSorted" type="Conditional">
+	<component id="condSorted" type="If">
 		<binding name="condition" expression="columnSorted"/>
 	</component>
 	
-	<component id="condNotSorted" type="Conditional">
+	<component id="condNotSorted" type="Else">
 		<binding name="condition" expression="columnSorted"/>
 		<static-binding name="invert">true</static-binding>
 	</component>
@@ -51,7 +51,7 @@
 		<binding name="image" expression="sortImage"/>
 	</component>
 	
-	<component id="condSort" type="Conditional">
+	<component id="condSort" type="If">
 		<binding name="condition" expression="isSorted"/>
 	</component>
 	

@@ -29,6 +29,8 @@ import org.apache.tapestry.util.ComponentAddress;
  */
 public class ComponentTableRendererSource implements ITableRendererSource
 {
+	private static final long serialVersionUID = 1L;
+	
 	private ComponentAddress m_objComponentAddress;
 
 	public ComponentTableRendererSource(ITableRendererListener objComponent)

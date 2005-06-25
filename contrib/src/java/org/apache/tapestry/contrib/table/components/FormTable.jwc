@@ -212,7 +212,7 @@
 		<static-binding name="element">table</static-binding>
 	</component>
 
-	<component id="condPages" type="FormConditional">
+	<component id="condPages" type="If">
 		<binding name="condition" expression="tableModel.pageCount > 1"/>
 	</component>
 

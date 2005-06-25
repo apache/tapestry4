@@ -26,6 +26,8 @@ import org.apache.tapestry.contrib.table.model.ITableSortingState;
  */
 public class SimpleTableState implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
 	private ITablePagingState m_objPagingState;
 	private ITableSortingState m_objSortingState;
 

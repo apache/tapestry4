@@ -22,6 +22,8 @@ import org.apache.tapestry.services.ExpressionEvaluator;
  */
 public class ExpressionTableColumn extends SimpleTableColumn
 {
+	private static final long serialVersionUID = 1L;
+	
     /** @since 4.0 */
 
     public ExpressionTableColumn(String strColumnName, String strExpression,
