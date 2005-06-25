@@ -35,6 +35,8 @@ import org.apache.tapestry.contrib.table.model.common.ReverseComparator;
  */
 public class SimpleTableModel extends AbstractTableModel implements ITableDataModelListener
 {
+	private static final long serialVersionUID = 1L;
+	
     private ITableDataModel m_objDataModel = null;
     private Object[] m_arrRows = null;
     private ITableColumnModel m_objColumnModel = null;

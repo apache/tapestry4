@@ -26,7 +26,9 @@ import org.apache.tapestry.contrib.table.model.ITablePagingState;
  */
 public class SimpleTablePagingState implements ITablePagingState, Serializable
 {
-    private final static int DEFAULT_PAGE_SIZE = 10;
+	private static final long serialVersionUID = 1L;
+
+	private static final int DEFAULT_PAGE_SIZE = 10;
 
     private int m_nPageSize;
     private int m_nCurrentPage;

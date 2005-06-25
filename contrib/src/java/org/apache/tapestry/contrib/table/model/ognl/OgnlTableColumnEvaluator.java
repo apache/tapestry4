@@ -25,11 +25,13 @@ import org.apache.tapestry.services.ExpressionEvaluator;
  */
 public class OgnlTableColumnEvaluator implements ITableColumnEvaluator
 {
+	private static final long serialVersionUID = 1L;
+	
     /** @since 4.0 */
 
     private ExpressionEvaluator _expressionEvaluator;
 
-    private static final Log LOG = LogFactory.getLog(ExpressionTableColumn.class);
+    private static final Log LOG = LogFactory.getLog(OgnlTableColumnEvaluator.class);
 
     private String m_strExpression;
 
@@ -45,7 +47,7 @@ public class OgnlTableColumnEvaluator implements ITableColumnEvaluator
      */
     public synchronized Object getColumnValue(ITableColumn objColumn, Object objRow)
     {
-        // If no expression is given, then this is dummy column. Return something.
+        // If no expression is given, then this is a dummy column. Return something.
         if (m_strExpression == null || m_strExpression.equals(""))
             return "";
 

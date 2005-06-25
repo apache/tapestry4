@@ -34,6 +34,8 @@ import org.apache.tapestry.valid.RenderString;
  */
 public class SimpleTableValueRendererSource implements ITableRendererSource
 {
+	private static final long serialVersionUID = 1L;
+	
     /** 
      *  The representation of null values. This is geared towards HTML, but will
      *  work for some other *ML languages as well. In any case, changing the 

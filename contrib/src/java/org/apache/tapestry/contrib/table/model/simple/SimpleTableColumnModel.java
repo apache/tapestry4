@@ -33,7 +33,8 @@ import org.apache.tapestry.contrib.table.model.common.ArrayIterator;
  */
 public class SimpleTableColumnModel implements ITableColumnModel, Serializable
 {
-
+	private static final long serialVersionUID = 1L;
+	
     private ITableColumn[] m_arrColumns;
     private Map m_mapColumns;
 

@@ -23,6 +23,8 @@ import org.apache.tapestry.services.ExpressionEvaluator;
  */
 public class ExpressionTableColumnModel extends SimpleTableColumnModel
 {
+	private static final long serialVersionUID = 1L;
+	
     /**
      * Constructs a table column model containting OGNL expression columns. <br>
      * The data for the columns is provided in the form of a string array, where the info of each

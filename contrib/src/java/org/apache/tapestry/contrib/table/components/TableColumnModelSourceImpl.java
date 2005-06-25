@@ -20,9 +20,10 @@ import java.util.StringTokenizer;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.contrib.table.model.IAdvancedTableColumn;
+import org.apache.tapestry.contrib.table.model.IAdvancedTableColumnSource;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
-import org.apache.tapestry.contrib.table.model.ognl.ExpressionTableColumn;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnModel;
 import org.apache.tapestry.services.ExpressionEvaluator;
@@ -60,8 +61,8 @@ public class TableColumnModelSourceImpl implements TableColumnModelSource
      *            the component containing the column settings
      * @return a table column model based on the provided parameters
      */
-    public ITableColumnModel generateTableColumnModel(String strDesc, IComponent objComponent,
-            IComponent objColumnSettingsContainer)
+    public ITableColumnModel generateTableColumnModel(IAdvancedTableColumnSource objColumnSource,
+    		String strDesc, IComponent objComponent, IComponent objColumnSettingsContainer)
     {
         if (strDesc == null)
             return null;
@@ -121,8 +122,9 @@ public class TableColumnModelSourceImpl implements TableColumnModelSource
                 strExpression = objColumnTokenizer.nextToken();
             }
 
-            ExpressionTableColumn objColumn = new ExpressionTableColumn(strName, strDisplayName,
-                    strExpression, bSortable, _expressionEvaluator);
+            IAdvancedTableColumn objColumn = 
+            	objColumnSource.generateTableColumn(strName, strDisplayName,
+            			bSortable, strExpression);
             if (bFormColumns)
                 objColumn.setColumnRendererSource(SimpleTableColumn.FORM_COLUMN_RENDERER_SOURCE);
             if (objColumnSettingsContainer != null)

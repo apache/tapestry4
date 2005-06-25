@@ -26,7 +26,9 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
  */
 public class BasicTableModelWrap extends AbstractTableModel 
 {
-    private IBasicTableModel m_objBasicTableModel;
+	private static final long serialVersionUID = 1L;
+	
+	private IBasicTableModel m_objBasicTableModel;
     private ITableColumnModel m_objTableColumnModel;
 
     public BasicTableModelWrap(IBasicTableModel objBasicTableModel, ITableColumnModel objColumnModel)

@@ -25,6 +25,7 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.contrib.table.model.IAdvancedTableColumnSource;
 import org.apache.tapestry.contrib.table.model.IBasicTableModel;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
@@ -97,9 +98,11 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
         PageBeginRenderListener, ITableModelSource
 {
     /** @since 4.0 */
-
     public abstract TableColumnModelSource getModelSource();
 
+    /** @since 4.0 */
+    public abstract IAdvancedTableColumnSource getColumnSource();
+    
     // Component properties
     private ITableSessionStateManager m_objDefaultSessionStateManager = null;
 
@@ -346,8 +349,9 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
     protected ITableColumnModel generateTableColumnModel(String strDesc)
     {
         IComponent objColumnSettingsContainer = getColumnSettingsContainer();
-
-        return getModelSource().generateTableColumnModel(strDesc, this, objColumnSettingsContainer);
+        IAdvancedTableColumnSource objColumnSource = getColumnSource();
+        
+        return getModelSource().generateTableColumnModel(objColumnSource, strDesc, this, objColumnSettingsContainer);
     }
 
     /**
@@ -377,7 +381,7 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
      * Ensures that the table state is saved before the render phase begins in case there are
      * modifications for which {@link #fireObservedStateChange()}has not been invoked.
      * 
-     * @see org.apache.tapestry.event.PageRenderListener#pageBeginRender(org.apache.tapestry.event.PageEvent)
+     * @see org.apache.tapestry.event.PageBeginRenderListener#pageBeginRender(org.apache.tapestry.event.PageEvent)
      */
     public void pageBeginRender(PageEvent event)
     {

@@ -40,13 +40,11 @@
 
 	<component id="informal" type="Any" inherit-informal-parameters="yes"/>
   
-	<component id="condCurrent" type="Conditional">
+	<component id="condCurrent" type="If">
 		<binding name="condition" expression="condCurrent"/>
 	</component>
   
-	<component id="condOther" type="Conditional">
-		<binding name="condition" expression="condCurrent"/>
-		<static-binding name="invert">true</static-binding>
+	<component id="condOther" type="Else">
 	</component>
   
 	<component id="iterPage" type="Foreach">

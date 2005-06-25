@@ -33,6 +33,8 @@ import org.apache.tapestry.contrib.table.model.common.ArrayIterator;
  */
 public class SimpleListTableDataModel extends AbstractTableDataModel implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	
     private List m_arrRows;
 
     public SimpleListTableDataModel(Object[] arrRows)
