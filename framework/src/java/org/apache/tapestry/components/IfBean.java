@@ -187,4 +187,8 @@ public abstract class IfBean extends AbstractFormComponent
         return _conditionValue;
     }
 
+	// Do nothing in those methods, but make the JVM happy
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle) { }
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle) { }
+    
 }
