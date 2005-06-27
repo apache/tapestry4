@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.3//EN" "./dtd/document-v13.dtd"
 [
 	<!ENTITY projectroot '../'>
   <!ENTITY % common.ent SYSTEM "common.ent">
@@ -47,7 +47,7 @@ The final source for this tutorial is packaged as <strong>helloworld.tar.gz</str
 Our first application will look like the following when it runs:
 </p>  
 
-<img src="../images/QuickStart/helloworld1.png" alt="HelloWorld step 1 screen shot."/>
+<figure src="../images/QuickStart/helloworld1.png" alt="HelloWorld step 1 screen shot."/>
   
 <p>
 Tapestry application always include a page named "Home".  The Home page is the first page
@@ -138,7 +138,7 @@ We're going to change the Home page to display the current date and time. It wil
 this:
 </p>
   
-<img src="../images/QuickStart/helloworld2.png" alt="HelloWorld showing current date/time"/>
+<figure src="../images/QuickStart/helloworld2.png" alt="HelloWorld showing current date/time"/>
 
 <p>
 In Tapestry, pretty much any time anything dynamic occurs, there's going to be a <em>component</em> involved. Tapestry components
@@ -203,7 +203,7 @@ its body ("render" the verb used throughout Tapestry meaning "write HTML output"
   we see the following:
 </p>
 
-<img src="../images/QuickStart/helloworld3.png" alt="HelloWorld Home.html template"/>
+<figure src="../images/QuickStart/helloworld3.png" alt="HelloWorld Home.html template"/>
 
 <p>
  That <em>provisional text</em>, "June 26 2005" is not <em>exactly</em> what the application will
@@ -264,7 +264,7 @@ its body ("render" the verb used throughout Tapestry meaning "write HTML output"
   instead of using the browser's refresh button. The end result looks like:
 </p>  
 
-<img src="../images/QuickStart/helloworld4.png" alt="HelloWorld with refresh link"/>
+<figure src="../images/QuickStart/helloworld4.png" alt="HelloWorld with refresh link"/>
 
 <p>
   We created this new link by adding the following to Home.html:
@@ -330,7 +330,6 @@ its body ("render" the verb used throughout Tapestry meaning "write HTML output"
 </p>
 </section>
 
-<hr/>
 
 <!-- If default bindings go, so can this footnote! -->
 

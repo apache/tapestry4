@@ -43,7 +43,7 @@
   This application simply counts the number of times we click a link.
 </p>  
 
-<img src="../images/QuickStart/directlink1.png" alt="Initial DirectLink Tutorial"/>
+<figure src="../images/QuickStart/directlink1.png" alt="Initial DirectLink Tutorial"/>
   
 <p>
   This requires a little more than we can accomplish with just an HTML template; we'll need
@@ -221,7 +221,7 @@ public abstract class Home extends BasePage
   exception page:
 </p>  
 
-<img src="../images/QuickStart/directlink2.png" alt="Exception report - missing property"/>
+<figure src="../images/QuickStart/directlink2.png" alt="Exception report - missing property"/>
 
 <p>
 That's quite a lot of information.  The root cause of the exception is the fact
@@ -371,7 +371,7 @@ the response.  With PageLink, we just get the page and render it.
   add a link to the page to do just that.  The end result will look like:
 </p>  
 
-<img src="../images/QuickStart/directlink3.png" alt="Tutorial with clear link"/>
+<figure src="../images/QuickStart/directlink3.png" alt="Tutorial with clear link"/>
 
 <p>
   To accomplish this we need to add a little to the Home page's HTML template, and connect that
@@ -427,7 +427,7 @@ the response.  With PageLink, we just get the page and render it.
   Just invoking a single operation is a bit limiting; we should be able to increment by more than just 1:
 </p>  
 
-<img src="../images/QuickStart/directlink4.png" alt="Multiple DirectLinks"/>
+<figure src="../images/QuickStart/directlink4.png" alt="Multiple DirectLinks"/>
 
 <p>
 In this case, we want to have more than one DirectLink component  call the same listener.  And we
@@ -506,9 +506,6 @@ need to figure out whether to increment the counter by 1, 5 or 10.
 
 </section>
 
-
-  
-<hr/>
 
 <p>
   <sup>1</sup>This is my (Howard Lewis Ship's) least favorite thing in Tapestry 4.0; it is something

@@ -57,7 +57,7 @@ create a directory, tapestry-libraries, with files and folders beneath it (espec
 inside lib/web).
 </p>  
 
-<img src="tapestry-libraries.png" alt="Tapestry Libraries Directories"/>
+<figure src="tapestry-libraries.png" alt="Tapestry Libraries Directories"/>
   
 </section>
 
@@ -69,13 +69,13 @@ Each tutorial is its own project (in fact, it includes .project and .classpath f
 used inside &Eclipse;).  Each should be expanded inside your tutorials directory:
 </p>
 
-<img src="tutorials-structure.png" alt="Tutorial Workspace Structure"/>
+<figure src="tutorials-structure.png" alt="Tutorial Workspace Structure"/>
 
 <p>
 Each individual tutorial has the same structure:
 </p>
 
-<img src="single-tutorial.png" alt="Single Tutorial Structure"/>
+<figure src="single-tutorial.png" alt="Single Tutorial Structure"/>
  
   
 <p>

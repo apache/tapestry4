@@ -190,7 +190,7 @@ of tutorials is being written.
 <p>
 Tapestry 4.0 should be production-ready soon.  It needs more exposure and more documentation. For the
 momement, it is still recommended that you stick with Tapestry 
-  <a href="http://jakarta.apache.org/tapestry/3.0.3/"><strong>3.0.3</strong></a>,
+  <link href="http://jakarta.apache.org/tapestry/3.0.3/"><strong>3.0.3</strong></link>,
 the latest stable release.
 </p>
 
