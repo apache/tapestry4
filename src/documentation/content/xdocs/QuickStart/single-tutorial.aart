@@ -1,0 +1,15 @@
+helloworld
+|
++- build.xml
++- src
+   |
+   +- conf
+   |  |
+   |  +- log4j.properties
+   +- context
+   |  |
+   |  +- WEB-INF
+   |     |
+   |     +- web.xml
+   +- java
+      

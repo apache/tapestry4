@@ -18,8 +18,10 @@
 <!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
 [
 	<!ENTITY projectroot '../'>
+  <!ENTITY % common.ent SYSTEM "common.ent">
 	<!ENTITY % links.ent SYSTEM "../links.ent">
-	%links.ent;
+	%common.ent;
+  %links.ent;  
 ]>
 <document>
   <header>
@@ -27,6 +29,92 @@
   </header>
 
 <body>
-  <p>Coming soon.</p>
+
+<p>
+This is the Tapestry Quick Start; basic documentation to get your started using Tapestry.
+The <link href="../UsersGuide/">Users Guide</link> is conceptual; it provides the gritty details.
+This Quick Start is about getting you running with Tapestry.
+</p>
+
+<section>
+  <title>Pre-requisistes</title>
+  
+<p>
+You will need a Java JDK to get started.  We'll be using some of the
+<link href="../tapestry-annotations/">Tapestry Annotations</link>, which require
+<strong>JDK 1.5</strong>.
+</p>  
+
+<p>
+The examples build with &Ant;, version 1.6.2 or better is required.
+</p>
+  
+<p>
+The examples all share a set of libraries (the Tapestry framework, its dependencies, the
+contrib library, and the annotations library).  These are available from <link href="&quickstart-download-url;">&quickstart-download-url;</link>
+as file tapestry-libraries.tar.gz.  Choose a directory to store the tutorials and expand the contents of this tarball; this will
+create a directory, tapestry-libraries, with files and folders beneath it (especially, many JAR files
+inside lib/web).
+</p>  
+
+<img src="tapestry-libraries.png" alt="Tapestry Libraries Directories"/>
+  
+</section>
+
+<section>
+  <title>Tutorial Structure</title>
+  
+<p>
+Each tutorial is its own project (in fact, it includes .project and .classpath files so that it may be
+used inside &Eclipse;).  Each should be expanded inside your tutorials directory:
+</p>
+
+<img src="tutorials-structure.png" alt="Tutorial Workspace Structure"/>
+
+<p>
+Each individual tutorial has the same structure:
+</p>
+
+<img src="single-tutorial.png" alt="Single Tutorial Structure"/>
+ 
+  
+<p>
+The  src/conf folder contains just a log4j.properties file, to set up logging for the applilcation
+as it runs.
+</p>
+
+<p>
+The src/context folder contains the files that will populate the web application archive; this includes
+HTML files, stylesheets, and images. Within the WEB-INF folder will be the standard web.xml deployment
+descriptor, plus additional Tapestry related files.
+</p>
+
+<p>
+The Ant <code>war</code> target will compile the Java source files, and create a WAR file containing
+the compiled classes (inside WEB-INF/classes), the contents of src/context, and all the dependencies (from tapestry-libraries)
+packaged inside WEB-INF/lib.  The file will be stored in the target folder, which is created
+as necessary, and is named after the project (i.e., target/helloworld.war).
+</p>
+  
+</section>
+
+<section>
+  <title>Building And Deploying</title>
+  
+<p>
+  Coming soon ...
+</p>
+  
+</section>
+
+<section>
+  <title>Next: HelloWorld</title>
+  
+ <p>
+  That covers the basics you'll need to get started. Continue on with the <link href="helloworld.html">HelloWorld Tutorial</link>
+ </p>
+  
+</section>
+
 </body>
 </document>
