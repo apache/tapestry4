@@ -42,6 +42,8 @@
     
     <QuickStart label="Quick Start" tab="quick-start" href="QuickStart/">
       <qsintro label="Introduction" href="index.html"/>
+      <helloworld label="Hello World" href="helloworld.html"/>
+      <directlink label="DirectLink" href="directlink.html"/>
     </QuickStart>
     
     <UsersGuide label="Users Guide" tab="users-guide" href="UsersGuide/">

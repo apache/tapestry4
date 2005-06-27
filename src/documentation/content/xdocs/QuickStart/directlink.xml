@@ -1,0 +1,536 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+[
+	<!ENTITY projectroot '../'>
+  <!ENTITY % common.ent SYSTEM "common.ent">
+	<!ENTITY % links.ent SYSTEM "../links.ent">
+	%common.ent;
+  %links.ent;  
+]>
+<document>
+  <header>
+    <title>QuickStart: DirectLink</title>
+  </header>
+
+<body>
+  
+<p>
+  In this tutorial, we'll get introduced to one of the real workhorses of Tapestry, the DirectLink 
+  component. It is one of the most common ways of triggering server-side behavior.  Along the way,
+  we'll start seeing some other common aspects of developing web applications using Tapestry.
+</p>
+
+<section>
+  <title>HTML Template</title>
+  
+<p>
+  This application simply counts the number of times we click a link.
+</p>  
+
+<img src="../images/QuickStart/directlink1.png" alt="Initial DirectLink Tutorial"/>
+  
+<p>
+  This requires a little more than we can accomplish with just an HTML template; we'll need
+  to supplement with a Java class.  This java class will contain a property that stores the count,
+  and contain logic used to increment the count.
+</p>  
+  
+<p>
+  We'll start again with the Home page's template:
+</p>  
+  
+<source><![CDATA[
+<html>
+  <head>
+    <title>Tutorial: DirectLink</title>
+  </head>
+  <body>
+    <h1>DirectLink Tutorial</h1>
+        
+<p>
+  The current value is: 
+    <span style="font-size:xx-large"><span jwcid="@Insert" value="ognl:counter">37</span></span>
+</p>        
+
+<p>
+  <a href="#" jwcid="@DirectLink" listener="listener:doClick">increment counter</a>
+</p>
+        
+<p>
+  <a href="#" jwcid="@PageLink" page="Home">refresh</a>
+</p>        
+        
+  </body>
+</html>  
+]]></source>  
+  
+<p>
+  Much of this should look familiar. We're again using the &Insert; component, and we're using
+  &OGNL; again. Instead of creating a new instance, we're using OGNL in a simpler way; it will
+  read the counter property and provide that to the Insert  component
+  in its value parameter.
+</p>
+  
+<p>
+  That's fine, but where does this counter property live?  In the Home page's Java class. We'll see how
+  to create that class shortly.
+</p>  
+
+<p>
+  Just displaying the current value isn't enough, we need a way to change that value.  That's where
+  the DirectLink component comes in; it will invoke a method of our Java class for us.
+  The listener parameter of DirectLink is how we connect that component to our application's
+  logic.  The "listener:" prefix activates the logic that lets Tapestry invoke the method
+  with the given name.
+  We supply a method, method doClick(), and the DirectLink
+  component will call it for us, in response to the user clicking that link in their web browser.
+</p>
+  
+</section>
+
+<section>
+  <title>Page classes</title>
+  
+<p>
+  So, we have half the puzzle: the HTML template. But we need the Java class that will contain the
+  properties to be stored, and the methods to be invoked.
+</p>
+
+<p>
+  first, we need a Java package to store the class.  For this tutorial, we'll use tutorials.directlink.pages. That means
+  we'll create the Home.java source file as src/java/tutorials/directlink/pages/Home.java:
+</p>
+
+<source><![CDATA[
+package tutorials.directlink.pages;
+
+import org.apache.tapestry.annotations.Persist;
+import org.apache.tapestry.html.BasePage;
+
+public abstract class Home extends BasePage
+{
+    @Persist
+    public abstract int getCounter();
+    public abstract void setCounter(int counter);
+    
+    public void doClick()
+    {
+        int counter = getCounter();
+        
+        counter++;
+        
+        setCounter(counter);
+    }
+}
+]]></source>
+
+<p>
+  The Java classes you write will extend from the Tapestry BasePage class<sup>1</sup>. 
+  To this base class, we are adding a property, counter, and a listener method, doClick()<sup>2</sup>.
+</p>  
+
+
+<p>
+  <em>Abstract? What's up with that?</em> That's a pretty typical first reaction to seeing a Tapestry page class; why is it
+  abstract, why is it not an ordinary JavaBean?
+</p>
+
+<p>
+  The answer involves a bit of a digression.  Tapestry pages exist on the server, and are somewhat expensive
+  to create ... expensive enough that you don't want to constantly create them and discard them. In this way,
+  they are much like database connections ... you want to pool pages for reuse from one request to the next.
+</p>
+
+<p>
+  Because the pages are pooled and shared, in fact shared <em>between different users</em>, its very important
+  that they page objects be cleansed of any user-specific or request-specific data before they go back
+  into the pool.  You can do this in your own code (there are additional interfaces to implement and additional
+  code to write), but it is <em>easier</em> to let Tapestry do that work for you.  
+</p> 
+
+<p>
+  By declaring an accessor method as abstract, you are implicitly directing Tapestry to
+  "fill in" the details; at <em>runtime</em>, it will create a subclass of the Java class you provide,
+  extending your implementation will all the grinding details.  As well see in later tutorials,
+  this in fact goes far beyond just properties; all sorts of useful features can be tied to
+  different flavors of abstract methods (often coupled with different 
+  <link href="../tapestry-annotations/index.html">annotations</link>).
+</p>
+
+<p>
+  There's something special about this counter property. It has to remember its value
+  <em>between</em> requests.  The @Persist annotation, attached to the getCounter() accessor method,
+  directs Tapestry to make this a <em>persistent page property</em>.  Despite the name, this has nothing to do
+  with database persistence, it's about storing the value for the property in the
+  HttpSession between requests, and restoring it the next time the same user, in the same session, 
+  accesses the page.
+</p>
+
+<p>
+  This is another pivotal feature in Tapestry; individual page properties (or properties of components
+  used within the page) can store their value in the HttpSession automatically. We can seperate out
+   the persistent state of the page from any <em>instance</em> of the page. This minimizes the
+   amount of information that must be stored in the HttpSession; rather than entire page objects (with all
+   those templates and nested components), we store just the tiny handful of properties that need
+   to "stick around" until the next request.
+</p>
+
+<p>
+  This approach to session management, combined with the pooling of page instances, is critical to
+  achieving another of Tapestry fundamental principals: <strong>Efficiency</strong>.  Tapestry
+  applications will scale because of how they manage server-side state.  The cost of this
+  is that the classes and methods are abstract, only filled out at runtime.
+</p>
+
+<p>
+  Back from our digression. We now have the counter property, and we understand how it is stored in the
+  HttpSession between requests.  That makes the implementation of the doClick() listener method straight
+  forward: get the current value, increment it, store it back in.
+</p>
+
+<p>
+  Again, we're demonstrating part of our promise about Tapestry: we're talking about objects and methods
+  and properties.  There's a URL in there, generated by Tapestry, for the DirectLink.  There's 
+  attributes stored in the HttpSession.  We don't see those or care about them.
+</p>
+
+</section>
+
+<section>
+  <title>Locating the page class</title>
+  
+<p>
+  We've provided the Home page's template and Java class, but we haven't quite connected the dots enough
+  for our application to run.  If we tried to run the application, we'd get the Tapestry
+  exception page:
+</p>  
+
+<img src="../images/QuickStart/directlink2.png" alt="Exception report - missing property"/>
+
+<p>
+That's quite a lot of information.  The root cause of the exception is the fact
+that Tapestry couldn't find the Home class we 
+created, so it instead used BasePage as-is.  BasePage doesn't have a counter property, so the OGNL expression
+<code>counter</code> couldn't be evaluated (you can see that in the deepest exception).  You can see in the
+target property of the ognl.NoSuchPropertyException, the value <code>$BasePage_0@cec78d[Home]</code> is the 
+toString() of a page class; the first part is the name of the class (remember, this is a subclass
+generated at runtime by Tapestry), the value in brackets is the name of the page.
+</p>
+
+<p>
+  This exception bubbled up to the top-level of Tapestry, getting wrapped inside other exceptions
+  along the way.  The framework couldn't continue with the Home page, so it generated this exception
+  report instead.
+</p>
+
+
+<p>
+  As you can see, the exception report is quite detailed; it shows the entire stack of exceptions,
+  including their properties.  It identifies the file and line at the root of the problem,
+  and even displays an excerpt from that file.  Further down on the page are exhaustive details about
+  all the Servlet API objects ... in short you are given all the information you need to understand what
+  was going on in your applilcation at the time of the failure, without having to restart using
+  a debugger.  This is another Tapestry priciple in action: Feedback. When things go wrong, Tapestry
+  should help you fix your problem, rather than get in the way.
+</p>
+
+<p>
+  So, the root of our problem is that Tapestry can't find our Home page, so we need to tell it where
+  to look.  This involves providing Tapestry with a little bit of configuration about our application.
+</p>
+
+<p>
+  We'll create an <em>application specification</em> for our application, and store the configuration
+  data there.  An application specification is an XML file that provides extra information about the application
+  to Tapestry.  It is optional; we didn't have one in the previous example.
+</p>
+
+<p>
+  The name of the servlet ("app", in this example) is appended with the extension ".application" to
+  form the name of the specification.  The specification itself is stored in the 
+  The specification itself is stored in the WEB-INF folder of the WAR.  In our project, it is
+  src/context/WEB-INF/app.application:
+</p>
+
+<source><![CDATA[
+<?xml version="1.0"?>
+<!DOCTYPE application PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+  
+<application>  
+  <meta key="org.apache.tapestry.page-class-packages" value="tutorials.directlink.pages"/>
+	
+</application>
+]]></source>
+
+<p>Application specifications are validated XML files, with a real DTD (at the specified
+  location). The &lt;meta&gt; element is used to specifiy meta data ... configuration data that
+  doesn't fit in elsewhere.  Here we're using it to inform Tapestry about which
+  Java packages to search for pages. We can actually specify a comma-seperated list if there is more
+  than one package.</p>
+  
+<p>
+  With this file in place, Tapestry has all it needs to run our application: the Home page's HTML template, its
+  Java class, at the connection between the two. Now, let's look at improving our example a bit.
+</p>  
+  
+</section>
+  
+<section>
+  <title>Understanding DirectLink URLs</title>
+  
+<p>
+  The URLs generated by the DirectLink component are more complex than those generated by the
+  PageLink component. Let's look at one:
+</p>  
+
+<source><![CDATA[
+http://localhost:8080/directlink/app?component=%24DirectLink&page=Home&service=direct&session=T
+]]></source>
+
+<p>
+The first query parameter, component, identifies the component within the page. That %24 is "URL-ese" for a dollar sign.
+In Tapestry, every component ends up with a unique id within its page. If you don't provide one, Tapestry
+creates one from the component type.  If you had many different DirectLinks on a page, you'd start seeing
+component ids such as $DirectLink_0, $DirectLink_1, etc.
+</p>
+
+<p>
+  You can give a component a shorter and more mneumonic id by putting that before the "@" sign:
+</p>
+
+<source><![CDATA[
+  <a href="#" jwcid="inc@DirectLink" listener="listener:doClick">increment counter</a>
+]]></source>
+
+<p>
+After making that change to the template, the URL for the DirectLink component is a bit better:
+</p>
+
+<source><![CDATA[
+http://localhost:8080/directlink/app?component=inc&page=Home&service=direct&session=T
+]]></source>
+
+<p>
+The other changes from the previous examples are the service query parameter and the session query parameter.
+The service query parameter indicates that the processing of the request is different than 
+for a link created by the PageLink component.  Here
+we need to get a page, find a component in the page and invoke a listener method before we can render
+the response.  With PageLink, we just get the page and render it.
+</p>
+
+<p>
+  Lastly, the session query parameter indicates whether there was an HttpSession at the time the link was rendered.
+  Tapestry uses this to detect when the HttpSession expired ... perhaps because the user walked away from the 
+  computer for a while before clicking the link.  If the application was stateless when this link
+  was generated, then the session parameter simply wouldn't appear in the URL.
+</p>
+
+<p>
+  One thing to take note of is that the method name <em>isn't</em> part of the URL, just the id of the 
+  component. This is very desirable ... why expose more of the construction of your application than 
+  you have to? As importantly, this helps to prevent malicious users from subverting your application; there
+  simply isn't a way to get an arbitrary listener method to be invoked, only one that you, as the developer, wired
+  to a specific component.
+</p>
+
+<p>
+  These are what Tapestry pros call "ugly URLs".  The ugly part is the use of query parameters, rather than paths,
+  to express the information in the URL.  Ugly URLs can cause some problems; since the entire application is
+  routed through the /app path, it's hard to apply J2EE declarative security.  Likewise, the use
+  of query parameters means that most search engines will not spider the site.  The solution is
+  to
+  use "friendly URLs"<sup>3</sup>, which is covered in a later tutorial.
+</p>
+
+
+</section>  
+
+<section>
+  <title>Adding more links</title>
+  
+<p>
+  This application is good, but we should have a way to reset the counter back to zero. We're going to
+  add a link to the page to do just that.  The end result will look like:
+</p>  
+
+<img src="../images/QuickStart/directlink3.png" alt="Tutorial with clear link"/>
+
+<p>
+  To accomplish this we need to add a little to the Home page's HTML template, and connect that
+  to logic expressed as a new method on the Home page class.  First the template:
+</p>
+
+<source><![CDATA[
+<p>
+  <a href="#" jwcid="clear@DirectLink" listener="listener:doClear">clear counter</a>
+</p>
+]]></source>
+  
+<p>This is just <em>another</em> DirectLink component, on the same page, but with
+  a different component id, and a different configuration. Here, we've called the component
+  "clear", and connected it to the doClear() listener method.</p>
+  
+ <p>
+  That method is also quite simple:
+ </p>
+ 
+<source><![CDATA[
+    public void doClear()
+    {
+        setCounter(0);
+    }
+]]></source>
+
+<p>
+  And that's all it takes.  We've added a new operation to our page, clearing the counter, in
+  four lines of Java code (three if you format your code the way Sun likes you to), and a couple
+  of lines of HTML.  No outside configuration beyond that. This conforms to another Tapestry
+  principle: Consistency.  Adding more  operations is not different from adding the first operation. Add
+  as many as you like, Tapestry will take care of it.
+</p>
+
+<p>
+  By contrast, using traditional servlets, we would have had to:
+</p>
+<ul>
+  <li>Decide on the URL</li>
+  <li>Update the HTML with that URL</li>
+  <li>Write an entire new servlet class for this single operation</li>
+  <li>Update web.xml with the servlet and the servlet mapping (the URL)</li>
+</ul>
+
+  
+</section>
+
+<section>
+  <title>Passing data in the links</title>
+  
+<p>
+  Just invoking a single operation is a bit limiting; we should be able to increment by more than just 1:
+</p>  
+
+<img src="../images/QuickStart/directlink4.png" alt="Multiple DirectLinks"/>
+
+<p>
+In this case, we want to have more than one DirectLink component  call the same listener.  And we
+need to figure out whether to increment the counter by 1, 5 or 10.
+</p>
+
+<p>
+  This requires two changes.  First, we changed the old increment link into three new links:
+</p>
+
+<source><![CDATA[
+<p>
+  <a href="#" jwcid="by1@DirectLink" listener="listener:doClick" parameters="ognl:1">increment counter by 1</a>
+</p>
+
+<p>
+  <a href="#" jwcid="by5@DirectLink" listener="listener:doClick" parameters="ognl:5">increment counter by 5</a>
+</p>
+
+<p>
+  <a href="#" jwcid="by10@DirectLink" listener="listener:doClick" parameters="ognl:10">increment counter by 10</a>
+</p>
+]]></source>
+
+<p>
+  We've given the three compnents mnuemonic ids ("by1", "by5" and "by10"). In addition, we're passing
+  parameters in the URL; that's the parameters parameter<sup>4</sup>. We can see that value
+  encoded into the URL:
+</p>
+
+<source><![CDATA[http://localhost:8080/directlink/app?component=by10&page=Home&service=direct&session=T&sp=10]]></source>
+  
+<p>The sp query parameter holds the value.  "sp" is short for "service parameter", and is a hold over
+  from Tapestry 3.0.  In Tapestry 4.0, these are called "listener parameters", because they are
+  only meaningful to the listener method.  Also, we're only showing a single parameter, but the
+  same mechanism supports multiple parameters.</p>  
+  
+<p>
+  That's how information gets encoded into the URL, but how does the listener method find out about it?
+  By adding a parameter to the doClick() listener method:
+</p>  
+
+<source>
+    public void doClick(int increment)
+    {
+        int counter = getCounter();
+        
+        counter += increment;
+        
+        setCounter(counter);
+    }  
+</source>
+  
+<p>
+  Tapestry maps the values in the sp query parameter to the parameters of the listener method.  Also, note
+  that <em>type</em> of the value has been maintained.  it started as a number, and is still a number.
+  Listener parameters can be of virtually any type, and will keep their type through being encoded into the URL
+  and decoded in the subsequent request. You can even pass arbitrary objects ... as long as they implement java.io.Serializable (but
+  you will start seeing some very long URLs if you do).
+</p>  
+  
+<p>
+  Again, we're seeing consistency. We wanted to pass information in the URL, and were able to use the
+  same mechanisms; the DirectLink component, the listener method ... we just added a little sensible extra
+  to get the needed information from point A (the page as it renders) to point B (the listener method when the
+  link is clicked).
+</p>  
+</section>  
+
+<section>
+  <title>Next: ???</title>
+  
+<p>
+  Don't know what's next ... haven't written it yet.  Probably start with Forms.
+</p>
+
+</section>
+
+
+  
+<hr/>
+
+<p>
+  <sup>1</sup>This is my (Howard Lewis Ship's) least favorite thing in Tapestry 4.0; it is something
+  that should be erradicated from Tapestry (you should not have to extend a base class at all), but
+  that will cause some significant backwards compatibility issues.
+</p>
+
+<p>
+  <sup>2</sup>Listener methods don't have to be named in any special way, they just have to be 
+  public methods. This naming convention, do<em>Something</em>, is a good one, but is
+  anything but mandatory.
+</p>
+
+<p>
+  <sup>3</sup>For some reason, "ugly" is the opposite of "friendly".  
+</p>
+
+<p>
+  <sup>4</sup>Say that a few times fast.
+</p>
+  
+  
+  
+</body>
+</document>

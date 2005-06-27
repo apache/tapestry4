@@ -27,61 +27,67 @@
  </header>
 
 <body>
-		
+
+<section>
+  <title>What is Tapestry?</title>
+
 <p>
-Tapestry is a powerful, open-source, all-Java framework
-for creating leading edge web applications in Java.
+Tapestry is an open-source framework for creating dynamic, robust, highly scalable web applications in Java.
+Tapestry complements and builds upon the standard Java Servlet API, and so it works in any servlet container
+or application server.
 </p>
 
 <p>
-Tapestry reconceptualizes web application development 
-in terms of objects, methods and properties
-instead of URLs and query parameters. It allows you to build sophisticated, richly interactive, highly scalable
-web applications without any concern for HTTP ... or even the Servlet API!  Tapestry takes over all the tedious 
-and error-prone aspects of web application development, letting you focus on just the parts specific to your
-application.
+Tapestry divides a web application into a set of pages, each constructed from components. This provides a consistent structure, allowing the Tapestry framework to 
+assume responsibility for key concerns such as URL construction and dispatch, persistent state storage
+on the client or on the server, user input validation, localization/internationalization, and exception reporting. Developing Tapestry applications involves creating HTML templates using plain HTML, and combining the templates with small amounts of Java code using (optional) XML descriptor files. In Tapestry, you create your
+application in terms of objects, and the methods and properties of those objects -- and specifically <em>not</em>
+ in terms of URLs and query parameters. Tapestry brings true object oriented development
+ to Java web applications.
 </p>
 
-<p>
-Tapestry is an alternative to scripting environments such as
-JavaServer Pages or Velocity.  Tapestry goes far further,
-providing a complete framework for creating extremely dynamic applications
-with minimal amounts of coding.
+<p>Tapestry is specifically designed to make creating new components very easy, as this is a routine approach when building applications. The distribution includes over fifty components, ranging from simple output components all the way up to complex data grids and tree navigators.
 </p>
 
+<p>Tapestry is architected to scale from tiny applications all the way up to massive applications consisting of hundreds of individual pages, developed by large, diverse teams. Tapestry easily integrates with any kind of backend, including J2EE, HiveMind and Spring.
+</p>
+
+
 <p>
-Tapestry's approach, using a component object model similar to a
-traditional GUI, provides the following benefits:
+Tapestry is released under the Apache Software Licence 2.0.
+</p>		
+
+</section>
+
+<section>
+  <title>What is Tapestry's philosophy?</title>
+<p>
+Tapestry is organized around four key principles:
 </p>
 
 <ul>
-<li>Very high level of reuse, within and between projects
-  <p><em>Everything in Tapestry is a reusable component</em></p></li>
-<li>Frees developers from writing boring, buggy code
-  <p><em>Code in terms of objects, methods and properties, not URLs and query parameters</em></p></li>
-<li>Allows applications' complexity to scale well
-  <p><em>Framework does all the URL building and message dispatching, transparently</em></p></li>
-<li>Easy Internationalization/Localization
-  <p><em>Framework selects localized version of text, templates and images</em></p></li>
-  
-<li>Extremely robust applications
-  <p><em>Less code is less bugs<br/>Sophisticated built-in exception reporting<br/><link href="faq.html#lineprecise">Line precise error reporting</link></em></p></li>
-  
-<li>Easy team integration
-  <p><em>Graphic designers and Java developers can work together without having to know each other's jobs</em></p></li>
+  <li>Simplicity - web applications shouldn't be rocket science!</li>
+  <li>Consistency - what works in pages should work in components. What works in small applications should work in large
+    applications. Different developers should find similar solutions to similar problems.</li>
+    <li>Efficiency - applications should be performant and scalable</li>
+    <li>Feedback - when things go wrong, the framework should not get in the way; in fact, it should provide
+      useful diagnostics</li>
 </ul>
 
 <p>
-Tapestry has been developed using the guiding principals of <strong>Simplicity</strong>,
-<strong>Consistency</strong>, <strong>Efficiency</strong> and
-<strong>Feedback</strong>. Tapestry is focused on improving developer productivity; the goal of Tapestry is to
-ensure that, when developing your applications, <em>the simplest approach is also the <strong>correct</strong> approach</em>.
+  These four principles drive the meta-principle: <em>The simplest choice should be the correct choice.</em> The decisions you make early in a project
+  should not come back later to haunt you.
 </p>
 
 <p>
-Tapestry is distributed under the terms of the Apache Software License. It can be freely used, shared and modified with minimal
-constraints.
+  We have found that a component approach to web development 
+  is the best way of realizing these principles. Structuring
+  the framework and your application around components makes it possible to move all the boring
+  plumbing  code out of your application and into the framework.  You write less code, you write simpler code,
+  sometimes you write <em>no</em> code. Tapestry picks up the slack.
 </p>
+
+</section>
 
 <section>
   <title>Tapestry 4.0</title>
@@ -147,7 +153,7 @@ your productivity. Here's a few of our favorites:
     listener on the server-side.
   </li>
   <li>
-    You are no longer limited to just Global and Visit; you can have 
+    You are no longer limited to just Global and Visit; you can have as many
     <link href="UsersGuide/state.html#state.aso">application state objects</link> as you like.
   </li>
   <li>
@@ -163,8 +169,8 @@ your productivity. Here's a few of our favorites:
 </ul>
 
 <p>
-The complete list of changes is almost too numerous to list.  Suffice to say, everything is about
-getting more bang for less work, and reducing the amount of Java code, reducing the complexity
+The complete list of changes is almost too numerous to enumerate.  Suffice to say, everything is about
+getting more bang for the buck, and reducing the amount of Java code, reducing the complexity
 of templates, and simplifying (or eliminating) XML files.
 </p>
 
@@ -177,7 +183,8 @@ of templates, and simplifying (or eliminating) XML files.
 Work on Tapestry 4.0 is in full swing.  Documentation is being converted
 from the old DocBook format, to the new Forrest format, leaving many temporary gaps. Only the 
 main code base and the Workbench example is being built, all other example code is not (this unfortunately
-includes the Virtual Library).
+includes the Virtual Library). A new <link href="QuickStart/index.html">Quick Start</link> series
+of tutorials is being written.
 </p>
 
 <p>
