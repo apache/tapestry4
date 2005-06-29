@@ -47,10 +47,10 @@ The final source for this tutorial is packaged as <strong>helloworld.tar.gz</str
 Our first application will look like the following when it runs:
 </p>  
 
-<figure src="../images/QuickStart/helloworld1.png" alt="HelloWorld step 1 screen shot."/>
+<figure src="&images-url;/helloworld1.png" alt="HelloWorld step 1 screen shot."/>
   
 <p>
-Tapestry application always include a page named "Home".  The Home page is the first page
+Tapestry applications always include a page named "Home".  The Home page is the first page
 displayed by the application, when it is first started (that is, when the client web browser
 first accesses the starting URL).
 </p>  
@@ -80,12 +80,14 @@ when you don't provide one; for a trivial page like ours, we don't need to suppl
 <p>
 There's nothing special in this HTML template, nothing dynamic (not yet, anyway).  We could access it
 as http://localhost:8080/helloworld/Home.html and see the same thing; but notice that in the screen shot
-the URL is http://localhost:8080/hellworld/app.  That means that a servlet, mapped to the /app path
-within the web application, was responsible for the output. 
+the URL is <link href="http://localhost:8080/hellworld/app">http://localhost:8080/hellworld/app</link>.  
+That means that a servlet, mapped to the /app path
+within the web application, was responsible for the output you can see in the web browser.
 </p>
 
 <p>
-Tapestry applications always use a particular servlet class. This is define in the web deployment descriptor, web.xml.
+Tapestry applications always use a specific servlet class provided with the framework. 
+This is defined in the web deployment descriptor, web.xml.
 This file is stored in the project as src/context/WEB-INF/web.xml:
 </p>
 
@@ -111,7 +113,7 @@ This file is stored in the project as src/context/WEB-INF/web.xml:
   
 <p>
 Here we've given our application a name, "app".  We're using the standard Tapestry ApplicationServlet class as
-our servlet, and mapping it to the path /app.  The name you choose for you application is relatively unimportant, and 
+our servlet, and mapped it to the path /app.  The name you choose for you application is relatively unimportant, and 
 Tapestry will adapt to whatever name you do choose.  
 </p>  
 
@@ -138,7 +140,7 @@ We're going to change the Home page to display the current date and time. It wil
 this:
 </p>
   
-<figure src="../images/QuickStart/helloworld2.png" alt="HelloWorld showing current date/time"/>
+<figure src="&images-url;/helloworld2.png" alt="HelloWorld showing current date/time"/>
 
 <p>
 In Tapestry, pretty much any time anything dynamic occurs, there's going to be a <em>component</em> involved. Tapestry components
@@ -149,7 +151,7 @@ later).
 
 <p>
 Tapestry components "hide" inside the HTML template.  They look like ordinary HTML tags, but have 
-extra attributes in them.  The revised Home.html template:
+extra attributes in them, often with unusual values.  The revised Home.html template:
 </p>
 
 <source><![CDATA[
@@ -184,7 +186,7 @@ can be configured and what Java class contains the logic for the component.  Aga
 Before we get to the value parameter, a word about the <em>body</em> of the component.  The body
 is the portion of the template enclosed by the component's start (&lt;span&gt;) and end (&lt;/span&gt;)
 tags.  Ultimately, the component itself determines when, if, or how many times it will render
-its body ("render" the verb used throughout Tapestry meaning "write HTML output").
+its body ("render" is the verb used throughout Tapestry meaning "write HTML output").
 </p>
 
 <p>
@@ -203,7 +205,7 @@ its body ("render" the verb used throughout Tapestry meaning "write HTML output"
   we see the following:
 </p>
 
-<figure src="../images/QuickStart/helloworld3.png" alt="HelloWorld Home.html template"/>
+<figure src="&images-url;/helloworld3.png" alt="HelloWorld Home.html template"/>
 
 <p>
  That <em>provisional text</em>, "June 26 2005" is not <em>exactly</em> what the application will
@@ -218,40 +220,54 @@ its body ("render" the verb used throughout Tapestry meaning "write HTML output"
   this template and make significant changes and validate them in their editor of choice without
   involving a Java developer. As long as the HTML side of the team honors the components,
   the tags with a jwcid attribute, and doesn't make changes to <em>those</em> elements, the rest
-  of the HTML template can be freely editted. It is only a tthe junction between content
+  of the HTML template can be freely editted. It is only at the junction between content
   and runtime behavior, that is, <em>inside</em> components, that HTML and Java developers need to work together.
 </note>
 
 <p>
-  So, what does <code>value="ognl:new java.util.Date()"</code> mean?  In Tapestry terms we are
-  <em>binding</em> the value parameter of the Insert  component to the &OGNL; expression
-  <code>new java.util.Date()</code>. so what does <em>that</em> mean?
+  So, what does <code>value="ognl:new java.util.Date()"</code> mean?  
+  Let's start with the attribute value, <code>ognl:new java.util.Date</code>.  The "ognl:" perfix
+  signals to Tapestry that this is an expression to be evaluated, rather than a ordinary, literal
+  string. If we did want the Insert to always render the same literal string, such as "Tapestry Rocks!", 
+  we wouldn't need the prefix, we could just write
+ <code>value="Tapestry Rocks!"</code><sup>1</sup>.
+</p>  
+  
+<p>
+OGNL is the Object Graph Navigation Language, an open source expression language used by several
+open-source projects, including Tapestry, &WebWork; and &Spring;.  OGNL has some astounding
+capabilities, not just reading and updating object properties, but also support creating
+new objects entirely (as here), as well as creating lists, maps and arrays of objects.
 </p>
 
 <p>
-  In Tapestry, components have parameters.  The logic for the component, expressed in Java code, 
-  is combined with
-  the component's parameters to produce the desired behavior.  In this case, the 
-  implementation of the Insert  component
-  reads the value bound to its value parameter, converts that to a string, and renders that string.
+Here, evaluating the expression results in a new instance of the java.util.Date class. This Date
+instance is <em>bound</em> to the value parameter of the Insert component. "Bound" is another
+specialized Tapestry term, one that concerns the relationship between a component parameter and
+a property (or expression) of its container.  Here, the component is the Insert component,
+the container is the Home page, and the expression is <code>new java.util.Date</code>.  Binding might
+look like just an assignment of a property of the Insert component, but is
+a bit more; components often use bindings to <em>update</em> properties of their container, something we'll see 
+when discussing the form element components.
 </p>
 
 <p>
- The leaves the question of <em>what</em> get rendered by the Insert .  If the value was just a simple literal
- string, such s "Tapestry Rocks!" we wouldn't need the prefix, we could just write
- <code>value="Tapestry Rocks!"</code><sup>1</sup>.  Here though, the "ognl:" prefix informs Tapestry 
- that the remainder of the value is an &OGNL; expression.  OGNL is very sophisticated, not only at 
- reading and updating
- the properties of your pages, but also at creating new objects on demand.  We'll see much more about
- OGNL later; it is ultimately the glue that connects together pages and comopnents. Here, we've told OGNL
- to create a new instance of the class java.util.Date, which will represent the current date and time.
- The Date instance is provided to the Insert  component, which converts it to a string
- and includes it in the result sent back to the client web browser.
+  What a component does with its parameters is its business; it may read them, update them, or even
+  ignore them. In the Java code for the Insert component is the logic that obtains value parameter and
+  converts it into into a string that is rendered into the response.
+</p>
+
+  <p>
+ So, the expression provides the Date instance, the value parameter gives the Insert component access
+ to that value, and the Insert component provides the logic for converting that Date into a string
+ and having it show up on the rendered page. Every time the Insert component renders, it will
+ re-read its value parameter, causing the expression to be evaluated and a new Date instance
+ to be created.   You can see this by hitting your browser's refresh button repeatedly; the displayed date will
+ keep changing.
 </p>
 
 <p>
-  You can keep hitting the refresh button on your browser to see the current time but that's quite awkward; in
-  the next section we'll see how to create a link to redisplay the page.
+  In the next section, we'll see how to create a link to get the displayed date to be updated.
 </p>
 
 </section>
@@ -264,7 +280,7 @@ its body ("render" the verb used throughout Tapestry meaning "write HTML output"
   instead of using the browser's refresh button. The end result looks like:
 </p>  
 
-<figure src="../images/QuickStart/helloworld4.png" alt="HelloWorld with refresh link"/>
+<figure src="&images-url;/helloworld4.png" alt="HelloWorld with refresh link"/>
 
 <p>
   We created this new link by adding the following to Home.html:
@@ -299,13 +315,13 @@ its body ("render" the verb used throughout Tapestry meaning "write HTML output"
 
 <p>
   This is a <strong>bad idea</strong>. Tapestry is doing more than spewing out a URL, it's
-  <em>encoding</em> the URL for you<sup>2</sup> and may be doing other useful things that
+  <em>session encoding</em> the URL for you<sup>2</sup> and may be doing other useful things that
   we'll see later.  Further, second guessing Tapestry's URLs is never a good idea; the PageLink component
   will be around in the next release of Tapestry, but the URL format may change between releases.
 </p>
 
 <p>
-  Another question: what's with the href attribute in the attribute.  What does <code>href="#"</code> mean?
+  Another question: what's with the href attribute in the attribute?  What does <code>href="#"</code> mean?
   This is another side to previewability:  to preview this page, the link
   ultimately generated by the PageLink needs to preview as a <em>link</em>.  An &lt;a&gt; tag
   without an href attribute is an <em>anchor</em>.  Again, this is a distinction that is more visible
@@ -316,7 +332,7 @@ its body ("render" the verb used throughout Tapestry meaning "write HTML output"
   The href provided in the HTML template is simply discarded in favor of the href attribute
   generated inside the PageLink components (/app?service=...). You can actually
   mix and match these component-generated attributes with extra attributes
-  provided in the template; these are called <em>informal parameters</em>, and is covered in a later
+  provided in the template; these are called <em>informal parameters</em>, and are covered in a later
     tutorial.
 </p>
 
@@ -340,7 +356,7 @@ its body ("render" the verb used throughout Tapestry meaning "write HTML output"
 </p>
 
 <p>
-  <sup>2</sup> Encoding is an aspect of the Servlet API.  Encoding a URL adds information about
+  <sup>2</sup> Session encoding is an aspect of the Servlet API.  Encoding a URL adds information about
   the server-side session (the HttpSession) if there is one. Although this information can
   be obtained via HTTP cookies, not all users have cookies enabled in their browser. The servlet
   specification encourages you to always encode your URLs, and this is simply done for you in Tapestry.

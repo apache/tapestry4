@@ -15,3 +15,4 @@
 -->
 
 <!ENTITY quickstart-download-url 'http://howardlewisship.com/downloads/quick-start/' >
+<!ENTITY images-url '../images/QuickStart' >
