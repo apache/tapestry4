@@ -31,7 +31,7 @@
 <body>
   
 <p>
-  In this tutorial, we'll get introduced to one of the real workhorses of Tapestry, the DirectLink 
+  In this tutorial, we'll get introduced to one of the real workhorses of Tapestry, the &DirectLink;
   component. It is one of the most common ways of triggering server-side behavior.  Along the way,
   we'll start seeing some other common aspects of developing web applications using Tapestry.
 </p>
@@ -43,7 +43,7 @@
   This application simply counts the number of times we click a link.
 </p>  
 
-<figure src="../images/QuickStart/directlink1.png" alt="Initial DirectLink Tutorial"/>
+<figure src="&images-url;/directlink1.png" alt="Initial DirectLink Tutorial"/>
   
 <p>
   This requires a little more than we can accomplish with just an HTML template; we'll need
@@ -94,13 +94,14 @@
 
 <p>
   Just displaying the current value isn't enough, we need a way to change that value.  That's where
-  the DirectLink component comes in; it will invoke a method of our Java class for us.
-  The listener parameter of DirectLink is how we connect that component to our application's
-  logic.  The "listener:" prefix activates the logic that lets Tapestry invoke the method
-  with the given name.
-  We supply a method, method doClick(), and the DirectLink
-  component will call it for us, in response to the user clicking that link in their web browser.
+  the &DirectLink; component comes in; it will invoke a method of our Java class for us.
+  This connection between component and method is supplied in the listener parameter. 
+  The "listener:" prefix activates the logic that lets Tapestry invoke the method
+  with the matching name.
+  We provide a method,  doClick(), in the page's Java class, and the DirectLink
+  component will invoke this method for us, in response to the user clicking the rendered link in their web browser.
 </p>
+
   
 </section>
 
@@ -113,7 +114,7 @@
 </p>
 
 <p>
-  first, we need a Java package to store the class.  For this tutorial, we'll use tutorials.directlink.pages. That means
+  First, we need a Java package to store the class.  For this tutorial, we'll use tutorials.directlink.pages. That means
   we'll create the Home.java source file as src/java/tutorials/directlink/pages/Home.java:
 </p>
 
@@ -158,7 +159,7 @@ public abstract class Home extends BasePage
 </p>
 
 <p>
-  Because the pages are pooled and shared, in fact shared <em>between different users</em>, its very important
+  Because the pages are pooled and shared, in fact shared <em>between different users</em>, it's very important
   that they page objects be cleansed of any user-specific or request-specific data before they go back
   into the pool.  You can do this in your own code (there are additional interfaces to implement and additional
   code to write), but it is <em>easier</em> to let Tapestry do that work for you.  
@@ -167,7 +168,7 @@ public abstract class Home extends BasePage
 <p>
   By declaring an accessor method as abstract, you are implicitly directing Tapestry to
   "fill in" the details; at <em>runtime</em>, it will create a subclass of the Java class you provide,
-  extending your implementation will all the grinding details.  As well see in later tutorials,
+  extending your implementation with all the grinding details.  As well see in later tutorials,
   this in fact goes far beyond just properties; all sorts of useful features can be tied to
   different flavors of abstract methods (often coupled with different 
   <link href="../tapestry-annotations/index.html">annotations</link>).
@@ -178,7 +179,7 @@ public abstract class Home extends BasePage
   <em>between</em> requests.  The @Persist annotation, attached to the getCounter() accessor method,
   directs Tapestry to make this a <em>persistent page property</em>.  Despite the name, this has nothing to do
   with database persistence, it's about storing the value for the property in the
-  HttpSession between requests, and restoring it the next time the same user, in the same session, 
+  HttpSession between requests, and restoring it the next time that the same user, in the same session, 
   accesses the page.
 </p>
 
@@ -201,7 +202,7 @@ public abstract class Home extends BasePage
 <p>
   Back from our digression. We now have the counter property, and we understand how it is stored in the
   HttpSession between requests.  That makes the implementation of the doClick() listener method straight
-  forward: get the current value, increment it, store it back in.
+  forward: get the current value for the proeprty, increment it, and store it back into the property.
 </p>
 
 <p>
@@ -217,11 +218,12 @@ public abstract class Home extends BasePage
   
 <p>
   We've provided the Home page's template and Java class, but we haven't quite connected the dots enough
-  for our application to run.  If we tried to run the application, we'd get the Tapestry
+  for our application to run.  If we tried to run the application (by opening a web browser to
+  <link href="http://localhost:8080/directlink/app">http://localhost:8080/directlink/app</link>), we'd get the Tapestry
   exception page:
 </p>  
 
-<figure src="../images/QuickStart/directlink2.png" alt="Exception report - missing property"/>
+<figure src="&images-url;/directlink2.png" alt="Exception report - missing property"/>
 
 <p>
 That's quite a lot of information.  The root cause of the exception is the fact
@@ -245,8 +247,8 @@ generated at runtime by Tapestry), the value in brackets is the name of the page
   including their properties.  It identifies the file and line at the root of the problem,
   and even displays an excerpt from that file.  Further down on the page are exhaustive details about
   all the Servlet API objects ... in short you are given all the information you need to understand what
-  was going on in your applilcation at the time of the failure, without having to restart using
-  a debugger.  This is another Tapestry priciple in action: Feedback. When things go wrong, Tapestry
+  was going on in your application at the time of the failure, without having to restart using
+  a debugger.  This is another Tapestry priciple in action: <strong>Feedback</strong>. When things go wrong, Tapestry
   should help you fix your problem, rather than get in the way.
 </p>
 
@@ -264,7 +266,7 @@ generated at runtime by Tapestry), the value in brackets is the name of the page
 <p>
   The name of the servlet ("app", in this example) is appended with the extension ".application" to
   form the name of the specification.  The specification itself is stored in the 
-  The specification itself is stored in the WEB-INF folder of the WAR.  In our project, it is
+  WEB-INF folder of the web application.  In our project, it is stored as
   src/context/WEB-INF/app.application:
 </p>
 
@@ -281,10 +283,10 @@ generated at runtime by Tapestry), the value in brackets is the name of the page
 ]]></source>
 
 <p>Application specifications are validated XML files, with a real DTD (at the specified
-  location). The &lt;meta&gt; element is used to specifiy meta data ... configuration data that
+  location). The &lt;meta&gt; element is used to specify meta data ... configuration data that
   doesn't fit in elsewhere.  Here we're using it to inform Tapestry about which
-  Java packages to search for pages. We can actually specify a comma-seperated list if there is more
-  than one package.</p>
+  Java packages to search for pages. This value can even be a comma-seperated list of packages, if there is more
+  than one package to search.</p>
   
 <p>
   With this file in place, Tapestry has all it needs to run our application: the Home page's HTML template, its
@@ -308,12 +310,13 @@ http://localhost:8080/directlink/app?component=%24DirectLink&page=Home&service=d
 <p>
 The first query parameter, component, identifies the component within the page. That %24 is "URL-ese" for a dollar sign.
 In Tapestry, every component ends up with a unique id within its page. If you don't provide one, Tapestry
-creates one from the component type.  If you had many different DirectLinks on a page, you'd start seeing
+creates one from the component type, prefixed with a dollar sign.  Here, our annoynmous DirectLink component was given the id $DirectLink.  
+If you had many different DirectLinks on a page, you'd start seeing
 component ids such as $DirectLink_0, $DirectLink_1, etc.
 </p>
 
 <p>
-  You can give a component a shorter and more mneumonic id by putting that before the "@" sign:
+  You can give a component a shorter and more mneumonic id by putting the desired id before the "@" sign:
 </p>
 
 <source><![CDATA[
@@ -321,7 +324,7 @@ component ids such as $DirectLink_0, $DirectLink_1, etc.
 ]]></source>
 
 <p>
-After making that change to the template, the URL for the DirectLink component is a bit better:
+After making that change to the template, the URL for the DirectLink component is just a bit easier to read:
 </p>
 
 <source><![CDATA[
@@ -332,19 +335,19 @@ http://localhost:8080/directlink/app?component=inc&page=Home&service=direct&sess
 The other changes from the previous examples are the service query parameter and the session query parameter.
 The service query parameter indicates that the processing of the request is different than 
 for a link created by the PageLink component.  Here
-we need to get a page, find a component in the page and invoke a listener method before we can render
+we need to get a page, find a component in the page and invoke a listener method <em>before</em> we can render
 the response.  With PageLink, we just get the page and render it.
 </p>
 
 <p>
   Lastly, the session query parameter indicates whether there was an HttpSession at the time the link was rendered.
   Tapestry uses this to detect when the HttpSession expired ... perhaps because the user walked away from the 
-  computer for a while before clicking the link.  If the application was stateless when this link
+  computer for a while before clicking the link.  If the application was stateless (no HttpSession) when this link
   was generated, then the session parameter simply wouldn't appear in the URL.
 </p>
 
 <p>
-  One thing to take note of is that the method name <em>isn't</em> part of the URL, just the id of the 
+  One thing to take note of is that the method name <em>is not</em> part of the URL, just the id of the 
   component. This is very desirable ... why expose more of the construction of your application than 
   you have to? As importantly, this helps to prevent malicious users from subverting your application; there
   simply isn't a way to get an arbitrary listener method to be invoked, only one that you, as the developer, wired
@@ -371,10 +374,10 @@ the response.  With PageLink, we just get the page and render it.
   add a link to the page to do just that.  The end result will look like:
 </p>  
 
-<figure src="../images/QuickStart/directlink3.png" alt="Tutorial with clear link"/>
+<figure src="&images-url;/directlink3.png" alt="Tutorial with clear link"/>
 
 <p>
-  To accomplish this we need to add a little to the Home page's HTML template, and connect that
+  To accomplish this we need to add another link to the Home page's HTML template, and connect that
   to logic expressed as a new method on the Home page class.  First the template:
 </p>
 
@@ -403,7 +406,7 @@ the response.  With PageLink, we just get the page and render it.
   And that's all it takes.  We've added a new operation to our page, clearing the counter, in
   four lines of Java code (three if you format your code the way Sun likes you to), and a couple
   of lines of HTML.  No outside configuration beyond that. This conforms to another Tapestry
-  principle: Consistency.  Adding more  operations is not different from adding the first operation. Add
+  principle: <strong>Consistency</strong>.  Adding more  operations is not different from adding the first operation. Add
   as many as you like, Tapestry will take care of it.
 </p>
 
@@ -427,7 +430,7 @@ the response.  With PageLink, we just get the page and render it.
   Just invoking a single operation is a bit limiting; we should be able to increment by more than just 1:
 </p>  
 
-<figure src="../images/QuickStart/directlink4.png" alt="Multiple DirectLinks"/>
+<figure src="&images-url;/directlink4.png" alt="Multiple DirectLinks"/>
 
 <p>
 In this case, we want to have more than one DirectLink component  call the same listener.  And we
@@ -435,7 +438,7 @@ need to figure out whether to increment the counter by 1, 5 or 10.
 </p>
 
 <p>
-  This requires two changes.  First, we changed the old increment link into three new links:
+  This requires two changes.  First, we must change the old increment link into three new links:
 </p>
 
 <source><![CDATA[
@@ -453,7 +456,7 @@ need to figure out whether to increment the counter by 1, 5 or 10.
 ]]></source>
 
 <p>
-  We've given the three compnents mnuemonic ids ("by1", "by5" and "by10"). In addition, we're passing
+  We've given the three components mnuemonic ids ("by1", "by5" and "by10"). In addition, we're passing
   parameters in the URL; that's the parameters parameter<sup>4</sup>. We can see that value
   encoded into the URL:
 </p>
