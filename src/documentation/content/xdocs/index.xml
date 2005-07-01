@@ -135,7 +135,7 @@ your productivity. Here's a few of our favorites:
     because of how parameters are now implemented.
   </li>
   <li>
-   HiveMind services and &Spring; beans to be directly injected
+   HiveMind services and &Spring; beans can be directly injected
     into page and component classes.
   </li>
   <li>

@@ -766,4 +766,70 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     {
         throw new IllegalStateException(TapestryMessages.providedByEnhancement("getSpecification"));
     }
+
+    /**
+     * Returns a localized message.
+     * 
+     * @since 3.0
+     * @deprecated To be removed in 4.1. Use {@link #getMessages()} instead.
+     */
+
+    public String getMessage(String key)
+    {
+        return getMessages().getMessage(key);
+    }
+
+    /**
+     * Formats a localized message string, using
+     * {@link Messages#format(java.lang.String, java.lang.Object[])}.
+     * 
+     * @param key
+     *            the key used to obtain a localized pattern
+     * @param arguments
+     *            passed to the formatter
+     * @since 3.0
+     * @deprecated To be removed in 4.1. Use {@link #getMessages()} instead.
+     */
+
+    public String format(String key, Object[] arguments)
+    {
+        return getMessages().format(key, arguments);
+    }
+
+    /**
+     * Convienience method for invoking {@link IMessages#format(String, Object)}
+     * 
+     * @since 3.0
+     * @deprecated To be removed in 4.1. Use {@link #getMessages()} instead.
+     */
+
+    public String format(String key, Object argument)
+    {
+        return getMessages().format(key, argument);
+    }
+
+    /**
+     * Convienience method for invoking {@link Messages#format(String, Object, Object)}.
+     * 
+     * @since 3.0
+     * @deprecated To be removed in 4.1. Use {@link #getMessages()} instead.
+     */
+
+    public String format(String key, Object argument1, Object argument2)
+    {
+        return getMessages().format(key, argument1, argument2);
+    }
+
+    /**
+     * Convienience method for {@link Messages#format(String, Object, Object, Object)}.
+     * 
+     * @since 3.0
+     * @deprecated To be removed in 4.1. Use {@link #getMessages()} instead.
+     */
+
+    public String format(String key, Object argument1, Object argument2, Object argument3)
+    {
+        return getMessages().format(key, argument1, argument2, argument3);
+    }
+
 }

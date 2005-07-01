@@ -317,11 +317,25 @@ public interface IComponent extends IRender, LocationHolder
 
     /**
      * Returns a {@link ListenerMap} for the component. The map contains a number of synthetic
-     * read-only properties that implement the {@link IActionListener} interface, but in fact,
-     * cause public instance methods to be invoked (via reflection).
+     * read-only properties that implement the {@link IActionListener} interface, but in fact, cause
+     * public instance methods to be invoked (via reflection).
      * 
      * @since 4.0
      */
 
     public ListenerMap getListeners();
+
+    /**
+     * Returns a localized string message. Each component has an optional set of localized message
+     * strings that are read from properties files.
+     * 
+     * @param key
+     *            the key used to locate the message
+     * @return the localized message for the key, or a placeholder if no message is defined for the
+     *         key.
+     * @since 3.0
+     * @deprecated To be removed in release 4.1. Use {@link #getMessages()} instead.
+     */
+
+    public String getMessage(String key);
 }
