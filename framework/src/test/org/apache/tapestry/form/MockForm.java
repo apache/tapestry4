@@ -317,4 +317,9 @@ public class MockForm implements IForm
     {
         return false;
     }
+
+    public String getMessage(String key)
+    {
+        return null;
+    }
 }
