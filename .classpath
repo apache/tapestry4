@@ -33,7 +33,7 @@
 	<classpathentry kind="lib" path="ext-package/lib/portlet-api-1.0.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/jcharts-0.6.0.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/jython-2.1.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/hivemind-1.1-beta-1.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.1-beta-1.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/hivemind-1.1-beta-2.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.1-beta-2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
