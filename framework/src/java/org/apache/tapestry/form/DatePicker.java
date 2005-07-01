@@ -46,8 +46,6 @@ import org.apache.tapestry.form.translator.DateTranslator;
 
 public abstract class DatePicker extends AbstractValidatableField
 {
-    public abstract String getFormat();
-
     public abstract Date getValue();
 
     public abstract void setValue(Date value);
