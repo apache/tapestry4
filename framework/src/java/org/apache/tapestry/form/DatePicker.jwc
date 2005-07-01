@@ -22,7 +22,6 @@
 <component-specification class="org.apache.tapestry.form.DatePicker" allow-body="no">
   
   <parameter name="value" required="yes" default-binding="ognl"/>
-  <parameter name="format" required="no" default-binding="ognl"/>
   <parameter name="disabled" default-binding="ognl"/>
   <parameter name="includeWeek" default-binding="ognl"/>
   <parameter name="icon" default-value="defaultIcon" default-binding="asset"/>
@@ -30,8 +29,7 @@
   <parameter name="displayName" default-binding="literal"/>
   <parameter name="translator" default-binding="translator" default-value="date,pattern=dd MMM yyyy"/>
   <parameter name="validators" default-binding="validators"/>
-  <parameter name="id" default-binding="literal" property="idParameter"
-  		default-value="ognl:id"/>
+  <parameter name="id" default-binding="literal" property="idParameter" default-value="ognl:id"/>
   		
   <asset name="defaultIcon" path="DatePickerIcon.png"/>
        
