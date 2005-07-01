@@ -16,6 +16,7 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.impl.LocationImpl;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.AssetSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;
@@ -41,6 +42,11 @@ public class AssetAnnotationWorker implements MethodAnnotationEnhancementWorker
         IAssetSpecification as = new AssetSpecification();
         as.setPath(asset.value());
         as.setPropertyName(propertyName);
+
+        // Very important for assets, as they need a location (really, the Resource
+        // of a location) to figure out what kind of asset they are.
+
+        as.setLocation(new LocationImpl(spec.getSpecificationLocation()));
 
         spec.addAsset(propertyName, as);
     }

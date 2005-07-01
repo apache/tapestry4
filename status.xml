@@ -55,6 +55,7 @@
     <release version="4.0-beta-2" date="unreleased">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-356">FormConditional extends BaseComponent but has no template</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-357">AbstractComponent: getMessages() and format() were removed, but should have been deprecated</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-361">Using @Asset annotation causes NullPointerException</action>
     </release>
     <release version="4.0-beta-1" date="Jun 24 2005">
        <action type="add" dev="HLS">Add InvokeListener component.</action>

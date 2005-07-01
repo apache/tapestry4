@@ -16,6 +16,9 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.LocationImpl;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;
@@ -32,8 +35,10 @@ public class TestAssetAnnotationWorker extends BaseAnnotationTestCase
 {
     public void testSuccess()
     {
+        Resource r = (Resource) newMock(Resource.class);
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
+        spec.setSpecificationLocation(r);
 
         replayControls();
 
@@ -45,7 +50,7 @@ public class TestAssetAnnotationWorker extends BaseAnnotationTestCase
 
         IAssetSpecification as = spec.getAsset("globalStylesheet");
         assertEquals("/style/global.css", as.getPath());
-        assertNull(as.getLocation());
+        assertEquals(new LocationImpl(r), as.getLocation());
         assertEquals("globalStylesheet", as.getPropertyName());
     }
 }
