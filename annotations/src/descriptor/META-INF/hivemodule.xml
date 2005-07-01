@@ -101,7 +101,6 @@
     <worker annotation="InjectObject" object="service:InjectObjectAnnotationWorker"/>
     <worker annotation="InjectComponent" object="instance:InjectComponentAnnotationWorker"/>
     <worker annotation="InjectState" object="service:InjectStateAnnotationWorker"/>
-    <worker annotation="InjectAsset" object="instance:InjectAssetAnnotationWorker"/>
     <worker annotation="Message" object="instance:MessageAnnotationWorker"/>
     
     <!-- These update the component specification with new sub-elements. Later, the 
@@ -109,6 +108,7 @@
          specified in the XML. This is actually a lot easier and just as powerful, and
          the delegating style will probably go pretty soon.  -->
          
+    <worker annotation="InjectAsset" object="instance:InjectAssetAnnotationWorker"/>
     <worker annotation="Persist" object="instance:PersistAnnotationWorker"/>
     <worker annotation="Bean" object="instance:BeanAnnotationWorker"/>
     <worker annotation="Asset" object="instance:AssetAnnotationWorker"/>

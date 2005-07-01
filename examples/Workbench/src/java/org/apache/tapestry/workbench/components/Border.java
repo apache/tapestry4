@@ -18,6 +18,8 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.annotations.Asset;
+import org.apache.tapestry.annotations.InjectAsset;
 import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.annotations.Message;
 import org.apache.tapestry.event.PageBeginRenderListener;
@@ -88,25 +90,40 @@ public abstract class Border extends BaseComponent implements PageBeginRenderLis
         return getMessages().getMessage(getPageName());
     }
 
+    // Arbitrary mix of @Asset and @InjectAsset just to
+    // test the annotations.
+
+    @Asset("images/tab-active-left.gif")
+    public abstract IAsset getActiveLeft();
+
+    @InjectAsset("inactiveLeft")
+    public abstract IAsset getInactiveLeft();
+
+    @Asset("images/tab-active-mid.gif")
+    public abstract IAsset getActiveMid();
+
+    @InjectAsset("inactiveMid")
+    public abstract IAsset getInactiveMid();
+
+    @Asset("images/tab-active-right.gif")
+    public abstract IAsset getActiveRight();
+
+    @InjectAsset("inactiveRight")
+    public abstract IAsset getInactiveRight();
+
     public IAsset getLeftTabAsset()
     {
-        String name = isActivePage() ? "activeLeft" : "inactiveLeft";
-
-        return getAsset(name);
+        return isActivePage() ? getActiveLeft() : getInactiveLeft();
     }
 
     public IAsset getMidTabAsset()
     {
-        String name = isActivePage() ? "activeMid" : "inactiveMid";
-
-        return getAsset(name);
+        return isActivePage() ? getActiveMid() : getInactiveMid();
     }
 
     public IAsset getRightTabAsset()
     {
-        String name = isActivePage() ? "activeRight" : "inactiveRight";
-
-        return getAsset(name);
+        return isActivePage() ? getActiveRight() : getInactiveRight();
     }
 
     public void selectPage(IRequestCycle cycle, String newPageName)
