@@ -30,7 +30,7 @@
   <import file="${hivebuild.dir}/hivedoc-report.xml"/>  
   <import file="${hivebuild.dir}/junit-report.xml"/> 
 	
-	<target name="compile-dependencies">
+  <target name="compile-dependencies">
     <project-dependency artifact="tapestry"/>
 
     <ibiblio-dependency artifact="commons-logging"    version="${logging.version}"  group="commons-logging"/>
@@ -48,7 +48,7 @@
     <ibiblio-dependency artifact="servletapi"         version="${servlet.version}"  group="servletapi"/>
       
 
-	</target>	
+  </target>	
   
   <target name="run-reports">
     <hivedoc-report/>    	

@@ -31,7 +31,7 @@
   <import file="${hivebuild.dir}/clover-report.xml"/>  
   <import file="${hivebuild.dir}/hivedoc-report.xml"/>  
   <import file="${hivebuild.dir}/junit-report.xml"/>  
-  
+  	
   <target name="compile-dependencies">
     <ibiblio-dependency artifact="bsf"                version="${bsf.version}"      group="bsf"/>
     <ibiblio-dependency artifact="commons-codec"      version="${codec.version}"    group="commons-codec"/>
@@ -50,12 +50,22 @@
     <ibiblio-dependency artifact="cglib-full"         version="2.0.2"               group="cglib"    use="test"/>
     <ibiblio-dependency artifact="jdom"               version="1.0"                 group="jdom"     use="test"/>
     <ibiblio-dependency artifact="jython"             version="2.1"                 group="jython"   use="test"/>
-	</target>
+  </target>
  
- <target name="compile" depends="compile-dependencies">
+  <property name="version-file.dir" value="${java.classes.dir}/org/apache/tapestry"/>
+  <property name="version-file" value="${version-file.dir}/version.properties"/>
+	
+  <available property="version-file-exists" file="${version-file}"/>
+	
+  <target name="create-version-file" unless="version-file-exists">
+  	<mkdir dir="${version-file.dir}"/>
+    <echo file="${java.classes.dir}/org/apache/tapestry/version.properties">
+project.version=${project.version}
+</echo>
+  </target>
+	
+ <target name="compile" depends="compile-dependencies,create-version-file">
     <default-compile/>
-    
-    <copy file="${root.dir}/version.properties" todir="${java.classes.dir}/org/apache/tapestry"/>    
   </target>	
   
   <target name="run-reports">
