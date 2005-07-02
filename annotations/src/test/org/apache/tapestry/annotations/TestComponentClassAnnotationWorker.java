@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.annotations;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -38,14 +39,14 @@ public class TestComponentClassAnnotationWorker extends BaseAnnotationTestCase
         return op;
     }
 
-    private IComponentSpecification attempt(Class baseClass)
+    private IComponentSpecification attempt(Class baseClass, Location location)
     {
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
 
         replayControls();
 
-        new ComponentClassAnnotationWorker().performEnhancement(op, spec, baseClass);
+        new ComponentClassAnnotationWorker().performEnhancement(op, spec, baseClass, location);
 
         verifyControls();
 
@@ -54,18 +55,20 @@ public class TestComponentClassAnnotationWorker extends BaseAnnotationTestCase
 
     public void testBasic()
     {
-        IComponentSpecification spec = attempt(BasicComponent.class);
+        Location l = newLocation();
+        IComponentSpecification spec = attempt(BasicComponent.class, l);
 
         assertEquals(true, spec.getAllowBody());
         assertEquals(true, spec.getAllowInformalParameters());
         assertEquals(false, spec.isReservedParameterName("foo"));
         assertEquals(false, spec.isReservedParameterName("bar"));
         assertEquals(false, spec.isDeprecated());
+        assertSame(l, spec.getLocation());
     }
 
     public void testFormalOnly()
     {
-        IComponentSpecification spec = attempt(FormalOnlyComponent.class);
+        IComponentSpecification spec = attempt(FormalOnlyComponent.class, null);
 
         assertEquals(false, spec.getAllowBody());
         assertEquals(false, spec.getAllowInformalParameters());
@@ -74,14 +77,14 @@ public class TestComponentClassAnnotationWorker extends BaseAnnotationTestCase
 
     public void testDeprecated()
     {
-        IComponentSpecification spec = attempt(DeprecatedComponent.class);
+        IComponentSpecification spec = attempt(DeprecatedComponent.class, null);
 
         assertEquals(true, spec.isDeprecated());
     }
 
     public void testReservedParameters()
     {
-        IComponentSpecification spec = attempt(ReservedParametersComponent.class);
+        IComponentSpecification spec = attempt(ReservedParametersComponent.class, null);
 
         assertEquals(true, spec.isReservedParameterName("foo"));
         assertEquals(true, spec.isReservedParameterName("bar"));

@@ -17,6 +17,7 @@ package org.apache.tapestry.annotations;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.bean.LightweightBeanInitializer;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.BeanSpecification;
@@ -33,7 +34,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
 public class BeanAnnotationWorker implements MethodAnnotationEnhancementWorker
 {
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method)
+            Method method, Location location)
     {
         Bean bean = method.getAnnotation(Bean.class);
         String propertyName = AnnotationUtils.getPropertyName(method);
@@ -49,6 +50,7 @@ public class BeanAnnotationWorker implements MethodAnnotationEnhancementWorker
 
         bs.setClassName(beanClass.getName());
         bs.setPropertyName(propertyName);
+        bs.setLocation(location);
 
         // Starting to like enums!
 

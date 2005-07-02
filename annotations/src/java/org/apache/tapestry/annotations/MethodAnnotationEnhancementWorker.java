@@ -16,6 +16,7 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -38,8 +39,9 @@ public interface MethodAnnotationEnhancementWorker
      * @param method
      *            the method to which the annotation is attached. The annotation
      *            may be obtained from the method.
+     * @param location TODO
      */
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method);
+            Method method, Location location);
 }

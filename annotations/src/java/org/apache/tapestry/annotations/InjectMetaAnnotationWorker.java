@@ -16,6 +16,7 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhanceUtils;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -30,7 +31,7 @@ public class InjectMetaAnnotationWorker implements MethodAnnotationEnhancementWo
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method)
+            Method method, Location location)
     {
         String propertyName = AnnotationUtils.getPropertyName(method);
 
@@ -40,7 +41,8 @@ public class InjectMetaAnnotationWorker implements MethodAnnotationEnhancementWo
         is.setProperty(propertyName);
         is.setType("meta");
         is.setObject(annotation.value());
-
+        is.setLocation(location);
+        
         spec.addInjectSpecification(is);
     }
 

@@ -16,6 +16,7 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
@@ -33,7 +34,7 @@ public class InjectPageAnnotationWorker implements MethodAnnotationEnhancementWo
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method)
+            Method method, Location location)
     {
         InjectPage injectPage = method.getAnnotation(InjectPage.class);
 
@@ -44,6 +45,7 @@ public class InjectPageAnnotationWorker implements MethodAnnotationEnhancementWo
         is.setProperty(propertyName);
         is.setType("page");
         is.setObject(injectPage.value());
+        is.setLocation(location);
 
         spec.addInjectSpecification(is);
     }

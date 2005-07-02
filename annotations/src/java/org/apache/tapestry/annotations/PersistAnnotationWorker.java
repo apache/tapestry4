@@ -16,6 +16,7 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
@@ -33,7 +34,7 @@ import org.apache.tapestry.spec.PropertySpecification;
 public class PersistAnnotationWorker implements MethodAnnotationEnhancementWorker
 {
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method)
+            Method method, Location location)
     {
         Persist p = method.getAnnotation(Persist.class);
 
@@ -44,6 +45,7 @@ public class PersistAnnotationWorker implements MethodAnnotationEnhancementWorke
 
         pspec.setName(propertyName);
         pspec.setPersistence(stategy);
+        pspec.setLocation(location);
 
         spec.addPropertySpecification(pspec);
     }

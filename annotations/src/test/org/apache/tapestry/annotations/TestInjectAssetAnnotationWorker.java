@@ -50,7 +50,7 @@ public class TestInjectAssetAnnotationWorker extends BaseAnnotationTestCase
 
         InjectAssetAnnotationWorker worker = new InjectAssetAnnotationWorker(delegate);
 
-        worker.performEnhancement(op, spec, m);
+        worker.performEnhancement(op, spec, m, null);
 
         verifyControls();
     }

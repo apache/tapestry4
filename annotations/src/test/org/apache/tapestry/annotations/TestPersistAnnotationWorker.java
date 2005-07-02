@@ -16,6 +16,7 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -32,6 +33,8 @@ public class TestPersistAnnotationWorker extends TestAnnotationEnhancementWorker
 {
     public void testInject()
     {
+        Location l = newLocation();
+
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
 
@@ -39,7 +42,7 @@ public class TestPersistAnnotationWorker extends TestAnnotationEnhancementWorker
 
         Method m = findMethod(AnnotatedPage.class, "getClientPersistentProperty");
 
-        new PersistAnnotationWorker().performEnhancement(op, spec, m);
+        new PersistAnnotationWorker().performEnhancement(op, spec, m, l);
 
         verifyControls();
 
@@ -47,5 +50,6 @@ public class TestPersistAnnotationWorker extends TestAnnotationEnhancementWorker
 
         assertEquals("client", ps.getPersistence());
         assertEquals("clientPersistentProperty", ps.getName());
+        assertSame(l, ps.getLocation());
     }
 }

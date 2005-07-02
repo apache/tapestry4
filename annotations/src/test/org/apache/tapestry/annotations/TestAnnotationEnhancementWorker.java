@@ -14,11 +14,15 @@
 
 package org.apache.tapestry.annotations;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Map;
 
+import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.easymock.MockControl;
@@ -68,6 +72,8 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
     public void testAnnotationMatch()
     {
+        ClassResolver resolver = new DefaultClassResolver();
+
         EnhancementOperation op = newOp(AnnotatedPage.class);
         IComponentSpecification spec = newSpec();
 
@@ -75,20 +81,49 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
         Method m = findMethod(AnnotatedPage.class, "getInjectedObject");
 
-        methodWorker.performEnhancement(op, spec, m);
+        AnnotationLocation location = newMethodLocation(
+                resolver,
+                AnnotatedPage.class,
+                m,
+                InjectObject.class);
+
+        methodWorker.performEnhancement(op, spec, m, location);
 
         replayControls();
 
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setMethodWorkers(newMap(InjectObject.class, methodWorker));
+        worker.setClassResolver(resolver);
 
         worker.performEnhancement(op, spec);
 
         verifyControls();
     }
 
+    protected AnnotationLocation newMethodLocation(ClassResolver resolver, Class baseClass,
+            Method m, Class annotationClass)
+    {
+        Resource classResource = newResource(resolver, baseClass);
+
+        return new AnnotationLocation(classResource, AnnotationMessages.methodAnnotation(m
+                .getAnnotation(annotationClass), m));
+    }
+
+    private AnnotationLocation newClassLocation(ClassResolver resolver, Class baseClass,
+            Class annotationClass)
+    {
+        Resource classResource = newResource(resolver, baseClass);
+        Annotation annotation = baseClass.getAnnotation(annotationClass);
+
+        return new AnnotationLocation(classResource, AnnotationMessages.classAnnotation(
+                annotation,
+                baseClass));
+    }
+
     public void testAnnotationWithSubclass()
     {
+        ClassResolver resolver = new DefaultClassResolver();
+
         EnhancementOperation op = newOp(AnnotatedPageSubclass.class);
         IComponentSpecification spec = newSpec();
 
@@ -96,12 +131,19 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
         Method m = findMethod(AnnotatedPageSubclass.class, "getInjectedObject");
 
-        methodWorker.performEnhancement(op, spec, m);
+        AnnotationLocation location = newMethodLocation(
+                resolver,
+                AnnotatedPageSubclass.class,
+                m,
+                InjectObject.class);
+
+        methodWorker.performEnhancement(op, spec, m, location);
 
         replayControls();
 
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setMethodWorkers(newMap(InjectObject.class, methodWorker));
+        worker.setClassResolver(resolver);
 
         worker.performEnhancement(op, spec);
 
@@ -110,6 +152,8 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
     public void testAnnotationFailure()
     {
+        ClassResolver resolver = new DefaultClassResolver();
+
         ErrorLog log = newLog();
         Throwable t = new RuntimeException("Woops!");
 
@@ -122,7 +166,13 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
         Method m = findMethod(AnnotatedPage.class, "getInjectedObject");
 
-        methodWorker.performEnhancement(op, spec, m);
+        AnnotationLocation location = newMethodLocation(
+                resolver,
+                AnnotatedPage.class,
+                m,
+                InjectObject.class);
+
+        methodWorker.performEnhancement(op, spec, m, location);
         methodWorkerc.setThrowable(t);
 
         log
@@ -138,6 +188,7 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setMethodWorkers(newMap(InjectObject.class, methodWorker));
         worker.setErrorLog(log);
+        worker.setClassResolver(resolver);
 
         worker.performEnhancement(op, spec);
 
@@ -151,17 +202,25 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
     public void testClassAnnotation()
     {
+        ClassResolver resolver = new DefaultClassResolver();
+
         EnhancementOperation op = newOp(DeprecatedBean.class);
         IComponentSpecification spec = newSpec();
 
         ClassAnnotationEnhancementWorker classWorker = (ClassAnnotationEnhancementWorker) newMock(ClassAnnotationEnhancementWorker.class);
 
-        classWorker.performEnhancement(op, spec, DeprecatedBean.class);
+        AnnotationLocation location = newClassLocation(
+                resolver,
+                DeprecatedBean.class,
+                Deprecated.class);
+
+        classWorker.performEnhancement(op, spec, DeprecatedBean.class, location);
 
         replayControls();
 
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setClassWorkers(newMap(Deprecated.class, classWorker));
+        worker.setClassResolver(resolver);
 
         worker.performEnhancement(op, spec);
 
@@ -170,6 +229,8 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
     public void testClassAnnotationFailure()
     {
+        ClassResolver resolver = new DefaultClassResolver();
+
         ErrorLog log = newLog();
         EnhancementOperation op = newOp(DeprecatedBean.class);
         IComponentSpecification spec = newSpec();
@@ -180,7 +241,12 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
         Throwable t = new RuntimeException("Simulated failure.");
 
-        classWorker.performEnhancement(op, spec, DeprecatedBean.class);
+        AnnotationLocation location = newClassLocation(
+                resolver,
+                DeprecatedBean.class,
+                Deprecated.class);
+
+        classWorker.performEnhancement(op, spec, DeprecatedBean.class, location);
         classWorkerc.setThrowable(t);
 
         log
@@ -195,6 +261,7 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setClassWorkers(newMap(Deprecated.class, classWorker));
         worker.setErrorLog(log);
+        worker.setClassResolver(resolver);
 
         worker.performEnhancement(op, spec);
 

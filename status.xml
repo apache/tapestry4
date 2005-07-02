@@ -57,6 +57,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-357">AbstractComponent: getMessages() and format() were removed, but should have been deprecated</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-361">Using @Asset annotation causes NullPointerException</action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-367">Removed obsolete "format" parameter from DatePicker</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-355">Annotations bypass line precise exception reporting</action>
     </release>
     <release version="4.0-beta-1" date="Jun 24 2005">
        <action type="add" dev="HLS">Add InvokeListener component.</action>

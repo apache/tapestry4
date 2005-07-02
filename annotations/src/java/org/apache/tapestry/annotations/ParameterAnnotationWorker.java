@@ -17,6 +17,7 @@ package org.apache.tapestry.annotations;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
@@ -34,7 +35,7 @@ public class ParameterAnnotationWorker implements MethodAnnotationEnhancementWor
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method)
+            Method method, Location location)
     {
         Parameter parameter = method.getAnnotation(Parameter.class);
 
@@ -65,6 +66,7 @@ public class ParameterAnnotationWorker implements MethodAnnotationEnhancementWor
         ps.setPropertyName(propertyName);
         ps.setRequired(parameter.required());
         ps.setType(propertyType.getName());
+        ps.setLocation(location);
 
         spec.addParameter(ps);
     }

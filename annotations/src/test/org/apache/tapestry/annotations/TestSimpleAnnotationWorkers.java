@@ -16,6 +16,7 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -32,44 +33,47 @@ public class TestSimpleAnnotationWorkers extends BaseAnnotationTestCase
 {
     public void testInjectPage()
     {
-        IComponentSpecification spec = execute(new InjectPageAnnotationWorker(), "getMyPage");
+        Location l = newLocation();
+        IComponentSpecification spec = execute(new InjectPageAnnotationWorker(), "getMyPage", l);
 
         InjectSpecification is = (InjectSpecification) spec.getInjectSpecifications().get(0);
 
         assertEquals("myPage", is.getProperty());
         assertEquals("page", is.getType());
         assertEquals("SomePageName", is.getObject());
-        assertNull(is.getLocation());
+        assertSame(l, is.getLocation());
     }
 
     public void testInjectMeta()
     {
-        IComponentSpecification spec = execute(new InjectMetaAnnotationWorker(), "getMetaFred");
+        Location l = newLocation();
+        IComponentSpecification spec = execute(new InjectMetaAnnotationWorker(), "getMetaFred", l);
 
         InjectSpecification is = (InjectSpecification) spec.getInjectSpecifications().get(0);
 
         assertEquals("metaFred", is.getProperty());
         assertEquals("meta", is.getType());
         assertEquals("fred", is.getObject());
-        assertNull(is.getLocation());
+        assertSame(l, is.getLocation());
 
     }
 
     public void testInjectScript()
     {
-        IComponentSpecification spec = execute(new InjectScriptAnnotationWorker(), "getScript");
+        Location l = newLocation();
+        IComponentSpecification spec = execute(new InjectScriptAnnotationWorker(), "getScript", l);
 
         InjectSpecification is = (InjectSpecification) spec.getInjectSpecifications().get(0);
 
         assertEquals("script", is.getProperty());
         assertEquals("script", is.getType());
         assertEquals("foo.script", is.getObject());
-        assertNull(is.getLocation());
+        assertSame(l, is.getLocation());
 
     }
 
     private IComponentSpecification execute(MethodAnnotationEnhancementWorker worker,
-            String methodName)
+            String methodName, Location location)
     {
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
@@ -78,7 +82,7 @@ public class TestSimpleAnnotationWorkers extends BaseAnnotationTestCase
 
         replayControls();
 
-        worker.performEnhancement(op, spec, method);
+        worker.performEnhancement(op, spec, method, location);
 
         verifyControls();
 

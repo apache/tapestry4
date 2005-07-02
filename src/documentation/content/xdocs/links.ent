@@ -182,6 +182,7 @@
 <!ENTITY Saxon 			'<link href="http://sf.net/projects/saxon/">Saxon</link>'>
 <!ENTITY Spring			'<link href="http://springframework.org/">Spring</link>'>
 <!ENTITY Struts 		'<link href="http://struts.apache.org/">Struts</link>'>
+<!ENTITY Tomcat			'<link href="http://jakarta.apache.org/tomcat/">Tomcat</link>'>
 <!ENTITY WebWork 		'<link href="http://opensymphony.com/webwork/">WebWork</link>'>
 <!ENTITY Velocity 		'<link href="http://jakarta.apache.org/velocity/">Velocity</link>'>
 

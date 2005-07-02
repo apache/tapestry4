@@ -1,5 +1,15 @@
 Tutorials Directory
 |
++- directlink
 +- helloworld
 +- tapestry-libraries
+|  |
+|  +- common.xml
+|  +- lib
+|     |
+|     +- web
+|        |
+|        +- bsf-2.3.0.jar
+|        +- commons-codec-1.3.jar
+|        +- . . .  
 +- . . .

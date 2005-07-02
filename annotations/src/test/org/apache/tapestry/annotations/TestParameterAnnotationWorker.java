@@ -16,6 +16,7 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -30,12 +31,13 @@ import org.easymock.MockControl;
  */
 public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
 {
-    private IParameterSpecification attempt(String propertyName)
+    private IParameterSpecification attempt(String propertyName, Location location)
     {
-        return attempt(propertyName, propertyName);
+        return attempt(propertyName, propertyName, location);
     }
 
-    private IParameterSpecification attempt(String propertyName, String parameterName)
+    private IParameterSpecification attempt(String propertyName, String parameterName,
+            Location location)
     {
         Method m = findMethod(AnnotatedPage.class, "get"
                 + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1));
@@ -50,7 +52,7 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
 
         replayControls();
 
-        new ParameterAnnotationWorker().performEnhancement(op, spec, m);
+        new ParameterAnnotationWorker().performEnhancement(op, spec, m, location);
 
         verifyControls();
 
@@ -59,14 +61,16 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
 
     public void testSimple()
     {
-        IParameterSpecification ps = attempt("simpleParameter");
+        Location l = newLocation();
+
+        IParameterSpecification ps = attempt("simpleParameter", l);
 
         assertListsEqual(new Object[] {}, ps.getAliasNames().toArray());
         assertEquals(true, ps.getCache());
         assertEquals(null, ps.getDefaultBindingType());
         assertEquals(null, ps.getDefaultValue());
         assertEquals(null, ps.getDescription());
-        assertNull(ps.getLocation());
+        assertSame(l, ps.getLocation());
         assertEquals("simpleParameter", ps.getParameterName());
         assertEquals("simpleParameter", ps.getPropertyName());
         assertEquals("java.lang.String", ps.getType());
@@ -74,14 +78,14 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
 
     public void testRequired()
     {
-        IParameterSpecification ps = attempt("requiredParameter");
+        IParameterSpecification ps = attempt("requiredParameter", null);
 
         assertEquals(true, ps.isRequired());
     }
 
     public void testDefaultBinding()
     {
-        IParameterSpecification ps = attempt("beanDefaultParameter");
+        IParameterSpecification ps = attempt("beanDefaultParameter", null);
 
         assertEquals("bean", ps.getDefaultBindingType());
         assertEquals("java.lang.Object", ps.getType());
@@ -89,14 +93,14 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
 
     public void testCacheOff()
     {
-        IParameterSpecification ps = attempt("nonCachedParameter");
+        IParameterSpecification ps = attempt("nonCachedParameter", null);
 
         assertEquals(false, ps.getCache());
     }
 
     public void testAliases()
     {
-        IParameterSpecification ps = attempt("aliasedParameter");
+        IParameterSpecification ps = attempt("aliasedParameter", null);
 
         assertListsEqual(new String[]
         { "fred" }, ps.getAliasNames().toArray());
@@ -104,13 +108,13 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
 
     public void testDeprecated()
     {
-        IParameterSpecification ps = attempt("deprecatedParameter");
+        IParameterSpecification ps = attempt("deprecatedParameter", null);
         assertEquals(true, ps.isDeprecated());
     }
 
     public void testNamed()
     {
-        IParameterSpecification ps = attempt("namedParameter", "fred");
+        IParameterSpecification ps = attempt("namedParameter", "fred", null);
 
         assertEquals("fred", ps.getParameterName());
         assertEquals("namedParameter", ps.getPropertyName());

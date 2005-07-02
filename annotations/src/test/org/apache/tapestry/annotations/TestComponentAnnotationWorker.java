@@ -16,8 +16,7 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.enhance.EnhanceUtils;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.ComponentSpecification;
@@ -33,7 +32,7 @@ import org.apache.tapestry.spec.IContainedComponent;
  */
 public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
 {
-    private IContainedComponent run(String id, String methodName)
+    private IContainedComponent run(String id, String methodName, Location location)
     {
         Method method = findMethod(AnnotatedPage.class, methodName);
 
@@ -43,7 +42,7 @@ public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
 
         IComponentSpecification spec = new ComponentSpecification();
 
-        new ComponentAnnotationWorker().performEnhancement(op, spec, method);
+        new ComponentAnnotationWorker().performEnhancement(op, spec, method, location);
 
         verifyControls();
 
@@ -52,36 +51,39 @@ public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
 
     public void testSimple()
     {
-        IContainedComponent cc = run("textField", "getTextField");
+        Location l = newLocation();
+
+        IContainedComponent cc = run("textField", "getTextField", l);
 
         assertEquals("TextField", cc.getType());
         assertEquals(false, cc.getInheritInformalParameters());
         assertEquals(null, cc.getCopyOf());
-        assertNull(cc.getLocation());
+        assertSame(l, cc.getLocation());
         assertEquals(true, cc.getBindingNames().isEmpty());
         assertEquals("textField", cc.getPropertyName());
     }
 
     public void testExplicitId()
     {
-        IContainedComponent cc = run("email", "getEmailField");
+        IContainedComponent cc = run("email", "getEmailField", null);
 
         assertEquals("emailField", cc.getPropertyName());
     }
 
     public void testInheritInformalParameters()
     {
-        IContainedComponent cc = run("inherit", "getInherit");
+        IContainedComponent cc = run("inherit", "getInherit", null);
 
         assertEquals(true, cc.getInheritInformalParameters());
     }
 
     public void testWithBindings()
     {
-        IContainedComponent cc = run("componentWithBindings", "getComponentWithBindings");
+        Location l = newLocation();
+        IContainedComponent cc = run("componentWithBindings", "getComponentWithBindings", l);
 
         IBindingSpecification bs1 = cc.getBinding("condition");
-        assertNull(bs1.getLocation());
+        assertSame(l, bs1.getLocation());
         assertEquals(BindingType.PREFIXED, bs1.getType());
         assertEquals("message", bs1.getValue());
 
@@ -91,10 +93,12 @@ public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
 
     public void testBindingWhitespaceTrimmed()
     {
-        IContainedComponent cc = run("whitespace", "getWhitespace");
+        Location l = newLocation();
+
+        IContainedComponent cc = run("whitespace", "getWhitespace", l);
 
         IBindingSpecification bs1 = cc.getBinding("value");
-        assertNull(bs1.getLocation());
+        assertSame(l, bs1.getLocation());
         assertEquals(BindingType.PREFIXED, bs1.getType());
         assertEquals("email", bs1.getValue());
 

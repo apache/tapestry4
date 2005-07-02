@@ -35,6 +35,7 @@ public class TestAssetAnnotationWorker extends BaseAnnotationTestCase
 {
     public void testSuccess()
     {
+        Location l = newLocation();
         Resource r = (Resource) newMock(Resource.class);
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
@@ -44,13 +45,13 @@ public class TestAssetAnnotationWorker extends BaseAnnotationTestCase
 
         Method m = findMethod(AnnotatedPage.class, "getGlobalStylesheet");
 
-        new AssetAnnotationWorker().performEnhancement(op, spec, m);
+        new AssetAnnotationWorker().performEnhancement(op, spec, m, l);
 
         verifyControls();
 
         IAssetSpecification as = spec.getAsset("globalStylesheet");
         assertEquals("/style/global.css", as.getPath());
-        assertEquals(new LocationImpl(r), as.getLocation());
+        assertEquals(new AnnotationLocation(r, l.toString()), as.getLocation());
         assertEquals("globalStylesheet", as.getPropertyName());
     }
 }

@@ -17,6 +17,7 @@ package org.apache.tapestry.annotations;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.BindingSpecification;
 import org.apache.tapestry.spec.BindingType;
@@ -38,7 +39,7 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method)
+            Method method, Location location)
     {
         Component component = method.getAnnotation(Component.class);
 
@@ -49,10 +50,11 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
         cc.setInheritInformalParameters(component.inheritInformalParameters());
         cc.setType(component.type());
         cc.setPropertyName(propertyName);
+        cc.setLocation(location);
 
         for (String binding : component.bindings())
         {
-            addBinding(cc, binding);
+            addBinding(cc, binding, location);
         }
 
         String id = component.id();
@@ -63,7 +65,7 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
         spec.addComponent(id, cc);
     }
 
-    void addBinding(IContainedComponent component, String binding)
+    void addBinding(IContainedComponent component, String binding, Location location)
     {
         int equalsx = binding.indexOf('=');
 
@@ -79,6 +81,7 @@ public class ComponentAnnotationWorker implements MethodAnnotationEnhancementWor
         IBindingSpecification bs = new BindingSpecification();
         bs.setType(BindingType.PREFIXED);
         bs.setValue(value);
+        bs.setLocation(location);
 
         component.setBinding(name, bs);
     }
