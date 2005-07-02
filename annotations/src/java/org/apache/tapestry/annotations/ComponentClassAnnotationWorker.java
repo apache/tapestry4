@@ -14,14 +14,15 @@
 
 package org.apache.tapestry.annotations;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * Sets properties of the {@link org.apache.tapestry.spec.IComponentSpecification} based on the
- * {@link org.apache.tapestry.annotations.ComponentClass} annotation. In addition, marks the component as
- * deprecated if the {@link java.lang.Deprecated} annotation is present on the class.
+ * {@link org.apache.tapestry.annotations.ComponentClass} annotation. In addition, marks the
+ * component as deprecated if the {@link java.lang.Deprecated} annotation is present on the class.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
@@ -30,12 +31,13 @@ public class ComponentClassAnnotationWorker implements ClassAnnotationEnhancemen
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Class baseClass)
+            Class baseClass, Location location)
     {
         ComponentClass component = (ComponentClass) baseClass.getAnnotation(ComponentClass.class);
 
         spec.setAllowBody(component.allowBody());
         spec.setAllowInformalParameters(component.allowInformalParameters());
+        spec.setLocation(location);
 
         String[] names = TapestryUtils.split(component.reservedParameters());
         for (String name : names)

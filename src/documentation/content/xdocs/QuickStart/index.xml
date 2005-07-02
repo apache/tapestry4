@@ -50,29 +50,20 @@ The examples build with &Ant;, version 1.6.2 or better is required.
 </p>
   
 <p>
-The examples all share a set of libraries (the Tapestry framework, its dependencies, the
-contrib library, and the annotations library).  These are available from <link href="&quickstart-download-url;">&quickstart-download-url;</link>
-as file tapestry-libraries.tar.gz.  Choose a directory to store the tutorials and expand the contents of this tarball; this will
-create a directory, tapestry-libraries, with files and folders beneath it (especially, many JAR files
-inside lib/web).
+The source code for the all the tutorials are distributed inside a single tarbar: tapestry-tutorials.tar.gz, available
+from <link href="&quickstart-download-url;">&quickstart-download-url;</link>.
 </p>  
-
-<figure src="tapestry-libraries.png" alt="Tapestry Libraries Directories"/>
-  
-</section>
-
-<section>
-  <title>Tutorial Structure</title>
-  
+    
 <p>
 Each tutorial is its own project (in fact, it includes .project and .classpath files so that it may be
-used inside &Eclipse;).  Each should be expanded inside your tutorials directory:
+used inside &Eclipse;).  In addition, the tapestry-tutorials project contains the set of libraries
+need by the applications: the Tapestry libraries and their dependencies.
 </p>
 
 <figure src="tutorials-structure.png" alt="Tutorial Workspace Structure"/>
 
 <p>
-Each individual tutorial has the same structure:
+Each tutorial project has the same structure:
 </p>
 
 <figure src="single-tutorial.png" alt="Single Tutorial Structure"/>
@@ -90,7 +81,7 @@ descriptor, plus additional Tapestry related files.
 </p>
 
 <p>
-The Ant <code>war</code> target will compile the Java source files, and create a WAR file containing
+The Ant <code>war</code> target will compile the Java source files (stored in src/java), and create a WAR file containing
 the compiled classes (inside WEB-INF/classes), the contents of src/context, and all the dependencies (from tapestry-libraries)
 packaged inside WEB-INF/lib.  The file will be stored in the target folder, which is created
 as necessary, and is named after the project (i.e., target/helloworld.war).
@@ -102,8 +93,31 @@ as necessary, and is named after the project (i.e., target/helloworld.war).
   <title>Building And Deploying</title>
   
 <p>
-  Coming soon ...
+To build a tutorial, simply change to its directory and execute <code>ant</code>:
 </p>
+
+<source><![CDATA[
+bash-2.05b$ ant
+Buildfile: build.xml
+
+compile:
+    [mkdir] Created dir: C:\workspace\directlink\target\classes
+    [javac] Compiling 1 source file to C:\workspace\directlink\target\classes
+    [javac] Note: C:\workspace\directlink\src\java\tutorials\directlink\pages\Home.java uses or overrides a deprecated API.
+    [javac] Note: Recompile with -Xlint:deprecation for details.
+
+war:
+      [war] Building war: C:\workspace\directlink\target\helloworld.war
+
+BUILD SUCCESSFUL
+Total time: 8 seconds
+bash-2.05b$
+]]></source>
+
+<p>
+The resulting WAR file is ready to be deployed into any servlet container such as &Jetty; or &Tomcat;.
+</p>
+
   
 </section>
 

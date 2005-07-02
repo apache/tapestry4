@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.annotations;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -35,9 +36,11 @@ public interface ClassAnnotationEnhancementWorker
      *            the specification of the component for which a class is being enhanced
      * @param baseClass
      *            the class containing the annotation
+     * @param location
+     *            the location associated with the annotation
      */
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Class baseClass);
+            Class baseClass, Location location);
 
 }

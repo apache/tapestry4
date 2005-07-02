@@ -16,6 +16,7 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectStateWorker;
@@ -44,7 +45,7 @@ public class InjectStateAnnotationWorker implements MethodAnnotationEnhancementW
     }
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method)
+            Method method, Location location)
     {
         InjectState is = method.getAnnotation(InjectState.class);
 

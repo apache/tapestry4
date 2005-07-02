@@ -48,7 +48,7 @@ public class TestInjectStateAnnotationWorker extends BaseAnnotationTestCase
 
         InjectStateAnnotationWorker worker = new InjectStateAnnotationWorker(delegate);
 
-        worker.performEnhancement(op, spec, findMethod(AnnotatedPage.class, "getBarney"));
+        worker.performEnhancement(op, spec, findMethod(AnnotatedPage.class, "getBarney"), null);
 
         verifyControls();
     }

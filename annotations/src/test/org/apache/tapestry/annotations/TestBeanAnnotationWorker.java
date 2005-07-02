@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.bean.LightweightBeanInitializer;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.BeanLifecycle;
@@ -37,6 +38,7 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
 {
     public void testBeanClassSpecified()
     {
+        Location l = newLocation();
         EnhancementOperation op = newOp();
         IComponentSpecification spec = new ComponentSpecification();
 
@@ -44,7 +46,7 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
 
         replayControls();
 
-        new BeanAnnotationWorker().performEnhancement(op, spec, m);
+        new BeanAnnotationWorker().performEnhancement(op, spec, m, l);
 
         verifyControls();
 
@@ -53,7 +55,7 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
         assertEquals("mapBean", bs.getPropertyName());
         assertEquals(HashMap.class.getName(), bs.getClassName());
         assertEquals(BeanLifecycle.REQUEST, bs.getLifecycle());
-        assertNull(bs.getLocation());
+        assertSame(l, bs.getLocation());
         assertNull(bs.getInitializers());
     }
 
@@ -70,6 +72,7 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
 
     public void testBeanClassNotSpecified()
     {
+        Location l = newLocation();
         EnhancementOperation op = newOp("hashMapBean", HashMap.class);
         IComponentSpecification spec = new ComponentSpecification();
 
@@ -77,7 +80,7 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
 
         replayControls();
 
-        new BeanAnnotationWorker().performEnhancement(op, spec, m);
+        new BeanAnnotationWorker().performEnhancement(op, spec, m, l);
 
         verifyControls();
 
@@ -86,7 +89,7 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
         assertEquals("hashMapBean", bs.getPropertyName());
         assertEquals(HashMap.class.getName(), bs.getClassName());
         assertEquals(BeanLifecycle.REQUEST, bs.getLifecycle());
-        assertNull(bs.getLocation());
+        assertSame(l, bs.getLocation());
         assertNull(bs.getInitializers());
     }
 
@@ -99,7 +102,7 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
 
         replayControls();
 
-        new BeanAnnotationWorker().performEnhancement(op, spec, m);
+        new BeanAnnotationWorker().performEnhancement(op, spec, m, null);
 
         verifyControls();
 
@@ -120,7 +123,7 @@ public class TestBeanAnnotationWorker extends BaseAnnotationTestCase
 
         replayControls();
 
-        new BeanAnnotationWorker().performEnhancement(op, spec, m);
+        new BeanAnnotationWorker().performEnhancement(op, spec, m, null);
 
         verifyControls();
 

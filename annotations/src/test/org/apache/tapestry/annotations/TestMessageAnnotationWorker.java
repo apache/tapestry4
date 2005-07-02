@@ -69,7 +69,7 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 
         try
         {
-            new MessageAnnotationWorker().performEnhancement(op, spec, method);
+            new MessageAnnotationWorker().performEnhancement(op, spec, method, null);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -98,7 +98,7 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 
         replayControls();
 
-        new MessageAnnotationWorker().performEnhancement(op, spec, method);
+        new MessageAnnotationWorker().performEnhancement(op, spec, method, null);
 
         verifyControls();
     }
@@ -114,7 +114,7 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 
         replayControls();
 
-        new MessageAnnotationWorker().performEnhancement(op, spec, method);
+        new MessageAnnotationWorker().performEnhancement(op, spec, method, null);
 
         verifyControls();
     }
@@ -130,7 +130,7 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
     {
         try
         {
-            new ComponentAnnotationWorker().addBinding(null, binding);
+            new ComponentAnnotationWorker().addBinding(null, binding, null);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)

@@ -16,7 +16,10 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Resource;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -47,6 +50,11 @@ public abstract class BaseAnnotationTestCase extends HiveMindTestCase
     protected EnhancementOperation newOp()
     {
         return (EnhancementOperation) newMock(EnhancementOperation.class);
+    }
+
+    protected Resource newResource(ClassResolver resolver, Class clazz)
+    {
+        return new ClasspathResource(resolver, clazz.getName().replace('.', '/'));
     }
 
 }

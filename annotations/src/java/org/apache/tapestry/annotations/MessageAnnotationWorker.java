@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.Tapestry;
@@ -34,7 +35,7 @@ public class MessageAnnotationWorker implements MethodAnnotationEnhancementWorke
 {
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method)
+            Method method, Location location)
     {
         if (!method.getReturnType().equals(String.class))
             throw new ApplicationRuntimeException(AnnotationMessages.returnStringOnly(method

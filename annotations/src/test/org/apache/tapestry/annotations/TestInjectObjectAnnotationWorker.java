@@ -62,7 +62,7 @@ public class TestInjectObjectAnnotationWorker extends BaseAnnotationTestCase
 
         replayControls();
 
-        worker.performEnhancement(op, spec, m);
+        worker.performEnhancement(op, spec, m, null);
 
         verifyControls();
     }

@@ -81,4 +81,14 @@ class AnnotationMessages
         return _formatter.format("binding-wrong-format", binding);
     }
 
+    public static String methodAnnotation(Annotation annotation, Method method)
+    {
+        return _formatter.format("method-annotation", annotation, method);
+    }
+
+    public static String classAnnotation(Annotation annotation, Class clazz)
+    {
+        return _formatter.format("class-annotation", annotation, clazz.getName());
+    }
+
 }

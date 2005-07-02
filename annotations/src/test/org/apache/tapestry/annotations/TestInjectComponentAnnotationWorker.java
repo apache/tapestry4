@@ -47,7 +47,7 @@ public class TestInjectComponentAnnotationWorker extends BaseAnnotationTestCase
 
         InjectComponentAnnotationWorker worker = new InjectComponentAnnotationWorker(delegate);
 
-        worker.performEnhancement(op, spec, findMethod(AnnotatedPage.class, "getFredField"));
+        worker.performEnhancement(op, spec, findMethod(AnnotatedPage.class, "getFredField"), null);
 
         verifyControls();
     }
