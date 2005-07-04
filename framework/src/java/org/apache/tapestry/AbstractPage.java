@@ -86,7 +86,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     /**
      * A list of listeners for the page.
      * 
-     * @see PageRenderListener
+     * @see PageBeginRenderListener
+     * @see PageEndRenderListener
      * @see PageDetachListener
      * @since 1.0.5
      */
@@ -251,11 +252,11 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     /**
      * <ul>
-     * <li>Invokes {@link PageRenderListener#pageBeginRender(PageEvent)}
+     * <li>Invokes {@link PageBeginRenderListener#pageBeginRender(PageEvent)}
      * <li>Invokes {@link #beginResponse(IMarkupWriter, IRequestCycle)}
      * <li>Invokes {@link IRequestCycle#commitPageChanges()}(if not rewinding)
      * <li>Invokes {@link #render(IMarkupWriter, IRequestCycle)}
-     * <li>Invokes {@link PageRenderListener#pageEndRender(PageEvent)}(this occurs even if a
+     * <li>Invokes {@link PageEndRenderListener#pageEndRender(PageEvent)}(this occurs even if a
      * previous step throws an exception)
      */
 

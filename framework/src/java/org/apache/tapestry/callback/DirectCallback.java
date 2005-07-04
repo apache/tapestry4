@@ -20,7 +20,6 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 
 /**
  * Simple callback for re-invoking a {@link IDirect}&nbsp;trigger.
