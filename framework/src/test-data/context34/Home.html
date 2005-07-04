@@ -1,0 +1,44 @@
+<html>
+<body>
+
+<p>
+Check the behavour of If, Else, and For.
+</p>
+
+	<span jwcid="@If" condition="!false">Show text!</span>
+	<span jwcid="@Else">Do not show this</span>
+
+	<span jwcid="@If" condition="false">Do not show this either</span>
+	<span jwcid="@Else">But show this too!</span>
+    
+
+	<span jwcid="for1@For" source="{ 'one', 'two' }">
+        for1 <span jwcid="@Insert" value="components.for1.index"/> : <span jwcid="@Insert" value="components.for1.value"/>
+    </span>
+
+    
+    <span jwcid="@Form">
+		<span jwcid="@If" condition="!false">Show form text!</span>
+		<span jwcid="@Else">Do not show form text</span>
+	
+		<span jwcid="@If" condition="false">Do not show this form text either</span>
+		<span jwcid="@Else">But show this form text too!</span>
+	    
+	
+		<span jwcid="for2@For" source="{ 'uno', 'due' }">
+	        for2 <span jwcid="@Insert" value="components.for2.index"/> : <span jwcid="@Insert" value="components.for2.value"/>
+	    </span>
+	
+		<span jwcid="for3@For" source="{ @java.util.Locale@US, @java.util.Locale@GERMANY }" 
+            fullSource="@java.util.Locale@getAvailableLocales()" keyExpression="toString()">
+	        for3 <span jwcid="@Insert" value="components.for3.index"/> : <span jwcid="@Insert" value="components.for3.value"/>
+	    </span>
+	
+		<span jwcid="for4@For" source="{ @java.util.Locale@US, @java.util.Locale@GERMANY }" keyExpression="toString()" defaultValue="@java.util.Locale@ENGLISH">
+	        for4 <span jwcid="@Insert" value="components.for4.index"/> : <span jwcid="@Insert" value="components.for4.value"/>
+	    </span>
+	</span>        
+    
+    
+</body>	
+</html>
