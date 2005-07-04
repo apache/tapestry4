@@ -38,7 +38,7 @@ public abstract class IfBean extends AbstractFormComponent
     public abstract IBinding getConditionValueBinding();
     
     public abstract boolean getCondition();
-    public abstract boolean getFormless();
+    public abstract boolean getVolatile();
     public abstract String getElement();
     public abstract IActionListener getListener();
     
@@ -97,7 +97,7 @@ public abstract class IfBean extends AbstractFormComponent
     {
         boolean condition;
         
-        if (form == null || getFormless()) { 
+        if (form == null || getVolatile()) { 
             condition = getCondition();
         }
         else {
