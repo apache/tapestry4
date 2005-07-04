@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+
+<component-specification class="org.apache.tapestry.components.ForBean" allow-body="yes" allow-informal-parameters="yes">
+    
+  <description>
+  Loops over a collection of source values.  May also emulate an element (like an Any
+  component). If this component is placed in a Form, it will automatically store
+  the collection in Hidden fields so that the structure of the page is preserved
+  during a rewind even if the values in the source change.
+  </description>
+	
+  <parameter name="source" required="yes" default-binding="ognl">
+    <description>
+    The source of values, a Java collection or array.
+    </description>
+  </parameter>
+  
+  <parameter name="value" property="valueParameter" default-binding="ognl">
+    <description>
+    If provided, the parameter is updated with the current value on each iteration.
+    </description>
+  </parameter>
+  
+  <parameter name="index" property="indexParameter" default-binding="ognl">
+    <description>
+    If provided, the parameter is updated with the index of the loop on each iteration.
+    </description>
+  </parameter>
+  
+  <parameter name="element" default-binding="literal">
+    <description>
+    If provided, the component wraps its content with the requested element.
+    Informal parameters become attributes of that element.
+    </description>
+  </parameter>
+  
+    
+  <parameter name="keyExpression" default-binding="literal">
+    <description>
+    Only active in a form. An OGNL expression that returns the primary key of the iterated value. 
+    The primary keys are stored in hidden fields during rendering and are loaded from the form
+    during a rewind to ensure that the iterations remain the same.
+    This is a simpler, but a less efficient alternative of the 'converter' parameter.
+    If needed, please use in conjuction with 'fullSource' to reference objects 
+    not currently present in 'source'.
+    Also, use the 'defaultValue' parameter to define the object to be returned if
+    a value corresponding to a particular primary key cannot be found.
+    </description>
+  </parameter>
+    
+  <parameter name="fullSource" default-binding="ognl">
+    <description>
+    Only active in a form and in combination with the 'keyExpression' parameter. 
+    The objects provided by this parameter will be used to determine the values 
+    referred to by the primary keys stored in the form. 
+    If this parameter is not bound, 'source' is used instead.
+    </description>
+  </parameter>
+  
+  <parameter name="defaultValue" default-value="null" default-binding="ognl">
+    <description>
+    Only active in a form. The value to be used when no match for a given primary key is found. 
+    </description>
+  </parameter>
+
+  <parameter name="converter" default-value="null" default-binding="ognl">
+    <description>
+    Only active in a form. Defines how the items iterated upon 
+    will be stored in the form as hidden values and how the stored information will be 
+    converted back to objects. 
+    This interface allows only the primary key of the items to be stored, 
+    rather than the whole item.
+    </description>
+  </parameter>
+  
+  <parameter name="primaryKeys" default-binding="ognl">
+    <description>
+    Only active in a form. If provided, the parameter is automatically updated 
+    before a rewind with the list of primary keys stored in the form. 
+    The parameter is updated right before the iterations begin in a rewind and 
+    could be used to preload the relevant objects in a provided 'converter'.
+    </description>
+  </parameter>
+  
+  <parameter name="volatile" default-value="false" default-binding="ognl">
+    <description>
+    Only active in a form. Determines whether to avoid creating hidden fields within a form.
+    Using this parameter may make the form structure different during render and rewind, 
+    and cause exceptions as a result. Please use with caution.
+    </description>
+  </parameter>
+  
+  <inject property="dataSqueezer" object="service:tapestry.data.DataSqueezer"/>
+  <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
+  <inject property="expressionEvaluator" object="service:tapestry.ognl.ExpressionEvaluator"/>
+
+</component-specification>

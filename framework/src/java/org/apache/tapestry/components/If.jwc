@@ -26,37 +26,32 @@
   if a condition is met.
   </description>
   
-  <parameter name="condition" required="yes">
+  <parameter name="condition" required="yes" default-binding="ognl">
     <description>
     The condition to evaluate.
     </description>
   </parameter>
   
-  <parameter name="conditionValue">
+  <parameter name="conditionValue" default-binding="ognl">
     <description>
     The value of the condition. During render this is obtained from
     the condition parameter. During rewind it is the submitted condition.
     </description>
   </parameter>
 
-  <parameter name="listener"/>
+  <parameter name="listener" default-binding="listener"/>
   
-  <parameter name="formless" default-value="false">
-    <description>
-    Determines whether to avoid creating hidden fields within a form.
-    </description>
-  </parameter>
-  
-  <parameter name="element" default-value="templateTag">
+  <parameter name="element" default-binding="literal">
   	<description>
   	The element to emulate.
   	</description>
   </parameter>
   
-  <parameter name="templateTag" default-value="null">
+  <parameter name="volatile" default-value="false" default-binding="ognl">
     <description>
-    The tag with which the component was inserted in its parent template
-    This parameter will be bound automatically by the framework.
+    Only active in a form. Determines whether to avoid creating hidden fields within a form.
+    Using this parameter may make the form structure different during render and rewind, 
+    and cause exceptions as a result. Please use with caution.
     </description>
   </parameter>
   
