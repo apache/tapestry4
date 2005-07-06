@@ -33,6 +33,10 @@
   <servlet>
   	<servlet-name>workbench</servlet-name>
     <servlet-class>org.apache.tapestry.ApplicationServlet</servlet-class>
+    <init-param>
+      <param-name>TreeRootDir</param-name>
+      <param-value>/</param-value>
+    </init-param>
   	<load-on-startup>0</load-on-startup>
   </servlet>
      

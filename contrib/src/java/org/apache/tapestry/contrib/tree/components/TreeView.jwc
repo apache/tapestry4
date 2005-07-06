@@ -33,5 +33,7 @@
     <component id="any" type="Any" inherit-informal-parameters="yes"/>
 
     <component id="renderBody" type="RenderBody"/>
+    
+    <property name="treeSessionState" persist="session"/>
 
 </component-specification>

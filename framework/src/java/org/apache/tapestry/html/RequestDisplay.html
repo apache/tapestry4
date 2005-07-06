@@ -1,7 +1,7 @@
 <span jwcid="$content$">
 <span jwcid="@Describe" object="ognl:request"/>
 
-<span jwcid="@Conditional" condition="ognl:request.getSession(false) != null">
+<span jwcid="@If" condition="ognl:request.getSession(false) != null">
 <span jwcid="@Describe" object="ognl:request.getSession(false)"/>
 </span>
 

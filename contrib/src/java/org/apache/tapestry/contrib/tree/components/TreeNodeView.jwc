@@ -52,17 +52,17 @@
         <binding name="anchor" expression="cleanSelectedID"/>
     </component>
     
-    <component id="showImages" type="Conditional">
+    <component id="showImages" type="If">
         <binding name="condition" expression="showImages"/>
     </component>
 
     <component id="showImages2" copy-of="showImages"/>
 
-    <component id="makeNodeDirect" type="Conditional">
+    <component id="makeNodeDirect" type="If">
         <binding name="condition" expression="makeNodeDirect"/>
     </component>
 
-    <component id="makeNodeNoDirect" type="Conditional">
+    <component id="makeNodeNoDirect" type="If">
         <binding name="condition" expression="makeNodeNoDirect"/>
     </component>
 
@@ -99,7 +99,7 @@
     
     <private-asset name="_whiteSpaceImage" resource-path="WhiteSpace.gif"/>
     
-    <component id="showConnectImage" type="Conditional">
+    <component id="showConnectImage" type="If">
         <binding name="condition" expression="showConnectImage"/>
     </component>
     <component id="connectImage" type="Image">
