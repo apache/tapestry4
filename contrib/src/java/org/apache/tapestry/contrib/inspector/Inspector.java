@@ -97,7 +97,7 @@ public abstract class Inspector extends BasePage
 
         // The up button may generate a null context.
 
-        if (parameters == null)
+        if (parameters == null || parameters.length == 0)
             newIdPath = null;
         else
             newIdPath = (String) parameters[0];

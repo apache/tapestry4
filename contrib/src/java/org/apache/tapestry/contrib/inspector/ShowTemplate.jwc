@@ -20,11 +20,11 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 	
 <component-specification class="org.apache.tapestry.contrib.inspector.ShowTemplate">
-  <component id="ifNoTemplate" type="Conditional">
+  <component id="ifNoTemplate" type="If">
     <binding name="condition" value="ognl:! hasTemplate"/>
   </component>
   
-  <component id="ifTemplate" type="Conditional">
+  <component id="ifTemplate" type="If">
     <binding name="condition" value="ognl:hasTemplate"/>
   </component>
   

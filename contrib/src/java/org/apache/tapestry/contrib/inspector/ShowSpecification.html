@@ -32,7 +32,7 @@
 		<td><span jwcid="@Insert" value="ognl:inspectedComponent.getClass().getName()"/></td>
 	</tr>
 
-<span jwcid="@Conditional" condition="ognl:! inspectedSpecification.pageSpecification">
+<span jwcid="@If" condition="ognl:! inspectedSpecification.pageSpecification">
 
 	<tr class="even">
 		<th>Allow informal parameters</th>
@@ -48,7 +48,7 @@
 	
 </table>
 
-<span jwcid="@Conditional" condition="ognl:formalParameterNames">
+<span jwcid="@If" condition="ognl:formalParameterNames">
 
 <table class="inspector-data" width="100%">
 	<tr class="heading">
@@ -70,7 +70,7 @@
 </table>
 </span>
 
-<span jwcid="@Conditional" condition="ognl:informalParameterNames">
+<span jwcid="@If" condition="ognl:informalParameterNames">
 
 <table class="inspector-data" width="100%">
 	<tr class="heading">
@@ -88,7 +88,7 @@
 </table>
 </span>
 
-<span jwcid="@Conditional" condition="ognl:assetNames">
+<span jwcid="@If" condition="ognl:assetNames">
 
 <table class="inspector-data"  width="100%">
 	<tr class="heading">
@@ -107,7 +107,7 @@
 </table>
 </span>
 
-<span jwcid="@Conditional" condition="ognl:sortedPropertyNames">
+<span jwcid="@If" condition="ognl:sortedPropertyNames">
 
 <table class="inspector-data" width="100%">
 	<tr class="heading">
@@ -125,7 +125,7 @@
 </table>
 </span>
 
-<span jwcid="@Conditional" condition="ognl:beanNames">
+<span jwcid="@If" condition="ognl:beanNames">
 
 <table class="inspector-data" width="100%">
 	<tr class="heading">
@@ -148,7 +148,7 @@
 </td>
 
 <td>
-<span jwcid="@Conditional" condition="ognl:sortedComponents">
+<span jwcid="@If" condition="ognl:sortedComponents">
 
 <table border="0" class="inspector-data">
 

@@ -292,10 +292,11 @@ public abstract class ShowTemplate extends BaseComponent implements IDirect
      * Invoked when a component id is clicked.
      */
 
-    public void trigger(IRequestCycle cycle, String componentId)
+    public void trigger(IRequestCycle cycle)
     {
         Inspector inspector = (Inspector) getPage();
 
+        String componentId = (String) cycle.getListenerParameters()[0];
         inspector.selectComponent(componentId);
 
         IComponent newComponent = inspector.getInspectedComponent();
