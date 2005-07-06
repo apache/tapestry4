@@ -53,6 +53,8 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
     private final PersistentPropertyDataEncoder _encoder;
 
     private WebRequest _request;
+    
+    private ClientPropertyPersistenceScope _scope;
 
     public ClientPropertyPersistenceStrategy()
     {
@@ -133,8 +135,11 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
 
             String pageName = (String) e.getKey();
             PersistentPropertyData data = (PersistentPropertyData) e.getValue();
+            
+            ClientPropertyPersistenceScope scope = getScope();
 
-            encoding.setParameterValue(PREFIX + pageName, data.getEncoded());
+            if (scope.addParametersForPersistentProperties(encoding, cycle, pageName, data))
+            	encoding.setParameterValue(PREFIX + pageName, data.getEncoded());
         }
     }
 
@@ -142,4 +147,12 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
     {
         _request = request;
     }
+
+	public ClientPropertyPersistenceScope getScope() {
+		return _scope;
+	}
+
+	public void setScope(ClientPropertyPersistenceScope scope) {
+		_scope = scope;
+	}
 }
