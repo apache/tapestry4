@@ -54,8 +54,24 @@
     </invoke-factory>
     
   </service-point>
-  
-  <service-point id="ClientPropertyPersistenceStrategy" interface="PropertyPersistenceStrategy">
+
+  <service-point id="AppClientPropertyPersistenceScope" interface="ClientPropertyPersistenceScope">
+    
+    Stores client persistent properties in all cases.
+    
+    <create-instance class="AppClientPropertyPersistenceScope"/>
+    
+  </service-point>
+    
+  <service-point id="PageClientPropertyPersistenceScope" interface="ClientPropertyPersistenceScope">
+    
+    Stores client persistent properties only if the page remains the same.
+    
+    <create-instance class="PageClientPropertyPersistenceScope"/>
+    
+  </service-point>
+    
+  <service-point id="PageClientPropertyPersistenceStrategy" interface="PropertyPersistenceStrategy">
     
     Stores persistent properties on the client, as either hidden form fields, or as
     query parameters. Persistent data for each page is stored in a seperate query parameter.
@@ -64,6 +80,22 @@
     <invoke-factory model="threaded">
       <construct class="ClientPropertyPersistenceStrategy">
         <set-object property="request" value="infrastructure:request"/>
+        <set-object property="scope" value="service:PageClientPropertyPersistenceScope"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="AppClientPropertyPersistenceStrategy" interface="PropertyPersistenceStrategy">
+    
+    Stores persistent properties on the client, as either hidden form fields, or as
+    query parameters. Persistent data for each page is stored in a seperate query parameter.
+    The service stores client-specific state internally, and so it must use the threaded service model.
+    
+    <invoke-factory model="threaded">
+      <construct class="ClientPropertyPersistenceStrategy">
+        <set-object property="request" value="infrastructure:request"/>
+        <set-object property="scope" value="service:AppClientPropertyPersistenceScope"/>
       </construct>
     </invoke-factory>
     
@@ -83,6 +115,8 @@
 
   <contribution configuration-id="PersistenceStrategy">
     <strategy name="session" object="service:SessionPropertyPersistenceStrategy"/>
-    <strategy name="client" object="service:ClientPropertyPersistenceStrategy"/>
+    <strategy name="client" object="service:PageClientPropertyPersistenceStrategy"/>
+    <strategy name="client:page" object="service:PageClientPropertyPersistenceStrategy"/>
+    <strategy name="client:app" object="service:AppClientPropertyPersistenceStrategy"/>
   </contribution>
 </module>
