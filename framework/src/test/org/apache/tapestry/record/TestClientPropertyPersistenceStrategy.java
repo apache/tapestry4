@@ -15,11 +15,11 @@
 package org.apache.tapestry.record;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.web.WebRequest;
@@ -108,9 +108,61 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
 
         ClientPropertyPersistenceStrategy strategy = new ClientPropertyPersistenceStrategy();
         strategy.setRequest(request);
+        strategy.setScope(new AppClientPropertyPersistenceScope());
 
         strategy.initializeService();
+        
+        strategy.addParametersForPersistentProperties(encoding, cycle);
 
+        verifyControls();
+
+    }
+    
+    public void testPageScope()
+    {
+        MockControl requestc = newControl(WebRequest.class);
+        WebRequest request = (WebRequest) requestc.getMock();
+
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        
+        MockControl pagec = newControl(IPage.class);
+        IPage page = (IPage) pagec.getMock();
+        
+        ServiceEncoding encoding = (ServiceEncoding) newMock(ServiceEncoding.class);
+
+        cycle.getPage();
+        cyclec.setReturnValue(page);
+        
+        cycle.getPage();
+        cyclec.setReturnValue(page);
+        
+        page.getPageName();
+        pagec.setReturnValue("MyPage");
+        
+        page.getPageName();
+        pagec.setReturnValue("MyPage");
+        
+        request.getParameterNames();
+        requestc.setReturnValue(Arrays.asList(new Object[]
+        { "foo", "state:MyPage", "state:OtherPage" }));
+
+        request.getParameterValue("state:MyPage");
+        requestc.setReturnValue("ENCODED");
+
+        request.getParameterValue("state:OtherPage");
+        requestc.setReturnValue("ENCODED");
+
+        encoding.setParameterValue("state:MyPage", "ENCODED");
+
+        replayControls();
+
+        ClientPropertyPersistenceStrategy strategy = new ClientPropertyPersistenceStrategy();
+        strategy.setRequest(request);
+        strategy.setScope(new PageClientPropertyPersistenceScope());
+
+        strategy.initializeService();
+        
         strategy.addParametersForPersistentProperties(encoding, cycle);
 
         verifyControls();
