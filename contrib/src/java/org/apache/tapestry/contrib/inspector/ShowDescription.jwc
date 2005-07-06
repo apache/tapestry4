@@ -25,7 +25,7 @@
 	
 	<parameter name="description" required="yes"/>
 	
-	<component id="ifDescription" type="Conditional">
+	<component id="ifDescription" type="If">
 	  <inherited-binding name="condition" parameter-name="description"/>
 	</component>
 	

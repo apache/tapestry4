@@ -24,11 +24,11 @@
   <bean name="persistPropertyClass" class="org.apache.tapestry.bean.EvenOdd"/>
   <bean name="propertyClass" class="org.apache.tapestry.bean.EvenOdd"/>
   
-  <component id="ifNoProperties" type="Conditional">
+  <component id="ifNoProperties" type="If">
     <binding name="condition" expression="!properties"/>
   </component>
   
-  <component id="ifHasProperties" type="Conditional">
+  <component id="ifHasProperties" type="If">
     <binding name="condition" expression="properties"/>
   </component>
   

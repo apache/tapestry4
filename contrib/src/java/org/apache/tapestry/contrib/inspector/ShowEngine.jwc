@@ -45,7 +45,7 @@
     <binding name="value" expression="page.engine.locale.displayName"/>
   </component>
   
-  <component id="ifNoVisit" type="Conditional">
+  <component id="ifNoVisit" type="If">
     <binding name="condition" expression="! page.engine.hasVisit"/>
   </component>
   
@@ -53,7 +53,7 @@
     <binding name="value" expression="page.engine.visit"/>
   </component>
   
-  <component id="ifVisit" type="Conditional">
+  <component id="ifVisit" type="If">
     <binding name="condition" expression="page.engine.hasVisit"/>
   </component>
   
