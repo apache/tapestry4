@@ -21,10 +21,10 @@
 	
 <page-specification class="org.apache.tapestry.contrib.inspector.Inspector">
 
-  <property-specification name="view" persist="session" initial-value="@org.apache.tapestry.contrib.inspector.View@SPECIFICATION"/>
-  <property-specification name="inspectedPageName" persist="session"/>
-  <property-specification name="inspectedIdPath" persist="session"/>
+  <property name="view" persist="session" initial-value="@org.apache.tapestry.contrib.inspector.View@SPECIFICATION"/>
+  <property name="inspectedPageName" persist="session"/>
+  <property name="inspectedIdPath" persist="session"/>
   
-  <private-asset name="stylesheet" resource-path="Inspector.css"/>
+  <asset name="stylesheet" path="Inspector.css"/>
 
 </page-specification>
