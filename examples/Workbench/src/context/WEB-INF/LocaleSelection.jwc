@@ -22,7 +22,7 @@
 <component-specification class="org.apache.tapestry.workbench.table.LocaleSelection"
 	allow-body="no" allow-informal-parameters="yes">
 	
-    <component id="condTable" type="Conditional">
+    <component id="condTable" type="If">
 		<binding name="condition" value="ognl:localeSet.size > 0"/>
 	</component>
 	

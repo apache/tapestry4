@@ -13,7 +13,7 @@
 	<card id="main" title="Scores">
         <p>
             Points: <p jwcid="@Insert" value="ognl:visit.points"/>
-            <p jwcid="@Conditional" condition="ognl:newHighscore">
+            <p jwcid="@If" condition="ognl:newHighscore">
                 <p jwcid="@Insert" value="New highscore!"/>
             </p>
             <br/>

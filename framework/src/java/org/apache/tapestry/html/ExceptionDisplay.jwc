@@ -74,11 +74,11 @@
     <binding name="delegate" value="ognl:adapterFactory.getRenderableAdaptor(property.value)"/>
   </component>
   
-  <component id="ifLast" type="Conditional">
+  <component id="ifLast" type="If">
     <binding name="condition" value="ognl:last"/>
   </component>
   
-  <component id="ifNotLast" type="Conditional">
+  <component id="ifNotLast" type="If">
     <binding name="condition" value="ognl:! last"/>
   </component>
   
