@@ -47,7 +47,7 @@
 	<component id="condOther" type="Else">
 	</component>
   
-	<component id="iterPage" type="Foreach">
+	<component id="iterPage" type="For">
 		<binding name="source" expression="pageList"/>
 		<binding name="value" expression="displayPage"/>
 	</component>

@@ -134,10 +134,20 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
 
     public abstract int getPageSize();
 
+    public abstract String getPersist();
+
     // enhanced property methods
     public abstract Serializable getSessionState();
 
     public abstract void setSessionState(Serializable sessionState);
+
+    public abstract Serializable getClientState();
+
+    public abstract void setClientState(Serializable sessionState);
+
+    public abstract Serializable getClientAppState();
+
+    public abstract void setClientAppState(Serializable sessionState);
 
     /**
      * The component constructor. Invokes the component member initializations.
@@ -414,7 +424,13 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
         ITableSessionStoreManager objManager = getTableSessionStoreManager();
         if (objManager != null)
             return objManager.loadState(getPage().getRequestCycle());
-        return getSessionState();
+    	String strPersist = getPersist();
+    	if (strPersist.equals("client") || strPersist.equals("client:page"))
+    		return getClientState();
+    	else if (strPersist.equals("client:app"))
+    		return getClientAppState();
+    	else
+    		return getSessionState();
     }
 
     /**
@@ -428,8 +444,15 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
         ITableSessionStoreManager objManager = getTableSessionStoreManager();
         if (objManager != null)
             objManager.saveState(getPage().getRequestCycle(), objState);
-        else
-            setSessionState(objState);
+        else {
+        	String strPersist = getPersist();
+        	if (strPersist.equals("client") || strPersist.equals("client:page"))
+        		setClientState(objState);
+        	else if (strPersist.equals("client:app"))
+        		setClientAppState(objState);
+        	else 
+        		setSessionState(objState);
+        }
     }
 
     /**

@@ -112,6 +112,15 @@
         </description>
     </parameter>
     
+    <parameter name="persist" default-value="'session'"> 
+        <description>
+            Defines how the table state (paging and sorting) will be persisted
+            if no tableSessionStoreManager is defined.
+            The possible values are 'session' (the default), 'client', 'client:page', 
+            and 'client:app'.
+        </description>
+    </parameter>
+    
     <parameter name="columnSettingsContainer"
         type="org.apache.tapestry.IComponent"
         required="no"
@@ -226,6 +235,7 @@
 		<inherited-binding name="initialSortOrder" parameter-name="initialSortOrder"/>
 		<inherited-binding name="tableSessionStateManager" parameter-name="tableSessionStateManager"/>
 		<inherited-binding name="tableSessionStoreManager" parameter-name="tableSessionStoreManager"/>
+		<inherited-binding name="persist" parameter-name="persist"/>
 		<inherited-binding name="columnSettingsContainer" parameter-name="columnSettingsContainer"/>
 		<static-binding name="element">div</static-binding>
 	</component>

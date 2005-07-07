@@ -35,10 +35,14 @@ public class SimpleTablePagingState implements ITablePagingState, Serializable
 
     public SimpleTablePagingState()
     {
-        m_nPageSize = DEFAULT_PAGE_SIZE;
-        m_nCurrentPage = 0;
+        this(DEFAULT_PAGE_SIZE, 0);
     }
 
+    public SimpleTablePagingState(int nPageSize, int nCurrentPage) {
+        m_nPageSize = nPageSize;
+        m_nCurrentPage = nCurrentPage;
+    }
+    
     /**
      * Returns the pageSize.
      * @return int

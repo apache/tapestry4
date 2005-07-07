@@ -96,6 +96,15 @@
         </description>
     </parameter>
     
+    <parameter name="persist" default-value="session" default-binding="literal"> 
+        <description>
+            Defines how the table state (paging and sorting) will be persisted
+            if no tableSessionStoreManager is defined.
+            The possible values are 'session' (the default), 'client', 'client:page', 
+            and 'client:app'.
+        </description>
+    </parameter>
+    
     <parameter name="element" default-value="table" default-binding="literal"> 
         <description>
             The tag with which the component will be inserted in the generated content.
@@ -109,6 +118,8 @@
     </parameter>
     
     <property name="sessionState" persist="session"/>
+    <property name="clientState" persist="client:page"/>
+    <property name="clientAppState" persist="client:app"/>
     
     <component id="table" type="Any" inherit-informal-parameters="yes">
         <binding name="element" value="ognl:element"/>
