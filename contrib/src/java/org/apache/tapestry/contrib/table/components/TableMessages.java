@@ -22,7 +22,7 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class TableMessages
+public class TableMessages
 {
     protected static MessageFormatter _formatter = new MessageFormatter(TableMessages.class,
             "TableStrings");
@@ -52,5 +52,9 @@ class TableMessages
     static String columnsOnlyPlease(IComponent component)
     {
         return _formatter.format("columns-only-please", component.getExtendedId());
+    }
+    
+    public static String invalidTableStateFormat(String value) {
+    	return _formatter.format("invalid-table-state-format", value);
     }
 }

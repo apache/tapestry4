@@ -44,6 +44,11 @@ public class SimpleTableState implements Serializable
 		m_objSortingState = objSortingState;
 	}
 
+	public SimpleTableState(int nPageSize, int nCurrentPage, String strSortColumn, boolean bSortOrder) {
+		this(new SimpleTablePagingState(nPageSize, nCurrentPage), 
+				new SimpleTableSortingState(strSortColumn, bSortOrder));
+	}
+	
 	/**
 	 * Returns the pagingState.
 	 * @return ITablePagingState

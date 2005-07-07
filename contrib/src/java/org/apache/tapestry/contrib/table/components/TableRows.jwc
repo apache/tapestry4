@@ -42,7 +42,7 @@
         <description>The tag to use to wrap the rows in, 'tr' by default.</description>
     </parameter>
 
-	<component id="iterRows" type="Foreach">
+	<component id="iterRows" type="For">
 		<binding name="source" expression="tableRowsIterator"/>
 		<binding name="value" expression="tableRow"/>
 	</component>

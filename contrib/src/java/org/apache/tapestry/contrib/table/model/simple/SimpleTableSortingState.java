@@ -34,11 +34,15 @@ public class SimpleTableSortingState
 
 	public SimpleTableSortingState()
 	{
-		m_strSortColumn = null; // no sorting
-		m_bSortOrder = ITableSortingState.SORT_ASCENDING;
-		// irrelevant, but anyway
+		this(null, ITableSortingState.SORT_ASCENDING); 
 	}
 
+	public SimpleTableSortingState(String strSortColumn, boolean bSortOrder)
+	{
+		m_strSortColumn = strSortColumn; 
+		m_bSortOrder = bSortOrder;
+	}
+	
 	/**
 	 * Returns the SortOrder.
 	 * @return boolean

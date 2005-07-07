@@ -40,7 +40,7 @@
         <description>The CSS class of the table values</description>
     </parameter>
     
-	<component id="iterColumns" type="Foreach">
+	<component id="iterColumns" type="For">
 		<binding name="source" value="ognl:tableColumnIterator"/>
 		<binding name="value" value="ognl:tableColumn"/>
 	</component>
