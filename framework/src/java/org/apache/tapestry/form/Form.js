@@ -17,7 +17,7 @@ function handle_invalid_field(event, field, message)
   // Temporary, while all the event logic is getting munged together
   // inside one big handler.
   
-  if (!event.abort)
+  if (!event.abort && !field.disabled)
   {
     focus(field);
     
