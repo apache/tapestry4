@@ -25,7 +25,8 @@ import java.util.Locale;
  */
 public class VerbosityRating implements Serializable
 {
-
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * Method calculateVerbosity.
 	 * Please note that this method is relatively slow
