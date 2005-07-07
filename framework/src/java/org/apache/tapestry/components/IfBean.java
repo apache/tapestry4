@@ -135,7 +135,7 @@ public abstract class IfBean extends AbstractFormComponent
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.format("FormConditional.unable-to-convert-value", booleanValue),
+                Tapestry.format("If.unable-to-convert-value", booleanValue),
                 this,
                 null,
                 ex);
