@@ -89,7 +89,7 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
 
         log
                 .error(
-                        "Error adding property 'wilma' to class org.apache.tapestry.BaseComponent: Simulated error.",
+                        "Error adding property wilma to class org.apache.tapestry.BaseComponent: Simulated error.",
                         l,
                         ex);
 

@@ -134,7 +134,7 @@ public class TestDispatchToInjectWorker extends HiveMindTestCase
 
         log
                 .error(
-                        "Error adding property 'myProperty' to class org.apache.tapestry.html.BasePage: Simulated failure.",
+                        "Error adding property myProperty to class org.apache.tapestry.html.BasePage: Simulated failure.",
                         l,
                         t);
 

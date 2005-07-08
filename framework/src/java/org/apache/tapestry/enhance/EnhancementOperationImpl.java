@@ -404,14 +404,23 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     public ComponentConstructor getConstructor()
     {
-        finalizeEnhancedClass();
+        try
+        {
+            finalizeEnhancedClass();
 
-        Constructor c = findConstructor();
+            Constructor c = findConstructor();
 
-        Object[] params = _constructorArguments.toArray();
+            Object[] params = _constructorArguments.toArray();
 
-        return new ComponentConstructorImpl(c, params, _classFab.toString(), _specification
-                .getLocation());
+            return new ComponentConstructorImpl(c, params, _classFab.toString(), _specification
+                    .getLocation());
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(EnhanceMessages.classEnhancementFailure(
+                    _baseClass,
+                    ex), _classFab, null, ex);
+        }
     }
 
     void finalizeEnhancedClass()
