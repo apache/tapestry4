@@ -415,11 +415,11 @@ public class EnhancementOperationImpl implements EnhancementOperation
             return new ComponentConstructorImpl(c, params, _classFab.toString(), _specification
                     .getLocation());
         }
-        catch (Exception ex)
+        catch (Throwable t)
         {
             throw new ApplicationRuntimeException(EnhanceMessages.classEnhancementFailure(
                     _baseClass,
-                    ex), _classFab, null, ex);
+                    t), _classFab, null, t);
         }
     }
 
