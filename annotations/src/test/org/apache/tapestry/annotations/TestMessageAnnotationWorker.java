@@ -18,9 +18,18 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Messages;
+import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.service.MethodSignature;
+import org.apache.hivemind.service.impl.ClassFactoryImpl;
+import org.apache.tapestry.enhance.EnhanceUtils;
 import org.apache.tapestry.enhance.EnhancementOperation;
+import org.apache.tapestry.enhance.EnhancementOperationImpl;
+import org.apache.tapestry.services.ComponentConstructor;
+import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.easymock.MockControl;
+import org.easymock.internal.ArrayMatcher;
 
 public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 {
@@ -36,26 +45,30 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 
     public void testNoArgsMessage()
     {
-        attempt("noArgsMessage", "return getMessages().getMessage(\"no-args-message\");");
+        attempt("noArgsMessage", "{\n  return getMessages().getMessage(\"no-args-message\");\n}\n");
     }
 
     public void testMessageWithSpecificKey()
     {
-        attempt("messageWithSpecificKey", "return getMessages().getMessage(\"message-key\");");
+        attempt(
+                "messageWithSpecificKey",
+                "{\n  return getMessages().getMessage(\"message-key\");\n}\n");
     }
 
     public void testMessageWithParameters()
     {
-        attempt(
-                "messageWithParameters",
-                "return getMessages().format(\"message-with-parameters\", new java.lang.Object[] { $1, $2 });");
+        attempt("messageWithParameters", "{\n"
+                + "  java.lang.Object[] params = new java.lang.Object[2];\n"
+                + "  params[0] = $1;\n" + "  params[1] = $2;\n"
+                + "  return getMessages().format(\"message-with-parameters\", params);\n}\n");
     }
 
     public void testMessageWithPrimitiveParameters()
     {
-        attempt(
-                "messageWithPrimitives",
-                "return getMessages().format(\"message-with-primitives\", new java.lang.Object[] { ($w) $1, ($w) $2 });");
+        attempt("messageWithPrimitives", "{\n"
+                + "  java.lang.Object[] params = new java.lang.Object[2];\n"
+                + "  params[0] = ($w) $1;\n" + "  params[1] = ($w) $2;\n"
+                + "  return getMessages().format(\"message-with-primitives\", params);\n}\n");
     }
 
     public void testNotStringReturnType()
@@ -93,7 +106,7 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(method),
-                "return getMessages().getMessage(\"like-getter\");");
+                "{\n  return getMessages().getMessage(\"like-getter\");\n}\n");
         op.claimProperty("likeGetter");
 
         replayControls();
@@ -117,6 +130,92 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
         new MessageAnnotationWorker().performEnhancement(op, spec, method, null);
 
         verifyControls();
+    }
+
+    private Object construct(Class baseClass, String methodName, Messages messages)
+    {
+        ComponentSpecification spec = new ComponentSpecification();
+        EnhancementOperationImpl op = new EnhancementOperationImpl(getClassResolver(), spec,
+                baseClass, new ClassFactoryImpl());
+
+        op.addInjectedField("_messages", Messages.class, messages);
+
+        EnhanceUtils.createSimpleAccessor(op, "_messages", "messages", Messages.class);
+
+        Method method = findMethod(baseClass, methodName);
+
+        new MessageAnnotationWorker().performEnhancement(op, spec, method, null);
+
+        ComponentConstructor cc = op.getConstructor();
+
+        return cc.newInstance();
+    }
+
+    public void testNoParams()
+    {
+        MockControl control = newControl(Messages.class);
+        Messages messages = (Messages) control.getMock();
+
+        messages.getMessage("no-params");
+        control.setReturnValue("<no params>");
+
+        MessagesTarget mt = (MessagesTarget) construct(MessagesTarget.class, "noParams", messages);
+
+        replayControls();
+
+        assertEquals("<no params>", mt.noParams());
+
+        verifyControls();
+    }
+
+    public void testObjectParam()
+    {
+        MockControl control = newControl(Messages.class);
+        Messages messages = (Messages) control.getMock();
+
+        Object[] params = new Object[]
+        { "PinkFloyd" };
+
+        messages.format("object-param", params);
+        control.setMatcher(new ArrayMatcher());
+        control.setReturnValue("<object param>");
+
+        MessagesTarget mt = (MessagesTarget) construct(
+                MessagesTarget.class,
+                "objectParam",
+                messages);
+
+        replayControls();
+
+        assertEquals("<object param>", mt.objectParam("PinkFloyd"));
+
+        verifyControls();
+    }
+
+    public void testPrimitiveParam()
+    {
+
+        MockControl control = newControl(Messages.class);
+        Messages messages = (Messages) control.getMock();
+
+        Object[] params = new Object[]
+        { 451 };
+
+        messages.format("primitive-param", params);
+        control.setMatcher(new ArrayMatcher());
+        control.setReturnValue("<primitive param>");
+
+        MessagesTarget mt = (MessagesTarget) construct(
+                MessagesTarget.class,
+                "primitiveParam",
+                messages);
+
+        replayControls();
+
+        assertEquals("<primitive param>", mt.primitiveParam(451));
+
+        verifyControls();
+
     }
 
     public void testInvalidBindings()
