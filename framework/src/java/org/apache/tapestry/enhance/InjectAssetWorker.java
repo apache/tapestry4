@@ -16,8 +16,10 @@ package org.apache.tapestry.enhance;
 
 import java.util.Iterator;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -66,9 +68,13 @@ public class InjectAssetWorker implements EnhancementWorker
 
         Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, null);
 
-        // TODO: Should be compatible with IAsset.
-
         op.claimProperty(propertyName);
+
+        if (!propertyType.isAssignableFrom(IAsset.class))
+            throw new ApplicationRuntimeException(EnhanceMessages.incompatiblePropertyType(
+                    propertyName,
+                    propertyType,
+                    IAsset.class));
 
         String fieldName = "_$" + propertyName;
 

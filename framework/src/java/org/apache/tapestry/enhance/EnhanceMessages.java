@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.hivemind.service.ClassFabUtils;
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -116,6 +117,19 @@ class EnhanceMessages
     {
         return _formatter.format("wrong-type-for-page-injection", propertyName, ClassFabUtils
                 .getJavaClassName(propertyType));
+    }
+
+    public static String incompatiblePropertyType(String propertyName, Class propertyType,
+            Class expectedType)
+    {
+        return _formatter.format("incompatible-property-type", propertyName, ClassFabUtils
+                .getJavaClassName(propertyType), ClassFabUtils.getJavaClassName(expectedType));
+    }
+
+    public static String classEnhancementFailure(Class baseClass, Throwable cause)
+    {
+        return _formatter.format("class-enhancement-failure", ClassFabUtils
+                .getJavaClassName(baseClass), cause);
     }
 
 }

@@ -127,6 +127,11 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
     private ClassFactory newClassFactory(Class baseClass)
     {
+        return newClassFactory(baseClass, newClassFab());
+    }
+
+    private ClassFactory newClassFactory(Class baseClass, ClassFab classFab)
+    {
         MockControl control = newControl(ClassFactory.class);
         ClassFactory factory = (ClassFactory) control.getMock();
 
@@ -135,7 +140,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         String baseName = className.substring(dotx + 1);
 
         factory.newClass("$" + baseName + "_97", baseClass);
-        control.setReturnValue(newClassFab());
+        control.setReturnValue(classFab);
 
         return factory;
     }
@@ -819,6 +824,42 @@ public class TestEnhancementOperation extends HiveMindTestCase
                 ServiceLink.class, cf);
 
         assertEquals(String.class, eo.getPropertyType("target"));
+
+        verifyControls();
+    }
+
+    public void testConstructorFailure()
+    {
+        IComponentSpecification spec = newSpec();
+
+        MockControl control = newControl(ClassFab.class);
+        ClassFab classFab = (ClassFab) control.getMock();
+
+        Throwable t = new RuntimeException("Inconceivable!");
+
+        classFab.createClass();
+        control.setThrowable(t);
+
+        ClassFactory cf = newClassFactory(ServiceLink.class, classFab);
+
+        replayControls();
+
+        EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
+                spec, ServiceLink.class, cf);
+
+        try
+        {
+            eo.getConstructor();
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Failure enhancing class org.apache.tapestry.link.ServiceLink: Inconceivable!",
+                    ex.getMessage());
+            assertSame(classFab, ex.getComponent());
+            assertSame(t, ex.getRootCause());
+        }
 
         verifyControls();
     }

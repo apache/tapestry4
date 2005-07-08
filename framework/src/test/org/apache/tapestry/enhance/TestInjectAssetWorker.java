@@ -134,4 +134,31 @@ public class TestInjectAssetWorker extends HiveMindTestCase
 
         verifyControls();
     }
+
+    public void testWrongPropertyType()
+    {
+        MockControl control = newControl(EnhancementOperation.class);
+        EnhancementOperation op = (EnhancementOperation) control.getMock();
+
+        op.getPropertyType("barney");
+        control.setReturnValue(IComponent.class);
+
+        op.claimProperty("barney");
+
+        replayControls();
+
+        InjectAssetWorker w = new InjectAssetWorker();
+        try
+        {
+            w.injectAsset(op, "fred", "barney");
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals("Property barney is type org.apache.tapestry.IComponent, which is not compatible with the expected type, org.apache.tapestry.IAsset.", ex.getMessage());
+        }
+
+        verifyControls();
+
+    }
 }
