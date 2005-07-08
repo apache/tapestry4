@@ -50,36 +50,35 @@ public class MessageAnnotationWorker implements MethodAnnotationEnhancementWorke
 
         BodyBuilder builder = new BodyBuilder();
 
-        builder.add("return getMessages().");
+        builder.begin();
 
         Class[] parameterTypes = method.getParameterTypes();
         int paramCount = Tapestry.size(parameterTypes);
 
-        builder.add(paramCount == 0 ? "getMessage" : "format");
-
-        builder.add("(\"{0}\"", keyName);
-
-        for (int i = 0; i < paramCount; i++)
+        if (paramCount > 0)
         {
-            if (i == 0)
-                builder.add(", new java.lang.Object[] { ");
-            else
-                builder.add(", ");
+            builder.addln("java.lang.Object[] params = new java.lang.Object[{0}];", paramCount);
+            for (int i = 0; i < paramCount; i++)
+            {
+                builder.add("params[{0}] = ", i);
 
-            // Javassist is kind enough to automatically wrapper stuff if we
-            // ask it.
+                if (parameterTypes[i].isPrimitive())
+                    builder.add("($w) ");
 
-            if (parameterTypes[i].isPrimitive())
-                builder.add("($w) ");
+                // Parameter $0 is this, so $1 is the first real parameter.
 
-            // Method parameter are numbered from 1, $0 is this
-            builder.add("$" + (i + 1));
+                builder.addln("${0};", i + 1);
+            }
         }
 
-        if (paramCount > 0)
-            builder.add(" }");
+        builder.add("return getMessages().");
 
-        builder.add(");");
+        if (paramCount == 0)
+            builder.addln("getMessage(\"{0}\");", keyName);
+        else
+            builder.addln("format(\"{0}\", params);", keyName);
+
+        builder.end();
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(method), builder.toString());
 
