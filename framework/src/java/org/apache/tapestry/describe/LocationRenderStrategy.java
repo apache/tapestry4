@@ -48,12 +48,17 @@ public class LocationRenderStrategy implements RenderStrategy
 
         writer.print(l.toString());
 
+        int lineNumber = l.getLineNumber();
+
+        if (lineNumber < 1)
+            return;
+
         URL url = l.getResource().getResourceURL();
 
         if (url == null)
             return;
 
-        writeResourceContent(writer, url, l.getLineNumber());
+        writeResourceContent(writer, url, lineNumber);
     }
 
     private void writeResourceContent(IMarkupWriter writer, URL url, int lineNumber)

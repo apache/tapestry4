@@ -21,6 +21,7 @@ import java.util.StringTokenizer;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.INamespace;
+import org.apache.tapestry.services.ClassFinder;
 
 /**
  * Searches for a class with a name matching the page name. Searches in the default Java package,
@@ -37,65 +38,27 @@ public class NamespaceClassSearchComponentClassProvider implements ComponentClas
      */
     private String _packagesName;
 
-    private ClassResolver _classResolver;
+    private ClassFinder _classFinder;
 
     public String provideComponentClassName(ComponentClassProviderContext context)
     {
-        List packages = buildPackageSearchList(context.getNamespace());
-        String pageClassName = context.getName().replace('/', '.');
-
-        Iterator i = packages.iterator();
-        while (i.hasNext())
-        {
-            String packagePrefix = (String) i.next();
-            String className = packagePrefix + pageClassName;
-
-            Class clazz = _classResolver.checkForClass(className);
-
-            if (clazz != null)
-                return className;
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns a List of String -- prefixes to apply to the page name to form a fully qualified
-     * class name.
-     */
-
-    List buildPackageSearchList(INamespace namespace)
-    {
-        List result = new ArrayList();
-
+        INamespace namespace = context.getNamespace();
         String packages = namespace.getPropertyValue(_packagesName);
 
-        if (packages != null)
-        {
-            StringTokenizer tokenizer = new StringTokenizer(packages, ", ");
+        String componentClassName = context.getName().replace('/', '.');
 
-            while (tokenizer.hasMoreTokens())
-            {
-                String packageName = tokenizer.nextToken();
+        Class clazz = _classFinder.findClass(packages, componentClassName);
 
-                result.add(packageName + ".");
-            }
-        }
-
-        // Search in the default package as well.
-
-        result.add("");
-
-        return result;
-    }
-
-    public void setClassResolver(ClassResolver classResolver)
-    {
-        _classResolver = classResolver;
+        return clazz == null ? null : clazz.getName();
     }
 
     public void setPackagesName(String packagesName)
     {
         _packagesName = packagesName;
+    }
+
+    public void setClassFinder(ClassFinder classFinder)
+    {
+        _classFinder = classFinder;
     }
 }

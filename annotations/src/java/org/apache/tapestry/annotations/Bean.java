@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.annotations;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -42,6 +43,7 @@ import org.apache.tapestry.spec.BeanLifecycle;
 @Target(
 { ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface Bean {
     /**
      * The Java class to instantiate. The default is Object.class; if a non-default value is

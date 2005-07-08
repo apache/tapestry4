@@ -58,6 +58,8 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-361">Using @Asset annotation causes NullPointerException</action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-367">Removed obsolete "format" parameter from DatePicker</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-355">Annotations bypass line precise exception reporting</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-378">Add @Documented annotation to the Tapestry annotations</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-372">Don't attempt to display source if no line number</action>
     </release>
     <release version="4.0-beta-1" date="Jun 24 2005">
        <action type="add" dev="HLS">Add InvokeListener component.</action>
@@ -310,6 +312,10 @@
     </release>
   </changes>
   <votes>
+    <vote title="Tapestry 4.0-beta-1" date="xxx" dev="HLS">
+      <motion>XXX</motion>
+      <response>XXX</response>
+    </vote>
     <vote title="Tapestry 4.0-alpha-3" date="May 12 2005" dev="HLS">
       <motion>Although it hasn't been long since alpha-2, I'd like to release the next alpha of Tapestry 4.0. Why? A few things have settled down, some bugs have been fixed, a few really key features have been added, and I think the Portlet support is now complete.</motion>
       <response>HLS, PF, HK, EH, RLS, DS, GL, TSV: +1</response>

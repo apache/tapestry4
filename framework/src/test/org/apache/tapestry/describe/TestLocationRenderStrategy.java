@@ -81,6 +81,25 @@ public class TestLocationRenderStrategy extends BaseDescribeTestCase
         writer.end("table");
     }
 
+    public void testNoLineNumber()
+    {
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        MockControl lc = newControl(Location.class);
+        Location l = (Location) lc.getMock();
+
+        l.getLineNumber();
+        lc.setReturnValue(0);
+
+        writer.print(l.toString());
+
+        replayControls();
+
+        new LocationRenderStrategy().renderObject(l, writer, cycle);
+
+        verifyControls();
+    }
+
     public void testNoURL()
     {
         IMarkupWriter writer = newWriter();
@@ -88,6 +107,9 @@ public class TestLocationRenderStrategy extends BaseDescribeTestCase
         Resource resource = newResource(null);
         MockControl lc = newControl(Location.class);
         Location l = (Location) lc.getMock();
+
+        l.getLineNumber();
+        lc.setReturnValue(99);
 
         l.getResource();
         lc.setReturnValue(resource);

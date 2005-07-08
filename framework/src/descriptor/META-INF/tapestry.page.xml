@@ -168,6 +168,7 @@
     <invoke-factory>
       <construct class="NamespaceClassSearchComponentClassProvider">
         <set property="packagesName" value="org.apache.tapestry.page-class-packages"/>
+        <set-object property="classFinder" value="infrastructure:classFinder"/>
       </construct>
     </invoke-factory>    
     
@@ -215,6 +216,7 @@
     <invoke-factory>
       <construct class="NamespaceClassSearchComponentClassProvider">
         <set property="packagesName" value="org.apache.tapestry.component-class-packages"/>
+        <set-object property="classFinder" value="infrastructure:classFinder"/>        
       </construct>
     </invoke-factory>    
     

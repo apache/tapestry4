@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.INamespace;
+import org.apache.tapestry.services.ClassFinder;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.easymock.MockControl;
 
@@ -46,51 +47,26 @@ public class TestNamespaceClassSearchComponentClassProvider extends HiveMindTest
         return namespace;
     }
 
-    public void testDefaultSearchList()
+    private ClassFinder newClassFinder(String packageList, String className, Class resultClass)
     {
-        INamespace namespace = newNamespace("foo", null);
+        MockControl control = newControl(ClassFinder.class);
+        ClassFinder finder = (ClassFinder) control.getMock();
 
-        replayControls();
+        finder.findClass(packageList, className);
+        control.setReturnValue(resultClass);
 
-        NamespaceClassSearchComponentClassProvider p = new NamespaceClassSearchComponentClassProvider();
-        p.setPackagesName("foo");
-
-        List prefixes = p.buildPackageSearchList(namespace);
-
-        assertListsEqual(new String[]
-        { "" }, prefixes);
-
-        verifyControls();
-    }
-
-    public void testSearchListWithPrefixes()
-    {
-        INamespace namespace = newNamespace("foo", "org.foo,org.bar.baz");
-
-        replayControls();
-
-        NamespaceClassSearchComponentClassProvider p = new NamespaceClassSearchComponentClassProvider();
-        p.setPackagesName("foo");
-
-        List prefixes = p.buildPackageSearchList(namespace);
-
-        assertListsEqual(new String[]
-        { "org.foo.", "org.bar.baz.", "" }, prefixes);
-
-        verifyControls();
+        return finder;
     }
 
     public void testFound()
     {
-        INamespace namespace = newNamespace("zip", "org.foo");
-
-        MockControl crc = newControl(ClassResolver.class);
-        ClassResolver cr = (ClassResolver) crc.getMock();
+        INamespace namespace = newNamespace("zip", "org.apache.tapestry.pageload");
+        ClassFinder finder = newClassFinder(
+                "org.apache.tapestry.pageload",
+                "bar.Baz",
+                TestPageLoader.class);
 
         IComponentSpecification spec = newSpec();
-
-        cr.checkForClass("org.foo.bar.Baz");
-        crc.setReturnValue(getClass());
 
         replayControls();
 
@@ -98,10 +74,10 @@ public class TestNamespaceClassSearchComponentClassProvider extends HiveMindTest
                 namespace);
 
         NamespaceClassSearchComponentClassProvider provider = new NamespaceClassSearchComponentClassProvider();
-        provider.setClassResolver(cr);
+        provider.setClassFinder(finder);
         provider.setPackagesName("zip");
 
-        assertEquals("org.foo.bar.Baz", provider.provideComponentClassName(context));
+        assertEquals(TestPageLoader.class.getName(), provider.provideComponentClassName(context));
 
         verifyControls();
     }
@@ -109,17 +85,9 @@ public class TestNamespaceClassSearchComponentClassProvider extends HiveMindTest
     public void testNotFound()
     {
         INamespace namespace = newNamespace("zap", "org.foo");
-
-        MockControl crc = newControl(ClassResolver.class);
-        ClassResolver cr = (ClassResolver) crc.getMock();
+        ClassFinder finder = newClassFinder("org.foo", "bar.Baz", null);
 
         IComponentSpecification spec = newSpec();
-
-        cr.checkForClass("org.foo.bar.Baz");
-        crc.setReturnValue(null);
-
-        cr.checkForClass("bar.Baz");
-        crc.setReturnValue(null);
 
         replayControls();
 
@@ -127,7 +95,7 @@ public class TestNamespaceClassSearchComponentClassProvider extends HiveMindTest
                 namespace);
 
         NamespaceClassSearchComponentClassProvider provider = new NamespaceClassSearchComponentClassProvider();
-        provider.setClassResolver(cr);
+        provider.setClassFinder(finder);
         provider.setPackagesName("zap");
 
         assertNull(provider.provideComponentClassName(context));
