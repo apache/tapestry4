@@ -70,6 +70,8 @@ public class MaxLength extends BaseValidator
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
             FormComponentContributorContext context, IFormComponent field)
     {
+        context.includeClasspathScript("/org/apache/tapestry/form/validator/StringValidator.js");
+        
         StringBuffer buffer = new StringBuffer("function(event) { validate_max_length(event, ");
         buffer.append(context.getFieldDOM());
         buffer.append(", ");
