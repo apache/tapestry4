@@ -41,8 +41,6 @@ import org.apache.tapestry.engine.IScriptSource;
 
 public abstract class Script extends AbstractComponent
 {
-    private Map _baseSymbols;
-
     /**
      * A Map of input and output symbols visible to the body of the Script.
      * 
@@ -62,8 +60,10 @@ public abstract class Script extends AbstractComponent
     {
         Map result = new HashMap();
 
-        if (_baseSymbols != null)
-            result.putAll(_baseSymbols);
+        Map baseSymbols = getBaseSymbols();
+
+        if (baseSymbols != null)
+            result.putAll(baseSymbols);
 
         // Now, iterate through all the binding names (which includes both
         // formal and informal parmeters). Skip the formal ones and
@@ -137,15 +137,9 @@ public abstract class Script extends AbstractComponent
 
     public abstract String getScriptPath();
 
-    public Map getBaseSymbols()
-    {
-        return _baseSymbols;
-    }
+    // Parameter
 
-    public void setBaseSymbols(Map baseSymbols)
-    {
-        _baseSymbols = baseSymbols;
-    }
+    public abstract Map getBaseSymbols();
 
     /**
      * Returns the complete set of symbols (input and output) from the script execution. This is
