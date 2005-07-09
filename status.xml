@@ -65,6 +65,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-389">asset service: send 304 status code when appropriate</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-374" due-to="Paul Green">Script component is not picking up the symbols parameter</action>
       <action type="add" dev="HLS">Add blank component reference pages for If and For</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-391">Cannot inject the same bean twice</action>
     </release>
     <release version="4.0-beta-1" date="Jun 24 2005">
        <action type="add" dev="HLS">Add InvokeListener component.</action>

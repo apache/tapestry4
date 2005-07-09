@@ -68,13 +68,17 @@ public class TestInjectObjectWorker extends HiveMindTestCase
 
         pc.setReturnValue(injectedValue);
 
+        // When the same bean is injected multiple times, the field name
+        // returned won't match the field name suggested; make sure the code
+        // generation used the correct field name.
+        
         op.addInjectedField("_$fred", Object.class, injectedValue);
-        opc.setReturnValue("_$fred");
+        opc.setReturnValue("_$gnarly");
 
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(Object.class, "getFred", null, null),
-                "return _$fred;");
+                "return _$gnarly;");
 
         replayControls();
 

@@ -54,8 +54,6 @@ public class InjectObjectWorker implements InjectEnhancementWorker
         if (propertyType == null)
             propertyType = Object.class;
 
-        String fieldName = "_$" + propertyName;
-
         op.claimProperty(propertyName);
 
         Object injectedValue = _provider.obtainValue(objectReference, location);
@@ -70,7 +68,7 @@ public class InjectObjectWorker implements InjectEnhancementWorker
                     injectedValue,
                     propertyType), location, null);
 
-        op.addInjectedField(fieldName, propertyType, injectedValue);
+        String fieldName = op.addInjectedField("_$" + propertyName, propertyType, injectedValue);
 
         String methodName = EnhanceUtils.createAccessorMethodName(propertyName);
 
