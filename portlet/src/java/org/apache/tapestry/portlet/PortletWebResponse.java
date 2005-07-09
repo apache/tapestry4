@@ -25,7 +25,7 @@ import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebResponse;
 
 /**
- * Adapts {@link javax.portlet.PortletResponse}. as {@link org.apache.tapestry.web.WebResponse}.
+ * Adapts {@link javax.portlet.PortletResponse} as {@link org.apache.tapestry.web.WebResponse}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -60,11 +60,13 @@ public class PortletWebResponse implements WebResponse
         return _portletResponse.encodeURL(url);
     }
 
+    /** Unsupported. */
     public void reset()
     {
         unsupported("reset");
     }
 
+    /** Unsupported. */
     public void setContentLength(int contentLength)
     {
         unsupported("setContentLength");
@@ -83,4 +85,17 @@ public class PortletWebResponse implements WebResponse
     {
         throw new UnsupportedOperationException(PortletMessages.unsupportedMethod(methodName));
     }
+
+    /** Unsupported. */
+    public void setDateHeader(String string, long date)
+    {
+        unsupported("setDateHeader");
+    }
+
+    /** Unsupported. */
+    public void setStatus(int status)
+    {
+        unsupported("setStatus");
+    }
+
 }

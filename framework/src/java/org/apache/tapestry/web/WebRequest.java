@@ -139,4 +139,14 @@ public interface WebRequest extends AttributeHolder, Describable
      * or by the container. May return null.
      */
     public Locale getLocale();
+
+    /**
+     * Returns the value of the specified request header.
+     * 
+     * @param name
+     *            the name of the header to retrieve
+     * @return the header value as a string, or null if the header is not in the request.
+     */
+
+    public String getHeader(String name);
 }

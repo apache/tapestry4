@@ -113,4 +113,14 @@ public class ServletWebResponse implements WebResponse
     {
         return "";
     }
+
+    public void setDateHeader(String name, long date)
+    {
+        _servletResponse.setDateHeader(name, date);
+    }
+
+    public void setStatus(int status)
+    {
+        _servletResponse.setStatus(status);
+    }
 }

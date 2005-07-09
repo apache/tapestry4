@@ -70,4 +70,19 @@ public interface WebResponse
      */
 
     public String getNamespace();
+
+    /**
+     * Sets a response header as a date.
+     * 
+     * @param string
+     *            the name of the header to set.
+     * @param date
+     *            the date value to set, in milliseconds since the epoch.
+     */
+    public void setDateHeader(String string, long date);
+
+    /**
+     * Sets the status code for this response.
+     */
+    public void setStatus(int status);
 }
