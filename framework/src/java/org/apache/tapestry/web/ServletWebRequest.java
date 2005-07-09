@@ -196,4 +196,9 @@ public class ServletWebRequest implements WebRequest
     {
         receiver.describeAlternate(_servletRequest);
     }
+
+    public String getHeader(String name)
+    {
+        return _servletRequest.getHeader(name);
+    }
 }

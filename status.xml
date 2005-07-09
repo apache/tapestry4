@@ -62,6 +62,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-372">Don't attempt to display source if no line number</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-370">@Message does not work with parameters</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-388">Wrong property type on injected assets fails with confusing message</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-389">asset service: send 304 status code when appropriate</action>
     </release>
     <release version="4.0-beta-1" date="Jun 24 2005">
        <action type="add" dev="HLS">Add InvokeListener component.</action>

@@ -145,4 +145,11 @@ public class PortletWebRequest implements WebRequest
     {
         return _portletRequest.getLocale();
     }
+
+    public String getHeader(String name)
+    {
+        unsupported("getHeader");
+
+        return null;
+    }
 }

@@ -23,6 +23,8 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.util.Defense;
@@ -37,6 +39,7 @@ import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebContext;
+import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
 /**
@@ -69,6 +72,10 @@ public class AssetService implements IEngineService
     private WebContext _context;
 
     /** @since 4.0 */
+
+    private WebRequest _request;
+
+    /** @since 4.0 */
     private WebResponse _response;
 
     /** @since 4.0 */
@@ -93,6 +100,21 @@ public class AssetService implements IEngineService
     }
 
     private static final int BUFFER_SIZE = 10240;
+
+    /**
+     * Startup time for this service; used to set the Last-Modified response header.
+     * 
+     * @since 4.0
+     */
+
+    private final long _startupTime = System.currentTimeMillis();
+
+    /**
+     * Time vended assets expire. Since a change in asset content is a change in asset URI, we want
+     * them to not expire ... but a year will do.
+     */
+
+    private final long _expireTime = _startupTime + 365 * 24 * 60 * 60 * 1000;
 
     /** @since 4.0 */
 
@@ -178,6 +200,15 @@ public class AssetService implements IEngineService
 
     public void service(IRequestCycle cycle) throws IOException
     {
+        // If they were vended an asset in the past then it must be up-to date.
+        // Asset URIs change if the underlying file is modified.
+
+        if (_request.getHeader("If-Modified-Since") != null)
+        {
+            _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            return;
+        }
+
         String path = cycle.getParameter(PATH);
         String md5 = cycle.getParameter(DIGEST);
 
@@ -220,6 +251,9 @@ public class AssetService implements IEngineService
 
             if (contentLength > 0)
                 _response.setContentLength(contentLength);
+
+            _response.setDateHeader("Last-Modified", _startupTime);
+            _response.setDateHeader("Expires", _expireTime);
 
             // Set the content type. If the servlet container doesn't
             // provide it, try and guess it by the extension.
@@ -293,5 +327,11 @@ public class AssetService implements IEngineService
     public void setDigestSource(ResourceDigestSource md5Source)
     {
         _digestSource = md5Source;
+    }
+
+    /** @since 4.0 */
+    public void setRequest(WebRequest request)
+    {
+        _request = request;
     }
 }
