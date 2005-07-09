@@ -316,9 +316,27 @@
     </release>
   </changes>
   <votes>
-    <vote title="Tapestry 4.0-beta-1" date="xxx" dev="HLS">
-      <motion>XXX</motion>
-      <response>XXX</response>
+    <vote title="Tapestry 4.0-beta-2" date="Jul 10 2005" dev="HLS">
+      <motion>Release early, release often.  Let's do a short vote and release
+beta-2 as soon as possible.</motion>
+<response>HLS, GL, EH, PF, DS, RLS, MB: +1</response>
+    </vote>
+    <vote title="Tapestry 4.0-beta-1" date="Jun 24 2005" dev="HLS">
+      <motion>I know this is unusual, but I'd like to make a vote pending some other
+developments.  I'm anxious to announce beta-1 when I'm at JavaOne.
+
+There are a couple of changes "in the queue" by various committers; I
+would like the first beta release to follow those changes being
+checked in.  MindBridge is readying his If and For components
+(form-aware version of Conditional and Foreach).  Paul is about to
+check in his improved validation support.  I will follow with some
+improvements to client-side event management.
+
+A +1 vote indicates a desire for the beta-1 release to follow these
+developments.  We can then focus on fixing bugs and documentation.
+</motion>
+      <response>HLS, PF, EH, DS, HK, RLS: +1</response>
+      <response>GL: +0</response>
     </vote>
     <vote title="Tapestry 4.0-alpha-3" date="May 12 2005" dev="HLS">
       <motion>Although it hasn't been long since alpha-2, I'd like to release the next alpha of Tapestry 4.0. Why? A few things have settled down, some bugs have been fixed, a few really key features have been added, and I think the Portlet support is now complete.</motion>
