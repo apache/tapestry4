@@ -100,6 +100,8 @@ public class TestMaxLength extends BaseValidatorTestCase
         FormComponentContributorContext context = (FormComponentContributorContext) contextc
                 .getMock();
 
+        context.includeClasspathScript("/org/apache/tapestry/form/validator/StringValidator.js");
+
         context.getFieldDOM();
         contextc.setReturnValue("document.myform.myfield");
 

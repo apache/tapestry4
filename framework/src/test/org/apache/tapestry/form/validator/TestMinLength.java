@@ -83,10 +83,7 @@ public class TestMinLength extends BaseValidatorTestCase
 
         try
         {
-            new MinLength("minLength=10,message=Too Short").validate(
-                    field,
-                    messages,
-                    "short");
+            new MinLength("minLength=10,message=Too Short").validate(field, messages, "short");
         }
         catch (ValidatorException ex)
         {
@@ -103,6 +100,8 @@ public class TestMinLength extends BaseValidatorTestCase
         MockControl contextc = newControl(FormComponentContributorContext.class);
         FormComponentContributorContext context = (FormComponentContributorContext) contextc
                 .getMock();
+
+        context.includeClasspathScript("/org/apache/tapestry/form/validator/StringValidator.js");
 
         context.getFieldDOM();
         contextc.setReturnValue("document.myform.myfield");
@@ -128,6 +127,8 @@ public class TestMinLength extends BaseValidatorTestCase
         MockControl contextc = newControl(FormComponentContributorContext.class);
         FormComponentContributorContext context = (FormComponentContributorContext) contextc
                 .getMock();
+
+        context.includeClasspathScript("/org/apache/tapestry/form/validator/StringValidator.js");
 
         context.getFieldDOM();
         contextc.setReturnValue("document.myform.myfield");
