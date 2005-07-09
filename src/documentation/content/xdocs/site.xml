@@ -85,11 +85,13 @@
         <ExceptionDisplay label="ExceptionDisplay" href="ExceptionDisplay.html"/>
         <ExternalLink label="ExternalLink" href="ExternalLink.html"/>
         <FieldLabel label="FieldLabel" href="FieldLabel.html"/>
+        <For label="For" href="For.html"/>
         <Foreach label="Foreach" href="Foreach.html"/>
         <Form label="Form" href="Form.html"/>
         <Frame label="Frame" href="Frame.html"/>
         <GenericLink label="GenericLink" href="GenericLink.html"/>
         <Hidden label="Hidden" href="Hidden.html"/>
+        <If label="If" href="If.html"/>
         <InvokeListener label="InvokeListener" href="InvokeListener.html"/>
         <Image label="Image" href="Image.html"/>
         <ImageSubmit label="ImageSubmit" href="ImageSubmit.html"/>
