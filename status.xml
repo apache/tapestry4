@@ -52,6 +52,9 @@
     -->
   </todo>
   <changes>
+    <release version="4.0-beta-3" date="unreleased">
+      
+    </release>
     <release version="4.0-beta-2" date="Jul 9 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-356">FormConditional extends BaseComponent but has no template</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-357">AbstractComponent: getMessages() and format() were removed, but should have been deprecated</action>
