@@ -52,7 +52,7 @@
     -->
   </todo>
   <changes>
-    <release version="4.0-beta-2" date="unreleased">
+    <release version="4.0-beta-2" date="Jul 9 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-356">FormConditional extends BaseComponent but has no template</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-357">AbstractComponent: getMessages() and format() were removed, but should have been deprecated</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-361">Using @Asset annotation causes NullPointerException</action>
@@ -67,6 +67,7 @@
       <action type="add" dev="HLS">Add blank component reference pages for If and For</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-391">Cannot inject the same bean twice</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-384">Client Side Validation inconsistent</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-393">InvokeListener component is not in Framework.library</action>
     </release>
     <release version="4.0-beta-1" date="Jun 24 2005">
        <action type="add" dev="HLS">Add InvokeListener component.</action>

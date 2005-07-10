@@ -56,6 +56,7 @@
     <component-type type="ImageSubmit" specification-path="form/ImageSubmit.jwc"/>
 	<component-type type="Insert" specification-path="components/Insert.jwc"/>
     <component-type type="InsertText" specification-path="html/InsertText.jwc"/>
+    <component-type type="InvokeListener" specification-path="components/InvokeListener.jwc"/>
     <component-type type="LinkSubmit" specification-path="form/LinkSubmit.jwc"/>
     <component-type type="ListEdit" specification-path="form/ListEdit.jwc"/>
     <component-type type="Option" specification-path="form/Option.jwc"/>
