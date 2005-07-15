@@ -25,7 +25,13 @@
   Creates a labeled submit button within a form.
   </description>
 
-  <parameter name="label" default-binding="literal"/>
+  <parameter name="label" default-binding="literal" deprecated="true">
+    <description>
+      Deprecated in 4.0.  An alternate way to specify the value attribute,
+      which is the label used on the button in the browser (as well as the
+      value supplied in the query parameter on form submit).
+    </description>
+  </parameter>
   <parameter name="disabled" default-binding="ognl">
       <description>
           If true, then the component is disabled, which will be reflected in the
