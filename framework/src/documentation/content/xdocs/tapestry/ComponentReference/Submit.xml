@@ -73,7 +73,7 @@ is notified.
   </tr>
 
    <tr>
-		<td>label</td>
+		<td>label <strong>(deprecated)</strong></td>
 		<td>String</td>
 		<td>in</td>
 		<td>no</td>
