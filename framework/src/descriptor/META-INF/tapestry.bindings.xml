@@ -112,7 +112,7 @@
     <invoke-factory>
       <construct class="StateBindingFactory">
         <set-object property="valueConverter" value="infrastructure:valueConverter"/>
-        <set-object property="applicationStateManager" object="infrastructure:applicationStateManager"/> 
+        <set-object property="applicationStateManager" value="infrastructure:applicationStateManager"/> 
       </construct>
     </invoke-factory>    
     
