@@ -28,11 +28,14 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> Renders an HTML checkbox, based on a boolean value.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: 
+    <link href="&apiroot;/form/Checkbox.html">org.apache.tapestry.form.Checkbox</link>,
+    &Form;
+    </strong> 
 </p>
 
 <section>
@@ -45,28 +48,55 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
+    <th>Default Binding</th>
     <th>Description</th>
+  </tr>
+  
+  <tr>
+    <td>value</td>
+    <td>boolean</td> <td>in/out</td> <td>yes</td> <td>&nbsp;</td>
+    <td>ognl</td>
+    <td>
+      Value editted by the component; read on render, updated on form submit.
+      This sets the check attribute of the rendered element.
+      Deprecated alias: selected.  
+    </td>
+  </tr>
+  
+  <tr>
+    <td>disabled</td> <td>boolean</td> <td>in</td> <td>no</td> <td>false</td>
+    <td>ognl</td>
+    <td>
+       If true, then the checkbox will render as disabled and any input from the checkbox
+    will be ignored.   
+    </td>
+  </tr>
+  
+  <tr>
+    <td>id</td>
+    <td>string</td>
+    <td>in</td>
+    <td>no</td> <td>&nbsp;</td> <td>literal</td>
+    <td>
+      Sets the id attribute for the rendered &lt;input&gt; element.
+    </td>
   </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed </strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: type, checked, name
 </p>
 
 </section>
 
-<section>
-  <title>Examples</title>
-
-</section>
 </body>
 </document>

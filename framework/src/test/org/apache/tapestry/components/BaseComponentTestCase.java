@@ -104,13 +104,35 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         control.setReturnValue(rewinding);
     }
 
-    protected IRequestCycle newCycle(String pageName, IPage page)
+    protected IRequestCycle newCycleGetPage(String pageName, IPage page)
     {
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) control.getMock();
 
         cycle.getPage(pageName);
         control.setReturnValue(page);
+
+        return cycle;
+    }
+
+    protected IRequestCycle newCycleGetUniqueId(String id, String uniqueId)
+    {
+        MockControl control = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) control.getMock();
+
+        cycle.getUniqueId(id);
+        control.setReturnValue(uniqueId);
+
+        return cycle;
+    }
+
+    protected IRequestCycle newCycleGetParameter(String name, String value)
+    {
+        MockControl control = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) control.getMock();
+
+        cycle.getParameter(name);
+        control.setReturnValue(value);
 
         return cycle;
     }
@@ -188,7 +210,8 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         return page;
     }
 
-    protected void trainGetAttribute(MockControl cyclec, IRequestCycle cycle, String key, Object value)
+    protected void trainGetAttribute(MockControl cyclec, IRequestCycle cycle, String key,
+            Object value)
     {
         cycle.getAttribute(key);
         cyclec.setReturnValue(value);

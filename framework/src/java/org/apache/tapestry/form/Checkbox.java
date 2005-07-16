@@ -40,7 +40,7 @@ public abstract class Checkbox extends AbstractFormComponent
         if (isDisabled())
             writer.attribute("disabled", "disabled");
 
-        if (isSelected())
+        if (getValue())
             writer.attribute("checked", "checked");
 
         renderIdAttribute(writer, cycle);
@@ -59,12 +59,10 @@ public abstract class Checkbox extends AbstractFormComponent
     {
         String value = cycle.getParameter(getName());
 
-        setSelected(value != null);
+        setValue(value != null);
     }
 
-    /** @since 2.2 */
-    public abstract boolean isSelected();
+    public abstract boolean getValue();
 
-    /** @since 2.2 */
-    public abstract void setSelected(boolean selected);
+    public abstract void setValue(boolean selected);
 }

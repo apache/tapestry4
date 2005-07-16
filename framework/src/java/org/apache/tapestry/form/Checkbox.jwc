@@ -25,7 +25,9 @@
   Implements a checkbox within a Form.
   </description>
 
-  <parameter name="selected" required="yes" default-binding="ognl">
+  <!-- selected aliased and deprecated in 4.0 -->
+ 
+  <parameter name="value" required="yes" default-binding="ognl" aliases="selected">
     <description>
     The property read and updated by the Checkbox.
     </description>
@@ -37,6 +39,7 @@
     will be ignored.
     </description>
   </parameter>
+  
   <parameter name="id" default-binding="literal" property="idParameter"
   		default-value="ognl:id"/>
   		  
