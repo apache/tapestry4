@@ -63,6 +63,9 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
 
     protected void renderIdAttribute(IMarkupWriter writer, IRequestCycle cycle)
     {
+        // If the user explicitly sets the id parameter to null, then
+        // we honor that!
+        
         String rawId = getIdParameter();
 
         if (rawId == null)

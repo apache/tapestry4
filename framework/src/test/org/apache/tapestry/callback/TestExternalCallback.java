@@ -51,7 +51,7 @@ public class TestExternalCallback extends BaseComponentTestCase
         { "param1", "param2" };
 
         IExternalPage page = newExternalPage();
-        IRequestCycle cycle = newCycle("Fred", page);
+        IRequestCycle cycle = newCycleGetPage("Fred", page);
 
         cycle.activate(page);
 
@@ -71,7 +71,7 @@ public class TestExternalCallback extends BaseComponentTestCase
     public void testByNameNoParameters()
     {
         IExternalPage page = newExternalPage();
-        IRequestCycle cycle = newCycle("Fred", page);
+        IRequestCycle cycle = newCycleGetPage("Fred", page);
 
         cycle.activate(page);
 
@@ -94,7 +94,7 @@ public class TestExternalCallback extends BaseComponentTestCase
         { "param1", "param2" };
 
         IExternalPage page = newExternalPage("Barney");
-        IRequestCycle cycle = newCycle("Barney", page);
+        IRequestCycle cycle = newCycleGetPage("Barney", page);
 
         cycle.activate(page);
 
@@ -114,7 +114,7 @@ public class TestExternalCallback extends BaseComponentTestCase
     public void testNotExternalPage()
     {
         IPage page = newPage();
-        IRequestCycle cycle = newCycle("Barney", page);
+        IRequestCycle cycle = newCycleGetPage("Barney", page);
 
         replayControls();
 

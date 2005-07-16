@@ -53,7 +53,7 @@ public class TestDirectCallback extends BaseComponentTestCase
 
         verifyControls();
 
-        IRequestCycle cycle = newCycle("Fred", page);
+        IRequestCycle cycle = newCycleGetPage("Fred", page);
 
         page.getNestedComponent("foo.bar");
         pagec.setReturnValue(component);
@@ -97,7 +97,7 @@ public class TestDirectCallback extends BaseComponentTestCase
 
         verifyControls();
 
-        IRequestCycle cycle = newCycle("Barney", page);
+        IRequestCycle cycle = newCycleGetPage("Barney", page);
 
         page.getNestedComponent("foo.bar");
         pagec.setReturnValue(component);
@@ -138,7 +138,7 @@ public class TestDirectCallback extends BaseComponentTestCase
 
         verifyControls();
 
-        IRequestCycle cycle = newCycle("Fred", page);
+        IRequestCycle cycle = newCycleGetPage("Fred", page);
 
         Location l = newLocation();
         IComponent component2 = newComponent("Fred/foo.bar", l);
