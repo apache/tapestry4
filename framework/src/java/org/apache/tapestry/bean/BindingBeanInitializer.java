@@ -23,9 +23,9 @@ import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingSource;
 
 /**
- * An {@link org.apache.tapestry.bean.IBeanInitializer}&nbsp; implementation that uses an
- * {@link org.apache.tapestry.IBinding}&nbsp; to obtain the value which will be assigned to the
- * bean property.
+ * An {@link org.apache.tapestry.bean.IBeanInitializer} implementation that uses an
+ * {@link org.apache.tapestry.IBinding} to obtain the value which will be assigned to the bean
+ * property.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -35,9 +35,6 @@ public class BindingBeanInitializer extends AbstractBeanInitializer
     private BindingSource _bindingSource;
 
     private String _bindingReference;
-
-    /** @since 4.0 */
-    private IBinding _binding;
 
     /** @since 4.0 */
     public BindingBeanInitializer(BindingSource source)
@@ -63,25 +60,21 @@ public class BindingBeanInitializer extends AbstractBeanInitializer
 
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {
-        if (_binding == null)
-        {
-            IComponent component = provider.getComponent();
+        IComponent component = provider.getComponent();
 
-            String description = BeanMessages.propertyInitializerName(_propertyName);
+        String description = BeanMessages.propertyInitializerName(_propertyName);
 
-            _binding = _bindingSource.createBinding(
-                    component,
-                    description,
-                    _bindingReference,
-                    BindingConstants.OGNL_PREFIX,
-                    getLocation());
-        }
+        IBinding binding = _bindingSource.createBinding(
+                component,
+                description,
+                _bindingReference,
+                BindingConstants.OGNL_PREFIX,
+                getLocation());
 
         Class propertyType = PropertyUtils.getPropertyType(bean, _propertyName);
 
-        Object bindingValue = _binding.getObject(propertyType);
+        Object bindingValue = binding.getObject(propertyType);
 
         setBeanProperty(bean, bindingValue);
     }
 }
-
