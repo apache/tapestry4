@@ -63,11 +63,25 @@ public interface IForm extends IAction, FormBehavior
      */
 
     public IValidationDelegate getDelegate();
-    
+
     /**
      * Indicates whether or not client-side validation will be generated during render.
+     * 
      * @return true, if client-side validation is enabled, false otherwise
      * @since 4.0
      */
     public boolean isClientValidationEnabled();
+
+    /**
+     * Returns true if the form should support automatic field focus (that is, adding JavaScript to
+     * position the cursor into the first field of the form, automatically). This requires that the
+     * Form component be enclosed by a {@link org.apache.tapestry.html.Body} component. When a
+     * single page contains multiple Forms, only the first Form that renders will get field focus;
+     * by setting the Form's focus parameter to false, it is possible to control which Form gets
+     * focus.
+     * 
+     * @since 4.0
+     */
+
+    public boolean getFocus();
 }

@@ -87,6 +87,14 @@
 	</description>
   </parameter>
   
+  <parameter name="focus" default-binding="ognl" default-value="true">
+    <description>
+      If true (the default), then the form will attempt to get field focus on the first
+      field in error (or first required field, or just first field) within the form.
+      Set to false to allow a different Form on the same page to claim field focus.
+    </description>
+  </parameter>
+  
   <reserved-parameter name="action"/>
   <reserved-parameter name="name"/>
   <reserved-parameter name="onsubmit"/>

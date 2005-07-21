@@ -20,6 +20,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
@@ -68,6 +69,8 @@ public class Required extends BaseValidator
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
             FormComponentContributorContext context, IFormComponent field)
     {
+        context.registerForFocus(ValidationConstants.REQUIRED_FIELD);
+
         StringBuffer buffer = new StringBuffer("function(event) { require(event, ");
         buffer.append(context.getFieldDOM());
         buffer.append(", '");

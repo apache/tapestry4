@@ -56,6 +56,10 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-405">Submit component should deprecate its label parameter</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-404">Checkbox selected parameter should be named "value"</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-428">Parameters with aliases cause class enhancement exceptions</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-385">Restore "zebra-striping" to the Exception page</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-427">InspectorButton ignores its disabled parameter</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-383, TAPESTRY-225">Properly position cursor into form fields</action>
     </release>
     <release version="4.0-beta-2" date="Jul 9 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-356">FormConditional extends BaseComponent but has no template</action>
@@ -75,60 +79,60 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-393">InvokeListener component is not in Framework.library</action>
     </release>
     <release version="4.0-beta-1" date="Jun 24 2005">
-       <action type="add" dev="HLS">Add InvokeListener component.</action>
-       <action type="add" dev="HLS">Add getErrorRenderers() method to IValidationDelegate.</action>
-       <action type="add" dev="HLS">Add purgeDeletedKeys() method to ListEditMap.</action>
+       <action type="add" dev="HLS">Add InvokeListener component</action>
+       <action type="add" dev="HLS">Add getErrorRenderers() method to IValidationDelegate</action>
+       <action type="add" dev="HLS">Add purgeDeletedKeys() method to ListEditMap</action>
        <action type="add" dev="HLS">Add checks for multiple specification elements "claiming" the same injected property. </action>
-       <action type="add" dev="HLS">Add support for validation decoration to TextArea.</action>
-       <action type="add" dev="HLS">Add raw parameter to InsertText.</action>
-       <action type="add" dev="HLS">Add aliases attribute to &lt;parmeter&gt; element, to allow parameters to be renamed.</action>
-       <action type="fix" dev="HLS">Properly wire the assetFactory property of the tapestry.portlet.services.PortletRenderer service.</action>
-       <action type="fix" dev="HLS">Fix some missing default bindings for the Table component (and subcomponents).</action>
+       <action type="add" dev="HLS">Add support for validation decoration to TextArea</action>
+       <action type="add" dev="HLS">Add raw parameter to InsertText</action>
+       <action type="add" dev="HLS">Add aliases attribute to &lt;parmeter&gt; element, to allow parameters to be renamed</action>
+       <action type="fix" dev="HLS">Properly wire the assetFactory property of the tapestry.portlet.services.PortletRenderer service</action>
+       <action type="fix" dev="HLS">Fix some missing default bindings for the Table component (and subcomponents)</action>
        <action type="add" dev="HLS">Add getRequiredParameters() method to IComponentSpecification. </action>
-       <action type="fix" dev="HLS">Make inherited bindings (a holdover from the 3.0 DTDs) override (quietly) default parameter bindings.</action>
-       <action type="fix" dev="HLS">Properly identify when portal mode or window state has changed.</action>
-       <action type="add" dev="HLS">Add deprecated attribute to &lt;component-specification&gt; and &lt;parameter&gt;.</action>
-       <action type="add" dev="HLS">Add configuration property org.apache.tapestry.accepted-locales, used to limit localization to a finite set of locales.</action>
-       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-335">Injection uses actual type of injected object, which may not be available (due to AOP, or due to use of JDK Proxies).</action>
-       <action type="add" dev="HLS">Add page listing the project voting history.</action>
-       <action type="add" dev="HLS">Add annotation support (in tapestry-annotation module).</action>
-       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-321">Add lightweight initialization for managed beans.</action>
-       <action type="add" dev="HLS">Add a command chain for resolving component classes.</action>
-       <action type="update" dev="HLS">Cache specification provided by the specification resolver delegate.</action>
+       <action type="fix" dev="HLS">Make inherited bindings (a holdover from the 3.0 DTDs) override (quietly) default parameter bindings</action>
+       <action type="fix" dev="HLS">Properly identify when portal mode or window state has changed</action>
+       <action type="add" dev="HLS">Add deprecated attribute to &lt;component-specification&gt; and &lt;parameter&gt;</action>
+       <action type="add" dev="HLS">Add configuration property org.apache.tapestry.accepted-locales, used to limit localization to a finite set of locales</action>
+       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-335">Injection uses actual type of injected object, which may not be available (due to AOP, or due to use of JDK Proxies)</action>
+       <action type="add" dev="HLS">Add page listing the project voting history</action>
+       <action type="add" dev="HLS">Add annotation support (in tapestry-annotation module)</action>
+       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-321">Add lightweight initialization for managed beans</action>
+       <action type="add" dev="HLS">Add a command chain for resolving component classes</action>
+       <action type="update" dev="HLS">Cache specification provided by the specification resolver delegate</action>
        <action type="fix" dev="HLS" fixes-bug="TAPESTRY-342">@Parameter does not work for required</action>
-       <action type="add" dev="HLS" fixes-bug="TAPESTRY-96">Add a page explicitly discussing JDK and library dependencies.</action>
+       <action type="add" dev="HLS" fixes-bug="TAPESTRY-96">Add a page explicitly discussing JDK and library dependencies</action>
        <action type="fix" dev="HLS" fixes-bug="TAPESTRY-337">Incorrect link to Spring integration docs in FAQ</action>
        <action type="fix" dev="HLS" fixes-bug="TAPESTRY-304">Non thread safe documentation example</action>
        <action type="fix" dev="HLS" fixes-bug="TAPESTRY-261">ListEditMap can return null from getDeletedKeys()</action>
        <action type="fix" dev="HLS">Fix injection problems; InjectScriptWorker injects a DeferredScript, not an IScript. Add super-verbose exception output when there's 
         a failure instantiating a component class. </action>
-       <action type="add" dev="PF">Refactored and expanded validation functionality to include DatePicker, PropertySelection, RadioGroup, Select, TextArea, TextField, Upload, contrib:Palette, and contrib:MultiplePropertySelection.</action>		
-       <action type="update" dev="HLS">Rework form event management to be primarily a client-side concern.</action>
-       <action type="add" dev="HLS">Add translator binding prefix.</action>
-       <action type="add" dev="HLS">Add cancel and refresh listener parameters to Form.</action>
-       <action type="add" dev="HLS">Listener methods may now return a page name, or a page instance, to activate and render the response.</action>
-       <action type="add" dev="HLS">Add injection of pages.</action>
-       <action type="add" dev="HLS">Add InjectPage annotation.</action>
+       <action type="add" dev="PF">Refactored and expanded validation functionality to include DatePicker, PropertySelection, RadioGroup, Select, TextArea, TextField, Upload, contrib:Palette, and contrib:MultiplePropertySelection</action>		
+       <action type="update" dev="HLS">Rework form event management to be primarily a client-side concern</action>
+       <action type="add" dev="HLS">Add translator binding prefix</action>
+       <action type="add" dev="HLS">Add cancel and refresh listener parameters to Form</action>
+       <action type="add" dev="HLS">Listener methods may now return a page name, or a page instance, to activate and render the response</action>
+       <action type="add" dev="HLS">Add injection of pages</action>
+       <action type="add" dev="HLS">Add InjectPage annotation</action>
        <action type="add" dev="HLS">Add validators: binding prefix, which allows validators to be
-        specified as a succinct list.</action>
-        <action type="add" dev="HLS">Rename Component annotation to ComponentClass.</action>
-        <action type="add" dev="HLS">Add Component, Message, InjectMeta and InjectScript annotations.</action>
-        <action type="update" dev="HLS">Renamed property-name attribute to property in the DTD for consistency.</action>
-        <action type="add" dev="HLS" fixes-bug="TAPESTRY-314">Change FieldLabel to output a &lt;label&gt; element, and add support for generating a client-side id to form control components.</action>
+        specified as a succinct list</action>
+        <action type="add" dev="HLS">Rename Component annotation to ComponentClass</action>
+        <action type="add" dev="HLS">Add Component, Message, InjectMeta and InjectScript annotations</action>
+        <action type="update" dev="HLS">Renamed property-name attribute to property in the DTD for consistency</action>
+        <action type="add" dev="HLS" fixes-bug="TAPESTRY-314">Change FieldLabel to output a &lt;label&gt; element, and add support for generating a client-side id to form control components</action>
     </release>
     <release version="4.0-alpha-3" date="May 16 2005">
-      <action type="add" dev="HLS">Add initial support for the validator: binding prefix.</action>
-      <action type="add" dev="PF" fixes-bug="TAPESTRY-317">Fix workbench build script so that generated war file will include the required ognl jar.</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-166">Allow Submits to defer invoking their listener.</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-320"> Properly seperate data from different users stored using the tapestry.persist.ClientPropertyPersistenceStrategy service.</action>
+      <action type="add" dev="HLS">Add initial support for the validator: binding prefix</action>
+      <action type="add" dev="PF" fixes-bug="TAPESTRY-317">Fix workbench build script so that generated war file will include the required ognl jar</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-166">Allow Submits to defer invoking their listener</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-320"> Properly seperate data from different users stored using the tapestry.persist.ClientPropertyPersistenceStrategy service</action>
       <action type="add" dev="HLS"> Store the Registry as a ServletContext attribute, so that it may be accessed from other servlets. </action>
       <action type="add" dev="HLS" fixes-bug="TAPESTRY-323"> Allow control over the ErrorHandler used when building the HiveMind Registry. </action>
-      <action type="update" dev="HLS"> Remove &lt;inject-state&gt;, and add type attribute to &lt;inject&gt;.</action>
-      <action type="fix" due-to="Richard Hensley">Fix some problems with the TestRestartService test suite.</action>
+      <action type="update" dev="HLS"> Remove &lt;inject-state&gt;, and add type attribute to &lt;inject&gt;</action>
+      <action type="fix" due-to="Richard Hensley">Fix some problems with the TestRestartService test suite</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-294"> Make it possible to add behavior before and/or after invoking listener methods. </action>
-      <action type="add" dev="HLS"> Add meta and script injection types.</action>
-      <action type="add" dev="RLS" fixes-bug="TAPESTRY-325">Add defer parameters parameter to LinkSubmit.</action>
-      <action type="add" dev="RLS" fixes-bug="TAPESTRY-326">Add listener parameters to Form submitting components.</action>
+      <action type="add" dev="HLS"> Add meta and script injection types</action>
+      <action type="add" dev="RLS" fixes-bug="TAPESTRY-325">Add defer parameters parameter to LinkSubmit</action>
+      <action type="add" dev="RLS" fixes-bug="TAPESTRY-326">Add listener parameters to Form submitting components</action>
     </release>
     <release version="4.0-alpha-2" date="May 5 2005">
       <action type="update" dev="HLS"> Coordinate Locale changes with the hivemind.ThreadLocale service. </action>
@@ -145,16 +149,16 @@
       <action type="update" dev="HLS"> Replace references to release 3.1 with release 4.0. </action>
       <action type="update" dev="HLS"> Upgrade to Javassist 3.0. </action>
       <action type="add" dev="HLS"> Add DirectServiceEncoder. </action>
-      <action type="fix" dev="EH" fixes-bug="TAPESTRY-303">Add quotes around attribute values in contrib:Table &lt;table&gt; elements.</action>
+      <action type="fix" dev="EH" fixes-bug="TAPESTRY-303">Add quotes around attribute values in contrib:Table &lt;table&gt; elements</action>
       <action type="update" dev="HLS"> Upgrade to HiveMind 1.0-beta-1. </action>
-      <action type="add" dev="HLS">Add cache attribute to &lt;parameter&gt; element.</action>
+      <action type="add" dev="HLS">Add cache attribute to &lt;parameter&gt; element</action>
       <action type="add" dev="HLS" fixes-bug="TAPESTRY-279"> Add Trails as a related project. </action>
       <action type="add" dev="HLS"> Add AppFuse as a related project. </action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-259"> Validation error renderers should implement toString. </action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-246"> Roll IValidationDelegate change, adding getCurrentFieldTracking(), forward from 3.0.2 into 4.0.</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-246"> Roll IValidationDelegate change, adding getCurrentFieldTracking(), forward from 3.0.2 into 4.0</action>
       <action type="add" dev="HLS" fixes-bug="TAPESTRY-210"> Add methods to IMarkupWriter that allow filtering to be specified using a parameter. </action>
       <action type="update" dev="HLS" fixes-bug="TAPESTRY-108"> Change FieldLabel to pre-render its associated field, so that decorations stay synchronized, even in a loop. </action>
-      <action type="add" dev="HLS" fixes-bug="TAPESTRY-181">Add PageAttachListener event interface.</action>
+      <action type="add" dev="HLS" fixes-bug="TAPESTRY-181">Add PageAttachListener event interface</action>
     </release>
     <release version="3.0.3" date="Mar 26 2005">
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fix security flaw in asset service. </action>
@@ -256,7 +260,7 @@
       <action type="update" dev="HLS"> Update DatePicker to use a graphic icon to hide and show the calendar. </action>
       <action type="fix" dev="HLS" fixes-bug="20932"> Check for duplication of ids between the HTML template and the specification. </action>
       <action type="fix" dev="HLS" fixed-bug="27082"> Fix some number conversion problems inside NumberValidator. </action>
-      <action type="update" dev="HLS"> Dynamically download OGNL and Javassist libraries (in accordance with ASF directives about non-ASL code). <b>Unfortunately, this means that we no longer can distribute precompiled examples that include those libraries.</b> </action>
+      <action type="update" dev="HLS"> Dynamically download OGNL and Javassist libraries (in accordance with ASF directives about non-ASL code). <b>Unfortunately, this means that we no longer can distribute precompiled examples that include those libraries</b> </action>
     </release>
     <release version="3.0-beta-4" date="Feb 5 2004">
       <action type="update" dev="DS"> Change direction of parameter model for WML components, SelectionField and PropertySelection </action>

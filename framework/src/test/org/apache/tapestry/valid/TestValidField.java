@@ -239,6 +239,9 @@ public class TestValidField extends BaseFormComponentTest
 
         trainToString(validatorc, validator, component, value, "fred value");
 
+        validator.isRequired();
+        validatorc.setReturnValue(false);
+
         // Would be nice to have this do something so we could check the timing, but ...
 
         validator.renderValidatorContribution(component, writer, cycle);
@@ -295,6 +298,9 @@ public class TestValidField extends BaseFormComponentTest
 
         trainToString(validatorc, validator, component, null, null);
 
+        validator.isRequired();
+        validatorc.setReturnValue(false);
+
         // Would be nice to have this do something so we could check the timing, but ...
 
         validator.renderValidatorContribution(component, writer, cycle);
@@ -327,12 +333,9 @@ public class TestValidField extends BaseFormComponentTest
 
     public void testRenderWithError()
     {
-
         Object value = new Object();
         MockControl validatorc = newControl(IValidator.class);
         IValidator validator = (IValidator) validatorc.getMock();
-
-        PageRenderSupport support = (PageRenderSupport) newMock(PageRenderSupport.class);
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
@@ -359,70 +362,12 @@ public class TestValidField extends BaseFormComponentTest
         trainGetDelegate(formc, form, delegate);
         trainGetDelegate(formc, form, delegate);
 
-        // Would be nice to have this do something so we could check the timing, but ...
-
-        validator.renderValidatorContribution(component, writer, cycle);
-
-        trainGetAttribute(cyclec, cycle, "org.apache.tapestry.form.SelectedField", null);
-
-        trainGetAttribute(cyclec, cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, support);
-
-        trainGetName(formc, form, "zeform");
-
-        support.addInitializationScript("focus(document.zeform.fred)");
-
-        cycle.setAttribute("org.apache.tapestry.form.SelectedField", Boolean.TRUE);
-
-        replayControls();
-
-        component.render(writer, cycle);
-
-        verifyControls();
-
-        assertSame(component, delegate.getFormComponent());
-        assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"recorded field value\" class=\"validation-delegate\"/></span>");
-    }
-
-    public void testRenderWithErrorNoPageSupport()
-    {
-        Object value = new Object();
-        MockControl validatorc = newControl(IValidator.class);
-        IValidator validator = (IValidator) validatorc.getMock();
-
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-
-        // Set form and name properties here because the delegate won't.
-
-        ValidField component = (ValidField) newInstance(ValidField.class, new Object[]
-        { "value", value, "validator", validator, "form", form, "name", "fred" });
-
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        IMarkupWriter writer = newBufferWriter();
-
-        MockDelegate delegate = new MockDelegate(true);
-        delegate.recordFieldInputValue("recorded field value");
-
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
-
-        trainGetElementId(formc, form, component, "fred");
-        trainIsRewinding(formc, form, false);
-        trainIsRewinding(cyclec, cycle, false);
-
-        trainGetDelegate(formc, form, delegate);
-        trainGetDelegate(formc, form, delegate);
+        validator.isRequired();
+        validatorc.setReturnValue(true);
 
         // Would be nice to have this do something so we could check the timing, but ...
 
         validator.renderValidatorContribution(component, writer, cycle);
-
-        trainGetAttribute(cyclec, cycle, "org.apache.tapestry.form.SelectedField", null);
-
-        trainGetAttribute(cyclec, cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, null);
 
         replayControls();
 

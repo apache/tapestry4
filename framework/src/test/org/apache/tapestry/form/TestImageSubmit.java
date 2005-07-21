@@ -24,6 +24,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.valid.IValidationDelegate;
+import org.apache.tapestry.valid.ValidationConstants;
 import org.easymock.MockControl;
 
 /**
@@ -104,8 +105,10 @@ public class TestImageSubmit extends BaseFormComponentTest
         writer.attribute("src", "image-url");
         writer.closeTag();
 
+        delegate.registerForFocus(submit, ValidationConstants.NORMAL_FIELD);
+
         trainIsInError(delegatec, delegate, false);
-        
+
         replayControls();
 
         submit.renderComponent(writer, cycle);
@@ -199,7 +202,7 @@ public class TestImageSubmit extends BaseFormComponentTest
         writer.closeTag();
 
         trainIsInError(delegatec, delegate, false);
-        
+
         replayControls();
 
         submit.renderComponent(writer, cycle);
@@ -237,7 +240,7 @@ public class TestImageSubmit extends BaseFormComponentTest
         trainIsRewinding(formc, form, false);
 
         trainIsRewinding(cyclec, cycle, false);
-        
+
         writer.beginEmpty("input");
         writer.attribute("type", "image");
         writer.attribute("name", "barney$0");
@@ -245,8 +248,10 @@ public class TestImageSubmit extends BaseFormComponentTest
         writer.attribute("src", "image-url");
         writer.closeTag();
 
+        delegate.registerForFocus(submit, ValidationConstants.NORMAL_FIELD);
+
         trainIsInError(delegatec, delegate, false);
-        
+
         replayControls();
 
         submit.renderComponent(writer, cycle);

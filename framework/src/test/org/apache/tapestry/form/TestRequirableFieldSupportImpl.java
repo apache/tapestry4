@@ -19,6 +19,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.valid.IValidationDelegate;
+import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidatorException;
 import org.easymock.MockControl;
 
@@ -31,22 +32,27 @@ import org.easymock.MockControl;
 public class TestRequirableFieldSupportImpl extends TapestryTestCase
 {
     private RequirableFieldSupport _support = new RequirableFieldSupportImpl();
-    
+
     private MockControl _componentControl = MockControl.createControl(RequirableField.class);
+
     private RequirableField _component = (RequirableField) _componentControl.getMock();
-    
+
     private MockControl _writerControl = MockControl.createControl(IMarkupWriter.class);
+
     private IMarkupWriter _writer = (IMarkupWriter) _writerControl.getMock();
 
     private MockControl _cycleControl = MockControl.createControl(IRequestCycle.class);
+
     private IRequestCycle _cycle = (IRequestCycle) _cycleControl.getMock();
 
     private MockControl _formControl = MockControl.createControl(IForm.class);
+
     private IForm _form = (IForm) _formControl.getMock();
-    
+
     private MockControl _delegateControl = MockControl.createNiceControl(IValidationDelegate.class);
+
     private IValidationDelegate _delegate = (IValidationDelegate) _delegateControl.getMock();
-    
+
     /**
      * @see org.apache.hivemind.test.HiveMindTestCase#tearDown()
      */
@@ -57,7 +63,7 @@ public class TestRequirableFieldSupportImpl extends TapestryTestCase
         _cycleControl.reset();
         _formControl.reset();
         _delegateControl.reset();
-        
+
         super.tearDown();
     }
 
@@ -78,37 +84,39 @@ public class TestRequirableFieldSupportImpl extends TapestryTestCase
         _formControl.verify();
         _delegateControl.verify();
     }
-    
+
     public void testNotRequiredRender()
     {
         _component.getForm();
         _componentControl.setReturnValue(_form);
-        
+
         _component.isRequired();
         _componentControl.setReturnValue(false);
-        
+
         replay();
-        
+
         _support.render(_component, _writer, _cycle);
-        
+
         verify();
     }
-    
+
     public void testRequiredClientValidationDisabledRender()
     {
         _component.getForm();
         _componentControl.setReturnValue(_form);
-        
+
         _component.isRequired();
         _componentControl.setReturnValue(true);
 
         _form.isClientValidationEnabled();
         _formControl.setReturnValue(false);
-        
+
+        _form.registerForFocus(_component, ValidationConstants.REQUIRED_FIELD);
+
         replay();
-        
+
         _support.render(_component, _writer, _cycle);
-        
+
         verify();
     }
 
@@ -116,40 +124,45 @@ public class TestRequirableFieldSupportImpl extends TapestryTestCase
     {
         _component.getForm();
         _componentControl.setReturnValue(_form);
-        
+
         _component.isRequired();
         _componentControl.setReturnValue(true);
 
         _form.isClientValidationEnabled();
         _formControl.setReturnValue(true);
-        
+
+        _form.registerForFocus(_component, ValidationConstants.REQUIRED_FIELD);
+
         _form.getName();
         _formControl.setReturnValue("formName");
-        
+
         _component.getName();
         _componentControl.setReturnValue("fieldName");
-        
+
         _component.getRequiredMessage();
         _componentControl.setReturnValue("You must enter a value for {0}.");
-        
+
         _component.getDisplayName();
         _componentControl.setReturnValue("Field Name");
 
-        _form.addEventHandler(FormEventType.SUBMIT, "require(event, document.formName.fieldName,'You must enter a value for Field Name.')");
+        _form
+                .addEventHandler(
+                        FormEventType.SUBMIT,
+                        "require(event, document.formName.fieldName,'You must enter a value for Field Name.')");
         _formControl.setVoidCallable();
-        
+
         replay();
-        
+
         _support.render(_component, _writer, _cycle);
-        
+
         verify();
     }
-    
+
     public void testNotRequiredRewind()
     {
         _component.getSubmittedValue(_cycle);
         _componentControl.setReturnValue("value");
-        
+
         _component.isRequired();
         _componentControl.setReturnValue(false);
 
@@ -157,9 +170,9 @@ public class TestRequirableFieldSupportImpl extends TapestryTestCase
         {
             _component.bind(_writer, _cycle);
             _componentControl.setVoidCallable();
-        
+
             replay();
-            
+
             _support.rewind(_component, _writer, _cycle);
         }
         catch (ValidatorException e)
@@ -171,52 +184,52 @@ public class TestRequirableFieldSupportImpl extends TapestryTestCase
             verify();
         }
     }
-    
+
     public void testRequiredBlankRewind()
     {
         _component.getSubmittedValue(_cycle);
         _componentControl.setReturnValue("");
-        
+
         _component.isRequired();
         _componentControl.setReturnValue(true);
 
         String pattern = "You must enter a value for {0}.";
         String displayName = "Field Name";
-        
+
         _component.getRequiredMessage();
         _componentControl.setReturnValue(pattern);
-        
+
         _component.getDisplayName();
         _componentControl.setReturnValue(displayName);
 
         _component.getForm();
         _componentControl.setReturnValue(_form);
-        
+
         _form.getDelegate();
         _formControl.setReturnValue(_delegate);
-        
+
         replay();
-        
+
         _support.rewind(_component, _writer, _cycle);
-        
+
         verify();
     }
-    
+
     public void testRequiredNotBlankRewind()
     {
         _component.getSubmittedValue(_cycle);
         _componentControl.setReturnValue("value");
-        
+
         _component.isRequired();
         _componentControl.setReturnValue(true);
-        
+
         try
         {
             _component.bind(_writer, _cycle);
             _componentControl.setVoidCallable();
-        
+
             replay();
-            
+
             _support.rewind(_component, _writer, _cycle);
         }
         catch (ValidatorException e)

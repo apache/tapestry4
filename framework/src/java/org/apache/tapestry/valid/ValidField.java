@@ -55,6 +55,9 @@ public abstract class ValidField extends AbstractFormComponent
     {
         IValidationDelegate delegate = getForm().getDelegate();
 
+        delegate.registerForFocus(this, delegate.isInError() ? ValidationConstants.ERROR_FIELD
+                : ValidationConstants.NORMAL_FIELD);
+
         delegate.writePrefix(writer, cycle, this, null);
 
         writer.beginEmpty("input");
@@ -80,6 +83,9 @@ public abstract class ValidField extends AbstractFormComponent
 
         if (validator == null)
             throw Tapestry.createRequiredParameterException(this, "validator");
+
+        if (validator.isRequired())
+            delegate.registerForFocus(this, ValidationConstants.REQUIRED_FIELD);
 
         validator.renderValidatorContribution(this, writer, cycle);
 

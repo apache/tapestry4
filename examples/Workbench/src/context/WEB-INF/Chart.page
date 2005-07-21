@@ -52,7 +52,7 @@
   </component>
   
   <component id="inputMarked" type="Checkbox">
-    <binding name="selected" value="markedForDeletion"/>
+    <binding name="value" value="markedForDeletion"/>
   </component>
   
   <component id="add" type="Submit">

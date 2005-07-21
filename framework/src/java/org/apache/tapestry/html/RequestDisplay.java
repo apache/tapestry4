@@ -35,9 +35,11 @@ import org.apache.tapestry.web.WebUtils;
  */
 public abstract class RequestDisplay extends BaseComponent
 {
+    private boolean _even;
 
     public void renderSystemProperties(IMarkupWriter writer)
     {
+        _even = true;
 
         Properties p = System.getProperties();
 
@@ -73,6 +75,11 @@ public abstract class RequestDisplay extends BaseComponent
         for (int i = 0; i < values.length; i++)
         {
             writer.begin("tr");
+
+            writer.attribute("class", _even ? "even" : "odd");
+
+            _even = !_even;
+
             writer.begin("th");
 
             if (i == 0)

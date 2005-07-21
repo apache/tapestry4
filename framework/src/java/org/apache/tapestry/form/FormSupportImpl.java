@@ -43,6 +43,7 @@ import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.IdAllocator;
+import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
  * Encapsulates most of the behavior of a Form component.
@@ -78,6 +79,13 @@ public class FormSupportImpl implements FormSupport
     public static final String SCRIPT = "/org/apache/tapestry/form/Form.js";
 
     private final static Set _standardReservedIds;
+
+    /**
+     * Attribute set to true when a field has been focused; used to prevent conflicting JavaScript
+     * for field focusing from being emitted.
+     */
+
+    public static final String FIELD_FOCUS_ATTRIBUTE = "org.apache.tapestry.field-focused";
 
     static
     {
@@ -143,11 +151,15 @@ public class FormSupportImpl implements FormSupport
 
     private final List _hiddenValues = new ArrayList();
 
-    private boolean _rewinding;
+    private final boolean _rewinding;
 
     private final IMarkupWriter _writer;
 
     private final Resource _script;
+
+    private final IValidationDelegate _delegate;
+
+    private final PageRenderSupport _pageRenderSupport;
 
     public FormSupportImpl(IMarkupWriter writer, IRequestCycle cycle, IForm form)
     {
@@ -158,11 +170,14 @@ public class FormSupportImpl implements FormSupport
         _writer = writer;
         _cycle = cycle;
         _form = form;
+        _delegate = form.getDelegate();
 
         _rewinding = cycle.isRewound(form);
         _allocatedIdIndex = 0;
 
         _script = new ClasspathResource(cycle.getEngine().getClassResolver(), SCRIPT);
+
+        _pageRenderSupport = TapestryUtils.getOptionalPageRenderSupport(cycle);
     }
 
     /**
@@ -276,8 +291,6 @@ public class FormSupportImpl implements FormSupport
         if (_events == null || _events.isEmpty())
             return;
 
-        PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(_cycle, _form);
-
         StringBuffer buffer = new StringBuffer();
 
         Iterator i = _events.entrySet().iterator();
@@ -323,7 +336,9 @@ public class FormSupportImpl implements FormSupport
             buffer.append(";\n});\n");
         }
 
-        pageRenderSupport.addInitializationScript(buffer.toString());
+        // TODO: If PRS is null ...
+
+        _pageRenderSupport.addInitializationScript(buffer.toString());
     }
 
     /**
@@ -473,6 +488,22 @@ public class FormSupportImpl implements FormSupport
         // Close the <form> tag.
 
         _writer.end();
+
+        String field = _delegate.getFocusField();
+
+        if (field == null || _pageRenderSupport == null)
+            return;
+
+        // If the form doesn't support focus, or the focus has already been set by a different form,
+        // then do nothing.
+
+        if (!_form.getFocus() || _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) != null)
+            return;
+
+        _pageRenderSupport.addInitializationScript("focus(document." + _form.getName() + "."
+                + field + ");");
+
+        _cycle.setAttribute(FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
     }
 
     /**
@@ -481,18 +512,16 @@ public class FormSupportImpl implements FormSupport
      */
     protected String emitEventManagerInitialization()
     {
-        PageRenderSupport pageRenderSupport = TapestryUtils.getOptionalPageRenderSupport(_cycle);
-
-        if (pageRenderSupport == null)
+        if (_pageRenderSupport == null)
             return null;
 
-        pageRenderSupport.addExternalScript(_script);
+        _pageRenderSupport.addExternalScript(_script);
 
         String formName = _form.getName();
 
         String eventManager = formName + "_events";
 
-        pageRenderSupport.addInitializationScript("var " + eventManager
+        _pageRenderSupport.addInitializationScript("var " + eventManager
                 + " = new FormEventManager(document." + formName + ");");
 
         return eventManager;
@@ -658,4 +687,10 @@ public class FormSupportImpl implements FormSupport
 
         _deferredRunnables.add(runnable);
     }
+
+    public void registerForFocus(IFormComponent field, int priority)
+    {
+        _delegate.registerForFocus(field, priority);
+    }
+
 }

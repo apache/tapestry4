@@ -41,6 +41,10 @@ public class ValidationDelegate implements IValidationDelegate
 
     private transient IFormComponent _currentComponent;
 
+    private transient String _focusField;
+
+    private transient int _focusPriority = -1;
+
     /**
      * A list of {@link IFieldTracking}.
      */
@@ -413,4 +417,26 @@ public class ValidationDelegate implements IValidationDelegate
 
         return result;
     }
+
+    /** @since 4.0 */
+
+    public void registerForFocus(IFormComponent field, int priority)
+    {
+        if (priority > _focusPriority)
+        {
+            _focusField = field.getName();
+            _focusPriority = priority;
+        }
+    }
+
+    /**
+     * Returns the focus field, or null if no form components registered for focus (i.e., they were
+     * all disabled).
+     */
+
+    public String getFocusField()
+    {
+        return _focusField;
+    }
+
 }

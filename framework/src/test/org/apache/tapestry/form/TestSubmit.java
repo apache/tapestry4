@@ -26,6 +26,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.listener.ListenerInvokerTerminator;
 import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.valid.IValidationDelegate;
+import org.apache.tapestry.valid.ValidationConstants;
 import org.easymock.MockControl;
 
 /**
@@ -85,14 +86,16 @@ public class TestSubmit extends BaseFormComponentTest
         trainIsRewinding(formc, form, false);
 
         trainIsRewinding(cyclec, cycle, false);
-        
+
         writer.beginEmpty("input");
         writer.attribute("type", "submit");
         writer.attribute("name", "fred");
         writer.closeTag();
 
+        delegate.registerForFocus(submit, ValidationConstants.NORMAL_FIELD);
+
         trainIsInError(delegatec, delegate, false);
-        
+
         replayControls();
 
         submit.renderComponent(writer, cycle);
@@ -128,7 +131,7 @@ public class TestSubmit extends BaseFormComponentTest
         trainIsRewinding(formc, form, false);
 
         trainIsRewinding(cyclec, cycle, false);
-        
+
         writer.beginEmpty("input");
         writer.attribute("type", "submit");
         writer.attribute("name", "fred");
@@ -136,7 +139,7 @@ public class TestSubmit extends BaseFormComponentTest
         writer.closeTag();
 
         trainIsInError(delegatec, delegate, false);
-        
+
         replayControls();
 
         submit.renderComponent(writer, cycle);
@@ -172,15 +175,17 @@ public class TestSubmit extends BaseFormComponentTest
         trainIsRewinding(formc, form, false);
 
         trainIsRewinding(cyclec, cycle, false);
-        
+
         writer.beginEmpty("input");
         writer.attribute("type", "submit");
         writer.attribute("name", "fred");
         writer.attribute("value", "flintstone");
         writer.closeTag();
 
+        delegate.registerForFocus(submit, ValidationConstants.NORMAL_FIELD);
+
         trainIsInError(delegatec, delegate, false);
-        
+
         replayControls();
 
         submit.renderComponent(writer, cycle);

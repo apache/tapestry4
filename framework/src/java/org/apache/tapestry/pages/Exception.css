@@ -120,6 +120,8 @@ DIV.described-object-title
 {
   font-size: large;
   font-weight: bold;
+  color: white;
+  background-color: blue;
 }
 
 TABLE.described-object
@@ -131,7 +133,7 @@ TABLE.described-object
 TABLE.described-object TR.section TH
 {
   color: white;
-  background-color: black;
+  background-color: blue;
   text-align: center;
 }
 
@@ -139,4 +141,14 @@ TABLE.described-object TH
 {
   text-align: right;
   width: 1px; // Will stretch to fit.
+}
+
+TABLE.described-object TR.even
+{
+  background-color: white;
+}
+
+TABLE.described-object TR.odd
+{
+  background-color: #C0C0FF;
 }

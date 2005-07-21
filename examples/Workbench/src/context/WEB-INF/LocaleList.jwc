@@ -34,7 +34,7 @@
 	</component>
 
 	<component id="checkbox" type="Checkbox">
-		<binding name="selected" value="ognl:checkboxSelected"/>
+		<binding name="value" value="checkboxSelected"/>
 	</component>
 
 	<component id="submitButton" type="Submit">

@@ -94,12 +94,9 @@ public class TapestryUtils
 
     public static PageRenderSupport getPageRenderSupport(IRequestCycle cycle, IComponent component)
     {
-        Defense.notNull(cycle, "cycle");
         Defense.notNull(component, "component");
 
-        PageRenderSupport result = (PageRenderSupport) cycle
-                .getAttribute(PAGE_RENDER_SUPPORT_ATTRIBUTE);
-
+        PageRenderSupport result = getOptionalPageRenderSupport(cycle);
         if (result == null)
             throw new ApplicationRuntimeException(TapestryMessages.noPageRenderSupport(component),
                     component.getLocation(), null);
@@ -108,7 +105,7 @@ public class TapestryUtils
     }
 
     /**
-     * Gets the previously stored {@link IForm}&nbsp;object.
+     * Gets the previously stored {@link IForm} object.
      * 
      * @param cycle
      *            the request cycle storing the support object

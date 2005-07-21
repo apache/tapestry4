@@ -25,16 +25,12 @@ Adds scripting support for the ShowInspector component.
 Prefixes all variables and functions with "ti_" (for Tapestry Inspector).
 
 Expects that the Inspector is inside a <div> named "tapestryInspector".
-
-Input symbols:
- URL - The complete URL needed for to raise the Inspector
  
 -->
 <script>
 
 <include-script resource-path="/org/apache/tapestry/html/PracticalBrowserSniffer.js"/>
 
-<input-symbol key="URL" class="java.lang.String" required="yes"/>
 
 <body>
 var ti = new Object();
@@ -115,15 +111,6 @@ function ti_positionInspector()
   window.setTimeout("ti_positionInspector()", 250);
 }
 
-function ti_raiseInspector()
-{
-  var newWindow = window.open(
-  	"${URL}",
-  	"TapestryInspector",
-  	"titlebar,resizable,scrollbars,width=700,height=600");
-  	
-  newWindow.focus();
-}
 </body>
 
 <initialization>

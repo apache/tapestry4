@@ -28,7 +28,7 @@
   <property name="bytesPerLine" persist="session"/>
   
   <component id="inputEnabled" type="Checkbox">
-    <binding name="selected" value="clientValidationEnabled"/> 
+    <binding name="value" value="clientValidationEnabled"/> 
     <binding name="onchange" value="'this.form.submit()'"/>
   </component>
   

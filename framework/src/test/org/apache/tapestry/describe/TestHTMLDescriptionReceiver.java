@@ -68,9 +68,10 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         writer.println();
     }
 
-    private void trainForKeyValue(IMarkupWriter writer, String key, String value)
+    private void trainForKeyValue(IMarkupWriter writer, String key, String value, boolean even)
     {
         writer.begin("tr");
+        writer.attribute("class", even ? "even" : "odd");
         writer.begin("th");
         if (key != null)
             writer.print(key);
@@ -81,9 +82,10 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         writer.println();
     }
 
-    private void trainForNestedKeyValue(IMarkupWriter writer, String key, String value)
+    private void trainForNestedKeyValue(IMarkupWriter writer, String key, String value, boolean even)
     {
         writer.begin("tr");
+        writer.attribute("class", even ? "even" : "odd");
         writer.begin("th");
         if (key != null)
             writer.print(key);
@@ -149,7 +151,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
 
         trainForTitle(writer, "Object Title");
         trainForSection(writer, "Section");
-        trainForKeyValue(writer, "intProperty", "97");
+        trainForKeyValue(writer, "intProperty", "97", true);
 
         replayControls();
 
@@ -168,8 +170,8 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         DescribableStrategy adapter = newStrategy();
 
         trainForTitle(writer, "Object Title");
-        trainForKeyValue(writer, "first", "1");
-        trainForKeyValue(writer, "second", "2");
+        trainForKeyValue(writer, "first", "1", true);
+        trainForKeyValue(writer, "second", "2", false);
 
         replayControls();
 
@@ -182,8 +184,8 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         verifyControls();
 
         trainForSection(writer, "Section 1");
-        trainForKeyValue(writer, "s1", "1");
-        trainForKeyValue(writer, "s2", "2");
+        trainForKeyValue(writer, "s1", "1", true);
+        trainForKeyValue(writer, "s2", "2", false);
 
         replayControls();
 
@@ -200,7 +202,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         DescribableStrategy adapter = newStrategy();
 
         trainForTitle(writer, "Object Title");
-        trainForKeyValue(writer, "first", "1");
+        trainForKeyValue(writer, "first", "1", true);
 
         replayControls();
 
@@ -270,8 +272,8 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         { "Fred", "Barney" };
 
         trainForTitle(writer, "Array");
-        trainForNestedKeyValue(writer, "list", "Fred");
-        trainForNestedKeyValue(writer, null, "Barney");
+        trainForNestedKeyValue(writer, "list", "Fred", true);
+        trainForNestedKeyValue(writer, null, "Barney", false);
 
         replayControls();
 
@@ -293,8 +295,8 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         Collection collection = Arrays.asList(array);
 
         trainForTitle(writer, "Collection");
-        trainForNestedKeyValue(writer, "list", "Fred");
-        trainForNestedKeyValue(writer, null, "Barney");
+        trainForNestedKeyValue(writer, "list", "Fred", true);
+        trainForNestedKeyValue(writer, null, "Barney", false);
 
         replayControls();
 
@@ -344,14 +346,14 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         DescribableStrategy strategy = newStrategy();
 
         trainForTitle(writer, "Scalars");
-        trainForKeyValue(writer, "boolean", "true");
-        trainForKeyValue(writer, "byte", "22");
-        trainForKeyValue(writer, "char", "*");
-        trainForKeyValue(writer, "short", "-8");
-        trainForKeyValue(writer, "int", "900");
-        trainForKeyValue(writer, "long", "200020");
-        trainForKeyValue(writer, "float", "3.14");
-        trainForKeyValue(writer, "double", "-2.7");
+        trainForKeyValue(writer, "boolean", "true", true);
+        trainForKeyValue(writer, "byte", "22", false);
+        trainForKeyValue(writer, "char", "*", true);
+        trainForKeyValue(writer, "short", "-8", false);
+        trainForKeyValue(writer, "int", "900", true);
+        trainForKeyValue(writer, "long", "200020", false);
+        trainForKeyValue(writer, "float", "3.14", true);
+        trainForKeyValue(writer, "double", "-2.7", false);
 
         replayControls();
 
@@ -392,7 +394,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         DescribableStrategy strategy = newStrategy();
 
         trainForTitle(writer, "Null Property");
-        trainForKeyValue(writer, "null", HTMLDescriptionReceiver.NULL_VALUE);
+        trainForKeyValue(writer, "null", HTMLDescriptionReceiver.NULL_VALUE, true);
 
         replayControls();
 

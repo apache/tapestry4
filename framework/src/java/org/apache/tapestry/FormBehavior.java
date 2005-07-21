@@ -18,6 +18,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.form.FormEventType;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.valid.ValidationConstants;
 
 /**
  * Common interface extended by {@link org.apache.tapestry.IForm}&nbsp;and
@@ -147,5 +148,19 @@ public interface FormBehavior
      */
 
     public void addDeferredRunnable(Runnable runnable);
+
+    /**
+     * Registers a field for automatic focus. The goal is for the first field that is in error to
+     * get focus; failing that, the first required field; failing that, any field.
+     * 
+     * @param field
+     *            the field requesting focus
+     * @param priority
+     *            a priority level used to determine whether the registered field becomes the focus
+     *            field. Constants for this purpose are defined in {@link ValidationConstants}.
+     * @since 4.0
+     */
+
+    public void registerForFocus(IFormComponent field, int priority);
 
 }

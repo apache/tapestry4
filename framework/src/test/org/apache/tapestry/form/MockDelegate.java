@@ -40,6 +40,10 @@ public class MockDelegate implements IValidationDelegate
 
     private boolean _inError;
 
+    public void registerForFocus(IFormComponent field, int priority)
+    {
+    }
+
     public MockDelegate()
     {
         this(false);
@@ -138,6 +142,11 @@ public class MockDelegate implements IValidationDelegate
     }
 
     public List getErrorRenderers()
+    {
+        return null;
+    }
+
+    public String getFocusField()
     {
         return null;
     }
