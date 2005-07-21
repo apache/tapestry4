@@ -48,6 +48,8 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
 
     private HTMLDescriptionReceiverStyles _styles;
 
+    private boolean _even = true;
+
     public HTMLDescriptionReceiver(IMarkupWriter writer, DescribableStrategy adapter)
     {
         this(writer, adapter, new HTMLDescriptionReceiverStyles());
@@ -125,6 +127,11 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
             throw new IllegalStateException(DescribeMessages.mustSetTitleBeforeProperty());
     }
 
+    /**
+     * Invoked to ensure that the section portion has been output, before any properties within the
+     * section are output.
+     */
+
     private void emitSection()
     {
         if (_emitDefault)
@@ -140,6 +147,8 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
             _writer.begin("table");
             _writer.attribute("class", _styles.getTableClass());
             _writer.println();
+
+            _even = true;
         }
 
         if (_section != null)
@@ -153,7 +162,10 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
             _writer.println();
 
             _section = null;
+
+            _even = true;
         }
+
     }
 
     private void pair(String key, String value)
@@ -162,6 +174,8 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
         emitSection();
 
         _writer.begin("tr");
+        writeRowClass();
+
         _writer.begin("th");
         _writer.print(key);
         _writer.end();
@@ -169,6 +183,13 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
         _writer.print(value);
         _writer.end("tr");
         _writer.println();
+
+    }
+
+    private void writeRowClass()
+    {
+        _writer.attribute("class", _even ? "even" : "odd");
+        _even = !_even;
     }
 
     public void property(String key, Object value)
@@ -179,6 +200,8 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
         emitSection();
 
         _writer.begin("tr");
+        writeRowClass();
+
         _writer.begin("th");
         _writer.print(key);
         _writer.end();
@@ -273,6 +296,8 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
         for (int i = 0; i < values.length; i++)
         {
             _writer.begin("tr");
+            writeRowClass();
+
             _writer.begin("th");
 
             if (i == 0)
@@ -307,6 +332,8 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
         while (i.hasNext())
         {
             _writer.begin("tr");
+            writeRowClass();
+
             _writer.begin("th");
 
             if (first)

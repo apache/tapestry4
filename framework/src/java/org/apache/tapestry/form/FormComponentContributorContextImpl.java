@@ -41,6 +41,10 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
 
     private final PageRenderSupport _pageRenderSupport;
 
+    private final IFormComponent _field;
+
+    private final IForm _form;
+
     /**
      * Used for testing.
      */
@@ -49,10 +53,12 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
     {
         super(Locale.ENGLISH);
 
+        _field = null;
         _resolver = null;
         _formDOM = null;
         _fieldDOM = null;
         _pageRenderSupport = null;
+        _form = null;
     }
 
     public FormComponentContributorContextImpl(Locale locale, IRequestCycle cycle,
@@ -60,11 +66,12 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
     {
         super(locale);
 
-        IForm form = component.getForm();
+        _field = component;
+        _form = component.getForm();
 
         _resolver = cycle.getInfrastructure().getClassResolver();
 
-        _formDOM = "document." + form.getName();
+        _formDOM = "document." + _form.getName();
         _fieldDOM = _formDOM + "." + component.getName();
 
         _pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, component);
@@ -87,4 +94,10 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
         _pageRenderSupport.addInitializationScript(_formDOM + ".events.addSubmitListener("
                 + submitListener + ");");
     }
+
+    public void registerForFocus(int priority)
+    {
+        _form.registerForFocus(_field, priority);
+    }
+
 }

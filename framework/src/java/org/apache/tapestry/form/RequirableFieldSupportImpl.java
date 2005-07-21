@@ -20,12 +20,13 @@ import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * Default {@link RequirableFieldSupport} implementation.  This implementation generates
- * calls to a static javascript function during render if client-side validation is enabled.
+ * Default {@link RequirableFieldSupport} implementation. This implementation generates calls to a
+ * static javascript function during render if client-side validation is enabled.
  * 
  * @author Paul Ferraro
  * @since 4.0
@@ -33,34 +34,43 @@ import org.apache.tapestry.valid.ValidatorException;
 public class RequirableFieldSupportImpl implements RequirableFieldSupport
 {
     /**
-     * @see org.apache.tapestry.form.RequirableFieldSupport#render(org.apache.tapestry.form.RequirableField, org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.RequirableFieldSupport#render(org.apache.tapestry.form.RequirableField,
+     *      org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
     public void render(RequirableField component, IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = component.getForm();
-        
-        if (component.isRequired() && form.isClientValidationEnabled())
+
+        if (component.isRequired())
         {
-            String function = "require(event, document." + form.getName() + "." + component.getName() + ",'" + buildRequiredMessage(component) + "')";
-            
-            form.addEventHandler(FormEventType.SUBMIT, function);
+            form.registerForFocus(component, ValidationConstants.REQUIRED_FIELD);
+
+            if (form.isClientValidationEnabled())
+            {
+                String function = "require(event, document." + form.getName() + "."
+                        + component.getName() + ",'" + buildRequiredMessage(component) + "')";
+
+                form.addEventHandler(FormEventType.SUBMIT, function);
+            }
         }
     }
 
     /**
-     * @see org.apache.tapestry.form.RequirableFieldSupport#rewind(org.apache.tapestry.form.RequirableField, org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.RequirableFieldSupport#rewind(org.apache.tapestry.form.RequirableField,
+     *      org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
     public void rewind(RequirableField component, IMarkupWriter writer, IRequestCycle cycle)
     {
         try
         {
             String value = component.getSubmittedValue(cycle);
-            
+
             if (component.isRequired() && HiveMind.isBlank(value))
             {
-                throw new ValidatorException(buildRequiredMessage(component), ValidationConstraint.REQUIRED);
+                throw new ValidatorException(buildRequiredMessage(component),
+                        ValidationConstraint.REQUIRED);
             }
-            
+
             component.bind(writer, cycle);
         }
         catch (ValidatorException e)
@@ -68,9 +78,10 @@ public class RequirableFieldSupportImpl implements RequirableFieldSupport
             component.getForm().getDelegate().record(e);
         }
     }
-    
+
     protected String buildRequiredMessage(RequirableField component)
     {
-        return MessageFormat.format(component.getRequiredMessage(), new Object[] { component.getDisplayName() });
+        return MessageFormat.format(component.getRequiredMessage(), new Object[]
+        { component.getDisplayName() });
     }
 }

@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 
 <component-specification class="org.apache.tapestry.contrib.inspector.InspectorButton" 
 	allow-body="no" 
@@ -31,18 +31,43 @@ window.
 ]]>
     </description>
 
-  <parameter name="disabled" type="boolean" direction="in"/>
+  <parameter name="disabled" default-binding="ognl">
+    <description>
+      If true, then the InspectorButton will not be displayed (this saves the
+      trouble of wrapping the InspectorButton in a conditional, as 
+      it generally should only be displayed when developing an application,
+      not in deployment).
+    </description>
+  </parameter>
 
-    <component id="link" type="GenericLink">
-        <static-binding name="href">javascript:ti_raiseInspector();</static-binding>
+  <component id="ifNotDisabled" type="If">
+    <binding name="condition" value="! disabled"/>
+    <binding name="element" value="div"/>
+  </component>
+  
+    <bean name="renderer" class="org.apache.tapestry.contrib.link.PopupLinkRenderer">
+      <set name="windowName" value="'TapestryInspector'"/>
+      <set name="features">
+        'titlebar,resizable,scrollbars,width=700,height=600'
+      </set>
+    </bean>
+    
+    <component id="link" type="DirectLink">
+      <binding name="listener" value="trigger"/>
+      <binding name="stateful" value="false"/>
+      <binding name="renderer" value="bean:renderer"/>
     </component>
 
     <component id="rollover" type="Rollover">
-    	<binding name="image" expression="assets.logo"/>
-    	<binding name="focus" expression="assets.inspector"/>
-        <static-binding name="alt">Inspector</static-binding>
+    	<binding name="image" value="asset:logo"/>
+    	<binding name="focus" value="asset:inspector"/>
+    </component>
+    
+    <component id="script" type="Script">
+      <binding name="script" value="InspectorButton.script"/>
     </component>
 
-    <private-asset name="logo" resource-path="tapestry-logo.gif"/>
-    <private-asset name="inspector" resource-path="inspector-rollover.gif"/>
+    <asset name="logo" path="tapestry-logo.gif"/>
+    <asset name="inspector" path="inspector-rollover.gif"/>
+    
 </component-specification>

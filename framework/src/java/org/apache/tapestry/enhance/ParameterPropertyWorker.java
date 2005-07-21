@@ -67,6 +67,12 @@ public class ParameterPropertyWorker implements EnhancementWorker
     private void performEnhancement(EnhancementOperation op, String parameterName,
             IParameterSpecification ps)
     {
+        // If the parameter name doesn't match, its because this is an alias
+        // for a true parameter; we ignore aliases.
+
+        if (!parameterName.equals(ps.getParameterName()))
+            return;
+
         String propertyName = ps.getPropertyName();
         String specifiedType = ps.getType();
         boolean cache = ps.getCache();

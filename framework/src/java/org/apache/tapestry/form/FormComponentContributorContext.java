@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form;
 
+import org.apache.tapestry.valid.ValidationConstants;
+
 /**
  * Object that provides support to objects that implement
  * {@link org.apache.tapestry.form.FormComponentContributor}. For the moment, at least, this is all
@@ -50,4 +52,16 @@ public interface FormComponentContributorContext extends ValidationMessages
      */
 
     public void addSubmitListener(String submitListener);
+
+    /**
+     * Registers a field for automatic focus. The goal is for the first field that is in error to
+     * get focus; failing that, the first required field; failing that, any field.
+     * 
+     * @param priority
+     *            a priority level used to determine whether the registered field becomes the focus
+     *            field. Constants for this purpose are defined in {@link ValidationConstants}.
+     * @see org.apache.tapestry.FormBehavior#registerForFocus(IFormComponent, int)
+     */
+
+    public void registerForFocus(int priority);
 }

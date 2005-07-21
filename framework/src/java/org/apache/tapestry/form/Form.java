@@ -425,4 +425,10 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      */
 
     public abstract ListenerInvoker getListenerInvoker();
+
+    public void registerForFocus(IFormComponent field, int priority)
+    {
+        _formSupport.registerForFocus(field, priority);
+    }
+
 }

@@ -53,6 +53,8 @@ public class MockForm implements IForm
 
     private IValidationDelegate _delegate;
 
+    private boolean _focus = true;
+
     public MockForm()
     {
         this(null, null);
@@ -321,5 +323,19 @@ public class MockForm implements IForm
     public String getMessage(String key)
     {
         return null;
+    }
+
+    public void registerForFocus(IFormComponent field, int priority)
+    {
+    }
+
+    public boolean getFocus()
+    {
+        return _focus;
+    }
+
+    public void setFocus(boolean focus)
+    {
+        _focus = focus;
     }
 }

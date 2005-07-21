@@ -76,6 +76,8 @@ DIV.described-object-title
 {
   font-size: large;
   font-weight: bold;
+  color: white;
+  background-color: black;
 }
 
 TABLE.described-object  
@@ -90,6 +92,16 @@ TABLE.described-object TR.section TH
   color: white;
   background-color: black;
   text-align: center;
+}
+
+TABLE.described-object TR.odd
+{
+  background-color: silver;
+}
+
+TABLE.described-object TR.even
+{
+  background-color: #839cd1;
 }
 
 TABLE.described-object TH

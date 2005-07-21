@@ -124,6 +124,16 @@
       that support it (such as &TextField;). 
     </td>
   </tr>
+  
+  <tr>
+    <td>focus</td> <td>boolean</td> <td>in</td> <td>no</td> <td>true</td> <td>ognl</td>
+    <td>
+      If true (the default), the the Form will determine a field to receive input focus, and
+      add JavaScript to move the cursor to that field.  Priority is given to fields in error,
+      then required fields, then any non-disabled field.  On a page with multiple forms, use
+      this parameter to control which form will take focus.
+    </td>
+  </tr>
 
 	</table>
   

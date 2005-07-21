@@ -22,6 +22,8 @@
 <application name="Tapestry Component Workbench">
   <meta key="org.apache.tapestry.visit-class" value="org.apache.tapestry.workbench.Visit"/>
   <meta key="org.apache.tapestry.template-encoding" value="ISO-8859-1"/>
+  <meta key="org.apache.tapestry.page-class-packages" value="org.apache.tapestry.workbench"/>
+  <meta key="org.apache.tapestry.component-class-packages" value="org.apache.tapestry.workbench.components"/>
   
   <extension name="org.apache.tapestry.request-decoder" class="org.apache.tapestry.workbench.RequestDecoder"/>
          

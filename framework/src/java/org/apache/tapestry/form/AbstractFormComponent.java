@@ -21,6 +21,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.valid.IValidationDelegate;
+import org.apache.tapestry.valid.ValidationConstants;
 
 /**
  * A base class for building components that correspond to HTML form elements. All such components
@@ -65,7 +66,7 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
     {
         // If the user explicitly sets the id parameter to null, then
         // we honor that!
-        
+
         String rawId = getIdParameter();
 
         if (rawId == null)
@@ -108,34 +109,13 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
         }
         else if (!cycle.isRewinding())
         {
+            if (!isDisabled())
+                delegate.registerForFocus(this, ValidationConstants.NORMAL_FIELD);
+
             renderFormComponent(writer, cycle);
 
             if (delegate.isInError())
-            {
-                select(cycle);
-            }
-        }
-    }
-
-    protected void select(IRequestCycle cycle)
-    {
-        if (cycle.getAttribute(SELECTED_ATTRIBUTE_NAME) == null)
-        {
-            PageRenderSupport pageRenderSupport = TapestryUtils.getOptionalPageRenderSupport(cycle);
-
-            if (pageRenderSupport != null)
-            {
-                String formName = getForm().getName();
-                String fieldName = getName();
-
-                String script = "focus(document." + formName + "." + fieldName + ")";
-
-                pageRenderSupport.addInitializationScript(script);
-
-                // Put a marker in, indicating that the selected field is known.
-
-                cycle.setAttribute(SELECTED_ATTRIBUTE_NAME, Boolean.TRUE);
-            }
+                delegate.registerForFocus(this, ValidationConstants.ERROR_FIELD);
         }
     }
 

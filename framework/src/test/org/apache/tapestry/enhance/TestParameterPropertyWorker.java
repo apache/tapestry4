@@ -38,11 +38,18 @@ import org.easymock.MockControl;
 public class TestParameterPropertyWorker extends HiveMindTestCase
 {
 
-    private ParameterSpecification buildParameterSpec(String propertyName, String type,
+    private ParameterSpecification buildParameterSpec(String parameterName, String type,
             Location location)
+    {
+        return buildParameterSpec(parameterName, parameterName, type, location);
+    }
+
+    private ParameterSpecification buildParameterSpec(String parameterName, String propertyName,
+            String type, Location location)
     {
         ParameterSpecification ps = new ParameterSpecification();
 
+        ps.setParameterName(parameterName);
         ps.setPropertyName(propertyName);
         ps.setType(type);
         ps.setLocation(location);
@@ -68,9 +75,9 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
 
     public void testFailure() throws Exception
     {
-        Location l = fabricateLocation(207);
+        Location l = newLocation();
 
-        IComponentSpecification spec = buildComponentSpecification("fred", buildParameterSpec(
+        IComponentSpecification spec = buildComponentSpecification("wilma", buildParameterSpec(
                 "wilma",
                 "String",
                 l));
@@ -97,6 +104,24 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
 
         ParameterPropertyWorker w = new ParameterPropertyWorker();
         w.setErrorLog(log);
+
+        w.performEnhancement(op, spec);
+
+        verifyControls();
+    }
+
+    public void testSkipParameterAlias()
+    {
+        IComponentSpecification spec = buildComponentSpecification("barney", buildParameterSpec(
+                "fred",
+                null,
+                null));
+
+        EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
+
+        replayControls();
+
+        ParameterPropertyWorker w = new ParameterPropertyWorker();
 
         w.performEnhancement(op, spec);
 
@@ -210,7 +235,8 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
 
     public void testDifferentPropertyName()
     {
-        IComponentSpecification spec = buildComponentSpecification("barney", buildParameterSpec(
+        IComponentSpecification spec = buildComponentSpecification("myparam", buildParameterSpec(
+                "myparam",
                 "fred",
                 null,
                 null));
@@ -233,7 +259,7 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
         builder.addln("if (_$fred$Cached) return _$fred;");
-        builder.addln("org.apache.tapestry.IBinding binding = getBinding(\"barney\");");
+        builder.addln("org.apache.tapestry.IBinding binding = getBinding(\"myparam\");");
         builder.addln("if (binding == null) return _$fred$Default;");
         builder.add("java.lang.String result = ");
         builder.addln("(java.lang.String) binding.getObject(_class$String);");
@@ -262,11 +288,11 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         builder.addln("return;");
         builder.end();
 
-        builder.addln("org.apache.tapestry.IBinding binding = getBinding(\"barney\");");
+        builder.addln("org.apache.tapestry.IBinding binding = getBinding(\"myparam\");");
 
         builder.addln("if (binding == null)");
         builder
-                .addln("  throw new org.apache.hivemind.ApplicationRuntimeException(\"Parameter 'barney' is not bound and can not be updated.\");");
+                .addln("  throw new org.apache.hivemind.ApplicationRuntimeException(\"Parameter 'myparam' is not bound and can not be updated.\");");
 
         builder.addln("binding.setObject(($w) $1);");
 
@@ -282,7 +308,7 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
 
         BodyBuilder expectedCleanup = new BodyBuilder();
 
-        expectedCleanup.addln("org.apache.tapestry.IBinding fredBinding = getBinding(\"barney\");");
+        expectedCleanup.addln("org.apache.tapestry.IBinding fredBinding = getBinding(\"myparam\");");
         expectedCleanup.addln("if (_$fred$Cached && ! fredBinding.isInvariant())");
         expectedCleanup.begin();
         expectedCleanup.addln("_$fred$Cached = false;");
