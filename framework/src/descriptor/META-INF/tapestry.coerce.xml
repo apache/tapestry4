@@ -69,6 +69,8 @@
     <converter class="java.lang.Object" object="instance:ObjectToIteratorConverter"/>
     <converter class="java.util.Collection" object="instance:CollectionToIteratorConverter"/>
     <converter class="java.lang.Object[]" object="instance:ObjectArrayToIteratorConverter"/>
+    <converter class="char[]" object="instance:CharArrayToIteratorConverter"/>
+    <converter class="boolean[]" object="instance:BooleanArrayToIteratorConverter"/>    
   </contribution>
   
   <service-point id="IteratorConverter" interface="TypeConverter">

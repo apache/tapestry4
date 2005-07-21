@@ -16,6 +16,7 @@ package org.apache.tapestry.coerce;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -90,6 +91,26 @@ public class TestBooleanConverters extends HiveMindTestCase
         TypeConverter c = new ObjectToBooleanConverter();
 
         assertSame(Boolean.TRUE, c.convertValue("foo"));
+    }
+
+    public void testBooleanArrayToIterator()
+    {
+        TypeConverter c = new BooleanArrayToIteratorConverter();
+
+        boolean[] input =
+        { false, true, true, false };
+
+        Iterator i = (Iterator) c.convertValue(input);
+
+        for (int j = 0; j < input.length; j++)
+        {
+            Boolean expected = input[j] ? Boolean.TRUE : Boolean.FALSE;
+
+            assertSame(expected, i.next());
+        }
+
+        assertEquals(false, i.hasNext());
+
     }
 
 }
