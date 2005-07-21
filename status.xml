@@ -59,7 +59,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-428">Parameters with aliases cause class enhancement exceptions</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-385">Restore "zebra-striping" to the Exception page</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-427">InspectorButton ignores its disabled parameter</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-383, TAPESTRY-225">Properly position cursor into form fields</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-383, TAPESTRY-224">Properly position cursor into form fields</action>
     </release>
     <release version="4.0-beta-2" date="Jul 9 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-356">FormConditional extends BaseComponent but has no template</action>
