@@ -72,7 +72,7 @@ public class RestartService implements IEngineService
 
     public void service(IRequestCycle cycle) throws IOException
     {
-        HttpSession session = _request.getSession();
+        HttpSession session = _request.getSession(false);
 
         if (session != null)
         {
