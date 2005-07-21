@@ -47,7 +47,7 @@ public class TestRestartService extends TapestryTestCase
 
         // Training
 
-        request.getSession();
+        request.getSession(false);
         requestControl.setReturnValue(null);
 
         cycle.getAbsoluteURL("/app");
@@ -88,7 +88,7 @@ public class TestRestartService extends TapestryTestCase
 
         // Training
 
-        request.getSession();
+        request.getSession(false);
         requestControl.setReturnValue(session);
 
         session.invalidate();
@@ -136,7 +136,7 @@ public class TestRestartService extends TapestryTestCase
 
         // Training
 
-        request.getSession();
+        request.getSession(false);
         requestControl.setReturnValue(session);
 
         session.invalidate();

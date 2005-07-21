@@ -62,6 +62,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-383, TAPESTRY-224">Properly position cursor into form fields</action>
       <action type="fix" dev="HLS" due-to="Kent Tong" fixes-bug="TAPESTRY-406">Bean Property does not get updated from component parameter</action>
       <action type="fix" dev="HLS" due-to="Laurent Etiemble" fixes-bug="TAPESTRY-425">Foreach components cannot handle primitive arrays</action>
+      <action type="fix" dev="HLS" due-to="Fernando" fixes-bug="TAPESTRY-424">RestartService creates HttpSession wrongfully</action>
     </release>
     <release version="4.0-beta-2" date="Jul 9 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-356">FormConditional extends BaseComponent but has no template</action>
