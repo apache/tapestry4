@@ -37,7 +37,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
 {
     // Uses Thread's context class loader
 
-    private ClassResolver _ognlResolver = new OgnlClassResolver();
+    private final ClassResolver _ognlResolver = new OgnlClassResolver();
 
     private ExpressionCache _expressionCache;
 
@@ -46,6 +46,11 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
     private TypeConverter _typeConverter;
 
     private List _contributions;
+
+    // Context, with a root of null, used when evaluating an expression
+    // to see if it is a constant.
+
+    private Map _defaultContext;
 
     public void setApplicationSpecification(IApplicationSpecification applicationSpecification)
     {
@@ -67,6 +72,8 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
 
             OgnlRuntime.setPropertyAccessor(c.getSubjectClass(), c.getAccessor());
         }
+
+        _defaultContext = Ognl.createDefaultContext(null, _ognlResolver, _typeConverter);
 
     }
 
@@ -127,7 +134,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
 
         try
         {
-            return Ognl.isConstant(compiled);
+            return Ognl.isConstant(compiled, _defaultContext);
         }
         catch (Exception ex)
         {
