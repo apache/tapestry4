@@ -35,7 +35,7 @@ import org.easymock.MockControl;
  */
 public class TestExpressionEvaluator extends HiveMindTestCase
 {
-    private ExpressionEvaluator create()
+    private ExpressionEvaluatorImpl create()
     {
         ExpressionCache cache = new ExpressionCacheImpl();
 
@@ -146,13 +146,33 @@ public class TestExpressionEvaluator extends HiveMindTestCase
 
     public void testIsConstant()
     {
-        ExpressionEvaluator ee = create();
+        ExpressionEvaluatorImpl ee = create();
+
+        ee.setApplicationSpecification(newAppSpec());
+        ee.setContributions(Collections.EMPTY_LIST);
+
+        replayControls();
+
+        ee.initializeService();
 
         assertEquals(true, ee.isConstant("true"));
         assertEquals(true, ee.isConstant("'OGNL'"));
         assertEquals(false, ee.isConstant("foo.bar"));
         assertEquals(false, ee.isConstant("bar()"));
         assertEquals(true, ee.isConstant("@org.apache.tapestry.Tapestry@HOME_SERVICE"));
+
+        verifyControls();
+    }
+
+    private IApplicationSpecification newAppSpec()
+    {
+        MockControl control = newControl(IApplicationSpecification.class);
+        IApplicationSpecification spec = (IApplicationSpecification) control.getMock();
+
+        spec.checkExtension(Tapestry.OGNL_TYPE_CONVERTER);
+        control.setReturnValue(false);
+
+        return spec;
     }
 
     public void testIsConstantFail()
@@ -196,7 +216,7 @@ public class TestExpressionEvaluator extends HiveMindTestCase
         ee.setExpressionCache(cache);
         ee.setApplicationSpecification(as);
         ee.setContributions(Collections.EMPTY_LIST);
-        
+
         ee.initializeService();
 
         verifyControls();
