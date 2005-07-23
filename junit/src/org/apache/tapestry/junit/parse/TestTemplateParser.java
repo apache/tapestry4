@@ -340,6 +340,11 @@ public class TestTemplateParser extends TestCase
     {
         runFailure("DuplicateTagAttribute.html", "Tag <input> on line 3 contains more than one 'value' attribute.");
     }
+    
+    public void testDuplicateTagAttributeFailureII()
+    {
+        runFailure("DuplicateTagAttributeII.html", "Tag <input> on line 3 contains more than one 'value' attribute.");
+    }
 
     public void testUnclosedOpenTagFailure()
     {

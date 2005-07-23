@@ -884,8 +884,20 @@ public class TemplateParser
                         String attributeValue =
                             new String(_templateData, attributeValueStart, _cursor - attributeValueStart);
 
-                        _attributes.put(attributeName, attributeValue);
                         attributeEndEvent(_cursor);
+                        
+                        if (_attributes.containsKey(attributeName))
+                        	templateParseProblem(
+                                    Tapestry.format(
+                                        "TemplateParser.duplicate-tag-attribute",
+                                        tagName,
+                                        Integer.toString(_line),
+                                        attributeName),
+                                    getCurrentLocation(),
+                                    _line,
+                                    _cursor);
+                            
+                          _attributes.put(attributeName, attributeValue);
 
                         state = WAIT_FOR_ATTRIBUTE_NAME;
                         break;
