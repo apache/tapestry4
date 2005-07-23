@@ -335,6 +335,11 @@ public class TestTemplateParser extends TestCase
     {
         runFailure("UnterminatedComment.html", "Comment on line 3 did not end.");
     }
+    
+    public void testDuplicateTagAttributeFailure()
+    {
+        runFailure("DuplicateTagAttribute.html", "Tag <input> on line 3 contains more than one 'value' attribute.");
+    }
 
     public void testUnclosedOpenTagFailure()
     {
