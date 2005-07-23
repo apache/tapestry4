@@ -124,6 +124,9 @@
     -->
   </todo>
   <changes>
+  	<release version="3.0.4" date="unreleased">
+      <action type="fix" dev="GL" fixes-bug="TAPESTRY-431"> Fixed TemplateParser throws an exception and stops parsing when duplicate attributes are found in a tag. </action>
+    </release>
     <release version="3.0.3" date="Mar 26 2005">
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-230"> JanitorThread now terminates explicitly when servlet is destroyed.  Interruption properly terminates thread during sweep operation. </action>
