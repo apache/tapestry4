@@ -755,9 +755,10 @@ public class TemplateParser implements ITemplateParser
                         String attributeValue = new String(_templateData, attributeValueStart,
                                 _cursor - attributeValueStart);
 
-                        addAttributeIfUnique(tagName, attributeName, attributeValue);
-
                         attributeEndEvent(_cursor);
+                        
+                        addAttributeIfUnique(tagName, attributeName, attributeValue);
+                        
 
                         // Advance over the quote.
                         advance();
@@ -777,9 +778,9 @@ public class TemplateParser implements ITemplateParser
                     {
                         String attributeValue = new String(_templateData, attributeValueStart,
                                 _cursor - attributeValueStart);
-
-                        addAttributeIfUnique(tagName, attributeName, attributeValue);
+                        
                         attributeEndEvent(_cursor);
+                        addAttributeIfUnique(tagName, attributeName, attributeValue);                        
 
                         state = WAIT_FOR_ATTRIBUTE_NAME;
                         break;
