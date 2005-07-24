@@ -1,0 +1,15 @@
+This file tests for a duplicate tag attribute.
+
+<input jwcid="@TextField" value='ognl:emailAddress' type="text" name="emailaddress" id="emailaddress"  size="10" maxlength="25" value="" />
+
+One possible scenario, designer gives developer a page with a long <input> tag.
+Developer adds jwcid and ognl expression for 'value' but misses the fact that
+there is already a 'value' attribute. Unless this case was handled as an error, the TemplateParser
+will silently throw away the first 'value' attribute and bind the parameter statically.
+This hurts in, say, a TextField as Tapestry dumps an exception page when it tries to update
+value's binding, which is static and does not allow this.
+    
+Tough to track down as, in this case, the stack trace shows that AbstractBinding.setString()
+throwing the exception. This kills newbies!
+    
+In case you are wondering...this file is slightly different than the DuplicateTagAttribute.html. Hint: check the quotes for 'value'

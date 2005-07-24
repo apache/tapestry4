@@ -755,7 +755,8 @@ public class TemplateParser implements ITemplateParser
                         String attributeValue = new String(_templateData, attributeValueStart,
                                 _cursor - attributeValueStart);
 
-                        _attributes.put(attributeName, attributeValue);
+                        addAttributeIfUnique(tagName, attributeName, attributeValue);
+
                         attributeEndEvent(_cursor);
 
                         // Advance over the quote.
@@ -777,7 +778,7 @@ public class TemplateParser implements ITemplateParser
                         String attributeValue = new String(_templateData, attributeValueStart,
                                 _cursor - attributeValueStart);
 
-                        _attributes.put(attributeName, attributeValue);
+                        addAttributeIfUnique(tagName, attributeName, attributeValue);
                         attributeEndEvent(_cursor);
 
                         state = WAIT_FOR_ATTRIBUTE_NAME;
@@ -872,6 +873,25 @@ public class TemplateParser implements ITemplateParser
             _blockStart = cursorStart;
 
         advance();
+    }
+
+    /**
+     * @throws TemplateParseException
+     * @since 4.0
+     */
+
+    private void addAttributeIfUnique(String tagName, String attributeName, String attributeValue)
+            throws TemplateParseException
+    {
+
+        if (_attributes.containsKey(attributeName))
+            templateParseProblem(
+                    ParseMessages.duplicateTagAttribute(tagName, _line, attributeName),
+                    getCurrentLocation(),
+                    _line,
+                    _cursor);
+
+        _attributes.put(attributeName, attributeValue);
     }
 
     /**

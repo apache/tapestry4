@@ -183,4 +183,13 @@ class ParseMessages
     {
         return _formatter.format("range-error", token, new Integer(length));
     }
+
+    public static String duplicateTagAttribute(String tagName, int line, String attributeName)
+    {
+        return _formatter.format(
+                "duplicate-tag-attribute",
+                tagName,
+                new Integer(line),
+                attributeName);
+    }
 }
