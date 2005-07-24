@@ -651,4 +651,20 @@ public class TestTemplateParser extends TestCase
         assertCloseToken(tokens[4], 4);
         assertCloseToken(tokens[6], 5);
     }
+
+    /** @since 4.0 */
+    public void testDuplicateTagAttributeFailure()
+    {
+        runFailure(
+                "DuplicateTagAttribute.html",
+                "Tag <input> on line 3 contains more than one 'value' attribute.");
+    }
+
+    /** @since 4.0 */
+    public void testDuplicateTagAttributeFailureSingleQuotes()
+    {
+        runFailure(
+                "DuplicateTagAttributeSingleQuotes.html",
+                "Tag <input> on line 3 contains more than one 'value' attribute.");
+    }
 }

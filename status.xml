@@ -35,10 +35,8 @@
   <todo>
     <actions priority="Release ???">
       <action context="code" dev="open">Handle change of locale correctly, by reloading new instance of page in proper locale</action>
-      <action context="code" dev="HLS">Improved User's Guide to replace existing Developer's Guide</action>
-      <action context="code" dev="DS">Fix all the Component Reference pages to use the 3.0 syntax</action>
-      <action context="script" dev="open">Improve the "include script" element to support relative scripts, scripts in context, script in classpath</action>
       <action context="code" dev="open">Intersertials</action>
+      <action context="code" dev="open">POJO page and component classes</action>
     </actions>
     <!-- Add todo items. @context is an arbitrary string. Eg:
     <actions priority="high">
@@ -64,6 +62,7 @@
       <action type="fix" dev="HLS" due-to="Laurent Etiemble" fixes-bug="TAPESTRY-425">Foreach components cannot handle primitive arrays</action>
       <action type="fix" dev="HLS" due-to="Fernando" fixes-bug="TAPESTRY-424">RestartService creates HttpSession wrongfully</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-408">OGNL can't access a static field in a class in the webapp context</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-432" due-to="Geoff Longman">Change TemplateParser to throw an exception and stop parsing when duplicate attributes are found in a tag</action>
     </release>
     <release version="4.0-beta-2" date="Jul 9 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-356">FormConditional extends BaseComponent but has no template</action>
@@ -333,6 +332,11 @@
     </release>
   </changes>
   <votes>
+    <vote title="Tapestry 4.0-beta-3" date="Jul 21 2005" dev="HLS">
+      <motion>Things have been cranking along, and we have a number of important
+fixes out there, and likely more by the time this vote completes.</motion>
+      <response>HLS, PF, EH, DS, RLS, GL: +1</response>
+    </vote>
     <vote title="Tapestry 4.0-beta-2" date="Jul 10 2005" dev="HLS">
       <motion>Release early, release often.  Let's do a short vote and release
 beta-2 as soon as possible.</motion>
