@@ -19,57 +19,52 @@ import java.rmi.RemoteException;
 import javax.ejb.EJBObject;
 
 /**
- *  Remote interface for the BookQuery stateless session bean.
- *
- *  @version $Id$
- *  @author Howard Lewis Ship
- *
- **/
+ * Remote interface for the BookQuery stateless session bean.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public interface IBookQuery extends EJBObject
 {
     /**
-     *  Returns the total number of results rows in the query.
-     *
-     **/
+     * Returns the total number of results rows in the query.
+     */
 
     public int getResultCount() throws RemoteException;
 
     /**
-     *  Returns a selected subset of the results.
-     *
-     **/
+     * Returns a selected subset of the results.
+     */
 
     public Book[] get(int offset, int length) throws RemoteException;
 
     /**
-     *  Performs a query of books with the matching title and (optionally) publisher.
-     *
-     *  @param parameters defines subset of books to return.
-     *  @param sortOrdering order of items in result set.
-     *
-     **/
+     * Performs a query of books with the matching title and (optionally) publisher.
+     * 
+     * @param parameters
+     *            defines subset of books to return.
+     * @param sortOrdering
+     *            order of items in result set.
+     */
 
-    public int masterQuery(MasterQueryParameters parameters, SortOrdering sortOrdering) throws RemoteException;
+    public int masterQuery(MasterQueryParameters parameters, SortOrdering sortOrdering)
+            throws RemoteException;
 
     /**
-     *  Queries on books owned by a given person.
-     *
-     **/
+     * Queries on books owned by a given person.
+     */
 
     public int ownerQuery(Integer ownerPK, SortOrdering sortOrdering) throws RemoteException;
 
     /**
-     *  Queries on books held by a given person.
-     *
-     **/
+     * Queries on books held by a given person.
+     */
 
     public int holderQuery(Integer holderPK, SortOrdering sortOrdering) throws RemoteException;
 
     /**
-     *  Queries the list of books held by the borrower but not owned by the borrower.
-     *
-     **/
+     * Queries the list of books held by the borrower but not owned by the borrower.
+     */
 
     public int borrowerQuery(Integer borrowerPK, SortOrdering sortOrdering) throws RemoteException;
 }

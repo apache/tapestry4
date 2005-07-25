@@ -18,12 +18,10 @@ import java.rmi.RemoteException;
 import java.sql.Timestamp;
 
 /**
- *  Remote interface for the Book entity bean.
- *
- *  @version $Id$
- *  @author Howard Lewis Ship
- *
- **/
+ * Remote interface for the Book entity bean.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public interface IBook extends IEntityBean
 {
@@ -52,7 +50,7 @@ public interface IBook extends IEntityBean
     public Integer getHolderId() throws RemoteException;
 
     public void setPublisherId(Integer value) throws RemoteException;
-    
+
     public Integer getPublisherId() throws RemoteException;
 
     public boolean getHidden() throws RemoteException;
