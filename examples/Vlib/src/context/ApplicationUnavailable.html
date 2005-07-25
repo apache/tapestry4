@@ -1,0 +1,51 @@
+<html>
+<head>
+<title>Virtual Library: Search for Books</title>
+<link rel="stylesheet" type="text/css" href="scripts/style_virtlib_pcIE55.css">
+</head>
+<span jwcid="$content$">
+	
+<span jwcid="@Shell" title="Virtual Library: Application Unavailable" 
+	stylesheets="ognl:{ assets.stylesheet, assets.exception_stylesheet }">
+<body jwcid="@Body" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+	
+<table border="0" cellpadding="0" cellspacing="0" width="691" height="110">
+  <tr>
+    <td rowspan="1" colspan="3" width="691" height="58"><img src="images/title/title_1x1.png" width="691" height="58" border="0"/></td>
+  </tr>
+  <tr>
+    <td rowspan="1" colspan="1" width="91" height="40"><img src="images/title/title_2x1.png" width="91" height="40" border="0"/></td>
+    <td rowspan="1" colspan="1" width="345" height="40"><img src="images/title/blank.png" width="345" height="40" border="0"/></td>
+    <td rowspan="1" colspan="1" width="255" height="40"><img src="images/title/title_2x3.png" width="255" height="40" border="0"/></td>
+  </tr>
+  <tr>
+    <td rowspan="1" colspan="3" width="691" height="12"><img src="images/title/title_3x1.png" width="691" height="12" border="0"/></td>
+  </tr>
+</table>
+
+<table style="{ padding-left: 4px }">
+	
+<tr>
+	<td>
+<span jwcid="@ShowError"/>
+
+<p>The Virtual Library application is temporarily unavailable due to
+system errors.  You may attempt to 
+<a jwcid="@ServiceLink" service="restart" href="#">restart the application</a>.
+</p>
+
+<span jwcid="@Conditional" condition="ognl:engine.debugEnabled">
+
+<span jwcid="@ExceptionDisplay" exceptions="ognl:exceptions"/>
+<span jwcid="@Delegator" delegate="ognl:requestCycle.requestContext"/>
+<span jwcid="@contrib:InspectorButton"/>
+</span>
+
+</td>
+</tr>
+</table>
+
+</body>
+</span>
+</span>
+</html>

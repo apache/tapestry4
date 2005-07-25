@@ -1,0 +1,30 @@
+<html jwcid="$content$">
+<body jwcid="@Border" title="Matching Books" browser="ognl:components.browser">
+
+<table class="data">
+  <tr>
+    <th><span jwcid="sortTitle">Title</span></th>
+    <th><span jwcid="sortAuthor">Author</span></th>
+    <th><span jwcid="sortPublisher">Publisher</span></th>
+    <th><span jwcid="sortOwner">Owner</span></th>
+    <th><span jwcid="sortBorrower">Borrowed&nbsp;By</span></th>
+    <th>Borrow</th>
+  </tr>
+    <tr jwcid="browser@Browser" query="ognl:bookQuery" value="ognl:currentMatch" listener="listener:requery">
+      <td><a href="#" jwcid="@BookLink" book="ognl:currentMatch">Swing Second Edition</a>
+      </td>
+      <td><span jwcid="@Insert" value="ognl:currentMatch.author">Robinson and Vorobiev</span>
+      </td>
+      <td><span jwcid="@Insert" value="ognl:currentMatch.publisherName">Manning</span>
+      </td>
+      <td><a jwcid="ownerLink" href="#">Jim Moran</a>
+      </td>
+      <td><a jwcid="holderLink" href="#">Howard Lewis Ship</a>
+      </td>
+      <td class="icon"><a jwcid="@Borrow" book="ognl:currentMatch" href="#"><img src="images/checkout.png" alt="Borrow" border="0" vspace="2"></a>
+      </td>
+    </tr>
+</table>
+
+</body>
+</html>

@@ -12,44 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.vlib.ejb;
+package org.apache.tapestry.vlib;
+
+import org.apache.tapestry.IPage;
 
 /**
- * Represents the different columns which may be sorted.
+ *  Marks pages that have an error property (of type String).
+ *
+ *  @see VirtualLibraryDelegate
+ *
+ *  @author Howard Lewis Ship
  * 
- * @author Howard Lewis Ship
- * @since 3.0
- */
+ **/
 
-public enum SortColumn {
+public interface IErrorProperty extends IPage
+{
+    public String getError();
 
-    /**
-     * Sort by book title.
-     */
-
-    TITLE,
-
-    /**
-     * Sort by author name.
-     */
-
-    AUTHOR,
-
-    /**
-     * Sort by publisher name.
-     */
-
-    PUBLISHER,
-
-    /**
-     * Sort by holder name (last name, then first). Not applicable to all queries.
-     */
-
-    HOLDER,
-
-    /**
-     * Sort by book owner (last name, then first). Not applicable to all queries.
-     */
-
-    OWNER;
+    public void setError(String value);
 }

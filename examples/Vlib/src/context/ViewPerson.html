@@ -1,0 +1,52 @@
+<html jwcid="$content$">
+<body jwcid="@Border" subtitle="ognl:person.naturalName" browser="ognl:components.browser">
+	
+<table class="form">
+  <tr>
+    <th>User</th>
+    <td><span jwcid="@Insert" value="ognl:person.naturalName">Jim Moran</span></td>
+  </tr>
+  <tr>
+    <th>E-Mail</th>
+    <td><a jwcid="mailLink" href="#"><span jwcid="@Insert" value="ognl:person.email">foo@bar.com</span></a></td>
+  </tr>
+</table>
+
+
+<span jwcid="@Conditional" condition="ognl:components.browser.resultCount  == 0">
+
+<span jwcid="@Information">
+<span jwcid="@Insert" value="ognl:person.naturalName">Jim Moran</span>
+has no books available for lending.
+</span>
+</span>
+
+<span jwcid="@Conditional" condition="ognl:components.browser.resultCount != 0">
+
+						 
+<table class="data">
+  <tr>
+    <th><span jwcid="sortTitle">Title</span></th>
+    <th><span jwcid="sortAuthor">Author</span></th>
+    <th><span jwcid="sortPublisher">Publisher</span></th>
+    <th><span jwcid="sortBorrower">Borrowed&nbsp;By</span></th>
+    <th>Borrow</th>
+  </tr>
+  <tr jwcid="browser@Browser" query="ognl:query" value="ognl:currentMatch" listener="listener:requery">
+    <td><a href="#" jwcid="@BookLink" book="ognl:currentMatch">DocBook:The Definitive Guide</a>
+    </td>
+    <td><span jwcid="@Insert" value="ognl:currentMatch.author">Walsh &#38; Muellner</span>
+    </td>
+    <td><span jwcid="@Insert" value="ognl:currentMatch.publisherName">O'Reilly</span>
+    </td>
+    <td><a jwcid="holderLink" href="#">Jim Moran</a>
+    </td>
+    <td class="icon"><a jwcid="@Borrow" book="ognl:currentMatch" href="#"><img src="images/checkout.png" width="25" height="26" border="0"></a>
+    </td>
+  </tr>
+</table>
+
+
+</span>
+</body>
+</html>

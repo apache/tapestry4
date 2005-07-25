@@ -12,44 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.vlib.ejb;
+package org.apache.tapestry.vlib;
+
+import org.apache.tapestry.IPage;
+import org.apache.tapestry.IRequestCycle;
 
 /**
- * Represents the different columns which may be sorted.
+ * Interface used for pages that may be activated by the Border component.
  * 
  * @author Howard Lewis Ship
  * @since 3.0
  */
 
-public enum SortColumn {
-
-    /**
-     * Sort by book title.
-     */
-
-    TITLE,
-
-    /**
-     * Sort by author name.
-     */
-
-    AUTHOR,
-
-    /**
-     * Sort by publisher name.
-     */
-
-    PUBLISHER,
-
-    /**
-     * Sort by holder name (last name, then first). Not applicable to all queries.
-     */
-
-    HOLDER,
-
-    /**
-     * Sort by book owner (last name, then first). Not applicable to all queries.
-     */
-
-    OWNER;
+public interface IActivate extends IPage
+{
+    public void activate(IRequestCycle cycle);
 }

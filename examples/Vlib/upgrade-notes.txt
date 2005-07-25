@@ -1,0 +1,27 @@
+Changed SortColumn from (common-lang) Enum to JDK 1.5 enum.
+
+VlibLibraryEngine
+
+activateExceptionPage()
+	- Changed signature (ResponseOutputStream no longer exists)
+	
+handleStaleSessionException()
+	- Changed signature (ResponseOutputStream no longer exists)
+
+
+Border
+
+getBrowserBinding()
+	- No longer exists (no binding properties, just connected parameter properties)
+selectBrowserPage() (listener method)
+	- removed IRequestCycle parameter (no longer needed)
+	- added page parameter
+	
+Login
+- Changed interface from PageRenderListener to PageBeginRenderListener
+loginUser()
+	- IEngine.getServletPath() has been removed, as has RequestContext.addCookie()
+	- Replaced with calls to infrastructure:CookieSource [TAPESTRY-438]
+	- Replace IEngine.forgetPage() with IRequestCycle.forgetPage()
+pageBeginRender()
+	- Replaced with calls to infrastructure:CookieSource (to read the user's email)

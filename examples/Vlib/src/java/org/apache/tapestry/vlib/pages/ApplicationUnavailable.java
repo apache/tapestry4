@@ -12,44 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.vlib.ejb;
+package org.apache.tapestry.vlib.pages;
+
+import org.apache.tapestry.pages.Exception;
+import org.apache.tapestry.vlib.IErrorProperty;
 
 /**
- * Represents the different columns which may be sorted.
+ * A page only displayed when the application is unavailable (typically because of repeated
+ * {@link java.rmi.RemoteException}s or {@link javax.naming.NamingException}s accessing EJBs.
  * 
+ * @see org.apache.tapestry.vlib.VirtualLibraryEngine#rmiFailure(String, java.rmi.RemoteException,
+ *      int)
  * @author Howard Lewis Ship
- * @since 3.0
+ * @since 2.2
  */
 
-public enum SortColumn {
+public abstract class ApplicationUnavailable extends Exception implements IErrorProperty
+{
 
-    /**
-     * Sort by book title.
-     */
+    public void activate(String message, Throwable ex)
+    {
+        setError(message);
 
-    TITLE,
-
-    /**
-     * Sort by author name.
-     */
-
-    AUTHOR,
-
-    /**
-     * Sort by publisher name.
-     */
-
-    PUBLISHER,
-
-    /**
-     * Sort by holder name (last name, then first). Not applicable to all queries.
-     */
-
-    HOLDER,
-
-    /**
-     * Sort by book owner (last name, then first). Not applicable to all queries.
-     */
-
-    OWNER;
+        setException(ex);
+    }
 }
