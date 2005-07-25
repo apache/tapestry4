@@ -12,44 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.vlib.ejb;
+package org.apache.tapestry.vlib;
+
+import org.apache.tapestry.IPage;
 
 /**
- * Represents the different columns which may be sorted.
+ * String message property, for many pages that can display an informational message.
  * 
  * @author Howard Lewis Ship
  * @since 3.0
  */
 
-public enum SortColumn {
+public interface IMessageProperty extends IPage
+{
+    public String getMessage();
 
-    /**
-     * Sort by book title.
-     */
-
-    TITLE,
-
-    /**
-     * Sort by author name.
-     */
-
-    AUTHOR,
-
-    /**
-     * Sort by publisher name.
-     */
-
-    PUBLISHER,
-
-    /**
-     * Sort by holder name (last name, then first). Not applicable to all queries.
-     */
-
-    HOLDER,
-
-    /**
-     * Sort by book owner (last name, then first). Not applicable to all queries.
-     */
-
-    OWNER;
+    public void setMessage(String message);
 }

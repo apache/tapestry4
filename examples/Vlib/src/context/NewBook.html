@@ -1,0 +1,75 @@
+<html jwcid="$content$">
+<body jwcid="@Border">
+
+<form jwcid="@Form" listener="listener:addBook" delegate="ognl:validationDelegate">
+	
+<p>
+	Enter information about the book into the form below. Fields marked with
+	<span class="required-field">*</span> are required.
+</p>
+
+<span jwcid="@ShowError"/>
+<span jwcid="@ShowValidationError" delegate="ognl:validationDelegate"/>
+
+  <table class="form">
+    <tr>
+      <th width="80" height="30"><span jwcid="@FieldLabel" field="ognl:components.inputTitle">Title</span></th>
+      <td><span class="required-field">*</span></td>
+      <td width="420"><input jwcid="inputTitle" type="text" size="50" maxlength="100"/>
+      </td>
+    </tr>
+    <tr>
+      <th><span jwcid="@FieldLabel" field="ognl:components.inputAuthor">Author</span>
+      	 <td><span class="required-field">*</span></td>
+      </th>
+      <td><input jwcid="inputAuthor" type="text" size="30" maxlength="60"/>
+      </td>
+    </tr>
+    <tr>
+      <th>ISBN</th>
+      <td></td>
+      <td><input jwcid="inputISBN@TextField" value="ognl:attributes.ISBN" type="text" maxlength="20" size="20"/>
+      </td>
+    </tr>
+    <tr>
+      <th><span jwcid="@FieldLabel" field="ognl:components.inputPublisherName">Publisher</span></th>
+       <td><span class="required-field">*</span></td>
+      <td><select jwcid="inputPublisher@PropertySelection" value="ognl:attributes.publisherId" model="ognl:engine.publisherModel"/>
+<input jwcid="inputPublisherName" type="text" size="20" maxlength="40"/>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2"></td>
+      <td>
+	Note: If the Publisher is not listed, leave the option blank and type the name of the publisher in the field to the right.
+      </td>
+    </tr>
+    <tr>
+      <th>Description</th>
+      <td></td>
+      <td><textarea jwcid="inputDescription@TextArea" value="ognl:attributes.description" cols="35" rows="8"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <th>Hidden</th>
+      <td></td>
+      <td><input jwcid="inputHidden@Checkbox" selected="ognl:attributes.hidden" type="checkbox"/>Check to prevent this book from appearing in searches.
+      </td>
+    </tr>
+    <tr>
+      <th>Lendable</th>
+      <td></td>
+      <td><input jwcid="inputLendable@Checkbox" selected="ognl:attributes.lendable" type="checkbox"/>Leave checked to allow this book to be borrowed by others.
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+      </td>
+      <td><input type="image" src="images/add.png" height="20" width="28" border="0"/>
+      </td>
+    </tr>
+  </table>
+<span jwcid="@Script" script="Publisher.script" select="ognl:components.inputPublisher" field="ognl:components.inputPublisherName"/>
+</form>
+</body>
+</html>

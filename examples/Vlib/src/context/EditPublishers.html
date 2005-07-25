@@ -1,0 +1,26 @@
+<html jwcid="$content$">
+<body jwcid="@Border">
+<span jwcid="@ShowMessage"/>
+<span jwcid="@ShowError"/>
+<form jwcid="@Form" listener="listener:processForm">
+  <p>This page allows you to rename and delete publishers.
+  </p>
+  <table class="data">
+    <tr>
+      <th>Publisher</th>
+      <th>Delete</th>
+    </tr>
+    <tr jwcid="listEdit">
+      <td class="control"><input jwcid="inputName@TextField" value="ognl:publisher.name" size="40" maxlength="40"/>
+      </td>
+      <td class="checkbox"><input type="checkbox" jwcid="delete@Checkbox" selected="ognl:listEditMap.deleted"/>
+      </td>
+    </tr>
+    <tr>
+    <td class="control"><input type="image" src="images/update.png" width="52" height="20" alt="Update"/>
+    </td>	
+    </tr>
+  </table>
+</form>
+</body>
+</html>

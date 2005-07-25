@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE page-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  
+<page-specification class="org.apache.tapestry.vlib.pages.EditBook">
+	
+	<property name="page-type" value="MyLibrary"/>
+  
+  <property-specification name="error" type="java.lang.String"/>
+  <property-specification name="attributes" type="java.util.Map"/>
+  <property-specification name="bookId" type="java.lang.Integer"/>
+  <property-specification name="publisherName" type="java.lang.String"/>
+  
+  <bean name="required" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="clientScriptingEnabled" expression="true"/>
+  </bean>
+  
+	<bean name="optional" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
+	  <set-property name="required" expression="true"/>
+	</bean>
+  
+  <component id="inputTitle" type="ValidField">
+    <binding name="value" expression="attributes.title"/>
+    <static-binding name="displayName" value="Title"/>
+    <binding name="validator" expression="beans.required"/>
+  </component>
+ 
+  <component id="inputAuthor" type="ValidField">
+    <binding name="value" expression="attributes.author"/>
+    <static-binding name="displayName" value="Author"/>
+    <binding name="validator" expression="beans.required"/>
+  </component>
+  
+  <component id="inputPublisher" type="PropertySelection">
+    <binding name="value" expression="attributes.publisherId"/>
+    <binding name="model" expression="engine.publisherModel"/>
+  </component>
+  
+  <component id="inputPublisherName" type="ValidField">
+    <binding name="value" expression="publisherName"/>
+    <static-binding name="displayName" value="Publisher"/>
+    <binding name="validator" expression="beans.optional"/>
+  </component>
+
+
+</page-specification>
