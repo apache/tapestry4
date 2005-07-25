@@ -22,12 +22,10 @@ import javax.ejb.EJBHome;
 import javax.ejb.FinderException;
 
 /**
- *  Home interface for the {@link IBook} entity bean.
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *
- **/
+ * Home interface for the {@link IBook} entity bean.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public interface IBookHome extends EJBHome
 {

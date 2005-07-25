@@ -18,72 +18,72 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- *  Represents a single result row from a {@link IBookQuery}.  In effect,
- *  this is a light-wieght, serializable, read-only version of an {@link IBook}
- *  bean, plus it contains the owner and holder name (which means we don't
- *  have to go find the correct {@link IPerson} to dig out the name).
- *
- *  <p>This is provided for efficient access when doing various queries.
- *
- *  @version $Id$
- *  @author Howard Lewis Ship
- *
- **/
+ * Represents a single result row from a {@link IBookQuery}. In effect, this is a light-wieght,
+ * serializable, read-only version of an {@link IBook} bean, plus it contains the owner and holder
+ * name (which means we don't have to go find the correct {@link IPerson} to dig out the name).
+ * <p>
+ * This is provided for efficient access when doing various queries.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public class Book implements Serializable
 {
     private static final long serialVersionUID = -3423550323411938995L;
-    
+
     /**
-     *  Column index for the Book's primary key.
-     *
-     **/
+     * Column index for the Book's primary key.
+     */
 
     public static final int ID_COLUMN = 0;
 
     /**
-     *  Column index for the book title.
-     *
-     **/
+     * Column index for the book title.
+     */
 
     public static final int TITLE_COLUMN = 1;
 
     public static final int DESCRIPTION_COLUMN = 2;
+
     public static final int ISBN_COLUMN = 3;
+
     public static final int OWNER_ID_COLUMN = 4;
 
     /**
-     *  Column index for a presentable version of the holder's name.
-     *
-     *  @see IPerson#getNaturalName()
-     *
-     **/
+     * Column index for a presentable version of the holder's name.
+     * 
+     * @see IPerson#getNaturalName()
+     */
 
     public static final int OWNER_NAME_COLUMN = 5;
 
     public static final int HOLDER_ID_COLUMN = 6;
+
     public static final int HOLDER_NAME_COLUMN = 7;
+
     public static final int PUBLISHER_ID_COLUMN = 8;
+
     public static final int PUBLISHER_NAME_COLUMN = 9;
+
     public static final int AUTHOR_COLUMN = 10;
 
     public static final int HIDDEN_COLUMN = 11;
+
     public static final int LENDABLE_COLUMN = 12;
+
     public static final int DATE_ADDED_COLUMN = 13;
 
     /**
-     *  Number of columns in the result.
-     *
-     **/
+     * Number of columns in the result.
+     */
 
     public static final int N_COLUMNS = 14;
 
     private Object[] columns;
 
     /**
-     *  Constructs a new BookQueryResult, making an internal copy of the columns passed.
-     *
-     **/
+     * Constructs a new BookQueryResult, making an internal copy of the columns passed.
+     */
 
     public Book(Object[] columns)
     {
@@ -176,10 +176,8 @@ public class Book implements Serializable
     }
 
     /**
-     *  Returns true if the book is borrowed; that is, if its holder doesn't
-     *  match its owner.
-     *
-     **/
+     * Returns true if the book is borrowed; that is, if its holder doesn't match its owner.
+     */
 
     public boolean isBorrowed()
     {
