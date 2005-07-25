@@ -338,4 +338,30 @@ public interface IComponent extends IRender, LocationHolder
      */
 
     public String getMessage(String key);
+
+    /**
+     * Returns this component. That seems to be a very odd method for a component; it's based on the
+     * future direction of Tapestry. Currently, the base classes (such as {@link AbstractComponent},
+     * {@link BaseComponent} and {@link org.apache.tapestry.html.BasePage}) largely provide
+     * <em>structural concerns</em> such as containing, lifecycle, templates, bindings, and so
+     * forth. Tapestry users provide subclasses that represent the <em>application concerns</em>:
+     * properties, (listener) methods and parameters.
+     * <p>
+     * This current vision for Tapestry is to split these two concerns into the component and
+     * <em>the peer</em>. The peer contains the application concerns, the component provides the
+     * structural concerns. The peer will not have to implement any special interfaces or subclass
+     * from any special base classes (though there will be some optional interfaces, annotations
+     * and/or naming conventions). The component will be <em>injected</em> into the peer as this
+     * property: <code>component</code>.
+     * <p>
+     * That means that certain OGNL expression will have to change: For example, "ognl:assets.foo"
+     * may eventually have to be re-written as "ognl:component.assets.foo". Of course, using
+     * "asset:foo", or injecting the foo asset as a property, may make it even easier to reference
+     * the asset. In any case, having this property in place long before the transition should make
+     * it easier to build applications that can survive the transition unchanged.`
+     * 
+     * @since 4.0
+     */
+
+    public IComponent getComponent();
 }

@@ -34,6 +34,13 @@ public class TestAbstractComponent extends HiveMindTestCase
 
     }
 
+    public void testGetComponent()
+    {
+        IComponent component = new ConcreteComponent();
+
+        assertSame(component, component.getComponent());
+    }
+
     public void testUnimplementedMethods()
     {
         IComponent component = new ConcreteComponent();

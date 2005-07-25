@@ -50,6 +50,9 @@
     -->
   </todo>
   <changes>
+    <release version="4.0-beta-4" date="unreleased">
+      <action type="fix" dev="HLS">Add getComponent() method to IComponent.</action>
+    </release>
     <release version="4.0-beta-3" date="Jul 22 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-405">Submit component should deprecate its label parameter</action>
