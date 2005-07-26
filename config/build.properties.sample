@@ -19,7 +19,7 @@ tomcat.dir=
 jetty.dir=
 
 # The absolute path to the directory containing the Jython installation.
-# Required to execute the junit target.
+# Required to execute some of the framework unit tests.
 jython.dir=
 
 

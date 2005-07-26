@@ -9,6 +9,8 @@
 	<classpathentry kind="src" path="annotations/src/java"/>
 	<classpathentry kind="src" path="annotations/src/test"/>
 	<classpathentry kind="src" path="examples/Workbench/src/java"/>
+	<classpathentry kind="src" path="examples/VlibBeans/src/java"/>
+	<classpathentry kind="src" path="examples/Vlib/src/java"/>
 	<classpathentry kind="lib" path="config"/>
 	<classpathentry exported="true" kind="lib" path="framework/src/descriptor"/>
 	<classpathentry exported="true" kind="lib" path="portlet/src/descriptor"/>

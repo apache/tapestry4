@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd" > 
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd" > 
   
 <component-specification class="org.apache.tapestry.contrib.inspector.ShowSpecification">
 
@@ -28,52 +28,52 @@
   <bean name="componentClass" class="org.apache.tapestry.bean.EvenOdd"/>
   <bean name="beanClass" class="org.apache.tapestry.bean.EvenOdd"/>
         
-  <component id="e_formal" type="Foreach">
-    <binding name="source" expression="formalParameterNames"/>
-    <binding name="value" expression="parameterName"/>
-    <static-binding name="element">tr</static-binding>
-    <binding name="class" expression="beans.formalClass.next"/>
+  <component id="e_formal" type="For">
+    <binding name="source" value="ognl:formalParameterNames"/>
+    <binding name="value" value="ognl:parameterName"/>
+  	<binding name="element" value="tr"/>
+    <binding name="class" value="ognl:beans.formalClass.next"/>
   </component>
      
   
   <component id="e_informal" type="Foreach"> 
-    <binding name="source" expression="informalParameterNames"/>
-    <binding name="value" expression="parameterName"/>
-    <static-binding name="element">tr</static-binding>
-    <binding name="class" expression="beans.informalClass.next"/>
+    <binding name="source" value="ognl:informalParameterNames"/>
+    <binding name="value" value="ognl:parameterName"/>
+  	<binding name="element" value="tr"/>
+    <binding name="class" value="ognl:beans.informalClass.next"/>
   </component>
 
   <component id="e_asset" type="Foreach">
-    <binding name="source" expression="assetNames"/>
-    <binding name="value" expression="assetName"/>
-    <static-binding name="element">tr</static-binding>
-    <binding name="class" expression="beans.assetClass.next"/>
+    <binding name="source" value="ognl:assetNames"/>
+    <binding name="value" value="ognl:assetName"/>
+  	<binding name="element" value="tr"/>
+    <binding name="class" value="ognl:beans.assetClass.next"/>
   </component>
   
   <component id="e_components" type="Foreach">
-    <binding name="source" expression="sortedComponents"/>
-    <binding name="value" expression="component"/>
-    <static-binding name="element">tr</static-binding>
-    <binding name="class" expression="beans.componentClass.next"/>
+    <binding name="source" value="ognl:sortedComponents"/>
+    <binding name="value" value="ognl:currentComponent"/>
+    <binding name="element" value="tr"/>
+    <binding name="class" value="ognl:beans.componentClass.next"/>
   </component>
 
   <component id="selectComponent" type="DirectLink">
-    <binding name="listener" expression="page.listeners.selectComponent"/>
-    <binding name="parameters" expression="component.idPath"/>
+    <binding name="listener" value="ognl:page.listeners.selectComponent"/>
+    <binding name="parameters" value="ognl:currentComponent.idPath"/>
   </component>
 
   <component id="e_property" type="Foreach">
-    <binding name="source" expression="sortedPropertyNames"/>
-    <binding name="value" expression="propertyName"/>
-    <static-binding name="element">tr</static-binding>
-    <binding name="class" expression="beans.propertyClass.next"/>
+    <binding name="source" value="ognl:sortedPropertyNames"/>
+    <binding name="value" value="ognl:propertyName"/>
+  	<binding name="element" value="tr"/>
+    <binding name="class" value="ognl:beans.propertyClass.next"/>
   </component>
       
   <component id="e_bean" type="Foreach">
-  	<binding name="source" expression="beanNames"/>
-  	<binding name="value" expression="beanName"/>
-  	<static-binding name="element">tr</static-binding>
-  	<binding name="class" expression="beans.beanClass.next"/>
+  	<binding name="source" value="ognl:beanNames"/>
+  	<binding name="value" value="ognl:beanName"/>
+  	<binding name="element" value="tr"/>
+  	<binding name="class" value="ognl:beans.beanClass.next"/>
   </component>
   	
 </component-specification>
