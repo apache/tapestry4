@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<jboss-app>
+  <loader-repository> 
+  org.apache.tapestry.vlib:loader=tapestry-vlib-demo-loader
+     <loader-repository-config> 
+     java2ParentDelegation=false 
+     </loader-repository-config> 
+  </loader-repository>
+</jboss-app>

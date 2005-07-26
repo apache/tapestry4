@@ -338,4 +338,9 @@ public class MockForm implements IForm
     {
         _focus = focus;
     }
+
+    public IComponent getComponent()
+    {
+        return this;
+    }
 }

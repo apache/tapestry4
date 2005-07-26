@@ -30,10 +30,14 @@
   <import file="${hivebuild.dir}/javadoc-report.xml"/>
   
   <target name="compile-dependencies">
-    <project-dependency artifact="tapestry"            use="run"/>
+  	<project-dependency artifact="vlibbeans"/>
+  	<ibiblio-dependency artifact="log4j"              version="${log4j.version}"    group="log4j"             use="test"/>
+    <ibiblio-dependency artifact="servletapi"         version="${servlet.version}"  group="servletapi"/>
+    <ibiblio-dependency artifact="jboss-j2ee" version="${jboss-j2ee.version}" group="jboss"/>
+  	    
+  	<project-dependency artifact="tapestry"            use="run"/>
     <project-dependency artifact="tapestry-contrib"    use="run"/>
     <project-dependency artifact="tapestry-annotations" use="run"/>
-  	<project-dependency artifact="vlibbeans" use="compile"/>
 
     <ibiblio-dependency artifact="bsf"                version="${bsf.version}"      group="bsf"               use="run"/>
     <ibiblio-dependency artifact="commons-codec"      version="${codec.version}"    group="commons-codec"     use="run"/>
@@ -43,13 +47,54 @@
     <ibiblio-dependency artifact="hivemind"           version="${hivemind.version}" group="hivemind"          use="run"/>
     <ibiblio-dependency artifact="hivemind-lib"       version="${hivemind.version}" group="hivemind"          use="run"/>
     <ibiblio-dependency artifact="javassist"          version="${javassist.version}"  group="jboss"           use="run"/>
-    <ibiblio-dependency artifact="log4j"              version="${log4j.version}"    group="log4j"             use="test"/>
     <ibiblio-dependency artifact="ognl"               version="${ognl.version}"     group="ognl"              use="run"/>
     <ibiblio-dependency artifact="oro"                version="${oro.version}"      group="oro"               use="run"/>
-    <ibiblio-dependency artifact="servletapi"         version="${servlet.version}"  group="servletapi"/>
-  	
-    <ibiblio-dependency artifact="jboss-j2ee" version="${jboss-j2ee.version}" group="jboss"/>
 
-  </target>	
-  
+  </target>
+	
+  <target name="war" depends="run-tests" description="Build the Vlib WAR and EAR files.">
+	
+	<property name="complete-war-path" value="${module.install.dir}/${module.war.file}"/>
+	
+	<mkdir dir="${module.install.dir}"/>
+	
+	<announce message="Packaging as ${complete-war-path} ..."/>
+
+	<war destfile="${complete-war-path}"
+    	webxml="${context.src.dir}/WEB-INF/web.xml">
+    
+    	<fileset dir="${context.src.dir}">
+      		<exclude name="WEB-INF/web.xml"/>
+    	</fileset>
+    <!-- Causes an error if the descriptor directory doesn't exist.  Hm. -->
+    <!-- fileset dir="${descriptor.src.dir}"/ -->
+    
+		<classes dir="${java.classes.dir}"/>
+		
+		<!-- NOTE: Packaged WITH OUT dependent libraries. -->
+		
+	</war>  
+  	
+  	<announce message="Building ${module.install.dir}/vlib.ear"/>
+  	
+  	<property name="ear-image.dir" value="${target.dir}/ear-image"/>
+  	<property name="ear.lib.dir" value="${ear-image.dir}/APP-INF/lib"/>
+  	<mkdir dir="${ear.lib.dir}"/>
+  	
+  	<copy file="${module.install.dir}/${module.war.file}" todir="${ear-image.dir}"/>
+  	
+  	<copy todir="${ear.lib.dir}" flatten="true">
+  		<fileset dir="${module.lib.dir}/run" includes="**/*.jar"/>
+  	</copy>
+  	
+  	<copy todir="${ear-image.dir}">
+  		<fileset dir="${module.install.dir}" includes="vlibbeans-*.jar"/>
+		<mapper type="regexp" from="^(.*?)-.*\.jar$$" to="\1.jar"/>
+  	</copy>
+  	
+  	<ear destfile="${module.install.dir}/vlib.ear" appxml="${src.dir}/ear-conf/META-INF/application.xml" basedir="${ear-image.dir}">
+  		<metainf dir="${src.dir}/ear-conf/META-INF" excludes="application.xml"/>
+  	</ear>
+  </target>
+  	
 </project>

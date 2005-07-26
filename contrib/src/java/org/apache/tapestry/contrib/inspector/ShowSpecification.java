@@ -25,36 +25,48 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.event.PageBeginRenderListener;
+import org.apache.tapestry.event.PageEndRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.spec.IParameterSpecification;
 
 /**
- *  Component of the {@link Inspector} page used to display
- *  the specification, parameters and bindings and assets of the inspected component.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Component of the {@link Inspector} page used to display the specification, parameters and
+ * bindings and assets of the inspected component.
+ * 
+ * @author Howard Lewis Ship
+ */
 
-public abstract class ShowSpecification extends BaseComponent implements PageRenderListener
+public abstract class ShowSpecification extends BaseComponent implements PageBeginRenderListener,
+        PageEndRenderListener
 {
     private IComponent _inspectedComponent;
+
     private IComponentSpecification _inspectedSpecification;
+
     private String _parameterName;
+
     private String _assetName;
+
     private List _sortedComponents;
-    private IComponent _component;
+
     private List _assetNames;
+
     private List _formalParameterNames;
+
     private List _informalParameterNames;
+
     private List _sortedPropertyNames;
+
     private String _propertyName;
+
     private List _beanNames;
+
     private String _beanName;
+
     private IBeanSpecification _beanSpecification;
 
     private static class ComponentComparitor implements Comparator
@@ -80,13 +92,11 @@ public abstract class ShowSpecification extends BaseComponent implements PageRen
     }
 
     /**
-     *  Clears all cached information about the component and such after
-     *  each render (including the rewind phase render used to process
-     *  the tab view).
-     *
-     *  @since 1.0.5
-     *
-     **/
+     * Clears all cached information about the component and such after each render (including the
+     * rewind phase render used to process the tab view).
+     * 
+     * @since 1.0.5
+     */
 
     public void pageEndRender(PageEvent event)
     {
@@ -95,7 +105,6 @@ public abstract class ShowSpecification extends BaseComponent implements PageRen
         _parameterName = null;
         _assetName = null;
         _sortedComponents = null;
-        _component = null;
         _assetNames = null;
         _formalParameterNames = null;
         _informalParameterNames = null;
@@ -107,10 +116,10 @@ public abstract class ShowSpecification extends BaseComponent implements PageRen
     }
 
     /**
-     *  Gets the inspected component and specification from the {@link Inspector} page.
-     *
-     *  @since 1.0.5
-     **/
+     * Gets the inspected component and specification from the {@link Inspector} page.
+     * 
+     * @since 1.0.5
+     */
 
     public void pageBeginRender(PageEvent event)
     {
@@ -131,9 +140,8 @@ public abstract class ShowSpecification extends BaseComponent implements PageRen
     }
 
     /**
-     *  Returns a sorted list of formal parameter names.
-     *
-     **/
+     * Returns a sorted list of formal parameter names.
+     */
 
     public List getFormalParameterNames()
     {
@@ -144,11 +152,9 @@ public abstract class ShowSpecification extends BaseComponent implements PageRen
     }
 
     /**
-     *  Returns a sorted list of informal parameter names.  This is
-     *  the list of all bindings, with the list of parameter names removed,
-     *  sorted.
-     *
-     **/
+     * Returns a sorted list of informal parameter names. This is the list of all bindings, with the
+     * list of parameter names removed, sorted.
+     */
 
     public List getInformalParameterNames()
     {
@@ -160,7 +166,7 @@ public abstract class ShowSpecification extends BaseComponent implements PageRen
         {
             _informalParameterNames = new ArrayList(names);
 
-            // Remove the names of any formal parameters.  This leaves
+            // Remove the names of any formal parameters. This leaves
             // just the names of informal parameters (informal parameters
             // are any parameters/bindings that don't match a formal parameter
             // name).
@@ -186,10 +192,9 @@ public abstract class ShowSpecification extends BaseComponent implements PageRen
     }
 
     /**
-     *  Returns the {@link org.apache.tapestry.spec.ParameterSpecification} corresponding to
-     *  the value of the parameterName property.
-     *
-     **/
+     * Returns the {@link org.apache.tapestry.spec.ParameterSpecification} corresponding to the
+     * value of the parameterName property.
+     */
 
     public IParameterSpecification getParameterSpecification()
     {
@@ -197,10 +202,8 @@ public abstract class ShowSpecification extends BaseComponent implements PageRen
     }
 
     /**
-     *  Returns the {@link IBinding} corresponding to the value of
-     *  the parameterName property.
-     *
-     **/
+     * Returns the {@link IBinding} corresponding to the value of the parameterName property.
+     */
 
     public IBinding getBinding()
     {
@@ -218,10 +221,8 @@ public abstract class ShowSpecification extends BaseComponent implements PageRen
     }
 
     /**
-     *  Returns the {@link IAsset} corresponding to the value
-     *  of the assetName property.
-     *
-     **/
+     * Returns the {@link IAsset} corresponding to the value of the assetName property.
+     */
 
     public IAsset getAsset()
     {
@@ -229,10 +230,8 @@ public abstract class ShowSpecification extends BaseComponent implements PageRen
     }
 
     /**
-     *  Returns a sorted list of asset names, or null if the
-     *  component contains no assets.
-     *
-     **/
+     * Returns a sorted list of asset names, or null if the component contains no assets.
+     */
 
     public List getAssetNames()
     {
@@ -262,32 +261,25 @@ public abstract class ShowSpecification extends BaseComponent implements PageRen
         return _sortedComponents;
     }
 
-    public void setComponent(IComponent value)
-    {
-        _component = value;
-    }
+    public abstract void setCurrentComponent(IComponent value);
 
-    public IComponent getComponent()
-    {
-        return _component;
-    }
+    public abstract IComponent getCurrentComponent();
 
     /**
-     *  Returns the type of the component, as specified in the container's
-     *  specification (i.e., the component alias if known).
-     *
-     **/
+     * Returns the type of the component, as specified in the container's specification (i.e., the
+     * component alias if known).
+     */
 
     public String getComponentType()
     {
-        IComponent container = _component.getContainer();
+        IComponent container = getCurrentComponent().getContainer();
 
         IComponentSpecification containerSpecification = container.getSpecification();
 
-        String id = _component.getId();
+        String id = getCurrentComponent().getId();
         IContainedComponent contained = containerSpecification.getComponent(id);
 
-        // Temporary:  An implicit component will not be in the containing
+        // Temporary: An implicit component will not be in the containing
         // component's specification as a ContainedComponent.
 
         if (contained == null)
@@ -297,11 +289,9 @@ public abstract class ShowSpecification extends BaseComponent implements PageRen
     }
 
     /**
-     *  Returns a list of the properties for the component
-     *  (from its specification), or null if the component
-     *  has no properties.
-     *
-     **/
+     * Returns a list of the properties for the component (from its specification), or null if the
+     * component has no properties.
+     */
 
     public List getSortedPropertyNames()
     {

@@ -18,11 +18,19 @@
 <project name="Jakarta Tapestry Project" default="install">
 
   <property file="config/build.properties"/>
+  <property file="config/common.properties"/>
   <property file="project.properties"/>
 
 	<filelist id="project.modules" 
 		dir="."
-		files="framework/build.xml portlet/build.xml contrib/build.xml annotations/build.xml examples/Workbench/build.xml"/>
+		files="
+			framework/build.xml 
+			portlet/build.xml 
+			contrib/build.xml 
+			annotations/build.xml 
+			examples/Workbench/build.xml 
+			examples/VlibBeans/build.xml
+			examples/Vlib/build.xml"/>
     
 	<import file="${hivebuild.dir}/project.xml"/>
 	<import file="${hivebuild.dir}/license-report.xml"/>    
@@ -73,5 +81,36 @@
 			<sysproperty key="org.apache.tapestry.asset.URL" value="/private"/>
 		</java>
 	</target>
+	
+	<available property="available.vlib.ear" file="target/vlib.ear"/>
+	
+	<target name="deploy-jboss" description="Deploys the Virtual Library example into JBoss 4.0.">
+		
+		<fail unless="available.vlib.ear" message="You must run the 'install' target to build the vlib.ear first."/>
+		<property name="jboss.default.dir" value="${jboss.dir}/server/default"/>
+		
+		<!-- Download from Maven -->
+		<grab-file
+			src="${maven.ibiblio.url}/mckoi/jars/mckoi-${mckoi.version}.jar"
+			dest="${external.lib.dir}/mckoi-${mckoi.version}.jar"/>
+		<copy todir="${jboss.default.dir}/lib">
+			<fileset dir="${external.lib.dir}">
+				<include name="mckoi-${mckoi.version}.jar"/>
+				<!-- include name="ognl-${ognl.version}.jar"/ -->
+			</fileset>
+		</copy>
+		<copy todir="${jboss.default.dir}/deploy">
+			<fileset dir="config/jboss/deploy" includes="*"/>
+			<fileset dir="target" includes="*.ear"/>
+		</copy>
+		<mkdir dir="${jboss.default.dir}/db"/>
+		<unzip dest="${jboss.default.dir}/db" src="config/jboss/tapestry-db.zip"/>
+				
+		<announce message="JBoss 4 has been set up to execute the Virtual Library application."/>
+		<announce message="You may need to restart JBoss before the application will run."/>
+		
+	</target>
+	
+	
   
 </project>

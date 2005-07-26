@@ -1,105 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-   Copyright 2005 The Apache Software Foundation
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+<!-- Adapated from default Hypersonic data source  -->
 
-       http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+<datasources>
+   <local-tx-datasource>
+
+      <!-- The jndi name of the DataSource, it is prefixed with java:/ -->
+      <!-- Datasources are not available outside the virtual machine -->
+      <jndi-name>McKoiDB</jndi-name>
+
+      <!-- for tcp connection, allowing other processes to use the hsqldb
+      database. This requires the org.jboss.jdbc.HypersonicDatabase mbean. -->
+      <connection-url>jdbc:mckoi://localhost/</connection-url>
+
+      <!-- for totally in-memory db, not saved when jboss stops. 
+      The org.jboss.jdbc.HypersonicDatabase mbean necessary
+      <connection-url>jdbc:hsqldb:.</connection-url>
+-->
+      <!-- for in-process persistent db, saved when jboss stops. The
+      org.jboss.jdbc.HypersonicDatabase mbean is necessary for properly db shutdown
+
+      <connection-url>jdbc:hsqldb:${jboss.server.data.dir}${/}hypersonic${/}localDB</connection-url>
 -->
 
-<server>
+      <!-- The driver class -->
+      <driver-class>com.mckoi.JDBCDriver</driver-class>
 
-	<!-- The current working directory is the JBoss/bin directory, so this
-		 relative path works. -->
-		 
+      <!-- The login and password -->
+      <user-name>admin</user-name>
+      <password>secret</password>
+
+      <!--example of how to specify class that determines if exception means connection should be destroyed-->
+      <!--exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.DummyExceptionSorter</exception-sorter-class-name-->
+
+      <!-- this will be run before a managed connection is removed from the pool for use by a client-->
+      <!--<check-valid-connection-sql>select * from something</check-valid-connection-sql> -->
+
+      <!-- The minimum connections in a pool/sub-pool. Pools are lazily constructed on first use -->
+      <min-pool-size>0</min-pool-size>
+
+      <!-- The maximum connections in a pool/sub-pool -->
+      <max-pool-size>50</max-pool-size>
+
+      <!-- The time before an unused connection is destroyed -->
+      <!-- NOTE: This is the check period. It will be destroyed somewhere between 1x and 2x this timeout after last use -->
+      <!-- TEMPORARY FIX! - Disable idle connection removal, HSQLDB has a problem with not reaping threads on closed connections -->
+      <idle-timeout-minutes>15</idle-timeout-minutes>
+
+      <!-- sql to call when connection is created
+        <new-connection-sql>some arbitrary sql</new-connection-sql>
+      -->
+
+      <!-- sql to call on an existing pooled connection when it is obtained from pool 
+         <check-valid-connection-sql>some arbitrary sql</check-valid-connection-sql>
+      -->
+
+      <!-- example of how to specify a class that determines a connection is valid before it is handed out from the pool
+         <valid-connection-checker-class-name>org.jboss.resource.adapter.jdbc.vendor.DummyValidConnectionChecker</valid-connection-checker-class-name>
+      -->
+
+      <!-- Whether to check all statements are closed when the connection is returned to the pool,
+           this is a debugging feature that should be turned off in production -->
+      <track-statements/>
+
+      <!-- Use the getConnection(user, pw) for logins
+        <application-managed-security/>
+      -->
+
+      <!-- Use the security domain defined in conf/login-config.xml -->
+      <security-domain>HsqlDbRealm</security-domain>
+
+      <!-- Use the security domain defined in conf/login-config.xml or the
+           getConnection(user, pw) for logins. The security domain takes precedence.
+        <security-domain-and-application>HsqlDbRealm</security-domain-and-application>
+      -->
+
+      <!-- corresponding type-mapping in the standardjbosscmp-jdbc.xml (optional) -->
+      <metadata>
+         <type-mapping>McKoi</type-mapping>
+      </metadata>
+
+      <!-- This mbean can be used when using in process persistent hypersonic
+      <depends>jboss:service=Hypersonic,database=localDB</depends>  -->
+   </local-tx-datasource>
+
+   <!-- This mbean should be used only when using tcp connections. Uncomment
+   when the tcp based connection-url is used. 
+   <mbean code="org.jboss.jdbc.HypersonicDatabase" 
+     name="jboss:service=Hypersonic">
+     <attribute name="Port">1701</attribute>
+     <attribute name="Silent">true</attribute>
+     <attribute name="Database">default</attribute>
+     <attribute name="Trace">false</attribute>
+     <attribute name="No_system_exit">true</attribute>
+   </mbean>
+ -->
+
+   <!-- This mbean can be used when using in process persistent db -->
+
+   
 	<mbean code="net.sf.tapestry.contrib.mckoi.McKoiDB" name="jboss:service=McKoiDB">
-  		<attribute name="ConfigPath">../server/tapestry/db/tapestry.conf</attribute>
-	</mbean>
-	  		
-
-  <mbean
-  	code="org.jboss.resource.connectionmanager.LocalTxConnectionManager" 
-  	name="jboss.jca:service=LocalTxCM,name=McKoiDB">
-
-    <depends>jboss:service=McKoiDB</depends>
-      
-    <depends optional-attribute-name="ManagedConnectionFactoryName">
-      
-      <!--embedded mbean-->
-      <mbean
-      	code="org.jboss.resource.connectionmanager.RARDeployment" 
-      	name="jboss.jca:service=LocalTxDS,name=McKoiDB">
-
-        <attribute name="JndiName">McKoiDB</attribute>
-        
-        <!--NOTE: Solid wants the username/password in the URL, it will 
-            ignore the specific arguments.-->
-        <attribute name="ManagedConnectionFactoryProperties">
-          <properties>
-            <config-property name="ConnectionURL" type="java.lang.String">jdbc:mckoi://localhost/</config-property>
-            <config-property name="DriverClass" type="java.lang.String">com.mckoi.JDBCDriver</config-property>
-            <config-property name="UserName" type="java.lang.String">admin</config-property>
-            <config-property name="Password" type="java.lang.String">secret</config-property>
-          </properties>
-
-            <!--These properties are ignored by the Solid driver.
-            <config-property name="UserName" type="java.lang.String"></config-property>
-            <config-property name="Password" type="java.lang.String"></config-property>
-             -->
-        </attribute>
-        <!--hack-->
-        <depends optional-attribute-name="OldRarDeployment">jboss.jca:service=RARDeployment,name=JBoss LocalTransaction JDBC Wrapper</depends>
-      </mbean>
-    </depends>
-
-    <depends optional-attribute-name="ManagedConnectionPool">
-      <!--embedded mbean-->
-      <mbean code="org.jboss.resource.connectionmanager.JBossManagedConnectionPool"
-      	name="jboss.jca:service=LocalTxPool,name=McKoiDB">
-
-        <attribute name="MinSize">0</attribute>
-        <attribute name="MaxSize">50</attribute>
-        <attribute name="BlockingTimeoutMillis">5000</attribute>
-        <attribute name="IdleTimeoutMinutes">15</attribute>
-        <!--criteria indicates if Subject (from security domain) or app supplied
-            parameters (such as from getConnection(user, pw)) are used to distinguish
-            connections in the pool. Choices are 
-            ByContainerAndApplication (use both), 
-            ByContainer (use Subject),
-            ByApplication (use app supplied params only),
-            ByNothing (all connections are equivalent, usually if adapter supports
-              reauthentication)-->
-        <!-- Since at present only a single user specified in the URL is supported, 
-          ByNothing is mosst appropriate.  If a URL construction scheme is implemented, 
-          this could be one of the other values -->
-        <attribute name="Criteria">ByNothing</attribute>
-      </mbean>
-
-    </depends>
-    <depends optional-attribute-name="CachedConnectionManager">jboss.jca:service=CachedConnectionManager</depends>
-   <!-- Since the username/password needs to be in the url, there is no way at 
-     present for a generic wrapper to supply user/pw to the driver.  A custom 
-     wrapper could be used to consruct the url dynamically from a base and the 
-     user/pw.  In case someone does that, I'm leaving the container-managed-security 
-     attribute in.  -->
-    <!-- <attribute name="SecurityDomainJndiName">SolidDbRealm</attribute>-->
-    
-    <depends optional-attribute-name="JaasSecurityManagerService">jboss.security:service=JaasSecurityManager</depends>
-    
-
-    <attribute name="TransactionManager">java:/TransactionManager</attribute>
-    <!--make the rar deploy! hack till better deployment-->
-    <depends>jboss.jca:service=RARDeployer</depends>
-  </mbean>
-
-</server>
-
-
+  		<attribute name="ConfigPath">../server/default/db/tapestry.conf</attribute>
+	</mbean>   
+</datasources>

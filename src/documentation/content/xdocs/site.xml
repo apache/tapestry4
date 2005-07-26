@@ -37,8 +37,9 @@
       <wiki label="Wiki" href="http://wiki.apache.org/jakarta-tapestry/"/>
       <dev label="Developers" href="dev.html"/>
       <dependencies label="Dependencies" href="dependencies.html"/>
-      
+      <downloads label="Downloads" href="downloads.html"/>
     </project>
+    
     
     <QuickStart label="Quick Start" tab="quick-start" href="QuickStart/">
       <qsintro label="Introduction" href="index.html"/>
@@ -159,7 +160,6 @@
         <item label="Forums"            href="http://www.tapestryforums.com/"/>
         <item label="Bug Database"     href="http://issues.apache.org/jira/secure/BrowseProject.jspa?id=10573"/>
         <item label="CVS Access"      href="cvs.html"/>    
-        <item label="Downloads" href="downloads.html"/>
         <item label="Voting History" href="votes.html"/>
     
         <reports label="Reports">
