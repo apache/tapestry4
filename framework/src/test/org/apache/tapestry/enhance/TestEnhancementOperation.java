@@ -436,6 +436,8 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
     public void testAddMethod()
     {
+        Location l = newLocation();
+
         Class baseClass = Insert.class;
         MethodSignature sig = new MethodSignature(void.class, "frob", null, null);
 
@@ -461,7 +463,56 @@ public class TestEnhancementOperation extends HiveMindTestCase
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 baseClass, cf);
 
-        eo.addMethod(Modifier.PUBLIC, sig, "method body");
+        eo.addMethod(Modifier.PUBLIC, sig, "method body", l);
+
+        verifyControls();
+    }
+
+    public void testAddMethodDuplicate()
+    {
+        Location firstLocation = newLocation();
+        Location secondLocation = newLocation();
+
+        Class baseClass = Insert.class;
+        MethodSignature sig = new MethodSignature(void.class, "frob", null, null);
+
+        IComponentSpecification spec = newSpec();
+
+        MockControl cfc = newControl(ClassFactory.class);
+        ClassFactory cf = (ClassFactory) cfc.getMock();
+
+        MockControl fabc = newControl(ClassFab.class);
+        ClassFab fab = (ClassFab) fabc.getMock();
+
+        // We force the uid to 97 in setUp()
+
+        cf.newClass("$Insert_97", baseClass);
+
+        cfc.setReturnValue(fab);
+
+        fab.addMethod(Modifier.PUBLIC, sig, "method body");
+        fabc.setReturnValue(null);
+
+        replayControls();
+
+        EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
+                baseClass, cf);
+
+        eo.addMethod(Modifier.PUBLIC, sig, "method body", firstLocation);
+
+        try
+        {
+            eo.addMethod(Modifier.PUBLIC, sig, "second method body", secondLocation);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "A new implementation of method 'void frob()' conflicts with an existing "
+                            + "implementation (at classpath:/org/apache/tapestry/enhance/TestEnhancementOperation, line 1).",
+                    ex.getMessage());
+            assertSame(secondLocation, ex.getLocation());
+        }
 
         verifyControls();
     }
@@ -511,7 +562,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         String ref2 = eo.getClassReference(Map.class);
 
         eo.addMethod(Modifier.PUBLIC, new MethodSignature(Class.class, "getClassReference", null,
-                null), "return " + ref + ";");
+                null), "return " + ref + ";", l);
 
         ComponentConstructor cc = eo.getConstructor();
 

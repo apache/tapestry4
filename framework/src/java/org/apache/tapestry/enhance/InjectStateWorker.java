@@ -16,6 +16,7 @@ package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Modifier;
 
+import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
@@ -39,10 +40,11 @@ public class InjectStateWorker implements InjectEnhancementWorker
 
     public void performEnhancement(EnhancementOperation op, InjectSpecification spec)
     {
-        injectState(op, spec.getObject(), spec.getProperty());
+        injectState(op, spec.getObject(), spec.getProperty(), spec.getLocation());
     }
 
-    public void injectState(EnhancementOperation op, String objectName, String propertyName)
+    public void injectState(EnhancementOperation op, String objectName, String propertyName,
+            Location location)
     {
         Defense.notNull(op, "op");
         Defense.notNull(objectName, "objectName");
@@ -75,7 +77,7 @@ public class InjectStateWorker implements InjectEnhancementWorker
 
         MethodSignature sig = new MethodSignature(propertyType, methodName, null, null);
 
-        op.addMethod(Modifier.PUBLIC, sig, builder.toString());
+        op.addMethod(Modifier.PUBLIC, sig, builder.toString(), location);
 
         // Mutator
 
@@ -89,7 +91,7 @@ public class InjectStateWorker implements InjectEnhancementWorker
                 new Class[]
                 { propertyType }, null);
 
-        op.addMethod(Modifier.PUBLIC, sig, builder.toString());
+        op.addMethod(Modifier.PUBLIC, sig, builder.toString(), location);
 
         // Extend pageDetached() to clean out the cached field value.
 

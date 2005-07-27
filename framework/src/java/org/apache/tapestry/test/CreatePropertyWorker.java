@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.test;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhanceUtils;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.EnhancementWorker;
@@ -28,11 +29,14 @@ import org.apache.tapestry.spec.IComponentSpecification;
  */
 public class CreatePropertyWorker implements EnhancementWorker
 {
-    private String _propertyName;
+    private final String _propertyName;
 
-    public CreatePropertyWorker(String propertyName)
+    private final Location _location;
+
+    public CreatePropertyWorker(String propertyName, Location location)
     {
         _propertyName = propertyName;
+        _location = location;
     }
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
@@ -45,8 +49,8 @@ public class CreatePropertyWorker implements EnhancementWorker
 
         op.addField(field, propertyType);
 
-        EnhanceUtils.createSimpleAccessor(op, field, _propertyName, propertyType);
+        EnhanceUtils.createSimpleAccessor(op, field, _propertyName, propertyType, _location);
 
-        EnhanceUtils.createSimpleMutator(op, field, _propertyName, propertyType);
+        EnhanceUtils.createSimpleMutator(op, field, _propertyName, propertyType, _location);
     }
 }

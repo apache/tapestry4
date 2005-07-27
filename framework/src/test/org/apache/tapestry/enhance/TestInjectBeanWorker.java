@@ -69,7 +69,8 @@ public class TestInjectBeanWorker extends HiveMindTestCase
 
     public void testSuccess()
     {
-        IComponentSpecification spec = newSpec("fred", "barney", null);
+        Location l = newLocation();
+        IComponentSpecification spec = newSpec("fred", "barney", l);
         MockControl control = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) control.getMock();
 
@@ -84,12 +85,13 @@ public class TestInjectBeanWorker extends HiveMindTestCase
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(ArrayList.class, "getBarney", null, null),
-                "return (java.util.ArrayList) getBeans().getBean(\"fred\");");
+                "return (java.util.ArrayList) getBeans().getBean(\"fred\");",
+                l);
 
         replayControls();
-        
+
         new InjectBeanWorker().performEnhancement(op, spec);
-        
+
         verifyControls();
     }
 

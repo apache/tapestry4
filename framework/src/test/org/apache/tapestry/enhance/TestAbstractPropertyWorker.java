@@ -34,10 +34,15 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestAbstractPropertyWorker extends HiveMindTestCase
+public class TestAbstractPropertyWorker extends BaseEnhancementTestCase
 {
+
     public void testSuccess()
     {
+        Location l = newLocation();
+
+        IComponentSpecification spec = newSpec(l);
+
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
@@ -56,10 +61,11 @@ public class TestAbstractPropertyWorker extends HiveMindTestCase
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(String.class, "getFred", null, null),
-                "return _$fred;");
+                "return _$fred;",
+                l);
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[]
-        { String.class }, null), "_$fred = $1;");
+        { String.class }, null), "_$fred = $1;", l);
 
         op.extendMethodImplementation(
                 IComponent.class,
@@ -75,7 +81,7 @@ public class TestAbstractPropertyWorker extends HiveMindTestCase
 
         replayControls();
 
-        new AbstractPropertyWorker().performEnhancement(op, null);
+        new AbstractPropertyWorker().performEnhancement(op, spec);
 
         verifyControls();
     }

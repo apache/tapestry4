@@ -18,6 +18,7 @@ import java.util.Iterator;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IComponent;
@@ -49,7 +50,7 @@ public class InjectAssetWorker implements EnhancementWorker
             {
                 try
                 {
-                    injectAsset(op, name, propertyName);
+                    injectAsset(op, name, propertyName, as.getLocation());
                 }
                 catch (Exception ex)
                 {
@@ -60,7 +61,7 @@ public class InjectAssetWorker implements EnhancementWorker
         }
     }
 
-    public void injectAsset(EnhancementOperation op, String assetName, String propertyName)
+    public void injectAsset(EnhancementOperation op, String assetName, String propertyName, Location location)
     {
         Defense.notNull(op, "op");
         Defense.notNull(assetName, "assetName");
@@ -80,7 +81,7 @@ public class InjectAssetWorker implements EnhancementWorker
 
         op.addField(fieldName, propertyType);
 
-        EnhanceUtils.createSimpleAccessor(op, fieldName, propertyName, propertyType);
+        EnhanceUtils.createSimpleAccessor(op, fieldName, propertyName, propertyType, location);
 
         // i.e. _$fred = getAsset("barney");
 

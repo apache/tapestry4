@@ -70,7 +70,8 @@ public class TestInjectAssetWorker extends HiveMindTestCase
 
     public void testSuccess()
     {
-        IComponentSpecification spec = newSpec("fred", "barney", null);
+        Location l = newLocation();
+        IComponentSpecification spec = newSpec("fred", "barney", l);
         MockControl control = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) control.getMock();
 
@@ -87,7 +88,8 @@ public class TestInjectAssetWorker extends HiveMindTestCase
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(IAsset.class, "getBarney", null, null),
-                "return _$barney;");
+                "return _$barney;",
+                l);
 
         op.extendMethodImplementation(
                 IComponent.class,
@@ -103,7 +105,7 @@ public class TestInjectAssetWorker extends HiveMindTestCase
 
     public void testFailure()
     {
-        Location l = fabricateLocation(99);
+        Location l = newLocation();
         Throwable ex = new ApplicationRuntimeException(EnhanceMessages.claimedProperty("barney"));
 
         MockControl control = newControl(EnhancementOperation.class);
@@ -150,12 +152,14 @@ public class TestInjectAssetWorker extends HiveMindTestCase
         InjectAssetWorker w = new InjectAssetWorker();
         try
         {
-            w.injectAsset(op, "fred", "barney");
+            w.injectAsset(op, "fred", "barney", null);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals("Property barney is type org.apache.tapestry.IComponent, which is not compatible with the expected type, org.apache.tapestry.IAsset.", ex.getMessage());
+            assertEquals(
+                    "Property barney is type org.apache.tapestry.IComponent, which is not compatible with the expected type, org.apache.tapestry.IAsset.",
+                    ex.getMessage());
         }
 
         verifyControls();

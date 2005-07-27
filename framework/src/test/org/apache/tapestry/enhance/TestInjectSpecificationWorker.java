@@ -31,19 +31,17 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestInjectSpecificationWorker extends HiveMindTestCase
+public class TestInjectSpecificationWorker extends BaseEnhancementTestCase
 {
-    private IComponentSpecification newSpec()
-    {
-        return (IComponentSpecification) newMock(IComponentSpecification.class);
-    }
 
     public void testSuccess() throws Exception
     {
+        Location l = newLocation();
+        
         MockControl control = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) control.getMock();
 
-        IComponentSpecification spec = newSpec();
+        IComponentSpecification spec = newSpec(l);
 
         op.claimProperty("specification");
 
@@ -54,7 +52,7 @@ public class TestInjectSpecificationWorker extends HiveMindTestCase
         control.setReturnValue("getSpecification");
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(IComponentSpecification.class,
-                "getSpecification", null, null), "return _$specification;");
+                "getSpecification", null, null), "return _$specification;", l);
 
         replayControls();
 
@@ -65,7 +63,7 @@ public class TestInjectSpecificationWorker extends HiveMindTestCase
 
     public void testFailure()
     {
-        Location l = fabricateLocation(11);
+        Location l = newLocation();
 
         MockControl control = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) control.getMock();

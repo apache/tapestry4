@@ -17,8 +17,10 @@ package org.apache.tapestry.enhance;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.Location;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.hivemind.service.ClassFabUtils;
+import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.Tapestry;
 
@@ -130,6 +132,11 @@ class EnhanceMessages
     {
         return _formatter.format("class-enhancement-failure", ClassFabUtils
                 .getJavaClassName(baseClass), cause);
+    }
+
+    public static String methodConflict(MethodSignature sig, Location existing)
+    {
+        return _formatter.format("method-conflict", sig, existing);
     }
 
 }

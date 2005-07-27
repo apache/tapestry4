@@ -24,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.impl.ClassFactoryImpl;
@@ -34,6 +35,7 @@ import org.apache.tapestry.enhance.EnhancementOperationImpl;
 import org.apache.tapestry.enhance.EnhancementWorker;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * A utility class that is used to instantiate abstract Tapestry pages and components. It creates,
@@ -68,11 +70,13 @@ public class Creator
     private List _workers = new ArrayList();
 
     {
+        Location location = new CreatorLocation();
+
         // Overrride AbstractComponent's implementations of
         // these two properties (making them read/write).
 
-        _workers.add(new CreatePropertyWorker("messages"));
-        _workers.add(new CreatePropertyWorker("specification"));
+        _workers.add(new CreatePropertyWorker("messages", location));
+        _workers.add(new CreatePropertyWorker("specification", location));
 
         // Implement any abstract properties.
         // Note that we don't bother setting the errorLog property
@@ -89,12 +93,15 @@ public class Creator
         EnhancementOperationImpl op = new EnhancementOperationImpl(_classResolver,
                 new ComponentSpecification(), inputClass, _classFactory);
 
+        IComponentSpecification spec = new ComponentSpecification();
+        spec.setLocation(new CreatorLocation());
+
         Iterator i = _workers.iterator();
         while (i.hasNext())
         {
             EnhancementWorker worker = (EnhancementWorker) i.next();
 
-            worker.performEnhancement(op, null);
+            worker.performEnhancement(op, spec);
         }
 
         return op.getConstructor();

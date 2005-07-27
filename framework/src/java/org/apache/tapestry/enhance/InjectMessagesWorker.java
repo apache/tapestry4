@@ -17,6 +17,7 @@ package org.apache.tapestry.enhance;
 import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
@@ -44,18 +45,20 @@ public class InjectMessagesWorker implements EnhancementWorker
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
     {
+        Location location = spec.getLocation();
+
         try
         {
-            injectMessages(op);
+            injectMessages(op, location);
         }
         catch (Exception ex)
         {
             _errorLog.error(EnhanceMessages.errorAddingProperty(MESSAGES_PROPERTY, op
-                    .getBaseClass(), ex), null, ex);
+                    .getBaseClass(), ex), location, ex);
         }
     }
 
-    public void injectMessages(EnhancementOperation op)
+    public void injectMessages(EnhancementOperation op, Location location)
     {
         Defense.notNull(op, "op");
 
@@ -75,7 +78,7 @@ public class InjectMessagesWorker implements EnhancementWorker
         builder.addln("return _$messages;");
         builder.end();
 
-        op.addMethod(Modifier.PUBLIC, METHOD_SIGNATURE, builder.toString());
+        op.addMethod(Modifier.PUBLIC, METHOD_SIGNATURE, builder.toString(), location);
     }
 
     public void setComponentMessagesSource(ComponentMessagesSource componentMessagesSource)

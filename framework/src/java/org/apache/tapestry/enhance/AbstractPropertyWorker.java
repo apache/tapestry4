@@ -17,6 +17,7 @@ package org.apache.tapestry.enhance;
 import java.util.Iterator;
 
 import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -34,6 +35,8 @@ public class AbstractPropertyWorker implements EnhancementWorker
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
     {
+        Location location = spec.getLocation();
+
         Iterator i = op.findUnclaimedAbstractProperties().iterator();
 
         while (i.hasNext())
@@ -42,19 +45,19 @@ public class AbstractPropertyWorker implements EnhancementWorker
 
             try
             {
-                createProperty(op, name);
+                createProperty(op, name, location);
             }
             catch (Exception ex)
             {
                 _errorLog.error(
                         EnhanceMessages.errorAddingProperty(name, op.getBaseClass(), ex),
-                        spec.getLocation(),
+                        location,
                         ex);
             }
         }
     }
 
-    private void createProperty(EnhancementOperation op, String name)
+    private void createProperty(EnhancementOperation op, String name, Location location)
     {
         // This won't be null because its always for existing properties.
 
@@ -66,8 +69,8 @@ public class AbstractPropertyWorker implements EnhancementWorker
         op.addField(fieldName, propertyType);
         op.addField(defaultFieldName, propertyType);
 
-        EnhanceUtils.createSimpleAccessor(op, fieldName, name, propertyType);
-        EnhanceUtils.createSimpleMutator(op, fieldName, name, propertyType);
+        EnhanceUtils.createSimpleAccessor(op, fieldName, name, propertyType, location);
+        EnhanceUtils.createSimpleMutator(op, fieldName, name, propertyType, location);
 
         // Copy the real attribute into the default attribute inside finish load
         // (allowing a default value to be set inside finishLoad()).

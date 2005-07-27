@@ -45,10 +45,7 @@ public class TestInjectPageWorker extends HiveMindTestCase
 
         replayControls();
 
-        InjectSpecification is = new InjectSpecificationImpl();
-        is.setProperty("somePage");
-        is.setObject("SomePage");
-        is.setLocation(l);
+        InjectSpecification is = newSpec(l);
 
         try
         {
@@ -66,12 +63,24 @@ public class TestInjectPageWorker extends HiveMindTestCase
         verifyControls();
     }
 
+    private InjectSpecification newSpec(Location l)
+    {
+        InjectSpecification is = new InjectSpecificationImpl();
+        is.setProperty("somePage");
+        is.setObject("SomePage");
+        is.setLocation(l);
+
+        return is;
+    }
+
     /**
      * Test for when there's no existing property.
      */
 
     public void testNoPropertyType()
     {
+        Location l = newLocation();
+
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
@@ -88,13 +97,12 @@ public class TestInjectPageWorker extends HiveMindTestCase
         op.addMethod(
                 Modifier.PUBLIC,
                 sig,
-                "return getPage().getRequestCycle().getPage(\"SomePage\");");
+                "return getPage().getRequestCycle().getPage(\"SomePage\");",
+                l);
 
         replayControls();
 
-        InjectSpecification is = new InjectSpecificationImpl();
-        is.setProperty("somePage");
-        is.setObject("SomePage");
+        InjectSpecification is = newSpec(l);
 
         new InjectPageWorker().performEnhancement(op, is);
 
@@ -103,6 +111,8 @@ public class TestInjectPageWorker extends HiveMindTestCase
 
     public void testExistingPropertyType()
     {
+        Location l = newLocation();
+
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
@@ -123,13 +133,12 @@ public class TestInjectPageWorker extends HiveMindTestCase
                 .addMethod(
                         Modifier.PUBLIC,
                         sig,
-                        "return (org.apache.tapestry.html.BasePage)getPage().getRequestCycle().getPage(\"SomePage\");");
+                        "return (org.apache.tapestry.html.BasePage)getPage().getRequestCycle().getPage(\"SomePage\");",
+                        l);
 
         replayControls();
 
-        InjectSpecification is = new InjectSpecificationImpl();
-        is.setProperty("somePage");
-        is.setObject("SomePage");
+        InjectSpecification is = newSpec(l);
 
         new InjectPageWorker().performEnhancement(op, is);
 

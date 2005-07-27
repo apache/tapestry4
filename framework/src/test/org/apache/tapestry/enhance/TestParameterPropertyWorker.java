@@ -176,7 +176,8 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(String.class, "getFred", null, null),
-                builder.toString());
+                builder.toString(),
+                null);
 
         builder.clear();
 
@@ -203,7 +204,7 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         builder.end();
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[]
-        { String.class }, null), builder.toString());
+        { String.class }, null), builder.toString(), null);
 
         BodyBuilder expectedCleanup = new BodyBuilder();
 
@@ -235,11 +236,12 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
 
     public void testDifferentPropertyName()
     {
+        Location l = newLocation();
         IComponentSpecification spec = buildComponentSpecification("myparam", buildParameterSpec(
                 "myparam",
                 "fred",
                 null,
-                null));
+                l));
 
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
@@ -277,7 +279,8 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(String.class, "getFred", null, null),
-                builder.toString());
+                builder.toString(),
+                l);
 
         builder.clear();
 
@@ -304,11 +307,12 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         builder.end();
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[]
-        { String.class }, null), builder.toString());
+        { String.class }, null), builder.toString(), l);
 
         BodyBuilder expectedCleanup = new BodyBuilder();
 
-        expectedCleanup.addln("org.apache.tapestry.IBinding fredBinding = getBinding(\"myparam\");");
+        expectedCleanup
+                .addln("org.apache.tapestry.IBinding fredBinding = getBinding(\"myparam\");");
         expectedCleanup.addln("if (_$fred$Cached && ! fredBinding.isInvariant())");
         expectedCleanup.begin();
         expectedCleanup.addln("_$fred$Cached = false;");
@@ -331,6 +335,8 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
 
     public void testPrimitiveType()
     {
+        Location l = newLocation();
+
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
@@ -355,7 +361,8 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(boolean.class, "isFred", null, null),
-                builder.toString());
+                builder.toString(),
+                l);
 
         replayControls();
 
@@ -367,13 +374,16 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
                 "_$fred",
                 "_$fred$Default",
                 "_$fred$Cached",
-                true);
+                true,
+                l);
 
         verifyControls();
     }
 
     public void testParameterCacheDisabled()
     {
+        Location l = newLocation();
+
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
@@ -398,7 +408,8 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(boolean.class, "isFred", null, null),
-                builder.toString());
+                builder.toString(),
+                l);
 
         replayControls();
 
@@ -410,7 +421,8 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
                 "_$fred",
                 "_$fred$Default",
                 "_$fred$Cached",
-                false);
+                false,
+                l);
 
         verifyControls();
     }

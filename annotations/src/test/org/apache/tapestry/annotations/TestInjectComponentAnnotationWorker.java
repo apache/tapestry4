@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.annotations;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectComponentWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -36,18 +37,19 @@ public class TestInjectComponentAnnotationWorker extends BaseAnnotationTestCase
 
     public void testDelegation()
     {
+        Location l = newLocation();
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
 
         InjectComponentWorker delegate = (InjectComponentWorker) newMock(InjectComponentWorker.class);
 
-        delegate.injectComponent(op, "fred", "fredField");
+        delegate.injectComponent(op, "fred", "fredField", l);
 
         replayControls();
 
         InjectComponentAnnotationWorker worker = new InjectComponentAnnotationWorker(delegate);
 
-        worker.performEnhancement(op, spec, findMethod(AnnotatedPage.class, "getFredField"), null);
+        worker.performEnhancement(op, spec, findMethod(AnnotatedPage.class, "getFredField"), l);
 
         verifyControls();
     }

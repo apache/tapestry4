@@ -17,6 +17,7 @@ package org.apache.tapestry.enhance;
 import java.util.Iterator;
 
 import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
@@ -50,7 +51,7 @@ public class InjectComponentWorker implements EnhancementWorker
             {
                 try
                 {
-                    injectComponent(op, id, propertyName);
+                    injectComponent(op, id, propertyName, cc.getLocation());
                 }
                 catch (Exception ex)
                 {
@@ -61,7 +62,7 @@ public class InjectComponentWorker implements EnhancementWorker
         }
     }
 
-    public void injectComponent(EnhancementOperation op, String componentId, String propertyName)
+    public void injectComponent(EnhancementOperation op, String componentId, String propertyName, Location location)
     {
         Defense.notNull(op, "op");
         Defense.notNull(componentId, "componentId");
@@ -75,7 +76,7 @@ public class InjectComponentWorker implements EnhancementWorker
 
         op.addField(fieldName, propertyType);
 
-        EnhanceUtils.createSimpleAccessor(op, fieldName, propertyName, propertyType);
+        EnhanceUtils.createSimpleAccessor(op, fieldName, propertyName, propertyType, location);
 
         // I.e. _$fred = (IComponent) getComponent("fred");
 

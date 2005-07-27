@@ -53,7 +53,8 @@ public class TestInjectStateWorker extends HiveMindTestCase
 
     public void testSuccess()
     {
-        InjectSpecification spec = newSpec("fred", "barney", null);
+        Location l = newLocation();
+        InjectSpecification spec = newSpec("fred", "barney", l);
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
@@ -83,7 +84,7 @@ public class TestInjectStateWorker extends HiveMindTestCase
 
         MethodSignature sig = new MethodSignature(Map.class, "getFred", null, null);
 
-        op.addMethod(Modifier.PUBLIC, sig, builder.toString());
+        op.addMethod(Modifier.PUBLIC, sig, builder.toString(), l);
 
         builder.clear();
         builder.begin();
@@ -94,7 +95,7 @@ public class TestInjectStateWorker extends HiveMindTestCase
         sig = new MethodSignature(void.class, "setFred", new Class[]
         { Map.class }, null);
 
-        op.addMethod(Modifier.PUBLIC, sig, builder.toString());
+        op.addMethod(Modifier.PUBLIC, sig, builder.toString(), l);
         op.extendMethodImplementation(
                 PageDetachListener.class,
                 EnhanceUtils.PAGE_DETACHED_SIGNATURE,

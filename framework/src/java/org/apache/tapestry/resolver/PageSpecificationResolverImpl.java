@@ -17,6 +17,7 @@ package org.apache.tapestry.resolver;
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.LocationImpl;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageNotFoundException;
@@ -237,6 +238,7 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
         IComponentSpecification specification = new ComponentSpecification();
         specification.setPageSpecification(true);
         specification.setSpecificationLocation(resource);
+        specification.setLocation(new LocationImpl(resource));
 
         setSpecification(specification);
 

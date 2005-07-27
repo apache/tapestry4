@@ -16,6 +16,7 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectObjectWorker;
 import org.apache.tapestry.services.InjectedValueProvider;
@@ -40,6 +41,8 @@ public class TestInjectObjectAnnotationWorker extends BaseAnnotationTestCase
 
     public void testDelegation()
     {
+        Location l = newLocation();
+
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
 
@@ -58,11 +61,11 @@ public class TestInjectObjectAnnotationWorker extends BaseAnnotationTestCase
 
         Method m = findMethod(AnnotatedPage.class, "getInjectedObject");
 
-        delegate.injectObject(op, "barney", "injectedObject", null);
+        delegate.injectObject(op, "barney", "injectedObject", l);
 
         replayControls();
 
-        worker.performEnhancement(op, spec, m, null);
+        worker.performEnhancement(op, spec, m, l);
 
         verifyControls();
     }
