@@ -54,7 +54,8 @@
       <action type="fix" dev="HLS">Add getComponent() method to IComponent.</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-445" due-to="Markus Joschko">ContextAssetFactory assembles wrong filename for assets</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-444">regexp validator(Email) script function name mismatch</action>
-      <action type="fix" dev="HLS" fixes-bug="TPAESTRY-446">Changes to assets are not picked up, even when caching is disabled</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-446">Changes to assets are not picked up, even when caching is disabled</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-435,TAPESTRY-325,TAPESTRY-309,TAPESTRY-311,TAPESTRY-252,TAPESTRY-254,TAPESTRY-327,TAPESTRY-333" due-to="Our many international users">Add many translations of ValidationStrings.properties.</action>
     </release>
     <release version="4.0-beta-3" date="Jul 22 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>
