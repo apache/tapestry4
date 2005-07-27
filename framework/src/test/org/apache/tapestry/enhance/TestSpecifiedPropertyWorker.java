@@ -99,7 +99,14 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
 
     public void testAddNormal() throws Exception
     {
-        IComponentSpecification spec = buildComponentSpecification("fred", "boolean", false);
+        Location l = newLocation();
+
+        IComponentSpecification spec = buildComponentSpecification(buildPropertySpecs(
+                "fred",
+                "boolean",
+                false,
+                l,
+                null));
 
         // Training
 
@@ -119,10 +126,11 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(boolean.class, "isFred", null, null),
-                "return _$fred;");
+                "return _$fred;",
+                l);
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[]
-        { boolean.class }, null), "{\n  _$fred = $1;\n}\n");
+        { boolean.class }, null), "{\n  _$fred = $1;\n}\n", l);
 
         op.addField("_$fred$default", boolean.class);
 
@@ -178,10 +186,11 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(List.class, "getFred", null, null),
-                "return _$fred;");
+                "return _$fred;",
+                l);
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[]
-        { List.class }, null), "{\n  _$fred = $1;\n}\n");
+        { List.class }, null), "{\n  _$fred = $1;\n}\n", l);
 
         op.addInjectedField(
                 "_$fred$initialValueBindingCreator",
@@ -241,7 +250,8 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(String.class, "getBarney", null, null),
-                "return _$barney;");
+                "return _$barney;",
+                null);
 
         BodyBuilder b = new BodyBuilder();
         b.begin();
@@ -250,7 +260,7 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         b.end();
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setBarney", new Class[]
-        { String.class }, null), b.toString());
+        { String.class }, null), b.toString(), null);
 
         op.addField("_$barney$default", String.class);
 

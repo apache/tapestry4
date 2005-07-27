@@ -16,6 +16,7 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectAssetWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -37,6 +38,8 @@ public class TestInjectAssetAnnotationWorker extends BaseAnnotationTestCase
 
     public void testDelegation()
     {
+        Location l = newLocation();
+
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
 
@@ -44,13 +47,13 @@ public class TestInjectAssetAnnotationWorker extends BaseAnnotationTestCase
 
         Method m = findMethod(AnnotatedPage.class, "getStylesheetAsset");
 
-        delegate.injectAsset(op, "stylesheet", "stylesheetAsset");
+        delegate.injectAsset(op, "stylesheet", "stylesheetAsset", l);
 
         replayControls();
 
         InjectAssetAnnotationWorker worker = new InjectAssetAnnotationWorker(delegate);
 
-        worker.performEnhancement(op, spec, m, null);
+        worker.performEnhancement(op, spec, m, l);
 
         verifyControls();
     }

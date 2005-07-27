@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.annotations;
 
+import org.apache.hivemind.Location;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectStateWorker;
@@ -37,18 +38,20 @@ public class TestInjectStateAnnotationWorker extends BaseAnnotationTestCase
 
     public void testDelegation()
     {
+        Location l = newLocation();
+
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
 
         InjectStateWorker delegate = (InjectStateWorker) newMock(InjectStateWorker.class);
 
-        delegate.injectState(op, "barneyASO", "barney");
+        delegate.injectState(op, "barneyASO", "barney", l);
 
         replayControls();
 
         InjectStateAnnotationWorker worker = new InjectStateAnnotationWorker(delegate);
 
-        worker.performEnhancement(op, spec, findMethod(AnnotatedPage.class, "getBarney"), null);
+        worker.performEnhancement(op, spec, findMethod(AnnotatedPage.class, "getBarney"), l);
 
         verifyControls();
     }

@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.service.MethodSignature;
@@ -98,6 +99,7 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 
     public void testSetterIsClaimed()
     {
+        Location l = newLocation();
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
 
@@ -106,45 +108,49 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(method),
-                "{\n  return getMessages().getMessage(\"like-getter\");\n}\n");
+                "{\n  return getMessages().getMessage(\"like-getter\");\n}\n",
+                l);
         op.claimProperty("likeGetter");
 
         replayControls();
 
-        new MessageAnnotationWorker().performEnhancement(op, spec, method, null);
+        new MessageAnnotationWorker().performEnhancement(op, spec, method, l);
 
         verifyControls();
     }
 
     private void attempt(String methodName, String codeBlock)
     {
+        Location l = newLocation();
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
 
         Method method = findMethod(AnnotatedPage.class, methodName);
 
-        op.addMethod(Modifier.PUBLIC, new MethodSignature(method), codeBlock);
+        op.addMethod(Modifier.PUBLIC, new MethodSignature(method), codeBlock, l);
 
         replayControls();
 
-        new MessageAnnotationWorker().performEnhancement(op, spec, method, null);
+        new MessageAnnotationWorker().performEnhancement(op, spec, method, l);
 
         verifyControls();
     }
 
     private Object construct(Class baseClass, String methodName, Messages messages)
     {
+        Location l = newLocation();
+
         ComponentSpecification spec = new ComponentSpecification();
         EnhancementOperationImpl op = new EnhancementOperationImpl(getClassResolver(), spec,
                 baseClass, new ClassFactoryImpl());
 
         op.addInjectedField("_messages", Messages.class, messages);
 
-        EnhanceUtils.createSimpleAccessor(op, "_messages", "messages", Messages.class);
+        EnhanceUtils.createSimpleAccessor(op, "_messages", "messages", Messages.class, l);
 
         Method method = findMethod(baseClass, methodName);
 
-        new MessageAnnotationWorker().performEnhancement(op, spec, method, null);
+        new MessageAnnotationWorker().performEnhancement(op, spec, method, l);
 
         ComponentConstructor cc = op.getConstructor();
 

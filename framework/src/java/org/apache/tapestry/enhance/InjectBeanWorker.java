@@ -18,6 +18,7 @@ import java.lang.reflect.Modifier;
 import java.util.Iterator;
 
 import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.util.Defense;
@@ -49,7 +50,7 @@ public class InjectBeanWorker implements EnhancementWorker
             {
                 try
                 {
-                    injectBean(op, name, propertyName);
+                    injectBean(op, name, propertyName, bs.getLocation());
                 }
                 catch (Exception ex)
                 {
@@ -60,7 +61,8 @@ public class InjectBeanWorker implements EnhancementWorker
         }
     }
 
-    public void injectBean(EnhancementOperation op, String beanName, String propertyName)
+    public void injectBean(EnhancementOperation op, String beanName, String propertyName,
+            Location location)
     {
         Defense.notNull(op, "op");
         Defense.notNull(beanName, "beanName");
@@ -79,7 +81,7 @@ public class InjectBeanWorker implements EnhancementWorker
 
         op.addMethod(Modifier.PUBLIC, sig, "return ("
                 + ClassFabUtils.getJavaClassName(propertyType) + ") getBeans().getBean(\""
-                + beanName + "\");");
+                + beanName + "\");", location);
     }
 
     public void setErrorLog(ErrorLog errorLog)

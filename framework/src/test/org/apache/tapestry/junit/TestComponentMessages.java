@@ -40,6 +40,7 @@ import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.spec.LibrarySpecification;
+import org.apache.tapestry.test.CreatorLocation;
 
 /**
  * Tests the class {@link org.apache.tapestry.services.impl.ComponentMessagesSourceImpl}.
@@ -116,7 +117,8 @@ public class TestComponentMessages extends TapestryTestCase
      * much as the full framework would do at runtime.
      */
 
-    private IPage newPage(IComponentSpecification specification, ComponentMessagesSource source, Locale locale)
+    private IPage newPage(IComponentSpecification specification, ComponentMessagesSource source,
+            Locale locale)
     {
         ClassFactory classFactory = new ClassFactoryImpl();
 
@@ -125,11 +127,11 @@ public class TestComponentMessages extends TapestryTestCase
 
         InjectMessagesWorker injectMessages = new InjectMessagesWorker();
         injectMessages.setComponentMessagesSource(source);
-        
+
         injectMessages.performEnhancement(op, specification);
-        
+
         new InjectSpecificationWorker().performEnhancement(op, specification);
-            
+
         IPage result = (IPage) op.getConstructor().newInstance();
 
         result.setLocale(locale);
@@ -144,6 +146,7 @@ public class TestComponentMessages extends TapestryTestCase
         source.setComponentPropertySource(new NullComponentPropertySource());
 
         IComponentSpecification spec = newSpec(location);
+        spec.setLocation(new CreatorLocation());
 
         IPage page = newPage(spec, source, locale);
 

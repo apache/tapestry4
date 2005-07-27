@@ -65,6 +65,6 @@ public class InjectPageWorker implements InjectEnhancementWorker
 
         builder.add("getPage().getRequestCycle().getPage(\"{0}\");", pageName);
 
-        op.addMethod(Modifier.PUBLIC, sig, builder.toString());
+        op.addMethod(Modifier.PUBLIC, sig, builder.toString(), location);
     }
 }

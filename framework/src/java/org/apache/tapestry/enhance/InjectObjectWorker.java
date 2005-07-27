@@ -75,7 +75,7 @@ public class InjectObjectWorker implements InjectEnhancementWorker
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(propertyType, methodName, null, null),
-                "return " + fieldName + ";");
+                "return " + fieldName + ";", location);
     }
 
     public void setProvider(InjectedValueProvider provider)

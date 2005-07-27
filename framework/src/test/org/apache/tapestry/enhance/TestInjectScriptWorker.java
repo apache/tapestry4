@@ -40,7 +40,7 @@ public class TestInjectScriptWorker extends HiveMindTestCase
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
-        Location componentSpecLocation = fabricateLocation(22);
+        Location componentSpecLocation = newLocation();
         final Resource scriptResource = componentSpecLocation.getResource().getRelativeResource(
                 "bar.script");
 
@@ -77,7 +77,7 @@ public class TestInjectScriptWorker extends HiveMindTestCase
 
         MethodSignature sig = new MethodSignature(IScript.class, "getFoo", null, null);
 
-        op.addMethod(Modifier.PUBLIC, sig, "return _script.getScript();");
+        op.addMethod(Modifier.PUBLIC, sig, "return _script.getScript();", injectSpecLocation);
 
         replayControls();
 

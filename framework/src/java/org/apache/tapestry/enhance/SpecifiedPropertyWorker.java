@@ -85,7 +85,8 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         addProperty(op, propertyName, specifiedType, persistent, initialValue, location);
     }
 
-    public void addProperty(EnhancementOperation op, String propertyName, String specifiedType, boolean persistent, String initialValue, Location location)
+    public void addProperty(EnhancementOperation op, String propertyName, String specifiedType,
+            boolean persistent, String initialValue, Location location)
     {
         Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, specifiedType);
 
@@ -99,9 +100,9 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         // if they exist. 4.0 is less picky ... it blindly adds new methods, possibly
         // overwriting methods in the base component class.
 
-        EnhanceUtils.createSimpleAccessor(op, field, propertyName, propertyType);
+        EnhanceUtils.createSimpleAccessor(op, field, propertyName, propertyType, location);
 
-        addMutator(op, propertyName, propertyType, field, persistent);
+        addMutator(op, propertyName, propertyType, field, persistent, location);
 
         if (initialValue == null)
             addReinitializer(op, propertyType, field);
@@ -174,7 +175,7 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
     }
 
     private void addMutator(EnhancementOperation op, String propertyName, Class propertyType,
-            String fieldName, boolean persistent)
+            String fieldName, boolean persistent, Location location)
     {
         String methodName = EnhanceUtils.createMutatorMethodName(propertyName);
 
@@ -196,7 +197,7 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         MethodSignature sig = new MethodSignature(void.class, methodName, new Class[]
         { propertyType }, null);
 
-        op.addMethod(Modifier.PUBLIC, sig, body.toString());
+        op.addMethod(Modifier.PUBLIC, sig, body.toString(), location);
     }
 
     public void setErrorLog(ErrorLog errorLog)

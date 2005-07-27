@@ -70,7 +70,8 @@ public class TestInjectComponentWorker extends HiveMindTestCase
 
     public void testSuccess()
     {
-        IComponentSpecification spec = newSpec("fred", "barney", null);
+        Location l = newLocation();
+        IComponentSpecification spec = newSpec("fred", "barney", l);
         MockControl control = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) control.getMock();
 
@@ -87,7 +88,7 @@ public class TestInjectComponentWorker extends HiveMindTestCase
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(IComponent.class, "getBarney", null, null),
-                "return _$barney;");
+                "return _$barney;", l);
 
         op.extendMethodImplementation(
                 IComponent.class,
@@ -103,7 +104,7 @@ public class TestInjectComponentWorker extends HiveMindTestCase
 
     public void testFailure()
     {
-        Location l = fabricateLocation(99);
+        Location l = newLocation();
         Throwable ex = new ApplicationRuntimeException(EnhanceMessages.claimedProperty("barney"));
 
         MockControl control = newControl(EnhancementOperation.class);

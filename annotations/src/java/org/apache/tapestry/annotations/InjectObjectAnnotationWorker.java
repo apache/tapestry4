@@ -55,7 +55,7 @@ public class InjectObjectAnnotationWorker implements MethodAnnotationEnhancement
 
         String propertyName = AnnotationUtils.getPropertyName(method);
 
-        _delegate.injectObject(op, object, propertyName, null);
+        _delegate.injectObject(op, object, propertyName, location);
     }
 
     public void setProvider(InjectedValueProvider provider)

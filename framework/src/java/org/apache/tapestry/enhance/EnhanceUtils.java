@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.util.Defense;
@@ -64,23 +65,24 @@ public class EnhanceUtils
     }
 
     public static void createSimpleAccessor(EnhancementOperation op, String fieldName,
-            String propertyName, Class propertyType)
+            String propertyName, Class propertyType, Location location)
     {
         String methodName = op.getAccessorMethodName(propertyName);
 
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(propertyType, methodName, null, null),
-                "return " + fieldName + ";");
+                "return " + fieldName + ";",
+                location);
     }
 
     public static void createSimpleMutator(EnhancementOperation op, String fieldName,
-            String propertyName, Class propertyType)
+            String propertyName, Class propertyType, Location location)
     {
         String methodName = createMutatorMethodName(propertyName);
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, methodName, new Class[]
-        { propertyType }, null), fieldName + " = $1;");
+        { propertyType }, null), fieldName + " = $1;", location);
     }
 
     /**

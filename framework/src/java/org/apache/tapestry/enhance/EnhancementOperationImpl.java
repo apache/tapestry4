@@ -33,6 +33,7 @@ import java.util.Set;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
@@ -100,6 +101,13 @@ public class EnhancementOperationImpl implements EnhancementOperation
      */
 
     private final IdAllocator _idAllocator = new IdAllocator();
+
+    /**
+     * Map keyed on MethodSignature, value is Location. Used to track which methods have been
+     * created, based on which location data (identified conflicts).
+     */
+
+    private final Map _methods = new HashMap();
 
     public EnhancementOperationImpl(ClassResolver classResolver,
             IComponentSpecification specification, Class baseClass, ClassFactory classFactory)
@@ -332,8 +340,20 @@ public class EnhancementOperationImpl implements EnhancementOperation
         return EnhanceUtils.createAccessorMethodName(propertyName);
     }
 
-    public void addMethod(int modifier, MethodSignature sig, String methodBody)
+    public void addMethod(int modifier, MethodSignature sig, String methodBody, Location location)
     {
+        Defense.notNull(sig, "sig");
+        Defense.notNull(methodBody, "methodBody");
+        Defense.notNull(location, "location");
+
+        Location existing = (Location) _methods.get(sig);
+        if (existing != null)
+            throw new ApplicationRuntimeException(EnhanceMessages.methodConflict(
+                    sig,
+                    existing), location, null);
+
+        _methods.put(sig, location);
+
         _classFab.addMethod(modifier, sig, methodBody);
     }
 

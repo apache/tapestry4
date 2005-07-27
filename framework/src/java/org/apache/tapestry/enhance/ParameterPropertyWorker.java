@@ -19,6 +19,7 @@ import java.util.Iterator;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
@@ -77,7 +78,7 @@ public class ParameterPropertyWorker implements EnhancementWorker
         String specifiedType = ps.getType();
         boolean cache = ps.getCache();
 
-        addParameter(op, parameterName, propertyName, specifiedType, cache);
+        addParameter(op, parameterName, propertyName, specifiedType, cache, ps.getLocation());
     }
 
     /**
@@ -96,10 +97,12 @@ public class ParameterPropertyWorker implements EnhancementWorker
      * @param cache
      *            if true, then the value should be cached while the component renders; false (a
      *            much less common case) means that every access will work through binding object.
+     * @param location
+     *            TODO
      */
 
     public void addParameter(EnhancementOperation op, String parameterName, String propertyName,
-            String specifiedType, boolean cache)
+            String specifiedType, boolean cache, Location location)
     {
         Defense.notNull(op, "op");
         Defense.notNull(parameterName, "parameterName");
@@ -132,7 +135,8 @@ public class ParameterPropertyWorker implements EnhancementWorker
                 fieldName,
                 defaultFieldName,
                 cachedFieldName,
-                cache);
+                cache,
+                location);
 
         buildMutator(
                 op,
@@ -141,7 +145,8 @@ public class ParameterPropertyWorker implements EnhancementWorker
                 propertyType,
                 fieldName,
                 defaultFieldName,
-                cachedFieldName);
+                cachedFieldName,
+                location);
 
         extendCleanupAfterRender(
                 op,
@@ -191,7 +196,8 @@ public class ParameterPropertyWorker implements EnhancementWorker
     }
 
     private void buildMutator(EnhancementOperation op, String parameterName, String propertyName,
-            Class propertyType, String fieldName, String defaultFieldName, String cachedFieldName)
+            Class propertyType, String fieldName, String defaultFieldName, String cachedFieldName,
+            Location location)
     {
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
@@ -237,14 +243,14 @@ public class ParameterPropertyWorker implements EnhancementWorker
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, mutatorMethodName,
                 new Class[]
-                { propertyType }, null), builder.toString());
+                { propertyType }, null), builder.toString(), location);
     }
 
     // Package private for testing
 
     void buildAccessor(EnhancementOperation op, String parameterName, String propertyName,
             Class propertyType, String fieldName, String defaultFieldName, String cachedFieldName,
-            boolean cache)
+            boolean cache, Location location)
     {
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
@@ -283,7 +289,7 @@ public class ParameterPropertyWorker implements EnhancementWorker
         String accessorMethodName = op.getAccessorMethodName(propertyName);
 
         op.addMethod(Modifier.PUBLIC, new MethodSignature(propertyType, accessorMethodName, null,
-                null), builder.toString());
+                null), builder.toString(), location);
     }
 
     public void setErrorLog(ErrorLog errorLog)

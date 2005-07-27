@@ -18,9 +18,9 @@ import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.service.BodyBuilder;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -32,13 +32,8 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestInjectMessagesWorker extends HiveMindTestCase
+public class TestInjectMessagesWorker extends BaseEnhancementTestCase
 {
-    private IComponentSpecification newSpec()
-    {
-        return (IComponentSpecification) newMock(IComponentSpecification.class);
-    }
-
     private ComponentMessagesSource newSource()
     {
         return (ComponentMessagesSource) newMock(ComponentMessagesSource.class);
@@ -46,10 +41,10 @@ public class TestInjectMessagesWorker extends HiveMindTestCase
 
     public void testSuccess()
     {
-
+        Location l = newLocation();
         InjectMessagesWorker w = new InjectMessagesWorker();
 
-        IComponentSpecification spec = newSpec();
+        IComponentSpecification spec = newSpec(l);
         ComponentMessagesSource source = newSource();
 
         MockControl control = newControl(EnhancementOperation.class);
@@ -67,7 +62,7 @@ public class TestInjectMessagesWorker extends HiveMindTestCase
         builder.end();
 
         op.addField("_$messages", Messages.class);
-        op.addMethod(Modifier.PUBLIC, w.METHOD_SIGNATURE, builder.toString());
+        op.addMethod(Modifier.PUBLIC, w.METHOD_SIGNATURE, builder.toString(), l);
 
         replayControls();
 
@@ -80,13 +75,13 @@ public class TestInjectMessagesWorker extends HiveMindTestCase
 
     public void testFailure()
     {
-
+        Location l = newLocation();
         InjectMessagesWorker w = new InjectMessagesWorker();
 
         Throwable ex = new ApplicationRuntimeException(EnhanceMessages
                 .claimedProperty(w.MESSAGES_PROPERTY));
 
-        IComponentSpecification spec = newSpec();
+        IComponentSpecification spec = newSpec(l);
 
         MockControl control = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) control.getMock();
@@ -101,7 +96,7 @@ public class TestInjectMessagesWorker extends HiveMindTestCase
 
         log.error(
                 EnhanceMessages.errorAddingProperty(w.MESSAGES_PROPERTY, BaseComponent.class, ex),
-                null,
+                l,
                 ex);
 
         replayControls();

@@ -51,7 +51,7 @@ public class InjectStateAnnotationWorker implements MethodAnnotationEnhancementW
 
         String propertyName = AnnotationUtils.getPropertyName(method);
 
-        _delegate.injectState(op, is.value(), propertyName);
+        _delegate.injectState(op, is.value(), propertyName, location);
     }
 
     public void setApplicationStateManager(ApplicationStateManager applicationStateManager)

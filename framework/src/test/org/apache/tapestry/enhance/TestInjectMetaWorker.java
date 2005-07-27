@@ -16,6 +16,7 @@ package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Modifier;
 
+import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.test.HiveMindTestCase;
@@ -33,12 +34,13 @@ import org.easymock.MockControl;
  */
 public class TestInjectMetaWorker extends HiveMindTestCase
 {
-    private InjectSpecification newSpec(String propertyName, String object)
+    private InjectSpecification newSpec(String propertyName, String object, Location location)
     {
         InjectSpecificationImpl result = new InjectSpecificationImpl();
 
         result.setProperty(propertyName);
         result.setObject(object);
+        result.setLocation(location);
 
         return result;
     }
@@ -50,7 +52,8 @@ public class TestInjectMetaWorker extends HiveMindTestCase
 
     public void testPrimitive()
     {
-        InjectSpecification spec = newSpec("fooBar", "foo.bar");
+        Location l = newLocation();
+        InjectSpecification spec = newSpec("fooBar", "foo.bar", l);
 
         ComponentPropertySource source = newSource();
 
@@ -76,7 +79,7 @@ public class TestInjectMetaWorker extends HiveMindTestCase
         builder.addln("return java.lang.Integer.parseInt(meta);");
         builder.end();
 
-        op.addMethod(Modifier.PUBLIC, sig, builder.toString());
+        op.addMethod(Modifier.PUBLIC, sig, builder.toString(), l);
 
         replayControls();
 
@@ -91,7 +94,8 @@ public class TestInjectMetaWorker extends HiveMindTestCase
 
     public void testCharacter()
     {
-        InjectSpecification spec = newSpec("fooBar", "foo.bar");
+        Location l = newLocation();
+        InjectSpecification spec = newSpec("fooBar", "foo.bar", l);
 
         ComponentPropertySource source = newSource();
 
@@ -117,7 +121,7 @@ public class TestInjectMetaWorker extends HiveMindTestCase
         builder.addln("return meta.charAt(0);");
         builder.end();
 
-        op.addMethod(Modifier.PUBLIC, sig, builder.toString());
+        op.addMethod(Modifier.PUBLIC, sig, builder.toString(), l);
 
         replayControls();
 
@@ -132,7 +136,8 @@ public class TestInjectMetaWorker extends HiveMindTestCase
 
     public void testObject()
     {
-        InjectSpecification spec = newSpec("fooBar", "foo.bar");
+        Location l = newLocation();
+        InjectSpecification spec = newSpec("fooBar", "foo.bar", l);
 
         ComponentPropertySource source = newSource();
         ValueConverter converter = (ValueConverter) newMock(ValueConverter.class);
@@ -165,7 +170,7 @@ public class TestInjectMetaWorker extends HiveMindTestCase
         builder.addln("return (java.lang.Object) vc.coerceValue(meta, _$Object);");
         builder.end();
 
-        op.addMethod(Modifier.PUBLIC, sig, builder.toString());
+        op.addMethod(Modifier.PUBLIC, sig, builder.toString(), l);
 
         replayControls();
 

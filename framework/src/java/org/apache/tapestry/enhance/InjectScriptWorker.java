@@ -81,7 +81,7 @@ public class InjectScriptWorker implements InjectEnhancementWorker
 
         MethodSignature sig = new MethodSignature(propertyType, methodName, null, null);
 
-        op.addMethod(Modifier.PUBLIC, sig, "return " + fieldName + ".getScript();");
+        op.addMethod(Modifier.PUBLIC, sig, "return " + fieldName + ".getScript();", location);
     }
 
     public void setSource(IScriptSource source)

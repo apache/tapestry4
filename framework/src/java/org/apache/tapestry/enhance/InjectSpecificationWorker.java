@@ -60,7 +60,8 @@ public class InjectSpecificationWorker implements EnhancementWorker
                 op,
                 fieldName,
                 SPECIFICATION_PROPERTY_NAME,
-                IComponentSpecification.class);
+                IComponentSpecification.class,
+                spec.getLocation());
     }
 
     public void setErrorLog(ErrorLog errorLog)

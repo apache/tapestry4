@@ -16,6 +16,7 @@ package org.apache.tapestry.enhance;
 
 import java.util.List;
 
+import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
 
 /**
@@ -101,8 +102,11 @@ public interface EnhancementOperation
      *            the method signature (defining name, return type, etc.)
      * @param methodBody
      *            a Javassist code snippet for the method body
+     * @param location
+     *            a location used to identify "why" the method was added; the location may later be
+     *            used to describe conflicts. May not be null.
      */
-    public void addMethod(int modifier, MethodSignature sig, String methodBody);
+    public void addMethod(int modifier, MethodSignature sig, String methodBody, Location location);
 
     /**
      * Returns the base component class, as defined in the specification (or defaulted). An enhaced

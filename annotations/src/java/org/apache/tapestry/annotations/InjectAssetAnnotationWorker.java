@@ -47,10 +47,10 @@ public class InjectAssetAnnotationWorker implements MethodAnnotationEnhancementW
             Method method, Location location)
     {
         InjectAsset as = method.getAnnotation(InjectAsset.class);
-        
+
         String propertyName = AnnotationUtils.getPropertyName(method);
 
-        _delegate.injectAsset(op, as.value(), propertyName);
+        _delegate.injectAsset(op, as.value(), propertyName, location);
     }
 
 }

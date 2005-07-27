@@ -49,7 +49,7 @@ public class InjectComponentAnnotationWorker implements MethodAnnotationEnhancem
         InjectComponent ic = method.getAnnotation(InjectComponent.class);
         String propertyName = AnnotationUtils.getPropertyName(method);
 
-        _delegate.injectComponent(op, ic.value(), propertyName);
+        _delegate.injectComponent(op, ic.value(), propertyName, location);
     }
 
 }

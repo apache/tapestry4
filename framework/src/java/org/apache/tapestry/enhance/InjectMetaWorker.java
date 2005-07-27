@@ -18,6 +18,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.hivemind.Location;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
@@ -58,10 +59,11 @@ public class InjectMetaWorker implements InjectEnhancementWorker
         String propertyName = spec.getProperty();
         String metaKey = spec.getObject();
 
-        injectMetaValue(op, propertyName, metaKey);
+        injectMetaValue(op, propertyName, metaKey, spec.getLocation());
     }
 
-    public void injectMetaValue(EnhancementOperation op, String propertyName, String metaKey)
+    public void injectMetaValue(EnhancementOperation op, String propertyName, String metaKey,
+            Location location)
     {
         Defense.notNull(op, "op");
         Defense.notNull(propertyName, "propertyName");
@@ -81,21 +83,21 @@ public class InjectMetaWorker implements InjectEnhancementWorker
 
         if (parser != null)
         {
-            addPrimitive(op, metaKey, propertyName, sig, sourceName, parser);
+            addPrimitive(op, metaKey, propertyName, sig, sourceName, parser, location);
             return;
         }
 
         if (propertyType == char.class)
         {
-            addCharacterPrimitive(op, metaKey, propertyName, sig, sourceName);
+            addCharacterPrimitive(op, metaKey, propertyName, sig, sourceName, location);
             return;
         }
 
-        addObject(op, metaKey, propertyName, propertyType, sig, sourceName);
+        addObject(op, metaKey, propertyName, propertyType, sig, sourceName, location);
     }
 
     private void addPrimitive(EnhancementOperation op, String metaKey, String propertyName,
-            MethodSignature sig, String sourceName, String parser)
+            MethodSignature sig, String sourceName, String parser, Location location)
     {
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
@@ -106,11 +108,11 @@ public class InjectMetaWorker implements InjectEnhancementWorker
         builder.addln("return {0}(meta);", parser);
         builder.end();
 
-        op.addMethod(Modifier.PUBLIC, sig, builder.toString());
+        op.addMethod(Modifier.PUBLIC, sig, builder.toString(), location);
     }
 
     private void addCharacterPrimitive(EnhancementOperation op, String metaKey,
-            String propertyName, MethodSignature sig, String sourceName)
+            String propertyName, MethodSignature sig, String sourceName, Location location)
     {
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
@@ -121,11 +123,11 @@ public class InjectMetaWorker implements InjectEnhancementWorker
         builder.addln("return meta.charAt(0);");
         builder.end();
 
-        op.addMethod(Modifier.PUBLIC, sig, builder.toString());
+        op.addMethod(Modifier.PUBLIC, sig, builder.toString(), location);
     }
 
     private void addObject(EnhancementOperation op, String metaKey, String propertyName,
-            Class propertyType, MethodSignature sig, String sourceName)
+            Class propertyType, MethodSignature sig, String sourceName, Location location)
     {
         String valueConverterName = op.addInjectedField(
                 "_$valueConverter",
@@ -143,7 +145,7 @@ public class InjectMetaWorker implements InjectEnhancementWorker
                 .getJavaClassName(propertyType), valueConverterName, classRef);
         builder.end();
 
-        op.addMethod(Modifier.PUBLIC, sig, builder.toString());
+        op.addMethod(Modifier.PUBLIC, sig, builder.toString(), location);
     }
 
     public void setSource(ComponentPropertySource source)
