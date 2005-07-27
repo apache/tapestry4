@@ -119,6 +119,8 @@ FormEventManager.prototype.addListener = function(type, handler)
 
 FormEventManager.prototype.invokeListeners = function(type, eventObj)
 {
+  if (eventObj.cancelListeners) return;
+  
   var array = this.handlers[type];
    
   if (array == null) return;
@@ -161,10 +163,28 @@ FormEventManager.prototype.cancel = function()
 	}
 }
 
+// addPreSubmitListener(handler)
+//
+// Typically used to setup state prior to the submit handlers being invoked.
+// Pre-submit listeners are invoked before submit handlers are invoked.  If
+// a pre-submit listener sets the cancelListeners flag on the event, the
+// submit and post-submit listeners will not be invoked.
+
+//
+// form - the Form object for which a listener is added
+// handler - recieves notification when the form is submitted
+
+FormEventManager.prototype.addPreSubmitListener = function(handler)
+{
+  this.addListener("presubmit", handler);
+}
+
 // addSubmitListener(handler)
 //
 // Typically used for input validations; normal submit listeners are skipped when
-// a form is submitted to refresh some of its values.
+// a form is submitted to refresh some of its values.  If a handler sets
+// the cancelListener flag on the event, then subsequent submit handlers, and all
+// post-submit handlers, will not be invoked.
 //
 // form - the Form object for which a listener is added
 // handler - receives notifications when the form is submitted
@@ -174,18 +194,34 @@ FormEventManager.prototype.addSubmitListener = function(handler)
   this.addListener("submit", handler);
 }
 
+// addPostSubmitListener(handler)
+// 
+// Used to perform final cleanup after all submit listeners have been invoked.
+//
+// form - the Form object for which a listener is added
+// handler - receives notifications when the form is submitted
+
+FormEventManager.prototype.addPostSubmitListener = function(handler)
+{
+  this.addListener("postsubmit", handler);
+}
+
 // submit()
 //
 // Submits a form.  This is designed to be the form's onsubmit event handler, so it returns true
 // to let the form submit, or false if any of the listeners set the abort flag on the event.
 // Returns false if any listener set the event's abort flag, true otherwise.
+//
+// Invokes all pre-submit listeners, then all submit listeners, then all post-submit listeners.
 // 
 
 FormEventManager.prototype.submit = function()
 {
 	var event = new FormSubmitEvent(this.form, "submit");
 
+    this.invokeListeners("presubmit", event);
 	this.invokeListeners("submit", event);	
+	this.invokeListeners("postsubmit", event);
 		
 	if (event.abort)
       return false;
