@@ -437,11 +437,13 @@ This will create a <code>registration</code> property, which can be wired to com
 accessors for this property, in which case you should be sure that the application state object is assignable.
 </p>
   
-<p>
+<warning>
 The &IPage; interface defines two read-only properties: <code>visit</code> and <code>global</code>. These are both
 type Object. This is a holdover from Tapestry 3.0, which only supported these two application
-state objects.
-</p>
+state objects.  If you want to access the visit or the global application state objects without needing casts,
+you will have to inject as a differently named property (say <code>appVisit</code> or <code>visitObject</code>).
+</warning>
+  
   
 </section>  <!-- state.aso.access -->
 

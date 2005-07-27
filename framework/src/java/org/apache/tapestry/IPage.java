@@ -206,6 +206,9 @@ public interface IPage extends IComponent
     /**
      * Returns the visit object for the application; the visit object contains application-specific
      * information.
+     * 
+     * @deprecated To be removed in 4.1. Inject an application state object instead. <strong>Do not
+     *             attempt to inject property visit</strong>.
      */
 
     public Object getVisit();
@@ -217,6 +220,8 @@ public interface IPage extends IComponent
      * Returns the global object, if it exists, or null if not defined.
      * 
      * @since 2.3
+     * @deprecated To be removed in 4.1. Inject an application state object instead. <strong>Do not
+     *             attempt to inject property global.</strong>
      */
 
     public Object getGlobal();
