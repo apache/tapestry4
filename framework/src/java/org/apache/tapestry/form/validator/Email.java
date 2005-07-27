@@ -76,7 +76,7 @@ public class Email extends BaseValidator
         String pattern = _matcher.getEscapedPatternString(PATTERN);
         String message = buildMessage(context, field);
 
-        StringBuffer buffer = new StringBuffer("function(event) { validate_regexp(event, ");
+        StringBuffer buffer = new StringBuffer("function(event) { validate_regex(event, ");
         buffer.append(context.getFieldDOM());
         buffer.append(", '");
         buffer.append(pattern);
