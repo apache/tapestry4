@@ -14,8 +14,12 @@
 
 function validate_regex(event, field, pattern, message)
 {
+	var value = field.value;
+	
+	if (value == "") return; //
+	
     var regexp = new RegExp(pattern)
 
-    if (!regexp.test(field.value))
+    if (!regexp.test(value))
       handle_invalid_field(event, field, message)
 }

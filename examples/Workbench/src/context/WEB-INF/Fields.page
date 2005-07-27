@@ -83,7 +83,7 @@
 
   <component id="inputEmail" type="TextField">
     <binding name="value" value="ognl:visit.emailValue"/>
-    <binding name="validators" value="required,email"/>
+    <binding name="validators" value="email"/>
     <binding name="displayName" value="Email Field"/>
   </component>
   
