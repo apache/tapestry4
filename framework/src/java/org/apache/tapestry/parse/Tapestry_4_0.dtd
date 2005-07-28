@@ -41,7 +41,7 @@ The following changes have occured:
 - Added property attribute to <component>, <bean> and <asset>
 - Removed the type attribute from the <configure> element
 - Added many alternatives to 'yes' and 'no' for boolean attributes.
-- Added aliases, default-binding and cache attributes to <parameter>
+- Added aliases and cache attributes to <parameter>
 - Added deprecated to <component-specification>
 -->
 <!-- =======================================================
@@ -398,8 +398,6 @@ Attributes:
     JavaBean property connected to this parameter.
   default-value: Specifies the default value for the parameter, if not bound,
     as a binding reference.
-  default-binding: The default binding type for parameters (when a binding
-    is specified without a parameter). 
   cache: If true (the default), then the parameter property will cache the binding value
    If false, then each access to the property will re-acquire the the current value
    for the binding on each access (though invariant bindings may still be cached).
@@ -413,7 +411,6 @@ Attributes:
 	required %attribute-flag; "no"
 	property CDATA #IMPLIED
 	default-value CDATA #IMPLIED
-  default-binding CDATA #IMPLIED
   cache %attribute-flag; "yes"
   aliases CDATA #IMPLIED
   deprecated %attribute-flag; "no"

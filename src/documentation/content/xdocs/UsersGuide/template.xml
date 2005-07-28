@@ -145,14 +145,14 @@ any existing tag.  For example:
     <span jwcid="border">
     
       Hello,
-      <span jwcid="@Insert" value="user.name">Joe User</span>
+      <span jwcid="@Insert" value="ognl:user.name">Joe User</span>
     </span>
   </body>
 </html>]]></source>
 
 <p>
 The first span is a reference to a <em>declared component</em>; the type and parameters
-of the component are in the page's specification.
+of the component are declared in the page's specification.
 </p>	
 
 <p>
@@ -261,7 +261,7 @@ Implicit components can also have a specific id, by placing the id in front of t
 </p>
 
 <source><![CDATA[
-  <span jwcid="insert@Insert" value="user.name">Joe User</span>
+  <span jwcid="insert@Insert" value="ognl:user.name">Joe User</span>
 ]]></source>
 
 <p>
@@ -322,7 +322,7 @@ the allow-informal-parameters attribute of the &spec.component-specification; el
 
 <p>
 Informal parameters are <em>not</em> limited to simply strings; using 
-&binding-reference; prefixes, it is possible for them to be expression, assets, or
+&binding-reference; prefixes, it is possible for them to be OGNL expressions, references to assets, or
 anything else.
 </p>
 

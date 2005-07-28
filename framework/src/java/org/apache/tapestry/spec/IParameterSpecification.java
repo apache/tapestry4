@@ -75,7 +75,7 @@ public interface IParameterSpecification extends LocationHolder
     /**
      * Returns the default value for the parameter (or null if the parameter has no default value).
      * Required parameters may not have a default value. The default value is a
-     * <em>binding locator</em>(a prefixed value, as with a binding element).
+     * <em>binding locator</em> (a prefixed value, as with a binding element).
      */
     public String getDefaultValue();
 
@@ -83,23 +83,6 @@ public interface IParameterSpecification extends LocationHolder
      * Sets the default value of the JavaBeans property if no binding is provided
      */
     public void setDefaultValue(String defaultValue);
-
-    /**
-     * Sets the default binding type, used when a parameter is bound without specifying an explicit
-     * binding prefix. May be blank (null or empty string), in which case the default binding type
-     * is determined by whether the parameter is bound in an HTML template or in a page or component
-     * specification.
-     * 
-     * @see org.apache.tapestry.binding.BindingConstants
-     * @see org.apache.tapestry.binding.BindingUtils#getDefaultBindingType(IComponentSpecification,
-     *      String, String)
-     * @since 4.0
-     */
-
-    public void setDefaultBindingType(String bindingType);
-
-    /** @since 4.0 */
-    public String getDefaultBindingType();
 
     /**
      * Returns true if the parameter property should cache the result of the binding.

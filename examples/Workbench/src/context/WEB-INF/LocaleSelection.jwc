@@ -22,8 +22,8 @@
 <component-specification class="org.apache.tapestry.workbench.table.LocaleSelection"
 	allow-body="no" allow-informal-parameters="yes">
 	
-    <component id="condTable" type="If">
-		<binding name="condition" value="ognl:localeSet.size > 0"/>
+  <component id="condTable" type="If">
+		<binding name="condition" value="localeSet.size gt 0"/>
 	</component>
 	
     <!-- Define the Table component that will be used. 
@@ -32,33 +32,34 @@
         
         <!-- The source of the data for the table will be the localeSet property
              defined further down in this file -->
-        <binding name="source" value="ognl:localeSet"/>
+        <binding name="source" value="localeSet"/>
         
         <!-- The columns of the table -->
         <binding name="columns"> 
-            ognl:
+            literal:
             
             <!-- The first column is the representation of the locale returned when invoking toString() on it.
                  Its name will be displayed according to the translation value
                  of this component with key 'locale' (see LocaleSelection.properties) -->
-            'locale:toString(), ' +
+            locale:toString(),
             
             <!-- The next two columns are returned by the Java code as ITableColumn objects -->
-            '=currencyColumn, =dateFormatColumn, ' +
+            =currencyColumn, 
+            =dateFormatColumn,
             
             <!-- The next column is named 'verbosity' and thus will use the 
                  verbosityValueRenderer block in this component to render the row values. 
                  If no translation key 'verbosity' is found, the column will be displayed as 'Verbosity' -->
-            'verbosity:Verbosity:@org.apache.tapestry.workbench.table.VerbosityRating@calculateVerbosity(#this), ' +
+            verbosity:Verbosity:@org.apache.tapestry.workbench.table.VerbosityRating@calculateVerbosity(#this),
             
             <!-- The last column is named 'delete' and is not sortable. Please see the 
                  deleteValueRenderer block for the definition of how it should look --> 
-            '!delete'
+            !delete
         </binding>
 
         <!-- The row object (locale) that is currently being rendered 
              will be stored in the currentLocale property (defined further down) -->
-        <binding name="row" value="ognl:currentLocale"/>
+        <binding name="row" value="currentLocale"/>
         
         <!-- Each rendered row will be given the CSS class of 'tableRowsClass' -->
 		<binding name="rowsClass" value="literal:tableRowsClass"/>
@@ -67,18 +68,18 @@
 	
     <component id="directDelete" type="DirectLink">
 		<binding name="listener" value="listener:deleteLocale"/>
-		<binding name="parameters" value="ognl:deleteLocaleContext"/>
+		<binding name="parameters" value="deleteLocaleContext"/>
 	</component>
 	
     <component id="verbosity" type="Any">
-		<binding name="element" value="td"/>
-		<binding name="style"> ognl: 
+		<binding name="element" value="literal:td"/>
+		<binding name="style">ognl:  
             "background-color:blue; width:"
 			+ (currentLocaleVerbosity / 2) + "px"
 		</binding>
 	</component>
     
-    <property name="localeSet" persist="session"  initial-value="ognl:new java.util.HashSet()"/>
+    <property name="localeSet" persist="session"  initial-value="new java.util.HashSet()"/>
 
     <property name="currentLocale"/>
     

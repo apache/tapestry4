@@ -45,7 +45,6 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
-    <th>Default Binding</th>
     <th>Description</th>
   </tr>
 
@@ -55,7 +54,6 @@
     <td>in</td>
     <td>yes</td>
     <td>&nbsp;</td>
-    <td>listener</td>
     <td>
       The listener to invoke.
     </td>
@@ -67,7 +65,6 @@
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>ognl</td>
     <td>
       Parameter(s) gathered at the time the listener is invoked, 
       supplied as listener parameters in the IRequestCycle
@@ -95,7 +92,8 @@
 
 <p>
 This component does not render any output at all. The component is a placeholder within the page or component template that marks a point
-where logic within the Java class should be executed. A typical use of this is to setup properties needed by comopnents within the template.
+where logic within the Java class should be executed. A typical use of this is to setup properties needed by components within the template, for example,
+to fetch an object from a database so that other components may read or update its properties.
 </p>
 
 </section>

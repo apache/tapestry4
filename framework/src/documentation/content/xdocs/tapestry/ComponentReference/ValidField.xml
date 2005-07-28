@@ -51,7 +51,6 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
-    <th>Default Binding</th>
     <th>Description</th>
   </tr>
   
@@ -61,7 +60,6 @@
     <td>in / out</td>
     <td>yes</td>
     <td>&nbsp;</td>
-    <td>ognl</td>
     <td>The value to be edited which may be any reasonable type.  The validator is responsible for
       converting back and forth between server-side data types (such as int, long, Date, BigDecimal, etc.) and
       client-side representation (as a simple string).</td>
@@ -73,7 +71,6 @@
     <td>int</td>
     <td>yes</td>
     <td>&nbsp;</td>
-    <td>validator</td>
     <td>
     The validator object for this field.  Validators are stateless and, therefore, highly sharable.  The
     validator binding allows validator type and configuration to be specified succinctly; where more control
@@ -87,7 +84,6 @@
     <td>in</td>
     <td>no</td>
     <td>false</td>
-    <td>ognl</td>
     <td>If true, then a disabled attribute will be rendered as part of the &lt;input&gt; tag, and the component will not
       update its value parameter when the form is submitted.</td>
   </tr>
@@ -98,7 +94,6 @@
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>literal</td>
     <td>The user-presentable name for the component, which will be used by a &FieldLabel; connected to the component. This name is also
       used by the validator, when creating client- or server-side error messages.</td>
   </tr>
@@ -109,7 +104,6 @@
     <td>in</td>
     <td>no</td>
     <td>false</td>
-    <td>ognl</td>
     <td>If true, then the type attribute will be "password", not "text", and user input in the browser will be masked. </td>
   </tr>  
 
@@ -151,29 +145,29 @@ This example shows the usage of a number of ValidField components, each configur
       <td colspan="2"><span jwcid="@ShowError" delegate="beans.delegate"/></td>
     </tr>
     <tr>
-      <td><span jwcid="@FieldLabel" field="lotNoField">Lot Number</span></td>
+      <td><span jwcid="@FieldLabel" field="component:lotNoField">Lot Number</span></td>
       <td><input jwcid="lotNoField" type="text" size="4" maxlength="4"/></td> 
     </tr>
     <tr>
-      <td><span jwcid="@FieldLabel" field="bidAmountField">Bid Amount</span></td>
+      <td><span jwcid="@FieldLabel" field="component:bidAmountField">Bid Amount</span></td>
       <td><input jwcid="bidAmountField" type="text" size="7" maxlength="7"/></td>
     </tr>
     <tr>
-      <td><span jwcid="@FieldLabel" field="fullNameField">Full Name</span></td>
+      <td><span jwcid="@FieldLabel" field="component:fullNameField">Full Name</span></td>
       <td><input jwcid="fullNameField" type="text" size="25" maxlength="30"/></td>
     </tr>
     <tr>
-      <td><span jwcid="@FieldLabel" field="emailField">Email</span></td>
+      <td><span jwcid="@FieldLabel" field="component:emailField">Email</span></td>
       <td><input jwcid="emailField" type="text" size="25" maxlength="30"/></td>
     </tr>
     <tr>
-      <td><span jwcid="@FieldLabel" field="telephoneField">Telephone</span></td>
+      <td><span jwcid="@FieldLabel" field="component:telephoneField">Telephone</span></td>
       <td><input jwcid="telephoneField" type="text" size="25" maxlength="30"/></td>
     </tr>
    <tr>
      <td colspan="2" align="right">
-       <input jwcid="@Submit" listener="doSubmit" type="Submit" value="   OK   "/>
-       <input jwcid="@Submit" listener="doCancel" onclick="javascript:form.onsubmit = null;"/>
+       <input jwcid="@Submit" listener="listener:doSubmit" type="Submit" value="   OK   "/>
+       <input jwcid="@Submit" listener="listener:doCancel" onclick="javascript:form.events.cancel();"/>
      </td>
    </tr>
   </table>
@@ -207,31 +201,31 @@ specification.
 <component id="lotNoField" type="ValidField">
     <binding name="value" value="lotBid.lotNo"/>
     <binding name="validator" value="bean:lotNoValidator"/>
-    <binding name="displayName" value="Lot Number"/>
+    <binding name="displayName" value="literal:Lot Number"/>
 </component>
 
 <component id="bidAmountField" type="ValidField">
     <binding name="value" value="lotBid.bidAmount"/>
     <value name="validator" value="bean:bidAmountNoValidator"/>
-    <value name="displayName" value="Bid Amount"/>
+    <value name="displayName" value="literal:Bid Amount"/>
 </component>
 
 <component id="fullNameField" type="ValidField">
     <binding name="value" value="lotBid.bidderName"/>
-    <binding name="validator" value="string,required,minimumLength=3"/>
-    <binding name="displayName" value="Full Name"/>
+    <binding name="validator" value="validator:string,required,minimumLength=3"/>
+    <binding name="displayName" value="literal:Full Name"/>
 </component>
 
 <component id="emailField" type="ValidField">
     <binding name="value" value="lotBid.bidderEmail"/>
-    <binding name="validator" value="string,required,minimumLength=12"/>
-    <binding name="displayName" value="Email"/>
+    <binding name="validator" value="validator:string,required,minimumLength=12"/>
+    <binding name="displayName" value="literal:Email"/>
 </component>
 
 <component id="telephoneField" type="ValidField">
     <binding name="value" value="lotBid.bidderTelephone"/>
-    <binding name="validator" value="string,required,minimumLength=11"/>
-    <binding name="displayName" value="Telephone"/>;
+    <binding name="validator" value="validator:string,required,minimumLength=11"/>
+    <binding name="displayName" value="literal:Telephone"/>;
 </component>
 ]]></source>
 
@@ -250,22 +244,22 @@ public abstract class EnterBid extends BasePage {
     
     public abstract IValidationDelegate getDelegate();
 
-    public void doSubmit(IRequestCycle cycle) {
+    public String doSubmit() {
         IValidationDelegate delegate = getDelegate();
 
         // If no errors process the bid, otherwise stay on this page and 
         // let the fields show their errors.
-        if (!delegate.getHasErrors())
-            // Save the lot bid to the database.
-            ..
+        if (delegate.getHasErrors())
+          return null;
+          
+        // Save the lot bid to the database.
+        // ..
             
-            // Go to the confirmation page.
-            cycle.activate("BidConfirmPage");
-        }
+        return "BidConfirmPage";
     }
     
-    public void doCancel(IRequestCycle cycle) {
-        cycle.activate("AuctionListPage");
+    public String doCancel() {
+       return "AuctionListPage";
     }
 }]]></source>
 </section>

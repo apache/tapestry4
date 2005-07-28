@@ -67,7 +67,6 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
 
         assertListsEqual(new Object[] {}, ps.getAliasNames().toArray());
         assertEquals(true, ps.getCache());
-        assertEquals(null, ps.getDefaultBindingType());
         assertEquals(null, ps.getDefaultValue());
         assertEquals(null, ps.getDescription());
         assertSame(l, ps.getLocation());
@@ -81,14 +80,6 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
         IParameterSpecification ps = attempt("requiredParameter", null);
 
         assertEquals(true, ps.isRequired());
-    }
-
-    public void testDefaultBinding()
-    {
-        IParameterSpecification ps = attempt("beanDefaultParameter", null);
-
-        assertEquals("bean", ps.getDefaultBindingType());
-        assertEquals("java.lang.Object", ps.getType());
     }
 
     public void testCacheOff()

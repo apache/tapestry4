@@ -22,7 +22,7 @@
 <page-specification class="org.apache.tapestry.html.BasePage">
 
   <component id="border" type="lib:Border">
-  	<binding name="title" value="Private Asset Template"/>
+  	<binding name="title" value="literal:Private Asset Template"/>
   </component>
 
   <asset name="$template" path="/pages/PrivateAssetTemplate.html"/>

@@ -74,9 +74,6 @@ public abstract class AnnotatedPage extends BasePage
     @Parameter(required = true)
     public abstract String getRequiredParameter();
 
-    @Parameter(defaultBinding = "bean")
-    public abstract Object getBeanDefaultParameter();
-
     @Parameter(cache = false)
     public abstract Object getNonCachedParameter();
 

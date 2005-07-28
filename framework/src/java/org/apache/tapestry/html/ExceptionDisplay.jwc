@@ -46,50 +46,50 @@
   <inject property="adapterFactory" object="service:tapestry.describe.RenderableAdapterFactory"/>
   
   <component id="eException" type="Foreach">
-    <binding name="source" value="ognl:exceptions"/>
-    <binding name="value" value="ognl:exception"/>
-    <binding name="index" value="ognl:index"/>
+    <binding name="source" value="exceptions"/>
+    <binding name="value" value="exception"/>
+    <binding name="index" value="index"/>
   </component>
   
   <component id="insertClass" type="Insert">
-    <binding name="value" value="ognl:exception.exceptionClassName"/>
+    <binding name="value" value="exception.exceptionClassName"/>
   </component>
   
   <component id="insertMessage" type="Insert">
-    <binding name="value" value="ognl:exception.message"/>
+    <binding name="value" value="exception.message"/>
   </component>
   
   <component id="eProperty" type="Foreach">
-  	<binding name="element" value="tr"/>
-  	<binding name="class" value="ognl:beans.evenOdd.next"/>
-    <binding name="source" value="ognl:exception.properties"/>
-    <binding name="value" value="ognl:property"/>
+  	<binding name="element" value="literal:tr"/>
+  	<binding name="class" value="beans.evenOdd.next"/>
+    <binding name="source" value="exception.properties"/>
+    <binding name="value" value="property"/>
   </component>
   
   <component id="insertPropertyName" type="Insert">
-    <binding name="value" value="ognl:property.name"/>
+    <binding name="value" value="property.name"/>
   </component>
   
   <component id="insertPropertyValue" type="Delegator">
-    <binding name="delegate" value="ognl:adapterFactory.getRenderableAdaptor(property.value)"/>
+    <binding name="delegate" value="adapterFactory.getRenderableAdaptor(property.value)"/>
   </component>
   
   <component id="ifLast" type="If">
-    <binding name="condition" value="ognl:last"/>
+    <binding name="condition" value="last"/>
   </component>
   
   <component id="ifNotLast" type="If">
-    <binding name="condition" value="ognl:! last"/>
+    <binding name="condition" value="! last"/>
   </component>
   
   <component id="eStack" type="Foreach">
-    <binding name="element" value="li"/>
-    <binding name="source" value="ognl:exception.stackTrace"/>
-    <binding name="value" value="ognl:trace"/>
+    <binding name="element" value="literal:li"/>
+    <binding name="source" value="exception.stackTrace"/>
+    <binding name="value" value="trace"/>
   </component>
   
   <component id="insertStackTrace" type="Insert">
-    <binding name="value" value="ognl:trace"/>
+    <binding name="value" value="trace"/>
   </component>
   
 </component-specification>

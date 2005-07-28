@@ -23,7 +23,6 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -224,13 +223,28 @@ public abstract class AbstractEngine implements IEngine
         if (_infrastructure == null)
             _infrastructure = (Infrastructure) request.getAttribute(Constants.INFRASTRUCTURE_KEY);
 
+        // Create the request cycle; if this fails, there's not much that can be done ... everything
+        // else in Tapestry relies on the RequestCycle.
+
+        try
+        {
+            cycle = _infrastructure.getRequestCycleFactory().newRequestCycle(this);
+        }
+        catch (RuntimeException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw new IOException(ex.getMessage());
+        }
+
         try
         {
             try
             {
-                cycle = _infrastructure.getRequestCycleFactory().newRequestCycle(this);
-
                 monitor = cycle.getMonitor();
+
                 service = cycle.getService();
 
                 monitor.serviceBegin(service.getName(), _infrastructure.getRequest()

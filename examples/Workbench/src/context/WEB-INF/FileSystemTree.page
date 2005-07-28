@@ -23,34 +23,34 @@
 <page-specification class="org.apache.tapestry.workbench.tree.examples.FileSystemTree">
 
     <component id="currentTime" type="Insert">
-        <binding name="value" value="ognl:currentTime"/>
+        <binding name="value" value="currentTime"/>
     </component>
 
     <component id="shell" type="Shell">
         <binding name="stylesheet" value="asset:stylesheet"/>
-        <binding name="title" value="Home"/>
+        <binding name="title" value="literal:Home"/>
     </component>
 
     <component id="treeData" type="contrib:TreeDataView">
-        <binding name="treeView" value="ognl:components.treeView"/>
-        <binding name="value" value="ognl:value"/>
-        <!--binding name="showRootNode" value="ognl:@java.lang.Boolean@FALSE"/-->
+        <binding name="treeView" value="components.treeView"/>
+        <binding name="value" value="value"/>
+        <!--binding name="showRootNode" value="@java.lang.Boolean@FALSE"/-->
     </component>
 
     <component id="treeNodeView" type="contrib:TreeNodeView">
         <binding name="makeNodeDirect" value="true"/>
-        <binding name="nodeRenderFactory" value="ognl:renderFactory"/>
-        <binding name="treeDataView" value="ognl:components.treeData"/>
+        <binding name="nodeRenderFactory" value="renderFactory"/>
+        <binding name="treeDataView" value="components.treeData"/>
     </component>
 
     <component id="treeView" type="contrib:TreeView">
-        <binding name="sessionStateManager" value="ognl:sessionStateManager"/>
-        <binding name="treeModel" value="ognl:treeModel"/>
-        <binding name="treeStateListener" value="ognl:treeStateListener"/>
+        <binding name="sessionStateManager" value="sessionStateManager"/>
+        <binding name="treeModel" value="treeModel"/>
+        <binding name="treeStateListener" value="treeStateListener"/>
     </component>
 
     <component id="directoryTableView" type="DirectoryTableView">
-        <binding name="selectedFolderSource" value="ognl:selectedFolderSource"/>
+        <binding name="selectedFolderSource" value="selectedFolderSource"/>
     </component>
 
     <!--component id="showInspector" type="contrib:InspectorButton"/-->

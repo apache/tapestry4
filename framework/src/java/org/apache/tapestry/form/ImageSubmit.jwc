@@ -25,43 +25,43 @@
   Creates a clickable image within a form.
   </description>
 
-  <parameter name="image" required="yes" default-binding="asset">
+  <parameter name="image" required="yes">
   	<description>
   	Image used for the button.
   	</description>
   </parameter>
   	
-  <parameter name="name" property="nameOverride" default-binding="literal"/>
+  <parameter name="name" property="nameOverride"/>
   	
-  <parameter name="disabledImage" default-binding="asset">
+  <parameter name="disabledImage">
   	<description>
   	Image used for the button, if disabled.
   	</description>
   </parameter>
   	
-  <parameter name="disabled" default-binding="ognl"/>
+  <parameter name="disabled"/>
   	
-  <parameter name="point" default-binding="ognl"/>
+  <parameter name="point"/>
   
-  <parameter name="selected" default-binding="ognl">
+  <parameter name="selected">
   	<description>
   	Property updated when the button is clicked.
   	</description>
   </parameter>
   
-  <parameter name="tag" default-binding="ognl">
+  <parameter name="tag">
   	<description>
   	Value used when updating the selected parameter.
   	</description>
   </parameter>
   
-  <parameter name="listener" default-binding="listener">
+  <parameter name="listener">
   	<description>
   	Notified when the button is clicked.
   	</description>
   </parameter>
   
-  <parameter name="defer" default-binding="ognl" default-value="true">
+  <parameter name="defer" default-value="true">
     <description>
       If true (the default), then the listener (if any)
       is not notified until just before the form's listener,
@@ -70,15 +70,14 @@
     </description>
   </parameter>
 
-  <parameter name="parameters" default-binding="ognl">
+  <parameter name="parameters">
     <description>
       An object, or list of objects, gathered when the button is triggered and 
       made available as listener parameters in the request cycle, making
       the parameters available to a deferred listener.
     </description>
   </parameter>
-  <parameter name="id" default-binding="literal" property="idParameter"
-  		default-value="ognl:id"/>
+  <parameter name="id" property="idParameter"	default-value="id"/>
 
   		  
   <reserved-parameter name="type"/>

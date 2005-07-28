@@ -53,8 +53,7 @@
     <th>Type</th>
 	  <th>Direction</th>
     <th>Required</th> 
-    <th>Default</th>
-    <th>Default Binding</th>    
+    <th>Default</th>   
     <th>Description</th>
   </tr>
   
@@ -64,7 +63,6 @@
     <td>in</td>
     <td>yes</td>
     <td>&nbsp;</td>
-    <td>component</td>
     <td>
       The component to be labeled.  The component will be <em>pre-rendered</em> by the FieldLabel, and
       its displayName property used as the label string (note that most form element components return null
@@ -78,7 +76,6 @@
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>literal</td>
     <td>
       Overrides the displayName provided by the component (if a &ValidField;), or supplies a displayName for components
       (such as &TextField;, etc.) that don't provide one.  A runtime exception occurs if displayName is null
@@ -92,7 +89,6 @@
     <td>in</td>
     <td>no</td>
     <td>false</td>
-    <td>&nbsp;</td>
     <td>
       If true, then the displayName is printed "raw" (without filtering), which is appropriate when
       the displayName includes markup text.
@@ -127,7 +123,7 @@ a &ValidField; being labeled (with the displayName being provided by the ValidFi
 <source><![CDATA[
 <tr>
   <th>
-    <span jwcid="@FieldLabel" field="textField" displayName="message:textfield-label">Text Field</span>:
+    <span jwcid="@FieldLabel" field="component:textField" displayName="message:textfield-label">Text Field</span>:
   </th>
   <td>
     <input jwcid="textField@TextField" . . . />
@@ -135,7 +131,7 @@ a &ValidField; being labeled (with the displayName being provided by the ValidFi
 </tr>
 <tr>
   <th>
-    <span jwcid="@FieldLabel" field="validField">Valid Field</span>:
+    <span jwcid="@FieldLabel" field="component:validField">Valid Field</span>:
   </th>
   <td>
     <input jwcid="validField@ValidField" displayName="message:validfield-label" . . . />

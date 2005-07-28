@@ -22,8 +22,8 @@
 <page-specification class="org.apache.tapestry.workbench.upload.UploadResults">
   
   <component id="backRollover" type="Rollover">
-    <binding name="image" value="back"/>
-    <binding name="focus" value="backFocus"/>
+    <binding name="image" value="asset:back"/>
+    <binding name="focus" value="asset:backFocus"/>
   </component>
   
   <asset name="back" path="images/Back.gif"/>

@@ -23,12 +23,13 @@
 
   <description>
   Creates a non-contextual link.  Non-persistent state can be stored within the link
-  using the context.
+  using the parameters, which will be encoded into the URL and provided to the eventual
+  listener.
   </description>
 
-  <parameter name="listener" required="yes" default-binding="listener"/>
+  <parameter name="listener" required="yes"/>
   	
-  <parameter name="parameters" default-binding="ognl">
+  <parameter name="parameters">
     <description>
     An object, or list of objects, encoded into the URL
     as listener parameters (and made available to the ulimate listener object
@@ -36,9 +37,9 @@
     </description>
   </parameter>
      
-  <parameter name="stateful" default-value="true" default-binding="ognl"/>
+  <parameter name="stateful" default-value="true"/>
   
-  <parameter name="disabled" default-binding="ognl"/>
+  <parameter name="disabled"/>
   	  	
   <parameter name="anchor"/>
   	

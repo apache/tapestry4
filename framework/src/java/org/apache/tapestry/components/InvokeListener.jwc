@@ -27,13 +27,12 @@
   Invokes a listener, with parameters, during the page render.
   </description>
 
-  <parameter name="listener" required="yes" default-binding="listener"/>
+  <parameter name="listener" required="yes"/>
   	
-  <parameter name="parameters" default-binding="ognl">
+  <parameter name="parameters">
     <description>
-    An object, or list of objects, encoded into the URL
-    as listener parameters (and made available to the ulimate listener object
-        or method).
+    An object, or list of objects, provided as method parameters
+    to the listener method.
     </description>
   </parameter>
   

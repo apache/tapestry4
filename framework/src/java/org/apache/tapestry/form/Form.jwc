@@ -29,20 +29,20 @@
 
   <bean name="defaultDelegate" class="org.apache.tapestry.valid.ValidationDelegate"/>
   
-  <parameter name="method" default-value="post" default-binding="literal">
+  <parameter name="method" default-value="literal:post">
     <description>
     The method used by the form when it is submitted, defaults to "post".
     </description>
   </parameter>
   
-  <parameter name="listener" default-binding="listener">
+  <parameter name="listener">
     <description>
   	Object invoked when the form is submitted, after all form components have responded
   	to the submission.
     </description>
   </parameter>
   
-  <parameter name="cancel" default-binding="listener">
+  <parameter name="cancel">
       <description>
           Object invoked when the form is cancelled (a special type of form submission).
           The cancel listener (if any) overrides the standard listener. Other properties
@@ -50,7 +50,7 @@
        </description>
    </parameter>
   
-  <parameter name="refresh" default-binding="listener">
+  <parameter name="refresh">
       <description>
           Object invoked when the form is refreshed (a special type of form submission).
           The refresh listener (if any) overrides the standard listener.
@@ -58,7 +58,7 @@
       </description>
   </parameter>
   
-  <parameter name="stateful" default-value="true" default-binding="ognl">
+  <parameter name="stateful" default-value="true">
     <description>
     If true (the default), then an active session is required when the
         form is submitted, if there was an active session when the
@@ -66,28 +66,28 @@
     </description>
   </parameter>
   
-  <parameter name="direct" default-value="true" default-binding="ognl">
+  <parameter name="direct" default-value="true">
     <description>
     If true (the default), then the more efficient direct service is used.
     If false, then the action service is used.
     </description>
   </parameter>
   
-  <parameter name="delegate" default-binding="ognl" default-value="bean:defaultDelegate">
+  <parameter name="delegate" default-value="bean:defaultDelegate">
     <description>
     Specifies the delegate to be used by fields to track input errors. If not specified, the
         Form provides a default instance of org.apache.tapestry.valid.ValidationDelegate.
     </description>
   </parameter>
   
-  <parameter name="clientValidationEnabled" default-binding="ognl">
+  <parameter name="clientValidationEnabled">
     <description>
     If true (the default) then client-side validation will be generated upon render for any
         required or validating fields.
 	</description>
   </parameter>
   
-  <parameter name="focus" default-binding="ognl" default-value="true">
+  <parameter name="focus" default-value="true">
     <description>
       If true (the default), then the form will attempt to get field focus on the first
       field in error (or first required field, or just first field) within the form.

@@ -30,12 +30,11 @@
   
   <parameter name="renderer"/>
 
-  <parameter name="displayName" default-binding="literal"/>
-  <parameter name="required" default-binding="ognl"/>
-  <parameter name="requiredMessage" default-binding="literal"/>
+  <parameter name="displayName"/>
+  <parameter name="required"/>
+  <parameter name="requiredMessage"/>
       	
-  <parameter name="id" default-binding="literal" property="idParameter"
-  		default-value="ognl:id"/>
+  <parameter name="id" property="idParameter" default-value="id"/>
         	
   <property name="name"/>
   <property name="form"/>

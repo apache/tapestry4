@@ -96,7 +96,7 @@
         </description>
     </parameter>
     
-    <parameter name="persist" default-value="session" default-binding="literal"> 
+    <parameter name="persist" default-value="literal:session"> 
         <description>
             Defines how the table state (paging and sorting) will be persisted
             if no tableSessionStoreManager is defined.
@@ -105,13 +105,13 @@
         </description>
     </parameter>
     
-    <parameter name="element" default-value="table" default-binding="literal"> 
+    <parameter name="element" default-value="literal:table"> 
         <description>
             The tag with which the component will be inserted in the generated content.
         </description>
     </parameter>
     
-    <parameter name="columnSettingsContainer" default-value="ognl:container">
+    <parameter name="columnSettingsContainer" default-value="container">
         <description>
             The component where Block and messages are pulled from when using source/columns.
         </description>

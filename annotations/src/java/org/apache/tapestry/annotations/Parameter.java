@@ -42,13 +42,6 @@ public @interface Parameter {
     boolean required() default false;
 
     /**
-     * The default binding type, used when the parameter is bound without an explicit binding
-     * prefix. Note that this default binding will apply to the {@link #defaultValue}.
-     */
-
-    String defaultBinding() default "";
-
-    /**
      * The default value for the binding, as a binding reference.
      */
 

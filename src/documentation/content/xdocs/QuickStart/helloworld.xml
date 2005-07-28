@@ -226,17 +226,17 @@ its body ("render" is the verb used throughout Tapestry meaning "write HTML outp
 
 <p>
   So, what does <code>value="ognl:new java.util.Date()"</code> mean?  
-  Let's start with the attribute value, <code>ognl:new java.util.Date</code>.  The "ognl:" perfix
+  Let's start with the attribute value, <code>ognl:new java.util.Date</code>.  The "ognl:" prefix
   signals to Tapestry that this is an expression to be evaluated, rather than a ordinary, literal
   string. If we did want the Insert to always render the same literal string, such as "Tapestry Rocks!", 
   we wouldn't need the prefix, we could just write
- <code>value="Tapestry Rocks!"</code><sup>1</sup>.
+ <code>value="Tapestry Rocks!"</code>.
 </p>  
   
 <p>
 OGNL is the Object Graph Navigation Language, an open source expression language used by several
 open-source projects, including Tapestry, &WebWork; and &Spring;.  OGNL has some astounding
-capabilities, not just reading and updating object properties, but also support creating
+capabilities, not just reading and updating object properties, but also includes support for creating
 new objects entirely (as here), as well as creating lists, maps and arrays of objects.
 </p>
 
@@ -252,8 +252,7 @@ when discussing the form element components.
 </p>
 
 <p>
-  What a component does with its parameters is its business; it may read them, update them, or even
-  ignore them. In the Java code for the Insert component is the logic that obtains value parameter and
+  In the Java code for the Insert component is the logic that obtains value parameter and
   converts it into into a string that is rendered into the response.
 </p>
 
@@ -261,7 +260,7 @@ when discussing the form element components.
  So, the expression provides the Date instance, the value parameter gives the Insert component access
  to that value, and the Insert component provides the logic for converting that Date into a string
  and having it show up on the rendered page. Every time the Insert component renders, it will
- re-read its value parameter, causing the expression to be evaluated and a new Date instance
+ re-read its value parameter, causing the expression to be evaluated once more, and a new Date instance
  to be created.   You can see this by hitting your browser's refresh button repeatedly; the displayed date will
  keep changing.
 </p>
@@ -315,7 +314,7 @@ when discussing the form element components.
 
 <p>
   This is a <strong>bad idea</strong>. Tapestry is doing more than spewing out a URL, it's
-  <em>session encoding</em> the URL for you<sup>2</sup> and may be doing other useful things that
+  <em>session encoding</em> the URL for you<sup>1</sup> and may be doing other useful things that
   we'll see later.  Further, second guessing Tapestry's URLs is never a good idea; the PageLink component
   will be around in the next release of Tapestry, but the URL format may change between releases.
 </p>
@@ -346,17 +345,8 @@ when discussing the form element components.
 </p>
 </section>
 
-
-<!-- If default bindings go, so can this footnote! -->
-
 <p>
-  <sup>1</sup> Actually, that wouldn't work. As we'll see later, the Insert  component
-  always interprets its value as an OGNL expression, even when there isn't a prefix.
-  We would have to say <code>value="literal:Tapestry Rocks!"</code> to avoid a runtime error.
-</p>
-
-<p>
-  <sup>2</sup> Session encoding is an aspect of the Servlet API.  Encoding a URL adds information about
+  <sup>1</sup> Session encoding is an aspect of the Servlet API.  Encoding a URL adds information about
   the server-side session (the HttpSession) if there is one. Although this information can
   be obtained via HTTP cookies, not all users have cookies enabled in their browser. The servlet
   specification encourages you to always encode your URLs, and this is simply done for you in Tapestry.

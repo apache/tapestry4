@@ -26,20 +26,19 @@
   Allows a file to be uploaded as part of a form.
   </description>
 
-  <parameter name="file" required="yes" default-binding="ognl">
+  <parameter name="file" required="yes">
   	<description>
   	Parameter updated with the information (filename and content) of the file
   	when the form is submitted.
   	</description>
   </parameter>
 
-  <parameter name="disabled" default-binding="ognl"/>
+  <parameter name="disabled"/>
 
-  <parameter name="displayName" default-binding="literal"/>
-  <parameter name="required" default-binding="ognl"/>
-  <parameter name="requiredMessage" default-binding="literal"/>
-  <parameter name="id" default-binding="literal" property="idParameter"
-  		default-value="ognl:id"/>
+  <parameter name="displayName"/>
+  <parameter name="required"/>
+  <parameter name="requiredMessage"/>
+  <parameter name="id" property="idParameter" default-value="id"/>
 
   		 
   <reserved-parameter name="type"/>

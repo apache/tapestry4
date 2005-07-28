@@ -26,25 +26,24 @@
   to existing components such as TextField and TextArea.
   </description>
 
-  <parameter name="value" required="yes" default-binding="ognl"/>
+  <parameter name="value" required="yes"/>
   
-  <parameter name="disabled" default-binding="ognl"/>
+  <parameter name="disabled"/>
   
-  <parameter name="hidden" default-binding="ognl"/>
+  <parameter name="hidden"/>
     
-  <parameter name="validator" required="yes" default-binding="validator">
+  <parameter name="validator" required="yes">
     <description>
     Converts value to a string and parses strings back into object values.
     </description>
   </parameter>
     
-  <parameter name="displayName" required="yes" default-binding="literal">
+  <parameter name="displayName" required="yes">
     <description>
     Name used by FieldLabel and when generating validation error messages.
     </description>
   </parameter>
-  <parameter name="id" default-binding="literal" property="idParameter"
-  		default-value="ognl:id"/>
+  <parameter name="id" property="idParameter" default-value="id"/>
   		  
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>

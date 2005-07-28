@@ -270,28 +270,15 @@ equivalent:
 <source><![CDATA[
   <parameter name="foo" type="int" default-value="bar.baz"/>  <!-- 3.0 -->
   
-  <parameter name="foo" default-value="ognl:bar.baz"/>        <!-- 4.0 -->]]>
+  <parameter name="foo" default-value="bar.baz"/>             <!-- 4.0 -->]]>
 </source>
   
-<p>
-  If you <em>don't</em> specify a prefix, then the default-binding (if any) for the parameter is used as the prefix for the default-value,
-  just as it would be for any binding of the parameter. If the default-binding attribute
-  is not set, then no prefix will be interpreted as an OGNL expression (so, really, the "ognl:" could be omitted in the example above).
-  All of this comes in handy for more a more complex example:
-</p>
 
 <source><![CDATA[
   <parameter name="bar" type="java.lang.String" 
     default-value="messages.getMessage('default-bar')"/>      <!-- 3.0 -->
   
   <parameter name="bar" default-value="message:default-bar"/> <!-- 4.0 --> 
-  
-  
-  <parameter name="baz" type="org.apache.tapestry.IAsset"
-    default-value="assets.defaultBaz"/>                       <!-- 3.0 -->
-    
-  <parameter name="baz" default-binding="asset"
-    default-value="defaultBaz"/>                              <!-- 4.0 -->
 ]]></source>
   
   
@@ -323,10 +310,14 @@ bound to the nested component parameter:
   <parameter name="itemCount"/>
   
   <component id="nested" type="Nested">
-    <binding name="count" value="ognl:itemCount"/>
+    <binding name="count" value="itemCount"/>
   </component>
 
 ]]></source>
+
+<warning>
+  inherited-binding may make a comeback in Tapestry 4.0!
+</warning>
   
 </section>
   

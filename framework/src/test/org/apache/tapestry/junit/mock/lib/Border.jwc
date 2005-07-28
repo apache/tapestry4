@@ -21,10 +21,10 @@
 	
 <component-specification allow-informal-parameters="no">
 	
-  <parameter name="title" required="yes" default-binding="literal"/>
+  <parameter name="title" required="yes"/>
 	
   <component id="shell" type="Shell">
-    <binding name="title" value="ognl:title"/>
+    <binding name="title" value="title"/>
     <binding name="stylesheet" value="asset:style"/>
   </component>
   

@@ -28,7 +28,7 @@
   
   <component id="inputEnabled" type="Checkbox">
     <binding name="value" value="clientValidationEnabled"/> 
-    <binding name="onchange" value="'this.form.submit()'"/>
+    <binding name="onchange" value="javascript:this.form.submit();"/>
   </component>
 
   <component id="inputColorSort" type="PropertySelection">
@@ -40,18 +40,18 @@
     <binding name="model" value="colorModel"/>
     <binding name="selected" value="selectedColors"/>
     <binding name="sort" value="sort"/>
-    <binding name="tableClass" value="palette"/>
-    <binding name="displayName" value="Colors"/>
+    <binding name="tableClass" value="literal:palette"/>
+    <binding name="displayName" value="literal:Colors"/>
     <binding name="required" value="true"/>
   </component>
   
   <component id="update" type="ImageSubmit">
-    <binding name="image" value="update"/>
+    <binding name="image" value="asset:update"/>
   </component>
   
   <component id="continue" type="ImageSubmit">
-  	<binding name="image" value="continue"/>
-  	<binding name="listener" value="advance"/>
+  	<binding name="image" value="asset:continue"/>
+  	<binding name="listener" value="listener:advance"/>
   </component>
  
   <asset name="continue" path="images/Continue.gif"/>

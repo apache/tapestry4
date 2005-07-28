@@ -1333,10 +1333,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         ps.setDefaultValue(defaultValue);
 
-        ps.setDefaultBindingType(getAttribute("default-binding"));
-
         if (!_DTD_4_0)
         {
+            // When direction=auto (in a 3.0 DTD), turn caching off
+
             String direction = getAttribute("direction");
             ps.setCache(!"auto".equals(direction));
         }

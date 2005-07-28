@@ -140,7 +140,7 @@ it is expected that there will be some runtime warnings).
   <li>Added the property attribute to the &spec.component; and &spec.bean; elements.</li>
   <li>Removed the type attribute from the &spec.configure; element.</li>
   <li>Added many more options for <link href="#spec.boolean-types">boolean attributes</link>.</li>
-  <li>Added the aliases, cache and default-binding attributes to the &spec.parameter; element.</li>
+  <li>Added the aliases and cache attributes to the &spec.parameter; element.</li>
   <li>Added the deprecated attribute to &spec.component-specification; and &spec.parameter;.</li>
   <li>Renamed property-name attribute to property (in several places)</li>
 </ul>
@@ -687,7 +687,8 @@ and elements related to parameters.
 	<td>no</td>
 	<td/>
 	<td>The Java class to instantiate, which must implement the
-	interface &IComponent;.  If not specified, &BaseComponent; is used.
+	interface &IComponent;.  If not specified, &BaseComponent; is used
+  (though Tapestry 4.0 will do a <link href="page-class.html">lookup of the class based on component type</link>)
 	</td>
 </tr>
 <tr>
@@ -1278,7 +1279,7 @@ with attributes and entities related to parameters removed.
 	<td>The Java class to instantiate, which must implement the
 	interface &IPage;.  Typically, this is
 	&BasePage; or a subclass of it.  &BasePage; is the default if not otherwise
-	 specified.</td>
+	 specified (though Tapestry 4.0 will do a <link href="page-class.html">lookup of the class based on page name</link>).</td>
 </tr>
 
 </table>
@@ -1341,17 +1342,6 @@ Appears in: &spec.component-specification;
   <td>Allows the name of the property
   to differ from the name of the parameter.  If not specified,
   the property name will be the same as the parameter name.
-  </td>
-</tr>
-
-<tr>
-  <td>default-binding</td>
-  <td>string</td>
-  <td>no</td>
-  <td>&nbsp;</td>
-  <td>
-    The default <link href="bindings.html">binding type</link>, used when a binding for this parameter
-    does not include a prefix.
   </td>
 </tr>
 
@@ -1584,7 +1574,6 @@ obtained via a &binding-reference;.
 	<td>no</td>
 	<td/>
 	<td>A &binding-reference; that provides the value to assign to the bean property.
-    The default prefix for this reference is "ognl:".
 	</td>
 </tr>
 

@@ -109,6 +109,11 @@ public class ServiceMapImpl implements ServiceMap, EngineServiceSource
         return result;
     }
 
+    public boolean isValid(String name)
+    {
+        return _services.containsKey(name);
+    }
+
     /**
      * This returns the actual service, not the outer proxy.
      */

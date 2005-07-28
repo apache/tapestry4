@@ -356,6 +356,10 @@ element, indicates a <em>transient</em> page property, one which does not persis
 More such stategies are expected; these will give more control over the lifecycle of the page property.
 </p>
   
+<fixme author="HLS">
+  Mind Bridge has added (or changed) these, adding a concept of "scope" for how long a property will persist. This documentation
+  needs to be updated.
+</fixme>  
 </section> <!-- state.page-properties.types -->
 
 </section> <!-- state.page-properties -->

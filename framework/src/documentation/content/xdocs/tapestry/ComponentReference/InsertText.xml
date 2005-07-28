@@ -48,7 +48,6 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
-    <th>Default Binding</th>
     <th>Description</th>
   </tr>
 
@@ -58,7 +57,6 @@
     <td>in</td>
     <td>yes</td>
     <td>&nbsp;</td>
-    <td>ognl</td>
     <td>The multi-line string to render.</td>
   </tr>
   
@@ -68,7 +66,6 @@
     <td>in</td>
     <td>no</td>
     <td>BREAK</td>
-    <td>ognl</td>
     <td>Controls how each line is rendered.</td>
   </tr>
   
@@ -78,7 +75,6 @@
     <td>in</td>
     <td>no</td>
     <td>false</td>
-    <td>ognl</td>
     <td>If true, then output is not filtered for HTML entities.  Used when the value parameter contains markup that should
       be rendered as-is.</td>
   </tr>

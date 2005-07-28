@@ -195,14 +195,10 @@ the latest stable release.
 </p>
 
 <warning>
-One new feature of Tapestry 4.0, default bindings for parameters, has proven to be quite controversial.
-This feature allows you to define a default binding prefix for a parameter as part of the &lt;parameter&gt; 
-element.  Then in your template, you can omit the prefix ... this allows you to say
-<code>value="userId"</code> rather than <code>value="ognl:userId"</code>,
-or <code>listener="doSubmit"</code> rather than <code>listener="listener:doSubmit"</code>.
-The pros and cons are still being evaluated and exposure of the beta release may provoke a new discussion
-and possibly the removal of this feature. If you are intending to start work on a production application
-using Tapestry 4.0, you are advised to <em>always</em> use an explicit binding prefix.
+A controversial feature introduced Tapestry 4.0-alpha-2, default binding type prefixes for parameters, has been removed, starting in release
+4.0-beta-4.
+You may need to change templates and XML specifications to add explicit binding prefixes back in, if you wrote code for earlier
+releases of Tapestry 4.0.
 </warning>
   
 </section>

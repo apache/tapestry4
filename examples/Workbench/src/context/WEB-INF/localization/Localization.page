@@ -38,12 +38,12 @@
 
   <component id="form" type="Form">
     <binding name="listener" value="listener:formSubmit"/>
-    <binding name="stateful" value="ognl:false"/>
+    <binding name="stateful" value="false"/>
   </component>
   
   <component id="inputLocale" type="PropertySelection">
-    <binding name="value" value="ognl:page.engine.locale"/>
-    <binding name="model" value="ognl:localeModel"/>
+    <binding name="value" value="page.engine.locale"/>
+    <binding name="model" value="localeModel"/>
   </component>
   
   <component id="changeButton" type="ImageSubmit">

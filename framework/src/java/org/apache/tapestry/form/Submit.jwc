@@ -25,52 +25,50 @@
   Creates a labeled submit button within a form.
   </description>
 
-  <parameter name="label" default-binding="literal" deprecated="true">
+  <parameter name="label" deprecated="true">
     <description>
       Deprecated in 4.0.  An alternate way to specify the value attribute,
       which is the label used on the button in the browser (as well as the
       value supplied in the query parameter on form submit).
     </description>
   </parameter>
-  <parameter name="disabled" default-binding="ognl">
+  <parameter name="disabled">
       <description>
           If true, then the component is disabled, which will be reflected in the
           output submit element. Additionally, the component will not respond
           during the form submission.
       </description>
   </parameter>
-  <parameter name="selected" default-binding="ognl">
+  <parameter name="selected">
       <description>
           If bound, then this parameter will be updated with the value of the
           tag parameter, if the Submit is triggered.
        </description>
   </parameter>
-  <parameter name="tag" default-binding="ognl">
+  <parameter name="tag">
       <description>
           A tag value used to identify this Submit as the triggered component.
       </description>
   </parameter>
-  <parameter name="listener" default-binding="listener">
+  <parameter name="listener">
       <description>
           A listener that is notified if this component is triggered.
       </description>
   </parameter>
-  <parameter name="defer" default-binding="ognl" default-value="true">
+  <parameter name="defer" default-value="true">
       <description>
           If true (the default), then any listener notification is deferred
           until just before the form's listener is invoked.
       </description>
   </parameter>
-  <parameter name="parameters" default-binding="ognl">
+  <parameter name="parameters">
     <description>
     An object, or list of objects, gathered when the button is triggered and 
     made available as listener parameters in the request cycle, making
     the parameters available to a deferred listener.
     </description>
   </parameter>
-  <parameter name="id" default-binding="literal" property="idParameter"
-  		default-value="ognl:id"/>
-
+  <parameter name="id" property="idParameter" default-value="id"/>
   		  
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>

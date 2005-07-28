@@ -13,18 +13,18 @@ This page is used to demonstrate the DatePicker component.
 <table valign="middle">
  <tr>
  	<td></td>
- 	<td><input type="checkbox" jwcid="@Checkbox" value="includeWeek"
+ 	<td><input type="checkbox" jwcid="@Checkbox" value="ognl:includeWeek"
  		onclick="javascript:this.form.submit();"/>
  		Include weeks in DatePicker UI.
  		</td>
  	</tr>
  <tr>
-  <td><span jwcid="@FieldLabel" field="startDate"/>:</td>
-  <td><input jwcid="startDate@DatePicker" includeWeek="includeWeek" value="startDate" displayName="Start Date" required="true" validators="bean:maxDateValidator"/></td> 
+  <td><span jwcid="@FieldLabel" field="component:startDate"/>:</td>
+  <td><input jwcid="startDate@DatePicker" includeWeek="ognl:includeWeek" value="ognl:startDate" displayName="Start Date" required="true" validators="bean:maxDateValidator"/></td> 
  </tr>
  <tr>
-  <td><span jwcid="@FieldLabel" field="endDate"/>:</td>
-  <td><input jwcid="endDate@DatePicker" includeWeek="includeWeek" value="endDate" displayName="End Date" required="true" validators="bean:minDateValidator"/></td>
+  <td><span jwcid="@FieldLabel" field="component:endDate"/>:</td>
+  <td><input jwcid="endDate@DatePicker" includeWeek="ognl:includeWeek" value="ognl:endDate" displayName="End Date" required="true" validators="bean:minDateValidator"/></td>
  </tr>
  <tr>
   <td></td>
@@ -39,12 +39,12 @@ This page is used to demonstrate the DatePicker component.
 <table valign="middle">
 	<tr>
 <th>Start date:</th>
-<td> <span jwcid="@Insert" value="startDate"/></td>
+<td> <span jwcid="@Insert" value="ognl:startDate"/></td>
 </tr>
 	<tr>
 <th>End date:</th> 
 	<td>
-		<span jwcid="@Insert" value="endDate"/>
+		<span jwcid="@Insert" value="ognl:endDate"/>
 		</td></tr>
 </table>
 </span>

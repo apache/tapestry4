@@ -25,15 +25,14 @@
   Creates an HTML select populated with a number of options.
   </description>
 
-  <parameter name="multiple" default-binding="ognl"/>
-  <parameter name="disabled" default-binding="ognl"/>
+  <parameter name="multiple"/>
+  <parameter name="disabled"/>
 
-  <parameter name="displayName" default-binding="literal"/>
-  <parameter name="required" default-binding="ognl"/>
-  <parameter name="requiredMessage" default-binding="literal"/>
+  <parameter name="displayName"/>
+  <parameter name="required"/>
+  <parameter name="requiredMessage"/>
   
-  <parameter name="id" default-binding="literal" property="idParameter"
-  		default-value="ognl:id"/>
+  <parameter name="id"  property="idParameter" default-value="ognl:id"/>
   		  
   <reserved-parameter name="name"/>
 

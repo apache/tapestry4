@@ -17,48 +17,48 @@ doesn't support JavaScript).
 
 <span jwcid="showError"/>
 
-<form jwcid="form@Form" listener="formSubmit" delegate="bean:delegate" clientValidationEnabled="ognl:clientValidationEnabled">
+<form jwcid="form@Form" listener="listener:formSubmit" delegate="bean:delegate" clientValidationEnabled="ognl:clientValidationEnabled">
 
 <table class="form">
 	<tr>
-		<th><label jwcid="@FieldLabel" accesskey="d" field="inputDate"/></th>
+		<th><label jwcid="@FieldLabel" accesskey="d" field="component:inputDate"/></th>
 		<td><input jwcid="inputDate"/></td>
 	</tr>
   <tr>
-  	<th><label jwcid="@FieldLabel" accesskey="i" field="inputInt"/></th>
+  	<th><label jwcid="@FieldLabel" accesskey="i" field="component:inputInt"/></th>
   	<td><input jwcid="inputInt"/></td>
   </tr>
   <tr>
-  	<th><label jwcid="@FieldLabel" field="inputDouble"/></th>
+  	<th><label jwcid="@FieldLabel" field="component:inputDouble"/></th>
   	<td><input jwcid="inputDouble"/></td>
   </tr>
   <tr>
-  	<th><label jwcid="@FieldLabel" accesskey="b" field="inputBigDecimal"/></th>
+  	<th><label jwcid="@FieldLabel" accesskey="b" field="component:inputBigDecimal"/></th>
   	<td><input jwcid="inputBigDecimal"/></td>
   </tr>
   <tr>
- 	<th><label jwcid="@FieldLabel" accesskey="l" field="inputLong"/></th>
+ 	<th><label jwcid="@FieldLabel" accesskey="l" field="component:inputLong"/></th>
  	<td><input jwcid="inputLong"/></td>
   </tr>
 
   <tr>
-  	<th><label jwcid="@FieldLabel" accesskey="s" field="inputString"/></th>
+  	<th><label jwcid="@FieldLabel" accesskey="s" field="component:inputString"/></th>
   	<td><input jwcid="inputString"/></td>
   </tr>
 
   <tr>
-  	<th><label jwcid="@FieldLabel" accesskey="e" field="inputEmail"/></th>
+  	<th><label jwcid="@FieldLabel" accesskey="e" field="component:inputEmail"/></th>
   	<td><input jwcid="inputEmail"/></td>
   </tr>
 
   <tr>
-  	<th><label jwcid="@FieldLabel" accesskey="a" field="textArea"/></th>
+  	<th><label jwcid="@FieldLabel" accesskey="a" field="component:textArea"/></th>
   	<td><input jwcid="textArea"/></td>
   </tr>
 
   <tr>
   	<td></td>
-  	<td><input jwcid="continue@ImageSubmit" image="continue"/></td>
+  	<td><input jwcid="continue@ImageSubmit" image="asset:continue"/></td>
   </tr>    
     
   <tr>

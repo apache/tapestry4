@@ -47,7 +47,6 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
-    <th>Default Binding</th>
     <th>Description</th>
   </tr>
 
@@ -57,7 +56,6 @@
     <td>in</td>
     <td>no</td>
     <td>body</td>
-    <td>literal</td>
     <td>The element to use; this can be overriden, for example, when the Body component is used to generate a &lt;frameset&gt;.</td>
   </tr>
 

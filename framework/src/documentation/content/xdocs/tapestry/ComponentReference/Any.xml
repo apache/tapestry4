@@ -47,7 +47,6 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
-    <th>Default Binding</th>
     <th>Description</th>
   </tr>
 
@@ -57,7 +56,6 @@
     <td>in</td>
     <td>no</td>
     <td><em>From the HTML template</em></td>
-    <td>literal</td>
     <td>
       The element to render.
     </td>

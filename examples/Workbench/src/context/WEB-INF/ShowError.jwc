@@ -21,6 +21,6 @@
 	
 <component-specification allow-informal-parameters="no" allow-body="no">
   
-  <parameter name="delegate" required="yes" default-binding="ognl"/>    
+  <parameter name="delegate" required="yes"/>    
   
 </component-specification>

@@ -27,7 +27,7 @@
   Delegates rendering to an object that implements the IRender interface.
   </description>
 
-  <parameter name="delegate" default-binding="ognl">
+  <parameter name="delegate" required="true">
     <description>
     The object which will perform the render.
     </description>

@@ -37,7 +37,7 @@
   
   <component id="inputEnabled" type="Checkbox">
     <binding name="value" value="clientValidationEnabled"/> 
-    <binding name="onchange" value="literal:javascript:this.form.submit()"/>
+    <binding name="onchange" value="javascript:this.form.submit()"/>
   </component>
   
   <component id="showError" type="ShowError">

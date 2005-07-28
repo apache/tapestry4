@@ -26,7 +26,7 @@
   if the condition of the previous If component evaluates to false.
   </description>
     
-  <parameter name="element" default-binding="literal">
+  <parameter name="element">
   	<description>
   	The element to emulate.
   	</description>

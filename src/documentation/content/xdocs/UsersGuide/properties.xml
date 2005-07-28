@@ -45,12 +45,6 @@ This table is a quick guide to the most common objects and their properties.
 				<th>Description</th>
 			</tr>	
 			
-<tr>
-	<td>activePageNames</td>
-	<td>&BaseEngine;</td>	
-	<td>Collection of String</td>
-	<td>Names of all pages for which a page recorder has been created.</td>
-</tr>
 			
 <tr>
 	<td>assets</td>

@@ -108,7 +108,7 @@ list expression:
 </p>
 
 <source><![CDATA[
-<a jwcid="@DirectLink" listener="doClick" parameters="{ objectId, index }"> . . . </a>
+<a jwcid="@DirectLink" listener="listener:doClick" parameters="ognl:{ objectId, index }"> . . . </a>
 ]]></source>
 
 <p>
@@ -150,7 +150,7 @@ In fact, Tapestry does a search for the most appropriate method, given the numbe
   <li>public <em>type</em> <em>method</em>(<em>parameters</em>)</li>
   <li>public <em>type</em> <em>method</em>(IRequestCycle cycle, <em>parameters</em>)</li>
   <li>public <em>type</em> <em>method</em>()</li>
-  <li>public <em>type</em> <em>method(IRequestCycle cycle)</em></li>
+  <li>public <em>type</em> <em>method</em>(IRequestCycle cycle)</li>
 </ul>
 
 <p>
@@ -179,7 +179,7 @@ In your component specification:
 </p>
 
 <source><![CDATA[
-  <parameter name="listener" required="yes" default-binding="listener"/>
+  <parameter name="listener" required="yes"/>
 
   <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
 ]]></source>

@@ -48,7 +48,6 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
-    <th>Default Binding</th>
     <th>Description</th>
   </tr>
 
@@ -58,7 +57,6 @@
     <td>in</td>
     <td>yes</td>
     <td>&nbsp;</td>
-    <td>asset</td>
     <td>
       The normal image to display for the button.
     </td>
@@ -70,7 +68,6 @@
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>literal</td>
     <td>
       Overrides the default mechanism for selecting the form element id; this allows the name attribute of the rendered
       &lt;input&gt; tag to be controlled, which is necessary is some browsers to control the tooltip help message for the
@@ -84,7 +81,6 @@
     <td>in</td>
     <td>no</td>
 	  <td>false</td>
-    <td>ognl</td>
     <td>
     If set to true, the button will be disabled (will not respond to
     the mouse); the browser should provide a "greyed out" appearance.
@@ -97,7 +93,6 @@
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>asset</td>
     <td>
       If specified, and if the component is disabled, then this image is used rather than the normal image
       parameter. This allows an alternate image to be used to indicate to the user that the option is not available.
@@ -110,7 +105,6 @@
     <td>out</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>ognl</td>
     <td>
       Set to the coordinates of the clicked point within the image.
     </td>
@@ -122,7 +116,6 @@
     <td>out</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>ognl</td>
     <td>
     This parameter is bound to a property that is updated when the submit 
     button is clicked by the user. The property is updated to match the tag 
@@ -135,7 +128,6 @@
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>ognl</td>
     <td>
     Tag used with the selected parameter to indicate which Submit button
     on a form was clicked.
@@ -150,7 +142,6 @@
  		<td>in</td>
  		<td>no</td>
  		<td>&nbsp;</td>
-    <td>listener</td>
  		<td>
     An optional listener (typically specified as the name of a listener method), notified
     when the Submit is triggered.
@@ -162,7 +153,6 @@
     <td>in</td>
     <td>no</td>
     <td>true</td>
-    <td>ognl</td>
     <td>
       If true (the default), then the listener (if any) will not
       be notified immediately but will be notified just
@@ -175,7 +165,6 @@
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>ognl</td>
     <td>
       Parameter(s) gathered at the time the button is triggered, 
       supplied as listener parameters in the IRequestCycle
@@ -225,20 +214,20 @@ HTML template:
 </p>
 
 <source><![CDATA[
-<form jwcid="form@Form" listener="doSubmit">
+<form jwcid="form@Form" listener="listener:doSubmit">
 <table>
   <tr>
     <th>User name:</th>
-    <td><input jwcid="userName@TextField" value="userName" size="12"/></td>
+    <td><input jwcid="userName@TextField" value="ognl:userName" size="12"/></td>
   </tr>
   <tr>
     <th>Password:</th>
-    <td><input jwcid="password@TextField" value="password" hidden="true" size="12"/></td>
+    <td><input jwcid="password@TextField" value="ognl:password" hidden="true" size="12"/></td>
   </tr>
   <tr>
     <td colspan="2">
       <input type="image" src="images/login.png"/>
-      <input type="image" jwcid="help@ImageSubmit" listener="doHelp" image="help/>
+      <input type="image" jwcid="help@ImageSubmit" listener="listener:doHelp" image="asset:help/>
     </td>
   </tr>
 </table>
