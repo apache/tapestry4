@@ -29,26 +29,26 @@
 	</component>
 	
 	<component id="foreach" type="Foreach">
-		<binding name="source" value="ognl:objects"/>
-		<binding name="value" value="ognl:currentObject"/>
-        <binding name="element" value="tr"/>
+		<binding name="source" value="objects"/>
+		<binding name="value" value="currentObject"/>
+    <binding name="element" value="literal:tr"/>
 	</component>
 	
 	<component id="insertIndex" type="Insert">
-		<binding name="value" value="ognl:components.foreach.index"/>
+		<binding name="value" value="components.foreach.index"/>
 	</component>
 	
 	<component id="insertClass" type="Insert">
-		<binding name="value" value="ognl:className"/>
+		<binding name="value" value="className"/>
 	</component>
 	
 	<component id="insertValue" type="Insert">
-		<binding name="value" value="ognl:currentObject"/>
+		<binding name="value" value="currentObject"/>
 	</component>
 	
 	<component id="refresh" type="PageLink">
-		<binding name="page" value="Dumper"/>
-		<binding name="namespace" value="ognl:namespace"/>
+		<binding name="page" value="literal:Dumper"/>
+		<binding name="namespace" value="namespace"/>
 	</component>
 	
 </page-specification>	

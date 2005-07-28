@@ -13,11 +13,11 @@ be freely mixed with other components in a form.</p>
 
 <span jwcid="@ShowError" delegate="bean:delegate"/>
 
-<form jwcid="@Form" listener="formSubmit" delegate="bean:delegate" clientValidationEnabled="ognl:clientValidationEnabled">
+<form jwcid="@Form" listener="listener:formSubmit" delegate="bean:delegate" clientValidationEnabled="ognl:clientValidationEnabled">
 
 <table class="form">
 	<tr>
-		<th><span jwcid="@FieldLabel" field="inputFile"/>:</th>
+		<th><span jwcid="@FieldLabel" field="component:inputFile"/>:</th>
 		<td><input jwcid="inputFile@Upload" file="ognl:file" size="30" displayName="File" required="true"/></td>
 	</tr>
 	<tr>
@@ -25,7 +25,7 @@ be freely mixed with other components in a form.</p>
 		<td>
 			<table class="form">
 				<tr>
-					<th><input jwcid="@Checkbox" value="showAscii"/></th>
+					<th><input jwcid="@Checkbox" value="ognl:showAscii"/></th>
 					<td>Display ASCII</td>
 				</tr>
 				<tr>
@@ -38,7 +38,7 @@ be freely mixed with other components in a form.</p>
 	
 	<tr>
 		<td></td>
-		<td><input jwcid="@ImageSubmit" image="continue"/></td>
+		<td><input jwcid="@ImageSubmit" image="asset:continue"/></td>
 	</tr>
 	
 </table>

@@ -27,9 +27,9 @@
   Labels a ValidField of other form element component.
   </description>
 
-  <parameter name="field" required="yes" default-binding="component"/>
+  <parameter name="field" required="yes"/>
 
-  <parameter name="displayName" default-binding="literal">
+  <parameter name="displayName">
     <description>
       Optional.  Defaults to the displayName of the associated field.
       Used to override the field's displayName, or when there is no

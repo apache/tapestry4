@@ -22,13 +22,13 @@
 <component-specification allow-informal-parameters="no">
 
   <component id="tabCell" type="Any">
-  	<binding name="element" value="td"/>
+  	<binding name="element" value="literal:td"/>
   	<binding name="background" value="midTabAsset"/>
   </component>
 
 
   <component id="pageLink" type="DirectLink">
-    <binding name="listener" value="selectPage"/>
+    <binding name="listener" value="listener:selectPage"/>
     <binding name="parameters" value="pageName"/>
     <binding name="stateful" value="false"/>
   </component>

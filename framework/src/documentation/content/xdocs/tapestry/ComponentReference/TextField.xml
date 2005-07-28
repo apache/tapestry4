@@ -45,7 +45,6 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
-    <th>Default Binding</th>
     <th>Description</th>
   </tr>
   
@@ -55,7 +54,6 @@
     <td>in / out</td>
     <td>yes</td>
     <td>&nbsp;</td>
-    <td>ognl</td>
     <td>The value to be editted, which is is usually a string.  Tapestry has limited ability to convert to and from strings.</td>
   </tr>
   
@@ -65,7 +63,6 @@
     <td>in</td>
     <td>no</td>
     <td>false</td>
-    <td>ognl</td>
     <td>If true, then a disabled attribute will be rendered as part of the &lt;input&gt; tag, and the component will not
       update its value parameter when the form is submitted.</td>
   </tr>
@@ -76,7 +73,6 @@
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>literal</td>
     <td>The user-presentable name for the component, which will be used by a &FieldLabel; connected to the component.</td>
   </tr>
   
@@ -86,7 +82,6 @@
     <td>in</td>
     <td>no</td>
     <td>false</td>
-    <td>ognl</td>
     <td>If true, then the type attribute will be "password", not "text", and user input in the browser will be masked. </td>
   </tr>
 
@@ -119,15 +114,15 @@ Below is an excerpt from a Login page, that collects a user id and a password.
 <p>Login.html: (partial)</p>
 
 <source><![CDATA[
-<form jwcid="form@Form" listener="doLogin">
+<form jwcid="form@Form" listener="listener:doLogin">
   <table>
     <tr>
       <th>User id:</th>
-      <td><input jwcid="userId@TextField" value="userId" size="8"/></td>
+      <td><input jwcid="userId@TextField" value="ognl:userId" size="8"/></td>
     </tr>
     <tr>
       <th>Password:</th>
-      <td><input jwcid="password@TextField" value="password" size="8" hidden="true"/></td>
+      <td><input jwcid="password@TextField" value="ognl:password" size="8" hidden="true"/></td>
     </tr>
     <tr>
       <td colpsan="2">

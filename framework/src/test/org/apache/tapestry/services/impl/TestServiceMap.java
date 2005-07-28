@@ -92,7 +92,12 @@ public class TestServiceMap extends HiveMindTestCase
 
         m.initializeService();
 
+        assertEquals(true, m.isValid("factory"));
+
         m.getService("factory").service(cycle1);
+
+        assertEquals(true, m.isValid("application"));
+
         m.getService("application").service(cycle2);
 
         verifyControls();
@@ -188,6 +193,8 @@ public class TestServiceMap extends HiveMindTestCase
         m.setApplicationServices(Collections.EMPTY_LIST);
 
         m.initializeService();
+
+        assertEquals(false, m.isValid("missing"));
 
         try
         {

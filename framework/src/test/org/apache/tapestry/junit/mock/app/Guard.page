@@ -25,7 +25,7 @@
   <property name="visited" persist="session"/>
   
   <component id="border" type="lib:Border">
-  	<binding name="title" value="Guard"/>
+  	<binding name="title" value="literal:Guard"/>
   </component>
   
   <component id="link" type="DirectLink">
@@ -33,7 +33,7 @@
   </component>
    
   <component id="insertCallback" type="Insert">
-  	<binding name="value" value="ognl:callback"/>
+  	<binding name="value" value="callback"/>
   </component>
    
 </page-specification>

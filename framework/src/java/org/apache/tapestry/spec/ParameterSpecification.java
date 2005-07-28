@@ -48,9 +48,6 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
     private String _defaultValue;
 
     /** @since 4.0 */
-    private String _defaultBindingType;
-
-    /** @since 4.0 */
     private boolean _cache = true;
 
     /** @since 4.0 */
@@ -151,18 +148,6 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
     public void setDefaultValue(String defaultValue)
     {
         _defaultValue = defaultValue;
-    }
-
-    /** @since 4.0 */
-    public String getDefaultBindingType()
-    {
-        return _defaultBindingType;
-    }
-
-    /** @since 4.0 */
-    public void setDefaultBindingType(String defaultBindingType)
-    {
-        _defaultBindingType = defaultBindingType;
     }
 
     /** @since 4.0 */

@@ -55,9 +55,6 @@ public class ParameterAnnotationWorker implements MethodAnnotationEnhancementWor
         ps.setAliases(parameter.aliases());
         ps.setCache(parameter.cache());
 
-        if (HiveMind.isNonBlank(parameter.defaultBinding()))
-            ps.setDefaultBindingType(parameter.defaultBinding());
-
         if (HiveMind.isNonBlank(parameter.defaultValue()))
             ps.setDefaultValue(parameter.defaultValue());
 

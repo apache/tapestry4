@@ -26,28 +26,28 @@
   if a condition is met.
   </description>
   
-  <parameter name="condition" required="yes" default-binding="ognl">
+  <parameter name="condition" required="yes">
     <description>
     The condition to evaluate.
     </description>
   </parameter>
   
-  <parameter name="conditionValue" default-binding="ognl">
+  <parameter name="conditionValue">
     <description>
     The value of the condition. During render this is obtained from
     the condition parameter. During rewind it is the submitted condition.
     </description>
   </parameter>
 
-  <parameter name="listener" default-binding="listener"/>
+  <parameter name="listener"/>
   
-  <parameter name="element" default-binding="literal">
+  <parameter name="element">
   	<description>
   	The element to emulate.
   	</description>
   </parameter>
   
-  <parameter name="volatile" default-value="false" default-binding="ognl">
+  <parameter name="volatile" default-value="false">
     <description>
     Only active in a form. Determines whether to avoid creating hidden fields within a form.
     Using this parameter may make the form structure different during render and rewind, 

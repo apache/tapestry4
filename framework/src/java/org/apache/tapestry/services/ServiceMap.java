@@ -33,10 +33,16 @@ public interface ServiceMap
      * 
      * @param name
      *            the unique name for the service, as defined by each service instance's
-     *            {@link IEngineService#getName()}method.
+     *            {@link IEngineService#getName()} method.
      * @returns the named service
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if the named service does not exist
      */
     public IEngineService getService(String name);
+
+    /**
+     * Returns true if the name is a known service, or false otherwise.
+     */
+
+    public boolean isValid(String name);
 }

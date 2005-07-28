@@ -45,7 +45,6 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
-    <th>Default Binding</th>
     <th>Description</th>
   </tr>
 
@@ -55,7 +54,6 @@
     <td>in / out</td>
     <td>yes</td>
     <td>&nbsp;</td>
-    <td>ognl</td>
     <td>The value to read and update (unless the disabled parameters is true).</td>
   </tr>
   
@@ -65,7 +63,6 @@
     <td>in</td>
     <td>no</td>
     <td>false</td>
-    <td>ognl</td>
     <td>
       If true, then the &lt;textarea&gt; will be written with a disabled attribute (preventing user interaction
       in the client web browser).  In addition, when the form is submitted, the component will not update
@@ -79,7 +76,6 @@
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>literal</td>
     <td>
       A name for the field, which may be used by the &FieldLabel; component connected to the TextArea.
     </td>

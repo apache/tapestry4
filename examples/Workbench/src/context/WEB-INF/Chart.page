@@ -36,19 +36,19 @@
   <component id="plotValues" type="Foreach">
     <binding name="source" value="plotValues"/>
     <binding name="value" value="plotValue"/>
-    <binding name="element" value="tr"/>
+    <binding name="element" value="literal:tr"/>
   </component>
 
   <component id="inputName" type="ValidField">
-  	<binding name="displayName" value="Name"/>
+  	<binding name="displayName" value="literal:Name"/>
   	<binding name="value" value="plotValue.name"/>
-  	<binding name="validator" value="string,required,clientScriptingEnabled"/>
+  	<binding name="validator" value="validator:string,required,clientScriptingEnabled"/>
   </component>
 
   <component id="inputValue" type="ValidField">	
-  	<binding name="displayName" value="Value"/>
+  	<binding name="displayName" value="literal:Value"/>
   	<binding name="value" value="plotValue.value"/>
-  	<binding name="validator" value="int,required,clientScriptingEnabled,minimum=0"/>
+  	<binding name="validator" value="validator:int,required,clientScriptingEnabled,minimum=0"/>
   </component>
   
   <component id="inputMarked" type="Checkbox">
@@ -56,13 +56,13 @@
   </component>
   
   <component id="add" type="Submit">
-  	<binding name="listener" value="add"/>
-  	<binding name="label" value="Update and Add"/>
+  	<binding name="listener" value="listener:add"/>
+  	<binding name="label" value="literal:Update and Add"/>
   </component>
   
   <component id="delete" type="Submit">	
-  	<binding name="listener" value="delete"/>
-  	<binding name="label" value="Delete Selected"/>
+  	<binding name="listener" value="listener:delete"/>
+  	<binding name="label" value="literal:Delete Selected"/>
   </component>
 
 </page-specification>

@@ -23,6 +23,7 @@ import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
+import org.apache.tapestry.services.ServiceMap;
 import org.apache.tapestry.util.QueryParameterMap;
 import org.easymock.MockControl;
 
@@ -95,16 +96,27 @@ public class TestRequestCycle extends HiveMindTestCase
     public void testGetters()
     {
         RequestContext context = new RequestContext(null, null);
-        Infrastructure infrastructure = newInfrastructure();
+
+        IEngineService service = newService();
+        ServiceMap map = newServiceMap("fred", service);
+
+        MockControl control = newControl(Infrastructure.class);
+        Infrastructure infrastructure = (Infrastructure) control.getMock();
+
+        infrastructure.getPageSource();
+        control.setReturnValue(newPageSource());
+
+        infrastructure.getServiceMap();
+        control.setReturnValue(map);
+
         RequestCycleEnvironment env = new RequestCycleEnvironment(newErrorHandler(),
                 infrastructure, context, newStrategySource(), newBuilder());
         IEngine engine = newEngine();
-        IEngineService service = newService();
         IMonitor monitor = newMonitor();
 
         replayControls();
 
-        IRequestCycle cycle = new RequestCycle(engine, new QueryParameterMap(), service, monitor,
+        IRequestCycle cycle = new RequestCycle(engine, new QueryParameterMap(), "fred", monitor,
                 env);
 
         assertSame(infrastructure, cycle.getInfrastructure());
@@ -116,6 +128,17 @@ public class TestRequestCycle extends HiveMindTestCase
         verifyControls();
     }
 
+    private ServiceMap newServiceMap(String serviceName, IEngineService service)
+    {
+        MockControl control = newControl(ServiceMap.class);
+        ServiceMap map = (ServiceMap) control.getMock();
+
+        map.getService(serviceName);
+        control.setReturnValue(service);
+
+        return map;
+    }
+
     public void testForgetPage()
     {
         RequestContext context = new RequestContext(null, null);
@@ -124,16 +147,14 @@ public class TestRequestCycle extends HiveMindTestCase
         RequestCycleEnvironment env = new RequestCycleEnvironment(newErrorHandler(),
                 infrastructure, context, source, newBuilder());
         IEngine engine = newEngine();
-        IEngineService service = newService();
         IMonitor monitor = newMonitor();
 
         replayControls();
 
-        IRequestCycle cycle = new RequestCycle(engine, new QueryParameterMap(), service, monitor,
-                env);
-        
+        IRequestCycle cycle = new RequestCycle(engine, new QueryParameterMap(), null, monitor, env);
+
         cycle.getEngine();
-        
+
         verifyControls();
 
         source.discardAllStoredChanged("MyPage", cycle);
@@ -143,7 +164,7 @@ public class TestRequestCycle extends HiveMindTestCase
         cycle.forgetPage("MyPage");
 
         verifyControls();
-        
+
         source.discardAllStoredChanged("MyPage", cycle);
 
         replayControls();

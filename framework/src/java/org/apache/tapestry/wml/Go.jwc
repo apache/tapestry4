@@ -27,20 +27,20 @@
 
     <bean name="delegate" class="org.apache.tapestry.valid.ValidationDelegate" property="delegate"/>
 
-    <parameter name="method" default-value="post" default-binding="literal">
+    <parameter name="method" default-value="literal:post">
         <description>
             The method used by the form when it is submitted, defaults to POST.
         </description>
     </parameter>
 
-    <parameter name="listener" default-binding="listener">
+    <parameter name="listener">
         <description>
             Object invoked when the form is submitted, after all form components have responded
             to the submission.
         </description>
     </parameter>
     
-  <parameter name="cancel" default-binding="listener">
+  <parameter name="cancel">
       <description>
           Object invoked when the form is cancelled (a special type of form submission).
           The oncancel listener (if any) overrides the standard listener. Other properties
@@ -48,7 +48,7 @@
        </description>
    </parameter>
   
-  <parameter name="refresh" default-binding="listener">
+  <parameter name="refresh">
       <description>
           Object invoked when the form is refreshed (a special type of form submission).
           The onrefresh listener (if any) overrides the standard listener.

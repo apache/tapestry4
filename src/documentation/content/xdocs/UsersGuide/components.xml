@@ -340,20 +340,23 @@ is, effectively, a binding to use if no binding is provided.
 </p>
 
 <source><![CDATA[
-  <parameter name="title" default-binding="literal" default-value="Link to current thread"/>]]>
+  <parameter name="title" default-value="literal:Link to current thread"/>]]>
 </source>
 
-
 <p>
-Using a default-binding of "literal" means that, by default, bindings for the parameter (including
-the default-value), will be interpreted as literal strings. This can always be overriden using a binding prefix.
-Of course, the best practice for this type of example, where the value is a string that will be presented 
-to the user, is to store the message in the component's message catalog, and access it from there.  Default
-values are actually converted into bindings, and the value may be prefixed as with a binding:
+ Remember that outside of the template, all &binding-reference;s, including the default-value attribute, default
+ to OGNL expressions. Therefore, it is necessary to prefix the default value with the literal: prefix to ensure
+ that Tapestry doesn't treat it as an expression.
 </p>
 
+<p>
+ What's nice is that the default value doesn't have to be a simple string; it can be a computed OGNL expression, or
+ a reference to a localized message:
+</p>
+
+
 <source><![CDATA[
-  <parameter name="title" default-binding="literal" default-value="message:link-title"/>]]>  
+  <parameter name="title"  default-value="message:link-title"/>]]>  
 </source>
 
 <source>
@@ -361,7 +364,7 @@ link-title=Link to current thread
 </source>
 
 <p>
-The second approach is to set the property from the component's finishLoad() method.
+The second approach to defining default values for parameters is to set the parameter's property from the component's finishLoad() method.
 </p>
 
 <source>
@@ -445,7 +448,9 @@ cache parameter can be set to "false" to defeat this caching.
 <p>
 However, for the majority of binding types (most types except for "ognl"), the value obtained is invariant ... it will always be the same value. Values
 obtained from invariant bindings are <em>always</em> cached <em>indefinately</em> (not just for the component's render). In other words, literal string values,
-localized messages and so forth are accessed via the binding just once.
+localized messages and so forth are accessed via the binding just once.  This is great for <em>efficiency</em>; after "warming up", a Tapestry page 
+will render faster the second time through, because so many component parameters are invariant and already in  place inside
+component properties.
 </p>
 
 <p>

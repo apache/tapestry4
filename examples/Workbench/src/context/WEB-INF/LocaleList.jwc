@@ -27,10 +27,10 @@
     
 	<property name="currentLocale"/>
 	
-	<property name="selectedLocales" persist="session" initial-value="ognl:new java.util.HashSet()"/>
+	<property name="selectedLocales" persist="session" initial-value="new java.util.HashSet()"/>
 
 	<component id="form" type="Form">
-		<!--binding name="listener" value="ognl:listeners.formSubmit"/-->
+		<!--binding name="listener" value="listeners.formSubmit"/-->
 	</component>
 
 	<component id="checkbox" type="Checkbox">
@@ -38,13 +38,13 @@
 	</component>
 
 	<component id="submitButton" type="Submit">
-		<binding name="label" value="Select locales"/>
+		<binding name="label" value="literal:Select locales"/>
 		<binding name="listener" value="listener:selectLocales"/>
 	</component>
 
 	<component id="tableView" type="contrib:TableView">
-        <binding name="source" value="ognl:@java.util.Locale@getAvailableLocales()"/>
-        <binding name="columns">
+        <binding name="source" value="@java.util.Locale@getAvailableLocales()"/>
+        <binding name="columns"> literal:
             * Locale:toString(), Language:displayLanguage, Country:displayCountry, 
             Variant:displayVariant, ISO Language:ISO3Language, ISO Country:ISO3Country
         </binding>
@@ -53,9 +53,9 @@
 	<component id="tableColumns" type="contrib:TableColumns"/>
 
 	<component id="tableFormRows" type="contrib:TableFormRows">
-		<binding name="row" value="ognl:currentLocale"/>
-        <binding name="convertor" value="ognl:localeConvertor"/>
-		<binding name="class" value="ognl:beans.rowClass.next"/>
+		<binding name="row" value="currentLocale"/>
+    <binding name="convertor" value="localeConvertor"/>
+		<binding name="class" value="beans.rowClass.next"/>
 	</component>
 
 	<component id="tableValues" type="contrib:TableValues"/>

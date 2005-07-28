@@ -23,7 +23,7 @@
     allow-body="yes" allow-informal-parameters="yes">
     
 	<component id="table" type="contrib:Table">
-		<binding name="tableModel" value="ognl:tableModel"/>
+		<binding name="tableModel" value="tableModel"/>
 		<!--binding name="tableSessionStateManager" expression="tableSessionStateManager"/-->
 	</component>
 

@@ -61,7 +61,6 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
-    <th>Default Binding</th>
     <th>Description</th>
   </tr>
   
@@ -71,7 +70,6 @@
     <td>in</td>
     <td>yes</td>
     <td>&nbsp;</td>
-    <td>literal</td>
     <td>The title for the page, used to render the &lt;title&gt; tag.</td>
   </tr>
   
@@ -81,7 +79,6 @@
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>asset</td>    
     <td>If provided, then a &lt;link&gt; to the stylesheet is generated.</td>
   </tr>
   
@@ -91,7 +88,6 @@
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>ognl</td>
     <td>
       If provided, then &lt;link&gt; elements are created for each stylesheet asset.
     </td>
@@ -103,7 +99,6 @@
     <td>in</td>
     <td>no</td>
     <td>HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"</td>
-    <td>literal</td>
     <td>Used to specify the full definition of the DOCTYPE element in the response page.</td>
   </tr>
   
@@ -113,7 +108,6 @@
     <td>in</td>
     <td>no</td>
     <td>true</td>
-    <td>ognl</td>
     <td>If true (the default), then a &meta; tag will be written to set the content
       type of the page.</td>
   </tr>
@@ -124,7 +118,6 @@
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>ognl</td>
     <td>If provided, then a &meta; tag will be written to cause a page refresh. The parameter value is
       the number of seconds before the refresh.</td>
   </tr>
@@ -135,7 +128,6 @@
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>ognl</td>
     <td>If specified, the delegate is rendered before the close of the &lt;head&gt;
       tag.  Typically, this is used to provide additional &meta; tags.</td>
   </tr>

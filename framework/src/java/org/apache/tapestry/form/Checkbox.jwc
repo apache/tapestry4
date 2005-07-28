@@ -25,23 +25,22 @@
   Implements a checkbox within a Form.
   </description>
 
-  <!-- selected aliased and deprecated in 4.0 -->
+  <!-- 'selected' aliased and deprecated in 4.0 -->
  
-  <parameter name="value" required="yes" default-binding="ognl" aliases="selected">
+  <parameter name="value" required="yes" aliases="selected">
     <description>
     The property read and updated by the Checkbox.
     </description>
   </parameter>
   
-  <parameter name="disabled" default-binding="ognl">
+  <parameter name="disabled">
     <description>
     If true, then the checkbox will be disabled and any input from the checkbox
     will be ignored.
     </description>
   </parameter>
   
-  <parameter name="id" default-binding="literal" property="idParameter"
-  		default-value="ognl:id"/>
+  <parameter name="id" property="idParameter" default-value="id"/>
   		  
   <reserved-parameter name="type"/>
   <reserved-parameter name="checked"/>

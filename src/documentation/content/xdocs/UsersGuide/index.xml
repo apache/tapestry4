@@ -290,25 +290,21 @@ Application Development) support in the form of <link href="template.html#templa
 </p>
 
 <p>
- At the time of this writing, Tapestry 4.0 is in an early alpha stage. It represents an even more radical
+Tapestry 4.0 represents an even more radical
  leap beyond 3.0 by introducing a new, sophisticated infrastructure on top of the 
- &HiveMind; microkernel.  This new backbone will provide the support necessary to meet the needs of Tapestry's
+ &HiveMind; microkernel.  This new backbone provides the support necessary to meet the needs of Tapestry's
  much larger community ... including support for <em>prettier</em> URLs, integration of Tapestry and the Java Portlet API,
  and modularization of applications (allowing the use of folders, and thus, J2EE declarative security). In addition,
- a more sophisticated approach to implementing connected parameter properties has already been introduced, and more flexibility for
- storing session-specific state as HTTP cookies or query parameters will likely be provided.
+ a more sophisticated approach to implementing connected parameter properties has been introduced in release 4.0, and more flexibility for
+ storing session-specific state as HTTP query parameters has been provided.
+ For JDK 1.5 users, the XML page and component specifications can now be sidelined in favor
+  of Java annotations.
 </p>
 
-<warning>
-The exact feature set for Tapestry 4.0, and its schedule, are most assuredly up in the air!
-</warning>
-
 <p>
-  A further future direction, in the Tapestry 4.0 timeframe (the far future), is to rethink the component object model
+  A further future direction, in the Tapestry 5.0 timeframe (the far future), is to rethink the component object model
   such that the classes <em>you</em> write do not sub-class Tapestry base classes. Page and component Java classes will
   be simple POJOs (Plain Old Java Objects) and will have any Tapestry dependencies <em>injected</em> into them.
-  Also on the table is sidelining or entirely eliminating the XML page and component specifications in favor
-  of Java annotations.
 </p>
   
 </section>

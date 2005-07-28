@@ -29,18 +29,18 @@
   <parameter name="selected"/>
   <parameter name="tag"/>
   
-  <parameter name="listener" default-binding="listener">
+  <parameter name="listener">
       <description>
           A listener that is notified if this component is triggered.
       </description>
   </parameter>
-  <parameter name="defer" default-binding="ognl" default-value="true">
+  <parameter name="defer" default-value="true">
       <description>
           If true (the default), then any listener notification is deferred
           until just before the form's listener is invoked.
       </description>
   </parameter>
-  <parameter name="parameters" default-binding="ognl">
+  <parameter name="parameters">
     <description>
     An object, or list of objects, gathered when the link is triggered and 
     made available as listener parameters in the request cycle, making

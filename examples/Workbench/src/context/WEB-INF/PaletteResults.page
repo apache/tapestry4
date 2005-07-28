@@ -22,13 +22,13 @@
 <page-specification class="org.apache.tapestry.workbench.palette.PaletteResults">
   
   <component id="loop" type="Foreach">
-  	<binding name="element" value="li"/>
+  	<binding name="element" value="literal:li"/>
   	<binding name="source" value="selectedColors"/>
   </component>
      
   <component id="backRollover" type="Rollover">
-    <binding name="image" value="back"/>
-    <binding name="focus" value="backFocus"/>
+    <binding name="image" value="asset:back"/>
+    <binding name="focus" value="asset:backFocus"/>
   </component>
   
   <asset name="back" path="images/Back.gif"/>

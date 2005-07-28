@@ -27,8 +27,7 @@
   
   <parameter name="page" 
   	required="yes" 
-  	property="targetPage"
-    default-binding="literal"/>
+  	property="targetPage"/>
   
   <parameter name="namespace"  
   	required="no" 

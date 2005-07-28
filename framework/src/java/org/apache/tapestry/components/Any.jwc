@@ -25,7 +25,7 @@
   informal parameters).
   </description>
   
-  <parameter name="element" default-value="ognl:templateTag" default-binding="literal">
+  <parameter name="element" default-value="ognl:templateTag">
   	<description>
   	The element to emulate.
   	</description>

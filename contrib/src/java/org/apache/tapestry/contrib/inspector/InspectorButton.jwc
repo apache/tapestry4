@@ -31,7 +31,7 @@ window.
 ]]>
     </description>
 
-  <parameter name="disabled" default-binding="ognl">
+  <parameter name="disabled">
     <description>
       If true, then the InspectorButton will not be displayed (this saves the
       trouble of wrapping the InspectorButton in a conditional, as 
@@ -42,18 +42,18 @@ window.
 
   <component id="ifNotDisabled" type="If">
     <binding name="condition" value="! disabled"/>
-    <binding name="element" value="div"/>
+    <binding name="element" value="literal:div"/>
   </component>
   
     <bean name="renderer" class="org.apache.tapestry.contrib.link.PopupLinkRenderer">
-      <set name="windowName" value="'TapestryInspector'"/>
+      <set name="windowName" value="literal:TapestryInspector"/>
       <set name="features">
         'titlebar,resizable,scrollbars,width=700,height=600'
       </set>
     </bean>
     
     <component id="link" type="DirectLink">
-      <binding name="listener" value="trigger"/>
+      <binding name="listener" value="listener:trigger"/>
       <binding name="stateful" value="false"/>
       <binding name="renderer" value="bean:renderer"/>
     </component>
@@ -64,7 +64,7 @@ window.
     </component>
     
     <component id="script" type="Script">
-      <binding name="script" value="InspectorButton.script"/>
+      <binding name="script" value="literal:InspectorButton.script"/>
     </component>
 
     <asset name="logo" path="tapestry-logo.gif"/>

@@ -347,6 +347,11 @@ currently used in Tapestry:
 	to a directory that is visible to the client web browser.  The URL
 	value should map to the directory specified by the dir value.
 	</p>
+  
+  <note>
+    Due to changes in Tapestry, these are no longer needed.  Issues with security and performance
+    have been fixed in Tapestry 4.0, allowing private assets to be accessed with zero configuration.
+  </note>
   </td>
   </tr>
   

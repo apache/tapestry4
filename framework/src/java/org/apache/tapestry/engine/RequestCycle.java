@@ -57,7 +57,7 @@ public class RequestCycle implements IRequestCycle
 
     private IEngine _engine;
 
-    private IEngineService _service;
+    private String _serviceName;
 
     private IMonitor _monitor;
 
@@ -126,16 +126,28 @@ public class RequestCycle implements IRequestCycle
 
     /**
      * Standard constructor used to render a response page.
+     * 
+     * @param engine
+     *            the current request's engine
+     * @param parameters
+     *            query parameters (possibly the result of {@link ServiceEncoder}s decoding path
+     *            information)
+     * @param serviceName
+     *            the name of engine service
+     * @param monitor
+     *            informed of various events during the processing of the request
+     * @param environment
+     *            additional invariant services and objects needed by each RequestCycle instance
      */
 
-    public RequestCycle(IEngine engine, QueryParameterMap parameters, IEngineService service,
+    public RequestCycle(IEngine engine, QueryParameterMap parameters, String serviceName,
             IMonitor monitor, RequestCycleEnvironment environment)
     {
         // Variant from instance to instance
 
         _engine = engine;
         _parameters = parameters;
-        _service = service;
+        _serviceName = serviceName;
         _monitor = monitor;
 
         // Invariant from instance to instance
@@ -150,7 +162,7 @@ public class RequestCycle implements IRequestCycle
     }
 
     /**
-     * Alternate constructor used <b>only for testing purposes </b>.
+     * Alternate constructor used <strong>only for testing purposes</strong>.
      * 
      * @since 4.0
      */
@@ -184,7 +196,7 @@ public class RequestCycle implements IRequestCycle
 
     public IEngineService getService()
     {
-        return _service;
+        return _infrastructure.getServiceMap().getService(_serviceName);
     }
 
     public String encodeURL(String URL)
@@ -638,8 +650,7 @@ public class RequestCycle implements IRequestCycle
 
         b.append("rewinding", _rewinding);
 
-        if (_service != null)
-            b.append("service", _service);
+        b.append("serviceName", _serviceName);
 
         b.append("serviceParameters", _listenerParameters);
 

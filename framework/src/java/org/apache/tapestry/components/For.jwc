@@ -28,25 +28,25 @@
   during a rewind even if the values in the source change.
   </description>
 	
-  <parameter name="source" required="yes" default-binding="ognl">
+  <parameter name="source" required="yes">
     <description>
     The source of values, a Java collection or array.
     </description>
   </parameter>
   
-  <parameter name="value" property="valueParameter" default-binding="ognl">
+  <parameter name="value" property="valueParameter">
     <description>
     If provided, the parameter is updated with the current value on each iteration.
     </description>
   </parameter>
   
-  <parameter name="index" property="indexParameter" default-binding="ognl">
+  <parameter name="index" property="indexParameter">
     <description>
     If provided, the parameter is updated with the index of the loop on each iteration.
     </description>
   </parameter>
   
-  <parameter name="element" default-binding="literal">
+  <parameter name="element">
     <description>
     If provided, the component wraps its content with the requested element.
     Informal parameters become attributes of that element.
@@ -54,7 +54,7 @@
   </parameter>
   
     
-  <parameter name="keyExpression" default-binding="literal">
+  <parameter name="keyExpression">
     <description>
     Only active in a form. An OGNL expression that returns the primary key of the iterated value. 
     The primary keys are stored in hidden fields during rendering and are loaded from the form
@@ -67,7 +67,7 @@
     </description>
   </parameter>
     
-  <parameter name="fullSource" default-binding="ognl">
+  <parameter name="fullSource">
     <description>
     Only active in a form and in combination with the 'keyExpression' parameter. 
     The objects provided by this parameter will be used to determine the values 
@@ -76,13 +76,13 @@
     </description>
   </parameter>
   
-  <parameter name="defaultValue" default-value="null" default-binding="ognl">
+  <parameter name="defaultValue" default-value="null">
     <description>
     Only active in a form. The value to be used when no match for a given primary key is found. 
     </description>
   </parameter>
 
-  <parameter name="converter" default-value="null" default-binding="ognl">
+  <parameter name="converter" default-value="null">
     <description>
     Only active in a form. Defines how the items iterated upon 
     will be stored in the form as hidden values and how the stored information will be 
@@ -92,7 +92,7 @@
     </description>
   </parameter>
   
-  <parameter name="primaryKeys" default-binding="ognl">
+  <parameter name="primaryKeys">
     <description>
     Only active in a form. If provided, the parameter is automatically updated 
     before a rewind with the list of primary keys stored in the form. 
@@ -101,7 +101,7 @@
     </description>
   </parameter>
   
-  <parameter name="volatile" default-value="false" default-binding="ognl">
+  <parameter name="volatile" default-value="false">
     <description>
     Only active in a form. Determines whether to avoid creating hidden fields within a form.
     Using this parameter may make the form structure different during render and rewind, 

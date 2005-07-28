@@ -27,72 +27,56 @@
   </description>
   		  
   <parameter name="selectedTitleBlock" 
-    default-value="defaultSelectedTitleBlock"
-    default-binding="component"/>
+    default-value="component:defaultSelectedTitleBlock"/>
     
   <parameter name="availableTitleBlock" 
-    default-value="defaultAvailableTitleBlock"
-    default-binding="component"/>
+    default-value="component:defaultAvailableTitleBlock"/>
    	
   <parameter name="model" 
-  	required="yes"
-    default-binding="ognl"/>
+  	required="yes"/>
   
   <parameter name="selected"
-  	required="yes" 
-    default-binding="ognl"/>
+  	required="yes"/>
   
   <parameter name="sort"
-      default-value="@org.apache.tapestry.contrib.palette.SortMode@NONE"
-      default-binding="ognl"/>
+      default-value="@org.apache.tapestry.contrib.palette.SortMode@NONE"/>
   
   <parameter name="rows"
-    default-value="10"
-    default-binding="ognl"/>
+    default-value="10"/>
   
   <parameter name="tableClass" 
-	default-binding="literal"
-	default-value="tapestry-palette"/> 
+	default-value="literal:tapestry-palette"/> 
   
   <parameter name="selectImage" 
-    default-binding="asset"
-    default-value="Select"/>
+    default-value="asset:Select"/>
   
   <parameter name="disabledImage"
-	default-binding="asset"
-	default-value="Disabled"/>
+	default-value="asset:Disabled"/>
   
   <parameter name="deselectImage"
-	default-binding="asset"
-	default-value="Deselect"/>
+	default-value="asset:Deselect"/>
   
   <parameter name="selectDisabledImage"
-	default-binding="asset"
-	default-value="SelectDisabled"/> 
+	default-value="asset:SelectDisabled"/> 
   
   <parameter name="deselectDisabledImage"
-  	default-binding="asset"
- 	default-value="DeselectDisabled"/>
+ 	default-value="asset:DeselectDisabled"/>
   
   <parameter name="upImage" 
-  	default-binding="asset"
-  	default-value="Up"/>
+  	default-value="asset:Up"/>
   
   <parameter name="upDisabledImage"
-  	default-binding="asset"
-    default-value="UpDisabled"/>
+  	default-value="asset:UpDisabled"/>
   
   <parameter name="downImage"
-   	default-binding="asset"
-    default-value="Down"/>
+    default-value="asset:Down"/>
   
   <parameter name="downDisabledImage"
-   	default-binding="asset"
-    default-value="DownDisabled"/>    
+    default-value="asset:DownDisabled"/>    
   
-  <parameter name="displayName" default-binding="literal"/>
-  <parameter name="required" default-binding="ognl"/>
-  <parameter name="requiredMessage" default-binding="literal"/>
+  <parameter name="displayName"/>
+  <parameter name="required"/>
+  <parameter name="requiredMessage"/>
 
   <asset name="Select" path="select_right.gif"/>
   <asset name="SelectDisabled" path="select_right_off.gif"/>

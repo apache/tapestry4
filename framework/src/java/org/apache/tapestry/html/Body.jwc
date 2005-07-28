@@ -26,7 +26,7 @@
   forms of support to all components it wraps.
   </description>
 
-  <parameter name="element" default-binding="literal" default-value="body">
+  <parameter name="element" default-value="literal:body">
   	<description>
   	Name of element to use, defaults to "body".
   	</description>

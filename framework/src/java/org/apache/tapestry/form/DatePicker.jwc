@@ -21,15 +21,15 @@
 
 <component-specification class="org.apache.tapestry.form.DatePicker" allow-body="no">
   
-  <parameter name="value" required="yes" default-binding="ognl"/>
-  <parameter name="disabled" default-binding="ognl"/>
-  <parameter name="includeWeek" default-binding="ognl"/>
-  <parameter name="icon" default-value="defaultIcon" default-binding="asset"/>
+  <parameter name="value" required="yes"/>
+  <parameter name="disabled"/>
+  <parameter name="includeWeek"/>
+  <parameter name="icon" default-value="asset:defaultIcon"/>
   
-  <parameter name="displayName" default-binding="literal"/>
-  <parameter name="translator" default-binding="translator" default-value="date,pattern=dd MMM yyyy"/>
-  <parameter name="validators" default-binding="validators"/>
-  <parameter name="id" default-binding="literal" property="idParameter" default-value="ognl:id"/>
+  <parameter name="displayName"/>
+  <parameter name="translator" default-value="translator:date,pattern=dd MMM yyyy"/>
+  <parameter name="validators"/>
+  <parameter name="id" property="idParameter" default-value="id"/>
   		
   <asset name="defaultIcon" path="DatePickerIcon.png"/>
        

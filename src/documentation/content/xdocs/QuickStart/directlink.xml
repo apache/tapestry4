@@ -196,7 +196,8 @@ public abstract class Home extends BasePage
   This approach to session management, combined with the pooling of page instances, is critical to
   achieving another of Tapestry fundamental principals: <strong>Efficiency</strong>.  Tapestry
   applications will scale because of how they manage server-side state.  The cost of this
-  is that the classes and methods are abstract, only filled out at runtime.
+  is that the classes and methods are abstract, with the implementations of many methods only provided dynamically,
+  by Tapestry, at runtime.
 </p>
 
 <p>

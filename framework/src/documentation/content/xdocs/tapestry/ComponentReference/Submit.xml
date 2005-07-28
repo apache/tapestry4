@@ -68,7 +68,6 @@ is notified.
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
-    <th>Default Binding</th>
     <th>Description</th>
   </tr>
 
@@ -78,7 +77,6 @@ is notified.
 		<td>in</td>
 		<td>no</td>
 		<td>&nbsp;</td>
-    <td>literal</td>
 		<td>The label put on the button (this becomes the HTML value attribute). Alternately,
       the value attribute may simply be specified as an informal parameter.
 		</td>
@@ -90,7 +88,6 @@ is notified.
     <td>in</td>
     <td>no</td>
 	  <td>false</td>
-    <td>ognl</td>
     <td>
     If set to true, the button will be disabled (will not respond to
     the mouse); the browser should provide a "greyed out" appearance.
@@ -103,7 +100,6 @@ is notified.
     <td>out</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>ognl</td>
     <td>
     This parameter is bound to a property that is updated when the submit 
     button is clicked by the user. The property is updated to match the tag 
@@ -116,7 +112,6 @@ is notified.
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>ognl</td>
     <td>
     Tag used with the selected parameter to indicate which Submit button
     on a form was clicked.
@@ -131,7 +126,6 @@ is notified.
  		<td>in</td>
  		<td>no</td>
  		<td>&nbsp;</td>
-    <td>listener</td>
  		<td>
     An optional listener (typically specified as the name of a listener method), notified
     when the Submit is triggered.
@@ -143,7 +137,6 @@ is notified.
     <td>in</td>
     <td>no</td>
     <td>true</td>
-    <td>ognl</td>
     <td>
       If true (the default), then the listener (if any) will not
       be notified immediately but will be notified just
@@ -156,7 +149,6 @@ is notified.
     <td>in</td>
     <td>no</td>
     <td>&nbsp;</td>
-    <td>ognl</td>
     <td>
       Parameter(s) gathered at the time the button is triggered, 
       supplied as listener parameters in the IRequestCycle
@@ -200,20 +192,20 @@ is notified.
   <title>Example</title>
 
 <source><![CDATA[
-<form jwcid="form@Form" listener="doSubmit">
+<form jwcid="form@Form" listener="listener:doSubmit">
 <table>
   <tr>
     <th>User name:</th>
-    <td><input jwcid="userName@TextField" value="userName" size="12"/></td>
+    <td><input jwcid="userName@TextField" value="ognl:userName" size="12"/></td>
   </tr>
   <tr>
     <th>Password:</th>
-    <td><input jwcid="password@TextField" value="password" hidden="true" size="12"/></td>
+    <td><input jwcid="password@TextField" value="ognl:password" hidden="true" size="12"/></td>
   </tr>
   <tr>
     <td colspan="2">
       <input type="submit" value="Login"/>
-      <input type="submit" jwcid="help@Submit" listener="doHelp" value="Help"/>
+      <input type="submit" jwcid="help@Submit" listener="listener:doHelp" value="Help"/>
     </td>
   </tr>
 </table>

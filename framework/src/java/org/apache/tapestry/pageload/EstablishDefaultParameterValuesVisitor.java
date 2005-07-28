@@ -51,10 +51,10 @@ public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
             IParameterSpecification parameterSpec = spec.getParameter(name);
 
             // Skip aliases
-            
-            if (! name.equals(parameterSpec.getParameterName()))
+
+            if (!name.equals(parameterSpec.getParameterName()))
                 continue;
-            
+
             String defaultValue = parameterSpec.getDefaultValue();
             if (defaultValue == null)
                 continue;
@@ -72,15 +72,11 @@ public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
             {
                 String description = PageloadMessages.defaultParameterName(name);
 
-                String defaultBindingType = parameterSpec.getDefaultBindingType();
-                if (defaultBindingType == null)
-                    defaultBindingType = BindingConstants.OGNL_PREFIX;
-
                 IBinding binding = _bindingSource.createBinding(
                         component,
                         description,
                         defaultValue,
-                        defaultBindingType,
+                        BindingConstants.OGNL_PREFIX,
                         parameterSpec.getLocation());
 
                 component.setBinding(name, binding);

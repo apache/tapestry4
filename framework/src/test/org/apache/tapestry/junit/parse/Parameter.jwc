@@ -24,7 +24,6 @@
     <parameter name="noDefault" required="yes"/>
     <parameter name="literalDefault" default-value="literal-value"/>
     <parameter name="expressionDefault" default-value="ognl:an.expression"/>
-    <parameter name="defaultBindingType" default-binding="ognl"/>
     <parameter name="noCache" cache="false"/>
     <parameter name="withAliases" aliases="fred,barney"/>
     <parameter name="deprecated" deprecated="aye"/>

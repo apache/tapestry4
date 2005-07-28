@@ -36,6 +36,7 @@ import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.RequestCycleFactory;
 import org.apache.tapestry.services.ServiceConstants;
+import org.apache.tapestry.services.ServiceMap;
 import org.apache.tapestry.util.QueryParameterMap;
 import org.apache.tapestry.web.WebRequest;
 
@@ -84,19 +85,16 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
         decodeParameters(request.getActivationPath(), parameters);
 
-        IEngineService service = findService(parameters);
+        String serviceName = findService(parameters);
 
-        return new RequestCycle(engine, parameters, service, monitor, _environment);
+        return new RequestCycle(engine, parameters, serviceName, monitor, _environment);
     }
 
-    private IEngineService findService(QueryParameterMap parameters)
+    private String findService(QueryParameterMap parameters)
     {
         String serviceName = parameters.getParameterValue(ServiceConstants.SERVICE);
 
-        if (serviceName == null)
-            serviceName = Tapestry.HOME_SERVICE;
-
-        return _infrastructure.getServiceMap().getService(serviceName);
+        return serviceName == null ? Tapestry.HOME_SERVICE : serviceName;
     }
 
     /**

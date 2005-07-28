@@ -47,7 +47,6 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default Value</th>
-    <th>Default Binding</th>
     <th>Description</th>
   </tr>
   <tr>
@@ -56,7 +55,6 @@
     <td>in</td>
    	<td>no</td>
 		<td>&nbsp;</td>
-    <td>ognl</td>
 		<td>The value to be inserted. If the binding is null, then nothing is 
     inserted. Any object may be inserted, the <code>toString()</code> method is 
     used to convert it to a printable value.
@@ -70,7 +68,6 @@
 		<td>in</td>
 		<td>no</td>
 		<td>&nbsp;</td>
-    <td>ognl</td>
 		<td>An optional format object used to convert the value parameter for 
     insertion into the HTML response. 
 		</td>
@@ -81,7 +78,6 @@
 		<td>in</td>
 		<td>no</td>
 		<td>&nbsp;</td>
-    <td>literal</td>
 		<td>If specified, then the output is wrapped in an HTML &lt;span&gt; tag, 
     using the value specified as the CSS class. 
     
@@ -96,7 +92,6 @@
 		<td>in</td>
 		<td>no</td>
 		<td>false</td>
-    <td>&nbsp;</td>
 		<td>If true, then the method 
     <link href="&apiroot;/IMarkupWriter.html#printRaw(java.lang.String)">
     <code>IMarkupWriter.printRaw(String)</code></link> is used, rather than 
@@ -152,7 +147,7 @@
 <tr>
  <td>
  The order was due on the <font color="red"><b>
- <span jwcid="@Insert" value="date" format="dateFormat" class="ognl:dueClass">21 January 2002</span>. 	
+ <span jwcid="@Insert" value="ognl:date" format="ognl:dateFormat" class="ognl:dueClass">21 January 2002</span>. 	
  </td>
 </tr>
 </table>

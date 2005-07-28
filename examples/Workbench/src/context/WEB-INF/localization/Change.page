@@ -21,7 +21,7 @@
 <page-specification class="org.apache.tapestry.workbench.localization.LocalizationChange">
 
   <component id="insertLocaleName" type="Insert">
-    <binding name="value" value="ognl:localeName"/>
+    <binding name="value" value="localeName"/>
   </component>
   
 <!-- 
@@ -41,7 +41,7 @@
 -->
 
   <component id="back" type="PageLink">
-    <binding name="page" value="localization/Localization"/>
+    <binding name="page" value="literal:localization/Localization"/>
   </component>
   
   <component id="chooseAgainImage" type="Rollover">

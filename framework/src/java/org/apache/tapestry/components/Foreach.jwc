@@ -24,22 +24,22 @@
         Loops over a collection of source values.  May also emulate an element (like an Any
         component).
     </description>
-    <parameter name="source" required="yes" default-binding="ognl">
+    <parameter name="source" required="yes">
         <description>
             The source of values, a Java collection or array.
         </description>
     </parameter>
-    <parameter name="value" property="valueParameter" default-binding="ognl">
+    <parameter name="value" property="valueParameter">
         <description>
             If provided, then on each iteration, the value property is updated.
         </description>
     </parameter>
-    <parameter name="index" property="indexParameter" default-binding="ognl">
+    <parameter name="index" property="indexParameter">
         <description>
             If provided, then the index of the loop is set on each iteration.
         </description>
     </parameter>
-    <parameter name="element" default-binding="literal">
+    <parameter name="element">
         <description>
             If provided, then the Foreach creates an element wrapping its content.
             Informal parameters become attributes of the element.

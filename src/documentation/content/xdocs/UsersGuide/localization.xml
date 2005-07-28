@@ -230,7 +230,7 @@ It is common to format messages using OGNL expessions, i.e.:
 </p>
 
 <source>
-&lt;span jwcid="@&Insert;" value="messages.format('billing-info', amountDue)"/&gt;
+&lt;span jwcid="@&Insert;" value="ognl:messages.format('billing-info', amountDue)"/&gt;
 </source>
 
 <p>
