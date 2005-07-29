@@ -25,5 +25,27 @@
   <body>
     <p>A collection of powerful add-on components for Tapestry.</p>
     <p>This library started as a collection of components <em>contrib</em>uted by the community.</p>
+    
+    <p>
+      To make use of this library, you must include its JAR on the classpath (typically, by copying it into WEB-INF/lib), and
+      extend your application specification, and add a &lt;library&gt; element:
+    </p>
+    
+<source><![CDATA[
+ <library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
+]]></source>    
+
+  <p>
+    You may then reference the components of the framework using the prefix:
+  </p>
+  
+<source><![CDATA[
+  <table jwcid="@contrib:Table" ...> ... 
+]]></source>
+    
+<p>
+The prefix "contrib:" can be changed; if you don't like typing, make it "c:" ... Tapestry doesn't care!
+</p>
+    
   </body>
 </document>
