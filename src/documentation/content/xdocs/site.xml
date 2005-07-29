@@ -128,7 +128,39 @@
    <contrib label="Contrib Library" tab="contrib" href="tapestry-contrib/">
       
       <index label="Overview" href="index.html"/>
-    
+ 
+       <ComponentReference label="Components" href="ComponentReference/">
+         <Choose label="Choose" href="Choose.html"/>
+         <DateField label="DateField" href="DateField.html"/>
+         <FormConditional label="FormConditional" href="FormConditional.html"/>
+         <FormTable label="FormTable" href="FormTable.html"/>
+         <InspectorButton label="InspectorButton" href="InspectorButton.html"/>         
+         <MaskEdit label="MaskEdit" href="MaskEdit.html"/>
+         <MultiplePropertySelection label="MultiplePropertySelection" href="MultiplePropertySelection.html"/>
+         <NumericField label="NumericField" href="NumericField.html"/>
+         <Otherwise label="Otherwise" href="Otherwise.html"/>
+         <Palette label="Palette" href="Palette.html"/>
+         <SimpleTableColumnComponent label="SimpleTableColumnComponent" href="SimpleTableColumnComponent.html"/>
+         <SimpleTableColumnFormComponent label="SimpleTableColumnFormComponent" href="SimpleTableColumnFormComponent.html"/>
+         <Table label="Table" href="Table.html"/>
+         <TableColumns label="TableColumns" href="TableColumns.html"/>
+         <TableFormPages label="TableFormPages" href="TableFormPages.html"/>
+         <TableFormRows label="TableFormRows" href="TableFormRows.html"/>
+         <TableRows label="TableRows" href="TableRows.html"/>
+         <TablePages label="TablePages" href="TablePages.html"/>
+         <TableValues label="TableValues" href="TableValues.html"/>
+         <TableView label="TableView" href="TableView.html"/>
+         <Tree label="Tree" href="Tree.html"/>
+         <TreeDataView label="TreeDataView" href="TreeDataView.html"/>
+         <TreeNodeView label="TreeNodeView" href="TreeNodeView.html"/>
+         <TreeTable label="TreeTable" href="TreeTable.html"/>
+         <TreeTableDataView label="TreeTableDataView" href="TreeTableDataView.html"/>
+         <TreeTableNodeViewDelegator label="TreeTableNodeViewDelegator" href="TreeTableNodeViewDelegator.html"/>
+         <TreeView label="TreeView" href="TreeView.html"/>
+         <ValidatingTextField label="ValidatingTextField" href="ValidatingTextField.html"/>
+         <When label="When" href="When.html"/>
+       </ComponentReference>
+         
       <reports label="Reports">
         &tapestry-contrib-report-menu.ent;
       </reports>    
