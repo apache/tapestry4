@@ -86,6 +86,9 @@ public abstract class AnnotatedPage extends BasePage
 
     @Parameter(name = "fred")
     public abstract double getNamedParameter();
+    
+    @Parameter(defaultValue="myDefault")
+    public abstract String getDefaultValue();
 
     @InjectPage("SomePageName")
     public abstract IPage getMyPage();
