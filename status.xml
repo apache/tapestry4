@@ -58,7 +58,8 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-435,TAPESTRY-325,TAPESTRY-309,TAPESTRY-311,TAPESTRY-252,TAPESTRY-254,TAPESTRY-327,TAPESTRY-333" due-to="Our many international users">Add many translations of ValidationStrings.properties.</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-441">Poor reporting of duplicate method implementations</action>
       <action type="update" dev="HLS">Remove default-binding attribute from &lt;parameter&gt; element</action>
-	  <action type="fix" dev="HLS" fixes-bug="TAPESTRY-515">Deprecate out-of-date contrib components</action>
+	    <action type="fix" dev="HLS" fixes-bug="TAPESTRY-515">Deprecate out-of-date contrib components</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-481">Enhancement Workers that create read-only properties should flag setter methods as an error</action>
     </release>
     <release version="4.0-beta-3" date="Jul 22 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>

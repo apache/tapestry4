@@ -62,7 +62,7 @@ public class TestInjectObjectWorker extends HiveMindTestCase
         op.getPropertyType("fred");
         opc.setReturnValue(null);
 
-        op.claimProperty("fred");
+        op.claimReadonlyProperty("fred");
 
         p.obtainValue("service:barney", l);
 
@@ -107,7 +107,7 @@ public class TestInjectObjectWorker extends HiveMindTestCase
         op.getPropertyType("wilma");
         opc.setReturnValue(IEngineService.class);
 
-        op.claimProperty("wilma");
+        op.claimReadonlyProperty("wilma");
 
         p.obtainValue("service:betty", l);
         pc.setReturnValue(injectedValue);
@@ -148,7 +148,7 @@ public class TestInjectObjectWorker extends HiveMindTestCase
         op.getPropertyType("fred");
         opc.setReturnValue(null);
 
-        op.claimProperty("fred");
+        op.claimReadonlyProperty("fred");
 
         p.obtainValue("service:barney", l);
         pc.setReturnValue(null);
@@ -187,7 +187,7 @@ public class TestInjectObjectWorker extends HiveMindTestCase
         op.getPropertyType("fred");
         opc.setReturnValue(IEngineService.class);
 
-        op.claimProperty("fred");
+        op.claimReadonlyProperty("fred");
 
         p.obtainValue("service:barney", l);
         pc.setReturnValue("INJECTED-VALUE");

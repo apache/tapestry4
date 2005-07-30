@@ -235,6 +235,17 @@ public class EnhancementOperationImpl implements EnhancementOperation
         _claimedProperties.add(propertyName);
     }
 
+    public void claimReadonlyProperty(String propertyName)
+    {
+        claimProperty(propertyName);
+
+        PropertyDescriptor pd = getPropertyDescriptor(propertyName);
+
+        if (pd != null && pd.getWriteMethod() != null)
+            throw new ApplicationRuntimeException(EnhanceMessages.readonlyProperty(propertyName, pd
+                    .getWriteMethod()));
+    }
+
     public void addField(String name, Class type)
     {
         _classFab.addField(name, type);
@@ -348,9 +359,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         Location existing = (Location) _methods.get(sig);
         if (existing != null)
-            throw new ApplicationRuntimeException(EnhanceMessages.methodConflict(
-                    sig,
-                    existing), location, null);
+            throw new ApplicationRuntimeException(EnhanceMessages.methodConflict(sig, existing),
+                    location, null);
 
         _methods.put(sig, location);
 

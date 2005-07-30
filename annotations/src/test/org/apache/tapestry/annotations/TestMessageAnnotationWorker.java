@@ -110,7 +110,7 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
                 new MethodSignature(method),
                 "{\n  return getMessages().getMessage(\"like-getter\");\n}\n",
                 l);
-        op.claimProperty("likeGetter");
+        op.claimReadonlyProperty("likeGetter");
 
         replayControls();
 

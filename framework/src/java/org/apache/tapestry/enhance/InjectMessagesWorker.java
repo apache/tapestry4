@@ -62,7 +62,7 @@ public class InjectMessagesWorker implements EnhancementWorker
     {
         Defense.notNull(op, "op");
 
-        op.claimProperty(MESSAGES_PROPERTY);
+        op.claimReadonlyProperty(MESSAGES_PROPERTY);
 
         String sourceField = op.addInjectedField(
                 "_$componentMessagesSource",

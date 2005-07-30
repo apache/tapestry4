@@ -65,7 +65,7 @@ public class InjectScriptWorker implements InjectEnhancementWorker
         Defense.notNull(scriptName, "scriptName");
         Defense.notNull(location, "location");
 
-        op.claimProperty(propertyName);
+        op.claimReadonlyProperty(propertyName);
 
         Class propertyType = EnhanceUtils.verifyPropertyType(op, propertyName, IScript.class);
 

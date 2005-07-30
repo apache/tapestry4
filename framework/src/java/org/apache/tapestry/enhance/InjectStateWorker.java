@@ -53,6 +53,8 @@ public class InjectStateWorker implements InjectEnhancementWorker
         Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, null);
         String fieldName = "_$" + propertyName;
 
+        // State properties are read/write
+        
         op.claimProperty(propertyName);
 
         op.addField(fieldName, propertyType);

@@ -48,7 +48,7 @@ public class TestInjectScriptWorker extends HiveMindTestCase
 
         final IScriptSource source = (IScriptSource) newMock(IScriptSource.class);
 
-        op.claimProperty("foo");
+        op.claimReadonlyProperty("foo");
 
         op.getPropertyType("foo");
         opc.setReturnValue(IScript.class);

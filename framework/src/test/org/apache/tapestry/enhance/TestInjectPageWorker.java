@@ -87,7 +87,7 @@ public class TestInjectPageWorker extends HiveMindTestCase
         op.getPropertyType("somePage");
         opc.setReturnValue(null);
 
-        op.claimProperty("somePage");
+        op.claimReadonlyProperty("somePage");
 
         op.getAccessorMethodName("somePage");
         opc.setReturnValue("getSomePage");
@@ -119,7 +119,7 @@ public class TestInjectPageWorker extends HiveMindTestCase
         op.getPropertyType("somePage");
         opc.setReturnValue(BasePage.class);
 
-        op.claimProperty("somePage");
+        op.claimReadonlyProperty("somePage");
 
         op.getAccessorMethodName("somePage");
         opc.setReturnValue("getSomePage");

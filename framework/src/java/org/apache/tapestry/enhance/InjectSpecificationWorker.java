@@ -49,7 +49,7 @@ public class InjectSpecificationWorker implements EnhancementWorker
         Defense.notNull(op, "op");
         Defense.notNull(spec, "spec");
 
-        op.claimProperty(SPECIFICATION_PROPERTY_NAME);
+        op.claimReadonlyProperty(SPECIFICATION_PROPERTY_NAME);
 
         String fieldName = op.addInjectedField(
                 "_$" + SPECIFICATION_PROPERTY_NAME,

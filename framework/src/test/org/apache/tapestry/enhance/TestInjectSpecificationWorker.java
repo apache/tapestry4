@@ -43,7 +43,7 @@ public class TestInjectSpecificationWorker extends BaseEnhancementTestCase
 
         IComponentSpecification spec = newSpec(l);
 
-        op.claimProperty("specification");
+        op.claimReadonlyProperty("specification");
 
         op.addInjectedField("_$specification", IComponentSpecification.class, spec);
         control.setReturnValue("_$specification");
@@ -76,7 +76,7 @@ public class TestInjectSpecificationWorker extends BaseEnhancementTestCase
         MockControl specc = newControl(IComponentSpecification.class);
         IComponentSpecification spec = (IComponentSpecification) specc.getMock();
 
-        op.claimProperty("specification");
+        op.claimReadonlyProperty("specification");
         control.setThrowable(ex);
 
         op.getBaseClass();
