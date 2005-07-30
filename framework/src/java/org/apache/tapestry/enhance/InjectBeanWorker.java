@@ -68,7 +68,7 @@ public class InjectBeanWorker implements EnhancementWorker
         Defense.notNull(beanName, "beanName");
         Defense.notNull(propertyName, "propertyName");
 
-        op.claimProperty(propertyName);
+        op.claimReadonlyProperty(propertyName);
 
         Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, null);
 

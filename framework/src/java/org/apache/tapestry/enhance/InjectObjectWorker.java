@@ -54,7 +54,7 @@ public class InjectObjectWorker implements InjectEnhancementWorker
         if (propertyType == null)
             propertyType = Object.class;
 
-        op.claimProperty(propertyName);
+        op.claimReadonlyProperty(propertyName);
 
         Object injectedValue = _provider.obtainValue(objectReference, location);
 

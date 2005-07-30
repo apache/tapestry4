@@ -120,6 +120,73 @@ public class TestEnhancementOperation extends HiveMindTestCase
         }
     }
 
+    public void testClaimReadonlyPropertyDoesNotExist()
+    {
+        IComponentSpecification spec = newSpec();
+        ClassFactory cf = newClassFactory();
+
+        replayControls();
+
+        EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
+                BaseComponent.class, cf);
+
+        eo.claimReadonlyProperty("foo");
+
+        verifyControls();
+    }
+
+    public void testClaimReadonlyPropertyClaimed()
+    {
+        IComponentSpecification spec = newSpec();
+        ClassFactory cf = newClassFactory();
+
+        replayControls();
+
+        EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
+                BaseComponent.class, cf);
+
+        eo.claimReadonlyProperty("foo");
+        eo.claimReadonlyProperty("bar");
+
+        try
+        {
+            eo.claimProperty("foo");
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(EnhanceMessages.claimedProperty("foo"), ex.getMessage());
+        }
+
+        verifyControls();
+    }
+
+    public void testClaimReadonlyPropertyHasSetter()
+    {
+        IComponentSpecification spec = newSpec();
+        ClassFactory cf = newClassFactory();
+
+        replayControls();
+
+        EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
+                BaseComponent.class, cf);
+
+        try
+        {
+            // id is a read/write property (even if it isn't abstract)
+            eo.claimReadonlyProperty("id");
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Property id should be read-only; remove method public void org.apache.tapestry.AbstractComponent.setId(java.lang.String).",
+                    ex.getMessage());
+        }
+
+        verifyControls();
+    }
+
     private ClassFactory newClassFactory()
     {
         return newClassFactory(BaseComponent.class);

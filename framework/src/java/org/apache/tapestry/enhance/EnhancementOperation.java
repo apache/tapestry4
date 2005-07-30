@@ -40,6 +40,17 @@ public interface EnhancementOperation
     public void claimProperty(String propertyName);
 
     /**
+     * Claims a property as read-only. This will check to see if the property has an abstract setter
+     * method.
+     * 
+     * @throws org.apache.hivemind.ApplicationRuntimeException
+     *             if the property was previously claimed, or if the property includes an accessor
+     *             method.
+     */
+    
+    public void claimReadonlyProperty(String propertyName);
+
+    /**
      * Returns a list of the names of existing properties that are not claimed and which have
      * abstract accessor methods.
      */

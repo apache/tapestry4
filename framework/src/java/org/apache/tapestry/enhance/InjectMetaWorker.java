@@ -71,7 +71,7 @@ public class InjectMetaWorker implements InjectEnhancementWorker
 
         Class propertyType = op.getPropertyType(propertyName);
 
-        op.claimProperty(propertyName);
+        op.claimReadonlyProperty(propertyName);
 
         String sourceName = op
                 .addInjectedField(SOURCE_NAME, ComponentPropertySource.class, _source);

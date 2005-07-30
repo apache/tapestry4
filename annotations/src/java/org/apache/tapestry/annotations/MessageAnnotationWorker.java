@@ -83,7 +83,7 @@ public class MessageAnnotationWorker implements MethodAnnotationEnhancementWorke
         op.addMethod(Modifier.PUBLIC, new MethodSignature(method), builder.toString(), location);
 
         if (isGetter(method))
-            op.claimProperty(AnnotationUtils.getPropertyName(method));
+            op.claimReadonlyProperty(AnnotationUtils.getPropertyName(method));
     }
 
     boolean isGetter(Method method)

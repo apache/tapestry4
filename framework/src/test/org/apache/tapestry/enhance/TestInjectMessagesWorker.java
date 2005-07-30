@@ -50,7 +50,7 @@ public class TestInjectMessagesWorker extends BaseEnhancementTestCase
         MockControl control = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) control.getMock();
 
-        op.claimProperty(w.MESSAGES_PROPERTY);
+        op.claimReadonlyProperty(w.MESSAGES_PROPERTY);
         op.addInjectedField("_$componentMessagesSource", ComponentMessagesSource.class, source);
         control.setReturnValue("fred");
 
@@ -86,7 +86,7 @@ public class TestInjectMessagesWorker extends BaseEnhancementTestCase
         MockControl control = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) control.getMock();
 
-        op.claimProperty(w.MESSAGES_PROPERTY);
+        op.claimReadonlyProperty(w.MESSAGES_PROPERTY);
         control.setThrowable(ex);
 
         op.getBaseClass();

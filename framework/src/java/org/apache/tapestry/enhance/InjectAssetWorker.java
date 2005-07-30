@@ -69,7 +69,7 @@ public class InjectAssetWorker implements EnhancementWorker
 
         Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, null);
 
-        op.claimProperty(propertyName);
+        op.claimReadonlyProperty(propertyName);
 
         if (!propertyType.isAssignableFrom(IAsset.class))
             throw new ApplicationRuntimeException(EnhanceMessages.incompatiblePropertyType(

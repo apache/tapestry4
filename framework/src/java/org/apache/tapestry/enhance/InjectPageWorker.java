@@ -48,7 +48,7 @@ public class InjectPageWorker implements InjectEnhancementWorker
                     propertyName,
                     propertyType), null, location, null);
 
-        op.claimProperty(propertyName);
+        op.claimReadonlyProperty(propertyName);
 
         MethodSignature sig = new MethodSignature(propertyType, op
                 .getAccessorMethodName(propertyName), null, null);

@@ -139,4 +139,9 @@ class EnhanceMessages
         return _formatter.format("method-conflict", sig, existing);
     }
 
+    public static String readonlyProperty(String propertyName, Method writeMethod)
+    {
+        return _formatter.format("readonly-property", propertyName, writeMethod);
+    }
+
 }

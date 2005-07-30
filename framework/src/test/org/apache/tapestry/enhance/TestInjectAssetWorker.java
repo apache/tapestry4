@@ -78,7 +78,7 @@ public class TestInjectAssetWorker extends HiveMindTestCase
         op.getPropertyType("barney");
         control.setReturnValue(IAsset.class);
 
-        op.claimProperty("barney");
+        op.claimReadonlyProperty("barney");
 
         op.addField("_$barney", IAsset.class);
 
@@ -118,7 +118,7 @@ public class TestInjectAssetWorker extends HiveMindTestCase
         op.getPropertyType("barney");
         control.setReturnValue(IComponent.class);
 
-        op.claimProperty("barney");
+        op.claimReadonlyProperty("barney");
         control.setThrowable(ex);
 
         op.getBaseClass();
@@ -145,7 +145,7 @@ public class TestInjectAssetWorker extends HiveMindTestCase
         op.getPropertyType("barney");
         control.setReturnValue(IComponent.class);
 
-        op.claimProperty("barney");
+        op.claimReadonlyProperty("barney");
 
         replayControls();
 

@@ -63,7 +63,7 @@ public class TestInjectMetaWorker extends HiveMindTestCase
         op.getPropertyType("fooBar");
         control.setReturnValue(int.class);
 
-        op.claimProperty("fooBar");
+        op.claimReadonlyProperty("fooBar");
 
         MethodSignature sig = new MethodSignature(int.class, "getFooBar", null, null);
 
@@ -105,7 +105,7 @@ public class TestInjectMetaWorker extends HiveMindTestCase
         op.getPropertyType("fooBar");
         control.setReturnValue(char.class);
 
-        op.claimProperty("fooBar");
+        op.claimReadonlyProperty("fooBar");
 
         MethodSignature sig = new MethodSignature(char.class, "getFooBar", null, null);
 
@@ -148,7 +148,7 @@ public class TestInjectMetaWorker extends HiveMindTestCase
         op.getPropertyType("fooBar");
         control.setReturnValue(Object.class);
 
-        op.claimProperty("fooBar");
+        op.claimReadonlyProperty("fooBar");
 
         MethodSignature sig = new MethodSignature(Object.class, "getFooBar", null, null);
 

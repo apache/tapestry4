@@ -74,7 +74,7 @@ public class TestInjectBeanWorker extends HiveMindTestCase
         MockControl control = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) control.getMock();
 
-        op.claimProperty("barney");
+        op.claimReadonlyProperty("barney");
 
         op.getPropertyType("barney");
         control.setReturnValue(ArrayList.class);
@@ -107,7 +107,7 @@ public class TestInjectBeanWorker extends HiveMindTestCase
 
         ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
-        op.claimProperty("barney");
+        op.claimReadonlyProperty("barney");
         control.setThrowable(ex);
 
         op.getBaseClass();
