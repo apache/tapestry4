@@ -110,4 +110,12 @@ public class TestParameterAnnotationWorker extends BaseAnnotationTestCase
         assertEquals("fred", ps.getParameterName());
         assertEquals("namedParameter", ps.getPropertyName());
     }
+
+    public void testDefaultValue()
+    {
+        IParameterSpecification ps = attempt("defaultValue", null);
+
+        assertEquals("myDefault", ps.getDefaultValue());
+    }
+
 }
