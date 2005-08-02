@@ -30,23 +30,41 @@ import org.apache.tapestry.valid.ValidationStrings;
  */
 public class ValidationMessagesImpl implements ValidationMessages
 {
-    private Locale _locale;
+    private final IFormComponent _field;
 
-    public ValidationMessagesImpl(Locale locale)
+    private final Locale _locale;
+
+    public ValidationMessagesImpl(IFormComponent field, Locale locale)
     {
+        Defense.notNull(field, "field");
         Defense.notNull(locale, "locale");
 
+        _field = field;
         _locale = locale;
     }
 
     public String formatValidationMessage(String messageOverride, String messageKey,
             Object[] arguments)
     {
-        String message = (messageOverride == null) ? ValidationStrings.getMessagePattern(
-                messageKey,
-                _locale) : messageOverride;
+        String message = extractLocalizedMessage(messageOverride, messageKey);
 
         return MessageFormat.format(message, arguments);
     }
 
+    private String extractLocalizedMessage(String messageOverride, String messageKey)
+    {
+        if (messageOverride == null)
+            return ValidationStrings.getMessagePattern(messageKey, _locale);
+
+        if (messageOverride.startsWith("%"))
+        {
+            String key = messageOverride.substring(1);
+
+            return _field.getContainer().getMessages().getMessage(key);
+        }
+
+        // Otherwise, a literal string
+
+        return messageOverride;
+    }
 }

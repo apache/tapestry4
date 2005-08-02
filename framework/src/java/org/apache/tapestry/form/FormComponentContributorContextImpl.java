@@ -49,11 +49,11 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
      * Used for testing.
      */
 
-    FormComponentContributorContextImpl()
+    FormComponentContributorContextImpl(IFormComponent field)
     {
-        super(Locale.ENGLISH);
+        super(field, Locale.ENGLISH);
 
-        _field = null;
+        _field = field;
         _resolver = null;
         _formDOM = null;
         _fieldDOM = null;
@@ -62,19 +62,19 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
     }
 
     public FormComponentContributorContextImpl(Locale locale, IRequestCycle cycle,
-            IFormComponent component)
+            IFormComponent field)
     {
-        super(locale);
+        super(field, locale);
 
-        _field = component;
-        _form = component.getForm();
+        _field = field;
+        _form = field.getForm();
 
         _resolver = cycle.getInfrastructure().getClassResolver();
 
         _formDOM = "document." + _form.getName();
-        _fieldDOM = _formDOM + "." + component.getName();
+        _fieldDOM = _formDOM + "." + field.getName();
 
-        _pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, component);
+        _pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, field);
     }
 
     public String getFieldDOM()

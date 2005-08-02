@@ -60,6 +60,7 @@
       <action type="update" dev="HLS">Remove default-binding attribute from &lt;parameter&gt; element</action>
 	    <action type="fix" dev="HLS" fixes-bug="TAPESTRY-515">Deprecate out-of-date contrib components</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-481">Enhancement Workers that create read-only properties should flag setter methods as an error</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-413">Allow access to component message catalog from validators: binding string</action>
     </release>
     <release version="4.0-beta-3" date="Jul 22 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>
