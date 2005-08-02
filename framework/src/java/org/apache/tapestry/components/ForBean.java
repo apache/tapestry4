@@ -16,6 +16,7 @@ package org.apache.tapestry.components;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -39,6 +40,9 @@ import org.apache.tapestry.services.ExpressionEvaluator;
 public abstract class ForBean extends AbstractFormComponent {
     private static final char DESC_VALUE = 'V';
 	private static final char DESC_PRIMARY_KEY = 'P';
+	
+	private static final String PARAMETER_SOURCE = "source";
+	private static final String PARAMETER_FULL_SOURCE = "fullSource";
 
 	// parameters
 	public abstract Object getSource();
@@ -53,6 +57,8 @@ public abstract class ForBean extends AbstractFormComponent {
     // properties
     public abstract Map getPrimaryKeyMap();
     public abstract void setPrimaryKeyMap(Map primaryKeys);
+    public abstract Map getSourceIteratorMap();
+    public abstract void setSourceIteratorMap(Map sourceIteratorMap);
     
     // injects
     public abstract DataSqueezer getDataSqueezer();
@@ -63,72 +69,123 @@ public abstract class ForBean extends AbstractFormComponent {
     private Object _value;
     private int _index;
     private boolean _rendering;
-	
+
     /**
-     *  Gets the source binding and returns an {@link Iterator}
-     *  representing
-     *  the values identified by the source.  Returns an empty {@link Iterator}
-     *  if the binding, or the binding value, is null.
-     *
-     *  <p>Invokes {@link Tapestry#coerceToIterator(Object)} to perform
-     *  the actual conversion.
+     *  Gets the source binding and iterates through
+     *  its values.  For each, it updates the value binding and render's its wrapped elements.
      *
      **/
 
-    protected Iterator getSourceData()
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-		Object source = getSource();
-		if (source == null)
-			return null;
+        // form may be null if component is not located in a form
+        IForm form = (IForm) cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
+
+        // If the cycle is rewinding, but not this particular form,
+        // then do nothing (don't even render the body).
+        boolean cycleRewinding = cycle.isRewinding();
+        if (cycleRewinding && form != null && !form.isRewinding())
+            return;
+
+        // Get the data to be iterated upon. Store in form if needed.
+        Iterator dataSource = getData(cycle, form);
+        
+        // Do not iterate if dataSource is null. 
+        // The dataSource was either not convertable to Iterator, or was empty. 
+        if (dataSource == null)
+            return;
+
+        String element = getElement();
+
+        // Perform the iterations
+        try
+        {
+            _index = 0;
+            _rendering = true;
+
+            while (dataSource.hasNext())
+            {
+            	// Get current value
+                _value = dataSource.next();
+
+                // Update output component parameters
+                updateOutputParameters();
+            	
+                // Render component
+                if (element != null)
+                {
+                    writer.begin(element);
+                    renderInformalParameters(writer, cycle);
+                }
+
+                renderBody(writer, cycle);
+
+                if (element != null)
+                    writer.end();
+
+                _index++;
+            }
+        }
+        finally
+        {
+            _rendering = false;
+            _value = null;
+        }
+    }
     
-    	Iterator iteratorSource = (Iterator) getValueConverter().coerceValue(source, Iterator.class);
-    	
-    	return iteratorSource;
+    
+    /**
+     * Returns a list with the values to be iterated upon.
+     * 
+     * The list is obtained in different ways:
+     * - If the component is not located in a form or 'volatile' is set to true, 
+     *   then the simply the values passed to 'source' are returned (same as Foreach)
+     * - If the component is in a form, and the form is rewinding, the values stored 
+     *    in the form are returned -- rewind is then always the same as render.
+     * - If the component is in a form, and the form is being rendered, the values
+     *   are stored in the form as Hidden fields. 
+     * 
+     * @param cycle The current request cycle
+     * @param form The form within which the component is located (if any)
+     * @return An iterator with the values to be cycled upon
+     **/
+    private Iterator getData(IRequestCycle cycle, IForm form) {
+        if (form == null || getVolatile())
+        	return getSource(PARAMETER_SOURCE);
+        
+        String name = form.getElementId(this);
+        if (cycle.isRewinding())
+        	return getStoredData(cycle, name);
+        else 
+        	return storeSourceData(form, name);
     }
-
-    protected Iterator storeSourceData(IForm form, String name)
+    
+    /**
+     *  Returns an {@link Iterator} containing the values provided 
+     *  by the identified source binding.
+     *
+     *  @param parameter The name of the source binding
+     *  @return an iterator with the bound values. null if the parameter is not bound  
+     *          or the conversion cannot be performed 
+     **/
+    protected Iterator getSource(String parameter)
     {
-    	Iterator iteratorSource = getSourceData();
-		if (iteratorSource == null)
+    	IBinding binding = getBinding(parameter);
+		if (binding == null)
 			return null;
-    	
-		// extract primary keys from data
-		StringBuffer pkDesc = new StringBuffer();
-		List data = new ArrayList();
-		List pks = new ArrayList();
-		while (iteratorSource.hasNext()) {
-			Object value = iteratorSource.next();
-			data.add(value);
-			
-			Object pk = getPrimaryKeyFromValue(value);
-			if (pk == null) {
-				pk = value;
-				pkDesc.append(DESC_VALUE);
-			}
-			else
-				pkDesc.append(DESC_PRIMARY_KEY);
-			pks.add(pk);
-		}
 		
-		// store primary keys
-        form.addHiddenValue(name, pkDesc.toString());
-        for (Iterator it = pks.iterator(); it.hasNext();) {
-			Object pk = it.next();
-	    	try {
-				String stringRep = getDataSqueezer().squeeze(pk);
-				form.addHiddenValue(name, stringRep);
-			} catch (IOException ex) {
-	            throw new ApplicationRuntimeException(
-	                    Tapestry.format("For.unable-to-convert-value", pk),
-	                    this,
-	                    null,
-	                    ex);
-			}
-		}
-
-    	return data.iterator();
+		Object data = binding.getObject();
+		return (Iterator) getValueConverter().coerceValue(data, Iterator.class);
     }
-
+    
+    /**
+     *  Returns a list of the values stored as Hidden fields in the form.
+     *  A conversion is performed if the primary key of the value is stored.
+     *  
+     *  @param cycle The current request cycle
+     *  @param name The name of the HTTP parameter whether the values 
+     *  @return an iterator with the values stored in the provided Hidden fields
+     **/
     protected Iterator getStoredData(IRequestCycle cycle, String name)
     {
         String[] submittedPrimaryKeys = cycle.getParameters(name);
@@ -171,111 +228,64 @@ public abstract class ForBean extends AbstractFormComponent {
     }
     
     /**
-     *  Gets the source binding and iterates through
-     *  its values.  For each, it updates the value binding and render's its wrapped elements.
-     *
+     *  Stores the provided data in the form and then returns the data as an iterator.
+     *  If the primary key of the value can be determined, 
+     *  then that primary key is saved instead.
+     *   
+     *  @param form The form where the data will be stored
+     *  @param name The name under which the data will be stored
+     *  @return an iterator with the bound values stored in the form 
      **/
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    protected Iterator storeSourceData(IForm form, String name)
     {
-        // form may be null if component is not located in a form
-        IForm form = (IForm) cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
-
-        // If the cycle is rewinding, but not this particular form,
-        // then do nothing (don't even render the body).
-        boolean cycleRewinding = cycle.isRewinding();
-        if (cycleRewinding && form != null && !form.isRewinding())
-            return;
-
-        boolean bInForm = (form != null && !getVolatile());
-        
-        String name = "";
-        if (form != null)
-            name = form.getElementId(this);
-
-        // Get the data to be iterated upon. Store in form if needed.
-        Iterator dataSource;
-        if (!bInForm)
-        	dataSource = getSourceData();
-        else if (cycleRewinding)
-        	dataSource = getStoredData(cycle, name);
-        else 
-        	dataSource = storeSourceData(form, name);
-      	
-        
-        // Do not iterate if dataSource is null. 
-        // The dataSource was either not convertable to Iterator, or was empty. 
-        if (dataSource == null)
-            return;
-
-        String element = getElement();
-
-        // Perform the iterations
-        try
-        {
-            _index = 0;
-            _rendering = true;
-
-            while (dataSource.hasNext())
-            {
-            	// Get current value
-                _value = dataSource.next();
-
-                // Update output component parameters
-            	IBinding indexBinding = getBinding("index");
-            	if (indexBinding != null)
-            		indexBinding.setObject(new Integer(_index));
-
-            	IBinding valueBinding = getBinding("value");
-            	if (valueBinding != null)
-            		valueBinding.setObject(_value);
-            	
-                // Render component
-                if (element != null)
-                {
-                    writer.begin(element);
-                    renderInformalParameters(writer, cycle);
-                }
-
-                renderBody(writer, cycle);
-
-                if (element != null)
-                    writer.end();
-
-                _index++;
-            }
-        }
-        finally
-        {
-            _rendering = false;
-            _value = null;
-        }
-    }
-
-    private Object restoreValue(IForm form, String name, Object primaryKey)
-    {
-    	return getValueFromPrimaryKey(primaryKey);
-    }
-    
-    private void storeValue(IForm form, String name, Object value)
-    {
-    	Object convertedValue = getPrimaryKeyFromValue(value);
+    	Iterator iteratorSource = getSource(PARAMETER_SOURCE);
+		if (iteratorSource == null)
+			return null;
     	
-        try
-        {
-        	String externalValue = getDataSqueezer().squeeze(convertedValue);
-            form.addHiddenValue(name, externalValue);
-        }
-        catch (IOException ex)
-        {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("For.unable-to-convert-value", value),
-                this,
-                null,
-                ex);
-        }
+		// extract primary keys from data
+		StringBuffer pkDesc = new StringBuffer();
+		List data = new ArrayList();
+		List pks = new ArrayList();
+		while (iteratorSource.hasNext()) {
+			Object value = iteratorSource.next();
+			data.add(value);
+			
+			Object pk = getPrimaryKeyFromValue(value);
+			if (pk == null) {
+				pk = value;
+				pkDesc.append(DESC_VALUE);
+			}
+			else
+				pkDesc.append(DESC_PRIMARY_KEY);
+			pks.add(pk);
+		}
+		
+		// store primary keys
+        form.addHiddenValue(name, pkDesc.toString());
+        for (Iterator it = pks.iterator(); it.hasNext();) {
+			Object pk = it.next();
+	    	try {
+				String stringRep = getDataSqueezer().squeeze(pk);
+				form.addHiddenValue(name, stringRep);
+			} catch (IOException ex) {
+	            throw new ApplicationRuntimeException(
+	                    Tapestry.format("For.unable-to-convert-value", pk),
+	                    this,
+	                    null,
+	                    ex);
+			}
+		}
+
+    	return data.iterator();
     }
 
+    /**
+     * Returns the primary key of the given value. 
+     * Uses the 'keyExpression' or the 'converter' (if either is provided).
+     * 
+     * @param value The value from which the primary key should be extracted
+     * @return The primary key of the value, or null if such cannot be extracted.
+     */
     private Object getPrimaryKeyFromValue(Object value) {
     	Object primaryKey = null;
     	
@@ -292,18 +302,20 @@ public abstract class ForBean extends AbstractFormComponent {
     	return primaryKey;
     }
     
+    /**
+     * Returns a value that corresponds to the provided primary key.
+     * Uses either the 'keyExpression' if provided 
+     * 
+     * @param primaryKey
+     * @return
+     */
     private Object getValueFromPrimaryKey(Object primaryKey) {
     	Object value = null;
 
-    	if (value == null && getKeyExpression() != null) {
-    		String keyExpression = getKeyExpression();
-    		if (keyExpression != null) {
-        		Map primaryKeys = getPrimaryKeyMap();
-            	if (primaryKeys == null)
-            		primaryKeys = initializePrimaryKeysFromSource(keyExpression);
-            	value = primaryKeys.get(primaryKeys);
-    		}
-    	}
+    	// if keyExpression is defined, try to get the object in that way
+		String keyExpression = getKeyExpression();
+		if (keyExpression != null)
+        	value = getValueFromExpressionPrimaryKeys(keyExpression, primaryKey);
     	
     	if (value == null) {
 	    	IPrimaryKeyConverter converter = getConverter();
@@ -317,28 +329,79 @@ public abstract class ForBean extends AbstractFormComponent {
     	return value;
     }
     
-    private Map initializePrimaryKeysFromSource(String keyExpression)
+    private Object getValueFromExpressionPrimaryKeys(String keyExpression, Object primaryKey)
     {
-    	Map primaryKeys = new HashMap();
+    	Object value = null;
     	
-    	Object fullSource = getFullSource();
-    	if (fullSource == null)
-    		fullSource = getSource();
-    	if (fullSource == null)
-    		return primaryKeys;
+		Map primaryKeys = getPrimaryKeyMap(); 
+		if (primaryKeys == null)
+			primaryKeys = new HashMap();
+		else {
+			value = primaryKeys.get(primaryKey);
+			if (value != null)
+				return value;
+		}
+
+		ExpressionEvaluator evaluator = getExpressionEvaluator();
+		
+		// Iterate over the elements in 'source' and 'fullSource' until a primary key match is found
+		value = findPrimaryKeyMatch(primaryKey, PARAMETER_SOURCE);
+		if (value == null)
+			value = findPrimaryKeyMatch(primaryKey, PARAMETER_FULL_SOURCE);
+
+		return value;
+    }
+    
+    private Object findPrimaryKeyMatch(Object primaryKey, String parameter)
+    {
+		ExpressionEvaluator evaluator = getExpressionEvaluator();
+    	String keyExpression = getKeyExpression();
+
+    	Map primaryKeys = getPrimaryKeyMap();
+    	if (primaryKeys == null)
+    		primaryKeys = new HashMap();
     	
-    	ExpressionEvaluator evaluator = getExpressionEvaluator();
+    	Map sourceIteratorMap = getSourceIteratorMap();
+    	if (sourceIteratorMap == null)
+    		sourceIteratorMap = new HashMap();
     	
-    	Iterator iteratorSource = (Iterator) getValueConverter().coerceValue(fullSource, Iterator.class);
-    	while (iteratorSource.hasNext()) {
-    		Object value = iteratorSource.next();
-        	Object primaryKey = evaluator.read(value, keyExpression);
-        	if (primaryKey != null)
-        		primaryKeys.put(primaryKey, value);
-    	}
-    	
-    	setPrimaryKeyMap(primaryKeys);
-    	return primaryKeys;
+		Iterator it = (Iterator) sourceIteratorMap.get(parameter);
+		if (it == null) {
+			it = getSource(parameter);
+			if (it == null)
+				it = Collections.EMPTY_LIST.iterator();
+		}
+		
+		try { 
+			while (it.hasNext()) {
+	    		Object sourceValue = it.next();
+	        	Object sourcePrimaryKey = evaluator.read(sourceValue, keyExpression);
+	        	if (sourcePrimaryKey != null)
+	        		primaryKeys.put(sourcePrimaryKey, sourceValue);
+	        	
+	        	if (primaryKey.equals(sourcePrimaryKey)) {
+	        		return sourceValue;
+	        	}
+			}
+			
+			return null;
+		}
+		finally {
+			sourceIteratorMap.put(parameter, it);
+			setSourceIteratorMap(sourceIteratorMap);
+			setPrimaryKeyMap(primaryKeys);
+		}
+    }
+    
+    private void updateOutputParameters()
+    {
+    	IBinding indexBinding = getBinding("index");
+    	if (indexBinding != null)
+    		indexBinding.setObject(new Integer(_index));
+
+    	IBinding valueBinding = getBinding("value");
+    	if (valueBinding != null)
+    		valueBinding.setObject(_value);
     }
     
     /**
