@@ -5,37 +5,50 @@
 Check the behavour of If, Else, and For.
 </p>
 
-	<span jwcid="@If" condition="!false">Show text!</span>
+	<span jwcid="@If" condition="ognl: !false">Show text!</span>
 	<span jwcid="@Else">Do not show this</span>
 
 	<span jwcid="@If" condition="false">Do not show this either</span>
 	<span jwcid="@Else">But show this too!</span>
     
 
-	<span jwcid="for1@For" source="{ 'one', 'two' }">
-        for1 <span jwcid="@Insert" value="components.for1.index"/> : <span jwcid="@Insert" value="components.for1.value"/>
+	<span jwcid="for1@For" source="ognl: { 'one', 'two' }">
+        for1 <span jwcid="@Insert" value="ognl: components.for1.index"/> : <span jwcid="@Insert" value="ognl: components.for1.value"/>
     </span>
 
+    <p>Rewinded index count: <span jwcid="@Insert" value="ognl: rewindedIndexes.size()"/></p>
+    <span jwcid="inds@For" source="ognl: rewindedIndexes" element="p">
+        Rewinded index <span jwcid="@Insert" value="ognl: components.inds.index"/> is <span jwcid="@Insert" value="ognl: components.inds.value"/>
+    </span>
+    
+    <p>Rewinded value count: <span jwcid="@Insert" value="ognl: rewindedValues.size()"/></p>
+    <span jwcid="vals@For" source="ognl: rewindedValues" element="p">
+        Rewinded value <span jwcid="@Insert" value="ognl: components.vals.index"/> is <span jwcid="@Insert" value="ognl: components.vals.value"/>
+    </span>
     
     <span jwcid="@Form">
-		<span jwcid="@If" condition="!false">Show form text!</span>
+		<span jwcid="@If" condition="ognl: !false">Show form text!</span>
 		<span jwcid="@Else">Do not show form text</span>
 	
 		<span jwcid="@If" condition="false">Do not show this form text either</span>
 		<span jwcid="@Else">But show this form text too!</span>
 	    
 	
-		<span jwcid="for2@For" source="{ 'uno', 'due' }">
-	        for2 <span jwcid="@Insert" value="components.for2.index"/> : <span jwcid="@Insert" value="components.for2.value"/>
+		<span jwcid="for2@For" source="ognl: { 'uno', 'due' }" 
+            index="ognl: index" value="ognl: value">
+	        for2 <span jwcid="@Insert" value="ognl: components.for2.index"/> : <span jwcid="@Insert" value="ognl: components.for2.value"/>
 	    </span>
 	
-		<span jwcid="for3@For" source="{ @java.util.Locale@US, @java.util.Locale@GERMANY }" 
-            fullSource="@java.util.Locale@getAvailableLocales()" keyExpression="toString()">
-	        for3 <span jwcid="@Insert" value="components.for3.index"/> : <span jwcid="@Insert" value="components.for3.value"/>
+		<span jwcid="for3@For" source="ognl: { @java.util.Locale@US, @java.util.Locale@GERMANY }" 
+            fullSource="ognl: @java.util.Locale@getAvailableLocales()" keyExpression="toString()"
+            index="ognl: index" value="ognl: value">
+	        for3 <span jwcid="@Insert" value="ognl: components.for3.index"/> : <span jwcid="@Insert" value="ognl: components.for3.value"/>
 	    </span>
 	
-		<span jwcid="for4@For" source="{ @java.util.Locale@US, @java.util.Locale@GERMANY }" keyExpression="toString()" defaultValue="@java.util.Locale@ENGLISH">
-	        for4 <span jwcid="@Insert" value="components.for4.index"/> : <span jwcid="@Insert" value="components.for4.value"/>
+		<span jwcid="for4@For" source="ognl: { @java.util.Locale@US, @java.util.Locale@GERMANY }" keyExpression="toString()" 
+            defaultValue="ognl: @java.util.Locale@ENGLISH"
+            index="ognl: index" value="ognl: value">
+	        for4 <span jwcid="@Insert" value="ognl: components.for4.index"/> : <span jwcid="@Insert" value="ognl: components.for4.value"/>
 	    </span>
 	</span>        
     

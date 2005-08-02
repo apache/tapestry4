@@ -56,5 +56,111 @@ But show this form text too!
         
 	</request>		
 
+	<request>
+	  	<parameter name="formids" value="$If$1,$If$2,for2,for3,for4"/>
+	  	<parameter name="component" value="$Form"/>
+	  	<parameter name="page" value="Home"/>
+	  	<parameter name="service" value="direct"/>
+	  	<parameter name="submitmode" value=""/>
+	  	<parameter name="$If$1" value="T"/>
+	  	<parameter name="$If$2" value="F"/>
+	  	<parameter name="for2">
+              <value>VV</value>
+              <value>Suno</value>
+              <value>Sdue</value>
+        </parameter>
+	  	<parameter name="for3">
+              <value>PP</value>
+              <value>Sbg_BG</value>
+              <value>Sde_DE</value>
+        </parameter>
+	  	<parameter name="for4">
+              <value>PP</value>
+              <value>Sen_US</value>
+              <value>Sbg_BG</value>
+        </parameter>
+
+		<assert-output name="Test If 1">
+Show text!
+		</assert-output>
+
+		<assert-no-output name="Test If 2">
+Do not show this
+		</assert-no-output>
+
+		<assert-no-output name="Test If 3">
+Do not show this either
+		</assert-no-output>
+
+		<assert-output name="Test If 4">
+But show this too!
+		</assert-output>
+
+		<assert-output name="Test Form If 1">
+Show form text!
+		</assert-output>
+
+		<assert-no-output name="Test Form If 2">
+Do not show form text
+		</assert-no-output>
+
+		<assert-no-output name="Test Form If 3">
+Do not show this form text either
+		</assert-no-output>
+
+		<assert-output name="Test If 4">
+But show this form text too!
+		</assert-output>
+        
+		<assert-output name="Test For index 0">
+Rewinded index 0 is 0
+		</assert-output>
+                  
+		<assert-output name="Test For index 1">
+Rewinded index 1 is 1
+		</assert-output>
+                  
+		<assert-output name="Test For index 2">
+Rewinded index 2 is 0
+		</assert-output>
+                  
+		<assert-output name="Test For index 3">
+Rewinded index 3 is 1
+		</assert-output>
+                  
+		<assert-output name="Test For index 4">
+Rewinded index 4 is 0
+		</assert-output>
+                  
+		<assert-output name="Test For index 5">
+Rewinded index 5 is 1
+		</assert-output>
+                  
+		<assert-output name="Test For value 0">
+Rewinded value 0 is uno
+		</assert-output>
+                  
+		<assert-output name="Test For value 1">
+Rewinded value 1 is due
+		</assert-output>
+                  
+		<assert-output name="Test For value 2">
+Rewinded value 2 is bg_BG
+		</assert-output>
+                  
+		<assert-output name="Test For value 3">
+Rewinded value 3 is de_DE
+		</assert-output>
+                  
+		<assert-output name="Test For value 4">
+Rewinded value 4 is en_US
+		</assert-output>
+                  
+		<assert-output name="Test For value 5">
+Rewinded value 5 is en
+		</assert-output>
+                  
+	</request>		
+    
 </mock-test>
     	
