@@ -25,7 +25,7 @@
   Creates a labeled button within a form.
   </description>
 
-  <parameter name="label"/>
+  <parameter name="label" deprecated="true"/>
   <parameter name="disabled"/>
   <parameter name="id" property="idParameter" default-value="id"/>
   		  

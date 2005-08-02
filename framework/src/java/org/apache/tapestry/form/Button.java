@@ -36,7 +36,7 @@ public abstract class Button extends AbstractFormComponent
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        writer.beginEmpty("button");
+        writer.begin("button");
         writer.attribute("type", "button");
         writer.attribute("name", getName());
 
@@ -56,7 +56,39 @@ public abstract class Button extends AbstractFormComponent
         else
             renderBody(writer, cycle);
 
-        writer.closeTag();
+        writer.end();
+    }
+
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        // Do nothing
+    }
+
+    /**
+     * @see org.apache.tapestry.form.IFormComponent#getClientId()
+     */
+    public String getClientId()
+    {
+        return null;
+    }
+
+    /**
+     * @see org.apache.tapestry.form.IFormComponent#getDisplayName()
+     */
+    public String getDisplayName()
+    {
+        return null;
+    }
+
+    /**
+     * @see org.apache.tapestry.form.IFormComponent#isDisabled()
+     */
+    public boolean isDisabled()
+    {
+        return false;
     }
 
     public abstract String getLabel();
