@@ -274,11 +274,8 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         _component.getTranslator();
         _componentControl.setReturnValue(_translator);
 
-        _translator.renderContribution(
-                _writer,
-                cycle,
-                new FormComponentContributorContextImpl(),
-                _component);
+        _translator.renderContribution(_writer, cycle, new FormComponentContributorContextImpl(
+                _component), _component);
         _translatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
         { null, null, new TypeMatcher(), null }));
 
@@ -354,11 +351,8 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         _component.getTranslator();
         _componentControl.setReturnValue(_translator);
 
-        _translator.renderContribution(
-                _writer,
-                cycle,
-                new FormComponentContributorContextImpl(),
-                _component);
+        _translator.renderContribution(_writer, cycle, new FormComponentContributorContextImpl(
+                _component), _component);
         _translatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
         { null, null, new TypeMatcher(), null }));
 
@@ -368,11 +362,8 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         _valueConverter.coerceValue(_validator, Iterator.class);
         _valueConverterControl.setReturnValue(Collections.singletonList(_validator).iterator());
 
-        _validator.renderContribution(
-                _writer,
-                cycle,
-                new FormComponentContributorContextImpl(),
-                _component);
+        _validator.renderContribution(_writer, cycle, new FormComponentContributorContextImpl(
+                _component), _component);
         _validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
         { null, null, new TypeMatcher(), null }));
         replay();
@@ -472,7 +463,10 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         _valueConverter.coerceValue(_validator, Iterator.class);
         _valueConverterControl.setReturnValue(Collections.singletonList(_validator).iterator());
 
-        _validator.validate(_component, new ValidationMessagesImpl(Locale.ENGLISH), object);
+        _validator.validate(
+                _component,
+                new ValidationMessagesImpl(_component, Locale.ENGLISH),
+                object);
         _validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
         { null, new TypeMatcher(), null }));
 
@@ -512,7 +506,10 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         _validator.getAcceptsNull();
         _validatorControl.setReturnValue(true);
 
-        _validator.validate(_component, new ValidationMessagesImpl(Locale.ENGLISH), null);
+        _validator.validate(
+                _component,
+                new ValidationMessagesImpl(_component, Locale.ENGLISH),
+                null);
         _validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
         { null, new TypeMatcher(), null }));
 
@@ -589,7 +586,10 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         _valueConverter.coerceValue(_validator, Iterator.class);
         _valueConverterControl.setReturnValue(Collections.singletonList(_validator).iterator());
 
-        _validator.validate(_component, new ValidationMessagesImpl(Locale.ENGLISH), object);
+        _validator.validate(
+                _component,
+                new ValidationMessagesImpl(_component, Locale.ENGLISH),
+                object);
         _validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
         { null, new TypeMatcher(), null }));
         _validatorControl.setThrowable(ex);

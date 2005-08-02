@@ -122,7 +122,7 @@ public class ValidatableFieldSupportImpl implements ValidatableFieldSupport
 
             Iterator validators = getValidatorsIterator(component);
 
-            ValidationMessages messages = new ValidationMessagesImpl(_threadLocale.getLocale());
+            ValidationMessages messages = new ValidationMessagesImpl(component, _threadLocale.getLocale());
 
             while (validators.hasNext())
             {

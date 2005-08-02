@@ -16,8 +16,11 @@ package org.apache.tapestry.form;
 
 import java.util.Locale;
 
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.valid.ValidationStrings;
+import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.ValidationMessagesImpl}.
@@ -27,9 +30,18 @@ import org.apache.tapestry.valid.ValidationStrings;
  */
 public class TestValidationMessages extends HiveMindTestCase
 {
+    private IFormComponent newField()
+    {
+        return (IFormComponent) newMock(IFormComponent.class);
+    }
+
     public void testMessageOverrideNull()
     {
-        ValidationMessages m = new ValidationMessagesImpl(Locale.ENGLISH);
+        IFormComponent field = newField();
+
+        ValidationMessages m = new ValidationMessagesImpl(field, Locale.ENGLISH);
+
+        replayControls();
 
         assertEquals("You must enter a value for My Field.", m.formatValidationMessage(
                 null,
@@ -37,24 +49,87 @@ public class TestValidationMessages extends HiveMindTestCase
                 new Object[]
                 { "My Field" }));
 
-        m = new ValidationMessagesImpl(new Locale("es"));
+        m = new ValidationMessagesImpl(field, new Locale("es"));
 
         assertEquals("Tiene que ingresar un valor para My Field.", m.formatValidationMessage(
                 null,
                 ValidationStrings.REQUIRED_TEXT_FIELD,
                 new Object[]
                 { "My Field" }));
+
+        verifyControls();
     }
 
     public void testMessageOverride()
     {
-        ValidationMessages m = new ValidationMessagesImpl(Locale.ENGLISH);
+        IFormComponent field = newField();
+
+        ValidationMessages m = new ValidationMessagesImpl(field, Locale.ENGLISH);
+
+        replayControls();
 
         assertEquals("Gimme data for My Field.", m.formatValidationMessage(
                 "Gimme data for {0}.",
                 ValidationStrings.REQUIRED_TEXT_FIELD,
                 new Object[]
                 { "My Field" }));
+
+        verifyControls();
     }
 
+    /**
+     * Test the use of the '%key' construct as the message.
+     */
+
+    public void testMessageOverrideAsReference()
+    {
+        Messages messages = newMessage("myfield-required", "Yo Dawg! Gimme a piece of {0}.");
+        IComponent container = newComponent(messages);
+        IFormComponent field = newField(container);
+
+        ValidationMessages m = new ValidationMessagesImpl(field, Locale.ENGLISH);
+
+        replayControls();
+
+        assertEquals("Yo Dawg! Gimme a piece of My Field.", m.formatValidationMessage(
+                "%myfield-required",
+                ValidationStrings.REQUIRED_TEXT_FIELD,
+                new Object[]
+                { "My Field" }));
+
+        verifyControls();
+    }
+
+    private IFormComponent newField(IComponent container)
+    {
+        MockControl control = newControl(IFormComponent.class);
+        IFormComponent field = (IFormComponent) control.getMock();
+
+        field.getContainer();
+        control.setReturnValue(container);
+
+        return field;
+    }
+
+    private IComponent newComponent(Messages messages)
+    {
+        MockControl control = newControl(IComponent.class);
+        IComponent component = (IComponent) control.getMock();
+
+        component.getMessages();
+        control.setReturnValue(messages);
+
+        return component;
+    }
+
+    private Messages newMessage(String key, String message)
+    {
+        MockControl control = newControl(Messages.class);
+        Messages messages = (Messages) control.getMock();
+
+        messages.getMessage(key);
+        control.setReturnValue(message);
+
+        return messages;
+    }
 }
