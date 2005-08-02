@@ -70,9 +70,9 @@
   <parameter name="fullSource">
     <description>
     Only active in a form and in combination with the 'keyExpression' parameter. 
-    The objects provided by this parameter will be used to determine the values 
-    referred to by the primary keys stored in the form. 
-    If this parameter is not bound, 'source' is used instead.
+    If an object corresponding to a primary key stored in the form cannot be
+    found in the 'source' parameter, then the objects provided by this parameter 
+    are searched for a match next. 
     </description>
   </parameter>
   
