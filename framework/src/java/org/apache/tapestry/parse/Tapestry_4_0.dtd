@@ -148,6 +148,22 @@ Attributes:
 	value CDATA #IMPLIED
 >
 <!-- =======================================================
+Element: inherited-binding
+Appears in: component
+
+Binds a parameter of the component to a parameter of the container.
+
+Attributes:
+  name: The name of the component parameter to bind.
+  parameter-name: The name of the container parameter to bind the
+    component parameter to.
+-->
+<!ELEMENT inherited-binding EMPTY>
+<!ATTLIST inherited-binding
+	name CDATA #REQUIRED
+	parameter-name CDATA #REQUIRED
+>
+<!-- =======================================================
 Element: configure
 Appears in: extension
 
@@ -184,7 +200,7 @@ Attribute:
 
 The Tapestry page loader ensures that either type or copy-of is specified, but not both.
 -->
-<!ELEMENT component (meta | binding | listener-binding)*>
+<!ELEMENT component (meta | binding | inherited-binding | listener-binding)*>
 <!ATTLIST component
 	id ID #REQUIRED
 	type CDATA #IMPLIED
