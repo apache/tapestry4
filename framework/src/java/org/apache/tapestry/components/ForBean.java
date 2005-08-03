@@ -342,8 +342,6 @@ public abstract class ForBean extends AbstractFormComponent {
 				return value;
 		}
 
-		ExpressionEvaluator evaluator = getExpressionEvaluator();
-		
 		// Iterate over the elements in 'source' and 'fullSource' until a primary key match is found
 		value = findPrimaryKeyMatch(primaryKey, PARAMETER_SOURCE);
 		if (value == null)
