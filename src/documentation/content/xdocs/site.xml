@@ -38,6 +38,7 @@
       <dev label="Developers" href="dev.html"/>
       <dependencies label="Dependencies" href="dependencies.html"/>
       <downloads label="Downloads" href="downloads.html"/>
+      <olddoc label="3.0.3 Documentation" href="http://jakarta.apache.org/tapestry/3.0.3/"/>
     </project>
     
     
