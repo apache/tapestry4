@@ -42,6 +42,18 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
         requestc.setReturnValue(Arrays.asList(new Object[]
         { "foo", "state:MyPage" }));
 
+        MockControl scopec = newControl(ClientPropertyPersistenceScope.class);
+        ClientPropertyPersistenceScope scope = (ClientPropertyPersistenceScope) scopec.getMock();
+
+        scope.isParameterForScope("foo");
+        scopec.setReturnValue(false);
+
+        scope.isParameterForScope("state:MyPage");
+        scopec.setReturnValue(true);
+
+        scope.extractPageName("state:MyPage");
+        scopec.setReturnValue("MyPage");
+
         request.getParameterValue("state:MyPage");
         requestc.setReturnValue("ENCODED");
 
@@ -57,6 +69,7 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
 
         ClientPropertyPersistenceStrategy strategy = new ClientPropertyPersistenceStrategy(encoder);
         strategy.setRequest(request);
+        strategy.setScope(scope);
 
         strategy.initializeService();
 
@@ -97,12 +110,12 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
 
         request.getParameterNames();
         requestc.setReturnValue(Arrays.asList(new Object[]
-        { "foo", "state:MyPage" }));
+        { "bar", "appstate:MyPage" }));
 
-        request.getParameterValue("state:MyPage");
+        request.getParameterValue("appstate:MyPage");
         requestc.setReturnValue("ENCODED");
 
-        encoding.setParameterValue("state:MyPage", "ENCODED");
+        encoding.setParameterValue("appstate:MyPage", "ENCODED");
 
         replayControls();
 
@@ -111,13 +124,12 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
         strategy.setScope(new AppClientPropertyPersistenceScope());
 
         strategy.initializeService();
-        
+
         strategy.addParametersForPersistentProperties(encoding, cycle);
 
         verifyControls();
-
     }
-    
+
     public void testPageScope()
     {
         MockControl requestc = newControl(WebRequest.class);
@@ -125,24 +137,24 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
 
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-        
+
         MockControl pagec = newControl(IPage.class);
         IPage page = (IPage) pagec.getMock();
-        
+
         ServiceEncoding encoding = (ServiceEncoding) newMock(ServiceEncoding.class);
 
         cycle.getPage();
         cyclec.setReturnValue(page);
-        
+
         cycle.getPage();
         cyclec.setReturnValue(page);
-        
+
         page.getPageName();
         pagec.setReturnValue("MyPage");
-        
+
         page.getPageName();
         pagec.setReturnValue("MyPage");
-        
+
         request.getParameterNames();
         requestc.setReturnValue(Arrays.asList(new Object[]
         { "foo", "state:MyPage", "state:OtherPage" }));
@@ -162,7 +174,7 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
         strategy.setScope(new PageClientPropertyPersistenceScope());
 
         strategy.initializeService();
-        
+
         strategy.addParametersForPersistentProperties(encoding, cycle);
 
         verifyControls();

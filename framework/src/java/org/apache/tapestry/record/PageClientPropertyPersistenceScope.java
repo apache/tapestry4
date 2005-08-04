@@ -14,25 +14,45 @@
 
 package org.apache.tapestry.record;
 
-
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ServiceEncoding;
 
 /**
- * Defines the 'page' scope for persisting client properties.
- * Persist the properties only if the current page name is the same as that of the property. 
+ * Defines the 'page' scope for persisting client properties. Persist the properties only if the
+ * current page name is the same as that of the property.
  * 
  * @author Mindbridge
  * @since 4.0
  * @see org.apache.tapestry.record.ClientPropertyPersistenceScope
  */
-public class PageClientPropertyPersistenceScope implements
-		ClientPropertyPersistenceScope {
+public class PageClientPropertyPersistenceScope implements ClientPropertyPersistenceScope
+{
+    private static final String PREFIX = "state:";
 
-	public boolean addParametersForPersistentProperties(
-			ServiceEncoding encoding, IRequestCycle cycle, String pageName,
-			PersistentPropertyData data) {
-		return pageName.equals(cycle.getPage().getPageName());
-	}
+    /**
+     * Returns true if the active page name matches the page for this property. This means that
+     * <em>after a new page has been activated</em>, the state is discarded.
+     */
+
+    public boolean shouldEncodeState(ServiceEncoding encoding,
+            IRequestCycle cycle, String pageName, PersistentPropertyData data)
+    {
+        return pageName.equals(cycle.getPage().getPageName());
+    }
+
+    public String constructParameterName(String pageName)
+    {
+        return PREFIX + pageName;
+    }
+
+    public boolean isParameterForScope(String parameterName)
+    {
+        return parameterName.startsWith(PREFIX);
+    }
+
+    public String extractPageName(String parameterName)
+    {
+        return parameterName.substring(PREFIX.length());
+    }
 
 }

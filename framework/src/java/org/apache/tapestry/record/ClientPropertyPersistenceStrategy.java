@@ -39,12 +39,6 @@ import org.apache.tapestry.web.WebRequest;
 public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStrategy
 {
     /**
-     * Query parameters consist of this prefix followed by the page name. Each page gets its own
-     * query parameter.
-     */
-    public static final String PREFIX = "state:";
-
-    /**
      * Keyed on page name (String), values are
      * {@link org.apache.tapestry.record.PersistentPropertyData}.
      */
@@ -53,7 +47,7 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
     private final PersistentPropertyDataEncoder _encoder;
 
     private WebRequest _request;
-    
+
     private ClientPropertyPersistenceScope _scope;
 
     public ClientPropertyPersistenceStrategy()
@@ -83,10 +77,11 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
         {
             String name = (String) i.next();
 
-            if (!name.startsWith(PREFIX))
+            if (!_scope.isParameterForScope(name))
                 continue;
 
-            String pageName = name.substring(PREFIX.length());
+            String pageName = _scope.extractPageName(name);
+
             String encoded = _request.getParameterValue(name);
 
             PersistentPropertyData data = new PersistentPropertyData(_encoder);
@@ -135,11 +130,14 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
 
             String pageName = (String) e.getKey();
             PersistentPropertyData data = (PersistentPropertyData) e.getValue();
-            
+
             ClientPropertyPersistenceScope scope = getScope();
 
-            if (scope.addParametersForPersistentProperties(encoding, cycle, pageName, data))
-            	encoding.setParameterValue(PREFIX + pageName, data.getEncoded());
+            if (scope.shouldEncodeState(encoding, cycle, pageName, data))
+            {
+                String parameterName = _scope.constructParameterName(pageName);
+                encoding.setParameterValue(parameterName, data.getEncoded());
+            }
         }
     }
 
@@ -148,11 +146,13 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
         _request = request;
     }
 
-	public ClientPropertyPersistenceScope getScope() {
-		return _scope;
-	}
+    public ClientPropertyPersistenceScope getScope()
+    {
+        return _scope;
+    }
 
-	public void setScope(ClientPropertyPersistenceScope scope) {
-		_scope = scope;
-	}
+    public void setScope(ClientPropertyPersistenceScope scope)
+    {
+        _scope = scope;
+    }
 }
