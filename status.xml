@@ -65,6 +65,7 @@
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-521">Button component creates invalid markup</action>
       <action type="update" dev="PF">Deprecate label parameter of Button component</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-527">Tapestry 4.0 DTD invalid</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-524" due-to="Adam Greene">Client Side Persistence Scopes can conflict with each other</action>
     </release>
     <release version="4.0-beta-3" date="Jul 22 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>

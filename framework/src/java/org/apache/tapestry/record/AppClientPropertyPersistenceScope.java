@@ -18,20 +18,40 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ServiceEncoding;
 
 /**
- * Defines the 'app' scope for persisting client properties.
- * Persist the properties in all cases. 
+ * Defines the 'app' scope for persisting client properties. Persist the properties in all cases.
  * 
  * @author Mindbridge
  * @since 4.0
  * @see org.apache.tapestry.record.ClientPropertyPersistenceScope
  */
-public class AppClientPropertyPersistenceScope implements
-		ClientPropertyPersistenceScope {
+public class AppClientPropertyPersistenceScope implements ClientPropertyPersistenceScope
+{
 
-	public boolean addParametersForPersistentProperties(
-			ServiceEncoding encoding, IRequestCycle cycle, String pageName,
-			PersistentPropertyData data) {
-		return true;
-	}
+    private final static String PREFIX = "appstate:";
+
+    /**
+     * Always returns true.
+     */
+
+    public boolean shouldEncodeState(ServiceEncoding encoding,
+            IRequestCycle cycle, String pageName, PersistentPropertyData data)
+    {
+        return true;
+    }
+
+    public String constructParameterName(String pageName)
+    {
+        return PREFIX + pageName;
+    }
+
+    public boolean isParameterForScope(String parameterName)
+    {
+        return parameterName.startsWith(PREFIX);
+    }
+
+    public String extractPageName(String parameterName)
+    {
+        return parameterName.substring(PREFIX.length());
+    }
 
 }
