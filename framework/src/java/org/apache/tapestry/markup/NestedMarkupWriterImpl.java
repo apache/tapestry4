@@ -38,6 +38,13 @@ public class NestedMarkupWriterImpl extends MarkupWriterImpl implements NestedMa
 
     public String getBuffer()
     {
+        if (_closed)
+            throw new IllegalStateException(MarkupMessages.closeOnce());
+
+        _closed = true;
+
+        super.close();
+
         return _charArrayWriter.toString();
     }
 
@@ -66,13 +73,6 @@ public class NestedMarkupWriterImpl extends MarkupWriterImpl implements NestedMa
 
     public void close()
     {
-        if (_closed)
-            throw new IllegalStateException(MarkupMessages.closeOnce());
-
-        _closed = true;
-
-        super.close();
-
         String content = getBuffer();
 
         _parent.printRaw(content);

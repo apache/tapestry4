@@ -29,6 +29,8 @@ public interface NestedMarkupWriter extends IMarkupWriter
      * Returns any makrup so far accumulated by the nested markup writer. When the nested markup
      * writer is closed, it invokes {@link org.apache.tapestry.IMarkupWriter#printRaw(String)},
      * with this content, on its parent markup writer.
+     * <p>
+     * Getting the buffer will <em>close</em> the writer.
      */
 
     public String getBuffer();
