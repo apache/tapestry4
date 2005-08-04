@@ -24,34 +24,22 @@ import org.apache.tapestry.engine.ServiceEncoding;
  * @since 4.0
  * @see org.apache.tapestry.record.ClientPropertyPersistenceScope
  */
-public class AppClientPropertyPersistenceScope implements ClientPropertyPersistenceScope
+public class AppClientPropertyPersistenceScope extends
+        AbstractPrefixedClientPropertyPersistenceScope
 {
 
-    private final static String PREFIX = "appstate:";
+    public AppClientPropertyPersistenceScope()
+    {
+        super("appstate:");
+    }
 
     /**
      * Always returns true.
      */
 
-    public boolean shouldEncodeState(ServiceEncoding encoding,
-            IRequestCycle cycle, String pageName, PersistentPropertyData data)
+    public boolean shouldEncodeState(ServiceEncoding encoding, IRequestCycle cycle,
+            String pageName, PersistentPropertyData data)
     {
         return true;
     }
-
-    public String constructParameterName(String pageName)
-    {
-        return PREFIX + pageName;
-    }
-
-    public boolean isParameterForScope(String parameterName)
-    {
-        return parameterName.startsWith(PREFIX);
-    }
-
-    public String extractPageName(String parameterName)
-    {
-        return parameterName.substring(PREFIX.length());
-    }
-
 }
