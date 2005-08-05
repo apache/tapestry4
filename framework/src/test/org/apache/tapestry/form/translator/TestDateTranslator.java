@@ -29,7 +29,6 @@ import org.apache.tapestry.valid.ValidatorException;
  */
 public class TestDateTranslator extends TranslatorTestCase
 {
-    private DateTranslator _translator = new DateTranslator();
     private Calendar _calendar = Calendar.getInstance();
 
     /**
@@ -51,17 +50,27 @@ public class TestDateTranslator extends TranslatorTestCase
     
     public void testDefaultFormat()
     {
-        testFormat(buildDate(1976, Calendar.OCTOBER, 29), "10/29/1976");
+        DateTranslator translator = new DateTranslator();
+        testFormat(translator, buildDate(1976, Calendar.OCTOBER, 29), "10/29/1976");
     }
     
     public void testCustomFormat()
     {
-        _translator.setPattern("yyyy-MM-dd");
+        DateTranslator translator = new DateTranslator();
+
+        translator.setPattern("yyyy-MM-dd");
         
-        testFormat(buildDate(1976, Calendar.OCTOBER, 29), "1976-10-29");
+        testFormat(translator, buildDate(1976, Calendar.OCTOBER, 29), "1976-10-29");
     }
     
-    public void testFormat(Date date, String expected)
+    public void testInitializerFormat()
+    {
+        DateTranslator translator = new DateTranslator("pattern=yyyy-MM-dd");
+        
+        testFormat(translator, buildDate(1976, Calendar.OCTOBER, 29), "1976-10-29");
+    }
+    
+    public void testFormat(DateTranslator translator, Date date, String expected)
     {
         _component.getPage();
         _componentControl.setReturnValue(_page);
@@ -71,7 +80,7 @@ public class TestDateTranslator extends TranslatorTestCase
         
         replay();
         
-        String result = _translator.format(_component, date);
+        String result = translator.format(_component, date);
         
         assertEquals(expected, result);
 
@@ -80,9 +89,11 @@ public class TestDateTranslator extends TranslatorTestCase
 
     public void testNullFormat()
     {
+        DateTranslator translator = new DateTranslator();
+        
         replay();
         
-        String result = _translator.format(_component, null);
+        String result = translator.format(_component, null);
         
         assertEquals("", result);
 
@@ -91,30 +102,38 @@ public class TestDateTranslator extends TranslatorTestCase
 
     public void testDefaultParse()
     {
-        testParse("10/29/1976", buildDate(1976, Calendar.OCTOBER, 29));
+        DateTranslator translator = new DateTranslator();
+        
+        testParse(translator, "10/29/1976", buildDate(1976, Calendar.OCTOBER, 29));
     }
     
     public void testCustomParse()
     {
-        _translator.setPattern("yyyy-MM-dd");
+        DateTranslator translator = new DateTranslator();
         
-        testParse("1976-10-29", buildDate(1976, Calendar.OCTOBER, 29));
+        translator.setPattern("yyyy-MM-dd");
+        
+        testParse(translator, "1976-10-29", buildDate(1976, Calendar.OCTOBER, 29));
     }
     
     public void testTrimmedParse()
     {
-        _translator.setTrim(true);
+        DateTranslator translator = new DateTranslator();
         
-        testParse(" 10/29/1976 ", buildDate(1976, Calendar.OCTOBER, 29));
+        translator.setTrim(true);
+        
+        testParse(translator, " 10/29/1976 ", buildDate(1976, Calendar.OCTOBER, 29));
     }
     
     public void testEmptyParse()
     {
+        DateTranslator translator = new DateTranslator();
+        
         replay();
         
         try
         {
-            Date result = (Date) _translator.parse(_component, "");
+            Date result = (Date) translator.parse(_component, "");
 
             assertEquals(null, result);
         }
@@ -128,7 +147,7 @@ public class TestDateTranslator extends TranslatorTestCase
         }
     }
 
-    private void testParse(String date, Date expected)
+    private void testParse(DateTranslator translator, String date, Date expected)
     {
         _component.getPage();
         _componentControl.setReturnValue(_page);
@@ -140,7 +159,7 @@ public class TestDateTranslator extends TranslatorTestCase
         
         try
         {
-            Date result = (Date) _translator.parse(_component, date);
+            Date result = (Date) translator.parse(_component, date);
 
             assertEquals(expected, result);
         }
@@ -156,19 +175,22 @@ public class TestDateTranslator extends TranslatorTestCase
     
     public void testFailedParseDefaultMessage()
     {
-        testFailedParse("Invalid date format for Field Name.  Format is MM/DD/YYYY.");
+        DateTranslator translator = new DateTranslator();
+        
+        testFailedParse(translator, "Invalid date format for Field Name.  Format is MM/DD/YYYY.");
     }
     
     public void testFailedParseCustomMessage()
     {
+        DateTranslator translator = new DateTranslator();
         String message = "Field Name is an invalid date.";
         
-        _translator.setMessage(message);
+        translator.setMessage(message);
         
-        testFailedParse(message);
+        testFailedParse(translator, message);
     }
 
-    private void testFailedParse(String message)
+    private void testFailedParse(DateTranslator translator, String message)
     {
         _component.getPage();
         _componentControl.setReturnValue(_page);
@@ -189,7 +211,7 @@ public class TestDateTranslator extends TranslatorTestCase
         
         try
         {
-            System.out.println(_translator.parse(_component, "Bad-Date"));
+            System.out.println(translator.parse(_component, "Bad-Date"));
             
             unreachable();
         }
@@ -206,21 +228,26 @@ public class TestDateTranslator extends TranslatorTestCase
     
     public void testRenderContribution()
     {
+        DateTranslator translator = new DateTranslator();
+        
         replay();
         
-        _translator.renderContribution(null, _cycle, null, _component);
+        translator.renderContribution(null, _cycle, null, _component);
         
         verify();
     }
     
     public void testTrimRenderContribution()
     {
-        _translator.setTrim(true);
+        DateTranslator translator = new DateTranslator();
+        
+        translator.setTrim(true);
+
         trim();
         
         replay();
         
-        _translator.renderContribution(null, _cycle, null, _component);
+        translator.renderContribution(null, _cycle, null, _component);
         
         verify();
     }

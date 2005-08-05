@@ -18,6 +18,7 @@ import java.text.Format;
 import java.text.ParseException;
 import java.util.Locale;
 
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
@@ -30,7 +31,7 @@ import org.apache.tapestry.valid.ValidatorException;
  */
 public abstract class FormatTranslator extends AbstractTranslator
 {
-    private String _pattern = defaultPattern();
+    private String _pattern;
 
     protected abstract String defaultPattern();
 
@@ -84,11 +85,17 @@ public abstract class FormatTranslator extends AbstractTranslator
 
     public FormatTranslator()
     {
+    	_pattern = defaultPattern();
     }
 
     // Needed until HIVEMIND-134 fix is available
     public FormatTranslator(String initializer)
     {
         super(initializer);
+        
+        if (HiveMind.isBlank(_pattern))
+        {
+        	_pattern = defaultPattern();
+        }
     }
 }

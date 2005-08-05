@@ -22,21 +22,30 @@ import org.apache.tapestry.valid.ValidatorException;
 
 public class TestNumberTranslator extends TranslatorTestCase
 {
-    private NumberTranslator _translator = new NumberTranslator();
-    
     public void testDefaultFormat()
     {
-        testFormat(new Integer(10), "10");
+        NumberTranslator translator = new NumberTranslator();
+        
+        testFormat(translator, new Integer(10), "10");
     }
     
     public void testCustomFormat()
     {
-        _translator.setPattern("$#0.00");
+        NumberTranslator translator = new NumberTranslator();
         
-        testFormat(new Integer(10), "$10.00");
+        translator.setPattern("$#0.00");
+        
+        testFormat(translator, new Integer(10), "$10.00");
     }
     
-    public void testFormat(Number number, String expected)
+    public void testInitializerFormat()
+    {
+        NumberTranslator translator = new NumberTranslator("pattern=#0%");
+        
+        testFormat(translator, new Double(0.10), "10%");
+    }
+    
+    public void testFormat(Translator translator, Number number, String expected)
     {
         _component.getPage();
         _componentControl.setReturnValue(_page);
@@ -46,7 +55,7 @@ public class TestNumberTranslator extends TranslatorTestCase
         
         replay();
         
-        String result = _translator.format(_component, number);
+        String result = translator.format(_component, number);
         
         assertEquals(expected, result);
 
@@ -55,9 +64,11 @@ public class TestNumberTranslator extends TranslatorTestCase
 
     public void testNullFormat()
     {
+        NumberTranslator translator = new NumberTranslator();
+        
         replay();
         
-        String result = _translator.format(_component, null);
+        String result = translator.format(_component, null);
         
         assertEquals("", result);
 
@@ -66,24 +77,30 @@ public class TestNumberTranslator extends TranslatorTestCase
 
     public void testDefaultParse()
     {
-        testParse("0.1", new Double(0.1));
+        NumberTranslator translator = new NumberTranslator();
+        
+        testParse(translator, "0.1", new Double(0.1));
     }
     
     public void testCustomParse()
     {
-        _translator.setPattern("#%");
+        NumberTranslator translator = new NumberTranslator();
         
-        testParse("10%", new Double(0.1));
+        translator.setPattern("#%");
+        
+        testParse(translator, "10%", new Double(0.1));
     }
     
     public void testTrimmedParse()
     {
-        _translator.setTrim(true);
+        NumberTranslator translator = new NumberTranslator();
         
-        testParse(" 100 ", new Long(100));
+        translator.setTrim(true);
+        
+        testParse(translator, " 100 ", new Long(100));
     }
 
-    private void testParse(String number, Number expected)
+    private void testParse(Translator translator, String number, Number expected)
     {
         _component.getPage();
         _componentControl.setReturnValue(_page);
@@ -95,7 +112,7 @@ public class TestNumberTranslator extends TranslatorTestCase
         
         try
         {
-            Number result = (Number) _translator.parse(_component, number);
+            Number result = (Number) translator.parse(_component, number);
 
             assertEquals(expected, result);
         }
@@ -111,19 +128,23 @@ public class TestNumberTranslator extends TranslatorTestCase
     
     public void testFailedParseDefaultMessage()
     {
-        testFailedParse("Field Name must be a numeric value.");
+        NumberTranslator translator = new NumberTranslator();
+        
+        testFailedParse(translator, "Field Name must be a numeric value.");
     }
     
     public void testFailedParseCustomMessage()
     {
+        NumberTranslator translator = new NumberTranslator();
+        
         String message = "Field Name is an invalid number.";
         
-        _translator.setMessage(message);
+        translator.setMessage(message);
         
-        testFailedParse(message);
+        testFailedParse(translator, message);
     }
 
-    private void testFailedParse(String message)
+    private void testFailedParse(Translator translator, String message)
     {
         _component.getPage();
         _componentControl.setReturnValue(_page);
@@ -144,7 +165,7 @@ public class TestNumberTranslator extends TranslatorTestCase
         
         try
         {
-            System.out.println(_translator.parse(_component, "Bad-Number"));
+            System.out.println(translator.parse(_component, "Bad-Number"));
             
             unreachable();
         }
@@ -161,6 +182,8 @@ public class TestNumberTranslator extends TranslatorTestCase
     
     public void testRenderContribution()
     {
+        NumberTranslator translator = new NumberTranslator();
+        
         addScript("/org/apache/tapestry/form/translator/NumberTranslator.js");
         
         _component.getPage();
@@ -186,14 +209,16 @@ public class TestNumberTranslator extends TranslatorTestCase
         
         replay();
         
-        _translator.renderContribution(null, _cycle, null, _component);
+        translator.renderContribution(null, _cycle, null, _component);
         
         verify();
     }
     
     public void testMessageRenderContribution()
     {
-        _translator.setMessage("You entered a bunk value for {0}. I should look like {1}.");
+        NumberTranslator translator = new NumberTranslator();
+        
+        translator.setMessage("You entered a bunk value for {0}. I should look like {1}.");
         
         addScript("/org/apache/tapestry/form/translator/NumberTranslator.js");
         
@@ -220,14 +245,16 @@ public class TestNumberTranslator extends TranslatorTestCase
         
         replay();
         
-        _translator.renderContribution(null, _cycle, null, _component);
+        translator.renderContribution(null, _cycle, null, _component);
         
         verify();
     }
     
     public void testTrimRenderContribution()
     {
-        _translator.setTrim(true);
+        NumberTranslator translator = new NumberTranslator();
+        
+        translator.setTrim(true);
         trim();
         
         addScript("/org/apache/tapestry/form/translator/NumberTranslator.js");
@@ -255,7 +282,7 @@ public class TestNumberTranslator extends TranslatorTestCase
         
         replay();
         
-        _translator.renderContribution(null, _cycle, null, _component);
+        translator.renderContribution(null, _cycle, null, _component);
         
         verify();
     }
