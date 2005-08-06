@@ -139,8 +139,9 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
     {
         List localizations = findLocalizationsForResource(baseResourceLocation, locale);
 
-        Properties parent = getNamespaceProperties(component, locale);
-
+        Properties parent = null;
+        Properties assembledProperties = null;
+        
         Iterator i = localizations.iterator();
 
         while (i.hasNext())
@@ -149,19 +150,32 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
             Locale l = rl.getLocale();
 
-            Properties properties = (Properties) propertiesMap.get(l);
+            // Retrieve namespace properties for current locale (and parent locales)
+        	Properties namespaceProperties = getNamespaceProperties(component, l);
+        	
+        	// Use the namespace properties as default for assembled properties
+            assembledProperties = new Properties(namespaceProperties);
+            
+            // Read localized properties for component
+            Properties properties = readComponentProperties(component, l, rl.getResource(), null);
 
-            if (properties == null)
-            {
-                properties = readComponentProperties(component, l, rl.getResource(), parent);
-
-                propertiesMap.put(l, properties);
+            // Override parent properties with current locale
+            if (parent != null) {
+            	if (properties != null)
+            		parent.putAll(properties);
             }
-
-            parent = properties;
+            else
+            	parent = properties;
+            
+            // Add to assembled properties
+            if (parent != null)
+            	assembledProperties.putAll(parent);
+            
+            // Save result in cache
+            propertiesMap.put(l, assembledProperties);
         }
 
-        return parent;
+        return assembledProperties;
     }
 
     private Properties assembleNamespaceProperties(INamespace namespace, Map propertiesMap,
