@@ -87,12 +87,6 @@ public class TestRequestCycle extends HiveMindTestCase
         return (IEngineService) newMock(IEngineService.class);
     }
 
-    private RequestCycleEnvironment newEnvironment(RequestContext context)
-    {
-        return new RequestCycleEnvironment(newErrorHandler(), newInfrastructure(), context,
-                newStrategySource(), newBuilder());
-    }
-
     public void testGetters()
     {
         RequestContext context = new RequestContext(null, null);

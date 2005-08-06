@@ -20,8 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
@@ -56,8 +54,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
  */
 public class Creator
 {
-    private static final Log LOG = LogFactory.getLog(Creator.class);
-
     /**
      * Keyed on Class, value is an {@link ComponentConstructor}.
      */

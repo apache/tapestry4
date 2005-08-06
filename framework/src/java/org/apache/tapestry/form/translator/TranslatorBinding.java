@@ -18,7 +18,6 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.binding.AbstractBinding;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.apache.tapestry.valid.IValidator;
 
 /**
  * Implementation of {@link org.apache.tapestry.IBinding} that wraps around a

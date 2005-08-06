@@ -49,6 +49,16 @@ public interface INamespace extends Locatable, IPropertySource
     public static final String FRAMEWORK_NAMESPACE = "framework";
 
     /**
+     * Reserved name for the implicit (root) application namespace. Use of this prefix allows page
+     * or component defined in the application to be referenced from a library. Is this a good
+     * thing? In rare cases, yes. Is it subject to severe abuse? Yes.
+     * 
+     * @since 4.0
+     */
+
+    public static final String APPLICATION_NAMESPACE = "application";
+
+    /**
      * Character used to seperate the namespace prefix from the page name or component type.
      * 
      * @since 2.3
@@ -94,8 +104,8 @@ public interface INamespace extends Locatable, IPropertySource
      * Returns a namespace contained by this namespace.
      * 
      * @param id
-     *            either a simple name (of a directly contained namespace), or a dot-seperarated
-     *            name sequence.
+     *            either a simple name (of a directly contained namespace), or a dot-separated name
+     *            sequence
      * @return the child namespace
      * @throws ApplicationRuntimeException
      *             if no such namespace exist.

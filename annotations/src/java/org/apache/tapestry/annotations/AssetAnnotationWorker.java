@@ -18,7 +18,6 @@ import java.lang.reflect.Method;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.impl.LocationImpl;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.AssetSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;

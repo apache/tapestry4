@@ -26,38 +26,38 @@ import org.apache.tapestry.form.IPropertySelectionModel;
 
 public class LocaleModel implements IPropertySelectionModel
 {
-    private Locale locale;
+    private Locale _locale;
 
-    private List locales = new ArrayList();
+    private List _locales = new ArrayList();
 
     public LocaleModel(Locale locale)
     {
-        this.locale = locale;
+        _locale = locale;
     }
 
     public void add(Locale locale)
     {
-        locales.add(locale);
+        _locales.add(locale);
     }
 
     private Locale get(int index)
     {
-        return (Locale) locales.get(index);
+        return (Locale) _locales.get(index);
     }
 
     public String getLabel(int index)
     {
-        return get(index).getDisplayName(locale);
+        return get(index).getDisplayName(_locale);
     }
 
     public int getOptionCount()
     {
-        return locales.size();
+        return _locales.size();
     }
 
     public Object getOption(int index)
     {
-        return locales.get(index);
+        return _locales.get(index);
     }
 
     /**
@@ -73,6 +73,6 @@ public class LocaleModel implements IPropertySelectionModel
     {
         int index = Integer.parseInt(value);
 
-        return locales.get(index);
+        return _locales.get(index);
     }
 }

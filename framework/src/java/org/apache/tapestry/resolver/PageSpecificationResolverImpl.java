@@ -113,10 +113,7 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
             _simpleName = prefixedName.substring(colonx + 1);
             String namespaceId = prefixedName.substring(0, colonx);
 
-            if (namespaceId.equals(INamespace.FRAMEWORK_NAMESPACE))
-                namespace = _frameworkNamespace;
-            else
-                namespace = _applicationNamespace.getChildNamespace(namespaceId);
+            namespace = findNamespaceForId(_applicationNamespace, namespaceId);
         }
         else
         {

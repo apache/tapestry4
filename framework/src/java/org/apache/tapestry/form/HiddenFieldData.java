@@ -14,11 +14,6 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.hivemind.HiveMind;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-
 /**
  * Representation of hidden form field data, which is collected by the Form component as it renders
  * (and renders its body).

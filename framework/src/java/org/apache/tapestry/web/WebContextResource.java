@@ -19,8 +19,6 @@ import java.util.Locale;
 
 import javax.servlet.ServletContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.AbstractResource;
 import org.apache.hivemind.util.LocalizedResource;
@@ -35,8 +33,6 @@ import org.apache.hivemind.util.LocalizedResource;
 
 public class WebContextResource extends AbstractResource
 {
-    private static final Log LOG = LogFactory.getLog(WebContextResource.class);
-
     private WebContext _context;
 
     public WebContextResource(WebContext context, String path)
@@ -58,8 +54,7 @@ public class WebContextResource extends AbstractResource
 
     public Resource getLocalization(Locale locale)
     {
-        LocalizedWebContextResourceFinder finder = new LocalizedWebContextResourceFinder(
-                _context);
+        LocalizedWebContextResourceFinder finder = new LocalizedWebContextResourceFinder(_context);
 
         String path = getPath();
         LocalizedResource localizedResource = finder.resolve(path, locale);

@@ -21,7 +21,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.translator.Translator;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.apache.tapestry.valid.ValidatorException;
 import org.easymock.MockControl;
 
 /**

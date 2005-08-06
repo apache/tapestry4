@@ -50,8 +50,6 @@ public abstract class Login extends BasePage implements IErrorProperty, PageBegi
 
     private static final String COOKIE_NAME = "org.apache.tapestry.vlib.Login.email";
 
-    private final static int ONE_WEEK = 7 * 24 * 60 * 60;
-
     public abstract void setEmail(String value);
 
     public abstract String getEmail();

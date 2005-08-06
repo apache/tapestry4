@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.services.impl;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.web.WebRequest;

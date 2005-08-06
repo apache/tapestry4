@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.workbench;
 
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RedirectException;
 import org.apache.tapestry.html.BasePage;
 

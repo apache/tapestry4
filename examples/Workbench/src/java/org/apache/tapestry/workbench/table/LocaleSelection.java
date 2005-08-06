@@ -31,9 +31,6 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
  */
 public abstract class LocaleSelection extends BaseComponent implements ILocaleSelectionListener
 {
-    // temporary
-    private Locale m_objCurrentLocale;
-
     // properties
     public abstract Locale getCurrentLocale();
 
@@ -118,8 +115,8 @@ public abstract class LocaleSelection extends BaseComponent implements ILocaleSe
      */
     private static class CurrencyEvaluator implements ITableColumnEvaluator
     {
-    	private static final long serialVersionUID = 1L;
-    	
+        private static final long serialVersionUID = 1L;
+
         /**
          * @see org.apache.tapestry.contrib.table.model.simple.ITableColumnEvaluator#getColumnValue(ITableColumn,
          *      Object)
@@ -141,7 +138,8 @@ public abstract class LocaleSelection extends BaseComponent implements ILocaleSe
      */
     private static class DateFormatColumn extends SimpleTableColumn
     {
-    	private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
+
         private Date m_objDate;
 
         public DateFormatColumn(Date objDate)

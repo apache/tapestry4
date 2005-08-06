@@ -23,21 +23,12 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.impl.RegistryBuilder;
-import org.apache.hivemind.test.AggregateArgumentsMatcher;
-import org.apache.hivemind.test.ArgumentMatcher;
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.hivemind.test.TypeMatcher;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.services.ClasspathResourceFactory;
 import org.apache.tapestry.services.Infrastructure;
-import org.apache.tapestry.services.RequestGlobals;
-import org.apache.tapestry.services.ServletRequestServicer;
 import org.apache.tapestry.services.ResetEventCoordinator;
-import org.apache.tapestry.web.ServletWebRequest;
-import org.apache.tapestry.web.ServletWebResponse;
-import org.apache.tapestry.web.WebRequest;
-import org.apache.tapestry.web.WebResponse;
 import org.easymock.MockControl;
 
 /**

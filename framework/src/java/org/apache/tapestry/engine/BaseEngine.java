@@ -17,8 +17,6 @@ package org.apache.tapestry.engine;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.apache.tapestry.IRequestCycle;
-
 /**
  * Concrete implementation of {@link org.apache.tapestry.IEngine} used for ordinary applications.
  * All page state information is maintained in the {@link javax.servlet.http.HttpSession} using

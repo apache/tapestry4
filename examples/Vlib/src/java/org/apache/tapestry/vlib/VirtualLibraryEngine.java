@@ -19,7 +19,6 @@ import java.rmi.RemoteException;
 
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;

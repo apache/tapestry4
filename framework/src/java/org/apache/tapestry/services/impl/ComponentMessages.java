@@ -14,11 +14,9 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Properties;
 
-import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.AbstractMessages;
 import org.apache.hivemind.util.Defense;
 

@@ -21,7 +21,6 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.InjectObjectWorker;
 import org.apache.tapestry.services.InjectedValueProvider;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.InjectObjectAnnotationWorker}.

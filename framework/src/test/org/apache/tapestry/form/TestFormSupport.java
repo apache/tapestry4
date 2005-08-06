@@ -25,7 +25,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.NestedMarkupWriter;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.StaleLinkException;
-import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.easymock.MockControl;
@@ -326,7 +325,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         form.setBody(new IRender()
         {
-            public void render(IMarkupWriter writer, IRequestCycle cycle)
+            public void render(IMarkupWriter pwriter, IRequestCycle pcycle)
             {
                 fs.addEventHandler(FormEventType.SUBMIT, "mySubmit1");
                 fs.addEventHandler(FormEventType.SUBMIT, "mySubmit2");
@@ -431,7 +430,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         form.setBody(new IRender()
         {
-            public void render(IMarkupWriter writer, IRequestCycle cycle)
+            public void render(IMarkupWriter pwriter, IRequestCycle pcycle)
             {
                 fs.setEncodingType("foo/bar");
             }
@@ -529,7 +528,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         form.setBody(new IRender()
         {
-            public void render(IMarkupWriter writer, IRequestCycle cycle)
+            public void render(IMarkupWriter pwriter, IRequestCycle pcycle)
             {
                 fs.addHiddenValue("hidden1", "value1");
                 fs.addHiddenValue("hidden2", "id2", "value2");
@@ -627,7 +626,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         form.setBody(new IRender()
         {
-            public void render(IMarkupWriter writer, IRequestCycle cycle)
+            public void render(IMarkupWriter pwriter, IRequestCycle pcycle)
             {
                 fs.setEncodingType("foo/bar");
                 fs.setEncodingType("zip/zap");
@@ -811,7 +810,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         form.setBody(new IRender()
         {
-            public void render(IMarkupWriter writer, IRequestCycle cycle)
+            public void render(IMarkupWriter pwriter, IRequestCycle pcycle)
             {
                 fs.addEventHandler(FormEventType.RESET, "myReset1");
                 fs.addEventHandler(FormEventType.RESET, "myReset2");
@@ -1267,14 +1266,14 @@ public class TestFormSupport extends HiveMindTestCase
         IRender body = new IRender()
         {
 
-            public void render(final IMarkupWriter writer, IRequestCycle cycle)
+            public void render(final IMarkupWriter pwriter, IRequestCycle pcycle)
             {
                 fs.addDeferredRunnable(new Runnable()
                 {
 
                     public void run()
                     {
-                        writer.print("DEFERRED");
+                        pwriter.print("DEFERRED");
                     }
 
                 });
@@ -1528,13 +1527,13 @@ public class TestFormSupport extends HiveMindTestCase
         IRender body = new IRender()
         {
 
-            public void render(final IMarkupWriter writer, IRequestCycle cycle)
+            public void render(final IMarkupWriter pwriter, IRequestCycle pcycle)
             {
                 fs.addDeferredRunnable(new Runnable()
                 {
                     public void run()
                     {
-                        writer.print("DEFERRED");
+                        pwriter.print("DEFERRED");
                     }
 
                 });
@@ -1589,7 +1588,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         form.setBody(new IRender()
         {
-            public void render(IMarkupWriter writer, IRequestCycle cycle)
+            public void render(IMarkupWriter pwriter, IRequestCycle pcycle)
             {
                 fs.addEventHandler(FormEventType.SUBMIT, "mySubmit()");
             }

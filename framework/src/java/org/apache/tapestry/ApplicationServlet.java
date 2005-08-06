@@ -15,7 +15,6 @@
 package org.apache.tapestry;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Locale;
 
 import javax.servlet.ServletConfig;
@@ -38,6 +37,7 @@ import org.apache.hivemind.impl.RegistryBuilder;
 import org.apache.hivemind.impl.StrictErrorHandler;
 import org.apache.hivemind.impl.XmlModuleDescriptorProvider;
 import org.apache.hivemind.util.ContextResource;
+import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.services.ServletRequestServicer;
 import org.apache.tapestry.spec.ApplicationSpecification;

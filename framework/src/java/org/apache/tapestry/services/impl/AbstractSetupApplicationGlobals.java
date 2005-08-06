@@ -16,11 +16,8 @@ package org.apache.tapestry.services.impl;
 
 import java.util.List;
 
-import org.apache.tapestry.describe.HTMLDescriber;
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.Infrastructure;
-import org.apache.tapestry.services.LinkFactory;
-import org.apache.tapestry.services.ResponseRenderer;
 
 /**
  * Base class for settting up services and configurations inside

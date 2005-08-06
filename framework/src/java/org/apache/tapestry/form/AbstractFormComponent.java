@@ -18,7 +18,6 @@ import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidationConstants;
@@ -33,8 +32,6 @@ import org.apache.tapestry.valid.ValidationConstants;
  */
 public abstract class AbstractFormComponent extends AbstractComponent implements IFormComponent
 {
-    private static final String SELECTED_ATTRIBUTE_NAME = "org.apache.tapestry.form.SelectedField";
-
     public abstract IForm getForm();
 
     public abstract void setForm(IForm form);

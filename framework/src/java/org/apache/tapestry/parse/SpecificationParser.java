@@ -1246,7 +1246,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         String libraryId = getValidatedAttribute("id", LIBRARY_ID_PATTERN, "invalid-library-id");
         String path = getAttribute("specification-path");
 
-        if (libraryId.equals(INamespace.FRAMEWORK_NAMESPACE))
+        if (libraryId.equals(INamespace.FRAMEWORK_NAMESPACE)
+                || libraryId.equals(INamespace.APPLICATION_NAMESPACE))
             throw new DocumentParseException(ParseMessages
                     .frameworkLibraryIdIsReserved(INamespace.FRAMEWORK_NAMESPACE), getLocation(),
                     null);

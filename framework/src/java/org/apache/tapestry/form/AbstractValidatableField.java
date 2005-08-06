@@ -16,7 +16,6 @@ package org.apache.tapestry.form;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Abstract requirable field implementation that delegates render and bind (i.e. rewind) logic to an

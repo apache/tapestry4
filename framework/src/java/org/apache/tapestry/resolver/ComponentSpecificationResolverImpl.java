@@ -128,12 +128,7 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         reset();
         _type = type;
 
-        INamespace namespace = null;
-
-        if (libraryId != null)
-            namespace = containerNamespace.getChildNamespace(libraryId);
-        else
-            namespace = containerNamespace;
+        INamespace namespace = findNamespaceForId(containerNamespace, libraryId);
 
         setNamespace(namespace);
 
@@ -155,7 +150,7 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         }
     }
 
-    // TODO: This looks like a chain-of-command to me
+    // Hm. This could maybe go elsewhere, say onto ISpecificationSource
 
     private void searchForComponent(IRequestCycle cycle)
     {

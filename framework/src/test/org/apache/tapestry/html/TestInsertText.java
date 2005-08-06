@@ -14,13 +14,9 @@
 
 package org.apache.tapestry.html;
 
-import java.io.IOException;
-
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.components.BaseComponentTestCase;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.html.InsertText}.

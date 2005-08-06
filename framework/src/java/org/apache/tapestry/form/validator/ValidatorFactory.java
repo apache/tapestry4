@@ -16,8 +16,6 @@ package org.apache.tapestry.form.validator;
 
 import java.util.List;
 
-import org.apache.tapestry.IComponent;
-
 /**
  * Constructs {@link org.apache.tapestry.form.validator.Validator} instances from a specification. A
  * specification is a comma-seperated list of entries. Each entry is in one of the following forms:

@@ -29,7 +29,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.asset.AssetFactory;
-import org.apache.tapestry.asset.PrivateAsset;
 
 /**
  * Implementation of {@link org.apache.tapestry.PageRenderSupport}. The

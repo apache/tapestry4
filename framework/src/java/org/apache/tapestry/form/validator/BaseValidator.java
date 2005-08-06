@@ -19,8 +19,6 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.form.ValidationMessages;
-import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Abstract implementation of {@link org.apache.tapestry.form.validator.Validator}.
