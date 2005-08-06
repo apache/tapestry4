@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.portlet;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,7 +28,7 @@ import org.apache.tapestry.web.WebSession;
 import org.apache.tapestry.web.WebUtils;
 
 /**
- * Implementation of {@link org.apache.tapestry.web.WebRequest}that adapts a
+ * Implementation of {@link org.apache.tapestry.web.WebRequest} that adapts a
  * {@link PortletRequest).
  * 
  * @author Howard M. Lewis Ship
@@ -151,5 +152,20 @@ public class PortletWebRequest implements WebRequest
         unsupported("getHeader");
 
         return null;
+    }
+
+    public String getRemoteUser()
+    {
+        return _portletRequest.getRemoteUser();
+    }
+
+    public Principal getUserPrincipal()
+    {
+        return _portletRequest.getUserPrincipal();
+    }
+
+    public boolean isUserInRole(String role)
+    {
+        return _portletRequest.isUserInRole(role);
     }
 }

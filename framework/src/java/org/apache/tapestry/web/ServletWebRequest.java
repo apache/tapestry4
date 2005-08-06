@@ -15,6 +15,7 @@
 package org.apache.tapestry.web;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
 
@@ -200,5 +201,20 @@ public class ServletWebRequest implements WebRequest
     public String getHeader(String name)
     {
         return _servletRequest.getHeader(name);
+    }
+
+    public String getRemoteUser()
+    {
+        return _servletRequest.getRemoteUser();
+    }
+
+    public Principal getUserPrincipal()
+    {
+        return _servletRequest.getUserPrincipal();
+    }
+
+    public boolean isUserInRole(String role)
+    {
+        return _servletRequest.isUserInRole(role);
     }
 }

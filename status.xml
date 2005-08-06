@@ -70,6 +70,7 @@
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-407">Unable to override default pattern of DateTranslator and NumberTranslator when initialized via the translator binding.</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-529">Provide application: prefix to reference the application (root) namespace (from a library)</action>   
       <action type="update" dev="HLS">Enable Eclipse project-specific compile options, active additional checks as errors, and fix those errors in the code base.</action> 
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-534">WebRequest interface doesn't expose getRemoteUser(), isUserInRole() or getUserPrincipal()</action>
     </release>
     <release version="4.0-beta-3" date="Jul 22 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>
