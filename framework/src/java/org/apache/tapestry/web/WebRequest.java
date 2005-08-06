@@ -149,4 +149,35 @@ public interface WebRequest extends AttributeHolder, Describable
      */
 
     public String getHeader(String name);
+
+    /**
+     * Returns the login of the user making this request, if the user has been authenticated, or
+     * null if the user has not been authenticated.
+     * 
+     * @return a String specifying the login of the user making this request, or null if the user
+     *         login is not known.
+     */
+
+    public String getRemoteUser();
+
+    /**
+     * Returns a java.security.Principal object containing the name of the current authenticated
+     * user.
+     * 
+     * @return a java.security.Principal containing the name of the user making this request, or
+     *         null if the user has not been authenticated.
+     */
+    public java.security.Principal getUserPrincipal();
+
+    /**
+     * * Returns a boolean indicating whether the authenticated user is included in the specified
+     * logical "role". Roles and role membership can be defined using deployment descriptors. If the
+     * user has not been authenticated, the method returns false.
+     * 
+     * @param role
+     *            a String specifying the name of the role
+     * @return a boolean indicating whether the user making this request belongs to a given role;
+     *         false if the user has not been authenticated.
+     */
+    public boolean isUserInRole(java.lang.String role);
 }
