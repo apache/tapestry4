@@ -21,7 +21,6 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.tapestry.IAsset;
 import org.apache.tapestry.Tapestry;
 
 /**

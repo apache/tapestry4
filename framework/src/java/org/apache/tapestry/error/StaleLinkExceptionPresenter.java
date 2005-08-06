@@ -16,7 +16,6 @@ package org.apache.tapestry.error;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleLinkException;
-import org.apache.tapestry.StaleSessionException;
 
 /**
  * Service interface for informing the user about a {@link org.apache.tapestry.StaleLinkException}.

@@ -49,8 +49,6 @@ public class KeyAllocatorBean implements SessionBean
 {
     private static final String PROPERTY_NAME = "next-key";
 
-    private SessionContext context;
-
     /**
      * List of Integer instances; these are keys acquired from the database.
      */
@@ -124,7 +122,6 @@ public class KeyAllocatorBean implements SessionBean
 
     public void setSessionContext(SessionContext value)
     {
-        context = value;
     }
 
     /**

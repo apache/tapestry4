@@ -20,7 +20,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor;

@@ -17,7 +17,6 @@ package org.apache.tapestry.portlet;
 import java.util.List;
 
 import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
 import javax.portlet.PortletSession;
 
 import org.apache.tapestry.web.WebRequest;
@@ -35,11 +34,6 @@ public class TestPortletWebRequest extends BasePortletWebTestCase
     private PortletRequest newRequest()
     {
         return (PortletRequest) newMock(PortletRequest.class);
-    }
-
-    private PortletResponse newResponse()
-    {
-        return (PortletResponse) newMock(PortletResponse.class);
     }
 
     public void testGetParameterNames()

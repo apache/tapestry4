@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.callback;
 
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.components.BaseComponentTestCase;

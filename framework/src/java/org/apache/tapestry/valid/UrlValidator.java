@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
-import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IFormComponent;
@@ -300,7 +299,7 @@ public class UrlValidator extends BaseValidator
     public void setAllowedProtocols(String protocols)
     {
         StringSplitter spliter = new StringSplitter(',');
-        //String[] aProtocols = protocols.split(","); //$NON-NLS-1$
+        // String[] aProtocols = protocols.split(","); //$NON-NLS-1$
         String[] aProtocols = spliter.splitToArray(protocols); //$NON-NLS-1$
         _allowedProtocols = new Vector();
         for (int i = 0; i < aProtocols.length; i++)

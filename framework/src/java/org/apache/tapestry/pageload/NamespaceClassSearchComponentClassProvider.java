@@ -14,12 +14,6 @@
 
 package org.apache.tapestry.pageload;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
-
-import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.services.ClassFinder;
 

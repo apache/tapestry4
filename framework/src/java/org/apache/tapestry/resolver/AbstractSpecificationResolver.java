@@ -176,4 +176,32 @@ public class AbstractSpecificationResolver
         _specificationSource = source;
     }
 
+    /** @since 4.0 */
+    protected INamespace getApplicationNamespace()
+    {
+        return _specificationSource.getApplicationNamespace();
+    }
+
+    /** @since 4.0 */
+    protected INamespace getFrameworkNamespace()
+    {
+        return _specificationSource.getFrameworkNamespace();
+    }
+
+    /**
+     * @since 4.0
+     */
+    protected INamespace findNamespaceForId(INamespace containerNamespace, String libraryId)
+    {
+        if (libraryId == null)
+            return containerNamespace;
+    
+        if (libraryId.equals(INamespace.APPLICATION_NAMESPACE))
+            return getApplicationNamespace();
+    
+        if (libraryId.equals(INamespace.FRAMEWORK_NAMESPACE))
+            return getFrameworkNamespace();
+    
+        return containerNamespace.getChildNamespace(libraryId);
+    }
 }

@@ -20,7 +20,6 @@ import java.lang.reflect.Modifier;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Messages;
-import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.service.impl.ClassFactoryImpl;
 import org.apache.tapestry.enhance.EnhanceUtils;

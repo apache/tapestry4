@@ -18,7 +18,6 @@ import org.apache.hivemind.Location;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.ComponentClassAnnotationWorker}.
@@ -28,17 +27,6 @@ import org.easymock.MockControl;
  */
 public class TestComponentClassAnnotationWorker extends BaseAnnotationTestCase
 {
-    private EnhancementOperation newOp(Class componentClass)
-    {
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
-
-        op.getBaseClass();
-        control.setReturnValue(componentClass);
-
-        return op;
-    }
-
     private IComponentSpecification attempt(Class baseClass, Location location)
     {
         EnhancementOperation op = newOp();

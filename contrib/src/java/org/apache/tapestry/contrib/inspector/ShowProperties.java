@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.engine.IPageRecorder;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
@@ -37,7 +36,7 @@ public abstract class ShowProperties extends BaseComponent implements PageRender
 
     private PropertyChange _change;
 
-    private IPage _inspectedPage;
+    // private IPage _inspectedPage;
 
     /**
      * Does nothing.
@@ -57,16 +56,15 @@ public abstract class ShowProperties extends BaseComponent implements PageRender
     {
         _properties = null;
         _change = null;
-        _inspectedPage = null;
+        // _inspectedPage = null;
     }
 
     private void buildProperties()
     {
-        Inspector inspector = (Inspector) getPage();
+        // Inspector inspector = (Inspector) getPage();
 
-        _inspectedPage = inspector.getInspectedPage();
+        // _inspectedPage = inspector.getInspectedPage();
 
-        //  IEngine engine = getPage().getEngine();
         IPageRecorder recorder = null;
 
         // TODO: This is going to blow up with UnsupportedOperationException

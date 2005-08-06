@@ -21,8 +21,6 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.BaseFormComponentTest;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.MockDelegate;
@@ -325,12 +323,6 @@ public class TestValidField extends BaseFormComponentTest
         control.setReturnValue(object);
     }
 
-    private void trainIsRequired(MockControl control, IValidator validator, boolean isRequired)
-    {
-        validator.isRequired();
-        control.setReturnValue(isRequired);
-    }
-
     public void testRenderWithError()
     {
         Object value = new Object();
@@ -377,12 +369,5 @@ public class TestValidField extends BaseFormComponentTest
 
         assertSame(component, delegate.getFormComponent());
         assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" value=\"recorded field value\" class=\"validation-delegate\"/></span>");
-    }
-
-    private void trainGetName(MockControl control, IForm form, String name)
-    {
-        form.getName();
-
-        control.setReturnValue(name);
     }
 }

@@ -36,16 +36,18 @@ import org.apache.tapestry.test.assertions.RegexpMatch;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**
- * Parses Tapestry test scripts; XML files that define an execution environment and
- * a sequence of operations and assertions.
- *
+ * Parses Tapestry test scripts; XML files that define an execution environment and a sequence of
+ * operations and assertions.
+ * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public class IntegrationTestScriptParser extends AbstractParser
 {
     private ScriptDescriptor _scriptDescriptor;
+
     private Map _attributes;
+
     private String _elementName;
 
     /**
@@ -185,12 +187,17 @@ public class IntegrationTestScriptParser extends AbstractParser
     }
 
     private static final int STATE_INITIAL = 0;
+
     private static final int STATE_TEST_SCRIPT = 1;
+
     private static final int STATE_SERVLET = 2;
-    private static final int STATE_INIT_PARAMETER = 3;
+
     private static final int STATE_REQUEST = 4;
+
     private static final int STATE_ASSERT_OUTPUT = 5;
+
     private static final int STATE_ASSERT_REGEXP = 6;
+
     private static final int STATE_MATCH = 7;
 
     private static final int STATE_NO_CONTENT = 1000;
@@ -202,27 +209,27 @@ public class IntegrationTestScriptParser extends AbstractParser
 
         switch (getState())
         {
-            case STATE_INITIAL :
+            case STATE_INITIAL:
                 beginInitial();
                 break;
 
-            case STATE_TEST_SCRIPT :
+            case STATE_TEST_SCRIPT:
                 beginTestScript();
                 break;
 
-            case STATE_SERVLET :
+            case STATE_SERVLET:
                 beginServlet();
                 break;
 
-            case STATE_REQUEST :
+            case STATE_REQUEST:
                 beginRequest();
                 break;
 
-            case STATE_ASSERT_REGEXP :
+            case STATE_ASSERT_REGEXP:
                 beginAssertRegexp();
                 break;
 
-            default :
+            default:
                 unexpectedElement(_elementName);
         }
     }
@@ -233,20 +240,20 @@ public class IntegrationTestScriptParser extends AbstractParser
 
         switch (getState())
         {
-            case STATE_ASSERT_OUTPUT :
+            case STATE_ASSERT_OUTPUT:
 
                 endAssertOutput();
                 break;
 
-            case STATE_ASSERT_REGEXP :
+            case STATE_ASSERT_REGEXP:
                 endAssertRegexp();
                 break;
 
-            case STATE_MATCH :
+            case STATE_MATCH:
                 endMatch();
                 break;
 
-            default :
+            default:
                 break;
         }
 
@@ -477,7 +484,7 @@ public class IntegrationTestScriptParser extends AbstractParser
         sd.setClassName(className);
 
         // Can't wait for push() to do this, because of checks inside
-        // addServletDescriptor(). 
+        // addServletDescriptor().
         sd.setLocation(getLocation());
 
         ScriptDescriptor scriptDescriptor = (ScriptDescriptor) peekObject();
@@ -513,10 +520,9 @@ public class IntegrationTestScriptParser extends AbstractParser
             String name = (String) i.next();
 
             if (!epi.isKnown(name))
-                throw new DocumentParseException(
-                    ScriptMessages.unexpectedAttributeInElement(name, _elementName),
-                    getLocation(),
-                    null);
+                throw new DocumentParseException(ScriptMessages.unexpectedAttributeInElement(
+                        name,
+                        _elementName), getLocation(), null);
         }
 
         // Now check that all required attributes have been specified.
@@ -527,10 +533,9 @@ public class IntegrationTestScriptParser extends AbstractParser
             String name = (String) i.next();
 
             if (!_attributes.containsKey(name))
-                throw new DocumentParseException(
-                    ScriptMessages.missingRequiredAttribute(name, _elementName),
-                    getLocation(),
-                    null);
+                throw new DocumentParseException(ScriptMessages.missingRequiredAttribute(
+                        name,
+                        _elementName), getLocation(), null);
         }
 
     }
@@ -561,14 +566,11 @@ public class IntegrationTestScriptParser extends AbstractParser
         }
         catch (NumberFormatException ex)
         {
-            throw new ApplicationRuntimeException(
-                ScriptMessages.invalidIntAttribute(
+            throw new ApplicationRuntimeException(ScriptMessages.invalidIntAttribute(
                     name,
                     _elementName,
                     getLocation(),
-                    attributeValue),
-                getLocation(),
-                ex);
+                    attributeValue), getLocation(), ex);
         }
     }
 }

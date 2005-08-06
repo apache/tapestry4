@@ -66,8 +66,6 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 public class OperationsBean implements SessionBean
 {
-    private SessionContext _context;
-
     private transient Context _environment;
 
     private transient IBookHome _bookHome;
@@ -126,7 +124,6 @@ public class OperationsBean implements SessionBean
 
     public void setSessionContext(SessionContext value)
     {
-        _context = value;
     }
 
     /**

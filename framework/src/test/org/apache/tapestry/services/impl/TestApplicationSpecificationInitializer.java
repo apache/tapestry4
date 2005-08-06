@@ -33,7 +33,6 @@ import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.spec.ApplicationSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.easymock.AbstractMatcher;
 import org.easymock.MockControl;
 
 /**
@@ -259,26 +258,6 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
         i.initialize(servlet);
 
         verifyControls();
-    }
-
-    private static class SmartApplicationSpecificationMatcher extends AbstractMatcher
-    {
-
-        protected boolean argumentMatches(Object expected, Object actual)
-        {
-            if (expected instanceof IApplicationSpecification)
-            {
-                IApplicationSpecification expectedSpec = (IApplicationSpecification) expected;
-                IApplicationSpecification actualSpec = (IApplicationSpecification) actual;
-
-                return expectedSpec.getName().equals(actualSpec.getName())
-                        && expectedSpec.getSpecificationLocation().equals(
-                                actualSpec.getSpecificationLocation());
-            }
-
-            return super.argumentMatches(expected, actual);
-        }
-
     }
 
     public void testNoAppSpec() throws Exception

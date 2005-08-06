@@ -23,7 +23,6 @@ import org.apache.hivemind.ErrorHandler;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IMonitor;
 import org.apache.tapestry.engine.IMonitorFactory;
 import org.apache.tapestry.engine.RequestCycle;
@@ -36,7 +35,6 @@ import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.RequestCycleFactory;
 import org.apache.tapestry.services.ServiceConstants;
-import org.apache.tapestry.services.ServiceMap;
 import org.apache.tapestry.util.QueryParameterMap;
 import org.apache.tapestry.web.WebRequest;
 

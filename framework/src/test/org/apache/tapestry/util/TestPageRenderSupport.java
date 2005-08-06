@@ -24,7 +24,6 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.asset.AssetFactory;
-import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.markup.AsciiMarkupFilter;
 import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.easymock.MockControl;
@@ -61,17 +60,6 @@ public class TestPageRenderSupport extends HiveMindTestCase
         control.setReturnValue(url);
 
         return asset;
-    }
-
-    private ILink newLink(String URL)
-    {
-        MockControl control = newControl(ILink.class);
-        ILink link = (ILink) control.getMock();
-
-        link.getURL();
-        control.setReturnValue(URL);
-
-        return link;
     }
 
     private CharArrayWriter _writer;

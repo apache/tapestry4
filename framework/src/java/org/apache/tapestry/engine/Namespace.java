@@ -22,11 +22,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.hivemind.util.ClasspathResource;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -359,7 +359,6 @@ public class Namespace implements INamespace
         return _components.containsKey(type)
                 || (_specification.getComponentSpecificationPath(type) != null);
     }
-
 
     /** @since 3.0 * */
 

@@ -29,7 +29,6 @@ import junit.framework.TestCase;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.services.DataSqueezer;
-import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.util.ComponentAddress;
 import org.apache.tapestry.util.io.DataSqueezerImpl;
 import org.apache.tapestry.util.io.ISqueezeAdaptor;
@@ -54,13 +53,14 @@ public class TestDataSqueezer extends TestCase
         attempt(input, expectedEncoding, ds);
     }
 
-    private void attempt(Object input, String expectedEncoding, DataSqueezer ds) throws IOException
+    private void attempt(Object input, String expectedEncoding, DataSqueezer squeezer)
+            throws IOException
     {
-        String encoding = ds.squeeze(input);
+        String encoding = squeezer.squeeze(input);
 
         assertEquals("String encoding.", expectedEncoding, encoding);
 
-        Object output = ds.unsqueeze(encoding);
+        Object output = squeezer.unsqueeze(encoding);
 
         assertEquals("Decoded object.", input, output);
     }
@@ -176,11 +176,11 @@ public class TestDataSqueezer extends TestCase
         assertNull(output);
     }
 
-    private void attempt(Serializable s, DataSqueezer ds) throws IOException
+    private void attempt(Serializable s, DataSqueezer squeezer) throws IOException
     {
-        String encoded = ds.squeeze(s);
+        String encoded = squeezer.squeeze(s);
 
-        Object output = ds.unsqueeze(encoded);
+        Object output = squeezer.unsqueeze(encoded);
 
         assertEquals(s, output);
     }
@@ -274,13 +274,14 @@ public class TestDataSqueezer extends TestCase
 
     public void testCustom() throws IOException
     {
-        DataSqueezer ds = new DataSqueezerImpl(new DefaultClassResolver(), new ISqueezeAdaptor[]
-        { new BHSqueezer() });
+        DataSqueezer squeezer = new DataSqueezerImpl(new DefaultClassResolver(),
+                new ISqueezeAdaptor[]
+                { new BHSqueezer() });
 
-        attempt(new BooleanHolder(true), "BT", ds);
-        attempt(new BooleanHolder(false), "BF", ds);
+        attempt(new BooleanHolder(true), "BT", squeezer);
+        attempt(new BooleanHolder(false), "BF", squeezer);
 
-        attempt("BooleanHolder", "SBooleanHolder", ds);
+        attempt("BooleanHolder", "SBooleanHolder", squeezer);
     }
 
     public void testRegisterShortPrefix()

@@ -119,8 +119,8 @@ public class ValidatorFactoryImpl implements ValidatorFactory
 
             if (length >= chopped.length())
                 break;
-            else
-                chopped = chopped.substring(length + 1);
+
+            chopped = chopped.substring(length + 1);
 
         }
 

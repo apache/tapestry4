@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.pageload;
 
-import java.util.List;
-
-import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.services.ClassFinder;

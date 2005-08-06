@@ -148,8 +148,6 @@ public abstract class ChartPage extends BasePage implements IChartProvider, Page
         }
     }
 
-    private IAsset chartImageAsset;
-
     public IAsset getChartImageAsset()
     {
         return new ChartAsset(getRequestCycle(), this);

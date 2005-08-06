@@ -42,7 +42,7 @@ public class TestBlock extends BaseComponentTestCase
 
         IRender body = new IRender()
         {
-            public void render(IMarkupWriter writer, IRequestCycle cycle)
+            public void render(IMarkupWriter pwriter, IRequestCycle pcycle)
             {
                 assertSame(block.getInvoker(), invoker);
                 assertSame(block.getInserter(), invoker);

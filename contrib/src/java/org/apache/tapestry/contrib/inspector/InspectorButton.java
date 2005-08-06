@@ -14,22 +14,8 @@
 
 package org.apache.tapestry.contrib.inspector;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.hivemind.Resource;
 import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IEngine;
-import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScript;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryUtils;
-import org.apache.tapestry.engine.DirectServiceParameter;
-import org.apache.tapestry.engine.IEngineService;
-import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.html.Body;
 
 /**

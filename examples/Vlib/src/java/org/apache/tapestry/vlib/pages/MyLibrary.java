@@ -16,17 +16,13 @@ package org.apache.tapestry.vlib.pages;
 
 import java.rmi.RemoteException;
 
-import javax.ejb.FinderException;
-
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.vlib.ActivatePage;
 import org.apache.tapestry.vlib.IMessageProperty;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.components.Browser;
-import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
-import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.SortColumn;
 import org.apache.tapestry.vlib.ejb.SortOrdering;
 
@@ -131,36 +127,6 @@ public abstract class MyLibrary extends ActivatePage implements IMessageProperty
 
         ConfirmBookDelete page = (ConfirmBookDelete) cycle.getPage("ConfirmBookDelete");
         page.selectBook(bookId, cycle);
-    }
-
-    private void returnBook(Integer bookId)
-    {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-        int i = 0;
-        while (true)
-        {
-            try
-            {
-                IOperations operations = vengine.getOperations();
-                Book book = operations.returnBook(bookId);
-
-                setMessage(format("returned-book", book.getTitle()));
-
-                break;
-            }
-            catch (FinderException ex)
-            {
-                setError(format("unable-to-return-book", ex.getMessage()));
-                return;
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception returning book.", ex, i++);
-            }
-        }
-
-        runQuery();
     }
 
 }

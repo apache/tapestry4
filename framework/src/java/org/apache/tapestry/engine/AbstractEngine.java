@@ -38,7 +38,6 @@ import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.RedirectException;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.StaleSessionException;
-import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.DataSqueezer;
