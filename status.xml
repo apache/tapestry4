@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+  <?xml version="1.0"?>
 <!-- 
    Copyright 2005 The Apache Software Foundation
 
@@ -69,8 +69,9 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-519" due-to="Raphael Jean">NestedMarkupWriterImpl doesn't close the current open tag when getBuffer() is called</action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-407">Unable to override default pattern of DateTranslator and NumberTranslator when initialized via the translator binding.</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-529">Provide application: prefix to reference the application (root) namespace (from a library)</action>   
-      <action type="update" dev="HLS">Enable Eclipse project-specific compile options, active additional checks as errors, and fix those errors in the code base.</action> 
+      <action type="update" dev="HLS">Enable Eclipse project-specific compile options, active additional checks as errors, and fix those errors in the code base</action> 
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-534">WebRequest interface doesn't expose getRemoteUser(), isUserInRole() or getUserPrincipal()</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-530" due-to="Raphael Jean">Namespace messages are retrieved using page's locale rather than engine's locale</action>
     </release>
     <release version="4.0-beta-3" date="Jul 22 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>

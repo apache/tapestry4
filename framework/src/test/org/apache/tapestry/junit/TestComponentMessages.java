@@ -292,4 +292,25 @@ public class TestComponentMessages extends TapestryTestCase
         assertEquals("A formatted date: 24/12/66", messages.format("using-date-format", d));
 
     }
+
+    public void testMultipleLocalesWithNamespace()
+    {
+        ComponentMessagesSourceImpl source = new ComponentMessagesSourceImpl();
+        source.setComponentPropertySource(new NullComponentPropertySource());
+
+        IComponentSpecification spec = newSpec(MOCK1);
+        spec.setLocation(new CreatorLocation());
+
+        INamespace namespace = new Namespace(null, null, newLibrarySpec(), null, null);
+
+        IPage page = newPage(spec, source, new Locale("fr"));
+        page.setNamespace(namespace);
+        
+        assertEquals("multilocale_fr", source.getMessages(page).getMessage("multilocale"));
+        
+        page = newPage(spec, source, new Locale("en"));
+        page.setNamespace(namespace);
+
+        assertEquals("multilocale", source.getMessages(page).getMessage("multilocale"));
+    }
 }
