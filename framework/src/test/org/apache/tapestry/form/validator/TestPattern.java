@@ -152,14 +152,14 @@ public class TestPattern extends BaseValidatorTestCase
                 ValidationStrings.REGEX_MISMATCH,
                 new Object[]
                 { "Fred" },
-                "custom message");
+                "custom\\message");
 
         context.getFieldDOM();
         contextc.setReturnValue("document.fred.barney");
 
         context
                 .addSubmitListener("function(event) { validate_regexp(event, document.fred.barney, '"
-                        + pattern + "', 'custom message'); }");
+                        + pattern + "', 'custom\\\\message'); }");
 
         replayControls();
 

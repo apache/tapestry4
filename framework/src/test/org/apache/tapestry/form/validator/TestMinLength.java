@@ -140,10 +140,10 @@ public class TestMinLength extends BaseValidatorTestCase
                 ValidationStrings.VALUE_TOO_SHORT,
                 new Object[]
                 { new Integer(25), "My Field" },
-                "custom message");
+                "custom\\message");
 
         context
-                .addSubmitListener("function(event) { validate_min_length(event, document.myform.myfield, 25, 'custom message'); }");
+                .addSubmitListener("function(event) { validate_min_length(event, document.myform.myfield, 25, 'custom\\\\message'); }");
 
         replayControls();
 

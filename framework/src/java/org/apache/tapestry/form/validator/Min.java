@@ -77,7 +77,7 @@ public class Min extends BaseValidator
         buffer.append(", ");
         buffer.append(_min);
         buffer.append(", '");
-        buffer.append(message);
+        buffer.append(escapeReservedCharacters(message));
         buffer.append("'); }");
 
         context.addSubmitListener(buffer.toString());

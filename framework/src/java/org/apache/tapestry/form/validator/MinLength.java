@@ -81,7 +81,7 @@ public class MinLength extends BaseValidator
         buffer.append(", ");
         buffer.append(_minLength);
         buffer.append(", '");
-        buffer.append(buildMessage(context, field));
+        buffer.append(escapeReservedCharacters(buildMessage(context, field)));
         buffer.append("'); }");
 
         context.addSubmitListener(buffer.toString());

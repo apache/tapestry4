@@ -138,13 +138,13 @@ public class TestMax extends BaseValidatorTestCase
                 ValidationStrings.VALUE_TOO_LARGE,
                 new Object[]
                 { "My Field", new Double(20) },
-                "custom message");
+                "custom\\message");
 
         context.getFieldDOM();
         contextc.setReturnValue("document.myform.myfield");
 
         context
-                .addSubmitListener("function(event) { validate_max_number(event, document.myform.myfield, 20.0, 'custom message'); }");
+                .addSubmitListener("function(event) { validate_max_number(event, document.myform.myfield, 20.0, 'custom\\\\message'); }");
 
         replayControls();
 

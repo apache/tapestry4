@@ -218,7 +218,9 @@ public class TestNumberTranslator extends TranslatorTestCase
     {
         NumberTranslator translator = new NumberTranslator();
         
-        translator.setMessage("You entered a bunk value for {0}. I should look like {1}.");
+        // MessageFormat requires that single quotes be doubled if they are to be interpreted.
+        
+        translator.setMessage("You entered a bunk value for {0}. I should look like {1}. Watch out for ''this''!");
         
         addScript("/org/apache/tapestry/form/translator/NumberTranslator.js");
         
@@ -240,7 +242,7 @@ public class TestNumberTranslator extends TranslatorTestCase
         _component.getName();
         _componentControl.setReturnValue("fieldName");
         
-        _form.addEventHandler(FormEventType.SUBMIT, "validate_number(event, document.formName.fieldName,'You entered a bunk value for Field Label. I should look like #.')");
+        _form.addEventHandler(FormEventType.SUBMIT, "validate_number(event, document.formName.fieldName,'You entered a bunk value for Field Label. I should look like #. Watch out for \\'this\\'!')");
         _formControl.setVoidCallable();
         
         replay();

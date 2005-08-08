@@ -77,7 +77,7 @@ public class MaxLength extends BaseValidator
         buffer.append(", ");
         buffer.append(_maxLength);
         buffer.append(", '");
-        buffer.append(buildMessage(context, field));
+        buffer.append(escapeReservedCharacters(buildMessage(context, field)));
         buffer.append("'); }");
 
         context.addSubmitListener(buffer.toString());

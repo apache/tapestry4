@@ -19,6 +19,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.Format;
 import java.util.Locale;
 
+import org.apache.hivemind.util.StringUtils;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -106,6 +107,10 @@ public class NumberTranslator extends FormatTranslator
         String message = buildMessage(field, getMessageKey());
         IForm form = field.getForm();
 
+        // Escape backslashes and single quotes in the message
+        message = StringUtils.replace(message, "\\", "\\\\");
+        message = StringUtils.replace(message, "'", "\\'");
+        
         addSubmitHandler(form, "validate_number(event, document." + form.getName() + "."
                 + field.getName() + ",'" + message + "')");
     }
