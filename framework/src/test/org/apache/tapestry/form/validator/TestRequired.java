@@ -122,10 +122,10 @@ public class TestRequired extends BaseValidatorTestCase
                 ValidationStrings.REQUIRED_TEXT_FIELD,
                 new Object[]
                 { "Fred" },
-                "Default Message for Fred.");
+                "Default\\Message for Fred.");
 
          context
-                .addSubmitListener("function(event) { require(event, document.fred.barney, 'Default Message for Fred.'); }");
+                .addSubmitListener("function(event) { require(event, document.fred.barney, 'Default\\\\Message for Fred.'); }");
 
         replayControls();
 

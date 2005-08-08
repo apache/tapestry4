@@ -140,7 +140,7 @@ public class TestRequirableFieldSupportImpl extends TapestryTestCase
         _componentControl.setReturnValue("fieldName");
 
         _component.getRequiredMessage();
-        _componentControl.setReturnValue("You must enter a value for {0}.");
+        _componentControl.setReturnValue("You must enter a value for {0}. Isn''t it?");
 
         _component.getDisplayName();
         _componentControl.setReturnValue("Field Name");
@@ -148,7 +148,7 @@ public class TestRequirableFieldSupportImpl extends TapestryTestCase
         _form
                 .addEventHandler(
                         FormEventType.SUBMIT,
-                        "require(event, document.formName.fieldName,'You must enter a value for Field Name.')");
+                        "require(event, document.formName.fieldName,'You must enter a value for Field Name. Isn\\'t it?')");
         _formControl.setVoidCallable();
 
         replay();

@@ -81,7 +81,7 @@ public class Email extends BaseValidator
         buffer.append(", '");
         buffer.append(pattern);
         buffer.append("', '");
-        buffer.append(message);
+        buffer.append(escapeReservedCharacters(message));
         buffer.append("'); }");
 
         context.addSubmitListener(buffer.toString());

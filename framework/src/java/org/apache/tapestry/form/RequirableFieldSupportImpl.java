@@ -17,6 +17,7 @@ package org.apache.tapestry.form;
 import java.text.MessageFormat;
 
 import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.util.StringUtils;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -47,8 +48,14 @@ public class RequirableFieldSupportImpl implements RequirableFieldSupport
 
             if (form.isClientValidationEnabled())
             {
-                String function = "require(event, document." + form.getName() + "."
-                        + component.getName() + ",'" + buildRequiredMessage(component) + "')";
+                String requiredMessage = buildRequiredMessage(component);
+                
+                // Escape backslashes and single quotes in the message
+                requiredMessage = StringUtils.replace(requiredMessage, "\\", "\\\\");
+                requiredMessage = StringUtils.replace(requiredMessage, "'", "\\'");
+                
+				String function = "require(event, document." + form.getName() + "."
+                        + component.getName() + ",'" + requiredMessage + "')";
 
                 form.addEventHandler(FormEventType.SUBMIT, function);
             }

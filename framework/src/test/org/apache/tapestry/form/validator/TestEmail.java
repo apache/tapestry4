@@ -113,14 +113,14 @@ public class TestEmail extends BaseValidatorTestCase
         IFormComponent field = newField("Fred");
 
         trainFormatMessage(contextc, context, null, ValidationStrings.INVALID_EMAIL, new Object[]
-        { "Fred" }, "default message");
+        { "Fred" }, "default\\message");
 
         context.getFieldDOM();
         contextc.setReturnValue("document.fred.barney");
 
         context
                 .addSubmitListener("function(event) { validate_regex(event, document.fred.barney, '"
-                        + pattern + "', 'default message'); }");
+                        + pattern + "', 'default\\\\message'); }");
 
         replayControls();
 

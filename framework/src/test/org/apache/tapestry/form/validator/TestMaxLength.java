@@ -106,10 +106,10 @@ public class TestMaxLength extends BaseValidatorTestCase
         contextc.setReturnValue("document.myform.myfield");
 
         trainFormatMessage(contextc, context, null, ValidationStrings.VALUE_TOO_LONG, new Object[]
-        { new Integer(20), "My Field" }, "default message");
+        { new Integer(20), "My Field" }, "default\\message");
 
         context
-                .addSubmitListener("function(event) { validate_max_length(event, document.myform.myfield, 20, 'default message'); }");
+                .addSubmitListener("function(event) { validate_max_length(event, document.myform.myfield, 20, 'default\\\\message'); }");
 
         replayControls();
 

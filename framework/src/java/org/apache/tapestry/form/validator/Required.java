@@ -73,7 +73,7 @@ public class Required extends BaseValidator
         StringBuffer buffer = new StringBuffer("function(event) { require(event, ");
         buffer.append(context.getFieldDOM());
         buffer.append(", '");
-        buffer.append(buildMessage(context, field));
+        buffer.append(escapeReservedCharacters(buildMessage(context, field)));
         buffer.append("'); }");
 
         context.addSubmitListener(buffer.toString());
