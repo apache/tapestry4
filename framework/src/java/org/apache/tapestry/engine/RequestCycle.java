@@ -31,6 +31,7 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.RedirectException;
 import org.apache.tapestry.RenderRewoundException;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.Tapestry;
@@ -700,4 +701,11 @@ public class RequestCycle implements IRequestCycle
     {
         return _idAllocator.allocateId(baseId);
     }
+
+    /** @since 4.0 */
+    public void sendRedirect(String URL)
+    {
+        throw new RedirectException(URL);
+    }
+
 }

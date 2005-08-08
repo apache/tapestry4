@@ -63,6 +63,7 @@
 <!ENTITY IForm 						'<link href="&apiroot;/IForm.html">IForm</link>'>
 <!ENTITY IFormComponent 			'<link href="&apiroot;/form/IFormComponent.html">IFormComponent</link>'>
 <!ENTITY IEngineService 			'<link href="&apiroot;/IEngineService.html">IEngineService</link>'>
+<!ENTITY ILink						'<link href="&apiroot;/engine/ILink.html">ILink</link>'>
 <!ENTITY INamespace 				'<link href="&apiroot;/INamespace.html">INamespace</link>'>
 <!ENTITY IMarkupWriter 				'<link href="&apiroot;/IMarkupWriter.html">IMarkupWriter</link>'>
 <!ENTITY IMonitor 					'<link href="&apiroot;/engine/IMonitor.html">IMonitor</link>'>

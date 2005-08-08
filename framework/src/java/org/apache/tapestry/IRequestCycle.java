@@ -343,4 +343,14 @@ public interface IRequestCycle
      */
 
     public String getUniqueId(String baseId);
+
+    /**
+     * Sends a redirect to the client web browser. This is currently a convinience for constructing
+     * and throwing a {@link RedirectException}, but may change in a later release.
+     * 
+     * @since 4.0
+     * @throws RedirectException
+     */
+
+    public void sendRedirect(String URL);
 }

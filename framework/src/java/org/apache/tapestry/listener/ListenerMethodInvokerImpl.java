@@ -22,6 +22,7 @@ import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.engine.ILink;
 
 /**
  * Logic for mapping a listener method name to an actual method invocation; this may require a
@@ -147,26 +148,11 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
             for (int i = 0; i < Tapestry.size(listenerParameters); i++)
                 parameters[cursor++] = listenerParameters[i];
 
+        Object methodResult = null;
+
         try
         {
-            Object methodResult = invokeTargetMethod(target, listenerMethod, parameters);
-
-            // void methods return null
-
-            if (methodResult == null)
-                return;
-
-            // The method scanner, inside ListenerMapSourceImpl,
-            // ensures that only methods that return void, String,
-            // or assignable to IPage are considered.
-
-            if (methodResult instanceof String)
-            {
-                cycle.activate((String) methodResult);
-                return;
-            }
-
-            cycle.activate((IPage) methodResult);
+            methodResult = invokeTargetMethod(target, listenerMethod, parameters);
         }
         catch (InvocationTargetException ex)
         {
@@ -188,6 +174,33 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
                     ex), target, null, ex);
 
         }
+
+        // void methods return null
+
+        if (methodResult == null)
+            return;
+
+        // The method scanner, inside ListenerMapSourceImpl,
+        // ensures that only methods that return void, String,
+        // or assignable to ILink or IPage are considered.
+
+        if (methodResult instanceof String)
+        {
+            cycle.activate((String) methodResult);
+            return;
+        }
+
+        if (methodResult instanceof ILink)
+        {
+            ILink link = (ILink) methodResult;
+
+            String url = link.getAbsoluteURL();
+
+            cycle.sendRedirect(url);
+            return;
+        }
+
+        cycle.activate((IPage) methodResult);
     }
 
     /**

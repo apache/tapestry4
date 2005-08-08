@@ -20,6 +20,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.ILink;
 import org.easymock.MockControl;
 
 /**
@@ -73,6 +74,7 @@ public class TestListenerMapSource extends HiveMindTestCase
         attemptReturnType(true, clazz, "returnsBasePage");
         attemptReturnType(false, clazz, "returnsObject");
         attemptReturnType(false, clazz, "returnsInt");
+        attemptReturnType(true, clazz, "returnsLink");
     }
 
     public void testFoundWithParameters()
@@ -172,6 +174,38 @@ public class TestListenerMapSource extends HiveMindTestCase
         map.getListener("returnsPageName").actionTriggered(null, cycle);
 
         verifyControls();
+    }
+
+    public void testReturnLink()
+    {
+        ILink link = newLink("http://foo/bar");
+        
+        IRequestCycle cycle = newCycle(null);
+        
+        cycle.sendRedirect("http://foo/bar");
+        
+        ListenerMethodHolder holder = new ListenerMethodHolder(link);
+        
+        replayControls();
+
+        ListenerMapSource source = new ListenerMapSourceImpl();
+
+        ListenerMap map = source.getListenerMapForObject(holder);
+
+        map.getListener("returnsLink").actionTriggered(null, cycle);
+
+        verifyControls();    
+    }
+
+    private ILink newLink(String absoluteURL)
+    {
+        MockControl control = newControl(ILink.class);
+        ILink link = (ILink) control.getMock();
+
+        link.getAbsoluteURL();
+        control.setReturnValue(absoluteURL);
+
+        return link;
     }
 
     public void testReturnPageInstance()
