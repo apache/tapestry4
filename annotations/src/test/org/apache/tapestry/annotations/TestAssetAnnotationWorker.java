@@ -22,6 +22,7 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.util.DescribedLocation;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.AssetAnnotationWorker}.
@@ -49,7 +50,7 @@ public class TestAssetAnnotationWorker extends BaseAnnotationTestCase
 
         IAssetSpecification as = spec.getAsset("globalStylesheet");
         assertEquals("/style/global.css", as.getPath());
-        assertEquals(new AnnotationLocation(r, l.toString()), as.getLocation());
+        assertEquals(new DescribedLocation(r, l.toString()), as.getLocation());
         assertEquals("globalStylesheet", as.getPropertyName());
     }
 }

@@ -22,6 +22,7 @@ import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.AssetSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.util.DescribedLocation;
 
 /**
  * Uses the {@link org.apache.tapestry.annotations.Asset} annotation to create a new
@@ -48,7 +49,7 @@ public class AssetAnnotationWorker implements MethodAnnotationEnhancementWorker
         // of a location) to figure out what kind of asset they are.
 
         Resource specResource = spec.getSpecificationLocation();
-        Location assetLocation = new AnnotationLocation(specResource, location.toString());
+        Location assetLocation = new DescribedLocation(specResource, location.toString());
 
         as.setLocation(assetLocation);
 

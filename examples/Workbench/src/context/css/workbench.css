@@ -10,7 +10,7 @@ SPAN.label-error
   background-color: Red;
 }
 
-TABLE.inputError TD.message
+TABLE.inputerror TD.message
 {
   font-weight: bold;
   font-size: smaller;

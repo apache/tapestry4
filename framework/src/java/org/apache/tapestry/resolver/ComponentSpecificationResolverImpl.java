@@ -18,8 +18,11 @@ import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.LocationImpl;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.services.ClassFinder;
+import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
@@ -34,11 +37,13 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * specification. The search, based on the <i>simple-name </i> of the page, goes as follows:
  * <ul>
  * <li>As declared in the application specification
- * <li><i>type </i>.jwc in the same folder as the application specification
- * <li><i>type </i> jwc in the WEB-INF/ <i>servlet-name </i> directory of the context root
- * <li><i>type </i>.jwc in WEB-INF
- * <li><i>type </i>.jwc in the application root (within the context root)
+ * <li><i>type</i>.jwc in the same folder as the application specification
+ * <li><i>type</i> jwc in the WEB-INF/ <i>servlet-name </i> directory of the context root
+ * <li><i>type</i>.jwc in WEB-INF
+ * <li><i>type</i>.jwc in the application root (within the context root)
  * <li>By searching the framework namespace
+ * <li>By searching for a named class file within the org.apache.tapestry.component-class-packages
+ * property (defined within the namespace)
  * </ul>
  * The search for components in library namespaces is more abbreviated:
  * <li>As declared in the library specification
@@ -58,6 +63,8 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
 
     /** Set by resolve() */
     private String _type;
+
+    private ClassFinder _classFinder;
 
     protected void reset()
     {
@@ -133,27 +140,36 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         setNamespace(namespace);
 
         if (namespace.containsComponentType(type))
+        {
             setSpecification(namespace.getComponentSpecification(type));
-        else
-            searchForComponent(cycle);
+            return;
+        }
+
+        IComponentSpecification spec = searchForComponent(cycle);
 
         // If not found after search, check to see if it's in
         // the framework instead.
 
-        if (getSpecification() == null)
+        if (spec == null)
         {
-
             throw new ApplicationRuntimeException(ResolverMessages.noSuchComponentType(
                     type,
                     namespace), location, null);
 
         }
+
+        setSpecification(spec);
+
+        // Install it into the namespace, to short-circuit any future search.
+
+        install();
     }
 
     // Hm. This could maybe go elsewhere, say onto ISpecificationSource
 
-    private void searchForComponent(IRequestCycle cycle)
+    private IComponentSpecification searchForComponent(IRequestCycle cycle)
     {
+        IComponentSpecification result = null;
         INamespace namespace = getNamespace();
 
         if (_log.isDebugEnabled())
@@ -165,23 +181,32 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         // Look for appropriate file in same folder as the library (or application)
         // specificaiton.
 
-        if (found(namespaceLocation.getRelativeResource(expectedName)))
-            return;
+        result = check(namespaceLocation.getRelativeResource(expectedName));
+
+        if (result != null)
+            return result;
 
         if (namespace.isApplicationNamespace())
         {
 
             // The application namespace gets some extra searching.
 
-            if (found(getWebInfAppLocation().getRelativeResource(expectedName)))
-                return;
+            result = check(getWebInfAppLocation().getRelativeResource(expectedName));
 
-            if (found(getWebInfLocation().getRelativeResource(expectedName)))
-                return;
+            if (result == null)
+                result = check(getWebInfLocation().getRelativeResource(expectedName));
 
-            if (found(getContextRoot().getRelativeResource(expectedName)))
-                return;
+            if (result == null)
+                result = check((getContextRoot().getRelativeResource(expectedName)));
+
+            if (result != null)
+                return result;
         }
+
+        result = searchForComponentClass(namespace, _type);
+
+        if (result != null)
+            return result;
 
         // Not in the library or app spec; does it match a component
         // provided by the Framework?
@@ -189,40 +214,47 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         INamespace framework = getSpecificationSource().getFrameworkNamespace();
 
         if (framework.containsComponentType(_type))
-        {
-            setSpecification(framework.getComponentSpecification(_type));
+            return framework.getComponentSpecification(_type);
 
-            install();
-
-            return;
-        }
-
-        IComponentSpecification specification = getDelegate().findComponentSpecification(
-                cycle,
-                namespace,
-                _type);
-
-        if (specification != null)
-        {
-            setSpecification(specification);
-            install();
-            return;
-        }
+        return getDelegate().findComponentSpecification(cycle, namespace, _type);
     }
 
-    private boolean found(Resource resource)
+    IComponentSpecification searchForComponentClass(INamespace namespace, String type)
+    {
+        String packages = namespace
+                .getPropertyValue("org.apache.tapestry.component-class-packages");
+
+        String className = type.replace('/', '.');
+
+        Class componentClass = _classFinder.findClass(packages, className);
+
+        if (componentClass == null)
+            return null;
+
+        IComponentSpecification spec = new ComponentSpecification();
+
+        Resource namespaceResource = namespace.getSpecificationLocation();
+
+        Resource componentResource = namespaceResource.getRelativeResource(type + ".jwc");
+
+        Location location = new LocationImpl(componentResource);
+
+        spec.setLocation(location);
+        spec.setSpecificationLocation(componentResource);
+        spec.setComponentClassName(componentClass.getName());
+
+        return spec;
+    }
+
+    private IComponentSpecification check(Resource resource)
     {
         if (_log.isDebugEnabled())
             _log.debug("Checking: " + resource);
 
         if (resource.getResourceURL() == null)
-            return false;
+            return null;
 
-        setSpecification(getSpecificationSource().getComponentSpecification(resource));
-
-        install();
-
-        return true;
+        return getSpecificationSource().getComponentSpecification(resource);
     }
 
     private void install()
@@ -244,6 +276,11 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
     public void setLog(Log log)
     {
         _log = log;
+    }
+
+    public void setClassFinder(ClassFinder classFinder)
+    {
+        _classFinder = classFinder;
     }
 
 }

@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.annotations;
+package org.apache.tapestry.util;
 
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.test.HiveMindTestCase;
 
 /**
- * Tests for {@link org.apache.tapestry.annotations.AnnotationLocation}.
+ * Tests for {@link org.apache.tapestry.util.DescribedLocation}.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestAnnotationLocation extends HiveMindTestCase
+public class TestDescribedLocation extends HiveMindTestCase
 {
     public void testLineRowAreZero()
     {
@@ -31,7 +31,7 @@ public class TestAnnotationLocation extends HiveMindTestCase
 
         replayControls();
 
-        AnnotationLocation l = new AnnotationLocation(r, "location description");
+        DescribedLocation l = new DescribedLocation(r, "location description");
 
         assertEquals(0, l.getLineNumber());
         assertEquals(0, l.getColumnNumber());
@@ -50,10 +50,10 @@ public class TestAnnotationLocation extends HiveMindTestCase
 
         replayControls();
 
-        AnnotationLocation l = new AnnotationLocation(r, "location description");
-        AnnotationLocation l2 = new AnnotationLocation(r2, "location description");
-        AnnotationLocation l3 = new AnnotationLocation(r, "wrong description");
-        AnnotationLocation l4 = new AnnotationLocation(r, "location description");
+        DescribedLocation l = new DescribedLocation(r, "location description");
+        DescribedLocation l2 = new DescribedLocation(r2, "location description");
+        DescribedLocation l3 = new DescribedLocation(r, "wrong description");
+        DescribedLocation l4 = new DescribedLocation(r, "location description");
 
         assertEquals(false, l.equals(null));
         assertEquals(false, l.equals("XYZ"));

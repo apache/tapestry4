@@ -72,6 +72,7 @@
       <action type="update" dev="HLS">Enable Eclipse project-specific compile options, active additional checks as errors, and fix those errors in the code base</action> 
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-534">WebRequest interface doesn't expose getRemoteUser(), isUserInRole() or getUserPrincipal()</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-530" due-to="Raphael Jean">Namespace messages are retrieved using page's locale rather than engine's locale</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-354">Component w/o .jwc file not visible</action>
     </release>
     <release version="4.0-beta-3" date="Jul 22 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>

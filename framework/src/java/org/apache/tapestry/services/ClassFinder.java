@@ -26,7 +26,7 @@ public interface ClassFinder
      * Searches for a class within a list of packages, which always includes the default package.
      * 
      * @param packageList
-     *            a comma seperated list of package named (i.e., "java.lang,java.util")
+     *            a comma seperated list of package names (i.e., "java.lang,java.util")
      * @param className
      *            the name of the class to search for. This may be just a class name, or even a
      *            partial class name (i.e., "impl.Foo").
