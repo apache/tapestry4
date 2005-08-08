@@ -655,8 +655,17 @@ public class TestPageSpecificationResolver extends AbstractSpecificationResolver
         IComponentSpecification spec = application._specification;
 
         assertEquals(true, spec.isPageSpecification());
-        assertEquals(resource, spec.getSpecificationLocation());
 
+        // The specification location is used to find relative assets and the like, and is baesd
+        // on the page name and the namespace location.
+
+        assertEquals(contextRoot.getRelativeResource("WEB-INF/TemplatePage.page"), spec
+                .getSpecificationLocation());
+
+        // The Location is used for any error reporting, and should be the actual file
+        // located, the template.
+
+        assertEquals(resource, spec.getLocation().getResource());
         assertEquals("TemplatePage", resolver.getSimplePageName());
         assertEquals("TemplatePage", application._pageName);
 

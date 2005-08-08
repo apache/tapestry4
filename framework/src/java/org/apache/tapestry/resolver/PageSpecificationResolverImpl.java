@@ -187,7 +187,7 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
 
             if (templateResource.getResourceURL() != null)
             {
-                setupImplicitPage(templateResource);
+                setupImplicitPage(templateResource, namespaceLocation);
                 return;
             }
 
@@ -224,7 +224,7 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
         }
     }
 
-    private void setupImplicitPage(Resource resource)
+    private void setupImplicitPage(Resource resource, Resource namespaceLocation)
     {
         if (_log.isDebugEnabled())
             _log.debug(ResolverMessages.foundHTMLTemplate(resource));
@@ -232,9 +232,15 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
         // TODO The SpecFactory in Specification parser should be used in some way to
         // create an IComponentSpecification!
 
+        // The virtual location of the page specification is relative to the
+        // namespace (typically, the application specification). This will be used when
+        // searching for the page's message catalog or other related assets.
+
+        Resource pageResource = namespaceLocation.getRelativeResource(_simpleName + ".page");
+
         IComponentSpecification specification = new ComponentSpecification();
         specification.setPageSpecification(true);
-        specification.setSpecificationLocation(resource);
+        specification.setSpecificationLocation(pageResource);
         specification.setLocation(new LocationImpl(resource));
 
         setSpecification(specification);
