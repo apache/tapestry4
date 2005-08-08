@@ -26,6 +26,7 @@ import java.util.Map;
 
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IPage;
+import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.ResetEventListener;
 
 /**
@@ -127,7 +128,7 @@ public class ListenerMapSourceImpl implements ListenerMapSource, ResetEventListe
         if (returnType == void.class || returnType == String.class)
             return true;
 
-        return IPage.class.isAssignableFrom(returnType);
+        return IPage.class.isAssignableFrom(returnType) || ILink.class.isAssignableFrom(returnType);
     }
 
     private Map convertMethodListMapToInvokerMap(Map map)

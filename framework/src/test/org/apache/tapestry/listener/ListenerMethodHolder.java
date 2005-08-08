@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.html.BasePage;
 
 /**
@@ -34,6 +35,8 @@ public class ListenerMethodHolder
 
     private IPage _page;
 
+    private ILink _link;
+
     public ListenerMethodHolder()
     {
     }
@@ -41,6 +44,11 @@ public class ListenerMethodHolder
     public ListenerMethodHolder(String pageName)
     {
         _pageName = pageName;
+    }
+
+    public ListenerMethodHolder(ILink link)
+    {
+        _link = link;
     }
 
     public ListenerMethodHolder(IPage page)
@@ -79,6 +87,11 @@ public class ListenerMethodHolder
     public IPage returnsPage()
     {
         return _page;
+    }
+
+    public ILink returnsLink()
+    {
+        return _link;
     }
 
     public String returnsPageName()

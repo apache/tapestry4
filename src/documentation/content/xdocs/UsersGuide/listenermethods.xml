@@ -64,11 +64,25 @@ the response. Returning null will not change the active page (it defaults to the
 link or form components which invoked the listener method).
 </p>
 
-<p>
-This control over the returned page, especially when combined with
-<link href="injection.html#injection.page">page injection</link>, means that you will rarely
-need to access the &IRequestCycle; object.
-</p>
+<dl>
+ <dt>void</dt>
+ <dd>The listener method does not change the active page.</dd>
+
+<dt>java.lang.String</dt>
+<dd>The listener method may return the name of a page to activate (and render the response). Returning
+null does not change the active page.</dd>
+
+<dt>&IPage;</dt>
+<dd>A non-null &IPage; will activate that page instance. The page object may be obtained
+from the request cycle, or via <link href="injection.html#injection.page">page injection</link>.
+</dd>
+
+<dt>&ILink;</dt>
+<dd>
+Returning a non-null &ILink; will send a redirect to the client for the URL associated with the link.
+This is commonly used to perform a <em>redirect-after-post</em>.
+</dd>
+</dl>
 
 </section> <!-- listenermethods.return -->
 

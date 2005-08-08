@@ -82,7 +82,6 @@ public class DescribedLocation implements Location
      * A DescribedLocation is equal to another only if their resources are equal, and their
      * descriptions are equal.
      */
-    @Override
     public boolean equals(Object other)
     {
         if (other instanceof DescribedLocation)

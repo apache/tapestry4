@@ -18,6 +18,7 @@ import org.apache.hivemind.ErrorHandler;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.RedirectException;
 import org.apache.tapestry.pageload.PageSource;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.request.RequestContext;
@@ -166,5 +167,20 @@ public class TestRequestCycle extends HiveMindTestCase
         cycle.discardPage("MyPage");
 
         verifyControls();
+    }
+
+    public void testSendRedirect()
+    {
+        IRequestCycle cycle = new RequestCycle();
+
+        try
+        {
+            cycle.sendRedirect("http://foo/bar");
+            unreachable();
+        }
+        catch (RedirectException ex)
+        {
+            assertEquals("http://foo/bar", ex.getRedirectLocation());
+        }
     }
 }
