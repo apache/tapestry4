@@ -18,9 +18,11 @@ import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ISpecificationSource;
+import org.apache.tapestry.services.ClassFinder;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.easymock.MockControl;
 
@@ -62,13 +64,13 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
     }
 
     private ISpecificationResolverDelegate newDelegate(IRequestCycle cycle, INamespace namespace,
-            IComponentSpecification spec)
+            String type, IComponentSpecification spec)
     {
         MockControl control = newControl(ISpecificationResolverDelegate.class);
         ISpecificationResolverDelegate delegate = (ISpecificationResolverDelegate) control
                 .getMock();
 
-        delegate.findComponentSpecification(cycle, namespace, "DelegateComponent");
+        delegate.findComponentSpecification(cycle, namespace, type);
         control.setReturnValue(spec);
 
         return delegate;
@@ -125,8 +127,9 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         trainIsDeprecated(specc, spec, true);
 
         Log log = (Log) newMock(Log.class);
-        
-        log.error("Component 'MyComponent' (at classpath:/org/apache/tapestry/resolver/TestComponentSpecificationResolver, line 1) is deprecated, and will likely be removed in a later release. Consult its documentation to find a replacement component.");
+
+        log
+                .error("Component 'MyComponent' (at classpath:/org/apache/tapestry/resolver/TestComponentSpecificationResolver, line 1) is deprecated, and will likely be removed in a later release. Consult its documentation to find a replacement component.");
 
         replayControls();
 
@@ -259,6 +262,9 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         namespace.isApplicationNamespace();
         namespacec.setReturnValue(false);
 
+        ClassFinder finder = newClassFinder("org.foo", "FrameworkComponent", null);
+        trainGetPackages(namespacec, namespace, "org.foo");
+
         ISpecificationSource source = newSource(framework);
 
         framework.containsComponentType("FrameworkComponent");
@@ -278,6 +284,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         ComponentSpecificationResolverImpl resolver = new ComponentSpecificationResolverImpl();
         resolver.setLog(log);
         resolver.setSpecificationSource(source);
+        resolver.setClassFinder(finder);
 
         resolver.resolve(cycle, namespace, "FrameworkComponent", l);
 
@@ -304,7 +311,11 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         MockControl frameworkc = newControl(INamespace.class);
         INamespace framework = (INamespace) frameworkc.getMock();
 
-        ISpecificationResolverDelegate delegate = newDelegate(cycle, namespace, spec);
+        ISpecificationResolverDelegate delegate = newDelegate(
+                cycle,
+                namespace,
+                "DelegateComponent",
+                spec);
 
         Resource namespaceLocation = newResource("LibraryStandin.library");
 
@@ -329,9 +340,12 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
 
         log.isDebugEnabled();
         logc.setReturnValue(false);
-        
+
+        ClassFinder finder = newClassFinder("org.foo", "DelegateComponent", null);
+        trainGetPackages(namespacec, namespace, "org.foo");
+
         namespace.installComponentSpecification("DelegateComponent", spec);
-        
+
         trainIsDeprecated(specc, spec, false);
 
         replayControls();
@@ -340,6 +354,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         resolver.setLog(log);
         resolver.setSpecificationSource(source);
         resolver.setDelegate(delegate);
+        resolver.setClassFinder(finder);
 
         resolver.resolve(cycle, namespace, "DelegateComponent", l);
 
@@ -347,6 +362,23 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         assertSame(namespace, resolver.getNamespace());
 
         verifyControls();
+    }
+
+    private void trainGetPackages(MockControl namespacec, INamespace namespace, String packages)
+    {
+        namespace.getPropertyValue("org.apache.tapestry.component-class-packages");
+        namespacec.setReturnValue(packages);
+    }
+
+    private ClassFinder newClassFinder(String packages, String className, Class result)
+    {
+        MockControl control = newControl(ClassFinder.class);
+        ClassFinder finder = (ClassFinder) control.getMock();
+
+        finder.findClass(packages, className);
+        control.setReturnValue(result);
+
+        return finder;
     }
 
     public void testNotFound()
@@ -363,28 +395,35 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         MockControl frameworkc = newControl(INamespace.class);
         INamespace framework = (INamespace) frameworkc.getMock();
 
-        ISpecificationResolverDelegate delegate = newDelegate(cycle, namespace, null);
+        ISpecificationResolverDelegate delegate = newDelegate(
+                cycle,
+                namespace,
+                "NotFoundComponent",
+                null);
 
         Resource namespaceLocation = newResource("LibraryStandin.library");
 
-        namespace.containsComponentType("DelegateComponent");
+        namespace.containsComponentType("NotFoundComponent");
         namespacec.setReturnValue(false);
 
-        train(log, logc, ResolverMessages.resolvingComponent("DelegateComponent", namespace));
+        train(log, logc, ResolverMessages.resolvingComponent("NotFoundComponent", namespace));
 
         namespace.getSpecificationLocation();
         namespacec.setReturnValue(namespaceLocation);
 
         train(log, logc, ResolverMessages.checkingResource(namespaceLocation
-                .getRelativeResource("DelegateComponent.jwc")));
+                .getRelativeResource("NotFoundComponent.jwc")));
 
         namespace.isApplicationNamespace();
         namespacec.setReturnValue(false);
 
         ISpecificationSource source = newSource(framework);
 
-        framework.containsComponentType("DelegateComponent");
+        framework.containsComponentType("NotFoundComponent");
         frameworkc.setReturnValue(false);
+
+        ClassFinder finder = newClassFinder("org.foo", "NotFoundComponent", null);
+        trainGetPackages(namespacec, namespace, "org.foo");
 
         replayControls();
 
@@ -392,16 +431,17 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         resolver.setLog(log);
         resolver.setSpecificationSource(source);
         resolver.setDelegate(delegate);
+        resolver.setClassFinder(finder);
 
         try
         {
-            resolver.resolve(cycle, namespace, "DelegateComponent", l);
+            resolver.resolve(cycle, namespace, "NotFoundComponent", l);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
         {
             assertEquals(
-                    "Component 'DelegateComponent' not found in EasyMock for interface org.apache.tapestry.INamespace.",
+                    "Component 'NotFoundComponent' not found in EasyMock for interface org.apache.tapestry.INamespace.",
                     ex.getMessage());
             assertSame(l, ex.getLocation());
         }
@@ -598,5 +638,56 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         assertSame(namespace, resolver.getNamespace());
 
         verifyControls();
+    }
+
+    private Resource newResource()
+    {
+        return (Resource) newMock(Resource.class);
+    }
+
+    public void testFoundComponentClass()
+    {
+        Resource componentResource = newResource();
+        Resource namespaceResource = newResource("folder/MyComponent.jwc", componentResource);
+
+        MockControl namespacec = newControl(INamespace.class);
+        INamespace namespace = (INamespace) namespacec.getMock();
+
+        trainGetPackages(namespacec, namespace, "org.foo");
+        ClassFinder finder = newClassFinder("org.foo", "folder.MyComponent", BaseComponent.class);
+
+        trainGetResource(namespacec, namespace, namespaceResource);
+
+        replayControls();
+
+        ComponentSpecificationResolverImpl resolver = new ComponentSpecificationResolverImpl();
+        resolver.setClassFinder(finder);
+
+        IComponentSpecification spec = resolver.searchForComponentClass(
+                namespace,
+                "folder/MyComponent");
+
+        assertEquals(BaseComponent.class.getName(), spec.getComponentClassName());
+        assertSame(componentResource, spec.getSpecificationLocation());
+        assertSame(componentResource, spec.getLocation().getResource());
+
+        verifyControls();
+    }
+
+    private void trainGetResource(MockControl control, INamespace namespace, Resource resource)
+    {
+        namespace.getSpecificationLocation();
+        control.setReturnValue(resource);
+    }
+
+    private Resource newResource(String relativePath, Resource relativeResource)
+    {
+        MockControl control = newControl(Resource.class);
+        Resource resource = (Resource) control.getMock();
+
+        resource.getRelativeResource(relativePath);
+        control.setReturnValue(relativeResource);
+
+        return resource;
     }
 }

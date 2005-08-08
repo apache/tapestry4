@@ -25,6 +25,7 @@ import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.util.DescribedLocation;
 import org.easymock.MockControl;
 
 /**
@@ -81,7 +82,7 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
         Method m = findMethod(AnnotatedPage.class, "getInjectedObject");
 
-        AnnotationLocation location = newMethodLocation(
+        DescribedLocation location = newMethodLocation(
                 resolver,
                 AnnotatedPage.class,
                 m,
@@ -100,22 +101,22 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         verifyControls();
     }
 
-    protected AnnotationLocation newMethodLocation(ClassResolver resolver, Class baseClass,
+    protected DescribedLocation newMethodLocation(ClassResolver resolver, Class baseClass,
             Method m, Class annotationClass)
     {
         Resource classResource = newResource(resolver, baseClass);
 
-        return new AnnotationLocation(classResource, AnnotationMessages.methodAnnotation(m
+        return new DescribedLocation(classResource, AnnotationMessages.methodAnnotation(m
                 .getAnnotation(annotationClass), m));
     }
 
-    private AnnotationLocation newClassLocation(ClassResolver resolver, Class baseClass,
+    private DescribedLocation newClassLocation(ClassResolver resolver, Class baseClass,
             Class annotationClass)
     {
         Resource classResource = newResource(resolver, baseClass);
         Annotation annotation = baseClass.getAnnotation(annotationClass);
 
-        return new AnnotationLocation(classResource, AnnotationMessages.classAnnotation(
+        return new DescribedLocation(classResource, AnnotationMessages.classAnnotation(
                 annotation,
                 baseClass));
     }
@@ -131,7 +132,7 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
         Method m = findMethod(AnnotatedPageSubclass.class, "getInjectedObject");
 
-        AnnotationLocation location = newMethodLocation(
+        DescribedLocation location = newMethodLocation(
                 resolver,
                 AnnotatedPageSubclass.class,
                 m,
@@ -166,7 +167,7 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
         Method m = findMethod(AnnotatedPage.class, "getInjectedObject");
 
-        AnnotationLocation location = newMethodLocation(
+        DescribedLocation location = newMethodLocation(
                 resolver,
                 AnnotatedPage.class,
                 m,
@@ -209,7 +210,7 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
         ClassAnnotationEnhancementWorker classWorker = (ClassAnnotationEnhancementWorker) newMock(ClassAnnotationEnhancementWorker.class);
 
-        AnnotationLocation location = newClassLocation(
+        DescribedLocation location = newClassLocation(
                 resolver,
                 DeprecatedBean.class,
                 Deprecated.class);
@@ -241,7 +242,7 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
         Throwable t = new RuntimeException("Simulated failure.");
 
-        AnnotationLocation location = newClassLocation(
+        DescribedLocation location = newClassLocation(
                 resolver,
                 DeprecatedBean.class,
                 Deprecated.class);

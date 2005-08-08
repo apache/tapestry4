@@ -26,6 +26,7 @@ import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.enhance.EnhancementWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.util.DescribedLocation;
 
 /**
  * Implementation of {@link org.apache.tapestry.enhance.EnhancementWorker} that finds class and
@@ -84,7 +85,7 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
 
         try
         {
-            Location location = new AnnotationLocation(classResource, AnnotationMessages
+            Location location = new DescribedLocation(classResource, AnnotationMessages
                     .classAnnotation(annotation, clazz));
 
             worker.performEnhancement(op, spec, clazz, location);
@@ -119,7 +120,7 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
 
         try
         {
-            Location location = new AnnotationLocation(classResource, AnnotationMessages
+            Location location = new DescribedLocation(classResource, AnnotationMessages
                     .methodAnnotation(annotation, method));
             worker.performEnhancement(op, spec, method, location);
         }

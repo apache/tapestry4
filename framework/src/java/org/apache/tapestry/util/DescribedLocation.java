@@ -12,27 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.annotations;
+package org.apache.tapestry.util;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
 
 /**
- * Implementation of {@link org.apache.hivemind.Location} that is used to identify the class and/or
- * method and annotation. This is useful for line-precise exception reporting of errors related to
- * annotations.
+ * Implementation of {@link org.apache.hivemind.Location} that is used to describe a location within
+ * a resource. This is used when the location within the resource can't be expressed as a line and
+ * column. One example is for setting the location of an annotation. This is useful for line-precise
+ * exception reporting of errors related to annotations.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class AnnotationLocation implements Location
+public class DescribedLocation implements Location
 {
     private final Resource _resource;
 
     private final String _description;
 
-    public AnnotationLocation(Resource resource, String description)
+    public DescribedLocation(Resource resource, String description)
     {
         Defense.notNull(resource, "resource");
         Defense.notNull(description, "description");
@@ -42,7 +43,7 @@ public class AnnotationLocation implements Location
     }
 
     /**
-     * Returns the location's description.
+     * Returns the description provided in the constructor.
      */
 
     public String toString()
@@ -51,7 +52,7 @@ public class AnnotationLocation implements Location
     }
 
     /**
-     * Returns a resource corresponding to the Java class.
+     * Returns the resource provided in the constructor.
      */
 
     public Resource getResource()
@@ -77,12 +78,16 @@ public class AnnotationLocation implements Location
         return 0;
     }
 
+    /**
+     * A DescribedLocation is equal to another only if their resources are equal, and their
+     * descriptions are equal.
+     */
     @Override
     public boolean equals(Object other)
     {
-        if (other instanceof AnnotationLocation)
+        if (other instanceof DescribedLocation)
         {
-            AnnotationLocation otherLocation = (AnnotationLocation) other;
+            DescribedLocation otherLocation = (DescribedLocation) other;
 
             return _resource.equals(otherLocation._resource)
                     && _description.equals(otherLocation._description);

@@ -105,6 +105,7 @@
         <set-service property="delegate" service-id="SpecificationResolverDelegate"/>
         <set-object property="applicationId" value="infrastructure:applicationId"/>
         <set-object property="contextRoot" value="infrastructure:contextRoot"/>
+		<set-object property="classFinder" value="infrastructure:classFinder"/>
       </construct>
     </invoke-factory>    
   </service-point>
