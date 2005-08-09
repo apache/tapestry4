@@ -128,7 +128,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                BaseComponent.class, cf);
+                BaseComponent.class, cf, null);
 
         eo.claimReadonlyProperty("foo");
 
@@ -143,7 +143,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                BaseComponent.class, cf);
+                BaseComponent.class, cf, null);
 
         eo.claimReadonlyProperty("foo");
         eo.claimReadonlyProperty("bar");
@@ -169,7 +169,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                BaseComponent.class, cf);
+                BaseComponent.class, cf, null);
 
         try
         {
@@ -230,7 +230,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                BaseComponent.class, cf);
+                BaseComponent.class, cf, null);
 
         assertSame(BaseComponent.class, eo.getBaseClass());
 
@@ -245,7 +245,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                BaseComponent.class, cf);
+                BaseComponent.class, cf, null);
 
         assertEquals(false, eo.implementsInterface(PageValidateListener.class));
 
@@ -260,7 +260,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                ValidatingComponent.class, cf);
+                ValidatingComponent.class, cf, null);
 
         assertEquals(true, eo.implementsInterface(PageValidateListener.class));
 
@@ -285,7 +285,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                BaseComponent.class, factory);
+                BaseComponent.class, factory, null);
 
         eo.extendMethodImplementation(
                 PageDetachListener.class,
@@ -315,7 +315,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                BaseComponent.class, factory);
+                BaseComponent.class, factory, null);
 
         eo.extendMethodImplementation(
                 PageDetachListener.class,
@@ -335,7 +335,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                BaseComponent.class, cf);
+                BaseComponent.class, cf, null);
 
         // Validates because BaseComponent doesn't have such a property.
 
@@ -352,7 +352,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                BaseComponent.class, cf);
+                BaseComponent.class, cf, null);
 
         // Validates because BaseComponent inherits a page property of type IPage
 
@@ -369,7 +369,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                BaseComponent.class, cf);
+                BaseComponent.class, cf, null);
 
         // Validates because BaseComponent inherits a page property of type IPage
 
@@ -398,7 +398,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                BaseComponent.class, cf);
+                BaseComponent.class, cf, null);
 
         assertSame(boolean.class, eo.convertTypeName("boolean"));
         assertSame(float[].class, eo.convertTypeName("float[]"));
@@ -440,7 +440,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                BaseComponent.class, cf);
+                BaseComponent.class, cf, null);
 
         eo.addField("fred", String.class);
 
@@ -468,7 +468,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
-                spec, BaseComponent.class, cf);
+                spec, BaseComponent.class, cf, null);
 
         assertEquals("fred", eo.addInjectedField("fred", String.class, "FRED_VALUE"));
 
@@ -528,7 +528,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                baseClass, cf);
+                baseClass, cf, null);
 
         eo.addMethod(Modifier.PUBLIC, sig, "method body", l);
 
@@ -563,7 +563,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                baseClass, cf);
+                baseClass, cf, null);
 
         eo.addMethod(Modifier.PUBLIC, sig, "method body", firstLocation);
 
@@ -592,7 +592,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                Fixture.class, cf);
+                Fixture.class, cf, null);
 
         assertEquals("getStringProperty", eo.getAccessorMethodName("stringProperty"));
         assertEquals("isBooleanProperty", eo.getAccessorMethodName("booleanProperty"));
@@ -620,7 +620,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
-                spec, GetClassReferenceFixture.class, new ClassFactoryImpl());
+                spec, GetClassReferenceFixture.class, new ClassFactoryImpl(), null);
 
         // This does two things; it creates a new field, and it sets up a new constructor
         // parameter to inject the class value (Map.class) into each new instance.
@@ -651,7 +651,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
-                spec, GetClassReferenceFixture.class, new ClassFactoryImpl());
+                spec, GetClassReferenceFixture.class, new ClassFactoryImpl(), null);
 
         String ref = eo.getClassReference(int[].class);
 
@@ -695,7 +695,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                BaseComponent.class, cf);
+                BaseComponent.class, cf, null);
 
         assertEquals(Map.class, eo.getPropertyType("assets"));
         assertEquals(IPage.class, eo.getPropertyType("page"));
@@ -716,7 +716,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(cr, spec,
-                UnclaimedAbstractPropertiesFixture.class, cf);
+                UnclaimedAbstractPropertiesFixture.class, cf, null);
 
         List l = eo.findUnclaimedAbstractProperties();
 
@@ -759,7 +759,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(cr, spec, BaseComponent.class,
-                cf);
+                cf, null);
 
         MethodSignature sig = EnhanceUtils.PAGE_DETACHED_SIGNATURE;
 
@@ -809,7 +809,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(cr, spec, BaseComponent.class,
-                cf);
+                cf, null);
 
         MethodSignature sig = EnhanceUtils.FINISH_LOAD_SIGNATURE;
 
@@ -850,7 +850,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(cr, spec, BaseComponent.class,
-                cf);
+                cf, null);
 
         // A protected method
         MethodSignature sig = EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE;
@@ -901,7 +901,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(cr, spec,
-                ExistingAbstractMethodFixture.class, cf);
+                ExistingAbstractMethodFixture.class, cf, null);
 
         MethodSignature sig = EnhanceUtils.PAGE_DETACHED_SIGNATURE;
 
@@ -939,7 +939,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
-                ServiceLink.class, cf);
+                ServiceLink.class, cf, null);
 
         assertEquals(String.class, eo.getPropertyType("target"));
 
@@ -963,7 +963,7 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(),
-                spec, ServiceLink.class, cf);
+                spec, ServiceLink.class, cf, null);
 
         try
         {

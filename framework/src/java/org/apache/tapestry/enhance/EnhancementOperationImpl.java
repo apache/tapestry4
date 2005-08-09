@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.HiveMind;
@@ -109,8 +110,13 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     private final Map _methods = new HashMap();
 
+    // May be null
+
+    private final Log _log;
+
     public EnhancementOperationImpl(ClassResolver classResolver,
-            IComponentSpecification specification, Class baseClass, ClassFactory classFactory)
+            IComponentSpecification specification, Class baseClass, ClassFactory classFactory,
+            Log log)
     {
         Defense.notNull(classResolver, "classResolver");
         Defense.notNull(specification, "specification");
@@ -126,6 +132,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
         String name = newClassName();
 
         _classFab = classFactory.newClass(name, _baseClass);
+        _log = log;
     }
 
     public String toString()
@@ -223,6 +230,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     EnhancementOperationImpl()
     {
+        _log = null;
     }
 
     public void claimProperty(String propertyName)
@@ -466,6 +474,9 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
             _classFab.addConstructor(types, null, _constructorBuilder.toString());
         }
+
+        if (_log != null)
+            _log.debug("Creating class:\n\n" + _classFab);
     }
 
     private void finalizeIncompleteMethods()
