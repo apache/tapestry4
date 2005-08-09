@@ -24,7 +24,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +43,7 @@ import org.apache.hivemind.util.ToStringBuilder;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.IdAllocator;
+import org.apache.tapestry.util.ObjectIdentityMap;
 
 /**
  * Implementation of {@link org.apache.tapestry.enhance.EnhancementOperation}that knows how to
@@ -71,7 +71,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     private final List _constructorArguments = new ArrayList();
 
-    private final Map _finalFields = new IdentityHashMap();
+    private final ObjectIdentityMap _finalFields = new ObjectIdentityMap();
 
     /**
      * Set of interfaces added to the enhanced class.
