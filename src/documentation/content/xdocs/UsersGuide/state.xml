@@ -393,7 +393,7 @@ To create a new ASO, you must update your &hivemind-descriptor; and add a contri
 </p>  
 
 <source><![CDATA[
-<contribution configuration-id="hivemind.state.ApplicationObjects">
+<contribution configuration-id="tapestry.state.ApplicationObjects">
   <state-object name="registration-data" scope="session">
     <create-instance class="org.example.registration.RegistrationData"/>
   </state-object>  
