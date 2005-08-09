@@ -50,12 +50,18 @@ public interface Validator extends FormComponentContributor
 
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
             throws ValidatorException;
-    
+
     /**
-     * Returns true if this validator accepts null as the object parameter to validate(). When the object
-     * is null, validators that can't accept null are skipped.  It is rare for a validator to return true.
-     * 
+     * Returns true if this validator accepts null as the object parameter to validate(). When the
+     * object is null, validators that can't accept null are skipped. It is rare for a validator to
+     * return true.
      */
-    
+
     public boolean getAcceptsNull();
+
+    /**
+     * Returns true if this field is required. Returns false otherwise.
+     */
+
+    public boolean isRequired();
 }

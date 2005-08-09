@@ -81,7 +81,7 @@ public class Pattern extends BaseValidator
         buffer.append(", '");
         buffer.append(pattern);
         buffer.append("', '");
-        buffer.append(escapeReservedCharacters(message));
+        buffer.append(ValidatorUtils.escapeReservedCharacters(message));
         buffer.append("'); }");
 
         context.addSubmitListener(buffer.toString());

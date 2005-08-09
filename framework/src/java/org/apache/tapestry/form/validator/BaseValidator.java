@@ -15,7 +15,6 @@
 package org.apache.tapestry.form.validator;
 
 import org.apache.hivemind.util.PropertyUtils;
-import org.apache.hivemind.util.StringUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -69,11 +68,12 @@ public abstract class BaseValidator implements Validator
     {
     }
 
-    protected String escapeReservedCharacters(String message) {
-        // Escape backslashes and single quotes in the message
-        message = StringUtils.replace(message, "\\", "\\\\");
-        message = StringUtils.replace(message, "'", "\\'");
-        
-        return message;
+    /**
+     * Returns false. Subclasses may override.
+     */
+
+    public boolean isRequired()
+    {
+        return false;
     }
 }

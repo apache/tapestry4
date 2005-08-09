@@ -91,4 +91,13 @@ public interface IFormComponent extends IComponent
      */
 
     public String getClientId();
+
+    /**
+     * Returns true if the field is required. This will (typically) involve consulting the
+     * component's validators.
+     * 
+     * @since 4.0
+     */
+
+    public boolean isRequired();
 }

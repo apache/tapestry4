@@ -155,4 +155,9 @@ public class TestMinLength extends BaseValidatorTestCase
 
         verifyControls();
     }
+
+    public void testNotRequired()
+    {
+        assertEquals(false, new MinLength().isRequired());
+    }
 }

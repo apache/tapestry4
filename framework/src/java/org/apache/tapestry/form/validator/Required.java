@@ -73,10 +73,19 @@ public class Required extends BaseValidator
         StringBuffer buffer = new StringBuffer("function(event) { require(event, ");
         buffer.append(context.getFieldDOM());
         buffer.append(", '");
-        buffer.append(escapeReservedCharacters(buildMessage(context, field)));
+        buffer.append(ValidatorUtils.escapeReservedCharacters(buildMessage(context, field)));
         buffer.append("'); }");
 
         context.addSubmitListener(buffer.toString());
+    }
+
+    /**
+     * Returns true, that's what Required means!
+     */
+
+    public boolean isRequired()
+    {
+        return true;
     }
 
 }
