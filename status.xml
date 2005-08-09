@@ -67,12 +67,12 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-527">Tapestry 4.0 DTD invalid</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-524" due-to="Adam Greene">Client Side Persistence Scopes can conflict with each other</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-519" due-to="Raphael Jean">NestedMarkupWriterImpl doesn't close the current open tag when getBuffer() is called</action>
-      <action type="fix" dev="PF" fixes-bug="TAPESTRY-407">Unable to override default pattern of DateTranslator and NumberTranslator when initialized via the translator binding.</action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-407">Unable to override default pattern of DateTranslator and NumberTranslator when initialized via the translator binding</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-529">Provide application: prefix to reference the application (root) namespace (from a library)</action>   
-      <action type="update" dev="HLS">Enable Eclipse project-specific compile options, active additional checks as errors, and fix those errors in the code base</action> 
+      <action type="update" dev="HLS">Enable Eclipse project-specific compile options, activate additional checks as errors, and fix those errors in the code base</action> 
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-534">WebRequest interface doesn't expose getRemoteUser(), isUserInRole() or getUserPrincipal()</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-530" due-to="Raphael Jean">Namespace messages are retrieved using page's locale rather than engine's locale</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-354">Component w/o .jwc file not visible</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-354">Components without a .jwc file not visible</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-533" due-to="Raphael Jean">Generated client-side javascript is wrong when error message or field display name contains single-quote characters or backslashes</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-365">Set the location for a page that has no specification (just a template) to be relative to the application (or library) specification</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-537">Allow listener methods to return ILink, to support redirect-after-post</action>
