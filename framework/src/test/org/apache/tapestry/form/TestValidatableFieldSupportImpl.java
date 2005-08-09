@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Locale;
@@ -601,5 +602,86 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         _support.bind(_component, _writer, _cycle, "some value");
 
         verify();
+    }
+
+    private ValidatableField newFieldGetValidators(Collection validators)
+    {
+        MockControl control = newControl(ValidatableField.class);
+        ValidatableField field = (ValidatableField) control.getMock();
+
+        field.getValidators();
+        control.setReturnValue(validators);
+
+        return field;
+    }
+
+    private ValueConverter newValueConverter(Collection validators)
+    {
+        MockControl control = newControl(ValueConverter.class);
+        ValueConverter converter = (ValueConverter) control.getMock();
+
+        converter.coerceValue(validators, Iterator.class);
+        control.setReturnValue(validators.iterator());
+
+        return converter;
+    }
+
+    private Validator newValidator(boolean isRequired)
+    {
+        MockControl control = newControl(Validator.class);
+        Validator validator = (Validator) control.getMock();
+
+        validator.isRequired();
+        control.setReturnValue(isRequired);
+
+        return validator;
+    }
+
+    public void testIsRequiredNoValidators()
+    {
+        Collection validators = Collections.EMPTY_LIST;
+        ValidatableField field = newFieldGetValidators(validators);
+        ValueConverter converter = newValueConverter(validators);
+
+        replayControls();
+
+        ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
+        support.setValueConverter(converter);
+
+        assertEquals(false, support.isRequired(field));
+
+        verifyControls();
+    }
+
+    public void testIsRequiredNoRequiredValidators()
+    {
+        Collection validators = Collections.singletonList(newValidator(false));
+        ValidatableField field = newFieldGetValidators(validators);
+        ValueConverter converter = newValueConverter(validators);
+
+        replayControls();
+
+        ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
+        support.setValueConverter(converter);
+
+        assertEquals(false, support.isRequired(field));
+
+        verifyControls();
+    }
+
+    public void testIsRequiredWithRequiredValidator()
+    {
+        Collection validators = Collections.singletonList(newValidator(true));
+        ValidatableField field = newFieldGetValidators(validators);
+        ValueConverter converter = newValueConverter(validators);
+
+        replayControls();
+
+        ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
+        support.setValueConverter(converter);
+
+        assertEquals(true, support.isRequired(field));
+
+        verifyControls();
     }
 }

@@ -68,4 +68,8 @@ public class ValidatorFixture implements Validator
         _value = value;
     }
 
+    public boolean isRequired()
+    {
+        return false;
+    }
 }

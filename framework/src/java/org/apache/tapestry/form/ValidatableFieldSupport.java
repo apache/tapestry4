@@ -31,13 +31,13 @@ public interface ValidatableFieldSupport
      * Called during render of the specified component. Determines form element value used to render
      * element.
      */
-    public void render(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle);
+    public void render(ValidatableField field, IMarkupWriter writer, IRequestCycle cycle);
 
     /**
      * Called during render of the specified component. Renders any contributions from translator
      * and validators.
      */
-    public void renderContributions(ValidatableField component, IMarkupWriter writer,
+    public void renderContributions(ValidatableField field, IMarkupWriter writer,
             IRequestCycle cycle);
 
     /**
@@ -47,6 +47,12 @@ public interface ValidatableFieldSupport
      * @throws ValidatorException
      *             if translation or validation fails
      */
-    public void bind(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle,
-            String value);
+    public void bind(ValidatableField field, IMarkupWriter writer, IRequestCycle cycle, String value);
+
+    /**
+     * Returns true if this component is required. This usually entails a search of the component's
+     * validators.
+     */
+
+    public boolean isRequired(ValidatableField field);
 }

@@ -57,4 +57,16 @@ public abstract class AbstractValidatableField extends AbstractFormComponent imp
     {
         getValidatableFieldSupport().renderContributions(this, writer, cycle);
     }
+
+    /**
+     * Returns true if the field is required (because it contains a
+     * {@link org.apache.tapestry.form.validator.Validator} that is required.
+     * 
+     * @see org.apache.tapestry.form.ValidatableFieldSupport#isRequired(ValidatableField)
+     */
+
+    public boolean isRequired()
+    {
+        return getValidatableFieldSupport().isRequired(this);
+    }
 }

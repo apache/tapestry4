@@ -122,7 +122,8 @@ public class ValidatableFieldSupportImpl implements ValidatableFieldSupport
 
             Iterator validators = getValidatorsIterator(component);
 
-            ValidationMessages messages = new ValidationMessagesImpl(component, _threadLocale.getLocale());
+            ValidationMessages messages = new ValidationMessagesImpl(component, _threadLocale
+                    .getLocale());
 
             while (validators.hasNext())
             {
@@ -143,5 +144,20 @@ public class ValidatableFieldSupportImpl implements ValidatableFieldSupport
         {
             delegate.record(ex);
         }
+    }
+
+    public boolean isRequired(ValidatableField field)
+    {
+        Iterator i = getValidatorsIterator(field);
+
+        while (i.hasNext())
+        {
+            Validator validator = (Validator) i.next();
+
+            if (validator.isRequired())
+                return true;
+        }
+
+        return false;
     }
 }

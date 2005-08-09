@@ -470,4 +470,22 @@ public class TestTextField extends BaseFormComponentTest
 
         assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" class=\"validation-delegate\"/></span>");
     }
+
+    public void testIsRequired()
+    {
+        MockControl supportc = newControl(ValidatableFieldSupport.class);
+        ValidatableFieldSupport support = (ValidatableFieldSupport) supportc.getMock();
+
+        TextField field = (TextField) newInstance(TextField.class, new Object[]
+        { "validatableFieldSupport", support, });
+
+        support.isRequired(field);
+        supportc.setReturnValue(true);
+
+        replayControls();
+
+        assertEquals(true, field.isRequired());
+
+        verifyControls();
+    }
 }

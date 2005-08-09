@@ -67,7 +67,7 @@ public class TestRequired extends BaseValidatorTestCase
             assertEquals("Default Message for Fred.", ex.getMessage());
             assertSame(ValidationConstraint.REQUIRED, ex.getConstraint());
         }
-        
+
         verifyControls();
     }
 
@@ -95,7 +95,7 @@ public class TestRequired extends BaseValidatorTestCase
             assertEquals("Custom Message for Fred.", ex.getMessage());
             assertSame(ValidationConstraint.REQUIRED, ex.getConstraint());
         }
-        
+
         verifyControls();
     }
 
@@ -111,7 +111,7 @@ public class TestRequired extends BaseValidatorTestCase
         IFormComponent field = newField("Fred");
 
         context.registerForFocus(ValidationConstants.REQUIRED_FIELD);
-        
+
         context.getFieldDOM();
         contextc.setReturnValue("document.fred.barney");
 
@@ -124,11 +124,17 @@ public class TestRequired extends BaseValidatorTestCase
                 { "Fred" },
                 "Default\\Message for Fred.");
 
-         context
+        context
                 .addSubmitListener("function(event) { require(event, document.fred.barney, 'Default\\\\Message for Fred.'); }");
 
         replayControls();
 
-        new Required().renderContribution(writer, cycle, context, field);verifyControls();
+        new Required().renderContribution(writer, cycle, context, field);
+        verifyControls();
+    }
+
+    public void testIsRequired()
+    {
+        assertEquals(true, new Required().isRequired());
     }
 }

@@ -77,6 +77,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-365">Set the location for a page that has no specification (just a template) to be relative to the application (or library) specification</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-537">Allow listener methods to return ILink, to support redirect-after-post</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-539">Abstract properties (without a &lt;property&gt; element) do not clear out their values</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-351">Add isRequired() to IFieldComponent</action>
     </release>
     <release version="4.0-beta-3" date="Jul 22 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>

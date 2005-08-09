@@ -136,6 +136,17 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
         form.getElementId(this);
     }
 
+    /**
+     * Returns false. Subclasses that might be required must override this method. Typically, this
+     * involves checking against the component's validators.
+     * 
+     * @since 4.0
+     */
+    public boolean isRequired()
+    {
+        return false;
+    }
+
     protected abstract void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle);
 
     protected abstract void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle);
