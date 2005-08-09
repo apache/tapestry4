@@ -78,6 +78,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-537">Allow listener methods to return ILink, to support redirect-after-post</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-539">Abstract properties (without a &lt;property&gt; element) do not clear out their values</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-351">Add isRequired() to IFieldComponent</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-452">Tapestry 4.0 (excluding annotations) not source compatible with JDK 1.3</action>
     </release>
     <release version="4.0-beta-3" date="Jul 22 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>
