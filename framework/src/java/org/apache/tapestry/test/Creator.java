@@ -87,7 +87,7 @@ public class Creator
             throw new IllegalArgumentException(ScriptMessages.wrongTypeForEnhancement(inputClass));
 
         EnhancementOperationImpl op = new EnhancementOperationImpl(_classResolver,
-                new ComponentSpecification(), inputClass, _classFactory);
+                new ComponentSpecification(), inputClass, _classFactory, null);
 
         IComponentSpecification spec = new ComponentSpecification();
         spec.setLocation(new CreatorLocation());

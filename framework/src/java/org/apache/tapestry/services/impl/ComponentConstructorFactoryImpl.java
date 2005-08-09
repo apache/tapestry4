@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.tapestry.enhance.EnhancedClassValidator;
@@ -29,7 +30,7 @@ import org.apache.tapestry.services.ComponentConstructorFactory;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- * Implementation of the {@link org.apache.tapestry.services.ComponentConstructorFactory}service
+ * Implementation of the {@link org.apache.tapestry.services.ComponentConstructorFactory} service
  * interface.
  * 
  * @author Howard M. Lewis Ship
@@ -38,6 +39,8 @@ import org.apache.tapestry.spec.IComponentSpecification;
 public class ComponentConstructorFactoryImpl implements ComponentConstructorFactory,
         ResetEventListener
 {
+    private Log _log;
+    
     private ClassFactory _classFactory;
 
     private ClassResolver _classResolver;
@@ -68,7 +71,7 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
             Class baseClass = _classResolver.findClass(className);
 
             EnhancementOperationImpl eo = new EnhancementOperationImpl(_classResolver,
-                    specification, baseClass, _classFactory);
+                    specification, baseClass, _classFactory, _log);
 
             // Invoking on the chain is the same as invoking on every
             // object in the chain (because method performEnhancement() is type void).
@@ -108,5 +111,10 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
     public void setChain(EnhancementWorker chain)
     {
         _chain = chain;
+    }
+
+    public void setLog(Log log)
+    {
+        _log = log;
     }
 }

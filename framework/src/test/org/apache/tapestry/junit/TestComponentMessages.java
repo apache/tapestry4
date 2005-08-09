@@ -123,7 +123,7 @@ public class TestComponentMessages extends TapestryTestCase
         ClassFactory classFactory = new ClassFactoryImpl();
 
         EnhancementOperationImpl op = new EnhancementOperationImpl(new DefaultClassResolver(),
-                specification, BasePage.class, classFactory);
+                specification, BasePage.class, classFactory, null);
 
         InjectMessagesWorker injectMessages = new InjectMessagesWorker();
         injectMessages.setComponentMessagesSource(source);

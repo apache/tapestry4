@@ -63,27 +63,31 @@
   
   <contribution configuration-id="EnhancementWorkers">
     
-    <!-- These can actually run in any order, as long as page-detach-listener runs later. -->
+    <!-- These can actually run in any order, as long as abstract-property runs later. -->
 
-    <command id="inject-messages" object="service:InjectMessagesWorker" before="page-detach-listener"/>    
-    <command id="inject-specification" object="service:InjectSpecificationWorker" before="page-detach-listener"/>
-    <command id="specified-property" object="service:SpecifiedPropertyWorker" before="page-detach-listener"/>
-    <command id="parameter" object="service:ParameterPropertyWorker" before="page-detach-listener"/>
-    <command id="dispatch-inject" object="service:DispatchToInjectWorker" before="page-detach-listener"/>
-    <command id="inject-component" object="service:InjectComponentWorker" before="page-detach-listener"/>
-    <command id="inject-bean" object="service:InjectBeanWorker" before="page-detach-listener"/>
-    <command id="inject-asset" object="service:InjectAssetWorker" before="page-detach-listener"/>
+    <command id="inject-messages" object="service:InjectMessagesWorker" before="abstract-property"/>    
+    <command id="inject-specification" object="service:InjectSpecificationWorker" before="abstract-property"/>
+    <command id="specified-property" object="service:SpecifiedPropertyWorker" before="abstract-property"/>
+    <command id="parameter" object="service:ParameterPropertyWorker" before="abstract-property"/>
+    <command id="dispatch-inject" object="service:DispatchToInjectWorker" before="abstract-property"/>
+    <command id="inject-component" object="service:InjectComponentWorker" before="abstract-property"/>
+    <command id="inject-bean" object="service:InjectBeanWorker" before="abstract-property"/>
+    <command id="inject-asset" object="service:InjectAssetWorker" before="abstract-property"/>
     
-    <!-- These need to come last,  since the previous commands may have added interfaces
-         to the class. -->
+    <!-- After all the previous workers have had their chance, we "fill in" any unclaimed properties
+         as transient page properties. -->
+         
+    <command id="abstract-property" object="service:AbstractPropertyWorker"/>
+
+    <!-- These need to come last,  since the previous commands (including abstract-property)
+         may have added interfaces to the class. -->
     
-    <command id="page-detach-listener" object="service:InjectPageDetachListenerWorker"/>
-    <command id="page-attach-listener" object="service:InjectPageAttachListenerWorker" after="page-detach-listener"/>
-    <command id="page-validate-listener" object="service:InjectPageValidateListenerWorker" after="page-detach-listener"/>
-    <command id="page-begin-render-listener" object="service:InjectPageBeginRenderListenerWorker" after="page-detach-listener"/>
-    <command id="page-end-render-listener" object="service:InjectPageEndRenderListenerWorker" after="page-detach-listener"/>
+    <command id="page-detach-listener" object="service:InjectPageDetachListenerWorker" after="abstract-property"/>
+    <command id="page-attach-listener" object="service:InjectPageAttachListenerWorker" after="abstract-property"/>
+    <command id="page-validate-listener" object="service:InjectPageValidateListenerWorker" after="abstract-property"/>
+    <command id="page-begin-render-listener" object="service:InjectPageBeginRenderListenerWorker" after="abstract-property"/>
+    <command id="page-end-render-listener" object="service:InjectPageEndRenderListenerWorker" after="abstract-property"/>
         
-    <command id="abstract-property" object="service:AbstractPropertyWorker" after="*"/>
     
   </contribution>
   

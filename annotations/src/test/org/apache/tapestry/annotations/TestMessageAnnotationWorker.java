@@ -141,7 +141,7 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
 
         ComponentSpecification spec = new ComponentSpecification();
         EnhancementOperationImpl op = new EnhancementOperationImpl(getClassResolver(), spec,
-                baseClass, new ClassFactoryImpl());
+                baseClass, new ClassFactoryImpl(), null);
 
         op.addInjectedField("_messages", Messages.class, messages);
 
