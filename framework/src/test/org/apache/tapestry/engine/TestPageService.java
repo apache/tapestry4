@@ -43,7 +43,7 @@ public class TestPageService extends ServiceTestCase
 
         IRequestCycle cycle = newRequestCycle();
 
-        lf.constructLink(cycle, parameters, true);
+        lf.constructLink(cycle, false, parameters, true);
         lfc.setReturnValue(link);
 
         replayControls();
@@ -51,7 +51,7 @@ public class TestPageService extends ServiceTestCase
         PageService ps = new PageService();
         ps.setLinkFactory(lf);
 
-        assertSame(link, ps.getLink(cycle, "TargetPage"));
+        assertSame(link, ps.getLink(cycle, false, "TargetPage"));
 
         verifyControls();
     }

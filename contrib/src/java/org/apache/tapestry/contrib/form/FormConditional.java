@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.contrib.form;
 
-import java.io.IOException;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.AbstractComponent;
@@ -109,7 +107,7 @@ public abstract class FormConditional extends AbstractComponent implements IForm
         {
             externalValue = getDataSqueezer().squeeze(value ? Boolean.TRUE : Boolean.FALSE);
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
             throw new ApplicationRuntimeException(Tapestry.format(
                     "FormConditional.unable-to-convert-value",
@@ -126,7 +124,7 @@ public abstract class FormConditional extends AbstractComponent implements IForm
             Boolean b = (Boolean) getDataSqueezer().unsqueeze(value);
             return b.booleanValue();
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
             throw new ApplicationRuntimeException(Tapestry.format(
                     "FormConditional.unable-to-convert-string",

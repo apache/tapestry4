@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.form;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -40,7 +39,8 @@ import org.apache.tapestry.services.DataSqueezer;
 public abstract class ListEdit extends AbstractFormComponent
 {
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -48,13 +48,16 @@ public abstract class ListEdit extends AbstractFormComponent
     }
 
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String[] values = cycle.getParameters(getName());
-        
-        this.render(writer, cycle, (Iterator) getValueConverter().coerceValue(values, Iterator.class));
+
+        this.render(writer, cycle, (Iterator) getValueConverter().coerceValue(
+                values,
+                Iterator.class));
     }
 
     protected void render(IMarkupWriter writer, IRequestCycle cycle, Iterator i)
@@ -112,7 +115,7 @@ public abstract class ListEdit extends AbstractFormComponent
         {
             externalValue = getDataSqueezer().squeeze(value);
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
             throw new ApplicationRuntimeException(Tapestry.format(
                     "ListEdit.unable-to-convert-value",
@@ -128,7 +131,7 @@ public abstract class ListEdit extends AbstractFormComponent
         {
             return getDataSqueezer().unsqueeze(value);
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
             throw new ApplicationRuntimeException(Tapestry.format(
                     "ListEdit.unable-to-convert-string",

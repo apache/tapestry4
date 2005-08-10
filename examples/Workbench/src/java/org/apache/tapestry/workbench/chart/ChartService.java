@@ -55,7 +55,7 @@ public class ChartService implements IEngineService
     /** @since 4.0 */
     private WebResponse _response;
 
-    public ILink getLink(IRequestCycle cycle, Object parameter)
+    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
     {
         Defense.isAssignable(parameter, IComponent.class, "parameter");
 
@@ -67,7 +67,7 @@ public class ChartService implements IEngineService
         parameters.put(ServiceConstants.PAGE, component.getPage().getPageName());
         parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
 
-        return _linkFactory.constructLink(cycle, parameters, true);
+        return _linkFactory.constructLink(cycle, false, parameters, true);
     }
 
     public void service(IRequestCycle cycle) throws IOException

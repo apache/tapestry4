@@ -347,14 +347,14 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         if (isDirect())
         {
             Object parameter = new DirectServiceParameter(this);
-            return getDirectService().getLink(cycle, parameter);
+            return getDirectService().getLink(cycle, true, parameter);
         }
 
         // I'd love to pull out support for the action service entirely!
 
         Object parameter = new ActionServiceParameter(this, actionId);
 
-        return getActionService().getLink(cycle, parameter);
+        return getActionService().getLink(cycle, true, parameter);
     }
 
     /** Injected */

@@ -40,7 +40,7 @@ public class PageService implements IEngineService
     /** @since 4.0 */
     private LinkFactory _linkFactory;
 
-    public ILink getLink(IRequestCycle cycle, Object parameter)
+    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
     {
         Defense.isAssignable(parameter, String.class, "parameter");
 
@@ -49,7 +49,7 @@ public class PageService implements IEngineService
         parameters.put(ServiceConstants.SERVICE, Tapestry.PAGE_SERVICE);
         parameters.put(ServiceConstants.PAGE, parameter);
 
-        return _linkFactory.constructLink(cycle, parameters, true);
+        return _linkFactory.constructLink(cycle, post, parameters, true);
 
     }
 

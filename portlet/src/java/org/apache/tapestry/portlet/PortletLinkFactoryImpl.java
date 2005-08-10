@@ -41,7 +41,7 @@ public class PortletLinkFactoryImpl extends LinkFactoryImpl
         _renderResponse = renderResponse;
     }
 
-    public ILink constructLink(IRequestCycle cycle, Map parameters, boolean stateful)
+    public ILink constructLink(IRequestCycle cycle, boolean post, Map parameters, boolean stateful)
     {
         Defense.notNull(cycle, "cycle");
         Defense.notNull(parameters, "parameters");

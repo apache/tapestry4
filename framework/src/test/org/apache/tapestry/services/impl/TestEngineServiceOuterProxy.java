@@ -45,7 +45,7 @@ public class TestEngineServiceOuterProxy extends HiveMindTestCase
 
         Object parameter = new Object();
 
-        delegate.getLink(cycle, parameter);
+        delegate.getLink(cycle, false, parameter);
         control.setReturnValue(link);
 
         replayControls();
@@ -53,7 +53,7 @@ public class TestEngineServiceOuterProxy extends HiveMindTestCase
         EngineServiceOuterProxy proxy = new EngineServiceOuterProxy("xxx");
         proxy.installDelegate(delegate);
 
-        assertSame(link, proxy.getLink(cycle, parameter));
+        assertSame(link, proxy.getLink(cycle, false, parameter));
 
         verifyControls();
     }

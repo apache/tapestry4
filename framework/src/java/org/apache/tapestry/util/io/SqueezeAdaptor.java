@@ -19,20 +19,29 @@ import java.io.IOException;
 import org.apache.tapestry.services.DataSqueezer;
 
 /**
- * Interface which defines a class used to convert data for a specific Java type
- * into a String format (squeeze it), or convert from a String back into a Java
- * type (unsqueeze).
- * 
+ * Interface which defines a class used to convert data for a specific Java type into a String
+ * format (squeeze it), or convert from a String back into a Java type (unsqueeze).
  * <p>
- * This interface is somewhat misnamed; this is more of the GoF Strategy pattern
- * than GoF Adaptor pattern.
+ * This interface is somewhat misnamed; this is more of the GoF Strategy pattern than GoF Adaptor
+ * pattern.
  * 
  * @author Howard Lewis Ship
- *
  */
 
-public interface ISqueezeAdaptor
+public interface SqueezeAdaptor
 {
+    /**
+     * Returns one or more characters, each of which will be a prefix for this adaptor.
+     */
+
+    public String getPrefix();
+
+    /**
+     * Returns the class (or interface) which can be encoded by this adaptor.
+     */
+
+    public Class getDataClass();
+
     /**
      * Converts the data object into a String.
      * 
@@ -40,7 +49,7 @@ public interface ISqueezeAdaptor
      *             if the object can't be converted.
      */
 
-    public String squeeze(DataSqueezer squeezer, Object data) throws IOException;
+    public String squeeze(DataSqueezer squeezer, Object data);
 
     /**
      * Converts a String back into an appropriate object.
@@ -49,11 +58,5 @@ public interface ISqueezeAdaptor
      *             if the String can't be converted.
      */
 
-    public Object unsqueeze(DataSqueezer squeezer, String string) throws IOException;
-
-    /**
-     * Invoked to ask an adaptor to register itself to the squeezer.
-     */
-
-    public void register(DataSqueezer squeezer);
+    public Object unsqueeze(DataSqueezer squeezer, String string);
 }

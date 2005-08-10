@@ -17,31 +17,29 @@ package org.apache.tapestry.util.io;
 import org.apache.tapestry.services.DataSqueezer;
 
 /**
- *  Squeezes a {@link Float}.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Squeezes a {@link Float}.
+ * 
+ * @author Howard Lewis Ship
+ */
 
-class FloatAdaptor implements ISqueezeAdaptor
+public class FloatAdaptor implements SqueezeAdaptor
 {
     private static final String PREFIX = "f";
 
-    /**
-     *  Registers using the prefix 'f'.
-     *
-     **/
-
-    public void register(DataSqueezer squeezer)
+    public String getPrefix()
     {
-        squeezer.register(PREFIX, Float.class, this);
+        return PREFIX;
+    }
+
+    public Class getDataClass()
+    {
+        return Float.class;
     }
 
     /**
-     *  Invoked <code>toString()</code> on data (which is type {@link Float}),
-     *  and prefixs the result.
-     *
-     **/
+     * Invoked <code>toString()</code> on data (which is type {@link Float}), and prefixs the
+     * result.
+     */
 
     public String squeeze(DataSqueezer squeezer, Object data)
     {
@@ -49,10 +47,8 @@ class FloatAdaptor implements ISqueezeAdaptor
     }
 
     /**
-     *  Constructs a {@link Float} from the string, after stripping
-     *  the prefix.
-     *
-     **/
+     * Constructs a {@link Float} from the string, after stripping the prefix.
+     */
 
     public Object unsqueeze(DataSqueezer squeezer, String string)
     {

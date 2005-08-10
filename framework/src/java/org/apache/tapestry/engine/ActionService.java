@@ -55,7 +55,7 @@ public class ActionService implements IEngineService
     /** @since 4.0 */
     private WebRequest _request;
 
-    public ILink getLink(IRequestCycle cycle, Object parameter)
+    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
     {
         Defense.isAssignable(parameter, ActionServiceParameter.class, "parameter");
 
@@ -77,7 +77,7 @@ public class ActionService implements IEngineService
         parameters.put(ACTION, asp.getActionId());
         parameters.put(ServiceConstants.SESSION, stateful ? "T" : null);
 
-        return _linkFactory.constructLink(cycle, parameters, true);
+        return _linkFactory.constructLink(cycle, post, parameters, true);
     }
 
     public void service(IRequestCycle cycle) throws IOException

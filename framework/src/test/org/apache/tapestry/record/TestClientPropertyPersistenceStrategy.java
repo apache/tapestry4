@@ -125,7 +125,7 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
 
         strategy.initializeService();
 
-        strategy.addParametersForPersistentProperties(encoding, cycle);
+        strategy.addParametersForPersistentProperties(encoding, cycle, false);
 
         verifyControls();
     }
@@ -175,7 +175,7 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
 
         strategy.initializeService();
 
-        strategy.addParametersForPersistentProperties(encoding, cycle);
+        strategy.addParametersForPersistentProperties(encoding, cycle, false);
 
         verifyControls();
 

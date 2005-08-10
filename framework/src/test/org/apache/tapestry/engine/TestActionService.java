@@ -77,7 +77,7 @@ public class TestActionService extends ServiceTestCase
         MockControl lfc = newControl(LinkFactory.class);
         LinkFactory lf = (LinkFactory) lfc.getMock();
 
-        lf.constructLink(cycle, parameters, true);
+        lf.constructLink(cycle, false, parameters, true);
         lfc.setReturnValue(link);
 
         replayControls();
@@ -88,9 +88,61 @@ public class TestActionService extends ServiceTestCase
 
         ActionServiceParameter p = new ActionServiceParameter(component, "action-id");
 
-        assertSame(link, as.getLink(cycle, p));
+        assertSame(link, as.getLink(cycle, false, p));
 
         verifyControls();
+    }
+    
+    public void testGetLinkSimplePost()
+    {
+        MockControl componentc = newControl(IComponent.class);
+        IComponent component = (IComponent) componentc.getMock();
+
+        IPage page = newPage("ActivePage");
+
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+
+        WebRequest request = newWebRequest(false, null);
+
+        cycle.getPage();
+        cyclec.setReturnValue(page);
+
+        component.getPage();
+        componentc.setReturnValue(page);
+
+        Map parameters = new HashMap();
+
+        parameters.put(ServiceConstants.SERVICE, Tapestry.ACTION_SERVICE);
+
+        component.getIdPath();
+        componentc.setReturnValue("fred.barney");
+
+        parameters.put(ServiceConstants.COMPONENT, "fred.barney");
+        parameters.put(ServiceConstants.PAGE, "ActivePage");
+        parameters.put(ServiceConstants.CONTAINER, null);
+        parameters.put("action", "action-id");
+        parameters.put(ServiceConstants.SESSION, null);
+
+        ILink link = newLink();
+
+        MockControl lfc = newControl(LinkFactory.class);
+        LinkFactory lf = (LinkFactory) lfc.getMock();
+
+        lf.constructLink(cycle, true, parameters, true);
+        lfc.setReturnValue(link);
+
+        replayControls();
+
+        ActionService as = new ActionService();
+        as.setLinkFactory(lf);
+        as.setRequest(request);
+
+        ActionServiceParameter p = new ActionServiceParameter(component, "action-id");
+
+        assertSame(link, as.getLink(cycle, true, p));
+
+        verifyControls();      
     }
 
     public void testGetLinkComplex()
@@ -129,7 +181,7 @@ public class TestActionService extends ServiceTestCase
         MockControl lfc = newControl(LinkFactory.class);
         LinkFactory lf = (LinkFactory) lfc.getMock();
 
-        lf.constructLink(cycle, parameters, true);
+        lf.constructLink(cycle, false, parameters, true);
         lfc.setReturnValue(link);
 
         replayControls();
@@ -140,7 +192,7 @@ public class TestActionService extends ServiceTestCase
 
         ActionServiceParameter p = new ActionServiceParameter(component, "action-id");
 
-        assertSame(link, as.getLink(cycle, p));
+        assertSame(link, as.getLink(cycle, false, p));
 
         verifyControls();
     }

@@ -34,17 +34,20 @@ public interface LinkFactory
      * 
      * @param cycle
      *            the current request cycle
+     * @param post
+     *            if true, then the link will be used for a post (not a get, i.e., for a HTML form);
+     *            this may affect what information is encoded into the link
      * @param parameters
      *            A map; keys are strings and values are strings or string arrays (exception: key
-     *            {@link ServiceConstants#PARAMETER}&nbsp;is an array of objects. Certain keys,
-     *            defined in {@link ServiceConstants}&nbsp;may have special meaning. The map will
-     *            typically be modified internally. May not be null.
+     *            {@link ServiceConstants#PARAMETER} is an array of objects. Certain keys, defined
+     *            in {@link ServiceConstants} may have special meaning. The map will typically be
+     *            modified internally. May not be null.
      * @param stateful
      *            If true, then the final URL should be encoded (with the session id) if necessary.
      *            If false, the session encoding should not occur. The latter case is useful for
      *            services that will absolutely not need any access to user-specific state.
      */
-    public ILink constructLink(IRequestCycle cycle, Map parameters, boolean stateful);
+    public ILink constructLink(IRequestCycle cycle, boolean post, Map parameters, boolean stateful);
 
     /**
      * A secondary function of the service is to convert encoded (aka "squeezed") listener

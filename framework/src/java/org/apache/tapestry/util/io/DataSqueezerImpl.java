@@ -14,9 +14,9 @@
 
 package org.apache.tapestry.util.io;
 
-import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
-import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.lib.util.StrategyRegistry;
 import org.apache.hivemind.lib.util.StrategyRegistryImpl;
 import org.apache.tapestry.Tapestry;
@@ -45,7 +45,7 @@ public class DataSqueezerImpl implements DataSqueezer
      * offset into this table is the character minus 33.
      */
 
-    private ISqueezeAdaptor[] _adaptorByPrefix = new ISqueezeAdaptor[ARRAY_SIZE];
+    private SqueezeAdaptor[] _adaptorByPrefix = new SqueezeAdaptor[ARRAY_SIZE];
 
     /**
      * AdaptorRegistry cache of adaptors.
@@ -53,80 +53,42 @@ public class DataSqueezerImpl implements DataSqueezer
 
     private StrategyRegistry _adaptors = new StrategyRegistryImpl();
 
-    /**
-     * Resource resolver used to deserialize classes.
-     */
-
-    private ClassResolver _resolver;
-
-    /**
-     * Creates a new squeezer with the default set of adaptors.
-     */
-
-    public DataSqueezerImpl(ClassResolver resolver)
+    public void setSqueezeAdaptors(List adaptors)
     {
-        this(resolver, null);
-    }
+        Iterator i = adaptors.iterator();
 
-    /**
-     * Creates a new data squeezer, which will have the default set of adaptors, and may add
-     * additional adaptors.
-     * 
-     * @param adaptors
-     *            an optional list of adaptors that will be registered to the data squeezer (it may
-     *            be null or empty)
-     */
-
-    public DataSqueezerImpl(ClassResolver resolver, ISqueezeAdaptor[] adaptors)
-    {
-        _resolver = resolver;
-
-        registerDefaultAdaptors();
-
-        if (adaptors != null)
-            for (int i = 0; i < adaptors.length; i++)
-                adaptors[i].register(this);
-    }
-
-    private void registerDefaultAdaptors()
-    {
-        new CharacterAdaptor().register(this);
-        new StringAdaptor().register(this);
-        new IntegerAdaptor().register(this);
-        new DoubleAdaptor().register(this);
-        new ByteAdaptor().register(this);
-        new FloatAdaptor().register(this);
-        new LongAdaptor().register(this);
-        new ShortAdaptor().register(this);
-        new BooleanAdaptor().register(this);
-        new SerializableAdaptor().register(this);
-        new ComponentAddressAdaptor().register(this);
+        while (i.hasNext())
+        {
+            SqueezeAdaptor adaptor = (SqueezeAdaptor) i.next();
+            register(adaptor);
+        }
     }
 
     /**
      * Registers the adaptor with one or more single-character prefixes.
+     * <p>
+     * <b>Note</b>: This method should be used for testing purposes only! Squeeze adaptors are
+     * normally injected by HiveMind.
      * 
-     * @param prefix
-     *            one or more characters, each of which will be a prefix for the adaptor.
-     * @param dataClass
-     *            the class (or interface) which can be encoded by the adaptor.
      * @param adaptor
      *            the adaptor which to be registered.
      */
 
-    public synchronized void register(String prefix, Class dataClass, ISqueezeAdaptor adaptor)
+    public synchronized void register(SqueezeAdaptor adaptor)
     {
+        if (adaptor == null)
+            throw new IllegalArgumentException(Tapestry.getMessage("DataSqueezer.null-adaptor"));
+
+        String prefix = adaptor.getPrefix();
         int prefixLength = prefix.length();
         int offset;
 
         if (prefixLength < 1)
             throw new IllegalArgumentException(Tapestry.getMessage("DataSqueezer.short-prefix"));
 
+        Class dataClass = adaptor.getDataClass();
         if (dataClass == null)
             throw new IllegalArgumentException(Tapestry.getMessage("DataSqueezer.null-class"));
-
-        if (adaptor == null)
-            throw new IllegalArgumentException(Tapestry.getMessage("DataSqueezer.null-adaptor"));
 
         for (int i = 0; i < prefixLength; i++)
         {
@@ -155,14 +117,14 @@ public class DataSqueezerImpl implements DataSqueezer
      * the conversion. data may be null.
      */
 
-    public String squeeze(Object data) throws IOException
+    public String squeeze(Object data)
     {
-        ISqueezeAdaptor adaptor;
+        SqueezeAdaptor adaptor;
 
         if (data == null)
             return NULL_PREFIX;
 
-        adaptor = (ISqueezeAdaptor) _adaptors.getStrategy(data.getClass());
+        adaptor = (SqueezeAdaptor) _adaptors.getStrategy(data.getClass());
 
         return adaptor.squeeze(this, data);
     }
@@ -172,7 +134,7 @@ public class DataSqueezerImpl implements DataSqueezer
      * null, returns null.
      */
 
-    public String[] squeeze(Object[] data) throws IOException
+    public String[] squeeze(Object[] data)
     {
         if (data == null)
             return null;
@@ -194,9 +156,9 @@ public class DataSqueezerImpl implements DataSqueezer
      * no change.
      */
 
-    public Object unsqueeze(String string) throws IOException
+    public Object unsqueeze(String string)
     {
-        ISqueezeAdaptor adaptor = null;
+        SqueezeAdaptor adaptor = null;
 
         if (string.equals(NULL_PREFIX))
             return null;
@@ -225,7 +187,7 @@ public class DataSqueezerImpl implements DataSqueezer
      * If strings is null, returns null.
      */
 
-    public Object[] unsqueeze(String[] strings) throws IOException
+    public Object[] unsqueeze(String[] strings)
     {
         if (strings == null)
             return null;
@@ -272,16 +234,4 @@ public class DataSqueezerImpl implements DataSqueezer
 
         return buffer.toString();
     }
-
-    /**
-     * Returns the resource resolver used with this squeezer.
-     * 
-     * @since 2.2
-     */
-
-    public ClassResolver getResolver()
-    {
-        return _resolver;
-    }
-
 }

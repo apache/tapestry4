@@ -77,7 +77,7 @@ public class TestDirectService extends ServiceTestCase
 
         ILink link = newLink();
 
-        lf.constructLink(cycle, parameters, true);
+        lf.constructLink(cycle, false, parameters, true);
         lfc.setReturnValue(link);
 
         replayControls();
@@ -87,7 +87,59 @@ public class TestDirectService extends ServiceTestCase
         ds.setLinkFactory(lf);
         ds.setRequest(request);
 
-        assertSame(link, ds.getLink(cycle, new DirectServiceParameter(c, serviceParameters)));
+        assertSame(link, ds.getLink(cycle, false, new DirectServiceParameter(c, serviceParameters)));
+
+        verifyControls();
+    }
+    
+    public void testGetLinkOnSamePageForPost()
+    {
+        IPage page = newPage("ThePage");
+
+        MockControl cc = newControl(IDirect.class);
+        IDirect c = (IDirect) cc.getMock();
+
+        MockControl cyclec = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+
+        WebRequest request = newWebRequest(false, null);
+
+        cycle.getPage();
+        cyclec.setReturnValue(page);
+
+        c.getPage();
+        cc.setReturnValue(page);
+
+        c.getIdPath();
+        cc.setReturnValue("fred.barney");
+
+        Object[] serviceParameters = new Object[0];
+
+        Map parameters = new HashMap();
+
+        parameters.put(ServiceConstants.SERVICE, Tapestry.DIRECT_SERVICE);
+        parameters.put(ServiceConstants.PAGE, "ThePage");
+        parameters.put(ServiceConstants.COMPONENT, "fred.barney");
+        parameters.put(ServiceConstants.CONTAINER, null);
+        parameters.put(ServiceConstants.SESSION, null);
+        parameters.put(ServiceConstants.PARAMETER, serviceParameters);
+
+        MockControl lfc = newControl(LinkFactory.class);
+        LinkFactory lf = (LinkFactory) lfc.getMock();
+
+        ILink link = newLink();
+
+        lf.constructLink(cycle, true, parameters, true);
+        lfc.setReturnValue(link);
+
+        replayControls();
+
+        DirectService ds = new DirectService();
+
+        ds.setLinkFactory(lf);
+        ds.setRequest(request);
+
+        assertSame(link, ds.getLink(cycle, true, new DirectServiceParameter(c, serviceParameters)));
 
         verifyControls();
     }
@@ -128,7 +180,7 @@ public class TestDirectService extends ServiceTestCase
 
         ILink link = newLink();
 
-        lf.constructLink(cycle, parameters, true);
+        lf.constructLink(cycle, false, parameters, true);
         lfc.setReturnValue(link);
 
         replayControls();
@@ -137,7 +189,7 @@ public class TestDirectService extends ServiceTestCase
         ds.setLinkFactory(lf);
         ds.setRequest(request);
 
-        assertSame(link, ds.getLink(cycle, new DirectServiceParameter(c, serviceParameters)));
+        assertSame(link, ds.getLink(cycle, false, new DirectServiceParameter(c, serviceParameters)));
 
         verifyControls();
     }
@@ -178,7 +230,7 @@ public class TestDirectService extends ServiceTestCase
 
         ILink link = newLink();
 
-        lf.constructLink(cycle, parameters, true);
+        lf.constructLink(cycle, false, parameters, true);
         lfc.setReturnValue(link);
 
         replayControls();
@@ -187,7 +239,7 @@ public class TestDirectService extends ServiceTestCase
         ds.setLinkFactory(lf);
         ds.setRequest(request);
 
-        assertSame(link, ds.getLink(cycle, new DirectServiceParameter(c, serviceParameters)));
+        assertSame(link, ds.getLink(cycle, false, new DirectServiceParameter(c, serviceParameters)));
 
         verifyControls();
     }

@@ -140,7 +140,7 @@ public abstract class ServiceTestCase extends HiveMindTestCase
         MockControl control = newControl(LinkFactory.class);
         LinkFactory lf = (LinkFactory) control.getMock();
 
-        lf.constructLink(cycle, parameters, stateful);
+        lf.constructLink(cycle, false, parameters, stateful);
 
         control.setReturnValue(link);
 

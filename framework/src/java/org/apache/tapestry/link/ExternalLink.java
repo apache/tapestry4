@@ -40,7 +40,7 @@ public abstract class ExternalLink extends AbstractLinkComponent
         ExternalServiceParameter esp = new ExternalServiceParameter(getTargetPage(),
                 serviceParameters);
 
-        return getExternalService().getLink(cycle, esp);
+        return getExternalService().getLink(cycle, false, esp);
     }
 
     public abstract Object getParameters();

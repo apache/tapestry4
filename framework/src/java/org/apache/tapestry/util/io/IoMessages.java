@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,29 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock.c21;
+package org.apache.tapestry.util.io;
 
-import java.io.IOException;
+import org.apache.hivemind.impl.MessageFormatter;
 
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.engine.IEngineService;
-import org.apache.tapestry.engine.ILink;
-
-public class NameMismatchService implements IEngineService
+class IoMessages
 {
+    private static final MessageFormatter _formatter = new MessageFormatter(IoMessages.class);
 
-    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
+    static String encodeFailure(Object object, Throwable cause)
     {
-        return null;
+        return _formatter.format("encode-failure", object, cause);
     }
 
-    public void service(IRequestCycle cycle) throws IOException
+    static String decodeFailure(Throwable cause)
     {
+        return _formatter.format("decode-failure", cause);
     }
-
-    public String getName()
-    {
-        return "IncorrectName";
-    }
-
 }

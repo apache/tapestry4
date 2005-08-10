@@ -60,7 +60,7 @@ public class TestResetService extends ServiceTestCase
         ResetService s = new ResetService();
         s.setLinkFactory(lf);
 
-        assertSame(link, s.getLink(cycle, null));
+        assertSame(link, s.getLink(cycle, false, null));
 
         verifyControls();
     }
@@ -71,7 +71,7 @@ public class TestResetService extends ServiceTestCase
 
         try
         {
-            s.getLink(null, "NonNullValue");
+            s.getLink(null, false, "NonNullValue");
             unreachable();
         }
         catch (IllegalArgumentException ex)

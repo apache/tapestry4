@@ -17,19 +17,23 @@ package org.apache.tapestry.util.io;
 import org.apache.tapestry.services.DataSqueezer;
 
 /**
- *  Squeezes a String (which is pretty simple, most of the time).
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Squeezes a String (which is pretty simple, most of the time).
+ * 
+ * @author Howard Lewis Ship
+ */
 
-class StringAdaptor implements ISqueezeAdaptor
+public class StringAdaptor implements SqueezeAdaptor
 {
     private static final String PREFIX = "S";
 
-    public void register(DataSqueezer squeezer)
+    public String getPrefix()
     {
-        squeezer.register(PREFIX, String.class, this);
+        return PREFIX;
+    }
+
+    public Class getDataClass()
+    {
+        return String.class;
     }
 
     public String squeeze(DataSqueezer squeezer, Object data)
@@ -40,11 +44,9 @@ class StringAdaptor implements ISqueezeAdaptor
     }
 
     /**
-     *  Strips the prefix from the string.  This method is only
-     *  invoked by the {@link DataSqueezerImpl} if the string leads
-     *  with its normal prefix (an 'S').
-     *
-     **/
+     * Strips the prefix from the string. This method is only invoked by the
+     * {@link DataSqueezerImpl} if the string leads with its normal prefix (an 'S').
+     */
 
     public Object unsqueeze(DataSqueezer squeezer, String string)
     {

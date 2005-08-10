@@ -118,7 +118,7 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
         _data.remove(pageName);
     }
 
-    public void addParametersForPersistentProperties(ServiceEncoding encoding, IRequestCycle cycle)
+    public void addParametersForPersistentProperties(ServiceEncoding encoding, IRequestCycle cycle, boolean post)
     {
         Defense.notNull(encoding, "encoding");
         Defense.notNull(cycle, "cycle");

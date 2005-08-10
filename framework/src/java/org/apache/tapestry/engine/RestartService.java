@@ -58,7 +58,7 @@ public class RestartService implements IEngineService
     /** @since 4.0 */
     private String _servletPath;
 
-    public ILink getLink(IRequestCycle cycle, Object parameter)
+    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
     {
         if (parameter != null)
             throw new IllegalArgumentException(EngineMessages.serviceNoParameter(this));
@@ -67,7 +67,7 @@ public class RestartService implements IEngineService
 
         parameters.put(ServiceConstants.SERVICE, Tapestry.RESTART_SERVICE);
 
-        return _linkFactory.constructLink(cycle, parameters, true);
+        return _linkFactory.constructLink(cycle, post, parameters, true);
     }
 
     public void service(IRequestCycle cycle) throws IOException

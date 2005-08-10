@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.components;
 
-import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
@@ -23,7 +22,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.util.io.DataSqueezerImpl;
+import org.apache.tapestry.util.io.DataSqueezerUtil;
 import org.easymock.MockControl;
 
 /**
@@ -346,7 +345,7 @@ public class TestIfElse extends BaseComponentTestCase
     	}
     	
     	public DataSqueezer getDataSqueezer() {
-    		return new DataSqueezerImpl(new DefaultClassResolver());
+    		return DataSqueezerUtil.createUnitTestSqueezer();
     	}
     }
 }

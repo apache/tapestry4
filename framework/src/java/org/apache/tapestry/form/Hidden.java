@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.form;
 
-import java.io.IOException;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IForm;
@@ -34,7 +32,8 @@ import org.apache.tapestry.services.DataSqueezer;
 public abstract class Hidden extends AbstractFormComponent
 {
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -49,7 +48,7 @@ public abstract class Hidden extends AbstractFormComponent
             {
                 externalValue = getDataSqueezer().squeeze(value);
             }
-            catch (IOException e)
+            catch (Exception e)
             {
                 throw new ApplicationRuntimeException(e.getMessage(), this, null, e);
             }
@@ -61,7 +60,7 @@ public abstract class Hidden extends AbstractFormComponent
 
         form.addHiddenValue(getName(), id, externalValue);
     }
-    
+
     /**
      * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IRequestCycle)
      */
@@ -77,7 +76,7 @@ public abstract class Hidden extends AbstractFormComponent
             {
                 value = getDataSqueezer().unsqueeze(parameter);
             }
-            catch (IOException ex)
+            catch (Exception ex)
             {
                 throw new ApplicationRuntimeException(ex.getMessage(), this, null, ex);
             }

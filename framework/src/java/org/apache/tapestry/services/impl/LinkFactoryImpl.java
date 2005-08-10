@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +94,7 @@ public class LinkFactoryImpl implements LinkFactory
 
     }
 
-    public ILink constructLink(IRequestCycle cycle, Map parameters, boolean stateful)
+    public ILink constructLink(IRequestCycle cycle, boolean post, Map parameters, boolean stateful)
     {
         Defense.notNull(cycle, "cycle");
         Defense.notNull(parameters, "parameters");
@@ -110,7 +109,10 @@ public class LinkFactoryImpl implements LinkFactory
         // into the link.
 
         if (stateful)
-            _persistenceStrategySource.addParametersForPersistentProperties(serviceEncoding, cycle);
+            _persistenceStrategySource.addParametersForPersistentProperties(
+                    serviceEncoding,
+                    cycle,
+                    post);
 
         String fullServletPath = _contextPath + serviceEncoding.getServletPath();
 
@@ -165,7 +167,7 @@ public class LinkFactoryImpl implements LinkFactory
         {
             return _dataSqueezer.unsqueeze(squeezed);
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
             throw new ApplicationRuntimeException(ex);
         }
@@ -177,7 +179,7 @@ public class LinkFactoryImpl implements LinkFactory
         {
             return _dataSqueezer.squeeze(input);
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
             throw new ApplicationRuntimeException(ex);
         }

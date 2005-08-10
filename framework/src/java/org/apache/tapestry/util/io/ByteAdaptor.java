@@ -17,31 +17,29 @@ package org.apache.tapestry.util.io;
 import org.apache.tapestry.services.DataSqueezer;
 
 /**
- *  Squeezes a {@link Byte}. 
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Squeezes a {@link Byte}.
+ * 
+ * @author Howard Lewis Ship
+ */
 
-class ByteAdaptor implements ISqueezeAdaptor
+public class ByteAdaptor implements SqueezeAdaptor
 {
     private static final String PREFIX = "b";
 
-    /**
-     *  Registers using the prefix 'b'.
-     *
-     **/
-
-    public void register(DataSqueezer squeezer)
+    public String getPrefix()
     {
-        squeezer.register(PREFIX, Byte.class, this);
+        return PREFIX;
+    }
+
+    public Class getDataClass()
+    {
+        return Byte.class;
     }
 
     /**
-     *  Invoked <code>toString()</code> on data (which is type {@link Byte}),
-     *  and prefixs the result.
-     *
-     **/
+     * Invoked <code>toString()</code> on data (which is type {@link Byte}), and prefixs the
+     * result.
+     */
 
     public String squeeze(DataSqueezer squeezer, Object data)
     {
@@ -49,10 +47,8 @@ class ByteAdaptor implements ISqueezeAdaptor
     }
 
     /**
-     *  Constructs an {@link Byte} from the string, after stripping
-     *  the prefix.
-     *
-     **/
+     * Constructs an {@link Byte} from the string, after stripping the prefix.
+     */
 
     public Object unsqueeze(DataSqueezer squeezer, String string)
     {

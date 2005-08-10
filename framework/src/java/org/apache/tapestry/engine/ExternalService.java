@@ -119,7 +119,7 @@ public class ExternalService implements IEngineService
     /** @since 4.0 */
     private LinkFactory _linkFactory;
 
-    public ILink getLink(IRequestCycle cycle, Object parameter)
+    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
     {
         Defense.isAssignable(parameter, ExternalServiceParameter.class, "parameter");
 
@@ -130,7 +130,7 @@ public class ExternalService implements IEngineService
         parameters.put(ServiceConstants.PAGE, esp.getPageName());
         parameters.put(ServiceConstants.PARAMETER, esp.getServiceParameters());
 
-        return _linkFactory.constructLink(cycle, parameters, true);
+        return _linkFactory.constructLink(cycle, post, parameters, true);
     }
 
     public void service(IRequestCycle cycle) throws IOException

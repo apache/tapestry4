@@ -38,7 +38,7 @@ public abstract class Frame extends AbstractComponent
 
         IEngine engine = cycle.getEngine();
         IEngineService pageService = engine.getService(Tapestry.PAGE_SERVICE);
-        ILink link = pageService.getLink(cycle, getTargetPage());
+        ILink link = pageService.getLink(cycle, false, getTargetPage());
 
         writer.beginEmpty("frame");
         writer.attribute("src", link.getURL());

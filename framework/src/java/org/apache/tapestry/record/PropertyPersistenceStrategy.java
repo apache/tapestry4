@@ -67,8 +67,12 @@ public interface PropertyPersistenceStrategy
      *            the {@link org.apache.tapestry.engine.ILink}&nbsp;will be created.
      * @param cycle
      *            The current request cycle.
+     * @param post
+     *            if true, then the link will be used for a post (not a get, i.e., for a HTML form);
+     *            this may affect what information is encoded into the link
      * @see PropertyPersistenceStrategySource
      */
 
-    public void addParametersForPersistentProperties(ServiceEncoding encoding, IRequestCycle cycle);
+    public void addParametersForPersistentProperties(ServiceEncoding encoding, IRequestCycle cycle,
+            boolean post);
 }

@@ -73,7 +73,7 @@ public class PrivateAsset extends AbstractAsset
         if (_assetService == null)
             _assetService = cycle.getEngine().getService(Tapestry.ASSET_SERVICE);
 
-        ILink link = _assetService.getLink(cycle, path);
+        ILink link = _assetService.getLink(cycle, false, path);
 
         return link.getURL();
     }

@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.components;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -220,7 +219,7 @@ public abstract class ForBean extends AbstractFormComponent
                 if (i <= pkDesc.length() && pkDesc.charAt(i - 1) == DESC_PRIMARY_KEY)
                     pks.add(value);
             }
-            catch (IOException ex)
+            catch (Exception ex)
             {
                 throw new ApplicationRuntimeException(Tapestry.format(
                         "For.unable-to-convert-string",
@@ -293,7 +292,7 @@ public abstract class ForBean extends AbstractFormComponent
                 String stringRep = getDataSqueezer().squeeze(pk);
                 form.addHiddenValue(name, stringRep);
             }
-            catch (IOException ex)
+            catch (Exception ex)
             {
                 throw new ApplicationRuntimeException(Tapestry.format(
                         "For.unable-to-convert-value",
