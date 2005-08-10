@@ -83,7 +83,7 @@
 
   <component id="inputEmail" type="TextField">
     <binding name="value" value="visit.emailValue"/>
-    <binding name="validators" value="validators:email"/>
+    <binding name="validators" value="validators:required,email"/>
     <binding name="displayName" value="literal:Email Field"/>
   </component>
   

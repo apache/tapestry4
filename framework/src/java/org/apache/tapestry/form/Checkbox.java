@@ -16,15 +16,18 @@ package org.apache.tapestry.form;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Implements a component that manages an HTML &lt;input type=checkbox&gt; form element. [ <a
  * href="../../../../../ComponentReference/Checkbox.html">Component Reference </a>]
+ * <p>
+ * As of 4.0, this component can be validated.
  * 
  * @author Howard Lewis Ship
  * @author Paul Ferraro
  */
-public abstract class Checkbox extends AbstractFormComponent
+public abstract class Checkbox extends AbstractFormComponent implements ValidatableField
 {
     /**
      * @see org.apache.tapestry.form.validator.AbstractRequirableField#renderRequirableFormComponent(org.apache.tapestry.IMarkupWriter,
@@ -60,9 +63,32 @@ public abstract class Checkbox extends AbstractFormComponent
         String value = cycle.getParameter(getName());
 
         setValue(value != null);
+        
+        try
+        {
+            // This is atypical validation - since this component does not explicitly bind to an object
+            getValidatableFieldSupport().validate(this, writer, cycle, value);
+        }
+        catch (ValidatorException e)
+        {
+            getForm().getDelegate().record(e);
+        }
     }
 
     public abstract boolean getValue();
 
     public abstract void setValue(boolean selected);
+
+    /**
+     * Injected.
+     */
+    public abstract ValidatableFieldSupport getValidatableFieldSupport();
+
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#isRequired()
+     */
+    public boolean isRequired()
+    {
+        return getValidatableFieldSupport().isRequired(this);
+    }
 }

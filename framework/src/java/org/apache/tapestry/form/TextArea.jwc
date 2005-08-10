@@ -51,5 +51,6 @@
   <reserved-parameter name="name"/>
 
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
-    
+  <inject property="translatedFieldSupport" object="service:tapestry.form.TranslatedFieldSupport"/>
+
 </component-specification>

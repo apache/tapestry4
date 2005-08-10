@@ -31,14 +31,13 @@
   <parameter name="renderer"/>
 
   <parameter name="displayName"/>
-  <parameter name="required"/>
-  <parameter name="requiredMessage"/>
+  <parameter name="validators"/>
       	
   <parameter name="id" property="idParameter" default-value="id"/>
         	
   <property name="name"/>
   <property name="form"/>
   
-  <inject property="requirableFieldSupport" object="service:tapestry.form.RequirableFieldSupport"/>
+  <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
     
 </component-specification>

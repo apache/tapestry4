@@ -14,18 +14,9 @@
 
 package org.apache.tapestry.form;
 
-/**
- * Implemented by form components that can need to be translated and validated. During render the
- * translator is used to translated the value to a string. During rewind, the submitted value is
- * translated back into an object by the translator and then validated.
- * 
- * @author Paul Ferraro
- * @since 4.0
- */
-public interface ValidatableField extends IFormComponent
+import org.apache.tapestry.form.translator.Translator;
+
+public interface TranslatedField extends ValidatableField
 {
-    /**
-     * Coerced into an Iterator of Validators
-     */
-    public Object getValidators();
+	public Translator getTranslator();
 }

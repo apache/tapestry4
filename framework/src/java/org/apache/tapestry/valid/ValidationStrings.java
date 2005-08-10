@@ -24,9 +24,7 @@ import java.util.ResourceBundle;
  */
 public final class ValidationStrings
 {
-    public static final String REQUIRED_TEXT_FIELD = "field-is-required";
-    public static final String REQUIRED_SELECT_FIELD = "select-field-is-required";
-    public static final String REQUIRED_FILE_FIELD = "file-field-is-required";
+    public static final String REQUIRED_FIELD = "field-is-required";
 
     public static final String INVALID_DATE = "invalid-date-format";
     public static final String INVALID_NUMBER = "invalid-numeric-format";
@@ -40,8 +38,8 @@ public final class ValidationStrings
     public static final String VALUE_TOO_SMALL = "number-too-small";
     public static final String VALUE_TOO_LARGE = "number-too-large";
     
-    public static final String DATE_TOO_EARLY = "date-too-small";
-    public static final String DATE_TOO_LATE = "date-too-large";
+    public static final String DATE_TOO_EARLY = "date-too-early";
+    public static final String DATE_TOO_LATE = "date-too-late";
     
     public static final String INVALID_FIELD_EQUALITY = "invalid-field-equality";
     

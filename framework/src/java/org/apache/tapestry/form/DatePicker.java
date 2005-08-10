@@ -31,12 +31,15 @@ import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.form.translator.DateTranslator;
+import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Provides a Form <tt>java.util.Date</tt> field component for selecting dates. [ <a
  * href="../../../../../ComponentReference/DatePicker.html">Component Reference </a>] As of 4.0,
  * DatePicker can indicate that it is required, use a custom translator (e.g. for java.sql.Date),
  * and perform validation on the submitted date.
+ * <p>
+ * As of 4.0, this component can be configurably translated and validated.
  * 
  * @author Paul Geerts
  * @author Malcolm Edgar
@@ -44,7 +47,7 @@ import org.apache.tapestry.form.translator.DateTranslator;
  * @since 2.2
  */
 
-public abstract class DatePicker extends AbstractValidatableField
+public abstract class DatePicker extends AbstractFormComponent implements TranslatedField
 {
     public abstract Date getValue();
 
@@ -105,10 +108,9 @@ public abstract class DatePicker extends AbstractValidatableField
     }
 
     /**
-     * @see org.apache.tapestry.form.validator.AbstractValidatableField#render(org.apache.tapestry.IMarkupWriter,
-     *      org.apache.tapestry.IRequestCycle, java.lang.String)
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
-    public void render(IMarkupWriter writer, IRequestCycle cycle, String value)
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
 
@@ -121,7 +123,9 @@ public abstract class DatePicker extends AbstractValidatableField
         Calendar cal = Calendar.getInstance(locale);
 
         String name = getName();
-
+        
+        String value = getTranslatedFieldSupport().format(this, getValue());
+        
         Map symbols = new HashMap();
 
         symbols.put(SYM_NAME, name);
@@ -154,7 +158,8 @@ public abstract class DatePicker extends AbstractValidatableField
 
         renderDelegateAttributes(writer, cycle);
 
-        renderContributions(writer, cycle);
+        getTranslatedFieldSupport().renderContributions(this, writer, cycle);
+        getValidatableFieldSupport().renderContributions(this, writer, cycle);
 
         renderInformalParameters(writer, cycle);
 
@@ -179,19 +184,24 @@ public abstract class DatePicker extends AbstractValidatableField
     }
 
     /**
-     * @see org.apache.tapestry.form.AbstractValidatableField#readValue()
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
-    public Object readValue()
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        return getValue();
-    }
-
-    /**
-     * @see org.apache.tapestry.form.AbstractValidatableField#updateValue(java.lang.Object)
-     */
-    public void writeValue(Object value)
-    {
-        setValue((Date) value);
+        String value = cycle.getParameter(getName());
+        
+        try
+        {
+            Date date = (Date) getTranslatedFieldSupport().parse(this, value);
+            
+            setValue(date);
+            
+            getValidatableFieldSupport().validate(this, writer, cycle, date);
+        }
+        catch (ValidatorException e)
+        {
+            getForm().getDelegate().record(e);
+        }
     }
 
     /**
@@ -246,4 +256,21 @@ public abstract class DatePicker extends AbstractValidatableField
         return b.reverse().toString();
     }
 
+    /**
+     * Injected.
+     */
+    public abstract ValidatableFieldSupport getValidatableFieldSupport();
+
+    /**
+     * Injected.
+     */
+    public abstract TranslatedFieldSupport getTranslatedFieldSupport();
+
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#isRequired()
+     */
+    public boolean isRequired()
+    {
+        return getValidatableFieldSupport().isRequired(this);
+    }
 }

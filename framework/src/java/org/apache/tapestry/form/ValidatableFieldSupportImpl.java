@@ -15,15 +15,12 @@
 package org.apache.tapestry.form;
 
 import java.util.Iterator;
-import java.util.Locale;
 
-import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.service.ThreadLocale;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.form.validator.Validator;
-import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -55,33 +52,15 @@ public class ValidatableFieldSupportImpl implements ValidatableFieldSupport
     }
 
     /**
-     * @see org.apache.tapestry.form.ValidatableFieldSupport#render(org.apache.tapestry.form.ValidatableField,
-     *      org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
-     */
-    public void render(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle)
-    {
-        IValidationDelegate delegate = component.getForm().getDelegate();
-
-        String value = delegate.isInError() ? delegate.getFieldInputValue()
-                : getTranslatedValue(component);
-
-        component.render(writer, cycle, value);
-    }
-
-    /**
-     * @see org.apache.tapestry.form.ValidatableFieldSupport#renderContributions(org.apache.tapestry.form.ValidatableField,
-     *      org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.ValidatableFieldSupport#renderValidatorContributions(org.apache.tapestry.form.ValidatableField, org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
     public void renderContributions(ValidatableField component, IMarkupWriter writer,
             IRequestCycle cycle)
     {
         if (component.getForm().isClientValidationEnabled())
         {
-            Locale locale = component.getPage().getLocale();
             FormComponentContributorContext context = new FormComponentContributorContextImpl(
-                    locale, cycle, component);
-
-            component.getTranslator().renderContribution(writer, cycle, context, component);
+                    _threadLocale.getLocale(), cycle, component);
 
             Iterator validators = getValidatorsIterator(component);
 
@@ -94,55 +73,23 @@ public class ValidatableFieldSupportImpl implements ValidatableFieldSupport
         }
     }
 
-    protected String getTranslatedValue(ValidatableField component)
-    {
-        Object value = component.readValue();
-
-        return (value != null) ? component.getTranslator().format(component, value) : "";
-    }
-
     /**
-     * @see org.apache.tapestry.form.ValidatableFieldSupport#bind(org.apache.tapestry.form.ValidatableField,
-     *      org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, java.lang.String)
+     * @see org.apache.tapestry.form.ValidatableFieldSupport#validate(org.apache.tapestry.form.ValidatableField, org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, java.lang.Object)
      */
-    public void bind(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle,
-            String value)
+    public void validate(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle, Object object) throws ValidatorException
     {
-        IValidationDelegate delegate = component.getForm().getDelegate();
+        boolean isNonNull = (object != null);
 
-        delegate.recordFieldInputValue(value);
+        Iterator validators = getValidatorsIterator(component);
 
-        try
+        ValidationMessages messages = new ValidationMessagesImpl(component, _threadLocale.getLocale());
+
+        while (validators.hasNext())
         {
-            Object object = HiveMind.isBlank(value) ? null : component.getTranslator().parse(
-                    component,
-                    value);
+            Validator validator = (Validator) validators.next();
 
-            boolean isNonNull = object != null;
-
-            Iterator validators = getValidatorsIterator(component);
-
-            ValidationMessages messages = new ValidationMessagesImpl(component, _threadLocale
-                    .getLocale());
-
-            while (validators.hasNext())
-            {
-                Validator validator = (Validator) validators.next();
-
-                if (isNonNull || validator.getAcceptsNull())
-                    validator.validate(component, messages, object);
-            }
-
-            // Only get here if it translated OK and then validated OK.
-
-            // NOTE: May need to have the Translator implement a provideNullValue() method, i.e.,
-            // to return 0 if the translator is concerned with numbers.
-
-            component.writeValue(object);
-        }
-        catch (ValidatorException ex)
-        {
-            delegate.record(ex);
+            if (isNonNull || validator.getAcceptsNull())
+                validator.validate(component, messages, object);
         }
     }
 

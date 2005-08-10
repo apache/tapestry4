@@ -43,7 +43,6 @@
       The name of the field, which may be used by a FieldLabel.
     </description>
   </parameter>
-  
     
   <parameter name="hidden">
     <description>
@@ -61,5 +60,6 @@
   <reserved-parameter name="value"/>
 
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
+  <inject property="translatedFieldSupport" object="service:tapestry.form.TranslatedFieldSupport"/>
     
 </component-specification>

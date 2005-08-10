@@ -28,31 +28,22 @@ import org.apache.tapestry.valid.ValidatorException;
 public interface ValidatableFieldSupport
 {
     /**
-     * Called during render of the specified component. Determines form element value used to render
-     * element.
-     */
-    public void render(ValidatableField field, IMarkupWriter writer, IRequestCycle cycle);
-
-    /**
-     * Called during render of the specified component. Renders any contributions from translator
-     * and validators.
+     * Called during render of the specified component. Renders any contributions from validators.
      */
     public void renderContributions(ValidatableField field, IMarkupWriter writer,
             IRequestCycle cycle);
 
     /**
-     * Called during rewind of the specified component. Specified value is translated via the
-     * component's translator then validated using the component's validators.
+     * Called during rewind of the specified component. Specified value is validated using the 
+     * component's validators.
      * 
-     * @throws ValidatorException
-     *             if translation or validation fails
+     * @throws ValidatorException if validation fails
      */
-    public void bind(ValidatableField field, IMarkupWriter writer, IRequestCycle cycle, String value);
+    public void validate(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle, Object value) throws ValidatorException;
 
     /**
      * Returns true if this component is required. This usually entails a search of the component's
      * validators.
      */
-
     public boolean isRequired(ValidatableField field);
 }

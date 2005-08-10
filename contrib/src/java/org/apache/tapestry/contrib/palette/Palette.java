@@ -32,11 +32,10 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.components.Block;
 import org.apache.tapestry.form.IPropertySelectionModel;
-import org.apache.tapestry.form.RequirableField;
-import org.apache.tapestry.form.RequirableFieldSupport;
-import org.apache.tapestry.html.Body;
+import org.apache.tapestry.form.ValidatableField;
+import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.apache.tapestry.valid.ValidationStrings;
+import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -201,13 +200,13 @@ import org.apache.tapestry.valid.ValidatorException;
  *   
  *  
  * </pre>
- * 
- * As of 4.0, Palette can indicate that it is required.
+ * <p>
+ * As of 4.0, this component can be validated.
  * 
  * @author Howard Lewis Ship
  */
 
-public abstract class Palette extends BaseComponent implements RequirableField
+public abstract class Palette extends BaseComponent implements ValidatableField
 {
     private static final int MAP_SIZE = 7;
 
@@ -234,13 +233,12 @@ public abstract class Palette extends BaseComponent implements RequirableField
     {
         // Next few lines of code is similar to AbstractFormComponent (which, alas, extends from
         // AbstractComponent, not from BaseComponent).
-
         IForm form = TapestryUtils.getForm(cycle, this);
+
+        setForm(form);
 
         if (form.wasPrerendered(writer, this))
             return;
-
-        setForm(form);
 
         IValidationDelegate delegate = form.getDelegate();
 
@@ -248,52 +246,65 @@ public abstract class Palette extends BaseComponent implements RequirableField
 
         form.getElementId(this);
 
-        RequirableFieldSupport requirableFieldSupport = getRequirableFieldSupport();
-        
         if (form.isRewinding())
-            requirableFieldSupport.rewind(this, writer, cycle);
-
-        // Don't do any additional work if rewinding
-        // (some other action or form on the page).
-
-        if (!cycle.isRewinding())
         {
-            // Lots of work to produce JavaScript and HTML for this sucker.
+            if (!isDisabled())
+            {
+                rewindFormComponent(writer, cycle);
+            }
+        }
+        else if (!cycle.isRewinding())
+        {
+            if (!isDisabled())
+                delegate.registerForFocus(this, ValidationConstants.NORMAL_FIELD);
 
-            _symbols = new HashMap(MAP_SIZE);
+            renderFormComponent(writer, cycle);
 
-            runScript(cycle);
-
-            constructColumns();
-            
-            requirableFieldSupport.render(this, writer, cycle);
+            if (delegate.isInError())
+                delegate.registerForFocus(this, ValidationConstants.ERROR_FIELD);
         }
 
         super.renderComponent(writer, cycle);
     }
 
-    /**
-     * @see org.apache.tapestry.form.RequirableField#bind(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
-     */
-    public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        handleSubmission(cycle);
+        _symbols = new HashMap(MAP_SIZE);
+
+        runScript(cycle);
+
+        constructColumns();
+        
+        getValidatableFieldSupport().renderContributions(this, writer, cycle);
     }
 
-    /**
-     * @see org.apache.tapestry.AbstractComponent#finishLoad()
-     */
-    protected void finishLoad()
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        setRequiredMessage(ValidationStrings.getMessagePattern(ValidationStrings.REQUIRED_SELECT_FIELD, getPage().getLocale()));
-    }
+        String[] values = cycle.getParameters(getName());
 
-    /**
-     * @see org.apache.tapestry.form.RequirableField#getSubmittedValue(org.apache.tapestry.IRequestCycle)
-     */
-    public String getSubmittedValue(IRequestCycle cycle)
-    {
-        return cycle.getParameter(getName());
+        int count = Tapestry.size(values);
+
+        List selected = new ArrayList(count);
+        IPropertySelectionModel model = getModel();
+
+        for (int i = 0; i < count; i++)
+        {
+            String value = values[i];
+            Object option = model.translateValue(value);
+
+            selected.add(option);
+        }
+
+        setSelected(selected);
+        
+        try
+        {
+            getValidatableFieldSupport().validate(this, writer, cycle, selected);
+        }
+        catch (ValidatorException e)
+        {
+            getForm().getDelegate().record(e);
+        }
     }
 
     protected void cleanupAfterRender(IRequestCycle cycle)
@@ -432,40 +443,9 @@ public abstract class Palette extends BaseComponent implements RequirableField
         setSelectedColumn(selectedColumn);
     }
 
-    private void handleSubmission(IRequestCycle cycle)
-    {
-        String[] values = cycle.getParameters(getName());
-
-        int count = Tapestry.size(values);
-
-        if (count == 0)
-            return;
-
-        List selected = new ArrayList(count);
-        IPropertySelectionModel model = getModel();
-
-        for (int i = 0; i < count; i++)
-        {
-            String value = values[i];
-            Object option = model.translateValue(value);
-
-            selected.add(option);
-        }
-
-        setSelected(selected);
-    }
-
     public boolean isSortUser()
     {
         return getSort() == SortMode.USER;
-    }
-
-    /**
-     * Returns null, but may make sense to implement a displayName parameter.
-     */
-    public String getDisplayName()
-    {
-        return null;
     }
 
     public abstract Block getAvailableTitleBlock();
@@ -522,5 +502,13 @@ public abstract class Palette extends BaseComponent implements RequirableField
      * Injected.
      * @since 4.0 
      */
-    public abstract RequirableFieldSupport getRequirableFieldSupport();
+    public abstract ValidatableFieldSupport getValidatableFieldSupport();
+
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#isRequired()
+     */
+    public boolean isRequired()
+    {
+        return getValidatableFieldSupport().isRequired(this);
+    }
 }

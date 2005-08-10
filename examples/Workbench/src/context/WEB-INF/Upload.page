@@ -21,7 +21,7 @@
   
 <page-specification class="org.apache.tapestry.workbench.upload.Upload">
 
-  <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
+  <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate" property="delegate"/>
   
   <property name="clientValidationEnabled" persist="client" initial-value="true"/>
   <property name="showAscii" persist="session"/>

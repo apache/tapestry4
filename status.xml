@@ -1,4 +1,4 @@
-  <?xml version="1.0"?>
+<?xml version="1.0"?>
 <!-- 
    Copyright 2005 The Apache Software Foundation
 
@@ -79,6 +79,10 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-539">Abstract properties (without a &lt;property&gt; element) do not clear out their values</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-351">Add isRequired() to IFieldComponent</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-452">Tapestry 4.0 (excluding annotations) not source compatible with JDK 1.3</action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-350">Replaced RequirableField logic and 'required' parameter in PropertySelection, RadioGroup, Select, Upload, contrib:MultiplePropertySelection, and contrib:Palette with more general ValidatableField logic that adds a 'validators' parameter.</action>
+      <action type="update" dev="PF">Checkbox component is now validatable.</action>
+      <action type="update" dev="PF">Required validator additionally detects empty strings and empty collections.</action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-531">contrib:MultiplePropertySelection isn't setting it's own name before rendering</action>
     </release>
     <release version="4.0-beta-3" date="Jul 22 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>
@@ -202,7 +206,7 @@
       <action type="fix" dev="PF" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-251"> Patch for bad translation in ValidationStrings_zh_CN.properties </action>
       <action type="fix" dev="PF" due-to="Michael Hamilton" fixes-bug="TAPESTRY-1"> Fix incorrect test for enabling rendering of element in FormConditional component. </action>
       <action type="fix" dev="PF" due-to="Markus Wiederkehr" fixes-bug="TAPESTRY-283"> Fix missing type attribute of script tag in Body component. </action>
-      <action type="fix" dev="PF" due-to="Matthew Mead" fixed-bug="TAPESTRY-284"> Fix improper engine cleanup when client aborts a request. </action>
+      <action type="fix" dev="PF" due-to="Matthew Mead" fixes-bug="TAPESTRY-284"> Fix improper engine cleanup when client aborts a request. </action>
       <action type="update" dev="PF"> Build scripts are now Java 1.5 friendly. </action>
     </release>
     <release version="3.1-alpha-1" date="Feb 21 2005">
@@ -292,7 +296,7 @@
       <action type="fix" dev="HLS" fixes-bug="27110" due-to="Karel Miarka"> DatePicker doesn't use the current Locale in its formatter </action>
       <action type="update" dev="HLS"> Update DatePicker to use a graphic icon to hide and show the calendar. </action>
       <action type="fix" dev="HLS" fixes-bug="20932"> Check for duplication of ids between the HTML template and the specification. </action>
-      <action type="fix" dev="HLS" fixed-bug="27082"> Fix some number conversion problems inside NumberValidator. </action>
+      <action type="fix" dev="HLS" fixes-bug="27082"> Fix some number conversion problems inside NumberValidator. </action>
       <action type="update" dev="HLS"> Dynamically download OGNL and Javassist libraries (in accordance with ASF directives about non-ASL code). <b>Unfortunately, this means that we no longer can distribute precompiled examples that include those libraries</b> </action>
     </release>
     <release version="3.0-beta-4" date="Feb 5 2004">

@@ -40,10 +40,14 @@
     </description>
   </parameter>
   
+  <parameter name="validators"/>
+
   <parameter name="id" property="idParameter" default-value="id"/>
   		  
   <reserved-parameter name="type"/>
   <reserved-parameter name="checked"/>
   <reserved-parameter name="name"/>
+
+  <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
   
 </component-specification>

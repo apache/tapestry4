@@ -35,6 +35,8 @@ public abstract class Upload extends BasePage
 
     public abstract String getBytesPerLine();
 
+    public abstract IValidationDelegate getDelegate();
+    
     private static final String[] bytesPerLineOptions = new String[]
     { "8", "16", "24", "32", "40", "48" };
 
@@ -42,9 +44,7 @@ public abstract class Upload extends BasePage
 
     public void formSubmit(IRequestCycle cycle)
     {
-        IValidationDelegate delegate = (IValidationDelegate) getBeans().getBean("delegate");
-
-        if (delegate.getHasErrors()) return;
+        if (getDelegate().getHasErrors()) return;
         
         IUploadFile file = getFile();
 

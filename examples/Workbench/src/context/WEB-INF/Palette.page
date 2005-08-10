@@ -24,7 +24,7 @@
   <property name="clientValidationEnabled" persist="client" initial-value="true"/>
   <property name="sort" persist="client" initial-value="@org.apache.tapestry.contrib.palette.SortMode@USER"/>
 
-  <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
+  <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate" property="delegate"/>
   
   <component id="inputEnabled" type="Checkbox">
     <binding name="value" value="clientValidationEnabled"/> 
@@ -42,7 +42,7 @@
     <binding name="sort" value="sort"/>
     <binding name="tableClass" value="literal:palette"/>
     <binding name="displayName" value="literal:Colors"/>
-    <binding name="required" value="true"/>
+    <binding name="validators" value="validators:required"/>
   </component>
   
   <component id="update" type="ImageSubmit">

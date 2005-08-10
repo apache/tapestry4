@@ -75,8 +75,7 @@
     default-value="asset:DownDisabled"/>    
   
   <parameter name="displayName"/>
-  <parameter name="required"/>
-  <parameter name="requiredMessage"/>
+  <parameter name="validators"/>
 
   <asset name="Select" path="select_right.gif"/>
   <asset name="SelectDisabled" path="select_right_off.gif"/>
@@ -88,6 +87,6 @@
   <asset name="DownDisabled" path="move_down_off.gif"/>
   
   <inject property="script" type="script" object="Palette.script"/>
-  <inject property="requirableFieldSupport" object="service:tapestry.form.RequirableFieldSupport"/>
+  <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
     
 </component-specification>

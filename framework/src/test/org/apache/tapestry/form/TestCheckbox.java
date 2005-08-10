@@ -15,10 +15,13 @@
 package org.apache.tapestry.form;
 
 import org.apache.tapestry.IBinding;
+import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.components.BaseComponentTestCase;
 import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.valid.IValidationDelegate;
+import org.apache.tapestry.valid.ValidatorException;
+import org.easymock.MockControl;
 
 /**
  * Tests for the {@link org.apache.tapestry.form.Checkbox} component.
@@ -26,7 +29,7 @@ import org.apache.tapestry.spec.ComponentSpecification;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestCheckbox extends BaseComponentTestCase
+public class TestCheckbox extends BaseFormComponentTest
 {
     public void testRenderChecked()
     {
@@ -103,29 +106,91 @@ public class TestCheckbox extends BaseComponentTestCase
 
     public void testSubmitNull()
     {
+        ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
+    	
         Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
-        { "value", Boolean.TRUE, "name", "checkbox" });
+        { "value", Boolean.TRUE, "name", "checkbox", "validatableFieldSupport", vfs });
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycleGetParameter("checkbox", null);
 
+        try
+        {
+	        vfs.validate(cb, writer, cycle, null);
+        }
+        catch (ValidatorException e)
+        {
+        	unreachable();
+        }
+    	
         replayControls();
 
         cb.rewindFormComponent(writer, cycle);
-
+        
         verifyControls();
 
         assertEquals(false, cb.getValue());
     }
 
+    public void testSubmitValidateFailed()
+    {
+        MockControl vfsc = newControl(ValidatableFieldSupport.class);
+        ValidatableFieldSupport vfs = (ValidatableFieldSupport) vfsc.getMock();
+    	
+        MockControl formc = newControl(IForm.class);
+        IForm form = (IForm) formc.getMock();
+        
+        IValidationDelegate delegate = newDelegate();
+        
+        Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
+        { "form", form, "value", Boolean.TRUE, "name", "checkbox", "validatableFieldSupport", vfs });
+
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycleGetParameter("checkbox", null);
+
+        ValidatorException exception = new ValidatorException("failed");
+        
+        try
+        {
+	        vfs.validate(cb, writer, cycle, null);
+	        vfsc.setThrowable(exception);
+	    }
+        catch (ValidatorException e)
+        {
+        	unreachable();
+        }
+
+        form.getDelegate();
+        formc.setReturnValue(delegate);
+        
+        delegate.record(exception);
+
+        replayControls();
+
+        cb.rewindFormComponent(writer, cycle);
+        
+        verifyControls();
+    }
+
     public void testSubmitNonNull()
     {
+        ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
+        
         Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
-        { "value", Boolean.FALSE, "name", "checkbox" });
+        { "value", Boolean.FALSE, "name", "checkbox", "validatableFieldSupport", vfs });
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycleGetParameter("checkbox", "foo");
 
+        try
+        {
+        	vfs.validate(cb, writer, cycle, "foo");
+        }
+        catch (ValidatorException e)
+        {
+        	unreachable();
+        }
+        
         replayControls();
 
         cb.rewindFormComponent(writer, cycle);

@@ -30,9 +30,8 @@
   <parameter name="disabled"/>
   
   <parameter name="displayName"/>
-  <parameter name="required"/>
-  <parameter name="requiredMessage"/>
+  <parameter name="validators"/>
   
-  <inject property="requirableFieldSupport" object="service:tapestry.form.RequirableFieldSupport"/>
+  <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
     
 </component-specification>
