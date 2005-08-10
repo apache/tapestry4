@@ -83,6 +83,7 @@
       <action type="update" dev="PF">Checkbox component is now validatable.</action>
       <action type="update" dev="PF">Required validator additionally detects empty strings and empty collections.</action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-531">contrib:MultiplePropertySelection isn't setting it's own name before rendering</action>
+      <action type="update" dev="HLS">Remove incomplete and unused integration test code</action>
     </release>
     <release version="4.0-beta-3" date="Jul 22 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>

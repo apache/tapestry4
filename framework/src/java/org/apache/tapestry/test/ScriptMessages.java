@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.test;
 
-import org.apache.hivemind.Location;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.hivemind.service.ClassFabUtils;
 
@@ -35,46 +34,6 @@ public class ScriptMessages
 {
     protected static MessageFormatter _formatter = new MessageFormatter(ScriptMessages.class,
             "ScriptStrings");
-
-    public static String expectedSubstringMissing(String substring, Location location)
-    {
-        return _formatter.format("expected-substring-missing", substring, location);
-    }
-
-    public static String expectedRegexpMissing(String regexp, Location location)
-    {
-        return _formatter.format("expected-regexp-missing", regexp, location);
-    }
-
-    static String unexpectedAttributeInElement(String attributeName, String elementName)
-    {
-        return _formatter.format("unexpected-attribute-in-element", attributeName, elementName);
-    }
-
-    static String missingRequiredAttribute(String attributeName, String elementName)
-    {
-        return _formatter.format("missing-required-attribute", attributeName, elementName);
-    }
-
-    static String invalidIntAttribute(String attributeName, String elementName,
-            Location location, String attributeValue)
-    {
-        return _formatter.format("invalid-int-attribute", new Object[]
-        { attributeName, elementName, location, attributeValue });
-    }
-
-    public static String incorrectRegexpMatch(String expectedMatch, Location location,
-            String actualMatch)
-    {
-        return _formatter.format("incorrect-regexp-match", expectedMatch, location, actualMatch);
-    }
-
-    public static String incorrectRegexpMatchCount(String pattern, Location location,
-            int expectedCount, int actualCount)
-    {
-        return _formatter.format("incorrect-regexp-match-count", new Object[]
-        { pattern, location, new Integer(expectedCount), new Integer(actualCount) });
-    }
 
     static String wrongTypeForEnhancement(Class type)
     {
