@@ -370,7 +370,16 @@
     </release>
   </changes>
   <votes>
-    <vote title="Remove default-binding" dev="HLS" date="">
+    <vote title="Tapestry 4.0-beta-4" date="Aug 9 2005">
+      <motion>
+        Since we've found and fixed a couple of real show-stopper bugs in
+beta-3, and its been a couple of weeks, I'd like to release beta-4.
+      </motion>
+      <response>
+        HLS, GL, HK, EH, DS, PF, RLS: +1
+      </response>
+    </vote>
+    <vote title="Remove default-binding" dev="HLS" date="Jul 31 2005">
       <motion>
         OK ... this discussion has gone on long enough.  I'm willing to strip
 out the default-binding stuff and replace it with a simpler approach.
