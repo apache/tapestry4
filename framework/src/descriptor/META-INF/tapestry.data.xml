@@ -15,25 +15,66 @@
    limitations under the License.
 -->
 
-<module id="tapestry.data" version="4.0.0" package="org.apache.tapestry.services">
+<module id="tapestry.data" version="4.0.0" package="org.apache.tapestry.util.io">
   
-  Module used to define the DataSqueezer service and related.  To come: configuratons for defining
-  squeeze adaptors.
+  Module used to define the DataSqueezer service and related.
   
-  <service-point id="DataSqueezer">
+  <service-point id="DataSqueezer" interface="org.apache.tapestry.services.DataSqueezer">
     
     Converts back and forth between primitive and object types and encoded strings.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.util.io.DataSqueezerImpl">
-        <class-resolver/>
+      <construct class="DataSqueezerImpl">
+        <set-configuration property="squeezeAdaptors"
+                           configuration-id="SqueezeAdaptors"/>
       </construct>
     </invoke-factory>
     
   </service-point>
   
+  <configuration-point id="SqueezeAdaptors" occurs="1..n">
+    
+    Defines the available set of adaptors.  Each adaptor provides its own
+    prefix (via its getPrefix() method), so all that's needed is 
+    the set of objects.
+    
+    <schema>
+      <element name="adaptor">
+        <attribute name="object" required="true" translator="object"/>
+        <rules>
+          <push-attribute attribute="object"/>
+          <invoke-parent method="addElement"/>
+        </rules>
+      </element>
+    </schema>
+  </configuration-point>
+  
   <contribution configuration-id="tapestry.Infrastructure">
     <property name="dataSqueezer" object="service:DataSqueezer"/>
   </contribution>
+
+  <service-point id="SerializableAdaptor" interface="SqueezeAdaptor">
     
+    Converts an object down to a compressed byte stream, and then to a MIME-like string representation.
+    
+    <invoke-factory>
+      <construct class="SerializableAdaptor"/>
+    </invoke-factory>
+  </service-point>
+  
+
+  <contribution configuration-id="SqueezeAdaptors">
+    <adaptor object="instance:BooleanAdaptor"/>
+    <adaptor object="instance:ByteAdaptor"/>
+    <adaptor object="instance:CharacterAdaptor"/>
+    <adaptor object="instance:ComponentAddressAdaptor"/>
+    <adaptor object="instance:DoubleAdaptor"/>
+    <adaptor object="instance:FloatAdaptor"/>
+    <adaptor object="instance:IntegerAdaptor"/>
+    <adaptor object="instance:LongAdaptor"/>
+    <adaptor object="service:SerializableAdaptor"/>
+    <adaptor object="instance:ShortAdaptor"/>
+    <adaptor object="instance:StringAdaptor"/>
+  </contribution>
+
 </module>

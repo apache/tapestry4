@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.components;
 
-import java.io.IOException;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IActionListener;
@@ -31,20 +29,24 @@ import org.apache.tapestry.services.DataSqueezer;
 /**
  * @author mb
  */
-public abstract class IfBean extends AbstractFormComponent 
+public abstract class IfBean extends AbstractFormComponent
 {
     public final static String IF_VALUE_ATTRIBUTE = "org.mb.tapestry.base.IfValue";
-    
+
     public abstract IBinding getConditionValueBinding();
-    
+
     public abstract boolean getCondition();
+
     public abstract boolean getVolatile();
+
     public abstract String getElement();
+
     public abstract IActionListener getListener();
-    
+
     private boolean _rendering = false;
+
     private boolean _conditionValue;
-    
+
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         boolean cycleRewinding = cycle.isRewinding();
@@ -60,50 +62,54 @@ public abstract class IfBean extends AbstractFormComponent
         // get the condition. work with a hidden field if necessary
         _conditionValue = evaluateCondition(cycle, form, cycleRewinding);
         _rendering = true;
-        
-        try {
+
+        try
+        {
             // call listener
             IActionListener listener = getListener();
             if (listener != null)
                 listener.actionTriggered(this, cycle);
-    
+
             // now render if condition is true
-            if (_conditionValue) 
+            if (_conditionValue)
             {
                 String element = getElement();
-                
+
                 boolean render = !cycleRewinding && HiveMind.isNonBlank(element);
-                
+
                 if (render)
                 {
                     writer.begin(element);
                     renderInformalParameters(writer, cycle);
                 }
-    
+
                 renderBody(writer, cycle);
-                
+
                 if (render)
                     writer.end(element);
             }
         }
-        finally {
+        finally
+        {
             _rendering = false;
         }
-        
+
         cycle.setAttribute(IF_VALUE_ATTRIBUTE, new Boolean(_conditionValue));
     }
-    
+
     protected boolean evaluateCondition(IRequestCycle cycle, IForm form, boolean cycleRewinding)
     {
         boolean condition;
-        
-        if (form == null || getVolatile()) { 
+
+        if (form == null || getVolatile())
+        {
             condition = getCondition();
         }
-        else {
+        else
+        {
             // we are in a form and we care -- load/store the condition in a hidden field
             String name = form.getElementId(this);
-            
+
             if (!cycleRewinding)
             {
                 condition = getCondition();
@@ -119,7 +125,7 @@ public abstract class IfBean extends AbstractFormComponent
         IBinding conditionValueBinding = getConditionValueBinding();
         if (conditionValueBinding != null)
             conditionValueBinding.setObject(new Boolean(condition));
-        
+
         return condition;
     }
 
@@ -132,13 +138,11 @@ public abstract class IfBean extends AbstractFormComponent
         {
             externalValue = getDataSqueezer().squeeze(booleanValue);
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("If.unable-to-convert-value", booleanValue),
-                this,
-                null,
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "If.unable-to-convert-value",
+                    booleanValue), this, null, ex);
         }
 
         form.addHiddenValue(name, externalValue);
@@ -152,23 +156,21 @@ public abstract class IfBean extends AbstractFormComponent
         {
             Object valueObject = getDataSqueezer().unsqueeze(submittedValue);
             if (!(valueObject instanceof Boolean))
-                throw new ApplicationRuntimeException(
-                        Tapestry.format("If.invalid-condition-type", submittedValue));
+                throw new ApplicationRuntimeException(Tapestry.format(
+                        "If.invalid-condition-type",
+                        submittedValue));
 
             return ((Boolean) valueObject).booleanValue();
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("If.unable-to-convert-string", submittedValue),
-                this,
-                null,
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "If.unable-to-convert-string",
+                    submittedValue), this, null, ex);
         }
     }
 
     public abstract DataSqueezer getDataSqueezer();
-    
 
     public boolean isDisabled()
     {
@@ -177,6 +179,7 @@ public abstract class IfBean extends AbstractFormComponent
 
     /**
      * Returns the value of the condition
+     * 
      * @return the condition value
      */
     public boolean getConditionValue()
@@ -187,8 +190,13 @@ public abstract class IfBean extends AbstractFormComponent
         return _conditionValue;
     }
 
-	// Do nothing in those methods, but make the JVM happy
-    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle) { }
-    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle) { }
-    
+    // Do nothing in those methods, but make the JVM happy
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+    }
+
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+    }
+
 }

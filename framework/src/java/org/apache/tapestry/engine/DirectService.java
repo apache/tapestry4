@@ -51,7 +51,7 @@ public class DirectService implements IEngineService
     /** @since 4.0 */
     private WebRequest _request;
 
-    public ILink getLink(IRequestCycle cycle, Object parameter)
+    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
     {
         Defense.isAssignable(parameter, DirectServiceParameter.class, "parameter");
 
@@ -82,7 +82,7 @@ public class DirectService implements IEngineService
         parameters.put(ServiceConstants.SESSION, stateful ? "T" : null);
         parameters.put(ServiceConstants.PARAMETER, dsp.getServiceParameters());
 
-        return _linkFactory.constructLink(cycle, parameters, true);
+        return _linkFactory.constructLink(cycle, post, parameters, true);
     }
 
     public void service(IRequestCycle cycle) throws IOException

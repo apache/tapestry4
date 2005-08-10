@@ -14,8 +14,7 @@
 
 package org.apache.tapestry.util.io;
 
-import java.io.IOException;
-
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.ComponentAddress;
@@ -27,13 +26,23 @@ import org.apache.tapestry.util.ComponentAddress;
  * @since 2.2
  */
 
-public class ComponentAddressAdaptor implements ISqueezeAdaptor
+public class ComponentAddressAdaptor implements SqueezeAdaptor
 {
     private static final String PREFIX = "A";
 
     private static final char SEPARATOR = ',';
 
-    public String squeeze(DataSqueezer squeezer, Object data) throws IOException
+    public String getPrefix()
+    {
+        return PREFIX;
+    }
+
+    public Class getDataClass()
+    {
+        return ComponentAddress.class;
+    }
+
+    public String squeeze(DataSqueezer squeezer, Object data)
     {
         ComponentAddress address = (ComponentAddress) data;
 
@@ -45,11 +54,12 @@ public class ComponentAddressAdaptor implements ISqueezeAdaptor
         return PREFIX + address.getPageName() + SEPARATOR + idPath;
     }
 
-    public Object unsqueeze(DataSqueezer squeezer, String string) throws IOException
+    public Object unsqueeze(DataSqueezer squeezer, String string)
     {
         int separator = string.indexOf(SEPARATOR);
         if (separator < 0)
-            throw new IOException(Tapestry.getMessage("ComponentAddressAdaptor.no-separator"));
+            throw new ApplicationRuntimeException(Tapestry
+                    .getMessage("ComponentAddressAdaptor.no-separator"));
 
         String pageName = string.substring(1, separator);
         String idPath = string.substring(separator + 1);
@@ -57,11 +67,6 @@ public class ComponentAddressAdaptor implements ISqueezeAdaptor
             idPath = null;
 
         return new ComponentAddress(pageName, idPath);
-    }
-
-    public void register(DataSqueezer squeezer)
-    {
-        squeezer.register(PREFIX, ComponentAddress.class, this);
     }
 
 }

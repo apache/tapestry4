@@ -158,7 +158,7 @@ public abstract class Shell extends AbstractComponent
         IEngineService pageService = getPageService();
         String pageName = getPage().getPageName();
 
-        ILink link = pageService.getLink(cycle, pageName);
+        ILink link = pageService.getLink(cycle, false, pageName);
 
         StringBuffer buffer = new StringBuffer();
         buffer.append(refresh);

@@ -17,30 +17,28 @@ package org.apache.tapestry.util.io;
 import org.apache.tapestry.services.DataSqueezer;
 
 /**
- *  Squeezes a {@link Integer}.  This adaptor claims all the digits as prefix
- *  characters, so its the very simplest conversion of all!
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Squeezes a {@link Integer}. This adaptor claims all the digits as prefix characters, so its the
+ * very simplest conversion of all!
+ * 
+ * @author Howard Lewis Ship
+ */
 
-class IntegerAdaptor implements ISqueezeAdaptor
+public class IntegerAdaptor implements SqueezeAdaptor
 {
-    /**
-     *  Registers this adaptor using all nine digits and the minus sign.
-     *
-     **/
 
-    public void register(DataSqueezer squeezer)
+    public String getPrefix()
     {
-        squeezer.register("-0123456789", Integer.class, this);
+        return "-0123456789";
+    }
+
+    public Class getDataClass()
+    {
+        return Integer.class;
     }
 
     /**
-     *  Simply invokes <code>toString()</code> on the data,
-     *  which is actually type {@link Integer}.
-     *
-     **/
+     * Simply invokes <code>toString()</code> on the data, which is actually type {@link Integer}.
+     */
 
     public String squeeze(DataSqueezer squeezer, Object data)
     {
@@ -48,9 +46,8 @@ class IntegerAdaptor implements ISqueezeAdaptor
     }
 
     /**
-     *  Constructs an {@link Integer} from the string.
-     *
-     **/
+     * Constructs an {@link Integer} from the string.
+     */
 
     public Object unsqueeze(DataSqueezer squeezer, String string)
     {

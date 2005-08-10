@@ -52,7 +52,7 @@ public class ResetService implements IEngineService
 
     private LinkFactory _linkFactory;
 
-    public ILink getLink(IRequestCycle cycle, Object parameter)
+    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
     {
         if (parameter != null)
             throw new IllegalArgumentException(EngineMessages.serviceNoParameter(this));
@@ -62,7 +62,7 @@ public class ResetService implements IEngineService
         parameters.put(ServiceConstants.SERVICE, Tapestry.RESET_SERVICE);
         parameters.put(ServiceConstants.PAGE, cycle.getPage().getPageName());
 
-        return _linkFactory.constructLink(cycle, parameters, true);
+        return _linkFactory.constructLink(cycle, post, parameters, true);
     }
 
     public String getName()

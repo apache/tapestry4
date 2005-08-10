@@ -39,6 +39,9 @@ public interface IEngineService
      * 
      * @param cycle
      *            Defines the request cycle being processed.
+     * @param post
+     *            if true, then the link will be used for a post (not a get, i.e., for a HTML form);
+     *            this may affect what information is encoded into the link
      * @param parameter
      *            An object that provide any additional information needed by the service. Each
      *            service implementation will expect that an object of the proper type be passed in.
@@ -48,15 +51,15 @@ public interface IEngineService
      *         {@link javax.servlet.http.HttpServletResponse#encodeURL(java.lang.String)}.
      */
 
-    public ILink getLink(IRequestCycle cycle, Object parameter);
+    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter);
 
     /**
      * Perform the service, interpreting the URL (from the
      * {@link javax.servlet.http.HttpServletRequest}) responding appropriately, and rendering a
      * result page.
+     * 
      * @param cycle
      *            the incoming request
-     * 
      * @see org.apache.tapestry.IEngine#service(org.apache.tapestry.request.RequestContext)
      */
 

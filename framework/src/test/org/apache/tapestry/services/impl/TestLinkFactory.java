@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.ErrorLog;
-import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
@@ -33,7 +32,7 @@ import org.apache.tapestry.engine.encoders.PageServiceEncoder;
 import org.apache.tapestry.record.PropertyPersistenceStrategy;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.services.ServiceConstants;
-import org.apache.tapestry.util.io.DataSqueezerImpl;
+import org.apache.tapestry.util.io.DataSqueezerUtil;
 import org.apache.tapestry.web.WebRequest;
 import org.easymock.MockControl;
 
@@ -86,7 +85,7 @@ public class TestLinkFactory extends HiveMindTestCase
         }
 
         public void addParametersForPersistentProperties(ServiceEncoding encoding,
-                IRequestCycle cycle)
+                IRequestCycle cycle, boolean post)
         {
             encoding.setParameterValue("foo", "bar");
         }
@@ -141,7 +140,7 @@ public class TestLinkFactory extends HiveMindTestCase
         Map parameters = new HashMap();
         parameters.put(ServiceConstants.SERVICE, "myservice");
 
-        ILink link = lf.constructLink(cycle, parameters, false);
+        ILink link = lf.constructLink(cycle, false, parameters, false);
 
         verifyControls();
 
@@ -183,7 +182,7 @@ public class TestLinkFactory extends HiveMindTestCase
         Map parameters = new HashMap();
         parameters.put(ServiceConstants.SERVICE, "myservice");
 
-        ILink link = lf.constructLink(cycle, parameters, true);
+        ILink link = lf.constructLink(cycle, false, parameters, true);
 
         assertEquals("{encoded}", link.getURL());
 
@@ -215,7 +214,7 @@ public class TestLinkFactory extends HiveMindTestCase
         Map parameters = new HashMap();
         parameters.put(ServiceConstants.SERVICE, "myservice");
 
-        ILink link = lf.constructLink(cycle, parameters, false);
+        ILink link = lf.constructLink(cycle, false, parameters, false);
 
         verifyControls();
 
@@ -249,7 +248,7 @@ public class TestLinkFactory extends HiveMindTestCase
         parameters.put(ServiceConstants.SERVICE, "page");
         parameters.put(ServiceConstants.PAGE, "Barney");
 
-        ILink link = lf.constructLink(cycle, parameters, false);
+        ILink link = lf.constructLink(cycle, false, parameters, false);
 
         verifyControls();
 
@@ -276,7 +275,7 @@ public class TestLinkFactory extends HiveMindTestCase
         lf.setErrorLog(log);
         lf.setContextPath("/context");
         lf.setServletPath("/app");
-        lf.setDataSqueezer(new DataSqueezerImpl(new DefaultClassResolver()));
+        lf.setDataSqueezer(DataSqueezerUtil.createUnitTestSqueezer());
         lf.setRequest(request);
 
         lf.initializeService();
@@ -287,7 +286,7 @@ public class TestLinkFactory extends HiveMindTestCase
         parameters.put(ServiceConstants.PARAMETER, new Object[]
         { Boolean.TRUE });
 
-        ILink link = lf.constructLink(cycle, parameters, false);
+        ILink link = lf.constructLink(cycle, false, parameters, false);
 
         verifyControls();
 

@@ -52,7 +52,7 @@ public class PortletHomeService implements IEngineService
         return Tapestry.HOME_SERVICE;
     }
 
-    public ILink getLink(IRequestCycle cycle, Object parameter)
+    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
     {
         if (parameter != null)
             throw new IllegalArgumentException(EngineMessages.serviceNoParameter(this));
@@ -61,7 +61,7 @@ public class PortletHomeService implements IEngineService
 
         parameters.put(ServiceConstants.SERVICE, Tapestry.HOME_SERVICE);
 
-        return _linkFactory.constructLink(cycle, parameters, true);
+        return _linkFactory.constructLink(cycle, post, parameters, true);
     }
 
     public void setLinkFactory(LinkFactory linkFactory)

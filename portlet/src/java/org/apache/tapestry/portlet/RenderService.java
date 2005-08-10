@@ -51,7 +51,7 @@ public class RenderService implements IEngineService
 
     private PortletPageResolver _pageResolver;
 
-    public ILink getLink(IRequestCycle cycle, Object parameter)
+    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
     {
         throw new UnsupportedOperationException(PortletMessages.unsupportedMethod("getLink"));
     }

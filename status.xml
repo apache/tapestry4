@@ -84,6 +84,9 @@
       <action type="update" dev="PF">Required validator additionally detects empty strings and empty collections.</action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-531">contrib:MultiplePropertySelection isn't setting it's own name before rendering</action>
       <action type="update" dev="HLS">Remove incomplete and unused integration test code</action>
+      <action type="update" dev="HLS">Add post parameter to IEngineService.getLink() to support building links differently for form posts vs. link gets</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-541" due-to="Markus Wiederkehr">Add a configuration point for creating additional SqueezeAdaptors</action>
+      <action type="update" dev="HLS">Change SerializableAdaptor to encode with and without compression, and use the shorter of the two</action>
     </release>
     <release version="4.0-beta-3" date="Jul 22 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>

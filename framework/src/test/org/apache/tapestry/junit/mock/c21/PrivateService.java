@@ -33,7 +33,7 @@ public class PrivateService implements IEngineService
     {
     }
 
-    public ILink getLink(IRequestCycle cycle, Object parameter)
+    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
     {
         return null;
     }

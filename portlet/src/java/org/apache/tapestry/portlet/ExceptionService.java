@@ -40,7 +40,7 @@ public class ExceptionService implements IEngineService
 
     private PortletRequestGlobals _globals;
 
-    public ILink getLink(IRequestCycle cycle, Object parameter)
+    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
     {
         throw new UnsupportedOperationException(PortletMessages.unsupportedMethod("getLink"));
     }

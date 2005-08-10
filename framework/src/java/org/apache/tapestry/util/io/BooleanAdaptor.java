@@ -22,17 +22,18 @@ import org.apache.tapestry.services.DataSqueezer;
  * @author Howard Lewis Ship
  */
 
-class BooleanAdaptor implements ISqueezeAdaptor
+public class BooleanAdaptor implements SqueezeAdaptor
 {
     private static final String PREFIX = "TF";
 
-    /**
-     * Registers using the prefixes 'T' and 'F' (for TRUE and FALSE).
-     */
-
-    public void register(DataSqueezer squeezer)
+    public String getPrefix()
     {
-        squeezer.register(PREFIX, Boolean.class, this);
+        return PREFIX;
+    }
+
+    public Class getDataClass()
+    {
+        return Boolean.class;
     }
 
     /**

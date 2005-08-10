@@ -15,7 +15,6 @@
 package org.apache.tapestry.junit.utils;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -26,12 +25,15 @@ import java.util.Map;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.ComponentAddress;
 import org.apache.tapestry.util.io.DataSqueezerImpl;
-import org.apache.tapestry.util.io.ISqueezeAdaptor;
+import org.apache.tapestry.util.io.DataSqueezerUtil;
+import org.apache.tapestry.util.io.SqueezeAdaptor;
 
 /**
  * A series of tests for {@link DataSqueezerImpl}&nbsp;and friends.
@@ -41,20 +43,20 @@ import org.apache.tapestry.util.io.ISqueezeAdaptor;
 
 public class TestDataSqueezer extends TestCase
 {
-    private DataSqueezerImpl ds = new DataSqueezerImpl(new DefaultClassResolver());
+    private DataSqueezerImpl ds = DataSqueezerUtil.createUnitTestSqueezer();
 
     public TestDataSqueezer(String name)
     {
         super(name);
     }
 
-    private void attempt(Object input, String expectedEncoding) throws IOException
+    private void attempt(Object input, String expectedEncoding)
     {
         attempt(input, expectedEncoding, ds);
     }
 
     private void attempt(Object input, String expectedEncoding, DataSqueezer squeezer)
-            throws IOException
+
     {
         String encoding = squeezer.squeeze(input);
 
@@ -65,53 +67,53 @@ public class TestDataSqueezer extends TestCase
         assertEquals("Decoded object.", input, output);
     }
 
-    public void testBoolean() throws IOException
+    public void testBoolean()
     {
         attempt(Boolean.TRUE, "T");
         attempt(Boolean.FALSE, "F");
     }
 
-    public void testNull() throws IOException
+    public void testNull()
     {
         attempt(null, "X");
     }
 
-    public void testByte() throws IOException
+    public void testByte()
     {
         attempt(new Byte((byte) 0), "b0");
         attempt(new Byte((byte) -5), "b-5");
         attempt(new Byte((byte) 72), "b72");
     }
 
-    public void testFloat() throws IOException
+    public void testFloat()
     {
         attempt(new Float(0), "f0.0");
         attempt(new Float(3.1459), "f3.1459");
         attempt(new Float(-37.23), "f-37.23");
     }
 
-    public void testDouble() throws IOException
+    public void testDouble()
     {
         attempt(new Double(0), "d0.0");
         attempt(new Double(3.1459), "d3.1459");
         attempt(new Double(-37.23), "d-37.23");
     }
 
-    public void testInteger() throws IOException
+    public void testInteger()
     {
         attempt(new Integer(0), "0");
         attempt(new Integer(205), "205");
         attempt(new Integer(-173), "-173");
     }
 
-    public void testLong() throws IOException
+    public void testLong()
     {
         attempt(new Long(0), "l0");
         attempt(new Long(800400300l), "l800400300");
         attempt(new Long(-987654321l), "l-987654321");
     }
 
-    public void testShort() throws IOException
+    public void testShort()
     {
         attempt(new Short((short) 0), "s0");
         attempt(new Short((short) -10), "s-10");
@@ -120,20 +122,20 @@ public class TestDataSqueezer extends TestCase
 
     /** @since 2.2 * */
 
-    public void testCharacter() throws IOException
+    public void testCharacter()
     {
         attempt(new Character('a'), "ca");
         attempt(new Character('Z'), "cZ");
     }
 
-    public void testString() throws IOException
+    public void testString()
     {
         attempt("Now is the time for all good men ...", "SNow is the time for all good men ...");
         attempt("X marks the spot!", "SX marks the spot!");
         attempt("So long, sucker!", "SSo long, sucker!");
     }
 
-    public void testComponentAddress() throws IOException
+    public void testComponentAddress()
     {
         ComponentAddress objAddress = new ComponentAddress("framework:DirectLink",
                 "component.subcomponent");
@@ -143,7 +145,7 @@ public class TestDataSqueezer extends TestCase
         attempt(objAddress, "Aframework:DirectLink,");
     }
 
-    public void testArray() throws IOException
+    public void testArray()
     {
         Object[] input =
         { new Short((short) -82), "Time to encode an array.", new Long(38383833273789l), null,
@@ -163,7 +165,7 @@ public class TestDataSqueezer extends TestCase
         }
     }
 
-    public void testNullArray() throws IOException
+    public void testNullArray()
     {
         Object[] input = null;
 
@@ -176,7 +178,7 @@ public class TestDataSqueezer extends TestCase
         assertNull(output);
     }
 
-    private void attempt(Serializable s, DataSqueezer squeezer) throws IOException
+    private void attempt(Serializable s, DataSqueezer squeezer)
     {
         String encoded = squeezer.squeeze(s);
 
@@ -185,7 +187,12 @@ public class TestDataSqueezer extends TestCase
         assertEquals(s, output);
     }
 
-    public void testSerializable() throws IOException
+    public void testSerializableShort()
+    {
+        attempt(new StringHolder("X"), ds);
+    }
+
+    public void testSerializableLong()
     {
 
         Map map = new HashMap();
@@ -238,28 +245,50 @@ public class TestDataSqueezer extends TestCase
         }
     }
 
-    public static class BHSqueezer implements ISqueezeAdaptor
+    public static class BHSqueezer implements SqueezeAdaptor
     {
-        private static final String PREFIX = "B";
+        private final String prefix_;
+
+        private final Class dataClass_;
 
         private static final String TRUE = "BT";
 
         private static final String FALSE = "BF";
 
-        public void register(DataSqueezer squeezer)
+        public BHSqueezer()
         {
-            squeezer.register(PREFIX, BooleanHolder.class, this);
+            this("B", BooleanHolder.class);
         }
 
-        public String squeeze(DataSqueezer squeezer, Object data) throws IOException
+        public BHSqueezer(String prefix)
+        {
+            this(prefix, BooleanHolder.class);
+        }
+
+        public BHSqueezer(String prefix, Class dataClass)
+        {
+            prefix_ = prefix;
+            dataClass_ = dataClass;
+        }
+
+        public String getPrefix()
+        {
+            return prefix_;
+        }
+
+        public Class getDataClass()
+        {
+            return dataClass_;
+        }
+
+        public String squeeze(DataSqueezer squeezer, Object data)
         {
             BooleanHolder h = (BooleanHolder) data;
 
             return h.getValue() ? TRUE : FALSE;
-
         }
 
-        public Object unsqueeze(DataSqueezer squeezer, String string) throws IOException
+        public Object unsqueeze(DataSqueezer squeezer, String string)
         {
             if (string.equals(TRUE))
                 return new BooleanHolder(true);
@@ -267,16 +296,15 @@ public class TestDataSqueezer extends TestCase
             if (string.equals(FALSE))
                 return new BooleanHolder(false);
 
-            throw new IOException("Unexpected value.");
+            throw new ApplicationRuntimeException("Unexpected value.");
         }
 
     }
 
-    public void testCustom() throws IOException
+    public void testCustom()
     {
-        DataSqueezer squeezer = new DataSqueezerImpl(new DefaultClassResolver(),
-                new ISqueezeAdaptor[]
-                { new BHSqueezer() });
+        DataSqueezerImpl squeezer = DataSqueezerUtil.createUnitTestSqueezer();
+        squeezer.register(new BHSqueezer());
 
         attempt(new BooleanHolder(true), "BT", squeezer);
         attempt(new BooleanHolder(false), "BF", squeezer);
@@ -288,7 +316,7 @@ public class TestDataSqueezer extends TestCase
     {
         try
         {
-            ds.register("", BooleanHolder.class, new BHSqueezer());
+            ds.register(new BHSqueezer(""));
 
             throw new AssertionFailedError("Null prefix should be invalid.");
         }
@@ -301,7 +329,7 @@ public class TestDataSqueezer extends TestCase
     {
         try
         {
-            ds.register("\n", BooleanHolder.class, new BHSqueezer());
+            ds.register(new BHSqueezer("\n"));
 
             throw new AssertionFailedError("Prefix should be invalid.");
         }
@@ -314,7 +342,7 @@ public class TestDataSqueezer extends TestCase
     {
         try
         {
-            ds.register("b", BooleanHolder.class, new BHSqueezer());
+            ds.register(new BHSqueezer("b"));
 
             throw new AssertionFailedError("Duplicate prefix should be invalid.");
         }
@@ -327,7 +355,7 @@ public class TestDataSqueezer extends TestCase
     {
         try
         {
-            ds.register("B", null, new BHSqueezer());
+            ds.register(new BHSqueezer("B", null));
 
             throw new AssertionFailedError("Null data class should be invalid.");
         }
@@ -340,7 +368,7 @@ public class TestDataSqueezer extends TestCase
     {
         try
         {
-            ds.register("B", BooleanHolder.class, null);
+            ds.register(null);
 
             throw new AssertionFailedError("Null squeezer should be invalid.");
         }
@@ -395,7 +423,8 @@ public class TestDataSqueezer extends TestCase
 
         PropertyUtils.write(visit, "stringValue", stringValue);
 
-        DataSqueezer squeezer = new DataSqueezerImpl(new DefaultClassResolver(visitClassLoader));
+        ClassResolver resolver = new DefaultClassResolver(visitClassLoader);
+        DataSqueezer squeezer = DataSqueezerUtil.createUnitTestSqueezer(resolver);
 
         String squeezed = squeezer.squeeze(visit);
 

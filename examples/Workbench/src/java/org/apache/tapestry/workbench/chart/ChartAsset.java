@@ -49,7 +49,7 @@ public class ChartAsset extends AbstractAsset
 
     public String buildURL(IRequestCycle cycle)
     {
-        ILink l = _chartService.getLink(cycle, _chartProvider);
+        ILink l = _chartService.getLink(cycle, false, _chartProvider);
 
         return l.getURL();
     }

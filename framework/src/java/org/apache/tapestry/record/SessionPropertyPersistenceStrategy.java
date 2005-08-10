@@ -137,7 +137,7 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
      * Does nothing; session persistence does not make use of query parameters.
      */
 
-    public void addParametersForPersistentProperties(ServiceEncoding encoding, IRequestCycle cycle)
+    public void addParametersForPersistentProperties(ServiceEncoding encoding, IRequestCycle cycle, boolean post)
     {
     }
 

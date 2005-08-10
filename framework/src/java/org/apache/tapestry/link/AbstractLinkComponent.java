@@ -196,7 +196,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
     {
         IEngineService service = cycle.getEngine().getService(serviceName);
 
-        return service.getLink(cycle, parameter);
+        return service.getLink(cycle, false, parameter);
     }
 
     public abstract String getAnchor();

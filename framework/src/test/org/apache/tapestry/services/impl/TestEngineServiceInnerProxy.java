@@ -74,7 +74,7 @@ public class TestEngineServiceInnerProxy extends HiveMindTestCase
 
         Object parameter = new Object();
 
-        service.getLink(cycle, parameter);
+        service.getLink(cycle, false, parameter);
         control.setReturnValue(link);
 
         EngineServiceSource source = newSource("fred", service);
@@ -86,7 +86,7 @@ public class TestEngineServiceInnerProxy extends HiveMindTestCase
 
         outer.installDelegate(inner);
 
-        assertSame(link, outer.getLink(cycle, parameter));
+        assertSame(link, outer.getLink(cycle, false, parameter));
 
         assertSame(service, outer.getDelegate());
 

@@ -17,31 +17,29 @@ package org.apache.tapestry.util.io;
 import org.apache.tapestry.services.DataSqueezer;
 
 /**
- *  Squeezes a {@link Double}. 
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Squeezes a {@link Double}.
+ * 
+ * @author Howard Lewis Ship
+ */
 
-class DoubleAdaptor implements ISqueezeAdaptor
+public class DoubleAdaptor implements SqueezeAdaptor
 {
     private static final String PREFIX = "d";
 
-    /**
-     *  Registers using the prefix 'd'.
-     *
-     **/
-
-    public void register(DataSqueezer squeezer)
+    public String getPrefix()
     {
-        squeezer.register(PREFIX, Double.class, this);
+        return PREFIX;
+    }
+
+    public Class getDataClass()
+    {
+        return Double.class;
     }
 
     /**
-     *  Invoked <code>toString()</code> on data (which is type {@link Double}),
-     *  and prefixs the result.
-     *
-     **/
+     * Invoked <code>toString()</code> on data (which is type {@link Double}), and prefixs the
+     * result.
+     */
 
     public String squeeze(DataSqueezer squeezer, Object data)
     {
@@ -49,10 +47,8 @@ class DoubleAdaptor implements ISqueezeAdaptor
     }
 
     /**
-     *  Constructs an {@link Double} from the string, after stripping
-     *  the prefix.
-     *
-     **/
+     * Constructs an {@link Double} from the string, after stripping the prefix.
+     */
 
     public Object unsqueeze(DataSqueezer squeezer, String string)
     {

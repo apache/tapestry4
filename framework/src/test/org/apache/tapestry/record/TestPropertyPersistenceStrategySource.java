@@ -114,7 +114,7 @@ public class TestPropertyPersistenceStrategySource extends HiveMindTestCase
         PropertyPersistenceStrategy strategy = newStrategy();
         ServiceEncoding encoding = (ServiceEncoding) newMock(ServiceEncoding.class);
 
-        strategy.addParametersForPersistentProperties(encoding, cycle);
+        strategy.addParametersForPersistentProperties(encoding, cycle, false);
 
         replayControls();
 
@@ -122,9 +122,15 @@ public class TestPropertyPersistenceStrategySource extends HiveMindTestCase
         source.setContributions(newContributions("whatever", strategy));
         source.initializeService();
 
-        source.addParametersForPersistentProperties(encoding, cycle);
+        source.addParametersForPersistentProperties(encoding, cycle, false);
 
         verifyControls();
+
+        strategy.addParametersForPersistentProperties(encoding, cycle, true);
+
+        replayControls();
+
+        source.addParametersForPersistentProperties(encoding, cycle, true);
     }
 
     public void testDiscardStoredChanges()
