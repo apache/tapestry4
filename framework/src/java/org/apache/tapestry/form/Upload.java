@@ -14,58 +14,36 @@
 
 package org.apache.tapestry.form;
 
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.multipart.MultipartDecoder;
 import org.apache.tapestry.request.IUploadFile;
-import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Form element used to upload files. [ <a
- * href="../../../../../ComponentReference/Upload.html">Component Reference </a>] As of 4.0, the
- * Upload field can indicate that it is required.
+ * href="../../../../../ComponentReference/Upload.html">Component Reference
+ * </a>]
+ * <p>
+ * As of 4.0, this component can be validated.
  * 
  * @author Howard Lewis Ship
  * @author Paul Ferraro
  * @since 1.0.8
  */
 
-public abstract class Upload extends AbstractRequirableField
+public abstract class Upload extends AbstractFormComponent implements ValidatableField
 {
-    /**
-     * @see org.apache.tapestry.form.validator.AbstractRequirableField#bind(org.apache.tapestry.IRequestCycle)
-     */
-    public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException
-    {
-        setFile(getUploadFile());
-    }
+    public abstract void setFile(IUploadFile file);
 
     /**
-     * @see org.apache.tapestry.AbstractComponent#finishLoad()
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
-    protected void finishLoad()
-    {
-        setRequiredMessage(ValidationStrings.getMessagePattern(
-                ValidationStrings.REQUIRED_FILE_FIELD,
-                getPage().getLocale()));
-    }
-
-    private IUploadFile getUploadFile()
-    {
-        return getDecoder().getFileUpload(getName());
-    }
-
-    public String getSubmittedValue(IRequestCycle cycle)
-    {
-        return getUploadFile().getFilePath();
-    }
-
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        super.renderFormComponent(writer, cycle);
-
         // Force the form to use the correct encoding type for file uploads.
         IForm form = getForm();
 
@@ -82,16 +60,59 @@ public abstract class Upload extends AbstractRequirableField
             writer.attribute("disabled", "disabled");
         }
 
-        form.getDelegate().writeAttributes(writer, cycle, this, null);
-
         renderIdAttribute(writer, cycle);
 
         renderDelegateAttributes(writer, cycle);
 
+        getValidatableFieldSupport().renderContributions(this, writer, cycle);
+
+        renderInformalParameters(writer, cycle);
+
+        writer.closeTag();
+
         renderDelegateSuffix(writer, cycle);
     }
 
-    public abstract void setFile(IUploadFile file);
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
+     */
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        IUploadFile file = getDecoder().getFileUpload(getName());
+        
+        if (HiveMind.isBlank(file.getFileName()))
+        {
+            file = null;
+        }
+        
+        setFile(file);
+        
+        try
+        {
+            getValidatableFieldSupport().validate(this, writer, cycle, file);
+        }
+        catch (ValidatorException e)
+        {
+            getForm().getDelegate().record(e);
+        }
+    }
+    
+    /**
+     * Injected.
+     */
+    public abstract ValidatableFieldSupport getValidatableFieldSupport();
 
+    /**
+     * Injected.
+     */
     public abstract MultipartDecoder getDecoder();
+
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#isRequired()
+     */
+    public boolean isRequired()
+    {
+        return getValidatableFieldSupport().isRequired(this);
+    }
 }

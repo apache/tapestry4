@@ -36,15 +36,13 @@
   <parameter name="disabled"/>
 
   <parameter name="displayName"/>
-  <parameter name="required"/>
-  <parameter name="requiredMessage"/>
+  <parameter name="validators"/>
   <parameter name="id" property="idParameter" default-value="id"/>
 
-  		 
   <reserved-parameter name="type"/>
   <reserved-parameter name="name"/>
   
   <inject property="decoder" object="service:tapestry.multipart.MultipartDecoder"/>
-  <inject property="requirableFieldSupport" object="service:tapestry.form.RequirableFieldSupport"/>
+  <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
   
 </component-specification>

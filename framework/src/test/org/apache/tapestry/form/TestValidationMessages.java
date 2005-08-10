@@ -45,7 +45,7 @@ public class TestValidationMessages extends HiveMindTestCase
 
         assertEquals("You must enter a value for My Field.", m.formatValidationMessage(
                 null,
-                ValidationStrings.REQUIRED_TEXT_FIELD,
+                ValidationStrings.REQUIRED_FIELD,
                 new Object[]
                 { "My Field" }));
 
@@ -53,7 +53,7 @@ public class TestValidationMessages extends HiveMindTestCase
 
         assertEquals("Tiene que ingresar un valor para My Field.", m.formatValidationMessage(
                 null,
-                ValidationStrings.REQUIRED_TEXT_FIELD,
+                ValidationStrings.REQUIRED_FIELD,
                 new Object[]
                 { "My Field" }));
 
@@ -70,7 +70,7 @@ public class TestValidationMessages extends HiveMindTestCase
 
         assertEquals("Gimme data for My Field.", m.formatValidationMessage(
                 "Gimme data for {0}.",
-                ValidationStrings.REQUIRED_TEXT_FIELD,
+                ValidationStrings.REQUIRED_FIELD,
                 new Object[]
                 { "My Field" }));
 
@@ -93,7 +93,7 @@ public class TestValidationMessages extends HiveMindTestCase
 
         assertEquals("Yo Dawg! Gimme a piece of My Field.", m.formatValidationMessage(
                 "%myfield-required",
-                ValidationStrings.REQUIRED_TEXT_FIELD,
+                ValidationStrings.REQUIRED_FIELD,
                 new Object[]
                 { "My Field" }));
 

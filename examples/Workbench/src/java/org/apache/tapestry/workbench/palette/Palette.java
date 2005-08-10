@@ -17,7 +17,6 @@ package org.apache.tapestry.workbench.palette;
 import java.util.List;
 
 import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
@@ -35,6 +34,8 @@ public abstract class Palette extends BasePage
 
     public abstract String getSort();
 
+    public abstract IValidationDelegate getDelegate();
+    
     private IPropertySelectionModel _sortModel;
 
     /**
@@ -46,9 +47,7 @@ public abstract class Palette extends BasePage
 
     public IPage advance()
     {
-        IValidationDelegate delegate = (IValidationDelegate) getBeans().getBean("delegate");
-        
-        if (delegate.getHasErrors()) return null;
+        if (getDelegate().getHasErrors()) return null;
         
         // Since Palette and palette.Results come from
         // a library now, we need to make sure

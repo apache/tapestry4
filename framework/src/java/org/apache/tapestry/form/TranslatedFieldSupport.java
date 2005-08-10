@@ -16,23 +16,13 @@ package org.apache.tapestry.form;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.valid.ValidatorException;
 
-/**
- * Implements the logic used by {@link RequiredField}s for required field checking on rewind 
- * and generating client-side logic during render.
- * 
- * @author Paul Ferraro
- * @since 4.0
- */
-public interface RequirableFieldSupport
+public interface TranslatedFieldSupport
 {
-    /**
-     * Called by the {@link RequiredField} during render to generate client-side validation logic.
-     */
-    public void render(RequirableField component, IMarkupWriter writer, IRequestCycle cycle);
+    public String format(TranslatedField field, Object object);
+    
+    public Object parse(TranslatedField field, String text) throws ValidatorException;
 
-    /**
-     * Called by the {@link RequiredField} during rewind to perform required field checking.
-     */
-    public void rewind(RequirableField component, IMarkupWriter writer, IRequestCycle cycle);
+    public void renderContributions(TranslatedField field, IMarkupWriter writer, IRequestCycle cycle);
 }

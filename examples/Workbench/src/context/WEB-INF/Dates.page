@@ -21,17 +21,18 @@
 
 <page-specification>
 	
-  <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
+  <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate" property="delegate"/>
   
   <property name="clientValidationEnabled" persist="client" initial-value="true"/>
-	<property name="includeWeek" persist="client"/>
+  <property name="includeWeek" persist="client"/>
   <property name="startDate" persist="client"/>
   <property name="endDate" persist="client"/>
 
-  <bean name="maxDateValidator" class="org.apache.tapestry.form.validator.MaxDate">
+  <bean name="required" class="org.apache.tapestry.form.validator.Required"></bean>
+  <bean name="maxDate" class="org.apache.tapestry.form.validator.MaxDate">
     <set name="maxDate" value="new java.util.Date()"></set>
   </bean>
-  <bean name="minDateValidator" class="org.apache.tapestry.form.validator.MinDate">
+  <bean name="minDate" class="org.apache.tapestry.form.validator.MinDate">
     <set name="minDate" value="new java.util.Date()"></set>
   </bean>
   

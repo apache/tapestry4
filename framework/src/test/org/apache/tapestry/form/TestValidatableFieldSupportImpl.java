@@ -23,66 +23,29 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.service.ThreadLocale;
 import org.apache.hivemind.test.AggregateArgumentsMatcher;
 import org.apache.hivemind.test.ArgumentMatcher;
+import org.apache.hivemind.test.EqualsMatcher;
 import org.apache.hivemind.test.TypeMatcher;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.components.BaseComponentTestCase;
-import org.apache.tapestry.form.translator.Translator;
 import org.apache.tapestry.form.validator.Validator;
 import org.apache.tapestry.services.Infrastructure;
-import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
 import org.easymock.MockControl;
 
 /**
- * Test case for {@link ValidatableFieldSupportImpl}. TODO: Desperate need to make this conform to
- * the HiveMindTestCase conventions!
+ * Test case for {@link ValidatableFieldSupportImpl}.
  * 
  * @author Paul Ferraro
  * @since 4.0
  */
 public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
 {
-    private ValidatableFieldSupportImpl _support = new ValidatableFieldSupportImpl();
-
-    private MockControl _componentControl = MockControl.createControl(ValidatableField.class);
-
-    private ValidatableField _component = (ValidatableField) _componentControl.getMock();
-
-    private MockControl _writerControl = MockControl.createControl(IMarkupWriter.class);
-
-    private IMarkupWriter _writer = (IMarkupWriter) _writerControl.getMock();
-
-    private MockControl _cycleControl = MockControl.createControl(IRequestCycle.class);
-
-    private IRequestCycle _cycle = (IRequestCycle) _cycleControl.getMock();
-
-    private MockControl _formControl = MockControl.createControl(IForm.class);
-
-    private IForm _form = (IForm) _formControl.getMock();
-
-    private MockControl _delegateControl = MockControl.createControl(IValidationDelegate.class);
-
-    private IValidationDelegate _delegate = (IValidationDelegate) _delegateControl.getMock();
-
-    private MockControl _translatorControl = MockControl.createControl(Translator.class);
-
-    private Translator _translator = (Translator) _translatorControl.getMock();
-
-    private MockControl _validatorControl = MockControl.createControl(Validator.class);
-
-    private Validator _validator = (Validator) _validatorControl.getMock();
-
-    private MockControl _valueConverterControl = MockControl.createControl(ValueConverter.class);
-
-    private ValueConverter _valueConverter = (ValueConverter) _valueConverterControl.getMock();
-
     private ThreadLocale newThreadLocale()
     {
         MockControl control = newControl(ThreadLocale.class);
@@ -92,212 +55,12 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         control.setReturnValue(Locale.ENGLISH);
 
         return tl;
-
     }
-
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception
-    {
-        _support.setValueConverter(_valueConverter);
-    }
-
-    /**
-     * @see org.apache.hivemind.test.HiveMindTestCase#tearDown()
-     */
-    protected void tearDown() throws Exception
-    {
-        _componentControl.reset();
-        _writerControl.reset();
-        _cycleControl.reset();
-        _formControl.reset();
-        _delegateControl.reset();
-        _translatorControl.reset();
-        _validatorControl.reset();
-        _valueConverterControl.reset();
-
-        super.tearDown();
-    }
-
-    private void replay()
-    {
-        _componentControl.replay();
-        _writerControl.replay();
-        _cycleControl.replay();
-        _formControl.replay();
-        _delegateControl.replay();
-        _translatorControl.replay();
-        _validatorControl.replay();
-        _valueConverterControl.replay();
-
-        replayControls();
-    }
-
-    private void verify()
-    {
-        _componentControl.verify();
-        _writerControl.verify();
-        _cycleControl.verify();
-        _formControl.verify();
-        _delegateControl.verify();
-        _translatorControl.verify();
-        _validatorControl.verify();
-        _valueConverterControl.verify();
-
-        verifyControls();
-    }
-
-    public void testNullRender()
-    {
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-
-        _form.getDelegate();
-        _formControl.setReturnValue(_delegate);
-
-        _delegate.isInError();
-        _delegateControl.setReturnValue(false);
-
-        _component.readValue();
-        _componentControl.setReturnValue(null);
-
-        _component.render(_writer, _cycle, "");
-
-        replay();
-
-        _support.render(_component, _writer, _cycle);
-
-        verify();
-    }
-
-    public void testNotNullRender()
-    {
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-
-        _form.getDelegate();
-        _formControl.setReturnValue(_delegate);
-
-        _delegate.isInError();
-        _delegateControl.setReturnValue(false);
-
-        Object object = new Object();
-
-        _component.readValue();
-        _componentControl.setReturnValue(object);
-
-        _component.getTranslator();
-        _componentControl.setReturnValue(_translator);
-
-        String value = "some value";
-
-        _translator.format(_component, object);
-        _translatorControl.setReturnValue(value);
-
-        _component.render(_writer, _cycle, value);
-
-        replay();
-
-        _support.render(_component, _writer, _cycle);
-
-        verify();
-    }
-
-    public void testNotNullInErrorRender()
-    {
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-
-        _form.getDelegate();
-        _formControl.setReturnValue(_delegate);
-
-        _delegate.isInError();
-        _delegateControl.setReturnValue(true);
-
-        String value = "recorded value";
-
-        _delegate.getFieldInputValue();
-        _delegateControl.setReturnValue(value);
-
-        _component.render(_writer, _cycle, value);
-
-        replay();
-
-        _support.render(_component, _writer, _cycle);
-
-        verify();
-    }
-
-    public void testClientValidationDisabledRenderContributions()
-    {
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-
-        _form.isClientValidationEnabled();
-        _formControl.setReturnValue(false);
-
-        replay();
-
-        _support.renderContributions(_component, _writer, _cycle);
-
-        verify();
-    }
-
-    public void testClientValidationEnabledNoValidatorsRenderContributions()
-    {
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-
-        _form.isClientValidationEnabled();
-        _formControl.setReturnValue(true);
-
-        MockControl pagec = newControl(IPage.class);
-        IPage page = (IPage) pagec.getMock();
-
-        _component.getPage();
-        _componentControl.setReturnValue(page);
-
-        page.getLocale();
-        pagec.setReturnValue(Locale.ENGLISH);
-
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-
-        _form.getName();
-        _formControl.setReturnValue("myform");
-
-        _component.getName();
-        _componentControl.setReturnValue("myfield");
-
-        IRequestCycle cycle = newCycle(_component);
-
-        _component.getTranslator();
-        _componentControl.setReturnValue(_translator);
-
-        _translator.renderContribution(_writer, cycle, new FormComponentContributorContextImpl(
-                _component), _component);
-        _translatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, null, new TypeMatcher(), null }));
-
-        _component.getValidators();
-        _componentControl.setReturnValue(null);
-
-        _valueConverter.coerceValue(null, Iterator.class);
-        _valueConverterControl.setReturnValue(Collections.EMPTY_LIST.iterator());
-
-        replay();
-
-        _support.renderContributions(_component, _writer, cycle);
-
-        verify();
-    }
-
+    
     /**
      * Lots of work to set up the request cycle here, since we have to train it about getting the
      * ClassResolver and the PageRenderSupport.
      */
-
     protected IRequestCycle newCycle(IComponent component)
     {
         MockControl cyclec = newControl(IRequestCycle.class);
@@ -321,287 +84,353 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         return cycle;
     }
 
-    public void testClientValidationEnabledValidatorRenderContributions()
+    public void testRenderContributionsClientValidationDisabled()
     {
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
+        ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
+        
+        MockControl fieldControl = newControl(TranslatedField.class);
+        TranslatedField field = (TranslatedField) fieldControl.getMock();
+        
+        MockControl formControl = newControl(IForm.class);
+        IForm form = (IForm) formControl.getMock();
+        
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        
+        field.getForm();
+        fieldControl.setReturnValue(form);
 
-        _form.isClientValidationEnabled();
-        _formControl.setReturnValue(true);
+        form.isClientValidationEnabled();
+        formControl.setReturnValue(false);
 
-        MockControl pagec = newControl(IPage.class);
-        IPage page = (IPage) pagec.getMock();
+        replayControls();
 
-        _component.getPage();
-        _componentControl.setReturnValue(page);
+        support.renderContributions(field, writer, cycle);
 
-        page.getLocale();
-        pagec.setReturnValue(Locale.ENGLISH);
-
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-
-        _form.getName();
-        _formControl.setReturnValue("myform");
-
-        _component.getName();
-        _componentControl.setReturnValue("myfield");
-
-        IRequestCycle cycle = newCycle(_component);
-
-        _component.getTranslator();
-        _componentControl.setReturnValue(_translator);
-
-        _translator.renderContribution(_writer, cycle, new FormComponentContributorContextImpl(
-                _component), _component);
-        _translatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, null, new TypeMatcher(), null }));
-
-        _component.getValidators();
-        _componentControl.setReturnValue(_validator);
-
-        _valueConverter.coerceValue(_validator, Iterator.class);
-        _valueConverterControl.setReturnValue(Collections.singletonList(_validator).iterator());
-
-        _validator.renderContribution(_writer, cycle, new FormComponentContributorContextImpl(
-                _component), _component);
-        _validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, null, new TypeMatcher(), null }));
-        replay();
-
-        _support.renderContributions(_component, _writer, cycle);
-
-        verify();
+        verifyControls();
     }
 
-    public void testNotNullNoValidatorsBind() throws Exception
+    public void testRenderContributionsClientValidationEnabledNoValidators()
     {
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
+        MockControl converterControl = newControl(ValueConverter.class);
+        ValueConverter converter = (ValueConverter) converterControl.getMock();
+        
+        ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
+        support.setThreadLocale(newThreadLocale());
+        support.setValueConverter(converter);
+        
+        MockControl fieldControl = newControl(TranslatedField.class);
+        TranslatedField field = (TranslatedField) fieldControl.getMock();
+        
+        MockControl formControl = newControl(IForm.class);
+        IForm form = (IForm) formControl.getMock();
+        
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle(field);
+        
+        field.getForm();
+        fieldControl.setReturnValue(form);
 
-        _form.getDelegate();
-        _formControl.setReturnValue(_delegate);
+        form.isClientValidationEnabled();
+        formControl.setReturnValue(true);
 
-        _delegate.recordFieldInputValue("some value");
+        field.getForm();
+        fieldControl.setReturnValue(form);
 
-        _component.getTranslator();
-        _componentControl.setReturnValue(_translator);
+        form.getName();
+        formControl.setReturnValue("myform");
 
+        field.getName();
+        fieldControl.setReturnValue("myfield");
+
+        field.getValidators();
+        fieldControl.setReturnValue(null);
+        
+        converter.coerceValue(null, Iterator.class);
+        converterControl.setReturnValue(Collections.EMPTY_LIST.iterator());
+        
+        replayControls();
+
+        support.renderContributions(field, writer, cycle);
+
+        verifyControls();
+    }
+
+    public void testRenderContributionsClientValidationEnabled()
+    {
+        MockControl converterControl = newControl(ValueConverter.class);
+        ValueConverter converter = (ValueConverter) converterControl.getMock();
+        
+        ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
+        support.setThreadLocale(newThreadLocale());
+        support.setValueConverter(converter);
+        
+        MockControl fieldControl = newControl(TranslatedField.class);
+        TranslatedField field = (TranslatedField) fieldControl.getMock();
+        
+        MockControl formControl = newControl(IForm.class);
+        IForm form = (IForm) formControl.getMock();
+        
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle(field);
+        
+        MockControl validatorControl = newControl(Validator.class);
+        Validator validator = (Validator) validatorControl.getMock();
+        
+        field.getForm();
+        fieldControl.setReturnValue(form);
+
+        form.isClientValidationEnabled();
+        formControl.setReturnValue(true);
+
+        field.getForm();
+        fieldControl.setReturnValue(form);
+
+        form.getName();
+        formControl.setReturnValue("myform");
+
+        field.getName();
+        fieldControl.setReturnValue("myfield");
+
+        field.getValidators();
+        fieldControl.setReturnValue(validator);
+        
+        converter.coerceValue(validator, Iterator.class);
+        converterControl.setReturnValue(Collections.singleton(validator).iterator());
+        
+        FormComponentContributorContext context = new FormComponentContributorContextImpl(field);
+        
+        validator.renderContribution(writer, cycle, context, field);
+        validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
+        { new EqualsMatcher(), new EqualsMatcher(), new TypeMatcher(), new EqualsMatcher() }));        
+        
+        replayControls();
+
+        support.renderContributions(field, writer, cycle);
+
+        verifyControls();
+    }
+
+    public void testValidate()
+    {
+        MockControl converterControl = newControl(ValueConverter.class);
+        ValueConverter converter = (ValueConverter) converterControl.getMock();
+        
+        ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
+        support.setThreadLocale(newThreadLocale());
+        support.setValueConverter(converter);
+        
+        MockControl fieldControl = newControl(TranslatedField.class);
+        TranslatedField field = (TranslatedField) fieldControl.getMock();
+        
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        
+        MockControl validatorControl = newControl(Validator.class);
+        Validator validator = (Validator) validatorControl.getMock();
+        
         Object object = new Object();
 
-        _translator.parse(_component, "some value");
-        _translatorControl.setReturnValue(object);
+        field.getValidators();
+        fieldControl.setReturnValue(validator);
+        
+        converter.coerceValue(validator, Iterator.class);
+        converterControl.setReturnValue(Collections.singleton(validator).iterator());
 
-        _component.writeValue(object);
-        _componentControl.setVoidCallable();
-
-        _component.getValidators();
-        _componentControl.setReturnValue(null);
-
-        _valueConverter.coerceValue(null, Iterator.class);
-        _valueConverterControl.setReturnValue(Collections.EMPTY_LIST.iterator());
-
-        _support.setThreadLocale(newThreadLocale());
-
-        replay();
-
-        _support.bind(_component, _writer, _cycle, "some value");
-
-        verify();
+        ValidationMessages messages = new ValidationMessagesImpl(field, Locale.ENGLISH);
+        
+        try
+        {
+            validator.validate(field, messages, object);
+            validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
+            { new EqualsMatcher(), new TypeMatcher(), new EqualsMatcher() }));
+            
+            replayControls();
+    
+            support.validate(field, writer, cycle, object);
+    
+            verifyControls();
+        }
+        catch (ValidatorException e)
+        {
+            unreachable();
+        }
     }
 
-    public void testNotNullTranslateFailBind() throws Exception
+    public void testValidateFailed()
     {
-        ValidatorException ex = new ValidatorException("Woops");
-
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-
-        _form.getDelegate();
-        _formControl.setReturnValue(_delegate);
-
-        _delegate.recordFieldInputValue("some value");
-
-        _component.getTranslator();
-        _componentControl.setReturnValue(_translator);
-
-        _translator.parse(_component, "some value");
-        _translatorControl.setThrowable(ex);
-
-        _delegate.record(ex);
-
-        replay();
-
-        _support.bind(_component, _writer, _cycle, "some value");
-
-        verify();
-
-    }
-
-    public void testNotNullBind() throws Exception
-    {
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-
-        _form.getDelegate();
-        _formControl.setReturnValue(_delegate);
-
-        _delegate.recordFieldInputValue("some value");
-
-        _component.getTranslator();
-        _componentControl.setReturnValue(_translator);
-
-        _support.setThreadLocale(newThreadLocale());
-
+        MockControl converterControl = newControl(ValueConverter.class);
+        ValueConverter converter = (ValueConverter) converterControl.getMock();
+        
+        ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
+        support.setThreadLocale(newThreadLocale());
+        support.setValueConverter(converter);
+        
+        MockControl fieldControl = newControl(TranslatedField.class);
+        TranslatedField field = (TranslatedField) fieldControl.getMock();
+        
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        
+        MockControl validatorControl = newControl(Validator.class);
+        Validator validator = (Validator) validatorControl.getMock();
+        
         Object object = new Object();
 
-        _translator.parse(_component, "some value");
-        _translatorControl.setReturnValue(object);
+        field.getValidators();
+        fieldControl.setReturnValue(validator);
+        
+        converter.coerceValue(validator, Iterator.class);
+        converterControl.setReturnValue(Collections.singleton(validator).iterator());
 
-        _component.getValidators();
-        _componentControl.setReturnValue(_validator);
-
-        _valueConverter.coerceValue(_validator, Iterator.class);
-        _valueConverterControl.setReturnValue(Collections.singletonList(_validator).iterator());
-
-        _validator.validate(
-                _component,
-                new ValidationMessagesImpl(_component, Locale.ENGLISH),
-                object);
-        _validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, new TypeMatcher(), null }));
-
-        _component.writeValue(object);
-
-        replay();
-
-        _support.bind(_component, _writer, _cycle, "some value");
-
-        verify();
+        ValidationMessages messages = new ValidationMessagesImpl(field, Locale.ENGLISH);
+        
+        ValidatorException expected = new ValidatorException("test");
+        
+        try
+        {
+            validator.validate(field, messages, object);
+            validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
+            { new EqualsMatcher(), new TypeMatcher(), new EqualsMatcher() }));
+            validatorControl.setThrowable(expected);
+            
+            replayControls();
+    
+            support.validate(field, writer, cycle, object);
+    
+            unreachable();
+        }
+        catch (ValidatorException e)
+        {
+            verifyControls();
+            
+            assertSame(expected, e);
+        }
     }
 
-    public void testNullBindValidatorAccepts() throws Exception
+    public void testValidateNoValidators()
     {
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-
-        _form.getDelegate();
-        _formControl.setReturnValue(_delegate);
-
-        _delegate.recordFieldInputValue("some value");
-
-        _component.getTranslator();
-        _componentControl.setReturnValue(_translator);
-
-        _support.setThreadLocale(newThreadLocale());
-
-        _translator.parse(_component, "some value");
-        _translatorControl.setReturnValue(null);
-
-        _component.getValidators();
-        _componentControl.setReturnValue(_validator);
-
-        _valueConverter.coerceValue(_validator, Iterator.class);
-        _valueConverterControl.setReturnValue(Collections.singletonList(_validator).iterator());
-
-        _validator.getAcceptsNull();
-        _validatorControl.setReturnValue(true);
-
-        _validator.validate(
-                _component,
-                new ValidationMessagesImpl(_component, Locale.ENGLISH),
-                null);
-        _validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, new TypeMatcher(), null }));
-
-        _component.writeValue(null);
-
-        replay();
-
-        _support.bind(_component, _writer, _cycle, "some value");
-
-        verify();
-    }
-
-    public void testNullBindValidatorRejects() throws Exception
-    {
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-
-        _form.getDelegate();
-        _formControl.setReturnValue(_delegate);
-
-        _delegate.recordFieldInputValue("some value");
-
-        _component.getTranslator();
-        _componentControl.setReturnValue(_translator);
-
-        _support.setThreadLocale(newThreadLocale());
-
-        _translator.parse(_component, "some value");
-        _translatorControl.setReturnValue(null);
-
-        _component.getValidators();
-        _componentControl.setReturnValue(_validator);
-
-        _valueConverter.coerceValue(_validator, Iterator.class);
-        _valueConverterControl.setReturnValue(Collections.singletonList(_validator).iterator());
-
-        _validator.getAcceptsNull();
-        _validatorControl.setReturnValue(false);
-
-        _component.writeValue(null);
-
-        replay();
-
-        _support.bind(_component, _writer, _cycle, "some value");
-
-        verify();
-    }
-
-    public void testNotNullValidateFailBind() throws Exception
-    {
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-
-        _form.getDelegate();
-        _formControl.setReturnValue(_delegate);
-
-        _delegate.recordFieldInputValue("some value");
-
-        _component.getTranslator();
-        _componentControl.setReturnValue(_translator);
-
-        _support.setThreadLocale(newThreadLocale());
-
-        ValidatorException ex = new ValidatorException("");
-
+        MockControl converterControl = newControl(ValueConverter.class);
+        ValueConverter converter = (ValueConverter) converterControl.getMock();
+        
+        ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
+        support.setThreadLocale(newThreadLocale());
+        support.setValueConverter(converter);
+        
+        MockControl fieldControl = newControl(TranslatedField.class);
+        TranslatedField field = (TranslatedField) fieldControl.getMock();
+        
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        
         Object object = new Object();
 
-        _translator.parse(_component, "some value");
-        _translatorControl.setReturnValue(object);
+        field.getValidators();
+        fieldControl.setReturnValue(null);
+        
+        converter.coerceValue(null, Iterator.class);
+        converterControl.setReturnValue(Collections.EMPTY_LIST.iterator());
+        
+        try
+        {
+            replayControls();
+    
+            support.validate(field, writer, cycle, object);
+    
+            verifyControls();
+        }
+        catch (ValidatorException e)
+        {
+            unreachable();
+        }
+    }
 
-        _component.getValidators();
-        _componentControl.setReturnValue(_validator);
+    public void testValidateAcceptNull()
+    {
+        MockControl converterControl = newControl(ValueConverter.class);
+        ValueConverter converter = (ValueConverter) converterControl.getMock();
+        
+        ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
+        support.setThreadLocale(newThreadLocale());
+        support.setValueConverter(converter);
+        
+        MockControl fieldControl = newControl(TranslatedField.class);
+        TranslatedField field = (TranslatedField) fieldControl.getMock();
+        
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        
+        MockControl validatorControl = newControl(Validator.class);
+        Validator validator = (Validator) validatorControl.getMock();
+        
+        field.getValidators();
+        fieldControl.setReturnValue(validator);
+        
+        converter.coerceValue(validator, Iterator.class);
+        converterControl.setReturnValue(Collections.singleton(validator).iterator());
 
-        _valueConverter.coerceValue(_validator, Iterator.class);
-        _valueConverterControl.setReturnValue(Collections.singletonList(_validator).iterator());
+        validator.getAcceptsNull();
+        validatorControl.setReturnValue(true);
 
-        _validator.validate(
-                _component,
-                new ValidationMessagesImpl(_component, Locale.ENGLISH),
-                object);
-        _validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, new TypeMatcher(), null }));
-        _validatorControl.setThrowable(ex);
+        ValidationMessages messages = new ValidationMessagesImpl(field, Locale.ENGLISH);
+        
+        try
+        {
+            validator.validate(field, messages, null);
+            validatorControl.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
+            { new EqualsMatcher(), new TypeMatcher(), new EqualsMatcher() }));
+            
+            replayControls();
+    
+            support.validate(field, writer, cycle, null);
+    
+            verifyControls();
+        }
+        catch (ValidatorException e)
+        {
+            unreachable();
+        }
+    }
 
-        _delegate.record(ex);
+    public void testValidateRejectNull()
+    {
+        MockControl converterControl = newControl(ValueConverter.class);
+        ValueConverter converter = (ValueConverter) converterControl.getMock();
+        
+        ValidatableFieldSupportImpl support = new ValidatableFieldSupportImpl();
+        support.setThreadLocale(newThreadLocale());
+        support.setValueConverter(converter);
+        
+        MockControl fieldControl = newControl(TranslatedField.class);
+        TranslatedField field = (TranslatedField) fieldControl.getMock();
+        
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        
+        MockControl validatorControl = newControl(Validator.class);
+        Validator validator = (Validator) validatorControl.getMock();
+        
+        field.getValidators();
+        fieldControl.setReturnValue(validator);
+        
+        converter.coerceValue(validator, Iterator.class);
+        converterControl.setReturnValue(Collections.singleton(validator).iterator());
 
-        replay();
-
-        _support.bind(_component, _writer, _cycle, "some value");
-
-        verify();
+        validator.getAcceptsNull();
+        validatorControl.setReturnValue(false);
+        
+        try
+        {
+            replayControls();
+    
+            support.validate(field, writer, cycle, null);
+    
+            verifyControls();
+        }
+        catch (ValidatorException e)
+        {
+            unreachable();
+        }
     }
 
     private ValidatableField newFieldGetValidators(Collection validators)

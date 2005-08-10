@@ -22,9 +22,11 @@
   
   Support for form components.
 
-  <service-point id="RequirableFieldSupport" interface="org.apache.tapestry.form.RequirableFieldSupport">
+  <service-point id="TranslatedFieldSupport" interface="org.apache.tapestry.form.TranslatedFieldSupport">
     <invoke-factory>
-      <construct class="RequirableFieldSupportImpl"/>
+      <construct class="TranslatedFieldSupportImpl">
+        <set-service property="threadLocale" service-id="hivemind.ThreadLocale"/>
+      </construct>
     </invoke-factory>
   </service-point>
 

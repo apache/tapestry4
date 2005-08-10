@@ -17,7 +17,6 @@ package org.apache.tapestry.form;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -34,50 +33,24 @@ import org.apache.tapestry.valid.ValidatorException;
  * {@link IPropertySelectionModel} to provide the list of possible values.
  * <p>
  * Often, this is used to select a particular {@link org.apache.commons.lang.enum.Enum} to assign to
- * a property; the {@link EnumPropertySelectionModel} class simplifies this. As of 4.0,
- * PropertySelection can indicate that it is required. Often, a drop-down list will contain an
- * initial option that serves both as a label and to represent that nothing is selected. This can
- * behavior can easily be achieved by decorating an existing {@link IPropertySelectionModel} with a
- * {@link LabeledPropertySelectionModel}.
+ * a property; the {@link EnumPropertySelectionModel} class simplifies this.
+ * <p>
+ * Often, a drop-down list will contain an initial option that serves both as a label and to represent 
+ * that nothing is selected. This can behavior can easily be achieved by decorating an existing 
+ * {@link IPropertySelectionModel} with a {@link LabeledPropertySelectionModel}.
+ * <p>
+ * As of 4.0, this component can be validated.
  * 
  * @author Howard Lewis Ship
  * @author Paul Ferraro
  */
-public abstract class PropertySelection extends AbstractRequirableField
+public abstract class PropertySelection extends AbstractFormComponent implements ValidatableField
 {
     /**
-     * @see org.apache.tapestry.form.validator.AbstractRequirableField#bind(org.apache.tapestry.IRequestCycle,
-     *      java.lang.String)
-     */
-    public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException
-    {
-        if (isDisabled())
-            return;
-
-        setValue(getModel().translateValue(getSubmittedValue(cycle)));
-    }
-
-    /**
-     * @see org.apache.tapestry.AbstractComponent#finishLoad()
-     */
-    protected void finishLoad()
-    {
-        setRequiredMessage(ValidationStrings.getMessagePattern(
-                ValidationStrings.REQUIRED_SELECT_FIELD,
-                getPage().getLocale()));
-    }
-
-    /**
-     * Renders the component. The possible options, their labels, and the values to be encoded in
-     * the form are provided by the {@link IPropertySelectionModel model}.
-     * 
-     * @see org.apache.tapestry.form.validator.AbstractRequirableField#renderRequirableFormComponent(org.apache.tapestry.IMarkupWriter,
-     *      org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        super.renderFormComponent(writer, cycle);
-
         renderDelegatePrefix(writer, cycle);
 
         writer.begin("select");
@@ -93,6 +66,8 @@ public abstract class PropertySelection extends AbstractRequirableField
 
         renderDelegateAttributes(writer, cycle);
 
+        getValidatableFieldSupport().renderContributions(this, writer, cycle);
+        
         // Apply informal attributes.
         renderInformalParameters(writer, cycle);
 
@@ -133,6 +108,27 @@ public abstract class PropertySelection extends AbstractRequirableField
         renderDelegateSuffix(writer, cycle);
     }
 
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        String value = cycle.getParameter(getName());
+        
+        Object object = getModel().translateValue(value);
+        
+        setValue(object);
+        
+        try
+        {
+            getValidatableFieldSupport().validate(this, writer, cycle, object);
+        }
+        catch (ValidatorException e)
+        {
+            getForm().getDelegate().record(e);
+        }
+    }
+
     private boolean isEqual(Object left, Object right)
     {
         // Both null, or same object, then are equal
@@ -160,4 +156,17 @@ public abstract class PropertySelection extends AbstractRequirableField
 
     /** @since 2.2 * */
     public abstract void setValue(Object value);
+
+    /**
+     * Injected.
+     */
+    public abstract ValidatableFieldSupport getValidatableFieldSupport();
+
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#isRequired()
+     */
+    public boolean isRequired()
+    {
+        return getValidatableFieldSupport().isRequired(this);
+    }
 }

@@ -20,9 +20,10 @@ import java.util.List;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.form.AbstractRequirableField;
+import org.apache.tapestry.form.AbstractFormComponent;
 import org.apache.tapestry.form.IPropertySelectionModel;
-import org.apache.tapestry.valid.ValidationStrings;
+import org.apache.tapestry.form.ValidatableField;
+import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -89,13 +90,13 @@ import org.apache.tapestry.valid.ValidatorException;
  * </table>
  * <p>
  * Informal parameters are not allowed.
- * 
- * As of 4.0, MultiplePropertySelection can indicate that it is required.
+ * <p>
+ * As of 4.0, this component can be validated.
  * 
  * @author Sanjay Munjal
  */
 
-public abstract class MultiplePropertySelection extends AbstractRequirableField
+public abstract class MultiplePropertySelection extends AbstractFormComponent implements ValidatableField
 {
     /**
      * A shared instance of {@link CheckBoxMultiplePropertySelectionRenderer}.
@@ -109,69 +110,9 @@ public abstract class MultiplePropertySelection extends AbstractRequirableField
     protected void finishLoad()
     {
         setRenderer(DEFAULT_CHECKBOX_RENDERER);
-        setRequiredMessage(ValidationStrings.getMessagePattern(ValidationStrings.REQUIRED_SELECT_FIELD, getPage().getLocale()));
     }
 
-    /**
-     * @see org.apache.tapestry.form.AbstractRequirableField#getSubmittedValue(org.apache.tapestry.IRequestCycle)
-     */
-    public String getSubmittedValue(IRequestCycle cycle)
-    {
-        return super.getSubmittedValue(cycle);
-    }
-
-    /**
-     * @see org.apache.tapestry.form.AbstractRequirableField#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
-     */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
-    {
-        super.renderFormComponent(writer, cycle);
-    }
-
-    /**
-     * @see org.apache.tapestry.form.AbstractRequirableField#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
-     */
-    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
-    {
-        super.rewindFormComponent(writer, cycle);
-    }
-
-    /**
-     * @see org.apache.tapestry.form.RequirableField#bind(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
-     */
-    public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException
-    {
-        // get all the values
-        String[] optionValues = cycle.getParameters(getName());
-
-        IPropertySelectionModel model = getModel();
-        
-        List selectedList = new ArrayList(getModel().getOptionCount());
-
-        // Nothing was selected
-        if (optionValues != null)
-        {
-            // Go through the array and translate and put back in the list
-            for (int i = 0; i < optionValues.length; i++)
-            {
-                // Translate the new value
-                Object selectedValue = model.translateValue(optionValues[i]);
-
-                // Add this element in the list back
-                selectedList.add(selectedValue);
-            }
-        }
-        
-        this.setSelectedList(selectedList);
-    }
-
-    /**
-     * Renders the component, much of which is the responsiblity of the
-     * {@link IMultiplePropertySelectionRenderer renderer}. The possible options, their labels, and
-     * the values to be encoded in the form are provided by the
-     * {@link IPropertySelectionModel model}.
-     */
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         List selectedList = getSelectedList();
 
@@ -205,9 +146,57 @@ public abstract class MultiplePropertySelection extends AbstractRequirableField
         renderer.endRender(this, writer, cycle);
     }
 
+    /**
+     * @see org.apache.tapestry.form.AbstractRequirableField#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        // get all the values
+        String[] optionValues = cycle.getParameters(getName());
+
+        IPropertySelectionModel model = getModel();
+        
+        List selectedList = new ArrayList(getModel().getOptionCount());
+
+        // Nothing was selected
+        if (optionValues != null)
+        {
+            // Go through the array and translate and put back in the list
+            for (int i = 0; i < optionValues.length; i++)
+            {
+                // Translate the new value
+                Object selectedValue = model.translateValue(optionValues[i]);
+
+                // Add this element in the list back
+                selectedList.add(selectedValue);
+            }
+        }
+        
+        setSelectedList(selectedList);
+        
+        try
+        {
+            getValidatableFieldSupport().validate(this, writer, cycle, selectedList);
+        }
+        catch (ValidatorException e)
+        {
+            getForm().getDelegate().record(e);
+        }
+    }
+
     public abstract IPropertySelectionModel getModel();
 
     public abstract IMultiplePropertySelectionRenderer getRenderer();
 
     public abstract void setRenderer(IMultiplePropertySelectionRenderer renderer);
+    
+    public abstract ValidatableFieldSupport getValidatableFieldSupport();
+
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#isRequired()
+     */
+    public boolean isRequired()
+    {
+        return getValidatableFieldSupport().isRequired(this);
+    }
 }

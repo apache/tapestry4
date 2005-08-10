@@ -16,31 +16,32 @@ package org.apache.tapestry.form;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Implements a component that manages an HTML &lt;input type=text&gt; or &lt;input
  * type=password&gt; form element. [ <a
- * href="../../../../../ComponentReference/TextField.html">Component Reference </a>] As of 4.0,
- * TextField can indicate that it is required, use a custom translator (e.g. for numbers, dates,
- * etc), and perform validation on the submitted value.
+ * href="../../../../../ComponentReference/TextField.html">Component Reference </a>]
+ * <p>
+ * As of 4.0, this component can be configurably translated and validated.
  * 
  * @author Howard Lewis Ship
  * @author Paul Ferraro
  */
-public abstract class TextField extends AbstractValidatableField
+public abstract class TextField extends AbstractFormComponent implements TranslatedField
 {
     public abstract boolean isHidden();
 
     public abstract Object getValue();
-
     public abstract void setValue(Object value);
 
     /**
-     * @see org.apache.tapestry.form.validator.AbstractValidatableField#render(org.apache.tapestry.IMarkupWriter,
-     *      org.apache.tapestry.IRequestCycle, java.lang.String)
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
-    public void render(IMarkupWriter writer, IRequestCycle cycle, String value)
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
+        String value = getTranslatedFieldSupport().format(this, getValue());
+        
         renderDelegatePrefix(writer, cycle);
 
         writer.beginEmpty("input");
@@ -59,7 +60,8 @@ public abstract class TextField extends AbstractValidatableField
 
         renderDelegateAttributes(writer, cycle);
 
-        renderContributions(writer, cycle);
+        getTranslatedFieldSupport().renderContributions(this, writer, cycle);
+        getValidatableFieldSupport().renderContributions(this, writer, cycle);
 
         renderInformalParameters(writer, cycle);
 
@@ -69,18 +71,41 @@ public abstract class TextField extends AbstractValidatableField
     }
 
     /**
-     * @see org.apache.tapestry.form.ValidatableField#writeValue(java.lang.Object)
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
-    public void writeValue(Object value)
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        setValue(value);
+        String value = cycle.getParameter(getName());
+        
+        try
+        {
+            Object object = getTranslatedFieldSupport().parse(this, value);
+            
+            setValue(object);
+            
+            getValidatableFieldSupport().validate(this, writer, cycle, object);
+        }
+        catch (ValidatorException e)
+        {
+            getForm().getDelegate().record(e);
+        }
     }
 
     /**
-     * @see org.apache.tapestry.form.ValidatableField#readValue()
+     * Injected.
      */
-    public Object readValue()
+    public abstract ValidatableFieldSupport getValidatableFieldSupport();
+
+    /**
+     * Injected.
+     */
+    public abstract TranslatedFieldSupport getTranslatedFieldSupport();
+
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#isRequired()
+     */
+    public boolean isRequired()
     {
-        return getValue();
+        return getValidatableFieldSupport().isRequired(this);
     }
 }

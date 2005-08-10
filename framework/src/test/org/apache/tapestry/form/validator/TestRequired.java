@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form.validator;
 
+import java.util.Collections;
+
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -50,7 +52,7 @@ public class TestRequired extends BaseValidatorTestCase
         IFormComponent field = newField("Fred");
         ValidationMessages messages = newMessages(
                 null,
-                ValidationStrings.REQUIRED_TEXT_FIELD,
+                ValidationStrings.REQUIRED_FIELD,
                 new Object[]
                 { "Fred" },
                 "Default Message for Fred.");
@@ -71,12 +73,64 @@ public class TestRequired extends BaseValidatorTestCase
         verifyControls();
     }
 
+    public void testValidateEmptyString() throws Exception
+    {
+        IFormComponent field = newField("Fred");
+        ValidationMessages messages = newMessages(
+                null,
+                ValidationStrings.REQUIRED_FIELD,
+                new Object[]
+                { "Fred" },
+                "Default Message for Fred.");
+
+        replayControls();
+
+        try
+        {
+            new Required().validate(field, messages, "");
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals("Default Message for Fred.", ex.getMessage());
+            assertSame(ValidationConstraint.REQUIRED, ex.getConstraint());
+        }
+        
+        verifyControls();
+    }
+
+    public void testValidateEmptyCollection() throws Exception
+    {
+        IFormComponent field = newField("Fred");
+        ValidationMessages messages = newMessages(
+                null,
+                ValidationStrings.REQUIRED_FIELD,
+                new Object[]
+                { "Fred" },
+                "Default Message for Fred.");
+
+        replayControls();
+
+        try
+        {
+            new Required().validate(field, messages, Collections.EMPTY_LIST);
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals("Default Message for Fred.", ex.getMessage());
+            assertSame(ValidationConstraint.REQUIRED, ex.getConstraint());
+        }
+        
+        verifyControls();
+    }
+
     public void testValidateNullCustomMessage() throws Exception
     {
         IFormComponent field = newField("Fred");
         ValidationMessages messages = newMessages(
                 "custom",
-                ValidationStrings.REQUIRED_TEXT_FIELD,
+                ValidationStrings.REQUIRED_FIELD,
                 new Object[]
                 { "Fred" },
                 "Custom Message for Fred.");
@@ -119,7 +173,7 @@ public class TestRequired extends BaseValidatorTestCase
                 contextc,
                 context,
                 null,
-                ValidationStrings.REQUIRED_TEXT_FIELD,
+                ValidationStrings.REQUIRED_FIELD,
                 new Object[]
                 { "Fred" },
                 "Default\\Message for Fred.");

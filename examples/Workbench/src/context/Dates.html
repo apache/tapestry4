@@ -20,11 +20,11 @@ This page is used to demonstrate the DatePicker component.
  	</tr>
  <tr>
   <td><span jwcid="@FieldLabel" field="component:startDate"/>:</td>
-  <td><input jwcid="startDate@DatePicker" includeWeek="ognl:includeWeek" value="ognl:startDate" displayName="Start Date" required="true" validators="bean:maxDateValidator"/></td> 
+  <td><input jwcid="startDate@DatePicker" includeWeek="ognl:includeWeek" value="ognl:startDate" displayName="Start Date" validators="ognl:{beans.required,beans.maxDate}"/></td> 
  </tr>
  <tr>
   <td><span jwcid="@FieldLabel" field="component:endDate"/>:</td>
-  <td><input jwcid="endDate@DatePicker" includeWeek="ognl:includeWeek" value="ognl:endDate" displayName="End Date" required="true" validators="bean:minDateValidator"/></td>
+  <td><input jwcid="endDate@DatePicker" includeWeek="ognl:includeWeek" value="ognl:endDate" displayName="End Date" validators="ognl:{beans.required,beans.minDate}"/></td>
  </tr>
  <tr>
   <td></td>

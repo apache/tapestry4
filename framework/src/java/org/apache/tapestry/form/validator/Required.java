@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form.validator;
 
+import java.util.Collection;
+
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -49,7 +51,9 @@ public class Required extends BaseValidator
     public void validate(IFormComponent field, ValidationMessages messages, Object object)
             throws ValidatorException
     {
-        if (object == null)
+        if ((object == null)
+                || (String.class.isInstance(object) && (((String) object).length() == 0))
+                || (Collection.class.isInstance(object) && ((Collection) object).isEmpty()))
         {
             String message = buildMessage(messages, field);
             throw new ValidatorException(message, ValidationConstraint.REQUIRED);
@@ -60,7 +64,7 @@ public class Required extends BaseValidator
     {
         return messages.formatValidationMessage(
                 getMessage(),
-                ValidationStrings.REQUIRED_TEXT_FIELD,
+                ValidationStrings.REQUIRED_FIELD,
                 new Object[]
                 { field.getDisplayName() });
     }
@@ -82,10 +86,8 @@ public class Required extends BaseValidator
     /**
      * Returns true, that's what Required means!
      */
-
     public boolean isRequired()
     {
         return true;
     }
-
 }

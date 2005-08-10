@@ -18,7 +18,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -26,13 +25,13 @@ import org.apache.tapestry.valid.ValidatorException;
  * {@link Radio}group components work together to update a property of some other object, much like
  * a more flexible version of a {@link PropertySelection}. [ <a
  * href="../../../../../ComponentReference/RadioGroup.html">Component Reference </a>]
- * 
- * As of 4.0, RadioGroup can indicate that it is required.
+ * <p>
+ * As of 4.0, this component can be validated.
  * 
  * @author Howard Lewis Ship
  * @author Paul Ferraro
  */
-public abstract class RadioGroup extends AbstractRequirableField
+public abstract class RadioGroup extends AbstractFormComponent implements ValidatableField
 {
     // Cached copy of the value from the selectedBinding
     private Object _selection;
@@ -102,6 +101,8 @@ public abstract class RadioGroup extends AbstractRequirableField
     public void updateSelection(Object value)
     {
         getBinding("selected").setObject(value);
+        
+        _selection = value;
     }
 
     /**
@@ -140,19 +141,27 @@ public abstract class RadioGroup extends AbstractRequirableField
     }
 
     /**
-     * @see org.apache.tapestry.AbstractComponent#finishLoad()
+     * @see org.apache.tapestry.form.AbstractRequirableField#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
-    protected void finishLoad()
+    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        setRequiredMessage(ValidationStrings.getMessagePattern(ValidationStrings.REQUIRED_SELECT_FIELD, getPage().getLocale()));
+        _rewinding = false;
+        
+        // For rendering, the Radio components need to know what the current
+        // selection is, so that the correct one can mark itself 'checked'.
+        _selection = getBinding("selected").getObject();
+        
+        renderBody(writer, cycle);
+        
+        getValidatableFieldSupport().renderContributions(this, writer, cycle);
     }
 
     /**
-     * @see org.apache.tapestry.form.AbstractRequirableField#bind(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
-    public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        String value = getSubmittedValue(cycle);
+        String value = cycle.getParameter(getName());
         
         if (value == null)
             _selectedOption = -1;
@@ -162,21 +171,27 @@ public abstract class RadioGroup extends AbstractRequirableField
         _rewinding = true;
         
         renderBody(writer, cycle);
+        
+        try
+        {
+            getValidatableFieldSupport().validate(this, writer, cycle, _selection);
+        }
+        catch (ValidatorException e)
+        {
+            getForm().getDelegate().record(e);
+        }
     }
 
     /**
-     * @see org.apache.tapestry.form.AbstractRequirableField#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * Injected.
      */
-    protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
-    {
-        super.renderFormComponent(writer, cycle);
+    public abstract ValidatableFieldSupport getValidatableFieldSupport();
 
-        _rewinding = false;
-        
-        // For rendering, the Radio components need to know what the current
-        // selection is, so that the correct one can mark itself 'checked'.
-        _selection = getBinding("selected").getObject();
-        
-        renderBody(writer, cycle);
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#isRequired()
+     */
+    public boolean isRequired()
+    {
+        return getValidatableFieldSupport().isRequired(this);
     }
 }

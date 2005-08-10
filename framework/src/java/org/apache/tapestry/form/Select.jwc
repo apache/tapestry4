@@ -29,13 +29,12 @@
   <parameter name="disabled"/>
 
   <parameter name="displayName"/>
-  <parameter name="required"/>
-  <parameter name="requiredMessage"/>
+  <parameter name="validators"/>
   
-  <parameter name="id"  property="idParameter" default-value="ognl:id"/>
+  <parameter name="id" property="idParameter" default-value="ognl:id"/>
   		  
   <reserved-parameter name="name"/>
 
-  <inject property="requirableFieldSupport" object="service:tapestry.form.RequirableFieldSupport"/>
+  <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
     
 </component-specification>

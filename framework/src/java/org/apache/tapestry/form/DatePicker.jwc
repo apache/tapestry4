@@ -34,6 +34,7 @@
   <asset name="defaultIcon" path="DatePickerIcon.png"/>
        
   <inject property="scriptSource" object="infrastructure:scriptSource"/>
+  <inject property="translatedFieldSupport" object="service:tapestry.form.TranslatedFieldSupport"/>
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
     
 </component-specification>

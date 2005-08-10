@@ -21,7 +21,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -30,13 +29,14 @@ import org.apache.tapestry.valid.ValidatorException;
  * using a {@link PropertySelection}component. [ <a
  * href="../../../../../ComponentReference/Select.html">Component Reference </a>]
  * <p>
- * Otherwise, this component is very similar to {@link RadioGroup}. As of 4.0, Select can indicate
- * that it is required.
+ * Otherwise, this component is very similar to {@link RadioGroup}. 
+ * <p>
+ * As of 4.0, this component can be validated.
  * 
  * @author Howard Lewis Ship
  * @author Paul Ferraro
  */
-public abstract class Select extends AbstractRequirableField
+public abstract class Select extends AbstractFormComponent implements ValidatableField
 {
     private boolean _rewinding;
 
@@ -111,47 +111,10 @@ public abstract class Select extends AbstractRequirableField
     }
 
     /**
-     * @see org.apache.tapestry.AbstractComponent#finishLoad()
-     */
-    protected void finishLoad()
-    {
-        setRequiredMessage(ValidationStrings.getMessagePattern(
-                ValidationStrings.REQUIRED_SELECT_FIELD,
-                getPage().getLocale()));
-    }
-
-    /**
-     * @see org.apache.tapestry.form.AbstractRequirableField#bind(org.apache.tapestry.IMarkupWriter,
-     *      org.apache.tapestry.IRequestCycle)
-     */
-    public void bind(IMarkupWriter writer, IRequestCycle cycle) throws ValidatorException
-    {
-        _selections = null;
-        _rewinding = true;
-
-        String[] parameters = cycle.getParameters(getName());
-
-        if (parameters != null)
-        {
-            int length = parameters.length;
-
-            _selections = new HashSet((length > 30) ? 101 : 7);
-
-            for (int i = 0; i < length; i++)
-                _selections.add(parameters[i]);
-        }
-
-        renderBody(writer, cycle);
-    }
-
-    /**
-     * @see org.apache.tapestry.form.AbstractRequirableField#renderFormComponent(org.apache.tapestry.IMarkupWriter,
-     *      org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        super.renderFormComponent(writer, cycle);
-
         _rewinding = false;
 
         renderDelegatePrefix(writer, cycle);
@@ -170,6 +133,8 @@ public abstract class Select extends AbstractRequirableField
 
         renderDelegateAttributes(writer, cycle);
 
+        getValidatableFieldSupport().renderContributions(this, writer, cycle);
+        
         renderInformalParameters(writer, cycle);
 
         renderBody(writer, cycle);
@@ -177,5 +142,51 @@ public abstract class Select extends AbstractRequirableField
         writer.end();
 
         renderDelegateSuffix(writer, cycle);
+    }
+
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        _selections = null;
+        _rewinding = true;
+
+        String[] parameters = cycle.getParameters(getName());
+
+        try
+        {
+            if (parameters != null)
+            {
+                int length = parameters.length;
+    
+                _selections = new HashSet((length > 30) ? 101 : 7);
+    
+                for (int i = 0; i < length; i++)
+                    _selections.add(parameters[i]);
+            }
+    
+            renderBody(writer, cycle);
+            
+            // This is atypical validation - since this component does not explicitly bind to an object
+            getValidatableFieldSupport().validate(this, writer, cycle, parameters);
+        }
+        catch (ValidatorException e)
+        {
+            getForm().getDelegate().record(e);
+        }
+    }
+
+    /**
+     * Injected.
+     */
+    public abstract ValidatableFieldSupport getValidatableFieldSupport();
+
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#isRequired()
+     */
+    public boolean isRequired()
+    {
+        return getValidatableFieldSupport().isRequired(this);
     }
 }
