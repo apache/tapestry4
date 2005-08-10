@@ -50,7 +50,7 @@
     -->
   </todo>
   <changes>
-    <release version="4.0-beta-4" date="unreleased">
+    <release version="4.0-beta-4" date="Aug 10 2005">
       <action type="fix" dev="HLS">Add getComponent() method to IComponent.</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-445" due-to="Markus Joschko">ContextAssetFactory assembles wrong filename for assets</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-444">regexp validator(Email) script function name mismatch</action>
