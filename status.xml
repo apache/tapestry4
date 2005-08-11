@@ -64,7 +64,7 @@
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-520">Button component needs to implement rewindFormComponent() method</action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-521">Button component creates invalid markup</action>
       <action type="update" dev="PF">Deprecate label parameter of Button component</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-527">Tapestry 4.0 DTD invalid</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-527,TAPESTRY-542">Tapestry 4.0 DTD invalid</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-524" due-to="Adam Greene">Client Side Persistence Scopes can conflict with each other</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-519" due-to="Raphael Jean">NestedMarkupWriterImpl doesn't close the current open tag when getBuffer() is called</action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-407">Unable to override default pattern of DateTranslator and NumberTranslator when initialized via the translator binding</action>
@@ -87,6 +87,7 @@
       <action type="update" dev="HLS">Add post parameter to IEngineService.getLink() to support building links differently for form posts vs. link gets</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-541" due-to="Markus Wiederkehr">Add a configuration point for creating additional SqueezeAdaptors</action>
       <action type="update" dev="HLS">Change SerializableAdaptor to encode with and without compression, and use the shorter of the two</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-543">DateField.jwc is 4.0 DTD but uses the type attribute of &lt;parameter&gt;</action>
     </release>
     <release version="4.0-beta-3" date="Jul 22 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>
