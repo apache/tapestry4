@@ -50,7 +50,7 @@ Entity: attribute-flag
 For entity attributes that take a boolean value.
 -->
 <!ENTITY % attribute-flag "(yes|no|true|false|on|off|1|0|y|n|t|f|aye|nay)">
-<!ENTITY % library-content "(description?, (meta|page|component-type|service|library|extension)*)">
+<!ENTITY % library-content "(description?, (meta|page|component-type|library|extension)*)">
 <!-- =======================================================
 Element: application
 Root element
