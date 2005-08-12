@@ -23,7 +23,7 @@ import java.util.List;
  * @author Laurent ETIEMBLE, Howard M. Lewis Ship
  * @since 4.0
  */
-public class BooleanArrayToIteratorConverter implements TypeConverter
+public class BooleanArrayToListConverter implements TypeConverter
 {
 
     public Object convertValue(Object value)
@@ -39,7 +39,7 @@ public class BooleanArrayToIteratorConverter implements TypeConverter
             list.add(b ? Boolean.TRUE : Boolean.FALSE);
         }
 
-        return list.iterator();
+        return list;
     }
 
 }

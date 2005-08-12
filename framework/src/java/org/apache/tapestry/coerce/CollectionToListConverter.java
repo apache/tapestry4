@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,31 +15,19 @@
 package org.apache.tapestry.coerce;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 /**
- * Converts primitive arrays of booleans to a Iterator (of a List of ) Boolean.
- * 
- * @author Laurent ETIEMBLE, Howard M. Lewis Ship
+ * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class BooleanArrayToIteratorConverter implements TypeConverter
+public class CollectionToListConverter implements TypeConverter
 {
 
     public Object convertValue(Object value)
     {
-        boolean[] booleans = (boolean[]) value;
-
-        List list = new ArrayList(booleans.length);
-
-        for (int i = 0; i < booleans.length; i++)
-        {
-            boolean b = booleans[i];
-
-            list.add(b ? Boolean.TRUE : Boolean.FALSE);
-        }
-
-        return list.iterator();
+        Collection c = (Collection) value;
+        return new ArrayList(c);
     }
 
 }
