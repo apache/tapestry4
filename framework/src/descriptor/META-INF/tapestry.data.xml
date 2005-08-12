@@ -58,7 +58,7 @@
     Converts an object down to a compressed byte stream, and then to a MIME-like string representation.
     
     <invoke-factory>
-      <construct class="SerializableAdaptor"/>
+      <construct class="SerializableAdaptor" class-resolver-property="resolver"/>
     </invoke-factory>
   </service-point>
   
