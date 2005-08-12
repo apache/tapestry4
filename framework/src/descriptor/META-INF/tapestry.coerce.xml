@@ -87,6 +87,7 @@
   <contribution configuration-id="ListConverters">
     <converter class="java.lang.Object" object="instance:ObjectToListConverter"/>
     <converter class="java.util.Collection" object="instance:CollectionToListConverter"/>
+    <converter class="java.util.Iterator" object="instance:IteratorToListConverter"/>
     <converter class="java.lang.Object[]" object="instance:ObjectArrayToListConverter"/>
     <converter class="char[]" object="instance:CharArrayToListConverter"/>
     <converter class="boolean[]" object="instance:BooleanArrayToListConverter"/>    
