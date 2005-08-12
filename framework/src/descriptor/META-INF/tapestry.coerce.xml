@@ -82,6 +82,25 @@
     </invoke-factory>
   </service-point>  
   
+  <configuration-point id="ListConverters" schema-id="Converters"/>
+  
+  <contribution configuration-id="ListConverters">
+    <converter class="java.lang.Object" object="instance:ObjectToListConverter"/>
+    <converter class="java.util.Collection" object="instance:CollectionToListConverter"/>
+    <converter class="java.lang.Object[]" object="instance:ObjectArrayToListConverter"/>
+    <converter class="char[]" object="instance:CharArrayToListConverter"/>
+    <converter class="boolean[]" object="instance:BooleanArrayToListConverter"/>    
+  </contribution>
+  
+  <service-point id="ListConverter" interface="TypeConverter">
+    <invoke-factory>
+      <construct class="TypeConverterWrapper">
+        <set-configuration property="contributions" configuration-id="ListConverters"/>
+        <set-object property="nullConverter" value="instance:NullToListConverter"/>
+      </construct>
+    </invoke-factory>
+  </service-point>  
+  
   <configuration-point id="TypeConverters" schema-id="Converters">
     
     Defines converters used by the ValueConverter service; the class identifies the 
@@ -93,6 +112,7 @@
   <contribution configuration-id="TypeConverters">
     <converter class="java.lang.Boolean" object="service:BooleanConverter"/>
     <converter class="java.util.Iterator" object="service:IteratorConverter"/>
+    <converter class="java.util.List" object="service:ListConverter"/>
     <converter class="java.lang.String" object="instance:ObjectToStringConverter"/>
   </contribution>
   

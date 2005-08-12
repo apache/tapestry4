@@ -18,28 +18,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Converts primitive arrays of booleans to a Iterator (of a List of ) Boolean.
- * 
  * @author Laurent ETIEMBLE, Howard M. Lewis Ship
  * @since 4.0
  */
-public class BooleanArrayToIteratorConverter implements TypeConverter
+public class CharArrayToListConverter implements TypeConverter
 {
-
     public Object convertValue(Object value)
     {
-        boolean[] booleans = (boolean[]) value;
+        char[] characters = (char[]) value;
 
-        List list = new ArrayList(booleans.length);
+        List list = new ArrayList(characters.length);
 
-        for (int i = 0; i < booleans.length; i++)
+        for (int i = 0; i < characters.length; i++)
         {
-            boolean b = booleans[i];
-
-            list.add(b ? Boolean.TRUE : Boolean.FALSE);
+            list.add(new Character(characters[i]));
         }
 
-        return list.iterator();
+        return list;
     }
 
 }
