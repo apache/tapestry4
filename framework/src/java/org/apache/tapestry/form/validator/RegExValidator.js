@@ -16,10 +16,10 @@ function validate_regex(event, field, pattern, message)
 {
 	var value = field.value;
 	
-	if (value == "") return; //
+	if (value == "") return;
 	
     var regexp = new RegExp(pattern)
 
     if (!regexp.test(value))
-      handle_invalid_field(event, field, message)
+      event.invalid_field(field, message)
 }

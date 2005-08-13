@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function handle_invalid_field(event, field, message)
+function default_invalid_field_handler(event, field, message)
 {
   // Temporary, while all the event logic is getting munged together
   // inside one big handler.
@@ -30,7 +30,7 @@ function handle_invalid_field(event, field, message)
 
 function focus(field)
 {
- 	field.focus();
+	field.focus();
     
     if (field.select)
         field.select();
@@ -44,7 +44,7 @@ function trim(field)
 function require(event, field, message)
 {
     if (field.value.length == 0)
-   		handle_invalid_field(event, field, message)
+      event.invalid_field(field, message);
 }
 
 // FormSubmitEvent
@@ -57,13 +57,21 @@ function require(event, field, message)
 // other listeners from being invoked.  A listener may also set the
 // cancelListeners flag, which will prevent further listeners from being 
 // invoked.
+// The invalid_field_handler is provided (by the FormEventManager)
+// to handle any invalid fields.
 
-function FormSubmitEvent(form, type)
+function FormSubmitEvent(form, type, invalid_field_handler)
 {
   this.form = form;
   this.type = type;
   this.abort = false;
   this.cancelListeners = false;
+  this.invalid_field_handler = invalid_field_handler;
+}
+
+FormSubmitEvent.prototype.invalid_field = function(field, message)
+{
+  this.invalid_field_handler.call(window, this, field, message);
 }
 
 FormSubmitEvent.prototype.toString = function()
@@ -93,6 +101,14 @@ function FormEventManager(form)
   
   form.onsubmit = function() { return this.events.submit(); };
   form.onreset = function() { return this.events.reset(); };
+  
+  // Override this property when doing something more ambitious than
+  // the default (which invokes window.alert(), focuses the field, and aborts
+  // the form submit and the rest of the listeners).  
+  // The function should take three parameters:
+  // the FormSubmitEvent, the field object, and the message
+  
+  this.invalid_field_handler = default_invalid_field_handler;
 }
 
 // addListener(type, handler)
@@ -151,7 +167,7 @@ FormEventManager.prototype.addCancelListener= function(handler)
 
 FormEventManager.prototype.cancel = function()
 {
-	var event = new FormSubmitEvent(this.form, "cancel");
+	var event = new FormSubmitEvent(this.form, "cancel", this.invalid_field_handler);
 	
 	this.invokeListeners("cancel", event);
 	
@@ -217,7 +233,7 @@ FormEventManager.prototype.addPostSubmitListener = function(handler)
 
 FormEventManager.prototype.submit = function()
 {
-	var event = new FormSubmitEvent(this.form, "submit");
+	var event = new FormSubmitEvent(this.form, "submit", this.invalid_field_handler);
 
     this.invokeListeners("presubmit", event);
 	this.invokeListeners("submit", event);	
@@ -255,7 +271,7 @@ FormEventManager.prototype.addRefreshListener = function(handler)
 
 FormEventManager.prototype.refresh = function()
 {
-	var event = new FormSubmitEvent(this.form, "refresh");
+	var event = new FormSubmitEvent(this.form, "refresh", this.invalid_field_handler);
 	
 	this.invokeListeners("refresh", event);
 	
@@ -286,7 +302,7 @@ FormEventManager.prototype.addResetListener = function(handler)
 
 FormEventManager.prototype.reset = function()
 {
-  var event = new FormSubmitEvent(this.form, "reset");
+  var event = new FormSubmitEvent(this.form, "reset", this.invalid_field_handler);
   
   this.invokeListeners("reset", event);
   

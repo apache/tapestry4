@@ -17,7 +17,7 @@ function validate_min_number(event, field, min, message)
 	var num = eval(field.value)
 	
     if (num < min)
-      handle_invalid_field(event, field, message)
+      event.invalid_field(field, message)
 }
 
 function validate_max_number(event, field, max, message)
@@ -25,5 +25,5 @@ function validate_max_number(event, field, max, message)
 	var num = eval(field.value)
 	
     if (num > max)
-      handle_invalid_field(event, field, message)
+      event.invalid_field(field, message)
 }
