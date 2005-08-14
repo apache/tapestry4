@@ -60,7 +60,7 @@ public abstract class PropertySelection extends AbstractFormComponent implements
             writer.attribute("disabled", "disabled");
 
         if (getSubmitOnChange())
-            writer.attribute("onchange", "this.form.submit()");
+            writer.attribute("onchange", "this.form.events.submit()");
 
         renderIdAttribute(writer, cycle);
 
