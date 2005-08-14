@@ -64,6 +64,19 @@ public class ValidationDelegate implements IValidationDelegate
         _trackingMap.clear();
     }
 
+    public void clearErrors()
+    {
+        if (_trackings == null)
+            return;
+
+        Iterator i = _trackings.iterator();
+        while (i.hasNext())
+        {
+            FieldTracking ft = (FieldTracking) i.next();
+            ft.setErrorRenderer(null);
+        }
+    }
+
     /**
      * If the form component is in error, places a &lt;font color="red"&lt; around it. Note: this
      * will only work on the render phase after a rewind, and will be confused if components are
