@@ -59,6 +59,7 @@
   
 	<component id="condCurrent" type="If">
 		<binding name="condition" expression="condCurrent"/>
+		<binding name="volatile" expression="true"/>
 	</component>
   
 	<component id="condOther" type="Else">
