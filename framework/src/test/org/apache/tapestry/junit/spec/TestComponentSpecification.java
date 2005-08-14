@@ -14,11 +14,18 @@
 
 package org.apache.tapestry.junit.spec;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.tapestry.junit.TapestryTestCase;
+import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
+import org.apache.tapestry.spec.IParameterSpecification;
+import org.apache.tapestry.spec.ParameterSpecification;
 
 /**
  * Test cases for page and component specifications.
@@ -73,5 +80,46 @@ public class TestComponentSpecification extends TapestryTestCase
         IAssetSpecification a = s.getAsset(assetName);
 
         assertEquals("Property " + propertyName + ".", expectedValue, a.getProperty(propertyName));
+    }
+
+    /** @since 4.0 */
+
+    public void testGetReservedParameterNames()
+    {
+        IComponentSpecification s = new ComponentSpecification();
+
+        assertEquals(Collections.EMPTY_SET, s.getReservedParameterNames());
+
+        s.addReservedParameterName("Fred");
+
+        Set expected = new HashSet();
+
+        expected.add("fred");
+
+        assertEquals(expected, s.getReservedParameterNames());
+
+        IParameterSpecification ps = new ParameterSpecification();
+
+        ps.setAliases("wilma,barney");
+        ps.setParameterName("bambam");
+
+        s.addParameter(ps);
+
+        expected.add("wilma");
+        expected.add("barney");
+        expected.add("bambam");
+
+        assertEquals(expected, s.getReservedParameterNames());
+
+        try
+        {
+            s.getReservedParameterNames().clear();
+            unreachable();
+        }
+        catch (UnsupportedOperationException ex)
+        {
+            // expected
+        }
+
     }
 }

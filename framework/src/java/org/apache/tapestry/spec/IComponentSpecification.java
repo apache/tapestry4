@@ -16,6 +16,7 @@ package org.apache.tapestry.spec;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.LocationHolder;
@@ -298,4 +299,16 @@ public interface IComponentSpecification extends IPropertyHolder, LocationHolder
      */
 
     public void setDeprecated(boolean deprecated);
+
+    /**
+     * Returns a Set of Strings; the reserved parameter names for the component. This combines
+     * explicit reserved names with formal parameter names. Each parameter name in the Set will be
+     * all lower case (to facilitate a caseless comparison).
+     * 
+     * @returns an unmodifiable set (of String), possibly empty
+     * @since 4.0
+     */
+
+    public Set getReservedParameterNames();
+
 }
