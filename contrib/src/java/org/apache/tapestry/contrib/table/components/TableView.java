@@ -204,7 +204,8 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
         if (m_objTableModel == null)
         {
             Serializable objState = loadSessionState();
-            m_objTableModel = getTableSessionStateManager().recreateTableModel(objState);
+            ITableSessionStateManager objStateManager = getTableSessionStateManager();
+            m_objTableModel = objStateManager.recreateTableModel(objState);
         }
 
         // if the session state does not help, get the model from the binding

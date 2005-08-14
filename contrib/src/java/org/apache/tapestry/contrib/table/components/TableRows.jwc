@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 	
 <component-specification class="org.apache.tapestry.contrib.table.components.TableRows" 
 	allow-body="yes" allow-informal-parameters="yes">
@@ -27,24 +27,85 @@
         This component must be wrapped by TableView. 
 	</description>
   
-	<parameter name="row" 
-		type="java.lang.Object" 
-		required="no"
-		direction="custom">
+	<parameter name="row" property="rowParameter">
         <description>The current row being rendered.</description>
     </parameter>
 
-	<parameter name="element" 
-		type="java.lang.String" 
-		required="no"
-		direction="auto"
-    	default-value="'tr'">
+	<parameter name="index" property="indexParameter">
+		<description>
+		    If provided, the parameter is updated with the index of the loop on each iteration.
+		</description>
+	</parameter>
+  
+	<parameter name="element" default-value="'tr'">
         <description>The tag to use to wrap the rows in, 'tr' by default.</description>
     </parameter>
 
+	<parameter name="keyExpression">
+    	<description>
+		    Only active in a form. An OGNL expression that returns the primary key of the iterated value. 
+		    The primary keys are stored in hidden fields during rendering and are loaded from the form
+		    during a rewind to ensure that the iterations remain the same.
+		    This is a simpler, but a less efficient alternative of the 'converter' parameter.
+		    If needed, please use in conjuction with 'fullSource' to reference objects 
+		    not currently present in 'source'.
+		    Also, use the 'defaultValue' parameter to define the object to be returned if
+		    a value corresponding to a particular primary key cannot be found.
+		</description>
+	</parameter>
+    
+	<parameter name="fullSource" property="fullSourceParameter">
+		<description>
+		    Only active in a form and in combination with the 'keyExpression' parameter. 
+		    If an object corresponding to a primary key stored in the form cannot be
+		    found in the 'source' parameter, then the objects provided by this parameter 
+		    are searched for a match next. 
+		</description>
+	</parameter>
+  
+	<parameter name="defaultValue" default-value="null">
+		<description>
+		    Only active in a form. The value to be used when no match for a given primary key is found. 
+		</description>
+	</parameter>
+
+	<parameter name="converter" default-value="null">
+		<description>
+		    Only active in a form. Defines how the items iterated upon 
+		    will be stored in the form as hidden values and how the stored information will be 
+		    converted back to objects. 
+		    This interface allows only the primary key of the items to be stored, 
+		    rather than the whole item.
+		</description>
+	</parameter>
+  
+	<parameter name="primaryKeys">
+		<description>
+			Only active in a form. If provided, the parameter is automatically updated 
+		    before a rewind with the list of primary keys stored in the form. 
+		    The parameter is updated right before the iterations begin in a rewind and 
+		    could be used to preload the relevant objects in a provided 'converter'.
+		</description>
+	</parameter>
+    
+    <parameter name="volatile"> 
+        <description>
+			Only active in a form. Determines whether to avoid creating hidden fields within a form.
+			Using this parameter may make the form structure different during render and rewind, 
+			and cause exceptions as a result. Please use with caution.
+        </description>
+    </parameter>
+    
 	<component id="iterRows" type="For">
-		<binding name="source" expression="tableRowsIterator"/>
-		<binding name="value" expression="tableRow"/>
+		<binding name="source" value="tableRowsIterator"/>
+		<binding name="value" value="tableRow"/>
+		<binding name="index" value="tableIndex"/>
+		<binding name="fullSource" value="fullSource"/>
+		<inherited-binding name="keyExpression" parameter-name="keyExpression"/>
+		<inherited-binding name="defaultValue" parameter-name="defaultValue"/>
+		<inherited-binding name="converter" parameter-name="converter"/>
+		<inherited-binding name="primaryKeys" parameter-name="primaryKeys"/>
+		<inherited-binding name="volatile" parameter-name="volatile"/>
 	</component>
   
 	<component id="informal" type="Any" inherit-informal-parameters="yes">

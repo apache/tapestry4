@@ -19,6 +19,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import org.apache.tapestry.contrib.table.model.CTableDataModelEvent;
+import org.apache.tapestry.contrib.table.model.IFullTableModel;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 import org.apache.tapestry.contrib.table.model.ITableDataModel;
@@ -33,7 +34,8 @@ import org.apache.tapestry.contrib.table.model.common.ReverseComparator;
  *
  * @author mindbridge
  */
-public class SimpleTableModel extends AbstractTableModel implements ITableDataModelListener
+public class SimpleTableModel extends AbstractTableModel 
+	implements IFullTableModel, ITableDataModelListener
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -177,5 +179,10 @@ public class SimpleTableModel extends AbstractTableModel implements ITableDataMo
         
         m_arrRows = null;
     }
+
+	public Iterator getRows() {
+		updateRows();
+		return new ArrayIterator(m_arrRows);
+	}
 
 }

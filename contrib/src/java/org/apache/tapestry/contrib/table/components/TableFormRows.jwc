@@ -16,11 +16,11 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 	
 <component-specification class="org.apache.tapestry.contrib.table.components.TableFormRows" 
-	allow-body="yes" allow-informal-parameters="yes">
+	allow-body="yes" allow-informal-parameters="yes" deprecated="yes">
 	
 	<description>
         A version of the TableRows designed for operation in a form. 
@@ -30,18 +30,11 @@
         This component must be wrapped by TableView. 
 	</description>
   
-	<parameter name="row" 
-		type="java.lang.Object" 
-		required="no"
-		direction="custom">
+	<parameter name="row">
         <description>The value object of the row currently being rendered.</description>
     </parameter>
 
-    <parameter name="convertor"
-    	type="org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor"
-    	required="no"
-    	direction="auto"
-    	default-value="null">
+    <parameter name="convertor" default-value="null">
         <description>
         An interface defining how the items iterated upon by this component 
         will be stored in the form as Hidden values. This interface allows only 
@@ -49,20 +42,17 @@
         </description>
     </parameter>
     
-	<parameter name="element" 
-		type="java.lang.String" 
-		required="no"
-		default-value='"tr"'>
+	<parameter name="element" default-value='"tr"'>
         <description>The tag to use to wrap the rows in, 'tr' by default.</description>
     </parameter>
 
 	<component id="iterRows" type="ListEdit" inherit-informal-parameters="yes">
-		<binding name="source" expression="convertedTableRowsIterator"/>
-		<binding name="value" expression="convertedTableRow"/>
+		<binding name="source" value="convertedTableRowsIterator"/>
+		<binding name="value" value="convertedTableRow"/>
         <inherited-binding name="element" parameter-name="element"/>
 	</component>
 
-    <property-specification name="convertedValues" type="java.util.Map" initial-value="new java.util.HashMap()"/>
-    <property-specification name="convertorCache" type="org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor" initial-value="null"/>
+    <property name="convertedValues" initial-value="new java.util.HashMap()"/>
+    <property name="convertorCache" initial-value="null"/>
       
 </component-specification>
