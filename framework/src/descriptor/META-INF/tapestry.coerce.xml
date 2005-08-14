@@ -69,6 +69,7 @@
     <converter class="java.lang.Object" object="instance:ObjectToIteratorConverter"/>
     <converter class="java.util.Collection" object="instance:CollectionToIteratorConverter"/>
     <converter class="java.lang.Object[]" object="instance:ObjectArrayToIteratorConverter"/>
+    <converter class="int[]" object="instance:IntArrayToIteratorConverter"/>
     <converter class="char[]" object="instance:CharArrayToIteratorConverter"/>
     <converter class="boolean[]" object="instance:BooleanArrayToIteratorConverter"/>    
   </contribution>
@@ -89,6 +90,7 @@
     <converter class="java.util.Collection" object="instance:CollectionToListConverter"/>
     <converter class="java.util.Iterator" object="instance:IteratorToListConverter"/>
     <converter class="java.lang.Object[]" object="instance:ObjectArrayToListConverter"/>
+    <converter class="int[]" object="instance:IntArrayToListConverter"/>
     <converter class="char[]" object="instance:CharArrayToListConverter"/>
     <converter class="boolean[]" object="instance:BooleanArrayToListConverter"/>    
   </contribution>
