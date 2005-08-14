@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE component-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+
+<component-specification class="org.apache.tapestry.contrib.ajax.Timeout"
+    allow-body="no" allow-informal-parameters="no">
+    
+    <description>
+        Displays a message to the user when a certain amount of time remains
+        to the expiration of the session.
+    </description>
+    
+    <parameter name="warningTime" default-value="300">
+        <description>
+            The number of seconds before session expiration when a warning message will appear.
+        </description>
+    </parameter>
+    
+    <parameter name="autoProlongTime" default-value="900">
+        <description>
+            The number of seconds before session expiration when the session 
+            will be automatically prolonged upon user activity.
+        </description>
+    </parameter>
+    
+    <parameter name="warningMessage" default-value="message: warning">
+        <description>
+            The warning message that will appear when the session is about to exipre.
+            Here {0} is replaced by the number of minutes that remain until expiration and 
+            {1} is replaced with the time when the expiration will occur.
+        </description>
+    </parameter>
+    
+    <parameter name="expirationMessage" default-value="'Your session has expired. Please log in again.'">
+        <description>
+            The message that will appear when the session exipres and
+            the user needs to log in again.
+        </description>
+    </parameter>
+
+    <parameter name="disableWarning" default-value="false">
+        <description>
+            Do not display a warning message after 'warningTime' seconds.
+        </description>
+    </parameter>
+
+    <parameter name="disableAutoProlong" default-value="false">
+        <description>
+            Disable the automatic prolonging of a session after 'autoProlongTime' seconds
+            upon user activity.
+        </description>
+    </parameter>
+    
+    <parameter name="expirationFunction" default-value="null">
+        <description>
+            The JavaScript function that will be invoked when the session expires.
+        </description>
+    </parameter>
+
+        
+    <component id="script" type="Script">
+        <binding name="script" value="literal:/org/apache/tapestry/contrib/ajax/Timeout.script"/>
+        <binding name="symbols" value="scriptSymbols"/>
+    </component>
+</component-specification>
