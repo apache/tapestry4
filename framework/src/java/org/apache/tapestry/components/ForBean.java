@@ -80,6 +80,10 @@ public abstract class ForBean extends AbstractFormComponent {
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
+    	// Clear the cache between rewind and render.
+    	// This allows the value of 'source' to be changed by the form listeners.
+    	setSavedSourceData(null);
+    	
         // form may be null if component is not located in a form
         IForm form = (IForm) cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
 
@@ -179,17 +183,6 @@ public abstract class ForBean extends AbstractFormComponent {
     	return sourceData;
     }
     
-    
-    protected Iterator getSources(String parameter)
-    {
-    	IBinding binding = getBinding(parameter);
-		if (binding == null)
-			return null;
-		
-		Object data = binding.getObject();
-		return (Iterator) getValueConverter().coerceValue(data, Iterator.class);
-    }
-    
     /**
      *  Returns a list of the values stored as Hidden fields in the form.
      *  A conversion is performed if the primary key of the value is stored.
@@ -249,7 +242,7 @@ public abstract class ForBean extends AbstractFormComponent {
 		if (sourceData == null)
 			return null;
 		
-    	List sourcePrimaryKeys = generateSourcePrimaryKeys();
+    	List sourcePrimaryKeys = evaluateSourcePrimaryKeys();
 		if (sourcePrimaryKeys == null)
 			return null;
     	
@@ -277,7 +270,7 @@ public abstract class ForBean extends AbstractFormComponent {
      * of the array is a string describing whether a particular element is
      * a primary key or a value.
      */
-    private List generateSourcePrimaryKeys()
+    private List evaluateSourcePrimaryKeys()
     {
     	// check if the result is already cached to avoid evaluating again
     	List sourcePrimaryKeys = getSourcePrimaryKeys();
@@ -287,10 +280,6 @@ public abstract class ForBean extends AbstractFormComponent {
     	List sourceData = getSourceData();
 		if (sourceData == null)
 			return null;
-    	
-    	Map primaryKeyMap = getPrimaryKeyMap();
-    	if (primaryKeyMap == null)
-    		primaryKeyMap = new HashMap();
     	
 		// extract primary keys from data
 		StringBuffer pkDesc = new StringBuffer(sourceData.size());
@@ -306,15 +295,108 @@ public abstract class ForBean extends AbstractFormComponent {
 			}
 			else {
 				pkDesc.append(DESC_PRIMARY_KEY);
-				primaryKeyMap.put(pk, value);
 			}
 			sourcePrimaryKeys.add(pk);
 		}
     	
 		setSourcePrimaryKeys(sourcePrimaryKeys);
-		setPrimaryKeyMap(primaryKeyMap);
 		
 		return sourcePrimaryKeys;
+    }
+    
+    /**
+     * Converts the values in the 'source' parameter to primary keys if possible.
+     * Stores the evaluated primary keys in a map to determine the value 
+     * that a particular primary key represents.  
+     *  
+     * @return the map from primary keys to their corresponding objects 
+     */
+    private Map fillSourcePrimaryKeysMap()
+    {
+    	// check if the result is already cached to avoid evaluating again
+    	Map primaryKeyMap = getPrimaryKeyMap();
+    	if (primaryKeyMap != null)
+    		return primaryKeyMap;
+    	
+    	List sourceData = getSourceData();
+		if (sourceData == null)
+			return null;
+    	
+		// extract primary keys from data
+		primaryKeyMap = new HashMap();
+		for (Iterator it = sourceData.iterator(); it.hasNext();) {
+			Object value = it.next();
+			Object pk = getPrimaryKeyFromValue(value);
+			if (pk != null)
+				primaryKeyMap.put(pk, value);
+		}
+    	
+		setPrimaryKeyMap(primaryKeyMap);
+		
+		return primaryKeyMap;
+    }
+    
+    /**
+     * Returns the primary key of the given value. 
+     * Uses the 'keyExpression' or the 'converter' (if either is provided).
+     * 
+     * @param value The value from which the primary key should be extracted
+     * @return The primary key of the value, or null if such cannot be extracted.
+     */
+    private Object getPrimaryKeyFromValue(Object value) {
+    	if (value == null)
+    		return null;
+    	
+    	Object primaryKey = null;
+    	
+		String keyExpression = getKeyExpression();
+		if (keyExpression != null)
+			primaryKey = getExpressionEvaluator().read(value, keyExpression);
+	
+		if (primaryKey == null) {
+	    	IPrimaryKeyConverter converter = getConverter();
+	    	if (converter != null)
+	    		primaryKey = converter.getPrimaryKey(value);
+		}
+
+    	return primaryKey;
+    }
+    
+    /**
+     * Returns a value that corresponds to the provided primary key.
+     * Uses the 'keyExpression' or the 'converter' (if either is provided).
+     * If 'keyExpression' is defined, it extracts the primary keys of all values 
+     * in 'source' until a match is found. If there is no match, it does the same 
+     * with 'fullSource'. If that does not help either, 'converter' is used.
+     * Finally, the 'defaultValue' is returned as a last resort.
+     * 
+     * @param primaryKey The primary key that identifies the value 
+     * @return A value with an identical primary key, or null if such is not found.
+     */
+    private Object getValueFromPrimaryKey(Object primaryKey) {
+    	Object value = null;
+
+    	Map primaryKeyMap = fillSourcePrimaryKeysMap();
+    	if (primaryKeyMap != null)
+    		value = primaryKeyMap.get(primaryKey);
+    	
+    	if (value == null) {
+	    	// if fullSource is defined, try to get the object in that way
+			Object fullSource = getFullSource();
+			if (fullSource != null)
+	        	value = findPrimaryKeyMatchInFullSource(primaryKey, fullSource);
+    	}
+    	
+    	if (value == null) {
+	    	IPrimaryKeyConverter converter = getConverter();
+	    	if (converter != null)
+	    		value = converter.getValue(primaryKey);
+    	}
+
+    	if (value == null)
+    		value = getDefaultValue();
+
+    	return value;
     }
     
     /**
@@ -360,71 +442,6 @@ public abstract class ForBean extends AbstractFormComponent {
 			setFullSourceIterator(it);
 			setPrimaryKeyMap(primaryKeyMap);
 		}
-    }
-    
-    /**
-     * Returns the primary key of the given value. 
-     * Uses the 'keyExpression' or the 'converter' (if either is provided).
-     * 
-     * @param value The value from which the primary key should be extracted
-     * @return The primary key of the value, or null if such cannot be extracted.
-     */
-    private Object getPrimaryKeyFromValue(Object value) {
-    	if (value == null)
-    		return null;
-    	
-    	Object primaryKey = null;
-    	
-		String keyExpression = getKeyExpression();
-		if (keyExpression != null)
-			primaryKey = getExpressionEvaluator().read(value, keyExpression);
-	
-		if (primaryKey == null) {
-	    	IPrimaryKeyConverter converter = getConverter();
-	    	if (converter != null)
-	    		primaryKey = converter.getPrimaryKey(value);
-		}
-
-    	return primaryKey;
-    }
-    
-    /**
-     * Returns a value that corresponds to the provided primary key.
-     * Uses the 'keyExpression' or the 'converter' (if either is provided).
-     * If 'keyExpression' is defined, it extracts the primary keys of all values 
-     * in 'source' until a match is found. If there is no match, it does the same 
-     * with 'fullSource'. If that does not help either, 'converter' is used.
-     * Finally, the 'defaultValue' is returned as a last resort.
-     * 
-     * @param primaryKey The primary key that identifies the value 
-     * @return A value with an identical primary key, or null if such is not found.
-     */
-    private Object getValueFromPrimaryKey(Object primaryKey) {
-    	Object value = null;
-
-    	generateSourcePrimaryKeys();
-    	
-    	Map primaryKeyMap = getPrimaryKeyMap();
-    	if (primaryKeyMap != null)
-    		value = primaryKeyMap.get(primaryKey);
-    	
-    	if (value == null) {
-	    	// if fullSource is defined, try to get the object in that way
-			Object fullSource = getFullSource();
-			if (fullSource != null)
-	        	value = findPrimaryKeyMatchInFullSource(primaryKey, fullSource);
-    	}
-    	
-    	if (value == null) {
-	    	IPrimaryKeyConverter converter = getConverter();
-	    	if (converter != null)
-	    		value = converter.getValue(primaryKey);
-    	}
-
-    	if (value == null)
-    		value = getDefaultValue();
-
-    	return value;
     }
     
     /**
