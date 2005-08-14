@@ -39,7 +39,7 @@
   	</description>
   </parameter>
   
-  <parameter name="submitOnChange">
+  <parameter name="submitOnChange" deprecated="true">
   	<description>
   	Enables logic to submit containing form when value changes.
   	</description>
