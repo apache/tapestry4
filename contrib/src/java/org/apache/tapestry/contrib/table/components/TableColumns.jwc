@@ -50,6 +50,7 @@
 	<component id="iterColumns" type="For">
 		<binding name="source" value="ognl:tableColumnIterator"/>
 		<binding name="value" value="ognl:tableColumn"/>
+		<binding name="volatile" value="true"/>
 	</component>
   
 	<component id="informal" type="Any" inherit-informal-parameters="yes">
