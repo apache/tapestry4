@@ -226,6 +226,9 @@ public class TestIfElse extends BaseComponentTestCase
         cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
         cyclec.setReturnValue(form);
         
+        form.isRewinding();
+        formc.setReturnValue(true);
+        
         form.getElementId(conditional);
         formc.setReturnValue("If");
         
@@ -270,6 +273,9 @@ public class TestIfElse extends BaseComponentTestCase
         
         cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
         cyclec.setReturnValue(form);
+        
+        form.isRewinding();
+        formc.setReturnValue(true);
         
         form.getElementId(conditional);
         formc.setReturnValue("If");
