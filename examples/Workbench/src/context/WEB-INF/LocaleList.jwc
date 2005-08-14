@@ -25,7 +25,7 @@
     <bean name="rowClass" class="org.apache.tapestry.bean.EvenOdd"/>
 
     
-	<property name="currentLocale"/>
+	<!--property name="currentLocale"/-->
 	
 	<property name="selectedLocales" persist="session" initial-value="new java.util.HashSet()"/>
 
@@ -33,28 +33,31 @@
 		<!--binding name="listener" value="listeners.formSubmit"/-->
 	</component>
 
-	<component id="checkbox" type="Checkbox">
+    <component id="checkboxGroup" type="contrib:CheckboxGroup"/>
+    
+    <component id="controlCheckbox" type="contrib:ControlCheckbox"/>
+    
+	<component id="checkbox" type="contrib:ControlledCheckbox">
 		<binding name="value" value="checkboxSelected"/>
 	</component>
 
 	<component id="submitButton" type="Submit">
-		<binding name="label" value="literal:Select locales"/>
 		<binding name="listener" value="listener:selectLocales"/>
 	</component>
 
 	<component id="tableView" type="contrib:TableView">
         <binding name="source" value="@java.util.Locale@getAvailableLocales()"/>
-        <binding name="columns"> literal:
-            * Locale:toString(), Language:displayLanguage, Country:displayCountry, 
-            Variant:displayVariant, ISO Language:ISO3Language, ISO Country:ISO3Country
+        <binding name="columns">literal: 
+            * locale:toString(), language:displayLanguage, country:displayCountry, 
+            variant:displayVariant, isoLanguage:ISO3Language, isoCountry:ISO3Country
         </binding>
 	</component>
 
 	<component id="tableColumns" type="contrib:TableColumns"/>
 
-	<component id="tableFormRows" type="contrib:TableFormRows">
+	<component id="tableFormRows" type="contrib:TableRows">
 		<binding name="row" value="currentLocale"/>
-    <binding name="convertor" value="localeConvertor"/>
+		<binding name="keyExpression" value="literal:toString()"/>
 		<binding name="class" value="beans.rowClass.next"/>
 	</component>
 
