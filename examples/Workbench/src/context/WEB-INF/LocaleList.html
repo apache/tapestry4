@@ -2,6 +2,8 @@
 
 <form jwcid="form">
 
+    <span jwcid="checkboxGroup">
+
 	<!-- This component could be implemented using the FormTable component
 		 in the following way:
 		 
@@ -27,7 +29,7 @@
         </tr>
 		
 		<tr>
-			<td></td>
+			<td><span jwcid="controlCheckbox"/></td>
 			<td jwcid="tableColumns"/>
 		</tr>
 		
@@ -37,7 +39,9 @@
 		</tr>
 	</table>
     
-	<span jwcid="submitButton"/>
+    </span>
+    
+	<span jwcid="submitButton" value="Select locales"/>
 
 </form>
 
