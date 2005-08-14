@@ -60,6 +60,8 @@
       <action type="fix" dev="MB" fixes-bug="TAPESTRY-290">Incorrect binding type converter for array of int[]</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-549">Method clearErrors() of IValidationDelegate is missing in 4.0</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-94">PropertySelection does not submit Palette properly</action>
+      <action type="fix" dev="MB" fixes-bug="TAPESTRY-540">All For and If components in the non-form table family should be declared as volatile</action>
+      <action type="fix" dev="MB" fixes-bug="TAPESTRY-296">Configurable location of Table component's page navigation links</action>
     </release>
     <release version="4.0-beta-4" date="Aug 10 2005">
       <action type="fix" dev="HLS">Add getComponent() method to IComponent.</action>
