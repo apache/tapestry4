@@ -56,7 +56,7 @@ public abstract class IfBean extends AbstractFormComponent
 
         // If the cycle is rewinding, but not this particular form,
         // then do nothing (don't even render the body).
-        if (cycleRewinding && form != null && !cycleRewinding)
+        if (cycleRewinding && form != null && !form.isRewinding())
             return;
 
         // get the condition. work with a hidden field if necessary
