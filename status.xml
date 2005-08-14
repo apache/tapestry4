@@ -55,6 +55,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-554">Hook needed on client side to control how validation errors are presented to the user</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-528">Add IComponentSpecification.getReservedParameterNames()</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-557">Remove unused org.apache.tapestry.IResourceLocation (replaced by org.apache.hivemind.Resource)</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-553">Rename property-name attribute of configure element to "property" (matching the code in SpecificationParser, as well as other similar elements in the DTD)</action>
     </release>
     <release version="4.0-beta-4" date="Aug 10 2005">
       <action type="fix" dev="HLS">Add getComponent() method to IComponent.</action>
