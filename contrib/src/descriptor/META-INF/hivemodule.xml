@@ -44,5 +44,19 @@
     </invoke-factory>
     
   </service-point>
+
   
+  <contribution configuration-id="tapestry.services.ApplicationServices">
+    <service name="xtile" object="service:XTileService"/>
+  </contribution>
+  
+  <service-point id="XTileService" interface="org.apache.tapestry.engine.IEngineService">
+    <invoke-factory>
+      <construct class="org.apache.tapestry.contrib.ajax.XTileService">
+        <set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
+        <set-object property="response" value="infrastructure:response"/>
+      </construct>
+    </invoke-factory>
+  </service-point>  
+    
 </module>

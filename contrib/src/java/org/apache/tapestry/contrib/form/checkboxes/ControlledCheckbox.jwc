@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE component-specification
+      PUBLIC "-//Apache Software Foundation//Tapestry Specification 4.0//EN"
+      "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+
+<component-specification class="org.apache.tapestry.contrib.form.checkboxes.ControlledCheckbox" allow-body="no" allow-informal-parameters="yes">
+
+    <description>
+        A checkbox whose state may be controlled by other checkboxes using JavaScript.
+        The checkbox rendered by this component may be automatically selected or deselected
+        by a ControlCheckbox within the same group.
+    </description>
+    
+    <parameter name="value" required="yes"/>
+    <parameter name="disabled" required="no"/>
+
+    <parameter name="group" default-value="null">
+        <description>
+            This is an optional parameter. If provided, it specifies the CheckboxGroup
+            this component belongs to. If it is not specified, then the component is a
+            a part of the CheckboxGroup that wraps it.
+            Please note that if this parameter is used, then the CheckboxGroup it refers to 
+            must either enclose the current component, or must be defined after it.
+        </description>
+    </parameter>
+        
+    <component id="checkbox" type="Checkbox" inherit-informal-parameters="yes">
+        <inherited-binding name="value" parameter-name="value"/>
+        <inherited-binding name="disabled" parameter-name="disabled"/>
+    </component>
+    
+</component-specification>

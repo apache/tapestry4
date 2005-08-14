@@ -57,4 +57,10 @@
     specification-path="tree/components/table/TreeTableNodeViewDelegator.jwc"/>
   <page name="TreeNodeViewPage" specification-path="tree/components/TreeNodeViewPage.page"/>
   <page name="TreeTableNodeViewPage" specification-path="tree/components/table/TreeTableNodeViewPage.page"/>
+  
+  <component-type type="CheckboxGroup" specification-path="form/checkboxes/CheckboxGroup.jwc"/>
+  <component-type type="ControlCheckbox" specification-path="form/checkboxes/ControlCheckbox.jwc"/>
+  <component-type type="ControlledCheckbox" specification-path="form/checkboxes/ControlledCheckbox.jwc"/>
+  <component-type type="XTile" specification-path="ajax/XTile.jwc"/>
+  <component-type type="Timeout" specification-path="ajax/Timeout.jwc"/>
 </library-specification>
