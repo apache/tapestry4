@@ -689,4 +689,12 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
     {
         _deprecated = deprecated;
     }
+
+    public Set getReservedParameterNames()
+    {
+        if (_reservedParameterNames == null)
+            return Collections.EMPTY_SET;
+
+        return Collections.unmodifiableSet(_reservedParameterNames);
+    }
 }
