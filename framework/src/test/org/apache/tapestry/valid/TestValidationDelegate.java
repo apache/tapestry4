@@ -289,7 +289,7 @@ public class TestValidationDelegate extends BaseValidatorTestCase
     }
 
     /** @since 4.0 */
-    
+
     public void testGetErrorRenderers()
     {
         List l = d.getErrorRenderers();
@@ -313,6 +313,31 @@ public class TestValidationDelegate extends BaseValidatorTestCase
         l = d.getErrorRenderers();
         assertEquals(1, l.size());
         assertSame(f2ErrorRenderer, l.get(0));
+
+        verifyControls();
+    }
+
+    public void testClearErrors()
+    {
+        IFormComponent f = newField("input", 4);
+
+        replayControls();
+
+        d.setFormComponent(f);
+        d.recordFieldInputValue("hello");
+        d.record("An error in the input field.", null);
+
+        assertEquals(true, d.getHasErrors());
+
+        assertNotNull(d.getFirstError());
+
+        d.clearErrors();
+
+        assertEquals(false, d.getHasErrors());
+
+        d.setFormComponent(f);
+
+        assertEquals("hello", d.getFieldInputValue());
 
         verifyControls();
     }
