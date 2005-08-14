@@ -151,4 +151,8 @@ public class MockDelegate implements IValidationDelegate
         return null;
     }
 
+    public void clearErrors()
+    {
+    }
+
 }
