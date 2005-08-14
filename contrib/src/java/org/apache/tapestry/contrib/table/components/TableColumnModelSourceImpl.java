@@ -69,6 +69,7 @@ public class TableColumnModelSourceImpl implements TableColumnModelSource
 
         List arrColumns = new ArrayList();
 
+        strDesc = strDesc.trim();
         boolean bFormColumns = false;
         while (strDesc.startsWith("*"))
         {

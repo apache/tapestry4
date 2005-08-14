@@ -19,6 +19,7 @@ import java.util.Iterator;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.contrib.table.model.IFullTableModel;
 import org.apache.tapestry.contrib.table.model.ITableModel;
 import org.apache.tapestry.contrib.table.model.ITableRowSource;
 
@@ -44,8 +45,12 @@ import org.apache.tapestry.contrib.table.model.ITableRowSource;
 public abstract class TableRows extends AbstractTableViewComponent implements ITableRowSource
 {
 
+	// Parameters
+	public abstract Object getFullSourceParameter();
+	
     // Transient
     private Object m_objTableRow = null;
+    private int m_nTableIndex;
 
     /**
      * Returns the currently rendered table row.
@@ -74,6 +79,32 @@ public abstract class TableRows extends AbstractTableViewComponent implements IT
     }
 
     /**
+     * Returns the index of the currently rendered table row.
+     * You can call this method to obtain the index of the current row.
+     *  
+     * @return int the current table index
+     */
+    public int getTableIndex()
+    {
+        return m_nTableIndex;
+    }
+
+    /**
+     * Sets the index of the currently rendered table row. 
+     * This method is for internal use only.
+     * 
+     * @param tableIndex The index of the current table row
+     */
+    public void setTableIndex(int tableIndex)
+    {
+        m_nTableIndex = tableIndex;
+
+        IBinding objIndexBinding = getBinding("index");
+        if (objIndexBinding != null)
+            objIndexBinding.setObject(new Integer(tableIndex));
+    }
+
+    /**
      * Get the list of all table rows to be displayed on this page.
      * 
      * @return an iterator of all table rows
@@ -84,6 +115,14 @@ public abstract class TableRows extends AbstractTableViewComponent implements IT
         return objTableModel.getCurrentPageRows();
     }
 
+    public Object getFullSource()
+    {
+        ITableModel objTableModel = getTableModelSource().getTableModel();
+    	if (objTableModel instanceof IFullTableModel)
+    		return ((IFullTableModel) objTableModel).getRows();
+    	return getFullSourceParameter();
+    }
+    
     /**
      * @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter, IRequestCycle)
      */
@@ -100,4 +139,5 @@ public abstract class TableRows extends AbstractTableViewComponent implements IT
         m_objTableRow = null;
     }
 
+    
 }
