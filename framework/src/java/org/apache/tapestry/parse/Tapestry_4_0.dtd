@@ -170,7 +170,7 @@ Appears in: extension
 Configures one JavaBean property of an extension.
 
 Attributes:
-  property-name:  The name of the property to configure.
+  property:  The name of the property to configure.
   value: The value to be converted and applied.  If not 
     specified, the element's character data is
     used.  
@@ -178,7 +178,7 @@ Attributes:
 -->
 <!ELEMENT configure (#PCDATA)>
 <!ATTLIST configure
-	property-name CDATA #REQUIRED
+	property CDATA #REQUIRED
 	value CDATA #IMPLIED
 >
 <!-- =======================================================
