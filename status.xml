@@ -62,6 +62,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-94">PropertySelection does not submit Palette properly</action>
       <action type="fix" dev="MB" fixes-bug="TAPESTRY-540">All For and If components in the non-form table family should be declared as volatile</action>
       <action type="fix" dev="MB" fixes-bug="TAPESTRY-296">Configurable location of Table component's page navigation links</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-417">validators: binding prefix should have way to reference the component's managed beans</action>
     </release>
     <release version="4.0-beta-4" date="Aug 10 2005">
       <action type="fix" dev="HLS">Add getComponent() method to IComponent.</action>

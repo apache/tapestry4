@@ -16,13 +16,14 @@ package org.apache.tapestry.form.validator;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.PropertyUtils;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.util.RegexpMatch;
 import org.apache.tapestry.util.RegexpMatcher;
 
@@ -35,13 +36,7 @@ import org.apache.tapestry.util.RegexpMatcher;
  */
 public class ValidatorFactoryImpl implements ValidatorFactory
 {
-    private static final String PATTERN = "^\\s*(\\w+)\\s*(=\\s*(((?!,|\\[).)*))?";
-
-    /**
-     * Cache of List (of Validator) keyed on specification.
-     */
-
-    private Map _masterCache = new HashMap();
+    private static final String PATTERN = "^\\s*(\\$?\\w+)\\s*(=\\s*(((?!,|\\[).)*))?";
 
     private RegexpMatcher _matcher = new RegexpMatcher();
 
@@ -51,21 +46,10 @@ public class ValidatorFactoryImpl implements ValidatorFactory
 
     private Map _validators;
 
-    public synchronized List constructValidatorList(String specification)
+    public List constructValidatorList(IComponent component, String specification)
     {
-        List result = (List) _masterCache.get(specification);
+        Defense.notNull(component, "component");
 
-        if (result == null)
-        {
-            result = buildValidatorList(specification);
-            _masterCache.put(specification, result);
-        }
-
-        return result;
-    }
-
-    private List buildValidatorList(String specification)
-    {
         if (HiveMind.isBlank(specification))
             return Collections.EMPTY_LIST;
 
@@ -113,7 +97,7 @@ public class ValidatorFactoryImpl implements ValidatorFactory
                 }
             }
 
-            Validator validator = buildValidator(name, value, message);
+            Validator validator = buildValidator(component, name, value, message);
 
             result.add(validator);
 
@@ -127,8 +111,11 @@ public class ValidatorFactoryImpl implements ValidatorFactory
         return Collections.unmodifiableList(result);
     }
 
-    private Validator buildValidator(String name, String value, String message)
+    private Validator buildValidator(IComponent component, String name, String value, String message)
     {
+        if (name.startsWith("$"))
+            return extractValidatorBean(component, name, value, message);
+
         ValidatorContribution vc = (ValidatorContribution) _validators.get(name);
 
         if (vc == null)
@@ -159,6 +146,24 @@ public class ValidatorFactoryImpl implements ValidatorFactory
                     vc.getValidatorClass(),
                     ex), ex);
         }
+    }
+
+    private Validator extractValidatorBean(IComponent component, String validatorName,
+            String value, String message)
+    {
+        String beanName = validatorName.substring(1);
+
+        if (HiveMind.isNonBlank(value) || HiveMind.isNonBlank(message))
+            throw new ApplicationRuntimeException(ValidatorMessages
+                    .noValueOrMessageForBean(beanName));
+
+        Object bean = component.getBeans().getBean(beanName);
+
+        if (bean instanceof Validator)
+            return (Validator) bean;
+
+        throw new ApplicationRuntimeException(ValidatorMessages.beanNotValidator(beanName), bean,
+                null, null);
     }
 
     public void setValidators(Map validators)

@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.BindingTestCase;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.easymock.MockControl;
@@ -34,6 +35,7 @@ public class TestValidatorsBinding extends BindingTestCase
 {
     public void testSuccess()
     {
+        IComponent component = newComponent();
         Location l = newLocation();
         List validators = (List) newMock(List.class);
         ValueConverter vc = newValueConverter();
@@ -41,7 +43,7 @@ public class TestValidatorsBinding extends BindingTestCase
         MockControl control = newControl(ValidatorFactory.class);
         ValidatorFactory vf = (ValidatorFactory) control.getMock();
 
-        vf.constructValidatorList("required");
+        vf.constructValidatorList(component, "required");
         control.setReturnValue(validators);
 
         replayControls();
@@ -50,7 +52,7 @@ public class TestValidatorsBinding extends BindingTestCase
         factory.setValueConverter(vc);
         factory.setValidatorFactory(vf);
 
-        IBinding binding = factory.createBinding(null, "my desc", "required", l);
+        IBinding binding = factory.createBinding(component, "my desc", "required", l);
 
         assertSame(validators, binding.getObject());
         assertSame(l, binding.getLocation());
@@ -61,6 +63,7 @@ public class TestValidatorsBinding extends BindingTestCase
 
     public void testFailure()
     {
+        IComponent component = newComponent();
         Throwable t = new RuntimeException("Boom!");
         Location l = newLocation();
 
@@ -69,7 +72,7 @@ public class TestValidatorsBinding extends BindingTestCase
         MockControl control = newControl(ValidatorFactory.class);
         ValidatorFactory vf = (ValidatorFactory) control.getMock();
 
-        vf.constructValidatorList("required");
+        vf.constructValidatorList(component, "required");
         control.setThrowable(t);
 
         replayControls();
@@ -80,7 +83,7 @@ public class TestValidatorsBinding extends BindingTestCase
 
         try
         {
-            factory.createBinding(null, "my desc", "required", l);
+            factory.createBinding(component, "my desc", "required", l);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)

@@ -174,4 +174,9 @@ public abstract class TapestryTestCase extends HiveMindTestCase
 
         return _sharedValueConverter;
     }
+
+    protected IComponent newComponent()
+    {
+        return (IComponent) newMock(IComponent.class);
+    }
 }
