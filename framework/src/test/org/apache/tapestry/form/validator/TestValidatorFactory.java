@@ -20,7 +20,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.IBeanProvider;
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.junit.TapestryTestCase;
+import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.ValidatorFactoryImpl}.
@@ -28,7 +31,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestValidatorFactory extends HiveMindTestCase
+public class TestValidatorFactory extends TapestryTestCase
 {
     private Map buildContributions(String name, boolean configurable)
     {
@@ -48,69 +51,85 @@ public class TestValidatorFactory extends HiveMindTestCase
 
     public void testEmpty()
     {
+        IComponent component = newComponent();
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
 
-        List result = vf.constructValidatorList("");
+        replayControls();
+
+        List result = vf.constructValidatorList(component, "");
 
         assertTrue(result.isEmpty());
+
+        verifyControls();
     }
 
     public void testSingle()
     {
+        IComponent component = newComponent();
+
+        replayControls();
+
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(buildContributions("value", true));
 
-        List result = vf.constructValidatorList("value=foo");
+        List result = vf.constructValidatorList(component, "value=foo");
 
         ValidatorFixture fixture = (ValidatorFixture) result.get(0);
 
         assertEquals("foo", fixture.getValue());
+
+        verifyControls();
     }
 
     public void testMessage()
     {
+        IComponent component = newComponent();
+
+        replayControls();
+
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(buildContributions("fred", false));
 
-        List result = vf.constructValidatorList("fred[fred's message]");
+        List result = vf.constructValidatorList(component, "fred[fred's message]");
 
         ValidatorFixture fixture = (ValidatorFixture) result.get(0);
 
         assertEquals("fred's message", fixture.getMessage());
+
+        verifyControls();
     }
 
     public void testConfigureAndMessage()
     {
+        IComponent component = newComponent();
+
+        replayControls();
+
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(buildContributions("value", true));
 
-        List result = vf.constructValidatorList("value=biff[fred's message]");
+        List result = vf.constructValidatorList(component, "value=biff[fred's message]");
 
         ValidatorFixture fixture = (ValidatorFixture) result.get(0);
 
         assertEquals("biff", fixture.getValue());
         assertEquals("fred's message", fixture.getMessage());
-    }
 
-    public void testValidatorListsCached()
-    {
-        ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
-        vf.setValidators(buildContributions("value", true));
-
-        List result1 = vf.constructValidatorList("value=foo");
-        List result2 = vf.constructValidatorList("value=foo");
-
-        assertSame(result1, result2);
+        verifyControls();
     }
 
     public void testMissingConfiguration()
     {
+        IComponent component = newComponent();
+
+        replayControls();
+
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(buildContributions("fred", true));
 
         try
         {
-            vf.constructValidatorList("fred");
+            vf.constructValidatorList(component, "fred");
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -119,10 +138,16 @@ public class TestValidatorFactory extends HiveMindTestCase
                     + "The value is configured by changing 'name' to 'name=value'.", ex
                     .getMessage());
         }
+
+        verifyControls();
     }
 
     public void testMultiple()
     {
+        IComponent component = newComponent();
+
+        replayControls();
+
         Map map = new HashMap();
         map.put("required", newContribution(false, Required.class));
         map.put("email", newContribution(false, Email.class));
@@ -132,7 +157,9 @@ public class TestValidatorFactory extends HiveMindTestCase
         vf.setValidators(map);
 
         List result = vf
-                .constructValidatorList("required[EMail is required],email,minLength=10[EMail must be at least ten characters long]");
+                .constructValidatorList(
+                        component,
+                        "required[EMail is required],email,minLength=10[EMail must be at least ten characters long]");
 
         assertEquals(3, result.size());
 
@@ -145,31 +172,43 @@ public class TestValidatorFactory extends HiveMindTestCase
 
         assertEquals(10, minLength.getMinLength());
         assertEquals("EMail must be at least ten characters long", minLength.getMessage());
+
+        verifyControls();
     }
 
     public void testUnparseable()
     {
+        IComponent component = newComponent();
+
+        replayControls();
+
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(buildContributions("fred", false));
 
         try
         {
-            vf.constructValidatorList("fred,=foo");
+            vf.constructValidatorList(component, "fred,=foo");
         }
         catch (ApplicationRuntimeException ex)
         {
             assertEquals("Unable to parse 'fred,=foo' into a list of validators.", ex.getMessage());
         }
+
+        verifyControls();
     }
 
     public void testUnwantedConfiguration()
     {
+        IComponent component = newComponent();
+
+        replayControls();
+
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(buildContributions("fred", false));
 
         try
         {
-            vf.constructValidatorList("fred=biff");
+            vf.constructValidatorList(component, "fred=biff");
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -177,26 +216,38 @@ public class TestValidatorFactory extends HiveMindTestCase
             assertEquals("Validator 'fred' is not configurable, "
                     + "'fred=biff' should be changed to just 'fred'.", ex.getMessage());
         }
+
+        verifyControls();
     }
 
     public void testMissingValidator()
     {
+        IComponent component = newComponent();
+
+        replayControls();
+
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(Collections.EMPTY_MAP);
 
         try
         {
-            vf.constructValidatorList("missing");
+            vf.constructValidatorList(component, "missing");
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
         {
             assertEquals("No validator named 'missing' has been defined.", ex.getMessage());
         }
+
+        verifyControls();
     }
 
     public void testInstantiateFailure()
     {
+        IComponent component = newComponent();
+
+        replayControls();
+
         Map map = new HashMap();
 
         map.put("fred", newContribution(false, Object.class));
@@ -206,7 +257,7 @@ public class TestValidatorFactory extends HiveMindTestCase
 
         try
         {
-            vf.constructValidatorList("fred");
+            vf.constructValidatorList(component, "fred");
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -216,5 +267,127 @@ public class TestValidatorFactory extends HiveMindTestCase
                     ex.getMessage());
         }
 
+        verifyControls();
+    }
+
+    private Validator newValidator()
+    {
+        return (Validator) newMock(Validator.class);
+    }
+
+    private IBeanProvider newBeanProvider(String beanName, Object bean)
+    {
+        MockControl control = newControl(IBeanProvider.class);
+        IBeanProvider provider = (IBeanProvider) control.getMock();
+
+        provider.getBean(beanName);
+        control.setReturnValue(bean);
+
+        return provider;
+    }
+
+    private IComponent newComponent(IBeanProvider provider)
+    {
+        MockControl control = newControl(IComponent.class);
+        IComponent component = (IComponent) control.getMock();
+
+        component.getBeans();
+        control.setReturnValue(provider);
+
+        return component;
+    }
+
+    public void testBeanReference()
+    {
+        Validator validator = newValidator();
+        IBeanProvider provider = newBeanProvider("fred", validator);
+        IComponent component = newComponent(provider);
+
+        replayControls();
+
+        ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
+        vf.setValidators(Collections.EMPTY_MAP);
+
+        List validators = vf.constructValidatorList(component, "$fred");
+
+        assertEquals(1, validators.size());
+        assertSame(validator, validators.get(0));
+
+        verifyControls();
+    }
+
+    public void testBeanReferenceNotValidator()
+    {
+        Object bean = new Object();
+        IBeanProvider provider = newBeanProvider("fred", bean);
+        IComponent component = newComponent(provider);
+
+        replayControls();
+
+        ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
+        vf.setValidators(Collections.EMPTY_MAP);
+
+        try
+        {
+            vf.constructValidatorList(component, "$fred");
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Bean 'fred' does not implement the org.apache.tapestry.form.validator.Validator interface.",
+                    ex.getMessage());
+            assertSame(bean, ex.getComponent());
+        }
+
+        verifyControls();
+    }
+
+    public void testBeanReferenceWithValue()
+    {
+        IComponent component = newComponent();
+
+        replayControls();
+
+        ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
+        vf.setValidators(Collections.EMPTY_MAP);
+
+        try
+        {
+            vf.constructValidatorList(component, "$fred=10");
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Validator 'fred' is a reference to a managed bean of the component, and may not have a value or a message override specified.",
+                    ex.getMessage());
+        }
+
+        verifyControls();
+    }
+
+    public void testBeanReferenceWithMessage()
+    {
+        IComponent component = newComponent();
+
+        replayControls();
+
+        ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
+        vf.setValidators(Collections.EMPTY_MAP);
+
+        try
+        {
+            vf.constructValidatorList(component, "$fred[custom message]");
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Validator 'fred' is a reference to a managed bean of the component, and may not have a value or a message override specified.",
+                    ex.getMessage());
+        }
+
+        verifyControls();
     }
 }

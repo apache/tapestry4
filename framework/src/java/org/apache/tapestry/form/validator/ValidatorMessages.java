@@ -54,4 +54,14 @@ class ValidatorMessages
     {
         return _formatter.format("bad-specification", specification);
     }
+
+    public static String noValueOrMessageForBean(String name)
+    {
+        return _formatter.format("no-value-or-message-for-bean", name);
+    }
+
+    public static String beanNotValidator(String name)
+    {
+        return _formatter.format("bean-not-validator", name, Validator.class.getName());
+    }
 }

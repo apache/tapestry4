@@ -36,7 +36,7 @@ public class ValidatorsBindingFactory extends AbstractBindingFactory
     {
         try
         {
-            List validators = _validatorFactory.constructValidatorList(path);
+            List validators = _validatorFactory.constructValidatorList(root, path);
 
             return new ValidatorsBinding(bindingDescription, getValueConverter(), location,
                     validators);

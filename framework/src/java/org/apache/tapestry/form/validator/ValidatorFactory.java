@@ -16,6 +16,8 @@ package org.apache.tapestry.form.validator;
 
 import java.util.List;
 
+import org.apache.tapestry.IComponent;
+
 /**
  * Constructs {@link org.apache.tapestry.form.validator.Validator} instances from a specification. A
  * specification is a comma-seperated list of entries. Each entry is in one of the following forms:
@@ -24,6 +26,7 @@ import java.util.List;
  * <li><em>name</em>=<em>value</em>
  * <li><em>name[<em>message</em>]</em>
  * <li><em>name</em>=<em>value</em>[<em>message</em>]
+ * <li>$<em>name</em>
  * </ul>
  * <p>
  * Most validator classes are <em>configurable</em>: they have a property that matches their
@@ -33,9 +36,14 @@ import java.util.List;
  * <p>
  * Validators are expected to have a public no-args constructor. They are also expected to have a
  * <code>message</code> property which is set from the value in brackets.
+ * The message is either a literal string, or may be prefixed with a '%' character, to indicate
+ * a localized key, resolved using the component's message catalog.
+ * <p>
+ * When the name is prefixed with a dollary sign, it indicates a reference to a <em>bean</em>
+ * with the given name.
  * <p>
  * A full validator specification might be:
- * <code>required,email,minLength=20[Email addresses must be at least 20 characters long.]
+ * <code>required,email[%email-format],minLength=20[Email addresses must be at least 20 characters long.]
  * 
  * @author Howard Lewis Ship
  * @since 4.0
@@ -46,9 +54,11 @@ public interface ValidatorFactory
      * Constructs a new (immutable) List of {@link Validator}, or returns a previously constructed
      * List.
      * 
+     * @param component
+     *            the component for which the list is being created
      * @param specification
      *            a string identifying which validators and their configuration
      * @return List of {@link Validator} (possibly empty)
      */
-    public List constructValidatorList(String specification);
+    public List constructValidatorList(IComponent component, String specification);
 }
