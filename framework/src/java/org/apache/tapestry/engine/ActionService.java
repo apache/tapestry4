@@ -69,7 +69,7 @@ public class ActionService implements IEngineService
 
         boolean stateful = _request.getSession(false) != null;
 
-        parameters.put(ServiceConstants.SERVICE, Tapestry.ACTION_SERVICE);
+        parameters.put(ServiceConstants.SERVICE, getName());
         parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
         parameters.put(ServiceConstants.PAGE, activePage.getPageName());
         parameters.put(ServiceConstants.CONTAINER, activePage == componentPage ? null

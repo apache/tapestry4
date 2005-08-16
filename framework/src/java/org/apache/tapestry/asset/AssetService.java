@@ -159,7 +159,7 @@ public class AssetService implements IEngineService
 
         Map parameters = new HashMap();
 
-        parameters.put(ServiceConstants.SERVICE, Tapestry.ASSET_SERVICE);
+        parameters.put(ServiceConstants.SERVICE, getName());
         parameters.put(PATH, path);
         parameters.put(DIGEST, digest);
 

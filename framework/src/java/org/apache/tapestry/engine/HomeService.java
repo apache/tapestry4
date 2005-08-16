@@ -53,7 +53,7 @@ public class HomeService implements IEngineService
 
         Map parameters = new HashMap();
 
-        parameters.put(ServiceConstants.SERVICE, Tapestry.HOME_SERVICE);
+        parameters.put(ServiceConstants.SERVICE, getName());
 
         return _linkFactory.constructLink(cycle, post, parameters, true);
     }

@@ -74,7 +74,7 @@ public class DirectService implements IEngineService
 
         boolean stateful = _request.getSession(false) != null;
 
-        parameters.put(ServiceConstants.SERVICE, Tapestry.DIRECT_SERVICE);
+        parameters.put(ServiceConstants.SERVICE, getName());
         parameters.put(ServiceConstants.PAGE, activePage.getPageName());
         parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
         parameters.put(ServiceConstants.CONTAINER, componentPage == activePage ? null

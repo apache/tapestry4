@@ -46,7 +46,7 @@ public class PageService implements IEngineService
 
         Map parameters = new HashMap();
 
-        parameters.put(ServiceConstants.SERVICE, Tapestry.PAGE_SERVICE);
+        parameters.put(ServiceConstants.SERVICE, getName());
         parameters.put(ServiceConstants.PAGE, parameter);
 
         return _linkFactory.constructLink(cycle, post, parameters, true);

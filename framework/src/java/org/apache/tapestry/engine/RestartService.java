@@ -65,7 +65,7 @@ public class RestartService implements IEngineService
 
         Map parameters = new HashMap();
 
-        parameters.put(ServiceConstants.SERVICE, Tapestry.RESTART_SERVICE);
+        parameters.put(ServiceConstants.SERVICE, getName());
 
         return _linkFactory.constructLink(cycle, post, parameters, true);
     }

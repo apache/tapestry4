@@ -126,7 +126,7 @@ public class ExternalService implements IEngineService
         ExternalServiceParameter esp = (ExternalServiceParameter) parameter;
 
         Map parameters = new HashMap();
-        parameters.put(ServiceConstants.SERVICE, Tapestry.EXTERNAL_SERVICE);
+        parameters.put(ServiceConstants.SERVICE, getName());
         parameters.put(ServiceConstants.PAGE, esp.getPageName());
         parameters.put(ServiceConstants.PARAMETER, esp.getServiceParameters());
 
