@@ -33,7 +33,9 @@
     
   </service-point>
   
-  <contribution configuration-id="tapestry.enhance.EnhancementWorkers">    
+  <!-- Only contribute when in JDK 1.5 and java.lang.Annotation exists -->
+  
+  <contribution configuration-id="tapestry.enhance.EnhancementWorkers" if="class java.lang.annotation.Annotation">    
     <!-- Needs to come very much first, because some enhancements modify
          the component specification, affecting what occurs in later commands. -->
     <command id="annotation-worker" object="service:AnnotationEnhancementWorker" before="*"/>
