@@ -98,7 +98,7 @@ public abstract class Select extends AbstractFormComponent implements Validatabl
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
         _rendering = true;
-        _nextOptionId = 0;
+        _nextOptionId = 0;      
     }
 
     /**
@@ -107,7 +107,9 @@ public abstract class Select extends AbstractFormComponent implements Validatabl
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
         _rendering = false;
-        _selections = null;
+        _selections = null;        
+        
+        cycle.removeAttribute(ATTRIBUTE_NAME);           
     }
 
     /**
