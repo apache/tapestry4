@@ -63,7 +63,7 @@ public class ChartService implements IEngineService
 
         Map parameters = new HashMap();
 
-        parameters.put(ServiceConstants.SERVICE, SERVICE_NAME);
+        parameters.put(ServiceConstants.SERVICE, getName());
         parameters.put(ServiceConstants.PAGE, component.getPage().getPageName());
         parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
 
