@@ -14,17 +14,13 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.hivemind.Resource;
-import org.apache.hivemind.util.ClasspathResource;
 import org.apache.hivemind.util.PropertyUtils;
-import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.TapestryUtils;
 
 /**
- * Abstract {@link FormComponentContributor} implementation that adds an optional static 
- * javscript method reference to the page.
+ * Abstract {@link FormComponentContributor} implementation that adds an optional static javscript
+ * method reference to the page.
  * 
  * @author Paul Ferraro
  * @since 4.0
@@ -32,17 +28,17 @@ import org.apache.tapestry.TapestryUtils;
 public abstract class AbstractFormComponentContributor implements FormComponentContributor
 {
     private String _script = defaultScript();
-    
+
     public AbstractFormComponentContributor()
-    {        
+    {
     }
-    
+
     // Needed until HIVEMIND-134 fix is available
     public AbstractFormComponentContributor(String initializer)
     {
         PropertyUtils.configureProperties(this, initializer);
     }
-    
+
     /**
      * Defines the default JavaScript file used by this contributor. Overriden by most subclasses
      * that use JavaScript.
@@ -51,37 +47,26 @@ public abstract class AbstractFormComponentContributor implements FormComponentC
     {
         return null;
     }
-    
+
     public String getScript()
     {
         return _script;
     }
-    
+
     public void setScript(String script)
     {
         _script = script;
     }
-    
+
     /**
-     * @see org.apache.tapestry.form.FormComponentContributor#renderContribution(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle, FormComponentContributorContext, org.apache.tapestry.form.IFormComponent)
+     * @see org.apache.tapestry.form.FormComponentContributor#renderContribution(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle, FormComponentContributorContext,
+     *      org.apache.tapestry.form.IFormComponent)
      */
-    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle, FormComponentContributorContext context, IFormComponent field)
+    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
+            FormComponentContributorContext context, IFormComponent field)
     {
         if (_script != null)
-        {
-            // TODO:  cycle.getInfrastructure().getClassResolver()
-            
-            Resource script = new ClasspathResource(cycle.getEngine().getClassResolver(), _script);
-            
-            TapestryUtils.getPageRenderSupport(cycle, field).addExternalScript(script);
-        }
-    }
-    
-    /**
-     * Helper method that adds the specified submit handler to to the specified form.
-     */
-    protected void addSubmitHandler(IForm form, String handler)
-    {
-        form.addEventHandler(FormEventType.SUBMIT, handler);
+            context.includeClasspathScript(_script);
     }
 }

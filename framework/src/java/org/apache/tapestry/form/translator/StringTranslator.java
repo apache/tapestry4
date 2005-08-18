@@ -14,7 +14,11 @@
 
 package org.apache.tapestry.form.translator;
 
+import java.util.Locale;
+
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.form.ValidationMessages;
 
 /**
  * A trivial {@link Translator} implementation. By default, empty text submissions are interpretted
@@ -36,23 +40,25 @@ public class StringTranslator extends AbstractTranslator
 
     public StringTranslator(String initializer)
     {
-        super(initializer);
+        PropertyUtils.configureProperties(this, initializer);
     }
 
     /**
      * @see org.apache.tapestry.form.translator.AbstractTranslator#parseText(org.apache.tapestry.form.IFormComponent,
-     *      java.lang.String)
+     *      ValidationMessages, java.lang.String)
      */
-    protected Object parseText(IFormComponent field, String text)
+    protected Object parseText(IFormComponent field, ValidationMessages messages, String text)
     {
+        // TODO: Do something with _empty here?
+
         return text;
     }
 
     /**
      * @see org.apache.tapestry.form.translator.AbstractTranslator#formatObject(org.apache.tapestry.form.IFormComponent,
-     *      java.lang.Object)
+     *      Locale, java.lang.Object)
      */
-    protected String formatObject(IFormComponent field, Object object)
+    protected String formatObject(IFormComponent field, Locale locale, Object object)
     {
         return object.toString();
     }

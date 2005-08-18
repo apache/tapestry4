@@ -60,6 +60,19 @@ public class TestValidationMessages extends HiveMindTestCase
         verifyControls();
     }
 
+    public void testGetLocale()
+    {
+        IFormComponent field = newField();
+
+        ValidationMessages m = new ValidationMessagesImpl(field, Locale.ENGLISH);
+
+        replayControls();
+
+        assertSame(Locale.ENGLISH, m.getLocale());
+
+        verifyControls();
+    }
+
     public void testMessageOverride()
     {
         IFormComponent field = newField();

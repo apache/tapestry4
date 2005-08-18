@@ -19,7 +19,9 @@ import java.text.ParseException;
 import java.util.Locale;
 
 import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
 
@@ -37,33 +39,35 @@ public abstract class FormatTranslator extends AbstractTranslator
 
     /**
      * @see org.apache.tapestry.form.translator.AbstractTranslator#formatObject(org.apache.tapestry.form.IFormComponent,
-     *      java.lang.Object)
+     *      Locale, java.lang.Object)
      */
-    protected String formatObject(IFormComponent field, Object object)
+    protected String formatObject(IFormComponent field, Locale locale, Object object)
     {
         // Get a new format each time, because (a) have to account for locale and (b) formatters are
         // not thread safe.
 
-        Format format = getFormat(field.getPage().getLocale());
+        Format format = getFormat(locale);
 
         return format.format(object);
     }
 
     /**
      * @see org.apache.tapestry.form.translator.AbstractTranslator#parseText(org.apache.tapestry.form.IFormComponent,
-     *      java.lang.String)
+     *      ValidationMessages, java.lang.String)
      */
-    protected Object parseText(IFormComponent field, String text) throws ValidatorException
+    protected Object parseText(IFormComponent field, ValidationMessages messages, String text)
+            throws ValidatorException
     {
-        Format format = getFormat(field.getPage().getLocale());
+        Format format = getFormat(messages.getLocale());
 
         try
         {
             return format.parseObject(text);
         }
-        catch (ParseException e)
+        catch (ParseException ex)
         {
-            throw new ValidatorException(buildMessage(field, getMessageKey()), getConstraint());
+            throw new ValidatorException(buildMessage(messages, field, getMessageKey()),
+                    getConstraint());
         }
     }
 
@@ -85,17 +89,17 @@ public abstract class FormatTranslator extends AbstractTranslator
 
     public FormatTranslator()
     {
-    	_pattern = defaultPattern();
+        _pattern = defaultPattern();
     }
 
     // Needed until HIVEMIND-134 fix is available
     public FormatTranslator(String initializer)
     {
-        super(initializer);
-        
+        PropertyUtils.configureProperties(this, initializer);
+
         if (HiveMind.isBlank(_pattern))
         {
-        	_pattern = defaultPattern();
+            _pattern = defaultPattern();
         }
     }
 }

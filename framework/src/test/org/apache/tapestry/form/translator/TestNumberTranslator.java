@@ -16,276 +16,289 @@ package org.apache.tapestry.form.translator;
 
 import java.util.Locale;
 
-import org.apache.tapestry.form.FormEventType;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.form.FormComponentContributorContext;
+import org.apache.tapestry.form.FormComponentContributorTestCase;
+import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
+import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
+import org.easymock.MockControl;
 
-public class TestNumberTranslator extends TranslatorTestCase
+/**
+ * Tests for {@link org.apache.tapestry.form.translator.NumberTranslator}
+ * 
+ * @author Howard Lewis Ship
+ * @since 4.0
+ */
+public class TestNumberTranslator extends FormComponentContributorTestCase
 {
     public void testDefaultFormat()
     {
         NumberTranslator translator = new NumberTranslator();
-        
+
         testFormat(translator, new Integer(10), "10");
     }
-    
+
+    public void testOmitZero()
+    {
+        NumberTranslator translator = new NumberTranslator("pattern=0.00");
+
+        testFormat(translator, new Integer(0), "");
+    }
+
+    public void testOmitZeroOff()
+    {
+        NumberTranslator translator = new NumberTranslator("!omitZero,pattern=0.00");
+
+        testFormat(translator, new Integer(0), "0.00");
+    }
+
     public void testCustomFormat()
     {
         NumberTranslator translator = new NumberTranslator();
-        
+
         translator.setPattern("$#0.00");
-        
+
         testFormat(translator, new Integer(10), "$10.00");
     }
-    
+
     public void testInitializerFormat()
     {
         NumberTranslator translator = new NumberTranslator("pattern=#0%");
-        
+
         testFormat(translator, new Double(0.10), "10%");
     }
-    
+
     public void testFormat(Translator translator, Number number, String expected)
     {
-        _component.getPage();
-        _componentControl.setReturnValue(_page);
-        
-        _page.getLocale();
-        _pageControl.setReturnValue(Locale.US);
-        
-        replay();
-        
-        String result = translator.format(_component, number);
-        
-        assertEquals(expected, result);
+        IFormComponent field = newField();
 
-        verify();
+        String result = translator.format(field, Locale.ENGLISH, number);
+
+        assertEquals(expected, result);
     }
 
     public void testNullFormat()
     {
         NumberTranslator translator = new NumberTranslator();
-        
+
         replay();
-        
-        String result = translator.format(_component, null);
-        
+
+        String result = translator.format(_component, null, null);
+
         assertEquals("", result);
 
         verify();
     }
 
-    public void testDefaultParse()
+    public void testDefaultParse() throws Exception
     {
         NumberTranslator translator = new NumberTranslator();
-        
+
         testParse(translator, "0.1", new Double(0.1));
     }
-    
-    public void testCustomParse()
+
+    public void testCustomParse() throws Exception
     {
         NumberTranslator translator = new NumberTranslator();
-        
+
         translator.setPattern("#%");
-        
+
         testParse(translator, "10%", new Double(0.1));
     }
-    
-    public void testTrimmedParse()
+
+    public void testTrimmedParse() throws Exception
     {
         NumberTranslator translator = new NumberTranslator();
-        
+
         translator.setTrim(true);
-        
+
         testParse(translator, " 100 ", new Long(100));
     }
 
-    private void testParse(Translator translator, String number, Number expected)
+    private void testParse(Translator translator, String number, Number expected) throws Exception
     {
-        _component.getPage();
-        _componentControl.setReturnValue(_page);
-        
-        _page.getLocale();
-        _pageControl.setReturnValue(Locale.US);
-        
-        replay();
-        
-        try
-        {
-            Number result = (Number) translator.parse(_component, number);
+        IFormComponent field = newField();
 
-            assertEquals(expected, result);
-        }
-        catch (ValidatorException e)
-        {
-            unreachable();
-        }
-        finally
-        {
-            verify();
-        }
+        MockControl messagesc = newControl(ValidationMessages.class);
+        ValidationMessages messages = (ValidationMessages) messagesc.getMock();
+
+        trainGetLocale(messagesc, messages, Locale.ENGLISH);
+
+        replayControls();
+
+        Number result = (Number) translator.parse(field, messages, number);
+
+        assertEquals(expected, result);
+
+        verifyControls();
+
     }
-    
+
     public void testFailedParseDefaultMessage()
     {
         NumberTranslator translator = new NumberTranslator();
-        
-        testFailedParse(translator, "Field Name must be a numeric value.");
+
+        testFailedParse(translator, null);
     }
-    
+
     public void testFailedParseCustomMessage()
     {
         NumberTranslator translator = new NumberTranslator();
-        
+
         String message = "Field Name is an invalid number.";
-        
+
         translator.setMessage(message);
-        
+
         testFailedParse(translator, message);
     }
 
-    private void testFailedParse(Translator translator, String message)
+    private void testFailedParse(Translator translator, String messageOverride)
     {
-        _component.getPage();
-        _componentControl.setReturnValue(_page);
+        IFormComponent field = newField("Number Field");
 
-        _page.getLocale();
-        _pageControl.setReturnValue(Locale.US);
-        
-        _component.getPage();
-        _componentControl.setReturnValue(_page);
+        MockControl messagesc = newControl(ValidationMessages.class);
+        ValidationMessages messages = (ValidationMessages) messagesc.getMock();
 
-        _page.getLocale();
-        _pageControl.setReturnValue(Locale.US);
-        
-        _component.getDisplayName();
-        _componentControl.setReturnValue("Field Name");
-        
-        replay();
-        
+        trainGetLocale(messagesc, messages, Locale.ENGLISH);
+        trainGetLocale(messagesc, messages, Locale.ENGLISH);
+
+        trainBuildMessage(
+                messagesc,
+                messages,
+                messageOverride,
+                ValidationStrings.INVALID_NUMBER,
+                new Object[]
+                { "Number Field", "#" },
+                "invalid number");
+
+        replayControls();
+
         try
         {
-            System.out.println(translator.parse(_component, "Bad-Number"));
-            
+            System.out.println(translator.parse(field, messages, "Bad-Number"));
+
             unreachable();
         }
         catch (ValidatorException e)
         {
-            assertEquals(message, e.getMessage());
+            assertEquals("invalid number", e.getMessage());
             assertEquals(ValidationConstraint.NUMBER_FORMAT, e.getConstraint());
         }
-        finally
-        {
-            verify();
-        }
+
+        verifyControls();
     }
-    
+
     public void testRenderContribution()
     {
         NumberTranslator translator = new NumberTranslator();
-        
-        addScript("/org/apache/tapestry/form/translator/NumberTranslator.js");
-        
-        _component.getPage();
-        _componentControl.setReturnValue(_page);
-        
-        _page.getLocale();
-        _pageControl.setReturnValue(Locale.US);
-        
-        _component.getDisplayName();
-        _componentControl.setReturnValue("Field Label");
-        
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-        
-        _form.getName();
-        _formControl.setReturnValue("formName");
-        
-        _component.getName();
-        _componentControl.setReturnValue("fieldName");
-        
-        _form.addEventHandler(FormEventType.SUBMIT, "validate_number(event, document.formName.fieldName,'Field Label must be a numeric value.')");
-        _formControl.setVoidCallable();
-        
-        replay();
-        
-        translator.renderContribution(null, _cycle, null, _component);
-        
-        verify();
+
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+
+        MockControl contextc = newControl(FormComponentContributorContext.class);
+        FormComponentContributorContext context = (FormComponentContributorContext) contextc
+                .getMock();
+
+        context.includeClasspathScript(translator.defaultScript());
+
+        trainGetLocale(contextc, context, Locale.ENGLISH);
+
+        trainBuildMessage(contextc, context, null, ValidationStrings.INVALID_NUMBER, new Object[]
+        { "Number Field", "#" }, "invalid number message");
+
+        trainGetFieldDOM(contextc, context, "field_dom");
+
+        context.addSubmitListener("validate_number(event, field_dom, 'invalid number message')");
+
+        IFormComponent field = newField("Number Field");
+
+        replayControls();
+
+        translator.renderContribution(writer, cycle, context, field);
+
+        verifyControls();
     }
-    
+
     public void testMessageRenderContribution()
     {
         NumberTranslator translator = new NumberTranslator();
-        
-        // MessageFormat requires that single quotes be doubled if they are to be interpreted.
-        
-        translator.setMessage("You entered a bunk value for {0}. I should look like {1}. Watch out for ''this''!");
-        
-        addScript("/org/apache/tapestry/form/translator/NumberTranslator.js");
-        
-        _component.getPage();
-        _componentControl.setReturnValue(_page);
-        
-        _page.getLocale();
-        _pageControl.setReturnValue(Locale.US);
-        
-        _component.getDisplayName();
-        _componentControl.setReturnValue("Field Label");
-        
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-        
-        _form.getName();
-        _formControl.setReturnValue("formName");
-        
-        _component.getName();
-        _componentControl.setReturnValue("fieldName");
-        
-        _form.addEventHandler(FormEventType.SUBMIT, "validate_number(event, document.formName.fieldName,'You entered a bunk value for Field Label. I should look like #. Watch out for \\'this\\'!')");
-        _formControl.setVoidCallable();
-        
-        replay();
-        
-        translator.renderContribution(null, _cycle, null, _component);
-        
-        verify();
+
+        String messageOverride = "You entered a bunk value for {0}. I should look like {1}. Watch out for ''this''!";
+
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+
+        MockControl contextc = newControl(FormComponentContributorContext.class);
+        FormComponentContributorContext context = (FormComponentContributorContext) contextc
+                .getMock();
+
+        context.includeClasspathScript(translator.defaultScript());
+
+        trainGetLocale(contextc, context, Locale.ENGLISH);
+
+        trainBuildMessage(
+                contextc,
+                context,
+                messageOverride,
+                ValidationStrings.INVALID_NUMBER,
+                new Object[]
+                { "Number Field", "#" },
+                "Blah Blah 'Field Name' Blah.");
+
+        trainGetFieldDOM(contextc, context, "field_dom");
+
+        context
+                .addSubmitListener("validate_number(event, field_dom, 'Blah Blah \\'Field Name\\' Blah.')");
+
+        IFormComponent field = newField("Number Field");
+
+        replayControls();
+
+        translator.setMessage(messageOverride);
+
+        translator.renderContribution(writer, cycle, context, field);
+
+        verifyControls();
     }
-    
+
     public void testTrimRenderContribution()
     {
         NumberTranslator translator = new NumberTranslator();
-        
+
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+
+        MockControl contextc = newControl(FormComponentContributorContext.class);
+        FormComponentContributorContext context = (FormComponentContributorContext) contextc
+                .getMock();
+
+        context.includeClasspathScript(translator.defaultScript());
+
+        trainGetFieldDOM(contextc, context, "field_dom");
+
+        context.addSubmitListener("trim(field_dom)");
+
+        trainGetLocale(contextc, context, Locale.ENGLISH);
+
+        trainBuildMessage(contextc, context, null, ValidationStrings.INVALID_NUMBER, new Object[]
+        { "Number Field", "#" }, "invalid number message");
+
+        trainGetFieldDOM(contextc, context, "field_dom");
+
+        context.addSubmitListener("validate_number(event, field_dom, 'invalid number message')");
+
+        IFormComponent field = newField("Number Field");
+
+        replayControls();
+
         translator.setTrim(true);
-        trim();
-        
-        addScript("/org/apache/tapestry/form/translator/NumberTranslator.js");
-        
-        _component.getPage();
-        _componentControl.setReturnValue(_page);
-        
-        _page.getLocale();
-        _pageControl.setReturnValue(Locale.US);
-        
-        _component.getDisplayName();
-        _componentControl.setReturnValue("Field Label");
-        
-        _component.getForm();
-        _componentControl.setReturnValue(_form);
-        
-        _form.getName();
-        _formControl.setReturnValue("formName");
-        
-        _component.getName();
-        _componentControl.setReturnValue("fieldName");
-        
-        _form.addEventHandler(FormEventType.SUBMIT, "validate_number(event, document.formName.fieldName,'Field Label must be a numeric value.')");
-        _formControl.setVoidCallable();
-        
-        replay();
-        
-        translator.renderContribution(null, _cycle, null, _component);
-        
-        verify();
+
+        translator.renderContribution(writer, cycle, context, field);
+
+        verifyControls();
     }
 }

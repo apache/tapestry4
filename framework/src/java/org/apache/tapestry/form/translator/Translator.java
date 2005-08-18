@@ -14,8 +14,11 @@
 
 package org.apache.tapestry.form.translator;
 
+import java.util.Locale;
+
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.FormComponentContributor;
+import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -30,16 +33,18 @@ public interface Translator extends FormComponentContributor
     /**
      * Invoked during rendering to format an object (which may be null) into a text value (which
      * should not be null) appropriate for the specified field.
+     * @param locale TODO
      */
-    public String format(IFormComponent field, Object object);
+    public String format(IFormComponent field, Locale locale, Object object);
 
     /**
      * Invoked during rewind to parse a submitted input value into an object suitable for the
      * specified component.
+     * @param messages TODO
      * 
      * @return the parsed object
      * @throws ValidatorException
      *             if the specified text could not be parsed into an object.
      */
-    public Object parse(IFormComponent field, String value) throws ValidatorException;
+    public Object parse(IFormComponent field, ValidationMessages messages, String value) throws ValidatorException;
 }

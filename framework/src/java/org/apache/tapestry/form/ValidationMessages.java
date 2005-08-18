@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form;
 
+import java.util.Locale;
+
 /**
  * Support interface used to provide access to validation messages. Typically used by
  * {@link org.apache.tapestry.form.validator.Validator}s.
@@ -37,4 +39,10 @@ public interface ValidationMessages
 
     public String formatValidationMessage(String messageOverride, String messageKey,
             Object[] arguments);
+
+    /**
+     * Returns the locale for which messages are generated.
+     */
+
+    public Locale getLocale();
 }

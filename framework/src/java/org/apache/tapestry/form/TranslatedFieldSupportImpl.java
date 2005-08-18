@@ -33,7 +33,8 @@ public class TranslatedFieldSupportImpl implements TranslatedFieldSupport
     }
 
     /**
-     * @param threadLocale The threadLocale to set.
+     * @param threadLocale
+     *            The threadLocale to set.
      */
     public void setThreadLocale(ThreadLocale threadLocale)
     {
@@ -43,24 +44,30 @@ public class TranslatedFieldSupportImpl implements TranslatedFieldSupport
     public String format(TranslatedField field, Object object)
     {
         IValidationDelegate delegate = field.getForm().getDelegate();
-        
-        return delegate.isInError() ? delegate.getFieldInputValue() : field.getTranslator().format(field, object);
+
+        return delegate.isInError() ? delegate.getFieldInputValue() : field.getTranslator().format(
+                field,
+                _threadLocale.getLocale(),
+                object);
     }
-    
+
     public Object parse(TranslatedField field, String text) throws ValidatorException
     {
         IValidationDelegate delegate = field.getForm().getDelegate();
-        
+
         delegate.recordFieldInputValue(text);
-        
-        return field.getTranslator().parse(field, text);
+
+        ValidationMessages messages = new ValidationMessagesImpl(field, _threadLocale.getLocale());
+
+        return field.getTranslator().parse(field, messages, text);
     }
 
     public void renderContributions(TranslatedField field, IMarkupWriter writer, IRequestCycle cycle)
     {
         if (field.getForm().isClientValidationEnabled())
         {
-            FormComponentContributorContext context = new FormComponentContributorContextImpl(_threadLocale.getLocale(), cycle, field);
+            FormComponentContributorContext context = new FormComponentContributorContextImpl(
+                    _threadLocale.getLocale(), cycle, field);
 
             field.getTranslator().renderContribution(writer, cycle, context, field);
         }

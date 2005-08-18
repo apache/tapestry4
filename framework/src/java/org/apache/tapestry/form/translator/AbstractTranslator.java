@@ -14,17 +14,15 @@
 
 package org.apache.tapestry.form.translator;
 
-import java.text.MessageFormat;
 import java.util.Locale;
 
 import org.apache.hivemind.HiveMind;
-import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.AbstractFormComponentContributor;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.valid.ValidationStrings;
+import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -53,44 +51,45 @@ public abstract class AbstractTranslator extends AbstractFormComponentContributo
 
     /**
      * @see org.apache.tapestry.form.translator.Translator#format(org.apache.tapestry.form.IFormComponent,
-     *      java.lang.Object)
+     *      Locale, java.lang.Object)
      */
-    public String format(IFormComponent field, Object object)
+    public String format(IFormComponent field, Locale locale, Object object)
     {
-        return (object != null) ? formatObject(field, object) : "";
+        if (object == null)
+            return "";
+
+        return formatObject(field, locale, object);
     }
 
     /**
      * @see org.apache.tapestry.form.translator.Translator#parse(org.apache.tapestry.form.IFormComponent,
-     *      java.lang.String)
+     *      ValidationMessages, java.lang.String)
      */
-    public Object parse(IFormComponent field, String text) throws ValidatorException
+    public Object parse(IFormComponent field, ValidationMessages messages, String text)
+            throws ValidatorException
     {
         String value = _trim ? text.trim() : text;
 
-        return HiveMind.isBlank(value) ? getEmpty() : parseText(field, value);
+        return HiveMind.isBlank(value) ? getEmpty() : parseText(field, messages, value);
     }
 
-    protected abstract String formatObject(IFormComponent field, Object object);
+    protected abstract String formatObject(IFormComponent field, Locale locale, Object object);
 
-    protected abstract Object parseText(IFormComponent field, String text)
-            throws ValidatorException;
+    protected abstract Object parseText(IFormComponent field, ValidationMessages messages,
+            String text) throws ValidatorException;
 
     protected Object getEmpty()
     {
         return null;
     }
 
-    protected String buildMessage(IFormComponent field, String key)
+    protected String buildMessage(ValidationMessages messages, IFormComponent field, String key)
     {
-        Locale locale = field.getPage().getLocale();
+        String label = field.getDisplayName();
 
-        String pattern = (_message == null) ? ValidationStrings.getMessagePattern(key, locale)
-                : _message;
+        Object[] parameters = getMessageParameters(messages.getLocale(), label);
 
-        String name = field.getDisplayName();
-
-        return MessageFormat.format(pattern, getMessageParameters(locale, name));
+        return messages.formatValidationMessage(_message, key, parameters);
     }
 
     protected Object[] getMessageParameters(Locale locale, String label)
@@ -103,19 +102,17 @@ public abstract class AbstractTranslator extends AbstractFormComponentContributo
      * @see org.apache.tapestry.form.FormComponentContributor#renderContribution(org.apache.tapestry.IRequestCycle,
      *      org.apache.tapestry.form.IFormComponent)
      */
-    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle, FormComponentContributorContext context, IFormComponent field)
+    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
+            FormComponentContributorContext context, IFormComponent field)
     {
         super.renderContribution(writer, cycle, context, field);
 
         if (_trim)
-        {
-            IForm form = field.getForm();
-
-            addSubmitHandler(form, "trim(document." + form.getName() + "." + field.getName() + ")");
-        }
+            context.addSubmitListener("trim(" + context.getFieldDOM() + ")");
     }
 
     public boolean isTrim()
+
     {
         return _trim;
     }
