@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -797,7 +798,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     }
 
     /**
-     * Convienience method for invoking {@link IMessages#format(String, Object)}
+     * Convienience method for invoking {@link IMessages#format(String, Locale, Object)}
      * 
      * @since 3.0
      * @deprecated To be removed in 4.1. Use {@link #getMessages()} instead.

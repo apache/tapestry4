@@ -14,7 +14,12 @@
 
 package org.apache.tapestry.form.translator;
 
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.form.FormComponentContributorContext;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.ValidatorException;
+import org.easymock.MockControl;
 
 /**
  * Test case for {@link StringTranslator}.
@@ -29,9 +34,9 @@ public class TestStringTranslator extends TranslatorTestCase
     public void testFormat()
     {
         replay();
-        
-        String result = _translator.format(_component, "Test this");
-        
+
+        String result = _translator.format(_component, null, "Test this");
+
         assertEquals("Test this", result);
 
         verify();
@@ -40,9 +45,9 @@ public class TestStringTranslator extends TranslatorTestCase
     public void testNullFormat()
     {
         replay();
-        
-        String result = _translator.format(_component, null);
-        
+
+        String result = _translator.format(_component, null, null);
+
         assertEquals("", result);
 
         verify();
@@ -51,10 +56,10 @@ public class TestStringTranslator extends TranslatorTestCase
     public void testParse()
     {
         replay();
-        
+
         try
         {
-            String result = (String) _translator.parse(_component, "Test this");
+            String result = (String) _translator.parse(_component, null, "Test this");
 
             assertEquals("Test this", result);
         }
@@ -71,12 +76,12 @@ public class TestStringTranslator extends TranslatorTestCase
     public void testTrimmedParse()
     {
         _translator.setTrim(true);
-        
+
         replay();
-        
+
         try
         {
-            String result = (String) _translator.parse(_component, " Test this ");
+            String result = (String) _translator.parse(_component, null, " Test this ");
 
             assertEquals("Test this", result);
         }
@@ -93,10 +98,10 @@ public class TestStringTranslator extends TranslatorTestCase
     public void testEmptyParse()
     {
         replay();
-        
+
         try
         {
-            String result = (String) _translator.parse(_component, "");
+            String result = (String) _translator.parse(_component, null, "");
 
             assertEquals(null, result);
         }
@@ -113,12 +118,12 @@ public class TestStringTranslator extends TranslatorTestCase
     public void testCustomEmptyParse()
     {
         _translator.setEmpty("");
-        
+
         replay();
-        
+
         try
         {
-            String result = (String) _translator.parse(_component, "");
+            String result = (String) _translator.parse(_component, null, "");
 
             assertEquals("", result);
         }
@@ -131,25 +136,39 @@ public class TestStringTranslator extends TranslatorTestCase
             verify();
         }
     }
-    
+
     public void testRenderContribution()
     {
         replay();
-        
+
         _translator.renderContribution(null, _cycle, null, _component);
-        
+
         verify();
     }
-    
+
     public void testTrimRenderContribution()
     {
-        _translator.setTrim(true);
-        trim();
-        
-        replay();
-        
-        _translator.renderContribution(null, _cycle, null, _component);
-        
-        verify();
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+
+        MockControl contextc = newControl(FormComponentContributorContext.class);
+        FormComponentContributorContext context = (FormComponentContributorContext) contextc
+                .getMock();
+
+        context.getFieldDOM();
+        contextc.setReturnValue("field_dom");
+
+        context.addSubmitListener("trim(field_dom)");
+
+        IFormComponent field = newField();
+
+        replayControls();
+
+        Translator t = new StringTranslator("trim");
+
+        t.renderContribution(writer, cycle, context, field);
+
+        verifyControls();
     }
+
 }

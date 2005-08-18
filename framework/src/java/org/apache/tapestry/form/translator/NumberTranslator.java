@@ -19,8 +19,8 @@ import java.text.DecimalFormatSymbols;
 import java.text.Format;
 import java.util.Locale;
 
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.hivemind.util.StringUtils;
-import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
@@ -36,15 +36,31 @@ import org.apache.tapestry.valid.ValidationStrings;
  */
 public class NumberTranslator extends FormatTranslator
 {
+    private boolean _omitZero = true;
 
     public NumberTranslator()
     {
     }
 
+    @Override
+    protected String formatObject(IFormComponent field, Locale locale, Object object)
+    {
+        Number number = (Number) object;
+
+        if (_omitZero)
+        {
+            if (number.doubleValue() == 0)
+
+                return "";
+        }
+
+        return super.formatObject(field, locale, object);
+    }
+
     // Needed until HIVEMIND-134 fix is available
     public NumberTranslator(String initializer)
     {
-        super(initializer);
+        PropertyUtils.configureProperties(this, initializer);
     }
 
     /**
@@ -98,21 +114,22 @@ public class NumberTranslator extends FormatTranslator
 
     /**
      * @see org.apache.tapestry.form.FormComponentContributor#renderContribution(org.apache.tapestry.IMarkupWriter,
-     *      org.apache.tapestry.IRequestCycle, FormComponentContributorContext, org.apache.tapestry.form.IFormComponent)
+     *      org.apache.tapestry.IRequestCycle, FormComponentContributorContext,
+     *      org.apache.tapestry.form.IFormComponent)
      */
-    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle, FormComponentContributorContext context, IFormComponent field)
+    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
+            FormComponentContributorContext context, IFormComponent field)
     {
         super.renderContribution(writer, cycle, context, field);
 
-        String message = buildMessage(field, getMessageKey());
-        IForm form = field.getForm();
+        String message = buildMessage(context, field, getMessageKey());
 
         // Escape backslashes and single quotes in the message
         message = StringUtils.replace(message, "\\", "\\\\");
         message = StringUtils.replace(message, "'", "\\'");
-        
-        addSubmitHandler(form, "validate_number(event, document." + form.getName() + "."
-                + field.getName() + ",'" + message + "')");
+
+        context.addSubmitListener("validate_number(event, " + context.getFieldDOM() + ", '"
+                + message + "')");
     }
 
     /**
@@ -122,4 +139,16 @@ public class NumberTranslator extends FormatTranslator
     {
         return ValidationConstraint.NUMBER_FORMAT;
     }
+
+    /**
+     * If true (which is the default for the property), then values that are 0 are rendered to an
+     * empty string, not "0" or "0.00". This is useful in most cases where the field is optional; it
+     * allow the field to render blank when no value is present.
+     */
+
+    public void setOmitZero(boolean omitZero)
+    {
+        _omitZero = omitZero;
+    }
+
 }

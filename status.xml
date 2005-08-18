@@ -66,6 +66,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-437" due-to="Nick Westgate">Select component exception when used twice on a page</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-568">Engine services should use getName() when constructing thier parameter maps so that they may be more easily subclassed and extended</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-566">Annotations jar on classpath breaks Tapestry if not running on JDK 1.5</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-563">NumberValidator should allow a special case for rendering zero</action>
     </release>
     <release version="4.0-beta-4" date="Aug 10 2005">
       <action type="fix" dev="HLS">Add getComponent() method to IComponent.</action>

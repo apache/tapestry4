@@ -67,4 +67,10 @@ public class ValidationMessagesImpl implements ValidationMessages
 
         return messageOverride;
     }
+
+    public Locale getLocale()
+    {
+        return _locale;
+    }
+
 }
