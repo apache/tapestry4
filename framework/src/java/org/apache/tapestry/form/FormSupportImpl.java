@@ -286,7 +286,7 @@ public class FormSupportImpl implements FormSupport
         return buffer.toString();
     }
 
-    private void emitEventHandlers(String eventManager)
+    private void emitEventHandlers()
     {
         if (_events == null || _events.isEmpty())
             return;
@@ -301,8 +301,9 @@ public class FormSupportImpl implements FormSupport
             FormEventType type = (FormEventType) entry.getKey();
             Object value = entry.getValue();
 
-            buffer.append(eventManager);
-            buffer.append(".");
+            buffer.append("document.");
+            buffer.append(_form.getName());
+            buffer.append(".events.");
             buffer.append(type.getAddListenerMethodName());
 
             // Build a composite function in-place
@@ -443,7 +444,7 @@ public class FormSupportImpl implements FormSupport
 
     public void render(String method, IRender informalParametersRenderer, ILink link)
     {
-        String eventManager = emitEventManagerInitialization();
+        emitEventManagerInitialization();
 
         // Convert the link's query parameters into a series of
         // hidden field values (that will be rendered later).
@@ -470,7 +471,7 @@ public class FormSupportImpl implements FormSupport
 
         // Write out event handlers collected during the rendering.
 
-        emitEventHandlers(eventManager);
+        emitEventHandlers();
 
         informalParametersRenderer.render(_writer, _cycle);
 
@@ -500,8 +501,8 @@ public class FormSupportImpl implements FormSupport
         if (!_form.getFocus() || _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) != null)
             return;
 
-        _pageRenderSupport.addInitializationScript("focus(document." + _form.getName() + "."
-                + field + ");");
+        _pageRenderSupport.addInitializationScript("Tapestry.set_focus(document." + _form.getName()
+                + "." + field + ");");
 
         _cycle.setAttribute(FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
     }
@@ -510,21 +511,17 @@ public class FormSupportImpl implements FormSupport
      * Pre-renders the form, setting up some client-side form support. Returns the name of the
      * client-side form event manager variable.
      */
-    protected String emitEventManagerInitialization()
+    protected void emitEventManagerInitialization()
     {
         if (_pageRenderSupport == null)
-            return null;
+            return;
 
         _pageRenderSupport.addExternalScript(_script);
 
         String formName = _form.getName();
 
-        String eventManager = formName + "_events";
-
-        _pageRenderSupport.addInitializationScript("var " + eventManager
-                + " = new FormEventManager(document." + formName + ");");
-
-        return eventManager;
+        _pageRenderSupport.addInitializationScript("new FormEventManager(document." + formName
+                + ");");
     }
 
     public String rewind()

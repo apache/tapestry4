@@ -29,6 +29,10 @@ import org.apache.hivemind.util.Defense;
  */
 public class TapestryUtils
 {
+    private static final char QUOTE = '\'';
+
+    private static final char BACKSLASH = '\\';
+
     /**
      * Stores an attribute into the request cycle, verifying that no object with that key is already
      * present.
@@ -207,5 +211,37 @@ public class TapestryUtils
         strings.add(token);
 
         return (String[]) strings.toArray(new String[strings.size()]);
+    }
+
+    /**
+     * Enquotes a string within single quotes, ready for insertion as part of a block of JavaScript.
+     * Single quotes and backslashes within the input string are properly escaped.
+     */
+
+    public static String enquote(String input)
+    {
+        Defense.notNull(input, "input");
+
+        char[] chars = input.toCharArray();
+
+        // Add room for the two quotes and a couple of escaped characters
+
+        StringBuffer buffer = new StringBuffer(chars.length + 5);
+
+        buffer.append(QUOTE);
+
+        for (int i = 0; i < chars.length; i++)
+        {
+            char ch = chars[i];
+
+            if (ch == QUOTE || ch == BACKSLASH)
+                buffer.append(BACKSLASH);
+
+            buffer.append(ch);
+        }
+
+        buffer.append(QUOTE);
+
+        return buffer.toString();
     }
 }

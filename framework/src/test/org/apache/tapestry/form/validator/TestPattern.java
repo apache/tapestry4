@@ -120,7 +120,7 @@ public class TestPattern extends BaseValidatorTestCase
         contextc.setReturnValue("document.fred.barney");
 
         context
-                .addSubmitListener("function(event) { validate_regexp(event, document.fred.barney, '"
+                .addSubmitListener("function(event) { Tapestry.validate_regexp(event, document.fred.barney, '"
                         + pattern + "', 'default message'); }");
 
         replayControls();
@@ -158,7 +158,7 @@ public class TestPattern extends BaseValidatorTestCase
         contextc.setReturnValue("document.fred.barney");
 
         context
-                .addSubmitListener("function(event) { validate_regexp(event, document.fred.barney, '"
+                .addSubmitListener("function(event) { Tapestry.validate_regexp(event, document.fred.barney, '"
                         + pattern + "', 'custom\\\\message'); }");
 
         replayControls();

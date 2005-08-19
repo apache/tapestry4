@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function validate_number(event, field, message)
+Tapestry.validate_number = function(event, field, message)
 {
+	if (field.value == "") return;
+	
 	if (isNaN(field.value))
-        return handle_invalid_field(event, field, message)    
+        event.invalid_field(field, message)    
 }

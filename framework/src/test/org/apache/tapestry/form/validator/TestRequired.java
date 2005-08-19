@@ -179,7 +179,7 @@ public class TestRequired extends BaseValidatorTestCase
                 "Default\\Message for Fred.");
 
         context
-                .addSubmitListener("function(event) { require(event, document.fred.barney, 'Default\\\\Message for Fred.'); }");
+                .addSubmitListener("function(event) { Tapestry.require_field(event, document.fred.barney, 'Default\\\\Message for Fred.'); }");
 
         replayControls();
 

@@ -158,7 +158,7 @@ public class TestStringTranslator extends TranslatorTestCase
         context.getFieldDOM();
         contextc.setReturnValue("field_dom");
 
-        context.addSubmitListener("trim(field_dom)");
+        trainTrim(context, "field_dom");
 
         IFormComponent field = newField();
 

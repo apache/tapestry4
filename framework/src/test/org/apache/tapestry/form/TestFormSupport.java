@@ -160,8 +160,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support
-                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.myform);");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -198,7 +197,7 @@ public class TestFormSupport extends HiveMindTestCase
         trainGetFocusField(delegatec, delegate, "wilma");
         trainGetFieldFocus(cyclec, cycle, null);
 
-        support.addInitializationScript("focus(document.myform.wilma);");
+        support.addInitializationScript("Tapestry.set_focus(document.myform.wilma);");
 
         trainSetFieldFocus(cycle);
 
@@ -341,8 +340,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support
-                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.myform);");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -377,7 +375,7 @@ public class TestFormSupport extends HiveMindTestCase
         writer.end();
 
         support
-                .addInitializationScript("myform_events.addSubmitListener(function (event)\n{\n  mySubmit1();\n  mySubmit2();\n  mySubmit3();\n});\n");
+                .addInitializationScript("document.myform.events.addSubmitListener(function (event)\n{\n  mySubmit1();\n  mySubmit2();\n  mySubmit3();\n});\n");
 
         // Side test: what if no focus field?
 
@@ -444,8 +442,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support
-                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.myform);");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -543,8 +540,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support
-                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.myform);");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -641,8 +637,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support
-                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.myform);");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -725,8 +720,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support
-                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.myform);");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -825,8 +819,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support
-                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.myform);");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -861,7 +854,7 @@ public class TestFormSupport extends HiveMindTestCase
         writer.end();
 
         support
-                .addInitializationScript("myform_events.addResetListener(function (event)\n{\n  myReset1();\n  myReset2();\n});\n");
+                .addInitializationScript("document.myform.events.addResetListener(function (event)\n{\n  myReset1();\n  myReset2();\n});\n");
 
         trainGetFocusField(delegatec, delegate, null);
 
@@ -1177,8 +1170,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support
-                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.myform);");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -1291,8 +1283,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support
-                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.myform);");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -1602,8 +1593,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support
-                .addInitializationScript("var myform_events = new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.myform);");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -1638,7 +1628,7 @@ public class TestFormSupport extends HiveMindTestCase
         writer.end();
 
         support
-                .addInitializationScript("myform_events.addSubmitListener(function (event)\n{\n  mySubmit();\n});\n");
+                .addInitializationScript("document.myform.events.addSubmitListener(function (event)\n{\n  mySubmit();\n});\n");
 
         trainGetFocusField(delegatec, delegate, null);
 

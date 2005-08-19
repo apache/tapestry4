@@ -176,4 +176,10 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
 
         return messages;
     }
+
+    protected void trainTrim(FormComponentContributorContext context, String fieldDOM)
+    {
+        context.addSubmitListener("function (event) { Tapestry.trim_field_value(" + fieldDOM
+                + "); }");
+    }
 }

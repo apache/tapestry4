@@ -109,7 +109,7 @@ public class TestMaxLength extends BaseValidatorTestCase
         { new Integer(20), "My Field" }, "default\\message");
 
         context
-                .addSubmitListener("function(event) { validate_max_length(event, document.myform.myfield, 20, 'default\\\\message'); }");
+                .addSubmitListener("function(event) { Tapestry.validate_max_length(event, document.myform.myfield, 20, 'default\\\\message'); }");
 
         replayControls();
 

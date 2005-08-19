@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function validate_regex(event, field, pattern, message)
+Tapestry.validate_regex = function(event, field, pattern, message)
 {
 	var value = field.value;
 	

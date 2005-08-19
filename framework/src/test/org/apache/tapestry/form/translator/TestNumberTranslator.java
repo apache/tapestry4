@@ -212,7 +212,8 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
 
         trainGetFieldDOM(contextc, context, "field_dom");
 
-        context.addSubmitListener("validate_number(event, field_dom, 'invalid number message')");
+        context
+                .addSubmitListener("function(event) { Tapestry.validate_number(event, field_dom, 'invalid number message'); }");
 
         IFormComponent field = newField("Number Field");
 
@@ -252,7 +253,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         trainGetFieldDOM(contextc, context, "field_dom");
 
         context
-                .addSubmitListener("validate_number(event, field_dom, 'Blah Blah \\'Field Name\\' Blah.')");
+                .addSubmitListener("function(event) { Tapestry.validate_number(event, field_dom, 'Blah Blah \\'Field Name\\' Blah.'); }");
 
         IFormComponent field = newField("Number Field");
 
@@ -280,7 +281,7 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
 
         trainGetFieldDOM(contextc, context, "field_dom");
 
-        context.addSubmitListener("trim(field_dom)");
+        trainTrim(context, "field_dom");
 
         trainGetLocale(contextc, context, Locale.ENGLISH);
 
@@ -289,7 +290,8 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
 
         trainGetFieldDOM(contextc, context, "field_dom");
 
-        context.addSubmitListener("validate_number(event, field_dom, 'invalid number message')");
+        context
+                .addSubmitListener("function(event) { Tapestry.validate_number(event, field_dom, 'invalid number message'); }");
 
         IFormComponent field = newField("Number Field");
 

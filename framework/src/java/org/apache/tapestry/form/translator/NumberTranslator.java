@@ -20,9 +20,9 @@ import java.text.Format;
 import java.util.Locale;
 
 import org.apache.hivemind.util.PropertyUtils;
-import org.apache.hivemind.util.StringUtils;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.ValidationConstraint;
@@ -122,14 +122,10 @@ public class NumberTranslator extends FormatTranslator
     {
         super.renderContribution(writer, cycle, context, field);
 
-        String message = buildMessage(context, field, getMessageKey());
+        String message = TapestryUtils.enquote(buildMessage(context, field, getMessageKey()));
 
-        // Escape backslashes and single quotes in the message
-        message = StringUtils.replace(message, "\\", "\\\\");
-        message = StringUtils.replace(message, "'", "\\'");
-
-        context.addSubmitListener("validate_number(event, " + context.getFieldDOM() + ", '"
-                + message + "')");
+        context.addSubmitListener("function(event) { Tapestry.validate_number(event, "
+                + context.getFieldDOM() + ", " + message + "); }");
     }
 
     /**

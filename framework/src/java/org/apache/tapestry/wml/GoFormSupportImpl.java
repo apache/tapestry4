@@ -60,8 +60,7 @@ public class GoFormSupportImpl extends FormSupportImpl
                 "addEventHandler() not supported for WML Go component.");
     }
 
-    protected String emitEventManagerInitialization()
+    protected void emitEventManagerInitialization()
     {
-        return null;
     }
 }

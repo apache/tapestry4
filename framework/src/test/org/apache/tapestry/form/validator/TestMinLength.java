@@ -110,7 +110,7 @@ public class TestMinLength extends BaseValidatorTestCase
         { new Integer(20), "My Field" }, "default message");
 
         context
-                .addSubmitListener("function(event) { validate_min_length(event, document.myform.myfield, 20, 'default message'); }");
+                .addSubmitListener("function(event) { Tapestry.validate_min_length(event, document.myform.myfield, 20, 'default message'); }");
 
         replayControls();
 
@@ -143,7 +143,7 @@ public class TestMinLength extends BaseValidatorTestCase
                 "custom\\message");
 
         context
-                .addSubmitListener("function(event) { validate_min_length(event, document.myform.myfield, 25, 'custom\\\\message'); }");
+                .addSubmitListener("function(event) { Tapestry.validate_min_length(event, document.myform.myfield, 25, 'custom\\\\message'); }");
 
         replayControls();
 

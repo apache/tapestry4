@@ -108,7 +108,7 @@ public abstract class AbstractTranslator extends AbstractFormComponentContributo
         super.renderContribution(writer, cycle, context, field);
 
         if (_trim)
-            context.addSubmitListener("trim(" + context.getFieldDOM() + ")");
+            context.addSubmitListener("function (event) { Tapestry.trim_field_value(" + context.getFieldDOM() + "); }");
     }
 
     public boolean isTrim()
