@@ -14,16 +14,20 @@
 
 Tapestry.validate_min_number = function(event, field, min, message)
 {
-	var num = eval(field.value)
+	var value = field.value;
 	
-    if (num < min)
+	if (value == "") return;
+	
+    if (Number(value) < min)
       event.invalid_field(field, message)
 }
 
 Tapestry.validate_max_number = function(event, field, max, message)
 {
-	var num = eval(field.value)
+	var value = field.value;
 	
-    if (num > max)
+	if (value == "") return;
+	
+    if (Number(value) > max)
       event.invalid_field(field, message)
 }

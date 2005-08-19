@@ -107,6 +107,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-541" due-to="Markus Wiederkehr">Add a configuration point for creating additional SqueezeAdaptors</action>
       <action type="update" dev="HLS">Change SerializableAdaptor to encode with and without compression, and use the shorter of the two</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-543">DateField.jwc is 4.0 DTD but uses the type attribute of &lt;parameter&gt;</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-570">Number translator generates incorrect javascript, preventing validation that the input value is numeric</action>
     </release>
     <release version="4.0-beta-3" date="Jul 22 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-398" due-to="Jonas Maurus">HiveMind configuration error breaks the useage of the state: binding prefix</action>
