@@ -40,6 +40,7 @@
     <ibiblio-dependency artifact="ognl"               version="${ognl.version}"     group="ognl"/>
     <ibiblio-dependency artifact="jboss-j2ee"         version="3.2.1"               group="jboss"/>
     <ibiblio-dependency artifact="oro"                version="${oro.version}"      group="oro"/>
+	<ibiblio-dependency artifact="servletapi"         version="${servlet.version}"  group="servletapi"/>
     
     <!--
     <ibiblio-dependency artifact="bsf"                version="2.3.0"               group="bsf"/>
