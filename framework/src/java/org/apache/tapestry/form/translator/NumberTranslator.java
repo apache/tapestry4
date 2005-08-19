@@ -42,7 +42,6 @@ public class NumberTranslator extends FormatTranslator
     {
     }
 
-    @Override
     protected String formatObject(IFormComponent field, Locale locale, Object object)
     {
         Number number = (Number) object;
