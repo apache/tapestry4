@@ -18,6 +18,7 @@ import java.util.Collection;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
@@ -74,11 +75,11 @@ public class Required extends BaseValidator
     {
         context.registerForFocus(ValidationConstants.REQUIRED_FIELD);
 
-        StringBuffer buffer = new StringBuffer("function(event) { require(event, ");
+        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.require_field(event, ");
         buffer.append(context.getFieldDOM());
-        buffer.append(", '");
-        buffer.append(ValidatorUtils.escapeReservedCharacters(buildMessage(context, field)));
-        buffer.append("'); }");
+        buffer.append(", ");
+        buffer.append(TapestryUtils.enquote(buildMessage(context, field)));
+        buffer.append("); }");
 
         context.addSubmitListener(buffer.toString());
     }

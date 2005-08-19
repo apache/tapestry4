@@ -244,7 +244,7 @@ public class TestDateTranslator extends TranslatorTestCase
         context.getFieldDOM();
         contextc.setReturnValue("field_dom");
 
-        context.addSubmitListener("trim(field_dom)");
+        trainTrim(context, "field_dom");
 
         replayControls();
 

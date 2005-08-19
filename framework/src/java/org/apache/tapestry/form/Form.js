@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Define a Tapestry object to contain most functions.
+
+var Tapestry = new Object();
+
 function default_invalid_field_handler(event, field, message)
 {
   // Temporary, while all the event logic is getting munged together
@@ -19,7 +23,7 @@ function default_invalid_field_handler(event, field, message)
   
   if (!event.abort && !field.disabled)
   {
-    focus(field);
+    Tapestry.set_focus(field);
     
     window.alert(message);
     
@@ -28,7 +32,7 @@ function default_invalid_field_handler(event, field, message)
   }
 }
 
-function focus(field)
+Tapestry.set_focus = function (field)
 {
 	field.focus();
     
@@ -36,12 +40,12 @@ function focus(field)
         field.select();
 }
 
-function trim(field)
+Tapestry.trim_field_value = function(field)
 {
 	field.value = field.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 }
 
-function require(event, field, message)
+Tapestry.require_field = function(event, field, message)
 {
     if (field.value.length == 0)
       event.invalid_field(field, message);

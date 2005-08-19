@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function validate_min_number(event, field, min, message)
+Tapestry.validate_min_number = function(event, field, min, message)
 {
 	var num = eval(field.value)
 	
@@ -20,7 +20,7 @@ function validate_min_number(event, field, min, message)
       event.invalid_field(field, message)
 }
 
-function validate_max_number(event, field, max, message)
+Tapestry.validate_max_number = function(event, field, max, message)
 {
 	var num = eval(field.value)
 	

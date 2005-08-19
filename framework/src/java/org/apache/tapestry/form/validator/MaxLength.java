@@ -16,6 +16,7 @@ package org.apache.tapestry.form.validator;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
@@ -71,14 +72,14 @@ public class MaxLength extends BaseValidator
             FormComponentContributorContext context, IFormComponent field)
     {
         context.includeClasspathScript("/org/apache/tapestry/form/validator/StringValidator.js");
-        
-        StringBuffer buffer = new StringBuffer("function(event) { validate_max_length(event, ");
+
+        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.validate_max_length(event, ");
         buffer.append(context.getFieldDOM());
         buffer.append(", ");
         buffer.append(_maxLength);
-        buffer.append(", '");
-        buffer.append(ValidatorUtils.escapeReservedCharacters(buildMessage(context, field)));
-        buffer.append("'); }");
+        buffer.append(", ");
+        buffer.append(TapestryUtils.enquote(buildMessage(context, field)));
+        buffer.append("); }");
 
         context.addSubmitListener(buffer.toString());
     }

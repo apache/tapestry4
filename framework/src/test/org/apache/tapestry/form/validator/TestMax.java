@@ -111,7 +111,7 @@ public class TestMax extends BaseValidatorTestCase
         contextc.setReturnValue("document.myform.myfield");
 
         context
-                .addSubmitListener("function(event) { validate_max_number(event, document.myform.myfield, 20.0, 'default message'); }");
+                .addSubmitListener("function(event) { Tapestry.validate_max_number(event, document.myform.myfield, 20.0, 'default message'); }");
 
         replayControls();
 
@@ -144,7 +144,7 @@ public class TestMax extends BaseValidatorTestCase
         contextc.setReturnValue("document.myform.myfield");
 
         context
-                .addSubmitListener("function(event) { validate_max_number(event, document.myform.myfield, 20.0, 'custom\\\\message'); }");
+                .addSubmitListener("function(event) { Tapestry.validate_max_number(event, document.myform.myfield, 20.0, 'custom\\\\message'); }");
 
         replayControls();
 

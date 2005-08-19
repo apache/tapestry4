@@ -16,6 +16,7 @@ package org.apache.tapestry.form.validator;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
@@ -74,15 +75,15 @@ public class Email extends BaseValidator
         context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
 
         String pattern = _matcher.getEscapedPatternString(PATTERN);
-        String message = buildMessage(context, field);
+        String message = TapestryUtils.enquote(buildMessage(context, field));
 
-        StringBuffer buffer = new StringBuffer("function(event) { validate_regex(event, ");
+        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.validate_regex(event, ");
         buffer.append(context.getFieldDOM());
         buffer.append(", '");
         buffer.append(pattern);
-        buffer.append("', '");
-        buffer.append(ValidatorUtils.escapeReservedCharacters(message));
-        buffer.append("'); }");
+        buffer.append("', ");
+        buffer.append(message);
+        buffer.append("); }");
 
         context.addSubmitListener(buffer.toString());
     }

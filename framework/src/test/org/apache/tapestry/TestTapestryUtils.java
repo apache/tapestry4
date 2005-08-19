@@ -131,7 +131,7 @@ public class TestTapestryUtils extends HiveMindTestCase
 
         verifyControls();
     }
-    
+
     public void testRemoveForm()
     {
         IRequestCycle cycle = newCycle();
@@ -142,7 +142,7 @@ public class TestTapestryUtils extends HiveMindTestCase
 
         TapestryUtils.removeForm(cycle);
 
-        verifyControls(); 
+        verifyControls();
     }
 
     public void testGetFormSuccess()
@@ -262,4 +262,14 @@ public class TestTapestryUtils extends HiveMindTestCase
         { "", "fred", "", "barney", "", "" }, TapestryUtils.split(",fred,,barney,,"));
     }
 
+    public void testEnquote()
+    {
+        assertEquals("'simple'", TapestryUtils.enquote("simple"));
+
+        assertEquals("'this is a \\\\backslash\\\\'", TapestryUtils
+                .enquote("this is a \\backslash\\"));
+
+        assertEquals("'this is a \\'single quote\\''", TapestryUtils
+                .enquote("this is a 'single quote'"));
+    }
 }

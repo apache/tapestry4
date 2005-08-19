@@ -12,14 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function validate_min_length(event, field, min, message)
+Tapestry.validate_min_length = function(event, field, min, message)
 {
+	if (field.value == "") return;
+	
     if (field.value.length < min)
       event.invalid_field(field, message)
 }
 
-function validate_max_length(event, field, max, message)
+Tapestry.validate_max_length = function(event, field, max, message)
 {
+	if (field.value == "") return;
+	
     if (field.value.length > max)
       event.invalid_field(field, message)
 }
