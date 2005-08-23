@@ -25,8 +25,7 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 class ParseMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(ParseMessages.class,
-            "ParseStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(ParseMessages.class);
 
     static String commentNotEnded(int line)
     {

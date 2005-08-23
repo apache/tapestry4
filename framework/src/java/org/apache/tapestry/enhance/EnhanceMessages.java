@@ -31,8 +31,7 @@ import org.apache.tapestry.Tapestry;
  */
 class EnhanceMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(EnhanceMessages.class,
-            "EnhanceStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(EnhanceMessages.class);
 
     static String noImplForAbstractMethod(Method method, Class declareClass, String className,
             Class enhancedClass)

@@ -26,26 +26,25 @@ import org.apache.tapestry.IPage;
  */
 public class EngineMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(EngineMessages.class,
-            "EngineStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(EngineMessages.class);
 
     public static String serviceNoParameter(IEngineService service)
     {
         return _formatter.format("service-no-parameter", service.getName());
     }
 
-    static String wrongComponentType(IComponent component, Class expectedType)
+    public static String wrongComponentType(IComponent component, Class expectedType)
     {
         return _formatter.format("wrong-component-type", component.getExtendedId(), expectedType
                 .getName());
     }
 
-    static String requestStateSession(IComponent component)
+    public static String requestStateSession(IComponent component)
     {
         return _formatter.format("request-stale-session", component.getExtendedId());
     }
 
-    static String pageNotCompatible(IPage page, Class expectedType)
+    public static String pageNotCompatible(IPage page, Class expectedType)
     {
         return _formatter.format("page-not-compatible", page.getPageName(), expectedType.getName());
     }

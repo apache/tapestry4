@@ -28,40 +28,39 @@ import org.apache.hivemind.service.ClassFabUtils;
 class AnnotationMessages
 {
     private static final MessageFormatter _formatter = new MessageFormatter(
-            AnnotationMessages.class, "AnnotationStrings");
+            AnnotationMessages.class);
 
-    public static String noParametersExpected(Method m)
+    static String noParametersExpected(Method m)
     {
         return _formatter.format("no-parameters-expected", m);
     }
 
-    public static String notAccessor(Method method)
+    static String notAccessor(Method method)
     {
         return _formatter.format("no-accessor", method);
     }
 
-    public static String voidAccessor(Method method)
+    static String voidAccessor(Method method)
     {
         return _formatter.format("void-accessor", method);
     }
 
-    public static String nonVoidMutator(Method method)
+    static String nonVoidMutator(Method method)
     {
         return _formatter.format("non-void-mutator", method);
     }
 
-    public static String wrongParameterCount(Method method)
+    static String wrongParameterCount(Method method)
     {
         return _formatter.format("wrong-parameter-count", method);
     }
 
-    public static String failureProcessingAnnotation(Annotation annotation, Method method,
-            Throwable cause)
+    static String failureProcessingAnnotation(Annotation annotation, Method method, Throwable cause)
     {
         return _formatter.format("failure-processing-annotation", annotation, method, cause);
     }
 
-    public static String failureProcessingClassAnnotation(Annotation annotation, Class clazz,
+    static String failureProcessingClassAnnotation(Annotation annotation, Class clazz,
             Throwable cause)
     {
         return _formatter.format(
@@ -71,22 +70,22 @@ class AnnotationMessages
                 cause);
     }
 
-    public static String returnStringOnly(Class returnType)
+    static String returnStringOnly(Class returnType)
     {
         return _formatter.format("return-string-only", ClassFabUtils.getJavaClassName(returnType));
     }
 
-    public static String bindingWrongFormat(String binding)
+    static String bindingWrongFormat(String binding)
     {
         return _formatter.format("binding-wrong-format", binding);
     }
 
-    public static String methodAnnotation(Annotation annotation, Method method)
+    static String methodAnnotation(Annotation annotation, Method method)
     {
         return _formatter.format("method-annotation", annotation, method);
     }
 
-    public static String classAnnotation(Annotation annotation, Class clazz)
+    static String classAnnotation(Annotation annotation, Class clazz)
     {
         return _formatter.format("class-annotation", annotation, clazz.getName());
     }

@@ -24,8 +24,7 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 class MultipartMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(MultipartMessages.class,
-            "MultipartStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(MultipartMessages.class);
 
     static String unableToDecode(Throwable cause)
     {

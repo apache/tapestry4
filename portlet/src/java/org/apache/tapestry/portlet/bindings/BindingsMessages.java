@@ -22,9 +22,7 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 class BindingsMessages
 {
-
-    protected static MessageFormatter _formatter = new MessageFormatter(BindingsMessages.class,
-            "BindingsStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(BindingsMessages.class);
 
     static String noUserInfo()
     {

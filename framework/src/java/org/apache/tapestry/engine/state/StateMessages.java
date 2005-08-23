@@ -22,8 +22,7 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 class StateMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(StateMessages.class,
-            "StateStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(StateMessages.class);
 
     static String unknownStateObjectName(String objectName)
     {

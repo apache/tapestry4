@@ -23,8 +23,7 @@ import org.apache.tapestry.IComponent;
  */
 class RecordMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(RecordMessages.class,
-            "RecordStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(RecordMessages.class);
 
     static String unknownPersistenceStrategy(String name)
     {
