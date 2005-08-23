@@ -41,6 +41,17 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
     public abstract void setName(String name);
 
     /**
+     * Returns true if the corresponding field, on the client side, can accept user focus (i.e.,
+     * implements the focus() method). Most components can take focus, but a few ({@link Hidden})
+     * override this method to return false.
+     */
+
+    protected boolean getCanTakeFocus()
+    {
+        return true;
+    }
+
+    /**
      * Should be connected to a parameter named "id" (annotations would be helpful here!). For
      * components w/o such a parameter, this will simply return null.
      */
@@ -69,7 +80,7 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
         if (rawId == null)
             return;
 
-        String id = cycle.getUniqueId(rawId);
+        String id = cycle.getUniqueId(TapestryUtils.convertTapestryIdToNMToken(rawId));
 
         // Store for later access by the FieldLabel (or JavaScript).
 
@@ -106,12 +117,17 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
         }
         else if (!cycle.isRewinding())
         {
-            if (!isDisabled())
+            boolean canFocus = getCanTakeFocus();
+            
+            if (canFocus && !isDisabled())
                 delegate.registerForFocus(this, ValidationConstants.NORMAL_FIELD);
 
             renderFormComponent(writer, cycle);
 
-            if (delegate.isInError())
+            // Can't think of a component that can be in error and not take focus,
+            // but whatever ...
+            
+            if (canFocus && delegate.isInError())
                 delegate.registerForFocus(this, ValidationConstants.ERROR_FIELD);
         }
     }

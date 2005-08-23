@@ -32,6 +32,15 @@ import org.apache.tapestry.services.DataSqueezer;
 public abstract class Hidden extends AbstractFormComponent
 {
     /**
+     * Returns false.
+     */
+
+    protected boolean getCanTakeFocus()
+    {
+        return false;
+    }
+
+    /**
      * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
      *      org.apache.tapestry.IRequestCycle)
      */
