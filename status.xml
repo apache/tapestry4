@@ -68,6 +68,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-566">Annotations jar on classpath breaks Tapestry if not running on JDK 1.5</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-563">NumberValidator should allow a special case for rendering zero</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-395">Rename framework javascript functions to avoid potential name collisions</action>
+      <action type="remove" dev="HLS">Remove the AssetExternalizer and externalization logic, since the asset service is better and as efficient</action>
     </release>
     <release version="4.0-beta-4" date="Aug 10 2005">
       <action type="fix" dev="HLS">Add getComponent() method to IComponent.</action>

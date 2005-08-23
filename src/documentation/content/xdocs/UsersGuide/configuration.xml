@@ -335,28 +335,6 @@ currently used in Tapestry:
   </tr>
   
   <tr>
-  	<td>org.apache.tapestry.asset.dir, org.apache.tapestry.asset.URL</td>
-	
-  <td>
-	These two values are used to handle private assets.  Private assets are assets
-	that are stored on the classpath, and not normally visible to client web browsers.
-
-	
-	<p>
-	By specifying these two configuration values, Tapestry can export private assets
-	to a directory that is visible to the client web browser.  The URL
-	value should map to the directory specified by the dir value.
-	</p>
-  
-  <note>
-    Due to changes in Tapestry, these are no longer needed.  Issues with security and performance
-    have been fixed in Tapestry 4.0, allowing private assets to be accessed with zero configuration.
-  </note>
-  </td>
-  </tr>
-  
-  
-  <tr>
   <td>org.apache.tapestry.component-class-packages</td>
   <td>
     A comma-seperated list of package names, used when

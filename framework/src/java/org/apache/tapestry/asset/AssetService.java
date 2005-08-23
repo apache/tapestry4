@@ -34,7 +34,6 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.error.RequestExceptionReporter;
-import org.apache.tapestry.link.StaticLink;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
@@ -61,9 +60,6 @@ public class AssetService implements IEngineService
 
     /** @since 4.0 */
     private ClassResolver _classResolver;
-
-    /** @since 4.0 */
-    private AssetExternalizer _assetExternalizer;
 
     /** @since 4.0 */
     private LinkFactory _linkFactory;
@@ -149,11 +145,6 @@ public class AssetService implements IEngineService
         Defense.isAssignable(parameter, String.class, "parameter");
 
         String path = (String) parameter;
-
-        String externalURL = _assetExternalizer.getURL(path);
-
-        if (externalURL != null)
-            return new StaticLink(externalURL);
 
         String digest = _digestSource.getDigestForResource(path);
 
@@ -291,12 +282,6 @@ public class AssetService implements IEngineService
     public void setExceptionReporter(RequestExceptionReporter exceptionReporter)
     {
         _exceptionReporter = exceptionReporter;
-    }
-
-    /** @since 4.0 */
-    public void setAssetExternalizer(AssetExternalizer assetExternalizer)
-    {
-        _assetExternalizer = assetExternalizer;
     }
 
     /** @since 4.0 */
