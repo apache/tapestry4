@@ -34,7 +34,8 @@ function default_invalid_field_handler(event, field, message)
 
 Tapestry.set_focus = function (field)
 {
-	field.focus();
+	if (field.focus)
+		field.focus();
     
     if (field.select)
         field.select();
