@@ -69,6 +69,8 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-563">NumberValidator should allow a special case for rendering zero</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-395">Rename framework javascript functions to avoid potential name collisions</action>
       <action type="remove" dev="HLS">Remove the AssetExternalizer and externalization logic, since the asset service is better and as efficient</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-447">Messages in org.apache.tapestry.engine.EngineMessages should be public</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-157">Make it easier to subclass DirectService</action>
     </release>
     <release version="4.0-beta-4" date="Aug 10 2005">
       <action type="fix" dev="HLS">Add getComponent() method to IComponent.</action>

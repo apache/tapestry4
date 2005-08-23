@@ -43,13 +43,13 @@ import org.apache.tapestry.web.WebSession;
 public class DirectService implements IEngineService
 {
     /** @since 4.0 */
-    private ResponseRenderer _responseRenderer;
+    protected ResponseRenderer _responseRenderer;
 
     /** @since 4.0 */
-    private LinkFactory _linkFactory;
+    protected LinkFactory _linkFactory;
 
     /** @since 4.0 */
-    private WebRequest _request;
+    protected WebRequest _request;
 
     public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
     {
@@ -127,14 +127,21 @@ public class DirectService implements IEngineService
 
         Object[] parameters = _linkFactory.extractListenerParameters(cycle);
 
-        cycle.setListenerParameters(parameters);
-
-        direct.trigger(cycle);
+        triggerComponent(cycle, direct, parameters);
 
         // Render the response. This will be the active page
         // unless the direct component (or its delegate) changes it.
 
         _responseRenderer.renderResponse(cycle);
+    }
+
+    /** @since 4.0 */
+
+    protected void triggerComponent(IRequestCycle cycle, IDirect direct, Object[] parameters)
+    {
+        cycle.setListenerParameters(parameters);
+
+        direct.trigger(cycle);
     }
 
     public String getName()

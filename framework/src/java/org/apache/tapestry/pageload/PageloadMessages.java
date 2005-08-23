@@ -29,8 +29,7 @@ import org.apache.tapestry.spec.IContainedComponent;
  */
 class PageloadMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(PageloadMessages.class,
-            "PageloadStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(PageloadMessages.class);
 
     static String parameterMustHaveNoDefaultValue(IComponent component, String name)
     {

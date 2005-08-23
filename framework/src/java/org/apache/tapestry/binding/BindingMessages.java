@@ -24,8 +24,7 @@ import org.apache.tapestry.IComponent;
  */
 class BindingMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(BindingMessages.class,
-            "BindingStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(BindingMessages.class);
 
     static String convertObjectError(IBinding binding, Throwable cause)
     {

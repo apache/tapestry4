@@ -23,8 +23,7 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 class SpecMessages
 {
-    private static MessageFormatter _formatter = new MessageFormatter(SpecMessages.class,
-            "SpecStrings");
+    private static final MessageFormatter _formatter = new MessageFormatter(SpecMessages.class);
 
     static String claimedProperty(String propertyName, Object existing)
     {

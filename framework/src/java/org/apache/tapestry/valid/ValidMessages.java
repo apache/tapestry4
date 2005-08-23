@@ -23,8 +23,7 @@ import org.apache.tapestry.IComponent;
  */
 class ValidMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(ValidMessages.class,
-            "ValidStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(ValidMessages.class);
 
     static String noDisplayName(IComponent label, IComponent field)
     {

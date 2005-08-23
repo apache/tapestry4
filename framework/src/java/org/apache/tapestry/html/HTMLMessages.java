@@ -22,8 +22,7 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 class HTMLMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(HTMLMessages.class,
-            "HTMLStrings");
+    private static final MessageFormatter _formatter = new MessageFormatter(HTMLMessages.class);
 
     static String textConversionError(Throwable cause)
     {

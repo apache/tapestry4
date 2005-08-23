@@ -23,8 +23,7 @@ import org.apache.tapestry.IComponent;
  */
 class CallbackMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(CallbackMessages.class,
-            "CallbackStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(CallbackMessages.class);
 
     static String pageNotExternal(String pageName)
     {

@@ -32,8 +32,7 @@ import org.apache.hivemind.service.ClassFabUtils;
  */
 public class ScriptMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(ScriptMessages.class,
-            "ScriptStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(ScriptMessages.class);
 
     static String wrongTypeForEnhancement(Class type)
     {

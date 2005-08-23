@@ -25,8 +25,7 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 class AssetMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(AssetMessages.class,
-            "AssetStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(AssetMessages.class);
 
     static String missingAsset(String path, Resource resource)
     {

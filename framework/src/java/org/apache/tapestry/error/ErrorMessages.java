@@ -22,8 +22,7 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 public class ErrorMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(ErrorMessages.class,
-            "ErrorStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(ErrorMessages.class);
 
     public static String unableToProcessClientRequest(Throwable cause)
     {

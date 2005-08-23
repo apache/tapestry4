@@ -23,8 +23,7 @@ import org.apache.hivemind.service.ClassFabUtils;
  */
 class CoerceMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(CoerceMessages.class,
-            "CoerceStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(CoerceMessages.class);
 
     static String noConverter(Class desiredType)
     {

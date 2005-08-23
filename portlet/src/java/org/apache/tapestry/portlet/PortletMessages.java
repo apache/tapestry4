@@ -22,8 +22,7 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 class PortletMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(PortletMessages.class,
-            "PortletStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(PortletMessages.class);
 
     static String unsupportedMethod(String methodName)
     {

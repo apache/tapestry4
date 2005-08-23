@@ -22,15 +22,14 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 class ValidatorMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(
-            ValidatorMessages.class, "ValidatorStrings");
+    private static final MessageFormatter _formatter = new MessageFormatter(ValidatorMessages.class);
 
-    public static String unknownValidator(String name)
+    static String unknownValidator(String name)
     {
         return _formatter.format("unknown-validator", name);
     }
 
-    public static String needsConfiguration(String name)
+    static String needsConfiguration(String name)
     {
         return _formatter.format("needs-configuration", name);
     }

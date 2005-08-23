@@ -40,8 +40,7 @@ import org.apache.tapestry.spec.IContainedComponent;
  */
 class ImplMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(ImplMessages.class,
-            "ImplStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(ImplMessages.class);
 
     static String initializerContribution()
     {

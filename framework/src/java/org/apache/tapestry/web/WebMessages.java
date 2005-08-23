@@ -23,8 +23,7 @@ import org.apache.tapestry.util.ContentType;
  */
 class WebMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(WebMessages.class,
-            "WebStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(WebMessages.class);
 
     static String streamOpenError(ContentType contentType, Throwable cause)
     {

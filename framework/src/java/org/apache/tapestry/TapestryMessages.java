@@ -22,7 +22,7 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 class TapestryMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(TapestryMessages.class,
+    private final static MessageFormatter _formatter = new MessageFormatter(TapestryMessages.class,
             "TapestryStrings2");
 
     static String servletInitFailure(Throwable cause)

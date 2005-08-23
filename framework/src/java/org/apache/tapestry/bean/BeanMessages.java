@@ -23,8 +23,7 @@ import org.apache.tapestry.IComponent;
  */
 class BeanMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(BeanMessages.class,
-            "BeanStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(BeanMessages.class);
 
     static String propertyInitializerName(String propertyName)
     {

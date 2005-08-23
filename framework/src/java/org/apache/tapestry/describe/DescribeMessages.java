@@ -22,8 +22,7 @@ import org.apache.hivemind.impl.MessageFormatter;
  */
 class DescribeMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(DescribeMessages.class,
-            "DescribeStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(DescribeMessages.class);
 
     static String mustSetTitleBeforeSection()
     {

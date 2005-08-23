@@ -24,8 +24,7 @@ import org.apache.tapestry.IComponent;
  */
 public class TableMessages
 {
-    protected static MessageFormatter _formatter = new MessageFormatter(TableMessages.class,
-            "TableStrings");
+    private final static MessageFormatter _formatter = new MessageFormatter(TableMessages.class);
 
     static String notAColumn(IComponent component, String expression)
     {
@@ -53,8 +52,9 @@ public class TableMessages
     {
         return _formatter.format("columns-only-please", component.getExtendedId());
     }
-    
-    public static String invalidTableStateFormat(String value) {
-    	return _formatter.format("invalid-table-state-format", value);
+
+    public static String invalidTableStateFormat(String value)
+    {
+        return _formatter.format("invalid-table-state-format", value);
     }
 }
