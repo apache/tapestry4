@@ -936,7 +936,7 @@ function getPoint(aTag)
       point.y += oTmp.offsetTop;
       oTmp = oTmp.offsetParent;
    } 
-   while (oTmp.tagName != "BODY");
+   while (oTmp.tagName != "BODY" && oTmp.tagName != "HTML");
 
    return point;
 }
