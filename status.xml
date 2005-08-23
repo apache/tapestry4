@@ -71,6 +71,9 @@
       <action type="remove" dev="HLS">Remove the AssetExternalizer and externalization logic, since the asset service is better and as efficient</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-447">Messages in org.apache.tapestry.engine.EngineMessages should be public</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-157">Make it easier to subclass DirectService</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-584">Form should have an element id when rendered (same applies to various FormComponents as well)</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-585">$ signs in generated element names / ids are illegal in XHTML</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-579">E-mail validator pattern doesn't take new TLDs into account</action>
     </release>
     <release version="4.0-beta-4" date="Aug 10 2005">
       <action type="fix" dev="HLS">Add getComponent() method to IComponent.</action>
