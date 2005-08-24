@@ -117,11 +117,11 @@ public abstract class PropertySelection extends AbstractFormComponent implements
         
         Object object = getModel().translateValue(value);
         
-        setValue(object);
-        
         try
         {
             getValidatableFieldSupport().validate(this, writer, cycle, object);
+            
+            setValue(object);
         }
         catch (ValidatorException e)
         {

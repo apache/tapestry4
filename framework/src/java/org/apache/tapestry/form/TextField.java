@@ -81,9 +81,9 @@ public abstract class TextField extends AbstractFormComponent implements Transla
         {
             Object object = getTranslatedFieldSupport().parse(this, value);
             
-            setValue(object);
-            
             getValidatableFieldSupport().validate(this, writer, cycle, object);
+            
+            setValue(object);
         }
         catch (ValidatorException e)
         {

@@ -86,11 +86,11 @@ public abstract class Upload extends AbstractFormComponent implements Validatabl
             file = null;
         }
         
-        setFile(file);
-        
         try
         {
             getValidatableFieldSupport().validate(this, writer, cycle, file);
+            
+            setFile(file);
         }
         catch (ValidatorException e)
         {

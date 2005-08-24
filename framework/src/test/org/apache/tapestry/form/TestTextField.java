@@ -138,6 +138,8 @@ public class TestTextField extends BaseFormComponentTest
         component.render(writer, cycle);
         
         verifyControls();
+
+        assertNull(component.getValue());
     }
 
     public void testRewindValidateFailed()
@@ -197,6 +199,8 @@ public class TestTextField extends BaseFormComponentTest
         component.render(writer, cycle);
         
         verifyControls();
+        
+        assertNull(component.getValue());
     }
 
     public void testWasPrerendered()

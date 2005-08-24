@@ -61,13 +61,13 @@ public abstract class Checkbox extends AbstractFormComponent implements Validata
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String value = cycle.getParameter(getName());
-
-        setValue(value != null);
         
         try
         {
             // This is atypical validation - since this component does not explicitly bind to an object
             getValidatableFieldSupport().validate(this, writer, cycle, value);
+
+            setValue(value != null);
         }
         catch (ValidatorException e)
         {

@@ -78,9 +78,9 @@ public abstract class TextArea extends AbstractFormComponent implements Translat
         {
             String text = (String) getTranslatedFieldSupport().parse(this, value);
             
-            setValue(text);
-            
             getValidatableFieldSupport().validate(this, writer, cycle, text);
+            
+            setValue(text);
         }
         catch (ValidatorException e)
         {

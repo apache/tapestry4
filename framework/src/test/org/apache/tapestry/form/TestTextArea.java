@@ -136,6 +136,8 @@ public class TestTextArea extends BaseFormComponentTest
         component.render(writer, cycle);
         
         verifyControls();
+        
+        assertNull(component.getValue());
     }
 
     public void testRewindValidateFailed()
@@ -193,6 +195,8 @@ public class TestTextArea extends BaseFormComponentTest
         component.render(writer, cycle);
         
         verifyControls();
+        
+        assertNull(component.getValue());
     }
 
     public void testWasPrerendered()

@@ -194,9 +194,9 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
         {
             Date date = (Date) getTranslatedFieldSupport().parse(this, value);
             
-            setValue(date);
-            
             getValidatableFieldSupport().validate(this, writer, cycle, date);
+            
+            setValue(date);
         }
         catch (ValidatorException e)
         {
