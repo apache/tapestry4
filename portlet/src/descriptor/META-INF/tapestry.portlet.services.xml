@@ -64,7 +64,6 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.asset.AssetService">
         <set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
-        <set-service property="assetExternalizer" service-id="tapestry.asset.AssetExternalizer"/>
         <!-- The big change: use the servlet LinkFactory, not the portlet LinkFactory. -->
         <set-service property="linkFactory" service-id="tapestry.url.LinkFactory"/>
         <set-service property="context" service-id="tapestry.globals.WebContext"/>
