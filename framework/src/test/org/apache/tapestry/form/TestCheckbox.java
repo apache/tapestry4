@@ -143,16 +143,16 @@ public class TestCheckbox extends BaseFormComponentTest
         IValidationDelegate delegate = newDelegate();
         
         Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
-        { "form", form, "value", Boolean.TRUE, "name", "checkbox", "validatableFieldSupport", vfs });
+        { "form", form, "value", Boolean.FALSE, "name", "checkbox", "validatableFieldSupport", vfs });
 
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycleGetParameter("checkbox", null);
+        IRequestCycle cycle = newCycleGetParameter("checkbox", "foo");
 
         ValidatorException exception = new ValidatorException("failed");
         
         try
         {
-	        vfs.validate(cb, writer, cycle, null);
+	        vfs.validate(cb, writer, cycle, "foo");
 	        vfsc.setThrowable(exception);
 	    }
         catch (ValidatorException e)
@@ -170,6 +170,8 @@ public class TestCheckbox extends BaseFormComponentTest
         cb.rewindFormComponent(writer, cycle);
         
         verifyControls();
+        
+        assertEquals(false, cb.getValue());
     }
 
     public void testSubmitNonNull()

@@ -172,11 +172,11 @@ public abstract class MultiplePropertySelection extends AbstractFormComponent im
             }
         }
         
-        setSelectedList(selectedList);
-        
         try
         {
             getValidatableFieldSupport().validate(this, writer, cycle, selectedList);
+            
+            setSelectedList(selectedList);
         }
         catch (ValidatorException e)
         {

@@ -294,12 +294,12 @@ public abstract class Palette extends BaseComponent implements ValidatableField
 
             selected.add(option);
         }
-
-        setSelected(selected);
         
         try
         {
             getValidatableFieldSupport().validate(this, writer, cycle, selected);
+
+            setSelected(selected);
         }
         catch (ValidatorException e)
         {
