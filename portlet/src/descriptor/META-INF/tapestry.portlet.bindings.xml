@@ -30,7 +30,7 @@
     
   </service-point>
   
-  <contribution configuration-id="tapestry.bindings.BindingFactories">
+  <contribution configuration-id="tapestry.bindings.BindingFactories" if="class javax.portlet.PortletSession">
     <binding prefix="user" service-id="UserAttributeBindingFactory"/>
   </contribution>
 </module>

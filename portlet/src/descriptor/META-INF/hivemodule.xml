@@ -293,7 +293,7 @@
     
   </service-point>  
   
-	<contribution configuration-id="tapestry.describe.DescribableStrategies">
+	<contribution configuration-id="tapestry.describe.DescribableStrategies" if="class javax.portlet.PortletSession">
     <strategy class="javax.portlet.PortletSession" object="instance:PortletSessionDescribableStrategy"/>
     <strategy class="javax.portlet.PortletConfig" object="instance:PortletConfigStrategy"/>
   </contribution>    
