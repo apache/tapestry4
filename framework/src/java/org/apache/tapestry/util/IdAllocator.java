@@ -29,6 +29,8 @@ import org.apache.hivemind.util.Defense;
 
 public class IdAllocator
 {
+    private static final String SEPARATOR = "_";
+
     private final Map _generatorMap = new HashMap();
 
     private final String _namespace;
@@ -41,7 +43,7 @@ public class IdAllocator
 
         NameGenerator(String baseId)
         {
-            _baseId = baseId + "$";
+            _baseId = baseId + SEPARATOR;
         }
 
         public String nextId()
@@ -63,7 +65,7 @@ public class IdAllocator
     }
 
     /**
-     * Allocates the id. Repeated calls for the same name will return "name", "name$0", "name$1",
+     * Allocates the id. Repeated calls for the same name will return "name", "name_0", "name_1",
      * etc.
      */
 

@@ -145,7 +145,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         final IFormComponent barney1 = newFormComponent("barney", "barney");
         final IFormComponent wilma = newFormComponent("wilma", "wilma");
-        final IFormComponent barney2 = newFormComponent("barney", "barney$0");
+        final IFormComponent barney2 = newFormComponent("barney", "barney_0");
 
         IRender body = newComponentsRenderBody(fs, new IFormComponent[]
         { barney1, wilma, barney2 }, nested);
@@ -160,7 +160,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support.addInitializationScript("new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -181,12 +181,13 @@ public class TestFormSupport extends HiveMindTestCase
         writer.attribute("action", "/app");
 
         writer.attribute("name", "myform");
+        writer.attribute("id", "myform");
 
         render.render(writer, cycle);
 
         writer.println();
 
-        trainHidden(writer, "formids", "barney,wilma,barney$0");
+        trainHidden(writer, "formids", "barney,wilma,barney_0");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
 
@@ -197,7 +198,7 @@ public class TestFormSupport extends HiveMindTestCase
         trainGetFocusField(delegatec, delegate, "wilma");
         trainGetFieldFocus(cyclec, cycle, null);
 
-        support.addInitializationScript("Tapestry.set_focus(document.myform.wilma);");
+        support.addInitializationScript("Tapestry.set_focus(document.getElementById('wilma'));");
 
         trainSetFieldFocus(cycle);
 
@@ -266,11 +267,11 @@ public class TestFormSupport extends HiveMindTestCase
 
         delegate.clear();
 
-        trainCycleForRewind(cyclec, cycle, "barney,wilma,barney$0", null);
+        trainCycleForRewind(cyclec, cycle, "barney,wilma,barney_0", null);
 
         final IFormComponent barney1 = newFormComponent("barney", "barney");
         final IFormComponent wilma = newFormComponent("wilma", "wilma");
-        final IFormComponent barney2 = newFormComponent("barney", "barney$0");
+        final IFormComponent barney2 = newFormComponent("barney", "barney_0");
 
         IRender body = newComponentsRenderBody(fs, new IFormComponent[]
         { barney1, wilma, barney2 }, writer);
@@ -340,7 +341,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support.addInitializationScript("new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -361,7 +362,8 @@ public class TestFormSupport extends HiveMindTestCase
         writer.attribute("action", "/app");
 
         writer.attribute("name", "myform");
-
+        writer.attribute("id", "myform");
+        
         render.render(writer, cycle);
 
         writer.println();
@@ -375,7 +377,7 @@ public class TestFormSupport extends HiveMindTestCase
         writer.end();
 
         support
-                .addInitializationScript("document.myform.events.addSubmitListener(function (event)\n{\n  mySubmit1();\n  mySubmit2();\n  mySubmit3();\n});\n");
+                .addInitializationScript("document.getElementById('myform').events.addSubmitListener(function (event)\n{\n  mySubmit1();\n  mySubmit2();\n  mySubmit3();\n});\n");
 
         // Side test: what if no focus field?
 
@@ -442,7 +444,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support.addInitializationScript("new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -462,6 +464,7 @@ public class TestFormSupport extends HiveMindTestCase
         writer.attribute("method", "post");
         writer.attribute("action", "/app");
         writer.attribute("name", "myform");
+        writer.attribute("id", "myform");        
         writer.attribute("enctype", "foo/bar");
 
         render.render(writer, cycle);
@@ -540,7 +543,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support.addInitializationScript("new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -561,7 +564,8 @@ public class TestFormSupport extends HiveMindTestCase
         writer.attribute("action", "/app");
 
         writer.attribute("name", "myform");
-
+        writer.attribute("id", "myform");
+        
         render.render(writer, cycle);
 
         writer.println();
@@ -637,7 +641,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support.addInitializationScript("new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -706,7 +710,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         verifyControls();
 
-        final IFormComponent component = newFormComponent("action", "action$0");
+        final IFormComponent component = newFormComponent("action", "action_0");
 
         IRender body = newComponentRenderBody(fs, component, nested);
 
@@ -720,7 +724,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support.addInitializationScript("new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -741,12 +745,13 @@ public class TestFormSupport extends HiveMindTestCase
         writer.attribute("action", "/app");
 
         writer.attribute("name", "myform");
-
+        writer.attribute("id", "myform");
+        
         render.render(writer, cycle);
 
         writer.println();
 
-        trainHidden(writer, "formids", "action$0");
+        trainHidden(writer, "formids", "action_0");
         trainHidden(writer, "action", "fred");
         trainHidden(writer, "reservedids", "action");
         trainHidden(writer, "submitmode", "");
@@ -819,7 +824,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support.addInitializationScript("new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -840,7 +845,8 @@ public class TestFormSupport extends HiveMindTestCase
         writer.attribute("action", "/app");
 
         writer.attribute("name", "myform");
-
+        writer.attribute("id", "myform");
+        
         render.render(writer, cycle);
 
         writer.println();
@@ -854,7 +860,7 @@ public class TestFormSupport extends HiveMindTestCase
         writer.end();
 
         support
-                .addInitializationScript("document.myform.events.addResetListener(function (event)\n{\n  myReset1();\n  myReset2();\n});\n");
+                .addInitializationScript("document.getElementById('myform').events.addResetListener(function (event)\n{\n  myReset1();\n  myReset2();\n});\n");
 
         trainGetFocusField(delegatec, delegate, null);
 
@@ -897,9 +903,9 @@ public class TestFormSupport extends HiveMindTestCase
 
         delegate.clear();
 
-        trainCycleForRewind(cyclec, cycle, "action$0", "action");
+        trainCycleForRewind(cyclec, cycle, "action_0", "action");
 
-        final IFormComponent component = newFormComponent("action", "action$0");
+        final IFormComponent component = newFormComponent("action", "action_0");
 
         IRender body = newComponentRenderBody(fs, component, writer);
 
@@ -952,7 +958,7 @@ public class TestFormSupport extends HiveMindTestCase
         // some kind of conditional that evaluated to true during the render,
         // but is now false on the rewind.
 
-        trainCycleForRewind(cyclec, cycle, "barney,wilma,pebbles,barney$0", null);
+        trainCycleForRewind(cyclec, cycle, "barney,wilma,pebbles,barney_0", null);
 
         final IFormComponent barney1 = newFormComponent("barney", "barney");
         final IFormComponent wilma = newFormComponent("wilma", "wilma");
@@ -973,7 +979,7 @@ public class TestFormSupport extends HiveMindTestCase
         catch (StaleLinkException ex)
         {
             assertEquals(
-                    "Rewind of form SomePage/myform expected allocated id #3 to be 'pebbles', but was 'barney$0' (requested by component SomePage/barney).",
+                    "Rewind of form SomePage/myform expected allocated id #3 to be 'pebbles', but was 'barney_0' (requested by component SomePage/barney).",
                     ex.getMessage());
             assertSame(barney2, ex.getComponent());
             assertSame(l, ex.getLocation());
@@ -1170,7 +1176,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support.addInitializationScript("new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -1191,7 +1197,8 @@ public class TestFormSupport extends HiveMindTestCase
         writer.attribute("action", "/app");
 
         writer.attribute("name", "myform");
-
+        writer.attribute("id", "myform");
+        
         render.render(writer, cycle);
 
         writer.println();
@@ -1283,7 +1290,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support.addInitializationScript("new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -1304,7 +1311,8 @@ public class TestFormSupport extends HiveMindTestCase
         writer.attribute("action", "/app");
 
         writer.attribute("name", "myform");
-
+        writer.attribute("id", "myform");
+        
         render.render(writer, cycle);
 
         writer.println();
@@ -1593,7 +1601,7 @@ public class TestFormSupport extends HiveMindTestCase
         support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
-        support.addInitializationScript("new FormEventManager(document.myform);");
+        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -1614,7 +1622,8 @@ public class TestFormSupport extends HiveMindTestCase
         writer.attribute("action", "/app");
 
         writer.attribute("name", "myform");
-
+        writer.attribute("id", "myform");
+        
         render.render(writer, cycle);
 
         writer.println();
@@ -1628,7 +1637,7 @@ public class TestFormSupport extends HiveMindTestCase
         writer.end();
 
         support
-                .addInitializationScript("document.myform.events.addSubmitListener(function (event)\n{\n  mySubmit();\n});\n");
+                .addInitializationScript("document.getElementById('myform').events.addSubmitListener(function (event)\n{\n  mySubmit();\n});\n");
 
         trainGetFocusField(delegatec, delegate, null);
 

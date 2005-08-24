@@ -573,7 +573,7 @@ public class TestTemplateParser extends TestCase
         assertTemplateAttributes(tokens[5], buildMap(new String[]
         { "value", "ognl:components.loop.value.name" }));
 
-        assertOpenToken(tokens[8], "$Insert$0", "Insert", "span", 11);
+        assertOpenToken(tokens[8], "$Insert_0", "Insert", "span", 11);
 
         assertTemplateAttributes(tokens[8], buildMap(new String[]
         { "value", "ognl:components.loop.value.price" }));

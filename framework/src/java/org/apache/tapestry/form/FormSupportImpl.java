@@ -286,7 +286,7 @@ public class FormSupportImpl implements FormSupport
         return buffer.toString();
     }
 
-    private void emitEventHandlers()
+    private void emitEventHandlers(String formId)
     {
         if (_events == null || _events.isEmpty())
             return;
@@ -301,8 +301,7 @@ public class FormSupportImpl implements FormSupport
             FormEventType type = (FormEventType) entry.getKey();
             Object value = entry.getValue();
 
-            buffer.append("document.");
-            buffer.append(_form.getName());
+            buffer.append(TapestryUtils.buildClientElementReference(formId));
             buffer.append(".events.");
             buffer.append(type.getAddListenerMethodName());
 
@@ -367,7 +366,11 @@ public class FormSupportImpl implements FormSupport
 
     public String getElementId(IFormComponent component, String baseId)
     {
-        String result = _elementIdAllocator.allocateId(baseId);
+        // $ is not a valid character in an XML/XHTML id, so convert it to an underscore.
+
+        String filteredId = TapestryUtils.convertTapestryIdToNMToken(baseId);
+
+        String result = _elementIdAllocator.allocateId(filteredId);
 
         if (_rewinding)
         {
@@ -444,7 +447,9 @@ public class FormSupportImpl implements FormSupport
 
     public void render(String method, IRender informalParametersRenderer, ILink link)
     {
-        emitEventManagerInitialization();
+        String formId = _form.getName();
+
+        emitEventManagerInitialization(formId);
 
         // Convert the link's query parameters into a series of
         // hidden field values (that will be rendered later).
@@ -464,14 +469,18 @@ public class FormSupportImpl implements FormSupport
 
         writeTag(_writer, method, link.getURL(null, false));
 
-        _writer.attribute("name", _form.getName());
+        // For HTML compatibility
+        _writer.attribute("name", formId);
+
+        // For XHTML compatibility
+        _writer.attribute("id", formId);
 
         if (_encodingType != null)
             _writer.attribute("enctype", _encodingType);
 
         // Write out event handlers collected during the rendering.
 
-        emitEventHandlers();
+        emitEventHandlers(formId);
 
         informalParametersRenderer.render(_writer, _cycle);
 
@@ -490,9 +499,9 @@ public class FormSupportImpl implements FormSupport
 
         _writer.end();
 
-        String field = _delegate.getFocusField();
+        String fieldId = _delegate.getFocusField();
 
-        if (field == null || _pageRenderSupport == null)
+        if (fieldId == null || _pageRenderSupport == null)
             return;
 
         // If the form doesn't support focus, or the focus has already been set by a different form,
@@ -501,8 +510,8 @@ public class FormSupportImpl implements FormSupport
         if (!_form.getFocus() || _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) != null)
             return;
 
-        _pageRenderSupport.addInitializationScript("Tapestry.set_focus(document." + _form.getName()
-                + "." + field + ");");
+        _pageRenderSupport.addInitializationScript("Tapestry.set_focus("
+                + TapestryUtils.buildClientElementReference(fieldId) + ");");
 
         _cycle.setAttribute(FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
     }
@@ -511,17 +520,15 @@ public class FormSupportImpl implements FormSupport
      * Pre-renders the form, setting up some client-side form support. Returns the name of the
      * client-side form event manager variable.
      */
-    protected void emitEventManagerInitialization()
+    protected void emitEventManagerInitialization(String formId)
     {
         if (_pageRenderSupport == null)
             return;
 
         _pageRenderSupport.addExternalScript(_script);
 
-        String formName = _form.getName();
-
-        _pageRenderSupport.addInitializationScript("new FormEventManager(document." + formName
-                + ");");
+        _pageRenderSupport.addInitializationScript("new FormEventManager("
+                + TapestryUtils.buildClientElementReference(formId) + ");");
     }
 
     public String rewind()

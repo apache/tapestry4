@@ -166,8 +166,8 @@ public class TestScript extends TapestryTestCase
         execute("unique-let.script", symbols);
 
         assertSymbol(symbols, "alpha", "Alpha");
-        assertSymbol(symbols, "beta", "Alpha$0");
-        assertSymbol(symbols, "gamma", "Alpha$1");
+        assertSymbol(symbols, "beta", "Alpha_0");
+        assertSymbol(symbols, "gamma", "Alpha_1");
     }
 
     public void testIncludeScript() throws Exception

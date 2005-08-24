@@ -33,7 +33,7 @@ public class TestIdAllocator extends TapestryTestCase
         assertEquals("name", a.allocateId("name"));
 
         for (int i = 0; i < 10; i++)
-            assertEquals("name$" + i, a.allocateId("name"));
+            assertEquals("name_" + i, a.allocateId("name"));
     }
 
     public void testSimpleNamespace()
@@ -43,46 +43,46 @@ public class TestIdAllocator extends TapestryTestCase
         assertEquals("name_NS", a.allocateId("name"));
 
         for (int i = 0; i < 10; i++)
-            assertEquals("name_NS$" + i, a.allocateId("name"));
+            assertEquals("name_NS_" + i, a.allocateId("name"));
 
         // This is current behavior, but is probably something
         // that could be improved.
 
         assertEquals("foo_NS_NS", a.allocateId("foo_NS"));
-        assertEquals("foo_NS_NS$0", a.allocateId("foo_NS"));
+        assertEquals("foo_NS_NS_0", a.allocateId("foo_NS"));
     }
 
     public void testDegenerate()
     {
         IdAllocator a = new IdAllocator();
 
-        assertEquals("d$1", a.allocateId("d$1"));
+        assertEquals("d_1", a.allocateId("d_1"));
 
         assertEquals("d", a.allocateId("d"));
-        assertEquals("d$0", a.allocateId("d"));
-        assertEquals("d$2", a.allocateId("d"));
+        assertEquals("d_0", a.allocateId("d"));
+        assertEquals("d_2", a.allocateId("d"));
 
-        assertEquals("d$3", a.allocateId("d"));
-        assertEquals("d$1$0", a.allocateId("d$1"));
+        assertEquals("d_3", a.allocateId("d"));
+        assertEquals("d_1_0", a.allocateId("d_1"));
     }
 
     public void testDegenerateNamespace()
     {
         IdAllocator a = new IdAllocator("_NS");
 
-        assertEquals("d$1_NS", a.allocateId("d$1"));
+        assertEquals("d_1_NS", a.allocateId("d_1"));
 
         assertEquals("d_NS", a.allocateId("d"));
-        assertEquals("d_NS$0", a.allocateId("d"));
-        assertEquals("d_NS$1", a.allocateId("d"));
-        assertEquals("d_NS$2", a.allocateId("d"));
-        assertEquals("d_NS$3", a.allocateId("d"));
+        assertEquals("d_NS_0", a.allocateId("d"));
+        assertEquals("d_NS_1", a.allocateId("d"));
+        assertEquals("d_NS_2", a.allocateId("d"));
+        assertEquals("d_NS_3", a.allocateId("d"));
 
-        assertEquals("d$1_NS$0", a.allocateId("d$1"));
+        assertEquals("d_1_NS_0", a.allocateId("d_1"));
 
         // This is very degenerate, and maybe something that needs fixing.
 
-        assertEquals("d$1_NS_NS", a.allocateId("d$1_NS"));
+        assertEquals("d_1_NS_NS", a.allocateId("d_1_NS"));
     }
 
     public void testClear()
