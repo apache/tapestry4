@@ -24,15 +24,19 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * One of the two columns in a Palette component: the left column lists
- * available options, the right column lists the selected columns.
- *
+ * One of the two columns in a Palette component: the left column lists available options, the right
+ * column lists the selected columns.
+ * 
  * @author Howard Lewis Ship
  */
 public class PaletteColumn implements IRender
 {
     private String _name;
+
+    private String _clientId;
+
     private int _rows;
+
     private List _options = new ArrayList();
 
     private static class ValueComparator implements Comparator
@@ -57,15 +61,18 @@ public class PaletteColumn implements IRender
         }
     }
 
-	/**
-	 * @param name the name of the column (the name attribute of the &lt;select&gt;)
-	 * @param rows the number of visible rows (the size attribute of the &lt;select&gt;)
-	 */
-	public PaletteColumn(String name, int rows)
-	{
-		_name = name;
-		_rows = rows;
-	}
+    /**
+     * @param name
+     *            the name of the column (the name attribute of the &lt;select&gt;)
+     * @param rows
+     *            the number of visible rows (the size attribute of the &lt;select&gt;)
+     */
+    public PaletteColumn(String name, String clientId, int rows)
+    {
+        _name = name;
+        _clientId = clientId;
+        _rows = rows;
+    }
 
     public void addOption(PaletteOption option)
     {
@@ -73,9 +80,8 @@ public class PaletteColumn implements IRender
     }
 
     /**
-     * Sorts the options by value (the hidden value for the option
-     * that represents the object value). This should be invoked
-     * before rendering this PaletteColumn.
+     * Sorts the options by value (the hidden value for the option that represents the object
+     * value). This should be invoked before rendering this PaletteColumn.
      */
     public void sortByValue()
     {
@@ -83,8 +89,8 @@ public class PaletteColumn implements IRender
     }
 
     /**
-     * Sorts the options by the label visible to the user. This should be invoked
-     * before rendering this PaletteColumn.
+     * Sorts the options by the label visible to the user. This should be invoked before rendering
+     * this PaletteColumn.
      */
     public void sortByLabel()
     {
@@ -92,14 +98,17 @@ public class PaletteColumn implements IRender
     }
 
     /**
-     * Renders the &lt;select&gt; and &lt;option&gt; tags for
-     * this column.
+     * Renders the &lt;select&gt; and &lt;option&gt; tags for this column.
      */
     public void render(IMarkupWriter writer, IRequestCycle cycle)
     {
         writer.begin("select");
         writer.attribute("multiple", "multiple");
         writer.attribute("name", _name);
+
+        if (_clientId != null)
+            writer.attribute("id", _clientId);
+
         writer.attribute("size", _rows);
         writer.println();
 

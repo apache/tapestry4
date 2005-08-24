@@ -199,9 +199,9 @@ public class TestPageRenderSupport extends HiveMindTestCase
         PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l);
 
         assertEquals("foo", prs.getUniqueString("foo"));
-        assertEquals("foo$0", prs.getUniqueString("foo"));
+        assertEquals("foo_0", prs.getUniqueString("foo"));
         assertEquals("bar", prs.getUniqueString("bar"));
-        assertEquals("foo$1", prs.getUniqueString("foo"));
+        assertEquals("foo_1", prs.getUniqueString("foo"));
 
         verifyControls();
     }
@@ -216,9 +216,9 @@ public class TestPageRenderSupport extends HiveMindTestCase
         PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "NAMESPACE", l);
 
         assertEquals("fooNAMESPACE", prs.getUniqueString("foo"));
-        assertEquals("fooNAMESPACE$0", prs.getUniqueString("foo"));
+        assertEquals("fooNAMESPACE_0", prs.getUniqueString("foo"));
         assertEquals("barNAMESPACE", prs.getUniqueString("bar"));
-        assertEquals("fooNAMESPACE$1", prs.getUniqueString("foo"));
+        assertEquals("fooNAMESPACE_1", prs.getUniqueString("foo"));
 
         verifyControls();
     }

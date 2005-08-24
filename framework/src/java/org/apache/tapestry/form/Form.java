@@ -291,7 +291,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     private String constructFormNameForDirectService(IRequestCycle cycle)
     {
-        return cycle.getUniqueId(getId());
+        return cycle.getUniqueId(TapestryUtils.convertTapestryIdToNMToken(getId()));
     }
 
     /**

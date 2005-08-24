@@ -57,13 +57,13 @@ But show this form text too!
 	</request>		
 
 	<request>
-	  	<parameter name="formids" value="$If$1,$If$2,for2,for3,for4"/>
+	  	<parameter name="formids" value="If_1,If_2,for2,for3,for4"/>
 	  	<parameter name="component" value="$Form"/>
 	  	<parameter name="page" value="Home"/>
 	  	<parameter name="service" value="direct"/>
 	  	<parameter name="submitmode" value=""/>
-	  	<parameter name="$If$1" value="T"/>
-	  	<parameter name="$If$2" value="F"/>
+	  	<parameter name="If_1" value="T"/>
+	  	<parameter name="If_2" value="F"/>
 	  	<parameter name="for2">
               <value>VV</value>
               <value>Suno</value>

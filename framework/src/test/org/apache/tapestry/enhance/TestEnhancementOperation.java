@@ -476,18 +476,18 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         HashMap map = new HashMap();
 
-        fab.addField("fred$0", Map.class);
+        fab.addField("fred_0", Map.class);
 
         replayControls();
 
-        assertEquals("fred$0", eo.addInjectedField("fred", Map.class, map));
+        assertEquals("fred_0", eo.addInjectedField("fred", Map.class, map));
 
         verifyControls();
 
         BodyBuilder body = new BodyBuilder();
         body.begin();
         body.addln("fred = $1;");
-        body.addln("fred$0 = $2;");
+        body.addln("fred_0 = $2;");
         body.end();
 
         fab.addConstructor(new Class[]

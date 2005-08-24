@@ -75,7 +75,7 @@ output symbols:
 </let>
 
 <let key="buttons">
-  ${baseName}$buttons
+  ${baseName}_buttons
 </let>
 
 <let key="selectDisabled">
@@ -95,7 +95,7 @@ output symbols:
 </let>
 
 <let key="availableName">
-  ${name}$avail
+  ${name}_avail
 </let>
 
 <let key="updateFunctionName">
@@ -123,7 +123,7 @@ output symbols:
 </let>
 
 <let key="selectImageName">
-  ${baseName}$selectImage
+  ${baseName}_selectImage
 </let>
 
 <let key="selectImagePath">
@@ -131,7 +131,7 @@ output symbols:
 </let>
 
 <let key="deselectImageName">
-  ${baseName}$deselectImage
+  ${baseName}_deselectImage
 </let>
 
 <let key="deselectImagePath">
@@ -139,11 +139,11 @@ output symbols:
 </let>
 
 <let key="formPath">
-  document.${formName}
+  document.getElementById('${formName}')
 </let>
 
 <let key="selectedPath">
-  ${formPath}.${name}
+  document.getElementById('${palette.clientId}')
 </let>
 
 <let key="selectedChangeFunctionName">
@@ -160,7 +160,7 @@ output symbols:
 
 
 <let key="upImageName">
-  ${baseName}$upimage
+  ${baseName}_upimage
 </let>
 
 <let key="upImagePath">
@@ -168,7 +168,7 @@ output symbols:
 </let>
 
 <let key="downImageName">
-  ${baseName}$downimage
+  ${baseName}_downimage
 </let>
 
 <let key="downImagePath">

@@ -15,19 +15,15 @@ Content-Disposition: form-data; name="session"
 
 T
 -----------------------------eldorado
-Content-Disposition: form-data; name="sp"
-
-S0
------------------------------eldorado
-Content-Disposition: form-data; name="$Select"
+Content-Disposition: form-data; name="Select"
 
 0
 -----------------------------eldorado
-Content-Disposition: form-data; name="$Select"
+Content-Disposition: form-data; name="Select"
 
 1
 -----------------------------eldorado
 Content-Disposition: form-data; name="formids"
 
-$Select
+Select
 -----------------------------eldorado--

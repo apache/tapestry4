@@ -11,11 +11,7 @@ Content-Disposition: form-data; name="component"
 
 $Form
 -----------------------------xyzzyx
-Content-Disposition: form-data; name="sp"
-
-S0
------------------------------xyzzyx
-Content-Disposition: form-data; name="$Upload"; filename="context19/long.html"
+Content-Disposition: form-data; name="Upload"; filename="context19/long.html"
 Content-Type: text/html
 
 <html><head>
@@ -81,5 +77,5 @@ Again, there is no particular need to do all this; using the
 -----------------------------xyzzyx
 Content-Disposition: form-data; name="formids"
 
-$Upload
+Upload
 -----------------------------xyzzyx--

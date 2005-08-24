@@ -156,50 +156,51 @@ import org.apache.tapestry.valid.ValidatorException;
  * use to format the palette component:
  * 
  * <pre>
- * 
- *  
- *   
- *    
  *     
  *      
  *       
- *                        TABLE.tapestry-palette TH
- *                        {
- *                          font-size: 9pt;
- *                          font-weight: bold;
- *                          color: white;
- *                          background-color: #330066;
- *                          text-align: center;
- *                        }
- *                       
- *                        TD.available-cell SELECT
- *                        {
- *                          font-weight: normal;
- *                          background-color: #FFFFFF;
- *                          width: 200px;
- *                        }
- *                        
- *                        TD.selected-cell SELECT
- *                        {
- *                          font-weight: normal;
- *                          background-color: #FFFFFF;
- *                          width: 200px;
- *                        }
- *                        
- *                        TABLE.tapestry-palette TD.controls
- *                        {
- *                          text-align: center;
- *                          vertical-align: middle;
- *                          width: 60px;
- *                        }
+ *        
+ *         
+ *          
+ *           
+ *                            TABLE.tapestry-palette TH
+ *                            {
+ *                              font-size: 9pt;
+ *                              font-weight: bold;
+ *                              color: white;
+ *                              background-color: #330066;
+ *                              text-align: center;
+ *                            }
+ *                           
+ *                            TD.available-cell SELECT
+ *                            {
+ *                              font-weight: normal;
+ *                              background-color: #FFFFFF;
+ *                              width: 200px;
+ *                            }
+ *                            
+ *                            TD.selected-cell SELECT
+ *                            {
+ *                              font-weight: normal;
+ *                              background-color: #FFFFFF;
+ *                              width: 200px;
+ *                            }
+ *                            
+ *                            TABLE.tapestry-palette TD.controls
+ *                            {
+ *                              text-align: center;
+ *                              vertical-align: middle;
+ *                              width: 60px;
+ *                            }
+ *            
+ *           
+ *          
+ *         
  *        
  *       
  *      
- *     
- *    
- *   
- *  
  * </pre>
+ * 
  * <p>
  * As of 4.0, this component can be validated.
  * 
@@ -215,7 +216,7 @@ public abstract class Palette extends BaseComponent implements ValidatableField
      * some of the HTML elements (&lt;select&gt; and &lt;button&gt; elements, etc.).
      */
     private Map _symbols;
-    
+
     /** @since 3.0 * */
     public abstract void setAvailableColumn(PaletteColumn column);
 
@@ -225,9 +226,17 @@ public abstract class Palette extends BaseComponent implements ValidatableField
     public abstract void setName(String name);
 
     public abstract void setForm(IForm form);
-    
+
     /** @since 4.0 */
     public abstract void setRequiredMessage(String message);
+
+    /** @since 4.0 */
+
+    public abstract String getIdParameter();
+
+    /** @since 4.0 */
+
+    public abstract void setClientId(String clientId);
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -269,12 +278,17 @@ public abstract class Palette extends BaseComponent implements ValidatableField
 
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
+        String clientId = cycle.getUniqueId(TapestryUtils
+                .convertTapestryIdToNMToken(getIdParameter()));
+
+        setClientId(clientId);
+
         _symbols = new HashMap(MAP_SIZE);
 
         runScript(cycle);
 
         constructColumns();
-        
+
         getValidatableFieldSupport().renderContributions(this, writer, cycle);
     }
 
@@ -294,12 +308,12 @@ public abstract class Palette extends BaseComponent implements ValidatableField
 
             selected.add(option);
         }
-        
+
+        setSelected(selected);
+
         try
         {
             getValidatableFieldSupport().validate(this, writer, cycle, selected);
-
-            setSelected(selected);
         }
         catch (ValidatorException e)
         {
@@ -388,8 +402,8 @@ public abstract class Palette extends BaseComponent implements ValidatableField
         }
 
         PaletteColumn availableColumn = new PaletteColumn((String) _symbols.get("availableName"),
-                getRows());
-        PaletteColumn selectedColumn = new PaletteColumn(getName(), getRows());
+                null, getRows());
+        PaletteColumn selectedColumn = new PaletteColumn(getName(), getClientId(), getRows());
 
         // Each value specified in the model will go into either the selected or available
         // lists.
@@ -494,13 +508,15 @@ public abstract class Palette extends BaseComponent implements ValidatableField
 
     /**
      * Injected.
+     * 
      * @since 4.0
      */
     public abstract IScript getScript();
-    
+
     /**
      * Injected.
-     * @since 4.0 
+     * 
+     * @since 4.0
      */
     public abstract ValidatableFieldSupport getValidatableFieldSupport();
 
