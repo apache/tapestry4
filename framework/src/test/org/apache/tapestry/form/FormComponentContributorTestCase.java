@@ -158,12 +158,6 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
         return field;        
     }
 
-    protected void trainGetFieldDOM(MockControl control, FormComponentContributorContext context,
-            String result)
-    {
-        context.getFieldDOM();
-        control.setReturnValue(result);
-    }
 
     protected void trainBuildMessage(MockControl control, ValidationMessages messages,
             String overrideMessage, String key, Object[] parameters, String result)

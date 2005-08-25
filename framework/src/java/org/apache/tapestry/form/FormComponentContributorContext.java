@@ -30,13 +30,6 @@ import org.apache.tapestry.valid.ValidationConstants;
 public interface FormComponentContributorContext extends ValidationMessages
 {
     /**
-     * Returns a client-side DOM reference for the field for which contributions are being rendered.
-     * Typically a value such as "document.myform.myfield".
-     */
-
-    public String getFieldDOM();
-
-    /**
      * Includes the indicated script; the path is a path on the classpath.
      */
 
