@@ -16,11 +16,8 @@
 
 var Tapestry = new Object();
 
-function default_invalid_field_handler(event, field, message)
+Tapestry.default_invalid_field_handler = function(event, field, message)
 {
-  // Temporary, while all the event logic is getting munged together
-  // inside one big handler.
-  
   if (!event.abort && !field.disabled)
   {
     Tapestry.set_focus(field);
@@ -28,12 +25,69 @@ function default_invalid_field_handler(event, field, message)
     window.alert(message);
     
     event.abort = true;
-    event.cancelListeners = true;
+    event.cancel_handlers = true;
   }
+}
+
+Tapestry.find = function(elementId)
+{
+  return document.getElementById(elementId);
+}
+
+Tapestry.register_form = function(formId)
+{
+  var form = this.find(formId);
+  
+  form.events = new FormEventManager(form);
+}
+
+Tapestry.onpresubmit = function(formId, handler)
+{
+  var form = this.find(formId);
+  
+  form.events.add_presubmit_handler(handler);
+}
+
+Tapestry.onsubmit = function(formId, handler)
+{
+  var form = this.find(formId);
+  
+  form.events.add_submit_handler(handler);
+}
+
+Tapestry.onpostsubmit = function(formId, handler)
+{
+  var form = this.find(formId);
+  
+  form.events.add_postsubmit_handler(handler);
+}
+
+Tapestry.onreset = function(formId, handler)
+{
+  var form = this.find(formId);
+  
+  form.events.add_reset_handler(handler);
+}
+
+Tapestry.onrefresh  = function(formId, handler)
+{
+  var form = this.find(formId);
+  
+  form.events.add_refresh_handler(handler);
+}
+
+Tapestry.oncancel = function(formId, handler)
+{
+  var form = this.find(formId);
+  
+  form.events.add_cancel_handler(handler);
 }
 
 Tapestry.set_focus = function (field)
 {
+	if (typeof field == "string")
+	  field = this.find(field);
+	  
 	if (field.focus)
 		field.focus();
     
@@ -41,13 +95,17 @@ Tapestry.set_focus = function (field)
         field.select();
 }
 
-Tapestry.trim_field_value = function(field)
+Tapestry.trim_field_value = function(fieldId)
 {
+	var field = this.find(fieldId);
+	
 	field.value = field.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 }
 
-Tapestry.require_field = function(event, field, message)
+Tapestry.require_field = function(event, fieldId, message)
 {
+    var field = this.find(fieldId);
+    
     if (field.value.length == 0)
       event.invalid_field(field, message);
 }
@@ -60,7 +118,7 @@ Tapestry.require_field = function(event, field, message)
 // A listener may set the abort flag to true, which will prevent
 // the Form submit or reset from occuring, but will not prevent
 // other listeners from being invoked.  A listener may also set the
-// cancelListeners flag, which will prevent further listeners from being 
+// cancel_handlers flag, which will prevent further listeners from being 
 // invoked.
 // The invalid_field_handler is provided (by the FormEventManager)
 // to handle any invalid fields.
@@ -70,7 +128,7 @@ function FormSubmitEvent(form, type, invalid_field_handler)
   this.form = form;
   this.type = type;
   this.abort = false;
-  this.cancelListeners = false;
+  this.cancel_handlers = false;
   this.invalid_field_handler = invalid_field_handler;
 }
 
@@ -93,9 +151,6 @@ FormSubmitEvent.prototype.toString = function()
 function FormEventManager(form)
 {
   this.form = form;
-  
-  // Add an events property to the form
-  form.events = this;
    
   // Key is handler type ("submit", "refresh", "reset" or "cancel"), value
   // is an array of functions.
@@ -113,15 +168,15 @@ function FormEventManager(form)
   // The function should take three parameters:
   // the FormSubmitEvent, the field object, and the message
   
-  this.invalid_field_handler = default_invalid_field_handler;
+  this.invalid_field_handler = Tapestry.default_invalid_field_handler;
 }
 
-// addListener(type, handler)
+// add_handler(type, handler)
 //
 // type -- the handler type to add ("submit", "refresh", "reset" or "cancel"
 // handler -- a function to execute
 
-FormEventManager.prototype.addListener = function(type, handler)
+FormEventManager.prototype.add_handler = function(type, handler)
 {
   var array = this.handlers[type];
   if (array == null)
@@ -133,14 +188,14 @@ FormEventManager.prototype.addListener = function(type, handler)
   array.push(handler);
 }
 
-// invokeListeners(type, eventObject)
+// invoke_handlers(type, eventObject)
 //
 // type -- the type of handler to execute
-// eventObject -- passed to the handler function
+// eventObj -- passed to the handler function
 
-FormEventManager.prototype.invokeListeners = function(type, eventObj)
+FormEventManager.prototype.invoke_handlers = function(type, eventObj)
 {
-  if (eventObj.cancelListeners) return;
+  if (eventObj.cancel_handlers) return;
   
   var array = this.handlers[type];
    
@@ -152,7 +207,7 @@ FormEventManager.prototype.invokeListeners = function(type, eventObj)
     var handler = array[i];
     handler.call(window, eventObj);
     
-    if (eventObj.cancelListeners) return;
+    if (eventObj.cancel_handlers) return;
   }
 }
 
@@ -162,7 +217,7 @@ FormEventManager.prototype.invokeListeners = function(type, eventObj)
 
 FormEventManager.prototype.addCancelListener= function(handler)
 {
-  this.addListener("cancel", handler);
+  this.add_handler("cancel", handler);
 }
 
 // cancel()
@@ -174,7 +229,7 @@ FormEventManager.prototype.cancel = function()
 {
 	var event = new FormSubmitEvent(this.form, "cancel", this.invalid_field_handler);
 	
-	this.invokeListeners("cancel", event);
+	this.invoke_handlers("cancel", event);
 	
 	if (event.abort == false)
 	{
@@ -184,7 +239,7 @@ FormEventManager.prototype.cancel = function()
 	}
 }
 
-// addPreSubmitListener(handler)
+// add_presubmit_handler(handler)
 //
 // Typically used to setup state prior to the submit handlers being invoked.
 // Pre-submit listeners are invoked before submit handlers are invoked.  If
@@ -195,12 +250,12 @@ FormEventManager.prototype.cancel = function()
 // form - the Form object for which a listener is added
 // handler - recieves notification when the form is submitted
 
-FormEventManager.prototype.addPreSubmitListener = function(handler)
+FormEventManager.prototype.add_presubmit_handler = function(handler)
 {
-  this.addListener("presubmit", handler);
+  this.add_handler("presubmit", handler);
 }
 
-// addSubmitListener(handler)
+// add_submit_handler(handler)
 //
 // Typically used for input validations; normal submit listeners are skipped when
 // a form is submitted to refresh some of its values.  If a handler sets
@@ -210,21 +265,21 @@ FormEventManager.prototype.addPreSubmitListener = function(handler)
 // form - the Form object for which a listener is added
 // handler - receives notifications when the form is submitted
 
-FormEventManager.prototype.addSubmitListener = function(handler)
+FormEventManager.prototype.add_submit_handler = function(handler)
 {
-  this.addListener("submit", handler);
+  this.add_handler("submit", handler);
 }
 
-// addPostSubmitListener(handler)
+// add_postsubmit_handler(handler)
 // 
 // Used to perform final cleanup after all submit listeners have been invoked.
 //
 // form - the Form object for which a listener is added
 // handler - receives notifications when the form is submitted
 
-FormEventManager.prototype.addPostSubmitListener = function(handler)
+FormEventManager.prototype.add_postsubmit_handler = function(handler)
 {
-  this.addListener("postsubmit", handler);
+  this.add_handler("postsubmit", handler);
 }
 
 // submit()
@@ -240,9 +295,9 @@ FormEventManager.prototype.submit = function()
 {
 	var event = new FormSubmitEvent(this.form, "submit", this.invalid_field_handler);
 
-    this.invokeListeners("presubmit", event);
-	this.invokeListeners("submit", event);	
-	this.invokeListeners("postsubmit", event);
+    this.invoke_handlers("presubmit", event);
+	this.invoke_handlers("submit", event);	
+	this.invoke_handlers("postsubmit", event);
 		
 	if (event.abort)
       return false;
@@ -252,7 +307,7 @@ FormEventManager.prototype.submit = function()
 	return true;
 }
 
-// addRefreshListener(handler)
+// add_refresh_handler(handler)
 //
 // Used for a limited number of situations where some logic is necessary even
 // when a form is submitted for refresh.  Normal submit listeners are skipped, but
@@ -261,10 +316,10 @@ FormEventManager.prototype.submit = function()
 //
 // handler - receives notifications when the form is submitted (normally, or for refresh)
 
-FormEventManager.prototype.addRefreshListener = function(handler)
+FormEventManager.prototype.add_refresh_handler = function(handler)
 {
-  this.addListener("submit", handler);
-  this.addListener("refresh", handler);
+  this.add_handler("submit", handler);
+  this.add_handler("refresh", handler);
 }
 
 // refresh()
@@ -278,7 +333,7 @@ FormEventManager.prototype.refresh = function()
 {
 	var event = new FormSubmitEvent(this.form, "refresh", this.invalid_field_handler);
 	
-	this.invokeListeners("refresh", event);
+	this.invoke_handlers("refresh", event);
 	
 	if (event.abort)
 	  return;
@@ -288,15 +343,15 @@ FormEventManager.prototype.refresh = function()
 	this.form.submit();
 }
 
-// addResetListener(handler)
+// add_reset_handler(handler)
 //
 // Allow for special behavior when a form is reset, intended as the
 // form's onreset .  Listeners are invoked
 // before the form is reset.
 
-FormEventManager.prototype.addResetListener = function(handler)
+FormEventManager.prototype.add_reset_handler = function(handler)
 {
-  this.addListener("reset", handler);
+  this.add_handler("reset", handler);
 }
 
 // reset()
@@ -309,7 +364,7 @@ FormEventManager.prototype.reset = function()
 {
   var event = new FormSubmitEvent(this.form, "reset", this.invalid_field_handler);
   
-  this.invokeListeners("reset", event);
+  this.invoke_handlers("reset", event);
   
   return ! event.abort;
 }

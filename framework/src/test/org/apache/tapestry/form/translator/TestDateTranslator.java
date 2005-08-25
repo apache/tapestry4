@@ -235,16 +235,11 @@ public class TestDateTranslator extends TranslatorTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
 
-        IFormComponent field = newField();
+        IFormComponent field = newFieldWithClientId("foo");
 
-        MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext) contextc
-                .getMock();
+        FormComponentContributorContext context = (FormComponentContributorContext) newMock(FormComponentContributorContext.class);
 
-        context.getFieldDOM();
-        contextc.setReturnValue("field_dom");
-
-        trainTrim(context, "field_dom");
+        trainTrim(context, "foo");
 
         replayControls();
 

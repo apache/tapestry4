@@ -272,4 +272,17 @@ public class TestTapestryUtils extends HiveMindTestCase
         assertEquals("'this is a \\'single quote\\''", TapestryUtils
                 .enquote("this is a 'single quote'"));
     }
+
+    public void testConvertTapestryIdToNMToken()
+    {
+        assertEquals("abc", TapestryUtils.convertTapestryIdToNMToken("abc"));
+        assertEquals("abc", TapestryUtils.convertTapestryIdToNMToken("$abc"));
+        assertEquals("a_b_c", TapestryUtils.convertTapestryIdToNMToken("$a$b$c"));
+    }
+
+    public void testBuildClientElementReference()
+    {
+        assertEquals("document.getElementById('foo')", TapestryUtils
+                .buildClientElementReference("foo"));
+    }
 }

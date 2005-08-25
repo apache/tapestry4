@@ -97,7 +97,7 @@ public class TestMax extends BaseValidatorTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-        IFormComponent field = newField("My Field");
+        IFormComponent field = newField("My Field", "myfield");
         MockControl contextc = newControl(FormComponentContributorContext.class);
         FormComponentContributorContext context = (FormComponentContributorContext) contextc
                 .getMock();
@@ -107,11 +107,8 @@ public class TestMax extends BaseValidatorTestCase
         trainFormatMessage(contextc, context, null, ValidationStrings.VALUE_TOO_LARGE, new Object[]
         { "My Field", new Double(20) }, "default message");
 
-        context.getFieldDOM();
-        contextc.setReturnValue("document.myform.myfield");
-
         context
-                .addSubmitListener("function(event) { Tapestry.validate_max_number(event, document.myform.myfield, 20.0, 'default message'); }");
+                .addSubmitHandler("function(event) { Tapestry.validate_max_number(event, 'myfield', 20.0, 'default message'); }");
 
         replayControls();
 
@@ -124,7 +121,7 @@ public class TestMax extends BaseValidatorTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-        IFormComponent field = newField("My Field");
+        IFormComponent field = newField("My Field", "myfield");
         MockControl contextc = newControl(FormComponentContributorContext.class);
         FormComponentContributorContext context = (FormComponentContributorContext) contextc
                 .getMock();
@@ -140,11 +137,8 @@ public class TestMax extends BaseValidatorTestCase
                 { "My Field", new Double(20) },
                 "custom\\message");
 
-        context.getFieldDOM();
-        contextc.setReturnValue("document.myform.myfield");
-
         context
-                .addSubmitListener("function(event) { Tapestry.validate_max_number(event, document.myform.myfield, 20.0, 'custom\\\\message'); }");
+                .addSubmitHandler("function(event) { Tapestry.validate_max_number(event, 'myfield', 20.0, 'custom\\\\message'); }");
 
         replayControls();
 

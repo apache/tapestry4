@@ -157,10 +157,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         IRender render = (IRender) newMock(IRender.class);
 
-        support.addExternalScript(new ClasspathResource(getClassResolver(),
-                "/org/apache/tapestry/form/Form.js"));
-
-        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
+        trainRegister(support);
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -198,7 +195,7 @@ public class TestFormSupport extends HiveMindTestCase
         trainGetFocusField(delegatec, delegate, "wilma");
         trainGetFieldFocus(cyclec, cycle, null);
 
-        support.addInitializationScript("Tapestry.set_focus(document.getElementById('wilma'));");
+        trainFocus(support);
 
         trainSetFieldFocus(cycle);
 
@@ -207,6 +204,19 @@ public class TestFormSupport extends HiveMindTestCase
         fs.render("post", render, link);
 
         verifyControls();
+    }
+
+    private void trainRegister(PageRenderSupport support)
+    {
+        support.addExternalScript(new ClasspathResource(getClassResolver(),
+                "/org/apache/tapestry/form/Form.js"));
+
+        support.addInitializationScript("Tapestry.register_form('myform');");
+    }
+
+    private void trainFocus(PageRenderSupport support)
+    {
+        support.addInitializationScript("Tapestry.set_focus('wilma');");
     }
 
     private void trainSetFieldFocus(IRequestCycle cycle)
@@ -338,10 +348,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         IRender render = (IRender) newMock(IRender.class);
 
-        support.addExternalScript(new ClasspathResource(getClassResolver(),
-                "/org/apache/tapestry/form/Form.js"));
-
-        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
+        trainRegister(support);
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -363,7 +370,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.attribute("name", "myform");
         writer.attribute("id", "myform");
-        
+
         render.render(writer, cycle);
 
         writer.println();
@@ -377,7 +384,7 @@ public class TestFormSupport extends HiveMindTestCase
         writer.end();
 
         support
-                .addInitializationScript("document.getElementById('myform').events.addSubmitListener(function (event)\n{\n  mySubmit1();\n  mySubmit2();\n  mySubmit3();\n});\n");
+                .addInitializationScript("Tapestry.onsubmit('myform', function (event)\n{\n  mySubmit1();\n  mySubmit2();\n  mySubmit3();\n});\n");
 
         // Side test: what if no focus field?
 
@@ -441,10 +448,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         IRender render = (IRender) newMock(IRender.class);
 
-        support.addExternalScript(new ClasspathResource(getClassResolver(),
-                "/org/apache/tapestry/form/Form.js"));
-
-        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
+        trainRegister(support);
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -464,7 +468,7 @@ public class TestFormSupport extends HiveMindTestCase
         writer.attribute("method", "post");
         writer.attribute("action", "/app");
         writer.attribute("name", "myform");
-        writer.attribute("id", "myform");        
+        writer.attribute("id", "myform");
         writer.attribute("enctype", "foo/bar");
 
         render.render(writer, cycle);
@@ -540,10 +544,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         IRender render = (IRender) newMock(IRender.class);
 
-        support.addExternalScript(new ClasspathResource(getClassResolver(),
-                "/org/apache/tapestry/form/Form.js"));
-
-        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
+        trainRegister(support);
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -565,7 +566,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.attribute("name", "myform");
         writer.attribute("id", "myform");
-        
+
         render.render(writer, cycle);
 
         writer.println();
@@ -638,10 +639,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         IRender render = (IRender) newMock(IRender.class);
 
-        support.addExternalScript(new ClasspathResource(getClassResolver(),
-                "/org/apache/tapestry/form/Form.js"));
-
-        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
+        trainRegister(support);
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -721,10 +719,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         IRender render = (IRender) newMock(IRender.class);
 
-        support.addExternalScript(new ClasspathResource(getClassResolver(),
-                "/org/apache/tapestry/form/Form.js"));
-
-        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
+        trainRegister(support);
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -746,7 +741,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.attribute("name", "myform");
         writer.attribute("id", "myform");
-        
+
         render.render(writer, cycle);
 
         writer.println();
@@ -821,10 +816,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         IRender render = (IRender) newMock(IRender.class);
 
-        support.addExternalScript(new ClasspathResource(getClassResolver(),
-                "/org/apache/tapestry/form/Form.js"));
-
-        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
+        trainRegister(support);
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -846,7 +838,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.attribute("name", "myform");
         writer.attribute("id", "myform");
-        
+
         render.render(writer, cycle);
 
         writer.println();
@@ -860,7 +852,7 @@ public class TestFormSupport extends HiveMindTestCase
         writer.end();
 
         support
-                .addInitializationScript("document.getElementById('myform').events.addResetListener(function (event)\n{\n  myReset1();\n  myReset2();\n});\n");
+                .addInitializationScript("Tapestry.onreset('myform', function (event)\n{\n  myReset1();\n  myReset2();\n});\n");
 
         trainGetFocusField(delegatec, delegate, null);
 
@@ -1173,10 +1165,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         IRender render = (IRender) newMock(IRender.class);
 
-        support.addExternalScript(new ClasspathResource(getClassResolver(),
-                "/org/apache/tapestry/form/Form.js"));
-
-        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
+        trainRegister(support);
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -1198,7 +1187,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.attribute("name", "myform");
         writer.attribute("id", "myform");
-        
+
         render.render(writer, cycle);
 
         writer.println();
@@ -1287,10 +1276,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         IRender render = (IRender) newMock(IRender.class);
 
-        support.addExternalScript(new ClasspathResource(getClassResolver(),
-                "/org/apache/tapestry/form/Form.js"));
-
-        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
+        trainRegister(support);
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -1312,7 +1298,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.attribute("name", "myform");
         writer.attribute("id", "myform");
-        
+
         render.render(writer, cycle);
 
         writer.println();
@@ -1598,10 +1584,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         IRender render = (IRender) newMock(IRender.class);
 
-        support.addExternalScript(new ClasspathResource(getClassResolver(),
-                "/org/apache/tapestry/form/Form.js"));
-
-        support.addInitializationScript("new FormEventManager(document.getElementById('myform'));");
+        trainRegister(support);
 
         link.getParameterNames();
         linkc.setReturnValue(new String[]
@@ -1623,7 +1606,7 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.attribute("name", "myform");
         writer.attribute("id", "myform");
-        
+
         render.render(writer, cycle);
 
         writer.println();
@@ -1637,7 +1620,7 @@ public class TestFormSupport extends HiveMindTestCase
         writer.end();
 
         support
-                .addInitializationScript("document.getElementById('myform').events.addSubmitListener(function (event)\n{\n  mySubmit();\n});\n");
+                .addInitializationScript("Tapestry.onsubmit('myform', function (event)\n{\n  mySubmit();\n});\n");
 
         trainGetFocusField(delegatec, delegate, null);
 

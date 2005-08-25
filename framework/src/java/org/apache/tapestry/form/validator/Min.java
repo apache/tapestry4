@@ -73,15 +73,15 @@ public class Min extends BaseValidator
 
         String message = buildMessage(context, field);
 
-        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.validate_min_number(event, ");
-        buffer.append(context.getFieldDOM());
-        buffer.append(", ");
+        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.validate_min_number(event, '");
+        buffer.append(field.getClientId());
+        buffer.append("', ");
         buffer.append(_min);
         buffer.append(", ");
         buffer.append(TapestryUtils.enquote(message));
         buffer.append("); }");
 
-        context.addSubmitListener(buffer.toString());
+        context.addSubmitHandler(buffer.toString());
     }
 
     public void setMin(double min)

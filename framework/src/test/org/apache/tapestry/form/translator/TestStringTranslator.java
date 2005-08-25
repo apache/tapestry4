@@ -155,12 +155,9 @@ public class TestStringTranslator extends TranslatorTestCase
         FormComponentContributorContext context = (FormComponentContributorContext) contextc
                 .getMock();
 
-        context.getFieldDOM();
-        contextc.setReturnValue("field_dom");
+        IFormComponent field = newFieldWithClientId("myfield");
 
-        trainTrim(context, "field_dom");
-
-        IFormComponent field = newField();
+        trainTrim(context, "myfield");
 
         replayControls();
 

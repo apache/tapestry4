@@ -123,8 +123,8 @@ public class NumberTranslator extends FormatTranslator
 
         String message = TapestryUtils.enquote(buildMessage(context, field, getMessageKey()));
 
-        context.addSubmitListener("function(event) { Tapestry.validate_number(event, "
-                + context.getFieldDOM() + ", " + message + "); }");
+        context.addSubmitHandler("function(event) { Tapestry.validate_number(event, '"
+                + field.getClientId() + "', " + message + "); }");
     }
 
     /**

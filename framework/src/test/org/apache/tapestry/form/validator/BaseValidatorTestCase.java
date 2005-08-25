@@ -39,6 +39,22 @@ public abstract class BaseValidatorTestCase extends BaseComponentTestCase
         return field;
     }
 
+    protected IFormComponent newField(String displayName, String clientId)
+    {
+        MockControl control = MockControl.createNiceControl(IFormComponent.class);
+        addControl(control);
+        
+        IFormComponent field = (IFormComponent) control.getMock();
+
+        field.getClientId();
+        control.setReturnValue(clientId);
+
+        field.getDisplayName();
+        control.setReturnValue(displayName);
+        
+        return field;
+    }
+
     protected IFormComponent newField()
     {
         return (IFormComponent) newMock(IFormComponent.class);
@@ -49,17 +65,19 @@ public abstract class BaseValidatorTestCase extends BaseComponentTestCase
         return (ValidationMessages) newMock(ValidationMessages.class);
     }
 
-    protected ValidationMessages newMessages(String messageOverride, String messageKey, Object[] parameters, String result)
+    protected ValidationMessages newMessages(String messageOverride, String messageKey,
+            Object[] parameters, String result)
     {
         MockControl control = newControl(ValidationMessages.class);
         ValidationMessages messages = (ValidationMessages) control.getMock();
-    
+
         trainFormatMessage(control, messages, messageOverride, messageKey, parameters, result);
-    
+
         return messages;
     }
 
-    protected void trainFormatMessage(MockControl control, ValidationMessages messages, String messageOverride, String messageKey, Object[] parameters, String result)
+    protected void trainFormatMessage(MockControl control, ValidationMessages messages,
+            String messageOverride, String messageKey, Object[] parameters, String result)
     {
         messages.formatValidationMessage(messageOverride, messageKey, parameters);
         control.setMatcher(MockControl.ARRAY_MATCHER);

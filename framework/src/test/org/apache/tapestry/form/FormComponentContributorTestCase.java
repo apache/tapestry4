@@ -130,6 +130,34 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
         return field;
     }
 
+    protected IFormComponent newField(String displayName, String clientId, int count)
+    {
+        MockControl control = MockControl.createNiceControl(IFormComponent.class);
+
+        addControl(control);
+
+        IFormComponent field = (IFormComponent) control.getMock();
+
+        field.getDisplayName();
+        control.setReturnValue(displayName);
+
+        field.getClientId();
+        control.setReturnValue(clientId, count);
+
+        return field;
+    }
+    
+    protected IFormComponent newFieldWithClientId(String clientId)
+    {
+        MockControl control = newControl(IFormComponent.class);
+        IFormComponent field = (IFormComponent)control.getMock();
+        
+        field.getClientId();
+        control.setReturnValue(clientId);
+        
+        return field;        
+    }
+
     protected void trainGetFieldDOM(MockControl control, FormComponentContributorContext context,
             String result)
     {
@@ -177,9 +205,9 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
         return messages;
     }
 
-    protected void trainTrim(FormComponentContributorContext context, String fieldDOM)
+    protected void trainTrim(FormComponentContributorContext context, String fieldId)
     {
-        context.addSubmitListener("function (event) { Tapestry.trim_field_value(" + fieldDOM
-                + "); }");
+        context.addSubmitHandler("function (event) { Tapestry.trim_field_value('" + fieldId
+                + "'); }");
     }
 }

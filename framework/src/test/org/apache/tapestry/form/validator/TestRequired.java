@@ -162,12 +162,9 @@ public class TestRequired extends BaseValidatorTestCase
         FormComponentContributorContext context = (FormComponentContributorContext) contextc
                 .getMock();
 
-        IFormComponent field = newField("Fred");
+        IFormComponent field = newField("Fred", "fred");
 
         context.registerForFocus(ValidationConstants.REQUIRED_FIELD);
-
-        context.getFieldDOM();
-        contextc.setReturnValue("document.fred.barney");
 
         trainFormatMessage(
                 contextc,
@@ -179,7 +176,7 @@ public class TestRequired extends BaseValidatorTestCase
                 "Default\\Message for Fred.");
 
         context
-                .addSubmitListener("function(event) { Tapestry.require_field(event, document.fred.barney, 'Default\\\\Message for Fred.'); }");
+                .addSubmitHandler("function(event) { Tapestry.require_field(event, 'fred', 'Default\\\\Message for Fred.'); }");
 
         replayControls();
 

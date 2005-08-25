@@ -301,13 +301,11 @@ public class FormSupportImpl implements FormSupport
             FormEventType type = (FormEventType) entry.getKey();
             Object value = entry.getValue();
 
-            buffer.append(TapestryUtils.buildClientElementReference(formId));
-            buffer.append(".events.");
-            buffer.append(type.getAddListenerMethodName());
-
-            // Build a composite function in-place
-
-            buffer.append("(function (event)\n{");
+            buffer.append("Tapestry.");
+            buffer.append(type.getAddHandlerFunctionName());
+            buffer.append("('");
+            buffer.append(formId);
+            buffer.append("', function (event)\n{");
 
             List l = (List) value;
             int count = l.size();
@@ -510,8 +508,7 @@ public class FormSupportImpl implements FormSupport
         if (!_form.getFocus() || _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) != null)
             return;
 
-        _pageRenderSupport.addInitializationScript("Tapestry.set_focus("
-                + TapestryUtils.buildClientElementReference(fieldId) + ");");
+        _pageRenderSupport.addInitializationScript("Tapestry.set_focus('" + fieldId + "');");
 
         _cycle.setAttribute(FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
     }
@@ -527,8 +524,7 @@ public class FormSupportImpl implements FormSupport
 
         _pageRenderSupport.addExternalScript(_script);
 
-        _pageRenderSupport.addInitializationScript("new FormEventManager("
-                + TapestryUtils.buildClientElementReference(formId) + ");");
+        _pageRenderSupport.addInitializationScript("Tapestry.register_form('" + formId + "');");
     }
 
     public String rewind()

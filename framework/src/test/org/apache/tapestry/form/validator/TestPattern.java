@@ -111,16 +111,13 @@ public class TestPattern extends BaseValidatorTestCase
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
 
-        IFormComponent field = newField("Fred");
+        IFormComponent field = newField("Fred", "myfield");
 
         trainFormatMessage(contextc, context, null, ValidationStrings.REGEX_MISMATCH, new Object[]
         { "Fred" }, "default message");
 
-        context.getFieldDOM();
-        contextc.setReturnValue("document.fred.barney");
-
         context
-                .addSubmitListener("function(event) { Tapestry.validate_regexp(event, document.fred.barney, '"
+                .addSubmitHandler("function(event) { Tapestry.validate_regexp(event, 'myfield', '"
                         + pattern + "', 'default message'); }");
 
         replayControls();
@@ -143,7 +140,7 @@ public class TestPattern extends BaseValidatorTestCase
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
 
-        IFormComponent field = newField("Fred");
+        IFormComponent field = newField("Fred", "myfield");
 
         trainFormatMessage(
                 contextc,
@@ -154,11 +151,8 @@ public class TestPattern extends BaseValidatorTestCase
                 { "Fred" },
                 "custom\\message");
 
-        context.getFieldDOM();
-        contextc.setReturnValue("document.fred.barney");
-
         context
-                .addSubmitListener("function(event) { Tapestry.validate_regexp(event, document.fred.barney, '"
+                .addSubmitHandler("function(event) { Tapestry.validate_regexp(event, 'myfield', '"
                         + pattern + "', 'custom\\\\message'); }");
 
         replayControls();
