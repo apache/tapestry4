@@ -87,7 +87,7 @@ function regexpTestUrl(sUrl) {
 	</body>
   
 <initialization>
-document.${form.name}.events.addSubmitListener(${function});
-</initialization>  
+Tapestry.onsubmit('${form.name}', ${function});
+</initialization>
 
 </script>

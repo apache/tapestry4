@@ -70,6 +70,7 @@ function ${function}(event)
 
 
 <initialization>
-document.${form.name}.events.addSubmitListener(${function});
+Tapestry.onsubmit('${form.name}', ${function});
 </initialization>
+
 </script>
