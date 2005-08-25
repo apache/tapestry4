@@ -792,7 +792,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         IContainedComponent source = cs.getComponent(sourceComponentId);
         if (source == null)
             throw new DocumentParseException(ParseMessages.unableToCopy(sourceComponentId),
-                    getLocation(), null);
+                    getLocation());
 
         Iterator i = source.getBindingNames().iterator();
         while (i.hasNext())
@@ -1109,14 +1109,13 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         if (hasCopyOf)
         {
             if (HiveMind.isNonBlank(type))
-                throw new DocumentParseException(ParseMessages.bothTypeAndCopyOf(id),
-                        getLocation(), null);
+                throw new DocumentParseException(ParseMessages.bothTypeAndCopyOf(id), getLocation());
         }
         else
         {
             if (HiveMind.isBlank(type))
                 throw new DocumentParseException(ParseMessages.missingTypeOrCopyOf(id),
-                        getLocation(), null);
+                        getLocation());
         }
 
         IContainedComponent cc = _factory.createContainedComponent();
@@ -1249,8 +1248,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         if (libraryId.equals(INamespace.FRAMEWORK_NAMESPACE)
                 || libraryId.equals(INamespace.APPLICATION_NAMESPACE))
             throw new DocumentParseException(ParseMessages
-                    .frameworkLibraryIdIsReserved(INamespace.FRAMEWORK_NAMESPACE), getLocation(),
-                    null);
+                    .frameworkLibraryIdIsReserved(INamespace.FRAMEWORK_NAMESPACE), getLocation());
 
         ILibrarySpecification ls = (ILibrarySpecification) peekObject();
 
@@ -1674,8 +1672,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             URL resourceURL = resource.getResourceURL();
 
             if (resourceURL == null)
-                throw new DocumentParseException(ParseMessages.missingResource(resource), resource,
-                        null);
+                throw new DocumentParseException(ParseMessages.missingResource(resource), resource);
 
             InputStream rawStream = resourceURL.openStream();
             stream = new BufferedInputStream(rawStream);

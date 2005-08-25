@@ -78,7 +78,8 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-222">IE Error in DataPicker.js</action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-586">Do not bind form component values unless all validators succeed.</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-588">Including the tapestry-portlet jar in the classpath for a servlet application causes exceptions</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-592">Optimize generated JavaScript to reduce the verbosity</action>    
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-592">Optimize generated JavaScript to reduce the verbosity</action>  
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-560">Poor reporting of missing specification file</action>  
     </release>
     <release version="4.0-beta-4" date="Aug 10 2005">
       <action type="fix" dev="HLS">Add getComponent() method to IComponent.</action>

@@ -34,6 +34,7 @@ import ognl.OgnlException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.Resource;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;
@@ -450,7 +451,7 @@ public class MockTester
 
         throw new DocumentParseException("Expression '" + expression + "' evaluates to ("
                 + value.getClass().getName() + ") " + value
-                + ", which cannot be interpreted as a boolean.", null);
+                + ", which cannot be interpreted as a boolean.");
     }
 
     /**
@@ -475,7 +476,7 @@ public class MockTester
             String pattern = a.getTextTrim();
 
             if (HiveMind.isBlank(pattern))
-                throw new DocumentParseException("Pattern is null in " + a, null);
+                throw new DocumentParseException("Pattern is null in " + a);
 
             if (outputString == null)
                 outputString = _response.getOutputString();
@@ -507,7 +508,7 @@ public class MockTester
             String substring = a.getTextTrim();
 
             if (HiveMind.isBlank(substring))
-                throw new DocumentParseException("Substring is null in " + a, null);
+                throw new DocumentParseException("Substring is null in " + a);
 
             if (outputString == null)
                 outputString = _response.getOutputString();
@@ -539,7 +540,7 @@ public class MockTester
             String substring = a.getTextTrim();
 
             if (HiveMind.isBlank(substring))
-                throw new DocumentParseException("Substring is null in " + a, null);
+                throw new DocumentParseException("Substring is null in " + a, (Resource) null);
 
             if (outputString == null)
                 outputString = _response.getOutputString();
@@ -653,7 +654,7 @@ public class MockTester
         String pattern = element.getTextTrim();
 
         if (HiveMind.isBlank(pattern))
-            throw new DocumentParseException("Pattern is null in " + element, null);
+            throw new DocumentParseException("Pattern is null in " + element);
 
         PatternMatcherInput input = new PatternMatcherInput(outputString);
 

@@ -125,7 +125,7 @@ public class RuleDirectedParser extends DefaultHandler
             if (url == null)
                 throw new DocumentParseException(Tapestry.format(
                         "RuleDrivenParser.resource-missing",
-                        documentLocation), documentLocation, null);
+                        documentLocation), documentLocation);
 
             return parse(url);
         }
@@ -335,7 +335,7 @@ public class RuleDirectedParser extends DefaultHandler
         if (rule == null)
             throw new DocumentParseException(Tapestry.format(
                     "RuleDrivenParser.no-rule-for-element",
-                    localName), getLocation(), null);
+                    localName), getLocation());
 
         return rule;
     }
