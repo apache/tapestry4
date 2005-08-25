@@ -30,9 +30,19 @@ import org.xml.sax.SAXParseException;
 
 public class DocumentParseException extends ApplicationRuntimeException
 {
+    public DocumentParseException(String message)
+    {
+        this(message, (Resource) null);
+    }
+
     public DocumentParseException(String message, Throwable rootCause)
     {
         super(message, null, rootCause);
+    }
+
+    public DocumentParseException(String message, Location location)
+    {
+        super(message, location, null);
     }
 
     public DocumentParseException(String message, Location location, Throwable rootCause)
@@ -44,6 +54,11 @@ public class DocumentParseException extends ApplicationRuntimeException
     {
         this(message, resource == null ? null : new LocationImpl(resource, rootCause
                 .getLineNumber(), rootCause.getColumnNumber()), rootCause);
+    }
+
+    public DocumentParseException(String message, Resource resource)
+    {
+        this(message, resource, (Throwable) null);
     }
 
     public DocumentParseException(String message, Resource resource, Throwable rootCause)
