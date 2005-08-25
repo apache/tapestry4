@@ -46,16 +46,13 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
         return form;
     }
 
-    private IFormComponent newField(IForm form, String clientId)
+    private IFormComponent newField(IForm form)
     {
         MockControl control = newControl(IFormComponent.class);
         IFormComponent field = (IFormComponent) control.getMock();
 
         field.getForm();
         control.setReturnValue(form);
-
-        field.getClientId();
-        control.setReturnValue(clientId);
 
         return field;
     }
@@ -79,7 +76,7 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
     public void testIncludeClasspathScript()
     {
         IForm form = newForm("myform");
-        IFormComponent field = newField(form, "myfield");
+        IFormComponent field = newField(form);
         ClassResolver resolver = newResolver();
 
         MockControl cyclec = newControl(IRequestCycle.class);
@@ -112,7 +109,7 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
     {
 
         IForm form = newForm("myform");
-        IFormComponent field = newField(form, "myfield");
+        IFormComponent field = newField(form);
         ClassResolver resolver = newResolver();
 
         MockControl cyclec = newControl(IRequestCycle.class);

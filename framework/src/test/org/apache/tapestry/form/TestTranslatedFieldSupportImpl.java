@@ -133,9 +133,6 @@ public class TestTranslatedFieldSupportImpl extends BaseComponentTestCase
         form.getName();
         formControl.setReturnValue("myform");
 
-        field.getClientId();
-        fieldControl.setReturnValue("myfield");
-
         field.getTranslator();
         fieldControl.setReturnValue(translator);
 
