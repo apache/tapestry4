@@ -48,7 +48,10 @@ public interface IForm extends IAction, FormBehavior
 
     /**
      * Returns the name of the form. The name is determined as the form component begins to render,
-     * but is not reset (as a convienience for building client-side JavaScript event handlers).
+     * but is not reset (as a convienience for building client-side JavaScript event handlers). The
+     * Form (and Go) components render this name as both the name and the id attribute (so it can be
+     * used like
+     * {@link org.apache.tapestry.form.IFormComponent#getClientId() a field's clientId property}.
      * 
      * @since 1.0.5
      */
