@@ -357,7 +357,7 @@ ${selectedPath}.onchange = ${selectedChangeFunctionName};
 ${selectedPath}.ondblclick = ${deselectFunctionName};
 ${availablePath}.onchange = ${availableChangeFunctionName};
 ${availablePath}.ondblclick = ${selectFunctionName};
-${formPath}.events.addRefreshListener(${formSubmitFunctionName});
 
+Tapestry.onrefresh('${formName}', ${formSubmitFunctionName});
 </initialization>
 </script>
