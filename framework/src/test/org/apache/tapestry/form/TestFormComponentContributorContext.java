@@ -76,34 +76,6 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
         return inf;
     }
 
-    public void testGetFieldDOM()
-    {
-        IForm form = newForm("myform");
-        IFormComponent field = newField(form, "myfield");
-        ClassResolver resolver = newResolver();
-
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        Infrastructure inf = newInfrastructure(resolver);
-
-        cycle.getInfrastructure();
-        cyclec.setReturnValue(inf);
-
-        PageRenderSupport prs = newSupport();
-
-        trainGetAttribute(cyclec, cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, prs);
-
-        replayControls();
-
-        FormComponentContributorContext context = new FormComponentContributorContextImpl(
-                Locale.ENGLISH, cycle, field);
-
-        assertEquals("Tapestry.find('myfield')", context.getFieldDOM());
-
-        verifyControls();
-    }
-
     public void testIncludeClasspathScript()
     {
         IForm form = newForm("myform");

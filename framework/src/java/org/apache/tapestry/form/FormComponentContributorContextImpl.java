@@ -35,8 +35,6 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
 {
     private final ClassResolver _resolver;
 
-    private final String _fieldDOM;
-
     private final PageRenderSupport _pageRenderSupport;
 
     private final IFormComponent _field;
@@ -46,7 +44,7 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
     private final String _formId;
 
     /**
-     * Used for testing.
+     * Used only for testing.
      */
 
     FormComponentContributorContextImpl(IFormComponent field)
@@ -56,7 +54,6 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
         _field = field;
         _resolver = null;
         _formId = null;
-        _fieldDOM = null;
         _pageRenderSupport = null;
         _form = null;
     }
@@ -72,14 +69,7 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
 
         _resolver = cycle.getInfrastructure().getClassResolver();
 
-        _fieldDOM = "Tapestry.find('" + field.getClientId() + "')";
-
         _pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, field);
-    }
-
-    public String getFieldDOM()
-    {
-        return _fieldDOM;
     }
 
     public void includeClasspathScript(String path)
