@@ -95,21 +95,18 @@ public class TestMaxLength extends BaseValidatorTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-        IFormComponent field = newField("My Field");
+        IFormComponent field = newField("My Field", "myfield");
         MockControl contextc = newControl(FormComponentContributorContext.class);
         FormComponentContributorContext context = (FormComponentContributorContext) contextc
                 .getMock();
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/StringValidator.js");
 
-        context.getFieldDOM();
-        contextc.setReturnValue("document.myform.myfield");
-
         trainFormatMessage(contextc, context, null, ValidationStrings.VALUE_TOO_LONG, new Object[]
         { new Integer(20), "My Field" }, "default\\message");
 
         context
-                .addSubmitListener("function(event) { Tapestry.validate_max_length(event, document.myform.myfield, 20, 'default\\\\message'); }");
+                .addSubmitHandler("function(event) { Tapestry.validate_max_length(event, 'myfield', 20, 'default\\\\message'); }");
 
         replayControls();
 

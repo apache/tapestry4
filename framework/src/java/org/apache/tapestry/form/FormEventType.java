@@ -20,7 +20,8 @@ package org.apache.tapestry.form;
  * 
  * @author Howard Lewis Ship
  * @since 1.0.2
- * @deprecated Managing of form events is now done on the client side; this class may be removed in a future release of Tapestry.
+ * @deprecated Managing of form events is now done on the client side; this class may be removed in
+ *             a future release of Tapestry.
  */
 
 public class FormEventType
@@ -33,23 +34,23 @@ public class FormEventType
      * are multiple event handlers for the form they will be combined using the binary and operator (<code>&amp;&amp;</code>).
      */
 
-    public static final FormEventType SUBMIT = new FormEventType("SUBMIT", "addSubmitListener");
+    public static final FormEventType SUBMIT = new FormEventType("SUBMIT", "onsubmit");
 
     /**
      * Form event triggered when the form is reset; this allows an event handler to deal with any
      * special cases related to resetting.
      */
 
-    public static final FormEventType RESET = new FormEventType("RESET", "addResetListener");
+    public static final FormEventType RESET = new FormEventType("RESET", "onreset");
 
     private final String _name;
 
-    private final String _addListenerMethodName;
+    private final String _addHandlerFunctionName;
 
-    private FormEventType(String name, String addListenerMethodName)
+    private FormEventType(String name, String addHandlerFunctionName)
     {
         _name = name;
-        _addListenerMethodName = addListenerMethodName;
+        _addHandlerFunctionName = addHandlerFunctionName;
     }
 
     public String toString()
@@ -58,12 +59,13 @@ public class FormEventType
     }
 
     /**
-     * Returns the DOM property corresponding to event type (used when generating client-side
-     * scripting).
+     * Returns the name of the function, on the Tapestry object (see Form.js), which should be
+     * invoked. The first parameter will be the id of the form, the second will be the handler
+     * itself.
      */
 
-    public String getAddListenerMethodName()
+    public String getAddHandlerFunctionName()
     {
-        return _addListenerMethodName;
+        return _addHandlerFunctionName;
     }
 }

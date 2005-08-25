@@ -75,13 +75,13 @@ public class Required extends BaseValidator
     {
         context.registerForFocus(ValidationConstants.REQUIRED_FIELD);
 
-        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.require_field(event, ");
-        buffer.append(context.getFieldDOM());
-        buffer.append(", ");
+        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.require_field(event, '");
+        buffer.append(field.getClientId());
+        buffer.append("', ");
         buffer.append(TapestryUtils.enquote(buildMessage(context, field)));
         buffer.append("); }");
 
-        context.addSubmitListener(buffer.toString());
+        context.addSubmitHandler(buffer.toString());
     }
 
     /**

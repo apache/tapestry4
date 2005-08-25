@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-Tapestry.validate_min_number = function(event, field, min, message)
+Tapestry.validate_min_number = function(event, fieldId, min, message)
 {
+	var field = this.find(fieldId);
 	var value = field.value;
 	
 	if (value == "") return;
@@ -22,8 +23,9 @@ Tapestry.validate_min_number = function(event, field, min, message)
       event.invalid_field(field, message)
 }
 
-Tapestry.validate_max_number = function(event, field, max, message)
+Tapestry.validate_max_number = function(event, fieldId, max, message)
 {
+	var field = this.find(fieldId);
 	var value = field.value;
 	
 	if (value == "") return;

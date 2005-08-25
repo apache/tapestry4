@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-Tapestry.validate_number = function(event, field, message)
+Tapestry.validate_number = function(event, fieldId, message)
 {
+	var field = this.find(fieldId);
+	
 	if (field.value == "") return;
 	
 	if (isNaN(field.value))

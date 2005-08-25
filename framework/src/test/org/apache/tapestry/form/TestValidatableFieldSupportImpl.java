@@ -140,7 +140,7 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         form.getName();
         formControl.setReturnValue("myform");
 
-        field.getName();
+        field.getClientId();
         fieldControl.setReturnValue("myfield");
 
         field.getValidators();
@@ -189,7 +189,7 @@ public class TestValidatableFieldSupportImpl extends BaseComponentTestCase
         form.getName();
         formControl.setReturnValue("myform");
 
-        field.getName();
+        field.getClientId();
         fieldControl.setReturnValue("myfield");
 
         field.getValidators();

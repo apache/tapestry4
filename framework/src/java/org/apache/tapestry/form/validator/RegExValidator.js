@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-Tapestry.validate_regex = function(event, field, pattern, message)
+Tapestry.validate_regex = function(event, fieldId, pattern, message)
 {
+	var field = this.find(fieldId);
 	var value = field.value;
 	
 	if (value == "") return;

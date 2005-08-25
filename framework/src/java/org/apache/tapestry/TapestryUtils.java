@@ -250,24 +250,26 @@ public class TapestryUtils
      * [A-Za-z][A-Za-z0-9:_.-]*, but a component id might include a leading dollar sign (for an
      * anonymous component with a fabricated id).
      */
-    
+
     public static String convertTapestryIdToNMToken(String baseId)
     {
-        while (baseId.startsWith("$"))
-            baseId = baseId.substring(1);
-    
-        return baseId.replace('$', '_');
+        String result = baseId.replace('$', '_');
+
+        while (result.startsWith("_"))
+            result = result.substring(1);
+
+        return result;
     }
 
     /**
      * Converts a clientId into a client-side DOM reference; i.e.
-     * <code>document.getElementById('<i>id</i>')</code>
+     * <code>document.getElementById('<i>id</i>')</code>.  
      */
-    
+
     public static String buildClientElementReference(String clientId)
     {
         Defense.notNull(clientId, "clientId");
-    
+
         return "document.getElementById('" + clientId + "')";
     }
 }

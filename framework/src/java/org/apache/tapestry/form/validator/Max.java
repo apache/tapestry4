@@ -73,15 +73,15 @@ public class Max extends BaseValidator
 
         String message = TapestryUtils.enquote(buildMessage(context, field));
 
-        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.validate_max_number(event, ");
-        buffer.append(context.getFieldDOM());
-        buffer.append(", ");
+        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.validate_max_number(event, '");
+        buffer.append(field.getClientId());
+        buffer.append("', ");
         buffer.append(_max);
         buffer.append(", ");
         buffer.append(message);
         buffer.append("); }");
 
-        context.addSubmitListener(buffer.toString());
+        context.addSubmitHandler(buffer.toString());
     }
 
     public void setMax(double max)

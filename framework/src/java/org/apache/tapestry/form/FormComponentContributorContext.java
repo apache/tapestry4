@@ -43,7 +43,7 @@ public interface FormComponentContributorContext extends ValidationMessages
     public void includeClasspathScript(String path);
 
     /**
-     * Adds initialization to register a submitListener on the client side. A submitListener is a
+     * Adds initialization to register a submit handler on the client side. A submit handler is a
      * JavaScript method that accepts a single parameter, a (JavaScript) FormSubmitEvent.
      * 
      * @param submitListener
@@ -51,7 +51,7 @@ public interface FormComponentContributorContext extends ValidationMessages
      *            of a listener function ("function(event) { ... } ").
      */
 
-    public void addSubmitListener(String submitListener);
+    public void addSubmitHandler(String handler);
 
     /**
      * Registers a field for automatic focus. The goal is for the first field that is in error to

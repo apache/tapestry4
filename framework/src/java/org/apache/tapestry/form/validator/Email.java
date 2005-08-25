@@ -77,14 +77,14 @@ public class Email extends BaseValidator
         String pattern = _matcher.getEscapedPatternString(PATTERN);
         String message = TapestryUtils.enquote(buildMessage(context, field));
 
-        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.validate_regex(event, ");
-        buffer.append(context.getFieldDOM());
-        buffer.append(", '");
+        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.validate_regex(event, '");
+        buffer.append(field.getClientId());
+        buffer.append("', '");
         buffer.append(pattern);
         buffer.append("', ");
         buffer.append(message);
         buffer.append("); }");
 
-        context.addSubmitListener(buffer.toString());
+        context.addSubmitHandler(buffer.toString());
     }
 }

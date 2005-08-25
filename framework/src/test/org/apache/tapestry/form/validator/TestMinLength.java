@@ -96,21 +96,18 @@ public class TestMinLength extends BaseValidatorTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-        IFormComponent field = newField("My Field");
+        IFormComponent field = newField("My Field", "myfield");
         MockControl contextc = newControl(FormComponentContributorContext.class);
         FormComponentContributorContext context = (FormComponentContributorContext) contextc
                 .getMock();
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/StringValidator.js");
 
-        context.getFieldDOM();
-        contextc.setReturnValue("document.myform.myfield");
-
         trainFormatMessage(contextc, context, null, ValidationStrings.VALUE_TOO_SHORT, new Object[]
         { new Integer(20), "My Field" }, "default message");
 
         context
-                .addSubmitListener("function(event) { Tapestry.validate_min_length(event, document.myform.myfield, 20, 'default message'); }");
+                .addSubmitHandler("function(event) { Tapestry.validate_min_length(event, 'myfield', 20, 'default message'); }");
 
         replayControls();
 
@@ -123,15 +120,12 @@ public class TestMinLength extends BaseValidatorTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-        IFormComponent field = newField("My Field");
+        IFormComponent field = newField("My Field", "customField");
         MockControl contextc = newControl(FormComponentContributorContext.class);
         FormComponentContributorContext context = (FormComponentContributorContext) contextc
                 .getMock();
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/StringValidator.js");
-
-        context.getFieldDOM();
-        contextc.setReturnValue("document.myform.myfield");
 
         trainFormatMessage(
                 contextc,
@@ -143,7 +137,7 @@ public class TestMinLength extends BaseValidatorTestCase
                 "custom\\message");
 
         context
-                .addSubmitListener("function(event) { Tapestry.validate_min_length(event, document.myform.myfield, 25, 'custom\\\\message'); }");
+                .addSubmitHandler("function(event) { Tapestry.validate_min_length(event, 'customField', 25, 'custom\\\\message'); }");
 
         replayControls();
 

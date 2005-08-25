@@ -73,15 +73,15 @@ public class MaxLength extends BaseValidator
     {
         context.includeClasspathScript("/org/apache/tapestry/form/validator/StringValidator.js");
 
-        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.validate_max_length(event, ");
-        buffer.append(context.getFieldDOM());
-        buffer.append(", ");
+        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.validate_max_length(event, '");
+        buffer.append(field.getClientId());
+        buffer.append("', ");
         buffer.append(_maxLength);
         buffer.append(", ");
         buffer.append(TapestryUtils.enquote(buildMessage(context, field)));
         buffer.append("); }");
 
-        context.addSubmitListener(buffer.toString());
+        context.addSubmitHandler(buffer.toString());
     }
 
 }

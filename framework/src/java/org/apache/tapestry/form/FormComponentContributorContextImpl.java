@@ -35,8 +35,6 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
 {
     private final ClassResolver _resolver;
 
-    private final String _formDOM;
-
     private final String _fieldDOM;
 
     private final PageRenderSupport _pageRenderSupport;
@@ -44,6 +42,8 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
     private final IFormComponent _field;
 
     private final IForm _form;
+
+    private final String _formId;
 
     /**
      * Used for testing.
@@ -55,7 +55,7 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
 
         _field = field;
         _resolver = null;
-        _formDOM = null;
+        _formId = null;
         _fieldDOM = null;
         _pageRenderSupport = null;
         _form = null;
@@ -68,11 +68,11 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
 
         _field = field;
         _form = field.getForm();
+        _formId = _form.getName();
 
         _resolver = cycle.getInfrastructure().getClassResolver();
 
-        _formDOM = "document." + _form.getName();
-        _fieldDOM = _formDOM + "." + field.getName();
+        _fieldDOM = "Tapestry.find('" + field.getClientId() + "')";
 
         _pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, field);
     }
@@ -89,9 +89,9 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
         _pageRenderSupport.addExternalScript(resource);
     }
 
-    public void addSubmitListener(String submitListener)
+    public void addSubmitHandler(String submitListener)
     {
-        _pageRenderSupport.addInitializationScript(_formDOM + ".events.addSubmitListener("
+        _pageRenderSupport.addInitializationScript("Tapestry.onsubmit('" + _formId + "', "
                 + submitListener + ");");
     }
 

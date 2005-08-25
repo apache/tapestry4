@@ -210,12 +210,10 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
         trainBuildMessage(contextc, context, null, ValidationStrings.INVALID_NUMBER, new Object[]
         { "Number Field", "#" }, "invalid number message");
 
-        trainGetFieldDOM(contextc, context, "field_dom");
-
         context
-                .addSubmitListener("function(event) { Tapestry.validate_number(event, field_dom, 'invalid number message'); }");
+                .addSubmitHandler("function(event) { Tapestry.validate_number(event, 'numberField', 'invalid number message'); }");
 
-        IFormComponent field = newField("Number Field");
+        IFormComponent field = newField("Number Field", "numberField", 1);
 
         replayControls();
 
@@ -250,12 +248,10 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
                 { "Number Field", "#" },
                 "Blah Blah 'Field Name' Blah.");
 
-        trainGetFieldDOM(contextc, context, "field_dom");
-
         context
-                .addSubmitListener("function(event) { Tapestry.validate_number(event, field_dom, 'Blah Blah \\'Field Name\\' Blah.'); }");
+                .addSubmitHandler("function(event) { Tapestry.validate_number(event, 'myfield', 'Blah Blah \\'Field Name\\' Blah.'); }");
 
-        IFormComponent field = newField("Number Field");
+        IFormComponent field = newField("Number Field", "myfield", 1);
 
         replayControls();
 
@@ -268,6 +264,9 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
 
     public void testTrimRenderContribution()
     {
+
+        IFormComponent field = newField("Number Field", "myfield", 2);
+
         NumberTranslator translator = new NumberTranslator();
 
         IMarkupWriter writer = newWriter();
@@ -279,21 +278,15 @@ public class TestNumberTranslator extends FormComponentContributorTestCase
 
         context.includeClasspathScript(translator.defaultScript());
 
-        trainGetFieldDOM(contextc, context, "field_dom");
-
-        trainTrim(context, "field_dom");
+        trainTrim(context, "myfield");
 
         trainGetLocale(contextc, context, Locale.ENGLISH);
 
         trainBuildMessage(contextc, context, null, ValidationStrings.INVALID_NUMBER, new Object[]
         { "Number Field", "#" }, "invalid number message");
 
-        trainGetFieldDOM(contextc, context, "field_dom");
-
         context
-                .addSubmitListener("function(event) { Tapestry.validate_number(event, field_dom, 'invalid number message'); }");
-
-        IFormComponent field = newField("Number Field");
+                .addSubmitHandler("function(event) { Tapestry.validate_number(event, 'myfield', 'invalid number message'); }");
 
         replayControls();
 

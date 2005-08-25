@@ -46,7 +46,7 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
         return form;
     }
 
-    private IFormComponent newField(IForm form, String name)
+    private IFormComponent newField(IForm form, String clientId)
     {
         MockControl control = newControl(IFormComponent.class);
         IFormComponent field = (IFormComponent) control.getMock();
@@ -54,8 +54,8 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
         field.getForm();
         control.setReturnValue(form);
 
-        field.getName();
-        control.setReturnValue(name);
+        field.getClientId();
+        control.setReturnValue(clientId);
 
         return field;
     }
@@ -99,7 +99,7 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
         FormComponentContributorContext context = new FormComponentContributorContextImpl(
                 Locale.ENGLISH, cycle, field);
 
-        assertEquals("document.myform.myfield", context.getFieldDOM());
+        assertEquals("Tapestry.find('myfield')", context.getFieldDOM());
 
         verifyControls();
     }
@@ -136,7 +136,7 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
         verifyControls();
     }
 
-    public void testAddSubmitListener()
+    public void testAddSubmitHandler()
     {
 
         IForm form = newForm("myform");
@@ -153,7 +153,7 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
 
         PageRenderSupport prs = newSupport();
 
-        prs.addInitializationScript("document.myform.events.addSubmitListener(foo);");
+        prs.addInitializationScript("Tapestry.onsubmit('myform', foo);");
 
         trainGetAttribute(cyclec, cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, prs);
 
@@ -162,7 +162,7 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
         FormComponentContributorContext context = new FormComponentContributorContextImpl(
                 Locale.ENGLISH, cycle, field);
 
-        context.addSubmitListener("foo");
+        context.addSubmitHandler("foo");
 
         verifyControls();
     }
