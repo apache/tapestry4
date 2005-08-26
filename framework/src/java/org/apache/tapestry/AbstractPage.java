@@ -124,6 +124,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      * </ul>
      * <p>
      * Subclasses may override this method, but must invoke this implementation (usually, last).
+     * 
      * @see PageDetachListener
      */
 
@@ -323,6 +324,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     /**
      * Returns the visit object obtained from the engine via {@link IEngine#getVisit(IRequestCycle)}.
+     * 
+     * @deprecated
      */
 
     public Object getVisit()
@@ -337,6 +340,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      * Convienience methods, simply invokes {@link IEngine#getGlobal()}.
      * 
      * @since 2.3
+     * @deprecated
      */
 
     public Object getGlobal()
@@ -367,6 +371,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
             _listenerList.remove(listenerClass, listener);
     }
 
+    /** @deprecated */
     public void addPageRenderListener(PageRenderListener listener)
     {
         addPageBeginRenderListener(listener);
@@ -510,6 +515,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         removeListener(PageDetachListener.class, listener);
     }
 
+    /** @deprecated */
     public void removePageRenderListener(PageRenderListener listener)
     {
         removePageBeginRenderListener(listener);
