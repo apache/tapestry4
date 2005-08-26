@@ -61,27 +61,6 @@
 ]]>  		
     </assert-output>	
 
-    <!-- Test button link -->
-    <assert-output name="Sixth Link">
-<![CDATA[
-<button type="button" onclick="window.location='/c10/app?component=sixth&amp;page=Home&amp;service=direct'">Sixth</button>
-]]>  		
-    </assert-output>	
-
-    <!-- Test disabled button link -->
-    <assert-output name="Seventh Link">
-<![CDATA[
-<button type="button" disabled="disabled" onclick="window.location='/c10/app?component=seventh&amp;page=Home&amp;service=direct'">Seventh</button>
-]]>  		
-    </assert-output>	
-
-    <!-- Test button link with target -->
-    <assert-output name="Eighth Link">
-<![CDATA[
-<button type="button" onclick="window.open('/c10/app?component=eighth&amp;page=Home&amp;service=direct','_blank')">Eighth</button>
-]]>  		
-    </assert-output>	
-
   </request>
 
   <request>
