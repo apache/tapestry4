@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.link;
+package org.apache.tapestry.contrib.link;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
@@ -20,6 +20,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.link.ILinkRenderer;
 
 /**
  * An {@link ILinkRenderer} implementation that generates an HTML button.
