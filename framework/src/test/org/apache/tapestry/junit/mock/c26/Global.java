@@ -18,7 +18,9 @@ import java.io.Serializable;
 
 public class Global implements Serializable
 {
-    private String _name = "Osamu Tezuka";
+    private static final long serialVersionUID = 7284303490795022189L;
+    
+	private String _name = "Osamu Tezuka";
 
     public String getName()
     {

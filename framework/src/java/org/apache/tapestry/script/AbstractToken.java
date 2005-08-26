@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
  * Base class for creating tokens which may contain other tokens.

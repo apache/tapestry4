@@ -17,7 +17,6 @@ package org.apache.tapestry;
 import java.util.Collection;
 import java.util.Map;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.LocationHolder;
 import org.apache.hivemind.Messages;
 import org.apache.tapestry.engine.IPageLoader;

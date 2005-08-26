@@ -66,7 +66,9 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 public class OperationsBean implements SessionBean
 {
-    private transient Context _environment;
+    private static final long serialVersionUID = -3942706099570269035L;
+
+	private transient Context _environment;
 
     private transient IBookHome _bookHome;
 

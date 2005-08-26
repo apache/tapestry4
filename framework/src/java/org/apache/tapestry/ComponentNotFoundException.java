@@ -25,7 +25,9 @@ import org.apache.hivemind.ApplicationRuntimeException;
  */
 public class ComponentNotFoundException extends ApplicationRuntimeException
 {
-    public ComponentNotFoundException(String message)
+    private static final long serialVersionUID = 7420847527195925045L;
+
+	public ComponentNotFoundException(String message)
     {
         super(message);
     }

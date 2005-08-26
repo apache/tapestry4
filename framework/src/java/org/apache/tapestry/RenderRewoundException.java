@@ -26,7 +26,9 @@ import org.apache.hivemind.ApplicationRuntimeException;
 
 public class RenderRewoundException extends ApplicationRuntimeException
 {
-    public RenderRewoundException(Object component)
+    private static final long serialVersionUID = -4212602864703507206L;
+
+	public RenderRewoundException(Object component)
     {
         super(null, component, null, null);
     }

@@ -25,4 +25,5 @@ import javax.servlet.http.HttpServlet;
  */
 public class ServletFixture extends HttpServlet
 {
+	private static final long serialVersionUID = -1257724425994536494L;
 }

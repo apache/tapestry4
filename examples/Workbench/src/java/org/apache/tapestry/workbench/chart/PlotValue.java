@@ -25,7 +25,9 @@ import java.io.Serializable;
 
 public class PlotValue implements Serializable
 {
-    private String name;
+    private static final long serialVersionUID = 4847193821463693432L;
+
+	private String name;
 
     private int value;
 

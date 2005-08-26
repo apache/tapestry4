@@ -25,8 +25,10 @@ import org.apache.tapestry.contrib.tree.model.ITreeNode;
 /**
  * @author ceco
  */
-public class SimpleTreeDataModel implements ITreeDataModel, Serializable {
-
+public class SimpleTreeDataModel implements ITreeDataModel, Serializable
+{
+	private static final long serialVersionUID = 9215832847660213349L;
+	
 	protected ITreeNode m_objRootNode;
 	/**
 	 * Constructor for SimpleTreeDataModel.

@@ -22,8 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.tapestry.ApplicationServlet;
-
 /**
  * This class encapsulates all the relevant data for one request cycle of an
  * {@link ApplicationServlet}. This includes:

@@ -20,8 +20,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.apache.tapestry.spec.BeanLifecycle;
-
 /**
  * Annotation used to <em>define</em> new managed beans, including limited/lightweight
  * initialization. For complex initialiation, the XML specification is necessary.

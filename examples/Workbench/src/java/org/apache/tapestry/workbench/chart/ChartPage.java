@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.html.BasePage;
@@ -31,6 +30,7 @@ import org.jCharts.chartData.ChartDataException;
 import org.jCharts.chartData.PieChartDataSet;
 import org.jCharts.nonAxisChart.PieChart2D;
 import org.jCharts.properties.ChartProperties;
+import org.jCharts.properties.LegendAreaProperties;
 import org.jCharts.properties.LegendProperties;
 import org.jCharts.properties.PieChart2DProperties;
 import org.jCharts.test.TestDataGenerator;
@@ -163,7 +163,7 @@ public abstract class ChartPage extends BasePage implements IChartProvider, Page
     {
         LegendProperties legendProperties = new LegendProperties();
         legendProperties.setNumColumns(2);
-        legendProperties.setPlacement(LegendProperties.RIGHT);
+        legendProperties.setPlacement(LegendAreaProperties.RIGHT);
         ChartProperties chartProperties = new ChartProperties();
         chartProperties.setBackgroundPaint(Color.decode("#ffffcc"));
 

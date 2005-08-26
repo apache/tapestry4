@@ -23,7 +23,6 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.parse.LocalizationToken;
-import org.apache.tapestry.parse.TextToken;
 
 /**
  * A class used with invisible localizations. Constructed from a {@link TextToken}.

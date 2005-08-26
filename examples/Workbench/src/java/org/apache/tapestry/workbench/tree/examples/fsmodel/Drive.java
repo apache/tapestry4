@@ -18,7 +18,10 @@ import java.io.File;
 
 import org.apache.tapestry.contrib.tree.model.ITreeNode;
 
-public class Drive extends FolderObject {
+public class Drive extends FolderObject
+{
+	private static final long serialVersionUID = -7032714277766590386L;
+	
 	private String m_strType;
 	private String m_strLabel;
 	private long m_lSize;

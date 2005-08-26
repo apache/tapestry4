@@ -30,7 +30,9 @@ import org.apache.tapestry.IRequestCycle;
 
 public class PageEvent extends EventObject
 {
-    private transient IPage page;
+    private static final long serialVersionUID = -6167989946862112436L;
+    
+	private transient IPage page;
     private transient IRequestCycle requestCycle;
 
     /**

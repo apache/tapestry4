@@ -27,7 +27,9 @@ import org.apache.tapestry.valid.ValidationDelegate;
 
 public class WorkbenchValidationDelegate extends ValidationDelegate
 {
-    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle,
+    private static final long serialVersionUID = -4782900422264574280L;
+
+	public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle,
             IFormComponent component, IValidator validator)
     {
         if (isInError())

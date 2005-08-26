@@ -20,9 +20,11 @@ import org.apache.tapestry.contrib.tree.simple.TreeNode;
 /**
  * @author ceco
  */
-public class TestTreeNode extends TreeNode {
-
-    private String m_strValue;
+public class TestTreeNode extends TreeNode
+{
+    private static final long serialVersionUID = -2513375115143901815L;
+    
+	private String m_strValue;
 
     /**
      * Constructor for TestTreeNode.

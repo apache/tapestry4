@@ -26,7 +26,9 @@ import org.apache.hivemind.Location;
 
 public class InvalidStringException extends DocumentParseException implements Locatable
 {
-    private String _invalidString;
+    private static final long serialVersionUID = 8199998733585358584L;
+    
+	private String _invalidString;
 
     public InvalidStringException(String message, String invalidString, Location location)
     {

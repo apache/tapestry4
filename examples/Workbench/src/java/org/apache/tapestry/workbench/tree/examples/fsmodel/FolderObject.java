@@ -21,9 +21,11 @@ import java.util.Vector;
 
 import org.apache.tapestry.contrib.tree.model.ITreeNode;
 
-public class FolderObject extends SFObject{
+public class FolderObject extends SFObject
+{
+    private static final long serialVersionUID = 8237515756497487278L;
 
-    /**
+	/**
      * @associates <{File}>
      * @supplierCardinality 0..*
      * @link aggregation

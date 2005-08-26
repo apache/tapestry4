@@ -139,7 +139,7 @@ public abstract class Login extends BasePage implements IErrorProperty, PageBegi
      * specified page).
      */
 
-    public void loginUser(Person person, IRequestCycle cycle) throws RemoteException
+    public void loginUser(Person person, IRequestCycle cycle)
     {
         String email = person.getEmail();
 

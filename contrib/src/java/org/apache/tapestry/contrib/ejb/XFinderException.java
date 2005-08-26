@@ -25,7 +25,9 @@ import javax.ejb.FinderException;
 
 public class XFinderException extends FinderException
 {
-    private Throwable rootCause;
+    private static final long serialVersionUID = -7761100160348957271L;
+    
+	private Throwable rootCause;
 
     public XFinderException(String message)
     {

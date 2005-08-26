@@ -21,7 +21,6 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;

@@ -22,7 +22,9 @@ package org.apache.tapestry.vlib.ejb;
 
 public class LoginException extends Exception
 {
-    private boolean _passwordError;
+    private static final long serialVersionUID = -1472279052871024178L;
+    
+	private boolean _passwordError;
 
     public LoginException(String message, boolean passwordError)
     {

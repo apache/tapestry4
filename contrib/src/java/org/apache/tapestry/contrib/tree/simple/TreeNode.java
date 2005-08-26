@@ -25,8 +25,10 @@ import org.apache.tapestry.contrib.tree.model.ITreeNode;
 /**
  * @author ceco
  */
-public class TreeNode implements IMutableTreeNode {
-
+public class TreeNode implements IMutableTreeNode
+{
+	private static final long serialVersionUID = 677919478017303186L;
+	
 	protected Set m_setChildren;
 	protected IMutableTreeNode m_objParentNode;
 	

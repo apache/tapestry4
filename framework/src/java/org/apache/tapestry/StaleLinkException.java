@@ -29,7 +29,9 @@ import org.apache.hivemind.ApplicationRuntimeException;
 
 public class StaleLinkException extends ApplicationRuntimeException
 {
-    private transient IPage _page;
+    private static final long serialVersionUID = -1266992401198999606L;
+    
+	private transient IPage _page;
     private String _pageName;
     private String _targetIdPath;
     private String _targetActionId;

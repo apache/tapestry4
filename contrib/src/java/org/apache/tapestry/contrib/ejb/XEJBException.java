@@ -28,7 +28,9 @@ import javax.ejb.EJBException;
 
 public class XEJBException extends EJBException
 {
-    private Throwable rootCause;
+    private static final long serialVersionUID = 3712108893575174833L;
+    
+	private Throwable rootCause;
 
     public XEJBException(String message)
     {

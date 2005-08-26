@@ -19,17 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.ToStringBuilder;
-import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.Constants;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
@@ -39,7 +34,6 @@ import org.apache.tapestry.RedirectException;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.listener.ListenerMap;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -371,7 +365,6 @@ public abstract class AbstractEngine implements IEngine
      */
 
     protected void handleStaleLinkException(IRequestCycle cycle, StaleLinkException exception)
-            throws IOException
     {
         _infrastructure.getStaleLinkExceptionPresenter()
                 .presentStaleLinkException(cycle, exception);

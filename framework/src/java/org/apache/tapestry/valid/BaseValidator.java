@@ -20,7 +20,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ClasspathResource;
@@ -34,7 +33,6 @@ import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.html.Body;
 
 /**
  * Abstract base class for {@link IValidator}. Supports a required and locale property.

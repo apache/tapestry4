@@ -26,7 +26,9 @@ import org.apache.hivemind.Location;
 
 public class TemplateParseException extends Exception implements Locatable
 {
-    private Location _location;
+    private static final long serialVersionUID = 3741503276431589982L;
+    
+	private Location _location;
     private Throwable _rootCause;
 
     public TemplateParseException(String message)

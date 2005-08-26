@@ -15,7 +15,6 @@
 package org.apache.tapestry.resolver;
 
 import org.apache.commons.logging.Log;
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.LocationImpl;
 import org.apache.tapestry.INamespace;

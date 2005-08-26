@@ -25,8 +25,9 @@ import org.apache.hivemind.ApplicationRuntimeException;
  */
 public class PageNotFoundException extends ApplicationRuntimeException
 {
+    private static final long serialVersionUID = -4776430599632429708L;
 
-    public PageNotFoundException(String message)
+	public PageNotFoundException(String message)
     {
         super(message);
     }

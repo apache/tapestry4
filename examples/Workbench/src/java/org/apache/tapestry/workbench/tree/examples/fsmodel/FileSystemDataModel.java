@@ -24,8 +24,11 @@ import org.apache.tapestry.contrib.tree.simple.SimpleTreeDataModel;
  * @author ceco
  */
 public class FileSystemDataModel extends SimpleTreeDataModel
-    implements Serializable {
-    /**
+    implements Serializable
+{
+    private static final long serialVersionUID = 2384273235598992452L;
+
+	/**
      * Constructor for FileSystemDataModel.
      * @param objRootNode
      */

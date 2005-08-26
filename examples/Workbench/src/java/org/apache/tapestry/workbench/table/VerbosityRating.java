@@ -16,6 +16,7 @@ package org.apache.tapestry.workbench.table;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
@@ -46,16 +47,16 @@ public class VerbosityRating implements Serializable
 		SimpleDateFormat objWeekDay = new SimpleDateFormat("EEEE", objLocale);
 
 		GregorianCalendar objCalendar = new GregorianCalendar();
-		objCalendar.set(GregorianCalendar.YEAR, 2000);
-		objCalendar.set(GregorianCalendar.MONTH, 0);
-		objCalendar.set(GregorianCalendar.DATE, 1);
+		objCalendar.set(Calendar.YEAR, 2000);
+		objCalendar.set(Calendar.MONTH, 0);
+		objCalendar.set(Calendar.DATE, 1);
 
 		int nCount = 0;
 		for (int i = 0; i < 7; i++)
 		{
 			String strWeekDay = objWeekDay.format(objCalendar.getTime());
 			nCount += strWeekDay.length();
-			objCalendar.add(GregorianCalendar.DATE, 1);
+			objCalendar.add(Calendar.DATE, 1);
 		}
 
 		return nCount;
@@ -66,16 +67,16 @@ public class VerbosityRating implements Serializable
 		SimpleDateFormat objMonth = new SimpleDateFormat("MMMM", objLocale);
 
 		GregorianCalendar objCalendar = new GregorianCalendar();
-		objCalendar.set(GregorianCalendar.YEAR, 2000);
-		objCalendar.set(GregorianCalendar.MONTH, 0);
-		objCalendar.set(GregorianCalendar.DATE, 1);
+		objCalendar.set(Calendar.YEAR, 2000);
+		objCalendar.set(Calendar.MONTH, 0);
+		objCalendar.set(Calendar.DATE, 1);
 
 		int nCount = 0;
 		for (int i = 0; i < 12; i++)
 		{
 			String strMonth = objMonth.format(objCalendar.getTime());
 			nCount += strMonth.length();
-			objCalendar.add(GregorianCalendar.MONTH, 1);
+			objCalendar.add(Calendar.MONTH, 1);
 		}
 
 		return nCount;

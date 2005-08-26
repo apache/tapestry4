@@ -38,7 +38,6 @@ import org.apache.tapestry.parse.ComponentTemplate;
 import org.apache.tapestry.parse.ITemplateParser;
 import org.apache.tapestry.parse.ITemplateParserDelegate;
 import org.apache.tapestry.parse.TemplateParseException;
-import org.apache.tapestry.parse.TemplateParser;
 import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.services.ComponentPropertySource;
