@@ -17,8 +17,6 @@ package org.apache.tapestry.web;
 import java.net.URL;
 import java.util.Locale;
 
-import javax.servlet.ServletContext;
-
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.AbstractResource;
 import org.apache.hivemind.util.LocalizedResource;

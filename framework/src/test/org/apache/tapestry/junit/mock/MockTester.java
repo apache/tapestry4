@@ -132,7 +132,7 @@ public class MockTester
      * Invoked to execute the request cycle.
      */
 
-    public void execute() throws IOException, ServletException, DocumentParseException
+    public void execute() throws IOException, DocumentParseException
     {
         Element root = _document.getRootElement();
 
@@ -151,8 +151,7 @@ public class MockTester
         _servlet.destroy();
     }
 
-    private void executeRequest(Element request) throws IOException, ServletException,
-            DocumentParseException
+    private void executeRequest(Element request) throws IOException, DocumentParseException
     {
         Cookie[] oldRequestCookies = (_request == null ? null : _request.getCookies());
 

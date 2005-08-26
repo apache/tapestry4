@@ -30,7 +30,9 @@ import org.xml.sax.SAXParseException;
 
 public class DocumentParseException extends ApplicationRuntimeException
 {
-    public DocumentParseException(String message)
+    private static final long serialVersionUID = 4630222650675402789L;
+
+	public DocumentParseException(String message)
     {
         this(message, (Resource) null);
     }

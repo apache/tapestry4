@@ -23,7 +23,9 @@ package org.apache.tapestry.vlib.ejb;
 
 public class RegistrationException extends Exception
 {
-    private Throwable _rootCause;
+    private static final long serialVersionUID = 1359775792320102947L;
+    
+	private Throwable _rootCause;
 
     public RegistrationException(Throwable rootCause)
     {

@@ -23,7 +23,9 @@ package org.apache.tapestry.vlib.ejb;
 
 public class BorrowException extends Exception
 {
-    public BorrowException(String message)
+    private static final long serialVersionUID = 7761447010967099141L;
+
+	public BorrowException(String message)
     {
         super(message);
     }

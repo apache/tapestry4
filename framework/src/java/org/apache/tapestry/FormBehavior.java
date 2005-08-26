@@ -14,11 +14,9 @@
 
 package org.apache.tapestry;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.form.FormEventType;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.valid.ValidationConstants;
 
 /**
  * Common interface extended by {@link org.apache.tapestry.IForm}&nbsp;and

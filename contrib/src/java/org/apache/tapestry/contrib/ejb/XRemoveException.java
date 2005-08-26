@@ -25,7 +25,9 @@ import javax.ejb.RemoveException;
 
 public class XRemoveException extends RemoveException
 {
-    private Throwable rootCause;
+    private static final long serialVersionUID = -8940644648555335217L;
+    
+	private Throwable rootCause;
 
     public XRemoveException(String message)
     {

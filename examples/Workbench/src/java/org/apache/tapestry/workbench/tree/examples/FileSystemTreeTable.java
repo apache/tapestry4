@@ -156,7 +156,9 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
             m_arrTableColumns = new ArrayList();
             m_arrTableColumns.add(new SimpleTableColumn("Date", true)
             {
-                public Object getColumnValue(Object objValue)
+                private static final long serialVersionUID = -8211004113105081255L;
+
+				public Object getColumnValue(Object objValue)
                 {
                     TreeRowObject objRowObject = (TreeRowObject) objValue;
                     //SFObject objSFObject = (SFObject)objRowObject.getTreeNode();

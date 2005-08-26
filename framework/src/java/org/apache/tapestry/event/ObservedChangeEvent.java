@@ -27,7 +27,9 @@ import org.apache.tapestry.IComponent;
 
 public class ObservedChangeEvent extends EventObject
 {
-    private IComponent _component;
+    private static final long serialVersionUID = -7693394232554811975L;
+
+	private IComponent _component;
 
     private String _propertyName;
 

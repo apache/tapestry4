@@ -29,6 +29,8 @@ import org.apache.hivemind.ApplicationRuntimeException;
 
 public class RedirectException extends ApplicationRuntimeException
 {
+	private static final long serialVersionUID = -9215837473156146010L;
+	
 	private String _redirectLocation;
 
 	public RedirectException(String redirectLocation)

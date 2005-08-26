@@ -215,5 +215,6 @@ public class LocalizedPropertiesLoader
 
     private static class IgnoreCharacterException extends Exception 
     {
+		private static final long serialVersionUID = 8366308710256427596L;
     }    
 }

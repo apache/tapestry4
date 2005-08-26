@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.tapestry.valid.ValidationConstants;
-
 /**
  * Object that provides support to objects that implement
  * {@link org.apache.tapestry.form.FormComponentContributor}. For the moment, at least, this is all

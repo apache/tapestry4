@@ -23,7 +23,9 @@ import org.apache.tapestry.util.ComponentAddress;
 /**
  * @author ceco
  */
-public class TreeTableColumn extends SimpleTableColumn {
+public class TreeTableColumn extends SimpleTableColumn
+{
+	private static final long serialVersionUID = -8046804468741132535L;
 
 	/**
 	 * @param arg0

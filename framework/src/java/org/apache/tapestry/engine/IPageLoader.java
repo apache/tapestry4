@@ -16,7 +16,6 @@ package org.apache.tapestry.engine;
 
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;

@@ -34,7 +34,9 @@ import org.apache.tapestry.valid.ValidatorException;
  */
 public class MockDelegate implements IValidationDelegate
 {
-    private IFormComponent _component;
+    private static final long serialVersionUID = -1940135823929783031L;
+
+	private IFormComponent _component;
 
     private String _input;
 

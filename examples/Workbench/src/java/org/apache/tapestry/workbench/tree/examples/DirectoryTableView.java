@@ -91,7 +91,9 @@ public abstract class DirectoryTableView extends BaseComponent implements PageDe
             ArrayList arrColumnsList = new ArrayList();
             arrColumnsList.add(new SimpleTableColumn("Name", true)
             {
-                public Object getColumnValue(Object objValue)
+                private static final long serialVersionUID = -5394217017984056107L;
+
+				public Object getColumnValue(Object objValue)
                 {
                     SFObject objSFObject = (SFObject) objValue;
                     return objSFObject.getName();
@@ -100,7 +102,9 @@ public abstract class DirectoryTableView extends BaseComponent implements PageDe
 
             arrColumnsList.add(new SimpleTableColumn("Date", true)
             {
-                public Object getColumnValue(Object objValue)
+                private static final long serialVersionUID = -3258043732869364037L;
+
+				public Object getColumnValue(Object objValue)
                 {
                     SFObject objSFObject = (SFObject) objValue;
                     return objSFObject.getDate();

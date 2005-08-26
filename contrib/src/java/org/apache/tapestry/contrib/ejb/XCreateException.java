@@ -26,7 +26,9 @@ import javax.ejb.CreateException;
 
 public class XCreateException extends CreateException
 {
-    private Throwable rootCause;
+    private static final long serialVersionUID = 6807032467099102587L;
+    
+	private Throwable rootCause;
 
     public XCreateException(String message)
     {

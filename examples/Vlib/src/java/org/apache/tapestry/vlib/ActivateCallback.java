@@ -27,7 +27,9 @@ import org.apache.tapestry.callback.ICallback;
 
 public class ActivateCallback implements ICallback
 {
-    private String _pageName;
+    private static final long serialVersionUID = 931074851273839081L;
+    
+	private String _pageName;
 
     public ActivateCallback(IActivate page)
     {

@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IActionListener;

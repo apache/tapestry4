@@ -38,7 +38,9 @@ import org.apache.tapestry.IRequestCycle;
  */
 public class ComponentAddress implements Serializable
 {
-    private String _pageName;
+    private static final long serialVersionUID = 533068199722072804L;
+
+	private String _pageName;
 
     private String _idPath;
 

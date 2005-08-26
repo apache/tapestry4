@@ -16,7 +16,6 @@ package org.apache.tapestry;
 
 import java.util.List;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.engine.IPropertySource;

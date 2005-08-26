@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+//         http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,53 +23,54 @@ import org.apache.tapestry.contrib.tree.model.ITreeNode;
 
 public class FileSystem implements IFileSystemTreeNode
 {
-
-  private transient AssetsHolder m_objAssetsHolder = null;
+    private static final long serialVersionUID = -6214030851378993747L;
+    
+	private transient AssetsHolder m_objAssetsHolder = null;
     /** @associates <{Drive}>
      * @supplierCardinality 0..*
-     * @link aggregation*/
-    
-  private Vector m_vDrives;
+     * @link aggregation
+     */
+    private Vector m_vDrives;
 
-  public FileSystem()
-  {
-    //initDrives();
-  }
-
-  private void initDrives()
-  {
-    m_vDrives = new Vector();
-    File[] arrFile = File.listRoots();
-
-    if (arrFile != null)
-      for(int i=0; i<arrFile.length; i++)
-      {
-        File objFile = arrFile[i];
-        boolean bFloppy = objFile.getAbsolutePath().startsWith("A:") || objFile.getAbsolutePath().startsWith("B:");
-        if(!bFloppy)
-            m_vDrives.addElement(new Drive(this, objFile));
-      }
-  }
-
-  public Vector getDrives()
-  {
-  	if(m_vDrives == null){
-  		initDrives();
-  	}
-    return m_vDrives;
-  }
-  public int getChildNumber(Object objChild)
-  {
-    for(int i=0;i<m_vDrives.size();i++)
+    public FileSystem()
     {
-      Object objChildDrive = m_vDrives.elementAt(i);
-      if(objChildDrive.equals(objChild))
-      {
-        return i;
-      }
+        //initDrives();
     }
-    return -1;
-  }
+
+    private void initDrives()
+    {
+        m_vDrives = new Vector();
+        File[] arrFile = File.listRoots();
+
+        if (arrFile != null)
+            for(int i=0; i<arrFile.length; i++)
+            {
+                File objFile = arrFile[i];
+                boolean bFloppy = objFile.getAbsolutePath().startsWith("A:") || objFile.getAbsolutePath().startsWith("B:");
+                if(!bFloppy)
+                        m_vDrives.addElement(new Drive(this, objFile));
+            }
+    }
+
+    public Vector getDrives()
+    {
+    	if(m_vDrives == null){
+    		initDrives();
+    	}
+        return m_vDrives;
+    }
+    public int getChildNumber(Object objChild)
+    {
+        for(int i=0;i<m_vDrives.size();i++)
+        {
+            Object objChildDrive = m_vDrives.elementAt(i);
+            if(objChildDrive.equals(objChild))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
 	/**
 	 * @see org.apache.tapestry.contrib.tree.model.ITreeNode#containsChild(ITreeNode)
 	 */

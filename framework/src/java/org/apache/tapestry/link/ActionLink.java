@@ -16,7 +16,6 @@ package org.apache.tapestry.link;
 
 import org.apache.tapestry.IAction;
 import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RenderRewoundException;
 import org.apache.tapestry.Tapestry;

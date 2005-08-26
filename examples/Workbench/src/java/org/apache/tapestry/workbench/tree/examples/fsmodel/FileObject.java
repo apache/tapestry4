@@ -20,8 +20,11 @@ import java.util.Collection;
 
 import org.apache.tapestry.contrib.tree.model.ITreeNode;
 
-public class FileObject extends SFObject {
-    private long m_lSize;
+public class FileObject extends SFObject
+{
+    private static final long serialVersionUID = -3267574534008265259L;
+    
+	private long m_lSize;
 
     public FileObject(ITreeNode objParent, File objFile) {
         super(objParent, objFile);

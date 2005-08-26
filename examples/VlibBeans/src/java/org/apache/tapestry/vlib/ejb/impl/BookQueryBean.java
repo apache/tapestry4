@@ -43,8 +43,9 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 public class BookQueryBean extends OperationsBean
 {
-
-    /**
+    private static final long serialVersionUID = 8782046868254488388L;
+    
+	/**
      * Stores the results from the most recent query.
      */
 

@@ -15,7 +15,6 @@
 package org.apache.tapestry.components;
 
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 

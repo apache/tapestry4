@@ -27,7 +27,6 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.link.DirectLink;
 import org.apache.tapestry.parse.CloseToken;
 import org.apache.tapestry.parse.ComponentTemplate;
 import org.apache.tapestry.parse.LocalizationToken;

@@ -31,7 +31,9 @@ import org.apache.hivemind.ApplicationRuntimeException;
 
 public class StaleSessionException extends ApplicationRuntimeException
 {
-    private transient IPage _page;
+    private static final long serialVersionUID = 6733303549871198597L;
+    
+	private transient IPage _page;
     private String _pageName;
 
     public StaleSessionException()

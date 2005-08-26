@@ -47,7 +47,9 @@ import org.apache.tapestry.contrib.ejb.XEJBException;
 
 public class KeyAllocatorBean implements SessionBean
 {
-    private static final String PROPERTY_NAME = "next-key";
+    private static final long serialVersionUID = -6783018767284081244L;
+
+	private static final String PROPERTY_NAME = "next-key";
 
     /**
      * List of Integer instances; these are keys acquired from the database.

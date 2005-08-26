@@ -20,11 +20,9 @@ import java.util.Locale;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,13 +35,9 @@ import org.apache.hivemind.impl.RegistryBuilder;
 import org.apache.hivemind.impl.StrictErrorHandler;
 import org.apache.hivemind.impl.XmlModuleDescriptorProvider;
 import org.apache.hivemind.util.ContextResource;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.services.ServletRequestServicer;
-import org.apache.tapestry.spec.ApplicationSpecification;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
-
-import com.sun.jndi.ldap.pool.Pool;
 
 /**
  * Links a servlet container with a Tapestry application. The servlet has some responsibilities
@@ -77,7 +71,9 @@ import com.sun.jndi.ldap.pool.Pool;
 
 public class ApplicationServlet extends HttpServlet
 {
-    /**
+    private static final long serialVersionUID = -8046042689991538059L;
+
+	/**
      * Prefix used to store the HiveMind Registry into the ServletContext. This string is suffixed
      * with the servlet name (in case multiple Tapestry applications are executing within a single
      * web application).
@@ -244,7 +240,7 @@ public class ApplicationServlet extends HttpServlet
      * @since 2.3
      */
 
-    protected ClassResolver createClassResolver() throws ServletException
+    protected ClassResolver createClassResolver()
     {
         return new DefaultClassResolver();
     }

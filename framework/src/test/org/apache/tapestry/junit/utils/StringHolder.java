@@ -18,7 +18,9 @@ import java.io.Serializable;
 
 public class StringHolder implements Serializable
 {
-    private String _string;
+    private static final long serialVersionUID = 2681665795452343714L;
+    
+	private String _string;
 
     public StringHolder(String string)
     {

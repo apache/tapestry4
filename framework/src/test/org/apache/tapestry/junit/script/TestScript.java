@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.junit.script;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +55,7 @@ public class TestScript extends TapestryTestCase
         return result;
     }
 
-    private IScript read(String file) throws IOException, DocumentParseException
+    private IScript read(String file) throws DocumentParseException
     {
         ClassResolver resolver = new DefaultClassResolver();
         ScriptParser parser = new ScriptParser(resolver, createExpressionEvaluator(), null);
@@ -69,7 +68,7 @@ public class TestScript extends TapestryTestCase
         return parser.parse(scriptLocation);
     }
 
-    private IScript execute(String file, Map symbols) throws DocumentParseException, IOException
+    private IScript execute(String file, Map symbols) throws DocumentParseException
     {
         IScript script = read(file);
 

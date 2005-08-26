@@ -20,7 +20,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -190,7 +189,7 @@ public class StatementAssembly
             return;
         }
 
-        Calendar calendar = GregorianCalendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
 
         calendar.setTime(date);
         calendar.set(Calendar.MILLISECOND, 0);

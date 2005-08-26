@@ -16,7 +16,6 @@ package org.apache.tapestry;
 
 import java.util.Locale;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageAttachListener;
 import org.apache.tapestry.event.PageBeginRenderListener;

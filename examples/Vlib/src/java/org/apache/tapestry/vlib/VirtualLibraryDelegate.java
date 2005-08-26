@@ -29,7 +29,9 @@ import org.apache.tapestry.valid.ValidationDelegate;
 
 public class VirtualLibraryDelegate extends ValidationDelegate
 {
-    public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
+    private static final long serialVersionUID = -1295233610266112824L;
+
+	public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
     {
         if (isInError(component))
         {

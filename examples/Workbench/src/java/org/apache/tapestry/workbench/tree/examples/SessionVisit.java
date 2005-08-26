@@ -18,4 +18,5 @@ import java.io.Serializable;
 
 public class SessionVisit implements Serializable
 {
+	private static final long serialVersionUID = 4805064665115445945L;
 }

@@ -28,7 +28,9 @@ import org.apache.hivemind.Location;
 
 public class BindingException extends ApplicationRuntimeException
 {
-    private transient IBinding _binding;
+    private static final long serialVersionUID = 1336659143140967861L;
+    
+	private transient IBinding _binding;
 
     public BindingException(String message, IBinding binding)
     {

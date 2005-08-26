@@ -25,7 +25,9 @@ import org.apache.tapestry.IRender;
 
 public class ValidatorException extends Exception
 {
-    private IRender _errorRenderer;
+    private static final long serialVersionUID = 2451683137746501377L;
+
+	private IRender _errorRenderer;
 
     private ValidationConstraint _constraint;
 

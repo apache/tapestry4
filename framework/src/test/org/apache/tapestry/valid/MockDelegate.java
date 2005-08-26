@@ -27,8 +27,9 @@ import org.apache.tapestry.form.IFormComponent;
  */
 public class MockDelegate extends ValidationDelegate
 {
+    private static final long serialVersionUID = -9197298078385854706L;
 
-    public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
+	public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
     {
         writer.print("{LABEL-PREFIX}");
     }

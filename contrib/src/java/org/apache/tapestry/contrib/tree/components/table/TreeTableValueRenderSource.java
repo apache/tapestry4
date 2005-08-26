@@ -27,7 +27,8 @@ import org.apache.tapestry.util.ComponentAddress;
  */
 public class TreeTableValueRenderSource implements ITableRendererSource
 {
-
+	private static final long serialVersionUID = 3237638859391458116L;
+	
 	private ComponentTableRendererSource m_objComponentRenderer;
 	private ComponentAddress m_objComponentAddress = null;
 
