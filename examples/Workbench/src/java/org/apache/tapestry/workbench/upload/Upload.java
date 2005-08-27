@@ -15,6 +15,7 @@
 package org.apache.tapestry.workbench.upload;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.form.StringPropertySelectionModel;
 import org.apache.tapestry.html.BasePage;
@@ -36,19 +37,20 @@ public abstract class Upload extends BasePage
     public abstract String getBytesPerLine();
 
     public abstract IValidationDelegate getDelegate();
-    
+
     private static final String[] bytesPerLineOptions = new String[]
     { "8", "16", "24", "32", "40", "48" };
 
     private IPropertySelectionModel bplModel;
 
-    public void formSubmit(IRequestCycle cycle)
+    @InjectPage("UploadResults")
+    public abstract UploadResults getUploadResults();
+
+    public void doSubmit()
     {
-        if (getDelegate().getHasErrors()) return;
-        
         IUploadFile file = getFile();
 
-        UploadResults results = (UploadResults) cycle.getPage("UploadResults");
+        UploadResults results = getUploadResults();
 
         results.activate(file, isShowAscii(), Integer.parseInt(getBytesPerLine()));
     }

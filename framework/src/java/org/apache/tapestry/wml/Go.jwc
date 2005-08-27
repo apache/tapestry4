@@ -33,17 +33,17 @@
         </description>
     </parameter>
 
-    <parameter name="listener">
-        <description>
-            Object invoked when the form is submitted, after all form components have responded
-            to the submission.
-        </description>
-    </parameter>
-    
+<parameter name="success">
+  <description>
+    Object invoked when the form is submitted normally (not a cancel or a refresh) and
+    the validation delegate contains no errors.
+  </description>
+</parameter>    
+
   <parameter name="cancel">
       <description>
           Object invoked when the form is cancelled (a special type of form submission).
-          The oncancel listener (if any) overrides the standard listener. Other properties
+          The cancel listener (if any) overrides the standard listener. Other properties
           will not be affected by the rewind.
        </description>
    </parameter>
@@ -51,10 +51,17 @@
   <parameter name="refresh">
       <description>
           Object invoked when the form is refreshed (a special type of form submission).
-          The onrefresh listener (if any) overrides the standard listener.
+          The refresh listener (if any) overrides the standard listener.
           Other properties managed by enclosed components will be updated.
       </description>
   </parameter>    
+
+    <parameter name="listener">
+        <description>
+            Default listener used when no other listener is invoked.
+        </description>
+    </parameter>
+
 
     <parameter name="stateful" default-value="true">
         <description>

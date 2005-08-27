@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IActionListener;
@@ -257,8 +258,10 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             result = getCancel();
         else if (mode.equals(FormConstants.SUBMIT_REFRESH))
             result = getRefresh();
+        else if (!getDelegate().getHasErrors())
+            result = getSuccess();
 
-        // If not cancel or refresh, or the corresponding listener
+        // If not success, cancel or refresh, or the corresponding listener
         // is itself null, then use the default listener
         // (which may be null as well!).
 
@@ -365,9 +368,12 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      */
 
     public abstract IValidationDelegate getDelegate();
-
+    
     /** listener parameter, may be null */
     public abstract IActionListener getListener();
+
+    /** success parameter, may be null */
+    public abstract IActionListener getSuccess();
 
     /** cancel parameter, may be null */
     public abstract IActionListener getCancel();

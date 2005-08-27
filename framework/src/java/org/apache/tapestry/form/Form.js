@@ -87,7 +87,7 @@ Tapestry.set_focus = function (field)
 {
 	if (typeof field == "string")
 	  field = this.find(field);
-	  
+	
 	if (field.focus)
 		field.focus();
     

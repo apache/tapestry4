@@ -114,7 +114,7 @@ Below is an excerpt from a Login page, that collects a user id and a password.
 <p>Login.html: (partial)</p>
 
 <source><![CDATA[
-<form jwcid="form@Form" listener="listener:doLogin">
+<form jwcid="form@Form" success="listener:doLogin">
   <table>
     <tr>
       <th>User id:</th>

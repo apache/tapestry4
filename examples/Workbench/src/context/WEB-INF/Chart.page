@@ -23,7 +23,8 @@
 
   <property name="plotValues" persist="session"/>
   
-  <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
+  <bean name="delegate" property="delegate"
+        class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
 
   <component id="showError" type="ShowError">
      <binding name="delegate" value="bean:delegate"/>
