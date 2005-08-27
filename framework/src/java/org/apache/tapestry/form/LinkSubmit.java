@@ -31,6 +31,7 @@ import org.apache.tapestry.TapestryUtils;
 
 public abstract class LinkSubmit extends AbstractSubmit
 {
+
     /**
      * The name of an {@link org.apache.tapestry.IRequestCycle}attribute in which the current
      * submit link is stored. LinkSubmits do not nest.
@@ -45,8 +46,8 @@ public abstract class LinkSubmit extends AbstractSubmit
      */
     public static final String ATTRIBUTE_FUNCTION_NAME = "org.apache.tapestry.form.LinkSubmit_function";
 
-	protected boolean isClicked(IRequestCycle cycle, String name)
-	{
+    protected boolean isClicked(IRequestCycle cycle, String name)
+    {
         // How to know which Submit link was actually
         // clicked? When submitted, it sets its elementId into a hidden field
         String value = cycle.getParameter("_linkSubmit");
@@ -54,23 +55,22 @@ public abstract class LinkSubmit extends AbstractSubmit
         // If the value isn't the elementId of this component, then this link wasn't
         // selected.
         return value != null && value.equals(name);
-	}
-    
-	/**
-     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+    }
+
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         boolean disabled = isDisabled();
-        
+
         IMarkupWriter wrappedWriter;
-        
+
         if (!disabled)
         {
-            PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(
-                    cycle,
-                    this);
-    
+            PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
+
             // make sure the submit function is on the page (once)
             if (cycle.getAttribute(ATTRIBUTE_FUNCTION_NAME) == null)
             {
@@ -78,7 +78,7 @@ public abstract class LinkSubmit extends AbstractSubmit
                         .addBodyScript("function submitLink(form, elementId) { form._linkSubmit.value = elementId; if (form.onsubmit == null || form.onsubmit()) form.submit(); }");
                 cycle.setAttribute(ATTRIBUTE_FUNCTION_NAME, this);
             }
-    
+
             IForm form = getForm();
             String formName = form.getName();
 
@@ -91,11 +91,12 @@ public abstract class LinkSubmit extends AbstractSubmit
                 writer.attribute("name", "_linkSubmit");
                 cycle.setAttribute(formHiddenFieldAttributeName, this);
             }
-            
+
             writer.begin("a");
-            writer.attribute("href", "javascript:submitLink(document." + formName + ",\"" + getName()
-                    + "\");");
-        
+            renderIdAttribute(writer, cycle);
+            writer.attribute("href", "javascript:submitLink(Tapestry.find('" + formName + "', '"
+                    + getName() + "');");
+
             // Allow the wrapped components a chance to render.
             // Along the way, they may interact with this component
             // and cause the name variable to get set.
@@ -108,12 +109,12 @@ public abstract class LinkSubmit extends AbstractSubmit
 
         if (!disabled)
         {
-            // Generate additional attributes from informal parameters.     
+            // Generate additional attributes from informal parameters.
             renderInformalParameters(writer, cycle);
-        
+
             // Dump in HTML provided by wrapped components
             wrappedWriter.close();
-        
+
             // Close the <a> tag
             writer.end();
         }
@@ -136,6 +137,6 @@ public abstract class LinkSubmit extends AbstractSubmit
      */
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
-        cycle.removeAttribute(ATTRIBUTE_NAME);          
+        cycle.removeAttribute(ATTRIBUTE_NAME);
     }
 }

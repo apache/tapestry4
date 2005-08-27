@@ -16,6 +16,8 @@ package org.apache.tapestry.form;
 
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.components.BaseComponentTestCase;
+import org.apache.tapestry.valid.IValidationDelegate;
+import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.Form}. Most of the testing is, still alas, done with
@@ -88,19 +90,54 @@ public class TestForm extends BaseComponentTestCase
         verifyControls();
     }
 
-    public void testFindListenerNormal()
+    public void testFindListenerSuccess()
     {
         IActionListener cancel = newListener();
         IActionListener refresh = newListener();
+        IActionListener success = newListener();
         IActionListener listener = newListener();
+
+        IValidationDelegate delegate = newDelegate(false);
 
         replayControls();
 
         Form form = (Form) newInstance(Form.class, new Object[]
-        { "listener", listener, "cancel", cancel, "refresh", refresh });
+        { "delegate", delegate, "success", success, "cancel", cancel, "refresh", refresh,
+                "listener", listener });
+
+        assertSame(success, form.findListener(FormConstants.SUBMIT_NORMAL));
+
+        verifyControls();
+    }
+
+    public void testFindListenerValidationErrors()
+    {
+        IActionListener cancel = newListener();
+        IActionListener refresh = newListener();
+        IActionListener success = newListener();
+        IActionListener listener = newListener();
+
+        IValidationDelegate delegate = newDelegate(true);
+
+        replayControls();
+
+        Form form = (Form) newInstance(Form.class, new Object[]
+        { "delegate", delegate, "success", success, "cancel", cancel, "refresh", refresh,
+                "listener", listener });
 
         assertSame(listener, form.findListener(FormConstants.SUBMIT_NORMAL));
 
         verifyControls();
+    }
+
+    private IValidationDelegate newDelegate(boolean hasErrors)
+    {
+        MockControl control = newControl(IValidationDelegate.class);
+        IValidationDelegate delegate = (IValidationDelegate) control.getMock();
+
+        delegate.getHasErrors();
+        control.setReturnValue(hasErrors);
+
+        return delegate;
     }
 }

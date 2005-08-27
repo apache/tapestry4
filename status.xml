@@ -83,6 +83,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-596">Form: have a success listener that is invoked only when the form is submitted normally and the delegate records no errors</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-589">Deprecated IPage methods are not marked as such in AbstractPage</action>
       <action type="update" dev="PF">Refactored ButtonLinkRenderer to the contrib library</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-596">Form: have a success listener that is invoked only when the form is submitted normally and the delegate records no errors</action>
     </release>
     <release version="4.0-beta-4" date="Aug 10 2005">
       <action type="fix" dev="HLS">Add getComponent() method to IComponent.</action>

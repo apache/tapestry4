@@ -16,7 +16,6 @@ package org.apache.tapestry.workbench.fields;
 
 import java.math.BigDecimal;
 
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
 
@@ -46,16 +45,9 @@ public abstract class Fields extends BasePage
 
     public static final int STRING_MIN_LENGTH = 3;
 
-    public void formSubmit(IRequestCycle cycle)
+    public String doSubmit()
     {
-        IValidationDelegate delegate = getDelegate();
-
-        // If no error message, advance to the Results page,
-
-        // otherwise, stay here and show the error message.
-
-        if (!delegate.getHasErrors())
-            cycle.activate("FieldsResults");
+        return "FieldsResults";
     }
 
     /**

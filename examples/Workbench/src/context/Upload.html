@@ -13,8 +13,8 @@ be freely mixed with other components in a form.</p>
 
 <span jwcid="@ShowError" delegate="bean:delegate"/>
 
-<form jwcid="@Form" listener="listener:formSubmit" delegate="bean:delegate" clientValidationEnabled="ognl:clientValidationEnabled">
-
+<form jwcid="@Form" success="listener:doSubmit" delegate="bean:delegate" clientValidationEnabled="ognl:clientValidationEnabled">
+  
 <table class="form">
 	<tr>
 		<th><span jwcid="@FieldLabel" field="component:inputFile"/>:</th>

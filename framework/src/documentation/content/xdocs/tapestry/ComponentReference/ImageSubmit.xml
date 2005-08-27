@@ -214,7 +214,7 @@ HTML template:
 </p>
 
 <source><![CDATA[
-<form jwcid="form@Form" listener="listener:doSubmit">
+<form jwcid="form@Form" success="listener:doSubmit">
 <table>
   <tr>
     <th>User name:</th>

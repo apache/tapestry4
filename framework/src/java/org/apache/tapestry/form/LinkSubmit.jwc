@@ -28,7 +28,8 @@
   <parameter name="disabled"/>
   <parameter name="selected"/>
   <parameter name="tag"/>
-  
+  <parameter name="id" property="idParameter" default-value="id"/>
+    
   <parameter name="listener">
       <description>
           A listener that is notified if this component is triggered.

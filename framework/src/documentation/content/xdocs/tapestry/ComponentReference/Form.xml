@@ -59,13 +59,14 @@
       <td>Method used by the form when it is submitted.</td>
   </tr>
 
+  
   <tr>
-    <td>listener</td> <td>&IActionListener;</td> <td>in</td> <td>no</td>
-    <td/> 
-    <td>Default listener to be invoked when the form is submitted. Invoked
-      after the form has rewond (all enclosed components have read query parameters
-      and updated server-side properties), and after any listeners related
-      to submit components (&Submit;, &ImageSubmit;, etc.) have been invoked.</td>
+   <td>success</td> <td>&IActionListener;</td> <td>in</td> <td>no</td>
+    <td/>
+    <td>Listener invoked when the form is submitted normally (not a cancel or
+      a refresh) and the validation delegate indicates no errors.  If the delegate
+      indicates errors, then the listener parameter (if non-null) is used instead.</td>
+    
   </tr>
   
   <tr>
@@ -86,6 +87,13 @@
       occurs on the server side. If no refresh listener is provided, then the normal listener
       will be used.
     </td>
+  </tr>
+
+  <tr>
+    <td>listener</td> <td>&IActionListener;</td> <td>in</td> <td>no</td>
+    <td/> 
+    <td>Default listener to be invoked when the form is submitted. Invoked only if
+      another listener (success, cancel or refresh) is not invoked.</td>
   </tr>
   
   <tr>
