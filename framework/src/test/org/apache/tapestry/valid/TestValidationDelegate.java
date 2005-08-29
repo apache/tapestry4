@@ -341,4 +341,34 @@ public class TestValidationDelegate extends BaseValidatorTestCase
 
         verifyControls();
     }
+
+    public void testRegistryForFocus()
+    {
+        IFormComponent fred = newFieldWithClientId("fred");
+        IFormComponent barney = newFieldWithClientId("barney");
+        IFormComponent wilma = newField();
+
+        ValidationDelegate vd = new ValidationDelegate();
+
+        replayControls();
+
+        vd.registerForFocus(fred, ValidationConstants.NORMAL_FIELD);
+        vd.registerForFocus(barney, ValidationConstants.REQUIRED_FIELD);
+        vd.registerForFocus(wilma, ValidationConstants.NORMAL_FIELD);
+
+        assertEquals("barney", vd.getFocusField());
+
+        verifyControls();
+    }
+
+    private IFormComponent newFieldWithClientId(String clientId)
+    {
+        MockControl control = newControl(IFormComponent.class);
+        IFormComponent field = (IFormComponent) control.getMock();
+
+        field.getClientId();
+        control.setReturnValue(clientId);
+
+        return field;
+    }
 }
