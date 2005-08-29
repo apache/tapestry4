@@ -157,13 +157,7 @@ public class ValidatorFactoryImpl implements ValidatorFactory
             throw new ApplicationRuntimeException(ValidatorMessages
                     .noValueOrMessageForBean(beanName));
 
-        Object bean = component.getBeans().getBean(beanName);
-
-        if (bean instanceof Validator)
-            return (Validator) bean;
-
-        throw new ApplicationRuntimeException(ValidatorMessages.beanNotValidator(beanName), bean,
-                null, null);
+        return new BeanValidatorWrapper(component, beanName);
     }
 
     public void setValidators(Map validators)

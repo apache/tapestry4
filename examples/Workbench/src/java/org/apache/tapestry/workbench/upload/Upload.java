@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.workbench.upload;
 
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.form.StringPropertySelectionModel;
