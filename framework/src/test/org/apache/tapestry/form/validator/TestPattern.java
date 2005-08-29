@@ -117,7 +117,7 @@ public class TestPattern extends BaseValidatorTestCase
         { "Fred" }, "default message");
 
         context
-                .addSubmitHandler("function(event) { Tapestry.validate_regexp(event, 'myfield', '"
+                .addSubmitHandler("function(event) { Tapestry.validate_regex(event, 'myfield', '"
                         + pattern + "', 'default message'); }");
 
         replayControls();
@@ -152,7 +152,7 @@ public class TestPattern extends BaseValidatorTestCase
                 "custom\\message");
 
         context
-                .addSubmitHandler("function(event) { Tapestry.validate_regexp(event, 'myfield', '"
+                .addSubmitHandler("function(event) { Tapestry.validate_regex(event, 'myfield', '"
                         + pattern + "', 'custom\\\\message'); }");
 
         replayControls();

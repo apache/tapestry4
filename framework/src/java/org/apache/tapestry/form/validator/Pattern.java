@@ -77,7 +77,7 @@ public class Pattern extends BaseValidator
         String pattern = _matcher.getEscapedPatternString(_pattern);
         String message = buildMessage(context, field);
 
-        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.validate_regexp(event, '");
+        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.validate_regex(event, '");
         buffer.append(field.getClientId());
         buffer.append("', '");
         buffer.append(pattern);
