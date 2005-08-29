@@ -342,7 +342,7 @@ public class TestValidationDelegate extends BaseValidatorTestCase
         verifyControls();
     }
 
-    public void testRegistryForFocus()
+    public void testRegisterForFocus()
     {
         IFormComponent fred = newFieldWithClientId("fred");
         IFormComponent barney = newFieldWithClientId("barney");
