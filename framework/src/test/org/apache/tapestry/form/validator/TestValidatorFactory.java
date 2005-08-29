@@ -22,6 +22,8 @@ import java.util.Map;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.easymock.MockControl;
 
@@ -297,11 +299,17 @@ public class TestValidatorFactory extends TapestryTestCase
         return component;
     }
 
-    public void testBeanReference()
+    public void testBeanReference() throws Exception
     {
         Validator validator = newValidator();
         IBeanProvider provider = newBeanProvider("fred", validator);
         IComponent component = newComponent(provider);
+
+        IFormComponent field = newField();
+        ValidationMessages messages = newMessages();
+        Object value = new Object();
+
+        validator.validate(field, messages, value);
 
         replayControls();
 
@@ -311,9 +319,22 @@ public class TestValidatorFactory extends TapestryTestCase
         List validators = vf.constructValidatorList(component, "$fred");
 
         assertEquals(1, validators.size());
-        assertSame(validator, validators.get(0));
+
+        Validator wrapper = (Validator) validators.get(0);
+
+        wrapper.validate(field, messages, value);
 
         verifyControls();
+    }
+
+    private ValidationMessages newMessages()
+    {
+        return (ValidationMessages) newMock(ValidationMessages.class);
+    }
+
+    private IFormComponent newField()
+    {
+        return (IFormComponent) newMock(IFormComponent.class);
     }
 
     public void testBeanReferenceNotValidator()
@@ -329,7 +350,12 @@ public class TestValidatorFactory extends TapestryTestCase
 
         try
         {
-            vf.constructValidatorList(component, "$fred");
+            List l = vf.constructValidatorList(component, "$fred");
+
+            Validator wrapper = (Validator) l.get(0);
+
+            wrapper.getAcceptsNull();
+
             unreachable();
         }
         catch (ApplicationRuntimeException ex)

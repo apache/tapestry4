@@ -17,7 +17,7 @@ doesn't support JavaScript).
 
 <span jwcid="showError"/>
 
-<form jwcid="form@Form" success="listener:formSubmit" delegate="bean:delegate" clientValidationEnabled="ognl:clientValidationEnabled">
+<form jwcid="form@Form" success="listener:doSubmit" delegate="bean:delegate" clientValidationEnabled="ognl:clientValidationEnabled">
 
 <table class="form">
 	<tr>
@@ -49,6 +49,11 @@ doesn't support JavaScript).
   <tr>
   	<th><label jwcid="@FieldLabel" accesskey="e" field="component:inputEmail"/></th>
   	<td><input jwcid="inputEmail"/></td>
+  </tr>
+  
+  <tr>
+    <th><label jwcid="@FieldLabel" accessKey="z" field="component:zipCode"/></th>
+    <td><input jwcid="zipCode"/></td>
   </tr>
 
   <tr>

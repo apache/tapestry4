@@ -60,7 +60,9 @@ public class Visit implements Serializable
     private String _emailValue;
 
     private String _textValue;
-    
+
+    private String _zipCode;
+
     public String getActiveTabName()
     {
         return _activeTabName;
@@ -165,9 +167,19 @@ public class Visit implements Serializable
     {
         return _textValue;
     }
-    
+
     public void setTextValue(String value)
     {
         _textValue = value;
+    }
+
+    public String getZipCode()
+    {
+        return _zipCode;
+    }
+
+    public void setZipCode(String zipCode)
+    {
+        _zipCode = zipCode;
     }
 }
