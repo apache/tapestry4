@@ -54,6 +54,7 @@
       <action type="update" dev="HLS" due-to="Henri Yandell">Convert Tapestry repository from CVS to SVN</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-611">Pattern validator invokes wrong client-side JavaScript function</action>      
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-610">$bean syntax for validators: binding prefix is broken</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-609">Tapestry.set_focus() seems to be passed the form components elementId (i.e. name attribute) not clientId (i.e. id attribute), which keeps focus from being set</action>
     </release>
     <release version="4.0-beta-5" date="Aug 26 2005">
       <action type="fix" dev="MB,HLS" fixes-bug="TAPESTRY-552">Improperly configured SerializableAdaptor (for DataSqueezer) prevents serialized objects from being de-serialized</action>

@@ -437,7 +437,7 @@ public class ValidationDelegate implements IValidationDelegate
     {
         if (priority > _focusPriority)
         {
-            _focusField = field.getName();
+            _focusField = field.getClientId();
             _focusPriority = priority;
         }
     }
