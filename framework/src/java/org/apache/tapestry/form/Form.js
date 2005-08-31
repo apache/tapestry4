@@ -159,8 +159,8 @@ function FormEventManager(form)
   // Inside onsubmit and onreset, "this" will be the form (how convienient)
   // so we need to carefully bridge this back to the FormEventManager instance.
   
-  form.onsubmit = function() { return this.events.submit(); };
-  form.onreset = function() { return this.events.reset(); };
+  form.onsubmit = function() { return this.events.onsubmit_handler(); };
+  form.onreset = function() { return this.events.onreset_handler(); };
   
   // Override this property when doing something more ambitious than
   // the default (which invokes window.alert(), focuses the field, and aborts
@@ -211,11 +211,11 @@ FormEventManager.prototype.invoke_handlers = function(type, eventObj)
   }
 }
 
-// addCancelListener(handler)
+// add_cancel_handler(handler)
 //
 // handler - receives notifications when the form is canceled
 
-FormEventManager.prototype.addCancelListener= function(handler)
+FormEventManager.prototype.add_cancel_handler = function(handler)
 {
   this.add_handler("cancel", handler);
 }
@@ -284,14 +284,27 @@ FormEventManager.prototype.add_postsubmit_handler = function(handler)
 
 // submit()
 //
-// Submits a form.  This is designed to be the form's onsubmit event handler, so it returns true
-// to let the form submit, or false if any of the listeners set the abort flag on the event.
-// Returns false if any listener set the event's abort flag, true otherwise.
-//
-// Invokes all pre-submit listeners, then all submit listeners, then all post-submit listeners.
+// Submits a form programatically.
 // 
 
 FormEventManager.prototype.submit = function()
+{
+	if (this.onsubmit_handler())
+	{
+	  this.form.onsubmit = null;
+	  this.form.submit();
+	}
+}
+
+// onsubmit_handler()
+//
+// The handler for the form's onsubmit event.  Invokes the presubmit, submit
+// and postsubmit handlers and returns false if any handler sets the
+// event's abort flag.  Otherwise, sets the form's submitmode to "submit"
+// and return true.
+// 
+
+FormEventManager.prototype.onsubmit_handler = function()
 {
 	var event = new FormSubmitEvent(this.form, "submit", this.invalid_field_handler);
 
@@ -354,13 +367,12 @@ FormEventManager.prototype.add_reset_handler = function(handler)
   this.add_handler("reset", handler);
 }
 
-// reset()
+// onreset_handler()
 //
-// Intended as an onreset event handler for a form.  Returns
-// true normally, or false if the event's abort flag was
-// set by a listener.
+// Handles a reset by invoking any "reset" handlers (which are rare).
+// Returns true, unless a handler sets the event.abort flag.
 
-FormEventManager.prototype.reset = function()
+FormEventManager.prototype.onreset_handler = function()
 {
   var event = new FormSubmitEvent(this.form, "reset", this.invalid_field_handler);
   

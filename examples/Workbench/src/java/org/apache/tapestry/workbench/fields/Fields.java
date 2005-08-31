@@ -16,6 +16,8 @@ package org.apache.tapestry.workbench.fields;
 
 import java.math.BigDecimal;
 
+import org.apache.tapestry.IPage;
+import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
 
@@ -45,9 +47,17 @@ public abstract class Fields extends BasePage
 
     public static final int STRING_MIN_LENGTH = 3;
 
-    public String doSubmit()
+    @InjectPage("FieldsResults")
+    public abstract FieldsResults getResultsPage();
+
+    public IPage doSubmit()
     {
-        return "FieldsResults";
+        return getResultsPage();
+    }
+
+    public void doByLink()
+    {
+        getResultsPage().setByLink(true);
     }
 
     /**
