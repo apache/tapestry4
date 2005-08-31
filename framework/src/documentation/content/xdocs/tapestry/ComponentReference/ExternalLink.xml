@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- 
-   Copyright 2004, 2005 The Apache Software Foundation
+   Copyright 2005 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -27,12 +27,11 @@
   </header>
   
   <body>
-
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
-</p>
+  
+  <p>Creates a &lt;a&gt; hyperlink to an <link href="&apiroot;/IExternalPage.html">IExternalPage</link> which may be bookmarked using the hyperlink's URL.</p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/link/ExternalLink.html">org.apache.tapestry.link.ExternalLink</link>, &DirectLink;, &GenericLink;, &PageLink;, &ServiceLink;</strong> 
 </p>
 
 <section>
@@ -42,30 +41,130 @@
   <tr> 
     <th>Name</th>
     <th>Type</th>
-	  <th>Direction</th>
+	<th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
     <th>Description</th>
   </tr>
-
-	</table>
+  <tr>
+    <td>page</td>
+    <td>String</td>
+    <td>in</td>
+    <td>yes</td>
+    <td></td>
+    <td>
+      The name of a application page to link to.
+    </td>
+  </tr>
+  <tr>
+    <td>parameters</td>
+    <td>Object or Object[] or List</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+       An array of objects to be encoded into the URL. These parameters will be passed to IExternalPage.activateExternalPage() method.
+    </td>
+  </tr>
+  <tr>
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+    <td>
+      Controls whether the link is produced. If disabled, the portion of the template the link surrounds is still rendered, but not the link itself.
+    </td>
+  </tr>
+  <tr>
+    <td>anchor</td>
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+        The name of an anchor or element to link to. The final URL will have '#' and the anchor appended to it.
+    </td>
+  </tr>
+  <tr>
+    <td>target</td>
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+         The target window to use in the link.
+    </td>
+  </tr>
+  <tr>
+    <td>renderer</td>
+    <td><link href="&apiroot;/link/ILinkRenderer.html">ILinkRenderer</link></td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+         The object which will actually render the link.
+    </td>
+  </tr>
+</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: href
 </p>
 
 </section>
 
 <section>
   <title>Examples</title>
+  <p>
+    This example illustrates a page displaying some content based on an id and a language code.
+    It contains a link to view the same content in German.
+  </p>
+<source><![CDATA[
+<a href="#" 
+   jwcid="@ExternalLink" 
+   page="ViewArticle" 
+   parameters="ognl:{articleId, 'de'}" 
+   disabled="ognl:languageCode=='de'"
+>view this article in German</a>
+
+<div jwcid="@Insert" value="ognl:content">content of the article</div>
+]]></source>
+
+<source><![CDATA[
+package com.myexample;
+
+import org.apache.tapestry.IExternalPage;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.html.BasePage;
+
+public abstract class ViewArticle extends BasePage implements IExternalPage {
+
+  public abstract Integer getArticleId();
+  public abstract void setArticleId(Integer articleId);
+  public abstract String getLanguageCode();
+  public abstract void setLanguageCode(String language);
+  
+  public void activateExternalPage(Object[] params, IRequestCycle cycle) {
+    setArticleId((Integer) params[0]);
+    setLanguageCode((String) params[1]);
+  }
+
+  public String getContent() {
+    // retrieve the content of the article for the selected language
+    
+  }
+  
+}
+]]></source>
 
 </section>
 </body>

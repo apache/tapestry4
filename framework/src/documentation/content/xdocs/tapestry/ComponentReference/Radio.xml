@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- 
-   Copyright 2004, 2005 The Apache Software Foundation
+   Copyright 2005 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -28,11 +28,14 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
-</p>
-
+  <p>Provides a HTML &lt;input type="radio"&gt; form element. The Radio component 
+  must be wrapped (possibly indirectly) inside a &RadioGroup; component.</p>
+  
+  <p>Generally the &PropertySelection; component is used in preference to 
+  the Radio and &RadioGroup;, except in special cases.</p>
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/components/Radio.html">org.apache.tapestry.components.Radio</link>, &Form;, &Option;, &PropertySelection;, &RadioGroup;, &Select;</strong> 
+
 </p>
 
 <section>
@@ -43,29 +46,57 @@
     <th>Name</th>
     <th>Type</th>
 	  <th>Direction</th>
+
     <th>Required</th> 
     <th>Default</th>
     <th>Description</th>
+  </tr>
+  <tr>
+    <td>value</td>
+    <td>Object</td>
+
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+        The value is used to determine if the radio button is initially selected (when rendering) and is the value assigned to the selected parameter when the form is submitted, if the HTML radio button is selected.
+    </td>
+  </tr>
+  <tr>
+
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+    <td>
+
+      If true, then the Radio is disabled. It will write a "disabled" attribute into its tag when rendering, and will not update its selected binding.
+      A Radio may also be disabled if its containing RadioGroup is disabled. 
+    </td>
   </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
+
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: checked, name, type
 </p>
 
 </section>
 
 <section>
   <title>Examples</title>
+  
+  <p>See &RadioGroup; for a Radio component example.</p>
 
 </section>
 </body>
