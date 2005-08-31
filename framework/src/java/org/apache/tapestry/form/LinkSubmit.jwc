@@ -53,5 +53,6 @@
   <reserved-parameter name="href"/>
   
   <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
+  <inject property="script" type="script" object="LinkSubmit.script"/>
   
 </component-specification>

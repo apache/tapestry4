@@ -21,10 +21,13 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.markup.AsciiMarkupFilter;
 import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -201,11 +204,16 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IPage newPage(String name)
     {
+        return newPage(name, 1);
+    }
+
+    protected IPage newPage(String name, int count)
+    {
         MockControl control = newControl(IPage.class);
         IPage page = (IPage) control.getMock();
 
         page.getPageName();
-        control.setReturnValue(name);
+        control.setReturnValue(name, count);
 
         return page;
     }
@@ -215,6 +223,65 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     {
         cycle.getAttribute(key);
         cyclec.setReturnValue(value);
+    }
+
+    protected IForm newForm()
+    {
+        return (IForm) newMock(IForm.class);
+    }
+
+    protected IRender newBody()
+    {
+        return new IRender()
+        {
+            public void render(IMarkupWriter writer, IRequestCycle cycle)
+            {
+                writer.print("BODY");
+            }
+        };
+    }
+
+    protected PageRenderSupport newPageRenderSupport()
+    {
+        return (PageRenderSupport) newMock(PageRenderSupport.class);
+    }
+
+    protected void trainGetSupport(IRequestCycle cycle, PageRenderSupport support)
+    {
+        trainGetAttribute(cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, support);
+    }
+
+    protected void trainGetAttribute(IRequestCycle cycle, String attributeName, Object attribute)
+    {
+        MockControl control = getControl(cycle);
+    
+        cycle.getAttribute(attributeName);
+    
+        control.setReturnValue(attribute);
+    }
+
+    protected void trainGetUniqueId(IRequestCycle cycle, String id, String uniqueId)
+    {
+        MockControl control = getControl(cycle);
+    
+        cycle.getUniqueId(id);
+        control.setReturnValue(uniqueId);
+    }
+
+    protected void trainGetIdPath(IComponent component, String idPath)
+    {
+        MockControl control = getControl(component);
+    
+        component.getIdPath();
+        control.setReturnValue(idPath);
+    }
+
+    protected void trainGetParameter(IRequestCycle cycle, String name, String value)
+    {
+        MockControl control = getControl(cycle);
+    
+        cycle.getParameter(name);
+        control.setReturnValue(value);
     }
 
 }

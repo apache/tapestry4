@@ -14,12 +14,17 @@
 
 package org.apache.tapestry.form;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.IScript;
 import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
 
 /**
@@ -39,23 +44,14 @@ public abstract class LinkSubmit extends AbstractSubmit
 
     public static final String ATTRIBUTE_NAME = "org.apache.tapestry.form.LinkSubmit";
 
-    /**
-     * The name of an {@link org.apache.tapestry.IRequestCycle}attribute in which the link submit
-     * component that generates the javascript function is stored. The function is only required
-     * once per page (containing a form with a non-disabled LinkSubmit)
-     */
-    public static final String ATTRIBUTE_FUNCTION_NAME = "org.apache.tapestry.form.LinkSubmit_function";
-
     protected boolean isClicked(IRequestCycle cycle, String name)
     {
-        // How to know which Submit link was actually
-        // clicked? When submitted, it sets its elementId into a hidden field
-        String value = cycle.getParameter("_linkSubmit");
+        String value = cycle.getParameter(name);
 
-        // If the value isn't the elementId of this component, then this link wasn't
-        // selected.
-        return value != null && value.equals(name);
+        return HiveMind.isNonBlank(value);
     }
+
+    public abstract IScript getScript();
 
     /**
      * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
@@ -65,59 +61,42 @@ public abstract class LinkSubmit extends AbstractSubmit
     {
         boolean disabled = isDisabled();
 
-        IMarkupWriter wrappedWriter;
+        IForm form = getForm();
+        String name = getName();
+
+        String hiddenId = cycle.getUniqueId(TapestryUtils
+                .convertTapestryIdToNMToken(getIdParameter()));
+
+        // Store for later access by the FieldLabel (or JavaScript).
+
+        setClientId(hiddenId);
+
+        // Add a hidden field used to identify the link that caused the submission.
+        // Client-side JavaScript will set the value to non-null when the link is clicked,
+        // then force the form to submit.
+
+        form.addHiddenValue(name, hiddenId, "");
 
         if (!disabled)
         {
             PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
 
-            // make sure the submit function is on the page (once)
-            if (cycle.getAttribute(ATTRIBUTE_FUNCTION_NAME) == null)
-            {
-                pageRenderSupport
-                        .addBodyScript("function submitLink(form, elementId) { form._linkSubmit.value = elementId; if (form.onsubmit == null || form.onsubmit()) form.submit(); }");
-                cycle.setAttribute(ATTRIBUTE_FUNCTION_NAME, this);
-            }
+            Map symbols = new HashMap();
+            symbols.put("form", form);
+            symbols.put("hiddenId", hiddenId);
 
-            IForm form = getForm();
-            String formName = form.getName();
-
-            // one hidden field per form:
-            String formHiddenFieldAttributeName = ATTRIBUTE_FUNCTION_NAME + formName;
-            if (cycle.getAttribute(formHiddenFieldAttributeName) == null)
-            {
-                writer.beginEmpty("input");
-                writer.attribute("type", "hidden");
-                writer.attribute("name", "_linkSubmit");
-                cycle.setAttribute(formHiddenFieldAttributeName, this);
-            }
+            getScript().execute(cycle, pageRenderSupport, symbols);
 
             writer.begin("a");
-            renderIdAttribute(writer, cycle);
-            writer.attribute("href", "javascript:submitLink(Tapestry.find('" + formName + "', '"
-                    + getName() + "');");
-
-            // Allow the wrapped components a chance to render.
-            // Along the way, they may interact with this component
-            // and cause the name variable to get set.
-            wrappedWriter = writer.getNestedWriter();
+            writer.attribute("href", (String) symbols.get("href"));
+            renderInformalParameters(writer, cycle);
         }
-        else
-            wrappedWriter = writer;
 
-        renderBody(wrappedWriter, cycle);
+        renderBody(writer, cycle);
 
         if (!disabled)
-        {
-            // Generate additional attributes from informal parameters.
-            renderInformalParameters(writer, cycle);
-
-            // Dump in HTML provided by wrapped components
-            wrappedWriter.close();
-
-            // Close the <a> tag
             writer.end();
-        }
+
     }
 
     /**
@@ -125,9 +104,11 @@ public abstract class LinkSubmit extends AbstractSubmit
      */
     protected void prepareForRender(IRequestCycle cycle)
     {
-        if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(Tapestry.getMessage("LinkSubmit.may-not-nest"),
-                    this, null, null);
+        IComponent outer = (IComponent) cycle.getAttribute(ATTRIBUTE_NAME);
+
+        if (outer != null)
+            throw new ApplicationRuntimeException(FormMessages.linkSubmitMayNotNest(this, outer),
+                    this, getLocation(), null);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
     }
@@ -138,5 +119,13 @@ public abstract class LinkSubmit extends AbstractSubmit
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
         cycle.removeAttribute(ATTRIBUTE_NAME);
+    }
+
+    /**
+     * Links can not take focus.
+     */
+    protected boolean getCanTakeFocus()
+    {
+        return false;
     }
 }

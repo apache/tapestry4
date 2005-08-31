@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form;
 
+import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.IComponent;
 
@@ -61,5 +62,11 @@ class FormMessages
     static String fieldAlreadyPrerendered(IComponent field)
     {
         return _formatter.format("field-already-prerenderer", field);
+    }
+
+    static String linkSubmitMayNotNest(IComponent inner, IComponent outer)
+    {
+        return _formatter.format("link-submit-may-not-nest", inner.getExtendedId(), outer
+                .getExtendedId(), HiveMind.getLocationString(outer));
     }
 }
