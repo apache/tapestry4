@@ -28,11 +28,20 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>
+ Provides a container group for Radio components. 
+ The RadioGroup itself must be within a &Form; component. 
+ The &Radio; and RadioGroup components work together to update a property of an object, much like a more flexible version of a &PropertySelection;.
+ This component should wrap around other &Radio; components.
 </p>
 
+<warning>
+  RadioGroup components may not nest.
+</warning>
+
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/components/RadioGroup.html">org.apache.tapestry.components.RadioGroup</link>, &Option;, &PropertySelection;, &Radio;, &Select;</strong> 
+
 </p>
 
 <section>
@@ -43,29 +52,113 @@
     <th>Name</th>
     <th>Type</th>
 	  <th>Direction</th>
+
     <th>Required</th> 
     <th>Default</th>
     <th>Description</th>
   </tr>
+  <tr>
+    <td>selected</td>
+    <td>Object</td>
 
-	</table>
+    <td>in-out</td>
+    <td>yes</td>
+    <td></td>
+    <td>
+       Read during rendering to determine which Radio will be the default. 
+       Updated during rewinding (when the form is submitted) to indicate which radio button was selected by the user (null if no button was selected).
+    </td>
+  </tr>
+  <tr>
+
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+    <td>
+
+      If true, then all contained Radio components will be disabled as well.
+    </td>
+  </tr>
+  <tr>
+    <td>displayName</td>
+    <td>string</td>
+    <td>in</td>
+    <td>no</td>
+
+    <td></td>
+    <td>
+      The user-presentable name for the component, which will be used by a &FieldLabel; connected to the component.
+    </td>
+  </tr>
+  <tr>
+    <td>validators</td>
+    <td>Array or collection of &Validator;, or &Validator;</td>
+
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+      The validators to apply to the component. In many cases, a "validators:" binding prefix should be used.
+    </td>
+  </tr>
+</table>
   
+
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>forbidden</strong>
 </p>
 
 <p>
   Reserved parameters: <em>none</em>
+
 </p>
 
 </section>
 
 <section>
   <title>Examples</title>
+  
+  <p>This RadioGroup example illustrates an order form where a user can select the order size.</p>
+  
+<source><![CDATA[
+<form jwcid="@Form" success="listener:doSubmit">
+ <span jwcid="@FieldLabel" field="component:size">Radio</span>
+ <span jwcid="size@RadioGroup" selected="ognl:orderSize" displayName="Size" validators="validators:required">
+  <input type="radio" jwcid="@Radio" value="ognl:@com.myexample.OrderPage@SMALL"/> Small
+  <input type="radio" jwcid="@Radio" value="ognl:@com.myexample.OrderPage@MEDIUM"/> Medium
+  <input type="radio" jwcid="@Radio" value="ognl:@com.myexample.OrderPage@LARGE"/> Large
+  <input type="submit" value="Order"/>
+ </span>
+</form>
+]]></source>
+
+<source><![CDATA[
+package com.myexample;
+
+import org.apache.tapestry.html.BasePage;
+
+public abstract class OrderPage extends BasePage {
+
+  public final static Integer SMALL = new Integer(1);
+  public final static Integer MEDIUM = new Integer(2);
+  public final static Integer LARGE = new Integer(3);
+
+  public abstract Integer getOrderSize();
+
+  public void doSubmit() {
+    // process order
+
+  }
+
+}
+]]></source>
+
 
 </section>
 </body>
