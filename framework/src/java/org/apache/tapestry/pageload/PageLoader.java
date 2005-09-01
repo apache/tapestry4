@@ -25,10 +25,12 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.ThreadLocale;
+import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IEngine;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
@@ -36,15 +38,18 @@ import org.apache.tapestry.ITemplateComponent;
 import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingSource;
+import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.binding.ListenerBinding;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.IPageLoader;
+import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.services.BSFManagerFactory;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.services.ComponentConstructorFactory;
 import org.apache.tapestry.services.ComponentTemplateLoader;
 import org.apache.tapestry.spec.BindingType;
+import org.apache.tapestry.spec.ContainedComponent;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IBindingSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -431,7 +436,7 @@ public class PageLoader implements IPageLoader
                         componentSpecification,
                         _componentResolver.getType(),
                         componentNamespace,
-                        location);
+                        contained);
 
                 // Add it, by name, to the container.
 
@@ -500,6 +505,10 @@ public class PageLoader implements IPageLoader
         INamespace componentNamespace = _componentResolver.getNamespace();
         IComponentSpecification spec = _componentResolver.getSpecification();
 
+        IContainedComponent contained = new ContainedComponent();
+        contained.setLocation(location);
+        contained.setType(componentType);
+
         IComponent result = instantiateComponent(
                 page,
                 container,
@@ -507,7 +516,7 @@ public class PageLoader implements IPageLoader
                 spec,
                 _componentResolver.getType(),
                 componentNamespace,
-                location);
+                contained);
 
         container.addComponent(result);
 
@@ -526,7 +535,8 @@ public class PageLoader implements IPageLoader
      */
 
     private IComponent instantiateComponent(IPage page, IComponent container, String id,
-            IComponentSpecification spec, String type, INamespace namespace, Location location)
+            IComponentSpecification spec, String type, INamespace namespace,
+            IContainedComponent containedComponent)
     {
         ComponentClassProviderContext context = new ComponentClassProviderContext(type, spec,
                 namespace);
@@ -559,7 +569,8 @@ public class PageLoader implements IPageLoader
         result.setPage(page);
         result.setContainer(container);
         result.setId(id);
-        result.setLocation(location);
+        result.setContainedComponent(containedComponent);
+        result.setLocation(containedComponent.getLocation());
 
         _count++;
 

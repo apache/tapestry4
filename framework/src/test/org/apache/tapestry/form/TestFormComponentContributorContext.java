@@ -19,11 +19,11 @@ import java.util.Locale;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
-import org.apache.tapestry.components.BaseComponentTestCase;
 import org.apache.tapestry.services.Infrastructure;
 import org.easymock.MockControl;
 

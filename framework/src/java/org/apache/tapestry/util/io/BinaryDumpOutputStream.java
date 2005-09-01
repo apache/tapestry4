@@ -20,16 +20,13 @@ import java.io.PrintWriter;
 import java.io.Writer;
 
 /**
- *  A kind of super-formatter.  It is sent a stream of binary data and
- *  formats it in a human-readable dump format which is forwarded to
- *  its output stream.
- *
- * <p>Currently, output is in hex though options to change that may
- * be introduced.
- *
- *  @author Howard Lewis Ship
+ * A kind of super-formatter. It is sent a stream of binary data and formats it in a human-readable
+ * dump format which is forwarded to its output stream.
+ * <p>
+ * Currently, output is in hex though options to change that may be introduced.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public class BinaryDumpOutputStream extends OutputStream
 {
@@ -38,41 +35,35 @@ public class BinaryDumpOutputStream extends OutputStream
     private boolean locked = false;
 
     private boolean showOffset = true;
+
     private int bytesPerLine = 16;
+
     private int spacingInterval = 4;
+
     private char substituteChar = '.';
+
     private String offsetSeperator = ": ";
+
     private int offset = 0;
+
     private int lineCount = 0;
+
     private int bytesSinceSpace = 0;
+
     private char[] ascii = null;
+
     private boolean showAscii = true;
+
     private String asciiBegin = "  |";
+
     private String asciiEnd = "|";
 
     private static final char[] HEX =
-        {
-            '0',
-            '1',
-            '2',
-            '3',
-            '4',
-            '5',
-            '6',
-            '7',
-            '8',
-            '9',
-            'a',
-            'b',
-            'c',
-            'd',
-            'e',
-            'f' };
+    { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
     /**
-     *  Creates a <code>PrintWriter</code> for <code>System.out</code>.
-     *
-     **/
+     * Creates a <code>PrintWriter</code> for <code>System.out</code>.
+     */
 
     public BinaryDumpOutputStream()
     {
@@ -140,9 +131,8 @@ public class BinaryDumpOutputStream extends OutputStream
     }
 
     /**
-     *  Forwards the <code>flush()</code> to the <code>PrintWriter</code>.
-     *
-     **/
+     * Forwards the <code>flush()</code> to the <code>PrintWriter</code>.
+     */
 
     public void flush() throws IOException
     {
@@ -222,10 +212,9 @@ public class BinaryDumpOutputStream extends OutputStream
     }
 
     /**
-     *  Sets the character used in the ASCII dump that substitutes for characters
-     *  outside the range of 32..126.
-     *
-     **/
+     * Sets the character used in the ASCII dump that substitutes for characters outside the range
+     * of 32..126.
+     */
 
     public void setSubstituteChar(char value)
     {
@@ -303,5 +292,25 @@ public class BinaryDumpOutputStream extends OutputStream
 
             out.print(HEX[nybble]);
         }
+    }
+
+    public void setSpacingInterval(int spacingInterval)
+    {
+        this.spacingInterval = spacingInterval;
+    }
+
+    public boolean isShowOffset()
+    {
+        return showOffset;
+    }
+
+    public void setShowOffset(boolean showOffset)
+    {
+        this.showOffset = showOffset;
+    }
+
+    public int getSpacingInterval()
+    {
+        return spacingInterval;
     }
 }

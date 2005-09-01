@@ -34,41 +34,36 @@
 		<th>Application Name</th>
 		<td><span jwcid="insertApplicationName"/></td>
 	</tr>
-
-	<tr class="even">
-		<th>Context Path</th>
-		<td><span jwcid="insertContextPath"/></td>
-	</tr>
-
-	<tr class="odd">
-		<th>Servlet Path</th>
-		<td><span jwcid="insertServletPath"/></td>
-	</tr>
-
-	<tr class="even">
-		<th>Engine Class</th>
-		<td><span jwcid="insertEngineClass"/></td>
-	</tr>
 	
-	<tr class="odd">
+	<tr class="even">
 		<th>Locale</th>
 		<td><span jwcid="insertLocale"/></td>
 	</tr>
 
-	<tr class="even">
-		<th>Visit</th>
-		<td>
-<span jwcid="ifNoVisit">
-<em>none</em>
-</span>
-
-<span jwcid="ifVisit">
-<span jwcid="insertVisit"/>
-</span>
-		</td>
-	</tr>
-
 </table>
+
+<div jwcid="@If" condition="ognl:! sessionAttributeNames.empty">
+  
+<h1>Session Data</h1>
+  
+<table class="inspector-data">
+  
+  <tr class="heading">
+    <th>Name</th> <th>Object</th>
+  </tr>
+  <tr jwcid="loop">
+    <td>
+      <span jwcid="@Insert" value="ognl:attributeName"/>
+    </td>
+    <td>
+      <pre><span jwcid="@DumpObject" object="ognl:session.getAttribute(attributeName)"/></pre>
+    </td>
+    
+  </tr>
+  
+</table>  
+  
+</div>
 
 <h1>Operations</h1>
 
@@ -91,15 +86,9 @@
 	</tr>
 </table>
 
-<h1>Serialized Engine</h1>
 
-<p>The serialized state of the application engine (the size of this is relevant
-for application servers which support clustering).
+<h1>Request Data</h1>
 
-<p><span jwcid="insertByteCount"/> bytes:
-<pre><span jwcid="insertSerializedEngine"/></pre>
+<span jwcid="@RequestDisplay"/>
 
-<h1>Request Context</h1>
-
-<span jwcid="insertRequest"/>
 </span>

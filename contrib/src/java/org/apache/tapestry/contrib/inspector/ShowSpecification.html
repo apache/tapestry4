@@ -64,7 +64,7 @@
 		</td>
 		<td><span jwcid="@Insert" value="ognl:parameterSpecification.required"/></td>
 		<td><span jwcid="@Insert" value="ognl:parameterSpecification.type"/></td>
-		<td><span jwcid="@Insert" value="ognl:binding"/></td>
+		<td><span jwcid="@Describe" object="ognl:binding"/></td>
 	</tr>
 
 </table>
@@ -82,7 +82,7 @@
 
 	<tr jwcid="e_informal">
 		<td><span jwcid="@Insert" value="ognl:parameterName"/></td>
-		<td><span jwcid="@Insert" value="ognl:binding"/></td>
+		<td><span jwcid="@Describe" object="ognl:binding"/></td>
 	</tr>
 
 </table>
@@ -100,7 +100,7 @@
 
 	<tr jwcid="e_asset">
 		<td><span jwcid="@Insert" value="ognl:assetName"/></td>
-		<td><span jwcid="@Insert" value="ognl:asset"/></td>
+		<td><span jwcid="@Describe" object="ognl:asset"/></td>
 	</tr>
 
 
@@ -164,7 +164,7 @@
 			<a jwcid="selectComponent"><span jwcid="@Insert" value="ognl:currentComponent.id"/></a>
 		</td>
 		<td>
-			<span jwcid="@Insert" value="ognl:componentType"/>
+			<span jwcid="@Insert" value="ognl:currentComponent.containedComponent.type"/>
 		</td>
 	</tr>
 

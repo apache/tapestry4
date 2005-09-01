@@ -14,8 +14,8 @@
 
 package org.apache.tapestry.form;
 
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.components.BaseComponentTestCase;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.easymock.MockControl;
 

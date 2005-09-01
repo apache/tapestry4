@@ -19,6 +19,7 @@ import java.util.Map;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
@@ -27,7 +28,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.IScriptProcessor;
 import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.components.BaseComponentTestCase;
 
 /**
  * Tests for {@link org.apache.tapestry.form.LinkSubmit}

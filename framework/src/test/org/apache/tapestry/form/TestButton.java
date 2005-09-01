@@ -14,10 +14,10 @@
 
 package org.apache.tapestry.form;
 
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.components.BaseComponentTestCase;
 import org.apache.tapestry.spec.ComponentSpecification;
 
 public class TestButton extends BaseComponentTestCase

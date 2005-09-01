@@ -8,9 +8,6 @@ H2  {}
 
 H3  {}
 
-A  {
-	color:#ffffff;
-}
 
 A:Visited  {}
 
@@ -21,15 +18,18 @@ A:Hover  {}
 SPAN.error
 {
 		color: Red;
-		font-weight: bold;
-	background-color : "#330066"		
+		font-weight: bold;	
 }
 
 BODY  {
 	font-family: "Trebuchet MS", sans-serif;
-	 background-color: #839cd1;
 }
 
+
+TABLE.inspector-data
+{
+  border: 1px solid black;
+}
 
 TABLE.inspector-data TR.odd TD  {
 	text-align : left;
@@ -37,6 +37,10 @@ TABLE.inspector-data TR.odd TD  {
 	background-color : Silver;
 }
 
+TABLE.inspector-data TR.heading TH
+{
+  border-bottom: 2px solid black;
+}
 
 TABLE.inspector-data TR.even TH
 {
@@ -76,7 +80,6 @@ TABLE.inspector-data TR.heading TH,
 TABLE.template TH
 {
 	text-align: center;
-	color : White;
 	background-color : "#330066";
 	font-weight: bold;
 }
@@ -119,14 +122,12 @@ SPAN.request-context-object  {
 
 TR.request-context-section TH  {
 	text-align : center;
-	color : White;
-	background-color : Blue;
+    background-color: silver;
 }
 
 TR.request-context-header TH  {
 	text-align : center;
-	color : White;
-	background-color : Blue;
+    background-color: silver;
 }
 
 TABLE.request-context-object TR.odd TD  {
@@ -198,4 +199,71 @@ UL
 	margin-top: 0px;
 	margin-bottom: 0px;
 	margin-left: 20px;
+}
+
+
+TABLE.requestDebug
+{
+	width: 700;
+  	border-color : Black;
+	border-style : solid;
+	border-width : thin;
+	border-top-width : 0px;
+	border-bottom-width : 2px;
+	border-right-width : 2px;
+	border-left-width : 0px;
+	background-color: #839cd1;
+	padding: 0;
+
+}
+
+TABLE.requestDebug TR.control
+{
+    font-weight: bold;
+    font-size: 9pt;
+	color : White;
+	background-color : black;
+}
+
+TABLE.requestDebug FORM
+{
+  margin: 0;
+}
+
+DIV.described-object-title
+{
+  font-size: large;
+  font-weight: bold;
+  color: white;
+  background-color: black;
+}
+
+TABLE.described-object  
+{
+  border: 1px solid black;
+  width: 100%;
+}
+
+
+TABLE.described-object TR.section TH
+{
+  color: white;
+  background-color: black;
+  text-align: center;
+}
+
+TABLE.described-object TR.odd
+{
+  background-color: silver;
+}
+
+TABLE.described-object TR.even
+{
+  background-color: white;
+}
+
+TABLE.described-object TH
+{
+  text-align: right;
+  width: 1px; // Will stretch to fit.
 }
