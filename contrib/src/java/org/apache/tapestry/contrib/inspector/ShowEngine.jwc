@@ -16,82 +16,55 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 	
 <component-specification class="org.apache.tapestry.contrib.inspector.ShowEngine" allow-body="no" allow-informal-parameters="no">
 
+  <inject property="request" object="infrastructure:request"/>
+  <bean name="evenOdd" class="org.apache.tapestry.bean.EvenOdd"/>
+  <property name="attributeName"/>
+  
   <component id="insertFrameworkVersion" type="Insert">
-  	<binding name="value" expression="@org.apache.tapestry.Tapestry@VERSION"/>
+  	<binding name="value" value="@org.apache.tapestry.Tapestry@VERSION"/>
   </component>
   
   <component id="insertApplicationName" type="Insert">
-    <binding name="value" expression="page.engine.specification.name"/>
-  </component>
-  
-  <component id="insertContextPath" type="Insert">
-    <binding name="value" expression="page.engine.contextPath"/>
-  </component>
-  
-  <component id="insertServletPath" type="Insert">
-    <binding name="value" expression="page.engine.servletPath"/>
-  </component>
-  
-  <component id="insertEngineClass" type="Insert">
-    <binding name="value" expression="engineClassName"/>
+    <binding name="value" value="page.engine.specification.name"/>
   </component>
   
   <component id="insertLocale" type="Insert">
-    <binding name="value" expression="page.engine.locale.displayName"/>
-  </component>
-  
-  <component id="ifNoVisit" type="If">
-    <binding name="condition" expression="! page.engine.hasVisit"/>
-  </component>
-  
-  <component id="insertVisit" type="Insert">
-    <binding name="value" expression="page.engine.visit"/>
-  </component>
-  
-  <component id="ifVisit" type="If">
-    <binding name="condition" expression="page.engine.hasVisit"/>
+    <binding name="value" value="page.engine.locale.displayName"/>
   </component>
   
   <component id="restart" type="ServiceLink">
-    <binding name="service" expression="@org.apache.tapestry.Tapestry@RESTART_SERVICE"/>
+    <binding name="service" value="@org.apache.tapestry.Tapestry@RESTART_SERVICE"/>
   </component>
   
   <component id="restartButton" type="Rollover">
-    <binding name="image" expression="assets.restart"/>
-    <binding name="focus" expression="assets.restartFocus"/>
+    <binding name="image" value="asset:restart"/>
+    <binding name="focus" value="asset:restartFocus"/>
   </component>
   
   <component id="reset" type="ServiceLink">
-    <binding name="service" expression="@org.apache.tapestry.Tapestry@RESET_SERVICE"/>
-    <binding name="disabled" expression="! page.engine.resetServiceEnabled"/>
+    <binding name="service" value="@org.apache.tapestry.Tapestry@RESET_SERVICE"/>
   </component>
   
   <component id="resetButton" type="Rollover">
-    <binding name="image" expression="assets.reset"/>
-    <binding name="focus" expression="assets.resetFocus"/>
-    <binding name="disabled" expression="assets.resetDisabled"/>
+    <binding name="image" value="asset:reset"/>
+    <binding name="focus" value="asset:resetFocus"/>
   </component>
   
-  <component id="insertByteCount" type="Insert">
-    <binding name="value" expression="engineByteCount"/>
+  <asset name="reset" path="Reset_Np1.gif"/>
+  <asset name="resetFocus" path="Reset_NRp2.gif"/>
+  <asset name="restart" path="Restart_Np1.gif"/>
+  <asset name="restartFocus" path="Restart_NRp2.gif"/>
+  
+  <component id="loop" type="For">
+    <binding name="source" value="sessionAttributeNames"/>
+    <binding name="value" value="attributeName"/>
+    <binding name="element" value="literal:tr"/>
+    <binding name="class" value="beans.evenOdd.next"/>
   </component>
   
-  <component id="insertSerializedEngine" type="Delegator">
-    <binding name="delegate" expression="engineDumpDelegate"/>
-  </component>
-  
-  <component id="insertRequest" type="Delegator">
-    <binding name="delegate" expression="page.requestCycle.requestContext"/>
-  </component>
-  
-  <private-asset name="reset" resource-path="Reset_Np1.gif"/>
-  <private-asset name="resetFocus" resource-path="Reset_NRp2.gif"/>
-  <private-asset name="resetDisabled" resource-path="Reset_Np1_disabled.gif"/>
-  <private-asset name="restart" resource-path="Restart_Np1.gif"/>
-  <private-asset name="restartFocus" resource-path="Restart_NRp2.gif"/>
 </component-specification>

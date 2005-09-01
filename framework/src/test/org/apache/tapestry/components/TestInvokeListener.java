@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.components;
 
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;

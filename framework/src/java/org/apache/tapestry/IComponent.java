@@ -22,6 +22,7 @@ import org.apache.hivemind.Messages;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IContainedComponent;
 
 /**
  * Defines an object which may be used to provide dynamic content on a Tapestry web page.
@@ -363,4 +364,24 @@ public interface IComponent extends IRender, LocationHolder
      */
 
     public IComponent getComponent();
+
+    /**
+     * Returns the {@link org.apache.tapestry.spec.IContainedComponent}. This will be null for
+     * pages. This property is set when a component is constructed, and links the component instance
+     * to the reference in the containing page or component's template or specification. This is
+     * useful to allow a component to know its type or the meta-data associated with the component.
+     * 
+     * @return the contained component, or null for a page.
+     * @since 4.0
+     */
+
+    public IContainedComponent getContainedComponent();
+
+    /**
+     * Sets the {@link #getContainedComponent()} property; this may only be done once.
+     * 
+     * @param containedComponent
+     *            may not be null
+     */
+    public void setContainedComponent(IContainedComponent containedComponent);
 }

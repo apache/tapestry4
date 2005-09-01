@@ -14,7 +14,9 @@
 
 package org.apache.tapestry;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.tapestry.spec.IContainedComponent;
+import org.apache.tapestry.test.Creator;
 
 /**
  * Tests a few new features of {@link org.apache.tapestry.AbstractComponent}&nbsp;added in release
@@ -23,7 +25,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestAbstractComponent extends HiveMindTestCase
+public class TestAbstractComponent extends BaseComponentTestCase
 {
     private static class ConcreteComponent extends AbstractComponent
     {
@@ -67,5 +69,60 @@ public class TestAbstractComponent extends HiveMindTestCase
             assertEquals(TapestryMessages.providedByEnhancement("getSpecification"), ex
                     .getMessage());
         }
+    }
+
+    public void testContainedComponent()
+    {
+        Creator creator = new Creator();
+
+        IContainedComponent cc = newContainedComponent();
+
+        replayControls();
+
+        IComponent component = (IComponent) creator.newInstance(BaseComponent.class);
+
+        component.setContainedComponent(cc);
+
+        assertSame(cc, component.getContainedComponent());
+
+        verifyControls();
+    }
+
+    public void testContainedComponentConflict()
+    {
+        Creator creator = new Creator();
+
+        IContainedComponent cc1 = newContainedComponent();
+        IContainedComponent cc2 = newContainedComponent();
+
+        IPage page = newPage("Fred");
+
+        trainGetIdPath(page, null);
+
+        replayControls();
+
+        IComponent component = (IComponent) creator.newInstance(BaseComponent.class, new Object[]
+        { "page", page, "container", page, "id", "barney" });
+
+        component.setContainedComponent(cc1);
+
+        try
+        {
+            component.setContainedComponent(cc2);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Attempt to change containedComponent property of component Fred/barney, which is not allowed.",
+                    ex.getMessage());
+        }
+
+        verifyControls();
+    }
+
+    private IContainedComponent newContainedComponent()
+    {
+        return (IContainedComponent) newMock(IContainedComponent.class);
     }
 }

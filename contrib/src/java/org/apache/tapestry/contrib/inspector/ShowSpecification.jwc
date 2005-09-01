@@ -29,51 +29,51 @@
   <bean name="beanClass" class="org.apache.tapestry.bean.EvenOdd"/>
         
   <component id="e_formal" type="For">
-    <binding name="source" value="ognl:formalParameterNames"/>
-    <binding name="value" value="ognl:parameterName"/>
-  	<binding name="element" value="tr"/>
-    <binding name="class" value="ognl:beans.formalClass.next"/>
+    <binding name="source" value="formalParameterNames"/>
+    <binding name="value" value="parameterName"/>
+  	<binding name="element" value="literal:tr"/>
+    <binding name="class" value="beans.formalClass.next"/>
   </component>
      
   
-  <component id="e_informal" type="Foreach"> 
-    <binding name="source" value="ognl:informalParameterNames"/>
-    <binding name="value" value="ognl:parameterName"/>
-  	<binding name="element" value="tr"/>
-    <binding name="class" value="ognl:beans.informalClass.next"/>
+  <component id="e_informal" type="For"> 
+    <binding name="source" value="informalParameterNames"/>
+    <binding name="value" value="parameterName"/>
+  	<binding name="element" value="literal:tr"/>
+    <binding name="class" value="beans.informalClass.next"/>
   </component>
 
-  <component id="e_asset" type="Foreach">
-    <binding name="source" value="ognl:assetNames"/>
-    <binding name="value" value="ognl:assetName"/>
-  	<binding name="element" value="tr"/>
-    <binding name="class" value="ognl:beans.assetClass.next"/>
+  <component id="e_asset" type="For">
+    <binding name="source" value="assetNames"/>
+    <binding name="value" value="assetName"/>
+  	<binding name="element" value="literal:tr"/>
+    <binding name="class" value="beans.assetClass.next"/>
   </component>
   
-  <component id="e_components" type="Foreach">
-    <binding name="source" value="ognl:sortedComponents"/>
-    <binding name="value" value="ognl:currentComponent"/>
-    <binding name="element" value="tr"/>
-    <binding name="class" value="ognl:beans.componentClass.next"/>
+  <component id="e_components" type="For">
+    <binding name="source" value="sortedComponents"/>
+    <binding name="value" value="currentComponent"/>
+    <binding name="element" value="literal:tr"/>
+    <binding name="class" value="beans.componentClass.next"/>
   </component>
 
   <component id="selectComponent" type="DirectLink">
-    <binding name="listener" value="ognl:page.listeners.selectComponent"/>
-    <binding name="parameters" value="ognl:currentComponent.idPath"/>
+    <binding name="listener" value="page.listeners.selectComponent"/>
+    <binding name="parameters" value="currentComponent.idPath"/>
   </component>
 
-  <component id="e_property" type="Foreach">
-    <binding name="source" value="ognl:sortedPropertyNames"/>
-    <binding name="value" value="ognl:propertyName"/>
-  	<binding name="element" value="tr"/>
-    <binding name="class" value="ognl:beans.propertyClass.next"/>
+  <component id="e_property" type="For">
+    <binding name="source" value="sortedPropertyNames"/>
+    <binding name="value" value="propertyName"/>
+  	<binding name="element" value="literal:tr"/>
+    <binding name="class" value="beans.propertyClass.next"/>
   </component>
       
-  <component id="e_bean" type="Foreach">
-  	<binding name="source" value="ognl:beanNames"/>
-  	<binding name="value" value="ognl:beanName"/>
-  	<binding name="element" value="tr"/>
-  	<binding name="class" value="ognl:beans.beanClass.next"/>
+  <component id="e_bean" type="For">
+  	<binding name="source" value="beanNames"/>
+  	<binding name="value" value="beanName"/>
+  	<binding name="element" value="literal:tr"/>
+  	<binding name="class" value="beans.beanClass.next"/>
   </component>
   	
 </component-specification>

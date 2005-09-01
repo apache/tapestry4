@@ -16,49 +16,51 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 	
 <component-specification class="org.apache.tapestry.contrib.inspector.ShowProperties">
 
+  <inject property="propertySource" object="service:tapestry.persist.PropertyPersistenceStrategySource"/>
+  
   <bean name="persistPropertyClass" class="org.apache.tapestry.bean.EvenOdd"/>
   <bean name="propertyClass" class="org.apache.tapestry.bean.EvenOdd"/>
   
   <component id="ifNoProperties" type="If">
-    <binding name="condition" expression="!properties"/>
+    <binding name="condition" value="properties.empty"/>
   </component>
   
   <component id="ifHasProperties" type="If">
-    <binding name="condition" expression="properties"/>
+    <binding name="condition" value="! properties.empty"/>
   </component>
   
-  <component id="e" type="Foreach">
-    <binding name="source" expression="properties"/>
-    <binding name="value" expression="change"/>
-    <static-binding name="element">tr</static-binding>
-    <binding name="class" expression="beans.persistPropertyClass.next"/>
+  <component id="e" type="For">
+    <binding name="source" value="properties"/>
+    <binding name="value" value="change"/>
+    <binding name="element" value="literal:tr"/>
+    <binding name="class" value="beans.persistPropertyClass.next"/>
   </component>
   
   <component id="selectComponent" type="DirectLink">
-    <binding name="listener" expression="page.listeners.selectComponent"/>
-    <binding name="parameters" expression="change.componentPath"/>
-    <binding name="disabled" expression="change.componentPath == null"/>
+    <binding name="listener" value="page.listeners.selectComponent"/>
+    <binding name="parameters" value="change.componentPath"/>
+    <binding name="disabled" value="change.componentPath == null"/>
   </component>
   
   <component id="insertPath" type="Insert">
-    <binding name="value" expression="change.componentPath"/>
+    <binding name="value" value="change.componentPath"/>
   </component>
   
   <component id="insertPersistPropertyName" type="Insert">
-    <binding name="value" expression="change.propertyName"/>
+    <binding name="value" value="change.propertyName"/>
   </component>
   
   <component id="insertPersistValueClass" type="Insert">
-    <binding name="value" expression="valueClassName"/>
+    <binding name="value" value="valueClassName"/>
   </component>
   
-  <component id="insertPersistValue" type="Insert">
-    <binding name="value" expression="change.newValue"/>
+  <component id="insertPersistValue" type="Describe">
+    <binding name="object" value="change.newValue"/>
   </component>
   
 </component-specification>

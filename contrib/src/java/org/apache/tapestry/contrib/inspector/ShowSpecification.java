@@ -30,7 +30,6 @@ import org.apache.tapestry.event.PageEndRenderListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.spec.IParameterSpecification;
 
 /**
@@ -264,29 +263,6 @@ public abstract class ShowSpecification extends BaseComponent implements PageBeg
     public abstract void setCurrentComponent(IComponent value);
 
     public abstract IComponent getCurrentComponent();
-
-    /**
-     * Returns the type of the component, as specified in the container's specification (i.e., the
-     * component alias if known).
-     */
-
-    public String getComponentType()
-    {
-        IComponent container = getCurrentComponent().getContainer();
-
-        IComponentSpecification containerSpecification = container.getSpecification();
-
-        String id = getCurrentComponent().getId();
-        IContainedComponent contained = containerSpecification.getComponent(id);
-
-        // Temporary: An implicit component will not be in the containing
-        // component's specification as a ContainedComponent.
-
-        if (contained == null)
-            return null;
-
-        return contained.getType();
-    }
 
     /**
      * Returns a list of the properties for the component (from its specification), or null if the

@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.components;
 
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;

@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.form.validator;
 
-import org.apache.tapestry.components.BaseComponentTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;

@@ -32,6 +32,7 @@ import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IContainedComponent;
 
 /**
  * Abstract base class implementing the {@link IComponent}interface.
@@ -138,6 +139,10 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      */
 
     private boolean _active;
+
+    /** @since 4.0 */
+
+    private IContainedComponent _containedComponent;
 
     public void addAsset(String name, IAsset asset)
     {
@@ -840,6 +845,24 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     public final IComponent getComponent()
     {
         return this;
+    }
+
+    /** @since 4.0 */
+    public IContainedComponent getContainedComponent()
+    {
+        return _containedComponent;
+    }
+
+    /** @since 4.0 */
+    public void setContainedComponent(IContainedComponent containedComponent)
+    {
+        Defense.notNull(containedComponent, "containedComponent");
+
+        if (_containedComponent != null)
+            throw new ApplicationRuntimeException(TapestryMessages
+                    .attemptToChangeContainedComponent(this));
+
+        _containedComponent = containedComponent;
     }
 
 }

@@ -14,15 +14,18 @@
 
 package org.apache.tapestry.contrib.inspector;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.engine.IPageRecorder;
+import org.apache.tapestry.IPage;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.record.PropertyChange;
+import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 
 /**
  * Component of the {@link Inspector}page used to display the persisent properties of the page.
@@ -30,83 +33,34 @@ import org.apache.tapestry.record.PropertyChange;
  * @author Howard Lewis Ship
  */
 
-public abstract class ShowProperties extends BaseComponent implements PageRenderListener
+public abstract class ShowProperties extends BaseComponent implements PageBeginRenderListener
 {
-    private List _properties;
 
-    private PropertyChange _change;
+    public abstract void setProperties(List properties);
 
-    // private IPage _inspectedPage;
+    public abstract PropertyChange getChange();
 
-    /**
-     * Does nothing.
-     * 
-     * @since 1.0.5
-     */
+    /** Injected */
+
+    public abstract PropertyPersistenceStrategySource getPropertySource();
 
     public void pageBeginRender(PageEvent event)
     {
-    }
+        IRequestCycle cycle = event.getRequestCycle();
 
-    /**
-     * @since 1.0.5
-     */
+        Inspector inspector = (Inspector) getPage();
 
-    public void pageEndRender(PageEvent event)
-    {
-        _properties = null;
-        _change = null;
-        // _inspectedPage = null;
-    }
+        IPage inspectedPage = inspector.getInspectedPage();
 
-    private void buildProperties()
-    {
-        // Inspector inspector = (Inspector) getPage();
+        String pageName = inspectedPage.getPageName();
 
-        // _inspectedPage = inspector.getInspectedPage();
+        PropertyPersistenceStrategySource source = getPropertySource();
 
-        IPageRecorder recorder = null;
+        Collection properties = source.getAllStoredChanges(pageName, cycle);
 
-        // TODO: This is going to blow up with UnsupportedOperationException
-        // engine.getPageRecorder(_inspectedPage.getPageName(), inspector.getRequestCycle());
+        // TODO: sorting
 
-        // No page recorder? No properties.
-
-        if (recorder == null)
-        {
-            _properties = Collections.EMPTY_LIST;
-            return;
-        }
-
-        _properties = Collections.EMPTY_LIST;
-
-        // The getChanges() method was removed
-        // from IPageRecorder in release 4.0
-        // new ArrayList(recorder.getChanges());
-    }
-
-    /**
-     * Returns a {@link List}of {@link PropertyChange}objects.
-     * <p>
-     * Sort order is not defined.
-     */
-
-    public List getProperties()
-    {
-        if (_properties == null)
-            buildProperties();
-
-        return _properties;
-    }
-
-    public void setChange(PropertyChange value)
-    {
-        _change = value;
-    }
-
-    public PropertyChange getChange()
-    {
-        return _change;
+        setProperties(new ArrayList(properties));
     }
 
     /**
@@ -115,9 +69,7 @@ public abstract class ShowProperties extends BaseComponent implements PageRender
 
     public String getValueClassName()
     {
-        Object value;
-
-        value = _change.getNewValue();
+        Object value = getChange().getNewValue();
 
         if (value == null)
             return "<null>";

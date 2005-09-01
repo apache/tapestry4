@@ -15,10 +15,10 @@
 package org.apache.tapestry.callback;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.components.BaseComponentTestCase;
 import org.easymock.MockControl;
 
 /**

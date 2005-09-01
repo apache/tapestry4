@@ -16,36 +16,38 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 	
 <component-specification class="org.apache.tapestry.contrib.inspector.Selector">
 
   <component id="form" type="Form">
-    <binding name="listener" expression="listeners.formSubmit"/>
+    <binding name="listener" value="listener:formSubmit"/>
   </component>
 
   <component id="selectPage" type="PropertySelection">
-    <binding name="value" expression="page.inspectedPageName"/>
-    <binding name="model" expression="pageModel"/>
-    <binding name="submitOnChange" expression="true"/>
+    <binding name="value" value="page.inspectedPageName"/>
+    <binding name="model" value="pageModel"/>
+    <binding name="onchange">
+      javascript:this.form.events.submit();
+    </binding>
   </component>
 
   <component id="page" type="DirectLink">
-    <binding name="listener" expression="page.listeners.selectComponent"/>
+    <binding name="listener" value="page.listeners.selectComponent"/>
   </component>
 
-  <component id="e" type="Foreach">
-    <binding name="source" expression="crumbTrail"/>
+  <component id="e" type="For">
+    <binding name="source" value="crumbTrail"/>
   </component>
 
   <component id="component" type="DirectLink">
-    <binding name="parameters" expression="components.e.value.idPath"/>
-    <binding name="listener" expression="page.listeners.selectComponent"/>
+    <binding name="parameters" value="components.e.value.idPath"/>
+    <binding name="listener" value="page.listeners.selectComponent"/>
   </component>
 
   <component id="insertId" type="Insert">
-    <binding name="value" expression="components.e.value.id"/>
+    <binding name="value" value="components.e.value.id"/>
   </component>
 
   <component id="renderBody" type="RenderBody"/>

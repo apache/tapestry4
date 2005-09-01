@@ -35,6 +35,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
@@ -342,5 +343,14 @@ public class MockForm implements IForm
     public IComponent getComponent()
     {
         return this;
+    }
+
+    public IContainedComponent getContainedComponent()
+    {
+        return null;
+    }
+
+    public void setContainedComponent(IContainedComponent containedComponent)
+    {
     }
 }

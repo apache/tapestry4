@@ -14,9 +14,9 @@
 
 package org.apache.tapestry.callback;
 
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.components.BaseComponentTestCase;
 
 /**
  * Tests for {@link org.apache.tapestry.callback.PageCallback}.
