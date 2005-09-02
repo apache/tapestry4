@@ -162,7 +162,13 @@
 <!ENTITY TextField 			'<link href="site:TextField">TextField</link>'>
 <!ENTITY Upload 			'<link href="site:Upload">Upload</link>'>
 <!ENTITY ValidField 		'<link href="site:ValidField">ValidField</link>'>
-  
+
+<!-- Links to contrib Component Reference -->
+
+<!ENTITY Choose 			'<link href="site:Choose">Choose</link>'>
+<!ENTITY Otherwise 			'<link href="site:Otherwise">Otherwise</link>'>
+<!ENTITY When 			    '<link href="site:When">When</link>'>
+
 <!-- External links -->
 
 <!ENTITY Ant 			'<link href="http://ant.apache.org/">Ant</link>'>

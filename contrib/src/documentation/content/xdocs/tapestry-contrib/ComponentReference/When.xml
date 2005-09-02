@@ -28,11 +28,12 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>  Describes one of the alternatives to be chosen by the &Choose; component. The default alternative is described by the &Otherwise; component.<br/>
+Must have &Choose; as an immediate parent and must appear before an &Otherwise; that has the same parent.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also:</strong> &Conditional;, &Choose;, &Otherwise;
 </p>
 
 <section>
@@ -47,26 +48,43 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
-
+    <tr>
+      <td>condition</td>
+      <td>boolean</td>
+      <td>in</td>
+         <td>no</td>
+          <td>false</td>
+          <td>The condition to test. If the expression evaluates to true, then its content is rendered.
+          </td>
+      </tr>
+    <tr>
+      <td>element</td>
+      <td>String</td>
+      <td>in</td>
+         <td>no</td>
+          <td>&nbsp;</td>
+          <td>If specified, then the component acts like an &Any;, emitting an open and close tag. Informal parameters are applied to the tag. If no element is specified, informal parameters are ignored.
+          </td>
+      </tr>
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: <em>invert</em>
 </p>
 
 </section>
 
 <section>
   <title>Examples</title>
-
+  <p>Please see the documentation for the &Choose; component.</p>
 </section>
 </body>
 </document>
