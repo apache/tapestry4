@@ -28,11 +28,12 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>  Provides a default condition for &Choose; component. Other alternatives are indicated by &When; components.<br/>
+    Must have &Choose; as an immediate parent and must be the last nested component within &Choose;.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also:</strong> &Conditional;, &Choose;, &When;
 </p>
 
 <section>
@@ -47,26 +48,35 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
+    <tr>
+      <td>element</td>
+      <td>String</td>
+      <td>in</td>
+         <td>no</td>
+          <td>&nbsp;</td>
+          <td>If specified and none of the conditions in any &When; component is satisfied, then the component acts like an &Any;, emitting an open and close tag. Informal parameters are applied to the tag. If no element is specified, informal parameters are ignored.
+          </td>
+      </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: <em>condition, invert</em>
 </p>
 
 </section>
 
 <section>
   <title>Examples</title>
-
+    <p>Please see the documentation for the &Choose; component.</p>
 </section>
 </body>
 </document>

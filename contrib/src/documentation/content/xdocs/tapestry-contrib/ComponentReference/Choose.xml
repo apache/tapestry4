@@ -28,11 +28,33 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
-</p>
+<p> The Choose component is used in conjunction with &When;
+              and &Otherwise; components to express mutually exclusive conditional
+              tests. </p>
+              <p>The Choose component must contain one or more When
+              components and can contain only one optional Otherwise component
+              (which must occur after all of the When components). If
+              the Choose component only contains one When element,
+              then for all practical purposes, it behaves just like the Conditional
+              component. When faced with three or more choices, this component
+              behaves like a switch/case/default statement.</p>
+            <p>Each When component is examined in the order of occurrence.
+              If and when the condition expression is satisfied the content in
+              that component is rendered. Then all further When components
+              are ignored. The optional Otherwise component is also automatically
+              ignored. If none of the conditions in any When component
+              is satisfied , then the Otherwise component is automatically
+              selected (if it is present) and the content associated with that
+              element is rendered.</p>
+			 <p> The body of the Choose component can only contain:
+             White spaces. May appear anywhere around the When and Otherwise components.<br/>
+             1 or more When components. Must all appear before Otherwise.<br/>
+             0 or 1 Otherwise component. Must be the last component nested within Choose.<br/>
+      </p>
+            <p>For simple conditional testing, use the &Conditional; component.</p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also:</strong> &Conditional;, &When;, &Otherwise;
 </p>
 
 <section>
@@ -47,19 +69,37 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
+    <tr>
+      <td>condition</td>
+      <td>boolean</td>
+      <td>in</td>
+         <td>no</td>
+          <td>false</td>
+          <td>The condition to be met. If this value is true, then the wrapped elements will be rendered.
+          </td>
+      </tr>
+    <tr>
+      <td>element</td>
+      <td>String</td>
+      <td>in</td>
+         <td>no</td>
+          <td>&nbsp;</td>
+          <td>If specified, then the component acts like an &Any;, emitting an open and close tag. Informal parameters are applied to the tag. If no element is specified, informal parameters are ignored.
+          </td>
+      </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: <em>invert</em>
 </p>
 
 </section>
@@ -67,6 +107,55 @@
 <section>
   <title>Examples</title>
 
+<section>
+  <title>Example 1</title>
+    <p>
+     The following sample code shows how the text rendered depends on a user membership category.
+  </p>
+
+<source><![CDATA[
+<span jwcid="@contrib:Choose>
+   <span jwcid="@contrib:When" condition='ognl:"visitor".equals(user.category)'>
+      ...
+   </span>
+   <span jwcid="@contrib:When" condition='ognl:"member".equals(user.category)'>
+      ...
+   </span>
+   <span jwcid="@contrib:When" condition='ognl:"customer".equals(user.category)'>
+      <span jwcid="@contrib:Choose>
+         <span jwcid="@contrib:When" condition='ognl:"person".equals(user.profile)'>
+            ...
+         </span>
+         <span jwcid="@contrib:When" condition='ognl:"enterprise".equals(user.profile)'>
+            ...
+         </span>
+      </span>
+   </span>
+   <span jwcid="@contrib:Otherwise">
+      ...
+   </span>
+</span>
+]]></source>
+</section>
+
+
+<section>
+  <title>Example 2</title>
+    <p>
+      An if/then/else statement can be easily achieved as follows:
+  </p>
+
+<source><![CDATA[
+<span jwcid="@contrib:Choose">
+   <span jwcid="@contrib:When" condition="ognl: count == 0">
+      Your search did not match any documents.
+   </span>
+   <span jwcid="@contrib:Otherwise">
+      <span jwcid="@Insert" value="ognl: count">51</span>&nbsp;documents matched your selection.
+   </span>
+</span>
+]]></source>
+</section>
 </section>
 </body>
 </document>
