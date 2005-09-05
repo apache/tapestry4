@@ -35,13 +35,13 @@
 
 <p>
   <strong>See also:</strong> <link href="&apiroot;/components/Conditional.html">org.apache.tapestry.components.Conditional</link>,
-	 <link href="site:If">If</link>,
-	 <link href="site:Else">Else</link>
+	 &If;,
+	 &Else;
 </p>
 
 		<warning>
-			This component has been deprecated; Tapestry 4.0 adds the '<link href="site:If">If</link>' component which
-			allows conditionalized elements to be safely contained by form components.
+			This component has been deprecated; Tapestry 4.0 adds the &If; component which
+			allows conditionalized elements to be safely contained by &Form; components.
 		</warning>
 
 
@@ -93,7 +93,7 @@
     <td>&nbsp;</td>
     <td>
       If specified and condition is satisfied, then the component behaves like
-                  an <link href="site:Any">Any</link>, emitting an open and close tag.
+                  an &Any;, emitting an open and close tag.
                   Informal parameters are applied to the tag. If no element is
                   specified, informal parameters are ignored.
     </td>

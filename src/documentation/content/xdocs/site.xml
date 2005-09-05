@@ -83,6 +83,7 @@
         <Conditional label="Conditional" href="Conditional.html"/>
         <DatePicker label="DatePicker" href="DatePicker.html"/>
         <Delegator label="Delegator" href="Delegator.html"/>
+		<Describe label="Describe" href="Describe.html"/>
         <DirectLink label="DirectLink" href="DirectLink.html"/>
         <ExceptionDisplay label="ExceptionDisplay" href="ExceptionDisplay.html"/>
         <ExternalLink label="ExternalLink" href="ExternalLink.html"/>
