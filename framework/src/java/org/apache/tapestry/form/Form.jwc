@@ -107,6 +107,7 @@
   <reserved-parameter name="onsubmit"/>
   <reserved-parameter name="onreset"/>
   <reserved-parameter name="enctype"/>
+  <reserved-parameter name="id"/>
   
   <inject property="directService" object="engine-service:direct"/>
   <inject property="actionService" object="engine-service:action"/>

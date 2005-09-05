@@ -153,7 +153,7 @@
 </p>
 
 <p>
-  Reserved parameters: action, enctype, name, onsubmit, onreset
+  Reserved parameters: action, enctype, id, name, onreset, onsubmit
 </p>
 
 <p>
