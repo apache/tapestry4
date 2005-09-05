@@ -60,6 +60,11 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-386">Big overhaul of the Tapestry Inspector</action>
 	  <action type="fix" dev="HLS" fixes-bug="TAPESTRY-626">Form component can render id tag twice</action>
 	  <action type="add" dev="HLS">Add documentation for the Describe component</action>
+      <action type="fix" dev="DS" fixes-bug="TAPESTRY-487, TAPESTRY-495, TAPESTRY-514">Document Choose, Otherwise, When components</action>
+      <action type="fix" dev="DS" fixes-bug="TAPESTRY-458" due-to="Jesse Bouwman">Document Conditional component</action>
+      <action type="fix" dev="DS" fixes-bug="TAPESTRY-456" due-to="Warner Onstine">Document ActionLink component</action>
+      <action type="fix" dev="DS" fixes-bug="TAPESTRY-483" due-to="Pierre-Yves Nicolas">Document Select component</action>
+      <action type="fix" dev="DS" fixes-bug="TAPESTRY-475" due-to="liigo">Document PageLink component</action>
     </release>
     <release version="4.0-beta-5" date="Aug 26 2005">
       <action type="fix" dev="MB,HLS" fixes-bug="TAPESTRY-552">Improperly configured SerializableAdaptor (for DataSqueezer) prevents serialized objects from being de-serialized</action>
