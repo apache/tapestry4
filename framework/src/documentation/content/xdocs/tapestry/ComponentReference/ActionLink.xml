@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- 
+<!--
    Copyright 2004, 2005 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,47 +25,231 @@
   <header>
     <title>ActionLink</title>
   </header>
-  
+
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> Creates an &lt;a&gt; hyperlink in the HTML response. If the link is triggered, then the ActionLink retrieves its listener, and invokes actionTriggered() on it.
 </p>
+<p>See the Developers Guide ActionLink and DirectLink listeners for a more complete description.</p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &DirectLink;, &ExternalLink;, &GenericLink;, &PageLink;, &ServiceLink;</strong>
+
 </p>
 
 <section>
   <title>Parameters</title>
-  
+
 <table>
-  <tr> 
+  <tr>
     <th>Name</th>
     <th>Type</th>
 	  <th>Direction</th>
-    <th>Required</th> 
+
+    <th>Required</th>
     <th>Default</th>
     <th>Description</th>
   </tr>
+  <tr>
+    <td>listener</td>
+    <td>&IActionListener;</td>
 
+    <td>in</td>
+    <td>yes</td>
+    <td></td>
+    <td>
+      Specifies an object that is notified when the link is clicked, which is typically a listener
+      method of its container (for example, listeners.<em>method</em>).
+    </td>
+  </tr>
+
+  <tr>
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+
+    <td>
+      Controls whether the link is produced. If disabled, the portion of the template the
+      link surrounds is still rendered, but not the link itself.
+    </td>
+  </tr>
+  <tr>
+    <td>stateful</td>
+    <td>boolean</td>
+    <td>in</td>
+
+    <td>no</td>
+    <td>true</td>
+    <td>
+      If true (the default), then the component requires an active (i.e., non-new) HttpSession when
+      triggered. Failing that, it throws a &StaleLinkException;. If false, then no check is necessary.
+      The latter works well with links that encode all necessary state inside the URL itself.
+    </td>
+  </tr>
+  <tr>
+    <td>anchor</td>
+
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+      The name of an anchor or element to link to. The final URL will have '#' and the anchor appended to it.
+    </td>
+
+  </tr>
+  <tr>
+    <td>renderer</td>
+    <td>&ILinkRenderer;</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+
+    <td>
+      The object which will actually render the link.
+    </td>
+  </tr>
 	</table>
-  
-<p>
-  Body: <strong>removed / allowed</strong>
-</p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Body: <strong>rendered</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+
+  Informal parameters: <strong>allowed</strong>
+</p>
+
+<p>
+  Reserved parameters: <em>href</em>
 </p>
 
 </section>
 
 <section>
   <title>Examples</title>
+
+  <p>
+In this example the ActionLink component enables users to select a Customer from the Customer List table.
+</p>
+
+<source><![CDATA[
+
+  <table class="examples" cellspacing="6">
+  <tr align="left">
+   <th>ID</th>
+   <th>&nbsp;</th>
+   <th>Name</th>
+   <th>&nbsp;</th>
+   <th>Level</th>
+  </tr>
+  <tr>
+   <td colspan="5"><hr></td>
+  </tr>
+  <tr>
+   <td>10276</td>
+   <td>&nbsp;</td>
+   <td><a href="ActionLink.html" style="{color:blue;}">Ms Sophie L. Jamies</a></td>
+   <td>&nbsp;</td>
+   <td>Platinum</td>
+  </tr>
+  <tr>
+   <td>10539</td>
+   <td>&nbsp;</td>
+   <td><a href="ActionLink.html" style="{color:blue;}">Mr Albert H. Davies</a></td>
+   <td>&nbsp;</td>
+   <td>Gold</td>
+  </tr>
+  <tr>
+   <td>10552</td>
+   <td>&nbsp;</td>
+   <td><a href="ActionLink.html" style="{color:blue;}">Mrs Jan S. Flawson</a></td>
+   <td>&nbsp;</td>
+   <td>Gold</td>
+  </tr>
+  <tr>
+   <td>10863</td>
+   <td>&nbsp;</td>
+   <td><a href="ActionLink.html" style="{color:blue;}">Mr Robert J. Hassel</a></td>
+   <td>&nbsp;</td>
+   <td>Silver</td>
+  </tr>
+</table>
+]]></source>
+
+
+<section>
+<title>HTML template</title>
+<source><![CDATA[
+  <table cellspacing="6">
+  <tr>
+   <td>ID</td>
+   <td>&nbsp;</td>
+   <td>Name</td>
+   <td>&nbsp;</td>
+   <td>Level</td>
+  </tr>
+  <tr>
+   <td colspan="5"><hr></td>
+  </tr>
+  <tr jwcid="@Foreach" source="ognl:customerList" value="ognl:customer" element="tr">
+   <td><span jwcid="@Insert" value="ognl:customer.id"/></td>
+   <td>&nbsp;</td>
+   <td><span jwcid="@ActionLink" listener="listener:customerSelectAction"> <span jwcid="@Insert" value="ognl:customer.fullName"/> </span></td>
+   <td>&nbsp;</td>
+   <td><span jwcid="@Insert" value="ognl:customer.memberLevel"/></td>
+  </tr>
+</table>
+]]></source>
+</section>
+
+<section>
+<title>Page specification</title>
+<source><![CDATA[
+<property-specification name="customerList" type="java.util.List" persistent="yes"/>
+<property-specification name="customer" type="Customer"/>
+]]></source>
+</section>
+
+
+<section>
+<title>Java sources</title>
+<source><![CDATA[
+public abstract class SalesPage extends BasePage {
+    public abstract List getCustomerList();
+    public abstract List setCustomerList(List value);
+
+    public abstract Customer getCustomer();
+
+    public void customerSelectAction(IRequestCycle cycle) {
+       Customer customer = getCustomer();
+       // Do something with customer
+    }
+}
+]]></source>
+
+<source><![CDATA[
+public class Customer implements Serializable {
+    private Integer id;
+    private String fullName;
+    private String memberLevel;
+
+    public Customer(Integer id, String fullName, String memberLevel) {
+        this.id = id;
+        this.fullName = fullName;
+        this.memberLevel = memberLevel;
+    }
+
+    public Integer getId() { return id; }
+
+    public String getFullName() { return fullName; }
+
+    public String getMemberLevel() { return memberLevel; }
+}
+]]></source>
+</section>
 
 </section>
 </body>
