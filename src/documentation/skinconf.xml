@@ -138,6 +138,11 @@
         in the class attribute of a <p> node. 
         e.g. <p class="quote"/>
     -->
+
+	A:visited  {
+	  color: green;
+	}	
+	
     p.quote {
       margin-left: 2em;
       padding: .5em;
