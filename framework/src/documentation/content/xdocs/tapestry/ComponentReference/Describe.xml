@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+[
+	<!ENTITY projectroot '../../'>
+	<!ENTITY % links.ent SYSTEM "../../links.ent">
+	%links.ent;
+]>
+<document>
+  <header>
+    <title>Describe</title>
+  </header>
+  
+  <body>
+
+<p> 
+Used to produce an HTML description of an object; typically a table is rendered, and the object's
+properties are displayed in successive rows of the table. In some cases, a property may be described recursively.
+Simple objects may be described as strings. The behavior behind this is extensible, defined in terms
+of contributions to the 
+<link href="&hivedoc;/config/tapestry.describe.DescribableStrategies">tapestry.describe.DescribableStrategies</link>
+configuration point.
+</p>
+
+<p>
+	This component is used internally by Tapestry as part of the default Exception page.
+</p>
+
+<p>
+  <strong>See also: <link href="&apiroot;/html/Describe.html">org.apache.tapestry.html.Describe</link>,
+	<link href="&hivedoc;/service/tapestry.describe.HTMLDescriber">tapestry.describe.HTMLDescriber</link>
+	</strong> 
+</p>
+
+<section>
+  <title>Parameters</title>
+  
+<table>
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+
+<tr>
+	<td>object</td> <td>any</td>
+	<td>in</td> <td>yes</td> <td/>
+	<td>The object to be described.</td>
+</tr>
+
+	</table>
+  
+<p>
+  Body: <strong>removed</strong>
+</p>  
+
+<p>
+  Informal parameters: <strong> forbidden</strong>
+</p>
+
+<p>
+  Reserved parameters: <em>none</em>
+</p>
+
+</section>
+
+</body>
+</document>
