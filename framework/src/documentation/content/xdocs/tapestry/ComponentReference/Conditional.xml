@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- 
+<!--
    Copyright 2004, 2005 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,47 +25,128 @@
   <header>
     <title>Conditional</title>
   </header>
-  
+
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>Causes the rendering of a part of an HTML template to occur only if a specified condition
+	is met. The conditionalized part of the template can be a single emulated element
+	 (if the element parameter is supplied), the body of the component, or both.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also:</strong> <link href="&apiroot;/components/Conditional.html">org.apache.tapestry.components.Conditional</link>,
+	 <link href="site:If">If</link>,
+	 <link href="site:Else">Else</link>
 </p>
+
+		<warning>
+			This component has been deprecated; Tapestry 4.0 adds the '<link href="site:If">If</link>' component which
+			allows conditionalized elements to be safely contained by form components.
+		</warning>
+
 
 <section>
   <title>Parameters</title>
-  
+
 <table>
-  <tr> 
+  <tr>
     <th>Name</th>
     <th>Type</th>
 	  <th>Direction</th>
-    <th>Required</th> 
+
+    <th>Required</th>
     <th>Default</th>
     <th>Description</th>
   </tr>
+	<tr>
+		<td>condition</td>
+		<td>boolean</td>
 
+		<td>in</td>
+		<td>yes</td>
+	<td>
+
+	</td>
+		<td>
+    The condition to evaluate.
+    </td>
+		</tr>
+
+
+  <tr>
+		<td>invert</td>
+		<td>boolean</td>
+		<td>in</td>
+		<td>no</td>
+		<td>false</td>
+
+		<td> If true, inverts the condition, so that a false condition causes the content to be
+			included. If false (the default), then the condition is evaluated normally. Note: it is
+			easier to specify the "!" operator in the condition's OGNL expression. </td>
+  </tr>
+  <tr>
+    <td>element</td>
+    <td>string</td>
+    <td>in</td>
+
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>
+      If specified and condition is satisfied, then the component behaves like
+                  an <link href="site:Any">Any</link>, emitting an open and close tag.
+                  Informal parameters are applied to the tag. If no element is
+                  specified, informal parameters are ignored.
+    </td>
+  </tr>
 	</table>
-  
-<p>
-  Body: <strong>removed / allowed</strong>
-</p>  
+
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Body: <strong>allowed</strong>
+</p>
+
+<p>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
   Reserved parameters: <em>none</em>
+
 </p>
 
 </section>
 
 <section>
   <title>Examples</title>
+<p>
+  The Conditional component in this example is used to display whether the
+  person is a manager, and if they are a manager, whether they have any staff:
+	</p>
+
+  <p>EnquiryPage.html:</p>
+   <source><![CDATA[
+<span jwcid="@Insert" value="ognl:fullName"/>
+<span jwcid="@Conditional" condition="ognl:manager"> is a Manager
+ <span jwcid="@Conditional" condition="ognl:! staffList.empty"> with staff.</span>
+ <span jwcid="@Conditional" condition="ognl:staffList.empty"> with <font color="red"><b>no</b></font> staff.</span>
+</span>
+<span jwcid="@Conditional" condition="ognl:! manager"> is not a Manager.</span>
+]]></source>
+
+  <p>EnquiryPage.java:</p>
+   <source><![CDATA[
+public abstract class EnquiryPage extends BasePage {
+
+    public abstract String getFullName();
+    public abstract void setFullName(String value);
+
+    public abstract boolean isManager();
+    public abstract void setManager(boolean value);
+
+    public abstract List getStaffList();
+    public abstract void setStaffList(List value);
+}
+]]></source>
 
 </section>
 </body>
