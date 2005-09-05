@@ -55,7 +55,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-611">Pattern validator invokes wrong client-side JavaScript function</action>      
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-610">$bean syntax for validators: binding prefix is broken</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-609">Tapestry.set_focus() seems to be passed the form components elementId (i.e. name attribute) not clientId (i.e. id attribute), which keeps focus from being set</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-478, TAPESTRY-477, TAPESTRY-463" due-to="Pierre-Yves Nicolas">Document RadioGroup, Radio and ExternalLink components</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-478, TAPESTRY-477, TAPESTRY-463, TAPESTRY-474" due-to="Pierre-Yves Nicolas">Document RadioGroup, Radio, ExternalLink, Option components</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-613">Javascript problem with @LinkSubmit</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-386">Big overhaul of the Tapestry Inspector</action>
 	  <action type="fix" dev="HLS" fixes-bug="TAPESTRY-626">Form component can render id tag twice</action>
