@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- 
+<!--
    Copyright 2004, 2005 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,47 +25,149 @@
   <header>
     <title>Select</title>
   </header>
-  
+
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
-</p>
+<p>Implements a component that manages an HTML &lt;select&gt; form element.
+The Select component can take the form of a drop down list (default) or a list selection box if the "multiple" parameter is set to true.
+The Select component must wrap around &Option; components within a &Form;.</p>
+<p>Unless multiple selections are required, it is generally easier to use the &PropertySelection; component.</p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/form/Select.html">org.apache.tapestry.form.Select</link>, &Form;, &Option;, &RadioGroup;, &Radio;, &PropertySelection;</strong>
+
 </p>
 
 <section>
   <title>Parameters</title>
-  
+
 <table>
-  <tr> 
+  <tr>
     <th>Name</th>
     <th>Type</th>
-	  <th>Direction</th>
-    <th>Required</th> 
+    <th>Direction</th>
+
+    <th>Required</th>
     <th>Default</th>
     <th>Description</th>
   </tr>
+  <tr>
+    <td>multiple</td>
+    <td>boolean</td>
 
-	</table>
-  
-<p>
-  Body: <strong>removed / allowed</strong>
-</p>  
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+    <td>
+      If true, the component allows multiple selection.
+    </td>
+  </tr>
+  <tr>
+
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+    <td>
+
+      Controls whether the select is active or not. Corresponds to the "disabled" HTML attribute.
+    </td>
+  </tr>
+  <tr>
+    <td>displayName</td>
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+
+    <td></td>
+    <td>
+      The user-presentable name for the component, which will be used by a &FieldLabel; connected to the component.
+    </td>
+  </tr>
+  <tr>
+    <td>validators</td>
+    <td>Array or collection of &Validator;, or &Validator;</td>
+
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+      The validators to apply to the component. In many cases, a "validators" binding can help.
+    </td>
+  </tr>
+  <tr>
+
+    <td>id</td>
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+      Sets the id attribute for the rendered &lt;select&gt; element.
+    </td>
+
+  </tr>
+</table>
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Body: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Informal parameters: <strong>allowed</strong>
+</p>
+
+<p>
+  Reserved parameters: <em>name</em>
 </p>
 
 </section>
 
 <section>
   <title>Examples</title>
+
+<p>In the following example, a user can select several colors (and, because of the validator, he must select at least one).</p>
+
+<source><![CDATA[
+<form jwcid="@Form" listener="listener:formSubmit">
+ <span jwcid="@FieldLabel" field="component:colorChooser" displayName="Choose a color">Color</span>
+ <select jwcid="colorChooser@Select" multiple="ognl:true" validators="validators:required">
+  <span jwcid="@Foreach" source="ognl:colors" value="ognl:currentColor" index="ognl:currentColorIndex">
+   <option jwcid="@Option" selected="ognl:selection[currentColorIndex]" label="ognl:currentColor"/>
+  </span>
+ </select>
+ <input type="submit"/>
+</form>
+]]></source>
+
+<source><![CDATA[
+public abstract class ColorChooser extends BasePage implements PageBeginRenderListener{
+
+  private String[] colors = {"blue", "red", "green", "yellow"};
+
+  public abstract int getCurrentColorIndex();
+  public abstract String getCurrentColor();
+  public abstract boolean[] getSelection();
+  public abstract void setSelection(boolean[] selection);
+
+  public String[] getColors() {
+    return colors;
+  }
+
+  public void formSubmit() {
+    // process form
+
+  }
+
+  public void pageBeginRender(PageEvent event) {
+    if (getSelection() == null) {
+      setSelection(new boolean[colors.length]);
+    }
+  }
+
+}
+]]></source>
 
 </section>
 </body>
