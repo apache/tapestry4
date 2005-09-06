@@ -28,11 +28,11 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>Renders the body (static HTML and components) wrapped by the container of the RenderBody component. Components which have HTML templates and can wrap other elements should include exactly one RenderBody component in their template.
 </p>
-
+<p> This component is very useful for creating a common navigational component used by multiple pages of an application. Typically you create a common navigational component which contains navigational links &PageLink; to other pages and a RenderBody component which will insert the actual content of the page. The application pages then use the navigational component as their first element, and then their usual content. When the pages renders, it renders the surrounding navigational component and then the page's content.</p>
 <p>
-  <strong>See also:</strong> 
+  <strong>See also:</strong>&Block;, &Insert;, &RenderBlock;, &InsertText;
 </p>
 
 <section>
@@ -47,15 +47,17 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
-
+   <tr>
+       <td colspan="6">None</td>
+   </tr>
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>forbidden</strong>
 </p>
 
 <p>
@@ -66,7 +68,69 @@
 
 <section>
   <title>Examples</title>
-
+  <p> This example shows an implementation of the classical Border component, an application specific component. It is a common practice to use a Border component to provide common layout to almost all of application pages.</p>
+  <p>Template</p>
+    <source><![CDATA[
+<span jwcid="@Border">
+<H1 align=center><FONT color=#ff3333>Agnosis</FONT></H1>
+<TABLE align=center border=0>
+   <TR>
+      <TD>
+         <P>
+            <B>A</B>GNOSIS feliz
+            <BR/>
+            <B>G</B>racias al ciego destino
+            <BR/>
+            <B>N</B>ada es constante
+            <BR/>
+            <B>O</B>lvidados por el Hado
+            <BR/>
+            <B>S</B>i El existe
+            <BR/>
+            <B>I</B>ncomprensible y eterno
+            <BR/>
+            <B>S</B>ilencio
+         </P>
+      </TD>
+   </TR>
+</TABLE>
+<br/>
+</span>
+]]></source>
+    <p>Border.html</p>
+      <source><![CDATA[
+<html jwcid="@Shell" title="RenderBody Example">
+   <body jwcid="@Body">
+      <table width="100%" cellspacing="0" border="0">
+         <tr>
+           <td valign="top" style="text-align:justify;">
+              <span jwcid="@RenderBody">Page content goes here.</span>
+           </td>
+        </tr>
+        <tr>
+           <td valign="bottom">
+              <table width="100%" cellspacing="0" border="0">
+                 <tr>
+                    <td align="center">
+                       <a href="http://jakarta.apache.org/tapestry"><img src="images/poweredbyTapestry.gif" width="79" height="33" border="0" alt="Tapestry"></a>
+                       <br/>
+                       <br/>
+                    </td>
+                 </tr>
+              </table>
+           </td>
+        </tr>
+     </table>
+  </body>
+</html>
+]]></source>
+    <p>Border.jwc</p>
+      <source><![CDATA[
+.....
+<component-specification allow-body="yes" allow-informal-parameters="no">
+</component-specification>
+.....
+]]></source>
 </section>
 </body>
 </document>
