@@ -97,7 +97,17 @@
     Only active in a form. If provided, the parameter is automatically updated 
     before a rewind with the list of primary keys stored in the form. 
     The parameter is updated right before the iterations begin in a rewind and 
-    could be used to preload the relevant objects in a provided 'converter'.
+    could be used to preload the relevant objects in the provided 'converter'.
+    </description>
+  </parameter>
+  
+  <parameter name="match" default-value="true">
+    <description>
+    Only active in a form. This parameter allows the matching of the squeezed 
+    representation of the values with that of the values in 'source'. It guarantees 
+    that the values iterated upon are physically identical to the ones provided. 
+    The method is often slower than simple unsqueezing, but it eliminates a number 
+    of potential pitfalls. Please disable with caution.
     </description>
   </parameter>
   
@@ -108,6 +118,8 @@
     and cause exceptions as a result. Please use with caution.
     </description>
   </parameter>
+  
+  <property name="repToValueMap" initial-value="new java.util.HashMap()"/>
   
   <inject property="dataSqueezer" object="service:tapestry.data.DataSqueezer"/>
   <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
