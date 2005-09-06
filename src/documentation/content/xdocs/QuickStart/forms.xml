@@ -477,7 +477,7 @@ public abstract class AddProject extends BasePage implements PageBeginRenderList
 	
 </section>
 
-<em>More coming soon ...</em>
+<p><em>More coming soon ...</em></p>
 
 </body>
 </document>
