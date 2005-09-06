@@ -128,6 +128,7 @@
 <!ENTITY Body 				'<link href="site:Body">Body</link>'>
 <!ENTITY Checkbox 			'<link href="site:Checkbox">Checkbox</link>'>
 <!ENTITY Conditional 		'<link href="site:Conditional">Conditional</link>'>
+<!ENTITY DatePicker			'<link href="site:DatePicker">DatePicker</link>'>
 <!ENTITY Delegator 			'<link href="site:Delegator">Delegator</link>'>
 <!ENTITY Describe			'<link href="site:Describe">Describe</link>'>
 <!ENTITY DirectLink 		'<link href="site:DirectLink">DirectLink</link>'>

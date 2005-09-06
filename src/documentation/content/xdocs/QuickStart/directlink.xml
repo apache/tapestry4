@@ -502,10 +502,11 @@ need to figure out whether to increment the counter by 1, 5 or 10.
 </section>  
 
 <section>
-  <title>Next: ???</title>
-  
+  <title>Next: <link href="forms.html">Forms</link></title>
+
 <p>
-  Don't know what's next ... haven't written it yet.  Probably start with Forms.
+&DirectLink; may be a real workhorse, but the heart of most web applications are the
+subject of our next tutorial: <link href="forms.html">Tapestry Forms</link>.
 </p>
 
 </section>
