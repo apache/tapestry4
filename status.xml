@@ -54,7 +54,7 @@
       <action type="update" dev="HLS" due-to="Henri Yandell">Convert Tapestry repository from CVS to SVN</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-611">Pattern validator invokes wrong client-side JavaScript function</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-610">$bean syntax for validators: binding prefix is broken</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-609">Tapestry.set_focus() seems to be passed the form components elementId (i.e. name attribute) not clientId (i.e. id attribute), which keeps 
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-609">Tapestry.set_focus() seems to be passed the form components elementId (i.e. name attribute) not clientId (i.e. id attribute), which keeps
         focus from being set</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-478, TAPESTRY-477, TAPESTRY-463, TAPESTRY-474" due-to="Pierre-Yves Nicolas">Document RadioGroup, Radio, ExternalLink, Option components</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-613">Javascript problem with @LinkSubmit</action>
@@ -69,13 +69,14 @@
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-479" due-to="Pierre-Yves Nicolas">Document RenderBody component</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-606">ListEdit components should not attempt to take focus</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-546">Build uploads vlibbeans-xxx.jar to java repository (and thence to the maven repository)</action>
+      <action type="fix" dev="DS" fixes-bug="TAPESTRY-461" due-to="Warner Onstine">Document DirectLink component</action>
     </release>
     <release version="4.0-beta-5" date="Aug 26 2005">
       <action type="fix" dev="MB,HLS" fixes-bug="TAPESTRY-552">Improperly configured SerializableAdaptor (for DataSqueezer) prevents serialized objects from being de-serialized</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-554">Hook needed on client side to control how validation errors are presented to the user</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-528">Add IComponentSpecification.getReservedParameterNames()</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-557">Remove unused org.apache.tapestry.IResourceLocation (replaced by org.apache.hivemind.Resource)</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-553">Rename property-name attribute of configure element to "property" (matching the code in SpecificationParser, as well as other similar 
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-553">Rename property-name attribute of configure element to "property" (matching the code in SpecificationParser, as well as other similar
         elements in the DTD)</action>
       <action type="fix" dev="MB" fixes-bug="TAPESTRY-555">IfBean has a logic error in it</action>
       <action type="fix" dev="MB" fixes-bug="TAPESTRY-290">Incorrect binding type converter for array of int[]</action>
@@ -111,7 +112,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-445" due-to="Markus Joschko">ContextAssetFactory assembles wrong filename for assets</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-444">regexp validator(Email) script function name mismatch</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-446">Changes to assets are not picked up, even when caching is disabled</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-435,TAPESTRY-325,TAPESTRY-309,TAPESTRY-311,TAPESTRY-252,TAPESTRY-254,TAPESTRY-327,TAPESTRY-333" due-to="Our many international users">Add many 
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-435,TAPESTRY-325,TAPESTRY-309,TAPESTRY-311,TAPESTRY-252,TAPESTRY-254,TAPESTRY-327,TAPESTRY-333" due-to="Our many international users">Add many
         translations of ValidationStrings.properties.</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-441">Poor reporting of duplicate method implementations</action>
       <action type="update" dev="HLS">Remove default-binding attribute from &lt;parameter&gt; element</action>
@@ -130,15 +131,15 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-534">WebRequest interface doesn't expose getRemoteUser(), isUserInRole() or getUserPrincipal()</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-530" due-to="Raphael Jean">Namespace messages are retrieved using page's locale rather than engine's locale</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-354">Components without a .jwc file not visible</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-533" due-to="Raphael Jean">Generated client-side javascript is wrong when error message or field display name contains single-quote characters 
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-533" due-to="Raphael Jean">Generated client-side javascript is wrong when error message or field display name contains single-quote characters
         or backslashes</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-365">Set the location for a page that has no specification (just a template) to be relative to the application (or library) 
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-365">Set the location for a page that has no specification (just a template) to be relative to the application (or library)
         specification</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-537">Allow listener methods to return ILink, to support redirect-after-post</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-539">Abstract properties (without a &lt;property&gt; element) do not clear out their values</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-351">Add isRequired() to IFieldComponent</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-452">Tapestry 4.0 (excluding annotations) not source compatible with JDK 1.3</action>
-      <action type="fix" dev="PF" fixes-bug="TAPESTRY-350">Replaced RequirableField logic and 'required' parameter in PropertySelection, RadioGroup, Select, Upload, contrib:MultiplePropertySelection, 
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-350">Replaced RequirableField logic and 'required' parameter in PropertySelection, RadioGroup, Select, Upload, contrib:MultiplePropertySelection,
         and contrib:Palette with more general ValidatableField logic that adds a 'validators' parameter.</action>
       <action type="update" dev="PF">Checkbox component is now validatable.</action>
       <action type="update" dev="PF">Required validator additionally detects empty strings and empty collections.</action>
@@ -207,9 +208,9 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-337">Incorrect link to Spring integration docs in FAQ</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-304">Non thread safe documentation example</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-261">ListEditMap can return null from getDeletedKeys()</action>
-      <action type="fix" dev="HLS">Fix injection problems; InjectScriptWorker injects a DeferredScript, not an IScript. Add super-verbose exception output when there's a failure instantiating a 
+      <action type="fix" dev="HLS">Fix injection problems; InjectScriptWorker injects a DeferredScript, not an IScript. Add super-verbose exception output when there's a failure instantiating a
         component class. </action>
-      <action type="add" dev="PF">Refactored and expanded validation functionality to include DatePicker, PropertySelection, RadioGroup, Select, TextArea, TextField, Upload, contrib:Palette, and 
+      <action type="add" dev="PF">Refactored and expanded validation functionality to include DatePicker, PropertySelection, RadioGroup, Select, TextArea, TextField, Upload, contrib:Palette, and
         contrib:MultiplePropertySelection</action>
       <action type="update" dev="HLS">Rework form event management to be primarily a client-side concern</action>
       <action type="add" dev="HLS">Add translator binding prefix</action>
@@ -286,7 +287,7 @@
       <action type="add" dev="HLS"> Add &lt;inject-state&gt; element to specifications. </action>
       <action type="add" dev="HLS"> Add property attribute to &lt;component&gt;, &lt;bean&gt; and &lt;asset&gt; and add enhancement workers to inject these objects as properties. </action>
       <action type="add" dev="HLS"> Add hivemind: binding prefix. </action>
-      <action type="update" dev="HLS"> Make the Body component output initializations in a script block at the end of the page (just before the close tag), rather than in a window.onload event 
+      <action type="update" dev="HLS"> Make the Body component output initializations in a script block at the end of the page (just before the close tag), rather than in a window.onload event
         handler. </action>
       <action type="update" dev="HLS" fixes-bug="TAPESTRY-262"> Support more boolean values. </action>
       <action type="update" dev="HLS"> Inject Messages into components; this means that all Tapestry page and component classes are abstract. </action>
@@ -308,7 +309,7 @@
       <action type="fix" dev="HLS" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-249"> Provide localized validation messages for Simplified Chinese (zh_CN). </action>
       <action type="fix" dev="HLS" due-to="Niklas Ekman" fixes-bug="TAPESTRY-139"> Provide localized validation messages for Swedish. </action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-230"> Ignored interruptedException prevents Janitorthread termination. </action>
-      <action type="fix" dev="HLS" due-to="Morten Holm" fixes-bug="TAPESTRY-248"> The online Tapestry component reference for 3.0.1 for @Foreach component has an error in the example section. 
+      <action type="fix" dev="HLS" due-to="Morten Holm" fixes-bug="TAPESTRY-248"> The online Tapestry component reference for 3.0.1 for @Foreach component has an error in the example section.
         </action>
       <action type="fix" dev="HLS" due-to="Michael Frericks" fixes-bug="TAPESTRY-218"> Persistent properties can't be set to null. </action>
       <action type="fix" dev="HLS" due-to="Sadanori Ito" fixes-bug="TAPESTRY-200"> ListEdit component reference should list source and value as required. </action>
@@ -337,11 +338,11 @@
     <!-- Use due-to to give acknowledgement for patches. -->
     <release version="3.0-rc-3" date="Apr 7 2004">
       <action type="update" dev="HLS"> Add docs on how to report problems. </action>
-      <action type="fix" dev="HLS" fixes-bug="28202" due-to="Mats Forst&#246;f"> Pass the java.security.ProtectionDomain to the parent class loader when creating an enhanced class, to allow Tapestry 
+      <action type="fix" dev="HLS" fixes-bug="28202" due-to="Mats Forst&#246;f"> Pass the java.security.ProtectionDomain to the parent class loader when creating an enhanced class, to allow Tapestry
         operation inside secure environments such as Tomcat. </action>
       <action type="fix" dev="DS" fixes-bug="28177" due-to="sito@htf.highway.ne.jp"> NPE in org.apache.tapestry.form.LinkSubmit. </action>
       <action type="fix" dev="HLS" fixes-bug="27956"> Make checks for unimplemented abstract methods optional, to work around a bug in IBM JDK 1.3.1 (used with Websphere 4.x). </action>
-      <action type="fix" dev="HLS" fixes-bug="28235"> Allow more primitive types to be used with parameter direction <code>auto</code> (byte, char, short, float and long) in addition to the 
+      <action type="fix" dev="HLS" fixes-bug="28235"> Allow more primitive types to be used with parameter direction <code>auto</code> (byte, char, short, float and long) in addition to the
         previously accepted types (boolean, int, double and objects). </action>
     </release>
     <release version="3.0-rc-2" date="Apr 1 2004">
@@ -367,7 +368,7 @@
       <action type="update" dev="HLS"> Update DatePicker to use a graphic icon to hide and show the calendar. </action>
       <action type="fix" dev="HLS" fixes-bug="20932"> Check for duplication of ids between the HTML template and the specification. </action>
       <action type="fix" dev="HLS" fixes-bug="27082"> Fix some number conversion problems inside NumberValidator. </action>
-      <action type="update" dev="HLS"> Dynamically download OGNL and Javassist libraries (in accordance with ASF directives about non-ASL code). <b>Unfortunately, this means that we no longer can 
+      <action type="update" dev="HLS"> Dynamically download OGNL and Javassist libraries (in accordance with ASF directives about non-ASL code). <b>Unfortunately, this means that we no longer can
         distribute precompiled examples that include those libraries</b> </action>
     </release>
     <release version="3.0-beta-4" date="Feb 5 2004">
@@ -417,7 +418,7 @@
       <action type="fix" dev="MB" fixes-bug="25642"> properties cannot be of complex array types </action>
       <action type="fix" dev="EH" fixes-bug="25766"> fixed broken links in doc\src\common\TapestryLinks.xml </action>
       <action type="fix" dev="MB" fixes-bug="26395"> Inherited parameters do not pick up default values </action>
-      <action type="update" dev="HLS"> Changed code to no longer invoke <code>StringUtils.isEmpty() / isNonEmpty()</code> (this is because the behavior of the method is changing between 
+      <action type="update" dev="HLS"> Changed code to no longer invoke <code>StringUtils.isEmpty() / isNonEmpty()</code> (this is because the behavior of the method is changing between
         jakarta-commons 1.0 and 2.0). </action>
       <action type="update" dev="HLS"> Add an implementation of <code>toString()</code> to <code>RequestCycle</code>. </action>
       <action type="update" dev="HLS"> Update all copyrights for 2004. </action>
@@ -433,7 +434,7 @@
       <action type="update" dev="MB"> Evaluate the string 'false' as Boolean.FALSE. All other non-empty strings continue to be evaluated as Boolean.TRUE. </action>
       <action type="update" dev="MB"> Automatically download external dependencies (such as Forrest and McKoi DB). </action>
       <action type="fix" dev="HK" due-to="Anatol Pomazau"> DatePicker positioning problem fixed. </action>
-      <action type="fix" dev="HK" fixes-bug="24336"> Automatic rendering of the maxlength and size attributes have been removed. DatePicker now allows informal attributes that will be applied to the 
+      <action type="fix" dev="HK" fixes-bug="24336"> Automatic rendering of the maxlength and size attributes have been removed. DatePicker now allows informal attributes that will be applied to the
         field. </action>
       <action type="fix" dev="MB" fixes-bug="25611"> Fixed one more place where the encoding needs to be set </action>
     </release>
