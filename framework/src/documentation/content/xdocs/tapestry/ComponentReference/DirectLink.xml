@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- 
+<!--
    Copyright 2004, 2005 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,48 +25,308 @@
   <header>
     <title>DirectLink</title>
   </header>
-  
+
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> Creates an &lt;a&gt; hyperlink that notifies the component when the link is triggered. The link includes
+some context-specific data that is made available to the component's listener. This is used in cases where the
+&ActionLink; component can't be used (or is too inefficient).
 </p>
+<p>See the Developers Guide ActionLink and DirectLink listeners for a more complete description.</p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &ActionLink;, &ExternalLink;, &GenericLink;, &PageLink;, &ServiceLink;</strong>
+
 </p>
 
 <section>
   <title>Parameters</title>
-  
+
 <table>
-  <tr> 
+
+  <tr>
     <th>Name</th>
     <th>Type</th>
 	  <th>Direction</th>
-    <th>Required</th> 
+
+    <th>Required</th>
     <th>Default</th>
+
     <th>Description</th>
   </tr>
+  <tr>
+    <td>listener</td>
+    <td>&IActionListener;</td>
 
+    <td>in</td>
+    <td>yes</td>
+
+    <td></td>
+    <td>
+      Specifies an object that is notified when the link is clicked, which is typically a listener
+      method of its container (for example, listeners.<em>method</em>).
+    </td>
+  </tr>
+  <tr>
+    <td>parameters</td>
+    <td>Object or<br />
+
+Object[] or <br />
+List</td>
+
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+      <p>An array of objects to be encoded into the URL. These parameters will be decoded when the
+      link is triggered.</p>
+
+      <p>In a web application built onto of Enterprise JavaBeans, the context is often the primary key
+      of some Entity bean; typically such keys are Strings or Integers.</p>
+      <p>A listener method can retrieve the parameters three ways:
+      <br/>parameters are declared in the method itself, e.g. - listenerMethod(<em>parameters</em>)
+      <br/>parameters are declared along with the IRequestCycle, e.g. - listenerMethod(IRequestCycle cycle, <em>parameters</em>)
+
+      <br/>or through the request cycle, e.g. - listenerMethod(IReuqestCycle cycle), using IRequestCycle.getServiceParameters()
+      </p>
+      <p>Prior to release 2.2, the parameters were always type String. They may now be of any type;
+      type will be maintained when the parameters are later retrieved by a listener. See &DataSqueezer;
+      for more details.</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+
+    <td>
+      Controls whether the link is produced. If disabled, the portion of the template the
+      link surrounds is still rendered, but not the link itself.
+    </td>
+  </tr>
+  <tr>
+    <td>stateful</td>
+    <td>boolean</td>
+    <td>in</td>
+
+    <td>no</td>
+    <td>true</td>
+    <td>
+      If true (the default), then the component requires an active (i.e., non-new) HttpSession when
+      triggered. Failing that, it throws a &StaleLinkException;. If false, then no check is necessary.
+      The latter works well with links that encode all necessary state inside the URL itself.
+    </td>
+  </tr>
+  <tr>
+
+    <td>anchor</td>
+
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+
+      The name of an anchor or element to link to. The final URL will have '#' and the anchor appended to it.
+    </td>
+
+  </tr>
+  <tr>
+    <td>renderer</td>
+    <td>&ILinkRenderer;</td>
+    <td>in</td>
+    <td>no</td>
+
+    <td></td>
+
+    <td>
+      The object which will actually render the link.
+    </td>
+  </tr>
 	</table>
-  
-<p>
-  Body: <strong>removed / allowed</strong>
-</p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Body: <strong>rendered</strong>
+
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+
+  Informal parameters: <strong>allowed</strong>
 </p>
 
+<p>
+  Reserved parameters: <em>href</em>
+</p>
+
+</section>
+<section>
+<title>Examples</title>
+<p>
+In this example the DirectLink component enables users to select a Customer from the Customer List table.
+</p>
+
+<source><![CDATA[
+
+  <table class="examples" cellspacing="6">
+  <tr align="left">
+   <th>ID</th>
+   <th>&nbsp;</th>
+   <th>Name</th>
+   <th>&nbsp;</th>
+   <th>Level</th>
+   <th>&nbsp;</th>
+  </tr>
+  <tr>
+   <td colspan="6"><hr></td>
+  </tr>
+  <tr>
+   <td>10276</td>
+   <td>&nbsp;</td>
+   <td><a href="DirectLink.html" style="{color:blue;}">Ms Sophie L. Jamies</a></td>
+   <td>&nbsp;</td>
+   <td>Platinum</td>
+   <td><a href="DirectLink.html" style="{color:blue;}"><img src="images/delete.gif" alt="Delete"></a></td>
+  </tr>
+  <tr>
+   <td>10539</td>
+   <td>&nbsp;</td>
+   <td><a href="DirectLink.html" style="{color:blue;}">Mr Albert H. Davies</a></td>
+   <td>&nbsp;</td>
+   <td>Gold</td>
+   <td><a href="DirectLink.html" style="{color:blue;}"><img src="images/delete.gif" alt="Delete"></a></td>
+  </tr>
+  <tr>
+   <td>10552</td>
+   <td>&nbsp;</td>
+   <td><a href="DirectLink.html" style="{color:blue;}">Mrs Jan S. Flawson</a></td>
+   <td>&nbsp;</td>
+   <td>Gold</td>
+   <td><a href="DirectLink.html" style="{color:blue;}"><img src="images/delete.gif" alt="Delete"></a></td>
+  </tr>
+  <tr>
+   <td>10863</td>
+   <td>&nbsp;</td>
+   <td><a href="DirectLink.html" style="{color:blue;}">Mr Robert J. Hassel</a></td>
+   <td>&nbsp;</td>
+   <td>Silver</td>
+   <td><a href="DirectLink.html" style="{color:blue;}"><img src="images/delete.gif" alt="Delete"></a></td>
+  </tr>
+</table>
+]]></source>
+
+
+<section>
+<title>HTML template</title>
+<source><![CDATA[
+  <table cellspacing="6">
+  <tr>
+   <td>ID</td>
+   <td>&nbsp;</td>
+   <td>Name</td>
+   <td>&nbsp;</td>
+   <td>Level</td>
+   <th>&nbsp;</th>
+  </tr>
+  <tr>
+   <td colspan="6"><hr></td>
+  </tr>
+  <tr jwcid="@Foreach" source="ognl:customerList" value="ognl:customer" element="tr">
+   <td><span jwcid="@Insert" value="ognl:customer.id"/></td>
+   <td>&nbsp;</td>
+   <td><span jwcid="@DirectLink" listener="listener:customerSelectAction" parameters="ognl:customer.id"> <span jwcid="@Insert" value="ognl:customer.fullName"/> </span></td>
+   <td>&nbsp;</td>
+   <td><span jwcid="@Insert" value="ognl:customer.memberLevel"/></td>
+   <td>
+    <a jwcid="@DirectLink" listener="listener.customerDeleteAction" parameters="ognl:customer.id" onclick="return window.confirm('Are you sure you want remove this customer?');">
+     <img jwcid="@Image" image="ognl:assets.deleteImage" alt="Delete"/>
+    </a>
+   </td>
+  </tr>
+</table>
+]]></source>
 </section>
 
 <section>
-  <title>Examples</title>
-
+<title>Page specification</title>
+<source><![CDATA[
+<property-specification name="customerList" type="java.util.List" persistent="yes"/>
+<property-specification name="customer" type="Customer"/>
+]]></source>
 </section>
+
+
+<section>
+<title>Java sources</title>
+<source><![CDATA[
+public abstract class SalesPage extends BasePage {
+    public abstract List getCustomerList();
+    public abstract List setCustomerList(List value);
+
+    public abstract Customer getCustomer();
+
+    public void customerSelectAction(Integer id) {
+        Visit visit = (Visit) getVisit();
+        Customer customer = visit.findCustomerByPrimaryKey(id);
+        // Perform some action with the selected customer.
+        ..
+    }
+
+    public void customerDeleteAction(Integer id) {
+        Visit visit = (Visit) getVisit();
+        Customer customer = visit.findCustomerByPrimaryKey(id);
+        visit.deleteCustomer(customer);
+    }
+}
+]]></source>
+<source><![CDATA[
+public class Visit() implements Serializable {
+
+    public List getCustomerList() {
+        List customerList = new ArrayList();
+        // Perform a database query retrieving the list of customers.
+        ..
+        return customerList;
+    }
+
+    public Customer findCustomerByPrimaryKey(Integer id) {
+        Customer customer = null;
+        // Retrieve the customer from the database with given the customer ID.
+        ..
+        return customer;
+    }
+
+    public void deleteCustomer(Customer customer) {
+        // Delete customer from the database.
+        ..
+    }
+}
+]]></source>
+
+<source><![CDATA[
+public class Customer implements Serializable {
+    private Integer id;
+    private String fullName;
+    private String memberLevel;
+
+    public Customer(Integer id, String fullName, String memberLevel) {
+        this.id = id;
+        this.fullName = fullName;
+        this.memberLevel = memberLevel;
+    }
+
+    public Integer getId() { return id; }
+
+    public String getFullName() { return fullName; }
+
+    public String getMemberLevel() { return memberLevel; }
+}
+]]></source>
+</section>
+</section>
+
 </body>
 </document>
