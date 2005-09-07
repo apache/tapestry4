@@ -50,6 +50,9 @@
     -->
   </todo>
   <changes>
+    <release version="4.0-beta-7" date="unreleased">
+      
+    </release>
     <release version="4.0-beta-6" date="Sep 7 2005">
       <action type="update" dev="HLS" due-to="Henri Yandell">Convert Tapestry repository from CVS to SVN</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-611">Pattern validator invokes wrong client-side JavaScript function</action>
