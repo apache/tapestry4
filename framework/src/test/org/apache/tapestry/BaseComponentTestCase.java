@@ -19,15 +19,6 @@ import java.io.PrintWriter;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.IBinding;
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRender;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.markup.AsciiMarkupFilter;
 import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -275,6 +266,25 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
         cycle.getParameter(name);
         control.setReturnValue(value);
+    }
+
+    protected void trainGetPageName(IPage page, String pageName)
+    {
+        page.getPageName();
+
+        getControl(page).setReturnValue(pageName);
+    }
+
+    protected void trainBuildURL(IAsset asset, IRequestCycle cycle, String URL)
+    {
+        asset.buildURL(cycle);
+
+        getControl(asset).setReturnValue(URL);
+    }
+
+    protected IAsset newAsset()
+    {
+        return (IAsset) newMock(IAsset.class);
     }
 
 }

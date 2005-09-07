@@ -23,7 +23,7 @@
   <!-- Turns out that libraries have to form a tree; since this library is included by Contrib, it can't include Contrib.  Instead,
        we shadow a component from it. Sloppy and probably a bug. -->
        
-  <component-type type="DumpObject" specification-path="/org/apache/tapestry/contrib/DumpObject.jwc"/>
+  <component-type type="DumpObject" specification-path="/org/apache/tapestry/contrib/components/DumpObject.jwc"/>
   
   <meta key="org.apache.tapestry.component-class-packages" value="org.apache.tapestry.contrib.components"/>
   

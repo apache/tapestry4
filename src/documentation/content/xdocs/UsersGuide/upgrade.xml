@@ -397,5 +397,20 @@ exactly as if they had been read from files on the classpath or web context.
   
 </section>
 
+<section id="upgrade.components">
+  <title>Changes to Components</title>
+  
+  <section>
+    <title>Image and Rollover</title>
+    
+    <p>
+      The border parameter of the &Image; and &Rollover; components has been removed, for XHTML compliance.
+      You may still specify a value for border as an informal parameter ... or better yet, handle this using CSS.
+    </p>
+      
+  </section>
+  
+</section>
+
 </body>
 </document>

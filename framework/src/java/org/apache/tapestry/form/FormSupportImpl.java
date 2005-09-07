@@ -486,7 +486,6 @@ public class FormSupportImpl implements FormSupport
 
         _writer.println();
 
-        writeHiddenField(FORM_IDS, null, buildAllocatedIdList());
         writeHiddenFields();
 
         // Close the nested writer, inserting its contents.
@@ -591,6 +590,9 @@ public class FormSupportImpl implements FormSupport
         _encodingType = encodingType;
     }
 
+    /**
+     * Overwridden by {@link org.apache.tapestry.wml.GoFormSupportImpl} (WML).
+     */
     protected void writeHiddenField(IMarkupWriter writer, String name, String id, String value)
     {
         writer.beginEmpty("input");
@@ -611,11 +613,29 @@ public class FormSupportImpl implements FormSupport
 
     /**
      * Writes out all hidden values previously added by
-     * {@link #addHiddenValue(String, String, String)}.
+     * {@link #addHiddenValue(String, String, String)}. Writes a &lt;div&gt; tag around
+     * {@link #writeHiddenFieldList()}. Overriden by
+     * {@link org.apache.tapestry.wml.GoFormSupportImpl}.
      */
 
-    private void writeHiddenFields()
+    protected void writeHiddenFields()
     {
+        _writer.begin("div");
+
+        writeHiddenFieldList();
+
+        _writer.end();
+    }
+
+    /**
+     * Writes out all hidden values previously added by
+     * {@link #addHiddenValue(String, String, String)}, plus the allocated id list.
+     */
+
+    protected void writeHiddenFieldList()
+    {
+        writeHiddenField(FORM_IDS, null, buildAllocatedIdList());
+
         Iterator i = _hiddenValues.iterator();
         while (i.hasNext())
         {
