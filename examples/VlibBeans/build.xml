@@ -23,6 +23,8 @@
   <property name="javadoc.package" value="org.apache.tapestry.vlib.ejb"/>
     
   <property name="root.dir" value="../.."/>
+  <property name="module.install.dir" value="${root.dir}/target/vlib"/>
+	
   <property file="${root.dir}/config/build.properties"/>
   <property file="${root.dir}/config/common.properties"/>
   
