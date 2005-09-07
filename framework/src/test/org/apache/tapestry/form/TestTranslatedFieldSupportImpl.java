@@ -73,7 +73,7 @@ public class TestTranslatedFieldSupportImpl extends BaseComponentTestCase
         infra.getClassResolver();
         infrac.setReturnValue(cr);
 
-        trainGetAttribute(cyclec, cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, prs);
+        trainGetAttribute(cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, prs);
 
         return cycle;
     }

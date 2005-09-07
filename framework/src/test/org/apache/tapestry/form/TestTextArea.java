@@ -52,16 +52,16 @@ public class TestTextArea extends BaseFormComponentTest
 
         IValidationDelegate delegate = newDelegate();
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, false);
+        trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(component);
 
-        trainGetElementId(formc, form, component, "barney");
-        trainIsRewinding(formc, form, true);
+        trainGetElementId(form, component, "barney");
+        trainIsRewinding(form, true);
 
-        trainGetParameter(cyclec, cycle, "barney", " text area value ");
+        trainGetParameter(cycle, "barney", " text area value ");
 
         try
         {
@@ -105,16 +105,16 @@ public class TestTextArea extends BaseFormComponentTest
 
         IValidationDelegate delegate = newDelegate();
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, false);
+        trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(component);
 
-        trainGetElementId(formc, form, component, "barney");
-        trainIsRewinding(formc, form, true);
+        trainGetElementId(form, component, "barney");
+        trainIsRewinding(form, true);
 
-        trainGetParameter(cyclec, cycle, "barney", " text area value ");
+        trainGetParameter(cycle, "barney", " text area value ");
 
         ValidatorException exception = new ValidatorException("test");
         
@@ -128,7 +128,7 @@ public class TestTextArea extends BaseFormComponentTest
             unreachable();
         }
         
-        trainGetDelegate(formc, form, delegate);
+        trainGetDelegate(form, delegate);
         delegate.record(exception);
         
         replayControls();
@@ -161,16 +161,16 @@ public class TestTextArea extends BaseFormComponentTest
 
         IValidationDelegate delegate = newDelegate();
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, false);
+        trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(component);
 
-        trainGetElementId(formc, form, component, "barney");
-        trainIsRewinding(formc, form, true);
+        trainGetElementId(form, component, "barney");
+        trainIsRewinding(form, true);
 
-        trainGetParameter(cyclec, cycle, "barney", " text area value ");
+        trainGetParameter(cycle, "barney", " text area value ");
 
         ValidatorException exception = new ValidatorException("test");
         
@@ -187,7 +187,7 @@ public class TestTextArea extends BaseFormComponentTest
             unreachable();
         }
         
-        trainGetDelegate(formc, form, delegate);
+        trainGetDelegate(form, delegate);
         delegate.record(exception);
         
         replayControls();
@@ -211,8 +211,8 @@ public class TestTextArea extends BaseFormComponentTest
 
         IMarkupWriter writer = newWriter();
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, true);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, true);
 
         replayControls();
 
@@ -235,15 +235,15 @@ public class TestTextArea extends BaseFormComponentTest
 
         IValidationDelegate delegate = newDelegate();
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, false);
+        trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(component);
 
-        trainGetElementId(formc, form, component, "barney");
-        trainIsRewinding(formc, form, false);
-        trainIsRewinding(cyclec, cycle, true);
+        trainGetElementId(form, component, "barney");
+        trainIsRewinding(form, false);
+        trainIsRewinding(cycle, true);
 
         replayControls();
 
@@ -266,14 +266,14 @@ public class TestTextArea extends BaseFormComponentTest
 
         IValidationDelegate delegate = newDelegate();
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, false);
+        trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(component);
 
-        trainGetElementId(formc, form, component, "barney");
-        trainIsRewinding(formc, form, true);
+        trainGetElementId(form, component, "barney");
+        trainIsRewinding(form, true);
 
         replayControls();
 
@@ -304,21 +304,21 @@ public class TestTextArea extends BaseFormComponentTest
         TextArea component = (TextArea) newInstance(TextArea.class, new Object[]
         { "name", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs, "value", " text area value " });
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, false);
+        trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(component);
 
-        trainGetElementId(formc, form, component, "fred");
-        trainIsRewinding(formc, form, false);
-        trainIsRewinding(cyclec, cycle, false);
+        trainGetElementId(form, component, "fred");
+        trainIsRewinding(form, false);
+        trainIsRewinding(cycle, false);
 
         delegate.setFormComponent(component);
 
-        trainGetDelegate(formc, form, delegate);
-        trainGetDelegate(formc, form, delegate);
-        trainGetDelegate(formc, form, delegate);
+        trainGetDelegate(form, delegate);
+        trainGetDelegate(form, delegate);
+        trainGetDelegate(form, delegate);
 
         tfs.format(component, " text area value ");
         tfsc.setReturnValue("text area value");
@@ -355,21 +355,21 @@ public class TestTextArea extends BaseFormComponentTest
         TextArea component = (TextArea) newInstance(TextArea.class, new Object[]
         { "name", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs, "value", " text area value ", "disabled", Boolean.TRUE });
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, false);
+        trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(component);
 
-        trainGetElementId(formc, form, component, "fred");
-        trainIsRewinding(formc, form, false);
-        trainIsRewinding(cyclec, cycle, false);
+        trainGetElementId(form, component, "fred");
+        trainIsRewinding(form, false);
+        trainIsRewinding(cycle, false);
 
         delegate.setFormComponent(component);
 
-        trainGetDelegate(formc, form, delegate);
-        trainGetDelegate(formc, form, delegate);
-        trainGetDelegate(formc, form, delegate);
+        trainGetDelegate(form, delegate);
+        trainGetDelegate(form, delegate);
+        trainGetDelegate(form, delegate);
 
         tfs.format(component, " text area value ");
         tfsc.setReturnValue("text area value");
@@ -410,21 +410,21 @@ public class TestTextArea extends BaseFormComponentTest
 
         component.setBinding("informal", binding);
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, false);
+        trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(component);
 
-        trainGetElementId(formc, form, component, "fred");
-        trainIsRewinding(formc, form, false);
-        trainIsRewinding(cyclec, cycle, false);
+        trainGetElementId(form, component, "fred");
+        trainIsRewinding(form, false);
+        trainIsRewinding(cycle, false);
 
         delegate.setFormComponent(component);
 
-        trainGetDelegate(formc, form, delegate);
-        trainGetDelegate(formc, form, delegate);
-        trainGetDelegate(formc, form, delegate);
+        trainGetDelegate(form, delegate);
+        trainGetDelegate(form, delegate);
+        trainGetDelegate(form, delegate);
 
         tfs.format(component, " text area value ");
         tfsc.setReturnValue("text area value");
@@ -461,21 +461,21 @@ public class TestTextArea extends BaseFormComponentTest
         TextArea component = (TextArea) newInstance(TextArea.class, new Object[]
         { "name", "fred", "translatedFieldSupport", tfs, "validatableFieldSupport", vfs });
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, false);
+        trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(component);
 
-        trainGetElementId(formc, form, component, "fred");
-        trainIsRewinding(formc, form, false);
-        trainIsRewinding(cyclec, cycle, false);
+        trainGetElementId(form, component, "fred");
+        trainIsRewinding(form, false);
+        trainIsRewinding(cycle, false);
 
         delegate.setFormComponent(component);
 
-        trainGetDelegate(formc, form, delegate);
-        trainGetDelegate(formc, form, delegate);
-        trainGetDelegate(formc, form, delegate);
+        trainGetDelegate(form, delegate);
+        trainGetDelegate(form, delegate);
+        trainGetDelegate(form, delegate);
 
         tfs.format(component, null);
         tfsc.setReturnValue("");

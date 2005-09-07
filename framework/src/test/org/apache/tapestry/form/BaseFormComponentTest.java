@@ -23,7 +23,6 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.easymock.MockControl;
 
 /**
  * Base class for tests of implementations of {@link org.apache.tapestry.form.IFormComponent}.
@@ -39,11 +38,11 @@ public abstract class BaseFormComponentTest extends BaseComponentTestCase
         return (IValidationDelegate) newMock(IValidationDelegate.class);
     }
 
-    protected void trainIsInError(MockControl control, IValidationDelegate delegate,
-            boolean isInError)
+    protected void trainIsInError(IValidationDelegate delegate, boolean isInError)
     {
         delegate.isInError();
-        control.setReturnValue(isInError);
+
+        getControl(delegate).setReturnValue(isInError);
     }
 
     protected IForm newForm()
@@ -51,44 +50,45 @@ public abstract class BaseFormComponentTest extends BaseComponentTestCase
         return (IForm) newMock(IForm.class);
     }
 
-    protected void trainGetForm(MockControl control, IRequestCycle cycle, IForm form)
+    protected void trainGetForm(IRequestCycle cycle, IForm form)
     {
         cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
-        control.setReturnValue(form);
+
+        getControl(cycle).setReturnValue(form);
     }
 
-    protected void trainGetDelegate(MockControl control, IForm form, IValidationDelegate delegate)
+    protected void trainGetDelegate(IForm form, IValidationDelegate delegate)
     {
         form.getDelegate();
-        control.setReturnValue(delegate);
+
+        getControl(form).setReturnValue(delegate);
     }
 
-    protected void trainGetParameter(MockControl control, IRequestCycle cycle,
-            String parameterName, String parameterValue)
+    protected void trainGetParameter(IRequestCycle cycle, String parameterName,
+            String parameterValue)
     {
         cycle.getParameter(parameterName);
-        control.setReturnValue(parameterValue);
+        getControl(cycle).setReturnValue(parameterValue);
     }
 
-    protected void trainWasPrerendered(MockControl control, IForm form, IMarkupWriter writer,
-            IComponent component, boolean wasPrerendered)
+    protected void trainWasPrerendered(IForm form, IMarkupWriter writer, IComponent component,
+            boolean wasPrerendered)
     {
         form.wasPrerendered(writer, component);
-        control.setReturnValue(wasPrerendered);
+        getControl(form).setReturnValue(wasPrerendered);
     }
 
-    protected void trainIsRewinding(MockControl control, IForm form, boolean isRewinding)
+    protected void trainIsRewinding(IForm form, boolean isRewinding)
     {
         form.isRewinding();
-        control.setReturnValue(isRewinding);
+        getControl(form).setReturnValue(isRewinding);
     }
 
-    protected void trainGetElementId(MockControl control, IForm form, IFormComponent component,
-            String name)
+    protected void trainGetElementId(IForm form, IFormComponent component, String name)
     {
         form.getElementId(component);
         component.setName(name);
-        control.setReturnValue(name);
+        getControl(form).setReturnValue(name);
     }
 
     protected IBinding newBinding()

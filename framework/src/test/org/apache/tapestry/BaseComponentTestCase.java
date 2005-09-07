@@ -96,15 +96,15 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) control.getMock();
 
-        trainIsRewinding(control, cycle, rewinding);
+        trainIsRewinding(cycle, rewinding);
 
         return cycle;
     }
 
-    protected void trainIsRewinding(MockControl control, IRequestCycle cycle, boolean rewinding)
+    protected void trainIsRewinding(IRequestCycle cycle, boolean rewinding)
     {
         cycle.isRewinding();
-        control.setReturnValue(rewinding);
+        getControl(cycle).setReturnValue(rewinding);
     }
 
     protected IRequestCycle newCycleGetPage(String pageName, IPage page)
@@ -218,13 +218,6 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         return page;
     }
 
-    protected void trainGetAttribute(MockControl cyclec, IRequestCycle cycle, String key,
-            Object value)
-    {
-        cycle.getAttribute(key);
-        cyclec.setReturnValue(value);
-    }
-
     protected IForm newForm()
     {
         return (IForm) newMock(IForm.class);
@@ -254,16 +247,16 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     protected void trainGetAttribute(IRequestCycle cycle, String attributeName, Object attribute)
     {
         MockControl control = getControl(cycle);
-    
+
         cycle.getAttribute(attributeName);
-    
+
         control.setReturnValue(attribute);
     }
 
     protected void trainGetUniqueId(IRequestCycle cycle, String id, String uniqueId)
     {
         MockControl control = getControl(cycle);
-    
+
         cycle.getUniqueId(id);
         control.setReturnValue(uniqueId);
     }
@@ -271,7 +264,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     protected void trainGetIdPath(IComponent component, String idPath)
     {
         MockControl control = getControl(component);
-    
+
         component.getIdPath();
         control.setReturnValue(idPath);
     }
@@ -279,7 +272,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     protected void trainGetParameter(IRequestCycle cycle, String name, String value)
     {
         MockControl control = getControl(cycle);
-    
+
         cycle.getParameter(name);
         control.setReturnValue(value);
     }

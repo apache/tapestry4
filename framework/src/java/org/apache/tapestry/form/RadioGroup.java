@@ -101,7 +101,7 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
     public void updateSelection(Object value)
     {
         getBinding("selected").setObject(value);
-        
+
         _selection = value;
     }
 
@@ -122,7 +122,7 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
             throw new ApplicationRuntimeException(Tapestry.getMessage("RadioGroup.may-not-nest"),
                     this, null, null);
-        
+
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
         _rendering = true;
@@ -136,42 +136,44 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
     {
         _rendering = false;
         _selection = null;
-        
+
         cycle.removeAttribute(ATTRIBUTE_NAME);
     }
 
     /**
-     * @see org.apache.tapestry.form.AbstractRequirableField#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractRequirableField#renderFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         _rewinding = false;
-        
+
         // For rendering, the Radio components need to know what the current
         // selection is, so that the correct one can mark itself 'checked'.
         _selection = getBinding("selected").getObject();
-        
+
         renderBody(writer, cycle);
-        
+
         getValidatableFieldSupport().renderContributions(this, writer, cycle);
     }
 
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String value = cycle.getParameter(getName());
-        
+
         if (value == null)
             _selectedOption = -1;
         else
             _selectedOption = Integer.parseInt(value);
-        
+
         _rewinding = true;
-        
+
         renderBody(writer, cycle);
-        
+
         try
         {
             getValidatableFieldSupport().validate(this, writer, cycle, _selection);
@@ -193,5 +195,13 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
     public boolean isRequired()
     {
         return getValidatableFieldSupport().isRequired(this);
+    }
+
+    /**
+     * This component can not take focus.
+     */
+    protected boolean getCanTakeFocus()
+    {
+        return false;
     }
 }

@@ -46,11 +46,11 @@ public class TestValidField extends BaseFormComponentTest
 
         IMarkupWriter writer = newWriter();
 
-        trainGetForm(cyclec, cycle, form);
+        trainGetForm(cycle, form);
 
         ValidField component = (ValidField) newInstance(ValidField.class);
 
-        trainWasPrerendered(formc, form, writer, component, true);
+        trainWasPrerendered(form, writer, component, true);
 
         replayControls();
 
@@ -79,15 +79,15 @@ public class TestValidField extends BaseFormComponentTest
         MockControl delegatec = newControl(IValidationDelegate.class);
         IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, false);
+        trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(component);
 
-        trainGetElementId(formc, form, component, "fred");
-        trainIsRewinding(formc, form, false);
-        trainIsRewinding(cyclec, cycle, true);
+        trainGetElementId(form, component, "fred");
+        trainIsRewinding(form, false);
+        trainIsRewinding(cycle, true);
 
         replayControls();
 
@@ -124,18 +124,18 @@ public class TestValidField extends BaseFormComponentTest
         MockControl delegatec = newControl(IValidationDelegate.class);
         IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, false);
+        trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(component);
 
-        trainGetElementId(formc, form, component, "fred");
-        trainIsRewinding(formc, form, true);
+        trainGetElementId(form, component, "fred");
+        trainIsRewinding(form, true);
 
-        trainGetParameter(cyclec, cycle, "fred", "fred-value");
+        trainGetParameter(cycle, "fred", "fred-value");
 
-        trainGetDelegate(formc, form, delegate);
+        trainGetDelegate(form, delegate);
 
         delegate.recordFieldInputValue("fred-value");
 
@@ -175,16 +175,16 @@ public class TestValidField extends BaseFormComponentTest
         MockControl delegatec = newControl(IValidationDelegate.class);
         IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, false);
+        trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(component);
 
-        trainGetElementId(formc, form, component, "fred");
-        trainIsRewinding(formc, form, true);
+        trainGetElementId(form, component, "fred");
+        trainIsRewinding(form, true);
 
-        trainGetParameter(cyclec, cycle, "fred", "fred-value");
+        trainGetParameter(cycle, "fred", "fred-value");
 
         replayControls();
 
@@ -224,16 +224,16 @@ public class TestValidField extends BaseFormComponentTest
 
         MockDelegate delegate = new MockDelegate();
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, false);
+        trainGetDelegate(form, delegate);
 
-        trainGetElementId(formc, form, component, "fred");
-        trainIsRewinding(formc, form, false);
-        trainIsRewinding(cyclec, cycle, false);
+        trainGetElementId(form, component, "fred");
+        trainIsRewinding(form, false);
+        trainIsRewinding(cycle, false);
 
-        trainGetDelegate(formc, form, delegate);
-        trainGetDelegate(formc, form, delegate);
+        trainGetDelegate(form, delegate);
+        trainGetDelegate(form, delegate);
 
         trainToString(validatorc, validator, component, value, "fred value");
 
@@ -283,16 +283,16 @@ public class TestValidField extends BaseFormComponentTest
 
         MockDelegate delegate = new MockDelegate();
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, false);
+        trainGetDelegate(form, delegate);
 
-        trainGetElementId(formc, form, component, "fred");
-        trainIsRewinding(formc, form, false);
-        trainIsRewinding(cyclec, cycle, false);
+        trainGetElementId(form, component, "fred");
+        trainIsRewinding(form, false);
+        trainIsRewinding(cycle, false);
 
-        trainGetDelegate(formc, form, delegate);
-        trainGetDelegate(formc, form, delegate);
+        trainGetDelegate(form, delegate);
+        trainGetDelegate(form, delegate);
 
         trainToString(validatorc, validator, component, null, null);
 
@@ -316,13 +316,6 @@ public class TestValidField extends BaseFormComponentTest
         assertBuffer("<span class=\"prefix\"><input type=\"text\" name=\"fred\" class=\"validation-delegate\"/></span>");
     }
 
-    protected void trainGetAttribute(MockControl control, IRequestCycle cycle, String name,
-            Object object)
-    {
-        cycle.getAttribute(name);
-        control.setReturnValue(object);
-    }
-
     public void testRenderWithError()
     {
         Object value = new Object();
@@ -343,16 +336,16 @@ public class TestValidField extends BaseFormComponentTest
         MockDelegate delegate = new MockDelegate(true);
         delegate.recordFieldInputValue("recorded field value");
 
-        trainGetForm(cyclec, cycle, form);
-        trainWasPrerendered(formc, form, writer, component, false);
-        trainGetDelegate(formc, form, delegate);
+        trainGetForm(cycle, form);
+        trainWasPrerendered(form, writer, component, false);
+        trainGetDelegate(form, delegate);
 
-        trainGetElementId(formc, form, component, "fred");
-        trainIsRewinding(formc, form, false);
-        trainIsRewinding(cyclec, cycle, false);
+        trainGetElementId(form, component, "fred");
+        trainIsRewinding(form, false);
+        trainIsRewinding(cycle, false);
 
-        trainGetDelegate(formc, form, delegate);
-        trainGetDelegate(formc, form, delegate);
+        trainGetDelegate(form, delegate);
+        trainGetDelegate(form, delegate);
 
         validator.isRequired();
         validatorc.setReturnValue(true);

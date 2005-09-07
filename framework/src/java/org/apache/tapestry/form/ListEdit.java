@@ -179,4 +179,27 @@ public abstract class ListEdit extends AbstractFormComponent
      */
 
     public abstract ListenerInvoker getListenerInvoker();
+
+    /**
+     * Returns false; ListEdit components can't take focus.
+     * 
+     * @since 4.0
+     */
+    protected boolean getCanTakeFocus()
+    {
+        return false;
+    }
+
+    public String getClientId()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public String getDisplayName()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

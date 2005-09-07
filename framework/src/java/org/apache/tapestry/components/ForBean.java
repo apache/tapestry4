@@ -556,4 +556,24 @@ public abstract class ForBean extends AbstractFormComponent {
     		return DESC_PRIMARY_KEY + getDataSqueezer().squeeze(pk);
     	}
     }
+
+    /**
+     * For component can not take focus.
+     */
+    protected boolean getCanTakeFocus() {
+        return false;
+    }
+    
+    public String getClientId()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    public String getDisplayName()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    
 }

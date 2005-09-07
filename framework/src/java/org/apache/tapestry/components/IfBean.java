@@ -199,4 +199,11 @@ public abstract class IfBean extends AbstractFormComponent
     {
     }
 
+    /**
+     * For component can not take focus.
+     */
+    protected boolean getCanTakeFocus()
+    {
+        return false;
+    }
 }
