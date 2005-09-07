@@ -217,7 +217,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     /**
      * Invokes {@link #finishLoad()}. Subclasses may overide as needed, but must invoke this
-     * implementation. {@link BaseComponent}loads its HTML template.
+     * implementation. {@link BaseComponent} loads its HTML template.
      */
 
     public void finishLoad(IRequestCycle cycle, IPageLoader loader,
@@ -731,7 +731,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * @since 4.0
      */
 
-    public boolean isRendering()
+    public final boolean isRendering()
     {
         return _rendering;
     }
@@ -743,20 +743,20 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * @since 4.0
      */
 
-    protected boolean isInActiveState()
+    protected final boolean isInActiveState()
     {
         return _active;
     }
 
     /** @since 4.0 */
-    public void enterActiveState()
+    public final void enterActiveState()
     {
         _active = true;
     }
 
     /** @since 4.0 */
 
-    protected void checkActiveLock()
+    protected final void checkActiveLock()
     {
         if (_active)
             throw new UnsupportedOperationException(TapestryMessages.componentIsLocked(this));
@@ -848,13 +848,13 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     }
 
     /** @since 4.0 */
-    public IContainedComponent getContainedComponent()
+    public final IContainedComponent getContainedComponent()
     {
         return _containedComponent;
     }
 
     /** @since 4.0 */
-    public void setContainedComponent(IContainedComponent containedComponent)
+    public final void setContainedComponent(IContainedComponent containedComponent)
     {
         Defense.notNull(containedComponent, "containedComponent");
 
