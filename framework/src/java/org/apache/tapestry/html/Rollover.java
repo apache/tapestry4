@@ -18,10 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.Resource;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
@@ -30,7 +28,6 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.components.LinkEventType;
-import org.apache.tapestry.engine.IScriptSource;
 
 /**
  * Combines a link component (such as {@link org.apache.tapestry.link.DirectLink}) with an
@@ -43,8 +40,6 @@ import org.apache.tapestry.engine.IScriptSource;
 
 public abstract class Rollover extends AbstractComponent
 {
-    private IScript _parsedScript;
-
     /**
      * Converts an {@link IAsset}binding into a usable URL. Returns null if the binding does not
      * exist or the binding's value is null.
@@ -106,8 +101,6 @@ public abstract class Rollover extends AbstractComponent
 
         writer.attribute("src", imageURL);
 
-        writer.attribute("border", 0);
-
         if (dynamic)
         {
             if (focusURL == null)
@@ -127,21 +120,9 @@ public abstract class Rollover extends AbstractComponent
 
     }
 
-    private IScript getParsedScript()
-    {
-        if (_parsedScript == null)
-        {
-            IEngine engine = getPage().getEngine();
-            IScriptSource source = engine.getScriptSource();
+    // Injected
 
-            Resource scriptLocation = getSpecification().getSpecificationLocation()
-                    .getRelativeResource("Rollover.script");
-
-            _parsedScript = source.getScript(scriptLocation);
-        }
-
-        return _parsedScript;
-    }
+    public abstract IScript getScript();
 
     private String writeScript(IRequestCycle cycle, PageRenderSupport pageRenderSupport,
             ILinkComponent link, String focusURL, String blurURL)
@@ -156,7 +137,7 @@ public abstract class Rollover extends AbstractComponent
         symbols.put("focusImageURL", focusImageURL);
         symbols.put("blurImageURL", blurImageURL);
 
-        getParsedScript().execute(cycle, pageRenderSupport, symbols);
+        getScript().execute(cycle, pageRenderSupport, symbols);
 
         // Add attributes to the link to control mouse over/out.
         // Because the script is written before the <body> tag,

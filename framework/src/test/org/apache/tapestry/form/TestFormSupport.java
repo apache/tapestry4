@@ -184,10 +184,14 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.println();
 
+        writer.begin("div");
+        
         trainHidden(writer, "formids", "barney,wilma,barney_0");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
 
+        writer.end();
+        
         nested.close();
 
         writer.end();
@@ -375,10 +379,14 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.println();
 
+        writer.begin("div");
+        
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
 
+        writer.end();
+        
         nested.close();
 
         writer.end();
@@ -475,10 +483,14 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.println();
 
+        writer.begin("div");
+        
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
 
+        writer.end();
+        
         nested.close();
 
         writer.end();
@@ -571,12 +583,16 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.println();
 
+        writer.begin("div");
+
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
         trainHidden(writer, "hidden1", "value1");
         trainHidden(writer, "hidden2", "id2", "value2");
 
+        writer.end();
+        
         nested.close();
 
         writer.end();
@@ -746,11 +762,15 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.println();
 
+        writer.begin("div");
+ 
         trainHidden(writer, "formids", "action_0");
         trainHidden(writer, "action", "fred");
         trainHidden(writer, "reservedids", "action");
         trainHidden(writer, "submitmode", "");
 
+        writer.end();
+        
         nested.close();
 
         writer.end();
@@ -843,10 +863,14 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.println();
 
+        writer.begin("div");
+
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
 
+        writer.end();
+        
         nested.close();
 
         writer.end();
@@ -1192,10 +1216,14 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.println();
 
+        writer.begin("div");
+
         trainHidden(writer, "formids", "barney");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
 
+        writer.end();
+        
         nested.close();
 
         writer.end();
@@ -1303,10 +1331,14 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.println();
 
+        writer.begin("div");
+
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
 
+        writer.end();
+        
         // EasyMock can't fully verify that this gets called at the right moment, nor can we truly
         // prove (well, except by looking at the code), that the deferred runnables execute at the
         // right time.
@@ -1611,10 +1643,14 @@ public class TestFormSupport extends HiveMindTestCase
 
         writer.println();
 
+        writer.begin("div");
+
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
 
+        writer.end();
+        
         nested.close();
 
         writer.end();

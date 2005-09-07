@@ -31,10 +31,6 @@
 		src="http://the.wall/"
 		</assert-output>
 		
-		<assert-output name="border">
-		border="0"
-		</assert-output>
-		
 		<assert-output name="width">
 		width="250"
 		</assert-output>
@@ -47,9 +43,9 @@
 		length="350"
 		</assert-output>
 
-		<assert-no-output name="no-border">
+		<assert-output name="no-border">
 		border="7"
-		</assert-no-output>
+		</assert-output>
 
 		<assert-no-output name="no-src">
 		src="testSrc"

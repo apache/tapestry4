@@ -31,12 +31,6 @@
     </description>
   </parameter>
   
-  <parameter name="border">
-    <description>
-    Number of pixels of border.
-    </description>
-  </parameter>
-  
   <reserved-parameter name="src"/>
   
 </component-specification>

@@ -25,6 +25,11 @@ BODY  {
 	font-family: "Trebuchet MS", sans-serif;
 }
 
+A IMG
+{
+  border: none;
+}
+
 
 TABLE.inspector-data
 {
@@ -267,3 +272,4 @@ TABLE.described-object TH
   text-align: right;
   width: 1px; // Will stretch to fit.
 }
+

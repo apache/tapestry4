@@ -175,7 +175,6 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
             // interpret <script .../> properly.
 
             writer.begin("script");
-            writer.attribute("language", "JavaScript");
             writer.attribute("type", "text/javascript");
             writer.attribute("src", url);
             writer.end();
@@ -203,7 +202,6 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
             return;
 
         writer.begin("script");
-        writer.attribute("language", "JavaScript");
         writer.attribute("type", "text/javascript");
         writer.printRaw("<!--");
 

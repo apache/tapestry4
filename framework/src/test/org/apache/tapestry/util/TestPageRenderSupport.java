@@ -132,7 +132,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
         prs.writeBodyScript(writer, cycle);
 
         assertOutput(new String[]
-        { "<script language=\"JavaScript\" type=\"text/javascript\"><!--", "",
+        { "<script type=\"text/javascript\"><!--", "",
                 "var tapestry_preload = new Array();", "if (document.images)", "{",
                 "  tapestry_preload[0] = new Image();",
                 "  tapestry_preload[0].src = \"/foo/bar.gif\";",
@@ -159,7 +159,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
         prs.writeBodyScript(writer, cycle);
 
         assertOutput(new String[]
-        { "<script language=\"JavaScript\" type=\"text/javascript\"><!--", "",
+        { "<script type=\"text/javascript\"><!--", "",
                 "var NAMESPACE_preload = new Array();", "if (document.images)", "{",
                 "  NAMESPACE_preload[0] = new Image();",
                 "  NAMESPACE_preload[0].src = \"/foo/bar.gif\";", "}", "", "", "// --></script>" });
@@ -183,7 +183,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
         prs.writeBodyScript(writer, cycle);
 
         assertOutput(new String[]
-        { "<script language=\"JavaScript\" type=\"text/javascript\"><!--", "", "myBodyScript();",
+        { "<script type=\"text/javascript\"><!--", "", "myBodyScript();",
                 "", "// --></script>" });
 
         verifyControls();
@@ -287,7 +287,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
     private String scriptTagFor(String url)
     {
-        return "<script language=\"JavaScript\" type=\"text/javascript\" src=\"" + url
+        return "<script type=\"text/javascript\" src=\"" + url
                 + "\"></script>";
     }
 }

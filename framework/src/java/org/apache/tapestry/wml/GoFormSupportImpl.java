@@ -42,6 +42,14 @@ public class GoFormSupportImpl extends FormSupportImpl
         writer.attribute("href", url);
     }
 
+    protected void writeHiddenFields()
+    {
+        // The super-implementation writes a <div> tag that's not
+        // valid as WML.
+
+        writeHiddenFieldList();
+    }
+
     protected void writeHiddenField(IMarkupWriter writer, String name, String id, String value)
     {
         writer.beginEmpty("postfield");
