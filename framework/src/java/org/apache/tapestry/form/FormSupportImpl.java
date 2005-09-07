@@ -669,10 +669,13 @@ public class FormSupportImpl implements FormSupport
     {
         String key = field.getExtendedId();
 
-        String buffer = (String) _prerenderMap.get(key);
+        // During a rewind, if the form is pre-rendered, the buffer will be null,
+        // so do the check based on the key, not a non-null value.
 
-        if (buffer == null)
+        if (!_prerenderMap.containsKey(key))
             return false;
+
+        String buffer = (String) _prerenderMap.get(key);
 
         writer.printRaw(buffer);
 

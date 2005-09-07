@@ -41,15 +41,15 @@ public abstract class FieldLabel extends AbstractComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (cycle.isRewinding())
-            return;
-
         IForm form = TapestryUtils.getForm(cycle, this);
 
         IFormComponent field = getField();
 
         if (field != null)
             form.prerenderField(writer, field, getLocation());
+
+        if (cycle.isRewinding())
+            return;
 
         String displayName = getDisplayName();
 

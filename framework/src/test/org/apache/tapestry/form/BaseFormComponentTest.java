@@ -100,4 +100,9 @@ public abstract class BaseFormComponentTest extends BaseComponentTestCase
     {
         return (IActionListener) newMock(IActionListener.class);
     }
+
+    protected IFormComponent newField()
+    {
+        return (IFormComponent) newMock(IFormComponent.class);
+    }
 }
