@@ -93,7 +93,7 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
 
         prs.addExternalScript(expected);
 
-        trainGetAttribute(cyclec, cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, prs);
+        trainGetAttribute(cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, prs);
 
         replayControls();
 
@@ -124,7 +124,7 @@ public class TestFormComponentContributorContext extends BaseComponentTestCase
 
         prs.addInitializationScript("Tapestry.onsubmit('myform', foo);");
 
-        trainGetAttribute(cyclec, cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, prs);
+        trainGetAttribute(cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, prs);
 
         replayControls();
 

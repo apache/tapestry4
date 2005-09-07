@@ -57,9 +57,9 @@ public class TestImageSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        trainGetForm(cyclec, cycle, form);
+        trainGetForm(cycle, form);
 
-        trainWasPrerendered(formc, form, writer, submit, true);
+        trainWasPrerendered(form, writer, submit, true);
 
         replayControls();
 
@@ -83,20 +83,20 @@ public class TestImageSubmit extends BaseFormComponentTest
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class, new Object[]
         { "image", image });
 
-        trainGetForm(cyclec, cycle, form);
+        trainGetForm(cycle, form);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainWasPrerendered(form, writer, submit, false);
 
-        trainGetDelegate(formc, form, delegate);
+        trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(submit);
         delegatec.setVoidCallable();
 
-        trainGetElementId(formc, form, submit, "fred");
+        trainGetElementId(form, submit, "fred");
 
-        trainIsRewinding(formc, form, false);
+        trainIsRewinding(form, false);
 
-        trainIsRewinding(cyclec, cycle, false);
+        trainIsRewinding(cycle, false);
 
         writer.beginEmpty("input");
         writer.attribute("type", "image");
@@ -105,9 +105,9 @@ public class TestImageSubmit extends BaseFormComponentTest
         writer.attribute("src", "image-url");
         writer.closeTag();
 
-        delegate.registerForFocus(submit, ValidationConstants.NORMAL_FIELD);
+        trainIsInError(delegate, false);
 
-        trainIsInError(delegatec, delegate, false);
+        delegate.registerForFocus(submit, ValidationConstants.NORMAL_FIELD);
 
         replayControls();
 
@@ -131,20 +131,20 @@ public class TestImageSubmit extends BaseFormComponentTest
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class, new Object[]
         { "disabledImage", image, "disabled", Boolean.TRUE });
 
-        trainGetForm(cyclec, cycle, form);
+        trainGetForm(cycle, form);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainWasPrerendered(form, writer, submit, false);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainGetElementId(formc, form, submit, "fred");
+        trainGetElementId(form, submit, "fred");
 
-        trainIsRewinding(formc, form, false);
+        trainIsRewinding(form, false);
 
-        trainIsRewinding(cyclec, cycle, false);
+        trainIsRewinding(cycle, false);
 
         writer.beginEmpty("input");
         writer.attribute("type", "image");
@@ -153,8 +153,6 @@ public class TestImageSubmit extends BaseFormComponentTest
         writer.attribute("border", 0);
         writer.attribute("src", "disabled-image-url");
         writer.closeTag();
-
-        trainIsInError(delegatec, delegate, false);
 
         replayControls();
 
@@ -178,20 +176,20 @@ public class TestImageSubmit extends BaseFormComponentTest
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class, new Object[]
         { "image", image, "disabled", Boolean.TRUE });
 
-        trainGetForm(cyclec, cycle, form);
+        trainGetForm(cycle, form);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainWasPrerendered(form, writer, submit, false);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainGetElementId(formc, form, submit, "fred");
+        trainGetElementId(form, submit, "fred");
 
-        trainIsRewinding(formc, form, false);
+        trainIsRewinding(form, false);
 
-        trainIsRewinding(cyclec, cycle, false);
+        trainIsRewinding(cycle, false);
 
         writer.beginEmpty("input");
         writer.attribute("type", "image");
@@ -200,8 +198,6 @@ public class TestImageSubmit extends BaseFormComponentTest
         writer.attribute("border", 0);
         writer.attribute("src", "image-url");
         writer.closeTag();
-
-        trainIsInError(delegatec, delegate, false);
 
         replayControls();
 
@@ -225,9 +221,9 @@ public class TestImageSubmit extends BaseFormComponentTest
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class, new Object[]
         { "image", image, "nameOverride", "barney" });
 
-        trainGetForm(cyclec, cycle, form);
+        trainGetForm(cycle, form);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainWasPrerendered(form, writer, submit, false);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
@@ -237,9 +233,9 @@ public class TestImageSubmit extends BaseFormComponentTest
         form.getElementId(submit, "barney");
         formc.setReturnValue("barney$0");
 
-        trainIsRewinding(formc, form, false);
+        trainIsRewinding(form, false);
 
-        trainIsRewinding(cyclec, cycle, false);
+        trainIsRewinding(cycle, false);
 
         writer.beginEmpty("input");
         writer.attribute("type", "image");
@@ -248,9 +244,9 @@ public class TestImageSubmit extends BaseFormComponentTest
         writer.attribute("src", "image-url");
         writer.closeTag();
 
-        delegate.registerForFocus(submit, ValidationConstants.NORMAL_FIELD);
+        trainIsInError(delegate, false);
 
-        trainIsInError(delegatec, delegate, false);
+        delegate.registerForFocus(submit, ValidationConstants.NORMAL_FIELD);
 
         replayControls();
 
@@ -272,18 +268,18 @@ public class TestImageSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        trainGetForm(cyclec, cycle, form);
+        trainGetForm(cycle, form);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainWasPrerendered(form, writer, submit, false);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainGetElementId(formc, form, submit, "fred");
+        trainGetElementId(form, submit, "fred");
 
-        trainIsRewinding(formc, form, true);
+        trainIsRewinding(form, true);
 
         replayControls();
 
@@ -304,20 +300,20 @@ public class TestImageSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        trainGetForm(cyclec, cycle, form);
+        trainGetForm(cycle, form);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainWasPrerendered(form, writer, submit, false);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainGetElementId(formc, form, submit, "fred");
+        trainGetElementId(form, submit, "fred");
 
-        trainIsRewinding(formc, form, true);
+        trainIsRewinding(form, true);
 
-        trainGetParameter(cyclec, cycle, "fred.x", null);
+        trainGetParameter(cycle, "fred.x", null);
 
         replayControls();
 
@@ -342,20 +338,20 @@ public class TestImageSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        trainGetForm(cyclec, cycle, form);
+        trainGetForm(cycle, form);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainWasPrerendered(form, writer, submit, false);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainGetElementId(formc, form, submit, "fred");
+        trainGetElementId(form, submit, "fred");
 
-        trainIsRewinding(formc, form, true);
+        trainIsRewinding(form, true);
 
-        trainGetParameter(cyclec, cycle, "fred.x", "33");
+        trainGetParameter(cycle, "fred.x", "33");
 
         replayControls();
 
@@ -390,22 +386,22 @@ public class TestImageSubmit extends BaseFormComponentTest
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
         IMarkupWriter writer = newWriter();
 
-        trainGetForm(cyclec, cycle, form);
+        trainGetForm(cycle, form);
 
-        trainWasPrerendered(formc, form, writer, submit, false);
+        trainWasPrerendered(form, writer, submit, false);
 
         form.getDelegate();
         formc.setReturnValue(delegate);
 
         delegate.setFormComponent(submit);
 
-        trainGetElementId(formc, form, submit, "fred");
+        trainGetElementId(form, submit, "fred");
 
-        trainIsRewinding(formc, form, true);
+        trainIsRewinding(form, true);
 
-        trainGetParameter(cyclec, cycle, "fred.x", "33");
-        trainGetParameter(cyclec, cycle, "fred.x", "33");
-        trainGetParameter(cyclec, cycle, "fred.y", "19");
+        trainGetParameter(cycle, "fred.x", "33");
+        trainGetParameter(cycle, "fred.x", "33");
+        trainGetParameter(cycle, "fred.y", "19");
 
         replayControls();
 

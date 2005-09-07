@@ -117,18 +117,16 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
         }
         else if (!cycle.isRewinding())
         {
-            boolean canFocus = getCanTakeFocus();
-            
-            if (canFocus && !isDisabled())
-                delegate.registerForFocus(this, ValidationConstants.NORMAL_FIELD);
-
             renderFormComponent(writer, cycle);
 
-            // Can't think of a component that can be in error and not take focus,
-            // but whatever ...
-            
-            if (canFocus && delegate.isInError())
-                delegate.registerForFocus(this, ValidationConstants.ERROR_FIELD);
+            if (getCanTakeFocus() && !isDisabled())
+            {
+                delegate.registerForFocus(
+                        this,
+                        delegate.isInError() ? ValidationConstants.ERROR_FIELD
+                                : ValidationConstants.NORMAL_FIELD);
+            }
+
         }
     }
 
