@@ -74,17 +74,24 @@ public class TestFieldLabel extends BaseFormComponentTest
 
     public void testRewinding()
     {
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        Location l = newLocation();
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        IForm form = newForm();
+        IFormComponent field = newField();
 
-        cycle.isRewinding();
-        cyclec.setReturnValue(true);
+        trainGetForm(cycle, form);
+
+        form.prerenderField(writer, field, l);
+
+        trainIsRewinding(cycle, true);
 
         replayControls();
 
-        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class);
+        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
+        { "field", field, "location", l });
 
-        fl.render(null, cycle);
+        fl.render(writer, cycle);
 
         verifyControls();
     }
@@ -97,8 +104,9 @@ public class TestFieldLabel extends BaseFormComponentTest
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
-        trainIsRewinding(cycle, false);
         trainGetForm(cycle, form);
+
+        trainIsRewinding(cycle, false);
 
         replayControls();
 
@@ -120,8 +128,9 @@ public class TestFieldLabel extends BaseFormComponentTest
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
-        trainIsRewinding(cycle, false);
         trainGetForm(cycle, form);
+
+        trainIsRewinding(cycle, false);
 
         replayControls();
 
@@ -146,8 +155,9 @@ public class TestFieldLabel extends BaseFormComponentTest
         IBinding binding = newBinding(l);
         IPage page = newFred();
 
-        trainIsRewinding(cycle, false);
         trainGetForm(cycle, form);
+
+        trainIsRewinding(cycle, false);
 
         replayControls();
 
@@ -184,11 +194,11 @@ public class TestFieldLabel extends BaseFormComponentTest
         IFormComponent field = newField("MyLabel", null);
         Location l = newLocation();
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = newCycle();
+
+        trainGetForm(cycle, form);
 
         trainIsRewinding(cycle, false);
-        trainGetForm(cycle, form);
 
         FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
         { "location", l, "field", field });
@@ -218,11 +228,11 @@ public class TestFieldLabel extends BaseFormComponentTest
         IFormComponent field = newField("MyLabel", "clientId");
         Location l = newLocation();
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = newCycle();
+
+        trainGetForm(cycle, form);
 
         trainIsRewinding(cycle, false);
-        trainGetForm(cycle, form);
 
         FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
         { "location", l, "field", field });
@@ -251,11 +261,11 @@ public class TestFieldLabel extends BaseFormComponentTest
         MockControl fieldc = newControl(IFormComponent.class);
         IFormComponent field = (IFormComponent) fieldc.getMock();
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = newCycle();
+
+        trainGetForm(cycle, form);
 
         trainIsRewinding(cycle, false);
-        trainGetForm(cycle, form);
 
         Location l = newLocation();
         IPage page = newFred();
