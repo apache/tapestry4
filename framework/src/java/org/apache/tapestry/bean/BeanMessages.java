@@ -41,4 +41,11 @@ class BeanMessages
         return _formatter.format("instantiation-error", new Object[]
         { name, component.getExtendedId(), className, cause });
     }
+
+    static String initializationError(IComponent component, String beanName, String propertyName,
+            Throwable cause)
+    {
+        return _formatter.format("initialization-error", new Object[]
+        { propertyName, beanName, component.getExtendedId(), cause });
+    }
 }

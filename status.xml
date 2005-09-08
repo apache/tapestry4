@@ -51,7 +51,7 @@
   </todo>
   <changes>
     <release version="4.0-beta-7" date="unreleased">
-      
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-341">Report location of errors initializing managed beans</action>   
     </release>
     <release version="4.0-beta-6" date="Sep 7 2005">
       <action type="update" dev="HLS" due-to="Henri Yandell">Convert Tapestry repository from CVS to SVN</action>

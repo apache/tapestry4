@@ -84,9 +84,4 @@ public class TestBlock extends BaseComponentTestCase
         verifyControls();
     }
 
-    private IComponent newComponent()
-    {
-        return (IComponent) newMock(IComponent.class);
-    }
-
 }

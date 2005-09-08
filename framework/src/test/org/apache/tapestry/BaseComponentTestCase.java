@@ -17,6 +17,8 @@ package org.apache.tapestry;
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.markup.AsciiMarkupFilter;
@@ -285,6 +287,46 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     protected IAsset newAsset()
     {
         return (IAsset) newMock(IAsset.class);
+    }
+
+    protected IEngine newEngine(ClassResolver resolver)
+    {
+        IEngine engine = (IEngine) newMock(IEngine.class);
+
+        engine.getClassResolver();
+        getControl(engine).setReturnValue(resolver);
+
+        return engine;
+    }
+
+    protected void trainGetEngine(IPage page, IEngine engine)
+    {
+        page.getEngine();
+
+        getControl(page).setReturnValue(engine);
+    }
+
+    protected IComponent newComponent()
+    {
+        return (IComponent) newMock(IComponent.class);
+    }
+
+    protected void trainGetPage(IComponent component, IPage page)
+    {
+        component.getPage();
+        getControl(component).setReturnValue(page);
+    }
+
+    protected void trainGetExtendedId(IComponent component, String extendedId)
+    {
+        component.getExtendedId();
+        getControl(component).setReturnValue(extendedId);
+    }
+
+    protected void trainGetLocation(Locatable locatable, Location location)
+    {
+        locatable.getLocation();
+        getControl(locatable).setReturnValue(location);
     }
 
 }
