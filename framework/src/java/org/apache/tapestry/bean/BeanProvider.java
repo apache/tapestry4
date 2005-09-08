@@ -176,7 +176,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageEndR
         return bean;
     }
 
-    private Object instantiateBean(String beanName, IBeanSpecification spec)
+    Object instantiateBean(String beanName, IBeanSpecification spec)
     {
         String className = spec.getClassName();
         Object bean = null;
@@ -198,7 +198,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageEndR
                     beanName,
                     _component,
                     className,
-                    ex), spec.getLocation(), ex);
+                    ex), _component, spec.getLocation(), ex);
         }
 
         // OK, have the bean, have to initialize it.
@@ -216,7 +216,19 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageEndR
             if (LOG.isDebugEnabled())
                 LOG.debug("Initializing property " + iz.getPropertyName());
 
-            iz.setBeanProperty(this, bean);
+            try
+            {
+                iz.setBeanProperty(this, bean);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationRuntimeException(BeanMessages.initializationError(
+                        _component,
+                        beanName,
+                        iz.getPropertyName(),
+                        ex), bean, iz.getLocation(), ex);
+
+            }
         }
 
         return bean;
