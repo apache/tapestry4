@@ -257,6 +257,8 @@ public abstract class ForBean extends AbstractFormComponent {
     protected Iterator getStoredData(IRequestCycle cycle, String name)
     {
         String[] stringReps = cycle.getParameters(name);
+        if (stringReps == null)
+        	return null;
         
         updatePrimaryKeysParameter(stringReps);
         
