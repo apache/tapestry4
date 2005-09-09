@@ -352,7 +352,7 @@ Page2.page
 
 public void submitListener(IRequestCycle cycle)
 {
-  String key = ifSuccess() ? "succes" : "error";
+  String key = ifSuccess() ? "success" : "error";
   String pageName = getSpecification().getProperty(key);
   
   cycle.activate(pageName);
@@ -401,9 +401,10 @@ public void downloadAction(IRequestCycle cycle)
         response.setContentLength(new Long(document.getSize()).intValue());
         ServletOutputStream out = response.getOutputStream();
 
-        while (in.read(data) > -1)
+        int bytesRead = 0;
+        while ((bytesRead = in.read(data)) > -1)
         {
-            out.write(data);
+            out.write(data, 0 , bytesRead);
         }
         in.close();
         response.flushBuffer();
