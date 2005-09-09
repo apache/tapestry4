@@ -837,16 +837,6 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
         return getMessages().format(key, argument1, argument2, argument3);
     }
 
-    /**
-     * Returns this component.
-     * 
-     * @since 4.0
-     */
-    public final IComponent getComponent()
-    {
-        return this;
-    }
-
     /** @since 4.0 */
     public final IContainedComponent getContainedComponent()
     {

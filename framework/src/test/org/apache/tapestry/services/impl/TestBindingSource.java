@@ -22,7 +22,6 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingFactory;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.BindingSourceImpl}.
