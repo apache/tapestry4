@@ -35,8 +35,6 @@ public class BindingSourceImpl implements BindingSource
 {
     private List _contributions;
 
-    private BindingFactory _literalBindingFactory;
-
     /**
      * Keyed on prefix, value is {@link BindingFactory}.
      */
@@ -64,16 +62,17 @@ public class BindingSourceImpl implements BindingSource
 
         if (colonx > 1)
         {
-            prefix = reference.substring(0, colonx);
+            String pathPrefix = reference.substring(0, colonx);
 
-            if (_factoryMap.containsKey(prefix))
+            if (_factoryMap.containsKey(pathPrefix))
+            {
+                prefix = pathPrefix;
+
                 path = reference.substring(colonx + 1);
+            }
         }
 
         BindingFactory factory = (BindingFactory) _factoryMap.get(prefix);
-
-        if (factory == null)
-            factory = _literalBindingFactory;
 
         return factory.createBinding(component, bindingDescription, path, location);
     }
@@ -81,10 +80,5 @@ public class BindingSourceImpl implements BindingSource
     public void setContributions(List contributions)
     {
         _contributions = contributions;
-    }
-
-    public void setLiteralBindingFactory(BindingFactory literalBindingFactory)
-    {
-        _literalBindingFactory = literalBindingFactory;
     }
 }

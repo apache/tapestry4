@@ -329,4 +329,8 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         getControl(locatable).setReturnValue(location);
     }
 
+    protected IBinding newBinding()
+    {
+        return (IBinding) newMock(IBinding.class);
+    }
 }
