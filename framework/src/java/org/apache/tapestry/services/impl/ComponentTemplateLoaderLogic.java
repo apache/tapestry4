@@ -344,61 +344,64 @@ public class ComponentTemplateLoaderLogic
         // TODO: This is ugly! Need a better/smarter way, even if we have to extend BindingSource
         // to tell us.
 
-        boolean literal = binding instanceof LiteralBinding;
+        boolean isLiteral = binding instanceof LiteralBinding;
+        boolean isBound = component.getBinding(name) != null;
+        boolean isFormal = spec.getParameter(name) != null;
 
-        boolean isFormal = (spec.getParameter(name) != null);
-
-        if (isFormal)
+        if (!isFormal)
         {
-            if (component.getBinding(name) != null)
+            if (!spec.getAllowInformalParameters())
             {
-                // Literal bindings in the template that conflict with bound parameters
-                // from the spec are silently ignored.
+                // Again; if informal parameters are disallowed, ignore literal bindings, as they
+                // are there as placeholders or for WYSIWYG.
 
-                if (literal)
+                if (isLiteral)
                     return false;
 
-                throw new ApplicationRuntimeException(ImplMessages.dupeTemplateBinding(
-                        name,
-                        component,
-                        _loadComponent), component, binding.getLocation(), null);
+                throw new ApplicationRuntimeException(ImplMessages
+                        .templateBindingForInformalParameter(_loadComponent, name, component),
+                        component, binding.getLocation(), null);
             }
 
-            return true;
+            // If the name is reserved (matches a formal parameter
+            // or reserved name, caselessly), then skip it.
+
+            if (spec.isReservedParameterName(name))
+            {
+                // Final case for literals: if they conflict with a reserved name, they are ignored.
+                // Again, there for WYSIWYG.
+
+                if (isLiteral)
+                    return false;
+
+                throw new ApplicationRuntimeException(ImplMessages
+                        .templateBindingForReservedParameter(_loadComponent, name, component),
+                        component, binding.getLocation(), null);
+            }
         }
 
-        if (!spec.getAllowInformalParameters())
-        {
-            // Again; if informal parameters are disallowed, ignore literal bindings, as they
-            // are there as placeholders or for WYSIWYG.
+        // So, at this point it doesn't matter if the parameter is a formal parameter or
+        // an informal parameter. The binding (if any) in the specification takes precendence
+        // over the template. Literal bindings that conflict are considered to be there for WYSIWYG
+        // purposes. Non-literal bindings that conflict with a specification binding are an
+        // error.
 
-            if (literal)
+        if (isBound)
+        {
+            // Literal bindings in the template that conflict with bound parameters
+            // from the spec are silently ignored.
+
+            if (isLiteral)
                 return false;
 
-            throw new ApplicationRuntimeException(ImplMessages.templateBindingForInformalParameter(
-                    _loadComponent,
+            throw new ApplicationRuntimeException(ImplMessages.dupeTemplateBinding(
                     name,
-                    component), component, binding.getLocation(), null);
-        }
-
-        // If the name is reserved (matches a formal parameter
-        // or reserved name, caselessly), then skip it.
-
-        if (spec.isReservedParameterName(name))
-        {
-            // Final case for literals: if they conflict with a reserved name, they are ignored.
-            // Again, there for WYSIWYG.
-
-            if (literal)
-                return false;
-
-            throw new ApplicationRuntimeException(ImplMessages.templateBindingForReservedParameter(
-                    _loadComponent,
-                    name,
-                    component), component, binding.getLocation(), null);
+                    component,
+                    _loadComponent), component, binding.getLocation(), null);
         }
 
         return true;
+
     }
 
     private void checkAllComponentsReferenced()
