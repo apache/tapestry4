@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+[
+	<!ENTITY projectroot '../../'>
+	<!ENTITY % links.ent SYSTEM "../../links.ent">
+	%links.ent;
+]>
+<document>
+  <header>
+    <title>Else</title>
+  </header>
+  
+  <body>
+
+<p>
+Conditionally emulates an element and its attributes and/or includes a block of content 
+if the condition of the previous If component evaluates to false.
+</p>
+
+<p>
+  <strong>See also: <link href="&apiroot;/components/ElseBean.html">org.apache.tapestry.components.ElseBean</link>, &If;, &Conditional;</strong> 
+</p>
+
+<section>
+  <title>Parameters</title>
+
+  
+<table>
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	<th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+
+    <th>Description</th>
+  </tr>
+
+  <tr> 
+    <td>element</td>
+    <td>String</td>
+	<td>in</td>
+    <td>no</td> 
+    <td>&nbsp;</td>
+
+    <td>The element to emulate. If specified, then the component acts like an &Any;, emitting an open and close tag. 
+Informal parameters are applied to the tag. If no element is specified, informal parameters are ignored.</td>
+  </tr>
+</table>
+  
+<p>
+  Body: <strong>allowed</strong>
+</p>  
+
+<p>
+  Informal parameters: <strong>allowed</strong>
+
+</p>
+
+<p>
+  Reserved parameters: <em>none</em>
+</p>
+
+</section>
+
+<section>
+  <title>Examples</title>
+
+<p>
+
+  In the example, we say hello to our user if he/she has login, or we ask him/her login. (Just the same example for If component.)
+</p>
+<p>Home.html</p>
+
+<source><![CDATA[
+...
+<p>
+Hello, <span jwcid="@If" condition="ognl:user.login"><span jwcid="@Insert" value="ognl:user.name"/></span>
+<span jwcid="@Else"> please <span jwcid="@PageLink" page="Login">login</span></span>	
+</p>
+...
+]]>
+</source>
+
+</section>
+
+</body>
+</document>
