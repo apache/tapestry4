@@ -55,13 +55,14 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-270" due-to="Andy Hedges">FAQ Code example contains bug</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-583">Spurious ERROR message (probably should be WARN or INFO) when template does not refer to components in page spec</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-535">Colons in an OGNL expression may force it to be intepreted as a literal string, not an expression</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-556">Literal bindings in template override bindings in specification for the same informal parameter</action>   
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-556">Literal bindings in template override bindings in specification for the same informal parameter</action>
+      <action type="fix" dev="DS" fixes-bug="TAPESTRY-459">Document DatePicker component</action>
     </release>
     <release version="4.0-beta-6" date="Sep 7 2005">
       <action type="update" dev="HLS" due-to="Henri Yandell">Convert Tapestry repository from CVS to SVN</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-611">Pattern validator invokes wrong client-side JavaScript function</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-610">$bean syntax for validators: binding prefix is broken</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-609">Tapestry.set_focus() seems to be passed the form components elementId (i.e. name attribute) not clientId (i.e. id attribute), which keeps 
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-609">Tapestry.set_focus() seems to be passed the form components elementId (i.e. name attribute) not clientId (i.e. id attribute), which keeps
         focus from being set</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-478, TAPESTRY-477, TAPESTRY-463, TAPESTRY-474" due-to="Pierre-Yves Nicolas">Document RadioGroup, Radio, ExternalLink, Option components</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-613">Javascript problem with @LinkSubmit</action>
@@ -85,7 +86,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-554">Hook needed on client side to control how validation errors are presented to the user</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-528">Add IComponentSpecification.getReservedParameterNames()</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-557">Remove unused org.apache.tapestry.IResourceLocation (replaced by org.apache.hivemind.Resource)</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-553">Rename property-name attribute of configure element to "property" (matching the code in SpecificationParser, as well as other similar 
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-553">Rename property-name attribute of configure element to "property" (matching the code in SpecificationParser, as well as other similar
         elements in the DTD)</action>
       <action type="fix" dev="MB" fixes-bug="TAPESTRY-555">IfBean has a logic error in it</action>
       <action type="fix" dev="MB" fixes-bug="TAPESTRY-290">Incorrect binding type converter for array of int[]</action>
@@ -121,7 +122,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-445" due-to="Markus Joschko">ContextAssetFactory assembles wrong filename for assets</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-444">regexp validator(Email) script function name mismatch</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-446">Changes to assets are not picked up, even when caching is disabled</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-435,TAPESTRY-325,TAPESTRY-309,TAPESTRY-311,TAPESTRY-252,TAPESTRY-254,TAPESTRY-327,TAPESTRY-333" due-to="Our many international users">Add many 
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-435,TAPESTRY-325,TAPESTRY-309,TAPESTRY-311,TAPESTRY-252,TAPESTRY-254,TAPESTRY-327,TAPESTRY-333" due-to="Our many international users">Add many
         translations of ValidationStrings.properties.</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-441">Poor reporting of duplicate method implementations</action>
       <action type="update" dev="HLS">Remove default-binding attribute from &lt;parameter&gt; element</action>
@@ -140,15 +141,15 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-534">WebRequest interface doesn't expose getRemoteUser(), isUserInRole() or getUserPrincipal()</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-530" due-to="Raphael Jean">Namespace messages are retrieved using page's locale rather than engine's locale</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-354">Components without a .jwc file not visible</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-533" due-to="Raphael Jean">Generated client-side javascript is wrong when error message or field display name contains single-quote characters 
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-533" due-to="Raphael Jean">Generated client-side javascript is wrong when error message or field display name contains single-quote characters
         or backslashes</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-365">Set the location for a page that has no specification (just a template) to be relative to the application (or library) 
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-365">Set the location for a page that has no specification (just a template) to be relative to the application (or library)
         specification</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-537">Allow listener methods to return ILink, to support redirect-after-post</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-539">Abstract properties (without a &lt;property&gt; element) do not clear out their values</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-351">Add isRequired() to IFieldComponent</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-452">Tapestry 4.0 (excluding annotations) not source compatible with JDK 1.3</action>
-      <action type="fix" dev="PF" fixes-bug="TAPESTRY-350">Replaced RequirableField logic and 'required' parameter in PropertySelection, RadioGroup, Select, Upload, contrib:MultiplePropertySelection, 
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-350">Replaced RequirableField logic and 'required' parameter in PropertySelection, RadioGroup, Select, Upload, contrib:MultiplePropertySelection,
         and contrib:Palette with more general ValidatableField logic that adds a 'validators' parameter.</action>
       <action type="update" dev="PF">Checkbox component is now validatable.</action>
       <action type="update" dev="PF">Required validator additionally detects empty strings and empty collections.</action>
@@ -217,9 +218,9 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-337">Incorrect link to Spring integration docs in FAQ</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-304">Non thread safe documentation example</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-261">ListEditMap can return null from getDeletedKeys()</action>
-      <action type="fix" dev="HLS">Fix injection problems; InjectScriptWorker injects a DeferredScript, not an IScript. Add super-verbose exception output when there's a failure instantiating a 
+      <action type="fix" dev="HLS">Fix injection problems; InjectScriptWorker injects a DeferredScript, not an IScript. Add super-verbose exception output when there's a failure instantiating a
         component class. </action>
-      <action type="add" dev="PF">Refactored and expanded validation functionality to include DatePicker, PropertySelection, RadioGroup, Select, TextArea, TextField, Upload, contrib:Palette, and 
+      <action type="add" dev="PF">Refactored and expanded validation functionality to include DatePicker, PropertySelection, RadioGroup, Select, TextArea, TextField, Upload, contrib:Palette, and
         contrib:MultiplePropertySelection</action>
       <action type="update" dev="HLS">Rework form event management to be primarily a client-side concern</action>
       <action type="add" dev="HLS">Add translator binding prefix</action>
@@ -296,7 +297,7 @@
       <action type="add" dev="HLS"> Add &lt;inject-state&gt; element to specifications. </action>
       <action type="add" dev="HLS"> Add property attribute to &lt;component&gt;, &lt;bean&gt; and &lt;asset&gt; and add enhancement workers to inject these objects as properties. </action>
       <action type="add" dev="HLS"> Add hivemind: binding prefix. </action>
-      <action type="update" dev="HLS"> Make the Body component output initializations in a script block at the end of the page (just before the close tag), rather than in a window.onload event 
+      <action type="update" dev="HLS"> Make the Body component output initializations in a script block at the end of the page (just before the close tag), rather than in a window.onload event
         handler. </action>
       <action type="update" dev="HLS" fixes-bug="TAPESTRY-262"> Support more boolean values. </action>
       <action type="update" dev="HLS"> Inject Messages into components; this means that all Tapestry page and component classes are abstract. </action>
@@ -318,7 +319,7 @@
       <action type="fix" dev="HLS" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-249"> Provide localized validation messages for Simplified Chinese (zh_CN). </action>
       <action type="fix" dev="HLS" due-to="Niklas Ekman" fixes-bug="TAPESTRY-139"> Provide localized validation messages for Swedish. </action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-230"> Ignored interruptedException prevents Janitorthread termination. </action>
-      <action type="fix" dev="HLS" due-to="Morten Holm" fixes-bug="TAPESTRY-248"> The online Tapestry component reference for 3.0.1 for @Foreach component has an error in the example section. 
+      <action type="fix" dev="HLS" due-to="Morten Holm" fixes-bug="TAPESTRY-248"> The online Tapestry component reference for 3.0.1 for @Foreach component has an error in the example section.
         </action>
       <action type="fix" dev="HLS" due-to="Michael Frericks" fixes-bug="TAPESTRY-218"> Persistent properties can't be set to null. </action>
       <action type="fix" dev="HLS" due-to="Sadanori Ito" fixes-bug="TAPESTRY-200"> ListEdit component reference should list source and value as required. </action>
@@ -347,11 +348,11 @@
     <!-- Use due-to to give acknowledgement for patches. -->
     <release version="3.0-rc-3" date="Apr 7 2004">
       <action type="update" dev="HLS"> Add docs on how to report problems. </action>
-      <action type="fix" dev="HLS" fixes-bug="28202" due-to="Mats Forst&#246;f"> Pass the java.security.ProtectionDomain to the parent class loader when creating an enhanced class, to allow Tapestry 
+      <action type="fix" dev="HLS" fixes-bug="28202" due-to="Mats Forst&#246;f"> Pass the java.security.ProtectionDomain to the parent class loader when creating an enhanced class, to allow Tapestry
         operation inside secure environments such as Tomcat. </action>
       <action type="fix" dev="DS" fixes-bug="28177" due-to="sito@htf.highway.ne.jp"> NPE in org.apache.tapestry.form.LinkSubmit. </action>
       <action type="fix" dev="HLS" fixes-bug="27956"> Make checks for unimplemented abstract methods optional, to work around a bug in IBM JDK 1.3.1 (used with Websphere 4.x). </action>
-      <action type="fix" dev="HLS" fixes-bug="28235"> Allow more primitive types to be used with parameter direction <code>auto</code> (byte, char, short, float and long) in addition to the 
+      <action type="fix" dev="HLS" fixes-bug="28235"> Allow more primitive types to be used with parameter direction <code>auto</code> (byte, char, short, float and long) in addition to the
         previously accepted types (boolean, int, double and objects). </action>
     </release>
     <release version="3.0-rc-2" date="Apr 1 2004">
@@ -377,7 +378,7 @@
       <action type="update" dev="HLS"> Update DatePicker to use a graphic icon to hide and show the calendar. </action>
       <action type="fix" dev="HLS" fixes-bug="20932"> Check for duplication of ids between the HTML template and the specification. </action>
       <action type="fix" dev="HLS" fixes-bug="27082"> Fix some number conversion problems inside NumberValidator. </action>
-      <action type="update" dev="HLS"> Dynamically download OGNL and Javassist libraries (in accordance with ASF directives about non-ASL code). <b>Unfortunately, this means that we no longer can 
+      <action type="update" dev="HLS"> Dynamically download OGNL and Javassist libraries (in accordance with ASF directives about non-ASL code). <b>Unfortunately, this means that we no longer can
         distribute precompiled examples that include those libraries</b> </action>
     </release>
     <release version="3.0-beta-4" date="Feb 5 2004">
@@ -427,7 +428,7 @@
       <action type="fix" dev="MB" fixes-bug="25642"> properties cannot be of complex array types </action>
       <action type="fix" dev="EH" fixes-bug="25766"> fixed broken links in doc\src\common\TapestryLinks.xml </action>
       <action type="fix" dev="MB" fixes-bug="26395"> Inherited parameters do not pick up default values </action>
-      <action type="update" dev="HLS"> Changed code to no longer invoke <code>StringUtils.isEmpty() / isNonEmpty()</code> (this is because the behavior of the method is changing between 
+      <action type="update" dev="HLS"> Changed code to no longer invoke <code>StringUtils.isEmpty() / isNonEmpty()</code> (this is because the behavior of the method is changing between
         jakarta-commons 1.0 and 2.0). </action>
       <action type="update" dev="HLS"> Add an implementation of <code>toString()</code> to <code>RequestCycle</code>. </action>
       <action type="update" dev="HLS"> Update all copyrights for 2004. </action>
@@ -443,14 +444,14 @@
       <action type="update" dev="MB"> Evaluate the string 'false' as Boolean.FALSE. All other non-empty strings continue to be evaluated as Boolean.TRUE. </action>
       <action type="update" dev="MB"> Automatically download external dependencies (such as Forrest and McKoi DB). </action>
       <action type="fix" dev="HK" due-to="Anatol Pomazau"> DatePicker positioning problem fixed. </action>
-      <action type="fix" dev="HK" fixes-bug="24336"> Automatic rendering of the maxlength and size attributes have been removed. DatePicker now allows informal attributes that will be applied to the 
+      <action type="fix" dev="HK" fixes-bug="24336"> Automatic rendering of the maxlength and size attributes have been removed. DatePicker now allows informal attributes that will be applied to the
         field. </action>
       <action type="fix" dev="MB" fixes-bug="25611"> Fixed one more place where the encoding needs to be set </action>
     </release>
   </changes>
   <votes>
     <vote title="Regular beta releases" date="Sep 3 2005" dev="HLS">
-      <motion>As per the ongoing discussion, this is a vote to introduce a new procedure: regular weekly beta releases until Tapestry 4.0 is ready for release. I will take primary responsibility for 
+      <motion>As per the ongoing discussion, this is a vote to introduce a new procedure: regular weekly beta releases until Tapestry 4.0 is ready for release. I will take primary responsibility for
         producing the release and the release announcements, though volunteers will also be welcome. Work will primarily occur on the weekend.</motion>
       <response> HLS, DS, PF, HK, GL, RLS: +1 </response>
     </vote>
@@ -463,8 +464,8 @@
       <response> HLS, GL, HK, EH, DS, PF, RLS: +1 </response>
     </vote>
     <vote title="Remove default-binding" dev="HLS" date="Jul 31 2005">
-      <motion> OK ... this discussion has gone on long enough. I'm willing to strip out the default-binding stuff and replace it with a simpler approach. Attributes will be intepreted as literals 
-        (unless prefixed) in the template, and as OGNL expressions (unless prefixed) elsewhere. This is a potentially de-stabilizing change; I am willing to do the work, but will expect others to 
+      <motion> OK ... this discussion has gone on long enough. I'm willing to strip out the default-binding stuff and replace it with a simpler approach. Attributes will be intepreted as literals
+        (unless prefixed) in the template, and as OGNL expressions (unless prefixed) elsewhere. This is a potentially de-stabilizing change; I am willing to do the work, but will expect others to
         pitch in and test (that is, pull down code and build apps against it), to help track down any latent errors. </motion>
       <response>HLS, RLS, EH, PF, GL, HK: +1</response>
     </vote>
@@ -477,66 +478,66 @@
       <response>HLS, GL, EH, PF, DS, RLS, MB: +1</response>
     </vote>
     <vote title="Tapestry 4.0-beta-1" date="Jun 24 2005" dev="HLS">
-      <motion>I know this is unusual, but I'd like to make a vote pending some other developments. I'm anxious to announce beta-1 when I'm at JavaOne. There are a couple of changes "in the queue" by 
-        various committers; I would like the first beta release to follow those changes being checked in. MindBridge is readying his If and For components (form-aware version of Conditional and 
-        Foreach). Paul is about to check in his improved validation support. I will follow with some improvements to client-side event management. A +1 vote indicates a desire for the beta-1 release 
+      <motion>I know this is unusual, but I'd like to make a vote pending some other developments. I'm anxious to announce beta-1 when I'm at JavaOne. There are a couple of changes "in the queue" by
+        various committers; I would like the first beta release to follow those changes being checked in. MindBridge is readying his If and For components (form-aware version of Conditional and
+        Foreach). Paul is about to check in his improved validation support. I will follow with some improvements to client-side event management. A +1 vote indicates a desire for the beta-1 release
         to follow these developments. We can then focus on fixing bugs and documentation. </motion>
       <response>HLS, PF, EH, DS, HK, RLS: +1</response>
       <response>GL: +0</response>
     </vote>
     <vote title="Tapestry 4.0-alpha-3" date="May 12 2005" dev="HLS">
-      <motion>Although it hasn't been long since alpha-2, I'd like to release the next alpha of Tapestry 4.0. Why? A few things have settled down, some bugs have been fixed, a few really key features 
+      <motion>Although it hasn't been long since alpha-2, I'd like to release the next alpha of Tapestry 4.0. Why? A few things have settled down, some bugs have been fixed, a few really key features
         have been added, and I think the Portlet support is now complete.</motion>
       <response>HLS, PF, HK, EH, RLS, DS, GL, TSV: +1</response>
     </vote>
     <vote title="Tapestry 4.0-alpha-2" date="May 5 2005" dev="HLS">
-      <motion> Now that HiveMind 1.1 has entered beta, I believe it's time to release a new alpha of Tapestry 4.0 (Picasso). This will give people a chance to see more of the (incomplete) Portlet 
+      <motion> Now that HiveMind 1.1 has entered beta, I believe it's time to release a new alpha of Tapestry 4.0 (Picasso). This will give people a chance to see more of the (incomplete) Portlet
         support and many of the other recent fixes and improvements. </motion>
       <response>HLS, RLS, EH, TSV, DS, PF, GL, MB: +1</response>
     </vote>
     <vote title="Tapestry 4.0" date="Apr 15 2005" dev="HLS">
-      <motion>The sentiment of the community seems to be that the next major release of Tapestry (i.e., HiveMind infrastructure, Portlet support, etc.) is too different from Tapestry 3.0 to be called 
-        "Tapestry 3.1". This release will only be largely backwards compatible; applications that sub-class BaseEngine or make use of custom Tapestry engine services will require some amount of 
-        re-work. In a small number of cases, component parameters (espcially those using direction "auto" or "custom") will not work exactly as before. I feel it is completely reasonable to not call 
-        this release 3.1, but to continue to bend over backwards for backwards compatibility. A +1 vote signals that you concur, and that the next release should be numbered 4.0. This will affect the 
-        code in a very limited way: Much code has been added with a @since 3.1 javadoc tag; this will change to @since 4.,0. Likewise, the 3.1 numbering is in documentation, and inside some of the 
+      <motion>The sentiment of the community seems to be that the next major release of Tapestry (i.e., HiveMind infrastructure, Portlet support, etc.) is too different from Tapestry 3.0 to be called
+        "Tapestry 3.1". This release will only be largely backwards compatible; applications that sub-class BaseEngine or make use of custom Tapestry engine services will require some amount of
+        re-work. In a small number of cases, component parameters (espcially those using direction "auto" or "custom") will not work exactly as before. I feel it is completely reasonable to not call
+        this release 3.1, but to continue to bend over backwards for backwards compatibility. A +1 vote signals that you concur, and that the next release should be numbered 4.0. This will affect the
+        code in a very limited way: Much code has been added with a @since 3.1 javadoc tag; this will change to @since 4.,0. Likewise, the 3.1 numbering is in documentation, and inside some of the
         specification DTDs; these will also change. </motion>
       <response>HLS, GL, PF, EH, DS, RLS: +1</response>
       <response>MB, HK, TSV: +0</response>
     </vote>
     <vote title="Tapestry 3.0.3" date="Mar 26 2005" dev="PF">
-      <motion> I finished patching/fixing all of the big issues identified with the last release. With any luck, this will be the last release for the 3.0 branch. This vote will run for one week. A 
+      <motion> I finished patching/fixing all of the big issues identified with the last release. With any luck, this will be the last release for the 3.0 branch. This vote will run for one week. A
         +1 vote is to release Tapestry 3.0.3. I will be able to start the release once the votes are tallied. </motion>
       <response> PF, HK, MB, HLS, TS, DS, EH, GL: +1 </response>
       <response> RLS: +0 </response>
     </vote>
     <vote title="Tapestry 3.1-alpha-1" date="Feb 15 2005" dev="HLS">
-      <motion>I think it's high time we provide people with a peek at 3.1. The code base has stabilized quite a bit in the last week or two, and although there's a huge amount of work to come, I 
+      <motion>I think it's high time we provide people with a peek at 3.1. The code base has stabilized quite a bit in the last week or two, and although there's a huge amount of work to come, I
         think the community would benefit from an easy preview of what's coming. This will also be a chance to work through the release checklist I prepared last week.</motion>
       <response>HLS, EH, HK, PF, RLS, DS, GL, TSV: +1 </response>
     </vote>
     <vote title="Tapestry 3.0.2" date="Feb 14 2005" dev="HLS">
-      <motion> I think we should just be done with 3.0.2. All the bugs that are going to get fixed, have been. The next version of OGNL should just drop in, and since its not shipped with the 
+      <motion> I think we should just be done with 3.0.2. All the bugs that are going to get fixed, have been. The next version of OGNL should just drop in, and since its not shipped with the
         framework anyway, its not a big deal. </motion>
       <response> HLS, PF, GL, RLS, DS, EH: +1 </response>
       <response> HK, TSV, MB: +0 </response>
     </vote>
     <vote title="Nominate Paul Ferraro as committer" date="Aug 24 2004" dev="RLS">
-      <motion> I would like to nominate Paul Ferraro as a Tapestry committer. Paul has shown a very good understanding of Tapestry, and recently made a large contribution with friendly URLs. (Paul 
+      <motion> I would like to nominate Paul Ferraro as a Tapestry committer. Paul has shown a very good understanding of Tapestry, and recently made a large contribution with friendly URLs. (Paul
         has indicated he is very interested) </motion>
       <response>RLS, EH, HK, GL, DS: +1</response>
       <response>HLS, MB, TS, NC: +0</response>
     </vote>
     <!-- Vote for 3.0.1 release is missing! -->
     <vote title="Tapestry 3.0 FINAL" date="Apr 14 2004" dev="HLS">
-      <motion> Despite a last minute flurry of bug fixes, the motion has passed and we'll be releasing the final Tapestry 3.0 release shortly. I'll be creating tagging and creating the final release 
+      <motion> Despite a last minute flurry of bug fixes, the motion has passed and we'll be releasing the final Tapestry 3.0 release shortly. I'll be creating tagging and creating the final release
         shortly. Alas, it looks like Neil Clayton is no longer contributing to the Tapestry project. </motion>
       <response>HLS, RLS, EH, HK, DS, TSV, MB: +1</response>
       <response>GL, NC: +0</response>
     </vote>
     <vote title="release 3.0-rc-3" date="Apr 7 2004" dev="HLS">
-      <motion> I've had some more time to knock down a the remaining blocker bugs in 3.0-rc-2. Assuming that there are no further blocker bugs added in the meantime, I'd like to release rc-3. A +1 
-        vote indicates that we should release rc-3, unless a new blocker bug is added in the meantime. Please respond in the next 24 hours (by Wednesday afternoon, EST). Missing responses will be 
+      <motion> I've had some more time to knock down a the remaining blocker bugs in 3.0-rc-2. Assuming that there are no further blocker bugs added in the meantime, I'd like to release rc-3. A +1
+        vote indicates that we should release rc-3, unless a new blocker bug is added in the meantime. Please respond in the next 24 hours (by Wednesday afternoon, EST). Missing responses will be
         treated as a +0. </motion>
       <response> HLS, EH, HK, DS: +1 </response>
       <response> NC, RLS, MB, TSV, GL: +0 </response>
@@ -551,13 +552,13 @@
       <response> RLS, GL, HK, EH, DS, MB, HLS: +1 </response>
     </vote>
     <vote title="Can the Tutorial" date="Feb 19 2004" dev="HLS">
-      <motion> I think its pretty obvious by now that no work is going to get done on the Tutorial for 3.0. I think it would be best to remove the Tutorial, perhaps replace it with a link to Kevin 
-        Dorff's site until we can actually put something useful together ... even if that is after 3.0 is released. A +1 vote would delete the Tutorial code, the docbook source and links to the old 
+      <motion> I think its pretty obvious by now that no work is going to get done on the Tutorial for 3.0. I think it would be best to remove the Tutorial, perhaps replace it with a link to Kevin
+        Dorff's site until we can actually put something useful together ... even if that is after 3.0 is released. A +1 vote would delete the Tutorial code, the docbook source and links to the old
         tutorial on the web site. </motion>
       <response> HLS, EH, DS, GL, MB, HK: +1 </response>
     </vote>
     <vote date="Sep 5 2003" title="Release 3.0-beta-3" dev="HLS">
-      <motion> People have been itching for the next release of Tapestry; one where the demos work (woops!) including JavaScript and the Palette. Documentation is still not ready for an rc release, 
+      <motion> People have been itching for the next release of Tapestry; one where the demos work (woops!) including JavaScript and the Palette. Documentation is still not ready for an rc release,
         but I think a beta release is a good idea. </motion>
       <response> HLS, GL, RLS, DS, HK, EH, MB, TS, NC: +1 </response>
     </vote>
@@ -567,21 +568,21 @@
       <response> NC: +0 (no vote) </response>
     </vote>
     <vote date="Sep 3 2003" title="Tsvetelin Saykov as committer" dev="MB">
-      <motion>I would like to nominate Tsvetelin Saykov as a committer. Tsvetelin has more than an year and a half of Tapestry experience, has worked with many large web projects, and can be very 
-        helpful overall for the development of the framework, especially in the area of dynamic pages with layout determined at runtime. (not to mention that he would need CVS access to work on the 
+      <motion>I would like to nominate Tsvetelin Saykov as a committer. Tsvetelin has more than an year and a half of Tapestry experience, has worked with many large web projects, and can be very
+        helpful overall for the development of the framework, especially in the area of dynamic pages with layout determined at runtime. (not to mention that he would need CVS access to work on the
         Tree) </motion>
       <response> MB, HLS, GL, DS, NC, RLS: +1 </response>
     </vote>
     <vote date="Sep 2 2003" title="Harish Krishnaswamy as committer" dev="HLS">
-      <motion> I would like to nominate Harish; he has been very actively and enthusiastically supporting Tapestry in the mailing lists. I think he would be an excellent and valuable asset to the 
+      <motion> I would like to nominate Harish; he has been very actively and enthusiastically supporting Tapestry in the mailing lists. I think he would be an excellent and valuable asset to the
         team. And hell, he's relatively local --- I might actually get to meet a Tapestry committer in person! </motion>
       <response> HLS, GL, DS, MB, RLS: +1 </response>
       <response> NC: +0 (no vote) </response>
     </vote>
     <vote date="Jul 13 2003" title="Release 3.0-beta-2" dev="HLS">
-      <motion> We informally discussed this not too long ago; I think we are at a good point for beta-2. There have been some significant improvements since beta-1a that will largely be invisible to 
-        most users (the correct thing for a beta release); at the same time, I think we're all anxious to push forward and get Tapestry 3.0-xxx into wider distribution. Although there are still 
-        several outstanding bugs (one or two that are problematic) I think this is a good time to keep momentum going and release the next beta. A +1 vote will procede with beta-2, tagging the 
+      <motion> We informally discussed this not too long ago; I think we are at a good point for beta-2. There have been some significant improvements since beta-1a that will largely be invisible to
+        most users (the correct thing for a beta release); at the same time, I think we're all anxious to push forward and get Tapestry 3.0-xxx into wider distribution. Although there are still
+        several outstanding bugs (one or two that are problematic) I think this is a good time to keep momentum going and release the next beta. A +1 vote will procede with beta-2, tagging the
         repository and pushing the new releases out to the Apache distribution mirrors. </motion>
       <response> HLS, MB, NC, RLS, GL, DS: +1 </response>
     </vote>

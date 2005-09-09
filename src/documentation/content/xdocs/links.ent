@@ -126,6 +126,7 @@
 <!ENTITY Any				'<link href="site:Any">Any</link>'>
 <!ENTITY Block 				'<link href="site:Block">Block</link>'>
 <!ENTITY Body 				'<link href="site:Body">Body</link>'>
+<!ENTITY Button 			'<link href="site:Button">Button</link>'>
 <!ENTITY Checkbox 			'<link href="site:Checkbox">Checkbox</link>'>
 <!ENTITY Conditional 		'<link href="site:Conditional">Conditional</link>'>
 <!ENTITY DatePicker			'<link href="site:DatePicker">DatePicker</link>'>
