@@ -36,13 +36,6 @@ public class TestAbstractComponent extends BaseComponentTestCase
 
     }
 
-    public void testGetComponent()
-    {
-        IComponent component = new ConcreteComponent();
-
-        assertSame(component, component.getComponent());
-    }
-
     public void testUnimplementedMethods()
     {
         IComponent component = new ConcreteComponent();
