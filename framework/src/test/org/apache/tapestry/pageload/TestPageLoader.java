@@ -128,7 +128,7 @@ public class TestPageLoader extends HiveMindTestCase
         Log log = (Log) newMock(Log.class);
 
         log
-                .error("Parameter barney (for component FredComponent, at classpath:/org/apache/tapestry/pageload/TestPageLoader, line 1) was bound; this parameter has been deprecated, bind parameter fred instead.");
+                .warn("Parameter barney (for component FredComponent, at classpath:/org/apache/tapestry/pageload/TestPageLoader, line 1) was bound; this parameter has been deprecated, bind parameter fred instead.");
 
         IBinding binding = newBinding();
         MockControl sourcec = newControl(BindingSource.class);
@@ -185,7 +185,7 @@ public class TestPageLoader extends HiveMindTestCase
         Log log = (Log) newMock(Log.class);
 
         log
-                .error("Parameter fred (at classpath:/org/apache/tapestry/pageload/TestPageLoader, line 1) has been deprecated, "
+                .warn("Parameter fred (at classpath:/org/apache/tapestry/pageload/TestPageLoader, line 1) has been deprecated, "
                         + "and may be removed in a future release. Consult the documentation for component FredComponent to "
                         + "determine an appropriate replacement.");
 

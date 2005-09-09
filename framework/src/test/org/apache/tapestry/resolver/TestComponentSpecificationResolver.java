@@ -129,7 +129,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         Log log = (Log) newMock(Log.class);
 
         log
-                .error("Component 'MyComponent' (at classpath:/org/apache/tapestry/resolver/TestComponentSpecificationResolver, line 1) is deprecated, and will likely be removed in a later release. Consult its documentation to find a replacement component.");
+                .warn("Component 'MyComponent' (at classpath:/org/apache/tapestry/resolver/TestComponentSpecificationResolver, line 1) is deprecated, and will likely be removed in a later release. Consult its documentation to find a replacement component.");
 
         replayControls();
 

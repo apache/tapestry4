@@ -107,7 +107,7 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
         IComponentSpecification spec = getSpecification();
 
         if (spec.isDeprecated())
-            _log.error(ResolverMessages.componentIsDeprecated(type, location));
+            _log.warn(ResolverMessages.componentIsDeprecated(type, location));
     }
 
     /**
