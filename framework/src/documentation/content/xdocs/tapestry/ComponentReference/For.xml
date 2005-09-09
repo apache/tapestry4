@@ -28,11 +28,15 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>
+  Loops over a collection of source values.  May also emulate an element (like an Any
+  component). If this component is placed in a Form, it will automatically store
+  the collection in Hidden fields so that the structure of the page is preserved
+  during a rewind even if the values in the source change.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/components/ForBean.html">org.apache.tapestry.components.ForBean</link>, &Foreach;</strong> 
 </p>
 
 <section>
@@ -42,20 +46,173 @@
   <tr> 
     <th>Name</th>
     <th>Type</th>
-	  <th>Direction</th>
+	<th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
     <th>Description</th>
   </tr>
 
-	</table>
+  <tr> 
+    <td>source</td>
+    <td>Iterator, Collection, Object[], or Object</td>
+	<td>in</td>
+    <td>yes</td> 
+    <td>&nbsp;</td>
+
+    <td>
+        The source of objects to be iterated, which may be a Collection, an Iterator, an array of Objects, 
+        or a even a single Object (which is treated as a singleton collection).<p/>
+		The source parameter may even be null, in which case the Foreach's body is never renderred.
+    </td>
+  </tr>
+  
+  <tr> 
+    <td>value</td>
+    <td>Object</td>
+	<td>out</td>
+    <td>no</td> 
+    <td>&nbsp;</td>
+
+    <td>If provided, the parameter is updated with the current value on each iteration.</td>
+  </tr>
+
+  <tr> 
+    <td>index</td>
+    <td>int</td>
+	<td>out</td>
+    <td>no</td> 
+    <td>&nbsp;</td>
+
+    <td>If provided, the parameter is updated with the index of the loop on each iteration.</td>
+  </tr>
+
+  <tr> 
+    <td>element</td>
+    <td>String</td>
+	<td>in</td>
+    <td>no</td> 
+    <td>&nbsp;</td>
+
+    <td>If provided, the component wraps its content with the requested element.
+    Informal parameters become attributes of that element.</td>
+  </tr>
+
+  <tr> 
+    <td>keyExpression</td>
+    <td>String</td>
+	<td>in</td>
+    <td>no</td> 
+    <td>&nbsp;</td>
+
+    <td>
+    Only active in a form. An OGNL expression that returns the primary key of the iterated value. 
+    The primary keys are stored in hidden fields during rendering and are loaded from the form
+    during a rewind to ensure that the iterations remain the same. <p/>
+    This is a simpler, but a less efficient alternative of the 'converter' parameter.
+    If needed, please use in conjuction with 'fullSource' to reference objects 
+    not currently present in 'source'. 
+    Use the 'defaultValue' parameter to define the object to be returned if
+    a value corresponding to a particular primary key cannot be found.
+	</td>
+  </tr>
+
+  <tr> 
+    <td>fullSource</td>
+    <td>Iterator, Collection, Object[], or Object</td>
+	<td>in</td>
+    <td>no</td> 
+    <td>&nbsp;</td>
+
+    <td>
+    Only active in a form. If an object with a representation stored in the form cannot be
+    found in the 'source' parameter, then the objects provided by this parameter 
+    are searched for a match next. 
+    </td>
+  </tr>
+
+  <tr> 
+    <td>defaultValue</td>
+    <td>Object</td>
+	<td>in</td>
+    <td>no</td> 
+    <td>&nbsp;</td>
+
+    <td>
+        Only active in a form. The value to be used when no match for a given 
+        representation stored in the hidden fields cannot be found. 
+    </td>
+  </tr>
+
+  <tr> 
+    <td>converter</td>
+    <td><link href="&apiroot;/components/IPrimaryKeyConverter.html">IPrimaryKeyConverter</link></td>
+	<td>in</td>
+    <td>no</td> 
+    <td>&nbsp;</td>
+
+    <td>
+    Only active in a form. Defines how the items iterated upon 
+    will be stored in the form as hidden values and how the stored information will be 
+    converted back to objects. <p/>
+    This interface allows only the primary key of the items to be stored, 
+    rather than the whole item.
+    </td>
+  </tr>
+
+  <tr> 
+    <td>primaryKeys</td>
+    <td>List</td>
+	<td>out</td>
+    <td>no</td> 
+    <td>&nbsp;</td>
+
+    <td>
+    Only active in a form. If provided, the parameter is automatically updated 
+    during a rewind with the list of primary keys stored in the form. 
+    The parameter is updated right before the iterations begin in a rewind and 
+    could be used to preload the relevant objects in the provided 'converter'.
+    </td>
+  </tr>
+
+  <tr> 
+    <td>match</td>
+    <td>boolean</td>
+	<td>in</td>
+    <td>no</td> 
+    <td>true</td>
+
+    <td>
+    Only active in a form. This parameter allows the matching of the string
+    representation of the values stored in the hidden fields with that 
+    of the values in 'source'. It guarantees that the values iterated upon are 
+    physically identical to the ones provided. <p/>
+    The method is sometimes slower than simple unsqueezing, but it eliminates a number 
+    of potential pitfalls. Please disable with caution.
+    </td>
+  </tr>
+
+  <tr> 
+    <td>volatile</td>
+    <td>boolean</td>
+	<td>in</td>
+    <td>no</td> 
+    <td>false</td>
+
+    <td>
+    Only active in a form. Determines whether to avoid creating hidden fields within a form.
+    Using this parameter may make the form structure different during render and rewind, 
+    and cause exceptions as a result. Please use with caution.
+    </td>
+  </tr>
+
+  	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
@@ -67,6 +224,64 @@
 <section>
   <title>Examples</title>
 
+  <p><strong>View list of customers</strong></p>
+  <p>This example displays a list of customers:</p>
+  
+<source><![CDATA[
+...
+<table cellspacing="10">
+  <tr>
+    <td>ID</td>
+    <td>Name</td>
+    <td>Level</td>
+  </tr>
+  <tr>
+    <td colspan="3"><hr></td>
+  </tr>
+  <tr jwcid="@For" source="ognl:customerList" value="ognl:customer" element="tr">
+    <td><span jwcid="@Insert" value="ognl:customer.id"/></td>
+    <td><span jwcid="@Insert" value="ognl:customer.fullName"/></td>
+    <td><span jwcid="@Insert" value="ognl:customer.memberLevel"/></td>
+  </tr>
+</table>
+...
+]]>
+</source>
+
+<p>&nbsp;</p>
+
+  <p><strong>Edit a list of customers</strong></p>
+  <p>This examples allows the user to edit a list of customers.
+     The 'keyExpression' parameter is optional. It tells the component to use the 'id'
+     expression to obtain the primary key of the customer. 
+     This approach is particularly useful when the Customer object is not Serializable,
+     as only the primary key is stored in the hidden fields, 
+     rather than the full Customer record.
+  </p>
+  
+<source><![CDATA[
+...
+<table cellspacing="10">
+  <tr>
+    <td>ID</td>
+    <td>Name</td>
+    <td>Level</td>
+  </tr>
+  <tr>
+    <td colspan="3"><hr></td>
+  </tr>
+  <tr jwcid="@For" source="ognl:customerList" keyExpression="id" value="ognl:customer" element="tr">
+    <td><span jwcid="@Insert" value="ognl:customer.id"/></td>
+    <td><span jwcid="@TextField" value="ognl:customer.fullName"/></td>
+    <td><span jwcid="@PropertySelection" value="ognl:customer.memberLevel"
+              model="ognl:@com.mycorp.Customer@MEMBER_LEVEL_MODEL"/></td>
+  </tr>
+</table>
+...
+]]>
+</source>
+      
+  
 </section>
 </body>
 </document>
