@@ -281,7 +281,7 @@ public class ComponentTemplateLoaderLogic
                 String parameterName = pspec == null ? attributeName : pspec.getParameterName();
 
                 if (!attributeName.equals(parameterName))
-                    _log.error(ImplMessages.usedTemplateParameterAlias(
+                    _log.warn(ImplMessages.usedTemplateParameterAlias(
                             token,
                             attributeName,
                             parameterName));
@@ -422,7 +422,7 @@ public class ComponentTemplateLoaderLogic
         ids = new HashSet(ids);
         ids.removeAll(_seenIds);
 
-        _log.error(ImplMessages.missingComponentSpec(_loadComponent, ids));
+        _log.warn(ImplMessages.missingComponentSpec(_loadComponent, ids));
 
     }
 
