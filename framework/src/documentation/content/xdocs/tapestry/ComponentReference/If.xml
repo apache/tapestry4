@@ -28,38 +28,92 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>
+Conditionally emulates an element and its attributes and/or includes a block of content if a condition is met.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/components/IfBean.html">org.apache.tapestry.components.IfBean</link>, &Else;, &Conditional;</strong> 
 </p>
 
 <section>
   <title>Parameters</title>
+
   
 <table>
   <tr> 
     <th>Name</th>
     <th>Type</th>
-	  <th>Direction</th>
+	<th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
+
     <th>Description</th>
   </tr>
 
-	</table>
+  <tr> 
+    <td>condition</td>
+    <td>boolean</td>
+	<td>in</td>
+    <td>yes</td> 
+    <td>&nbsp;</td>
+
+    <td>The condition to evaluate.</td>
+  </tr>
+  <tr> 
+    <td>conditionValue</td>
+    <td>boolean</td>
+	<td>in</td>
+    <td>no</td> 
+    <td>&nbsp;</td>
+
+    <td>The value of the condition. During render this is obtained from the condition parameter. 
+	During rewind it is the submitted condition.</td>
+  </tr>
+  <tr> 
+    <td>listener</td>
+    <td>&IActionListener;</td>
+	<td>in</td>
+    <td>no</td> 
+    <td>&nbsp;</td>
+
+    <td>The listener is called before the component renders itself, 
+        regardless of the value of the condition parameter.</td>
+  </tr>
+  <tr> 
+    <td>element</td>
+    <td>String</td>
+	<td>in</td>
+    <td>no</td> 
+    <td>&nbsp;</td>
+
+    <td>The element to emulate. If specified, then the component acts like an &Any;, emitting an open and close tag. 
+	Informal parameters are applied to the tag. If no element is specified, informal parameters are ignored.</td>
+  </tr>
+  <tr> 
+    <td>volatile</td>
+    <td>boolean</td>
+	<td>in</td>
+    <td>no</td> 
+    <td>false</td>
+
+    <td>Only active in a form. Determines whether to avoid creating hidden fields within a form. 
+    Using this parameter may make the form structure different during render and rewind, 
+    and cause exceptions as a result. Please use with caution.</td>
+  </tr>
+</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
+
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: <em>name</em>, <em>form</em>
 </p>
 
 </section>
@@ -67,6 +121,22 @@
 <section>
   <title>Examples</title>
 
+<p>
+  In this example we say hello to our user if he/she has login, or we ask him/her login. 
+</p>
+<p>Home.html</p>
+
+<source><![CDATA[
+...
+<p>
+Hello, <span jwcid="@If" condition="ognl:user.login"><span jwcid="@Insert" value="ognl:user.name"/></span>
+<span jwcid="@Else">please <span jwcid="@PageLink" page="Login">login</span></span>
+</p>
+...
+]]>
+</source>
+
 </section>
+
 </body>
 </document>
