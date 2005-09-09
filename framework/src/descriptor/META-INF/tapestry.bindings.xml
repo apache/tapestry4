@@ -171,7 +171,6 @@
     
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.BindingSourceImpl">
-        <set-service property="literalBindingFactory" service-id="LiteralBindingFactory"/>
         <set-configuration property="contributions" configuration-id="BindingFactories"/>
       </construct>
     </invoke-factory>
