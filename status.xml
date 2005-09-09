@@ -450,7 +450,7 @@
     <vote title="Regular beta releases" date="Sep 3 2005" dev="HLS">
       <motion>As per the ongoing discussion, this is a vote to introduce a new procedure: regular weekly beta releases until Tapestry 4.0 is ready for release. I will take primary responsibility for 
         producing the release and the release announcements, though volunteers will also be welcome. Work will primarily occur on the weekend.</motion>
-      <response> HLS, DS, PF, HK, GL: +1 </response>
+      <response> HLS, DS, PF, HK, GL, RLS: +1 </response>
     </vote>
     <vote title="Tapestry 4.0-beta-5" date="Aug 26 2005">
       <motion> Release early; release often. Lots of good fixes here, and I like releasing a beta every week or so. </motion>
