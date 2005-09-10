@@ -35,6 +35,12 @@
   <strong>See also:</strong> 
 </p>
 
+<warning>
+  This component may  only be used in Tapestry Servlet Applications; Upload currently
+  does not work with Portlet Applications.  See 
+  <link href="http://issues.apache.org/jira/browse/TAPESTRY-635">TAPESTRY-635</link> for more details.
+</warning>
+
 <section>
   <title>Parameters</title>
   
