@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.engine.state;
 
+import org.apache.tapestry.SessionStoreOptimized;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
 
@@ -74,6 +75,14 @@ public class SessionScopeManager implements StateObjectPersistenceManager
 
     public void store(String objectName, Object stateObject)
     {
+        if (stateObject instanceof SessionStoreOptimized)
+        {
+            SessionStoreOptimized optimized = (SessionStoreOptimized) stateObject;
+
+            if (!optimized.isStoreToSessionNeeded())
+                return;
+        }
+
         String key = buildKey(objectName);
 
         WebSession session = getSession();

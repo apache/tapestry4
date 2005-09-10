@@ -36,7 +36,9 @@
 <!ENTITY ChangeObserver 			'<link href="&apiroot;/event/ChangeObserver.html">ChangeObserver</link>'>
 <!ENTITY BaseComponent 				'<link href="&apiroot;/BaseComponent.html">BaseComponent</link>'>
 <!ENTITY BaseEngine 				'<link href="&apiroot;/engine/BaseEngine.html">BaseEngine</link>'>
-<!ENTITY BasePage 					'<link href="&apiroot;/html/BasePage.html">BasePage</link>'>
+<!ENTITY BasePage 
+					'<link href="&apiroot;/html/BasePage.html">BasePage</link>'>
+<!ENTITY BaseSessionStoreOptimized  '<link href="&apiroot;/BaseSessionStoreOptimized.html">BaseSessionStoreOptimized</link>'>
 <!ENTITY ComponentPropertySource	'<link href="&apiroot;/services/ComponentPropertySource.html">ComponentPropertySource</link>'>
 <!ENTITY DataSqueezer 				'<link href="&apiroot;/util/io/DataSqueezer.html">DataSqueezer</link>'>
 <!ENTITY Default 					'<link href="&apiroot;/bean/Default.html">Default</link>'>
@@ -62,7 +64,6 @@
 <!ENTITY IEngineService				'<link href="&apiroot;/engine/IEngineService.html">IEngineService</link>'>
 <!ENTITY IForm 						'<link href="&apiroot;/IForm.html">IForm</link>'>
 <!ENTITY IFormComponent 			'<link href="&apiroot;/form/IFormComponent.html">IFormComponent</link>'>
-<!ENTITY IEngineService 			'<link href="&apiroot;/IEngineService.html">IEngineService</link>'>
 <!ENTITY ILink						'<link href="&apiroot;/engine/ILink.html">ILink</link>'>
 <!ENTITY ILinkRenderer			    '<link href="&apiroot;/link/ILinkRenderer.html">ILinkRenderer</link>'>
 <!ENTITY INamespace 				'<link href="&apiroot;/INamespace.html">INamespace</link>'>
@@ -97,7 +98,6 @@
 <!ENTITY PageBeginRenderListener 	'<link href="&apiroot;/event/PageBeginRenderListener.html">PageBeginRenderListener</link>'>
 <!ENTITY PageEndRenderListener 		'<link href="&apiroot;/event/PageEndRenderListener.html">PageEndRenderListener</link>'>
 <!ENTITY PageRenderListener 		'<link href="&apiroot;/event/PageRenderListener.html">PageRenderListener</link>'>
-<!ENTITY PageAttachListener 		'<link href="&apiroot;/event/PageAttachListener.html">PageAttachListener</link>'>
 <!ENTITY PageValidateListener 		'<link href="&apiroot;/event/PageValidateListener.html">PageValidateListener</link>'>
 
 <!ENTITY PageRecorder 				'<link href="&apiroot;/record/PageRecorder.html">PageRecorder</link>'>
@@ -107,6 +107,7 @@
 <!ENTITY RedirectFilter 			'<link href="&apiroot;/RedirectFilter.html">RedirectFilter</link>'>
 <!ENTITY RequestContext 			'<link href="&apiroot;/RequestContext.html">RequestContext</link>'>
 <!ENTITY ServiceEncoder				'<link href="&apiroot;/engine/ServiceEncoder.html">ServiceEncoder</link>'>
+<!ENTITY SessionStoreOptimized      '<link href="&apiroot;/SessionStoreOptimized.html">SessionStoreOptimized</link>'>
 <!ENTITY SimpleEngine 				'<link href="&apiroot;/engine/SimpleEngine.html">SimpleEngine</link>'>
 <!ENTITY SpecificationParser 		'<link href="&apiroot;/parse/SpecificationParser">SpecificationParser</link>'>
 <!ENTITY StaleLinkException 		'<link href="&apiroot;/StaleLinkException.html">StaleLinkException</link>'>

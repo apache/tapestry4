@@ -61,6 +61,7 @@
       <action type="fix" dev="MB" fixes-bug="TAPESTRY-469">Document If component</action>
       <action type="fix" dev="MB" fixes-bug="TAPESTRY-464">Document For component</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-489">Document FormConditional component</action>
+      <action type="add" dev="HLS" fixes-bug="TAPESTRY-637">Application state objects are stored back to the session, even if unchanged</action>
     </release>
     <release version="4.0-beta-6" date="Sep 7 2005">
       <action type="update" dev="HLS" due-to="Henri Yandell">Convert Tapestry repository from CVS to SVN</action>
