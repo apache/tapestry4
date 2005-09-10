@@ -228,7 +228,6 @@
   <p>This example displays a list of customers:</p>
   
 <source><![CDATA[
-...
 <table cellspacing="10">
   <tr>
     <td>ID</td>
@@ -243,24 +242,19 @@
     <td><span jwcid="@Insert" value="ognl:customer.fullName"/></td>
     <td><span jwcid="@Insert" value="ognl:customer.memberLevel"/></td>
   </tr>
-</table>
-...
-]]>
+</table>]]>
 </source>
 
-<p>&nbsp;</p>
-
-  <p><strong>Edit a list of customers</strong></p>
+  <p><br/><strong>Edit a list of customers</strong></p>
   <p>This examples allows the user to edit a list of customers.
      The 'keyExpression' parameter is optional. It tells the component to use the 'id'
      expression to obtain the primary key of the customer. 
-     This approach is particularly useful when the Customer object is not Serializable,
+     The parameter is particularly useful when the Customer object is not Serializable,
      as only the primary key is stored in the hidden fields, 
      rather than the full Customer record.
   </p>
   
 <source><![CDATA[
-...
 <table cellspacing="10">
   <tr>
     <td>ID</td>
@@ -276,9 +270,7 @@
     <td><span jwcid="@PropertySelection" value="ognl:customer.memberLevel"
               model="ognl:@com.mycorp.Customer@MEMBER_LEVEL_MODEL"/></td>
   </tr>
-</table>
-...
-]]>
+</table>]]>
 </source>
       
   

@@ -28,15 +28,20 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> Creates an &lt;a&gt; hyperlink for an arbitrary URL.
 </p>
+<p> Although a GenericLink can be accomplished using an &Any; component, a GenericLink is more flexible: 
+it can be disabled, like a &DirectLink; or &ActionLink; and can also wrap around &Rollover; components. 
+GenericLinks are often used with javascript: URLs to perform client-side scripting.</p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &ActionLink;, &DirectLink;, &ExternalLink;, &PageLink;, &Rollover;, &ServiceLink;</strong>
+
 </p>
 
 <section>
   <title>Parameters</title>
+
   
 <table>
   <tr> 
@@ -45,17 +50,70 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
+
     <th>Description</th>
+  </tr>
+  <tr>
+    <td>href</td>
+    <td>String</td>
+
+    <td>in</td>
+
+    <td>yes</td>
+    <td></td>
+    <td>
+      The URL to trigger when the link is clicked. This is often of the form:
+&lt;a&gt; href="javascript:functionName('param')">
+    </td>
+  </tr>
+  <tr>
+
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+
+    <td>
+
+      Controls whether the link is produced. If disabled, the portion of the template the link surrounds is still rendered, but not the link itself.
+    </td>
+  </tr>
+  <tr>
+    <td>anchor</td>
+
+    <td>String</td>
+    <td>in</td>
+
+    <td>no</td>
+    <td></td>
+    <td>
+       The name of an anchor or element to link to. The final URL will have '#' and the anchor appended to it.
+    </td>
+
+  </tr>
+  <tr>
+    <td>renderer</td>
+
+    <td>&ILinkRenderer;</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+
+    <td>
+      The object which will actually render the link.
+    </td>
   </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
-</p>  
+  Body: <strong>rendered</strong>
+</p>
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
@@ -66,7 +124,10 @@
 
 <section>
   <title>Examples</title>
+  <p>
+Under Construction.
 
+</p>
 </section>
 </body>
 </document>
