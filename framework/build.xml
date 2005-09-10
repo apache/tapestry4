@@ -21,6 +21,7 @@
   <property name="javadoc.package" value="org.apache.tapestry.*"/>
 
   <property name="module.javac.deprecation" value="off"/>
+  <property name="module.junit.jvmarg" value="-Duser.language=en -Duser.country=US"/>
     
   <property name="root.dir" value=".."/>
   <property file="${root.dir}/config/build.properties"/>
