@@ -28,11 +28,17 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>  FormConditional is a variant of &Conditional; designed to be used in a &Form;, similar to the relationship between &Foreach; and &ListEdit;. It is used to guarantee that the data will be the same during rendering and rewind when a form is submitted avoiding a stale link.
+On render, FormConditional reads condition parameter, stores it into a hidden field, and could render or not according to condition value. On rewind, the FormConditional ignores condition parameter, reads the stored value, and could render or not matching previous render.
 </p>
 
+      <warning>
+          This component has been deprecated; Tapestry 4.0 adds the &If; component which
+          allows conditionalized elements to be safely contained by &Form; components.
+      </warning>
+
 <p>
-  <strong>See also:</strong> 
+  <strong>See also:</strong> &Conditional;, &Form; &If;
 </p>
 
 <section>
@@ -47,26 +53,64 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
+    <tr>
+      <td>condition</td>
+      <td>boolean</td>
+      <td>in</td>
+      <td>yes</td>
+      <td>&nbsp;</td>
+
+      <td>The condition to evaluate.</td>
+    </tr>
+    <tr>
+      <td>element</td>
+      <td>String</td>
+      <td>in</td>
+      <td>no</td>
+      <td>&nbsp;</td>
+
+      <td>The element to emulate. If specified, then the component acts like an &Any;, emitting an open and close tag.
+      Informal parameters are applied to the tag. If no element is specified, informal parameters are ignored.</td>
+    </tr>
+    <tr>
+      <td>listener</td>
+      <td>String</td>
+      <td>in</td>
+      <td>no</td>
+      <td>&nbsp;</td>
+
+      <td>The listener, informed at render.</td>
+    </tr>
+    <tr>
+      <td>conditionValue</td>
+      <td>boolean</td>
+      <td>custom</td>
+      <td>no</td>
+      <td>&nbsp;</td>
+
+      <td>The value of the condition. During render this is obtained from the condition parameter.
+      During rewind it is the submitted condition.</td>
+    </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: <em>invert</em>
 </p>
 
 </section>
 
 <section>
   <title>Examples</title>
-
+    <p>Please see the documentation for the &If; component.</p>
 </section>
 </body>
 </document>
