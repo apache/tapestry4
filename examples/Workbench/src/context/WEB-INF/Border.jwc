@@ -35,16 +35,12 @@
 
   <component id="inputRequestDebug" type="Checkbox">
     <binding name="value" value="visit.requestDebug"/>
-    <binding name="onclick">
-    	javascript:this.form.submit();
-    </binding>
+    <binding name="onclick" value="literal:javascript:this.form.events.submit();"/>
   </component>
 
   <component id="inputDisableInspector" type="Checkbox">
     <binding name="value" value="page.visit.disableInspector"/>
-    <binding name="onclick">
-    	javascript:this.form.submit();
-    </binding>
+    <binding name="onclick" value="literal:javascript:this.form.events.submit();"/>
   </component>
 
   <asset name="inactiveLeft" path="images/tab-inactive-left.gif"/>
