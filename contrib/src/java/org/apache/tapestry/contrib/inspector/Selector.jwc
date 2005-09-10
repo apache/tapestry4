@@ -28,9 +28,7 @@
   <component id="selectPage" type="PropertySelection">
     <binding name="value" value="page.inspectedPageName"/>
     <binding name="model" value="pageModel"/>
-    <binding name="onchange">
-      javascript:this.form.events.submit();
-    </binding>
+    <binding name="onchange" value="literal:javascript:this.form.events.submit();"/>
   </component>
 
   <component id="page" type="DirectLink">
