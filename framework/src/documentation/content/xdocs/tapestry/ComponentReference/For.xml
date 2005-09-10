@@ -62,7 +62,7 @@
     <td>
         The source of objects to be iterated, which may be a Collection, an Iterator, an array of Objects, 
         or a even a single Object (which is treated as a singleton collection).<p/>
-		The source parameter may even be null, in which case the Foreach's body is never renderred.
+		The source parameter may even be null, in which case the For's body is never renderred.
     </td>
   </tr>
   
