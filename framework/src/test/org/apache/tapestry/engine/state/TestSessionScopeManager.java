@@ -15,6 +15,7 @@
 package org.apache.tapestry.engine.state;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.SessionStoreOptimized;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
 import org.easymock.MockControl;
@@ -51,11 +52,9 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
     private WebSession newSession(String key, Object value)
     {
-        MockControl control = newControl(WebSession.class);
-        WebSession session = (WebSession) control.getMock();
+        WebSession session = newSession();
 
-        session.getAttribute(key);
-        control.setReturnValue(value);
+        trainGetAttribute(session, key, value);
 
         return session;
     }
@@ -139,11 +138,9 @@ public class TestSessionScopeManager extends HiveMindTestCase
         Object stateObject = new Object();
         StateObjectFactory factory = newFactory(stateObject);
 
-        MockControl control = newControl(WebSession.class);
-        WebSession session = (WebSession) control.getMock();
+        WebSession session = newSession();
 
-        session.getAttribute("state:myapp:fred");
-        control.setReturnValue(null);
+        trainGetAttribute(session, "state:myapp:fred", null);
 
         session.setAttribute("state:myapp:fred", stateObject);
 
@@ -160,12 +157,67 @@ public class TestSessionScopeManager extends HiveMindTestCase
         verifyControls();
     }
 
+    protected void trainGetAttribute(WebSession session, String name, Object attribute)
+    {
+        session.getAttribute(name);
+
+        getControl(session).setReturnValue(attribute);
+    }
+
     public void testStore()
     {
         Object stateObject = new Object();
 
-        MockControl control = newControl(WebSession.class);
-        WebSession session = (WebSession) control.getMock();
+        WebSession session = newSession();
+
+        session.setAttribute("state:myapp:fred", stateObject);
+
+        WebRequest request = newRequest(session);
+
+        replayControls();
+
+        SessionScopeManager m = new SessionScopeManager();
+        m.setRequest(request);
+        m.setApplicationId("myapp");
+
+        m.store("fred", stateObject);
+
+        verifyControls();
+    }
+
+    protected WebSession newSession()
+    {
+        return (WebSession) newMock(WebSession.class);
+    }
+
+    protected SessionStoreOptimized newOptimized(boolean dirty)
+    {
+        SessionStoreOptimized optimized = (SessionStoreOptimized) newMock(SessionStoreOptimized.class);
+
+        optimized.isStoreToSessionNeeded();
+        getControl(optimized).setReturnValue(dirty);
+
+        return optimized;
+    }
+
+    public void testStoreOptimizedClean()
+    {
+        Object stateObject = newOptimized(false);
+
+        SessionScopeManager m = new SessionScopeManager();
+
+        replayControls();
+
+        m.store("fred", stateObject);
+
+        verifyControls();
+    }
+
+    public void testStoreOptimizedDirty()
+    {
+        Object stateObject = newOptimized(true);
+
+        WebSession session = newSession();
 
         session.setAttribute("state:myapp:fred", stateObject);
 

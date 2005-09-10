@@ -54,7 +54,7 @@ public interface ApplicationStateManager
     public void store(String objectName, Object stateObject);
 
     /**
-     * Asks each {@link StateObjectManager}to store each object obtained.
+     * Asks each {@link StateObjectManager} to store each object obtained.
      */
 
     public void flush();

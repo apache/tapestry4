@@ -291,7 +291,7 @@ always include both a getter and a setter.
 In Tapestry 3.0, many users were frustrated that they had to specify the type of property
 in both the Java code and in the page specification. This is a violation of the
 <link href="http://c2.com/cgi/wiki?DontRepeatYourself">Dont Repeat Yourself</link> principal -- requiring
-coordination is just an inviation for the two sides to get out of synchronization. Starting with Tapestry 4.0,
+coordination is just an invitation for the two sides to get out of synchronization. Starting with Tapestry 4.0,
 there is no type attribute on the &spec.property; element; instead Tapestry matches the type to the
 property type of any existing accessor methods, and simply uses Object when there are no accessor methods.  In
 this example, the persistent itemsPerPage property will be type int, because of the abstract accessor methods.
@@ -451,6 +451,39 @@ you will have to inject as a differently named property (say <code>appVisit</cod
   
 </section>  <!-- state.aso.access -->
 
+<section id="state.aso.optimize">
+  <title>Optimizing Storage</title>
+  
+<p>
+  Normally, Tapestry has no way of knowing when the internal state of an ASO has changed. On any request
+  where the ASO is accessed, Tapestry assumes that its internal state has changed. The ASO is re-stored
+  at the end of the request. For session-scoped ASOs in a cluster, this is critical to ensure that
+  information is properly distributed around the cluster.
+</p>  
+
+<p>
+  However, it can also be expensive. Assuming that your application mostly <em>reads</em> information
+  out of the ASO, that means a lot of wasted resources needlessly copying the ASO around the cluster.
+</p>
+
+<p>
+  To control this, ASOs may <em>optionally</em> implement the &SessionStoreOptimized; interface.
+  The method isStoreToSessionNeeded() will be checked; if it returns false, the object will 
+  <em>not</em> be stored.
+</p>
+
+<p>
+  Typically, the ASO will store a dirty flag, and will set the dirty flag on any change
+  to internal state. The flag will be returned by isStoreToSessionNeeded(). The ASO
+  will also implement the HttpSessionBindingListener interface, and clear
+  the flag in valueBound().
+</p>
+
+<p>
+  A base class, &BaseSessionStoreOptimized;, implements this behavior.
+</p>
+  
+</section>
   
 </section>  <!-- state.aso -->
 
@@ -488,7 +521,7 @@ speed the initial display of the application, since no processing time will be u
 </p>	
 
 <p>
-The <code>state:</code> &binding-reference; combined with the &Conditional; component makes it easy for you to skip
+The <code>state:</code> &binding-reference; combined with the &If; component makes it easy for you to skip
 portions of a page if a particular ASO does not already exist; this allows you to avoid accidentally forcing its
 creation on first reference.
 </p>
