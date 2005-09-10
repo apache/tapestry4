@@ -63,6 +63,9 @@
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-489">Document FormConditional component</action>
       <action type="add" dev="HLS" fixes-bug="TAPESTRY-637">Application state objects are stored back to the session, even if unchanged</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-380" due-to="Laurent Prudhon"> Framework unit test suite fails for non-English developers due to localization issues</action>
+      <action type="fix" dev="MB" fixes-bug="TAPESTRY-467">Document GenericLink component</action>
+      <action type="fix" dev="MB" fixes-bug="TAPESTRY-480">Document Rollover component</action>
+      <action type="fix" dev="MB" fixes-bug="TAPESTRY-484">Document ServiceLink component</action>
     </release>
     <release version="4.0-beta-6" date="Sep 7 2005">
       <action type="update" dev="HLS" due-to="Henri Yandell">Convert Tapestry repository from CVS to SVN</action>
