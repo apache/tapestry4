@@ -667,4 +667,22 @@ public class TestTemplateParser extends TestCase
                 "DuplicateTagAttributeSingleQuotes.html",
                 "Tag <input> on line 3 contains more than one 'value' attribute.");
     }
+
+    /** @since 4.0 */
+    public void testSlashInComponentType() throws Exception
+    {
+        TemplateToken[] tokens = run("SlashInComponentType.html", new ParserDelegate());
+
+        assertEquals(6, tokens.length);
+
+        OpenToken token1 = (OpenToken) tokens[1];
+
+        assertEquals("$foo$Bar", token1.getId());
+        assertEquals("foo/Bar", token1.getComponentType());
+
+        OpenToken token2 = (OpenToken) tokens[4];
+
+        assertEquals("baz", token2.getId());
+        assertEquals("biff/bop/Boop", token2.getComponentType());
+    }
 }

@@ -150,7 +150,7 @@ public class TestComponentMessages extends TapestryTestCase
 
         IPage page = newPage(spec, source, locale);
 
-        INamespace namespace = new Namespace(null, null, newLibrarySpec(), null, null);
+        INamespace namespace = new Namespace(null, null, newLibrarySpec(), null);
 
         page.setNamespace(namespace);
 
@@ -301,7 +301,7 @@ public class TestComponentMessages extends TapestryTestCase
         IComponentSpecification spec = newSpec(MOCK1);
         spec.setLocation(new CreatorLocation());
 
-        INamespace namespace = new Namespace(null, null, newLibrarySpec(), null, null);
+        INamespace namespace = new Namespace(null, null, newLibrarySpec(), null);
 
         IPage page = newPage(spec, source, new Locale("fr"));
         page.setNamespace(namespace);

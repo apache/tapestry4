@@ -148,8 +148,8 @@ public interface INamespace extends Locatable, IPropertySource
      * Returns the path for the named component (within the namespace).
      * 
      * @param type
-     *            the component alias
-     * @return the specification path of the component
+     *            the component type
+     * @return the specification for the component
      * @throws ApplicationRuntimeException
      *             if the specification doesn't exist or can't be loaded
      */

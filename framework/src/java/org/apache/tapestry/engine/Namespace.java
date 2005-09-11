@@ -23,18 +23,18 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.services.NamespaceResources;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 
 /**
- * Implementation of {@link org.apache.tapestry.INamespace}that works with a
- * {@link ISpecificationSource}to obtain page and component specifications as needed.
+ * Implementation of {@link org.apache.tapestry.INamespace} that works with a
+ * {@link org.apache.tapestry.services.NamespaceResources} to obtain page and component
+ * specifications as needed.
  * 
  * @author Howard Lewis Ship
  * @since 2.2
@@ -42,23 +42,21 @@ import org.apache.tapestry.spec.ILibrarySpecification;
 
 public class Namespace implements INamespace
 {
-    private ILibrarySpecification _specification;
+    private final ILibrarySpecification _specification;
 
-    private ISpecificationSource _specificationSource;
-
-    private String _id;
+    private final String _id;
 
     private String _extendedId;
 
-    private INamespace _parent;
+    private final INamespace _parent;
 
-    private boolean _frameworkNamespace;
+    private final boolean _frameworkNamespace;
 
-    private boolean _applicationNamespace;
+    private final boolean _applicationNamespace;
 
     /** @since 4.0 */
 
-    private ClassResolver _resolver;
+    private final NamespaceResources _resources;
 
     /**
      * Map of {@link org.apache.tapestry.spec.ComponentSpecification}keyed on page name. The map is
@@ -66,28 +64,27 @@ public class Namespace implements INamespace
      * page discovery in the application namespace).
      */
 
-    private Map _pages = Collections.synchronizedMap(new HashMap());
+    private final Map _pages = Collections.synchronizedMap(new HashMap());
 
     /**
      * Map of {@link org.apache.tapestry.spec.ComponentSpecification}keyed on component alias.
      */
 
-    private Map _components = Collections.synchronizedMap(new HashMap());
+    private final Map _components = Collections.synchronizedMap(new HashMap());
 
     /**
      * Map, keyed on id, of {@link INamespace}.
      */
 
-    private Map _children = Collections.synchronizedMap(new HashMap());
+    private final Map _children = Collections.synchronizedMap(new HashMap());
 
     public Namespace(String id, INamespace parent, ILibrarySpecification specification,
-            ISpecificationSource specificationSource, ClassResolver resolver)
+            NamespaceResources resources)
     {
         _id = id;
         _parent = parent;
         _specification = specification;
-        _specificationSource = specificationSource;
-        _resolver = resolver;
+        _resources = resources;
 
         _applicationNamespace = (_id == null);
         _frameworkNamespace = FRAMEWORK_NAMESPACE.equals(_id);
@@ -260,9 +257,11 @@ public class Namespace implements INamespace
                     name,
                     getNamespaceId()));
 
-        Resource location = getSpecificationLocation().getRelativeResource(path);
+        // We don't record line-precise data about <page> elements
+        // so use the location for the specification as a whole (at least identifying
+        // the right file)
 
-        return _specificationSource.getPageSpecification(location);
+        return _resources.getPageSpecification(getSpecificationLocation(), path, getLocation());
     }
 
     private IComponentSpecification locateComponentSpecification(String type)
@@ -275,9 +274,12 @@ public class Namespace implements INamespace
                     type,
                     getNamespaceId()));
 
-        Resource location = getSpecificationLocation().getRelativeResource(path);
+        // We don't record line-precise data about <component-type> elements
+        // so use the location for the specification as a whole (at least identifying
+        // the right file)
 
-        return _specificationSource.getComponentSpecification(location);
+        return _resources
+                .getComponentSpecification(getSpecificationLocation(), path, getLocation());
     }
 
     private INamespace createNamespace(String id)
@@ -290,19 +292,16 @@ public class Namespace implements INamespace
                     id,
                     getNamespaceId()));
 
-        Resource location = getSpecificationLocation().getRelativeResource(path);
+        // We don't record line-precise data about <library> elements
+        // so use the location for the specification as a whole (at least identifying
+        // the right file)
 
-        // Ok, an absolute path to a library for an application whose specification
-        // is in the context root is problematic, cause getRelativeLocation()
-        // will still be looking in the context. Handle this case with the
-        // following little kludge:
+        ILibrarySpecification ls = _resources.findChildLibrarySpecification(
+                getSpecificationLocation(),
+                path,
+                getLocation());
 
-        if (location.getResourceURL() == null && path.startsWith("/"))
-            location = new ClasspathResource(_resolver, path);
-
-        ILibrarySpecification ls = _specificationSource.getLibrarySpecification(location);
-
-        return new Namespace(id, this, ls, _specificationSource, _resolver);
+        return new Namespace(id, this, ls, _resources);
     }
 
     public synchronized boolean containsPage(String name)

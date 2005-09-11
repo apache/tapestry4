@@ -129,4 +129,30 @@ public abstract class AbstractBinding implements IBinding
     {
         return _valueConverter;
     }
+
+    public String toString()
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(getClass().getName());
+        buffer.append("@");
+        buffer.append(Integer.toHexString(hashCode()));
+        buffer.append("[");
+        buffer.append(_description);
+
+        extendDescription(buffer);
+
+        buffer.append(", location=");
+        buffer.append(_location);
+        buffer.append("]");
+
+        return buffer.toString();
+    }
+
+    /**
+     * Does nothing, subclasses may override to add additional information.
+     */
+    protected void extendDescription(StringBuffer buffer)
+    {
+
+    }
 }

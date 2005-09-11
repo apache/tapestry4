@@ -43,7 +43,8 @@ public interface AssetFactory
      * @param locale
      *            the desired locale of the asset; the closest match will be used.
      * @param location
-     *            the location to be associated with the returned asset.
+     *            the location to be associated with the returned asset, or null to not attempt to
+     *            localize the asset
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if no matching asset may be found.
      */

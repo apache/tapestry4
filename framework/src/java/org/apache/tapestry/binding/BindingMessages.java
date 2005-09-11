@@ -40,4 +40,13 @@ class BindingMessages
     {
         return _formatter.format("missing-asset", component.getExtendedId(), assetName);
     }
+
+    static String listenerMethodFailure(IComponent component, String methodName, Throwable cause)
+    {
+        return _formatter.format(
+                "listener-method-failure",
+                methodName,
+                component.getExtendedId(),
+                cause);
+    }
 }

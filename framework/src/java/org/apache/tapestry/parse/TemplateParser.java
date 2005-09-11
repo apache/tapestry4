@@ -146,13 +146,14 @@ public class TemplateParser implements ITemplateParser
      * Pattern used to recognize implicit components (whose type is defined in the template).
      * Subgroup 1 is the id (which may be null) and subgroup 2 is the type (which may be qualified
      * with a library prefix). Subgroup 4 is the library id, Subgroup 5 is the simple component
-     * type.
+     * type, which may (as of 4.0) have slashes to delinate folders containing the component.
      * 
      * @since 3.0
      */
 
     public static final String IMPLICIT_ID_PATTERN = "^(" + PROPERTY_NAME_PATTERN + ")?@((("
-            + PROPERTY_NAME_PATTERN + "):)?(" + PROPERTY_NAME_PATTERN + "))$";
+            + PROPERTY_NAME_PATTERN + "):)?((" + PROPERTY_NAME_PATTERN + "/)*"
+            + PROPERTY_NAME_PATTERN + "))$";
 
     private static final int IMPLICIT_ID_PATTERN_ID_GROUP = 1;
 
@@ -756,9 +757,8 @@ public class TemplateParser implements ITemplateParser
                                 _cursor - attributeValueStart);
 
                         attributeEndEvent(_cursor);
-                        
+
                         addAttributeIfUnique(tagName, attributeName, attributeValue);
-                        
 
                         // Advance over the quote.
                         advance();
@@ -778,9 +778,9 @@ public class TemplateParser implements ITemplateParser
                     {
                         String attributeValue = new String(_templateData, attributeValueStart,
                                 _cursor - attributeValueStart);
-                        
+
                         attributeEndEvent(_cursor);
-                        addAttributeIfUnique(tagName, attributeName, attributeValue);                        
+                        addAttributeIfUnique(tagName, attributeName, attributeValue);
 
                         state = WAIT_FOR_ATTRIBUTE_NAME;
                         break;
@@ -975,9 +975,11 @@ public class TemplateParser implements ITemplateParser
             // with a leading dollar sign to ensure no conflicts
             // with user defined component ids (which don't allow dollar signs
             // in the id).
+            // New for 4.0: the component type may included slashes ('/'), but these
+            // are not valid identifiers, so we convert them to '$'.
 
             if (jwcId == null)
-                jwcId = _idAllocator.allocateId("$" + simpleType);
+                jwcId = _idAllocator.allocateId("$" + simpleType.replace('/', '$'));
 
             try
             {

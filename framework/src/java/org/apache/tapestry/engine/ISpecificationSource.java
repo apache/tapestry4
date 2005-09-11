@@ -20,75 +20,63 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 
 /**
- *  Defines access to component specifications.
- *
- *  @see IComponentSpecification
- *
- *  @author Howard Lewis Ship
+ * Defines access to component specifications.
  * 
- **/
+ * @see IComponentSpecification
+ * @author Howard Lewis Ship
+ */
 
 public interface ISpecificationSource
 {
     /**
-     *  Retrieves a component specification, parsing it as necessary.
-     *  
-     *  @param specificationLocation the location where the specification
-     *  may be read from.
+     * Retrieves a component specification, parsing it as necessary.
      * 
-     *  @throws org.apache.tapestry.ApplicationRuntimeException if the specification doesn't
-     *  exist, is unreadable or invalid.
-     * 
-     *  @since 2.2
-     * 
-     **/
+     * @param specificationLocation
+     *            the location where the specification may be read from.
+     * @throws org.apache.hivemind.ApplicationRuntimeException
+     *             if the specification doesn't exist, is unreadable or invalid.
+     * @since 2.2
+     */
 
     public IComponentSpecification getComponentSpecification(Resource specificationLocation);
 
     /**
-     *  Retrieves a component specification, parsing it as necessary.
-     *  
-     *  @param specificationLocation the location where the specification
-     *  may be read from.
+     * Retrieves a page specification, parsing it as necessary.
      * 
-     *  @throws org.apache.tapestry.ApplicationRuntimeException if the specification doesn't
-     *  exist, is unreadable or invalid.
-     * 
-     *  @since 2.2
-     * 
-     **/
+     * @param specificationLocation
+     *            the location where the specification may be read from.
+     * @throws org.apache.hivemind.ApplicationRuntimeException
+     *             if the specification doesn't exist, is unreadable or invalid.
+     * @since 2.2
+     */
 
     public IComponentSpecification getPageSpecification(Resource specificationLocation);
 
     /**
-     *  Returns a {@link org.apache.tapestry.spec.LibrarySpecification} with the given path.
+     * Returns a {@link org.apache.tapestry.spec.LibrarySpecification} with the given path.
      * 
-     *  @param specificationLocation the resource path of the specification
-     *  to return
-     *  @throws org.apache.tapestry.ApplicationRuntimeException if the specification
-     *  cannot be read
-     * 
-     *  @since 2.2
-     * 
-     **/
+     * @param specificationLocation
+     *            the resource path of the specification to return
+     * @throws org.apache.hivemind.ApplicationRuntimeException
+     *             if the specification cannot be read
+     * @since 2.2
+     */
 
     public ILibrarySpecification getLibrarySpecification(Resource specificationLocation);
 
     /**
-     *  Returns the {@link INamespace} for the application.
+     * Returns the {@link INamespace} for the application.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public INamespace getApplicationNamespace();
 
     /**
-     *  Returns the {@link INamespace} for the framework itself.
+     * Returns the {@link INamespace} for the framework itself.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public INamespace getFrameworkNamespace();
 }
