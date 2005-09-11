@@ -56,7 +56,6 @@ public class AssetSourceImpl implements AssetSource
     {
         Defense.notNull(base, "base");
         Defense.notNull(path, "path");
-        Defense.notNull(locale, "locale");
         Defense.notNull(location, "location");
 
         int colonx = path.indexOf(':');

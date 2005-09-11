@@ -1098,4 +1098,30 @@ public class TestSpecificationParser extends TapestryTestCase
 
         assertEquals(true, cs.isDeprecated());
     }
+
+    /** @since 4.0 */
+
+    public void testLibrarySlashInComponentType() throws Exception
+    {
+        ILibrarySpecification ls = parseLib("SlashInComponentType.library");
+
+        List types = ls.getComponentTypes();
+
+        assertEquals(1, types.size());
+
+        assertEquals("foo/Bar", types.get(0));
+
+        assertEquals("foocomponents/BarComponent.jwc", ls.getComponentSpecificationPath("foo/Bar"));
+    }
+
+    /** @since 4.0 */
+
+    public void testComponentSlashInComponentType() throws Exception
+    {
+        IComponentSpecification cs = parseComponent("SlashInComponentType.jwc");
+
+        IContainedComponent cc = cs.getComponent("fred");
+
+        assertEquals("rubble/Barney", cc.getType());
+    }
 }

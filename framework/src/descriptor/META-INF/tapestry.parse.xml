@@ -51,6 +51,7 @@
       <construct class="org.apache.tapestry.services.impl.SpecificationSourceImpl">
         <set-service property="parser" service-id="SpecificationParser"/>
         <set-object property="specification" value="infrastructure:applicationSpecification"/>
+        <set-object property="assetSource" value="service:tapestry.asset.AssetSource"/>
         <event-listener service-id="tapestry.ResetEventCoordinator"/>
       </construct>
     </invoke-factory>

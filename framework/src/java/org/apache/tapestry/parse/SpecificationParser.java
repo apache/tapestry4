@@ -97,13 +97,16 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     public static final String BEAN_NAME_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
-     * Perl5 pattern for component alias. Letter, followed by letter, number, or underscore. This is
-     * used to validate component types registered in the application or library specifications.
+     * Perl5 pattern for component type (which was known as an "alias" in earlier versions of
+     * Tapestry). This is either a simple property name, or a series of property names seperated by
+     * slashes (the latter being new in Tapestry 4.0). This defines a literal that can appear in a
+     * library or application specification.
      * 
      * @since 2.2
      */
 
-    public static final String COMPONENT_ALIAS_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
+    public static final String COMPONENT_ALIAS_PATTERN = "^(" + IDENTIFIER_PATTERN + "/)*"
+            + IDENTIFIER_PATTERN + "$";
 
     /**
      * Perl5 pattern for component ids. Letter, followed by letter, number or underscore.
@@ -114,14 +117,16 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     public static final String COMPONENT_ID_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
-     * Perl5 pattern for component types. Component types are an optional namespace prefix followed
-     * by a normal identifier.
+     * Perl5 pattern for component types (i.e., the type attribute of the &lt;component&gt;
+     * element). Component types are an optional namespace prefix followed by a component type
+     * (within the library defined by the namespace). Starting in 4.0, the type portion is actually
+     * a series of identifiers seperated by slashes.
      * 
      * @since 2.2
      */
 
-    public static final String COMPONENT_TYPE_PATTERN = "^(" + IDENTIFIER_PATTERN + ":)?"
-            + IDENTIFIER_PATTERN + "$";
+    public static final String COMPONENT_TYPE_PATTERN = "^(" + IDENTIFIER_PATTERN + ":)?" + "("
+            + IDENTIFIER_PATTERN + "/)*" + IDENTIFIER_PATTERN + "$";
 
     /**
      * We can share a single map for all the XML attribute to object conversions, since the keys are

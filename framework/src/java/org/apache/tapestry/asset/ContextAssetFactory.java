@@ -17,9 +17,12 @@ package org.apache.tapestry.asset;
 import java.util.Locale;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.web.WebContext;
 import org.apache.tapestry.web.WebContextResource;
 
@@ -38,6 +41,10 @@ public class ContextAssetFactory implements AssetFactory
 
     private Resource _servletRoot;
 
+    private ClassResolver _classResolver;
+
+    private IEngineService _assetService;
+
     public void initializeService()
     {
         _servletRoot = new WebContextResource(_context, "/");
@@ -46,6 +53,18 @@ public class ContextAssetFactory implements AssetFactory
     public IAsset createAsset(Resource baseResource, String path, Locale locale, Location location)
     {
         Resource assetResource = _servletRoot.getRelativeResource(path);
+
+        // Here's the thing; In Tapestry 3.0 and earlier, you could specify
+        // library path like /org/apache/tapestry/contrib/Contrib.library. In the new scheme
+        // of things, that should be "classpath:/org/apache/tapestry/contrib/Contrib.library".
+        // But to keep a lot of things from breaking, we'll kludgely allow that here.
+
+        if (assetResource.getResourceURL() == null && path.startsWith("/"))
+        {
+            ClasspathResource resource = new ClasspathResource(_classResolver, path);
+            return new PrivateAsset(resource, _assetService, location);
+        }
+
         Resource localized = assetResource.getLocalization(locale);
 
         if (localized == null)
@@ -68,5 +87,15 @@ public class ContextAssetFactory implements AssetFactory
     public void setContextPath(String contextPath)
     {
         _contextPath = contextPath;
+    }
+
+    public void setAssetService(IEngineService assetService)
+    {
+        _assetService = assetService;
+    }
+
+    public void setClassResolver(ClassResolver classResolver)
+    {
+        _classResolver = classResolver;
     }
 }

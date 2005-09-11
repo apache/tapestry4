@@ -21,7 +21,7 @@ import org.apache.hivemind.Resource;
 import org.apache.tapestry.IAsset;
 
 /**
- * Used to create an {@link org.apache.tapestry.IAsset}instance for a particular asset path. The
+ * Used to create an {@link org.apache.tapestry.IAsset} instance for a particular asset path. The
  * path may have a prefix that indicates its type, or it may be relative to some existing resource.
  * 
  * @author Howard M. Lewis Ship
@@ -29,5 +29,24 @@ import org.apache.tapestry.IAsset;
  */
 public interface AssetSource
 {
+    /**
+     * Finds an asset relative to some existing resource (typically, a page, component or library
+     * specification).
+     * 
+     * @param base
+     *            the base resource used for resolving the asset
+     * @param path
+     *            the path relative to the base resource; alternately, the path may include a prefix
+     *            that defines a domain (such as "classpath:" or "context:") in which case the base
+     *            resource is ignored and the resource resolved within that domain
+     * @param locale
+     *            used to find a localized version of the asset, may be null to indicate no
+     *            localization
+     * @param location
+     *            used to report errors (such as missing resources)
+     * @return the asset, possibly localized
+     * @throws org.apache.hivemind.ApplicationRuntimeException
+     *             if the asset does not exist
+     */
     public IAsset findAsset(Resource base, String path, Locale locale, Location location);
 }

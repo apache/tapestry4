@@ -14,9 +14,9 @@
 
 package org.apache.tapestry.binding;
 
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.apache.tapestry.junit.TapestryTestCase;
 import org.easymock.MockControl;
 
 /**
@@ -25,7 +25,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class BindingTestCase extends TapestryTestCase
+public abstract class BindingTestCase extends BaseComponentTestCase
 {
     protected IComponent newComponent(String extendedId)
     {
