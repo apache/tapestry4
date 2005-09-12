@@ -22,7 +22,10 @@ import org.apache.tapestry.util.ContentType;
 
 /**
  * Controls the response to the client, and specifically allows for creating the output stream (or
- * print writer) to which content is sent.
+ * print writer) to which content is sent. This is essentially a generic version of
+ * {@link javax.servlet.http.HttpServletResponse}. Some operations may be unsupported in some
+ * implementations (for example, the portlet implementation can't handle any of the setHeader
+ * methods).
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -39,7 +42,7 @@ public interface WebResponse
     public OutputStream getOutputStream(ContentType contentType) throws IOException;
 
     /**
-     * Returns a {@link PrintWriter}to which output should be sent. This method should be invoked
+     * Returns a {@link PrintWriter} to which output should be sent. This method should be invoked
      * once on a response. A second call is expected to be so that an exception page can be
      * rendered, and the underlying request data is reset.
      */
@@ -74,12 +77,33 @@ public interface WebResponse
     /**
      * Sets a response header as a date.
      * 
-     * @param string
-     *            the name of the header to set.
+     * @param name
+     *            the name of the header to set
      * @param date
-     *            the date value to set, in milliseconds since the epoch.
+     *            the date value to set, in milliseconds since the epoch
      */
-    public void setDateHeader(String string, long date);
+    public void setDateHeader(String name, long date);
+
+    /**
+     * Sets a response header as a string.
+     * 
+     * @param name
+     *            the name of the header to set
+     * @param value
+     *            the value for the named header
+     */
+
+    public void setHeader(String name, String value);
+
+    /**
+     * Sets a response header with the given name and integer value.
+     * 
+     * @param name
+     *            the name of the header to set
+     * @param value
+     *            the value for the named header
+     */
+    public void setIntHeader(String name, int value);
 
     /**
      * Sets the status code for this response.

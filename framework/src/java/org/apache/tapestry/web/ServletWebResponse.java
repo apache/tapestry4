@@ -123,4 +123,15 @@ public class ServletWebResponse implements WebResponse
     {
         _servletResponse.setStatus(status);
     }
+
+    public void setHeader(String name, String value)
+    {
+        _servletResponse.setHeader(name, value);
+    }
+
+    public void setIntHeader(String name, int value)
+    {
+        _servletResponse.setIntHeader(name, value);
+    }
+
 }

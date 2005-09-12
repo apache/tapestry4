@@ -98,4 +98,16 @@ public class PortletWebResponse implements WebResponse
         unsupported("setStatus");
     }
 
+    /** Unsupported. */
+    public void setHeader(String name, String value)
+    {
+        unsupported("setHeader");
+    }
+
+    /** Unsupported. */
+    public void setIntHeader(String name, int value)
+    {
+        unsupported("setIntHeader");
+    }
+
 }
