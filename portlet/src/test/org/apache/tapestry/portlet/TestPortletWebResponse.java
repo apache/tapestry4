@@ -87,6 +87,69 @@ public class TestPortletWebResponse extends BasePortletWebTestCase
         verifyControls();
     }
 
+    public void testSetDateHeaderUnsupported()
+    {
+        PortletResponse response = newResponse();
+
+        replayControls();
+
+        PortletWebResponse pwr = new PortletWebResponse(response);
+
+        try
+        {
+            pwr.setDateHeader(null, 0);
+            unreachable();
+        }
+        catch (UnsupportedOperationException ex)
+        {
+            // Expected.
+        }
+
+        verifyControls();
+    }
+
+    public void testSetHeaderUnsupported()
+    {
+        PortletResponse response = newResponse();
+
+        replayControls();
+
+        PortletWebResponse pwr = new PortletWebResponse(response);
+
+        try
+        {
+            pwr.setHeader(null, null);
+            unreachable();
+        }
+        catch (UnsupportedOperationException ex)
+        {
+            // Expected.
+        }
+
+        verifyControls();
+    }
+
+    public void testSetIntHeaderUnsupported()
+    {
+        PortletResponse response = newResponse();
+
+        replayControls();
+
+        PortletWebResponse pwr = new PortletWebResponse(response);
+
+        try
+        {
+            pwr.setIntHeader(null, 0);
+            unreachable();
+        }
+        catch (UnsupportedOperationException ex)
+        {
+            // Expected.
+        }
+
+        verifyControls();
+    }
+
     public void testEncodeURL()
     {
         MockControl control = newControl(PortletResponse.class);

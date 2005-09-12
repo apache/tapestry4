@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.web;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
 
@@ -21,7 +22,9 @@ import org.apache.tapestry.describe.Describable;
 
 /**
  * Contains information about the current request, including URLs, schemes, parameters, properties
- * and attributes.
+ * and attributes. This is essentially a generic version of
+ * {@link javax.servlet.http.HttpServletRequest}. In some cases, certain methods will be
+ * unsupported in some implementations (such as {@link #getHeader(String)} for Portlet Tapestry).
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -96,7 +99,7 @@ public interface WebRequest extends AttributeHolder, Describable
     /**
      * Returns the host name of the server that received the request. Note that behind a firewall,
      * this may be obscured (i.e., it may be the name of the firewall server, which is not
-     * necessarily visible to clients outside the firewall.
+     * necessarily visible to clients outside the firewall).
      * 
      * @see org.apache.tapestry.request.IRequestDecoder
      */
@@ -167,7 +170,7 @@ public interface WebRequest extends AttributeHolder, Describable
      * @return a java.security.Principal containing the name of the user making this request, or
      *         null if the user has not been authenticated.
      */
-    public java.security.Principal getUserPrincipal();
+    public Principal getUserPrincipal();
 
     /**
      * * Returns a boolean indicating whether the authenticated user is included in the specified
@@ -179,5 +182,5 @@ public interface WebRequest extends AttributeHolder, Describable
      * @return a boolean indicating whether the user making this request belongs to a given role;
      *         false if the user has not been authenticated.
      */
-    public boolean isUserInRole(java.lang.String role);
+    public boolean isUserInRole(String role);
 }

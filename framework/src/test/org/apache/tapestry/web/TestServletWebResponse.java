@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.util.ContentType;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.web.ServletWebResponse}.
@@ -43,14 +42,13 @@ public class TestServletWebResponse extends HiveMindTestCase
 
     public void testGetOutputStream() throws Exception
     {
-        MockControl control = newControl(HttpServletResponse.class);
-        HttpServletResponse response = (HttpServletResponse) control.getMock();
+        HttpServletResponse response = newResponse();
 
         ServletOutputStream stream = new MockServletOutputStream();
 
         response.setContentType("foo/bar");
         response.getOutputStream();
-        control.setReturnValue(stream);
+        getControl(response).setReturnValue(stream);
 
         replayControls();
 
@@ -63,14 +61,13 @@ public class TestServletWebResponse extends HiveMindTestCase
 
     public void testGetOutputStreamFailure() throws Exception
     {
-        MockControl control = newControl(HttpServletResponse.class);
-        HttpServletResponse response = (HttpServletResponse) control.getMock();
+        HttpServletResponse response = newResponse();
 
         Throwable t = new IOException("Simulated failure.");
 
         response.setContentType("foo/bar");
         response.getOutputStream();
-        control.setThrowable(t);
+        getControl(response).setThrowable(t);
 
         replayControls();
 
@@ -94,12 +91,11 @@ public class TestServletWebResponse extends HiveMindTestCase
     {
         PrintWriter writer = new PrintWriter(new CharArrayWriter());
 
-        MockControl control = newControl(HttpServletResponse.class);
-        HttpServletResponse response = (HttpServletResponse) control.getMock();
+        HttpServletResponse response = newResponse();
 
         response.setContentType("foo/bar");
         response.getWriter();
-        control.setReturnValue(writer);
+        getControl(response).setReturnValue(writer);
 
         replayControls();
 
@@ -115,12 +111,11 @@ public class TestServletWebResponse extends HiveMindTestCase
         PrintWriter writer1 = new PrintWriter(new CharArrayWriter());
         PrintWriter writer2 = new PrintWriter(new CharArrayWriter());
 
-        MockControl control = newControl(HttpServletResponse.class);
-        HttpServletResponse response = (HttpServletResponse) control.getMock();
+        HttpServletResponse response = newResponse();
 
         response.setContentType("foo/bar");
         response.getWriter();
-        control.setReturnValue(writer1);
+        getControl(response).setReturnValue(writer1);
 
         replayControls();
 
@@ -133,7 +128,7 @@ public class TestServletWebResponse extends HiveMindTestCase
         response.reset();
         response.setContentType("zip/zap");
         response.getWriter();
-        control.setReturnValue(writer2);
+        getControl(response).setReturnValue(writer2);
 
         replayControls();
 
@@ -144,14 +139,13 @@ public class TestServletWebResponse extends HiveMindTestCase
 
     public void testGetPrintWriterFailure() throws Exception
     {
-        MockControl control = newControl(HttpServletResponse.class);
-        HttpServletResponse response = (HttpServletResponse) control.getMock();
+        HttpServletResponse response = newResponse();
 
         Throwable t = new IOException("Simulated failure.");
 
         response.setContentType("foo/bar");
         response.getWriter();
-        control.setThrowable(t);
+        getControl(response).setThrowable(t);
 
         replayControls();
 
@@ -173,8 +167,7 @@ public class TestServletWebResponse extends HiveMindTestCase
 
     public void testReset()
     {
-        MockControl control = newControl(HttpServletResponse.class);
-        HttpServletResponse response = (HttpServletResponse) control.getMock();
+        HttpServletResponse response = newResponse();
 
         response.reset();
 
@@ -185,6 +178,31 @@ public class TestServletWebResponse extends HiveMindTestCase
         swr.reset();
 
         verifyControls();
+    }
+
+    private HttpServletResponse newResponse()
+    {
+        return (HttpServletResponse) newMock(HttpServletResponse.class);
+    }
+
+    public void testSetHeaderMethods()
+    {
+        HttpServletResponse response = newResponse();
+
+        response.setHeader("fie", "fie");
+        response.setDateHeader("expires", -1);
+        response.setIntHeader("size", 33);
+
+        replayControls();
+
+        ServletWebResponse swr = new ServletWebResponse(response);
+
+        swr.setHeader("fie", "fie");
+        swr.setDateHeader("expires", -1);
+        swr.setIntHeader("size", 33);
+
+        verifyControls();
+
     }
 
 }
