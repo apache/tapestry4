@@ -41,6 +41,7 @@ import org.apache.tapestry.error.StaleSessionExceptionPresenter;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.listener.ListenerMapSource;
 import org.apache.tapestry.markup.MarkupWriterSource;
+import org.apache.tapestry.services.ClassFinder;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.services.CookieSource;
@@ -266,10 +267,15 @@ public class InfrastructureImpl implements Infrastructure
     {
         return (AssetFactory) getProperty("assetFactory");
     }
-    
+
     public CookieSource getCookieSource()
     {
         return (CookieSource) getProperty("cookieSource");
+    }
+
+    public ClassFinder getClassFinder()
+    {
+        return (ClassFinder) getProperty("classFinder");
     }
 
     public Object getProperty(String propertyName)

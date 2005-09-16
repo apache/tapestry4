@@ -29,10 +29,12 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IEngine;
+import org.apache.tapestry.INamespace;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEndRenderListener;
 import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.services.ClassFinder;
+import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -65,13 +67,21 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageEndR
      * The component for which beans are being created and tracked.
      */
 
-    private IComponent _component;
+    private final IComponent _component;
 
     /**
      * Used for instantiating classes.
      */
 
-    private ClassResolver _resolver;
+    private final ClassResolver _resolver;
+
+    /**
+     * Used for resolving partial class names.
+     */
+
+    private final ClassFinder _classFinder;
+
+    private final String _packageList;
 
     /**
      * Map of beans, keyed on name.
@@ -90,12 +100,15 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageEndR
     public BeanProvider(IComponent component)
     {
         _component = component;
-        IEngine engine = component.getPage().getEngine();
-        _resolver = engine.getClassResolver();
 
-        if (LOG.isDebugEnabled())
-            LOG.debug("Created BeanProvider for " + component);
+        Infrastructure infrastructure = component.getPage().getRequestCycle().getInfrastructure();
 
+        _resolver = infrastructure.getClassResolver();
+
+        INamespace namespace = component.getNamespace();
+        _packageList = namespace.getPropertyValue("org.apache.tapestry.bean-class-packages");
+
+        _classFinder = infrastructure.getClassFinder();
     }
 
     /** @since 1.0.6 * */
@@ -184,12 +197,19 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageEndR
         if (LOG.isDebugEnabled())
             LOG.debug("Instantiating instance of " + className);
 
+        Class beanClass = _classFinder.findClass(_packageList, className);
+
+        if (beanClass == null)
+            throw new ApplicationRuntimeException(BeanMessages.missingBeanClass(
+                    _component,
+                    beanName,
+                    className,
+                    _packageList), _component, spec.getLocation(), null);
+
         // Do it the hard way!
 
         try
         {
-            Class beanClass = _resolver.findClass(className);
-
             bean = beanClass.newInstance();
         }
         catch (Exception ex)
@@ -197,7 +217,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageEndR
             throw new ApplicationRuntimeException(BeanMessages.instantiationError(
                     beanName,
                     _component,
-                    className,
+                    beanClass,
                     ex), _component, spec.getLocation(), ex);
         }
 

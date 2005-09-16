@@ -35,11 +35,11 @@ class BeanMessages
         return _formatter.format("bean-not-defined", component.getExtendedId(), name);
     }
 
-    static String instantiationError(String name, IComponent component, String className,
+    static String instantiationError(String name, IComponent component, Class beanClass,
             Throwable cause)
     {
         return _formatter.format("instantiation-error", new Object[]
-        { name, component.getExtendedId(), className, cause });
+        { name, component.getExtendedId(), beanClass.getName(), cause });
     }
 
     static String initializationError(IComponent component, String beanName, String propertyName,
@@ -47,5 +47,12 @@ class BeanMessages
     {
         return _formatter.format("initialization-error", new Object[]
         { propertyName, beanName, component.getExtendedId(), cause });
+    }
+
+    static String missingBeanClass(IComponent component, String beanName, String className,
+            String packageList)
+    {
+        return _formatter.format("missing-bean-class", new Object[]
+        { beanName, component.getExtendedId(), className, packageList });
     }
 }

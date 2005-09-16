@@ -288,4 +288,10 @@ public interface Infrastructure
      */
 
     public CookieSource getCookieSource();
+
+    /**
+     * Used to search for a class name within a list of packages.
+     */
+
+    public ClassFinder getClassFinder();
 }

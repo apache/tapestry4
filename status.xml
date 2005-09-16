@@ -69,6 +69,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-579">Using component types with slashes in the HTML template fails</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-595">Resource prefixes not honored inside &lt;page&gt;'s specification-path attribute</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-569">WebResponse does not expose a way to set headers</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-349">Search path for managed bean classes</action>
     </release>
     <release version="4.0-beta-6" date="Sep 7 2005">
       <action type="update" dev="HLS" due-to="Henri Yandell">Convert Tapestry repository from CVS to SVN</action>
