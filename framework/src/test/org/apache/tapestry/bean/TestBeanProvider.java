@@ -21,8 +21,11 @@ import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IEngine;
+import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.services.ClassFinder;
+import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.spec.BeanSpecification;
 import org.apache.tapestry.spec.IBeanSpecification;
 
@@ -63,15 +66,14 @@ public class TestBeanProvider extends BaseComponentTestCase
         getControl(spec).setReturnValue(className);
     }
 
-    public void testInstantiateFailure()
+    public void testResolveClassFailure()
     {
         ClassResolver resolver = newResolver();
-        IEngine engine = newEngine(resolver);
         IPage page = newPage();
         IComponent component = newComponent();
+        ClassFinder finder = newClassFinder();
 
-        trainGetPage(component, page);
-        trainGetEngine(page, engine);
+        trainForConstructor(page, component, resolver, finder);
 
         replayControls();
 
@@ -83,10 +85,7 @@ public class TestBeanProvider extends BaseComponentTestCase
 
         trainGetClassName(bs, "org.foo.Bar");
 
-        Throwable t = new RuntimeException("Poof!");
-
-        resolver.findClass("org.foo.Bar");
-        getControl(resolver).setThrowable(t);
+        trainFindClass(finder, "org.foo.Bar", null);
 
         trainGetExtendedId(component, "Fred/barney");
 
@@ -104,14 +103,92 @@ public class TestBeanProvider extends BaseComponentTestCase
         catch (ApplicationRuntimeException ex)
         {
             assertEquals(
-                    "Unable to instantiate bean 'wilma' (for component Fred/barney) as class org.foo.Bar: Poof!",
+                    "Unable to instantiate bean 'wilma' of component Fred/barney: Unable to find class org.foo.Bar within package list 'mypackage'.",
                     ex.getMessage());
             assertSame(component, ex.getComponent());
             assertSame(l, ex.getLocation());
-            assertSame(t, ex.getRootCause());
         }
 
         verifyControls();
+    }
+
+    public void testInstantiateBeanFailure()
+    {
+        ClassResolver resolver = newResolver();
+        IPage page = newPage();
+        IComponent component = newComponent();
+        ClassFinder finder = newClassFinder();
+
+        trainForConstructor(page, component, resolver, finder);
+
+        replayControls();
+
+        BeanProvider bp = new BeanProvider(component);
+
+        verifyControls();
+
+        IBeanSpecification bs = newBeanSpec();
+
+        trainGetClassName(bs, "org.foo.Bar");
+
+        trainFindClass(finder, "org.foo.Bar", InstantiateFailureBean.class);
+
+        trainGetExtendedId(component, "Fred/barney");
+
+        Location l = newLocation();
+
+        trainGetLocation(bs, l);
+
+        replayControls();
+
+        try
+        {
+            bp.instantiateBean("wilma", bs);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Unable to instantiate bean 'wilma' (for component Fred/barney) as class org.apache.tapestry.bean.InstantiateFailureBean: Boom!",
+                    ex.getMessage());
+            assertSame(component, ex.getComponent());
+            assertSame(l, ex.getLocation());
+        }
+
+        verifyControls();
+    }
+
+    private void trainForConstructor(IPage page, IComponent component, ClassResolver resolver,
+            ClassFinder classFinder)
+    {
+        IRequestCycle cycle = newCycle();
+        Infrastructure infrastructure = (Infrastructure) newMock(Infrastructure.class);
+        INamespace namespace = (INamespace) newMock(INamespace.class);
+
+        trainGetPage(component, page);
+
+        page.getRequestCycle();
+        getControl(page).setReturnValue(cycle);
+
+        cycle.getInfrastructure();
+        getControl(cycle).setReturnValue(infrastructure);
+
+        infrastructure.getClassResolver();
+        getControl(infrastructure).setReturnValue(resolver);
+
+        component.getNamespace();
+        getControl(component).setReturnValue(namespace);
+
+        namespace.getPropertyValue("org.apache.tapestry.bean-class-packages");
+        getControl(namespace).setReturnValue("mypackage");
+
+        infrastructure.getClassFinder();
+        getControl(infrastructure).setReturnValue(classFinder);
+    }
+
+    protected ClassFinder newClassFinder()
+    {
+        return (ClassFinder) newMock(ClassFinder.class);
     }
 
     private ClassResolver newResolver()
@@ -122,12 +199,11 @@ public class TestBeanProvider extends BaseComponentTestCase
     public void testInitializeFailure()
     {
         ClassResolver resolver = new DefaultClassResolver();
-        IEngine engine = newEngine(resolver);
         IPage page = newPage();
         IComponent component = newComponent();
+        ClassFinder finder = newClassFinder();
 
-        trainGetPage(component, page);
-        trainGetEngine(page, engine);
+        trainForConstructor(page, component, resolver, finder);
 
         replayControls();
 
@@ -135,8 +211,12 @@ public class TestBeanProvider extends BaseComponentTestCase
 
         verifyControls();
 
+        String className = TargetBean.class.getName();
+
+        trainFindClass(finder, className, TargetBean.class);
+
         IBeanSpecification spec = new BeanSpecification();
-        spec.setClassName(TargetBean.class.getName());
+        spec.setClassName(className);
 
         RuntimeException t = new RuntimeException("Blat!");
 
@@ -166,5 +246,11 @@ public class TestBeanProvider extends BaseComponentTestCase
             assertSame(t, ex.getRootCause());
         }
 
+    }
+
+    private void trainFindClass(ClassFinder finder, String className, Class clazz)
+    {
+        finder.findClass("mypackage", className);
+        getControl(finder).setReturnValue(clazz);
     }
 }

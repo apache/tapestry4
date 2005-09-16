@@ -335,6 +335,15 @@ currently used in Tapestry:
   </tr>
   
   <tr>
+    <td>org.apache.tapestry.bean-class-packages</td>
+    <td>
+      A comma-seperated list, used when converting class names for managed beans (specified
+      using the &spec.bean; element) into fully qualified class names. This property is specified
+      in the containing library or application specification.
+    </td>
+  </tr>
+  
+  <tr>
   <td>org.apache.tapestry.component-class-packages</td>
   <td>
     A comma-seperated list of package names, used when
