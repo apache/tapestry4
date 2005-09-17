@@ -50,8 +50,11 @@
     -->
   </todo>
   <changes>
+    <release version="4.0-beta-8" date="unreleased">
+    </release>
     <release version="4.0-beta-7" date="Sep 17 2005">
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-341">Report location of errors initializing managed beans</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-341">Need better line-precise reporting for listener method</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-307">Report location of errors initializing managed beans</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-270" due-to="Andy Hedges">FAQ Code example contains bug</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-583">Spurious ERROR message (probably should be WARN or INFO) when template does not refer to components in page spec</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-535">Colons in an OGNL expression may force it to be intepreted as a literal string, not an expression</action>
