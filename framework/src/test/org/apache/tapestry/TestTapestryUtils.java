@@ -16,7 +16,6 @@ package org.apache.tapestry;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.easymock.MockControl;
 
 /**
@@ -25,37 +24,16 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestTapestryUtils extends HiveMindTestCase
+public class TestTapestryUtils extends BaseComponentTestCase
 {
-    private IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
-    }
 
     private IRequestCycle newCycle(String key, Object attribute)
     {
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
+        IRequestCycle cycle = newCycle();
 
-        cycle.getAttribute(key);
-        control.setReturnValue(attribute);
+        trainGetAttribute(cycle, key, attribute);
 
         return cycle;
-    }
-
-    private IForm newForm()
-    {
-        return (IForm) newMock(IForm.class);
-    }
-
-    private PageRenderSupport newPageRenderSupport()
-    {
-        return (PageRenderSupport) newMock(PageRenderSupport.class);
-    }
-
-    private IComponent newComponent()
-    {
-        return (IComponent) newMock(IComponent.class);
     }
 
     public void testStoreUniqueAttributeSuccess()
@@ -284,5 +262,72 @@ public class TestTapestryUtils extends HiveMindTestCase
     {
         assertEquals("document.getElementById('foo')", TapestryUtils
                 .buildClientElementReference("foo"));
+    }
+
+    public void testGetComponent()
+    {
+        IComponent container = newComponent();
+        IComponent containee = newComponent();
+
+        trainGetComponent(container, "fred", containee);
+
+        replayControls();
+
+        assertSame(containee, TapestryUtils.getComponent(container, "fred", IComponent.class, null));
+
+        verifyControls();
+    }
+
+    public void testGetComponentWrongType()
+    {
+        IComponent container = newComponent();
+        IComponent containee = newComponent();
+        Location l = newLocation();
+
+        trainGetComponent(container, "fred", containee);
+        trainGetExtendedId(containee, "Flintstone/fred");
+
+        replayControls();
+
+        try
+        {
+            TapestryUtils.getComponent(container, "fred", String.class, l);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals("Component Flintstone/fred is not assignable to type java.lang.String.", ex.getMessage());
+            assertSame(l, ex.getLocation());
+        }
+
+        verifyControls();
+
+    }
+
+    public void testGetComponentDoesNotExist()
+    {
+        IComponent container = newComponent();
+        Location l = newLocation();
+
+        Throwable t = new RuntimeException("Poof!");
+
+        container.getComponent("fred");
+        getControl(container).setThrowable(t);
+
+        replayControls();
+
+        try
+        {
+            TapestryUtils.getComponent(container, "fred", IComponent.class, l);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals("Poof!", ex.getMessage());
+            assertSame(l, ex.getLocation());
+            assertSame(t, ex.getRootCause());
+        }
+
+        verifyControls();
     }
 }

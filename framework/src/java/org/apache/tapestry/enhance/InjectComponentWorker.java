@@ -18,9 +18,11 @@ import java.util.Iterator;
 
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 
@@ -62,7 +64,8 @@ public class InjectComponentWorker implements EnhancementWorker
         }
     }
 
-    public void injectComponent(EnhancementOperation op, String componentId, String propertyName, Location location)
+    public void injectComponent(EnhancementOperation op, String componentId, String propertyName,
+            Location location)
     {
         Defense.notNull(op, "op");
         Defense.notNull(componentId, "componentId");
@@ -73,17 +76,28 @@ public class InjectComponentWorker implements EnhancementWorker
         op.claimReadonlyProperty(propertyName);
 
         String fieldName = "_$" + propertyName;
+        String classField = op.getClassReference(propertyType);
+        String locationField = op.addInjectedField(
+                fieldName + "$location",
+                Location.class,
+                location);
 
         op.addField(fieldName, propertyType);
 
         EnhanceUtils.createSimpleAccessor(op, fieldName, propertyName, propertyType, location);
 
-        // I.e. _$fred = (IComponent) getComponent("fred");
+        // I.e. _$fred = (IComponent) TapestryUtils.getComponent(this, "fred", IComponent.class,
+        // location)
 
-        String code = fieldName + " = (" + ClassFabUtils.getJavaClassName(propertyType)
-                + ") getComponent(\"" + componentId + "\");";
+        BodyBuilder builder = new BodyBuilder();
 
-        op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE, code);
+        builder.add("{0} = ({1}) ", fieldName, ClassFabUtils.getJavaClassName(propertyType));
+        builder.add("{0}#getComponent(this, ", TapestryUtils.class.getName());
+        builder.addQuoted(componentId);
+        builder.add(", {0}, {1});", classField, locationField);
+
+        op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE, builder
+                .toString());
     }
 
     public void setErrorLog(ErrorLog errorLog)

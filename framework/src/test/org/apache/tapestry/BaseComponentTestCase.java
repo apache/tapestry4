@@ -29,6 +29,11 @@ import org.apache.tapestry.test.Creator;
 import org.easymock.MockControl;
 
 /**
+ * Base class for testing components, or testing classes that operate on components. Simplifies
+ * creating much of the infrastructure around the components.
+ * <p>
+ * This class may eventually be part of the Tapestry distribution.
+ * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
@@ -332,5 +337,11 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     protected IBinding newBinding()
     {
         return (IBinding) newMock(IBinding.class);
+    }
+
+    protected void trainGetComponent(IComponent container, String componentId, IComponent containee)
+    {
+        container.getComponent(componentId);
+        getControl(container).setReturnValue(containee);
     }
 }
