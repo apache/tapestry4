@@ -68,32 +68,67 @@ public class TestInjectComponentWorker extends HiveMindTestCase
         verifyControls();
     }
 
+    protected EnhancementOperation newEnhancementOperation()
+    {
+        return (EnhancementOperation) newMock(EnhancementOperation.class);
+    }
+
+    protected void trainGetPropertyType(EnhancementOperation op, String propertyName,
+            Class propertyType)
+    {
+        op.getPropertyType(propertyName);
+        getControl(op).setReturnValue(propertyType);
+    }
+
+    protected void trainGetAccessorMethodName(EnhancementOperation op, String propertyName,
+            String methodName)
+    {
+        op.getAccessorMethodName(propertyName);
+        getControl(op).setReturnValue(methodName);
+    }
+
+    protected void trainGetClassReference(EnhancementOperation op, Class clazz, String reference)
+    {
+        op.getClassReference(clazz);
+        getControl(op).setReturnValue(reference);
+    }
+
+    protected void trainAddInjectedField(EnhancementOperation op, String fieldName,
+            Class fieldType, Object fieldValue, String uniqueFieldName)
+    {
+        op.addInjectedField(fieldName, fieldType, fieldValue);
+        getControl(op).setReturnValue(uniqueFieldName);
+    }
+
     public void testSuccess()
     {
         Location l = newLocation();
         IComponentSpecification spec = newSpec("fred", "barney", l);
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        EnhancementOperation op = newEnhancementOperation();
 
-        op.getPropertyType("barney");
-        control.setReturnValue(IComponent.class);
+        trainGetPropertyType(op, "barney", IComponent.class);
 
         op.claimReadonlyProperty("barney");
 
+        trainGetClassReference(op, IComponent.class, "_$IComponent$class");
+        trainAddInjectedField(op, "_$barney$location", Location.class, l, "_$$location");
+
         op.addField("_$barney", IComponent.class);
 
-        op.getAccessorMethodName("barney");
-        control.setReturnValue("getBarney");
+        trainGetAccessorMethodName(op, "barney", "getBarney");
 
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(IComponent.class, "getBarney", null, null),
-                "return _$barney;", l);
+                "return _$barney;",
+                l);
 
         op.extendMethodImplementation(
                 IComponent.class,
                 EnhanceUtils.FINISH_LOAD_SIGNATURE,
-                "_$barney = (org.apache.tapestry.IComponent) getComponent(\"fred\");");
+                "_$barney = (org.apache.tapestry.IComponent) "
+                        + "org.apache.tapestry.TapestryUtils#getComponent"
+                        + "(this, \"fred\", _$IComponent$class, _$$location);");
 
         replayControls();
 

@@ -61,8 +61,15 @@ class TapestryMessages
         return _formatter.format("provided-by-enhancement", methodName);
     }
 
-    public static String attemptToChangeContainedComponent(IComponent component)
+    static String attemptToChangeContainedComponent(IComponent component)
     {
-        return _formatter.format("attempt-to-change-contained-component", component.getExtendedId());
+        return _formatter
+                .format("attempt-to-change-contained-component", component.getExtendedId());
+    }
+
+    static String componentWrongType(IComponent component, Class expectedType)
+    {
+        return _formatter.format("component-wrong-type", component.getExtendedId(), expectedType
+                .getName());
     }
 }

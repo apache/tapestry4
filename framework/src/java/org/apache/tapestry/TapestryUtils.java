@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.util.Defense;
 
 /**
@@ -263,7 +264,7 @@ public class TapestryUtils
 
     /**
      * Converts a clientId into a client-side DOM reference; i.e.
-     * <code>document.getElementById('<i>id</i>')</code>.  
+     * <code>document.getElementById('<i>id</i>')</code>.
      */
 
     public static String buildClientElementReference(String clientId)
@@ -271,5 +272,36 @@ public class TapestryUtils
         Defense.notNull(clientId, "clientId");
 
         return "document.getElementById('" + clientId + "')";
+    }
+
+    /**
+     * Used by some generated code; obtains a component and ensures it is of the correct type.
+     */
+
+    public static IComponent getComponent(IComponent container, String componentId,
+            Class expectedType, Location location)
+    {
+        Defense.notNull(container, "container");
+        Defense.notNull(componentId, "componentId");
+        Defense.notNull(expectedType, "expectedType");
+        // Don't always have a location
+
+        IComponent component = null;
+
+        try
+        {
+            component = container.getComponent(componentId);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(ex.getMessage(), location, ex);
+        }
+
+        if (!expectedType.isAssignableFrom(component.getClass()))
+            throw new ApplicationRuntimeException(TapestryMessages.componentWrongType(
+                    component,
+                    expectedType), location, null);
+
+        return component;
     }
 }
