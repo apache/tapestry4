@@ -36,7 +36,7 @@
 <!ENTITY ChangeObserver 			'<link href="&apiroot;/event/ChangeObserver.html">ChangeObserver</link>'>
 <!ENTITY BaseComponent 				'<link href="&apiroot;/BaseComponent.html">BaseComponent</link>'>
 <!ENTITY BaseEngine 				'<link href="&apiroot;/engine/BaseEngine.html">BaseEngine</link>'>
-<!ENTITY BasePage 
+<!ENTITY BasePage
 					'<link href="&apiroot;/html/BasePage.html">BasePage</link>'>
 <!ENTITY BaseSessionStoreOptimized  '<link href="&apiroot;/BaseSessionStoreOptimized.html">BaseSessionStoreOptimized</link>'>
 <!ENTITY ComponentPropertySource	'<link href="&apiroot;/services/ComponentPropertySource.html">ComponentPropertySource</link>'>
@@ -138,6 +138,7 @@
 <!ENTITY Else				'<link href="site:Else">Else</link>'>
 <!ENTITY ExternalLink 		'<link href="site:ExternalLink">ExternalLink</link>'>
 <!ENTITY FieldLabel			'<link href="site:FieldLabel">FieldLabel</link>'>
+<!ENTITY For    			'<link href="site:For">For</link>'>
 <!ENTITY Foreach 			'<link href="site:Foreach">Foreach</link>'>
 <!ENTITY Form 				'<link href="site:Form">Form</link>'>
 <!ENTITY Frame 				'<link href="site:Frame">Frame</link>'>
