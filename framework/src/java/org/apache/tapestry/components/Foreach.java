@@ -17,6 +17,7 @@ package org.apache.tapestry.components;
 import java.util.Iterator;
 
 import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -49,7 +50,11 @@ public abstract class Foreach extends AbstractComponent
 
     protected Iterator getSourceData()
     {
-        Object source = getSource();
+    	Object source = null;
+    	
+    	IBinding sourceBinding = getBinding("source");
+    	if (sourceBinding != null)
+    		source = sourceBinding.getObject();
 
         if (source == null)
             return null;
@@ -131,10 +136,6 @@ public abstract class Foreach extends AbstractComponent
         return _value;
     }
 
-    public abstract String getElement();
-
-    public abstract Object getSource();
-
     /**
      * The index number, within the {@link #getSource() source}, of the the current value.
      * 
@@ -150,6 +151,8 @@ public abstract class Foreach extends AbstractComponent
 
         return _index;
     }
+    
+    public abstract String getElement();
 
     /** @since 4.0 */
     public abstract void setIndexParameter(int value);
