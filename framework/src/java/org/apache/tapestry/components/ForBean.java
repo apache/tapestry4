@@ -16,6 +16,7 @@ package org.apache.tapestry.components;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -43,8 +44,6 @@ public abstract class ForBean extends AbstractFormComponent {
     private final RepSource KEY_EXPRESSION_REP_SOURCE = new KeyExpressionRepSource();
     
 	// parameters
-	public abstract Object getSource();
-	public abstract Object getFullSource();
     public abstract String getElement();
     public abstract String getKeyExpression();
     public abstract IPrimaryKeyConverter getConverter();
@@ -52,16 +51,6 @@ public abstract class ForBean extends AbstractFormComponent {
     public abstract boolean getMatch();
     public abstract boolean getVolatile();
 
-    // properties
-    public abstract Iterator getSourceIterator();
-    public abstract void setSourceIterator(Iterator sourceIterator);
-    
-    public abstract Iterator getFullSourceIterator();
-    public abstract void setFullSourceIterator(Iterator fullSourceIterator);
-    
-    public abstract Map getRepToValueMap();
-    public abstract void setRepToValueMap(Map repToValue);
-    
     // injects
     public abstract DataSqueezer getDataSqueezer();
     public abstract ValueConverter getValueConverter();
@@ -80,10 +69,6 @@ public abstract class ForBean extends AbstractFormComponent {
      **/
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-    	// Clear the cache between rewind and render.
-    	// This allows the value of 'source' to be changed by the form listeners.
-    	setSourceIterator(null);
-    	
         // form may be null if component is not located in a form
         IForm form = (IForm) cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
 
@@ -238,7 +223,7 @@ public abstract class ForBean extends AbstractFormComponent {
      **/
     private Iterator getData(IRequestCycle cycle, IForm form) {
         if (form == null || getVolatile())
-        	return getSourceIteratorValue();
+        	return evaluateSourceIterator();
         
         String name = form.getElementId(this);
         if (cycle.isRewinding())
@@ -262,11 +247,15 @@ public abstract class ForBean extends AbstractFormComponent {
         
         updatePrimaryKeysParameter(stringReps);
         
+        Iterator sourceIterator = evaluateSourceIterator();
+        Iterator fullSourceIterator = evaluateFullSourceIterator();
+        Map repToValueMap = new HashMap();
+        
         int valueCount = stringReps.length;
         List values = new ArrayList(valueCount);
         for (int i = 0; i < valueCount; i++) {
 			String rep = stringReps[i];
-			Object value = getValueFromStringRep(rep);
+			Object value = getValueFromStringRep(sourceIterator, fullSourceIterator, repToValueMap, rep);
 			values.add(value);
 		}
         
@@ -286,7 +275,7 @@ public abstract class ForBean extends AbstractFormComponent {
     {
         List values = new ArrayList();
     	
-        Iterator it = getSourceIteratorValue();
+        Iterator it = evaluateSourceIterator();
     	while (it.hasNext()) {
     		Object value = it.next();
     		values.add(value);
@@ -385,7 +374,8 @@ public abstract class ForBean extends AbstractFormComponent {
      * @param rep the string representation for which a value should be returned
      * @return the value that corresponds to the provided string representation
      */
-    protected Object getValueFromStringRep(String rep) {
+    protected Object getValueFromStringRep(Iterator sourceIterator, Iterator fullSourceIterator, 
+    		Map repToValueMap, String rep) {
     	Object value = null;
     	DataSqueezer squeezer = getDataSqueezer();
     	
@@ -396,7 +386,7 @@ public abstract class ForBean extends AbstractFormComponent {
     	// If required, find a value with an equivalent string representation and return it 
     	boolean match = getMatch();
 		if (match) {
-			value = findValueWithStringRep(rep, COMPLETE_REP_SOURCE);
+			value = findValueWithStringRep(sourceIterator, fullSourceIterator, repToValueMap, rep, COMPLETE_REP_SOURCE);
 			if (value != null)
 				return value;
 		}
@@ -414,7 +404,7 @@ public abstract class ForBean extends AbstractFormComponent {
     		case DESC_PRIMARY_KEY:
     			// Perform keyExpression match if not already attempted
     			if (!match && getKeyExpression() != null)
-    				value = findValueWithStringRep(rep, KEY_EXPRESSION_REP_SOURCE);
+    				value = findValueWithStringRep(sourceIterator, fullSourceIterator, repToValueMap, rep, KEY_EXPRESSION_REP_SOURCE);
 
     			// If 'converter' is defined, try to perform conversion from primary key to value 
     			if (value == null) {
@@ -445,20 +435,17 @@ public abstract class ForBean extends AbstractFormComponent {
      * @return the value in 'source' or 'fullSource' that corresponds 
      * to the provided string representation
      */
-    protected Object findValueWithStringRep(String rep, RepSource repSource) {
-    	Map repToValueMap = getRepToValueMap();
-    	
+    protected Object findValueWithStringRep(Iterator sourceIterator, Iterator fullSourceIterator, 
+    		Map repToValueMap, String rep, RepSource repSource) {
     	Object value = repToValueMap.get(rep);
     	if (value != null)
     		return value;
 
-		Iterator it = getSourceIteratorValue();
-		value = findValueWithStringRepInIterator(rep, repSource, it);
+		value = findValueWithStringRepInIterator(sourceIterator, repToValueMap, rep, repSource);
     	if (value != null)
     		return value;
 		
-		it = getFullSourceIteratorValue();
-		value = findValueWithStringRepInIterator(rep, repSource, it);
+		value = findValueWithStringRepInIterator(fullSourceIterator, repToValueMap, rep, repSource);
    		return value;
     }
 
@@ -475,9 +462,7 @@ public abstract class ForBean extends AbstractFormComponent {
      * @return the value in the provided collection that corresponds 
      * to the required string representation
      */
-    protected Object findValueWithStringRepInIterator(String rep, RepSource repSource, Iterator it) {
-    	Map repToValueMap = getRepToValueMap();
-    	
+    protected Object findValueWithStringRepInIterator(Iterator it, Map repToValueMap, String rep, RepSource repSource) {
 		while (it.hasNext()) {
     		Object sourceValue = it.next();
     		if (sourceValue == null)
@@ -492,41 +477,49 @@ public abstract class ForBean extends AbstractFormComponent {
 		
 		return null;
     }
-    
+        
     /**
-     * Returns the cached 'source' iterator. The value is initialized
-     * with the iterator provided by the 'source' parameter  
+     * Returns a new iterator of the values in 'source'. 
      * 
-     * @return the cached 'source' iterator
+     * @return the 'source' iterator
      */
-    protected Iterator getSourceIteratorValue()
+    protected Iterator evaluateSourceIterator()
     {
-		Iterator it = getSourceIterator();
-		if (it == null) {
-			it = (Iterator) getValueConverter().coerceValue(getSource(), Iterator.class);
-			if (it == null)
-				it = Collections.EMPTY_LIST.iterator();
-			setSourceIterator(it);
-		}
+    	Iterator it = null;
+    	Object source = null;
+    	
+    	IBinding sourceBinding = getBinding("source");
+    	if (sourceBinding != null)
+    		source = sourceBinding.getObject();
+
+        if (source != null)
+        	it = (Iterator) getValueConverter().coerceValue(source, Iterator.class);
+
+        if (it == null)
+			it = Collections.EMPTY_LIST.iterator();
     	
 		return it;
     }
     
     /**
-     * Returns the cached 'fullSource' iterator. The value is initialized
-     * with the iterator provided by the 'fullSource' parameter  
+     * Returns a new iterator of the values in 'fullSource'. 
      * 
-     * @return the cached 'fullSource' iterator
+     * @return the 'fullSource' iterator
      */
-    protected Iterator getFullSourceIteratorValue()
+    protected Iterator evaluateFullSourceIterator()
     {
-		Iterator it = getFullSourceIterator();
-		if (it == null) {
-			it = (Iterator) getValueConverter().coerceValue(getFullSource(), Iterator.class);
-			if (it == null)
-				it = Collections.EMPTY_LIST.iterator();
-			setFullSourceIterator(it);
-		}
+    	Iterator it = null;
+    	Object fullSource = null;
+    	
+    	IBinding fullSourceBinding = getBinding("fullSource");
+    	if (fullSourceBinding != null)
+    		fullSource = fullSourceBinding.getObject();
+
+        if (fullSource != null)
+        	it = (Iterator) getValueConverter().coerceValue(fullSource, Iterator.class);
+
+        if (it == null)
+			it = Collections.EMPTY_LIST.iterator();
     	
 		return it;
     }
@@ -568,12 +561,11 @@ public abstract class ForBean extends AbstractFormComponent {
     
     public String getClientId()
     {
-        // TODO Auto-generated method stub
         return null;
     }
+    
     public String getDisplayName()
     {
-        // TODO Auto-generated method stub
         return null;
     }
     

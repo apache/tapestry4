@@ -103,10 +103,11 @@
   
   <parameter name="match" default-value="true">
     <description>
-    Only active in a form. This parameter allows the matching of the squeezed 
-    representation of the values with that of the values in 'source'. It guarantees 
-    that the values iterated upon are physically identical to the ones provided. 
-    The method is often slower than simple unsqueezing, but it eliminates a number 
+    Only active in a form. This parameter allows the matching of the string
+    representation of the values stored in the hidden fields with that 
+    of the values in 'source'. It guarantees that the values iterated upon are 
+    physically identical to the ones provided. 
+    The method is sometimes slower than simple unsqueezing, but it eliminates a number 
     of potential pitfalls. Please disable with caution.
     </description>
   </parameter>
@@ -118,8 +119,6 @@
     and cause exceptions as a result. Please use with caution.
     </description>
   </parameter>
-  
-  <property name="repToValueMap" initial-value="new java.util.HashMap()"/>
   
   <inject property="dataSqueezer" object="service:tapestry.data.DataSqueezer"/>
   <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
