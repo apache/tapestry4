@@ -20,6 +20,7 @@ import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
+import org.apache.tapestry.RedirectException;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.listener.ListenerMap;
 
@@ -79,7 +80,7 @@ public class TestListenerMethodBinding extends BindingTestCase
         verifyControls();
     }
 
-    public void testInvokeAndRedirect()
+    public void testInvokeAndPageRedirect()
     {
         IComponent component = newComponent();
         ListenerMap map = newListenerMap();
@@ -111,7 +112,40 @@ public class TestListenerMethodBinding extends BindingTestCase
         }
 
         verifyControls();
+    }
 
+    public void testInvokeAndRedirect()
+    {
+        IComponent component = newComponent();
+        ListenerMap map = newListenerMap();
+        IActionListener listener = newListener();
+        Location l = newLocation();
+        ValueConverter vc = newValueConverter();
+        IComponent sourceComponent = newComponent();
+        IRequestCycle cycle = newCycle();
+
+        trainGetListener(component, map, listener);
+
+        listener.actionTriggered(sourceComponent, cycle);
+
+        Throwable t = new RedirectException("http://foo.bar");
+        getControl(listener).setThrowable(t);
+
+        replayControls();
+
+        ListenerMethodBinding b = new ListenerMethodBinding(component, "foo", "param", vc, l);
+
+        try
+        {
+            b.actionTriggered(sourceComponent, cycle);
+            unreachable();
+        }
+        catch (RedirectException ex)
+        {
+            assertSame(t, ex);
+        }
+
+        verifyControls();
     }
 
     public void testInvokeListenerFailure()
