@@ -24,6 +24,7 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
+import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.IScriptProcessor;
@@ -200,6 +201,28 @@ public class TestLinkSubmit extends BaseComponentTestCase
         LinkSubmit linkSubmit = (LinkSubmit) newInstance(LinkSubmit.class);
 
         assertEquals(false, linkSubmit.isClicked(cycle, "fred"));
+
+        verifyControls();
+    }
+
+    public void testRewind()
+    {
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        IRender body = newRender();
+        IForm form = newForm();
+
+        trainGetParameter(cycle, "fred", null);
+
+        body.render(writer, cycle);
+
+        replayControls();
+
+        LinkSubmit linkSubmit = (LinkSubmit) newInstance(LinkSubmit.class, new Object[]
+        { "name", "fred", "form", form });
+        linkSubmit.addBody(body);
+
+        linkSubmit.rewindFormComponent(writer, cycle);
 
         verifyControls();
     }
