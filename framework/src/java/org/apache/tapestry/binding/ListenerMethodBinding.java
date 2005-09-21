@@ -21,6 +21,7 @@ import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
+import org.apache.tapestry.RedirectException;
 import org.apache.tapestry.coerce.ValueConverter;
 
 /**
@@ -76,6 +77,10 @@ public class ListenerMethodBinding extends AbstractBinding implements IActionLis
             _listener.actionTriggered(component, cycle);
         }
         catch (PageRedirectException ex)
+        {
+            throw ex;
+        }
+        catch (RedirectException ex)
         {
             throw ex;
         }
