@@ -154,8 +154,8 @@ A typical use is to encode the primary key of an entity as a Hidden; when the fo
     <p>The page specification sets up some page properties for the ListEditMap and current publisher. The listEdit component is where it gets interesting. The source binding is the set of all keys in the list edit map. Basically the list of all the publishers identifers. The value is the current key. It would actually be possible to use the publisher object as the value however because each value object is serialized this could get pretty inefficient. Instead what happens is a listener is setup. This listener sets up the actual publisher object from the key when the form is rewound.</p>
   <source><![CDATA[
   .....
-  <property-specification name="listEditMap" type="org.apache.tapestry.form.ListEditMap"/>
-  <property-specification name="publisher" type="org.apache.tapestry.vlib.ejb.Publisher"/>
+  <property name="listEditMap" type="org.apache.tapestry.form.ListEditMap"/>
+  <property name="publisher" type="org.apache.tapestry.vlib.ejb.Publisher"/>
 
   <component id="listEdit" type="ListEdit">
   	<binding name="source" expression="listEditMap.keys"/>

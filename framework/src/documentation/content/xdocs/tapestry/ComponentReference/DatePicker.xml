@@ -133,8 +133,8 @@
     <p>Page specification</p>
 <source><![CDATA[
 ...
-<property-specification name="startDate" type="java.util.Date"/>
-<property-specification name="endDate" type="java.util.Date"/>
+<property name="startDate" type="java.util.Date"/>
+<property name="endDate" type="java.util.Date"/>
 ...
 ]]></source>
     <p>Java source</p>
