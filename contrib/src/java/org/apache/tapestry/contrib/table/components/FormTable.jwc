@@ -97,7 +97,7 @@
         </description>
     </parameter>
     
-    <parameter name="persist" default-value="session"> 
+    <parameter name="persist" default-value="literal:session"> 
         <description>
             Defines how the table state (paging and sorting) will be persisted
             if no tableSessionStoreManager is defined.
@@ -171,7 +171,7 @@
     
 
 	<component id="tableElement" type="Any" inherit-informal-parameters="yes">
-		<binding name="element">table</binding>
+		<binding name="element">literal:table</binding>
 	</component>
 
 	<component id="condPages" type="If">
@@ -190,7 +190,7 @@
 		<inherited-binding name="tableSessionStoreManager" parameter-name="tableSessionStoreManager"/>
 		<inherited-binding name="persist" parameter-name="persist"/>
 		<inherited-binding name="columnSettingsContainer" parameter-name="columnSettingsContainer"/>
-		<binding name="element">div</binding>
+		<binding name="element">literal:div</binding>
 	</component>
 
 	<component id="tablePages" type="TableFormPages">
