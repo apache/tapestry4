@@ -188,18 +188,11 @@ of tutorials is being written.
 </p>
 
 <p>
-Tapestry 4.0 should be production-ready soon.  It needs more exposure and more documentation. For the
-momement, it is still recommended that you stick with Tapestry 
-  <link href="http://jakarta.apache.org/tapestry/3.0.3/"><strong>3.0.3</strong></link>,
-the latest stable release.
+  Tapestry 4.0 is nearing the end of its beta cycle; new features are being deferred
+  to Tapestry 4.1 and the emphasis is on filling gaps in the documentation
+  and fixing bugs. A final release for Tapestry 4.0 is expected (but not guaranteed)
+  in October 2005.
 </p>
-
-<warning>
-A controversial feature introduced Tapestry 4.0-alpha-2, default binding type prefixes for parameters, has been removed, starting in release
-4.0-beta-4.
-You may need to change templates and XML specifications to add explicit binding prefixes back in, if you wrote code for earlier
-releases of Tapestry 4.0.
-</warning>
   
 </section>
 
@@ -264,6 +257,13 @@ is now available from
 <link href="http://www.manning.com/lewisship/index.html">Manning Publications</link>. It is the
 definitive introduction to Tapestry written by Howard Lewis Ship, the creator of Tapestry. Tapestry In Action
 covers Tapestry 3.0, but is still broadly useful in the wake of the 4.0 release.
+</p>
+
+<figure src="images/ewdt_tong_cover.jpg" alt="Enjoy Web Development with Tapestry Cover"/>
+
+<p>
+  <link href="http://www.agileskills2.org/EWDT/">Enjoy Web Development with Tapestry</link> by Kent Tong covers
+  Tapestry 4.0 (as well as 3.0) and is available in PDF and hard-copy formats.
 </p>
 
 <figure src="images/tapestry-german-cover.gif" alt="Tapestry Webanwendungen mit dem Apache Framework"/>
