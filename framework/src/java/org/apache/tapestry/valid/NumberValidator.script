@@ -52,7 +52,7 @@ function ${function}(event)
 <if expression="validator.required">
   if (stringValue.length == 0)
   {
-     handle_invalid_field(event, field, "${requiredMessage}");
+     event.invalid_field(field, "${requiredMessage}");
      return;
   }
 </if>
@@ -63,28 +63,28 @@ function ${function}(event)
   var value = stringValue * 1;
   if (isNaN(value))
   {
-      handle_invalid_field(event, field, "${formatMessage}");
+      event.invalid_field(field, "${formatMessage}");
       return;
   }
 <if expression="validator.integerNumber">
   var regex = /\./;
   if (stringValue.search(regex) != -1)
   {
-      handle_invalid_field(event, field, "${formatMessage}");
+      event.invalid_field(field, "${formatMessage}");
       return;
   }
 </if>
 <if expression="validator.minimum != null">
   if (value &lt; ${validator.minimum})
   {
-     handle_invalid_field(event, field, "${rangeMessage}");
+     event.invalid_field(field, "${rangeMessage}");
      return;
   }
 </if>
 <if expression="validator.maximum != null">
   if (value &gt; ${validator.maximum})
   {
-     handle_invalid_field(event, field, "${rangeMessage}");
+     event.invalid_field(field, "${rangeMessage}");
      return;
   }
 </if>

@@ -53,12 +53,12 @@ function ${function}(event)
 <if expression="validator.required">
     if (field.value.length == 0)
     {
-        handle_invalid_field(event, field, "${requiredMessage}");
+        event.invalid_field(field, "${requiredMessage}");
         return;
     }
 </if>
     if (field.value.length &gt; 0 &amp;&amp; !${pattern}.test(field.value))
-        handle_invalid_field(event, field, "${patternNotMatchedMessage}");
+        event.invalid_field(field, "${patternNotMatchedMessage}");
 }
 </body>
 

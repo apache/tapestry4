@@ -47,7 +47,7 @@ function ${function}(event)
   var field = document.${form.name}.${field.name}; 
 
   if (field.value.length == 0)
-     handle_invalid_field(event, field, "${requiredMessage}");
+     event.invalid_field(field, "${requiredMessage}");
 }
 </body>
 
