@@ -253,8 +253,8 @@ In this example the DirectLink component enables users to select a Customer from
 <section>
 <title>Page specification</title>
 <source><![CDATA[
-<property-specification name="customerList" type="java.util.List" persistent="yes"/>
-<property-specification name="customer" type="Customer"/>
+<property name="customerList" type="java.util.List" persistent="yes"/>
+<property name="customer" type="Customer"/>
 ]]></source>
 </section>
 
