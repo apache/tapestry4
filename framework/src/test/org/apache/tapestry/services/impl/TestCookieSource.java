@@ -131,7 +131,7 @@ public class TestCookieSource extends HiveMindTestCase
         requestControl.setReturnValue("/context");
 
         Cookie cookie = new ComparableCookie("foo", "bar");
-        cookie.setPath("/context");
+        cookie.setPath("/context/");
 
         response.addCookie(cookie);
 
@@ -159,7 +159,7 @@ public class TestCookieSource extends HiveMindTestCase
         requestControl.setReturnValue("/context");
 
         Cookie cookie = new ComparableCookie("foo", null);
-        cookie.setPath("/context");
+        cookie.setPath("/context/");
 
         response.addCookie(cookie);
 

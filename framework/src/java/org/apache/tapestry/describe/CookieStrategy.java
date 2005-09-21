@@ -27,15 +27,12 @@ public class CookieStrategy implements DescribableStrategy
     {
         Cookie cookie = (Cookie) object;
 
-        receiver.title("Cookie: " + cookie.getName());
+        // All other cookie information besides name and value
+        // is null/default when the cookie is obtained from the
+        // HttpServletRequest. The values are set when writing
+        // a new cookie to the client.
 
-        receiver.property("comment", cookie.getComment());
-        receiver.property("domain", cookie.getDomain());
-        receiver.property("maxAge", cookie.getMaxAge());
-        receiver.property("path", cookie.getPath());
-        receiver.property("secure", cookie.getSecure());
-        receiver.property("value", cookie.getValue());
-        receiver.property("version", cookie.getVersion());
+        receiver.title(cookie.getName() + "=" + cookie.getValue());
     }
 
 }

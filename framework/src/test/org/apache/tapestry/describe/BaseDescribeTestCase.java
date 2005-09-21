@@ -30,7 +30,6 @@ public abstract class BaseDescribeTestCase extends HiveMindTestCase
         return (IMarkupWriter) newMock(IMarkupWriter.class);
     }
 
-
     protected IRequestCycle newCycle()
     {
         return (IRequestCycle) newMock(IRequestCycle.class);
@@ -39,6 +38,11 @@ public abstract class BaseDescribeTestCase extends HiveMindTestCase
     protected HTMLDescriber newDescriber()
     {
         return (HTMLDescriber) newMock(HTMLDescriber.class);
+    }
+
+    protected DescriptionReceiver newReceiver()
+    {
+        return (DescriptionReceiver) newMock(DescriptionReceiver.class);
     }
 
 }

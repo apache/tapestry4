@@ -12,19 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.bean;
+package org.apache.tapestry.describe;
+
+import javax.servlet.http.Cookie;
 
 /**
- * Used by {@link org.apache.tapestry.bean.TestBeanProvider} to check logic that reports errors
- * instantiating beans.
+ * Tests for {@link org.apache.tapestry.describe.CookieStrategy}.
  * 
  * @author Howard M. Lewis Ship
  */
-public class InstantiateFailureBean
+public class CookieStrategyTest extends BaseDescribeTestCase
 {
-
-    public InstantiateFailureBean()
+    public void testDescribeObject()
     {
-        throw new RuntimeException("Boom!");
+        DescriptionReceiver receiver = newReceiver();
+
+        receiver.title("a-name=some-value");
+
+        replayControls();
+
+        Cookie cookie = new Cookie("a-name", "some-value");
+
+        CookieStrategy strategy = new CookieStrategy();
+
+        strategy.describeObject(cookie, receiver);
+
+        verifyControls();
     }
+
 }
