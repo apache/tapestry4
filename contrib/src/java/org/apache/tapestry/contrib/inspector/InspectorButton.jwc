@@ -62,10 +62,6 @@ window.
     	<binding name="image" value="asset:logo"/>
     	<binding name="focus" value="asset:inspector"/>
     </component>
-    
-    <component id="script" type="Script">
-      <binding name="script" value="literal:InspectorButton.script"/>
-    </component>
 
     <asset name="logo" path="tapestry-logo.gif"/>
     <asset name="inspector" path="inspector-rollover.gif"/>

@@ -54,6 +54,7 @@
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-465">Document Foreach component</action>
       <action type="fix" dev="MB" fixes-bug="TAPESTRY-654">Foreach and For cache the 'source' parameter even when they should not</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-473">Document ListEdit component</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-653">InspectorButton component renders poorly</action>
     </release>
     <release version="4.0-beta-7" date="Sep 17 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-341">Need better line-precise reporting for listener method</action>
