@@ -49,7 +49,7 @@ function ${function}(event)
 <if expression="validator.required">
   if (field.value.length == 0)
   {
-    handle_invalid_field(event, field, "${requiredMessage}");
+    event.invalid_field(field, "${requiredMessage}");
     return;
   }
 </if>
@@ -61,7 +61,7 @@ function ${function}(event)
 <if expression="validator.minimumLength">
   if (field.value.length &lt; ${validator.minimumLength})
   {
-    handle_invalid_field(event, field, "${minimumLengthMessage}");
+    event.invalid_field(field, "${minimumLengthMessage}");
     return;
   }
 </if>

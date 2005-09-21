@@ -56,7 +56,7 @@ function ${function}(event)
 <if expression="validator.required">
   if (strValue.length == 0)
   {
-    handle_invalid_field(event, field, "${requiredMessage}");
+    event.invalid_field(field, "${requiredMessage}");
     return;
   }
 </if>
@@ -69,14 +69,14 @@ function ${function}(event)
 <if expression="validator.minimumLength">
   if (strValue.length &lt; ${validator.minimumLength})
   {
-    handle_invalid_field(event, field, "${minimumLengthMessage}");
+    event.invalid_field(field, "${minimumLengthMessage}");
     return;
    }
 </if>
 
   atIndex = strValue.indexOf("@");
   if ((atIndex == -1) || (atIndex == 0) || (atIndex == strValue.length -1))
-    handle_invalid_field(event, field, "${emailFormatMessage}");
+    event.invalid_field(field, "${emailFormatMessage}");
 }
 </body>
 

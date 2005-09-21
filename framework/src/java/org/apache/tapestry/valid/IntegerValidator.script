@@ -55,7 +55,7 @@ function ${function}(event)
 <if expression="validator.required">
   if (stringValue.length == 0)
   {
-     handle_invalid_field(event, field, "${requiredMessage}");
+     event.invalid_field(field, "${requiredMessage}");
      return;
   }
 </if>
@@ -66,25 +66,25 @@ function ${function}(event)
   var value = stringValue * 1;
   if (isNaN(value))
   {
-    handle_invalid_field(event, field, "${formatMessage}");
+    event.invalid_field(field, "${formatMessage}");
   }
   var regex = /\./;
   if (stringValue.search(regex) != -1)
   {
-    handle_invalid_field(event, field, "${formatMessage}");
+    event.invalid_field(field, "${formatMessage}");
     return;
   }
 <if expression="minimum != null">
   if (value &lt; ${minimum})
   {
-    handle_invalid_field(event, field, "${rangeMessage}");
+    event.invalid_field(field, "${rangeMessage}");
     return;
   }
 </if>
 <if expression="maximum != null">
   if (value &gt; ${maximum})
   {
-    handle_invalid_field(event, field, "${rangeMessage}");
+    event.invalid_field(field, "${rangeMessage}");
     return;
   }
 </if>
