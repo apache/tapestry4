@@ -28,11 +28,12 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> Provides the HTML &lt;frame&gt; element within a &lt;frameset&gt;, inserting the specified Tapestry
+page as the content of the frame.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &RenderBlock;, &RenderBody;</strong>
 </p>
 
 <section>
@@ -47,26 +48,36 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
+  <tr>
+    <td>page</td>
+    <td>String</td>
+    <td>in</td>
+    <td>yes</td>
+    <td></td>
+    <td>
+      The name of the page to display in the frame.
+    </td>
+  </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: <em>src</em>
 </p>
 
 </section>
 
 <section>
   <title>Examples</title>
-
+  <p>This example is under construction.</p>
 </section>
 </body>
 </document>
