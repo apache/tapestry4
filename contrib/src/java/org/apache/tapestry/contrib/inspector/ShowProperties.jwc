@@ -59,8 +59,10 @@
     <binding name="value" value="valueClassName"/>
   </component>
   
-  <component id="insertPersistValue" type="Describe">
-    <binding name="object" value="change.newValue"/>
-  </component>
+  <inject property="adapterFactory" object="service:tapestry.describe.RenderableAdapterFactory"/>
+    
+  <component id="insertPersistValue" type="Delegator">
+    <binding name="delegate" value="adapterFactory.getRenderableAdaptor(change.newValue)"/>
+  </component>  
   
 </component-specification>

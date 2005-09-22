@@ -79,7 +79,20 @@
 	<contribution configuration-id="RenderStrategies">
 		<strategy class="java.lang.Object" object="service:DefaultRenderStrategy"/>
 		<strategy class="org.apache.hivemind.Location" object="instance:LocationRenderStrategy"/>
+		<strategy class="org.apache.hivemind.service.impl.ClassFabImpl" object="instance:PreformattedRenderStrategy"/>
+		<strategy class="java.lang.Object[]" object="service:ObjectArrayRenderStrategy"/>
 	</contribution>
+	
+	<service-point id="ObjectArrayRenderStrategy" interface="RenderStrategy">
+		Renders an array of objects as an unordered list.
+	
+		<invoke-factory>
+			<construct class="ObjectArrayRenderStrategy">
+				<set-service property="renderStrategy" service-id="RenderStrategy"/>
+			</construct>
+		</invoke-factory>	
+		
+	</service-point>
 	
 	<service-point id="RenderStrategy">
 		
