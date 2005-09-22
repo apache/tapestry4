@@ -61,6 +61,7 @@
       <action type="fix" dev="MB" fixes-bug="TAPESTRY-656">Invalid bindings in FormTable.jwc</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-641">The path used when writing the locale cookie means that the locale can get "lost" when navigating around the application</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-466" due-to="Warner Onstine">Document Frame component</action>
+      <action type="fix" dev="DS" fixes-bug="TAPESTRY-476" due-to="Pierre-Yves Nicolas">Document PropertySelection component</action>
     </release>
     <release version="4.0-beta-7" date="Sep 17 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-341">Need better line-precise reporting for listener method</action>

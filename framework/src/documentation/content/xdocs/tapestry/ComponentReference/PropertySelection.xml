@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- 
+<!--
    Copyright 2004, 2005 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,41 +25,138 @@
   <header>
     <title>PropertySelection</title>
   </header>
-  
+
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
-</p>
+<p>Creates form elements that allow a property of an object to be set from a drop-down list.</p>
+<p>Uses a &IPropertySelectionModel; to map between Java values that will be assigned,
+and textual labels that will appear in the HTML response.</p>
+<p>A useful property selection model is available
+(<link href="&apiroot;/form/StringPropertySelectionModel.html">StringPropertySelectionModel</link>).
+You can also create your own model, as illustrated in the examples below.</p>
+<p>Note that complex value Objects need to properly implement the <code>Object.equals()</code>
+method if the correct initial item is to be displayed.</p>
+
+<p>Informal parameters are applied to the &lt;select&gt; tag.&nbsp;
+To have greater control over the &lt;option&gt; tags, you must use the
+&Select; and &Option; components.</p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/form/PropertySelection.html">org.apache.tapestry.form.PropertySelection</link>, &Select;, &Option;, &Radio;, &RadioGroup;, &Form;, &Script;</strong>
+
 </p>
 
 <section>
   <title>Parameters</title>
-  
+
 <table>
-  <tr> 
+  <tr>
     <th>Name</th>
     <th>Type</th>
-	  <th>Direction</th>
-    <th>Required</th> 
+    <th>Direction</th>
+
+    <th>Required</th>
     <th>Default</th>
     <th>Description</th>
   </tr>
+  <tr>
+    <td>value</td>
+    <td>Object</td>
 
-	</table>
-  
-<p>
-  Body: <strong>removed / allowed</strong>
-</p>  
+    <td>in-out</td>
+    <td>yes</td>
+    <td></td>
+    <td>
+      The property to set. During rendering, this property is read,
+      and sets the default value of the selection (if it is null, no element is selected).
+      When the form is submitted, this property is updated based on the new selection.
+    </td>
+  </tr>
+  <tr>
+
+    <td>model</td>
+    <td>&IPropertySelectionModel;</td>
+    <td>in</td>
+    <td>yes</td>
+    <td></td>
+    <td>
+      The model provides a list of possible labels, and matches those labels against
+      possible values that can be assigned back to the property.
+    </td>
+
+  </tr>
+  <tr>
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+
+    <td>
+       	Controls whether the &lt;select&gt; is active or not.
+       	A disabled PropertySelection does not update its value parameter.
+       	Corresponds to the "disabled" HTML attribute.
+    </td>
+  </tr>
+  <tr>
+    <td>submitOnChange (deprecated)</td>
+    <td>boolean</td>
+
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+    <td>
+       	If true, then additional JavaScript is added to submit the containing form when select is changed.
+       	Equivalent to specifying a JavaScript event handler of <code>this.form.submit()</code>.
+    </td>
+  </tr>
+
+  <tr>
+    <td>displayName</td>
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+
+      The user-presentable name for the component, which will be used by a &FieldLabel; connected to the component.
+    </td>
+  </tr>
+  <tr>
+    <td>validators</td>
+    <td>Array or collection of &Validator;, or &Validator;</td>
+    <td>in</td>
+
+    <td>no</td>
+    <td></td>
+    <td>
+      The validators to apply to the component.
+    </td>
+  </tr>
+  <tr>
+    <td>id</td>
+
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+      The value of the id attribute in the generated <em>&lt;select&gt;</em> tag.
+    </td>
+
+  </tr>
+</table>
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Body: <strong>removed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Informal parameters: <strong>allowed</strong>
+</p>
+
+<p>
+  Reserved parameters: <em>name</em>
 </p>
 
 </section>
@@ -67,6 +164,150 @@
 <section>
   <title>Examples</title>
 
+<section>
+<title>Example 1</title>
+
+<p>The PropertySelection component provides Gender selection drop down list using a
+<link href="&apiroot;/form/StringPropertySelectionModel.html">StringPropertySelectionModel</link></p>
+
+<source><![CDATA[
+<form jwcid="@Form" listener="listener:formSubmit">
+ Gender: <span jwcid="@PropertySelection" model="ognl:@com.myexample.DetailsPage@GENDER_MODEL" value="ognl:gender"/>
+ <input type="submit"/>
+</form>
+]]></source>
+
+<source><![CDATA[
+public abstract class DetailsPage extends BasePage {
+  public static final IPropertySelectionModel GENDER_MODEL =
+      new StringPropertySelectionModel(new String[] { "Unspecified", "Female", "Male" });
+
+  public abstract String getGender();
+
+  public void formSubmit(IRequestCycle cycle) {
+      // Process form submission
+      String genderSelection = getGender();
+      ...
+  }
+}
+]]></source>
+
+</section>
+
+<section>
+<title>Example 2</title>
+<p>Provides list of clothing items for the user to select.
+When the user selects a cloting item from the list the description the label and price is automatically updated.
+The list of clothing items would typically be loaded from a database.</p>
+
+<p>PurchasePage.html</p>
+
+<source><![CDATA[
+<body jwcid="@Body">
+<form jwcid="@Form" listener="listener:formSubmit">
+ <span jwcid="@FieldLabel" field="component:itemSelection">Selection</span>
+ <span jwcid="itemSelection@PropertySelection"
+       model="ognl:itemSelectionModel"
+       value="ognl:clothingItem"
+       onchange="javascript:this.form.events.refresh();"
+       displayName="Choose an item"/>
+ <input type="submit" value="Show me this item"/>
+ <span jwcid="@Conditional" condition="ognl:clothingItem!=null">
+ <p>Description: <span jwcid="@Insert" value="ognl:clothingItem.description"/></p>
+ <p>Label: <span jwcid="@Insert" value="ognl:clothingItem.label"/></p>
+ <p>Price: $<span jwcid="@Insert" value="ognl:clothingItem.price"/></p>
+ </span>
+</form>
+</body>
+]]></source>
+
+<p>PurchasePage.java</p>
+<source><![CDATA[
+public abstract class PurchasePage extends BasePage implements PageDetachListener {
+
+  private ItemSelectionModel model = null;
+
+  public abstract Item getClothingItem();
+  public abstract void setClothingItem(Item value);
+
+  public ItemSelectionModel getItemSelectionModel() {
+    if (model == null) {
+      List items = new ArrayList();
+      items.add(new Item(1, "Dress", "Cotton full length Summer dress", "CountryClub", "89.95"));
+      items.add(new Item(2, "Jacket", "Gorgeous jacket", "CountryClub", "119.95"));
+      model = new ItemSelectionModel(items);
+    }
+    return model;
+  }
+
+  public void formSubmit() {
+    // Process form submission
+
+  }
+
+  public void pageDetached(PageEvent pageEvent) {
+    model = null;
+  }
+
+}
+]]></source>
+
+<p>Item.java</p>
+<source><![CDATA[
+public class Item implements Serializable {
+  private int id;
+  private String name;
+  private String description;
+  private String label;
+  private String price;
+
+  public Item(int id, String name, String desc, String label, String price) {
+      this.id = id;
+      this.name = name;
+      this.description = desc;
+      this.label = label;
+      this.price = price;
+  }
+
+  public int getId() { return id;  }
+
+  public String getName() { return name;  }
+
+  public String getDescription() { return description;  }
+
+  public String getLabel() { return label;  }
+
+  public String getPrice() { return price;  }
+}
+]]></source>
+
+<p>ItemSelectionModel.java</p>
+<source><![CDATA[
+public class ItemSelectionModel implements IPropertySelectionModel, Serializable {
+  private List itemList;
+
+  public ItemSelectionModel(List itemList) {
+      this.itemList = itemList;
+  }
+
+  public int getOptionCount() { return itemList.size(); }
+
+  public Object getOption(int index) {
+      return itemList.get(index);
+  }
+
+  public String getLabel(int index) {
+      return ((Item) itemList.get(index)).getName();
+  }
+
+  public String getValue(int index) { return Integer.toString(index); }
+
+  public Object translateValue(String value) {
+      return getOption(Integer.parseInt(value));
+  }
+}
+]]></source>
+</section>
 </section>
 </body>
 </document>
