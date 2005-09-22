@@ -63,6 +63,7 @@
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-466" due-to="Warner Onstine">Document Frame component</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-476" due-to="Pierre-Yves Nicolas">Document PropertySelection component</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-485" due-to="Pierre-Yves Nicolas">Document Upload component</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-660">Injecting meta data generates incorrect code for boolean properties</action>
     </release>
     <release version="4.0-beta-7" date="Sep 17 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-341">Need better line-precise reporting for listener method</action>

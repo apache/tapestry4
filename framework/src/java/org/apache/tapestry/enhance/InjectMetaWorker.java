@@ -46,7 +46,7 @@ public class InjectMetaWorker implements InjectEnhancementWorker
     private Map _primitiveParser = new HashMap();
 
     {
-        _primitiveParser.put(boolean.class, "java.lang.Boolean.valueOf");
+        _primitiveParser.put(boolean.class, "java.lang.Boolean.parseBoolean");
         _primitiveParser.put(short.class, "java.lang.Short.parseShort");
         _primitiveParser.put(int.class, "java.lang.Integer.parseInt");
         _primitiveParser.put(long.class, "java.lang.Long.parseLong");
