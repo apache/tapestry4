@@ -19,6 +19,10 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
+ * Base class for testing implementations of
+ * {@link org.apache.tapestry.describe.DescribableStrategy} and
+ * {@link org.apache.tapestry.describe.RenderStrategy}.
+ * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
