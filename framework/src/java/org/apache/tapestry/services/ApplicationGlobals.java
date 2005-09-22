@@ -16,6 +16,8 @@ package org.apache.tapestry.services;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.web.WebActivator;
 import org.apache.tapestry.web.WebContext;
@@ -39,10 +41,15 @@ public interface ApplicationGlobals
     public void storeSpecification(IApplicationSpecification applicationSpecification);
 
     /**
-     * Invoked by the (indirectly) by the servlet at init().
+     * Invoked (indirectly) by the servlet at init().
+     */
+    public void storeServletContext(ServletContext context);
+
+    /**
+     * Invoked (indirectly) by the servlet at init().
      */
 
-    public void storeContext(WebContext context);
+    public void storeWebContext(WebContext context);
 
     /**
      * Returns the previously stored context.
@@ -51,6 +58,13 @@ public interface ApplicationGlobals
      */
 
     public WebContext getWebContext();
+
+    /**
+     * Returns the previously stored context.
+     * 
+     * @see #storeServletContext(ServletContext)
+     */
+    public ServletContext getServletContext();
 
     public WebActivator getActivator();
 

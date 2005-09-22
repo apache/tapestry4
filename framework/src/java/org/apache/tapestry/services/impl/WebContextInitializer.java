@@ -23,9 +23,8 @@ import org.apache.tapestry.web.ServletWebContext;
 import org.apache.tapestry.web.WebContext;
 
 /**
- * Gets the context from the servlet, creates a
- * {@link org.apache.tapestry.web.ServletWebContext}, and stores that into the
- * {@link org.apache.tapestry.services.ApplicationGlobals}.
+ * Gets the context from the servlet, creates a {@link org.apache.tapestry.web.ServletWebContext},
+ * and stores that into the {@link org.apache.tapestry.services.ApplicationGlobals}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -39,7 +38,8 @@ public class WebContextInitializer implements ApplicationInitializer
         ServletContext servletContext = servlet.getServletContext();
         WebContext context = new ServletWebContext(servletContext);
 
-        _globals.storeContext(context);
+        _globals.storeServletContext(servletContext);
+        _globals.storeWebContext(context);
     }
 
     public void setGlobals(ApplicationGlobals globals)

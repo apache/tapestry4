@@ -38,7 +38,7 @@ public class PortletWebContextInitializer implements PortletApplicationInitializ
         WebContext context = new PortletWebContext(portletConfig.getPortletContext());
 
         _applicationGlobals.storeActivator(activator);
-        _applicationGlobals.storeContext(context);
+        _applicationGlobals.storeWebContext(context);
     }
 
     public void setApplicationGlobals(ApplicationGlobals applicationGlobals)
