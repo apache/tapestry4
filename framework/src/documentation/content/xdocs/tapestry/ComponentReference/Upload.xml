@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- 
+<!--
    Copyright 2004, 2005 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,53 +25,180 @@
   <header>
     <title>Upload</title>
   </header>
-  
+
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
-</p>
+<p>A form element used to handle file uploads. The uploaded file is represented by an instance of &IUploadFile;.</p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: <link href="&apiroot;/form/Upload.html">org.apache.tapestry.form.Upload</link>, &Form;</strong>
 </p>
 
 <warning>
   This component may  only be used in Tapestry Servlet Applications; Upload currently
-  does not work with Portlet Applications.  See 
+  does not work with Portlet Applications.  See
   <link href="http://issues.apache.org/jira/browse/TAPESTRY-635">TAPESTRY-635</link> for more details.
+
 </warning>
 
 <section>
   <title>Parameters</title>
-  
+
 <table>
-  <tr> 
+  <tr>
     <th>Name</th>
     <th>Type</th>
-	  <th>Direction</th>
-    <th>Required</th> 
+    <th>Direction</th>
+
+    <th>Required</th>
     <th>Default</th>
     <th>Description</th>
   </tr>
+  <tr>
+    <td>file</td>
+    <td>&IUploadFile;</td>
 
-	</table>
-  
-<p>
-  Body: <strong>removed / allowed</strong>
-</p>  
+    <td>out</td>
+    <td>yes</td>
+    <td></td>
+    <td>
+      Updated, when the form is submitted, with the name and content uploaded.
+    </td>
+  </tr>
+  <tr>
+
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+    <td>
+
+      If true, then (on render) the "disabled" attribute is written into the tag and on submit, the upload will not update its file parameter.
+    </td>
+  </tr>
+  <tr>
+    <td>displayName</td>
+    <td>string</td>
+    <td>in</td>
+    <td>no</td>
+
+    <td></td>
+    <td>
+      The user-presentable name for the component, which will be used by a &FieldLabel; connected to the component.
+    </td>
+  </tr>
+  <tr>
+    <td>validators</td>
+    <td>Array or collection of &Validator;, or &Validator;</td>
+
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+      The validators to apply to the component.
+    </td>
+  </tr>
+  <tr>
+
+    <td>id</td>
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+      Sets the id attribute for the rendered &lt;input&gt; element.
+    </td>
+
+  </tr>
+
+</table>
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Body: <strong>removed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Informal parameters: <strong>allowed</strong>
+</p>
+
+<p>
+  Reserved parameters: name, type
 </p>
 
 </section>
 
 <section>
   <title>Examples</title>
+
+<p>UploadPage.html</p>
+
+<source><![CDATA[
+<form jwcid="@Form" listener="listener:formSubmit">
+<span jwcid="@FieldLabel" field="component:upload"/>
+<input jwcid="upload@Upload" file="ognl:uploadFile" type="file" displayName="File" validators="validators:required"/>
+<input type= "submit" value="Upload"/>
+<span jwcid="@If" condition="ognl: uploadFile && serverFile">
+<ul>
+  <li>Filename: <span jwcid="@Insert" value="ognl:uploadFile.fileName"/></li>
+  <li>Client path: <span jwcid="@Insert" value="ognl:uploadFile.filePath"/></li>
+  <li>Server Path: <span jwcid="@Insert" value="ognl:serverFile.absolutePath"/></li>
+  <li>File Size: <span jwcid="@Insert" value="ognl:serverFile.length()" format="ognl:numberFormat"/> bytes</li>
+</ul>
+</span>
+</form>
+]]></source>
+
+<p>UploadPage.java</p>
+
+<source><![CDATA[
+public abstract class UploadPage extends BasePage {
+
+  public abstract IUploadFile getUploadFile();
+  public abstract File getServerFile();
+  public abstract void setServerFile(File file);
+
+  public Format getNumberFormat() {
+    return NumberFormat.getNumberInstance();
+  }
+
+  public void formSubmit(IRequestCycle cycle) {
+      if (getUploadFile() == null) {
+        return;
+      }
+
+      InputStream fis = getUploadFile().getStream();
+      FileOutputStream fos = null;
+
+      try {
+          fos = new FileOutputStream(new  File(getUploadFile().getFileName()));
+          byte[] buffer = new byte[1024];
+          while (true) {
+              int length = fis.read(buffer);
+              if (length <  0) {
+                  break;
+              }
+              fos.write(buffer, 0, length);
+          }
+          fis.close();
+          fos.close();
+          setServerFile(new File(getUploadFile().getFileName()));
+
+      } catch (IOException ioe) {
+          ioe.printStackTrace();
+      } finally {
+          if (fis != null) {
+              try { fis.close(); } catch (IOException ioe) {}
+          }
+          if (fos != null) {
+              try { fos.close(); } catch (IOException ioe) {}
+          }
+      }
+  }
+
+}
+]]></source>
+
 
 </section>
 </body>
