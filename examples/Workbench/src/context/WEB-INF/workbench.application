@@ -27,6 +27,6 @@
   
   <extension name="org.apache.tapestry.request-decoder" class="org.apache.tapestry.workbench.RequestDecoder"/>
          
-  <library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
+  <library id="contrib" specification-path="classpath:/org/apache/tapestry/contrib/Contrib.library"/>
   
 </application>

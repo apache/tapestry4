@@ -70,7 +70,7 @@ public class TestAssetSource extends HiveMindTestCase
 
     public void testKnownPrefix()
     {
-        Location l = fabricateLocation(17);
+        Location l = newLocation();
 
         Resource r = newResource();
         IAsset asset = newAsset();

@@ -40,4 +40,9 @@ public class DefaultAssetFactory implements AssetFactory
         return new ExternalAsset(resource.getPath(), location);
     }
 
+    public IAsset createAbsoluteAsset(String path, Locale locale, Location location)
+    {
+        return new ExternalAsset(path, location);
+    }
+
 }

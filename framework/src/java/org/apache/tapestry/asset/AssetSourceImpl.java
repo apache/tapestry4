@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
@@ -80,6 +81,11 @@ public class AssetSourceImpl implements AssetSource
 
             truePath = path;
         }
+
+        if (truePath.startsWith("/"))
+            return factory.createAbsoluteAsset(truePath, locale, location);
+
+        // This can happen when a 3.0 DTD is read in
 
         return factory.createAsset(base, truePath, locale, location);
     }

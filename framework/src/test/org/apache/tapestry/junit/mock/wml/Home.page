@@ -21,7 +21,7 @@
 
 <page-specification class="org.apache.tapestry.junit.mock.wml.Home">
 
-    <context-asset name="image" path="images/image.wbmp"/>
+    <context-asset name="image" path="/images/image.wbmp"/>
 
     <property-specification name="u" type="java.lang.String" persistent="yes" initial-value='"newbie"'/>
     <property-specification name="l" type="java.lang.String" persistent="yes" initial-value='"option_one"'/>

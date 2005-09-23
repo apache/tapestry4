@@ -24,7 +24,9 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 import org.apache.hivemind.service.ThreadLocale;
+import org.apache.hivemind.util.ContextResource;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
@@ -56,6 +58,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.spec.IListenerBindingSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
+import org.apache.tapestry.web.WebContextResource;
 
 /**
  * Runs the process of building the component hierarchy for an entire page.
@@ -705,7 +708,7 @@ public class PageLoader implements IPageLoader
     }
 
     /**
-     * Builds an instance of {@link IAsset}from the specification.
+     * Builds an instance of {@link IAsset} from the specification.
      */
 
     private IAsset convertAsset(IAssetSpecification spec)
@@ -714,7 +717,21 @@ public class PageLoader implements IPageLoader
         String path = spec.getPath();
         Location location = spec.getLocation();
 
-        return _assetSource.findAsset(location.getResource(), path, _locale, location);
+        Resource specResource = location.getResource();
+
+        // And ugly, ugly kludge. For page and component specifications in the
+        // context (typically, somewhere under WEB-INF), we evaluate them
+        // relative the web application root.
+
+        if (isContextResource(specResource))
+            specResource = specResource.getRelativeResource("/");
+
+        return _assetSource.findAsset(specResource, path, _locale, location);
+    }
+
+    private boolean isContextResource(Resource resource)
+    {
+        return (resource instanceof WebContextResource) || (resource instanceof ContextResource);
     }
 
     /** @since 4.0 */

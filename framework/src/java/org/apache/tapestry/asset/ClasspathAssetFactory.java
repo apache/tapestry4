@@ -17,6 +17,7 @@ package org.apache.tapestry.asset;
 import java.util.Locale;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ClasspathResource;
@@ -32,6 +33,8 @@ import org.apache.tapestry.engine.IEngineService;
  */
 public class ClasspathAssetFactory implements AssetFactory
 {
+    private ClassResolver _classResolver;
+
     private IEngineService _assetService;
 
     public IAsset createAsset(Resource baseResource, String path, Locale locale, Location location)
@@ -43,7 +46,19 @@ public class ClasspathAssetFactory implements AssetFactory
             throw new ApplicationRuntimeException(AssetMessages.missingAsset(path, baseResource),
                     location, null);
 
-        return new PrivateAsset((ClasspathResource) localized, _assetService, location);
+        return createAsset(localized, location);
+    }
+
+    public IAsset createAbsoluteAsset(String path, Locale locale, Location location)
+    {
+        Resource base = new ClasspathResource(_classResolver, path);
+        Resource localized = base.getLocalization(locale);
+
+        if (localized == null)
+            throw new ApplicationRuntimeException(AssetMessages.missingClasspathResource(path),
+                    location, null);
+
+        return createAsset(localized, location);
     }
 
     public IAsset createAsset(Resource resource, Location location)
@@ -56,5 +71,10 @@ public class ClasspathAssetFactory implements AssetFactory
     public void setAssetService(IEngineService assetService)
     {
         _assetService = assetService;
+    }
+
+    public void setClassResolver(ClassResolver classResolver)
+    {
+        _classResolver = classResolver;
     }
 }
