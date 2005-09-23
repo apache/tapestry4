@@ -29,7 +29,7 @@ import org.easymock.MockControl;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestCheckbox extends BaseFormComponentTest
+public class TestCheckbox extends BaseFormComponentTestCase
 {
     public void testRenderChecked()
     {

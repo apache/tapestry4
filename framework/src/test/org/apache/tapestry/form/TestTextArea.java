@@ -29,7 +29,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestTextArea extends BaseFormComponentTest
+public class TestTextArea extends BaseFormComponentTestCase
 {
     public void testRewind()
     {

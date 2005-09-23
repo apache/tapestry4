@@ -30,7 +30,7 @@ import org.apache.tapestry.valid.IValidationDelegate;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class BaseFormComponentTest extends BaseComponentTestCase
+public abstract class BaseFormComponentTestCase extends BaseComponentTestCase
 {
 
     protected IValidationDelegate newDelegate()

@@ -21,7 +21,7 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.form.BaseFormComponentTest;
+import org.apache.tapestry.form.BaseFormComponentTestCase;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.MockDelegate;
 import org.apache.tapestry.html.BasePage;
@@ -33,7 +33,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestValidField extends BaseFormComponentTest
+public class TestValidField extends BaseFormComponentTestCase
 {
 
     public void testWasPrerendered()
