@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
@@ -40,7 +41,6 @@ import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.spec.LibrarySpecification;
-import org.apache.tapestry.test.CreatorLocation;
 
 /**
  * Tests the class {@link org.apache.tapestry.services.impl.ComponentMessagesSourceImpl}.
@@ -54,6 +54,24 @@ import org.apache.tapestry.test.CreatorLocation;
 
 public class TestComponentMessages extends TapestryTestCase
 {
+    private Location _locationFixture = new Location()
+    {
+        public Resource getResource()
+        {
+            return null;
+        }
+
+        public int getLineNumber()
+        {
+            return 0;
+        }
+
+        public int getColumnNumber()
+        {
+            return 0;
+        }
+    };
+
     private static class NullComponentPropertySource implements ComponentPropertySource
     {
 
@@ -146,7 +164,7 @@ public class TestComponentMessages extends TapestryTestCase
         source.setComponentPropertySource(new NullComponentPropertySource());
 
         IComponentSpecification spec = newSpec(location);
-        spec.setLocation(new CreatorLocation());
+        spec.setLocation(_locationFixture);
 
         IPage page = newPage(spec, source, locale);
 
@@ -299,15 +317,15 @@ public class TestComponentMessages extends TapestryTestCase
         source.setComponentPropertySource(new NullComponentPropertySource());
 
         IComponentSpecification spec = newSpec(MOCK1);
-        spec.setLocation(new CreatorLocation());
+        spec.setLocation(_locationFixture);
 
         INamespace namespace = new Namespace(null, null, newLibrarySpec(), null);
 
         IPage page = newPage(spec, source, new Locale("fr"));
         page.setNamespace(namespace);
-        
+
         assertEquals("multilocale_fr", source.getMessages(page).getMessage("multilocale"));
-        
+
         page = newPage(spec, source, new Locale("en"));
         page.setNamespace(namespace);
 

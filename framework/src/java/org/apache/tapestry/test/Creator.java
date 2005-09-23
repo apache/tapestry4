@@ -23,9 +23,11 @@ import java.util.Map;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.impl.ClassFactoryImpl;
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.enhance.AbstractPropertyWorker;
@@ -34,6 +36,7 @@ import org.apache.tapestry.enhance.EnhancementWorker;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.util.DescribedLocation;
 
 /**
  * A utility class that is used to instantiate abstract Tapestry pages and components. It creates,
@@ -57,22 +60,26 @@ public class Creator
     /**
      * Keyed on Class, value is an {@link ComponentConstructor}.
      */
-    private Map _constructors = new HashMap();
+    private final Map _constructors = new HashMap();
 
-    private ClassFactory _classFactory = new ClassFactoryImpl();
+    private final ClassFactory _classFactory = new ClassFactoryImpl();
 
-    private ClassResolver _classResolver = new DefaultClassResolver();
+    private final ClassResolver _classResolver = new DefaultClassResolver();
 
-    private List _workers = new ArrayList();
+    private final List _workers = new ArrayList();
+
+    private final Resource _creatorResource = new ClasspathResource(_classResolver,
+            "/CreatorLocation");
+
+    private final Location _creatorLocation = new DescribedLocation(_creatorResource,
+            "Creator Location");
 
     {
-        Location location = new CreatorLocation();
-
         // Overrride AbstractComponent's implementations of
         // these two properties (making them read/write).
 
-        _workers.add(new CreatePropertyWorker("messages", location));
-        _workers.add(new CreatePropertyWorker("specification", location));
+        _workers.add(new CreatePropertyWorker("messages", _creatorLocation));
+        _workers.add(new CreatePropertyWorker("specification", _creatorLocation));
 
         // Implement any abstract properties.
         // Note that we don't bother setting the errorLog property
@@ -90,7 +97,7 @@ public class Creator
                 new ComponentSpecification(), inputClass, _classFactory, null);
 
         IComponentSpecification spec = new ComponentSpecification();
-        spec.setLocation(new CreatorLocation());
+        spec.setLocation(_creatorLocation);
 
         Iterator i = _workers.iterator();
         while (i.hasNext())

@@ -69,6 +69,7 @@
   
   <contribution configuration-id="ClassWorkers">
     <worker annotation="ComponentClass" object="instance:ComponentClassAnnotationWorker"/>
+    <worker annotation="Meta" object="instance:MetaAnnotationWorker"/>
   </contribution>
   
   <configuration-point id="MethodWorkers">

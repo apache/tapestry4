@@ -276,6 +276,8 @@ public interface IComponent extends IRender, LocationHolder
      *            the property name
      * @param value
      *            the provided value
+     * @deprecated To be removed in 4.1. Use
+     *             {@link org.apache.hivemind.util.PropertyUtils#read(java.lang.Object, java.lang.String) instead.
      */
     public void setProperty(String propertyName, Object value);
 
@@ -285,6 +287,9 @@ public interface IComponent extends IRender, LocationHolder
      * @param propertyName
      *            the property name
      * @return Object the value of property
+     * @deprecated To be removed in 4.1. Use
+     *             {@link org.apache.hivemind.util.PropertyUtils#read(java.lang.Object, java.lang.String)}
+     *             instead
      */
     public Object getProperty(String propertyName);
 
@@ -356,6 +361,7 @@ public interface IComponent extends IRender, LocationHolder
      * 
      * @param containedComponent
      *            may not be null
+     * @since 4.0
      */
     public void setContainedComponent(IContainedComponent containedComponent);
 }

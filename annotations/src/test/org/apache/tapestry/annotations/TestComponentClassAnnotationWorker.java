@@ -54,6 +54,19 @@ public class TestComponentClassAnnotationWorker extends BaseAnnotationTestCase
         assertSame(l, spec.getLocation());
     }
 
+    public void testSubclass()
+    {
+        Location l = newLocation();
+        IComponentSpecification spec = attempt(BasicComponentSubclass.class, l);
+
+        assertEquals(true, spec.getAllowBody());
+        assertEquals(true, spec.getAllowInformalParameters());
+        assertEquals(false, spec.isReservedParameterName("foo"));
+        assertEquals(false, spec.isReservedParameterName("bar"));
+        assertEquals(false, spec.isDeprecated());
+        assertSame(l, spec.getLocation());
+    }
+
     public void testFormalOnly()
     {
         IComponentSpecification spec = attempt(FormalOnlyComponent.class, null);

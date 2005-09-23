@@ -70,9 +70,11 @@
       <action type="update" dev="HLS">Rename certain test-related classes to be picked up properly by the Ant build scripts</action>
       <action type="remove" dev="HLS">Remove some code that is no longer used</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-488, TAPESTRY-494, TAPESTRY-513">Document DateField, NumericField, ValidatingTextField components</action>
+      <action type="add" dev="HLS" fixes-bug="TAPESTRY-661">Add @Meta annotation, for defining meta data</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-665">The @ComponentClass annotation is not inherited by sub-classes</action>
     </release>
     <release version="4.0-beta-7" date="Sep 17 2005">
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-341">Need better line-precise reporting for listener method</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-341">Need better line-precise reporting for listener methods</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-307">Report location of errors initializing managed beans</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-270" due-to="Andy Hedges">FAQ Code example contains bug</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-583">Spurious ERROR message (probably should be WARN or INFO) when template does not refer to components in page spec</action>
