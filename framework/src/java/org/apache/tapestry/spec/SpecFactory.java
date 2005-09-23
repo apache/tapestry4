@@ -16,12 +16,8 @@ package org.apache.tapestry.spec;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.bean.BindingBeanInitializer;
-import org.apache.tapestry.bean.ExpressionBeanInitializer;
-import org.apache.tapestry.bean.IBeanInitializer;
-import org.apache.tapestry.bean.MessageBeanInitializer;
 import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
  * A Factory used by {@link org.apache.tapestry.parse.SpecificationParser}&nbsp; to create Tapestry
@@ -127,32 +123,11 @@ public class SpecFactory
         return new ParameterSpecification();
     }
 
-    /**
-     * Creates a new instance of {@link ExpressionBeanInitializer}.
-     * 
-     * @since 3.0
-     */
-
-    public IBeanInitializer createExpressionBeanInitializer(ExpressionEvaluator evaluator)
-    {
-        return new ExpressionBeanInitializer(evaluator);
-    }
 
     /** @since 4.0 */
     public BindingBeanInitializer createBindingBeanInitializer(BindingSource source)
     {
         return new BindingBeanInitializer(source);
-    }
-
-    /**
-     * Returns a new instance of {@link MessageBeanInitializer}.
-     * 
-     * @since 3.0
-     */
-
-    public IBeanInitializer createMessageBeanInitializer()
-    {
-        return new MessageBeanInitializer();
     }
 
     /**
