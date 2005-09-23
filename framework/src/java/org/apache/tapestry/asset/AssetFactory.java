@@ -30,7 +30,7 @@ import org.apache.tapestry.IAsset;
 public interface AssetFactory
 {
     /**
-     * Creates a new asset.
+     * Creates a new asset relative to an existing asset.
      * 
      * @param baseResource
      *            the base resource from which an asset path may be calculated. Each type of asset
@@ -49,6 +49,19 @@ public interface AssetFactory
      *             if no matching asset may be found.
      */
     public IAsset createAsset(Resource baseResource, String path, Locale locale, Location location);
+
+    /**
+     * Creates a new asset relative to the root of the domain defined by the type of asset.
+     * 
+     * @param path
+     *            the absolute path for the resource
+     * @param locale
+     *            the locale to localize the asset to, or null for no localization
+     * @param location
+     *            the location used to report any errors
+     * @return an {@link IAsset}
+     */
+    public IAsset createAbsoluteAsset(String path, Locale locale, Location location);
 
     /**
      * Creates a new asset based on a known resource.

@@ -51,4 +51,14 @@ class AssetMessages
     {
         return _formatter.format("exception-report-title", path);
     }
+
+    static String missingClasspathResource(String path)
+    {
+        return _formatter.format("missing-classpath-resource", path);
+    }
+
+    static String missingContextResource(String path)
+    {
+        return _formatter.format("missing-context-resource", path);
+    }
 }

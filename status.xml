@@ -65,7 +65,8 @@
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-485" due-to="Pierre-Yves Nicolas">Document Upload component</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-660">Injecting meta data generates incorrect code for boolean properties</action>
       <action type="update" dev="HLS">Improve exception reporting of certain objects, including object arrays</action>
-      <action type="update" dev="HLS" fixes-bug="TAPESTRY-639">Expose the ServletContext as service tapestry.globals.ServletContext</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-639">Expose the ServletContext as service tapestry.globals.ServletContext</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-655">In some circumstances, using the classpath: or context: prefixes on paths fails to work</action>
     </release>
     <release version="4.0-beta-7" date="Sep 17 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-341">Need better line-precise reporting for listener method</action>

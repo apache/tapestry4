@@ -17,42 +17,39 @@ package org.apache.tapestry.asset;
 import java.util.Locale;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.web.WebContext;
 import org.apache.tapestry.web.WebContextResource;
 
 /**
- * For the moment, all "context:" prefixed asset paths are interpreted relative to the web context
- * (the web application's root folder).
+ * All "context:" prefixed asset paths are interpreted relative to the web context (the web
+ * application's root folder).
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class ContextAssetFactory implements AssetFactory
 {
-    private WebContext _context;
-
     private String _contextPath;
 
-    private Resource _servletRoot;
+    private AssetFactory _classpathAssetFactory;
 
-    private ClassResolver _classResolver;
+    private WebContext _webContext;
 
-    private IEngineService _assetService;
-
-    public void initializeService()
+    public void setWebContext(WebContext webContext)
     {
-        _servletRoot = new WebContextResource(_context, "/");
+        _webContext = webContext;
     }
 
     public IAsset createAsset(Resource baseResource, String path, Locale locale, Location location)
     {
-        Resource assetResource = _servletRoot.getRelativeResource(path);
+        // We always create a new asset relative to an existing resource; the type of resource
+        // will jive with the type of asset returned. Path may start with a leading slash, which
+        // yields an absolute, not relative, path to the resource.
+
+        Resource assetResource = baseResource.getRelativeResource(path);
 
         // Here's the thing; In Tapestry 3.0 and earlier, you could specify
         // library path like /org/apache/tapestry/contrib/Contrib.library. In the new scheme
@@ -60,18 +57,27 @@ public class ContextAssetFactory implements AssetFactory
         // But to keep a lot of things from breaking, we'll kludgely allow that here.
 
         if (assetResource.getResourceURL() == null && path.startsWith("/"))
-        {
-            ClasspathResource resource = new ClasspathResource(_classResolver, path);
-            return new PrivateAsset(resource, _assetService, location);
-        }
+            return _classpathAssetFactory.createAbsoluteAsset(path, locale, location);
 
         Resource localized = assetResource.getLocalization(locale);
 
         if (localized == null)
-            throw new ApplicationRuntimeException(AssetMessages.missingAsset(path, _servletRoot),
+            throw new ApplicationRuntimeException(AssetMessages.missingAsset(path, baseResource),
                     location, null);
 
-        return new ContextAsset(_contextPath, localized, location);
+        return createAsset(localized, location);
+    }
+
+    public IAsset createAbsoluteAsset(String path, Locale locale, Location location)
+    {
+        Resource base = new WebContextResource(_webContext, path);
+        Resource localized = base.getLocalization(locale);
+
+        if (localized == null)
+            throw new ApplicationRuntimeException(AssetMessages.missingContextResource(path),
+                    location, null);
+
+        return createAsset(localized, location);
     }
 
     public IAsset createAsset(Resource resource, Location location)
@@ -79,23 +85,13 @@ public class ContextAssetFactory implements AssetFactory
         return new ContextAsset(_contextPath, resource, location);
     }
 
-    public void setContext(WebContext context)
-    {
-        _context = context;
-    }
-
     public void setContextPath(String contextPath)
     {
         _contextPath = contextPath;
     }
 
-    public void setAssetService(IEngineService assetService)
+    public void setClasspathAssetFactory(AssetFactory classpathAssetFactory)
     {
-        _assetService = assetService;
-    }
-
-    public void setClassResolver(ClassResolver classResolver)
-    {
-        _classResolver = classResolver;
+        _classpathAssetFactory = classpathAssetFactory;
     }
 }

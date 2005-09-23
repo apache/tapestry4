@@ -90,9 +90,7 @@ public class PrivateAsset extends AbstractAsset
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "PrivateAsset.resource-missing",
-                    location), ex);
+            throw new ApplicationRuntimeException(AssetMessages.noSuchResource(location.getPath()));
         }
     }
 

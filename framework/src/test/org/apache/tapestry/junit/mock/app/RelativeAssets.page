@@ -22,6 +22,6 @@
 <page-specification class="org.apache.tapestry.html.BasePage">
 
   <private-asset name="private" resource-path="images/PrivateAsset.gif"/>
-  <context-asset name="context" path="images/ContextAsset.gif"/>
+  <context-asset name="context" path="/images/ContextAsset.gif"/>
     
 </page-specification>
