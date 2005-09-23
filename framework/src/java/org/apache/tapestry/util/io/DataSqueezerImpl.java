@@ -33,8 +33,6 @@ public class DataSqueezerImpl implements DataSqueezer
 {
     private static final String NULL_PREFIX = "X";
 
-    private static final char NULL_PREFIX_CH = 'X';
-
     private static final int ARRAY_SIZE = 90;
 
     private static final int FIRST_ADAPTOR_OFFSET = 33;
@@ -201,26 +199,6 @@ public class DataSqueezerImpl implements DataSqueezer
             result[i] = unsqueeze(strings[i]);
 
         return result;
-    }
-
-    /**
-     * Checks to see if a given prefix character has a registered adaptor. This is used by the
-     * String adaptor to determine whether it needs to put a prefix on its String.
-     */
-
-    public boolean isPrefixRegistered(char prefix)
-    {
-        int offset = prefix - FIRST_ADAPTOR_OFFSET;
-
-        // Special case for handling nulls.
-
-        if (prefix == NULL_PREFIX_CH)
-            return true;
-
-        if (offset < 0 || offset >= _adaptorByPrefix.length)
-            return false;
-
-        return _adaptorByPrefix[offset] != null;
     }
 
     public String toString()

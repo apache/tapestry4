@@ -90,4 +90,8 @@ class AnnotationMessages
         return _formatter.format("class-annotation", annotation, clazz.getName());
     }
 
+    static String missingEqualsInMeta(String value)
+    {
+        return _formatter.format("missing-equals-in-meta", value);
+    }
 }

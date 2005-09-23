@@ -435,6 +435,44 @@ Primitive types passed in as parameters are automatically converted to wrapper t
 </section>
 
 <section>
+  <title>Meta</title>
+  
+  <p>
+    The <link href="&javadoc;/Meta.html">Meta</link> annotation is used to define a meta data
+    value on a page or component class, as with the <link href="&spec;#spec.meta">&lt;meta&gt;</link> element in an XML
+    component or page specification.
+  </p>
+  
+  <p>
+  Meta data from base classes is merged into subclasses; when there's a name conflict, the subclass
+  overrides the base class. This allows a base class to set a default that can be naturally overriden in a subclass.
+  </p>
+  
+<source>
+@Meta({ "requires-login=false", "show-ad-banner=true" })
+public abstract class AppBasePage extends BasePage
+{
+...
+</source>  
+
+<p>
+  Subclasses of AppBasePage could provide a @Meta annotatioun that defines new meta data, or overrides either of
+  these values.
+</p>
+
+<p>
+  Often, you only want to define a single meta value; the compiler allows you to omit the curly braces for this case:
+</p>
+
+<source>
+@Meta("org.apache.tapestry.jwcid-attribute-name=id")
+public abstract class MyComponent extends BaseComponent
+{
+...
+</source>
+</section>
+
+<section>
   <title>Parameter</title>
   
 <p>
