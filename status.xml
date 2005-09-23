@@ -68,6 +68,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-639">Expose the ServletContext as service tapestry.globals.ServletContext</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-655">In some circumstances, using the classpath: or context: prefixes on paths fails to work</action>
       <action type="update" dev="HLS">Rename certain test-related classes to be picked up properly by the Ant build scripts</action>
+      <action type="remove"" dev="HLS">Remove some code that is no longer used</action>
     </release>
     <release version="4.0-beta-7" date="Sep 17 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-341">Need better line-precise reporting for listener method</action>
