@@ -28,12 +28,17 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> Backwards compatible version of the 1.0.7 ValidatingTextField component.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+    <strong>See also: &ValidField;</strong>
 </p>
+
+<warning>
+  This component has been deprecated; Tapestry 4.0 adds even better support for  validation to &TextField;, &TextArea; and most other
+  form element component.
+</warning>
 
 <section>
   <title>Parameters</title>
@@ -47,26 +52,50 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
-
-	</table>
+  <tr>
+    <td>text</td>
+    <td>String</td> <td>in/out</td> <td>yes</td> <td>&nbsp;</td>
+    <td>
+      The text inside the text field. When the form is submitted, the binding is only updated if the value is valid.
+    </td>
+  </tr>
+  <tr>
+    <td>required</td>
+    <td>boolean</td> <td>in</td> <td>no</td> <td>false</td>
+    <td>
+      If true, then a value must be entered.
+    </td>
+  </tr>
+  <tr>
+    <td>minimumLength</td>
+    <td>int</td> <td>in</td> <td>no</td> <td>0</td>
+    <td>
+      The minimum length (number of characters read) for the field. The value provided in the request is trimmed of leading and trailing whitespace.
+      If a field is not required and no value is given, then minimumLength is ignored. Minimum length only applies if some non-null value is given.
+    </td>
+  </tr>
+  <tr>
+    <td>displayName</td>
+    <td>String</td> <td>in</td> <td>yes</td> <td>&nbsp;</td>
+    <td>
+      A textual name for the field that is used when formulating error messages.
+    </td>
+  </tr>
+</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: <em>type, value</em>
 </p>
 
 </section>
 
-<section>
-  <title>Examples</title>
-
-</section>
 </body>
 </document>
