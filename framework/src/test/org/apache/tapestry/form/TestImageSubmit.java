@@ -33,7 +33,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestImageSubmit extends BaseFormComponentTest
+public class TestImageSubmit extends BaseFormComponentTestCase
 {
     protected IAsset newAsset(IRequestCycle cycle, String imageURL)
     {
