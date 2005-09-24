@@ -35,10 +35,11 @@
           A listener that is notified if this component is triggered.
       </description>
   </parameter>
-  <parameter name="defer" default-value="true">
+  <parameter name="action">
       <description>
-          If true (the default), then any listener notification is deferred
-          until just before the form's listener is invoked.
+          A listener that is notified if this component is triggered
+          just before the form's listener, after all components 
+          enclosed by the Form have had a chance to update their properties.
       </description>
   </parameter>
   <parameter name="parameters">

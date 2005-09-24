@@ -350,15 +350,15 @@ public class TestSubmit extends BaseFormComponentTestCase
         verifyControls();
     }
 
-    public void testTriggerWithDeferredListener()
+    public void testTriggerWithAction()
     {
-        IActionListener listener = newListener();
+        IActionListener action = newListener();
         MockForm form = new MockForm();
         IRequestCycle cycle = newCycle();
 
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
-        { "listener", listener, "defer", Boolean.TRUE, "listenerInvoker",
+        { "action", action, "listenerInvoker",
                 new ListenerInvokerTerminator() });
 
         replayControls();
@@ -367,7 +367,7 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         verifyControls();
 
-        listener.actionTriggered(submit, cycle);
+        action.actionTriggered(submit, cycle);
 
         replayControls();
 
@@ -376,9 +376,9 @@ public class TestSubmit extends BaseFormComponentTestCase
         verifyControls();
     }
 
-    public void testTriggerWithDeferredListenerAndSingleParameter()
+    public void testTriggerWithActionAndSingleParameter()
     {
-        IActionListener listener = newListener();
+        IActionListener action = newListener();
         MockForm form = new MockForm();
         MockControl cycleControl = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cycleControl.getMock();
@@ -386,7 +386,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         Object parameter = new Object();
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
-        { "listener", listener, "defer", Boolean.TRUE, "parameters", parameter, "listenerInvoker",
+        { "action", action, "parameters", parameter, "listenerInvoker",
                 new ListenerInvokerTerminator() });
 
         cycle.setListenerParameters(new Object[]
@@ -399,7 +399,7 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         verifyControls();
 
-        listener.actionTriggered(submit, cycle);
+        action.actionTriggered(submit, cycle);
 
         replayControls();
 
@@ -408,9 +408,9 @@ public class TestSubmit extends BaseFormComponentTestCase
         verifyControls();
     }
 
-    public void testTriggerWithDeferredListenerAndMultipleParameters()
+    public void testTriggerWithDActionAndMultipleParameters()
     {
-        IActionListener listener = newListener();
+        IActionListener action = newListener();
         MockForm form = new MockForm();
         MockControl cycleControl = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cycleControl.getMock();
@@ -421,7 +421,7 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
-        { "listener", listener, "defer", Boolean.TRUE, "parameters", parameters, "listenerInvoker",
+        { "action", action, "parameters", parameters, "listenerInvoker",
                 new ListenerInvokerTerminator() });
 
         cycle.setListenerParameters(new Object[]
@@ -434,7 +434,7 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         verifyControls();
 
-        listener.actionTriggered(submit, cycle);
+        action.actionTriggered(submit, cycle);
 
         replayControls();
 
@@ -442,4 +442,35 @@ public class TestSubmit extends BaseFormComponentTestCase
 
         verifyControls();
     }
+    
+    public void testTriggerWithListenerAndAction()
+    {
+        IActionListener listener = newListener();
+        IActionListener action = newListener();
+        
+        MockForm form = new MockForm();
+        IRequestCycle cycle = newCycle();
+
+        Creator creator = new Creator();
+        Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
+        { "listener", listener, "action", action, "listenerInvoker",
+                new ListenerInvokerTerminator() });
+
+        listener.actionTriggered(submit, cycle);
+        
+        replayControls();
+
+        submit.handleClick(cycle, form);
+
+        verifyControls();
+
+        action.actionTriggered(submit, cycle);
+
+        replayControls();
+
+        form.runDeferred();
+
+        verifyControls();
+    }
+    
 }

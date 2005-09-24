@@ -61,13 +61,12 @@
   	</description>
   </parameter>
   
-  <parameter name="defer" default-value="true">
-    <description>
-      If true (the default), then the listener (if any)
-      is not notified until just before the form's listener,
-      after all components enclosed by the Form have had
-      a chance to update properties.
-    </description>
+  <parameter name="action">
+      <description>
+          A listener that is notified if this component is triggered
+          just before the form's listener, after all components 
+          enclosed by the Form have had a chance to update their properties.
+      </description>
   </parameter>
 
   <parameter name="parameters">
