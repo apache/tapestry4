@@ -48,9 +48,10 @@ Submit component (if any) caused the form to be submitted:
 <p>
 It is even possible to combine the two, in which case the property is set first,
 then the listener is notified.  The listener may be notified immediately
-(i.e., in the middle of processing the form submission), but by default,
+(i.e., in the middle of processing the form submission) if provided 
+via the 'listener' parameter, but if it is provided via the 'action' parameter,
 the listener will be notified later, just before the form's listener (if any)
-is notified.
+is invoked.
 </p>
   
 
@@ -118,7 +119,7 @@ is notified.
     </td>
    </tr>    
    
- <tr>
+	<tr>
  		<td>listener</td>
  		<td>
     &IActionListener;
@@ -127,22 +128,22 @@ is notified.
  		<td>no</td>
  		<td>&nbsp;</td>
  		<td>
-    An optional listener (typically specified as the name of a listener method), notified
-    when the Submit is triggered.
+		An optional listener (typically specified as the name of a listener method), notified
+		when the Submit is triggered.
  		</td>
-   </tr>   
-   <tr>
-    <td>defer</td>
-    <td>boolean</td>
-    <td>in</td>
-    <td>no</td>
-    <td>true</td>
-    <td>
-      If true (the default), then the listener (if any) will not
-      be notified immediately but will be notified just
-      before the enclosing &Form;'s listener.
-    </td>
-   </tr>
+	</tr>   
+	<tr>
+ 		<td>action</td>
+ 		<td>&IActionListener;</td>
+ 		<td>in</td>
+ 		<td>no</td>
+ 		<td>&nbsp;</td>
+ 		<td>
+          A listener that is notified if this component is triggered
+          just before the form's listener, after all components 
+          enclosed by the Form have had a chance to update their properties.
+ 		</td>
+	</tr>   
    <tr>
     <td>parameters</td>
     <td>Object</td>
@@ -159,10 +160,10 @@ is notified.
       signature).
       </p>
       <p>
-      Allows deferred listeners 
-      (defer = true) access to any rewind state not conveniently
-      placed using tag/selected (e.g. when there are multiple objects
-      to select as might happen with a nested Foreach).
+      Allows listeners provided by the 'action' parameter to 
+      access any rewinded state not conveniently placed using tag/selected 
+      (e.g. when there are multiple objects to select 
+      as might happen with a nested For).
       </p>
     </td>
    </tr>
@@ -179,12 +180,6 @@ is notified.
 <p>
   Reserved parameters: name, type
 </p>
-
-<warning>
-  In Tapestry 3.0, the behavior of the Submit was <em>undeferred</em>, the equivalent of setting the defer parameter to false.
-  The default for the defer parameter in 4.0 is <strong>true</strong>, which may in rare cases, cause problems when upgrading
-  an applicaton from 3.0 to 4.0.
-</warning>
 
 </section>
 
@@ -205,7 +200,7 @@ is notified.
   <tr>
     <td colspan="2">
       <input type="submit" value="Login"/>
-      <input type="submit" jwcid="help@Submit" listener="listener:doHelp" value="Help"/>
+      <input type="submit" jwcid="help@Submit" action="listener:doHelp" value="Help"/>
     </td>
   </tr>
 </table>
