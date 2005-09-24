@@ -72,6 +72,7 @@
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-488, TAPESTRY-494, TAPESTRY-513">Document DateField, NumericField, ValidatingTextField components</action>
       <action type="add" dev="HLS" fixes-bug="TAPESTRY-661">Add @Meta annotation, for defining meta data</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-665">The @ComponentClass annotation is not inherited by sub-classes</action>
+      <action type="fix" dev="MB" fixes-bug="TAPESTRY-666">The 'defer' parameter of Submit, LinkSubmit, and ImageSubmit with default of 'true' tends to cause user issues</action>
     </release>
     <release version="4.0-beta-7" date="Sep 17 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-341">Need better line-precise reporting for listener methods</action>

@@ -55,8 +55,9 @@ abstract class AbstractSubmit extends AbstractFormComponent
             setSelected(getTag());
 
         final IActionListener listener = getListener();
+        final IActionListener action = getAction();
 
-        if (listener == null)
+        if (listener == null && action == null)
             return;
 
         final ListenerInvoker listenerInvoker = getListenerInvoker();
@@ -75,24 +76,28 @@ abstract class AbstractSubmit extends AbstractFormComponent
             }
         }
 
-        // Have a listener; notify it now, or defer for later?
-
-        Runnable notify = new Runnable()
-        {
-            public void run()
-            {
-                listenerInvoker.invokeListener(listener, AbstractSubmit.this, cycle);
-            }
-        };
-
-        if (getDefer())
+        // Invoke 'listener' now, but defer 'action' for later
+        if (listener != null)
+        	listenerInvoker.invokeListener(listener, AbstractSubmit.this, cycle);
+        
+        if (action != null) {
+	        Runnable notify = new Runnable()
+	        {
+	            public void run()
+	            {
+	                listenerInvoker.invokeListener(action, AbstractSubmit.this, cycle);
+	            }
+	        };
+	
             form.addDeferredRunnable(notify);
-        else
-            notify.run();
+        }
     }
 
     /** parameter */
     public abstract IActionListener getListener();
+
+    /** parameter */
+    public abstract IActionListener getAction();
 
     /** parameter */
     public abstract Object getTag();

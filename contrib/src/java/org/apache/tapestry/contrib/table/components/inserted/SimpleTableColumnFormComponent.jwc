@@ -55,7 +55,6 @@
 		<binding name="listener" expression="listeners.columnSelected"/>
 		<binding name="tag" expression="tableColumn.columnName"/>
 		<binding name="selected" expression="selectedColumnName"/>
-        <binding name="defer" expression="false"/>
 	</component>
 	
 	<component id="imageSort" type="Image">

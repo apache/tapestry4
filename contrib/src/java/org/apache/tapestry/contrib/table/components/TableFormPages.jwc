@@ -83,7 +83,6 @@
 	    <binding name="listener" expression="listeners.changePage"/>
 	    <binding name="tag" expression="displayPage"/>
 	    <binding name="selected" expression="selectedPage"/>
-        <binding name="defer" expression="false"/>
 	</component>
 
 	<component id="linkFirst" type="LinkSubmit">
@@ -91,7 +90,6 @@
 	    <binding name="tag" expression="1"/>
 	    <binding name="selected" expression="selectedPage"/>
 	    <binding name="disabled" expression="!condBack"/>
-        <binding name="defer" expression="false"/>
 	</component>
 
 	<component id="linkBack" type="LinkSubmit">
@@ -99,7 +97,6 @@
 	    <binding name="tag" expression="currentPage - 1"/>
 	    <binding name="selected" expression="selectedPage"/>
 	    <binding name="disabled" expression="!condBack"/>
-        <binding name="defer" expression="false"/>
 	</component>
 
 	<component id="linkFwd" type="LinkSubmit">
@@ -107,7 +104,6 @@
 	    <binding name="tag" expression="currentPage + 1"/>
 	    <binding name="selected" expression="selectedPage"/>
 	    <binding name="disabled" expression="!condFwd"/>
-        <binding name="defer" expression="false"/>
 	</component>
 	
 	<component id="linkLast" type="LinkSubmit">
@@ -115,7 +111,6 @@
 	    <binding name="tag" expression="pageCount"/>
 	    <binding name="selected" expression="selectedPage"/>
 	    <binding name="disabled" expression="!condFwd"/>
-        <binding name="defer" expression="false"/>
 	</component>
 
 </component-specification>
