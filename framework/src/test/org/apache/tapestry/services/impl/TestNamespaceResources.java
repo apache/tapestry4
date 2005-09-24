@@ -42,13 +42,13 @@ public class TestNamespaceResources extends HiveMindTestCase
     protected void trainGetRelativeResource(Resource parent, String path, Resource child)
     {
         parent.getRelativeResource(path);
-        getControl(parent).setReturnValue(child);
+        setReturnValue(parent,child);
     }
 
     protected void trainGetResourceURL(Resource resource, URL url)
     {
         resource.getResourceURL();
-        getControl(resource).setReturnValue(url);
+        setReturnValue(resource,url);
     }
 
     protected ISpecificationSource newSource()
@@ -95,10 +95,10 @@ public class TestNamespaceResources extends HiveMindTestCase
         IAsset asset = newAsset();
 
         assetSource.findAsset(parent, childPath, null, location);
-        getControl(assetSource).setReturnValue(asset);
+        setReturnValue(assetSource,asset);
 
         asset.getResourceLocation();
-        getControl(asset).setReturnValue(child);
+        setReturnValue(asset,child);
     }
 
     protected IAsset newAsset()
@@ -115,7 +115,7 @@ public class TestNamespaceResources extends HiveMindTestCase
             ILibrarySpecification spec)
     {
         source.getLibrarySpecification(resource);
-        getControl(source).setReturnValue(spec);
+        setReturnValue(source,spec);
     }
 
     protected IComponentSpecification newComponentSpec()
@@ -135,7 +135,7 @@ public class TestNamespaceResources extends HiveMindTestCase
         trainResolveChildResource(assetSource, libraryResource, "Foo.page", l, specResource);
 
         source.getPageSpecification(specResource);
-        getControl(source).setReturnValue(spec);
+        setReturnValue(source,spec);
 
         replayControls();
 
@@ -158,7 +158,7 @@ public class TestNamespaceResources extends HiveMindTestCase
         trainResolveChildResource(assetSource, libraryResource, "Foo.jwc", l, specResource);
 
         source.getComponentSpecification(specResource);
-        getControl(source).setReturnValue(spec);
+        setReturnValue(source,spec);
 
         replayControls();
 

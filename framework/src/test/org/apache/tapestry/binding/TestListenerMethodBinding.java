@@ -95,7 +95,7 @@ public class TestListenerMethodBinding extends BindingTestCase
         listener.actionTriggered(sourceComponent, cycle);
 
         Throwable t = new PageRedirectException("TargetPage");
-        getControl(listener).setThrowable(t);
+        setThrowable(listener, t);
 
         replayControls();
 
@@ -129,7 +129,7 @@ public class TestListenerMethodBinding extends BindingTestCase
         listener.actionTriggered(sourceComponent, cycle);
 
         Throwable t = new RedirectException("http://foo.bar");
-        getControl(listener).setThrowable(t);
+        setThrowable(listener, t);
 
         replayControls();
 
@@ -163,7 +163,7 @@ public class TestListenerMethodBinding extends BindingTestCase
         listener.actionTriggered(sourceComponent, cycle);
 
         Throwable t = new RuntimeException("Failure.");
-        getControl(listener).setThrowable(t);
+        setThrowable(listener, t);
 
         trainGetExtendedId(component, "Fred/barney");
 
@@ -203,13 +203,13 @@ public class TestListenerMethodBinding extends BindingTestCase
     private void trainGetListener(ListenerMap map, String methodName, IActionListener listener)
     {
         map.getListener(methodName);
-        getControl(map).setReturnValue(listener);
+        setReturnValue(map, listener);
     }
 
     private void trainGetListeners(IComponent component, ListenerMap lm)
     {
         component.getListeners();
-        getControl(component).setReturnValue(lm);
+        setReturnValue(component,lm);
     }
 
     private ListenerMap newListenerMap()

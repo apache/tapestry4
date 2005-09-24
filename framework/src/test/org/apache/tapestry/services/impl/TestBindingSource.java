@@ -45,7 +45,7 @@ public class TestBindingSource extends BaseComponentTestCase
         // Training
 
         factory.createBinding(component, "foo", "a literal value without a prefix", l);
-        getControl(factory).setReturnValue(binding);
+        setReturnValue(factory,binding);
 
         replayControls();
 
@@ -76,7 +76,7 @@ public class TestBindingSource extends BaseComponentTestCase
         // Training
 
         factory.createBinding(component, "foo", "an-expression", l);
-        getControl(factory).setReturnValue(binding);
+        setReturnValue(factory,binding);
 
         BindingPrefixContribution c = new BindingPrefixContribution();
         c.setPrefix(BindingConstants.OGNL_PREFIX);
@@ -110,7 +110,7 @@ public class TestBindingSource extends BaseComponentTestCase
         // Training
 
         factory.createBinding(component, "bar", "path part of locator", l);
-        getControl(factory).setReturnValue(binding);
+        setReturnValue(factory,binding);
 
         BindingPrefixContribution c = new BindingPrefixContribution();
         c.setPrefix("prefix");
@@ -145,7 +145,7 @@ public class TestBindingSource extends BaseComponentTestCase
         // Training
 
         factory.createBinding(component, "zip", "unknown:path part of locator", l);
-        getControl(factory).setReturnValue(binding);
+        setReturnValue(factory,binding);
 
         BindingPrefixContribution c = new BindingPrefixContribution();
         c.setPrefix(BindingConstants.LITERAL_PREFIX);

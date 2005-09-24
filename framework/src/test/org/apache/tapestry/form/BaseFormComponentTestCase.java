@@ -42,7 +42,7 @@ public abstract class BaseFormComponentTestCase extends BaseComponentTestCase
     {
         delegate.isInError();
 
-        getControl(delegate).setReturnValue(isInError);
+        setReturnValue(delegate,isInError);
     }
 
     protected IForm newForm()
@@ -54,41 +54,41 @@ public abstract class BaseFormComponentTestCase extends BaseComponentTestCase
     {
         cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
 
-        getControl(cycle).setReturnValue(form);
+        setReturnValue(cycle,form);
     }
 
     protected void trainGetDelegate(IForm form, IValidationDelegate delegate)
     {
         form.getDelegate();
 
-        getControl(form).setReturnValue(delegate);
+        setReturnValue(form,delegate);
     }
 
     protected void trainGetParameter(IRequestCycle cycle, String parameterName,
             String parameterValue)
     {
         cycle.getParameter(parameterName);
-        getControl(cycle).setReturnValue(parameterValue);
+        setReturnValue(cycle,parameterValue);
     }
 
     protected void trainWasPrerendered(IForm form, IMarkupWriter writer, IComponent component,
             boolean wasPrerendered)
     {
         form.wasPrerendered(writer, component);
-        getControl(form).setReturnValue(wasPrerendered);
+        setReturnValue(form,wasPrerendered);
     }
 
     protected void trainIsRewinding(IForm form, boolean isRewinding)
     {
         form.isRewinding();
-        getControl(form).setReturnValue(isRewinding);
+        setReturnValue(form,isRewinding);
     }
 
     protected void trainGetElementId(IForm form, IFormComponent component, String name)
     {
         form.getElementId(component);
         component.setName(name);
-        getControl(form).setReturnValue(name);
+        setReturnValue(form,name);
     }
 
     protected IBinding newBinding()

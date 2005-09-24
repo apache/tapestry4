@@ -63,7 +63,7 @@ public class TestBeanProvider extends BaseComponentTestCase
     protected void trainGetClassName(IBeanSpecification spec, String className)
     {
         spec.getClassName();
-        getControl(spec).setReturnValue(className);
+        setReturnValue(spec, className);
     }
 
     public void testResolveClassFailure()
@@ -168,22 +168,22 @@ public class TestBeanProvider extends BaseComponentTestCase
         trainGetPage(component, page);
 
         page.getRequestCycle();
-        getControl(page).setReturnValue(cycle);
+        setReturnValue(page, cycle);
 
         cycle.getInfrastructure();
-        getControl(cycle).setReturnValue(infrastructure);
+        setReturnValue(cycle, infrastructure);
 
         infrastructure.getClassResolver();
-        getControl(infrastructure).setReturnValue(resolver);
+        setReturnValue(infrastructure, resolver);
 
         component.getNamespace();
-        getControl(component).setReturnValue(namespace);
+        setReturnValue(component, namespace);
 
         namespace.getPropertyValue("org.apache.tapestry.bean-class-packages");
-        getControl(namespace).setReturnValue("mypackage");
+        setReturnValue(namespace, "mypackage");
 
         infrastructure.getClassFinder();
-        getControl(infrastructure).setReturnValue(classFinder);
+        setReturnValue(infrastructure, classFinder);
     }
 
     protected ClassFinder newClassFinder()
@@ -251,6 +251,6 @@ public class TestBeanProvider extends BaseComponentTestCase
     private void trainFindClass(ClassFinder finder, String className, Class clazz)
     {
         finder.findClass("mypackage", className);
-        getControl(finder).setReturnValue(clazz);
+        setReturnValue(finder, clazz);
     }
 }

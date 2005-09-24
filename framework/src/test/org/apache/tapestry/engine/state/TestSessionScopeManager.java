@@ -161,7 +161,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
     {
         session.getAttribute(name);
 
-        getControl(session).setReturnValue(attribute);
+        setReturnValue(session,attribute);
     }
 
     public void testStore()
@@ -195,7 +195,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
         SessionStoreOptimized optimized = (SessionStoreOptimized) newMock(SessionStoreOptimized.class);
 
         optimized.isStoreToSessionNeeded();
-        getControl(optimized).setReturnValue(dirty);
+        setReturnValue(optimized,dirty);
 
         return optimized;
     }
