@@ -30,7 +30,8 @@
 
 <p> A component that generates a clickable image that will cause the enclosing form to submit.  The &lt;input type="image"&gt; form element
   was originally designed for use as a way to select a pixel within an image that was presumable a map; it has been co-opted by web applications
-  as a way to decorate a form submit button using a custom image instead of ordinary clickable buttons.  This component is simply an enhanced version of the &Submit; component that will display an image
+  as a way to decorate a form submit button using a custom image instead of ordinary clickable buttons.  
+  This component is simply an enhanced version of the &Submit; component that will display an image
   instead of a text label.
 </p>
 
@@ -147,18 +148,18 @@
     when the Submit is triggered.
  		</td>
    </tr>   
-   <tr>
-    <td>defer</td>
-    <td>boolean</td>
-    <td>in</td>
-    <td>no</td>
-    <td>true</td>
-    <td>
-      If true (the default), then the listener (if any) will not
-      be notified immediately but will be notified just
-      before the enclosing &Form;'s listener.
-    </td>
-   </tr>
+	<tr>
+ 		<td>action</td>
+ 		<td>&IActionListener;</td>
+ 		<td>in</td>
+ 		<td>no</td>
+ 		<td>&nbsp;</td>
+ 		<td>
+          A listener that is notified if this component is triggered
+          just before the form's listener, after all components 
+          enclosed by the Form have had a chance to update their properties.
+ 		</td>
+	</tr>   
    <tr>
     <td>parameters</td>
     <td>Object</td>
@@ -227,7 +228,7 @@ HTML template:
   <tr>
     <td colspan="2">
       <input type="image" src="images/login.png"/>
-      <input type="image" jwcid="help@ImageSubmit" listener="listener:doHelp" image="asset:help/>
+      <input type="image" jwcid="help@ImageSubmit" action="listener:doHelp" image="asset:help/>
     </td>
   </tr>
 </table>
