@@ -73,6 +73,7 @@
   		  
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>
+  <reserved-parameter name="defer"/>
 
   <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
   
