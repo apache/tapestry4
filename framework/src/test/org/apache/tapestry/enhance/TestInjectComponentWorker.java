@@ -77,27 +77,27 @@ public class TestInjectComponentWorker extends HiveMindTestCase
             Class propertyType)
     {
         op.getPropertyType(propertyName);
-        getControl(op).setReturnValue(propertyType);
+        setReturnValue(op, propertyType);
     }
 
     protected void trainGetAccessorMethodName(EnhancementOperation op, String propertyName,
             String methodName)
     {
         op.getAccessorMethodName(propertyName);
-        getControl(op).setReturnValue(methodName);
+        setReturnValue(op, methodName);
     }
 
     protected void trainGetClassReference(EnhancementOperation op, Class clazz, String reference)
     {
         op.getClassReference(clazz);
-        getControl(op).setReturnValue(reference);
+        setReturnValue(op, reference);
     }
 
     protected void trainAddInjectedField(EnhancementOperation op, String fieldName,
             Class fieldType, Object fieldValue, String uniqueFieldName)
     {
         op.addInjectedField(fieldName, fieldType, fieldValue);
-        getControl(op).setReturnValue(uniqueFieldName);
+        setReturnValue(op, uniqueFieldName);
     }
 
     public void testSuccess()

@@ -296,7 +296,9 @@ public class TestTapestryUtils extends BaseComponentTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals("Component Flintstone/fred is not assignable to type java.lang.String.", ex.getMessage());
+            assertEquals(
+                    "Component Flintstone/fred is not assignable to type java.lang.String.",
+                    ex.getMessage());
             assertSame(l, ex.getLocation());
         }
 
@@ -312,7 +314,7 @@ public class TestTapestryUtils extends BaseComponentTestCase
         Throwable t = new RuntimeException("Poof!");
 
         container.getComponent("fred");
-        getControl(container).setThrowable(t);
+        setThrowable(container, t);
 
         replayControls();
 

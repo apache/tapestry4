@@ -102,7 +102,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     protected void trainIsRewinding(IRequestCycle cycle, boolean rewinding)
     {
         cycle.isRewinding();
-        getControl(cycle).setReturnValue(rewinding);
+        setReturnValue(cycle,rewinding);
     }
 
     protected IRequestCycle newCycleGetPage(String pageName, IPage page)
@@ -279,14 +279,14 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     {
         page.getPageName();
 
-        getControl(page).setReturnValue(pageName);
+        setReturnValue(page,pageName);
     }
 
     protected void trainBuildURL(IAsset asset, IRequestCycle cycle, String URL)
     {
         asset.buildURL(cycle);
 
-        getControl(asset).setReturnValue(URL);
+        setReturnValue(asset,URL);
     }
 
     protected IAsset newAsset()
@@ -299,7 +299,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         IEngine engine = (IEngine) newMock(IEngine.class);
 
         engine.getClassResolver();
-        getControl(engine).setReturnValue(resolver);
+        setReturnValue(engine,resolver);
 
         return engine;
     }
@@ -308,7 +308,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     {
         page.getEngine();
 
-        getControl(page).setReturnValue(engine);
+        setReturnValue(page,engine);
     }
 
     protected IComponent newComponent()
@@ -319,19 +319,19 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     protected void trainGetPage(IComponent component, IPage page)
     {
         component.getPage();
-        getControl(component).setReturnValue(page);
+        setReturnValue(component,page);
     }
 
     protected void trainGetExtendedId(IComponent component, String extendedId)
     {
         component.getExtendedId();
-        getControl(component).setReturnValue(extendedId);
+        setReturnValue(component,extendedId);
     }
 
     protected void trainGetLocation(Locatable locatable, Location location)
     {
         locatable.getLocation();
-        getControl(locatable).setReturnValue(location);
+        setReturnValue(locatable,location);
     }
 
     protected IBinding newBinding()
@@ -342,6 +342,6 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     protected void trainGetComponent(IComponent container, String componentId, IComponent containee)
     {
         container.getComponent(componentId);
-        getControl(container).setReturnValue(containee);
+        setReturnValue(container,containee);
     }
 }

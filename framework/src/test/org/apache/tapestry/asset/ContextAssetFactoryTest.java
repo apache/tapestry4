@@ -106,7 +106,7 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
         trainGetResourceURL(relative, null);
 
         classpathFactory.createAbsoluteAsset("/asset.png", Locale.FRENCH, l);
-        getControl(classpathFactory).setReturnValue(asset);
+        setReturnValue(classpathFactory, asset);
 
         replayControls();
 
@@ -175,24 +175,24 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
     private void trainGetLocalization(Resource resource, Locale locale, Resource localized)
     {
         resource.getLocalization(locale);
-        getControl(resource).setReturnValue(localized);
+        setReturnValue(resource, localized);
     }
 
     protected void trainGetResourceURL(Resource resource, URL url)
     {
         resource.getResourceURL();
-        getControl(resource).setReturnValue(url);
+        setReturnValue(resource, url);
     }
 
     protected void trainGetResource(WebContext context, String path, URL url)
     {
         context.getResource(path);
-        getControl(context).setReturnValue(url);
+        setReturnValue(context, url);
     }
 
     protected void trainGetRelativeResource(Resource base, String path, Resource relative)
     {
         base.getRelativeResource(path);
-        getControl(base).setReturnValue(relative);
+        setReturnValue(base, relative);
     }
 }

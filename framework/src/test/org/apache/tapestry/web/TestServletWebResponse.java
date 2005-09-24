@@ -48,7 +48,7 @@ public class TestServletWebResponse extends HiveMindTestCase
 
         response.setContentType("foo/bar");
         response.getOutputStream();
-        getControl(response).setReturnValue(stream);
+        setReturnValue(response,stream);
 
         replayControls();
 
@@ -67,7 +67,7 @@ public class TestServletWebResponse extends HiveMindTestCase
 
         response.setContentType("foo/bar");
         response.getOutputStream();
-        getControl(response).setThrowable(t);
+        setThrowable(response, t);
 
         replayControls();
 
@@ -95,7 +95,7 @@ public class TestServletWebResponse extends HiveMindTestCase
 
         response.setContentType("foo/bar");
         response.getWriter();
-        getControl(response).setReturnValue(writer);
+        setReturnValue(response,writer);
 
         replayControls();
 
@@ -115,7 +115,7 @@ public class TestServletWebResponse extends HiveMindTestCase
 
         response.setContentType("foo/bar");
         response.getWriter();
-        getControl(response).setReturnValue(writer1);
+        setReturnValue(response,writer1);
 
         replayControls();
 
@@ -128,7 +128,7 @@ public class TestServletWebResponse extends HiveMindTestCase
         response.reset();
         response.setContentType("zip/zap");
         response.getWriter();
-        getControl(response).setReturnValue(writer2);
+        setReturnValue(response,writer2);
 
         replayControls();
 
@@ -145,7 +145,7 @@ public class TestServletWebResponse extends HiveMindTestCase
 
         response.setContentType("foo/bar");
         response.getWriter();
-        getControl(response).setThrowable(t);
+        setThrowable(response, t);
 
         replayControls();
 

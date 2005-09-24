@@ -35,7 +35,7 @@ public class WebContextInitializerTest extends HiveMindTestCase
         ServletContext servletContext = (ServletContext) newMock(ServletContext.class);
 
         servlet.getServletContext();
-        getControl(servlet).setReturnValue(servletContext);
+        setReturnValue(servlet,servletContext);
 
         replayControls();
 
