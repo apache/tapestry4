@@ -18,6 +18,8 @@ import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.Map;
 
+import javax.ejb.CreateException;
+
 /**
  * Implementation of the Book entity.
  * <p>
@@ -83,7 +85,7 @@ public abstract class BookBean extends AbstractEntityBean
 
     // Create methods
 
-    public Integer ejbCreate(Map attributes) throws RemoteException
+    public Integer ejbCreate(Map attributes) throws CreateException, RemoteException
     {
         setLendable(true);
 

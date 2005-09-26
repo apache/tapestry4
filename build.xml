@@ -82,30 +82,26 @@
 		</java>
 	</target>
 	
-	<available property="available.vlib.ear" file="target/vlib.ear"/>
+	<available property="available.vlib.ear" file="target/vlib/vlib.ear"/>
 	
 	<target name="deploy-jboss" description="Deploys the Virtual Library example into JBoss 4.0.">
 		
 		<fail unless="available.vlib.ear" message="You must run the 'install' target to build the vlib.ear first."/>
 		<property name="jboss.default.dir" value="${jboss.dir}/server/default"/>
-		
-		<!-- Download from Maven -->
-		<grab-file
-			src="${maven.ibiblio.url}/mckoi/jars/mckoi-${mckoi.version}.jar"
-			dest="${external.lib.dir}/mckoi-${mckoi.version}.jar"/>
-		<copy todir="${jboss.default.dir}/lib">
-			<fileset dir="${external.lib.dir}">
-				<include name="mckoi-${mckoi.version}.jar"/>
-				<!-- include name="ognl-${ognl.version}.jar"/ -->
-			</fileset>
-		</copy>
+
 		<copy todir="${jboss.default.dir}/deploy">
-			<fileset dir="config/jboss/deploy" includes="*"/>
-			<fileset dir="target" includes="*.ear"/>
+			<fileset dir="target/vlib" includes="*.ear"/>
 		</copy>
+			
+		<!--
 		<mkdir dir="${jboss.default.dir}/db"/>
 		<unzip dest="${jboss.default.dir}/db" src="config/jboss/tapestry-db.zip"/>
-				
+		-->
+
+		<copy todir="${jboss.default.dir}/deploy">
+			<fileset dir="target" includes="*.ear"/>
+		</copy>
+		
 		<announce message="JBoss 4 has been set up to execute the Virtual Library application."/>
 		<announce message="You may need to restart JBoss before the application will run."/>
 		

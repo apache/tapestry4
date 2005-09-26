@@ -54,6 +54,27 @@
 
   </target>
 	
+  <macrodef name="update-classpath">
+	<attribute name="jarfile" description="Jar file to update"/>
+  	<attribute name="classpath" description="Class-Path value to set"/>
+  	
+  	<sequential>
+  		<property name="work.dir" value="${target.dir}/repack-jar"/>
+  		<delete dir="${work.dir}" quiet="true"/>
+  		<mkdir dir="${work.dir}"/>
+  		<unjar src="@{jarfile}" dest="${work.dir}">
+  			<patternset excludes="META-INF/INDEX*"/>
+  		</unjar>
+  		<jar destfile="@{jarfile}" index="true" manifest="${work.dir}/META-INF/MANIFEST.MF">
+  	  		<manifest>
+  	  			<attribute name="Class-Path" value="@{classpath}"/>
+  	  		</manifest>
+  			<fileset dir="${work.dir}" excludes="META-INF/MANIFEST.MF"/>
+  		</jar>
+	</sequential>
+  </macrodef>
+	
+	
   <target name="war" depends="run-tests" description="Build the Vlib WAR and EAR files.">
 	
 	<property name="complete-war-path" value="${module.install.dir}/${module.war.file}"/>
@@ -77,16 +98,21 @@
 		
 	</war>  
   	
+  	
   	<announce message="Building ${module.install.dir}/vlib.ear"/>
   	
   	<property name="ear-image.dir" value="${target.dir}/ear-image"/>
-  	<property name="ear.lib.dir" value="${ear-image.dir}/APP-INF/lib"/>
+  	<property name="ear.lib.dir" value="${ear-image.dir}/lib"/>
   	<mkdir dir="${ear.lib.dir}"/>
   	
   	<copy file="${module.install.dir}/${module.war.file}" todir="${ear-image.dir}"/>
   	
   	<copy todir="${ear.lib.dir}" flatten="true">
-  		<fileset dir="${module.lib.dir}/run" includes="**/*.jar"/>
+  		<fileset dir="${module.lib.dir}/run">
+  			<include name="**/*.jar"/>
+  			<!-- Conflicts with JBoss's copy -->
+  			<exclude name="**/commons-logging*.jar"/>
+  		</fileset>
   	</copy>
   	
   	<copy todir="${ear-image.dir}">
@@ -94,6 +120,21 @@
 		<mapper type="regexp" from="^(.*?)-.*\.jar$$" to="\1.jar"/>
   	</copy>
   	
+  	<taskdef name="manifestclasspath" classname="org.apache.hivemind.ant.ManifestClassPath">
+  		<!-- HiveMind is in there somewhere -->
+  		<classpath id="ear.lib.classpath">
+  			<fileset dir="${ear.lib.dir}" includes="*.jar"/>
+  		</classpath>
+  	</taskdef>
+
+  	<manifestclasspath property="ear.classpath" directory="${ear-image.dir}">
+	  	<classpath refid="ear.lib.classpath"/>
+  	</manifestclasspath>
+  		
+  	<echo>ear.classpath=${ear.classpath}</echo>
+
+  	<update-classpath jarfile="${ear-image.dir}/vlibbeans.jar" classpath="${ear.classpath}"/>
+
   	<ear destfile="${module.install.dir}/vlib.ear" appxml="${src.dir}/ear-conf/META-INF/application.xml" basedir="${ear-image.dir}">
   		<metainf dir="${src.dir}/ear-conf/META-INF" excludes="application.xml"/>
   	</ear>
