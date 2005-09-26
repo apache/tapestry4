@@ -28,11 +28,11 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>  Provides a HTML form button element &lt;input type="button"&gt; for attaching JavaScript onclick event handlers.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &Form; &Script; &Submit;</strong>
 </p>
 
 <section>
@@ -47,26 +47,36 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
+    <tr>
+      <td>lable</td>
+      <td>String</td> <td>in</td> <td>no</td> <td>&nbsp;</td>
+      <td>
+        The label put on the button (this becomes the HTML value attribute).
+      </td>
+    </tr>
+    <tr>
+      <td>disabled </td>
+      <td>boolean</td> <td>in</td> <td>no</td> <td>false</td>
+      <td>
+         If set to true, the button will be disabled (will not respond to the mouse); the browser should provide a "greyed out" appearance.
+      </td>
+    </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: <em>name, type</em>
 </p>
 
 </section>
 
-<section>
-  <title>Examples</title>
-
-</section>
 </body>
 </document>
