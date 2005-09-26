@@ -18,6 +18,8 @@ import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.Map;
 
+import javax.ejb.CreateException;
+
 /**
  * Implementation of the Person entity.
  * <p>
@@ -69,7 +71,7 @@ public abstract class PersonBean extends AbstractEntityBean
 
     public abstract Timestamp getLastAccess();
 
-    public Integer ejbCreate(Map attributes) throws RemoteException
+    public Integer ejbCreate(Map attributes) throws CreateException, RemoteException
     {
         updateEntityAttributes(attributes);
 

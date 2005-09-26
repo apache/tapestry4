@@ -3,19 +3,15 @@
   <!DOCTYPE jbosscmp-jdbc PUBLIC
       "-//JBoss//DTD JBOSSCMP-JDBC 3.0//EN"
       "http://www.jboss.org/j2ee/dtd/jbosscmp-jdbc_3_0.dtd">
-      
-      
 <jbosscmp-jdbc>
-	<defaults>
-  		<datasource>java:/McKoiDB</datasource>       
-  		<datasource-mapping>McKoi</datasource-mapping>
-  	</defaults>
-  
+  <defaults>
+    <datasource>java:/DefaultDS</datasource>
+    <datasource-mapping>Hypersonic SQL</datasource-mapping>
+  </defaults>
   <enterprise-beans>
     <entity>
       <ejb-name>Book</ejb-name>
       <table-name>BOOK</table-name>
-	  
       <cmp-field>
         <field-name>author</field-name>
         <column-name>AUTHOR</column-name>
@@ -56,7 +52,7 @@
         <field-name>ISBN</field-name>
         <column-name>ISBN</column-name>
         <jdbc-type>VARCHAR</jdbc-type>
-       <sql-type>VARCHAR(20)</sql-type>
+        <sql-type>VARCHAR(20)</sql-type>
       </cmp-field>
       <cmp-field>
         <field-name>bookId</field-name>
@@ -86,7 +82,6 @@
     <entity>
       <ejb-name>Person</ejb-name>
       <table-name>PERSON</table-name>
-
       <cmp-field>
         <field-name>email</field-name>
         <column-name>EMAIL</column-name>
@@ -139,7 +134,6 @@
     <entity>
       <ejb-name>Publisher</ejb-name>
       <table-name>PUBLISHER</table-name>
-      
       <cmp-field>
         <field-name>publisherId</field-name>
         <column-name>PUBLISHER_ID</column-name>
