@@ -51,6 +51,7 @@
   </todo>
   <changes>
     <release version="4.0-beta-9" date="unreleased">
+      <action type="fix" dev="DS" fixes-bug="TAPESTRY-663">Document Button component</action>
     </release>
     <release version="4.0-beta-8" date="Sep 24 2005">
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-465">Document Foreach component</action>
