@@ -20,34 +20,49 @@
   "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
   <display-name>Tapestry Virtual Library Demo</display-name>
-  
   <!--  distributable/ -->
-  
-	<filter>
-		<filter-name>redirect</filter-name>
-		<filter-class>org.apache.tapestry.RedirectFilter</filter-class>
-	</filter>
-	
-	<filter-mapping>
-		<filter-name>redirect</filter-name>
-		<url-pattern>/</url-pattern>
-	</filter-mapping>
-	  
+  <filter>
+    <filter-name>redirect</filter-name>
+    <filter-class>org.apache.tapestry.RedirectFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>redirect</filter-name>
+    <url-pattern>/</url-pattern>
+  </filter-mapping>
   <servlet>
     <servlet-name>vlib</servlet-name>
     <servlet-class>org.apache.tapestry.ApplicationServlet</servlet-class>
-  	<load-on-startup>0</load-on-startup>
+    <load-on-startup>0</load-on-startup>
   </servlet>
-  
-  <!-- The single mapping used for the Virtual Library application -->
-
   <servlet-mapping>
     <servlet-name>vlib</servlet-name>
     <url-pattern>/app</url-pattern>
   </servlet-mapping>
-  
+  <servlet-mapping>
+    <servlet-name>vlib</servlet-name>
+    <url-pattern>*.page</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>vlib</servlet-name>
+    <url-pattern>*.external</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>vlib</servlet-name>
+    <url-pattern>*.direct</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>vlib</servlet-name>
+    <url-pattern>*.sdirect</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>vlib</servlet-name>
+    <url-pattern>*.svc</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>vlib</servlet-name>
+    <url-pattern>/assets/*</url-pattern>
+  </servlet-mapping>
   <session-config>
-  	<session-timeout>15</session-timeout>
+    <session-timeout>15</session-timeout>
   </session-config>
-  
 </web-app>

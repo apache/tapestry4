@@ -9,25 +9,26 @@ handleStaleSessionException()
 	- Changed signature (ResponseOutputStream no longer exists)
 
 
-Border
+Border.java
 
-getBrowserBinding()
-	- No longer exists (no binding properties, just connected parameter properties)
-selectBrowserPage() (listener method)
-	- removed IRequestCycle parameter (no longer needed)
-	- added page parameter
+	getBrowserBinding()
+		- No longer exists (no binding properties, just connected parameter properties)
+	selectBrowserPage() (listener method)
+		- removed IRequestCycle parameter (no longer needed)
+		- added page parameter
 	
-Login
-- Changed interface from PageRenderListener to PageBeginRenderListener
-loginUser()
-	- IEngine.getServletPath() has been removed, as has RequestContext.addCookie()
-	- Replaced with calls to infrastructure:cookieSource [TAPESTRY-438]
-	- Replace IEngine.forgetPage() with IRequestCycle.forgetPage()
-pageBeginRender()
-	- Replaced with calls to infrastructure:cookieSource (to read the user's email)
+Login.java
+	- Changed interface from PageRenderListener to PageBeginRenderListener
+	loginUser()
+		- IEngine.getServletPath() has been removed, as has RequestContext.addCookie()
+		- Replaced with calls to infrastructure:cookieSource [TAPESTRY-438]
+		- Replace IEngine.forgetPage() with IRequestCycle.forgetPage()
+	pageBeginRender()
+		- Replaced with calls to infrastructure:cookieSource (to read the user's email)
 	
 application.xml
-	Can't deploy vlib.war as "/" due to conflict, deployed as "/vlib"
+	Can't deploy vlib.war as "/" due to conflict with built-in JBoss default app, 
+	deployed as "/vlib" (for the moment)
 	
 Publisher.script
 	org.apache.tapestry.form.AbstractTextField no longer exists, replaced with
@@ -35,4 +36,34 @@ Publisher.script
 	
 EditBook.html
 	Inline inputPublisher conflicted with <component> in EditBook.page and was removed
+	Converted Form to specified component
+	Converted ValidFields to TextFields
+	Removed the Hidden for the bookId property
+	
+EditBook.page
+	Updated to 4.0 DTD
+	Removed <property-specification>s
+	Made displayName attributes reference global messages keys
+	
+EditBook.java
+	Change return type of formSubmit() to IPage
+	Used @Message annotation
+	Made the bookId property persist on the client
+		
+
+	
+vlib.css
+	Added IMG {border:none;} because Tapestry Image/Rollover/etc. components 
+	no longer render border="0" automatically.
+	
+web.xml/hivemodule.xml
+	Added boilerplate friendly URL support
+	
+	
+vlib.application
+	Set up org.apache.tapestry.vlib.pages as the default page package
+	
+vlib.properties
+	Created to hold common strings
+	
 	
