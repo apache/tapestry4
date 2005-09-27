@@ -22,10 +22,13 @@ import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.annotations.Persist;
+import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.IOperations;
@@ -36,7 +39,7 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * @author Howard Lewis Ship
  */
 
-public abstract class EditBook extends Protected implements PageRenderListener
+public abstract class EditBook extends Protected implements PageBeginRenderListener
 {
     public abstract Map getAttributes();
 
@@ -44,6 +47,7 @@ public abstract class EditBook extends Protected implements PageRenderListener
 
     public abstract String getPublisherName();
 
+    @Persist("client")
     public abstract Integer getBookId();
 
     public abstract void setBookId(Integer bookId);
@@ -88,33 +92,42 @@ public abstract class EditBook extends Protected implements PageRenderListener
         cycle.activate(this);
     }
 
+    @Message
+    public abstract String needPublisherName();
+
+    @Message
+    public abstract String leavePublisherNameEmpty();
+
+    @Message
+    public abstract String updatedBook(Object title);
+
     /**
      * Used to update the book when the form is submitted.
      */
 
-    public void formSubmit(IRequestCycle cycle)
+    public IPage formSubmit(IRequestCycle cycle)
     {
         Map attributes = getAttributes();
 
         Integer publisherId = (Integer) attributes.get("publisherId");
         String publisherName = getPublisherName();
 
-        if (publisherId == null && Tapestry.isBlank(publisherName))
+        if (publisherId == null && HiveMind.isBlank(publisherName))
         {
-            setErrorField("inputPublisherName", getMessage("need-publisher-name"));
-            return;
+            setErrorField("inputPublisherName", needPublisherName());
+            return null;
         }
 
-        if (publisherId != null && Tapestry.isNonBlank(publisherName))
+        if (publisherId != null && HiveMind.isNonBlank(publisherName))
         {
-            setErrorField("inputPublisherName", getMessage("leave-publisher-name-empty"));
-            return;
+            setErrorField("inputPublisherName", leavePublisherNameEmpty());
+            return null;
         }
 
         // Check for an error from a validation field
 
         if (isInError())
-            return;
+            return null;
 
         // OK, do the update.
 
@@ -155,9 +168,10 @@ public abstract class EditBook extends Protected implements PageRenderListener
         }
 
         MyLibrary page = (MyLibrary) cycle.getPage("MyLibrary");
-        page.setMessage(format("updated-book", attributes.get("title")));
-        page.activate(cycle);
 
+        page.setMessage(updatedBook(attributes.get("title")));
+
+        return page;
     }
 
     public void pageBeginRender(PageEvent event)
