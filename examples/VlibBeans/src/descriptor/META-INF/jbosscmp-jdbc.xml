@@ -5,7 +5,7 @@
       "http://www.jboss.org/j2ee/dtd/jbosscmp-jdbc_3_0.dtd">
 <jbosscmp-jdbc>
   <defaults>
-    <datasource>java:/VlibDS</datasource>
+    <datasource>java:/DefaultDS</datasource>
     <datasource-mapping>Hypersonic SQL</datasource-mapping>
   </defaults>
   <enterprise-beans>

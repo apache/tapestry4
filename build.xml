@@ -89,7 +89,8 @@
 		<fail unless="available.vlib.ear" message="You must run the 'install' target to build the vlib.ear first."/>
 		<property name="jboss.default.dir" value="${jboss.dir}/server/default"/>
 
-		<copy todir="${jboss.default.dir}">
+		<!-- Overwrite the defaultDB data -->
+		<copy todir="${jboss.default.dir}" overwrite="true">
 			<fileset dir="config/jboss"/>
 		</copy>
 		
@@ -106,7 +107,7 @@
 			<fileset dir="target" includes="*.ear"/>
 		</copy>
 		
-		<announce message="JBoss 4 has been set up to execute the Virtual Library application."/>
+		<announce message="JBoss 4.0.2 has been set up to execute the Virtual Library application."/>
 		<announce message="You may need to restart JBoss before the application will run."/>
 		
 	</target>
