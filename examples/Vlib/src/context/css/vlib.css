@@ -2,6 +2,11 @@ BODY, TABLE, TD, P  {
 	font-family : Trebuchet MS, verdana, arial, helvetica, sans-serif;
 }
 
+IMG
+{
+    border: none;
+}
+
 DIV.error  {
 	font-weight : bold;
 	color : Red;

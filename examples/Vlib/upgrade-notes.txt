@@ -29,3 +29,10 @@ pageBeginRender()
 application.xml
 	Can't deploy vlib.war as "/" due to conflict, deployed as "/vlib"
 	
+Publisher.script
+	org.apache.tapestry.form.AbstractTextField no longer exists, replaced with
+	org.apache.tapestry.form.IFormComponent
+	
+EditBook.html
+	Inline inputPublisher conflicted with <component> in EditBook.page and was removed
+	
