@@ -21,7 +21,11 @@ Login
 - Changed interface from PageRenderListener to PageBeginRenderListener
 loginUser()
 	- IEngine.getServletPath() has been removed, as has RequestContext.addCookie()
-	- Replaced with calls to infrastructure:CookieSource [TAPESTRY-438]
+	- Replaced with calls to infrastructure:cookieSource [TAPESTRY-438]
 	- Replace IEngine.forgetPage() with IRequestCycle.forgetPage()
 pageBeginRender()
-	- Replaced with calls to infrastructure:CookieSource (to read the user's email)
+	- Replaced with calls to infrastructure:cookieSource (to read the user's email)
+	
+application.xml
+	Can't deploy vlib.war as "/" due to conflict, deployed as "/vlib"
+	

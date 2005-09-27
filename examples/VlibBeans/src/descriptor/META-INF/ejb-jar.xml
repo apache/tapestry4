@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" 
  "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
- 
 <ejb-jar>
   <enterprise-beans>
     <session>
@@ -72,7 +71,6 @@
         <res-auth>Container</res-auth>
       </resource-ref>
     </session>
-     
     <entity>
       <display-name>Person</display-name>
       <ejb-name>Person</ejb-name>
@@ -82,9 +80,7 @@
       <persistence-type>Container</persistence-type>
       <prim-key-class>java.lang.Integer</prim-key-class>
       <reentrant>False</reentrant>
-      
       <abstract-schema-name>Person</abstract-schema-name>
-      
       <cmp-field>
         <description>email address; must be unique, used as login identifier</description>
         <field-name>email</field-name>
@@ -106,7 +102,8 @@
         <field-name>lastName</field-name>
       </cmp-field>
       <cmp-field>
-        <description>If true, the user has been locked out of the system (for misconduct, or excessive invalid passwords).</description>
+        <description>If true, the user has been locked out of the system (for misconduct, or excessive invalid
+          passwords).</description>
         <field-name>lockedOut</field-name>
       </cmp-field>
       <cmp-field>
@@ -114,28 +111,25 @@
         <field-name>admin</field-name>
       </cmp-field>
       <cmp-field>
-      	<description>The time of last access to the system by the user; this is set when the user logs in.</description>
-      	<field-name>lastAccess</field-name>
+        <description>The time of last access to the system by the user; this is set when the user logs in.</description>
+        <field-name>lastAccess</field-name>
       </cmp-field>
       <primkey-field>personId</primkey-field>
-      
       <query>
-      	<query-method>
-      		<method-name>findByEmail</method-name>
-      		<method-params>
-      			<method-param>java.lang.String</method-param>
-      		</method-params>
-      	</query-method>
-      		
-      	<ejb-ql>
-<![CDATA[
+        <query-method>
+          <method-name>findByEmail</method-name>
+          <method-params>
+            <method-param>java.lang.String</method-param>
+          </method-params>
+        </query-method>
+        <ejb-ql>
+          <![CDATA[
 			select object(p)
 			from Person p
 			where p.email = ?1
-]]>      	
-		</ejb-ql>
-	   </query>
-	   	
+]]>
+        </ejb-ql>
+      </query>
       <ejb-ref>
         <description/>
         <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
@@ -144,7 +138,6 @@
         <remote>org.apache.tapestry.vlib.ejb.IKeyAllocator</remote>
       </ejb-ref>
     </entity>
-    
     <entity>
       <display-name>Book</display-name>
       <ejb-name>Book</ejb-name>
@@ -196,8 +189,8 @@
         <field-name>lendable</field-name>
       </cmp-field>
       <cmp-field>
-      	<description>The time at which the book was initially added to the database.</description>
-      	<field-name>dateAdded</field-name>
+        <description>The time at which the book was initially added to the database.</description>
+        <field-name>dateAdded</field-name>
       </cmp-field>
       <primkey-field>bookId</primkey-field>
       <ejb-ref>
@@ -208,7 +201,6 @@
         <remote>org.apache.tapestry.vlib.ejb.IKeyAllocator</remote>
       </ejb-ref>
     </entity>
-
     <entity>
       <display-name>Publisher</display-name>
       <ejb-name>Publisher</ejb-name>
@@ -226,25 +218,21 @@
         <field-name>publisherId</field-name>
       </cmp-field>
       <primkey-field>publisherId</primkey-field>
-      
-      
       <query>
-      	<query-method>
-      		<method-name>findByName</method-name>
-      		<method-params>
-      			<method-param>java.lang.String</method-param>
-      		</method-params>
-      	</query-method>
-      		
-      	<ejb-ql>
-<![CDATA[
+        <query-method>
+          <method-name>findByName</method-name>
+          <method-params>
+            <method-param>java.lang.String</method-param>
+          </method-params>
+        </query-method>
+        <ejb-ql>
+          <![CDATA[
 			select object(p)
 			from Publisher p
 			where p.name = ?1
-]]>      	
-		</ejb-ql>
-	   </query>
-	         
+]]>
+        </ejb-ql>
+      </query>
       <ejb-ref>
         <description/>
         <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
@@ -253,29 +241,6 @@
         <remote>org.apache.tapestry.vlib.ejb.IKeyAllocator</remote>
       </ejb-ref>
     </entity>
-    
-    <!-- Temporarily removed 
-    
-    <message-driven>
-      <ejb-name>MailQueue</ejb-name>
-      <ejb-class>org.apache.tapestry.vlib.ejb.impl.MailQueueBean</ejb-class>
-      <transaction-type>Bean</transaction-type>
-      <message-selector/>
-      <acknowledge-mode>AUTO_ACKNOWLEDGE</acknowledge-mode>
-      <message-driven-destination>
-        <destination-type>javax.jms.Queue</destination-type>
-        <subscription-durability>NonDurable</subscription-durability>
-      </message-driven-destination>
-      <ejb-ref>
-        <ejb-ref-name>ejb/MailSender</ejb-ref-name>
-        <ejb-ref-type>Session</ejb-ref-type>
-        <home>org.apache.tapestry.vlib.ejb.IMailSenderHome</home>
-        <remote>org.apache.tapestry.vlib.ejb.IMailSender</remote>
-      </ejb-ref>
-    </message-driven>
-    
-    -->
-    
   </enterprise-beans>
   <assembly-descriptor>
     <container-transaction>
@@ -303,20 +268,6 @@
         <ejb-name>Operations</ejb-name>
         <method-name>*</method-name>
       </method>
-      
-      <!--
-      
-      <method>
-        <ejb-name>MailQueue</ejb-name>
-        <method-name>*</method-name>
-      </method>
-      <method>
-        <ejb-name>MailSender</ejb-name>
-        <method-name>*</method-name>
-      </method>
-      
-      -->
-      
       <trans-attribute>Required</trans-attribute>
     </container-transaction>
   </assembly-descriptor>

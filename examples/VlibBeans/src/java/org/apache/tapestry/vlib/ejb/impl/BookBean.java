@@ -85,6 +85,7 @@ public abstract class BookBean extends AbstractEntityBean
 
     // Create methods
 
+    @SuppressWarnings("unused")
     public Integer ejbCreate(Map attributes) throws CreateException, RemoteException
     {
         setLendable(true);

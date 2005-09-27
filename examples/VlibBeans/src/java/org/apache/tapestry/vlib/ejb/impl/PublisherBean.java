@@ -44,6 +44,7 @@ public abstract class PublisherBean extends AbstractEntityBean
         { "name" };
     }
 
+    @SuppressWarnings("unused")
     public Integer ejbCreate(String name) throws CreateException, RemoteException
     {
         setPublisherId(allocateKey());

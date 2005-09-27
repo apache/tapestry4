@@ -58,7 +58,7 @@ public abstract class Login extends BasePage implements IErrorProperty, PageBegi
 
     public abstract void setPassword(String password);
 
-    @InjectObject("infrastructure:CookieSource")
+    @InjectObject("infrastructure:cookieSource")
     public abstract CookieSource getCookieSource();
 
     protected IValidationDelegate getValidationDelegate()

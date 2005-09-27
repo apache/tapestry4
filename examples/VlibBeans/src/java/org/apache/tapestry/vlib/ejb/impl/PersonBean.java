@@ -71,6 +71,7 @@ public abstract class PersonBean extends AbstractEntityBean
 
     public abstract Timestamp getLastAccess();
 
+    @SuppressWarnings("unused")
     public Integer ejbCreate(Map attributes) throws CreateException, RemoteException
     {
         updateEntityAttributes(attributes);
