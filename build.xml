@@ -89,6 +89,10 @@
 		<fail unless="available.vlib.ear" message="You must run the 'install' target to build the vlib.ear first."/>
 		<property name="jboss.default.dir" value="${jboss.dir}/server/default"/>
 
+		<copy todir="${jboss.default.dir}">
+			<fileset dir="config/jboss"/>
+		</copy>
+		
 		<copy todir="${jboss.default.dir}/deploy">
 			<fileset dir="target/vlib" includes="*.ear"/>
 		</copy>
