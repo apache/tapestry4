@@ -103,7 +103,7 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
         myLibrary.setMessage(format("transfered-books", Integer.toString(count), target
                 .getNaturalName()));
 
-        myLibrary.activate(cycle);
+        myLibrary.activate();
     }
 
     private IPropertySelectionModel buildPersonModel()
@@ -216,7 +216,7 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
             IRequestCycle cycle = getRequestCycle();
             IActivate page = (IActivate) cycle.getPage("MyLibrary");
 
-            page.activate(cycle);
+            page.activate();
 
             throw new PageRedirectException(page);
         }

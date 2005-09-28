@@ -15,7 +15,6 @@
 package org.apache.tapestry.vlib;
 
 import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
 
 /**
  * Interface used for pages that may be activated by the Border component.
@@ -26,5 +25,5 @@ import org.apache.tapestry.IRequestCycle;
 
 public interface IActivate extends IPage
 {
-    public void activate(IRequestCycle cycle);
+    public void activate();
 }

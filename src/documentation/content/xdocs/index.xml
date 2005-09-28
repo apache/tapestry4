@@ -213,9 +213,8 @@ of templates, and simplifying (or eliminating) XML files.
   
 <p>
 Work on Tapestry 4.0 is in full swing.  Documentation is being converted
-from the old DocBook format, to the new Forrest format, leaving many temporary gaps. Only the 
-main code base and the Workbench example is being built, all other example code is not (this unfortunately
-includes the Virtual Library). A new <link href="QuickStart/index.html">Quick Start</link> series
+from the old DocBook format, to the new Forrest format, leaving many temporary gaps. 
+ A new <link href="QuickStart/index.html">Quick Start</link> series
 of tutorials is being written.
 </p>
 
@@ -271,10 +270,6 @@ Things that will cause you trouble when upgrading:
       not all, situations. </li>
 </ul>
 
-<note>
-We apologize for any lack of documentation; the alpha period for Tapestry 4.0 has been marked by furious
-activity, the beta period is about bug fixing and catching up on the documentation.
-</note>
   
 </section>
 

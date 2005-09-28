@@ -17,22 +17,29 @@ package org.apache.tapestry.vlib.components;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.InjectState;
+import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.callback.PageCallback;
 import org.apache.tapestry.vlib.IActivate;
-import org.apache.tapestry.vlib.IMessageProperty;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
+import org.apache.tapestry.vlib.pages.Home;
 import org.apache.tapestry.vlib.pages.Login;
 
 /**
  * The standard Border component, which provides the title of the page, the link to
  * {@link org.apache.tapestry.vlib.pages.MyLibrary}, the
  * {@link org.apache.tapestry.vlib.pages.Login} page and the Logout page.
+ * <p>
+ * TODO: Part of the transition up to Tapestry 4.0 has "broken" the deferrment of state; the Border
+ * component on the Home page now forces a session immediately. This needs to be fixed (with a new
+ * injection type to identify if the visit state object has yet been created).
  * 
  * @author Howard Lewis Ship
  */
@@ -87,9 +94,23 @@ public abstract class Border extends BaseComponent
 
     private IAsset _transferBooksRolloverImage;
 
+    @Parameter
     public abstract String getSubtitle();
 
+    @Parameter
     public abstract Browser getBrowser();
+
+    @InjectState("visit")
+    public abstract Visit getVisit();
+
+    @InjectPage("Login")
+    public abstract Login getLogin();
+
+    @InjectPage("Home")
+    public abstract Home getHome();
+
+    @Message
+    public abstract String goodbye();
 
     public void finishLoad()
     {
@@ -164,8 +185,7 @@ public abstract class Border extends BaseComponent
 
     public boolean isLoggedIn()
     {
-        IEngine engine = getPage().getEngine();
-        Visit visit = (Visit) engine.getVisit();
+        Visit visit = getVisit();
 
         if (visit == null)
             return false;
@@ -175,65 +195,65 @@ public abstract class Border extends BaseComponent
 
     public boolean isAdmin()
     {
-        IEngine engine = getPage().getEngine();
-        Visit visit = (Visit) engine.getVisit();
-
-        if (visit == null)
-            return false;
+        Visit visit = getVisit();
 
         IRequestCycle cycle = getPage().getRequestCycle();
 
         return visit.isUserLoggedIn() && visit.getUser(cycle).isAdmin();
     }
 
-    public void editProfile(IRequestCycle cycle)
+    public void editProfile()
     {
-        activate("EditProfile", cycle);
+        activate("EditProfile");
     }
 
-    public void viewBorrowedBooks(IRequestCycle cycle)
+    public void viewBorrowedBooks()
     {
-        activate("BorrowedBooks", cycle);
+        activate("BorrowedBooks");
     }
 
-    public void viewMyLibrary(IRequestCycle cycle)
+    public void viewMyLibrary()
     {
-        activate("MyLibrary", cycle);
+        activate("MyLibrary");
     }
 
-    private void activate(String pageName, IRequestCycle cycle)
+    private void activate(String pageName)
     {
+        IRequestCycle cycle = getPage().getRequestCycle();
+
         IActivate page = (IActivate) cycle.getPage(pageName);
 
         page.validate(cycle);
 
-        page.activate(cycle);
+        page.activate();
     }
 
-    public void login(IRequestCycle cycle)
+    public IPage login()
     {
-        Visit visit = (Visit) cycle.getEngine().getVisit();
+        Visit visit = getVisit();
 
-        if (visit != null && visit.isUserLoggedIn())
-            return;
+        if (visit.isUserLoggedIn())
+            return null;
 
         ICallback callback = new PageCallback(getPage().getPageName());
-        Login loginPage = (Login) cycle.getPage("Login");
-        loginPage.setCallback(callback);
-        cycle.activate(loginPage);
+
+        Login login = getLogin();
+
+        login.setCallback(callback);
+
+        return login;
     }
 
-    public void logout(IRequestCycle cycle)
+    public IPage logout()
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getPage().getEngine();
 
         vengine.logout();
 
-        IMessageProperty home = (IMessageProperty) cycle.getPage("Home");
+        Home home = getHome();
+        home.setMessage(goodbye());
 
-        home.setMessage(getMessage("goodbye"));
-
-        cycle.activate(home);
+        return home;
     }
 
     public void selectBrowserPage(int page)

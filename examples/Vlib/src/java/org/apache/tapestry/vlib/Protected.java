@@ -15,6 +15,9 @@
 package org.apache.tapestry.vlib;
 
 import org.apache.tapestry.PageRedirectException;
+import org.apache.tapestry.annotations.Bean;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.callback.PageCallback;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageValidateListener;
@@ -33,20 +36,8 @@ import org.apache.tapestry.vlib.pages.Login;
 
 public abstract class Protected extends BasePage implements IErrorProperty, PageValidateListener
 {
-    private IValidationDelegate _validationDelegate;
-
-    public void initialize()
-    {
-        _validationDelegate = null;
-    }
-
-    public IValidationDelegate getValidationDelegate()
-    {
-        if (_validationDelegate == null)
-            _validationDelegate = new VirtualLibraryDelegate();
-
-        return _validationDelegate;
-    }
+    @Bean(VirtualLibraryDelegate.class)
+    public abstract IValidationDelegate getValidationDelegate();
 
     protected void setErrorField(String componentId, String message)
     {
@@ -67,6 +58,12 @@ public abstract class Protected extends BasePage implements IErrorProperty, Page
         return getError() != null || getValidationDelegate().getHasErrors();
     }
 
+    @InjectState("visit")
+    public abstract Visit getVisitState();
+
+    @InjectPage("Login")
+    public abstract Login getLogin();
+
     /**
      * Checks if the user is logged in. If not, they are sent to the {@link Login} page before
      * coming back to whatever this page is.
@@ -74,14 +71,14 @@ public abstract class Protected extends BasePage implements IErrorProperty, Page
 
     public void pageValidate(PageEvent event)
     {
-        Visit visit = (Visit) getVisit();
+        Visit visit = getVisitState();
 
-        if (visit != null && visit.isUserLoggedIn())
+        if (visit.isUserLoggedIn())
             return;
 
         // User not logged in ... redirect through the Login page.
 
-        Login login = (Login) getRequestCycle().getPage("Login");
+        Login login = getLogin();
 
         login.setCallback(new PageCallback(this));
 

@@ -16,32 +16,20 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 	
-<page-specification class="org.apache.tapestry.vlib.pages.BookMatches">
-
-  <property name="page-type" value="Search"/>
+<page-specification>
   
-  <property-specification name="bookQuery" type="org.apache.tapestry.vlib.ejb.IBookQuery" persistent="yes"/>
-  <property-specification name="currentMatch" type="org.apache.tapestry.vlib.ejb.Book"/>
-   
-  <property-specification name="queryParameters" 
-  	 type="org.apache.tapestry.vlib.ejb.MasterQueryParameters"
-  	 persistent="yes"/>
-  
-  <property-specification name="sortColumn" type="org.apache.tapestry.vlib.ejb.SortColumn" persistent="yes">
-  	@org.apache.tapestry.vlib.ejb.SortColumn@TITLE
-  </property-specification>
-  <property-specification name="descending" type="boolean" persistent="yes"/>
-   
+  <property name="currentMatch"/>
+      
   <component id="sortTitle" type="ColumnSorter">
-    <binding name="selected" expression="sortColumn"/>
+    <binding name="selected" value="sortColumn"/>
     <binding name="sortColumn">
       @org.apache.tapestry.vlib.ejb.SortColumn@TITLE
     </binding> 
-    <binding name="descending" expression="descending"/>
-    <binding name="listener" expression="listeners.requery"/>
+    <binding name="descending" value="descending"/>
+    <binding name="listener" value="listener:requery"/>
   </component> 
   
   <component id="sortAuthor" copy-of="sortTitle">
@@ -69,14 +57,14 @@
   </component>
   
   <component id="ownerLink" type="PersonLink">
-    <binding name="id" expression="currentMatch.ownerId"/>
-    <binding name="name" expression="currentMatch.ownerName"/>
+    <binding name="id" value="currentMatch.ownerId"/>
+    <binding name="name" value="currentMatch.ownerName"/>
   </component>
   
   <component id="holderLink" type="PersonLink">
-    <binding name="id" expression="currentMatch.holderId"/>
-    <binding name="name" expression="currentMatch.holderName"/>
-    <binding name="omit" expression="! currentMatch.borrowed"/>
+    <binding name="id" value="currentMatch.holderId"/>
+    <binding name="name" value="currentMatch.holderName"/>
+    <binding name="omit" value="! currentMatch.borrowed"/>
   </component>
 
 </page-specification>

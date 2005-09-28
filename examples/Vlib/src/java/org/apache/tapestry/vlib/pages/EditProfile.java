@@ -59,10 +59,10 @@ public abstract class EditProfile extends ActivatePage implements PageRenderList
      * {@link org.apache.tapestry.valid.ValidField} components.
      */
 
-    public void activate(IRequestCycle cycle)
+    public void activate()
     {
         Visit visit = (Visit) getVisit();
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getRequestCycle().getEngine();
 
         Integer userId = visit.getUserId();
         Map attributes = null;
@@ -91,7 +91,7 @@ public abstract class EditProfile extends ActivatePage implements PageRenderList
         attributes.remove("password");
         setAttributes(attributes);
 
-        cycle.activate(this);
+        getRequestCycle().activate(this);
     }
 
     public void updateProfile(IRequestCycle cycle)
@@ -165,7 +165,7 @@ public abstract class EditProfile extends ActivatePage implements PageRenderList
         vengine.clearCache();
 
         MyLibrary myLibrary = (MyLibrary) cycle.getPage("MyLibrary");
-        myLibrary.activate(cycle);
+        myLibrary.activate();
     }
 
     public void pageBeginRender(PageEvent event)

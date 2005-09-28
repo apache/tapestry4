@@ -21,9 +21,7 @@
   
 <page-specification>
 	
-  <meta key="page-type" value="MyLibrary"/>
-  
-  <component id="form" type="Form">
+   <component id="form" type="Form">
     <binding name="success" value="listener:formSubmit"/>
     <binding name="delegate" value="validationDelegate"/>
     <binding name="clientValidationEnabled" value="true"/>

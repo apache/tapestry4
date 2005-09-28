@@ -16,69 +16,61 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 
-<page-specification class="org.apache.tapestry.vlib.pages.MyLibrary">
+<page-specification>
 
-  <property-specification name="message" type="java.lang.String"/>
-  <property-specification name="error" type="java.lang.String"/>
-  <property-specification name="currentBook" type="org.apache.tapestry.vlib.ejb.Book"/>
-  <property-specification name="ownedQuery" type="org.apache.tapestry.vlib.ejb.IBookQuery" persistent="yes"/>
+  <property name="currentBook"/>
   
-  <property-specification name="sortColumn" type="org.apache.tapestry.vlib.ejb.SortColumn" persistent="yes">
-  	@org.apache.tapestry.vlib.ejb.SortColumn@TITLE
-  </property-specification>
-  <property-specification name="descending" type="boolean" persistent="yes"/>
-
   <component id="sortTitle" type="ColumnSorter">
-    <binding name="selected" expression="sortColumn"/>
-    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@TITLE"/>
-    <binding name="descending" expression="descending"/>
-    <binding name="listener" expression="listeners.requery"/>
+    <binding name="selected" value="sortColumn"/>
+    <binding name="sortColumn" value="@org.apache.tapestry.vlib.ejb.SortColumn@TITLE"/>
+    <binding name="descending" value="descending"/>
+    <binding name="listener" value="listener:requery"/>
   </component>   
     
   <component id="sortAuthor" copy-of="sortTitle">
-    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@AUTHOR"/>
+    <binding name="sortColumn" value="@org.apache.tapestry.vlib.ejb.SortColumn@AUTHOR"/>
   </component>
   
   <component id="sortPublisher" copy-of="sortTitle">
-    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@PUBLISHER"/>	
+    <binding name="sortColumn" value="@org.apache.tapestry.vlib.ejb.SortColumn@PUBLISHER"/>	
   </component>
   
   <component id="sortBorrower" copy-of="sortTitle">
-    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@HOLDER"/>
+    <binding name="sortColumn" value="@org.apache.tapestry.vlib.ejb.SortColumn@HOLDER"/>
   </component>
   
   <component id="holderLink" type="PersonLink">
-    <binding name="id" expression="currentBook.holderId"/>
-    <binding name="name" expression="currentBook.holderName"/>
-    <binding name="omit" expression="! currentBook.borrowed"/>
+    <binding name="id" value="currentBook.holderId"/>
+    <binding name="name" value="currentBook.holderName"/>
+    <binding name="omit" value="! currentBook.borrowed"/>
   </component>
 
   <component id="edit" type="DirectLink">
-    <binding name="listener" expression="listeners.editBook"/>
-    <binding name="parameters" expression="currentBook.id"/>
+    <binding name="listener" value="listener:editBook"/>
+    <binding name="parameters" value="currentBook.id"/>
   </component>
 
   <component id="editRollover" type="Rollover">
-    <binding name="image" expression="assets.edit"/>
-    <binding name="focus" expression="assets.edit_h"/>	
+    <binding name="image" value="asset:edit"/>
+    <binding name="focus" value="asset:edit_h"/>	
   </component>
 
   <component id="delete" type="DirectLink">
-    <binding name="listener" expression="listeners.deleteBook"/>
-    <binding name="parameters" expression="currentBook.id"/>
+    <binding name="listener" value="listeners.deleteBook"/>
+    <binding name="parameters" value="currentBook.id"/>
   </component>
   
   <component id="deleteRollover" type="Rollover">
-    <binding name="image" expression="assets.delete"/>
-    <binding name="focus" expression="assets.delete_h"/>	
+    <binding name="image" value="asset:delete"/>
+    <binding name="focus" value="asset:delete_h"/>	
   </component>
   
-  <context-asset name="edit" path="images/edit.png"/>
-  <context-asset name="edit_h" path="images/edit_h.png"/>
-  <context-asset name="delete" path="images/delete.png"/>
-  <context-asset name="delete_h" path="images/delete_h.png"/>
+  <asset name="edit" path="images/edit.png"/>
+  <asset name="edit_h" path="images/edit_h.png"/>
+  <asset name="delete" path="images/delete.png"/>
+  <asset name="delete_h" path="images/delete_h.png"/>
  
 </page-specification>

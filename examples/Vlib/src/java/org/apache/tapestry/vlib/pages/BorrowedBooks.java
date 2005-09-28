@@ -20,6 +20,10 @@ import javax.ejb.FinderException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.InjectComponent;
+import org.apache.tapestry.annotations.InjectState;
+import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.vlib.ActivatePage;
 import org.apache.tapestry.vlib.IMessageProperty;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
@@ -39,26 +43,41 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 public abstract class BorrowedBooks extends ActivatePage implements IMessageProperty
 {
-    private Browser _browser;
+    @InjectComponent("browser")
+    public abstract Browser getBrowser();
+
+    @Persist
+    public abstract IBookQuery getBorrowedQuery();
 
     public abstract void setBorrowedQuery(IBookQuery value);
 
-    public abstract IBookQuery getBorrowedQuery();
-
+    @Persist
     public abstract SortColumn getSortColumn();
 
+    public abstract void setSortColumn(SortColumn column);
+
+    @Persist
     public abstract boolean isDescending();
+
+    @Message
+    public abstract String returnedBook(String title);
+
+    @Message
+    public abstract String unableToReturnBook(String message);
+
+    @InjectState("visit")
+    public abstract Visit getVisitState();
 
     public void finishLoad()
     {
-        _browser = (Browser) getComponent("browser");
+        setSortColumn(SortColumn.TITLE);
     }
 
-    public void activate(IRequestCycle cycle)
+    public void activate()
     {
         runQuery();
 
-        cycle.activate(this);
+        getRequestCycle().activate(this);
     }
 
     /**
@@ -75,7 +94,7 @@ public abstract class BorrowedBooks extends ActivatePage implements IMessageProp
 
     private void runQuery()
     {
-        Visit visit = (Visit) getVisit();
+        Visit visit = getVisitState();
         Integer userPK = visit.getUserId();
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
@@ -96,9 +115,10 @@ public abstract class BorrowedBooks extends ActivatePage implements IMessageProp
                 }
 
                 int count = query.borrowerQuery(userPK, ordering);
+                Browser browser = getBrowser();
 
-                if (count != _browser.getResultCount())
-                    _browser.initializeForResultCount(count);
+                if (count != browser.getResultCount())
+                    browser.initializeForResultCount(count);
 
                 break;
             }
@@ -115,11 +135,8 @@ public abstract class BorrowedBooks extends ActivatePage implements IMessageProp
      * Listener used to return a book.
      */
 
-    public void returnBook(IRequestCycle cycle)
+    public void returnBook(Integer bookPK)
     {
-        Object[] parameters = cycle.getServiceParameters();
-        Integer bookPK = (Integer) parameters[0];
-
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         IOperations operations = vengine.getOperations();
 
@@ -127,13 +144,13 @@ public abstract class BorrowedBooks extends ActivatePage implements IMessageProp
         {
             Book book = operations.returnBook(bookPK);
 
-            setMessage(format("returned-book", book.getTitle()));
+            setMessage(returnedBook(book.getTitle()));
 
             runQuery();
         }
         catch (FinderException ex)
         {
-            setError(format("unable-to-return-book", ex.getMessage()));
+            setError(unableToReturnBook(ex.getMessage()));
             return;
         }
         catch (RemoteException ex)

@@ -16,34 +16,29 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
   
-<page-specification class="org.apache.tapestry.vlib.pages.ConfirmBookDelete">
- 
-  <property name="page-type" value="MyLibrary"/>
-  
-  <property-specification name="bookId" type="java.lang.Integer"/>
-  <property-specification name="bookTitle" type="java.lang.String"/>
+<page-specification>
   
   <component id="confirm" type="DirectLink">
-    <binding name="listener" expression="listeners.deleteBook"/>
-    <binding name="parameters" expression="bookId"/>
+    <binding name="listener" value="listener:deleteBook"/>
+    <binding name="parameters" value="bookId"/>
   </component>
   
   <component id="confirmRollover" type="Rollover">
-    <binding name="image" expression="assets.confirm"/>
-    <binding name="focus" expression="assets.confirm_h"/>	
+    <binding name="image" value="asset:confirm"/>
+    <binding name="focus" value="asset:confirm_h"/>	
   </component>
   
   <component id="cancelRollover" type="Rollover">
-    <binding name="image" expression="assets.cancel"/>
-    <binding name="focus" expression="assets.cancel_h"/>	
+    <binding name="image" value="asset:cancel"/>
+    <binding name="focus" value="asset:cancel_h"/>	
   </component>
   
-  <context-asset name="confirm" path="images/delete-confirm.png"/>
-  <context-asset name="confirm_h" path="images/delete-confirm_h.png"/>
-  <context-asset name="cancel" path="images/delete-cancel.png"/>
-  <context-asset name="cancel_h" path="images/delete-cancel_h.png"/>
+  <asset name="confirm" path="images/delete-confirm.png"/>
+  <asset name="confirm_h" path="images/delete-confirm_h.png"/>
+  <asset name="cancel" path="images/delete-cancel.png"/>
+  <asset name="cancel_h" path="images/delete-cancel_h.png"/>
   
 </page-specification>

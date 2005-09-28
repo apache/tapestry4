@@ -1,9 +1,9 @@
 <html jwcid="$content$">
-<body jwcid="@Border" browser="ognl:components.browser">
+<body jwcid="border@Border" browser="ognl:components.browser">
 <span jwcid="@ShowError"/>
 <span jwcid="@ShowMessage"/>
 
-<span jwcid="@Conditional" condition="ognl:components.browser.resultCount == 0">
+<span jwcid="@If" condition="ognl:components.browser.resultCount == 0">
 	
 <span jwcid="@Information">
 	You have no borrowed books.
@@ -11,7 +11,7 @@
 	
 </span>
 
-<span jwcid="@Conditional" condition="ognl:components.browser.resultCount != 0">
+<span jwcid="@If" condition="ognl:components.browser.resultCount != 0">
 
 <table class="data">
   <tr>
@@ -30,7 +30,7 @@
     </td>
     <td><a jwcid="@PersonLink" name="ognl:currentBook.ownerName" id="ognl:currentBook.ownerId" href="#">Jim Moran</a>
     </td>
-    <td class="icon"><a jwcid="@DirectLink" parameters="ognl:currentBook.id" listener="listener:returnBook" href="#"><img jwcid="returnRollover" src="images/return.png" alt="Return" width="25" height="26" border="0"/></a>
+    <td class="icon"><a jwcid="link@DirectLink" parameters="ognl:currentBook.id" listener="listener:returnBook" href="#"><img jwcid="returnRollover" src="images/return.png" alt="Return" width="25" height="26" border="0"/></a>
     </td>
   </tr>
 </table>
