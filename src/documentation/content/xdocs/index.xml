@@ -27,6 +27,36 @@
  </header>
 
 <body>
+  
+  <section>
+    <title>Quick Links</title>
+  
+<p>
+Quick links to the most common subjects:
+</p>
+
+<p>
+  
+  <link href="UsersGuide/index.html">User's Guide</link>
+  -
+  <link href="QuickStart/index.html">Quick Start Tutorial</link>
+  -
+  <link href="tapestry/ComponentReference/index.html">Component Reference</link>
+  -
+  <link href="tapestry/apidocs/index.html">JavaDoc</link>
+  -
+  <link href="site:faq">FAQ</link>
+  -
+  <link href="downloads.html"><strong>Downloads</strong></link>  
+  -
+  <link href="site:wiki">Wiki</link>
+  -
+  <link href="http://issues.apache.org/jira/secure/BrowseProject.jspa?id=10573">JIRA</link> (issue tracking)
+</p>  
+  
+    
+  </section>
+  
 
 <section>
   <title>What is Tapestry?</title>
@@ -88,6 +118,8 @@ Tapestry is organized around four key principles:
 </p>
 
 </section>
+
+
 
 <section>
   <title>Tapestry 4.0</title>
