@@ -20,7 +20,11 @@ import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.Book;
@@ -33,11 +37,18 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * @author Howard Lewis Ship
  */
 
+@Meta("page-type=MyLibrary")
 public abstract class ConfirmBookDelete extends BasePage
 {
     public abstract void setBookId(Integer bookId);
 
     public abstract void setBookTitle(String title);
+
+    @InjectPage("MyLibrary")
+    public abstract MyLibrary getMyLibrary();
+
+    @Message
+    public abstract String bookDeleted(String title);
 
     /**
      * Invoked (by {@link MyLibrary}) to select a book to be deleted. This method sets the
@@ -45,7 +56,7 @@ public abstract class ConfirmBookDelete extends BasePage
      * {@link IRequestCycle#setPage(IPage)}.
      */
 
-    public void selectBook(Integer bookId, IRequestCycle cycle)
+    public void selectBook(Integer bookId)
     {
         setBookId(bookId);
 
@@ -73,18 +84,15 @@ public abstract class ConfirmBookDelete extends BasePage
             }
         }
 
-        cycle.activate(this);
+        getRequestCycle().activate(this);
     }
 
     /**
      * Hooked up to the yes component, this actually deletes the book.
      */
 
-    public void deleteBook(IRequestCycle cycle)
+    public void deleteBook(Integer bookPK)
     {
-        Object[] parameters = cycle.getServiceParameters();
-        Integer bookPK = (Integer) parameters[0];
-
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Book book = null;
 
@@ -109,10 +117,10 @@ public abstract class ConfirmBookDelete extends BasePage
             }
         }
 
-        MyLibrary myLibrary = (MyLibrary) cycle.getPage("MyLibrary");
+        MyLibrary myLibrary = getMyLibrary();
 
-        myLibrary.setMessage(format("book-deleted", book.getTitle()));
+        myLibrary.setMessage(bookDeleted(book.getTitle()));
 
-        myLibrary.activate(cycle);
+        myLibrary.activate();
     }
 }

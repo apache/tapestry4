@@ -26,6 +26,7 @@ import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
@@ -39,6 +40,7 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * @author Howard Lewis Ship
  */
 
+@Meta("page-type=MyLibrary")
 public abstract class EditBook extends Protected implements PageBeginRenderListener
 {
     public abstract Map getAttributes();
@@ -57,7 +59,7 @@ public abstract class EditBook extends Protected implements PageBeginRenderListe
      * {@link org.apache.tapestry.vlib.ejb.IBook} and updates the request cycle to render this page,
      */
 
-    public void beginEdit(IRequestCycle cycle, Integer bookId)
+    public void beginEdit(Integer bookId)
     {
         setBookId(bookId);
 
@@ -89,7 +91,7 @@ public abstract class EditBook extends Protected implements PageBeginRenderListe
             }
         }
 
-        cycle.activate(this);
+        getRequestCycle().activate(this);
     }
 
     @Message

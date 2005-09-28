@@ -46,6 +46,6 @@ public class ActivateCallback implements ICallback
         IActivate page = (IActivate) cycle.getPage(_pageName);
 
         page.validate(cycle);
-        page.activate(cycle);
+        page.activate();
     }
 }

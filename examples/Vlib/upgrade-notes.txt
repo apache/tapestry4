@@ -66,4 +66,35 @@ vlib.application
 vlib.properties
 	Created to hold common strings
 	
+Protected.java
+	Made getValidationDelegate() and abstract property, with @Bean
+	Uses @InjectState and @InjectPage inside pageValidate()
+	
+MyLibrary.html
+	Used If not Conditional
+	
+MyLibrary.java
+	Use @Persist for sortColumn descending, ownedQuery properties
+	Set default for sortColumn in finishLoad()
+	Use @InjectComponent for browser property
+	
+ConfirmBookDelete.java
+	@Meta for page-type
+	
+EditBook.html
+	Made use of proper binding prefixes
+	
+Border
+	Moved parameters to Border.java using @Parameter
+	Converted @Conditional to @If
+	Converted XML to 4.0 DTD
+	Made use of binding prefixes
+	
+BookMatches
+	Standard changes
+	
+BorrowedBooks
+	Standard changes
+	
+		
 	

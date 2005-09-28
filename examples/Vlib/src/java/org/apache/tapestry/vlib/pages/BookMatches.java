@@ -17,8 +17,12 @@ package org.apache.tapestry.vlib.pages;
 import java.rmi.RemoteException;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.InjectComponent;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.annotations.Meta;
+import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.html.BasePage;
-import org.apache.tapestry.vlib.IMessageProperty;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.components.Browser;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
@@ -32,26 +36,40 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
  * @author Howard Lewis Ship
  */
 
+@Meta("page-type=Search")
 public abstract class BookMatches extends BasePage
 {
-    private Browser _browser;
+    @InjectComponent("browser")
+    public abstract Browser getBrowser();
 
-    public void finishLoad()
-    {
-        _browser = (Browser) getComponent("browser");
-    }
-
+    @Persist
     public abstract IBookQuery getBookQuery();
 
     public abstract void setBookQuery(IBookQuery bookQuery);
 
+    @Persist
     public abstract SortColumn getSortColumn();
 
+    public abstract void setSortColumn(SortColumn column);
+
+    @Persist
     public abstract boolean isDescending();
 
+    @Persist
     public abstract MasterQueryParameters getQueryParameters();
 
     public abstract void setQueryParameters(MasterQueryParameters queryParameters);
+
+    @Message
+    public abstract String noMatches();
+
+    public void finishLoad()
+    {
+        setSortColumn(SortColumn.TITLE);
+    }
+
+    @InjectPage("Home")
+    public abstract Home getHome();
 
     /**
      * Invoked by the {@link Home} page to perform a query.
@@ -65,12 +83,12 @@ public abstract class BookMatches extends BasePage
 
         if (count == 0)
         {
-            IMessageProperty page = (IMessageProperty) cycle.getPage();
-            page.setMessage(getMessage("no-matches"));
+            Home page = getHome();
+            page.setMessage(noMatches());
             return;
         }
 
-        _browser.initializeForResultCount(count);
+        getBrowser().initializeForResultCount(count);
         cycle.activate(this);
     }
 
@@ -78,8 +96,10 @@ public abstract class BookMatches extends BasePage
     {
         int count = executeQuery();
 
-        if (count != _browser.getResultCount())
-            _browser.initializeForResultCount(count);
+        Browser browser = getBrowser();
+
+        if (count != browser.getResultCount())
+            browser.initializeForResultCount(count);
     }
 
     private int executeQuery()
@@ -111,7 +131,6 @@ public abstract class BookMatches extends BasePage
 
                 setBookQuery(null);
             }
-
         }
     }
 

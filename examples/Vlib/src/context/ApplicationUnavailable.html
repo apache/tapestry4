@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>Virtual Library: Search for Books</title>
-<link rel="stylesheet" type="text/css" href="scripts/style_virtlib_pcIE55.css">
+<link rel="stylesheet" type="text/css" href="scripts/style_virtlib_pcIE55.css"/>
 </head>
 <span jwcid="$content$">
 	
@@ -34,10 +34,10 @@ system errors.  You may attempt to
 <a jwcid="@ServiceLink" service="restart" href="#">restart the application</a>.
 </p>
 
-<span jwcid="@Conditional" condition="ognl:engine.debugEnabled">
+<span jwcid="@If" condition="ognl:engine.debugEnabled">
 
 <span jwcid="@ExceptionDisplay" exceptions="ognl:exceptions"/>
-<span jwcid="@Delegator" delegate="ognl:requestCycle.requestContext"/>
+<span jwcid="@RequestDisplay"/>
 <span jwcid="@contrib:InspectorButton"/>
 </span>
 

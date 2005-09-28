@@ -17,6 +17,9 @@ package org.apache.tapestry.vlib.pages;
 import java.rmi.RemoteException;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.InjectComponent;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.vlib.ActivatePage;
 import org.apache.tapestry.vlib.IMessageProperty;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
@@ -38,26 +41,38 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 public abstract class MyLibrary extends ActivatePage implements IMessageProperty
 {
-    public abstract void setOwnedQuery(IBookQuery value);
-
+    @Persist
     public abstract IBookQuery getOwnedQuery();
 
+    public abstract void setOwnedQuery(IBookQuery value);
+
+    @Persist
     public abstract SortColumn getSortColumn();
 
+    public abstract void setSortColumn(SortColumn column);
+
+    @Persist
     public abstract boolean isDescending();
 
-    private Browser _browser;
+    @InjectComponent("browser")
+    public abstract Browser getBrowser();
+
+    @InjectPage("EditBook")
+    public abstract EditBook getEditBook();
+
+    @InjectPage("ConfirmBookDelete")
+    public abstract ConfirmBookDelete getConfirmBookDelete();
 
     public void finishLoad()
     {
-        _browser = (Browser) getComponent("browser");
+        setSortColumn(SortColumn.TITLE);
     }
 
-    public void activate(IRequestCycle cycle)
+    public void activate()
     {
         runQuery();
 
-        cycle.activate(this);
+        getRequestCycle().activate(this);
     }
 
     public void requery(IRequestCycle cycle)
@@ -89,8 +104,8 @@ public abstract class MyLibrary extends ActivatePage implements IMessageProperty
 
                 int count = query.ownerQuery(userId, ordering);
 
-                if (count != _browser.getResultCount())
-                    _browser.initializeForResultCount(count);
+                if (count != getBrowser().getResultCount())
+                    getBrowser().initializeForResultCount(count);
 
                 break;
             }
@@ -107,26 +122,18 @@ public abstract class MyLibrary extends ActivatePage implements IMessageProperty
      * Listener invoked to allow a user to edit a book.
      */
 
-    public void editBook(IRequestCycle cycle)
+    public void editBook(Integer bookId)
     {
-        Object[] parameters = cycle.getServiceParameters();
-        Integer bookId = (Integer) parameters[0];
-        EditBook page = (EditBook) cycle.getPage("EditBook");
-
-        page.beginEdit(cycle, bookId);
+        getEditBook().beginEdit(bookId);
     }
 
     /**
      * Listener invoked to allow a user to delete a book.
      */
 
-    public void deleteBook(IRequestCycle cycle)
+    public void deleteBook(Integer bookId)
     {
-        Object[] parameters = cycle.getServiceParameters();
-        Integer bookId = (Integer) parameters[0];
-
-        ConfirmBookDelete page = (ConfirmBookDelete) cycle.getPage("ConfirmBookDelete");
-        page.selectBook(bookId, cycle);
+        getConfirmBookDelete().selectBook(bookId);
     }
 
 }
