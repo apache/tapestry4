@@ -23,11 +23,6 @@
 	</header>
 	<body>
 
-<warning>
-Pre-packaged Tapestry 4.0 distributions are not yet available. Tapestry 3.0 is packaged more traditionally,
-with separate binary and source distributions.  
-</warning>
-
 <p>
 Tapestry distributions are available from the
 <fork href="http://jakarta.apache.org/site/downloads/downloads_tapestry.cgi">Apache Mirrors</fork>.  
