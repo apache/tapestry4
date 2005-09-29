@@ -83,4 +83,27 @@ public class ObjectArrayRenderStrategyTest extends BaseDescribeTestCase
 
         verifyControls();
     }
+
+    public void testNullInArray()
+    {
+        Object[] array =
+        { null };
+
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+
+        writer.begin("ul");
+        writer.begin("li");
+        writer.begin("em");
+        writer.print("<NULL>");
+        writer.end();
+        writer.end();
+        writer.end();
+
+        replayControls();
+
+        new ObjectArrayRenderStrategy().renderObject(array, writer, cycle);
+
+        verifyControls();
+    }
 }
