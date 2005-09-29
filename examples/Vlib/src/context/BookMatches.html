@@ -11,7 +11,7 @@
     <th>Borrow</th>
   </tr>
     <tr jwcid="browser@Browser" query="ognl:bookQuery" value="ognl:currentMatch" listener="listener:requery">
-      <td><a href="#" jwcid="@BookLink" book="ognl:currentMatch">Swing Second Edition</a>
+      <td><a href="#" jwcid="link@BookLink" book="ognl:currentMatch">Swing Second Edition</a>
       </td>
       <td><span jwcid="@Insert" value="ognl:currentMatch.author">Robinson and Vorobiev</span>
       </td>
@@ -21,7 +21,7 @@
       </td>
       <td><a jwcid="holderLink" href="#">Howard Lewis Ship</a>
       </td>
-      <td class="icon"><a jwcid="@Borrow" book="ognl:currentMatch" href="#"><img src="images/checkout.png" alt="Borrow" border="0" vspace="2"></a>
+      <td class="icon"><a jwcid="borrow@Borrow" book="ognl:currentMatch" href="#"><img src="images/checkout.png" alt="Borrow" border="0" vspace="2"></a>
       </td>
     </tr>
 </table>

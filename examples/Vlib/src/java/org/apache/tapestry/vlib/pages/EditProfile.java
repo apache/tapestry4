@@ -21,10 +21,14 @@ import java.util.Map;
 import javax.ejb.FinderException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.annotations.InjectComponent;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.InjectState;
+import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.vlib.ActivatePage;
@@ -38,7 +42,7 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * @author Howard Lewis Ship
  */
 
-public abstract class EditProfile extends ActivatePage implements PageRenderListener
+public abstract class EditProfile extends ActivatePage implements PageBeginRenderListener
 {
     public abstract String getPassword1();
 
@@ -52,6 +56,24 @@ public abstract class EditProfile extends ActivatePage implements PageRenderList
 
     public abstract void setAttributes(Map attributes);
 
+    @InjectState("visit")
+    public abstract Visit getVisitState();
+
+    @InjectComponent("inputPassword1")
+    public abstract IFormComponent getInputPassword1();
+
+    @InjectComponent("inputPassword2")
+    public abstract IFormComponent getInputPassword2();
+
+    @Message
+    public abstract String enterPasswordTwice();
+
+    @Message
+    public abstract String passwordMustMatch();
+
+    @InjectPage("MyLibrary")
+    public abstract MyLibrary getMyLibrary();
+
     /**
      * Invoked (from {@link MyLibrary}) to begin editting the user's profile. We get the entity
      * attributes from the {@link org.apache.tapestry.vlib.ejb.IPerson}, and store them in the
@@ -61,7 +83,7 @@ public abstract class EditProfile extends ActivatePage implements PageRenderList
 
     public void activate()
     {
-        Visit visit = (Visit) getVisit();
+        Visit visit = getVisitState();
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getRequestCycle().getEngine();
 
         Integer userId = visit.getUserId();
@@ -104,10 +126,10 @@ public abstract class EditProfile extends ActivatePage implements PageRenderList
 
         IValidationDelegate delegate = getValidationDelegate();
 
-        delegate.setFormComponent((IFormComponent) getComponent("inputPassword1"));
+        delegate.setFormComponent(getInputPassword1());
         delegate.recordFieldInputValue(null);
 
-        delegate.setFormComponent((IFormComponent) getComponent("inputPassword2"));
+        delegate.setFormComponent(getInputPassword2());
         delegate.recordFieldInputValue(null);
 
         if (delegate.getHasErrors())
@@ -115,25 +137,25 @@ public abstract class EditProfile extends ActivatePage implements PageRenderList
 
         Map attributes = getAttributes();
 
-        if (Tapestry.isBlank(password1) != Tapestry.isBlank(password2))
+        if (HiveMind.isBlank(password1) != HiveMind.isBlank(password2))
         {
-            setErrorField("inputPassword1", getMessage("enter-password-twice"));
+            setErrorField("inputPassword1", enterPasswordTwice());
 
             return;
         }
 
-        if (Tapestry.isNonBlank(password1))
+        if (HiveMind.isNonBlank(password1))
         {
             if (!password1.equals(password2))
             {
-                setErrorField("inputPassword1", getMessage("password-must-match"));
+                setErrorField("inputPassword1", passwordMustMatch());
                 return;
             }
 
             attributes.put("password", password1);
         }
 
-        Visit visit = (Visit) getVisit();
+        Visit visit = getVisitState();
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
         Integer userId = visit.getUserId();
 
@@ -164,8 +186,7 @@ public abstract class EditProfile extends ActivatePage implements PageRenderList
 
         vengine.clearCache();
 
-        MyLibrary myLibrary = (MyLibrary) cycle.getPage("MyLibrary");
-        myLibrary.activate();
+        getMyLibrary().activate();
     }
 
     public void pageBeginRender(PageEvent event)
