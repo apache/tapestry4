@@ -32,7 +32,7 @@
     </p>
     
 <source><![CDATA[
- <library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
+ <library id="contrib" specification-path="classpath:/org/apache/tapestry/contrib/Contrib.library"/>
 ]]></source>    
 
   <p>

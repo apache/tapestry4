@@ -25,7 +25,7 @@
 ]
 >
 
-<site xmlns="http://apache.org/forrest/linkmap/1.0" tab="project">
+<site xmlns="http://apache.org/forrest/linkmap/1.0" >
   
     <project-index href="index.html"/>
     
@@ -42,14 +42,14 @@
     </project>
     
     
-    <QuickStart label="Quick Start" tab="quick-start" href="QuickStart/">
+    <QuickStart label="Quick Start"  href="QuickStart/">
       <qsintro label="Introduction" href="index.html"/>
       <helloworld label="Hello World" href="helloworld.html"/>
       <directlink label="DirectLink" href="directlink.html"/>
 	  <forms label="Forms" href="forms.html"/>
     </QuickStart>
     
-    <UsersGuide label="Users Guide" tab="users-guide" href="UsersGuide/">
+    <UsersGuide label="Users Guide"  href="UsersGuide/">
       <intro label="Introduction" href="index.html"/>
       <templates label="Page and component templates" href="template.html"/>
       <bindings label="Component parameter bindings" href="bindings.html"/>
@@ -69,8 +69,11 @@
       <spec label="Specification DTDs" href="spec.html"/>
     </UsersGuide>
     
+  <Examples label="Examples"  href="examples/">
+    <index href="index.html"/>
+  </Examples>
     
-    <tapestry label="Framework" tab="tapestry" href="tapestry/">
+    <tapestry label="Framework"  href="tapestry/">
       
       <index label="Overview" href="index.html"/>
       
@@ -129,7 +132,7 @@
       
     </tapestry>
     
-   <contrib label="Contrib Library" tab="contrib" href="tapestry-contrib/">
+   <contrib label="Contrib Library"  href="tapestry-contrib/">
       
       <index label="Overview" href="index.html"/>
  
@@ -170,7 +173,7 @@
       </reports>    
    </contrib>
        
-   <portlet label="Portlet Support" tab="portlet" href="tapestry-portlet/">
+   <portlet label="Portlet Support"  href="tapestry-portlet/">
       
       <index label="Overview" href="index.html"/>
       <configuration label="Configuration" href="configuration.html"/>
@@ -181,7 +184,7 @@
       </reports>    
    </portlet>
    
-   <annotations label="Annotations" tab="annotations" href="tapestry-annotations/">
+   <annotations label="Annotations"  href="tapestry-annotations/">
  
     <index label="Overview" href="index.html"/>
   
