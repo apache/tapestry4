@@ -129,56 +129,56 @@ public class EnhanceUtils
     {
         Boolean wrapped = (Boolean) binding.getObject(Boolean.class);
 
-        return wrapped.booleanValue();
+        return wrapped == null ? false : wrapped.booleanValue();
     }
 
     public static byte toByte(IBinding binding)
     {
         Byte wrapped = (Byte) binding.getObject(Byte.class);
 
-        return wrapped.byteValue();
+        return wrapped == null ? 0 : wrapped.byteValue();
     }
 
     public static char toChar(IBinding binding)
     {
         Character wrapped = (Character) binding.getObject(Character.class);
 
-        return wrapped.charValue();
+        return wrapped == null ? 0 : wrapped.charValue();
     }
 
     public static short toShort(IBinding binding)
     {
         Short wrapped = (Short) binding.getObject(Short.class);
 
-        return wrapped.shortValue();
+        return wrapped == null ? 0 : wrapped.shortValue();
     }
 
     public static int toInt(IBinding binding)
     {
         Integer wrapped = (Integer) binding.getObject(Integer.class);
 
-        return wrapped.intValue();
+        return wrapped == null ? 0 : wrapped.intValue();
     }
 
     public static long toLong(IBinding binding)
     {
         Long wrapped = (Long) binding.getObject(Long.class);
 
-        return wrapped.longValue();
+        return wrapped == null ? 0 : wrapped.longValue();
     }
 
     public static float toFloat(IBinding binding)
     {
         Float wrapped = (Float) binding.getObject(Float.class);
 
-        return wrapped.floatValue();
+        return wrapped == null ? 0.0f : wrapped.floatValue();
     }
 
     public static double toDouble(IBinding binding)
     {
         Double wrapped = (Double) binding.getObject(Double.class);
 
-        return wrapped.doubleValue();
+        return wrapped == null ? 0.0d : wrapped.doubleValue();
     }
 
     /**

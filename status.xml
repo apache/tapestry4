@@ -53,6 +53,7 @@
     <release version="4.0-beta-9" date="unreleased">
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-663">Document Button component</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-491">Document Inspector component</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-601">EnhanceUtils needs null checks in the primitive unwrapper methods</action>
     </release>
     <release version="4.0-beta-8" date="Sep 24 2005">
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-465">Document Foreach component</action>

@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRender;
 import org.easymock.MockControl;
@@ -179,7 +180,192 @@ public class TestEnhanceUtils extends HiveMindTestCase
         }
 
         verifyControls();
+    }
 
+    protected IBinding newBinding(Class expectedType, Object value)
+    {
+        IBinding binding = (IBinding) newMock(IBinding.class);
+
+        binding.getObject(expectedType);
+        setReturnValue(binding, value);
+
+        return binding;
+    }
+
+    public void testToBooleanNull()
+    {
+        IBinding binding = newBinding(Boolean.class, null);
+
+        replayControls();
+
+        assertEquals(false, EnhanceUtils.toBoolean(binding));
+
+        verifyControls();
+    }
+
+    public void testToBoolean()
+    {
+        IBinding binding = newBinding(Boolean.class, Boolean.TRUE);
+
+        replayControls();
+
+        assertEquals(true, EnhanceUtils.toBoolean(binding));
+
+        verifyControls();
+    }
+
+    public void testToByteNull()
+    {
+        IBinding binding = newBinding(Byte.class, null);
+
+        replayControls();
+
+        assertEquals(0, EnhanceUtils.toByte(binding));
+
+        verifyControls();
+    }
+
+    public void testToByte()
+    {
+        IBinding binding = newBinding(Byte.class, new Byte((byte) 37));
+
+        replayControls();
+
+        assertEquals(37, EnhanceUtils.toByte(binding));
+
+        verifyControls();
+    }
+
+    public void testToCharNull()
+    {
+        IBinding binding = newBinding(Character.class, null);
+
+        replayControls();
+
+        assertEquals(0, EnhanceUtils.toChar(binding));
+
+        verifyControls();
+    }
+
+    public void testToChar()
+    {
+        IBinding binding = newBinding(Character.class, new Character('q'));
+
+        replayControls();
+
+        assertEquals('q', EnhanceUtils.toChar(binding));
+
+        verifyControls();
+    }
+
+    public void testToShortNull()
+    {
+        IBinding binding = newBinding(Short.class, null);
+
+        replayControls();
+
+        assertEquals(0, EnhanceUtils.toShort(binding));
+
+        verifyControls();
+    }
+
+    public void testToShort()
+    {
+        IBinding binding = newBinding(Short.class, new Short((short) 99));
+
+        replayControls();
+
+        assertEquals(99, EnhanceUtils.toShort(binding));
+
+        verifyControls();
+    }
+
+    public void testToIntNull()
+    {
+        IBinding binding = newBinding(Integer.class, null);
+
+        replayControls();
+
+        assertEquals(0, EnhanceUtils.toInt(binding));
+
+        verifyControls();
+    }
+
+    public void testToInt()
+    {
+        IBinding binding = newBinding(Integer.class, new Integer(107));
+
+        replayControls();
+
+        assertEquals(107, EnhanceUtils.toInt(binding));
+
+        verifyControls();
+    }
+
+    public void testToLongNull()
+    {
+        IBinding binding = newBinding(Long.class, null);
+
+        replayControls();
+
+        assertEquals(0, EnhanceUtils.toLong(binding));
+
+        verifyControls();
+    }
+
+    public void testToLong()
+    {
+        IBinding binding = newBinding(Long.class, new Long(90000));
+
+        replayControls();
+
+        assertEquals(90000, EnhanceUtils.toLong(binding));
+
+        verifyControls();
+    }
+
+    public void testToFloatNull()
+    {
+        IBinding binding = newBinding(Float.class, null);
+
+        replayControls();
+
+        assertEquals(0.0f, EnhanceUtils.toFloat(binding));
+
+        verifyControls();
+    }
+
+    public void testToFloat()
+    {
+        IBinding binding = newBinding(Float.class, new Float(2.5f));
+
+        replayControls();
+
+        assertEquals(2.5f, EnhanceUtils.toFloat(binding));
+
+        verifyControls();
+    }
+
+    public void testToDoubleNull()
+    {
+        IBinding binding = newBinding(Double.class, null);
+
+        replayControls();
+
+        assertEquals(0.0d, EnhanceUtils.toDouble(binding));
+
+        verifyControls();
+    }
+
+    public void testToDouble()
+    {
+        IBinding binding = newBinding(Double.class, new Double(2.5d));
+
+        replayControls();
+
+        assertEquals(2.5d, EnhanceUtils.toDouble(binding));
+
+        verifyControls();
     }
 
 }
