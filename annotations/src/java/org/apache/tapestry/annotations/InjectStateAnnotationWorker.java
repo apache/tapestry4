@@ -17,10 +17,10 @@ package org.apache.tapestry.annotations;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.Location;
-import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.enhance.EnhancementOperation;
-import org.apache.tapestry.enhance.InjectStateWorker;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.InjectSpecification;
+import org.apache.tapestry.spec.InjectSpecificationImpl;
 
 /**
  * Injects an Application State Object.
@@ -32,18 +32,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
  */
 public class InjectStateAnnotationWorker implements MethodAnnotationEnhancementWorker
 {
-    final InjectStateWorker _delegate;
-
-    InjectStateAnnotationWorker(InjectStateWorker delegate)
-    {
-        _delegate = delegate;
-    }
-
-    public InjectStateAnnotationWorker()
-    {
-        this(new InjectStateWorker());
-    }
-
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
             Method method, Location location)
     {
@@ -51,11 +39,13 @@ public class InjectStateAnnotationWorker implements MethodAnnotationEnhancementW
 
         String propertyName = AnnotationUtils.getPropertyName(method);
 
-        _delegate.injectState(op, is.value(), propertyName, location);
-    }
+        InjectSpecification inject = new InjectSpecificationImpl();
 
-    public void setApplicationStateManager(ApplicationStateManager applicationStateManager)
-    {
-        _delegate.setApplicationStateManager(applicationStateManager);
+        inject.setType("state");
+        inject.setProperty(propertyName);
+        inject.setObject(is.value());
+        inject.setLocation(location);
+
+        spec.addInjectSpecification(inject);
     }
 }

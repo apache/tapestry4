@@ -24,7 +24,7 @@ import org.apache.tapestry.spec.InjectSpecification;
 
 /**
  * Test for the "simple" annotation workers, that collect basic information and update the component
- * specification. {@link org.apache.tapestry.annotations.InjectPageAnnotationWorker}.
+ * specification.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
@@ -69,7 +69,35 @@ public class TestSimpleAnnotationWorkers extends BaseAnnotationTestCase
         assertEquals("script", is.getType());
         assertEquals("foo.script", is.getObject());
         assertSame(l, is.getLocation());
+    }
 
+    public void testInjectState()
+    {
+        Location l = newLocation();
+        IComponentSpecification spec = execute(new InjectStateAnnotationWorker(), "getBarney", l);
+
+        InjectSpecification is = (InjectSpecification) spec.getInjectSpecifications().get(0);
+
+        assertEquals("barney", is.getProperty());
+        assertEquals("state", is.getType());
+        assertEquals("barneyASO", is.getObject());
+        assertSame(l, is.getLocation());
+    }
+
+    public void testInjectStateFlag()
+    {
+        Location l = newLocation();
+        IComponentSpecification spec = execute(
+                new InjectStateFlagAnnotationWorker(),
+                "getBarneyExists",
+                l);
+
+        InjectSpecification is = (InjectSpecification) spec.getInjectSpecifications().get(0);
+
+        assertEquals("barneyExists", is.getProperty());
+        assertEquals("state-flag", is.getType());
+        assertEquals("barneyASO", is.getObject());
+        assertSame(l, is.getLocation());
     }
 
     private IComponentSpecification execute(MethodAnnotationEnhancementWorker worker,

@@ -14,17 +14,22 @@
 
 package org.apache.tapestry.annotations;
 
-import org.apache.tapestry.html.BasePage;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-/**
- * Used by {@link org.apache.tapestry.annotations.MetaAnnotationWorkerTest}.
- * 
- * @author Howard M. Lewis Ship
- * @since 4.0
- */
-@Meta(
-{ "foo=bar", "biff=bazz" })
-public abstract class MetaPage extends BasePage
-{
+@Target(
+{ ElementType.METHOD })
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface InjectStateFlag {
 
+    /**
+     * The id of the Application State Object; the boolean accessor method to which the annotation
+     * is attached will return true when the ASO exists, false when it does not.
+     */
+
+    String value();
 }
