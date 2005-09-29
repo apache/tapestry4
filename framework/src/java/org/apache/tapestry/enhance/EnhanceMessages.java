@@ -113,33 +113,37 @@ class EnhanceMessages
                 .getJavaClassName(propertyType), ClassFabUtils.getJavaClassName(requiredType));
     }
 
-    public static String wrongTypeForPageInjection(String propertyName, Class propertyType)
+    static String wrongTypeForPageInjection(String propertyName, Class propertyType)
     {
         return _formatter.format("wrong-type-for-page-injection", propertyName, ClassFabUtils
                 .getJavaClassName(propertyType));
     }
 
-    public static String incompatiblePropertyType(String propertyName, Class propertyType,
+    static String incompatiblePropertyType(String propertyName, Class propertyType,
             Class expectedType)
     {
         return _formatter.format("incompatible-property-type", propertyName, ClassFabUtils
                 .getJavaClassName(propertyType), ClassFabUtils.getJavaClassName(expectedType));
     }
 
-    public static String classEnhancementFailure(Class baseClass, Throwable cause)
+    static String classEnhancementFailure(Class baseClass, Throwable cause)
     {
         return _formatter.format("class-enhancement-failure", ClassFabUtils
                 .getJavaClassName(baseClass), cause);
     }
 
-    public static String methodConflict(MethodSignature sig, Location existing)
+    static String methodConflict(MethodSignature sig, Location existing)
     {
         return _formatter.format("method-conflict", sig, existing);
     }
 
-    public static String readonlyProperty(String propertyName, Method writeMethod)
+    static String readonlyProperty(String propertyName, Method writeMethod)
     {
         return _formatter.format("readonly-property", propertyName, writeMethod);
     }
 
+    static String mustBeBoolean(String propertyName)
+    {
+        return _formatter.format("must-be-boolean", propertyName);
+    }
 }

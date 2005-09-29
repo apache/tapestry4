@@ -365,6 +365,28 @@ with  a type of "state".
 </section>
 
 <section>
+  <title>InjectStateFlag</title>
+  
+  <p>
+    The <link href="&javadoc;/InjectStateFlag.html">InjectStateFlag</link> annotation
+  implements a read-only boolean property that returns true if the identified
+  application state object exists.  This is useful for avoiding the accidental creation
+  of the ASO, which helps avoid the unneccessary creation of the HttpSession.
+  </p>
+  
+  <source>
+    @InjectStateFlag("visit")
+    public abstract boolean getVisitExists();
+  </source>    
+  
+  <p>
+    The end result is equivalent to using the <link href="&spec;#spec.inject">&lt;inject&gt;</link> element,
+    with  a type of "state-flag".
+  </p>  
+  
+</section>
+
+<section>
   <title>Message</title>
   
   <p>

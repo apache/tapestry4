@@ -68,6 +68,9 @@ public abstract class AnnotatedPage extends BasePage
     @InjectState("barneyASO")
     public abstract Map getBarney();
 
+    @InjectStateFlag("barneyASO")
+    public abstract boolean getBarneyExists();
+
     @Parameter
     public abstract String getSimpleParameter();
 
@@ -86,8 +89,8 @@ public abstract class AnnotatedPage extends BasePage
 
     @Parameter(name = "fred")
     public abstract double getNamedParameter();
-    
-    @Parameter(defaultValue="myDefault")
+
+    @Parameter(defaultValue = "myDefault")
     public abstract String getDefaultValue();
 
     @InjectPage("SomePageName")

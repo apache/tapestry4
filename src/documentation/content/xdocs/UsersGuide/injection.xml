@@ -212,6 +212,47 @@ objects which store various kinds of global information (information needed on m
 </p>  
   
 </section>
+
+<section id="injection.state-flag">
+  <title>state-flag injection</title>
+  
+  <p>
+  Using the <link href="#injection.state">state</link> injection can force the creation
+  of an application state object; this type of injection will create a <em>read only</em>
+  boolean property that indicates <em>if</em> an application state object already exists.
+  </p>
+  
+  <p>
+    This is used to <em>prevent</em> the creation of an application state object until it
+    is absolutely needed.
+  </p>
+  
+  <p>
+    For example; in a situtation where the user may or may not be logged in, you would
+    inject a state flag and the state in two properties and check the state flag
+    <em>first</em>:
+  </p>
+  
+<source><![CDATA[
+// <inject> type state-flag in the XML
+public abstract boolean getUserIdentityExists();
+
+// <inject> type state in the XML
+public abstract WizardState  getUserIdentity();
+  
+public void doOperation()
+{
+  if (getUserIdentityExists() && getUserIdentity().isLoggedIn())
+  {
+    . . .
+  }
+  else
+  {
+    . . .
+  }
+}
+]]></source>
+</section> <!-- injection.state-flag -->
     
   </body>
 </document>

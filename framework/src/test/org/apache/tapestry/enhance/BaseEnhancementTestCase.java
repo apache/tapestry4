@@ -16,6 +16,7 @@ package org.apache.tapestry.enhance;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.easymock.MockControl;
 
@@ -41,5 +42,35 @@ public abstract class BaseEnhancementTestCase extends HiveMindTestCase
     protected IComponentSpecification newSpec()
     {
         return (IComponentSpecification) newMock(IComponentSpecification.class);
+    }
+
+    protected EnhancementOperation newOp()
+    {
+        return (EnhancementOperation) newMock(EnhancementOperation.class);
+    }
+
+    protected void trainGetAccessorMethodName(EnhancementOperation op, String propertyName, String methodName)
+    {
+        op.getAccessorMethodName(propertyName);
+        setReturnValue(op, methodName);
+    
+    }
+
+    protected void trainAddInjectedField(EnhancementOperation op, String fieldName, Class fieldType, Object injectedValue, String injectedFieldName)
+    {
+        op.addInjectedField(fieldName, fieldType, injectedValue);
+        setReturnValue(op, injectedFieldName);
+    
+    }
+
+    protected ApplicationStateManager newApplicationStateManager()
+    {
+        return (ApplicationStateManager) newMock(ApplicationStateManager.class);
+    }
+
+    protected void trainGetPropertyType(EnhancementOperation op, String propertyName, Class propertyType)
+    {
+        op.getPropertyType(propertyName);
+        setReturnValue(op, propertyType);
     }
 }

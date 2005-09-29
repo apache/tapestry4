@@ -43,7 +43,7 @@ public class InjectStateWorker implements InjectEnhancementWorker
         injectState(op, spec.getObject(), spec.getProperty(), spec.getLocation());
     }
 
-    public void injectState(EnhancementOperation op, String objectName, String propertyName,
+    void injectState(EnhancementOperation op, String objectName, String propertyName,
             Location location)
     {
         Defense.notNull(op, "op");
@@ -54,7 +54,7 @@ public class InjectStateWorker implements InjectEnhancementWorker
         String fieldName = "_$" + propertyName;
 
         // State properties are read/write
-        
+
         op.claimProperty(propertyName);
 
         op.addField(fieldName, propertyType);

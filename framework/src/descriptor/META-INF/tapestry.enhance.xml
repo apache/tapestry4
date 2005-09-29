@@ -116,6 +116,7 @@
   <contribution configuration-id="InjectWorkers">
     <worker type="object" object="service:InjectObjectWorker"/>
     <worker type="state" object="service:InjectStateWorker"/>
+    <worker type="state-flag" object="service:InjectStateFlagWorker"/>
     <worker type="meta" object="service:InjectMetaWorker"/>
     <worker type="script" object="service:InjectScriptWorker"/>
     <worker type="page" object="instance:InjectPageWorker"/>
@@ -199,6 +200,19 @@
     </invoke-factory>
     
   </service-point>
+  
+  <service-point id="InjectStateFlagWorker" interface="InjectEnhancementWorker">
+    
+    Injects boolean properties that indicate if a particular application state object
+    exists or not.
+    
+    <invoke-factory>
+      <construct class="InjectStateFlagWorker">
+        <set-service property="applicationStateManager" service-id="tapestry.state.ApplicationStateManager"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>  
   
   <service-point id="InjectMetaWorker" interface="InjectEnhancementWorker">
     
