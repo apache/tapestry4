@@ -28,11 +28,13 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>  Adds a link to a page that is used to raise the Tapestry Inspector in a new window.
+    <br/>The Tapestry Inspector enables you at runtime to examine composition of a Tapestry application, inspect persistent page properties, clear HttpSessions and Tapestry caches.
+    <br/>Pages incorporating a InspectorButton component must also include a Body component.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &Body;, &ExceptionDisplay;</strong>
 </p>
 
 <section>
@@ -47,15 +49,22 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
+    <tr>
+      <td>disabled</td>
+      <td>boolean</td> <td>in</td> <td>no</td> <td>false</td>
+      <td>
+        If true, the button does not appear. This is the correct configuration for a deployed application.
+      </td>
+    </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>forbidden</strong>
 </p>
 
 <p>
@@ -66,7 +75,18 @@
 
 <section>
   <title>Examples</title>
-
+<p>This example is a simple page with the InspectorButton.</p>
+    <p><strong>Template</strong></p>
+<source><![CDATA[
+<html jwcid="@Shell" title="InspectorButton Example">
+<head jwcid="$remove$">
+ <title>InspectorButton Example</title>
+</head>
+<body jwcid="@Body">
+<h1>Hello world</h1>
+<span jwcid="@contrib:InspectorButton"/>
+</body>
+</html>]]></source>
 </section>
 </body>
 </document>
