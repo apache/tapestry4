@@ -9,17 +9,8 @@ hivebuild.dir=
 # Required to execute the configure and run-jboss targets.
 jboss.dir=
 
-# The absolute path to the directory containing the Tomcat installation.
-# Required to execute the deploy-tomcat target.
-# 
-tomcat.dir=
-
 # The absolute path to the directory containing the Jetty installation.
 # Required to execute the run-workbench target.
 jetty.dir=
-
-# The absolute path to the directory containing the Jython installation.
-# Required to execute some of the framework unit tests.
-jython.dir=
 
 
