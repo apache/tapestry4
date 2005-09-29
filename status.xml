@@ -54,6 +54,7 @@
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-663">Document Button component</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-491">Document Inspector component</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-601">EnhanceUtils needs null checks in the primitive unwrapper methods</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-676">Tapestry Inspector can throw an exception on the properties page, if a property is an array containing nulls</action>
     </release>
     <release version="4.0-beta-8" date="Sep 24 2005">
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-465">Document Foreach component</action>

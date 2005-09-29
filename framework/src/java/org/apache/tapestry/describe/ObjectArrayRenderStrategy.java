@@ -44,7 +44,18 @@ public class ObjectArrayRenderStrategy implements RenderStrategy
         for (int i = 0; i < array.length; i++)
         {
             writer.begin("li");
-            _renderStrategy.renderObject(array[i], writer, cycle);
+
+            Object item = array[i];
+
+            if (item == null)
+            {
+                writer.begin("em");
+                writer.print("<NULL>");
+                writer.end();
+            }
+            else
+                _renderStrategy.renderObject(item, writer, cycle);
+
             writer.end();
 
         }
