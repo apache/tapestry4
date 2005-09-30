@@ -22,7 +22,7 @@
   copyright="Apache Software Foundation"
   xmlns:xlink="http://www.w3.org/1999/xlink">
 
-  <tab label="Tapestry Project" href=""/>
+  <tab label="Tapestry Project" dir="" href="index.html"/>
 
   <tab label="Quick Start" dir="QuickStart"/>
   <tab label="Users Guide" dir="UsersGuide" />
