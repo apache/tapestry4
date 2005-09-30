@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<project name="Tapestry Examples Installer" default="deploy">
+
+	<target name="-jboss-dir" unless="jboss.dir">
+		<echo>Please provide the directory into which you installed JBoss 4.0.2</echo>
+		<echo>On windows systems, it is commonly C:/jboss-4.0.2</echo>
+		<input addproperty="jboss.dir" />
+	</target>
+
+	<target name="-confirm" depends="-jboss-dir">
+		<echo>Installing the Tapestry demos WILL overwrite parts of your JBoss default configuration.</echo>
+		<echo>You should back up your JBoss installation before continuing; better yet, use a fresh</echo>
+		<echo>install just to run these Tapestry demos.</echo>
+		<echo>*** The demos are only guaranteed to run on a clean install of JBoss 4.0.2</echo>
+		<input message="Enter 'continue' to continue" validargs="continue"/>
+	</target>
+		
+	<target name="deploy" depends="-jboss-dir,-confirm">	
+		<property name="jboss.default.dir" value="${jboss.dir}/server/default"/>
+		<available property="jboss.exists" file="${jboss.default.dir}" type="dir"/>
+		<fail unless="jboss.exists" message="Directory ${jboss.default.dir} does not exist."/>
+		<echo>*** Shutting down JBoss</echo>
+		<java fork="true" classname="org.jboss.Shutdown" error="shutdown.log">
+			<arg value="-S"/>
+			<classpath>
+				<fileset dir="${jboss.dir}">
+					<include name="bin/shutdown.jar"/>
+					<include name="client/jbossall-client.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+		<echo>*** Installing Tapestry examples to ${jboss.default.dir}</echo>
+		<copy todir="${jboss.default.dir}" overwrite="true">
+			<fileset dir="config"/>
+		</copy>
+		<echo/>
+		<echo>Examples, database and configuration have been installed.</echo>
+		<echo>You may now restart JBoss.</echo>
+	</target>
+
+</project>
