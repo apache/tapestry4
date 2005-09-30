@@ -330,7 +330,7 @@ public class TestEnhanceUtils extends HiveMindTestCase
 
         replayControls();
 
-        assertEquals(0.0f, EnhanceUtils.toFloat(binding));
+        assertEquals(0.0f, EnhanceUtils.toFloat(binding), 0.0f);
 
         verifyControls();
     }
@@ -341,7 +341,7 @@ public class TestEnhanceUtils extends HiveMindTestCase
 
         replayControls();
 
-        assertEquals(2.5f, EnhanceUtils.toFloat(binding));
+        assertEquals(2.5f, EnhanceUtils.toFloat(binding), 0.0f);
 
         verifyControls();
     }
@@ -352,7 +352,7 @@ public class TestEnhanceUtils extends HiveMindTestCase
 
         replayControls();
 
-        assertEquals(0.0d, EnhanceUtils.toDouble(binding));
+        assertEquals(0.0d, EnhanceUtils.toDouble(binding), 0.0d);
 
         verifyControls();
     }
@@ -363,7 +363,7 @@ public class TestEnhanceUtils extends HiveMindTestCase
 
         replayControls();
 
-        assertEquals(2.5d, EnhanceUtils.toDouble(binding));
+        assertEquals(2.5d, EnhanceUtils.toDouble(binding), 0.0d);
 
         verifyControls();
     }
