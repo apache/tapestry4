@@ -17,101 +17,54 @@
 
 <project name="Jakarta Tapestry Project" default="install">
 
-  <property file="config/build.properties"/>
-  <property file="config/common.properties"/>
-  <property file="project.properties"/>
+	<property file="config/build.properties" />
+	<property file="config/common.properties" />
+	<property file="project.properties" />
 
-	<filelist id="project.modules" 
-		dir="."
-		files="
+	<filelist id="project.modules" dir="." files="
 			framework/build.xml 
 			portlet/build.xml 
 			contrib/build.xml 
 			annotations/build.xml 
 			examples/Workbench/build.xml 
 			examples/VlibBeans/build.xml
-			examples/Vlib/build.xml"/>
-    
-	<import file="${hivebuild.dir}/project.xml"/>
-	<import file="${hivebuild.dir}/license-report.xml"/>    
-	<import file="${hivebuild.dir}/dist.xml"/>
-    
-  <target name="run-reports">
-    <license-report/>
-  </target>
+			examples/Vlib/build.xml" />
 
-  <path id="jetty.classpath">
-    <pathelement location="config"/>
-    <fileset dir="${jetty.dir}">
-        <include name="ext/*.jar"/>
-        <include name="lib/*.jar"/>
-    </fileset>
-  	<fileset dir="ext-package/lib">
-  		<include name="log4j*.jar"/>
- 	</fileset>
-  </path>
+	<import file="${hivebuild.dir}/project.xml" />
+	<import file="${hivebuild.dir}/license-report.xml" />
+	<import file="${hivebuild.dir}/dist.xml" />
 
-  <available property="available.workbench.war" file="target/workbench.war"/>
-  
-	<target name="run-workbench"
-		description="Runs the Tapestry Workbench using Jetty.">
-    
-    <fail unless="available.workbench.war" message="You must run the 'install' target to build workbench.war first."/>
-    
-    <property name="private.dir" value="${target.dir}/private"/>
-    
-		<delete dir="${private.dir}" quiet="true"/>
-		<mkdir dir="${private.dir}"/>
-		<echo>Running Tapestry Workbench on port 8080 ...</echo>
-		<java classname="org.mortbay.jetty.Server" fork="true" maxmemory="384M">
-			<classpath>
-				<path refid="jetty.classpath"/>
-			</classpath>
-			<arg value="config/jetty-workbench.xml"/>
-			<!-- Enable debugging when running the Workbench -->
-			<jvmarg line="-showversion -Xdebug -Xnoagent -XX:+UseParallelGC -XX:PermSize=20M -XX:MaxNewSize=10M -XX:NewSize=10M -Xmx600m -Xms32m"/>
-			<jvmarg
-				line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"
-				/>
-			<!-- Jetty can get easily confused (under NT) unless this is turned off. -->
-			<sysproperty key="org.mortbay.util.FileResource.checkAliases"
-				value="false"/>
-			<sysproperty key="org.apache.tapestry.asset.dir" value="${private.dir}"
-				/>
-			<sysproperty key="org.apache.tapestry.asset.URL" value="/private"/>
-		</java>
+	<target name="run-reports">
+		<license-report />
 	</target>
-	
-	<available property="available.vlib.ear" file="target/vlib/vlib.ear"/>
-	
-	<target name="deploy-jboss" description="Deploys the Virtual Library example into JBoss 4.0.">
-		
-		<fail unless="available.vlib.ear" message="You must run the 'install' target to build the vlib.ear first."/>
-		<property name="jboss.default.dir" value="${jboss.dir}/server/default"/>
 
-		<!-- Overwrite the defaultDB data -->
-		<copy todir="${jboss.default.dir}" overwrite="true">
+	<target name="dist-build">
+		<antcall target="dist.dist-build" />
+		<antcall target="package-examples" />
+	</target>
+
+	<target name="package-examples" description="Packages the deployable examples.">
+
+		<announce message="Creating example files distribution"/>
+		
+		<!-- Package up the examples. -->
+
+		<property name="examples.dir" value="${local.target.dir}/examples" />
+		<mkdir dir="${examples.dir}/config/deploy" />
+		<copy todir="${examples.dir}">
+			<fileset dir="examples" includes="build.xml,README.txt"/>
+			<fileset dir="." includes="LICENSE*.txt,NOTICE.txt"/>
+		</copy>
+		<copy todir="${examples.dir}/config/deploy" flatten="true">
+			<fileset dir="${local.target.dir}">
+				<include name="workbench.war"/>
+				<include name="vlib/*.ear"/>
+			</fileset>
+		</copy>
+		<copy todir="${examples.dir}/config">
 			<fileset dir="config/jboss"/>
 		</copy>
-		
-		<copy todir="${jboss.default.dir}/deploy">
-			<fileset dir="target/vlib" includes="*.ear"/>
-		</copy>
-			
-		<!--
-		<mkdir dir="${jboss.default.dir}/db"/>
-		<unzip dest="${jboss.default.dir}/db" src="config/jboss/tapestry-db.zip"/>
-		-->
-
-		<copy todir="${jboss.default.dir}/deploy">
-			<fileset dir="target" includes="*.ear"/>
-		</copy>
-		
-		<announce message="JBoss 4.0.2 has been set up to execute the Virtual Library application."/>
-		<announce message="You may need to restart JBoss before the application will run."/>
-		
+		<tar basedir="${examples.dir}" destfile="${local.target.dir}/tapestry-examples-${project.version}.tar.gz" compression="gzip"/>
 	</target>
-	
-	
-  
+
 </project>
