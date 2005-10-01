@@ -50,6 +50,9 @@
     -->
   </todo>
   <changes>
+    <release version="4.0-beta-10" date="unreleased">
+      
+    </release>
     <release version="4.0-beta-9" date="Oct 1 2005">
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-663">Document Button component</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-491">Document Inspector component</action>
