@@ -28,11 +28,40 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> Provides a mask edit HTML &lt;input type="text"&gt; form element.
+<br/>Mask edit field validates the text the user enters against a mask that encodes the valid forms the text can take. The mask can also format text that is displayed to the user.
 </p>
+    <table>
+      <tr>
+        <th>Mask character</th>
+        <th>Meaning in mask</th>
+      </tr>
+      <tr>
+          <td>l</td><td>Mixed case letter character [a..z, A..Z]</td>
+      </tr>
+        <tr>
+           <td>L</td><td>Upper case letter character [A..Z]</td>
+        </tr>
+        <tr>
+            <td>a</td><td>Mixed case alpha numeric character [a..z, A..Z, 0..1]</td>
+        </tr>
+        <tr>
+            <td>A</td><td>Upper case alpha numeric character [A..Z, 0..9]</td>
+        </tr>
+        <tr>
+            <td>#</td><td>Numeric character [0..9]</td>
+        </tr>
+        <tr>
+            <td>_</td><td>Reserved character for display, do not use.</td>
+        </tr>
+        <tr>
+            <td>others</td><td>Non editable character for display.</td>
+        </tr>
+    </table>
+    <p> This component requires JavaScript to be enabled in the client browser.</p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &Form;</strong>
 </p>
 
 <section>
@@ -47,15 +76,40 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
+    <tr>
+      <td>mask</td>
+      <td>string</td>
+      <td>in</td>
+      <td>no</td>
+      <td>&nbsp;</td>
+      <td>See above.</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td>string</td>
+      <td>in / out</td>
+      <td>yes</td>
+      <td>&nbsp;</td>
+      <td>The value to be editted, which is is usually a string. </td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td>boolean</td>
+      <td>in</td>
+      <td>no</td>
+      <td>false</td>
+      <td>If true, then a disabled attribute will be rendered as part of the &lt;input&gt; tag, and the component will not
+        update its value parameter when the form is submitted.</td>
+    </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>forbidden</strong>
 </p>
 
 <p>
@@ -64,9 +118,5 @@
 
 </section>
 
-<section>
-  <title>Examples</title>
-
-</section>
 </body>
 </document>

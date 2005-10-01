@@ -58,6 +58,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-680">Need an injection type comparable to the state: binding prefix</action>
       <action type="update" dev="HLS">Re-organize Tapestry project site navigation to be more consistent</action>
       <action type="update" dev="HLS">Rework build to create an seperate Tapestry examples distribution (which will be hosted from a non-ASF host)</action>
+      <action type="fix" dev="DS" fixes-bug="TAPESTRY-492">Document MaskEdit component</action>
     </release>
     <release version="4.0-beta-8" date="Sep 24 2005">
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-465">Document Foreach component</action>
