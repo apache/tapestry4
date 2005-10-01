@@ -223,6 +223,15 @@ public class ValidationDelegate implements IValidationDelegate
         tracking.setConstraint(constraint);
     }
 
+    /** @since 4.0 */
+
+    public void record(IFormComponent field, String message)
+    {
+        setFormComponent(field);
+
+        record(message, null);
+    }
+
     public void recordFieldInputValue(String input)
     {
         FieldTracking tracking = findCurrentTracking();

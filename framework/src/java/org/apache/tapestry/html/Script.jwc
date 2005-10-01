@@ -38,4 +38,6 @@
     </description>
   </parameter>
 
+  <inject property="scriptSource" object="infrastructure:scriptSource"/>
+  
 </component-specification>

@@ -20,7 +20,10 @@ import java.io.PrintWriter;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.markup.AsciiMarkupFilter;
 import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -102,7 +105,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     protected void trainIsRewinding(IRequestCycle cycle, boolean rewinding)
     {
         cycle.isRewinding();
-        setReturnValue(cycle,rewinding);
+        setReturnValue(cycle, rewinding);
     }
 
     protected IRequestCycle newCycleGetPage(String pageName, IPage page)
@@ -279,14 +282,14 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     {
         page.getPageName();
 
-        setReturnValue(page,pageName);
+        setReturnValue(page, pageName);
     }
 
     protected void trainBuildURL(IAsset asset, IRequestCycle cycle, String URL)
     {
         asset.buildURL(cycle);
 
-        setReturnValue(asset,URL);
+        setReturnValue(asset, URL);
     }
 
     protected IAsset newAsset()
@@ -299,7 +302,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         IEngine engine = (IEngine) newMock(IEngine.class);
 
         engine.getClassResolver();
-        setReturnValue(engine,resolver);
+        setReturnValue(engine, resolver);
 
         return engine;
     }
@@ -308,7 +311,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     {
         page.getEngine();
 
-        setReturnValue(page,engine);
+        setReturnValue(page, engine);
     }
 
     protected IComponent newComponent()
@@ -319,19 +322,19 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     protected void trainGetPage(IComponent component, IPage page)
     {
         component.getPage();
-        setReturnValue(component,page);
+        setReturnValue(component, page);
     }
 
     protected void trainGetExtendedId(IComponent component, String extendedId)
     {
         component.getExtendedId();
-        setReturnValue(component,extendedId);
+        setReturnValue(component, extendedId);
     }
 
     protected void trainGetLocation(Locatable locatable, Location location)
     {
         locatable.getLocation();
-        setReturnValue(locatable,location);
+        setReturnValue(locatable, location);
     }
 
     protected IBinding newBinding()
@@ -342,6 +345,44 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     protected void trainGetComponent(IComponent container, String componentId, IComponent containee)
     {
         container.getComponent(componentId);
-        setReturnValue(container,containee);
+        setReturnValue(container, containee);
+    }
+
+    protected IEngineService newEngineService()
+    {
+        return (IEngineService) newMock(IEngineService.class);
+    }
+
+    protected void trainGetLink(IEngineService service, IRequestCycle cycle, boolean post, Object parameter, ILink link)
+    {
+        service.getLink(cycle, post, parameter);
+        setReturnValue(service, link);
+    }
+
+    protected void trainGetURL(ILink link, String URL)
+    {
+        link.getURL();
+        setReturnValue(link, URL);
+    }
+
+    protected ILink newLink()
+    {
+        ILink link = (ILink) newMock(ILink.class);
+        return link;
+    }
+
+    protected void trainGetPageRenderSupport(IRequestCycle cycle, PageRenderSupport support)
+    {
+        trainGetAttribute(cycle, TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE, support);
+    }
+
+    protected IComponentSpecification newSpec()
+    {
+        return (IComponentSpecification) newMock(IComponentSpecification.class);
+    }
+
+    protected Resource newResource()
+    {
+        return (Resource) newMock(Resource.class);
     }
 }

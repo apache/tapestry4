@@ -15,10 +15,8 @@
 package org.apache.tapestry.html;
 
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
@@ -31,13 +29,16 @@ import org.apache.tapestry.engine.ILink;
 
 public abstract class Frame extends AbstractComponent
 {
+    /**
+     * Injected engine service.
+     * 
+     * @since 4.0
+     */
+    public abstract IEngineService getPageService();
+
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (cycle.isRewinding())
-            return;
-
-        IEngine engine = cycle.getEngine();
-        IEngineService pageService = engine.getService(Tapestry.PAGE_SERVICE);
+        IEngineService pageService = getPageService();
         ILink link = pageService.getLink(cycle, false, getTargetPage());
 
         writer.beginEmpty("frame");

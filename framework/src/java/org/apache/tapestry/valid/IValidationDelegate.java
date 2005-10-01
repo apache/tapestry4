@@ -183,6 +183,19 @@ public interface IValidationDelegate extends Serializable
     public void record(String message, ValidationConstraint constraint);
 
     /**
+     * Convienience for recording a standard string messages against a field.
+     * 
+     * @param field
+     *            the field to record the error message against, or null to record an unassociated
+     *            error
+     * @param message
+     *            the error message to record
+     * @since 4.0
+     */
+
+    public void record(IFormComponent field, String message);
+
+    /**
      * Records an error in the current component, or an unassociated error. The maximum flexibility
      * recorder.
      * 
