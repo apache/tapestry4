@@ -157,4 +157,10 @@ public class MockDelegate implements IValidationDelegate
     {
     }
 
+    public void record(IFormComponent field, String message)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

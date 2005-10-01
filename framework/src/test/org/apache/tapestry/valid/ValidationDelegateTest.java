@@ -27,7 +27,7 @@ import org.easymock.MockControl;
  * @since 1.0.8
  */
 
-public class TestValidationDelegate extends BaseValidatorTestCase
+public class ValidationDelegateTest extends BaseValidatorTestCase
 {
     protected IFormComponent newField(String name, int count)
     {
@@ -370,5 +370,62 @@ public class TestValidationDelegate extends BaseValidatorTestCase
         control.setReturnValue(clientId);
 
         return field;
+    }
+
+    /**
+     * Test {@link ValidationDelegate#record(IFormComponent, String)}.
+     * 
+     * @since 4.0
+     */
+    public void testSimpleRecord()
+    {
+        IFormComponent field = newField();
+
+        trainGetName(field, "myField");
+        trainGetName(field, "myField");
+
+        replayControls();
+
+        ValidationDelegate delegate = new ValidationDelegate();
+
+        delegate.record(field, "My Error Message");
+
+        List list = delegate.getFieldTracking();
+
+        assertEquals(1, list.size());
+
+        IFieldTracking ft = (IFieldTracking) list.get(0);
+
+        assertEquals(true, ft.isInError());
+        assertSame(field, ft.getComponent());
+        assertNull(ft.getConstraint());
+        assertEquals("My Error Message", ft.getErrorRenderer().toString());
+
+        verifyControls();
+    }
+
+    public void testSimpleRecordUnassociated()
+    {
+        ValidationDelegate delegate = new ValidationDelegate();
+
+        delegate.record(null, "My Error Message");
+
+        List list = delegate.getUnassociatedTrackings();
+
+        assertEquals(1, list.size());
+
+        IFieldTracking ft = (IFieldTracking) list.get(0);
+
+        assertEquals(true, ft.isInError());
+        assertNull(ft.getComponent());
+        assertNull(ft.getConstraint());
+        assertEquals("My Error Message", ft.getErrorRenderer().toString());
+
+    }
+
+    protected void trainGetName(IFormComponent field, String name)
+    {
+        field.getName();
+        setReturnValue(field, name);
     }
 }

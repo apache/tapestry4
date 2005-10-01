@@ -42,6 +42,14 @@ import org.apache.tapestry.engine.IScriptSource;
 public abstract class Script extends AbstractComponent
 {
     /**
+     * Injected
+     * 
+     * @since 4.0
+     */
+
+    public abstract IScriptSource getScriptSource();
+
+    /**
      * A Map of input and output symbols visible to the body of the Script.
      * 
      * @since 2.2
@@ -93,15 +101,14 @@ public abstract class Script extends AbstractComponent
      * Gets the {@link IScript}for the correct script.
      */
 
-    private IScript getParsedScript(IRequestCycle cycle)
+    private IScript getParsedScript()
     {
         String scriptPath = getScriptPath();
 
         if (scriptPath == null)
             throw Tapestry.createRequiredParameterException(this, "scriptPath");
 
-        IEngine engine = cycle.getEngine();
-        IScriptSource source = engine.getScriptSource();
+        IScriptSource source = getScriptSource();
 
         // If the script path is relative, it should be relative to the Script component's
         // container (i.e., relative to a page in the application).
@@ -115,7 +122,8 @@ public abstract class Script extends AbstractComponent
         }
         catch (RuntimeException ex)
         {
-            throw new ApplicationRuntimeException(ex.getMessage(), this, null, ex);
+            throw new ApplicationRuntimeException(ex.getMessage(), this, getBinding("script")
+                    .getLocation(), ex);
         }
 
     }
@@ -128,7 +136,7 @@ public abstract class Script extends AbstractComponent
 
             _symbols = getInputSymbols();
 
-            getParsedScript(cycle).execute(cycle, pageRenderSupport, _symbols);
+            getParsedScript().execute(cycle, pageRenderSupport, _symbols);
         }
 
         // Render the body of the Script;

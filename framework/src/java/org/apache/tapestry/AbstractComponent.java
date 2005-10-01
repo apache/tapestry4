@@ -710,6 +710,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * 
      * @see IComponent
      * @since 3.0
+     * @deprecated
      */
     public void setProperty(String propertyName, Object value)
     {
@@ -721,6 +722,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * 
      * @see IComponent
      * @since 3.0
+     * @deprecated
      */
     public Object getProperty(String propertyName)
     {
