@@ -33,11 +33,20 @@ class EnhanceMessages
 {
     private final static MessageFormatter _formatter = new MessageFormatter(EnhanceMessages.class);
 
-    static String noImplForAbstractMethod(Method method, Class declareClass, String className,
+    static String noImplForAbstractMethod(Method method, Class declareClass, Class baseClass,
             Class enhancedClass)
     {
         return _formatter.format("no-impl-for-abstract-method", new Object[]
-        { method, declareClass.getName(), className, enhancedClass.getName() });
+        { method, declareClass.getName(), baseClass.getName(), enhancedClass.getName() });
+    }
+
+    static String unimplementedInterfaceMethod(Method method, Class baseClass, Class enhancedClass)
+    {
+        return _formatter.format(
+                "unimplemented-interface-method",
+                method,
+                baseClass.getName(),
+                enhancedClass.getName());
     }
 
     static String unabelToIntrospectClass(Class targetClass, Throwable cause)

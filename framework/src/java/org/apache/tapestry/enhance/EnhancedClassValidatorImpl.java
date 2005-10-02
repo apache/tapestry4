@@ -16,10 +16,14 @@ package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -37,6 +41,8 @@ public class EnhancedClassValidatorImpl implements EnhancedClassValidator
     public void validate(Class baseClass, Class enhancedClass, IComponentSpecification specification)
     {
         Set implementedMethods = new HashSet();
+        List interfaceQueue = new ArrayList();
+        Location location = specification.getLocation();
 
         Class current = enhancedClass;
 
@@ -57,31 +63,62 @@ public class EnhancedClassValidatorImpl implements EnhancedClassValidator
                     if (implementedMethods.contains(s))
                         continue;
 
-                    _errorLog.error(EnhanceMessages.noImplForAbstractMethod(m, current, baseClass
-                            .getName(), enhancedClass), specification.getLocation(), null);
+                    _errorLog.error(EnhanceMessages.noImplForAbstractMethod(
+                            m,
+                            current,
+                            baseClass,
+                            enhancedClass), location, null);
                 }
 
                 implementedMethods.add(s);
             }
 
-            // An earlier version of this code walked the interfaces directly,
-            // but it appears that implementing an interface actually
-            // puts abstract method declarations into the class
-            // (at least, in terms of what getDeclaredMethods() returns).
+            interfaceQueue.addAll(Arrays.asList(current.getInterfaces()));
 
-            // March up to the super class.
+            // Did an earlier JDK include methods from interfaces in
+            // getDeclaredMethods()? The old code here seemed to indicate
+            // that was the case, but it certainly is no longer, that's why
+            // we add all the interfaces to a queue to check after the rest.
 
             current = current.getSuperclass();
 
-            // Once advanced up to a concrete class, we trust that
-            // the compiler did its checking. Alternately, if
-            // we started on java.lang.Object for some reason, current
-            // will be null and we can stop.S
+            // We need to run straight to the top, to find all the implemented methods.
 
-            if (current == null || !Modifier.isAbstract(current.getModifiers()))
+            if (current == null)
                 break;
         }
 
+        while (!interfaceQueue.isEmpty())
+        {
+            Class thisInterface = (Class) interfaceQueue.remove(0);
+
+            checkAllInterfaceMethodsImplemented(
+                    thisInterface,
+                    baseClass,
+                    enhancedClass,
+                    implementedMethods,
+                    location);
+        }
+
+    }
+
+    private void checkAllInterfaceMethodsImplemented(Class interfaceClass, Class baseClass,
+            Class enhancedClass, Set implementedMethods, Location location)
+    {
+        // Get all methods defined by the interface, or its super-interfaces
+
+        Method[] methods = interfaceClass.getMethods();
+
+        for (int i = 0; i < methods.length; i++)
+        {
+            MethodSignature sig = new MethodSignature(methods[i]);
+
+            if (!implementedMethods.contains(sig))
+                _errorLog.error(EnhanceMessages.unimplementedInterfaceMethod(
+                        methods[i],
+                        baseClass,
+                        enhancedClass), location, null);
+        }
     }
 
     public void setErrorLog(ErrorLog errorLog)
