@@ -59,11 +59,11 @@ public abstract class EditProfile extends ActivatePage implements PageBeginRende
     @InjectState("visit")
     public abstract Visit getVisitState();
 
-    @InjectComponent("inputPassword1")
-    public abstract IFormComponent getInputPassword1();
+    @InjectComponent("password1")
+    public abstract IFormComponent getPassword1Field();
 
-    @InjectComponent("inputPassword2")
-    public abstract IFormComponent getInputPassword2();
+    @InjectComponent("password2")
+    public abstract IFormComponent getPassword2Field();
 
     @Message
     public abstract String enterPasswordTwice();
@@ -126,10 +126,10 @@ public abstract class EditProfile extends ActivatePage implements PageBeginRende
 
         IValidationDelegate delegate = getValidationDelegate();
 
-        delegate.setFormComponent(getInputPassword1());
+        delegate.setFormComponent(getPassword1Field());
         delegate.recordFieldInputValue(null);
 
-        delegate.setFormComponent(getInputPassword2());
+        delegate.setFormComponent(getPassword2Field());
         delegate.recordFieldInputValue(null);
 
         if (delegate.getHasErrors())
@@ -139,7 +139,7 @@ public abstract class EditProfile extends ActivatePage implements PageBeginRende
 
         if (HiveMind.isBlank(password1) != HiveMind.isBlank(password2))
         {
-            setErrorField("inputPassword1", enterPasswordTwice());
+            delegate.record(getPassword1Field(), enterPasswordTwice());
 
             return;
         }
@@ -148,7 +148,7 @@ public abstract class EditProfile extends ActivatePage implements PageBeginRende
         {
             if (!password1.equals(password2))
             {
-                setErrorField("inputPassword1", passwordMustMatch());
+                delegate.record(getPassword1Field(), passwordMustMatch());
                 return;
             }
 

@@ -15,7 +15,10 @@
 package org.apache.tapestry.vlib.pages.admin;
 
 import java.rmi.RemoteException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
@@ -23,14 +26,16 @@ import javax.ejb.RemoveException;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.components.IPrimaryKeyConverter;
+import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
-import org.apache.tapestry.form.ListEditMap;
 import org.apache.tapestry.vlib.AdminPage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.Publisher;
+import org.apache.tapestry.vlib.pages.MyLibrary;
 
 /**
  * Allows editting of the publishers in the database, including deleting publishers (which can be
@@ -39,29 +44,74 @@ import org.apache.tapestry.vlib.ejb.Publisher;
  * @author Howard Lewis Ship
  */
 
-public abstract class EditPublishers extends AdminPage implements PageRenderListener
+public abstract class EditPublishers extends AdminPage implements PageBeginRenderListener
 {
-    public abstract ListEditMap getListEditMap();
-
-    public abstract void setListEditMap(ListEditMap listEditMap);
-
     public abstract Publisher getPublisher();
 
     public abstract void setPublisher(Publisher publisher);
 
-    public void synchronizePublisher(IRequestCycle cycle)
+    public abstract Map<Integer, Publisher> getPublisherMap();
+
+    public abstract void setPublisherMap(Map<Integer, Publisher> map);
+
+    public abstract void setPublishers(Publisher[] publishers);
+
+    public abstract void setDeletedPublishers(Set<Integer> deleted);
+
+    public abstract Set<Integer> getDeletedPublishers();
+
+    @Message
+    public abstract String outOfDate();
+
+    @Message
+    public abstract String updateFailure();
+
+    @Message
+    public abstract String publishersUpdated();
+
+    @InjectPage("MyLibrary")
+    public abstract MyLibrary getMyLibrary();
+
+    public class PublisherKeyConverter implements IPrimaryKeyConverter
     {
-        ListEditMap map = getListEditMap();
-
-        Publisher publisher = (Publisher) map.getValue();
-
-        if (publisher == null)
+        public Object getPrimaryKey(Object value)
         {
-            setError(getMessage("out-of-date"));
-            throw new PageRedirectException(this);
+            Publisher publisher = (Publisher) value;
+
+            return publisher.getId();
         }
 
-        setPublisher(publisher);
+        public Object getValue(Object primaryKey)
+        {
+            Integer id = (Integer) primaryKey;
+
+            Publisher result = getPublisherMap().get(id);
+
+            if (result == null)
+            {
+                getValidationDelegate().record(null, outOfDate());
+                throw new PageRedirectException(EditPublishers.this);
+            }
+
+            return result;
+        }
+
+    }
+
+    public IPrimaryKeyConverter getPublisherConverter()
+    {
+        return new PublisherKeyConverter();
+    }
+
+    public boolean isDeleted()
+    {
+        return false;
+    }
+
+    public void setDeleted(boolean deleted)
+    {
+        if (deleted)
+            getDeletedPublishers().add(getPublisher().getId());
     }
 
     /**
@@ -87,33 +137,35 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure(getMessage("read-failure"), ex, i++);
+                vengine.rmiFailure(updateFailure(), ex, i++);
             }
         }
 
-        ListEditMap map = new ListEditMap();
+        // This is really only needed during render, not rewind
 
-        int count = Tapestry.size(publishers);
+        setPublishers(publishers);
 
-        for (i = 0; i < count; i++)
-            map.add(publishers[i].getId(), publishers[i]);
+        Map<Integer, Publisher> publisherMap = new HashMap<Integer, Publisher>();
 
-        setListEditMap(map);
+        for (Publisher publisher : publishers)
+        {
+            publisherMap.put(publisher.getId(), publisher);
+        }
+
+        setPublisherMap(publisherMap);
     }
 
     public void processForm(IRequestCycle cycle)
     {
-        if (isInError())
-            return;
+        Map<Integer, Publisher> publisherMap = getPublisherMap();
+        Set<Integer> deleted = getDeletedPublishers();
 
-        ListEditMap map = getListEditMap();
-        List updateList = map.getValues();
-        List deletedIds = map.getDeletedKeys();
+        // Delete from the map anything that was marked deleted
 
-        Publisher[] updated = (Publisher[]) updateList.toArray(new Publisher[updateList.size()]);
+        publisherMap.keySet().removeAll(deleted);
 
-        Integer[] deleted = deletedIds == null ? null : (Integer[]) deletedIds
-                .toArray(new Integer[deletedIds.size()]);
+        Publisher[] updated = publisherMap.values().toArray(new Publisher[0]);
+        Integer[] deletedKeys = deleted.toArray(new Integer[0]);
 
         // Now, push the updates through to the database
 
@@ -126,7 +178,7 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
             {
                 IOperations operations = vengine.getOperations();
 
-                operations.updatePublishers(updated, deleted);
+                operations.updatePublishers(updated, deletedKeys);
 
                 break;
             }
@@ -140,18 +192,26 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure(getMessage("update-failure"), ex, i++);
+                vengine.rmiFailure(updateFailure(), ex, i++);
             }
         }
 
         // Clear any cached info about publishers.
 
         vengine.clearCache();
+
+        MyLibrary page = getMyLibrary();
+
+        page.setMessage(publishersUpdated());
+
+        page.activate();
     }
 
     public void pageBeginRender(PageEvent event)
     {
         readPublishers();
+
+        setDeletedPublishers(new HashSet());
     }
 
 }
