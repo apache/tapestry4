@@ -16,22 +16,28 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 
 <page-specification class="org.apache.tapestry.vlib.pages.admin.EditPublishers">
-
-  <property-specification name="listEditMap" type="org.apache.tapestry.form.ListEditMap"/>
-  <property-specification name="message" type="java.lang.String"/>
-  <property-specification name="error" type="java.lang.String"/>
+ 
+  <component id="form" type="Form">
+    <binding name="success" value="listener:processForm"/>
+    <binding name="clientValidationEnabled" value="true"/>
+    <binding name="delegate" value="validationDelegate"/>
+  </component>
+ 
+  <component id="loop" type="For">
+  	<binding name="source" value="publishers"/>
+  	<binding name="value" value="publisher"/>
+  	<binding name="element" value="literal:tr"/>
+    <binding name="primaryKeyConverter" value="publisherConverter"/>
+  </component>
   
-  <property-specification name="publisher" type="org.apache.tapestry.vlib.ejb.Publisher"/>
-  
-  <component id="listEdit" type="ListEdit">
-  	<binding name="source" expression="listEditMap.keys"/>
-  	<binding name="value" expression="listEditMap.key"/>
-  	<static-binding name="element" value="tr"/>
-  	<binding name="listener" expression="listeners.synchronizePublisher"/>
+  <component id="name" type="TextField">
+    <binding name="value" value="publisher.name"/>
+    <binding name="validators" value="validators:required"/>
+    <binding name="displayName" value="message:publisher-name-label"/>
   </component>
   
 </page-specification>
