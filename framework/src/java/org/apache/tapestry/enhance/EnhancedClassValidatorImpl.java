@@ -16,10 +16,10 @@ package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.hivemind.ErrorLog;
@@ -40,26 +40,49 @@ public class EnhancedClassValidatorImpl implements EnhancedClassValidator
 
     public void validate(Class baseClass, Class enhancedClass, IComponentSpecification specification)
     {
+        // Set of MethodSignatures for methods that have a non-abstract implementation
+        // The Set is built working from the deepest subclass up to (and including) java.lang.Object
+
         Set implementedMethods = new HashSet();
-        List interfaceQueue = new ArrayList();
+        // Key is MethodSignature, value is Method
+        // Tracks which methods come from interfaces
+        Map interfaceMethods = new HashMap();
+
         Location location = specification.getLocation();
 
         Class current = enhancedClass;
 
         while (true)
         {
+            addInterfaceMethods(current, interfaceMethods);
+
+            // Inside Eclipse, for abstract classes, getDeclaredMethods() does NOT report methods
+            // inherited from interfaces. For Sun JDK and abstract classes, getDeclaredMethods()
+            // DOES report interface methods
+            // (as if they were declared by the class itself). This code is needlessly complex so
+            // that the checks work in both
+            // situations. Basically, I think Eclipse is right and Sun JDK is wrong and we're using
+            // the interfaceMethods map as a filter to ignore methods that Sun JDK is attributing
+            // to the class.
+
             Method[] methods = current.getDeclaredMethods();
 
             for (int i = 0; i < methods.length; i++)
             {
                 Method m = methods[i];
 
-                boolean isAbstract = Modifier.isAbstract(m.getModifiers());
-
                 MethodSignature s = new MethodSignature(m);
+
+                boolean isAbstract = Modifier.isAbstract(m.getModifiers());
 
                 if (isAbstract)
                 {
+                    if (interfaceMethods.containsKey(s))
+                        continue;
+
+                    // If a superclass defines an abstract method that a subclass implements, then
+                    // all's OK.
+
                     if (implementedMethods.contains(s))
                         continue;
 
@@ -73,51 +96,56 @@ public class EnhancedClassValidatorImpl implements EnhancedClassValidator
                 implementedMethods.add(s);
             }
 
-            interfaceQueue.addAll(Arrays.asList(current.getInterfaces()));
-
-            // Did an earlier JDK include methods from interfaces in
-            // getDeclaredMethods()? The old code here seemed to indicate
-            // that was the case, but it certainly is no longer, that's why
-            // we add all the interfaces to a queue to check after the rest.
-
             current = current.getSuperclass();
 
-            // We need to run straight to the top, to find all the implemented methods.
+            // No need to check Object.class; it is concrete and doesn't implement any interfaces,
+            // or provide any methods
+            // that might be declared in an interface.
 
-            if (current == null)
+            if (current == null || current == Object.class)
                 break;
         }
 
-        while (!interfaceQueue.isEmpty())
+        Iterator i = interfaceMethods.entrySet().iterator();
+        while (i.hasNext())
         {
-            Class thisInterface = (Class) interfaceQueue.remove(0);
+            Map.Entry entry = (Map.Entry) i.next();
 
-            checkAllInterfaceMethodsImplemented(
-                    thisInterface,
+            MethodSignature sig = (MethodSignature) entry.getKey();
+
+            if (implementedMethods.contains(sig))
+                continue;
+
+            Method method = (Method) entry.getValue();
+
+            _errorLog.error(EnhanceMessages.unimplementedInterfaceMethod(
+                    method,
                     baseClass,
-                    enhancedClass,
-                    implementedMethods,
-                    location);
+                    enhancedClass), location, null);
         }
 
     }
 
-    private void checkAllInterfaceMethodsImplemented(Class interfaceClass, Class baseClass,
-            Class enhancedClass, Set implementedMethods, Location location)
+    private void addInterfaceMethods(Class current, Map interfaceMethods)
     {
-        // Get all methods defined by the interface, or its super-interfaces
+        Class[] interfaces = current.getInterfaces();
 
+        for (int i = 0; i < interfaces.length; i++)
+            addMethodsFromInterface(interfaces[i], interfaceMethods);
+    }
+
+    private void addMethodsFromInterface(Class interfaceClass, Map interfaceMethods)
+    {
         Method[] methods = interfaceClass.getMethods();
 
         for (int i = 0; i < methods.length; i++)
         {
             MethodSignature sig = new MethodSignature(methods[i]);
 
-            if (!implementedMethods.contains(sig))
-                _errorLog.error(EnhanceMessages.unimplementedInterfaceMethod(
-                        methods[i],
-                        baseClass,
-                        enhancedClass), location, null);
+            if (interfaceMethods.containsKey(sig))
+                continue;
+
+            interfaceMethods.put(sig, methods[i]);
         }
     }
 
