@@ -41,12 +41,10 @@ import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.binding.ExpressionBinding;
-import org.apache.tapestry.binding.ListenerBinding;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
-import org.apache.tapestry.services.BSFManagerFactory;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.services.ComponentConstructorFactory;
 import org.apache.tapestry.services.ComponentTemplateLoader;
@@ -56,7 +54,6 @@ import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IBindingSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
-import org.apache.tapestry.spec.IListenerBindingSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.web.WebContextResource;
 
@@ -78,19 +75,11 @@ public class PageLoader implements IPageLoader
 
     /** @since 4.0 */
 
-    private String _defaultScriptLanguage;
-
-    /** @since 4.0 */
-
     private BindingSource _bindingSource;
 
     /** @since 4.0 */
 
     private ComponentTemplateLoader _componentTemplateLoader;
-
-    /** @since 4.0 */
-
-    private BSFManagerFactory _managerFactory;
 
     private List _inheritedBindingQueue = new ArrayList();
 
@@ -290,15 +279,6 @@ public class PageLoader implements IPageLoader
                 continue;
             }
 
-            if (type == BindingType.LISTENER)
-            {
-                constructListenerBinding(
-                        component,
-                        parameterName,
-                        (IListenerBindingSpecification) bspec);
-                continue;
-            }
-
             String description = PageloadMessages.parameterName(name);
 
             IBinding binding = convert(container, description, BindingConstants.OGNL_PREFIX, bspec);
@@ -346,35 +326,6 @@ public class PageLoader implements IPageLoader
                 bindingReference,
                 defaultBindingType,
                 location);
-    }
-
-    /**
-     * Construct a {@link ListenerBinding} for the component, and add it.
-     * 
-     * @since 3.0
-     */
-
-    private void constructListenerBinding(IComponent component, String parameterName,
-            IListenerBindingSpecification spec)
-    {
-        String language = spec.getLanguage();
-
-        // If not provided in the page or component specification, then
-        // search for a default (factory default is "jython").
-
-        if (HiveMind.isBlank(language))
-            language = _defaultScriptLanguage;
-
-        // Construct the binding. The first parameter is the compononent
-        // (not the DirectLink or Form, but the page or component containing the
-        // link or form).
-
-        String description = PageloadMessages.parameterName(parameterName);
-
-        IBinding binding = new ListenerBinding(description, _valueConverter, spec.getLocation(),
-                component.getContainer(), language, spec.getScript(), _managerFactory);
-
-        addBindingToComponent(component, parameterName, binding);
     }
 
     /**
@@ -750,13 +701,6 @@ public class PageLoader implements IPageLoader
 
     /** @since 4.0 */
 
-    public void setDefaultScriptLanguage(String string)
-    {
-        _defaultScriptLanguage = string;
-    }
-
-    /** @since 4.0 */
-
     public void setBindingSource(BindingSource bindingSource)
     {
         _bindingSource = bindingSource;
@@ -794,12 +738,6 @@ public class PageLoader implements IPageLoader
     public void setAssetSource(AssetSource assetSource)
     {
         _assetSource = assetSource;
-    }
-
-    /** @since 4.0 */
-    public void setManagerFactory(BSFManagerFactory managerFactory)
-    {
-        _managerFactory = managerFactory;
     }
 
     /** @since 4.0 */

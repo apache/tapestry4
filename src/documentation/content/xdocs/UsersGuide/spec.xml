@@ -143,6 +143,7 @@ it is expected that there will be some runtime warnings).
   <li>Added the aliases and cache attributes to the &spec.parameter; element.</li>
   <li>Added the deprecated attribute to &spec.component-specification; and &spec.parameter;.</li>
   <li>Renamed property-name attribute to property (in several places)</li>
+  <li>Removed the &lt;listener-binding&gt; element</li>
 </ul>
 
 <p>
@@ -642,7 +643,7 @@ containing library or application.
 	
 <p>&component; Elements</p>
 <source>
-  (&spec.meta; | &spec.binding; | &spec.listener-binding;) *
+  (&spec.meta; | &spec.binding;) *
 </source>
 
 	
@@ -1068,81 +1069,6 @@ element has no attributes.
 </source>
 
 </section> <!-- spec.library-specification -->
-
-
-
-<section id="spec.listener-binding">
-	<title>&lt;listener-binding&gt; element</title>
-
-<p>
-Appears in: &spec.component;
-</p>
-
-
-<p>
-A listener binding is used to create application logic, in the form
-of a listener (for a &DirectLink;, &ActionLink;, &Form;, etc.)
-in place within the specification, in 
-a scripting language (such as &Jython; or JavaScript).  The script itself
-is the wrapped character data for the &lt;listener-binding&gt; 
-element.
-</p>
-
-<p>
-When the listener is triggered, the script is executed.  Three beans,
-page, component and cycle
-are pre-declared.
-</p>
-
-<p>
-The page is the page activated by the request.  Usually, this is
-the same as the page which contains the component ... in fact,
-usually page and compoment are identical.
-</p>
-
-<p>
-The component is the component from whose specification
-the binding was created (that is, not the &DirectLink;, but the page or component
-which embeds the &DirectLink;).
-</p>
-
-<p>
-The cycle is the active request cycle, from which service parameters
-may be obtained.
-</p>
-
-
-<table>
-
-<tr>
-  <th>Name</th>
-  <th>Type</th>
-  <th>Required ?</th>
-  <th>Default Value</th>
-  <th>Description</th>
-</tr>
-
-<tr>
-	<td>name</td>
-	<td>string</td>
-	<td>yes</td>
-	<td/>
-	<td>The name of the listener parameter to bind.</td>
-</tr>
-<tr>
-	<td>language</td>
-	<td>string</td>
-	<td>no</td>
-	<td/>
-	<td>The name of a &BSF;-supported language that the script is written in.  The default,
-	if not specified, is jython.
-	</td>
-</tr>
-
-</table>
-
-
-</section> <!-- spec.listener-binding -->
 
 
 <section id="spec.meta">

@@ -73,6 +73,12 @@ public abstract class TapestryTestCase extends HiveMindTestCase
         }
     }
 
+    /** @since 4.0 */
+    protected BindingSourceFixture newBindingSource()
+    {
+        return new BindingSourceFixture();
+    }
+
     protected IComponentSpecification parseComponent(String simpleName) throws Exception
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
@@ -86,7 +92,7 @@ public abstract class TapestryTestCase extends HiveMindTestCase
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
 
-        parser.setBindingSource(new BindingSourceFixture());
+        parser.setBindingSource(newBindingSource());
 
         Resource location = getSpecificationResourceLocation(simpleName);
 

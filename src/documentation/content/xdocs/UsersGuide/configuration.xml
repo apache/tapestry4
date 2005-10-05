@@ -368,17 +368,6 @@ currently used in Tapestry:
 </tr>
 
 <tr>
-	<td>org.apache.tapestry.default-script-language</td>
-	
-  <td>
-	The name of a &BSF;-supported language, used when a
-	&spec.listener-binding; element does not specify
-	a language.  If not overridden, the default is "jython".
-  </td>
-	
-	</tr>
-
-<tr>
 	<td>org.apache.tapestry.disable-caching</td>
 	
   <td>

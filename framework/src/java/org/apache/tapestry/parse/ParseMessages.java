@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.parse;
 
+import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.MessageFormatter;
 
@@ -190,5 +192,11 @@ class ParseMessages
                 tagName,
                 new Integer(line),
                 attributeName);
+    }
+
+    public static Object listenerBindingUnsupported(Location location)
+    {
+        return _formatter.format("listener-binding-unsupported", HiveMind
+                .getLocationString(location));
     }
 }

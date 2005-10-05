@@ -183,7 +183,6 @@
     
   <contribution configuration-id="hivemind.FactoryDefaults">
     <default symbol="org.apache.tapestry.engine-class" value="org.apache.tapestry.engine.BaseEngine"/>
-    <default symbol="org.apache.tapestry.default-script-language" value="jython"/>
     <default symbol="org.apache.tapestry.visit-class" value="java.util.HashMap"/>
     <default symbol="org.apache.tapestry.output-encoding" value="UTF-8"/>
     <default symbol="org.apache.tapestry.enhance.disable-abstract-method-validation" value="false"/>

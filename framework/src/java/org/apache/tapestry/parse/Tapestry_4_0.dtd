@@ -43,6 +43,7 @@ The following changes have occured:
 - Added many alternatives to 'yes' and 'no' for boolean attributes.
 - Added aliases and cache attributes to <parameter>
 - Added deprecated to <component-specification>
+- Removed <listener-binding>
 -->
 <!-- =======================================================
 Entity: attribute-flag
@@ -200,7 +201,7 @@ Attribute:
 
 The Tapestry page loader ensures that either type or copy-of is specified, but not both.
 -->
-<!ELEMENT component (meta | binding | inherited-binding | listener-binding)*>
+<!ELEMENT component (meta | binding | inherited-binding )*>
 <!ATTLIST component
 	id ID #REQUIRED
 	type CDATA #IMPLIED
@@ -342,26 +343,6 @@ Attributes:
 <!ATTLIST page
 	name CDATA #REQUIRED
 	specification-path CDATA #REQUIRED
->
-<!-- =======================================================
-Element: listener-binding
-Appears in: component
-
-Defines an in-place script using the scripting language
-supported by Bean Scripting Framework (http://jakarta.apache.org/bsf).
-The script itself is the element's character data (often, inside
-a CDATA block).
-
-The default language is jython, though this can be overridden.
-
-Attributes:
-  name: The name of the component parameter to bind.
-  language: The language the script is written in.
--->
-<!ELEMENT listener-binding (#PCDATA)>
-<!ATTLIST listener-binding
-	name CDATA #REQUIRED
-	language CDATA #IMPLIED
 >
 <!-- =======================================================
 Element: meta

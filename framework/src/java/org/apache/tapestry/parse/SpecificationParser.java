@@ -52,7 +52,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.spec.IExtensionSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
-import org.apache.tapestry.spec.IListenerBindingSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.spec.InjectSpecification;
@@ -841,11 +840,6 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
                 endBinding();
                 break;
 
-            case STATE_LISTENER_BINDING:
-
-                endListenerBinding();
-                break;
-
             case STATE_STATIC_BINDING:
 
                 endStaticBinding();
@@ -914,22 +908,6 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         spec.setSpecificationLocation(getResource());
 
         spec.instantiateImmediateExtensions();
-    }
-
-    private void endListenerBinding()
-    {
-        BindingSetter bs = (BindingSetter) peekObject();
-
-        IListenerBindingSpecification lbs = _factory.createListenerBindingSpecification();
-
-        lbs.setLanguage(bs.getValue());
-
-        // Do we need a check for no body content?
-
-        lbs.setValue(peekContent());
-        lbs.setLocation(getLocation());
-
-        bs.apply(lbs);
     }
 
     private void endProperty()
@@ -1264,13 +1242,9 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void enterListenerBinding()
     {
-        String name = getAttribute("name");
-        String language = getAttribute("language");
+        _log.warn(ParseMessages.listenerBindingUnsupported(getLocation()));
 
-        IContainedComponent cc = (IContainedComponent) peekObject();
-        BindingSetter bs = new BindingSetter(cc, name, language);
-
-        push(_elementName, bs, STATE_LISTENER_BINDING, false);
+        push(_elementName, null, STATE_LISTENER_BINDING, false);
     }
 
     private void enterMessageBinding_3_0()

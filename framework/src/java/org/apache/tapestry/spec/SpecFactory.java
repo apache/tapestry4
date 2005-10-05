@@ -85,18 +85,6 @@ public class SpecFactory
     }
 
     /**
-     * Creates a new concrete instance of {@link IListenerBindingSpecification}for the given
-     * language (which is option) and script.
-     * 
-     * @since 3.0
-     */
-
-    public IListenerBindingSpecification createListenerBindingSpecification()
-    {
-        return new ListenerBindingSpecification();
-    }
-
-    /**
      * Creates a concrete instance of {@link IComponentSpecification}.
      */
 
@@ -122,7 +110,6 @@ public class SpecFactory
     {
         return new ParameterSpecification();
     }
-
 
     /** @since 4.0 */
     public BindingBeanInitializer createBindingBeanInitializer(BindingSource source)
