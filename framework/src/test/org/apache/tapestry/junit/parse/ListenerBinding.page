@@ -27,6 +27,7 @@ if page.isFormInputValid():
   cycle.page = "Results"
 else:
   page.message = "Please fix errors before continuing.";</listener-binding>
+  <static-binding name="foo" value="bar"/>
   </component>
   	  	
 </page-specification>

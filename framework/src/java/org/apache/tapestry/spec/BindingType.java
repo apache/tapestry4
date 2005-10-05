@@ -33,17 +33,6 @@ public final class BindingType
 
     public static final BindingType INHERITED = new BindingType("INHERITED");
 
-    /**
-     * Indicates a {@link org.apache.tapestry.binding.ListenerBinding}, a specialized kind of
-     * binding that encapsulates a component listener as a script. Uses a subclass of
-     * {@link BindingSpecification},{@link ListenerBindingSpecification}.
-     * {@link IListenerBindingSpecification}.
-     * 
-     * @since 3.0
-     */
-
-    public static final BindingType LISTENER = new BindingType("LISTENER");
-
     private final String _name;
 
     private BindingType(String name)

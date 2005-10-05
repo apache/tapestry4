@@ -15,18 +15,26 @@
 package org.apache.tapestry.vlib.pages.admin;
 
 import java.rmi.RemoteException;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRedirectException;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.annotations.InjectComponent;
+import org.apache.tapestry.annotations.InjectState;
+import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.components.IPrimaryKeyConverter;
+import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.vlib.AdminPage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
@@ -40,46 +48,130 @@ import org.apache.tapestry.vlib.ejb.Person;
  * 
  * @author Howard Lewis Ship
  */
-
-public abstract class EditUsers extends AdminPage implements PageRenderListener
+public abstract class EditUsers extends AdminPage implements PageBeginRenderListener
 {
     public abstract String getPassword();
 
     public abstract void setPassword(String password);
 
-    public abstract UserListEditMap getListEditMap();
-
-    public abstract void setListEditMap(UserListEditMap listEditMap);
-
     public abstract void setUser(Person person);
 
-    public void synchronizeUser(IRequestCycle cycle)
+    public abstract Person getUser();
+
+    public abstract void setUserList(List<Person> users);
+
+    public abstract void setUserMap(Map<Integer, Person> map);
+
+    public abstract Map<Integer, Person> getUserMap();
+
+    public abstract void setResetPasswordKeys(Set<Integer> set);
+
+    public abstract Set<Integer> getResetPasswordKeys();
+
+    public abstract void setDeleteKeys(Set<Integer> set);
+
+    public abstract Set<Integer> getDeleteKeys();
+
+    @Message
+    public abstract String outOfDate();
+
+    @Message
+    public abstract String readFailure();
+
+    @Message
+    public abstract String needPassword();
+
+    @Message
+    public abstract String updateFailure();
+
+    @Message
+    public abstract String usersUpdated();
+
+    @InjectState("visit")
+    public abstract Visit getVisitState();
+
+    @InjectComponent("password")
+    public abstract IFormComponent getPasswordField();
+
+    public class UserConverter implements IPrimaryKeyConverter
     {
-        UserListEditMap map = getListEditMap();
 
-        Person user = (Person) map.getValue();
-
-        if (user == null)
+        public Object getPrimaryKey(Object value)
         {
-            setError(getMessage("out-of-date"));
-            throw new PageRedirectException(this);
+            Person user = (Person) value;
+
+            return user.getId();
         }
 
-        setUser(user);
+        public Object getValue(Object primaryKey)
+        {
+            Integer id = (Integer) primaryKey;
+
+            return getUserMap().get(id);
+
+            // TODO: Handle null
+        }
+
+    }
+
+    public IPrimaryKeyConverter getUserConverter()
+    {
+        return new UserConverter();
+    }
+
+    // public void synchronizeUser(IRequestCycle cycle)
+    // {
+    // UserListEditMap map = getListEditMap();
+    //
+    // Person user = (Person) map.getValue();
+    //
+    // if (user == null)
+    // {
+    // getValidationDelegate().record(null, outOfDate());
+    // throw new PageRedirectException(this);
+    // }
+    //
+    // setUser(user);
+    // }
+
+    public boolean isDeleted()
+    {
+        return false;
+    }
+
+    public void setDeleted(boolean deleted)
+    {
+        if (deleted)
+            getDeleteKeys().add(getUser().getId());
+    }
+
+    public boolean isResetPassword()
+    {
+        return false;
+    }
+
+    public void setResetPassword(boolean resetPassword)
+    {
+        if (resetPassword)
+            getResetPasswordKeys().add(getUser().getId());
     }
 
     public void pageBeginRender(PageEvent event)
     {
-        setupListEditMap();
+        readUsers();
+        setDeleteKeys(new HashSet<Integer>());
+        setResetPasswordKeys(new HashSet<Integer>());
     }
 
-    private void setupListEditMap()
+    private void readUsers()
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-        Visit visit = (Visit) vengine.getVisit();
+        Visit visit = getVisitState();
 
         Integer userId = visit.getUserId();
         Person[] users = null;
+
+        List<Person> userList = new ArrayList<Person>();
 
         int i = 0;
         while (true)
@@ -94,23 +186,27 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure(getMessage("read-failure"), ex, i++);
+                vengine.rmiFailure(readFailure(), ex, i++);
             }
         }
 
-        UserListEditMap map = new UserListEditMap();
+        Map<Integer, Person> map = new HashMap<Integer, Person>();
 
         for (i = 0; i < users.length; i++)
         {
             Integer id = users[i].getId();
 
+            // Skip the current user; they can't edit themself
+
             if (id.equals(userId))
                 continue;
 
-            map.add(id, users[i]);
+            map.put(id, users[i]);
+            userList.add(users[i]);
         }
 
-        setListEditMap(map);
+        setUserMap(map);
+        setUserList(userList);
     }
 
     /**
@@ -119,27 +215,27 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
 
     public void updateUsers(IRequestCycle cycle)
     {
-        if (isInError())
-            return;
+        Visit visit = getVisitState();
 
-        Visit visit = (Visit) getVisit();
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
 
-        UserListEditMap map = getListEditMap();
+        Map<Integer, Person> userMap = getUserMap();
 
-        List updatedUsers = map.getValues();
+        Set<Integer> deletedIds = getDeleteKeys();
+        Set<Integer> resetPasswordIds = getResetPasswordKeys();
 
-        Person[] updates = (Person[]) updatedUsers.toArray(new Person[updatedUsers.size()]);
+        // Remove any users who have been deleted
 
-        Integer[] resetPasswordUserIds = toArray(map.getResetPasswordKeys());
-        Integer[] deletedUserIds = toArray(map.getDeletedKeys());
+        userMap.keySet().removeAll(deletedIds);
+
+        Person[] updates = userMap.values().toArray(new Person[0]);
 
         String password = getPassword();
         setPassword(null);
 
-        if (Tapestry.isBlank(password) && Tapestry.size(resetPasswordUserIds) != 0)
+        if (HiveMind.isBlank(password) && !resetPasswordIds.isEmpty())
         {
-            setErrorField("inputPassword", getMessage("need-password"));
+            getValidationDelegate().record(getPasswordField(), needPassword());
             return;
         }
 
@@ -154,15 +250,15 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
 
                 operations.updatePersons(
                         updates,
-                        resetPasswordUserIds,
+                        resetPasswordIds.toArray(new Integer[0]),
                         password,
-                        deletedUserIds,
+                        deletedIds.toArray(new Integer[0]),
                         adminId);
                 break;
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure(getMessage("update-failure"), ex, i++);
+                vengine.rmiFailure(updateFailure(), ex, i++);
             }
             catch (RemoveException ex)
             {
@@ -174,16 +270,6 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
             }
         }
 
-        setMessage(getMessage("users-updated"));
-    }
-
-    private Integer[] toArray(Collection c)
-    {
-        int count = Tapestry.size(c);
-
-        if (count == 0)
-            return null;
-
-        return (Integer[]) c.toArray(new Integer[count]);
+        setMessage(usersUpdated());
     }
 }

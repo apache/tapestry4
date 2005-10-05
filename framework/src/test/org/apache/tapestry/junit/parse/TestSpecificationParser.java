@@ -16,10 +16,15 @@ package org.apache.tapestry.junit.parse;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
 import org.apache.hivemind.Locatable;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.impl.DefaultErrorHandler;
 import org.apache.tapestry.bean.BindingBeanInitializer;
 import org.apache.tapestry.bean.LightweightBeanInitializer;
 import org.apache.tapestry.junit.TapestryTestCase;
+import org.apache.tapestry.parse.SpecificationParser;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;
@@ -29,11 +34,10 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.spec.IExtensionSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
-import org.apache.tapestry.spec.IListenerBindingSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.spec.InjectSpecification;
-import org.apache.tapestry.spec.ListenerBindingSpecification;
+import org.apache.tapestry.spec.SpecFactory;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**
@@ -466,38 +470,32 @@ public class TestSpecificationParser extends TapestryTestCase
 
     public void testListenerBinding() throws Exception
     {
-        IComponentSpecification spec = parsePage("ListenerBinding.page");
+        Log log = (Log) newMock(Log.class);
 
-        checkLine(spec, 22);
-        IContainedComponent c = spec.getComponent("c");
+        SpecificationParser parser = new SpecificationParser(new DefaultErrorHandler(), log,
+                new DefaultClassResolver(), new SpecFactory());
 
-        checkLine(c, 24);
+        parser.setBindingSource(newBindingSource());
 
-        IListenerBindingSpecification lbs = (ListenerBindingSpecification) c.getBinding("listener");
+        Resource location = getSpecificationResourceLocation("ListenerBinding.page");
 
-        checkLine(lbs, 25);
+        log
+                .warn("The <listener-binding> element is no longer supported (at classpath:/org/apache/tapestry/junit/parse/ListenerBinding.page, line 25, column 56).");
 
-        String expectedScript = buildExpectedScript(new String[]
-        { "if page.isFormInputValid():", "  cycle.page = \"Results\"", "else:",
-                "  page.message = \"Please fix errors before continuing.\";" });
+        replayControls();
 
-        assertEquals("jython", lbs.getLanguage());
-        assertEquals(expectedScript, lbs.getScript());
-    }
+        IComponentSpecification spec = parser.parsePageSpecification(location);
 
-    private String buildExpectedScript(String[] lines)
-    {
-        StringBuffer buffer = new StringBuffer();
+        verifyControls();
 
-        for (int i = 0; i < lines.length; i++)
-        {
-            if (i > 0)
-                buffer.append("\n");
+        IContainedComponent cc = spec.getComponent("c");
 
-            buffer.append(lines[i]);
-        }
+        assertNull(cc.getBinding("listener"));
 
-        return buffer.toString();
+        IBindingSpecification bs = cc.getBinding("foo");
+
+        assertEquals(BindingType.PREFIXED, bs.getType());
+        assertEquals("literal:bar", bs.getValue());
     }
 
     /** @since 3.0 * */

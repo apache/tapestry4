@@ -41,11 +41,8 @@
         <set-service property="componentTemplateLoader" service-id="ComponentTemplateLoader"/>
         <set-service property="establishDefaultParameterValuesVisitor"
           service-id="EstablishDefaultParameterValuesVisitor"/>
-        <set-object property="defaultScriptLanguage"
-                       value="app-property:org.apache.tapestry.default-script-language"/>
         <set-object property="valueConverter" value="infrastructure:valueConverter"/>
         <set-service property="assetSource" service-id="tapestry.asset.AssetSource"/>
-        <set-service property="managerFactory" service-id="BSFManagerFactory"/>
         <set-service property="pageClassProvider" service-id="PageClassProvider"/>
         <set-service property="componentClassProvider" service-id="ComponentClassProvider"/>
         <set-service property="threadLocale" service-id="hivemind.ThreadLocale"/>
@@ -120,19 +117,6 @@
         <set-service property="pageLoader" service-id="PageLoader"/>
         <set-service property="bindingSource" service-id="tapestry.bindings.BindingSource"/>
       </construct>
-    </invoke-factory>
-    
-  </service-point>
-  
-  <!-- This gets lumped in here, because the PageLoader is like a factory for ListenerBindings,
-       and this is needed to instantiate a ListenerBinding. -->
-  <service-point id="BSFManagerFactory" interface="org.apache.tapestry.services.BSFManagerFactory">
-    
-    Injected into ListenerBinding instances so that they can create a BSFManager, used to execute
-    the BSF script associated with the binding.
-    
-    <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.BSFManagerFactoryImpl"/>
     </invoke-factory>
     
   </service-point>

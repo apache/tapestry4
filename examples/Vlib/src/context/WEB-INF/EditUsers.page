@@ -16,31 +16,27 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
   
 <page-specification class="org.apache.tapestry.vlib.pages.admin.EditUsers">
-
-  <property-specification name="message" type="java.lang.String"/>
-  <property-specification name="error" type="java.lang.String"/>
-  <property-specification name="user" type="org.apache.tapestry.vlib.ejb.Person"/>
-  <property-specification name="listEditMap" type="org.apache.tapestry.vlib.pages.admin.UserListEditMap"/>
-  <property-specification name="password" type="java.lang.String"/>
   
-  <bean name="optional" class="org.apache.tapestry.valid.StringValidator" lifecycle="page"/>
-
-  
-  <component id="listEdit" type="ListEdit">
-  	<binding name="source" expression="listEditMap.keys"/>
-  	<binding name="value" expression="listEditMap.key"/>
-  	<binding name="listener" expression="listeners.synchronizeUser"/>
-  	<static-binding name="element" value="tr"/>
+  <component id="form" type="Form">
+    <binding name="success" value="listener:updateUsers"/>
+    <binding name="delegate" value="validationDelegate"/>
+    <binding name="clientValidationEnabled" value="true"/>
+  </component>
+    
+  <component id="loop" type="For">
+  	<binding name="source" value="userList"/>
+  	<binding name="value" value="user"/>
+  	<binding name="converter" value="userConverter"/>
+  	<binding name="element" value="literal:tr"/>
   </component>
   
-  <component id="inputPassword" type="ValidField">
-    <binding name="value" expression="password"/>
-    <binding name="validator" expression="beans.optional"/>
-    <static-binding name="displayName" value="New Password"/>	
+  <component id="password" type="TextField">
+    <binding name="value" value="password"/>
+    <binding name="displayName" value="message:new-password-label"/>	
   </component>
 
 </page-specification>

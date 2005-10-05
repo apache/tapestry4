@@ -34,7 +34,6 @@
   <import file="${hivebuild.dir}/junit-report.xml"/>  
   	
   <target name="compile-dependencies">
-    <ibiblio-dependency artifact="bsf"                version="${bsf.version}"      group="bsf"/>
     <ibiblio-dependency artifact="commons-codec"      version="${codec.version}"    group="commons-codec"/>
     <ibiblio-dependency artifact="commons-fileupload" version="${fileupload.version}" group="commons-fileupload"/>    
     <ibiblio-dependency artifact="commons-logging"    version="${logging.version}"  group="commons-logging"/>
@@ -50,7 +49,6 @@
     <ibiblio-dependency artifact="easymockclassextension" version="1.1"             group="easymock" use="test"/>
     <ibiblio-dependency artifact="cglib-full"         version="2.0.2"               group="cglib"    use="test"/>
     <ibiblio-dependency artifact="jdom"               version="1.0"                 group="jdom"     use="test"/>
-    <ibiblio-dependency artifact="jython"             version="2.1"                 group="jython"   use="test"/>
   </target>
  
   <property name="version-file.dir" value="${java.classes.dir}/org/apache/tapestry"/>
