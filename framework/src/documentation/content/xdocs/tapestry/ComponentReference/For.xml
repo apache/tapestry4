@@ -36,7 +36,9 @@
 </p>
 
 <p>
-  <strong>See also: <link href="&apiroot;/components/ForBean.html">org.apache.tapestry.components.ForBean</link>, &Foreach;</strong> 
+  <strong>See also: <link href="&apiroot;/components/ForBean.html">org.apache.tapestry.components.ForBean</link>, 
+    <link href="&apiroot;/utils/DefaultPrimaryKeyConverter.html">org.apache.tapestry.utils.DefaultPrimaryKeyConverter</link>,
+    &Foreach;</strong> 
 </p>
 
 <section>
