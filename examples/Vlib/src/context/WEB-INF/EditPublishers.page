@@ -28,10 +28,10 @@
   </component>
  
   <component id="loop" type="For">
-  	<binding name="source" value="publishers"/>
+  	<binding name="source" value="converter.values"/>
   	<binding name="value" value="publisher"/>
   	<binding name="element" value="literal:tr"/>
-    <binding name="primaryKeyConverter" value="publisherConverter"/>
+    <binding name="converter" value="converter"/>
   </component>
   
   <component id="name" type="TextField">

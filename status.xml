@@ -52,7 +52,8 @@
   <changes>
     <release version="4.0-beta-10" date="unreleased">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-344">Unimplemented abstract method check broken</action>
-      <action type="add" dev="HLS">Add DefaultPrimaryKeyConverter for use with the For component</action>      
+      <action type="add" dev="HLS">Add DefaultPrimaryKeyConverter for use with the For component</action>
+      <action type="update" dev="HLS">Change For component to interleave rendering/rewinding with access to its primary key converter</action>      
     </release>
     <release version="4.0-beta-9" date="Oct 1 2005">
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-663">Document Button component</action>

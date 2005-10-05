@@ -77,6 +77,22 @@ public class DefaultPrimaryKeyConverterTest extends HiveMindTestCase
         }
     }
 
+    public void testClear()
+    {
+        DefaultPrimaryKeyConverter cv = new DefaultPrimaryKeyConverter();
+
+        cv.add("fred", "flintstone");
+        cv.add("barney", "rubble");
+        cv.setDeleted(true);
+
+        cv.clear();
+
+        assertTrue(cv.getAllValues().isEmpty());
+        assertTrue(cv.getValues().isEmpty());
+        assertTrue(cv.getDeletedValues().isEmpty());
+        assertNull(cv.getLastValue());
+    }
+
     public void testDelete()
     {
         DefaultPrimaryKeyConverter cv = new DefaultPrimaryKeyConverter();

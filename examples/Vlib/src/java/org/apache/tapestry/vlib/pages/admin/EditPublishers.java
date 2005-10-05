@@ -15,9 +15,9 @@
 package org.apache.tapestry.vlib.pages.admin;
 
 import java.rmi.RemoteException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.ejb.FinderException;
@@ -28,9 +28,10 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.Message;
-import org.apache.tapestry.components.IPrimaryKeyConverter;
 import org.apache.tapestry.event.PageBeginRenderListener;
+import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.util.DefaultPrimaryKeyConverter;
 import org.apache.tapestry.vlib.AdminPage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.IOperations;
@@ -44,21 +45,10 @@ import org.apache.tapestry.vlib.pages.MyLibrary;
  * @author Howard Lewis Ship
  */
 
-public abstract class EditPublishers extends AdminPage implements PageBeginRenderListener
+public abstract class EditPublishers extends AdminPage implements PageBeginRenderListener,
+        PageDetachListener
 {
     public abstract Publisher getPublisher();
-
-    public abstract void setPublisher(Publisher publisher);
-
-    public abstract Map<Integer, Publisher> getPublisherMap();
-
-    public abstract void setPublisherMap(Map<Integer, Publisher> map);
-
-    public abstract void setPublishers(Publisher[] publishers);
-
-    public abstract void setDeletedPublishers(Set<Integer> deleted);
-
-    public abstract Set<Integer> getDeletedPublishers();
 
     @Message
     public abstract String outOfDate();
@@ -72,46 +62,35 @@ public abstract class EditPublishers extends AdminPage implements PageBeginRende
     @InjectPage("MyLibrary")
     public abstract MyLibrary getMyLibrary();
 
-    public class PublisherKeyConverter implements IPrimaryKeyConverter
+    private DefaultPrimaryKeyConverter _converter;
+
+    public DefaultPrimaryKeyConverter getConverter()
     {
-        public Object getPrimaryKey(Object value)
-        {
-            Publisher publisher = (Publisher) value;
-
-            return publisher.getId();
-        }
-
-        public Object getValue(Object primaryKey)
-        {
-            Integer id = (Integer) primaryKey;
-
-            Publisher result = getPublisherMap().get(id);
-
-            if (result == null)
+        if (_converter == null)
+            _converter = new DefaultPrimaryKeyConverter()
             {
-                getValidationDelegate().record(null, outOfDate());
-                throw new PageRedirectException(EditPublishers.this);
-            }
+                // Here's why we DON'T use @Bean ...
 
-            return result;
-        }
+                @Override
+                protected Object provideMissingValue(Object key)
+                {
+                    getValidationDelegate().record(null, outOfDate());
+                    throw new PageRedirectException(EditPublishers.this);
+                }
 
+            };
+
+        return _converter;
     }
 
-    public IPrimaryKeyConverter getPublisherConverter()
+    public void pageBeginRender(PageEvent event)
     {
-        return new PublisherKeyConverter();
+        readPublishers();
     }
 
-    public boolean isDeleted()
+    public void pageDetached(PageEvent event)
     {
-        return false;
-    }
-
-    public void setDeleted(boolean deleted)
-    {
-        if (deleted)
-            getDeletedPublishers().add(getPublisher().getId());
+        _converter = null;
     }
 
     /**
@@ -141,31 +120,42 @@ public abstract class EditPublishers extends AdminPage implements PageBeginRende
             }
         }
 
-        // This is really only needed during render, not rewind
+        DefaultPrimaryKeyConverter converter = getConverter();
 
-        setPublishers(publishers);
-
-        Map<Integer, Publisher> publisherMap = new HashMap<Integer, Publisher>();
+        converter.clear();
 
         for (Publisher publisher : publishers)
         {
-            publisherMap.put(publisher.getId(), publisher);
+            converter.add(publisher.getId(), publisher);
+        }
+    }
+
+    protected Publisher[] extractUpdatedPublishers()
+    {
+        List publishers = getConverter().getValues();
+
+        return (Publisher[]) publishers.toArray(new Publisher[0]);
+    }
+
+    protected Integer[] extractDeletedKeys()
+    {
+        Set deletedValues = getConverter().getDeletedValues();
+        List keys = new ArrayList(deletedValues.size());
+
+        Iterator i = deletedValues.iterator();
+        while (i.hasNext())
+        {
+            Publisher p = (Publisher) i.next();
+            keys.add(p.getId());
         }
 
-        setPublisherMap(publisherMap);
+        return (Integer[]) keys.toArray(new Integer[0]);
     }
 
     public void processForm(IRequestCycle cycle)
     {
-        Map<Integer, Publisher> publisherMap = getPublisherMap();
-        Set<Integer> deleted = getDeletedPublishers();
-
-        // Delete from the map anything that was marked deleted
-
-        publisherMap.keySet().removeAll(deleted);
-
-        Publisher[] updated = publisherMap.values().toArray(new Publisher[0]);
-        Integer[] deletedKeys = deleted.toArray(new Integer[0]);
+        Publisher[] updated = extractUpdatedPublishers();
+        Integer[] deletedKeys = extractDeletedKeys();
 
         // Now, push the updates through to the database
 
@@ -205,13 +195,6 @@ public abstract class EditPublishers extends AdminPage implements PageBeginRende
         page.setMessage(publishersUpdated());
 
         page.activate();
-    }
-
-    public void pageBeginRender(PageEvent event)
-    {
-        readPublishers();
-
-        setDeletedPublishers(new HashSet());
     }
 
 }

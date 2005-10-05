@@ -66,6 +66,19 @@ public class DefaultPrimaryKeyConverter implements IPrimaryKeyConverter
 
     private Set _deletedValues;
 
+    /**
+     * Clears all properties of the converter, returning it to a pristine state. Subclasses should
+     * invoke this implementation in addition to clearing any of their own state.
+     */
+    public void clear()
+    {
+        _map.clear();
+        _keys.clear();
+        _values.clear();
+        _lastValue = null;
+        _deletedValues = null;
+    }
+
     public final void add(Object key, Object value)
     {
         Defense.notNull(key, "key");
@@ -162,7 +175,7 @@ public class DefaultPrimaryKeyConverter implements IPrimaryKeyConverter
      *            if false, the last value will be removed
      * @return the set passed in, or a new Set instance
      */
-    protected Set updateSetForLastValue(Set set, boolean inSet)
+    protected final Set updateSetForLastValue(Set set, boolean inSet)
     {
         if (inSet)
         {

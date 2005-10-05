@@ -41,8 +41,20 @@ import org.apache.tapestry.services.ExpressionEvaluator;
 public abstract class ForBean extends AbstractFormComponent
 {
     // constants
+
+    /**
+     * Prefix on the hidden value stored into the field to indicate the the actual value is stored
+     * (this is used when there is no primary key converter). The remainder of the string is a
+     * {@link DataSqueezer squeezed} representation of the value.
+     */
     private static final char DESC_VALUE = 'V';
 
+    /**
+     * Prefix on the hidden value stored into the field that indicates the primary key of the
+     * iterated value is stored; the remainder of the string is a {@link DataSqueezer squeezed}
+     * representation of the primary key. The {@link IPrimaryKeyConverter converter} is used to
+     * obtain the value from this key.
+     */
     private static final char DESC_PRIMARY_KEY = 'P';
 
     private final RepSource COMPLETE_REP_SOURCE = new CompleteRepSource();
@@ -263,24 +275,47 @@ public abstract class ForBean extends AbstractFormComponent
 
         updatePrimaryKeysParameter(stringReps);
 
-        Iterator sourceIterator = evaluateSourceIterator();
-        Iterator fullSourceIterator = evaluateFullSourceIterator();
-        Map repToValueMap = new HashMap();
+        return new ReadSourceDataIterator(stringReps);
+    }
 
-        int valueCount = stringReps.length;
-        List values = new ArrayList(valueCount);
-        for (int i = 0; i < valueCount; i++)
+    /**
+     * Pulls data from successive strings (posted by client-side hidden fields); each string
+     * representation may be either a value or a primary key.
+     */
+    private class ReadSourceDataIterator implements Iterator
+    {
+        private final Iterator _sourceIterator = evaluateSourceIterator();
+
+        private final Iterator _fullSourceIterator = evaluateFullSourceIterator();
+
+        private final String[] _stringReps;
+
+        private int _index = 0;
+
+        private final Map _repToValueMap = new HashMap();
+
+        ReadSourceDataIterator(String[] stringReps)
         {
-            String rep = stringReps[i];
-            Object value = getValueFromStringRep(
-                    sourceIterator,
-                    fullSourceIterator,
-                    repToValueMap,
-                    rep);
-            values.add(value);
+            _stringReps = stringReps;
         }
 
-        return values.iterator();
+        public boolean hasNext()
+        {
+            return _index < _stringReps.length;
+        }
+
+        public Object next()
+        {
+            String rep = _stringReps[_index++];
+
+            return getValueFromStringRep(_sourceIterator, _fullSourceIterator, _repToValueMap, rep);
+        }
+
+        public void remove()
+        {
+            throw new UnsupportedOperationException("remove()");
+        }
+
     }
 
     /**
@@ -295,19 +330,49 @@ public abstract class ForBean extends AbstractFormComponent
      */
     protected Iterator storeSourceData(IForm form, String name)
     {
-        List values = new ArrayList();
+        return new StoreSourceDataIterator(form, name, evaluateSourceIterator());
+    }
 
-        Iterator it = evaluateSourceIterator();
-        while (it.hasNext())
+    /**
+     * Iterates over a set of values, using {@link ForBean#getStringRepFromValue(Object)} to obtain
+     * the correct client-side string representation, and working with the form to store each
+     * successive value into the form.
+     */
+    private class StoreSourceDataIterator implements Iterator
+    {
+        private final IForm _form;
+
+        private final String _name;
+
+        private final Iterator _delegate;
+
+        StoreSourceDataIterator(IForm form, String name, Iterator delegate)
         {
-            Object value = it.next();
-            values.add(value);
-
-            String rep = getStringRepFromValue(value);
-            form.addHiddenValue(name, rep);
+            _form = form;
+            _name = name;
+            _delegate = delegate;
         }
 
-        return values.iterator();
+        public boolean hasNext()
+        {
+            return _delegate.hasNext();
+        }
+
+        public Object next()
+        {
+            Object value = _delegate.next();
+
+            String rep = getStringRepFromValue(value);
+
+            _form.addHiddenValue(_name, rep);
+
+            return value;
+        }
+
+        public void remove()
+        {
+            throw new UnsupportedOperationException("remove()");
+        }
     }
 
     /**
