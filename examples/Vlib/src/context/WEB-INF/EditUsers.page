@@ -28,7 +28,7 @@
   </component>
     
   <component id="loop" type="For">
-  	<binding name="source" value="userList"/>
+  	<binding name="source" value="userConverter.values"/>
   	<binding name="value" value="user"/>
   	<binding name="converter" value="userConverter"/>
   	<binding name="element" value="literal:tr"/>
