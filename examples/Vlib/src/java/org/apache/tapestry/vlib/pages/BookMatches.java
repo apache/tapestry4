@@ -75,7 +75,7 @@ public abstract class BookMatches extends BasePage
      * Invoked by the {@link Home} page to perform a query.
      */
 
-    public void performQuery(MasterQueryParameters parameters, IRequestCycle cycle)
+    public void performQuery(MasterQueryParameters parameters)
     {
         setQueryParameters(parameters);
 
@@ -89,7 +89,7 @@ public abstract class BookMatches extends BasePage
         }
 
         getBrowser().initializeForResultCount(count);
-        cycle.activate(this);
+        getRequestCycle().activate(this);
     }
 
     public void requery(IRequestCycle cycle)

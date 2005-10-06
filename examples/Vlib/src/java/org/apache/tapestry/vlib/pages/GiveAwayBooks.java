@@ -20,14 +20,14 @@ import java.util.List;
 import javax.ejb.FinderException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.vlib.EntitySelectionModel;
-import org.apache.tapestry.vlib.IActivate;
 import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
@@ -43,7 +43,7 @@ import org.apache.tapestry.vlib.ejb.Person;
  * @since 3.0
  */
 
-public abstract class GiveAwayBooks extends Protected implements PageRenderListener
+public abstract class GiveAwayBooks extends Protected implements PageBeginRenderListener
 {
     public abstract IPropertySelectionModel getBooksModel();
 
@@ -57,7 +57,25 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
 
     public abstract Integer getTargetUserId();
 
-    public void formSubmit(IRequestCycle cycle)
+    @Message
+    public abstract String updateFailure();
+
+    @Message
+    public abstract String selectAtLeastOneBook(String targetName);
+
+    @Message
+    public abstract String transferedBooks(int count, String targetName);
+
+    @Message
+    public abstract String readUsersFailure();
+
+    @Message
+    public abstract String readBooksFailure();
+
+    @InjectPage("MyLibrary")
+    public abstract MyLibrary getMyLibrary();
+
+    public void formSubmit()
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
@@ -71,7 +89,7 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
 
         if (count == 0)
         {
-            setError(format("select-at-least-one-book", target.getNaturalName()));
+            setError(selectAtLeastOneBook(target.getNaturalName()));
             return;
         }
 
@@ -94,14 +112,13 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure(getMessage("update-failure"), ex, i++);
+                vengine.rmiFailure(updateFailure(), ex, i++);
             }
         }
 
-        MyLibrary myLibrary = (MyLibrary) cycle.getPage("MyLibrary");
+        MyLibrary myLibrary = getMyLibrary();
 
-        myLibrary.setMessage(format("transfered-books", Integer.toString(count), target
-                .getNaturalName()));
+        myLibrary.setMessage(transferedBooks(count, target.getNaturalName()));
 
         myLibrary.activate();
     }
@@ -127,7 +144,7 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure(getMessage("read-users-failure"), ex, i++);
+                vengine.rmiFailure(readUsersFailure(), ex, i++);
             }
         }
 
@@ -191,7 +208,7 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure(getMessage("read-books-failure"), ex, i++);
+                vengine.rmiFailure(readBooksFailure(), ex, i++);
             }
         }
 
@@ -213,8 +230,7 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
 
         if (model.getOptionCount() == 0)
         {
-            IRequestCycle cycle = getRequestCycle();
-            IActivate page = (IActivate) cycle.getPage("MyLibrary");
+            MyLibrary page = getMyLibrary();
 
             page.activate();
 

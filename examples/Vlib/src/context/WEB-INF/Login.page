@@ -16,38 +16,26 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
-	
-<page-specification class="org.apache.tapestry.vlib.pages.Login">
-
-  <property-specification name="email" type="java.lang.String"/>
-  <property-specification name="password" type="java.lang.String"/>
-  <property-specification name="error" type="java.lang.String"/>
-  <property-specification name="callback" type="org.apache.tapestry.callback.ICallback" persistent="yes"/>
-  
-  <bean name="delegate" class="org.apache.tapestry.vlib.VirtualLibraryDelegate"/>
-
-  <bean name="validator" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
-  	<set-property name="required" expression="true"/>
-  	<set-property name="clientScriptingEnabled" expression="true"/>
-  </bean>
-
-  <component id="inputEmail" type="ValidField">
-    <static-binding name="displayName" value="Email Address"/>
-    <binding name="value" expression="email"/>
-    <binding name="validator" expression="beans.validator"/>
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+<page-specification>
+  <component id="form" type="Form">
+    <binding name="success" value="listener:attemptLogin"/>
+    <binding name="stateful" value="false"/>
+    <binding name="clientValidationEnabled" value="true"/>
   </component>
-  
-  <component id="inputPassword" type="ValidField">
-    <binding name="value" expression="password"/>
-    <binding name="validator" expression="beans.validator"/>
-    <static-binding name="displayName" value="Password"/>
-    <binding name="hidden" expression="true"/>
+  <component id="email" type="TextField">
+    <binding name="displayName" value="message:email-label"/>
+    <binding name="value" value="email"/>
+    <binding name="validators" value="validators:required"/>
   </component>
-  
+  <component id="password" type="TextField">
+    <binding name="value" value="password"/>
+    <binding name="validators" value="validators:required"/>
+    <binding name="displayName" value="message:password-label"/>
+    <binding name="hidden" value="true"/>
+  </component>
   <component id="register" type="PageLink">
-    <static-binding name="page">Register</static-binding>
+    <binding name="page" value="literal:Register"/>
   </component>
-
 </page-specification>

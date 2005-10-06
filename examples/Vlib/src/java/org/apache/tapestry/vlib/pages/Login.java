@@ -17,7 +17,12 @@ package org.apache.tapestry.vlib.pages;
 import java.rmi.RemoteException;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.Bean;
+import org.apache.tapestry.annotations.InjectComponent;
 import org.apache.tapestry.annotations.InjectObject;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.InjectState;
+import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
@@ -25,8 +30,8 @@ import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.services.CookieSource;
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.apache.tapestry.valid.ValidatorException;
 import org.apache.tapestry.vlib.IErrorProperty;
+import org.apache.tapestry.vlib.VirtualLibraryDelegate;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.ejb.IOperations;
@@ -50,6 +55,9 @@ public abstract class Login extends BasePage implements IErrorProperty, PageBegi
 
     private static final String COOKIE_NAME = "org.apache.tapestry.vlib.Login.email";
 
+    @Bean(VirtualLibraryDelegate.class)
+    public abstract IValidationDelegate getValidationDelegate();
+
     public abstract void setEmail(String value);
 
     public abstract String getEmail();
@@ -61,23 +69,22 @@ public abstract class Login extends BasePage implements IErrorProperty, PageBegi
     @InjectObject("infrastructure:cookieSource")
     public abstract CookieSource getCookieSource();
 
-    protected IValidationDelegate getValidationDelegate()
-    {
-        return (IValidationDelegate) getBeans().getBean("delegate");
-    }
-
-    protected void setErrorField(String componentId, String message)
-    {
-        IFormComponent field = (IFormComponent) getComponent(componentId);
-
-        IValidationDelegate delegate = getValidationDelegate();
-        delegate.setFormComponent(field);
-        delegate.record(new ValidatorException(message));
-    }
+    @Persist("client:app")
+    public abstract ICallback getCallback();
 
     public abstract void setCallback(ICallback value);
 
-    public abstract ICallback getCallback();
+    @InjectComponent("email")
+    public abstract IFormComponent getEmailField();
+
+    @InjectComponent("password")
+    public abstract IFormComponent getPasswordField();
+
+    @InjectState("visit")
+    public abstract Visit getVisitState();
+
+    @InjectPage("MyLibrary")
+    public abstract MyLibrary getMyLibrary();
 
     /**
      * Attempts to login.
@@ -95,7 +102,7 @@ public abstract class Login extends BasePage implements IErrorProperty, PageBegi
         setPassword(null);
         IValidationDelegate delegate = getValidationDelegate();
 
-        delegate.setFormComponent((IFormComponent) getComponent("inputPassword"));
+        delegate.setFormComponent(getPasswordField());
         delegate.recordFieldInputValue(null);
 
         // An error, from a validation field, may already have occured.
@@ -114,16 +121,16 @@ public abstract class Login extends BasePage implements IErrorProperty, PageBegi
 
                 Person person = operations.login(getEmail(), password);
 
-                loginUser(person, cycle);
+                loginUser(person);
 
                 break;
 
             }
             catch (LoginException ex)
             {
-                String fieldName = ex.isPasswordError() ? "inputPassword" : "inputEmail";
+                IFormComponent field = ex.isPasswordError() ? getPasswordField() : getEmailField();
 
-                setErrorField(fieldName, ex.getMessage());
+                getValidationDelegate().record(field, ex.getMessage());
                 return;
             }
             catch (RemoteException ex)
@@ -139,29 +146,31 @@ public abstract class Login extends BasePage implements IErrorProperty, PageBegi
      * specified page).
      */
 
-    public void loginUser(Person person, IRequestCycle cycle)
+    public void loginUser(Person person)
     {
+        IRequestCycle cycle = getRequestCycle();
+
         String email = person.getEmail();
 
         // Get the visit object; this will likely force the
         // creation of the visit object and an HttpSession.
 
-        Visit visit = (Visit) getVisit();
+        Visit visit = getVisitState();
         visit.setUser(person);
 
-        // After logging in, go to the MyLibrary page, unless otherwise
+        // After logging in, go to the Home page, unless otherwise
         // specified.
 
         ICallback callback = getCallback();
 
         if (callback == null)
-            cycle.activate("Home");
+            getMyLibrary().activate();
         else
             callback.performCallback(cycle);
 
-        getCookieSource().writeCookieValue(COOKIE_NAME, email);
-
         // TODO: Set max age of cookie once TAPESTRY-438 is fixed.
+
+        getCookieSource().writeCookieValue(COOKIE_NAME, email);
 
         cycle.forgetPage(getPageName());
     }
