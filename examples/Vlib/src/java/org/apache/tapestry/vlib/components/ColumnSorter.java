@@ -18,6 +18,7 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.vlib.ejb.SortColumn;
 
 /**
@@ -29,16 +30,20 @@ import org.apache.tapestry.vlib.ejb.SortColumn;
 
 public abstract class ColumnSorter extends BaseComponent
 {
+    @Parameter(required = true)
     public abstract SortColumn getSortColumn();
 
+    @Parameter(required = true)
     public abstract SortColumn getSelected();
 
     public abstract void setSelected(SortColumn selected);
 
+    @Parameter(required = true)
     public abstract boolean isDescending();
 
     public abstract void setDescending(boolean descending);
 
+    @Parameter(required = true)
     public abstract IActionListener getListener();
 
     public void handleClick(IRequestCycle cycle)

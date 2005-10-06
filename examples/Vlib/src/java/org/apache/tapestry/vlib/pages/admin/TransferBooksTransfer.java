@@ -20,15 +20,20 @@ import java.util.List;
 import javax.ejb.FinderException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.IPage;
+import org.apache.tapestry.annotations.Bean;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.annotations.Meta;
+import org.apache.tapestry.annotations.Persist;
+import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.form.IPropertySelectionModel;
+import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.vlib.AdminPage;
 import org.apache.tapestry.vlib.EntitySelectionModel;
 import org.apache.tapestry.vlib.IErrorProperty;
-import org.apache.tapestry.vlib.IMessageProperty;
+import org.apache.tapestry.vlib.VirtualLibraryDelegate;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
@@ -43,16 +48,19 @@ import org.apache.tapestry.vlib.ejb.Person;
  * @since 3.0
  */
 
-public abstract class TransferBooksTransfer extends AdminPage implements PageRenderListener
+@Meta("page-type=TransferBooks")
+public abstract class TransferBooksTransfer extends AdminPage implements PageBeginRenderListener
 {
     public abstract Person getFromUser();
 
     public abstract void setFromUser(Person fromUser);
 
+    @Persist("client")
     public abstract Integer getFromUserId();
 
     public abstract void setFromUserId(Integer fromUserId);
 
+    @Persist("client")
     public abstract Integer getToUserId();
 
     public abstract void setToUserId(Integer toUserId);
@@ -67,7 +75,19 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
 
     public abstract void setUserBookModel(IPropertySelectionModel userBookModel);
 
-    public void activate(IRequestCycle cycle, Integer fromUserId, Integer toUserId)
+    @Bean(VirtualLibraryDelegate.class)
+    public abstract IValidationDelegate getValidationDelegate();
+
+    @Message
+    public abstract String userHasNoBooks(String userName);
+
+    @InjectPage("TransferBooksSelect")
+    public abstract TransferBooksSelect getSelectPage();
+
+    @Message
+    public abstract String transferedBooks(int count, String fromName, String toName);
+
+    public void activate(Integer fromUserId, Integer toUserId)
     {
         Person fromUser = readPerson(fromUserId);
 
@@ -75,8 +95,8 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
 
         if (model.getOptionCount() == 0)
         {
-            IErrorProperty page = (IErrorProperty) cycle.getPage();
-            page.setError(format("user-has-no-books", fromUser.getNaturalName()));
+            IErrorProperty page = getSelectPage();
+            page.setError(userHasNoBooks(fromUser.getNaturalName()));
             return;
         }
 
@@ -87,7 +107,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
 
         setUserBookModel(model);
 
-        cycle.activate(this);
+        getRequestCycle().activate(this);
     }
 
     /**
@@ -116,19 +136,11 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
         }
     }
 
-    public void formSubmit(IRequestCycle cycle)
+    public IPage formSubmit()
     {
         List selectedBooks = getSelectedBooks();
 
-        int count = Tapestry.size(selectedBooks);
-
-        if (count == 0)
-        {
-            setError(getMessage("no-books-selected"));
-            return;
-        }
-
-        Integer[] keys = (Integer[]) selectedBooks.toArray(new Integer[count]);
+        Integer[] keys = (Integer[]) selectedBooks.toArray(new Integer[0]);
         Person toUser = getToUser();
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
@@ -155,10 +167,13 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
         }
 
         Person fromUser = getFromUser();
-        IMessageProperty selectPage = (TransferBooksSelect) cycle.getPage("TransferBooksSelect");
-        selectPage.setMessage(format("transfered-books", Integer.toString(count), fromUser
-                .getNaturalName(), toUser.getNaturalName()));
-        cycle.activate(selectPage);
+
+        TransferBooksSelect selectPage = getSelectPage();
+
+        selectPage.setMessage(transferedBooks(keys.length, fromUser.getNaturalName(), toUser
+                .getNaturalName()));
+
+        return selectPage;
     }
 
     private IPropertySelectionModel buildUserBookModel(Person user)

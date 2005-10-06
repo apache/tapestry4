@@ -16,52 +16,41 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 	
-<page-specification class="org.apache.tapestry.vlib.pages.Register">
+<page-specification>
 
-  <property name="page-type" value="Login"/>
-
-  <property-specification name="error" type="java.lang.String"/>
-  <property-specification name="firstName" type="java.lang.String"/>
-  <property-specification name="lastName" type="java.lang.String"/>
-  <property-specification name="email" type="java.lang.String"/>
-  <property-specification name="password1" type="java.lang.String"/>
-  <property-specification name="password2" type="java.lang.String"/>
-  
-   <bean name="delegate" class="org.apache.tapestry.vlib.VirtualLibraryDelegate"/>
-  
-  <bean name="validator" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
-  	<set-property name="required" expression="true"/>
-  	<set-property name="clientScriptingEnabled" expression="true"/>
-  </bean>
-  
-  <component id="inputLastName" type="ValidField">
-    <binding name="value" expression="lastName"/>
-    <static-binding name="displayName" value="Last Name"/>
-    <binding name="validator" expression="beans.validator"/>
+  <component id="form" type="Form">
+    <binding name="delegate" value="validationDelegate"/>
+    <binding name="listener" value="listener:attemptRegister"/>
+    <binding name="clientValidationEnabled" value="true"/>
   </component>
   
-  <component id="inputEmail" type="ValidField">
-    <binding name="value" expression="email"/>
-    <binding name="validator" expression="beans.validator"/>
-    <static-binding name="displayName" value="E-Mail"/>
+  <component id="lastName" type="TextField">
+    <binding name="value" value="lastName"/>
+    <binding name="displayName" value="message:last-name-label"/>
+    <binding name="validators" value="validators:required"/>
   </component>
   
-  <component id="inputPassword1" type="ValidField">
-    <binding name="value" expression="password1"/>
-    <static-binding name="displayName" value="Password"/>
-    <binding name="validator" expression="beans.validator"/>
-    <binding name="hidden" expression="true"/>
+  <component id="email" type="TextField">
+    <binding name="value" value="email"/>
+    <binding name="validators" value="validators:required"/>
+    <binding name="displayName" value="message:email-label"/>
   </component>
   
-  
-  <component id="inputPassword2" type="ValidField">
-    <binding name="value" expression="password2"/>
-    <static-binding name="displayName" value="Password (again)"/>
-    <binding name="validator" expression="beans.validator"/>
-    <binding name="hidden" expression="true"/>
+  <component id="password1" type="TextField">
+    <binding name="value" value="password1"/>
+    <binding name="displayName" value="message:password-label"/>
+    <binding name="validators" value="validators:required"/>
+    <binding name="hidden" value="true"/>
   </component>
+  
+  <component id="password2" type="TextField">
+    <binding name="value" value="password2"/>
+    <binding name="displayName" value="message:password2-label"/>
+    <binding name="validators" value="validators:required"/>
+    <binding name="hidden" value="true"/>
+  </component>  
 
 </page-specification>

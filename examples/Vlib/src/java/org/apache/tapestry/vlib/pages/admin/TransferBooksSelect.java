@@ -14,35 +14,54 @@
 
 package org.apache.tapestry.vlib.pages.admin;
 
-import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.Bean;
+import org.apache.tapestry.annotations.InjectComponent;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.annotations.Meta;
+import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.vlib.AdminPage;
+import org.apache.tapestry.vlib.VirtualLibraryDelegate;
 
 /**
  * First page in Transfer Books wizard; allows the two users to be selected.
  * 
  * @author Howard Lewis Ship
  */
-
+@Meta("page-type=TransferBooks")
 public abstract class TransferBooksSelect extends AdminPage
 {
     public abstract Integer getFromUserId();
 
     public abstract Integer getToUserId();
 
-    public void formSubmit(IRequestCycle cycle)
+    @Message
+    public abstract String selectDifferentUsers();
+
+    @InjectComponent("to")
+    public abstract IFormComponent getToField();
+
+    @Bean(VirtualLibraryDelegate.class)
+    public abstract IValidationDelegate getValidationDelegate();
+
+    @InjectPage("TransferBooksTransfer")
+    public abstract TransferBooksTransfer getNextPage();
+
+    public void formSubmit()
     {
         Integer fromUserId = getFromUserId();
         Integer toUserId = getToUserId();
 
         if (fromUserId.equals(toUserId))
         {
-            setError(getMessage("select-different-users"));
+            getValidationDelegate().record(getToField(), selectDifferentUsers());
             return;
         }
 
-        TransferBooksTransfer next = (TransferBooksTransfer) cycle.getPage("TransferBooksTransfer");
+        TransferBooksTransfer next = getNextPage();
 
-        next.activate(cycle, fromUserId, toUserId);
+        next.activate(fromUserId, toUserId);
     }
 
 }

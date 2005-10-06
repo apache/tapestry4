@@ -19,11 +19,16 @@ import java.rmi.RemoteException;
 import javax.ejb.CreateException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.Bean;
+import org.apache.tapestry.annotations.InjectComponent;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.vlib.IErrorProperty;
+import org.apache.tapestry.vlib.VirtualLibraryDelegate;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.Person;
@@ -35,9 +40,9 @@ import org.apache.tapestry.vlib.ejb.RegistrationException;
  * @author Howard Lewis Ship
  */
 
+@Meta("page-type=Login")
 public abstract class Register extends BasePage implements IErrorProperty
 {
-
     public abstract String getFirstName();
 
     public abstract String getLastName();
@@ -52,30 +57,30 @@ public abstract class Register extends BasePage implements IErrorProperty
 
     public abstract void setPassword2(String value);
 
-    private IValidationDelegate getValidationDelegate()
-    {
-        return (IValidationDelegate) getBeans().getBean("delegate");
-    }
+    @Bean(VirtualLibraryDelegate.class)
+    public abstract IValidationDelegate getValidationDelegate();
 
-    private void setErrorField(String componentId, String message)
+    @InjectComponent("password1")
+    public abstract IFormComponent getPassword1Field();
+
+    @InjectComponent("password2")
+    public abstract IFormComponent getPassword2Field();
+
+    @Message
+    public abstract String passwordMustMatch();
+
+    @InjectPage("Login")
+    public abstract Login getLogin();
+
+    private void clear(IFormComponent field)
     {
         IValidationDelegate delegate = getValidationDelegate();
-        IFormComponent field = (IFormComponent) getComponent(componentId);
 
         delegate.setFormComponent(field);
-        delegate.record(message, null);
-    }
-
-    private void clear(String componentId)
-    {
-        IValidationDelegate delegate = getValidationDelegate();
-        IFormComponent component = (IFormComponent) getComponent(componentId);
-
-        delegate.setFormComponent(component);
         delegate.recordFieldInputValue(null);
     }
 
-    public void attemptRegister(IRequestCycle cycle)
+    public void attemptRegister()
     {
         IValidationDelegate delegate = getValidationDelegate();
 
@@ -85,22 +90,23 @@ public abstract class Register extends BasePage implements IErrorProperty
         setPassword1(null);
         setPassword2(null);
 
-        clear("inputPassword1");
-        clear("inputPassword2");
+        clear(getPassword1Field());
+        clear(getPassword1Field());
 
         if (delegate.getHasErrors())
             return;
+
         // Note: we know password1 and password2 are not null
         // because they are required fields.
 
         if (!password1.equals(password2))
         {
-            setErrorField("inputPassword1", getMessage("password-must-match"));
+            delegate.record(getPassword1Field(), passwordMustMatch());
             return;
         }
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-        Login login = (Login) cycle.getPage("Login");
+        Login login = getLogin();
 
         int i = 0;
         while (true)

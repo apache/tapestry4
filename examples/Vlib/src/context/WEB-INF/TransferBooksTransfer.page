@@ -16,29 +16,25 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 
 <page-specification class="org.apache.tapestry.vlib.pages.admin.TransferBooksTransfer">
 
-  <property name="page-type" value="TransferBooks"/>
-  
-  <property-specification name="message" type="java.lang.String"/>
-  <property-specification name="error" type="java.lang.String"/>
-  
-  <property-specification name="fromUserId" type="java.lang.Integer" persistent="yes"/>
-  <property-specification name="fromUser" type="org.apache.tapestry.vlib.ejb.Person"/>
-  <property-specification name="toUserId" type="java.lang.Integer" persistent="yes"/>
-  <property-specification name="toUser" type="org.apache.tapestry.vlib.ejb.Person"/>
-  <property-specification name="userBookModel" type="org.apache.tapestry.form.IPropertySelectionModel"/>
-  <property-specification name="selectedBooks" type="java.util.List"/>
-    
+  <component id="form" type="Form">
+    <binding name="success" value="listener:formSubmit"/>
+    <binding name="clientValidationEnabled" value="true"/>
+    <binding name="delegate" value="validationDelegate"/>
+  </component>
+
   <component id="selectBooks" type="contrib:Palette">
-    <binding name="model" expression="userBookModel"/>
-    <binding name="sort" expression="@org.apache.tapestry.contrib.palette.SortMode@LABEL"/>
-    <binding name="selected" expression="selectedBooks"/>
-    <binding name="selectedTitleBlock" expression="components.selectedTitle"/>
-    <binding name="availableTitleBlock" expression="components.availableTitle"/>
+    <binding name="model" value="userBookModel"/>
+    <binding name="sort" value="@org.apache.tapestry.contrib.palette.SortMode@LABEL"/>
+    <binding name="selected" value="selectedBooks"/>
+    <binding name="selectedTitleBlock" value="component:selectedTitle"/>
+    <binding name="availableTitleBlock" value="component:availableTitle"/>
+    <binding name="displayName" value="message:select-label"/>
+    <binding name="validators" value="validators:required"/>
   </component>
   
 </page-specification>
