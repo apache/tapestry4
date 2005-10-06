@@ -1,5 +1,5 @@
 <html jwcid="$content$">
-<body jwcid="@Border">
+<body jwcid="border@Border">
 	
 <p>This form allows you to transfer ownership of books from one user to another.  It consists of a two-part
 	wizard.</p>
@@ -17,8 +17,9 @@ to
 <br clear="left"/>
 
 <span jwcid="@ShowError"/>
-
-<form jwcid="@Form" listener="listener:formSubmit">
+<span jwcid="@ShowValidationError"/>
+    
+<form jwcid="form">
 
 <select jwcid="selectBooks"/>
 

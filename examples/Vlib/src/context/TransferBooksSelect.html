@@ -1,5 +1,5 @@
 <html jwcid="$content$">
-<body jwcid="@Border">
+<body jwcid="border@Border">
 	
 <p>This form allows you to transfer ownership of books from one user to another.  It consists of a two-part
 	wizard.</p>
@@ -15,21 +15,22 @@ Select the two users to transfer books between.
 
 <span jwcid="@ShowMessage"/>
 <span jwcid="@ShowError"/>
+<span jwcid="@ShowValidationError"/>
 
-<form jwcid="@Form" listener="listener:formSubmit">
+<form jwcid="form">
   <table class="form">
     <tr>
       <th>Move from:
       </th>
       <td>
-        <select jwcid="from@PropertySelection" value="ognl:fromUserId" model="ognl:engine.personModel"/>
+        <select jwcid="from"/>
       </td>
     </tr>
     <tr>
       <th>Move to:
       </th>
       <td>
-        <select jwcid="to@PropertySelection" value="ognl:toUserId" model="ognl:engine.personModel"/>
+        <select jwcid="to"/>
       </td>
     </tr>
     <tr>

@@ -1,7 +1,7 @@
 <html jwcid="$content$">
 <body jwcid="@Border">
 
-<form jwcid="@Form" listener="listener:attemptRegister" delegate="ognl:beans.delegate">
+<form jwcid="form">
 	
 <p>
 	Please enter your registration information here; this will allow you to access the Virtual Library.
@@ -10,38 +10,38 @@
 </p>
 
 <span jwcid="@ShowError"/>
-<span jwcid="@ShowValidationError" delegate="ognl:beans.delegate"/>
+<span jwcid="@ShowValidationError"/>
 
   <table class="form">
     <tr>
       <th>First Name</th>
       <td></td>
-      <td><input jwcid="inputFirstName@TextField" value="ognl:firstName" type="text" size="30" maxlength="30"/>
+      <td><input jwcid="firstName@TextField" value="ognl:firstName" type="text" size="30" maxlength="30"/>
       </td>
     </tr>
     <tr>
-      <th><span jwcid="@FieldLabel" field="ognl:components.inputLastName">Last Name</span>
+      <th><span jwcid="@FieldLabel" field="component:lastName">Last Name</span>
       </th>
       <td><span class="required-field">*</span></td>
-      <td><input jwcid="inputLastName" type="text" size="30" maxlength="30"/>
+      <td><input jwcid="lastName" type="text" size="30" maxlength="30"/>
       </td>
     </tr>
     <tr>
-      <th><span jwcid="@FieldLabel" field="ognl:components.inputEmail">E-mail</span>      </th>
+      <th><span jwcid="@FieldLabel" field="component:email">E-mail</span>      </th>
       <td><span class="required-field">*</span></td>
-      <td><input jwcid="inputEmail" type="text" size="30" maxlength="60"/>
+      <td><input jwcid="email" type="text" size="30" maxlength="60"/>
       </td>
     </tr>
     <tr>
-      <th><span jwcid="@FieldLabel" field="ognl:components.inputPassword1">Password</span>      </th>
+      <th><span jwcid="@FieldLabel" field="component:password1">Password</span>      </th>
       <td><span class="required-field">*</span></td>
-      <td><input jwcid="inputPassword1" type="password" size="20" maxlength="20"/>
+      <td><input jwcid="password1" type="password" size="20" maxlength="20"/>
       </td>
     </tr>
     <tr>
-      <th><span jwcid="@FieldLabel" field="ognl:components.inputPassword2">Password (again)</span>      </th>
+      <th><span jwcid="@FieldLabel" field="component:password2">Password (again)</span>      </th>
       <td><span class="required-field">*</span></td>
-      <td><input jwcid="inputPassword2" type="password" size="20" maxlength="20"/>
+      <td><input jwcid="password2" type="password" size="20" maxlength="20"/>
       </td>
     </tr>
    	<tr>

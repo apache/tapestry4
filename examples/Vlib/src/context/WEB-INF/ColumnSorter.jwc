@@ -16,36 +16,19 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
-
-<component-specification
-	class="org.apache.tapestry.vlib.components.ColumnSorter"
-  allow-body="yes" allow-informal-parameters="no">
-
-  <parameter name="selected" type="org.apache.tapestry.vlib.ejb.SortColumn" required="yes" direction="auto"/>
-  <parameter name="descending" type="boolean" required="yes" direction="auto"/>
-  <parameter name="sortColumn" type="org.apache.tapestry.vlib.ejb.SortColumn" required="yes" direction="auto"/>
-  <parameter name="listener" type="org.apache.tapestry.IActionListener" required="yes" direction="auto"/>
-  
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+<component-specification allow-body="yes" allow-informal-parameters="no">
   <component id="link" type="DirectLink">
-  	<binding name="listener" expression="listeners.handleClick"/>	
+    <binding name="listener" value="listener:handleClick"/>
   </component>
-  
   <component id="iconLink" copy-of="link"/>
-  
   <component id="rollover" type="Rollover">
-  		<binding name="image">
-  			descending ? assets.down : assets.up	
-  		</binding>
-  		<binding name="focus">
-  			descending ? assets.down_h : assets.up_h
-  		</binding>
+    <binding name="image"> descending ? assets.down : assets.up </binding>
+    <binding name="focus"> descending ? assets.down_h : assets.up_h </binding>
   </component>
-  
-  <context-asset name="up" path="images/sort-up.png"/>
-  <context-asset name="up_h" path="images/sort-up_h.png"/>
-  <context-asset name="down" path="images/sort-down.png"/>
-  <context-asset name="down_h" path="images/sort-down_h.png"/>
-  
+  <asset name="up" path="images/sort-up.png"/>
+  <asset name="up_h" path="images/sort-up_h.png"/>
+  <asset name="down" path="images/sort-down.png"/>
+  <asset name="down_h" path="images/sort-down_h.png"/>
 </component-specification>
