@@ -20,10 +20,14 @@ import java.util.Map;
 
 import javax.ejb.CreateException;
 
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
+import org.apache.hivemind.HiveMind;
+import org.apache.tapestry.annotations.InjectComponent;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
+import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
@@ -35,40 +39,57 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * @author Howard Lewis Ship
  */
 
-public abstract class NewBook extends Protected implements PageRenderListener
+public abstract class NewBook extends Protected implements PageBeginRenderListener
 {
-
     public abstract Map getAttributes();
 
     public abstract void setAttributes(Map attributes);
 
     public abstract String getPublisherName();
 
-    public void addBook(IRequestCycle cycle)
+    @Message
+    public abstract String needPublisherName();
+
+    @Message
+    public abstract String leavePublisherNameEmpty();
+
+    @Message
+    public abstract String addedBook(Object title);
+
+    @InjectComponent("publisherName")
+    public abstract IFormComponent getPublisherNameField();
+
+    @InjectPage("MyLibrary")
+    public abstract MyLibrary getMyLibrary();
+
+    public void addBook()
     {
+        IValidationDelegate delegate = getValidationDelegate();
+
         Map attributes = getAttributes();
 
         Integer publisherId = (Integer) attributes.get("publisherId");
         String publisherName = getPublisherName();
 
-        if (publisherId == null && Tapestry.isBlank(publisherName))
+        if (publisherId == null && HiveMind.isBlank(publisherName))
         {
-            setErrorField("inputPublisherName", getMessage("need-publisher-name"));
+            delegate.record(getPublisherNameField(), needPublisherName());
             return;
         }
 
-        if (publisherId != null && Tapestry.isNonBlank(publisherName))
+        if (publisherId != null && HiveMind.isNonBlank(publisherName))
         {
-            setErrorField("inputPublisherName", getMessage("leave-publisher-name-empty"));
+            delegate.record(getPublisherNameField(), leavePublisherNameEmpty());
             return;
         }
 
         if (isInError())
             return;
 
-        Visit visit = (Visit) getVisit();
+        Visit visit = getVisitState();
+
         Integer userId = visit.getUserId();
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         attributes.put("ownerId", userId);
         attributes.put("holderId", userId);
@@ -107,9 +128,9 @@ public abstract class NewBook extends Protected implements PageRenderListener
 
         // Success. First, update the message property of the return page.
 
-        MyLibrary myLibrary = (MyLibrary) cycle.getPage("MyLibrary");
+        MyLibrary myLibrary = getMyLibrary();
 
-        myLibrary.setMessage(format("added-book", attributes.get("title")));
+        myLibrary.setMessage(addedBook(attributes.get("title")));
 
         myLibrary.activate();
     }

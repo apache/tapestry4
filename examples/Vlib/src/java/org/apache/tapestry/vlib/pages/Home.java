@@ -15,6 +15,8 @@
 package org.apache.tapestry.vlib.pages;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.IErrorProperty;
 import org.apache.tapestry.vlib.IMessageProperty;
@@ -26,6 +28,7 @@ import org.apache.tapestry.vlib.ejb.MasterQueryParameters;
  * @author Howard Lewis Ship
  */
 
+@Meta("page-type=Search")
 public abstract class Home extends BasePage implements IErrorProperty, IMessageProperty
 {
 
@@ -37,18 +40,22 @@ public abstract class Home extends BasePage implements IErrorProperty, IMessageP
 
     public abstract Integer getOwnerId();
 
+    @InjectPage("BookMatches")
+    public abstract BookMatches getBookMatches();
+
     /**
-     * Invokes {@link BookMatches#performQuery(MasterQueryParameters, IRequestCycle)}.
+     * Listener method, invokes
+     * {@link BookMatches#performQuery(MasterQueryParameters, IRequestCycle)}.
      */
 
-    public void search(IRequestCycle cycle)
+    public void search()
     {
-        BookMatches matches = (BookMatches) cycle.getPage("BookMatches");
+        BookMatches matches = getBookMatches();
 
         MasterQueryParameters parameters = new MasterQueryParameters(getTitle(), getAuthor(),
                 getOwnerId(), getPublisherId());
 
-        matches.performQuery(parameters, cycle);
+        matches.performQuery(parameters);
     }
 
 }

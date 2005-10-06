@@ -16,39 +16,32 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 	
-<page-specification class="org.apache.tapestry.vlib.pages.NewBook">
-
-  <property-specification name="error" type="java.lang.String"/>
-  <property-specification name="publisherName" type="java.lang.String"/>
-  <property-specification name="attributes" type="java.util.Map"/>
+<page-specification>
+     
+  <component id="form" type="Form">
+    <binding name="listener" value="listener:addBook"/>
+    <binding name="clientValidationEnabled" value="true"/>
+  </component>    
   
-  <bean name="required" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
-    <set-property name="required" expression="true"/>
-    <set-property name="clientScriptingEnabled" expression="true"/>
-  </bean>
-  
-  <bean name="optional" class="org.apache.tapestry.valid.StringValidator" lifecycle="page"/>
-    
-  <component id="inputTitle" type="ValidField">
-    <binding name="value" expression="attributes.title"/>
-    <static-binding name="displayName" value="Title"/>
-    <binding name="validator" expression="beans.required"/>
+  <component id="title" type="TextField">
+    <binding name="value" value="attributes.title"/>
+    <binding name="displayName" value="message:title-label"/>
+    <binding name="validators" value="validators:required"/>
   </component>
   
-  <component id="inputAuthor" type="ValidField">
-    <binding name="value" expression="attributes.author"/>
-    <binding name="validator" expression="beans.required"/>
-    <static-binding name="displayName" value="Author"/>
+  <component id="author" type="TextField">
+    <binding name="value" value="attributes.author"/>
+    <binding name="validators" value="validators:required"/>
+    <binding name="displayName" value="message:author-title"/>
   </component>
 
   
-  <component id="inputPublisherName" type="ValidField">
-    <binding name="value" expression="publisherName"/>
-    <binding name="validator" expression="beans.optional"/>
-    <static-binding name="displayName" value="Publisher"/>
+  <component id="publisherName" type="TextField">
+    <binding name="value" value="publisherName"/>
+    <binding name="displayName" value="message:publisher-label"/>
   </component>
     
 </page-specification>

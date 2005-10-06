@@ -9,20 +9,20 @@
 </p>
 
 <span jwcid="@ShowError"/>
-<span jwcid="@ShowValidationError" delegate="ognl:validationDelegate"/>
+<span jwcid="@ShowValidationError"/>
 
   <table class="form">
     <tr>
-      <th width="80" height="30"><span jwcid="@FieldLabel" field="ognl:components.inputTitle">Title</span></th>
+      <th width="80" height="30"><span jwcid="@FieldLabel" field="component:title">Title</span></th>
       <td><span class="required-field">*</span></td>
-      <td width="420"><input jwcid="inputTitle" type="text" size="50" maxlength="100"/>
+      <td width="420"><input jwcid="title" type="text" size="50" maxlength="100"/>
       </td>
     </tr>
     <tr>
-      <th><span jwcid="@FieldLabel" field="ognl:components.inputAuthor">Author</span>
+      <th><span jwcid="@FieldLabel" field="component:author">Author</span>
       	 <td><span class="required-field">*</span></td>
       </th>
-      <td><input jwcid="inputAuthor" type="text" size="30" maxlength="60"/>
+      <td><input jwcid="author" type="text" size="30" maxlength="60"/>
       </td>
     </tr>
     <tr>
@@ -32,10 +32,11 @@
       </td>
     </tr>
     <tr>
-      <th><span jwcid="@FieldLabel" field="ognl:components.inputPublisherName">Publisher</span></th>
+      <th><span jwcid="@FieldLabel" field="component:publisherName">Publisher</span></th>
        <td><span class="required-field">*</span></td>
-      <td><select jwcid="inputPublisher@PropertySelection" value="ognl:attributes.publisherId" model="ognl:engine.publisherModel"/>
-<input jwcid="inputPublisherName" type="text" size="20" maxlength="40"/>
+      <td><select jwcid="publisher@PropertySelection" value="ognl:attributes.publisherId" 
+      model="ognl:engine.publisherModel"/>
+<input jwcid="publisherName" type="text" size="20" maxlength="40"/>
       </td>
     </tr>
     <tr>
@@ -47,19 +48,19 @@
     <tr>
       <th>Description</th>
       <td></td>
-      <td><textarea jwcid="inputDescription@TextArea" value="ognl:attributes.description" cols="35" rows="8"></textarea>
+      <td><textarea jwcid="description@TextArea" value="ognl:attributes.description" cols="35" rows="8"></textarea>
       </td>
     </tr>
     <tr>
       <th>Hidden</th>
       <td></td>
-      <td><input jwcid="inputHidden@Checkbox" selected="ognl:attributes.hidden" type="checkbox"/>Check to prevent this book from appearing in searches.
+      <td><input jwcid="hidden@Checkbox" value="ognl:attributes.hidden" type="checkbox"/>Check to prevent this book from appearing in searches.
       </td>
     </tr>
     <tr>
       <th>Lendable</th>
       <td></td>
-      <td><input jwcid="inputLendable@Checkbox" selected="ognl:attributes.lendable" type="checkbox"/>Leave checked to allow this book to be borrowed by others.
+      <td><input jwcid="lendable@Checkbox" value="ognl:attributes.lendable" type="checkbox"/>Leave checked to allow this book to be borrowed by others.
       </td>
     </tr>
     <tr>
@@ -69,7 +70,7 @@
       </td>
     </tr>
   </table>
-<span jwcid="@Script" script="Publisher.script" select="ognl:components.inputPublisher" field="ognl:components.inputPublisherName"/>
+<span jwcid="@Script" script="Publisher.script" select="component:publisher" field="component:publisherName"/>
 </form>
 </body>
 </html>

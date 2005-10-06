@@ -21,6 +21,6 @@
 	
 <component-specification allow-informal-parameters="false" allow-body="false">
 
-  <parameter name="delegate" required="true"/>
+  <parameter name="delegate" default-value="page.validationDelegate"/>
   
 </component-specification>

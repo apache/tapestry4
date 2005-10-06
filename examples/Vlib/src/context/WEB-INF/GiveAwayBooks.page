@@ -16,31 +16,24 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
-	
-<page-specification class="org.apache.tapestry.vlib.pages.GiveAwayBooks">
-
-  <property-specification name="error" type="java.lang.String"/>
-	<property-specification name="booksModel" type="org.apache.tapestry.form.IPropertySelectionModel"/>
-	<property-specification name="personModel" type="org.apache.tapestry.form.IPropertySelectionModel"/>
-	<property-specification name="selectedBooks" type="java.util.List"/>
-
-	<property-specification name="targetUserId" type="java.lang.Integer"/>
-
-    <component id="selectBooks" type="contrib:Palette">
-      <binding name="sort">
-        @org.apache.tapestry.contrib.palette.SortMode@LABEL
-     	</binding>
-      <binding name="model" expression="booksModel"/>
-      <binding name="selected" expression="selectedBooks"/>
-      <binding name="selectedTitleBlock" expression="components.selectedTitleBlock"/>
-      <binding name="availableTitleBlock" expression="components.availableTitleBlock"/>
-    </component>
-    
-    <component id="selectTarget" type="PropertySelection">
-      <binding name="value" expression="targetUserId"/>
-      <binding name="model" expression="personModel"/>
-    </component>
-
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+<page-specification>
+  <component id="form" type="Form">
+    <binding name="success" value="listener:formSubmit"/>
+    <binding name="clientValidationEnabled" value="true"/>
+  </component>
+  <component id="selectBooks" type="contrib:Palette">
+    <binding name="sort" value="@org.apache.tapestry.contrib.palette.SortMode@LABEL"/>
+    <binding name="model" value="booksModel"/>
+    <binding name="selected" value="selectedBooks"/>
+    <binding name="selectedTitleBlock" value="component:selectedTitleBlock"/>
+    <binding name="availableTitleBlock" value="component:availableTitleBlock"/>
+    <binding name="validators" value="validators:required"/>
+    <binding name="displayName" value="message:books-label"/>
+  </component>
+  <component id="selectTarget" type="PropertySelection">
+    <binding name="value" value="targetUserId"/>
+    <binding name="model" value="personModel"/>
+  </component>
 </page-specification>

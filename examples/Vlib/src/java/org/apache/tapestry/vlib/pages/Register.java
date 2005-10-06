@@ -117,7 +117,7 @@ public abstract class Register extends BasePage implements IErrorProperty
                 // Ask the login page to return us to the proper place, as well
                 // as set a cookie identifying the user for next time.
 
-                login.loginUser(user, cycle);
+                login.loginUser(user);
 
                 break;
             }
