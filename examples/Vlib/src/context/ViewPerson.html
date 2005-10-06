@@ -1,5 +1,5 @@
 <html jwcid="$content$">
-<body jwcid="@Border" subtitle="ognl:person.naturalName" browser="ognl:components.browser">
+<body jwcid="border@Border" subtitle="ognl:person.naturalName" browser="component:browser">
 	
 <table class="form">
   <tr>
@@ -13,7 +13,7 @@
 </table>
 
 
-<span jwcid="@Conditional" condition="ognl:components.browser.resultCount  == 0">
+<span jwcid="@If" condition="ognl:components.browser.resultCount  == 0">
 
 <span jwcid="@Information">
 <span jwcid="@Insert" value="ognl:person.naturalName">Jim Moran</span>
@@ -21,7 +21,7 @@ has no books available for lending.
 </span>
 </span>
 
-<span jwcid="@Conditional" condition="ognl:components.browser.resultCount != 0">
+<span jwcid="@If" condition="ognl:components.browser.resultCount != 0">
 
 						 
 <table class="data">
@@ -33,7 +33,7 @@ has no books available for lending.
     <th>Borrow</th>
   </tr>
   <tr jwcid="browser@Browser" query="ognl:query" value="ognl:currentMatch" listener="listener:requery">
-    <td><a href="#" jwcid="@BookLink" book="ognl:currentMatch">DocBook:The Definitive Guide</a>
+    <td><a href="#" jwcid="book@BookLink" book="ognl:currentMatch">DocBook:The Definitive Guide</a>
     </td>
     <td><span jwcid="@Insert" value="ognl:currentMatch.author">Walsh &#38; Muellner</span>
     </td>
@@ -41,7 +41,7 @@ has no books available for lending.
     </td>
     <td><a jwcid="holderLink" href="#">Jim Moran</a>
     </td>
-    <td class="icon"><a jwcid="@Borrow" book="ognl:currentMatch" href="#"><img src="images/checkout.png" width="25" height="26" border="0"></a>
+    <td class="icon"><a jwcid="borrow@Borrow" book="ognl:currentMatch" href="#"><img src="images/checkout.png" width="25" height="26" border="0"/></a>
     </td>
   </tr>
 </table>

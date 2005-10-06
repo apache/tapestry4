@@ -20,7 +20,12 @@ import javax.ejb.FinderException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.InjectState;
+import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.ejb.Book;
@@ -55,11 +60,21 @@ import org.apache.tapestry.vlib.pages.Home;
 
 public abstract class Borrow extends BaseComponent
 {
+    @Parameter(required = true)
     public abstract Book getBook();
+
+    @InjectState("visit")
+    public abstract Visit getVisit();
+
+    @InjectPage("Home")
+    public abstract Home getHome();
+
+    @Message
+    public abstract String borrowedBook(String title);
 
     public boolean isLinkDisabled()
     {
-        Visit visit = (Visit) getPage().getVisit();
+        Visit visit = getVisit();
 
         if (!visit.isUserLoggedIn())
             return true;
@@ -79,13 +94,11 @@ public abstract class Borrow extends BaseComponent
         return visit.isLoggedInUser(book.getHolderId());
     }
 
-    public void borrow(IRequestCycle cycle)
+    public IPage borrow(IRequestCycle cycle, Integer bookPK)
     {
-        Object[] parameters = cycle.getServiceParameters();
-        Integer bookPK = (Integer) parameters[0];
+        Visit visit = getVisit();
+        Home home = getHome();
 
-        Visit visit = (Visit) getPage().getVisit();
-        Home home = (Home) cycle.getPage("Home");
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
 
         int i = 0;
@@ -96,14 +109,14 @@ public abstract class Borrow extends BaseComponent
                 IOperations bean = vengine.getOperations();
                 Book book = bean.borrowBook(bookPK, visit.getUserId());
 
-                home.setMessage("Borrowed: " + book.getTitle());
+                home.setMessage(borrowedBook(book.getTitle()));
 
                 break;
             }
             catch (BorrowException ex)
             {
                 vengine.presentError(ex.getMessage(), cycle);
-                return;
+                return null;
             }
             catch (FinderException ex)
             {
@@ -115,7 +128,7 @@ public abstract class Borrow extends BaseComponent
             }
         }
 
-        cycle.activate(home);
+        return home;
     }
 
 }

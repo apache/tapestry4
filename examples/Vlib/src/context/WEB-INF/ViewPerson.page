@@ -16,54 +16,31 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
-	
-<page-specification class="org.apache.tapestry.vlib.pages.ViewPerson">
-
-  <property name="page-type" value="Search"/>
-
-  <property-specification name="personId" type="java.lang.Integer" persistent="yes"/>
-  <property-specification name="person" type="org.apache.tapestry.vlib.ejb.Person"/>
-  
-  <property-specification name="query" type="org.apache.tapestry.vlib.ejb.IBookQuery" persistent="yes"/>
-  <property-specification name="currentMatch" type="org.apache.tapestry.vlib.ejb.Book"/>
-
-  <property-specification name="sortColumn" type="org.apache.tapestry.vlib.ejb.SortColumn" persistent="yes">
-  	@org.apache.tapestry.vlib.ejb.SortColumn@TITLE
-  </property-specification>
-  <property-specification name="descending" type="boolean" persistent="yes"/>
-
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+<page-specification>
+  <property name="currentMatch"/>
   <component id="sortTitle" type="ColumnSorter">
-    <binding name="selected" expression="sortColumn"/>
-    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@TITLE"/>
-    <binding name="descending" expression="descending"/>
-    <binding name="listener" expression="listeners.requery"/>
-  </component>   
-    
+    <binding name="selected" value="sortColumn"/>
+    <binding name="sortColumn" value="@org.apache.tapestry.vlib.ejb.SortColumn@TITLE"/>
+    <binding name="descending" value="descending"/>
+    <binding name="listener" value="listeners.requery"/>
+  </component>
   <component id="sortAuthor" copy-of="sortTitle">
-    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@AUTHOR"/>
+    <binding name="sortColumn" value="@org.apache.tapestry.vlib.ejb.SortColumn@AUTHOR"/>
   </component>
-  
   <component id="sortPublisher" copy-of="sortTitle">
-    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@PUBLISHER"/>	
+    <binding name="sortColumn" value="@org.apache.tapestry.vlib.ejb.SortColumn@PUBLISHER"/>
   </component>
-  
   <component id="sortBorrower" copy-of="sortTitle">
-    <binding name="sortColumn" expression="@org.apache.tapestry.vlib.ejb.SortColumn@HOLDER"/>
+    <binding name="sortColumn" value="@org.apache.tapestry.vlib.ejb.SortColumn@HOLDER"/>
   </component>
-  
-  <component id="mailLink" type="Any">
-    <binding name="href">
-    	"mailto:" + person.email
-    </binding>
-    <static-binding name="element" value="a"/>
-  </component>
-
   <component id="holderLink" type="PersonLink">
-    <binding name="id" expression="currentMatch.holderId"/>
-    <binding name="name" expression="currentMatch.holderName"/>
-    <binding name="omit" expression="! currentMatch.borrowed"/>
+    <binding name="id" value="currentMatch.holderId"/>
+    <binding name="name" value="currentMatch.holderName"/>
+    <binding name="omit" value="! currentMatch.borrowed"/>
   </component>
- 
+  <component id="mailLink" type="Any">
+    <binding name="href"> "mailto:" + person.email </binding>
+  </component>
 </page-specification>

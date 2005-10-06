@@ -22,22 +22,24 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.annotations.ComponentClass;
+import org.apache.tapestry.annotations.Parameter;
+import org.apache.tapestry.annotations.Persist;
+import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 
 /**
  * Implements a paging browser for the results of a {@link IBookQuery}.
+ * Renders its body multiple times, once for each book provided by the query.
  * 
  * @author Howard Lewis Ship
  */
-
-public abstract class Browser extends AbstractComponent implements PageRenderListener
+@ComponentClass(allowInformalParameters = true, allowBody = true)
+public abstract class Browser extends AbstractComponent implements PageBeginRenderListener
 {
-    public abstract IBookQuery getQuery();
-
     /**
      * Default for the page size; the number of results viewed on each page.
      */
@@ -50,22 +52,31 @@ public abstract class Browser extends AbstractComponent implements PageRenderLis
 
     private int _pageSize = DEFAULT_PAGE_SIZE;
 
+    @Parameter(required = true)
+    public abstract IBookQuery getQuery();
+
+    @Persist
     public abstract int getResultCount();
 
     public abstract void setResultCount(int resultCount);
 
+    @Persist
     public abstract int getCurrentPage();
 
     public abstract void setCurrentPage(int currentPage);
 
     public abstract void setElement(String element);
 
+    @Parameter
     public abstract String getElement();
 
+    @Parameter(required = true)
     public abstract void setValue(Object value);
 
+    @Parameter(required = true)
     public abstract IActionListener getListener();
 
+    @Persist
     public abstract Object[] getPageResults();
 
     public abstract void setPageResults(Object[] pageResults);
@@ -82,6 +93,7 @@ public abstract class Browser extends AbstractComponent implements PageRenderLis
         setPageCount(computePageCount());
     }
 
+    @Persist
     public abstract int getPageCount();
 
     public abstract void setPageCount(int pageCount);

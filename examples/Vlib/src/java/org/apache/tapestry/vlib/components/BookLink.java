@@ -17,7 +17,9 @@ package org.apache.tapestry.vlib.components;
 import java.sql.Timestamp;
 
 import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IEngine;
+import org.apache.tapestry.annotations.InjectState;
+import org.apache.tapestry.annotations.InjectStateFlag;
+import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.ejb.Book;
 
@@ -57,14 +59,21 @@ public abstract class BookLink extends BaseComponent
 
     private static final long ONE_WEEK_MILLIS = 1000l * 60l * 60l * 24l * 7l;
 
+    @Parameter(required = true)
+    public abstract Book getBook();
+
+    @InjectState("visit")
+    public abstract Visit getVisitState();
+
+    @InjectStateFlag("visit")
+    public abstract boolean getVisitExists();
+
     public boolean isNewlyAdded()
     {
-        IEngine engine = getPage().getEngine();
-        Visit visit = (Visit) engine.getVisit();
         Timestamp lastAccess = null;
 
-        if (visit != null)
-            lastAccess = visit.getLastAccess();
+        if (getVisitExists())
+            lastAccess = getVisitState().getLastAccess();
 
         Book book = getBook();
 
@@ -91,5 +100,4 @@ public abstract class BookLink extends BaseComponent
         return lastAccess.compareTo(dateAdded) <= 0;
     }
 
-    public abstract Book getBook();
 }
