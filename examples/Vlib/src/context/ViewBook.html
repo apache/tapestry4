@@ -1,5 +1,5 @@
 <html jwcid="$content$">
-<body jwcid="@Border" subtitle="ognl:book.title">
+<body jwcid="border@Border" subtitle="ognl:book.title">
 <table class="form">
   <tr>
     <th>Title</th>
@@ -31,7 +31,7 @@
     <td><span jwcid="@Insert" value="ognl:book.dateAdded" format="ognl:dateFormat">Dec 24 1966</span>
     </td>
   </tr>
-<span jwcid="@Conditional" condition="ognl:! @org.apache.commons.lang.StringUtils@isEmpty(book.description)">
+<span jwcid="@If" condition="ognl:@org.apache.hivemind.HiveMind@isNonBlank(book.description)">
   <tr>
     <th>Description</th>
     <td><span jwcid="@InsertText" value="ognl:book.description">
@@ -41,7 +41,7 @@
     </td>
   </tr>
 </span>
-<span jwcid="@Conditional" condition="book.ownerPrimaryKey != book.holderPrimaryKey">
+<span jwcid="@If" condition="book.ownerPrimaryKey != book.holderPrimaryKey">
   <tr>
     <th>Held By</th>
     <td><a jwcid="holderLink" href="#">Howard Lewis Ship</a>
@@ -49,7 +49,7 @@
   </tr>
 </span>
 						
-<span jwcid="@Conditional" condition="ognl:!book.lendable">
+<span jwcid="@If" condition="ognl:!book.lendable">
   <tr>
     <td>
     </td>
@@ -59,7 +59,7 @@
 </span>
   <tr>
     <th>Borrow</th>
-    <td><a jwcid="@Borrow" book="ognl:book" href="#">Borrow</a>
+    <td><a jwcid="borrow@Borrow" book="ognl:book" href="#">Borrow</a>
     </td>
   </tr>
 </table>

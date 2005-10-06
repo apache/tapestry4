@@ -21,8 +21,10 @@ import javax.ejb.FinderException;
 
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.Meta;
+import org.apache.tapestry.annotations.Persist;
+import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.Book;
@@ -33,11 +35,12 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * 
  * @author Howard Lewis Ship
  */
-
-public abstract class ViewBook extends BasePage implements IExternalPage, PageRenderListener
+@Meta("page-type=Search")
+public abstract class ViewBook extends BasePage implements IExternalPage, PageBeginRenderListener
 {
     private DateFormat _dateFormat;
 
+    @Persist
     public abstract Integer getBookId();
 
     public abstract void setBookId(Integer bookId);

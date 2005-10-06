@@ -16,22 +16,14 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
-  
-<component-specification 
-	allow-body="no" 
-	allow-informal-parameters="no">
-  
-  <parameter name="name" type="java.lang.String" required="yes" direction="in"/>
-  
-  <parameter name="id" type="java.lang.Integer" required="yes" direction="in" property-name="personId"/>
-  
-  <parameter name="omit" type="boolean" direction="in"/>
-   
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+<component-specification allow-body="no" allow-informal-parameters="no">
+  <parameter name="name" required="yes"/>
+  <parameter name="id" required="yes" property="personId"/>
+  <parameter name="omit"/>
   <component id="link" type="ExternalLink">
-    <static-binding name="page" value="ViewPerson"/>
-    <binding name="parameters" expression="personId"/>
-  </component>  
-  
+    <binding name="page" value="literal:ViewPerson"/>
+    <binding name="parameters" value="personId"/>
+  </component>
 </component-specification>

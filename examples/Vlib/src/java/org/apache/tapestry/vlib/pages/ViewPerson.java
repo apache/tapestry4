@@ -18,8 +18,11 @@ import java.rmi.RemoteException;
 
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.annotations.InjectComponent;
+import org.apache.tapestry.annotations.Meta;
+import org.apache.tapestry.annotations.Persist;
+import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.components.Browser;
@@ -35,30 +38,37 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
  * 
  * @author Howard Lewis Ship
  */
-
-public abstract class ViewPerson extends BasePage implements IExternalPage, PageRenderListener
+@Meta("page-type=Search")
+public abstract class ViewPerson extends BasePage implements IExternalPage, PageBeginRenderListener
 {
     public abstract Integer getPersonId();
 
+    @Persist
     public abstract void setPersonId(Integer personId);
 
     public abstract void setPerson(Person value);
 
     public abstract Person getPerson();
 
+    @Persist
     public abstract IBookQuery getQuery();
 
     public abstract void setQuery(IBookQuery value);
 
+    @Persist
     public abstract SortColumn getSortColumn();
 
+    public abstract void setSortColumn(SortColumn sortColumn);
+
+    @Persist
     public abstract boolean isDescending();
 
-    private Browser _browser;
+    @InjectComponent("browser")
+    public abstract Browser getBrowser();
 
     public void finishLoad()
     {
-        _browser = (Browser) getComponent("browser");
+        setSortColumn(SortColumn.TITLE);
     }
 
     /**
@@ -75,15 +85,15 @@ public abstract class ViewPerson extends BasePage implements IExternalPage, Page
 
         int count = runQuery();
 
-        _browser.initializeForResultCount(count);
+        getBrowser().initializeForResultCount(count);
     }
 
     public void requery(IRequestCycle cycle)
     {
         int count = runQuery();
 
-        if (_browser.getResultCount() != count)
-            _browser.setResultCount(count);
+        if (getBrowser().getResultCount() != count)
+            getBrowser().setResultCount(count);
     }
 
     private int runQuery()
