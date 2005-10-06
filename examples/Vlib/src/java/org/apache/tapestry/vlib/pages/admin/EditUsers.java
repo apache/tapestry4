@@ -16,10 +16,8 @@ package org.apache.tapestry.vlib.pages.admin;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.FinderException;
@@ -31,10 +29,11 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectComponent;
 import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.annotations.Message;
-import org.apache.tapestry.components.IPrimaryKeyConverter;
 import org.apache.tapestry.event.PageBeginRenderListener;
+import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.util.DefaultPrimaryKeyConverter;
 import org.apache.tapestry.vlib.AdminPage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
@@ -48,7 +47,8 @@ import org.apache.tapestry.vlib.ejb.Person;
  * 
  * @author Howard Lewis Ship
  */
-public abstract class EditUsers extends AdminPage implements PageBeginRenderListener
+public abstract class EditUsers extends AdminPage implements PageBeginRenderListener,
+        PageDetachListener
 {
     public abstract String getPassword();
 
@@ -57,20 +57,6 @@ public abstract class EditUsers extends AdminPage implements PageBeginRenderList
     public abstract void setUser(Person person);
 
     public abstract Person getUser();
-
-    public abstract void setUserList(List<Person> users);
-
-    public abstract void setUserMap(Map<Integer, Person> map);
-
-    public abstract Map<Integer, Person> getUserMap();
-
-    public abstract void setResetPasswordKeys(Set<Integer> set);
-
-    public abstract Set<Integer> getResetPasswordKeys();
-
-    public abstract void setDeleteKeys(Set<Integer> set);
-
-    public abstract Set<Integer> getDeleteKeys();
 
     @Message
     public abstract String outOfDate();
@@ -93,74 +79,50 @@ public abstract class EditUsers extends AdminPage implements PageBeginRenderList
     @InjectComponent("password")
     public abstract IFormComponent getPasswordField();
 
-    public class UserConverter implements IPrimaryKeyConverter
+    public class UserConverter extends DefaultPrimaryKeyConverter
     {
+        private Set _resetPasswordValues;
 
-        public Object getPrimaryKey(Object value)
+        public void clear()
         {
-            Person user = (Person) value;
-
-            return user.getId();
+            _resetPasswordValues = null;
+            super.clear();
         }
 
-        public Object getValue(Object primaryKey)
+        public void setResetPassword(boolean resetPassword)
         {
-            Integer id = (Integer) primaryKey;
-
-            return getUserMap().get(id);
-
-            // TODO: Handle null
+            _resetPasswordValues = updateValueSetForLastValue(_resetPasswordValues, resetPassword);
         }
 
+        public boolean isResetPassword()
+        {
+            return checkValueSetForLastValue(_resetPasswordValues);
+        }
+
+        public Set getResetPasswordValues()
+        {
+            return createUnmodifiableSet(_resetPasswordValues);
+        }
     }
 
-    public IPrimaryKeyConverter getUserConverter()
-    {
-        return new UserConverter();
-    }
+    private UserConverter _userConverter;
 
-    // public void synchronizeUser(IRequestCycle cycle)
-    // {
-    // UserListEditMap map = getListEditMap();
-    //
-    // Person user = (Person) map.getValue();
-    //
-    // if (user == null)
-    // {
-    // getValidationDelegate().record(null, outOfDate());
-    // throw new PageRedirectException(this);
-    // }
-    //
-    // setUser(user);
-    // }
-
-    public boolean isDeleted()
+    public UserConverter getUserConverter()
     {
-        return false;
-    }
+        if (_userConverter == null)
+            _userConverter = new UserConverter();
 
-    public void setDeleted(boolean deleted)
-    {
-        if (deleted)
-            getDeleteKeys().add(getUser().getId());
-    }
-
-    public boolean isResetPassword()
-    {
-        return false;
-    }
-
-    public void setResetPassword(boolean resetPassword)
-    {
-        if (resetPassword)
-            getResetPasswordKeys().add(getUser().getId());
+        return _userConverter;
     }
 
     public void pageBeginRender(PageEvent event)
     {
         readUsers();
-        setDeleteKeys(new HashSet<Integer>());
-        setResetPasswordKeys(new HashSet<Integer>());
+    }
+
+    public void pageDetached(PageEvent event)
+    {
+        _userConverter = null;
     }
 
     private void readUsers()
@@ -170,8 +132,6 @@ public abstract class EditUsers extends AdminPage implements PageBeginRenderList
 
         Integer userId = visit.getUserId();
         Person[] users = null;
-
-        List<Person> userList = new ArrayList<Person>();
 
         int i = 0;
         while (true)
@@ -190,23 +150,21 @@ public abstract class EditUsers extends AdminPage implements PageBeginRenderList
             }
         }
 
-        Map<Integer, Person> map = new HashMap<Integer, Person>();
+        UserConverter converter = getUserConverter();
+
+        converter.clear();
 
         for (i = 0; i < users.length; i++)
         {
             Integer id = users[i].getId();
 
-            // Skip the current user; they can't edit themself
+            // Skip the current user; you aren't allowed to edit yourself
 
             if (id.equals(userId))
                 continue;
 
-            map.put(id, users[i]);
-            userList.add(users[i]);
+            converter.add(id, users[i]);
         }
-
-        setUserMap(map);
-        setUserList(userList);
     }
 
     /**
@@ -219,21 +177,16 @@ public abstract class EditUsers extends AdminPage implements PageBeginRenderList
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
 
-        Map<Integer, Person> userMap = getUserMap();
+        UserConverter converter = getUserConverter();
 
-        Set<Integer> deletedIds = getDeleteKeys();
-        Set<Integer> resetPasswordIds = getResetPasswordKeys();
-
-        // Remove any users who have been deleted
-
-        userMap.keySet().removeAll(deletedIds);
-
-        Person[] updates = userMap.values().toArray(new Person[0]);
+        Person[] updates = (Person[]) converter.getValues().toArray(new Person[0]);
+        Integer[] deletedIds = extractIds(converter.getDeletedValues());
+        Integer[] resetPasswordIds = extractIds(converter.getResetPasswordValues());
 
         String password = getPassword();
         setPassword(null);
 
-        if (HiveMind.isBlank(password) && !resetPasswordIds.isEmpty())
+        if (HiveMind.isBlank(password) && resetPasswordIds.length > 0)
         {
             getValidationDelegate().record(getPasswordField(), needPassword());
             return;
@@ -248,12 +201,7 @@ public abstract class EditUsers extends AdminPage implements PageBeginRenderList
             {
                 IOperations operations = vengine.getOperations();
 
-                operations.updatePersons(
-                        updates,
-                        resetPasswordIds.toArray(new Integer[0]),
-                        password,
-                        deletedIds.toArray(new Integer[0]),
-                        adminId);
+                operations.updatePersons(updates, resetPasswordIds, password, deletedIds, adminId);
                 break;
             }
             catch (RemoteException ex)
@@ -271,5 +219,24 @@ public abstract class EditUsers extends AdminPage implements PageBeginRenderList
         }
 
         setMessage(usersUpdated());
+    }
+
+    private Integer[] extractIds(Set valueSet)
+    {
+        int count = valueSet.size();
+
+        Integer[] result = new Integer[count];
+
+        Iterator i = valueSet.iterator();
+        int index = 0;
+
+        while (i.hasNext())
+        {
+            Person person = (Person) i.next();
+
+            result[index++] = person.getId();
+        }
+
+        return result;
     }
 }

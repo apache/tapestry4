@@ -160,7 +160,7 @@ public class DefaultPrimaryKeyConverter implements IPrimaryKeyConverter
      */
     public final void setDeleted(boolean deleted)
     {
-        _deletedValues = updateSetForLastValue(_deletedValues, deleted);
+        _deletedValues = updateValueSetForLastValue(_deletedValues, deleted);
     }
 
     /**
@@ -175,7 +175,7 @@ public class DefaultPrimaryKeyConverter implements IPrimaryKeyConverter
      *            if false, the last value will be removed
      * @return the set passed in, or a new Set instance
      */
-    protected final Set updateSetForLastValue(Set set, boolean inSet)
+    protected final Set updateValueSetForLastValue(Set set, boolean inSet)
     {
         if (inSet)
         {
@@ -212,8 +212,20 @@ public class DefaultPrimaryKeyConverter implements IPrimaryKeyConverter
 
     public final Set getDeletedValues()
     {
-        return _deletedValues == null ? Collections.emptySet() : Collections
-                .unmodifiableSet(_deletedValues);
+        return createUnmodifiableSet(_deletedValues);
+    }
+
+    /**
+     * Converts a value set into a returnable value; null is converted to the empty set, and
+     * non-null is wrapped as unmodifiable.
+     * 
+     * @param valueSet
+     *            the set to convert and return
+     * @return a non-null, non-modifiable Set
+     */
+    protected final Set createUnmodifiableSet(Set valueSet)
+    {
+        return valueSet == null ? Collections.emptySet() : Collections.unmodifiableSet(valueSet);
     }
 
     /**
