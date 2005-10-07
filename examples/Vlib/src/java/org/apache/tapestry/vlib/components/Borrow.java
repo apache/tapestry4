@@ -26,12 +26,12 @@ import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.annotations.Message;
 import org.apache.tapestry.annotations.Parameter;
-import org.apache.tapestry.vlib.VirtualLibraryEngine;
+import org.apache.tapestry.vlib.OperationsUser;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.BorrowException;
-import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.pages.Home;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * Implements the Borrow link that appears on many pages. <table border=1>
@@ -58,7 +58,7 @@ import org.apache.tapestry.vlib.pages.Home;
  * @author Howard Lewis Ship
  */
 
-public abstract class Borrow extends BaseComponent
+public abstract class Borrow extends BaseComponent implements OperationsUser
 {
     @Parameter(required = true)
     public abstract Book getBook();
@@ -94,41 +94,38 @@ public abstract class Borrow extends BaseComponent
         return visit.isLoggedInUser(book.getHolderId());
     }
 
-    public IPage borrow(IRequestCycle cycle, Integer bookPK)
+    public IPage borrow(final IRequestCycle cycle, final Integer bookId)
     {
-        Visit visit = getVisit();
-        Home home = getHome();
+        final Visit visit = getVisit();
+        final Home home = getHome();
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
-
-        int i = 0;
-        while (true)
+        RemoteCallback callback = new RemoteCallback()
         {
-            try
+            public Object remoteCallback() throws RemoteException
             {
-                IOperations bean = vengine.getOperations();
-                Book book = bean.borrowBook(bookPK, visit.getUserId());
+                try
+                {
+                    Book book = getOperations().borrowBook(bookId, visit.getUserId());
 
-                home.setMessage(borrowedBook(book.getTitle()));
+                    home.setMessage(borrowedBook(book.getTitle()));
 
-                break;
+                    return null;
+                }
+                catch (BorrowException ex)
+                {
+                    getErrorPresenter().presentError(ex.getMessage(), cycle);
+
+                    return null;
+                }
+                catch (FinderException ex)
+                {
+                    throw new ApplicationRuntimeException("Unable to find book or user.", ex);
+                }
             }
-            catch (BorrowException ex)
-            {
-                vengine.presentError(ex.getMessage(), cycle);
-                return null;
-            }
-            catch (FinderException ex)
-            {
-                throw new ApplicationRuntimeException("Unable to find book or user. ", ex);
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception borrowing book.", ex, i++);
-            }
-        }
+        };
+
+        getRemoteTemplate().doRemote(callback, "Error borrowing book.");
 
         return home;
     }
-
 }

@@ -15,7 +15,7 @@
    limitations under the License.
 -->
 
-<module id="vlib" version="4.0.0">
+<module id="vlib" version="4.0.0" package="org.apache.tapestry.vlib.services">
     
     <contribution configuration-id="tapestry.url.ServiceEncoders">
         <direct-service-encoder id="direct" stateless-extension="direct" stateful-extension="sdirect"/>
@@ -23,5 +23,35 @@
         <page-service-encoder id="external" extension="external" service="external"/>    
         <asset-encoder id="asset" path="/assets/"/>
         <extension-encoder id="ext" extension="svc" after="*"/>
-    </contribution>    
+    </contribution>
+     
+    <service-point id="Operations" interface="org.apache.tapestry.vlib.ejb.IOperations">
+        
+        EJB for the majority of operations needed by the presentation tier.
+        
+        <invoke-factory service-id="hivemind.lib.EJBProxyFactory">
+            <construct home-interface="org.apache.tapestry.vlib.ejb.IOperationsHome" 
+                jndi-name="vlib/Operations"/> 
+        </invoke-factory>
+    </service-point>
+    
+    <service-point id="RemoteTemplate">
+        Used to process and recover from remote exceptions while
+        executing a block of code.
+        
+        <invoke-factory>
+            <construct class="RemoteTemplateImpl">
+                <set-object property="coordinator" value="service:hivemind.lib.RemoteExceptionCoordinator"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+    
+    <service-point id="ErrorPresenter">
+        
+        Activates the Home or MyLibrary page to report an error.
+        
+        <create-instance class="ErrorPresenterImpl"/>
+        
+    </service-point>
+     
 </module>
