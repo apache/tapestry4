@@ -33,7 +33,6 @@
   
   <target name="compile-dependencies">
   	<project-dependency artifact="vlibbeans"/>
-  	<ibiblio-dependency artifact="log4j"              version="${log4j.version}"    group="log4j"             use="test"/>
     <ibiblio-dependency artifact="servletapi"         version="${servlet.version}"  group="servletapi"/>
     <ibiblio-dependency artifact="jboss-j2ee" version="${jboss-j2ee.version}" group="jboss"/>
   	    
@@ -51,6 +50,11 @@
     <ibiblio-dependency artifact="ognl"               version="${ognl.version}"     group="ognl"              use="run"/>
     <ibiblio-dependency artifact="oro"                version="${oro.version}"      group="oro"               use="run"/>
 
+    <ibiblio-dependency artifact="log4j"              version="${log4j.version}"    group="log4j"    use="test"/>
+    <ibiblio-dependency artifact="easymock"           version="1.1"                 group="easymock" use="test"/>
+    <ibiblio-dependency artifact="easymockclassextension" version="1.1"             group="easymock" use="test"/>
+    <ibiblio-dependency artifact="cglib-full"         version="2.0.2"               group="cglib"    use="test"/>
+  	
   </target>
 	
   <macrodef name="update-classpath">
