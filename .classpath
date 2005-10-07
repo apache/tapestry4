@@ -11,6 +11,7 @@
 	<classpathentry kind="src" path="examples/Workbench/src/java"/>
 	<classpathentry kind="src" path="examples/VlibBeans/src/java"/>
 	<classpathentry kind="src" path="examples/Vlib/src/java"/>
+	<classpathentry kind="src" path="examples/Vlib/src/test"/>
 	<classpathentry kind="lib" path="config"/>
 	<classpathentry exported="true" kind="lib" path="framework/src/descriptor"/>
 	<classpathentry exported="true" kind="lib" path="portlet/src/descriptor"/>
