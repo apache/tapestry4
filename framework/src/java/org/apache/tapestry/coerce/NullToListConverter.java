@@ -20,7 +20,7 @@ import java.util.Collections;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class NullToListConverter implements TypeConverter
+public final class NullToListConverter implements TypeConverter
 {
 
     public Object convertValue(Object value)

@@ -22,7 +22,7 @@ import java.util.Collections;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class ObjectToListConverter implements TypeConverter
+public final class ObjectToListConverter implements TypeConverter
 {
 
     public Object convertValue(Object value)

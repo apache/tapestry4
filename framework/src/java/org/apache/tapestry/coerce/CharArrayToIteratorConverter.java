@@ -21,7 +21,7 @@ import java.util.List;
  * @author Laurent ETIEMBLE, Howard M. Lewis Ship
  * @since 4.0
  */
-public class CharArrayToIteratorConverter implements TypeConverter
+public final class CharArrayToIteratorConverter implements TypeConverter
 {
     public Object convertValue(Object value)
     {

@@ -24,7 +24,7 @@ import org.apache.hivemind.HiveMind;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class StringToBooleanConverter implements TypeConverter
+public final class StringToBooleanConverter implements TypeConverter
 {
 
     public Object convertValue(Object value)

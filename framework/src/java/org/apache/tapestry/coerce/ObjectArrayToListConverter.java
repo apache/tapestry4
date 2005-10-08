@@ -21,7 +21,7 @@ import java.util.List;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class ObjectArrayToListConverter implements TypeConverter
+public final class ObjectArrayToListConverter implements TypeConverter
 {
 
     public Object convertValue(Object value)

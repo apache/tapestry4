@@ -150,6 +150,27 @@ public class TestPortletWebResponse extends BasePortletWebTestCase
         verifyControls();
     }
 
+    public void testSendErrorUnsupported() throws Exception
+    {
+        PortletResponse response = newResponse();
+
+        replayControls();
+
+        PortletWebResponse pwr = new PortletWebResponse(response);
+
+        try
+        {
+            pwr.sendError(99, "foo!");
+            unreachable();
+        }
+        catch (UnsupportedOperationException ex)
+        {
+            // Expected.
+        }
+
+        verifyControls();
+    }
+
     public void testEncodeURL()
     {
         MockControl control = newControl(PortletResponse.class);

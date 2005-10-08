@@ -21,7 +21,7 @@ package org.apache.tapestry.coerce;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TypeConverterContribution
+public final class TypeConverterContribution
 {
     private TypeConverter _converter;
 

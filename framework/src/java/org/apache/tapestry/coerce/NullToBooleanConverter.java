@@ -20,7 +20,7 @@ package org.apache.tapestry.coerce;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class NullToBooleanConverter implements TypeConverter
+public  final class NullToBooleanConverter implements TypeConverter
 {
 
     public Object convertValue(Object value)
