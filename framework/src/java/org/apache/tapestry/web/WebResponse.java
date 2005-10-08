@@ -109,4 +109,10 @@ public interface WebResponse
      * Sets the status code for this response.
      */
     public void setStatus(int status);
+
+    /**
+     * Sends an error response.
+     */
+
+    public void sendError(int statusCode, String message) throws IOException;
 }

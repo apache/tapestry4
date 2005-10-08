@@ -22,9 +22,15 @@
 <page-specification class="org.apache.tapestry.workbench.palette.Palette">
   
   <property name="clientValidationEnabled" persist="client" initial-value="true"/>
-  <property name="sort" persist="client" initial-value="@org.apache.tapestry.contrib.palette.SortMode@USER"/>
-
+ 
   <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate" property="delegate"/>
+  
+  <component id="form" type="Form">
+    <binding name="delegate" value="bean:delegate"/>
+    <binding name="clientValidationEnabled" value="clientValidationEnabled"/>
+    <binding name="refresh" value="listener:doRefresh"/>
+    <binding name="success" value="listener:doAdvance"/>    
+  </component>
   
   <component id="inputEnabled" type="Checkbox">
     <binding name="value" value="clientValidationEnabled"/> 
@@ -33,7 +39,10 @@
 
   <component id="inputColorSort" type="PropertySelection">
   	<binding name="value" value="sort"/>
-  	<binding name="model" value="sortModel"/>
+  	<binding name="model" value="literal:None=NONE,Label=LABEL,Value=VALUE,Manual=USER"/>
+    <binding name="onchange">
+      literal:javascript:this.form.events.refresh();
+    </binding>
   </component>
   
   <component id="inputColor" type="contrib:Palette">
@@ -51,7 +60,6 @@
   
   <component id="continue" type="ImageSubmit">
   	<binding name="image" value="asset:continue"/>
-  	<binding name="listener" value="listener:advance"/>
   </component>
  
   <asset name="continue" path="images/Continue.gif"/>

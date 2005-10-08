@@ -22,7 +22,7 @@ import java.util.Map;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class MapToBooleanConverter implements TypeConverter
+public final class MapToBooleanConverter implements TypeConverter
 {
     public Object convertValue(Object value)
     {

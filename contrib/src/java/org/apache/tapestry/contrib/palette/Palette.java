@@ -156,49 +156,49 @@ import org.apache.tapestry.valid.ValidatorException;
  * use to format the palette component:
  * 
  * <pre>
- *     
  *      
  *       
  *        
  *         
  *          
  *           
- *                            TABLE.tapestry-palette TH
- *                            {
- *                              font-size: 9pt;
- *                              font-weight: bold;
- *                              color: white;
- *                              background-color: #330066;
- *                              text-align: center;
- *                            }
- *                           
- *                            TD.available-cell SELECT
- *                            {
- *                              font-weight: normal;
- *                              background-color: #FFFFFF;
- *                              width: 200px;
- *                            }
+ *            
+ *                             TABLE.tapestry-palette TH
+ *                             {
+ *                               font-size: 9pt;
+ *                               font-weight: bold;
+ *                               color: white;
+ *                               background-color: #330066;
+ *                               text-align: center;
+ *                             }
  *                            
- *                            TD.selected-cell SELECT
- *                            {
- *                              font-weight: normal;
- *                              background-color: #FFFFFF;
- *                              width: 200px;
- *                            }
- *                            
- *                            TABLE.tapestry-palette TD.controls
- *                            {
- *                              text-align: center;
- *                              vertical-align: middle;
- *                              width: 60px;
- *                            }
+ *                             TD.available-cell SELECT
+ *                             {
+ *                               font-weight: normal;
+ *                               background-color: #FFFFFF;
+ *                               width: 200px;
+ *                             }
+ *                             
+ *                             TD.selected-cell SELECT
+ *                             {
+ *                               font-weight: normal;
+ *                               background-color: #FFFFFF;
+ *                               width: 200px;
+ *                             }
+ *                             
+ *                             TABLE.tapestry-palette TD.controls
+ *                             {
+ *                               text-align: center;
+ *                               vertical-align: middle;
+ *                               width: 60px;
+ *                             }
+ *             
  *            
  *           
  *          
  *         
  *        
  *       
- *      
  * </pre>
  * 
  * <p>
@@ -459,7 +459,7 @@ public abstract class Palette extends BaseComponent implements ValidatableField
 
     public boolean isSortUser()
     {
-        return getSort() == SortMode.USER;
+        return getSort().equals(SortMode.USER);
     }
 
     public abstract Block getAvailableTitleBlock();

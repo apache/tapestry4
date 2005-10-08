@@ -185,28 +185,30 @@ public class AssetService implements IEngineService
     /**
      * Retrieves a resource from the classpath and returns it to the client in a binary output
      * stream.
-     * <p>
-     * TBD: Security issues. Hackers can download .class files.
      */
 
     public void service(IRequestCycle cycle) throws IOException
     {
-        // If they were vended an asset in the past then it must be up-to date.
-        // Asset URIs change if the underlying file is modified.
-
-        if (_request.getHeader("If-Modified-Since") != null)
-        {
-            _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-            return;
-        }
-
         String path = cycle.getParameter(PATH);
-        String md5 = cycle.getParameter(DIGEST);
+        String md5Digest = cycle.getParameter(DIGEST);
 
         try
         {
-            if (!_digestSource.getDigestForResource(path).equals(md5))
-                throw new ApplicationRuntimeException(AssetMessages.md5Mismatch(path));
+            if (!_digestSource.getDigestForResource(path).equals(md5Digest))
+            {
+                _response.sendError(HttpServletResponse.SC_FORBIDDEN, AssetMessages
+                        .md5Mismatch(path));
+                return;
+            }
+
+            // If they were vended an asset in the past then it must be up-to date.
+            // Asset URIs change if the underlying file is modified.
+
+            if (_request.getHeader("If-Modified-Since") != null)
+            {
+                _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                return;
+            }
 
             URL resourceURL = _classResolver.getResource(path);
 

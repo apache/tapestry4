@@ -20,7 +20,7 @@ import java.util.Collection;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class CollectionToIteratorConverter implements TypeConverter
+public final class CollectionToIteratorConverter implements TypeConverter
 {
 
     public Object convertValue(Object value)

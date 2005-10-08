@@ -134,4 +134,9 @@ public class ServletWebResponse implements WebResponse
         _servletResponse.setIntHeader(name, value);
     }
 
+    public void sendError(int statusCode, String message) throws IOException
+    {
+        _servletResponse.sendError(statusCode, message);
+    }
+
 }

@@ -48,7 +48,7 @@ public class TestServletWebResponse extends HiveMindTestCase
 
         response.setContentType("foo/bar");
         response.getOutputStream();
-        setReturnValue(response,stream);
+        setReturnValue(response, stream);
 
         replayControls();
 
@@ -95,7 +95,7 @@ public class TestServletWebResponse extends HiveMindTestCase
 
         response.setContentType("foo/bar");
         response.getWriter();
-        setReturnValue(response,writer);
+        setReturnValue(response, writer);
 
         replayControls();
 
@@ -115,7 +115,7 @@ public class TestServletWebResponse extends HiveMindTestCase
 
         response.setContentType("foo/bar");
         response.getWriter();
-        setReturnValue(response,writer1);
+        setReturnValue(response, writer1);
 
         replayControls();
 
@@ -128,7 +128,7 @@ public class TestServletWebResponse extends HiveMindTestCase
         response.reset();
         response.setContentType("zip/zap");
         response.getWriter();
-        setReturnValue(response,writer2);
+        setReturnValue(response, writer2);
 
         replayControls();
 
@@ -185,13 +185,14 @@ public class TestServletWebResponse extends HiveMindTestCase
         return (HttpServletResponse) newMock(HttpServletResponse.class);
     }
 
-    public void testSetHeaderMethods()
+    public void testSetHeaderMethods() throws Exception
     {
         HttpServletResponse response = newResponse();
 
         response.setHeader("fie", "fie");
         response.setDateHeader("expires", -1);
         response.setIntHeader("size", 33);
+        response.sendError(99, "foo!");
 
         replayControls();
 
@@ -200,6 +201,7 @@ public class TestServletWebResponse extends HiveMindTestCase
         swr.setHeader("fie", "fie");
         swr.setDateHeader("expires", -1);
         swr.setIntHeader("size", 33);
+        swr.sendError(99, "foo!");
 
         verifyControls();
 

@@ -21,7 +21,7 @@ package org.apache.tapestry.coerce;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class NumberToBooleanConverter implements TypeConverter
+public final class NumberToBooleanConverter implements TypeConverter
 {
     public Object convertValue(Object value)
     {

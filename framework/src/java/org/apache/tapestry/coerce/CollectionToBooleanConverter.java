@@ -21,7 +21,7 @@ import java.util.Collection;
  * 
  * @author Howard M. Lewis Ship
  */
-public class CollectionToBooleanConverter implements TypeConverter
+public final class CollectionToBooleanConverter implements TypeConverter
 {
     public Object convertValue(Object value)
     {

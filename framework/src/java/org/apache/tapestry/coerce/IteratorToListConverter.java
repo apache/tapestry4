@@ -22,7 +22,7 @@ import java.util.List;
  * @author Mindbridge
  * @since 4.0
  */
-public class IteratorToListConverter implements TypeConverter
+public final class IteratorToListConverter implements TypeConverter
 {
 
     public Object convertValue(Object value)

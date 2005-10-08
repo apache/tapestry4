@@ -112,12 +112,27 @@
     
   </configuration-point>
   
+  <configuration-point id="PropertySelectionModelConverters" schema-id="Converters"/>
+  
+  <contribution configuration-id="PropertySelectionModelConverters">
+    <converter class="java.lang.String" object="instance:StringToPropertySelectionModelConverter"/>
+  </contribution>
+    
+  <service-point id="PropertySelectionModelConverter" interface="TypeConverter">
+    <invoke-factory>
+      <construct class="TypeConverterWrapper">
+        <set-configuration property="contributions" configuration-id="PropertySelectionModelConverters"/>
+      </construct>
+    </invoke-factory>   
+  </service-point>
+    
   <contribution configuration-id="TypeConverters">
     <converter class="java.lang.Boolean" object="service:BooleanConverter"/>
     <converter class="java.util.Iterator" object="service:IteratorConverter"/>
     <converter class="java.util.List" object="service:ListConverter"/>
     <converter class="java.lang.String" object="instance:ObjectToStringConverter"/>
-  </contribution>
+    <converter class="org.apache.tapestry.form.IPropertySelectionModel" object="service:PropertySelectionModelConverter"/>
+  </contribution>  
   
   <service-point id="ValueConverter" interface="ValueConverter">
     

@@ -17,7 +17,9 @@ package org.apache.tapestry.workbench.palette;
 import java.util.List;
 
 import org.apache.tapestry.IPage;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.form.StringPropertySelectionModel;
@@ -32,23 +34,28 @@ public abstract class Palette extends BasePage
 {
     public abstract List getSelectedColors();
 
+    @Persist("client:app")
     public abstract String getSort();
 
-    public abstract IValidationDelegate getDelegate();
-    
-    private IPropertySelectionModel _sortModel;
+    public abstract void setSort(String sort);
 
-    /**
-     * Invoked before {@link #formSubmit(IRequestCycle)} if the user clicks the "advance" button.
-     */
+    public abstract IValidationDelegate getDelegate();
 
     @InjectPage("PaletteResults")
     public abstract PaletteResults getResultsPage();
 
-    public IPage advance()
+    protected void finishLoad()
     {
-        if (getDelegate().getHasErrors()) return null;
-        
+        setSort(SortMode.USER);
+    }
+
+    public void doRefresh()
+    {
+        getDelegate().clearErrors();
+    }
+
+    public IPage doAdvance()
+    {
         // Since Palette and palette.Results come from
         // a library now, we need to make sure
         // the namespace id is part of the name.
@@ -71,18 +78,5 @@ public abstract class Palette extends BasePage
             colorModel = new StringPropertySelectionModel(colors);
 
         return colorModel;
-    }
-
-    public IPropertySelectionModel getSortModel()
-    {
-        if (_sortModel == null)
-        {
-            String[] options = new String[]
-            { SortMode.NONE, SortMode.LABEL, SortMode.VALUE, SortMode.USER };
-
-            _sortModel = new StringPropertySelectionModel(options);
-        }
-
-        return _sortModel;
     }
 }

@@ -110,4 +110,10 @@ public class PortletWebResponse implements WebResponse
         unsupported("setIntHeader");
     }
 
+    /** Unsupported. */
+    public void sendError(int statusCode, String message) throws IOException
+    {
+        unsupported("sendError");
+    }
+
 }

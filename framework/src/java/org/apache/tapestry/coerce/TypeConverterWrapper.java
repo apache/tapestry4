@@ -30,7 +30,7 @@ import org.apache.hivemind.lib.util.StrategyRegistryImpl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TypeConverterWrapper implements TypeConverter
+public final class TypeConverterWrapper implements TypeConverter
 {
     private StrategyRegistry _registry = new StrategyRegistryImpl();
 

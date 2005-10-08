@@ -21,6 +21,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.service.ClassFactory;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.enhance.EnhancedClassValidator;
 import org.apache.tapestry.enhance.EnhancementOperationImpl;
 import org.apache.tapestry.enhance.EnhancementWorker;
@@ -40,7 +41,7 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
         ResetEventListener
 {
     private Log _log;
-    
+
     private ClassFactory _classFactory;
 
     private ClassResolver _classResolver;
@@ -64,33 +65,36 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
     public ComponentConstructor getComponentConstructor(IComponentSpecification specification,
             String className)
     {
-        ComponentConstructor result = (ComponentConstructor) _cachedConstructors.get(specification);
+        Defense.notNull(specification, "specification");
 
-        if (result == null)
+        synchronized (specification)
         {
-            Class baseClass = _classResolver.findClass(className);
+            ComponentConstructor result = (ComponentConstructor) _cachedConstructors
+                    .get(specification);
 
-            EnhancementOperationImpl eo = new EnhancementOperationImpl(_classResolver,
-                    specification, baseClass, _classFactory, _log);
+            if (result == null)
+            {
+                Class baseClass = _classResolver.findClass(className);
 
-            // Invoking on the chain is the same as invoking on every
-            // object in the chain (because method performEnhancement() is type void).
+                EnhancementOperationImpl eo = new EnhancementOperationImpl(_classResolver,
+                        specification, baseClass, _classFactory, _log);
 
-            _chain.performEnhancement(eo, specification);
+                // Invoking on the chain is the same as invoking on every
+                // object in the chain (because method performEnhancement() is type void).
 
-            result = eo.getConstructor();
+                _chain.performEnhancement(eo, specification);
 
-            // TODO: This should be optional to work around that IBM JVM bug.
-            // Also, to some degree, it should be passed into EnhancementOperationImpl,
-            // as it generally only needs to be done if a enhanced class
-            // is fabricated.
+                result = eo.getConstructor();
 
-            _validator.validate(baseClass, result.getComponentClass(), specification);
+                // TODO: This should be optional to work around that IBM JVM bug.
 
-            _cachedConstructors.put(specification, result);
+                _validator.validate(baseClass, result.getComponentClass(), specification);
+
+                _cachedConstructors.put(specification, result);
+            }
+
+            return result;
         }
-
-        return result;
     }
 
     public void setClassFactory(ClassFactory classFactory)
