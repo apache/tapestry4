@@ -50,6 +50,9 @@
     -->
   </todo>
   <changes>
+    <release version="4.0-beta-11" date="unreleased">
+      
+    </release>
     <release version="4.0-beta-10" date="Oct 8 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-344">Unimplemented abstract method check broken</action>
       <action type="add" dev="HLS">Add DefaultPrimaryKeyConverter for use with the For component</action>
