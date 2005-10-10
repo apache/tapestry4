@@ -16,6 +16,7 @@ package org.apache.tapestry.junit.utils;
 
 import java.io.File;
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -33,6 +34,7 @@ import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.ComponentAddress;
 import org.apache.tapestry.util.io.DataSqueezerImpl;
 import org.apache.tapestry.util.io.DataSqueezerUtil;
+import org.apache.tapestry.util.io.SerializableAdaptor;
 import org.apache.tapestry.util.io.SqueezeAdaptor;
 
 /**
@@ -377,67 +379,62 @@ public class TestDataSqueezer extends TestCase
         }
     }
 
-    private void unable(String message)
-    {
-        System.err.println("Unable to run test " + getClass().getName() + " " + getName() + ":");
-        System.err.println(message);
-        System.err.println("This may be ignored when running tests inside Eclipse.");
-    }
-
     public void testClassLoader() throws Exception
     {
-        // TODO: Change the build to download some JAR file,
-        // and change this code to reference a class within that
-        // JAR file.
+        File tempDir = new File(System.getProperty("java.io.tmpdir"));
+        File projectRoot = new File(tempDir, "jakarta-tapestry");
+        File springJAR = new File(projectRoot,
+                "tapestry/target/module-lib/test-subject/spring/spring-1.1.jar");
 
-        File dir = new File(System.getProperty("PROJECT_ROOT", ".")
-                + "/examples/Workbench/target/classes");
+        if (!springJAR.exists())
+            throw new RuntimeException("File " + springJAR
+                    + " does not exist; this should have been downloaded by the Ant build scripts.");
 
-        if (!dir.exists())
-        {
-            unable("Unable to find classes directory " + dir + ".");
-            return;
-        }
+        ClassResolver resolver = newClassResolver(springJAR);
 
-        URL tutorialClassesURL = dir.toURL();
+        Class propertyValueClass = resolver.findClass("org.springframework.beans.PropertyValue");
+        Constructor constructor = propertyValueClass.getConstructor(new Class[]
+        { String.class, Object.class });
 
-        URLClassLoader classLoader = new URLClassLoader(new URL[]
-        { tutorialClassesURL });
+        Serializable instance = (Serializable) constructor.newInstance(new Object[]
+        { "fred", "flintstone" });
 
-        Class visitClass = classLoader.loadClass("org.apache.tapestry.workbench.Visit");
+        assertEquals("fred", PropertyUtils.read(instance, "name"));
+        assertEquals("flintstone", PropertyUtils.read(instance, "value"));
 
-        Object visit = visitClass.newInstance();
+        DataSqueezer ds = newDataSqueezer(resolver);
 
-        ClassLoader visitClassLoader = visit.getClass().getClassLoader();
+        String encoded = ds.squeeze(instance);
 
-        if (getClass().getClassLoader() == visitClassLoader)
-        {
-            unable("Unable to setup necessary ClassLoaders for test.");
-            return;
-        }
+        // OK; build a whole new class loader & stack to decode that
+        // string back into an object.
 
-        // System.out.println("This classloader = " + getClass().getClassLoader());
-        // System.out.println("Visit classloader = " + visit.getClass().getClassLoader());
+        ClassResolver resolver2 = newClassResolver(springJAR);
 
-        String stringValue = Long.toHexString(System.currentTimeMillis());
+        DataSqueezer ds2 = newDataSqueezer(resolver2);
 
-        PropertyUtils.write(visit, "stringValue", stringValue);
+        Object output = ds2.unsqueeze(encoded);
 
-        ClassResolver resolver = new DefaultClassResolver(visitClassLoader);
-        DataSqueezer squeezer = DataSqueezerUtil.createUnitTestSqueezer(resolver);
-
-        String squeezed = squeezer.squeeze(visit);
-
-        Object outVisit = squeezer.unsqueeze(squeezed);
-
-        // System.out.println("outVisit classloader = " + outVisit.getClass().getClassLoader());
-
-        assertNotNull(outVisit);
-        assertTrue("Input and output objects not same.", visit != outVisit);
-
-        String outStringValue = (String) PropertyUtils.read(outVisit, "stringValue");
-
-        assertEquals("Stored string.", stringValue, outStringValue);
+        assertEquals("fred", PropertyUtils.read(output, "name"));
+        assertEquals("flintstone", PropertyUtils.read(output, "value"));
     }
 
+    private ClassResolver newClassResolver(File jarFile) throws Exception
+    {
+        URLClassLoader classLoader = new URLClassLoader(new URL[]
+        { jarFile.toURL() });
+
+        return new DefaultClassResolver(classLoader);
+
+    }
+
+    private DataSqueezer newDataSqueezer(ClassResolver resolver)
+    {
+        DataSqueezerImpl ds = new DataSqueezerImpl();
+        SerializableAdaptor adaptor = new SerializableAdaptor();
+        adaptor.setResolver(resolver);
+
+        ds.register(adaptor);
+        return ds;
+    }
 }
