@@ -32,14 +32,8 @@ import org.apache.tapestry.services.DataSqueezer;
 
 /**
  * The most complicated of the adaptors, this one takes an arbitrary serializable object, serializes
- * it to binary (possibly encoding it), and encodes it in a Base64 encoding.
- * <p>
- * Encoding and decoding of Base64 strings uses code adapted from work in the public domain
- * originally written by Jonathan Knudsen and published in O'reilly's "Java Cryptography". Note that
- * we use a <em>modified</em> form of Base64 encoding, with URL-safe characters to encode the 62
- * and 63 values and the pad character.
- * <p>
- * TBD: Work out some class loader issues involved in deserializing.
+ * it to binary (possibly compressing the stream along the way), and encodes it in a Base64
+ * encoding. The first character of the squeezed stream indicates whether it is or is not encoded.
  * 
  * @author Howard Lewis Ship
  */

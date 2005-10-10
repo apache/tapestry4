@@ -31,8 +31,10 @@ import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.util.io.ResolvingObjectInputStream;
 import org.apache.tapestry.util.io.TeeOutputStream;
 
 /**
@@ -48,6 +50,8 @@ import org.apache.tapestry.util.io.TeeOutputStream;
  */
 public class PersistentPropertyDataEncoderImpl implements PersistentPropertyDataEncoder
 {
+    private ClassResolver _classResolver;
+
     /**
      * Prefix on the MIME encoding that indicates that the encoded data is not encoded.
      */
@@ -122,9 +126,11 @@ public class PersistentPropertyDataEncoderImpl implements PersistentPropertyData
             // I believe this is more efficient; the buffered input stream should ask the
             // GZIP stream for large blocks of un-gzipped bytes, with should be more efficient.
             // The object input stream will probably be looking for just a few bytes at
-            // a time.
+            // a time. We use a resolving object input stream that knows how to find
+            // classes not normally acessible.
 
-            ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(is));
+            ObjectInputStream ois = new ResolvingObjectInputStream(_classResolver,
+                    new BufferedInputStream(is));
 
             List result = readChangesFromStream(ois);
 
@@ -181,5 +187,10 @@ public class PersistentPropertyDataEncoderImpl implements PersistentPropertyData
         }
 
         return result;
+    }
+
+    public void setClassResolver(ClassResolver resolver)
+    {
+        _classResolver = resolver;
     }
 }
