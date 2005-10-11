@@ -27,6 +27,7 @@
 
 <!ENTITY apiroot "&projectroot;tapestry/apidocs/org/apache/tapestry">
 <!ENTITY hivedoc "&projectroot;tapestry/hivedocs">
+<!ENTITY apicontrib "&projectroot;tapestry-contrib/apidocs/org/apache/tapestry">
 
 <!ENTITY AbstractComponent 			'<link href="&apiroot;/AbstractComponent.html">AbstractComponent</link>'>
 <!ENTITY AbstractEngine 			'<link href="&apiroot;/engine/AbstractEngine.html">AbstractEngine</link>'>
@@ -118,6 +119,10 @@
 <!ENTITY ValidationDelegate 		'<link href="&apiroot;/valid/ValidationDelegate.html">ValidationDelegate</link>'>
 <!ENTITY WebRequest					'<link href="&apiroot;/web/WebRequest.html">WebRequest</link>'>
 <!ENTITY WebResponse			    '<link href="&apiroot;/web/WebResponse.html">WebResponse</link>'>
+
+<!-- Contrib Tapestry classes -->
+<!ENTITY CheckBoxMultiplePropertySelectionRenderer 		'<link href="&apicontrib;/contrib/form/CheckBoxMultiplePropertySelectionRenderer.html">CheckBoxMultiplePropertySelectionRenderer</link>'>
+<!ENTITY IMultiplePropertySelectionRenderer 			'<link href="&apicontrib;/contrib/form/IMultiplePropertySelectionRenderer.html">IMultiplePropertySelectionRenderer</link>'>
 
 <!-- Links to Component Reference -->
 
