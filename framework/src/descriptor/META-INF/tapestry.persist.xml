@@ -81,7 +81,18 @@
       <construct class="ClientPropertyPersistenceStrategy">
         <set-object property="request" value="infrastructure:request"/>
         <set-object property="scope" value="service:PageClientPropertyPersistenceScope"/>
+        <set-object property="encoder" value="service:PersistentPropertyDataEncoder"/>
       </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="PersistentPropertyDataEncoder">
+    
+    Responsible for encoding and decoding client persistent properties into MIME streams.
+    
+    <invoke-factory>
+      <construct class="PersistentPropertyDataEncoderImpl"/>
     </invoke-factory>
     
   </service-point>
