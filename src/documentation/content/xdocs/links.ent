@@ -123,6 +123,8 @@
 <!-- Contrib Tapestry classes -->
 <!ENTITY CheckBoxMultiplePropertySelectionRenderer 		'<link href="&apicontrib;/contrib/form/CheckBoxMultiplePropertySelectionRenderer.html">CheckBoxMultiplePropertySelectionRenderer</link>'>
 <!ENTITY IMultiplePropertySelectionRenderer 			'<link href="&apicontrib;/contrib/form/IMultiplePropertySelectionRenderer.html">IMultiplePropertySelectionRenderer</link>'>
+<!ENTITY SortMode 			                            '<link href="&apicontrib;/contrib/palette/SortMode.html">SortMode</link>'>
+<!ENTITY SortMode.NONE		                            '<link href="&apicontrib;/contrib/palette/SortMode.html#NONE">SortMode.NONE</link>'>
 
 <!-- Links to Component Reference -->
 
@@ -159,7 +161,6 @@
 <!ENTITY InspectorButton	'<link href="site:InspectorButton">InspectorButton</link>'>
 <!ENTITY Option 			'<link href="site:Option">Option</link>'>
 <!ENTITY PageLink 			'<link href="site:PageLink">PageLink</link>'>
-<!ENTITY Palette 			'<link href="site:contrib.Palette">Palette</link>'>
 <!ENTITY PropertySelection 	'<link href="site:PropertySelection">PropertySelection</link>'>
 <!ENTITY Radio 				'<link href="site:Radio">Radio</link>'>
 <!ENTITY RadioGroup 		'<link href="site:RadioGroup">RadioGroup</link>'>
@@ -179,7 +180,9 @@
 <!-- Links to contrib Component Reference -->
 
 <!ENTITY Choose 			'<link href="site:Choose">Choose</link>'>
+<!ENTITY MultiplePropertySelection  '<link href="site:MultiplePropertySelection">MultiplePropertySelection</link>'>
 <!ENTITY Otherwise 			'<link href="site:Otherwise">Otherwise</link>'>
+<!ENTITY Palette 			'<link href="site:Palette">Palette</link>'>
 <!ENTITY When 			    '<link href="site:When">When</link>'>
 
 <!-- External links -->
