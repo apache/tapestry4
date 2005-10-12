@@ -28,11 +28,12 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> Adds a hidden HTML &lt;input type="hidden"&gt; field to a &Form;. This is often used to synchronize data
+when the form is submitted with values known when the page was rendered.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &Form;, &ListEdit;</strong>
 </p>
 
 <section>
@@ -47,26 +48,77 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
+  <tr>
+    <td>value</td>
+    <td>Object</td>
 
-	</table>
+    <td>in/out</td>
+    <td>yes</td>
+    <td></td>
+    <td>
+      The value to be stored in the the hidden field. The parameter is read when the HTML response is
+      generated, and then written when the form is submitted. A &DataSqueezer; is used to convert the
+      value between an arbitrary type and a String.
+    </td>
+  </tr>
+
+  <tr>
+    <td>id</td>
+    <td>Object</td>
+    <td>in</td>
+    <td>no</td>
+    <td>undefined in HTML presentation.</td>
+    <td>
+      ID parameter of HTML hidden object. The parameter is read when the HTML response is generated and
+      if there is a specific value the component generate parameter id with passed value in its HTML presentation.
+    </td>
+  </tr>
+  <tr>
+    <td>listener</td>
+    <td>&IActionListener;</td>
+
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+      <p>A listener that is informed after the value parameter is updated. This allows the data set operated
+      on by the rest of the &Form; components to be synchronized to the value stored in the hidden field.</p>
+      <p>A typical use is to encode the primary key of an entity as a Hidden; when the form is submitted, the
+      Hidden's listener re-reads the corresponding entity from the database.</p>
+    </td>
+  </tr>
+  <tr>
+    <td>encode</td>
+
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>true</td>
+    <td>
+      <p>If true (the default) a &DataSqueezer; is used to transform the value Object into the HTML value
+      string, and (on submit) to convert the string back into an Object.</p>
+      <p>If false, then the value must be a String. This is most likely used when the hidden field is used
+      to communicate with client-side logic in JavaScript (which is not able to interpret even Strings encoded
+      by &DataSqueezer;). If you find yourself getting strange errors during the form rewind it could easily be
+      Tapestry trying to interpret a value you've set via JavaScript.</p>
+    </td>
+
+  </tr>
+</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>forbidden</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: <em>name</em>
 </p>
 
 </section>
 
-<section>
-  <title>Examples</title>
-
-</section>
 </body>
 </document>
