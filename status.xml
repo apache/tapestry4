@@ -53,6 +53,7 @@
     <release version="4.0-beta-11" date="unreleased">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-650">ClassNotFoundException thrown when deserializing an object from a client persistent property</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-493">Document MultiplePropertySelection component</action>
+      <action type="fix" dev="DS" fixes-bug="TAPESTRY-496">Document Palette component</action>
     </release>
     <release version="4.0-beta-10" date="Oct 8 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-344">Unimplemented abstract method check broken</action>
