@@ -28,11 +28,11 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> A component used on the standard exception page to render a detailed list of exceptions.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also:&InspectorButton;</strong>
 </p>
 
 <section>
@@ -47,15 +47,25 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
+  <tr>
+    <td>exceptions</td>
+    <td>&ExceptionDescription;[]</td>
+    <td>in</td>
+    <td>yes</td>
+    <td></td>
+    <td>
+      Provides the exception descriptions to render.
+    </td>
+  </tr>
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>forbidden</strong>
 </p>
 
 <p>
@@ -64,9 +74,5 @@
 
 </section>
 
-<section>
-  <title>Examples</title>
-
-</section>
-</body>
+  </body>
 </document>
