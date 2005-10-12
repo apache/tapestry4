@@ -28,7 +28,8 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>Creates a hyperlink that submits its enclosing form using a JavaScript function.
+<br/>Pages incorporating a LinkSubmit component must also include a &Body; component.
 </p>
 
 <p>
@@ -48,19 +49,46 @@
     <th>Default Binding</th>
     <th>Description</th>
   </tr>
-
+    <tr>
+      <td>disabled</td>
+      <td>boolean</td> <td>in</td> <td>no</td> <td>false</td>
+      <td>
+        Controls whether the link is produced. If disabled, the portion of the template the link surrounds is still rendered, but not the link itself.
+      </td>
+    </tr>
+    <tr>
+      <td>selected</td>
+      <td>Object</td> <td>out</td> <td>no</td> <td>&nbsp;</td>
+      <td>
+         This parameter is bound to a property that is updated when the submit button is clicked by the user. The property is updated to match the tag parameter.
+      </td>
+    </tr>
+    <tr>
+      <td>tag</td>
+      <td>Object</td> <td>in</td> <td>no</td> <td>&nbsp;</td>
+      <td>
+         Tag used with the selected parameter to indicate which Submit button on a form was clicked.
+      </td>
+    </tr>
+    <tr>
+      <td>listener</td>
+      <td>&IActionListener;</td> <td>in</td> <td>no</td> <td>&nbsp;</td>
+      <td>
+          If specified, the listener is notified. This notification occurs as the component is rewinded, i.e., prior to the Form's listener. In addition, the selected property (if bound) will be updated before the listener is notified.
+      </td>
+    </tr>
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: <em>name, href</em>
 </p>
 
 <warning>
@@ -73,9 +101,5 @@
 
 </section>
 
-<section>
-  <title>Examples</title>
-
-</section>
 </body>
 </document>
