@@ -67,9 +67,10 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
 
         replayControls();
 
-        ClientPropertyPersistenceStrategy strategy = new ClientPropertyPersistenceStrategy(encoder);
+        ClientPropertyPersistenceStrategy strategy = new ClientPropertyPersistenceStrategy();
         strategy.setRequest(request);
         strategy.setScope(scope);
+        strategy.setEncoder(encoder);
 
         strategy.initializeService();
 
@@ -90,6 +91,7 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
         PropertyChange pc = new PropertyChangeImpl("foo", "bar", "baz");
 
         ClientPropertyPersistenceStrategy strategy = new ClientPropertyPersistenceStrategy();
+        strategy.setEncoder(newEncoder());
 
         strategy.store("MyPage", "foo", "bar", "baz");
 
@@ -122,12 +124,21 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
         ClientPropertyPersistenceStrategy strategy = new ClientPropertyPersistenceStrategy();
         strategy.setRequest(request);
         strategy.setScope(new AppClientPropertyPersistenceScope());
+        strategy.setEncoder(newEncoder());
 
         strategy.initializeService();
 
         strategy.addParametersForPersistentProperties(encoding, cycle, false);
 
         verifyControls();
+    }
+
+    private PersistentPropertyDataEncoder newEncoder()
+    {
+        PersistentPropertyDataEncoderImpl encoder = new PersistentPropertyDataEncoderImpl();
+        encoder.setClassResolver(getClassResolver());
+
+        return encoder;
     }
 
     public void testPageScope()
@@ -172,6 +183,7 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
         ClientPropertyPersistenceStrategy strategy = new ClientPropertyPersistenceStrategy();
         strategy.setRequest(request);
         strategy.setScope(new PageClientPropertyPersistenceScope());
+        strategy.setEncoder(newEncoder());
 
         strategy.initializeService();
 
