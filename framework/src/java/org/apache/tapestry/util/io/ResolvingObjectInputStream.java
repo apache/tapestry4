@@ -20,6 +20,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
 
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.util.Defense;
 
 /**
  * Specialized subclass of {@link java.io.ObjectInputStream}that knows how to resolve classes with
@@ -37,6 +38,8 @@ public class ResolvingObjectInputStream extends ObjectInputStream
     public ResolvingObjectInputStream(ClassResolver resolver, InputStream input) throws IOException
     {
         super(input);
+
+        Defense.notNull(resolver, "resolver");
 
         _resolver = resolver;
     }

@@ -44,22 +44,11 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
      */
     private final Map _data = new HashMap();
 
-    private final PersistentPropertyDataEncoder _encoder;
+    private PersistentPropertyDataEncoder _encoder;
 
     private WebRequest _request;
 
     private ClientPropertyPersistenceScope _scope;
-
-    public ClientPropertyPersistenceStrategy()
-    {
-        this(new PersistentPropertyDataEncoderImpl());
-    }
-
-    // Alternate constructor used for testing
-    ClientPropertyPersistenceStrategy(PersistentPropertyDataEncoder encoder)
-    {
-        _encoder = encoder;
-    }
 
     /**
      * Initializer for this service, invoked every time a service instance is created. This
@@ -118,7 +107,8 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
         _data.remove(pageName);
     }
 
-    public void addParametersForPersistentProperties(ServiceEncoding encoding, IRequestCycle cycle, boolean post)
+    public void addParametersForPersistentProperties(ServiceEncoding encoding, IRequestCycle cycle,
+            boolean post)
     {
         Defense.notNull(encoding, "encoding");
         Defense.notNull(cycle, "cycle");
@@ -154,5 +144,10 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
     public void setScope(ClientPropertyPersistenceScope scope)
     {
         _scope = scope;
+    }
+
+    public void setEncoder(PersistentPropertyDataEncoder encoder)
+    {
+        _encoder = encoder;
     }
 }
