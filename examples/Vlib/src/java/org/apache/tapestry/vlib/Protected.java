@@ -34,7 +34,7 @@ import org.apache.tapestry.vlib.pages.Login;
  * @author Howard Lewis Ship
  */
 
-public abstract class Protected extends BasePage implements IErrorProperty, PageValidateListener
+public abstract class Protected extends BasePage implements IErrorProperty, PageValidateListener, OperationsUser
 {
     @Bean(VirtualLibraryDelegate.class)
     public abstract IValidationDelegate getValidationDelegate();

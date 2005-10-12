@@ -39,6 +39,7 @@ import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.Person;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * Allows editting of the users. Simple flags about the user can be changed; additionally, the user
@@ -72,9 +73,6 @@ public abstract class EditUsers extends AdminPage implements PageBeginRenderList
 
     @Message
     public abstract String usersUpdated();
-
-    @InjectState("visit")
-    public abstract Visit getVisitState();
 
     @InjectComponent("password")
     public abstract IFormComponent getPasswordField();
@@ -127,34 +125,25 @@ public abstract class EditUsers extends AdminPage implements PageBeginRenderList
 
     private void readUsers()
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Visit visit = getVisitState();
 
         Integer userId = visit.getUserId();
-        Person[] users = null;
 
-        int i = 0;
-        while (true)
+        RemoteCallback<Person[]> callback = new RemoteCallback()
         {
-            try
+            public Person[] doRemote() throws RemoteException
             {
-                IOperations operations = vengine.getOperations();
-
-                users = operations.getPersons();
-
-                break;
+                return getOperations().getPersons();
             }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure(readFailure(), ex, i++);
-            }
-        }
+        };
+
+        Person[] users = getRemoteTemplate().execute(callback, readFailure());
 
         UserConverter converter = getUserConverter();
 
         converter.clear();
 
-        for (i = 0; i < users.length; i++)
+        for (int i = 0; i < users.length; i++)
         {
             Integer id = users[i].getId();
 
@@ -171,19 +160,17 @@ public abstract class EditUsers extends AdminPage implements PageBeginRenderList
      * Invoked when the form is submitted.
      */
 
-    public void updateUsers(IRequestCycle cycle)
+    public void updateUsers()
     {
         Visit visit = getVisitState();
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
-
         UserConverter converter = getUserConverter();
 
-        Person[] updates = (Person[]) converter.getValues().toArray(new Person[0]);
-        Integer[] deletedIds = extractIds(converter.getDeletedValues());
-        Integer[] resetPasswordIds = extractIds(converter.getResetPasswordValues());
+        final Person[] updates = (Person[]) converter.getValues().toArray(new Person[0]);
+        final Integer[] deletedIds = extractIds(converter.getDeletedValues());
+        final Integer[] resetPasswordIds = extractIds(converter.getResetPasswordValues());
 
-        String password = getPassword();
+        final String password = getPassword();
         setPassword(null);
 
         if (HiveMind.isBlank(password) && resetPasswordIds.length > 0)
@@ -192,31 +179,36 @@ public abstract class EditUsers extends AdminPage implements PageBeginRenderList
             return;
         }
 
-        Integer adminId = visit.getUserId();
+        final Integer adminId = visit.getUserId();
 
-        int i = 0;
-        while (true)
+        RemoteCallback callback = new RemoteCallback()
         {
-            try
+            public Object doRemote() throws RemoteException
             {
-                IOperations operations = vengine.getOperations();
+                try
+                {
+                    getOperations().updatePersons(
+                            updates,
+                            resetPasswordIds,
+                            password,
+                            deletedIds,
+                            adminId);
+                }
+                catch (RemoveException ex)
+                {
+                    throw new ApplicationRuntimeException(ex);
+                }
+                catch (FinderException ex)
+                {
+                    throw new ApplicationRuntimeException(ex);
+                }
 
-                operations.updatePersons(updates, resetPasswordIds, password, deletedIds, adminId);
-                break;
+                return null;
             }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure(updateFailure(), ex, i++);
-            }
-            catch (RemoveException ex)
-            {
-                throw new ApplicationRuntimeException(ex);
-            }
-            catch (FinderException ex)
-            {
-                throw new ApplicationRuntimeException(ex);
-            }
-        }
+
+        };
+
+        getRemoteTemplate().execute(callback, updateFailure());
 
         setMessage(usersUpdated());
     }

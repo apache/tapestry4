@@ -42,6 +42,7 @@
         <invoke-factory>
             <construct class="RemoteTemplateImpl">
                 <set-object property="coordinator" value="service:hivemind.lib.RemoteExceptionCoordinator"/>
+                <set-object property="operations" value="service:Operations"/>            
             </construct>
         </invoke-factory>
     </service-point>

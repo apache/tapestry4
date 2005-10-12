@@ -19,6 +19,9 @@ import java.rmi.RemoteException;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.lib.RemoteExceptionCoordinator;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.vlib.ejb.Book;
+import org.apache.tapestry.vlib.ejb.IOperations;
+import org.apache.tapestry.vlib.ejb.Person;
 
 /**
  * Tests for {@link org.apache.tapestry.vlib.services.RemoteTemplateImpl}.
@@ -33,30 +36,29 @@ public class RemoteTemplateTest extends HiveMindTestCase
         RemoteTemplate rt = new RemoteTemplateImpl();
         RemoteCallback callback = new RemoteCallback()
         {
-            public Object remoteCallback() throws RemoteException
+            public Object doRemote() throws RemoteException
             {
                 return "flintstone";
             }
         };
 
-        Object actual = rt.doRemote(callback, "my error message");
+        Object actual = rt.execute(callback, "my error message");
 
         assertEquals("flintstone", actual);
     }
 
     public void testSuccessAfterRetry() throws Exception
     {
-        RemoteCallback callback = (RemoteCallback) newMock(RemoteCallback.class);
-        RemoteExceptionCoordinator coordinator = (RemoteExceptionCoordinator) newMock(RemoteExceptionCoordinator.class);
+        RemoteCallback callback = newCallback();
+        RemoteExceptionCoordinator coordinator = newCoordinator();
 
         Throwable t = new RemoteException();
 
-        callback.remoteCallback();
-        setThrowable(callback, t);
+        trainDoRemote(callback, t);
 
         coordinator.fireRemoteExceptionDidOccur(callback, t);
 
-        callback.remoteCallback();
+        callback.doRemote();
         setReturnValue(callback, "rubble");
 
         replayControls();
@@ -65,26 +67,24 @@ public class RemoteTemplateTest extends HiveMindTestCase
 
         rt.setCoordinator(coordinator);
 
-        assertEquals("rubble", rt.doRemote(callback, "my error message"));
+        assertEquals("rubble", rt.execute(callback, "my error message"));
 
         verifyControls();
     }
 
     public void testFailure() throws Exception
     {
-        RemoteCallback callback = (RemoteCallback) newMock(RemoteCallback.class);
-        RemoteExceptionCoordinator coordinator = (RemoteExceptionCoordinator) newMock(RemoteExceptionCoordinator.class);
+        RemoteCallback callback = newCallback();
+        RemoteExceptionCoordinator coordinator = newCoordinator();
 
         Throwable t1 = new RemoteException();
         Throwable t2 = new RemoteException();
 
-        callback.remoteCallback();
-        setThrowable(callback, t1);
+        trainDoRemote(callback, t1);
 
         coordinator.fireRemoteExceptionDidOccur(callback, t1);
 
-        callback.remoteCallback();
-        setThrowable(callback, t2);
+        trainDoRemote(callback, t2);
 
         coordinator.fireRemoteExceptionDidOccur(callback, t2);
 
@@ -96,7 +96,7 @@ public class RemoteTemplateTest extends HiveMindTestCase
 
         try
         {
-            rt.doRemote(callback, "error message");
+            rt.execute(callback, "error message");
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -107,4 +107,84 @@ public class RemoteTemplateTest extends HiveMindTestCase
 
         verifyControls();
     }
+
+    public void testGetPerson() throws Exception
+    {
+        Integer personId = new Integer(33);
+
+        IOperations operations = newOperations();
+        Person person = new Person(new Object[Person.N_COLUMNS]);
+
+        operations.getPerson(personId);
+        setReturnValue(operations, person);
+
+        replayControls();
+
+        RemoteTemplateImpl template = new RemoteTemplateImpl();
+        template.setOperations(operations);
+
+        assertSame(person, template.getPerson(personId));
+
+        verifyControls();
+    }
+
+    public void testGetPersons() throws Exception
+    {
+        IOperations operations = newOperations();
+        Person[] persons = new Person[0];
+
+        operations.getPersons();
+        setReturnValue(operations, persons);
+
+        replayControls();
+
+        RemoteTemplateImpl template = new RemoteTemplateImpl();
+        template.setOperations(operations);
+
+        assertSame(persons, template.getPersons());
+
+        verifyControls();
+    }
+
+    public void testGetBook() throws Exception
+    {
+        Integer bookId = new Integer(33);
+
+        IOperations operations = newOperations();
+        Book book = new Book(new Object[Book.N_COLUMNS]);
+
+        operations.getBook(bookId);
+        setReturnValue(operations, book);
+
+        replayControls();
+
+        RemoteTemplateImpl template = new RemoteTemplateImpl();
+        template.setOperations(operations);
+
+        assertSame(book, template.getBook(bookId));
+
+        verifyControls();
+    }
+
+    private IOperations newOperations()
+    {
+        return (IOperations) newMock(IOperations.class);
+    }
+
+    private void trainDoRemote(RemoteCallback callback, Throwable t) throws RemoteException
+    {
+        callback.doRemote();
+        setThrowable(callback, t);
+    }
+
+    private RemoteExceptionCoordinator newCoordinator()
+    {
+        return (RemoteExceptionCoordinator) newMock(RemoteExceptionCoordinator.class);
+    }
+
+    private RemoteCallback newCallback()
+    {
+        return (RemoteCallback) newMock(RemoteCallback.class);
+    }
+
 }

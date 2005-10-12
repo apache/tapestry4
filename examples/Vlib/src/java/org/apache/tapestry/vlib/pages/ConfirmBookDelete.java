@@ -26,9 +26,11 @@ import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.Message;
 import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.html.BasePage;
+import org.apache.tapestry.vlib.OperationsUser;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IOperations;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * Presents a confirmation page before deleting a book. If the user selects "yes", the book is
@@ -38,7 +40,7 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  */
 
 @Meta("page-type=MyLibrary")
-public abstract class ConfirmBookDelete extends BasePage
+public abstract class ConfirmBookDelete extends BasePage implements OperationsUser
 {
     public abstract void setBookId(Integer bookId);
 
@@ -60,29 +62,9 @@ public abstract class ConfirmBookDelete extends BasePage
     {
         setBookId(bookId);
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+        Book book = getRemoteTemplate().getBook(bookId);
 
-        int i = 0;
-        while (true)
-        {
-            try
-            {
-                IOperations operations = vengine.getOperations();
-                Book book = operations.getBook(bookId);
-
-                setBookTitle(book.getTitle());
-
-                break;
-            }
-            catch (FinderException ex)
-            {
-                throw new ApplicationRuntimeException(ex);
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception reading read book #" + bookId + ".", ex, i++);
-            }
-        }
+        setBookTitle(book.getTitle());
 
         getRequestCycle().activate(this);
     }
@@ -91,31 +73,24 @@ public abstract class ConfirmBookDelete extends BasePage
      * Hooked up to the yes component, this actually deletes the book.
      */
 
-    public void deleteBook(Integer bookPK)
+    public void deleteBook(final Integer bookId)
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-        Book book = null;
-
-        int i = 0;
-        while (true)
+        RemoteCallback<Book> callback = new RemoteCallback()
         {
-            try
+            public Book doRemote() throws RemoteException
             {
-                IOperations operations = vengine.getOperations();
+                try
+                {
+                    return getOperations().deleteBook(bookId);
+                }
+                catch (RemoveException ex)
+                {
+                    throw new ApplicationRuntimeException(ex);
+                }
+            }
+        };
 
-                book = operations.deleteBook(bookPK);
-
-                break;
-            }
-            catch (RemoveException ex)
-            {
-                throw new ApplicationRuntimeException(ex);
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception deleting book #" + bookPK + ".", ex, i++);
-            }
-        }
+        Book book = getRemoteTemplate().execute(callback, "Error deleting book #" + bookId + ".");
 
         MyLibrary myLibrary = getMyLibrary();
 

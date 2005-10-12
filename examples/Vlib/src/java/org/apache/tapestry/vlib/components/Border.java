@@ -199,7 +199,7 @@ public abstract class Border extends BaseComponent
 
         IRequestCycle cycle = getPage().getRequestCycle();
 
-        return visit.isUserLoggedIn() && visit.getUser(cycle).isAdmin();
+        return visit.isUserLoggedIn() && visit.getUser().isAdmin();
     }
 
     public void editProfile()

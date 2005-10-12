@@ -208,10 +208,7 @@ public class VirtualLibraryEngine extends BaseEngine
         _publisherModel = null;
         _personModel = null;
 
-        Visit visit = (Visit) getVisit();
-
-        if (visit != null)
-            visit.clearCache();
+        // Note: may need to update the user property of the Visit
     }
 
     /**
@@ -357,37 +354,7 @@ public class VirtualLibraryEngine extends BaseEngine
         _operations = null;
     }
 
-    /**
-     * Reads a person by id.
-     */
-
-    public Person readPerson(Integer personId)
-    {
-        Person result = null;
-
-        int i = 0;
-        while (true)
-        {
-            IOperations operations = getOperations();
-
-            try
-            {
-                result = operations.getPerson(personId);
-
-                break;
-            }
-            catch (FinderException ex)
-            {
-                throw new ApplicationRuntimeException("No such Person #" + personId + ".", ex);
-            }
-            catch (RemoteException ex)
-            {
-                rmiFailure("Unable to read Person #" + personId + ".", ex, i++);
-            }
-        }
-
-        return result;
-    }
+ 
 
     protected void handleStaleSessionException(IRequestCycle cycle, StaleSessionException exception)
     {

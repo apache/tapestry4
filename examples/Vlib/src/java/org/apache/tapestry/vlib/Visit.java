@@ -17,7 +17,6 @@ package org.apache.tapestry.vlib;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.vlib.ejb.Person;
 
 /**
@@ -35,16 +34,7 @@ public class Visit implements Serializable
      * Used to identify the logged in user.
      */
 
-    private transient Person _user;
-
-    private Integer _userId;
-
-    /**
-     * Set when the user first logs in. This is the time of their previous login (logging in returns
-     * the old value then updates the value for subsequent logins).
-     */
-
-    private Timestamp _lastAccess;
+    private Person _user;
 
     /**
      * Returns the time the user last accessed the database, which may be null if the user hasn't
@@ -53,25 +43,15 @@ public class Visit implements Serializable
 
     public Timestamp getLastAccess()
     {
-        return _lastAccess;
+        return _user == null ? null : _user.getLastAccess();
     }
 
     /**
      * Gets the logged-in user, or null if the user is not logged in.
      */
 
-    public Person getUser(IRequestCycle cycle)
+    public Person getUser()
     {
-        if (_user != null)
-            return _user;
-
-        if (_userId == null)
-            return null;
-
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
-
-        _user = vengine.readPerson(_userId);
-
         return _user;
     }
 
@@ -81,7 +61,7 @@ public class Visit implements Serializable
 
     public Integer getUserId()
     {
-        return _userId;
+        return _user == null ? null : _user.getId();
     }
 
     /**
@@ -89,18 +69,9 @@ public class Visit implements Serializable
      * {@link org.apache.tapestry.vlib.pages.Login} page.
      */
 
-    public void setUser(Person value)
+    public void setUser(Person user)
     {
-        _lastAccess = null;
-        _user = value;
-        _userId = null;
-
-        if (_user == null)
-            return;
-
-        _userId = _user.getId();
-
-        _lastAccess = _user.getLastAccess();
+        _user = user;
     }
 
     /**
@@ -109,7 +80,7 @@ public class Visit implements Serializable
 
     public boolean isUserLoggedIn()
     {
-        return _userId != null;
+        return _user != null;
     }
 
     /**
@@ -118,15 +89,15 @@ public class Visit implements Serializable
 
     public boolean isUserLoggedOut()
     {
-        return _userId == null;
+        return _user == null;
     }
 
     public boolean isLoggedInUser(Integer id)
     {
-        if (_userId == null)
+        if (_user == null)
             return false;
 
-        return _userId.equals(id);
+        return _user.getId().equals(id);
     }
 
     /**

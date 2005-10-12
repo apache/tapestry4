@@ -26,6 +26,7 @@ import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.html.BasePage;
+import org.apache.tapestry.vlib.OperationsUser;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IOperations;
@@ -36,7 +37,8 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * @author Howard Lewis Ship
  */
 @Meta("page-type=Search")
-public abstract class ViewBook extends BasePage implements IExternalPage, PageBeginRenderListener
+public abstract class ViewBook extends BasePage implements IExternalPage, PageBeginRenderListener,
+        OperationsUser
 {
     private DateFormat _dateFormat;
 
@@ -58,32 +60,12 @@ public abstract class ViewBook extends BasePage implements IExternalPage, PageBe
 
     private void readBook()
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-        Integer bookId = getBookId();
+        // This doesn't handle invalid book id as nicely as the 3.0 code did, but I'm
+        // getting a bit lazy!
 
-        int i = 0;
-        while (true)
-        {
-            IOperations bean = vengine.getOperations();
+        Book book = getRemoteTemplate().getBook(getBookId());
 
-            try
-            {
-                setBook(bean.getBook(bookId));
-
-                return;
-            }
-            catch (FinderException ex)
-            {
-                vengine.presentError("Book not found in database.", getRequestCycle());
-                return;
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception obtaining information for book #" + bookId
-                        + ".", ex, i++);
-            }
-        }
-
+        setBook(book);
     }
 
     public DateFormat getDateFormat()
