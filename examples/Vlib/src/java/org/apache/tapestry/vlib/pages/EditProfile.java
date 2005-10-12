@@ -35,6 +35,7 @@ import org.apache.tapestry.vlib.ActivatePage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.ejb.IOperations;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * Edit's a user's profile: names, email and password.
@@ -84,31 +85,25 @@ public abstract class EditProfile extends ActivatePage implements PageBeginRende
     public void activate()
     {
         Visit visit = getVisitState();
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getRequestCycle().getEngine();
 
-        Integer userId = visit.getUserId();
-        Map attributes = null;
+        final Integer userId = visit.getUserId();
 
-        int i = 0;
-        while (true)
+        RemoteCallback<Map> callback = new RemoteCallback()
         {
-            try
+            public Map doRemote() throws RemoteException
             {
-                IOperations operations = vengine.getOperations();
+                try
+                {
+                    return getOperations().getPersonAttributes(userId);
+                }
+                catch (FinderException ex)
+                {
+                    throw new ApplicationRuntimeException(ex);
+                }
+            }
+        };
 
-                attributes = operations.getPersonAttributes(userId);
-
-                break;
-            }
-            catch (FinderException ex)
-            {
-                throw new ApplicationRuntimeException(ex);
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception reading user.", ex, i++);
-            }
-        }
+        Map attributes = getRemoteTemplate().execute(callback, "Error reading user information.");
 
         attributes.remove("password");
         setAttributes(attributes);
@@ -135,7 +130,7 @@ public abstract class EditProfile extends ActivatePage implements PageBeginRende
         if (delegate.getHasErrors())
             return;
 
-        Map attributes = getAttributes();
+        final Map attributes = getAttributes();
 
         if (HiveMind.isBlank(password1) != HiveMind.isBlank(password2))
         {
@@ -156,34 +151,28 @@ public abstract class EditProfile extends ActivatePage implements PageBeginRende
         }
 
         Visit visit = getVisitState();
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
-        Integer userId = visit.getUserId();
+        final Integer userId = visit.getUserId();
 
-        int i = 0;
-        while (true)
+        RemoteCallback callback = new RemoteCallback()
         {
-            try
+            public Object doRemote() throws RemoteException
             {
-                /**
-                 * Note: this allows the user to change thier e-mail such that it conflicts with
-                 * another user! Need yet-another IOperations method to perform the update!
-                 */
+                try
+                {
+                    getOperations().updatePerson(userId, attributes);
 
-                IOperations operations = vengine.getOperations();
+                    return null;
+                }
+                catch (FinderException ex)
+                {
+                    throw new ApplicationRuntimeException(ex);
+                }
+            }
+        };
 
-                operations.updatePerson(userId, attributes);
-                break;
-            }
-            catch (FinderException ex)
-            {
-                throw new ApplicationRuntimeException(ex);
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception updating user attributes.", ex, i++);
-            }
-        }
+        getRemoteTemplate().execute(callback, "Error updating user attributes.");
 
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
         vengine.clearCache();
 
         getMyLibrary().activate();

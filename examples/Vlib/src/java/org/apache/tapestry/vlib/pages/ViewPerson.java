@@ -24,6 +24,7 @@ import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.html.BasePage;
+import org.apache.tapestry.vlib.OperationsUser;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.components.Browser;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
@@ -39,7 +40,8 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
  * @author Howard Lewis Ship
  */
 @Meta("page-type=Search")
-public abstract class ViewPerson extends BasePage implements IExternalPage, PageBeginRenderListener
+public abstract class ViewPerson extends BasePage implements IExternalPage,
+        PageBeginRenderListener, OperationsUser
 {
     public abstract Integer getPersonId();
 
@@ -135,9 +137,7 @@ public abstract class ViewPerson extends BasePage implements IExternalPage, Page
 
         if (person == null)
         {
-            VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-            person = vengine.readPerson(getPersonId());
+            person = getRemoteTemplate().getPerson(getPersonId());
 
             setPerson(person);
         }

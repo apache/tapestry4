@@ -31,12 +31,14 @@ import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.services.CookieSource;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.vlib.IErrorProperty;
+import org.apache.tapestry.vlib.OperationsUser;
 import org.apache.tapestry.vlib.VirtualLibraryDelegate;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.LoginException;
 import org.apache.tapestry.vlib.ejb.Person;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * Allows the user to login, by providing email address and password. After succesfully logging in,
@@ -46,7 +48,8 @@ import org.apache.tapestry.vlib.ejb.Person;
  * @author Howard Lewis Ship
  */
 
-public abstract class Login extends BasePage implements IErrorProperty, PageBeginRenderListener
+public abstract class Login extends BasePage implements IErrorProperty, PageBeginRenderListener,
+        OperationsUser
 {
     /**
      * The name of a cookie to store on the user's machine that will identify them next time they
@@ -95,7 +98,7 @@ public abstract class Login extends BasePage implements IErrorProperty, PageBegi
 
     public void attemptLogin(IRequestCycle cycle)
     {
-        String password = getPassword();
+        final String password = getPassword();
 
         // Do a little extra work to clear out the password.
 
@@ -110,34 +113,34 @@ public abstract class Login extends BasePage implements IErrorProperty, PageBegi
         if (delegate.getHasErrors())
             return;
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-        int i = 0;
-        while (true)
+        RemoteCallback callback = new RemoteCallback()
         {
-            try
+            public Object doRemote() throws RemoteException
             {
-                IOperations operations = vengine.getOperations();
 
-                Person person = operations.login(getEmail(), password);
+                try
+                {
+                    Person person = getOperations().login(getEmail(), password);
 
-                loginUser(person);
+                    loginUser(person);
 
-                break;
+                    return null;
+                }
+                catch (LoginException ex)
+                {
+                    IFormComponent field = ex.isPasswordError() ? getPasswordField()
+                            : getEmailField();
+
+                    getValidationDelegate().record(field, ex.getMessage());
+
+                    return null;
+                }
 
             }
-            catch (LoginException ex)
-            {
-                IFormComponent field = ex.isPasswordError() ? getPasswordField() : getEmailField();
+        };
 
-                getValidationDelegate().record(field, ex.getMessage());
-                return;
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception validating user.", ex, i++);
-            }
-        }
+        getRemoteTemplate().execute(callback, "Error validating user.");
+
     }
 
     /**

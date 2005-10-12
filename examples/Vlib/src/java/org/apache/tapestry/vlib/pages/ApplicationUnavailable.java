@@ -21,8 +21,6 @@ import org.apache.tapestry.vlib.IErrorProperty;
  * A page only displayed when the application is unavailable (typically because of repeated
  * {@link java.rmi.RemoteException}s or {@link javax.naming.NamingException}s accessing EJBs.
  * 
- * @see org.apache.tapestry.vlib.VirtualLibraryEngine#rmiFailure(String, java.rmi.RemoteException,
- *      int)
  * @author Howard Lewis Ship
  * @since 2.2
  */

@@ -97,19 +97,14 @@ public abstract class Borrow extends BaseComponent implements OperationsUser
     public IPage borrow(final IRequestCycle cycle, final Integer bookId)
     {
         final Visit visit = getVisit();
-        final Home home = getHome();
 
-        RemoteCallback callback = new RemoteCallback()
+        RemoteCallback<Book> callback = new RemoteCallback()
         {
-            public Object remoteCallback() throws RemoteException
+            public Book doRemote() throws RemoteException
             {
                 try
                 {
-                    Book book = getOperations().borrowBook(bookId, visit.getUserId());
-
-                    home.setMessage(borrowedBook(book.getTitle()));
-
-                    return null;
+                    return getOperations().borrowBook(bookId, visit.getUserId());
                 }
                 catch (BorrowException ex)
                 {
@@ -119,12 +114,19 @@ public abstract class Borrow extends BaseComponent implements OperationsUser
                 }
                 catch (FinderException ex)
                 {
-                    throw new ApplicationRuntimeException("Unable to find book or user.", ex);
+                    throw new ApplicationRuntimeException(ex);
                 }
             }
         };
 
-        getRemoteTemplate().doRemote(callback, "Error borrowing book.");
+        Book book = getRemoteTemplate().execute(callback, "Error borrowing book.");
+
+        if (book == null)
+            return null;
+
+        Home home = getHome();
+
+        home.setMessage(borrowedBook(book.getTitle()));
 
         return home;
     }

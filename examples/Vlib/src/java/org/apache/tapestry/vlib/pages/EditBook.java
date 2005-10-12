@@ -33,6 +33,7 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.IOperations;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * Edits the properties of at book.
@@ -59,37 +60,31 @@ public abstract class EditBook extends Protected implements PageBeginRenderListe
      * {@link org.apache.tapestry.vlib.ejb.IBook} and updates the request cycle to render this page,
      */
 
-    public void beginEdit(Integer bookId)
+    public void beginEdit(final Integer bookId)
     {
         setBookId(bookId);
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-        int i = 0;
-        while (true)
+        RemoteCallback<Map> callback = new RemoteCallback()
         {
-            try
+            public Map doRemote() throws RemoteException
             {
-                // Get the attributes as a source for our input fields.
+                try
+                {
+                    return getOperations().getBookAttributes(bookId);
 
-                IOperations operations = vengine.getOperations();
+                }
+                catch (FinderException ex)
+                {
+                    throw new ApplicationRuntimeException(ex);
+                }
+            }
+        };
 
-                setAttributes(operations.getBookAttributes(bookId));
+        Map attributes = getRemoteTemplate().execute(
+                callback,
+                "Error setting up page for book #" + bookId + ".");
 
-                break;
-            }
-            catch (FinderException ex)
-            {
-                throw new ApplicationRuntimeException(ex);
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure(
-                        "Remote exception setting up page for book #" + bookId + ".",
-                        ex,
-                        i++);
-            }
-        }
+        setAttributes(attributes);
 
         getRequestCycle().activate(this);
     }
@@ -109,10 +104,10 @@ public abstract class EditBook extends Protected implements PageBeginRenderListe
 
     public IPage formSubmit(IRequestCycle cycle)
     {
-        Map attributes = getAttributes();
+        final Map attributes = getAttributes();
 
-        Integer publisherId = (Integer) attributes.get("publisherId");
-        String publisherName = getPublisherName();
+        final Integer publisherId = (Integer) attributes.get("publisherId");
+        final String publisherName = getPublisherName();
 
         if (publisherId == null && HiveMind.isBlank(publisherName))
         {
@@ -131,43 +126,44 @@ public abstract class EditBook extends Protected implements PageBeginRenderListe
         if (isInError())
             return null;
 
-        // OK, do the update.
+        final Integer bookId = getBookId();
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
-        Integer bookId = getBookId();
-
-        int i = 0;
-        while (true)
+        RemoteCallback callback = new RemoteCallback()
         {
-            IOperations bean = vengine.getOperations();
-
-            try
+            public Object doRemote() throws RemoteException
             {
-                if (publisherId != null)
-                    bean.updateBook(bookId, attributes);
-                else
+
+                try
                 {
-                    bean.updateBook(bookId, attributes, publisherName);
-                    vengine.clearCache();
+                    IOperations operations = getOperations();
+
+                    if (publisherId != null)
+                        operations.updateBook(bookId, attributes);
+                    else
+                    {
+                        operations.updateBook(bookId, attributes, publisherName);
+                    }
+
+                    return null;
+                }
+                catch (FinderException ex)
+                {
+                    throw new ApplicationRuntimeException(ex);
+                }
+                catch (CreateException ex)
+                {
+                    throw new ApplicationRuntimeException(ex);
                 }
 
-                break;
             }
-            catch (FinderException ex)
-            {
-                throw new ApplicationRuntimeException(ex);
-            }
-            catch (CreateException ex)
-            {
-                throw new ApplicationRuntimeException(ex);
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception updating book #" + bookId + ".", ex, i++);
 
-                continue;
-            }
-        }
+        };
+
+        getRemoteTemplate().execute(callback, "Error updating book #" + bookId + ".");
+
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
+
+        vengine.clearCache();
 
         MyLibrary page = (MyLibrary) cycle.getPage("MyLibrary");
 

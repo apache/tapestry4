@@ -14,8 +14,12 @@
 
 package org.apache.tapestry.vlib.services;
 
+import org.apache.tapestry.vlib.ejb.Book;
+import org.apache.tapestry.vlib.ejb.Person;
+
 /**
- * Used to execute a {@link org.apache.tapestry.vlib.services.RemoteCallback}.
+ * Used to execute a {@link org.apache.tapestry.vlib.services.RemoteCallback}. In addition,
+ * provides a few very common operations.
  * 
  * @author Howard M. Lewis Ship
  */
@@ -30,5 +34,34 @@ public interface RemoteTemplate
      *            used when the callback fails
      * @return the return value of the callback
      */
-    Object doRemote(RemoteCallback callback, String errorMessage);
+    <T> T execute(RemoteCallback<T> callback, String errorMessage);
+
+    /**
+     * Reads a person, which is expected to exist.
+     * 
+     * @param personId
+     *            unique id for the person
+     * @return the Person
+     * @throws org.apache.hivemind.ApplicationRuntimeException
+     *             if the person does not exist, or if there are any other errors
+     */
+    Person getPerson(Integer personId);
+
+    /**
+     * Returns all persons, sorted by last name, then by first name.
+     */
+
+    Person[] getPersons();
+
+    /**
+     * Reads a book, which must exist.
+     * 
+     * @param bookId
+     *            unique id for the book
+     * @return the book
+     * @throws org.apache.hivemind.ApplicationRuntimeException
+     *             if the book does not exist, or if there are any other errors
+     */
+
+    Book getBook(Integer bookId);
 }

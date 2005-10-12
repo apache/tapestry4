@@ -39,6 +39,7 @@ import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.Person;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * Second page in Transfer Books wizard; allows the books owned by the from user to be selected and
@@ -89,7 +90,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageBeg
 
     public void activate(Integer fromUserId, Integer toUserId)
     {
-        Person fromUser = readPerson(fromUserId);
+        Person fromUser = getRemoteTemplate().getPerson(fromUserId);
 
         IPropertySelectionModel model = buildUserBookModel(fromUser);
 
@@ -121,7 +122,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageBeg
 
         if (fromUser == null)
         {
-            fromUser = readPerson(getFromUserId());
+            fromUser = getRemoteTemplate().getPerson(getFromUserId());
             setFromUser(fromUser);
         }
 
@@ -131,7 +132,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageBeg
         Person toUser = getToUser();
         if (toUser == null)
         {
-            toUser = readPerson(getToUserId());
+            toUser = getRemoteTemplate().getPerson(getToUserId());
             setToUser(toUser);
         }
     }
@@ -140,31 +141,27 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageBeg
     {
         List selectedBooks = getSelectedBooks();
 
-        Integer[] keys = (Integer[]) selectedBooks.toArray(new Integer[0]);
-        Person toUser = getToUser();
+        final Integer[] keys = (Integer[]) selectedBooks.toArray(new Integer[0]);
+        final Person toUser = getToUser();
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-        int i = 0;
-        while (true)
+        RemoteCallback callback = new RemoteCallback()
         {
-            try
+            public Object doRemote() throws RemoteException
             {
-                IOperations operations = vengine.getOperations();
+                try
+                {
+                    getOperations().transferBooks(toUser.getId(), keys);
+                }
+                catch (FinderException ex)
+                {
+                    throw new ApplicationRuntimeException(ex);
+                }
 
-                operations.transferBooks(toUser.getId(), keys);
+                return null;
+            }
+        };
 
-                break;
-            }
-            catch (FinderException ex)
-            {
-                throw new ApplicationRuntimeException(ex);
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Unable to transfer ownership of books.", ex, i++);
-            }
-        }
+        getRemoteTemplate().execute(callback, "Unable to transfer ownership of books.");
 
         Person fromUser = getFromUser();
 
@@ -213,10 +210,4 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageBeg
         return model;
     }
 
-    private Person readPerson(Integer personId)
-    {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-        return vengine.readPerson(personId);
-    }
 }

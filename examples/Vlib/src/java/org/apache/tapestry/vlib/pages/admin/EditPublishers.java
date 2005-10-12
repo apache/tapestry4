@@ -34,9 +34,9 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.util.DefaultPrimaryKeyConverter;
 import org.apache.tapestry.vlib.AdminPage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
-import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.Publisher;
 import org.apache.tapestry.vlib.pages.MyLibrary;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * Allows editting of the publishers in the database, including deleting publishers (which can be
@@ -100,25 +100,16 @@ public abstract class EditPublishers extends AdminPage implements PageBeginRende
 
     private void readPublishers()
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-        Publisher[] publishers = null;
-
-        int i = 0;
-        while (true)
+        RemoteCallback<Publisher[]> callback = new RemoteCallback()
         {
-            try
+            public Publisher[] doRemote() throws RemoteException
             {
-                IOperations operations = vengine.getOperations();
-
-                publishers = operations.getPublishers();
-
-                break;
+                return getOperations().getPublishers();
             }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure(updateFailure(), ex, i++);
-            }
-        }
+        };
+
+        Publisher[] publishers = getRemoteTemplate()
+                .execute(callback, "Could not read publishers.");
 
         DefaultPrimaryKeyConverter converter = getConverter();
 
@@ -154,37 +145,34 @@ public abstract class EditPublishers extends AdminPage implements PageBeginRende
 
     public void processForm(IRequestCycle cycle)
     {
-        Publisher[] updated = extractUpdatedPublishers();
-        Integer[] deletedKeys = extractDeletedKeys();
+        final Publisher[] updated = extractUpdatedPublishers();
+        final Integer[] deletedKeys = extractDeletedKeys();
 
-        // Now, push the updates through to the database
+        RemoteCallback callback = new RemoteCallback()
+        {
+            public Object doRemote() throws RemoteException
+            {
+
+                try
+                {
+                    getOperations().updatePublishers(updated, deletedKeys);
+                }
+                catch (FinderException ex)
+                {
+                    throw new ApplicationRuntimeException(ex);
+                }
+                catch (RemoveException ex)
+                {
+                    throw new ApplicationRuntimeException(ex);
+                }
+
+                return null;
+            }
+        };
+
+        getRemoteTemplate().execute(callback, updateFailure());
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-        int i = 0;
-        while (true)
-        {
-            try
-            {
-                IOperations operations = vengine.getOperations();
-
-                operations.updatePublishers(updated, deletedKeys);
-
-                break;
-            }
-            catch (FinderException ex)
-            {
-                throw new ApplicationRuntimeException(ex);
-            }
-            catch (RemoveException ex)
-            {
-                throw new ApplicationRuntimeException(ex);
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure(updateFailure(), ex, i++);
-            }
-        }
 
         // Clear any cached info about publishers.
 

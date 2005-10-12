@@ -16,6 +16,9 @@ package org.apache.tapestry.vlib;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
+import org.apache.tapestry.annotations.InjectPage;
+import org.apache.tapestry.annotations.InjectState;
+import org.apache.tapestry.annotations.InjectStateFlag;
 import org.apache.tapestry.callback.PageCallback;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.vlib.pages.Login;
@@ -28,26 +31,35 @@ import org.apache.tapestry.vlib.pages.Login;
 
 public abstract class AdminPage extends Protected implements IMessageProperty
 {
+    @InjectState("visit")
+    public abstract Visit getVisitState();
+
+    @InjectStateFlag("visit")
+    public abstract boolean getVisitStateExists();
+
+    @InjectPage("Login")
+    public abstract Login getLogin();
 
     public void pageValidate(PageEvent event)
     {
-        IRequestCycle cycle = event.getRequestCycle();
-        Visit visit = (Visit) getEngine().getVisit();
+        boolean loggedIn = getVisitStateExists() && getVisitState().isUserLoggedIn();
 
-        if (visit == null || !visit.isUserLoggedIn())
+        if (!loggedIn)
         {
-            Login login = (Login) cycle.getPage("Login");
+            Login login = getLogin();
 
             login.setCallback(new PageCallback(this));
 
             throw new PageRedirectException(login);
         }
 
-        if (!visit.getUser(cycle).isAdmin())
-        {
-            VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+        IRequestCycle cycle = getRequestCycle();
 
-            vengine.presentError("That function is restricted to adminstrators.", cycle);
+        if (!getVisitState().getUser().isAdmin())
+        {
+            getErrorPresenter().presentError(
+                    "That function is restricted to administrators.",
+                    cycle);
 
             throw new PageRedirectException(cycle.getPage());
         }

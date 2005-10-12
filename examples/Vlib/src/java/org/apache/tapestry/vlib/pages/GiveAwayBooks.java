@@ -33,8 +33,8 @@ import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
-import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.Person;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * Used to manage giving away of books to other users.
@@ -67,9 +67,6 @@ public abstract class GiveAwayBooks extends Protected implements PageBeginRender
     public abstract String transferedBooks(int count, String targetName);
 
     @Message
-    public abstract String readUsersFailure();
-
-    @Message
     public abstract String readBooksFailure();
 
     @InjectPage("MyLibrary")
@@ -77,11 +74,9 @@ public abstract class GiveAwayBooks extends Protected implements PageBeginRender
 
     public void formSubmit()
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+        final Integer targetUserId = getTargetUserId();
 
-        Integer targetUserId = getTargetUserId();
-
-        Person target = vengine.readPerson(targetUserId);
+        Person target = getRemoteTemplate().getPerson(targetUserId);
 
         List selectedBooks = getSelectedBooks();
 
@@ -93,28 +88,25 @@ public abstract class GiveAwayBooks extends Protected implements PageBeginRender
             return;
         }
 
-        Integer[] bookIds = (Integer[]) selectedBooks.toArray(new Integer[count]);
+        final Integer[] bookIds = (Integer[]) selectedBooks.toArray(new Integer[count]);
 
-        int i = 0;
-        while (true)
+        RemoteCallback callback = new RemoteCallback()
         {
-            IOperations operations = vengine.getOperations();
+            public Object doRemote() throws RemoteException
+            {
+                try
+                {
+                    getOperations().transferBooks(targetUserId, bookIds);
+                    return null;
+                }
+                catch (FinderException ex)
+                {
+                    throw new ApplicationRuntimeException(ex);
+                }
+            }
+        };
 
-            try
-            {
-                operations.transferBooks(targetUserId, bookIds);
-
-                break;
-            }
-            catch (FinderException ex)
-            {
-                throw new ApplicationRuntimeException(ex);
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure(updateFailure(), ex, i++);
-            }
-        }
+        getRemoteTemplate().execute(callback, updateFailure());
 
         MyLibrary myLibrary = getMyLibrary();
 
@@ -125,36 +117,20 @@ public abstract class GiveAwayBooks extends Protected implements PageBeginRender
 
     private IPropertySelectionModel buildPersonModel()
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-        Visit visit = (Visit) vengine.getVisit();
+        Visit visit = getVisitState();
         Integer userPK = visit.getUserId();
 
-        Person[] persons = null;
-
-        int i = 0;
-        while (true)
-        {
-            IOperations operations = vengine.getOperations();
-
-            try
-            {
-                persons = operations.getPersons();
-
-                break;
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure(readUsersFailure(), ex, i++);
-            }
-        }
+        Person[] persons = getRemoteTemplate().getPersons();
 
         EntitySelectionModel result = new EntitySelectionModel();
 
-        for (i = 0; i < persons.length; i++)
+        for (int i = 0; i < persons.length; i++)
         {
 
             Person p = persons[i];
             Integer pk = p.getId();
+
+            // Skip the current user
 
             if (pk.equals(userPK))
                 continue;

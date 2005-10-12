@@ -22,7 +22,7 @@ import java.rmi.RemoteException;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public interface RemoteCallback
+public interface RemoteCallback<T>
 {
     /**
      * Invoked by {@link RemoteTemplate}.
@@ -30,5 +30,5 @@ public interface RemoteCallback
      * @return
      * @throws RemoteException
      */
-    Object remoteCallback() throws RemoteException;
+    T doRemote() throws RemoteException;
 }

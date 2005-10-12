@@ -16,8 +16,13 @@ package org.apache.tapestry.vlib.services;
 
 import java.rmi.RemoteException;
 
+import javax.ejb.FinderException;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.lib.RemoteExceptionCoordinator;
+import org.apache.tapestry.vlib.ejb.Book;
+import org.apache.tapestry.vlib.ejb.IOperations;
+import org.apache.tapestry.vlib.ejb.Person;
 
 /**
  * Handles remote exceptions and retries.
@@ -31,7 +36,9 @@ public class RemoteTemplateImpl implements RemoteTemplate
 
     private RemoteExceptionCoordinator _coordinator;
 
-    public Object doRemote(RemoteCallback callback, String errorMessage)
+    private IOperations _operations;
+
+    public <T> T execute(RemoteCallback<T> callback, String errorMessage)
     {
         int attempt = 1;
 
@@ -39,7 +46,7 @@ public class RemoteTemplateImpl implements RemoteTemplate
         {
             try
             {
-                return callback.remoteCallback();
+                return callback.doRemote();
             }
             catch (RemoteException ex)
             {
@@ -54,8 +61,66 @@ public class RemoteTemplateImpl implements RemoteTemplate
         }
     }
 
+    public Person getPerson(final Integer personId)
+    {
+        RemoteCallback<Person> callback = new RemoteCallback()
+        {
+            public Person doRemote() throws RemoteException
+            {
+                try
+                {
+                    return _operations.getPerson(personId);
+                }
+                catch (FinderException ex)
+                {
+                    throw new ApplicationRuntimeException(ex);
+                }
+            }
+        };
+
+        return execute(callback, "Unable to read Person #" + personId + ".");
+    }
+
+    public Person[] getPersons()
+    {
+        RemoteCallback<Person[]> callback = new RemoteCallback()
+        {
+            public Person[] doRemote() throws RemoteException
+            {
+                return _operations.getPersons();
+            }
+        };
+
+        return execute(callback, "Error reading application users.");
+    }
+
+    public Book getBook(final Integer bookId)
+    {
+        RemoteCallback<Book> callback = new RemoteCallback()
+        {
+            public Book doRemote() throws RemoteException
+            {
+                try
+                {
+                    return _operations.getBook(bookId);
+                }
+                catch (FinderException ex)
+                {
+                    throw new ApplicationRuntimeException(ex);
+                }
+            }
+        };
+
+        return execute(callback, "Unable to read Book #" + bookId + ".");
+    }
+
     public void setCoordinator(RemoteExceptionCoordinator coordinator)
     {
         _coordinator = coordinator;
+    }
+
+    public void setOperations(IOperations operations)
+    {
+        _operations = operations;
     }
 }
