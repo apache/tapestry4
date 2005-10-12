@@ -28,11 +28,9 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
-</p>
-
-<p>
-  <strong>See also:</strong> 
+<p> A component which delegates its behavior (that is, the HTML rendered) to some other object.
+<br/>This is occasionally useful when the HTML to render is best generated from pure Java code
+(or has been provided from some source outside of Tapestry).
 </p>
 
 <section>
@@ -47,15 +45,25 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
+  <tr>
+    <td>delegate</td>
+    <td>&IRender;</td>
 
-	</table>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+      If specified, the object which will provide the rendering for the component.
+    </td>
+  </tr>
+</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>forbidden</strong>
 </p>
 
 <p>
@@ -64,9 +72,5 @@
 
 </section>
 
-<section>
-  <title>Examples</title>
-
-</section>
 </body>
 </document>
