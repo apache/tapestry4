@@ -51,6 +51,7 @@
 <!ENTITY EvenOdd 					'<link href="&apiroot;/bean/EvenOdd.html">EvenOdd</link>'>
 <!ENTITY ExceptionAnalyzer 			'<link href="&apiroot;/util/exception/ExceptionAnalyzer.html">ExceptionAnalyzer</link>'>
 <!ENTITY ExceptionDescription 		'<link href="&apiroot;/util/exception/ExceptionDescription.html">ExceptionDescription</link>'>
+<!ENTITY ExternalAsset 				'<link href="&apiroot;/ExternalAsset.html">ExternalAsset</link>'>
 <!ENTITY IAsset 					'<link href="&apiroot;/IAsset.html">IAsset</link>'>
 <!ENTITY IBeanProvider 				'<link href="&apiroot;/IBeanProvider.html">IBeanProvider</link>'>
 <!ENTITY IBinding 					'<link href="&apiroot;/IBinding.html">IBinding</link>'>
