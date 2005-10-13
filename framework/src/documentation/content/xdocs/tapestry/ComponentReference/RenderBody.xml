@@ -69,6 +69,7 @@
 <section>
   <title>Examples</title>
   <p> This example shows an implementation of the classical Border component, an application specific component. It is a common practice to use a Border component to provide common layout to almost all of application pages.</p>
+  <figure src="&projectroot;/images/tapestry/ComponentReference/RenderBody.png" alt="RenderBody Screen Shot"/>
   <p>Template</p>
     <source><![CDATA[
 <span jwcid="@Border">
