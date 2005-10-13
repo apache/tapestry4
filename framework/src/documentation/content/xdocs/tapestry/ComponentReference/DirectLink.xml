@@ -169,58 +169,10 @@ List</td>
 In this example the DirectLink component enables users to select a Customer from the Customer List table.
 </p>
 
-<source><![CDATA[
-
-  <table class="examples" cellspacing="6">
-  <tr align="left">
-   <th>ID</th>
-   <th>&nbsp;</th>
-   <th>Name</th>
-   <th>&nbsp;</th>
-   <th>Level</th>
-   <th>&nbsp;</th>
-  </tr>
-  <tr>
-   <td colspan="6"><hr></td>
-  </tr>
-  <tr>
-   <td>10276</td>
-   <td>&nbsp;</td>
-   <td><a href="DirectLink.html" style="{color:blue;}">Ms Sophie L. Jamies</a></td>
-   <td>&nbsp;</td>
-   <td>Platinum</td>
-   <td><a href="DirectLink.html" style="{color:blue;}"><img src="images/delete.gif" alt="Delete"></a></td>
-  </tr>
-  <tr>
-   <td>10539</td>
-   <td>&nbsp;</td>
-   <td><a href="DirectLink.html" style="{color:blue;}">Mr Albert H. Davies</a></td>
-   <td>&nbsp;</td>
-   <td>Gold</td>
-   <td><a href="DirectLink.html" style="{color:blue;}"><img src="images/delete.gif" alt="Delete"></a></td>
-  </tr>
-  <tr>
-   <td>10552</td>
-   <td>&nbsp;</td>
-   <td><a href="DirectLink.html" style="{color:blue;}">Mrs Jan S. Flawson</a></td>
-   <td>&nbsp;</td>
-   <td>Gold</td>
-   <td><a href="DirectLink.html" style="{color:blue;}"><img src="images/delete.gif" alt="Delete"></a></td>
-  </tr>
-  <tr>
-   <td>10863</td>
-   <td>&nbsp;</td>
-   <td><a href="DirectLink.html" style="{color:blue;}">Mr Robert J. Hassel</a></td>
-   <td>&nbsp;</td>
-   <td>Silver</td>
-   <td><a href="DirectLink.html" style="{color:blue;}"><img src="images/delete.gif" alt="Delete"></a></td>
-  </tr>
-</table>
-]]></source>
+<figure src="&projectroot;/images/tapestry/ComponentReference/DirectLink.png" alt="DirectLink Screen Shot"/>
 
 
-<section>
-<title>HTML template</title>
+<p>HTML template</p>
 <source><![CDATA[
   <table cellspacing="6">
   <tr>
@@ -248,19 +200,15 @@ In this example the DirectLink component enables users to select a Customer from
   </tr>
 </table>
 ]]></source>
-</section>
 
-<section>
-<title>Page specification</title>
+<p>Page specification</p>
 <source><![CDATA[
 <property name="customerList" type="java.util.List" persistent="yes"/>
 <property name="customer" type="Customer"/>
 ]]></source>
-</section>
 
 
-<section>
-<title>Java sources</title>
+<p>Java sources</p>
 <source><![CDATA[
 public abstract class SalesPage extends BasePage {
     public abstract List getCustomerList();
@@ -325,7 +273,6 @@ public class Customer implements Serializable {
     public String getMemberLevel() { return memberLevel; }
 }
 ]]></source>
-</section>
 </section>
 
 </body>
