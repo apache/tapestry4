@@ -111,7 +111,7 @@
       <td>&IAsset;</td> <td>in</td> <td>no</td> <td>&nbsp;</td>
       <td>
          If any of these are specified then they override the default images provided with the component. This allows the look and feel to be customized relatively easily.
-<br/>The most common reason to replace the images is to deal with backgrounds. The default images are anti-aliased against a white background. If a colored or patterned background is used, the default images will have an ugly white fringe. Until all browsers have full support for PNG (which has a true alpha channel), it is necessary to customize the images to match the background. 
+<br/>The most common reason to replace the images is to deal with backgrounds. The default images are anti-aliased against a white background. If a colored or patterned background is used, the default images will have an ugly white fringe. Until all browsers have full support for PNG (which has a true alpha channel), it is necessary to customize the images to match the background.
       </td>
     </tr>
 	</table>
@@ -128,6 +128,42 @@
   Reserved parameters: <em>none</em>
 </p>
 
+<p>
+A Palette requires some CSS entries to render correctly, especially the middle column, which contains the two or four buttons for moving selections between the two columns. The width and alignment of this column must be set using CSS.
+Additionally, CSS is commonly used to give the Palette columns a fixed width, and to dress up the titles. Here is an example of some CSS you can use to format the palette component:
+<br/>
+</p>
+    <source><![CDATA[
+TABLE.tapestry-palette TH
+ {
+   font-size: 9pt;
+   font-weight: bold;
+   color: white;
+   background-color: #330066;
+   text-align: center;
+ }
+
+ TD.available-cell SELECT
+ {
+   font-weight: normal;
+   background-color: #FFFFFF;
+   width: 200px;
+ }
+
+ TD.selected-cell SELECT
+ {
+   font-weight: normal;
+   background-color: #FFFFFF;
+   width: 200px;
+ }
+
+ TABLE.tapestry-palette TD.controls
+ {
+   text-align: center;
+   vertical-align: middle;
+   width: 60px;
+ }
+     ]]></source>
 </section>
 
 </body>
