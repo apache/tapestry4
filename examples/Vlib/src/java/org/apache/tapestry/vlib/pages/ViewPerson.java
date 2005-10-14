@@ -31,6 +31,7 @@ import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.Person;
 import org.apache.tapestry.vlib.ejb.SortColumn;
 import org.apache.tapestry.vlib.ejb.SortOrdering;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * Displays the book inventory list for a single {@link org.apache.tapestry.vlib.ejb.IPerson},
@@ -100,35 +101,34 @@ public abstract class ViewPerson extends BasePage implements IExternalPage,
 
     private int runQuery()
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-        Integer personId = getPersonId();
+        final Integer personId = getPersonId();
+        final SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
 
-        SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
-
-        int i = 0;
-        while (true)
+        RemoteCallback<Integer> callback = new RemoteCallback()
         {
-            IBookQuery query = getQuery();
-
-            if (query == null)
+            public Integer doRemote() throws RemoteException
             {
-                query = vengine.createNewQuery();
+                IBookQuery query = getQuery();
 
-                setQuery(query);
+                if (query == null)
+                {
+                    query = getBookQuerySource().newQuery();
+                    setQuery(query);
+                }
+
+                try
+                {
+                    return query.ownerQuery(personId, ordering);
+                }
+                catch (RemoteException ex)
+                {
+                    setQuery(null);
+                    throw ex;
+                }
             }
+        };
 
-            try
-            {
-                return query.ownerQuery(personId, ordering);
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception for owner query.", ex, i++);
-
-                setQuery(null);
-            }
-        }
-
+        return getRemoteTemplate().execute(callback, "Error executing owner query.");
     }
 
     public void pageBeginRender(PageEvent event)

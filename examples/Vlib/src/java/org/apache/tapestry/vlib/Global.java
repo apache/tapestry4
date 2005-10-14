@@ -22,7 +22,6 @@ import javax.rmi.PortableRemoteObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.vlib.ejb.IBookQueryHome;
 import org.apache.tapestry.vlib.ejb.IOperationsHome;
 
 /**
@@ -40,21 +39,9 @@ public class Global
     // Home interfaces are static, such that they are only
     // looked up once (JNDI lookup is very expensive).
 
-    private IBookQueryHome _bookQueryHome;
-
     private IOperationsHome _operationsHome;
 
     private Context _rootNamingContext;
-
-    public synchronized IBookQueryHome getBookQueryHome()
-    {
-        if (_bookQueryHome == null)
-            _bookQueryHome = (IBookQueryHome) findNamedObject(
-                    "vlib/BookQuery",
-                    IBookQueryHome.class);
-
-        return _bookQueryHome;
-    }
 
     public synchronized IOperationsHome getOperationsHome()
     {
@@ -159,7 +146,6 @@ public class Global
     public synchronized void clear()
     {
         _rootNamingContext = null;
-        _bookQueryHome = null;
         _operationsHome = null;
     }
 }

@@ -34,10 +34,8 @@ import org.apache.tapestry.vlib.AdminPage;
 import org.apache.tapestry.vlib.EntitySelectionModel;
 import org.apache.tapestry.vlib.IErrorProperty;
 import org.apache.tapestry.vlib.VirtualLibraryDelegate;
-import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
-import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.Person;
 import org.apache.tapestry.vlib.services.RemoteCallback;
 
@@ -173,38 +171,28 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageBeg
         return selectPage;
     }
 
-    private IPropertySelectionModel buildUserBookModel(Person user)
+    private IPropertySelectionModel buildUserBookModel(final Person user)
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-        Book[] books = null;
-
-        int i = 0;
-        while (true)
+        RemoteCallback<Book[]> callback = new RemoteCallback()
         {
-            books = null;
-
-            try
+            public Book[] doRemote() throws RemoteException
             {
-                IBookQuery query = vengine.createNewQuery();
+                IBookQuery query = getBookQuerySource().newQuery();
 
                 int count = query.ownerQuery(user.getId(), null);
 
-                if (count > 0)
-                    books = query.get(0, count);
+                return count > 0 ? query.get(0, count) : null;
+            }
+        };
 
-                break;
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Unable to retrieve books owned by " + user.getNaturalName()
-                        + ".", ex, i++);
-            }
-        }
+        Book[] books = getRemoteTemplate().execute(
+                callback,
+                "Unable to retrieve books owned by " + user.getNaturalName() + ".");
 
         EntitySelectionModel model = new EntitySelectionModel();
 
         if (books != null)
-            for (i = 0; i < books.length; i++)
+            for (int i = 0; i < books.length; i++)
                 model.add(books[i].getId(), books[i].getTitle());
 
         return model;

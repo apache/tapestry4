@@ -34,6 +34,7 @@ import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.SortColumn;
 import org.apache.tapestry.vlib.ejb.SortOrdering;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * Shows a list of books the user has borrowed.
@@ -95,40 +96,41 @@ public abstract class BorrowedBooks extends ActivatePage implements IMessageProp
     private void runQuery()
     {
         Visit visit = getVisitState();
-        Integer userPK = visit.getUserId();
+        final Integer userPK = visit.getUserId();
+        final SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-        SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
-
-        int i = 0;
-        while (true)
+        RemoteCallback<Integer> callback = new RemoteCallback()
         {
-            try
+            public Integer doRemote() throws RemoteException
             {
                 IBookQuery query = getBorrowedQuery();
 
                 if (query == null)
                 {
-                    query = vengine.createNewQuery();
+                    query = getBookQuerySource().newQuery();
                     setBorrowedQuery(query);
                 }
 
-                int count = query.borrowerQuery(userPK, ordering);
-                Browser browser = getBrowser();
-
-                if (count != browser.getResultCount())
-                    browser.initializeForResultCount(count);
-
-                break;
+                try
+                {
+                    return query.borrowerQuery(userPK, ordering);
+                }
+                catch (RemoteException ex)
+                {
+                    setBorrowedQuery(null);
+                    throw ex;
+                }
             }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception finding borrowed books.", ex, i++);
+        };
 
-                setBorrowedQuery(null);
-            }
-        }
+        int count = getRemoteTemplate().execute(
+                callback,
+                "Remote exception finding borrowed books.");
+
+        Browser browser = getBrowser();
+
+        if (count != browser.getResultCount())
+            browser.initializeForResultCount(count);
     }
 
     /**
@@ -137,12 +139,9 @@ public abstract class BorrowedBooks extends ActivatePage implements IMessageProp
 
     public void returnBook(Integer bookPK)
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-        IOperations operations = vengine.getOperations();
-
         try
         {
-            Book book = operations.returnBook(bookPK);
+            Book book = getOperations().returnBook(bookPK);
 
             setMessage(returnedBook(book.getTitle()));
 

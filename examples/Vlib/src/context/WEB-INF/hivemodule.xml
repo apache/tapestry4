@@ -54,5 +54,26 @@
         <create-instance class="ErrorPresenterImpl"/>
         
     </service-point>
+    
+    <service-point id="BookQuerySource">
+        
+        Handles JNDI lookup and retry logic for obtaining
+        an IBookQuery EJB.
+        
+        <invoke-factory>
+            <construct class="BookQuerySourceImpl">
+                <set-object property="nameLookup" value="service:hivemind.lib.NameLookup"/>
+                <set-object property="remoteTemplate" value="service:RemoteTemplate"/>
+            </construct>
+        </invoke-factory>
+                
+    </service-point>
+    
+    <contribution configuration-id="hivemind.ApplicationDefaults">
+        <!-- Talk to the local JBoss JNDI -->
+        <default symbol="java.naming.factory.initial" value="org.jnp.interfaces.NamingContextFactory"/>
+        <default symbol="java.naming.factory.url.pkgs" value="org.jboss.naming:org.jnp.interfaces"/>
+        <default symbol="java.naming.provider.url" value="localhost:1099"/>
+    </contribution>
      
 </module>
