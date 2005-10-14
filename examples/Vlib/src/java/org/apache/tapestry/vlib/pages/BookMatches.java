@@ -23,12 +23,14 @@ import org.apache.tapestry.annotations.Message;
 import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.html.BasePage;
+import org.apache.tapestry.vlib.OperationsUser;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.components.Browser;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.MasterQueryParameters;
 import org.apache.tapestry.vlib.ejb.SortColumn;
 import org.apache.tapestry.vlib.ejb.SortOrdering;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * Runs queries and displays matches.
@@ -37,7 +39,7 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
  */
 
 @Meta("page-type=Search")
-public abstract class BookMatches extends BasePage
+public abstract class BookMatches extends BasePage implements OperationsUser
 {
     @InjectComponent("browser")
     public abstract Browser getBrowser();
@@ -104,34 +106,35 @@ public abstract class BookMatches extends BasePage
 
     private int executeQuery()
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+        final MasterQueryParameters parameters = getQueryParameters();
 
-        MasterQueryParameters parameters = getQueryParameters();
+        final SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
 
-        SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
-
-        int i = 0;
-        while (true)
+        RemoteCallback<Integer> callback = new RemoteCallback()
         {
-            try
+            public Integer doRemote() throws RemoteException
             {
                 IBookQuery query = getBookQuery();
 
                 if (query == null)
                 {
-                    query = vengine.createNewQuery();
+                    query = getBookQuerySource().newQuery();
                     setBookQuery(query);
                 }
 
-                return query.masterQuery(parameters, ordering);
+                try
+                {
+                    return query.masterQuery(parameters, ordering);
+                }
+                catch (RemoteException ex)
+                {
+                    setBookQuery(null);
+                    throw ex;
+                }
             }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception processing query.", ex, i++);
+        };
 
-                setBookQuery(null);
-            }
-        }
+        return getRemoteTemplate().execute(callback, "Error processing query.");
     }
 
 }

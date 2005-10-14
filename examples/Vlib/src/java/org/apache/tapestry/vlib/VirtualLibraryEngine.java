@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 
 import javax.ejb.CreateException;
-import javax.ejb.FinderException;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
@@ -28,8 +27,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.engine.BaseEngine;
 import org.apache.tapestry.form.IPropertySelectionModel;
-import org.apache.tapestry.vlib.ejb.IBookQuery;
-import org.apache.tapestry.vlib.ejb.IBookQueryHome;
 import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.IOperationsHome;
 import org.apache.tapestry.vlib.ejb.Person;
@@ -258,40 +255,6 @@ public class VirtualLibraryEngine extends BaseEngine
     }
 
     /**
-     * Creates a new {@link IBookQuery} EJB instance.
-     */
-
-    public IBookQuery createNewQuery()
-    {
-        Global global = (Global) getGlobal();
-
-        IBookQuery result = null;
-
-        int i = 0;
-        while (true)
-        {
-            IBookQueryHome home = global.getBookQueryHome();
-
-            try
-            {
-                result = home.create();
-
-                break;
-            }
-            catch (CreateException ex)
-            {
-                throw new ApplicationRuntimeException("Could not create BookQuery bean.", ex);
-            }
-            catch (RemoteException ex)
-            {
-                rmiFailure("Remote exception creating BookQuery bean.", ex, i++);
-            }
-        }
-
-        return result;
-    }
-
-    /**
      * Invoked in various places to present an error message to the user. This sets the error
      * property of either the {@link org.apache.tapestry.vlib.pages.Home} or
      * {@link org.apache.tapestry.vlib.pages.MyLibrary} page (the latter only if the user is logged
@@ -353,8 +316,6 @@ public class VirtualLibraryEngine extends BaseEngine
 
         _operations = null;
     }
-
- 
 
     protected void handleStaleSessionException(IRequestCycle cycle, StaleSessionException exception)
     {

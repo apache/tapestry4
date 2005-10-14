@@ -29,7 +29,6 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.vlib.EntitySelectionModel;
 import org.apache.tapestry.vlib.Protected;
-import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
@@ -161,37 +160,27 @@ public abstract class GiveAwayBooks extends Protected implements PageBeginRender
 
     private IPropertySelectionModel buildBooksModel()
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-        Visit visit = (Visit) vengine.getVisit();
-        Integer userPK = visit.getUserId();
-        Book[] books = null;
+        Visit visit = getVisitState();
+        final Integer userPK = visit.getUserId();
 
-        int i = 0;
-        while (true)
+        RemoteCallback<Book[]> callback = new RemoteCallback()
         {
-            books = null;
-
-            try
+            public Book[] doRemote() throws RemoteException
             {
-                IBookQuery query = vengine.createNewQuery();
+                IBookQuery query = getBookQuerySource().newQuery();
 
                 int count = query.ownerQuery(userPK, null);
 
-                if (count > 0)
-                    books = query.get(0, count);
+                return count == 0 ? null : query.get(0, count);
+            }
+        };
 
-                break;
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure(readBooksFailure(), ex, i++);
-            }
-        }
+        Book[] books = getRemoteTemplate().execute(callback, readBooksFailure());
 
         EntitySelectionModel result = new EntitySelectionModel();
 
         if (books != null)
-            for (i = 0; i < books.length; i++)
+            for (int i = 0; i < books.length; i++)
                 result.add(books[i].getId(), books[i].getTitle());
 
         return result;

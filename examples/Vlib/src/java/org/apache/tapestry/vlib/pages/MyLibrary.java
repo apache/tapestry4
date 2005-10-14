@@ -28,6 +28,7 @@ import org.apache.tapestry.vlib.components.Browser;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.SortColumn;
 import org.apache.tapestry.vlib.ejb.SortOrdering;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * Shows a list of the user's books, allowing books to be editted or even deleted.
@@ -82,40 +83,39 @@ public abstract class MyLibrary extends ActivatePage implements IMessageProperty
 
     private void runQuery()
     {
-        Visit visit = (Visit) getVisit();
-        Integer userId = visit.getUserId();
+        final Integer userId = getVisitState().getUserId();
+        final SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-        SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
-
-        int i = 0;
-        while (true)
+        RemoteCallback<Integer> callback = new RemoteCallback()
         {
-            try
+            public Integer doRemote() throws RemoteException
             {
                 IBookQuery query = getOwnedQuery();
 
                 if (query == null)
                 {
-                    query = vengine.createNewQuery();
+                    query = getBookQuerySource().newQuery();
                     setOwnedQuery(query);
                 }
 
-                int count = query.ownerQuery(userId, ordering);
-
-                if (count != getBrowser().getResultCount())
-                    getBrowser().initializeForResultCount(count);
-
-                break;
+                try
+                {
+                    return query.ownerQuery(userId, ordering);
+                }
+                catch (RemoteException ex)
+                {
+                    setOwnedQuery(null);
+                    throw ex;
+                }
             }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception accessing owned books.", ex, i++);
+        };
 
-                setOwnedQuery(null);
-            }
-        }
+        int count = getRemoteTemplate().execute(callback, "Error accessing owned books.");
+
+        Browser browser = getBrowser();
+
+        if (count != browser.getResultCount())
+            browser.initializeForResultCount(count);
     }
 
     /**

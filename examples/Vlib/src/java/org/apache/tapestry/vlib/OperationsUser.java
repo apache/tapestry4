@@ -16,6 +16,7 @@ package org.apache.tapestry.vlib;
 
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.vlib.ejb.IOperations;
+import org.apache.tapestry.vlib.services.BookQuerySource;
 import org.apache.tapestry.vlib.services.ErrorPresenter;
 import org.apache.tapestry.vlib.services.RemoteTemplate;
 
@@ -37,4 +38,7 @@ public interface OperationsUser
 
     @InjectObject("service:vlib.ErrorPresenter")
     public abstract ErrorPresenter getErrorPresenter();
+
+    @InjectObject("service:vlib.BookQuerySource")
+    public abstract BookQuerySource getBookQuerySource();
 }

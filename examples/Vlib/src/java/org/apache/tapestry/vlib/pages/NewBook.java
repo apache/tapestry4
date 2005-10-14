@@ -20,6 +20,7 @@ import java.util.Map;
 
 import javax.ejb.CreateException;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.annotations.InjectComponent;
 import org.apache.tapestry.annotations.InjectPage;
@@ -32,6 +33,7 @@ import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.ejb.IOperations;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * Collects information for a new book.
@@ -66,10 +68,10 @@ public abstract class NewBook extends Protected implements PageBeginRenderListen
     {
         IValidationDelegate delegate = getValidationDelegate();
 
-        Map attributes = getAttributes();
+        final Map attributes = getAttributes();
 
-        Integer publisherId = (Integer) attributes.get("publisherId");
-        String publisherName = getPublisherName();
+        final Integer publisherId = (Integer) attributes.get("publisherId");
+        final String publisherName = getPublisherName();
 
         if (publisherId == null && HiveMind.isBlank(publisherName))
         {
@@ -89,41 +91,43 @@ public abstract class NewBook extends Protected implements PageBeginRenderListen
         Visit visit = getVisitState();
 
         Integer userId = visit.getUserId();
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         attributes.put("ownerId", userId);
         attributes.put("holderId", userId);
 
-        int i = 0;
-        while (true)
+        RemoteCallback<Boolean> callback = new RemoteCallback()
         {
-            try
+            public Boolean doRemote() throws RemoteException
             {
+                IOperations operations = getOperations();
 
-                IOperations operations = vengine.getOperations();
-
-                if (publisherId != null)
-                    operations.addBook(attributes);
-                else
+                try
                 {
+                    if (publisherId != null)
+                    {
+                        operations.addBook(attributes);
+
+                        return false;
+                    }
+
                     operations.addBook(attributes, publisherName);
 
-                    // Clear the app's cache of info; in this case, known publishers.
-
-                    vengine.clearCache();
+                    return true;
                 }
+                catch (CreateException ex)
+                {
+                    throw new ApplicationRuntimeException(ex);
+                }
+            }
+        };
 
-                break;
-            }
-            catch (CreateException ex)
-            {
-                setError("Error adding book: " + ex.getMessage());
-                return;
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception adding new book.", ex, i++);
-            }
+        boolean clearCache = getRemoteTemplate().execute(callback, "Error adding new book.");
+
+        if (clearCache)
+        {
+            VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+
+            vengine.clearCache();
         }
 
         // Success. First, update the message property of the return page.
@@ -143,7 +147,7 @@ public abstract class NewBook extends Protected implements PageBeginRenderListen
 
             // Setup defaults for the new book.
 
-            attributes.put("lendable", Boolean.TRUE);
+            attributes.put("lendable", true);
 
             setAttributes(attributes);
         }
