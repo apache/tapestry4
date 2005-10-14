@@ -28,12 +28,13 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.Message;
+import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.util.DefaultPrimaryKeyConverter;
-import org.apache.tapestry.vlib.AdminPage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
+import org.apache.tapestry.vlib.VlibPage;
 import org.apache.tapestry.vlib.ejb.Publisher;
 import org.apache.tapestry.vlib.pages.MyLibrary;
 import org.apache.tapestry.vlib.services.RemoteCallback;
@@ -44,8 +45,9 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
  * 
  * @author Howard Lewis Ship
  */
-
-public abstract class EditPublishers extends AdminPage implements PageBeginRenderListener,
+@Meta(
+{ "page-type=EditPublishers", "admin-page=true" })
+public abstract class EditPublishers extends VlibPage implements PageBeginRenderListener,
         PageDetachListener
 {
     public abstract Publisher getPublisher();

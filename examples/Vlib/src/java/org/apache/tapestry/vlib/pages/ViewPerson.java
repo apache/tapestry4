@@ -23,9 +23,7 @@ import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.html.BasePage;
-import org.apache.tapestry.vlib.OperationsUser;
-import org.apache.tapestry.vlib.VirtualLibraryEngine;
+import org.apache.tapestry.vlib.VlibPage;
 import org.apache.tapestry.vlib.components.Browser;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.Person;
@@ -40,9 +38,9 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
  * 
  * @author Howard Lewis Ship
  */
-@Meta("page-type=Search")
-public abstract class ViewPerson extends BasePage implements IExternalPage,
-        PageBeginRenderListener, OperationsUser
+@Meta(
+{ "page-type=Search", "anonymous-access=true" })
+public abstract class ViewPerson extends VlibPage implements IExternalPage, PageBeginRenderListener
 {
     public abstract Integer getPersonId();
 

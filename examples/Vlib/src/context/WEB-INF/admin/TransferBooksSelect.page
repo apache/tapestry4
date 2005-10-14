@@ -19,25 +19,27 @@
   "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 
-<page-specification class="org.apache.tapestry.vlib.pages.admin.EditPublishers">
- 
+<page-specification>
+
   <component id="form" type="Form">
-    <binding name="success" value="listener:processForm"/>
+    <binding name="success" value="listener:formSubmit"/>
     <binding name="clientValidationEnabled" value="true"/>
-    <binding name="delegate" value="validationDelegate"/>
-  </component>
- 
-  <component id="loop" type="For">
-  	<binding name="source" value="converter.values"/>
-  	<binding name="value" value="publisher"/>
-  	<binding name="element" value="literal:tr"/>
-    <binding name="converter" value="converter"/>
   </component>
   
-  <component id="name" type="TextField">
-    <binding name="value" value="publisher.name"/>
+  <component id="from" type="PropertySelection">
+    <binding name="value" value="fromUserId"/>
+    <binding name="model" value="engine.personModel"/>
+    <binding name="displayName" value="message:from-label"/>
     <binding name="validators" value="validators:required"/>
-    <binding name="displayName" value="message:publisher-name-label"/>
   </component>
+  
+  
+  <component id="to" type="PropertySelection">
+    <binding name="value" value="toUserId"/>
+    <binding name="model" value="engine.personModel"/>
+    <binding name="displayName" value="message:to-label"/>
+    <binding name="validators" value="validators:required"/>
+  </component>  
   
 </page-specification>
+

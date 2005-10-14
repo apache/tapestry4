@@ -14,10 +14,7 @@
 
 package org.apache.tapestry.vlib.pages;
 
-import java.rmi.RemoteException;
 import java.text.DateFormat;
-
-import javax.ejb.FinderException;
 
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
@@ -25,20 +22,18 @@ import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.html.BasePage;
-import org.apache.tapestry.vlib.OperationsUser;
-import org.apache.tapestry.vlib.VirtualLibraryEngine;
+import org.apache.tapestry.vlib.VlibPage;
 import org.apache.tapestry.vlib.ejb.Book;
-import org.apache.tapestry.vlib.ejb.IOperations;
 
 /**
  * Shows the details of a book, and allows the user to borrow it.
  * 
  * @author Howard Lewis Ship
  */
-@Meta("page-type=Search")
-public abstract class ViewBook extends BasePage implements IExternalPage, PageBeginRenderListener,
-        OperationsUser
+@Meta(
+{ "page-type=Search", "anonymous-access=true" })
+public abstract class ViewBook extends VlibPage implements IExternalPage, PageBeginRenderListener
+
 {
     private DateFormat _dateFormat;
 

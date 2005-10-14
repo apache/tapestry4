@@ -28,8 +28,8 @@ import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.vlib.EntitySelectionModel;
-import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.Visit;
+import org.apache.tapestry.vlib.VlibPage;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.Person;
@@ -42,7 +42,7 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
  * @since 3.0
  */
 
-public abstract class GiveAwayBooks extends Protected implements PageBeginRenderListener
+public abstract class GiveAwayBooks extends VlibPage implements PageBeginRenderListener
 {
     public abstract IPropertySelectionModel getBooksModel();
 

@@ -20,26 +20,21 @@ import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.vlib.pages.Login;
 
 /**
- * Subclass of {@link org.apache.tapestry.vlib.Protected} that implements
- * {@link org.apache.tapestry.vlib.IActivate}. Overrides
- * {@link #validate(org.apache.tapestry.IRequestCycle)}.
+ * Subclass of {@link org.apache.tapestry.vlib.VlibPage} that implements
+ * {@link org.apache.tapestry.vlib.IActivate}. Overrides {@link #pageValidate(PageEvent)}.
  * 
  * @author Howard Lewis Ship
  * @since 3.0
  */
 
-public abstract class ActivatePage extends Protected implements IActivate, PageValidateListener
+public abstract class ActivatePage extends VlibPage implements IActivate, PageValidateListener
 {
     public void pageValidate(PageEvent event)
     {
-        Visit visit = (Visit) getVisit();
-
-        if (visit != null && visit.isUserLoggedIn())
+        if (isUserLoggedIn())
             return;
 
-        // User not logged in ... redirect through the Login page.
-
-        Login login = (Login) getRequestCycle().getPage("Login");
+        Login login = getLogin();
 
         login.setCallback(new ActivateCallback(this));
 

@@ -21,21 +21,17 @@ import org.apache.tapestry.annotations.Bean;
 import org.apache.tapestry.annotations.InjectComponent;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.InjectPage;
-import org.apache.tapestry.annotations.InjectState;
+import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.services.CookieSource;
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.apache.tapestry.vlib.IErrorProperty;
-import org.apache.tapestry.vlib.OperationsUser;
 import org.apache.tapestry.vlib.VirtualLibraryDelegate;
-import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
-import org.apache.tapestry.vlib.ejb.IOperations;
+import org.apache.tapestry.vlib.VlibPage;
 import org.apache.tapestry.vlib.ejb.LoginException;
 import org.apache.tapestry.vlib.ejb.Person;
 import org.apache.tapestry.vlib.services.RemoteCallback;
@@ -48,8 +44,8 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
  * @author Howard Lewis Ship
  */
 
-public abstract class Login extends BasePage implements IErrorProperty, PageBeginRenderListener,
-        OperationsUser
+@Meta("anonymous-access=true")
+public abstract class Login extends VlibPage implements PageBeginRenderListener
 {
     /**
      * The name of a cookie to store on the user's machine that will identify them next time they
@@ -82,9 +78,6 @@ public abstract class Login extends BasePage implements IErrorProperty, PageBegi
 
     @InjectComponent("password")
     public abstract IFormComponent getPasswordField();
-
-    @InjectState("visit")
-    public abstract Visit getVisitState();
 
     @InjectPage("MyLibrary")
     public abstract MyLibrary getMyLibrary();
