@@ -21,16 +21,17 @@ import org.apache.tapestry.annotations.Message;
 import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.apache.tapestry.vlib.AdminPage;
 import org.apache.tapestry.vlib.VirtualLibraryDelegate;
+import org.apache.tapestry.vlib.VlibPage;
 
 /**
  * First page in Transfer Books wizard; allows the two users to be selected.
  * 
  * @author Howard Lewis Ship
  */
-@Meta("page-type=TransferBooks")
-public abstract class TransferBooksSelect extends AdminPage
+@Meta(
+{ "page-type=TransferBooks", "admin-page=true" })
+public abstract class TransferBooksSelect extends VlibPage
 {
     public abstract Integer getFromUserId();
 
@@ -45,7 +46,7 @@ public abstract class TransferBooksSelect extends AdminPage
     @Bean(VirtualLibraryDelegate.class)
     public abstract IValidationDelegate getValidationDelegate();
 
-    @InjectPage("TransferBooksTransfer")
+    @InjectPage("admin/TransferBooksTransfer")
     public abstract TransferBooksTransfer getNextPage();
 
     public void formSubmit()

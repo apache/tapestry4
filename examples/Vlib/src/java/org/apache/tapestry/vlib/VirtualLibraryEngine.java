@@ -32,6 +32,7 @@ import org.apache.tapestry.vlib.ejb.IOperationsHome;
 import org.apache.tapestry.vlib.ejb.Person;
 import org.apache.tapestry.vlib.ejb.Publisher;
 import org.apache.tapestry.vlib.pages.ApplicationUnavailable;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * The engine for the Virtual Library. This exists to implement the external service, which allows
@@ -252,29 +253,6 @@ public class VirtualLibraryEngine extends BaseEngine
 
         return model;
 
-    }
-
-    /**
-     * Invoked in various places to present an error message to the user. This sets the error
-     * property of either the {@link org.apache.tapestry.vlib.pages.Home} or
-     * {@link org.apache.tapestry.vlib.pages.MyLibrary} page (the latter only if the user is logged
-     * in), and sets the selected page for rendering the response.
-     */
-
-    public void presentError(String error, IRequestCycle cycle)
-    {
-        String pageName = "Home";
-        // Get, but don't create, the visit.
-        Visit visit = (Visit) getVisit();
-
-        if (visit != null && visit.isUserLoggedIn())
-            pageName = "MyLibrary";
-
-        IErrorProperty page = (IErrorProperty) cycle.getPage(pageName);
-
-        page.setError(error);
-
-        cycle.activate(page);
     }
 
     /**

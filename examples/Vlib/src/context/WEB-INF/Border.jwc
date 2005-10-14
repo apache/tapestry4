@@ -79,7 +79,7 @@
   </component>  
    
   <component id="editUsers" type="PageLink">
-    <binding name="page" value="literal:EditUsers"/>
+    <binding name="page" value="literal:admin/EditUsers"/>
   </component>
   
   <component id="editUsersRollover" type="Rollover">
@@ -88,7 +88,7 @@
   </component>
   
   <component id="editPublishers" type="PageLink">
-    <binding name="page" value="literal:EditPublishers"/>	
+    <binding name="page" value="literal:admin/EditPublishers"/>	
   </component>
   
   <component id="editPublishersRollover" type="Rollover">
@@ -97,7 +97,7 @@
   </component>
   
   <component id="transferBooks" type="PageLink">
-    <binding name="page" value="literal:TransferBooksSelect"/>	
+    <binding name="page" value="literal:admin/TransferBooksSelect"/>	
   </component>
   
   <component id="transferBooksRollover" type="Rollover">

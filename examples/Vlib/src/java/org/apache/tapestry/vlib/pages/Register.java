@@ -21,17 +21,12 @@ import javax.ejb.CreateException;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.annotations.Bean;
 import org.apache.tapestry.annotations.InjectComponent;
-import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.Message;
 import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.apache.tapestry.vlib.IErrorProperty;
-import org.apache.tapestry.vlib.OperationsUser;
 import org.apache.tapestry.vlib.VirtualLibraryDelegate;
-import org.apache.tapestry.vlib.VirtualLibraryEngine;
-import org.apache.tapestry.vlib.ejb.IOperations;
+import org.apache.tapestry.vlib.VlibPage;
 import org.apache.tapestry.vlib.ejb.Person;
 import org.apache.tapestry.vlib.ejb.RegistrationException;
 import org.apache.tapestry.vlib.services.RemoteCallback;
@@ -42,8 +37,9 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
  * @author Howard Lewis Ship
  */
 
-@Meta("page-type=Login")
-public abstract class Register extends BasePage implements IErrorProperty, OperationsUser
+@Meta(
+{ "page-type=Login", "anonymous-access=true" })
+public abstract class Register extends VlibPage
 {
     public abstract String getFirstName();
 
@@ -70,9 +66,6 @@ public abstract class Register extends BasePage implements IErrorProperty, Opera
 
     @Message
     public abstract String passwordMustMatch();
-
-    @InjectPage("Login")
-    public abstract Login getLogin();
 
     private void clear(IFormComponent field)
     {

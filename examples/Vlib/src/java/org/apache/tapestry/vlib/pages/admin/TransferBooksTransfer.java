@@ -30,10 +30,10 @@ import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.apache.tapestry.vlib.AdminPage;
 import org.apache.tapestry.vlib.EntitySelectionModel;
 import org.apache.tapestry.vlib.IErrorProperty;
 import org.apache.tapestry.vlib.VirtualLibraryDelegate;
+import org.apache.tapestry.vlib.VlibPage;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.Person;
@@ -47,8 +47,9 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
  * @since 3.0
  */
 
-@Meta("page-type=TransferBooks")
-public abstract class TransferBooksTransfer extends AdminPage implements PageBeginRenderListener
+@Meta(
+{ "page-type=TransferBooks", "admin-page=true" })
+public abstract class TransferBooksTransfer extends VlibPage implements PageBeginRenderListener
 {
     public abstract Person getFromUser();
 
@@ -80,7 +81,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageBeg
     @Message
     public abstract String userHasNoBooks(String userName);
 
-    @InjectPage("TransferBooksSelect")
+    @InjectPage("admin/TransferBooksSelect")
     public abstract TransferBooksSelect getSelectPage();
 
     @Message
@@ -94,7 +95,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageBeg
 
         if (model.getOptionCount() == 0)
         {
-            IErrorProperty page = getSelectPage();
+            TransferBooksSelect page = getSelectPage();
             page.setError(userHasNoBooks(fromUser.getNaturalName()));
             return;
         }

@@ -30,8 +30,8 @@ import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
+import org.apache.tapestry.vlib.VlibPage;
 import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.services.RemoteCallback;
 
@@ -42,7 +42,7 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
  */
 
 @Meta("page-type=MyLibrary")
-public abstract class EditBook extends Protected implements PageBeginRenderListener
+public abstract class EditBook extends VlibPage implements PageBeginRenderListener
 {
     public abstract Map getAttributes();
 

@@ -27,18 +27,21 @@ import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.vlib.OperationsUser;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
+import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
- * Implements a paging browser for the results of a {@link IBookQuery}.
- * Renders its body multiple times, once for each book provided by the query.
+ * Implements a paging browser for the results of a {@link IBookQuery}. Renders its body multiple
+ * times, once for each book provided by the query.
  * 
  * @author Howard Lewis Ship
  */
 @ComponentClass(allowInformalParameters = true, allowBody = true)
-public abstract class Browser extends AbstractComponent implements PageBeginRenderListener
+public abstract class Browser extends AbstractComponent implements PageBeginRenderListener,
+        OperationsUser
 {
     /**
      * Default for the page size; the number of results viewed on each page.
@@ -194,43 +197,37 @@ public abstract class Browser extends AbstractComponent implements PageBeginRend
         setElement("tr");
     }
 
-    public void pageBeginRender(PageEvent event)
+    public void pageBeginRender(final PageEvent event)
     {
         int resultCount = getResultCount();
         int currentPage = getCurrentPage();
 
-        int low = (currentPage - 1) * _pageSize;
-        int high = Math.min(currentPage * _pageSize, resultCount) - 1;
+        final int low = (currentPage - 1) * _pageSize;
+        final int high = Math.min(currentPage * _pageSize, resultCount) - 1;
 
         if (low > high)
             return;
 
-        Book[] pageResults = null;
-
-        int i = 0;
-        while (true)
+        RemoteCallback<Book[]> callback = new RemoteCallback()
         {
-
-            try
+            public Book[] doRemote() throws RemoteException
             {
-                pageResults = getQuery().get(low, high - low + 1);
-
-                break;
-            }
-            catch (RemoteException ex)
-            {
-                IPage page = getPage();
-
-                if (i++ == 0)
-                    getListener().actionTriggered(this, page.getRequestCycle());
-                else
+                try
                 {
-                    VirtualLibraryEngine vengine = (VirtualLibraryEngine) page.getEngine();
-                    vengine.rmiFailure("Unable to retrieve query results.", ex, i);
+                    return getQuery().get(low, high - low + 1);
                 }
+                catch (RemoteException ex)
+                {
+                    getListener().actionTriggered(Browser.this, event.getRequestCycle());
 
+                    throw ex;
+                }
             }
-        }
+        };
+
+        Book[] pageResults = getRemoteTemplate().execute(
+                callback,
+                "Error retrieving query results.");
 
         setPageResults(pageResults);
     }

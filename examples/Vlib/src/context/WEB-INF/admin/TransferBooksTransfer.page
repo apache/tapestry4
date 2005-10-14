@@ -19,27 +19,23 @@
   "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 
-<page-specification class="org.apache.tapestry.vlib.pages.admin.TransferBooksSelect">
+<page-specification>
 
   <component id="form" type="Form">
     <binding name="success" value="listener:formSubmit"/>
     <binding name="clientValidationEnabled" value="true"/>
+    <binding name="delegate" value="validationDelegate"/>
   </component>
-  
-  <component id="from" type="PropertySelection">
-    <binding name="value" value="fromUserId"/>
-    <binding name="model" value="engine.personModel"/>
-    <binding name="displayName" value="message:from-label"/>
+
+  <component id="selectBooks" type="contrib:Palette">
+    <binding name="model" value="userBookModel"/>
+    <binding name="sort" value="@org.apache.tapestry.contrib.palette.SortMode@LABEL"/>
+    <binding name="selected" value="selectedBooks"/>
+    <binding name="selectedTitleBlock" value="component:selectedTitle"/>
+    <binding name="availableTitleBlock" value="component:availableTitle"/>
+    <binding name="displayName" value="message:select-label"/>
     <binding name="validators" value="validators:required"/>
   </component>
-  
-  
-  <component id="to" type="PropertySelection">
-    <binding name="value" value="toUserId"/>
-    <binding name="model" value="engine.personModel"/>
-    <binding name="displayName" value="message:to-label"/>
-    <binding name="validators" value="validators:required"/>
-  </component>  
   
 </page-specification>
 
