@@ -62,6 +62,14 @@
     <servlet-name>vlib</servlet-name>
     <url-pattern>/assets/*</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>vlib</servlet-name>
+    <url-pattern>/book/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>vlib</servlet-name>
+    <url-pattern>/person/*</url-pattern>
+  </servlet-mapping>
   <session-config>
     <session-timeout>15</session-timeout>
   </session-config>
