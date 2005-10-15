@@ -32,9 +32,7 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.vlib.ActivatePage;
-import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
-import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
@@ -172,8 +170,7 @@ public abstract class EditProfile extends ActivatePage implements PageBeginRende
 
         getRemoteTemplate().execute(callback, "Error updating user attributes.");
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
-        vengine.clearCache();
+        getModelSource().clear();
 
         getMyLibrary().activate();
     }

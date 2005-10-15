@@ -18,6 +18,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.annotations.Bean;
 import org.apache.tapestry.annotations.InjectMeta;
+import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.annotations.InjectStateFlag;
@@ -29,6 +30,7 @@ import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.vlib.pages.Login;
+import org.apache.tapestry.vlib.services.ModelSource;
 
 /**
  * Base page used for pages that should be protected by the {@link Login} page. If the user is not
@@ -68,6 +70,9 @@ public abstract class VlibPage extends BasePage implements IErrorProperty, IMess
 
     @InjectMeta("admin-page")
     public abstract boolean isAdminPage();
+
+    @InjectObject("service:vlib.ModelSource")
+    public abstract ModelSource getModelSource();
 
     protected void setErrorField(String componentId, String message)
     {

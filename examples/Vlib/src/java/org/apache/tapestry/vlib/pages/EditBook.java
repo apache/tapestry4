@@ -30,7 +30,6 @@ import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.VlibPage;
 import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.services.RemoteCallback;
@@ -161,9 +160,7 @@ public abstract class EditBook extends VlibPage implements PageBeginRenderListen
 
         getRemoteTemplate().execute(callback, "Error updating book #" + bookId + ".");
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
-
-        vengine.clearCache();
+        getModelSource().clear();
 
         MyLibrary page = (MyLibrary) cycle.getPage("MyLibrary");
 

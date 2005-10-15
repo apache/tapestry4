@@ -41,7 +41,7 @@
   
   <component id="inputPublisher" type="PropertySelection">
     <binding name="value" value="attributes.publisherId"/>
-    <binding name="model" value="engine.publisherModel"/>
+    <binding name="model" value="modelSource.publisherModel"/>
   </component>
   
   <component id="inputPublisherName" type="TextField">

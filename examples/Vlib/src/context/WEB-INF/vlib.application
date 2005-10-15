@@ -24,7 +24,6 @@
 	engine-class="org.apache.tapestry.vlib.VirtualLibraryEngine">
    
   <meta key="org.apache.tapestry.visit-class" value="org.apache.tapestry.vlib.Visit"/>
-  <meta key="org.apache.tapestry.global-class" value="org.apache.tapestry.vlib.Global"/>   
   <meta key="org.apache.tapestry.page-class-packages" value="org.apache.tapestry.vlib.pages"/>
   <meta key="org.apache.tapestry.component-class-packages" value="org.apache.tapestry.vlib.components"/>
   

@@ -25,11 +25,11 @@ give it back eventually!
     </tr>
     <tr>
     	<th>Book Owner</th>	
-    	<td><select jwcid="owner@PropertySelection" value="ognl:ownerId" model="ognl:engine.buildPersonModel(true)"/></td>
+    	<td><select jwcid="owner@PropertySelection" value="ognl:ownerId" model="ognl:modelSource.optionalPersonModel"/></td>
     </tr>
     <tr>
       <th>Publisher</th>
-      <td><select jwcid="publisher@PropertySelection" value="ognl:publisherId" model="ognl:engine.publisherModel"/>
+      <td><select jwcid="publisher@PropertySelection" value="ognl:publisherId" model="ognl:modelSource.publisherModel"/>
 		</td>
 	</tr>
 	<tr>

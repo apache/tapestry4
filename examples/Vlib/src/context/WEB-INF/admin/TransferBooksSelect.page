@@ -28,7 +28,7 @@
   
   <component id="from" type="PropertySelection">
     <binding name="value" value="fromUserId"/>
-    <binding name="model" value="engine.personModel"/>
+    <binding name="model" value="modelSource.personModel"/>
     <binding name="displayName" value="message:from-label"/>
     <binding name="validators" value="validators:required"/>
   </component>
@@ -36,7 +36,7 @@
   
   <component id="to" type="PropertySelection">
     <binding name="value" value="toUserId"/>
-    <binding name="model" value="engine.personModel"/>
+    <binding name="model" value="modelSource.personModel"/>
     <binding name="displayName" value="message:to-label"/>
     <binding name="validators" value="validators:required"/>
   </component>  
