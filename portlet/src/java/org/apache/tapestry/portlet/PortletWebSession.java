@@ -70,4 +70,9 @@ public class PortletWebSession implements WebSession
         _portletSession.setAttribute(name, attribute);
     }
 
+    public void invalidate()
+    {
+        _portletSession.invalidate();
+    }
+
 }

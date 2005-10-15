@@ -20,26 +20,25 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.InjectState;
+import org.apache.tapestry.annotations.InjectStateFlag;
 import org.apache.tapestry.annotations.Message;
 import org.apache.tapestry.annotations.Parameter;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.callback.PageCallback;
+import org.apache.tapestry.vlib.Global;
 import org.apache.tapestry.vlib.IActivate;
-import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.pages.Home;
 import org.apache.tapestry.vlib.pages.Login;
+import org.apache.tapestry.vlib.services.ApplicationLifecycle;
 
 /**
  * The standard Border component, which provides the title of the page, the link to
  * {@link org.apache.tapestry.vlib.pages.MyLibrary}, the
  * {@link org.apache.tapestry.vlib.pages.Login} page and the Logout page.
- * <p>
- * TODO: Part of the transition up to Tapestry 4.0 has "broken" the deferrment of state; the Border
- * component on the Home page now forces a session immediately. This needs to be fixed (with a new
- * injection type to identify if the visit state object has yet been created).
  * 
  * @author Howard Lewis Ship
  */
@@ -103,11 +102,20 @@ public abstract class Border extends BaseComponent
     @InjectState("visit")
     public abstract Visit getVisit();
 
+    @InjectStateFlag("visit")
+    public abstract boolean getVisitExists();
+
     @InjectPage("Login")
     public abstract Login getLogin();
 
     @InjectPage("Home")
     public abstract Home getHome();
+
+    @InjectState("global")
+    public abstract Global getGlobal();
+
+    @InjectObject("service:vlib.ApplicationLifecycle")
+    public abstract ApplicationLifecycle getApplicationLifecycle();
 
     @Message
     public abstract String goodbye();
@@ -185,21 +193,12 @@ public abstract class Border extends BaseComponent
 
     public boolean isLoggedIn()
     {
-        Visit visit = getVisit();
-
-        if (visit == null)
-            return false;
-
-        return visit.isUserLoggedIn();
+        return getVisitExists() && getVisit().isUserLoggedIn();
     }
 
     public boolean isAdmin()
     {
-        Visit visit = getVisit();
-
-        IRequestCycle cycle = getPage().getRequestCycle();
-
-        return visit.isUserLoggedIn() && visit.getUser().isAdmin();
+        return isLoggedIn() && getVisit().getUser().isAdmin();
     }
 
     public void editProfile()
@@ -230,9 +229,7 @@ public abstract class Border extends BaseComponent
 
     public IPage login()
     {
-        Visit visit = getVisit();
-
-        if (visit.isUserLoggedIn())
+        if (isLoggedIn())
             return null;
 
         ICallback callback = new PageCallback(getPage().getPageName());
@@ -246,9 +243,7 @@ public abstract class Border extends BaseComponent
 
     public IPage logout()
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getPage().getEngine();
-
-        vengine.logout();
+        getApplicationLifecycle().logout();
 
         Home home = getHome();
         home.setMessage(goodbye());

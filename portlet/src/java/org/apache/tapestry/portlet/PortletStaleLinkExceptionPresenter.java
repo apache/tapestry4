@@ -14,13 +14,13 @@
 
 package org.apache.tapestry.portlet;
 
+import java.io.IOException;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleLinkException;
-import org.apache.tapestry.error.RequestExceptionReporter;
 import org.apache.tapestry.error.StaleLinkExceptionPresenter;
 import org.apache.tapestry.services.ServiceConstants;
 
@@ -34,49 +34,22 @@ public class PortletStaleLinkExceptionPresenter implements StaleLinkExceptionPre
 {
     private PortletRequestGlobals _globals;
 
-    private RequestExceptionReporter _requestExceptionReporter;
-
     public void presentStaleLinkException(IRequestCycle cycle, StaleLinkException cause)
+            throws IOException
     {
-        try
-        {
-            ActionRequest request = _globals.getActionRequest();
+        ActionRequest request = _globals.getActionRequest();
 
-            request.getPortletSession(true).setAttribute(
-                    PortletConstants.PORTLET_EXCEPTION_MARKUP_ATTRIBUTE,
-                    cause.getMessage());
+        request.getPortletSession(true).setAttribute(
+                PortletConstants.PORTLET_EXCEPTION_MARKUP_ATTRIBUTE,
+                cause.getMessage());
 
-            ActionResponse response = _globals.getActionResponse();
+        ActionResponse response = _globals.getActionResponse();
 
-            response.setRenderParameter(
-                    ServiceConstants.SERVICE,
-                    PortletConstants.EXCEPTION_SERVICE);
-        }
-        catch (Exception ex)
-        {
-            // Worst case scenario. The exception page itself is broken, leaving
-            // us with no option but to write the cause to the output.
-
-            // Also, write the exception thrown when redendering the exception
-            // page, so that can get fixed as well.
-
-            _requestExceptionReporter.reportRequestException(PortletMessages
-                    .errorReportingException(ex), ex);
-
-            // And throw the exception.
-
-            throw new ApplicationRuntimeException(ex.getMessage(), ex);
-        }
+        response.setRenderParameter(ServiceConstants.SERVICE, PortletConstants.EXCEPTION_SERVICE);
     }
 
     public void setGlobals(PortletRequestGlobals globals)
     {
         _globals = globals;
     }
-
-    public void setRequestExceptionReporter(RequestExceptionReporter requestExceptionReporter)
-    {
-        _requestExceptionReporter = requestExceptionReporter;
-    }
-
 }

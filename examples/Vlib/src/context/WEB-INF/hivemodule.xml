@@ -84,11 +84,52 @@
         
     </service-point>
     
+    <service-point id="ApplicationLifecycle">
+        
+        Controls lifecycle operations; specifically logging out.
+        
+        <invoke-factory model="threaded">
+            <construct class="ApplicationLifecycleImpl">
+                <set-object property="stateManager" value="infrastructure:applicationStateManager"/>
+            </construct>
+        </invoke-factory>        
+    </service-point>
+    
+    <service-point id="DiscardSessionFilter" interface="org.apache.tapestry.services.WebRequestServicerFilter">
+        
+        Filter used to optionally discard the session at the end of a request (typically after a logout).
+        
+        <invoke-factory>
+            <construct class="DiscardSessionFilter">
+                <set-object property="applicationLifecycle" value="service:ApplicationLifecycle"/>
+            </construct>
+        </invoke-factory>
+        
+    </service-point>
+    
+    <contribution configuration-id="tapestry.request.WebRequestServicerPipeline">
+        <filter name="discard-session" object="service:DiscardSessionFilter"/>
+    </contribution>
+    
     <contribution configuration-id="hivemind.ApplicationDefaults">
         <!-- Talk to the local JBoss JNDI -->
         <default symbol="java.naming.factory.initial" value="org.jnp.interfaces.NamingContextFactory"/>
         <default symbol="java.naming.factory.url.pkgs" value="org.jboss.naming:org.jnp.interfaces"/>
         <default symbol="java.naming.provider.url" value="localhost:1099"/>
     </contribution>
+    
+    <contribution configuration-id="tapestry.InfrastructureOverrides"> 
+        <property name="exceptionPageName" value="ApplicationUnavailable" />        
+    </contribution>
+    
+    <!-- Override the default implementation with one specific to the Virtual Library -->
+    
+    <implementation service-id="tapestry.error.StaleSessionExceptionPresenter">       
+        <invoke-factory>            
+            <construct class="VlibStaleSessionPresenter" >
+                <set-object property="responseRenderer" value="infrastructure:responseRenderer" />
+            </construct>            
+        </invoke-factory>
+    </implementation>
      
 </module>

@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.error;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
@@ -26,7 +25,7 @@ import org.apache.tapestry.services.ResponseRenderer;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestStaleSessionExceptionPresenter extends BaseErrorTestCase
+public class StaleSessionExceptionPresenterTest extends BaseErrorTestCase
 {
     public void testSuccess() throws Exception
     {
@@ -48,41 +47,4 @@ public class TestStaleSessionExceptionPresenter extends BaseErrorTestCase
         verifyControls();
     }
 
-    public void testFailure() throws Exception
-    {
-        StaleSessionException cause = new StaleSessionException();
-        Throwable renderCause = new ApplicationRuntimeException("Some failure.");
-
-        IPage page = newPage();
-
-        IRequestCycle cycle = newCycle("StaleSession", page);
-        ResponseRenderer renderer = newRenderer(cycle, renderCause);
-        RequestExceptionReporter reporter = newReporter();
-
-        cycle.activate(page);
-
-        reporter.reportRequestException(ErrorMessages.unableToProcessClientRequest(cause), cause);
-        reporter.reportRequestException(
-                ErrorMessages.unableToPresentExceptionPage(renderCause),
-                renderCause);
-
-        replayControls();
-
-        StaleSessionExceptionPresenterImpl presenter = new StaleSessionExceptionPresenterImpl();
-        presenter.setPageName("StaleSession");
-        presenter.setResponseRenderer(renderer);
-        presenter.setRequestExceptionReporter(reporter);
-
-        try
-        {
-            presenter.presentStaleSessionException(cycle, cause);
-            unreachable();
-        }
-        catch (ApplicationRuntimeException ex)
-        {
-            assertSame(renderCause, ex.getRootCause());
-        }
-
-        verifyControls();
-    }
 }

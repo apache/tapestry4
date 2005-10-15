@@ -18,8 +18,7 @@ import org.apache.tapestry.pages.Exception;
 import org.apache.tapestry.vlib.IErrorProperty;
 
 /**
- * A page only displayed when the application is unavailable (typically because of repeated
- * {@link java.rmi.RemoteException}s or {@link javax.naming.NamingException}s accessing EJBs.
+ * A customized exception page; in non-debug mode, it omits displays the main exception display.
  * 
  * @author Howard Lewis Ship
  * @since 2.2
@@ -27,11 +26,16 @@ import org.apache.tapestry.vlib.IErrorProperty;
 
 public abstract class ApplicationUnavailable extends Exception implements IErrorProperty
 {
-
-    public void activate(String message, Throwable ex)
+    @Override
+    public void setException(Throwable value)
     {
-        setError(message);
+        super.setException(value);
 
-        setException(ex);
+        String message = value.getMessage();
+
+        if (message == null)
+            message = value.getClass().getName();
+
+        setError(message);
     }
 }

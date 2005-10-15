@@ -14,7 +14,8 @@
 
 package org.apache.tapestry.error;
 
-import org.apache.hivemind.ApplicationRuntimeException;
+import java.io.IOException;
+
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
@@ -29,51 +30,23 @@ import org.apache.tapestry.services.ResponseRenderer;
  */
 public class StaleSessionExceptionPresenterImpl implements StaleSessionExceptionPresenter
 {
-    private RequestExceptionReporter _requestExceptionReporter;
-
     private ResponseRenderer _responseRenderer;
 
     private String _pageName;
 
     public void presentStaleSessionException(IRequestCycle cycle, StaleSessionException cause)
+            throws IOException
     {
-        try
-        {
-            IPage exceptionPage = cycle.getPage(_pageName);
+        IPage exceptionPage = cycle.getPage(_pageName);
 
-            cycle.activate(exceptionPage);
+        cycle.activate(exceptionPage);
 
-            _responseRenderer.renderResponse(cycle);
-        }
-        catch (Exception ex)
-        {
-            // Worst case scenario. The exception page itself is broken, leaving
-            // us with no option but to write the cause to the output.
-
-            _requestExceptionReporter.reportRequestException(ErrorMessages
-                    .unableToProcessClientRequest(cause), cause);
-
-            // Also, write the exception thrown when redendering the exception
-            // page, so that can get fixed as well.
-
-            _requestExceptionReporter.reportRequestException(ErrorMessages
-                    .unableToPresentExceptionPage(ex), ex);
-
-            // And throw the exception.
-
-            throw new ApplicationRuntimeException(ex.getMessage(), ex);
-        }
-
+        _responseRenderer.renderResponse(cycle);
     }
 
     public void setPageName(String pageName)
     {
         _pageName = pageName;
-    }
-
-    public void setRequestExceptionReporter(RequestExceptionReporter requestExceptionReporter)
-    {
-        _requestExceptionReporter = requestExceptionReporter;
     }
 
     public void setResponseRenderer(ResponseRenderer responseRenderer)

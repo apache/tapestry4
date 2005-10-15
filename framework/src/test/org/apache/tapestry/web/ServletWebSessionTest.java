@@ -28,15 +28,14 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestServletWebSession extends BaseWebTestCase
+public class ServletWebSessionTest extends BaseWebTestCase
 {
     public void testGetAttributeNames()
     {
-        MockControl control = newControl(HttpSession.class);
-        HttpSession session = (HttpSession) control.getMock();
+        HttpSession session = newSession();
 
         session.getAttributeNames();
-        control.setReturnValue(newEnumeration());
+        setReturnValue(session, newEnumeration());
 
         replayControls();
 
@@ -49,15 +48,19 @@ public class TestServletWebSession extends BaseWebTestCase
         verifyControls();
     }
 
+    private HttpSession newSession()
+    {
+        return (HttpSession) newMock(HttpSession.class);
+    }
+
     public void testGetAttribute()
     {
         Object attribute = new Object();
 
-        MockControl control = newControl(HttpSession.class);
-        HttpSession session = (HttpSession) control.getMock();
+        HttpSession session = newSession();
 
         session.getAttribute("attr");
-        control.setReturnValue(attribute);
+        setReturnValue(session, attribute);
 
         replayControls();
 
@@ -72,8 +75,7 @@ public class TestServletWebSession extends BaseWebTestCase
     {
         Object attribute = new Object();
 
-        MockControl control = newControl(HttpSession.class);
-        HttpSession session = (HttpSession) control.getMock();
+        HttpSession session = newSession();
 
         session.setAttribute("name", attribute);
 
@@ -88,8 +90,7 @@ public class TestServletWebSession extends BaseWebTestCase
 
     public void testSetAttributeToNull()
     {
-        MockControl control = newControl(HttpSession.class);
-        HttpSession session = (HttpSession) control.getMock();
+        HttpSession session = newSession();
 
         session.removeAttribute("tonull");
 
@@ -104,17 +105,31 @@ public class TestServletWebSession extends BaseWebTestCase
 
     public void testGetId()
     {
-        MockControl control = newControl(HttpSession.class);
-        HttpSession session = (HttpSession) control.getMock();
+        HttpSession session = newSession();
 
         session.getId();
-        control.setReturnValue("abc");
+        setReturnValue(session, "abc");
 
         replayControls();
 
         WebSession ws = new ServletWebSession(session);
 
         assertEquals("abc", ws.getId());
+
+        verifyControls();
+    }
+
+    public void testInvalidate()
+    {
+        HttpSession session = newSession();
+
+        session.invalidate();
+
+        replayControls();
+
+        WebSession ws = new ServletWebSession(session);
+
+        ws.invalidate();
 
         verifyControls();
     }

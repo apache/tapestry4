@@ -32,50 +32,23 @@ public class PortletStaleSessionExceptionPresenter implements StaleSessionExcept
 {
     private PortletRequestGlobals _globals;
 
-    private RequestExceptionReporter _requestExceptionReporter;
-
     public void presentStaleSessionException(IRequestCycle cycle, StaleSessionException cause)
     {
-        try
-        {
-            String markup = PortletMessages.staleSession();
+        String markup = PortletMessages.staleSession();
 
-            ActionRequest request = _globals.getActionRequest();
+        ActionRequest request = _globals.getActionRequest();
 
-            request.getPortletSession(true).setAttribute(
-                    PortletConstants.PORTLET_EXCEPTION_MARKUP_ATTRIBUTE,
-                    markup);
+        request.getPortletSession(true).setAttribute(
+                PortletConstants.PORTLET_EXCEPTION_MARKUP_ATTRIBUTE,
+                markup);
 
-            ActionResponse response = _globals.getActionResponse();
+        ActionResponse response = _globals.getActionResponse();
 
-            response.setRenderParameter(
-                    ServiceConstants.SERVICE,
-                    PortletConstants.EXCEPTION_SERVICE);
-        }
-        catch (Exception ex)
-        {
-            // Worst case scenario. The exception page itself is broken, leaving
-            // us with no option but to write the cause to the output.
-
-            // Also, write the exception thrown when redendering the exception
-            // page, so that can get fixed as well.
-
-            _requestExceptionReporter.reportRequestException(PortletMessages
-                    .errorReportingException(ex), ex);
-
-            // And throw the exception.
-
-            throw new ApplicationRuntimeException(ex.getMessage(), ex);
-        }
+        response.setRenderParameter(ServiceConstants.SERVICE, PortletConstants.EXCEPTION_SERVICE);
     }
 
     public void setGlobals(PortletRequestGlobals globals)
     {
         _globals = globals;
-    }
-
-    public void setRequestExceptionReporter(RequestExceptionReporter requestExceptionReporter)
-    {
-        _requestExceptionReporter = requestExceptionReporter;
     }
 }

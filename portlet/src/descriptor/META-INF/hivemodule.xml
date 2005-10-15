@@ -272,8 +272,6 @@
     <invoke-factory>
       <construct class="PortletStaleSessionExceptionPresenter">
         <set-service property="globals" service-id="PortletRequestGlobals"/>
-        <set-object property="requestExceptionReporter"
-                       value="infrastructure:requestExceptionReporter"/>   
       </construct>
     </invoke-factory>
     
@@ -286,8 +284,6 @@
     <invoke-factory>
       <construct class="PortletStaleLinkExceptionPresenter">
         <set-service property="globals" service-id="PortletRequestGlobals"/>
-        <set-object property="requestExceptionReporter"
-                       value="infrastructure:requestExceptionReporter"/>   
       </construct>
     </invoke-factory>
     

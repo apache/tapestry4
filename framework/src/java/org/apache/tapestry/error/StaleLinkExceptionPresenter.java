@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.error;
 
+import java.io.IOException;
+
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleLinkException;
 
@@ -33,5 +35,6 @@ public interface StaleLinkExceptionPresenter
      * @param cause
      *            the exception that was caught
      */
-    public void presentStaleLinkException(IRequestCycle cycle, StaleLinkException cause);
+    public void presentStaleLinkException(IRequestCycle cycle, StaleLinkException cause)
+            throws IOException;
 }
