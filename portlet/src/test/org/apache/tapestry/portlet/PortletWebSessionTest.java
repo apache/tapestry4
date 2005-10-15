@@ -28,16 +28,15 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestPortletWebSession extends BasePortletWebTestCase
+public class PortletWebSessionTest extends BasePortletWebTestCase
 {
 
     public void testGetAttributeNames()
     {
-        MockControl control = newControl(PortletSession.class);
-        PortletSession session = (PortletSession) control.getMock();
+        PortletSession session = newSession();
 
         session.getAttributeNames();
-        control.setReturnValue(newEnumeration());
+        setReturnValue(session, newEnumeration());
 
         replayControls();
 
@@ -50,15 +49,19 @@ public class TestPortletWebSession extends BasePortletWebTestCase
         verifyControls();
     }
 
+    private PortletSession newSession()
+    {
+        return (PortletSession) newMock(PortletSession.class);
+    }
+
     public void testGetAttribute()
     {
         Object attribute = new Object();
 
-        MockControl control = newControl(PortletSession.class);
-        PortletSession session = (PortletSession) control.getMock();
+        PortletSession session = newSession();
 
         session.getAttribute("attr");
-        control.setReturnValue(attribute);
+        setReturnValue(session, attribute);
 
         replayControls();
 
@@ -73,8 +76,7 @@ public class TestPortletWebSession extends BasePortletWebTestCase
     {
         Object attribute = new Object();
 
-        MockControl control = newControl(PortletSession.class);
-        PortletSession session = (PortletSession) control.getMock();
+        PortletSession session = newSession();
 
         session.setAttribute("name", attribute);
 
@@ -87,20 +89,33 @@ public class TestPortletWebSession extends BasePortletWebTestCase
         verifyControls();
     }
 
-
     public void testGetId()
     {
-        MockControl control = newControl(PortletSession.class);
-        PortletSession session = (PortletSession) control.getMock();
+        PortletSession session = newSession();
 
         session.getId();
-        control.setReturnValue("abc");
+        setReturnValue(session, "abc");
 
         replayControls();
 
         WebSession ws = new PortletWebSession(session);
 
         assertEquals("abc", ws.getId());
+
+        verifyControls();
+    }
+
+    public void testInvalidate()
+    {
+        PortletSession session = newSession();
+
+        session.invalidate();
+
+        replayControls();
+
+        WebSession ws = new PortletWebSession(session);
+
+        ws.invalidate();
 
         verifyControls();
     }

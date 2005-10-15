@@ -33,7 +33,6 @@ import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.util.DefaultPrimaryKeyConverter;
-import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.VlibPage;
 import org.apache.tapestry.vlib.ejb.Publisher;
 import org.apache.tapestry.vlib.pages.MyLibrary;

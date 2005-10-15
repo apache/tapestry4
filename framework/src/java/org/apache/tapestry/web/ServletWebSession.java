@@ -43,7 +43,7 @@ public class ServletWebSession implements WebSession
     {
         receiver.describeAlternate(_httpSession);
     }
-    
+
     public List getAttributeNames()
     {
         return WebUtils.toSortedList(_httpSession.getAttributeNames());
@@ -70,5 +70,10 @@ public class ServletWebSession implements WebSession
     public boolean isNew()
     {
         return _httpSession.isNew();
+    }
+
+    public void invalidate()
+    {
+        _httpSession.invalidate();
     }
 }

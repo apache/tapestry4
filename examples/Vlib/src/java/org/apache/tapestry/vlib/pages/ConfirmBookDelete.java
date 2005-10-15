@@ -16,7 +16,6 @@ package org.apache.tapestry.vlib.pages;
 
 import java.rmi.RemoteException;
 
-import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -27,9 +26,7 @@ import org.apache.tapestry.annotations.Message;
 import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.OperationsUser;
-import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.ejb.Book;
-import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**

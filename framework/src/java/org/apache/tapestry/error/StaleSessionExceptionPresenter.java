@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.error;
 
+import java.io.IOException;
+
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
 
@@ -33,5 +35,6 @@ public interface StaleSessionExceptionPresenter
      * @param cause
      *            the exception that was caught
      */
-    public void presentStaleSessionException(IRequestCycle cycle, StaleSessionException cause);
+    public void presentStaleSessionException(IRequestCycle cycle, StaleSessionException cause)
+            throws IOException;
 }

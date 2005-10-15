@@ -37,4 +37,13 @@ public interface WebSession extends AttributeHolder, Describable
      * to join the session.
      */
     public boolean isNew();
+
+    /**
+     * Invalidates this session then unbinds any objects bound to it.
+     * 
+     * @throws IllegalStateException
+     *             if the session is already invalidated.
+     */
+
+    public void invalidate();
 }

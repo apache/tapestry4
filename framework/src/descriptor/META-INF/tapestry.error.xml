@@ -70,8 +70,6 @@
       <construct class="StaleSessionExceptionPresenterImpl">
         <set-object property="pageName" 
                        value="infrastructure:staleSessionPageName"/>
-        <set-object property="requestExceptionReporter"
-                       value="infrastructure:requestExceptionReporter"/>
         <set-object property="responseRenderer"
                       value="infrastructure:responseRenderer"/>
       </construct>
@@ -88,8 +86,6 @@
       <construct class="StaleLinkExceptionPresenterImpl">
         <set-object property="pageName" 
                        value="infrastructure:staleLinkPageName"/>
-        <set-object property="requestExceptionReporter"
-                       value="infrastructure:requestExceptionReporter"/>
         <set-object property="responseRenderer"
                       value="infrastructure:responseRenderer"/>
       </construct>
