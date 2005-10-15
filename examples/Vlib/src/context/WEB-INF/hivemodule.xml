@@ -20,6 +20,8 @@
     <contribution configuration-id="tapestry.url.ServiceEncoders">
         <direct-service-encoder id="direct" stateless-extension="direct" stateful-extension="sdirect"/>
         <page-service-encoder id="page" extension="page" service="page"/>
+        <encoder id="viewbook" before="external" object="instance:ViewPageEncoder,pageName=ViewBook,url=/book"/>
+        <encoder id="viewperson" before="external" object="instance:ViewPageEncoder,pageName=ViewPerson,url=/person"/>
         <page-service-encoder id="external" extension="external" service="external"/>    
         <asset-encoder id="asset" path="/assets/"/>
         <extension-encoder id="ext" extension="svc" after="*"/>
