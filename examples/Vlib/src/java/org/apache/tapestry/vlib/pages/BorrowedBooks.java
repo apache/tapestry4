@@ -25,13 +25,10 @@ import org.apache.tapestry.annotations.InjectState;
 import org.apache.tapestry.annotations.Message;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.vlib.ActivatePage;
-import org.apache.tapestry.vlib.IMessageProperty;
-import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.components.Browser;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
-import org.apache.tapestry.vlib.ejb.IOperations;
 import org.apache.tapestry.vlib.ejb.SortColumn;
 import org.apache.tapestry.vlib.ejb.SortOrdering;
 import org.apache.tapestry.vlib.services.RemoteCallback;
@@ -42,7 +39,7 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
  * @author Howard Lewis Ship
  */
 
-public abstract class BorrowedBooks extends ActivatePage implements IMessageProperty
+public abstract class BorrowedBooks extends ActivatePage
 {
     @InjectComponent("browser")
     public abstract Browser getBrowser();

@@ -21,9 +21,6 @@ import org.apache.tapestry.annotations.InjectComponent;
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.vlib.ActivatePage;
-import org.apache.tapestry.vlib.IMessageProperty;
-import org.apache.tapestry.vlib.VirtualLibraryEngine;
-import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.components.Browser;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.SortColumn;
@@ -40,7 +37,7 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
  * @author Howard Lewis Ship
  */
 
-public abstract class MyLibrary extends ActivatePage implements IMessageProperty
+public abstract class MyLibrary extends ActivatePage
 {
     @Persist
     public abstract IBookQuery getOwnedQuery();

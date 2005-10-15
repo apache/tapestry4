@@ -174,11 +174,7 @@ public abstract class EditPublishers extends VlibPage implements PageBeginRender
 
         getRemoteTemplate().execute(callback, updateFailure());
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-        // Clear any cached info about publishers.
-
-        vengine.clearCache();
+        getModelSource().clear();
 
         MyLibrary page = getMyLibrary();
 

@@ -15,9 +15,7 @@
 package org.apache.tapestry.vlib;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 
-import javax.ejb.CreateException;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
@@ -26,13 +24,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.engine.BaseEngine;
-import org.apache.tapestry.form.IPropertySelectionModel;
-import org.apache.tapestry.vlib.ejb.IOperations;
-import org.apache.tapestry.vlib.ejb.IOperationsHome;
-import org.apache.tapestry.vlib.ejb.Person;
-import org.apache.tapestry.vlib.ejb.Publisher;
 import org.apache.tapestry.vlib.pages.ApplicationUnavailable;
-import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
  * The engine for the Virtual Library. This exists to implement the external service, which allows
@@ -52,12 +44,6 @@ public class VirtualLibraryEngine extends BaseEngine
 
     private transient boolean _killSession;
 
-    private transient IOperations _operations;
-
-    private transient IPropertySelectionModel _publisherModel;
-
-    private transient IPropertySelectionModel _personModel;
-
     private transient String _applicationUnavailableMessage;
 
     /**
@@ -68,8 +54,6 @@ public class VirtualLibraryEngine extends BaseEngine
 
     protected void cleanupAfterRequest(IRequestCycle cycle)
     {
-        clearCache();
-
         _applicationUnavailableMessage = null;
 
         if (_killSession)
@@ -106,193 +90,6 @@ public class VirtualLibraryEngine extends BaseEngine
     public boolean isDebugEnabled()
     {
         return DEBUG_ENABLED;
-    }
-
-    /**
-     * Returns an instance of the Vlib Operations beans, which is a stateless session bean for
-     * performing certain operations.
-     * <p>
-     * The bean is automatically removed at the end of the request cycle.
-     */
-
-    public IOperations getOperations()
-    {
-        Global global = (Global) getGlobal();
-
-        if (_operations == null)
-        {
-            int i = 0;
-            while (true)
-            {
-                try
-                {
-                    IOperationsHome home = global.getOperationsHome();
-
-                    _operations = home.create();
-
-                    break;
-                }
-                catch (CreateException ex)
-                {
-                    throw new ApplicationRuntimeException("Error creating operations bean.", ex);
-                }
-                catch (RemoteException ex)
-                {
-                    rmiFailure("Remote exception creating operations bean.", ex, i++);
-                }
-            }
-        }
-
-        return _operations;
-    }
-
-    /**
-     * Builds a model for entering in a publisher name, including an intial blank option.
-     */
-
-    public IPropertySelectionModel getPublisherModel()
-    {
-        if (_publisherModel == null)
-            _publisherModel = buildPublisherModel();
-
-        return _publisherModel;
-    }
-
-    private IPropertySelectionModel buildPublisherModel()
-    {
-        Publisher[] publishers = null;
-
-        EntitySelectionModel model = new EntitySelectionModel();
-
-        // Add in a default null value, such that the user can
-        // not select a specific Publisher.
-
-        model.add(null, "");
-
-        int i = 0;
-        while (true)
-        {
-            IOperations operations = getOperations();
-
-            try
-            {
-                publishers = operations.getPublishers();
-
-                // Exit the retry loop
-
-                break;
-            }
-            catch (RemoteException ex)
-            {
-                rmiFailure("Unable to obtain list of publishers.", ex, i++);
-            }
-        }
-
-        // Add in the actual publishers. They are sorted by name.
-
-        for (i = 0; i < publishers.length; i++)
-            model.add(publishers[i].getId(), publishers[i].getName());
-
-        return model;
-    }
-
-    /**
-     * Invoked from {@link Visit#clearCache()} (and at the end of the request cycle) to clear the
-     * publisher and person {@link IPropertySelectionModel} models.
-     */
-
-    public void clearCache()
-    {
-        _publisherModel = null;
-        _personModel = null;
-
-        // Note: may need to update the user property of the Visit
-    }
-
-    /**
-     * Returns a model that contains all the known Person's, sorted by last name, then first. The
-     * label for the model matches the user's natural name.
-     */
-
-    public IPropertySelectionModel getPersonModel()
-    {
-        if (_personModel == null)
-            _personModel = buildPersonModel(false);
-
-        return _personModel;
-    }
-
-    public IPropertySelectionModel buildPersonModel(boolean includeEmpty)
-    {
-        Person[] persons = null;
-
-        int i = 0;
-        while (true)
-        {
-            IOperations operations = getOperations();
-
-            try
-            {
-                persons = operations.getPersons();
-
-                break;
-            }
-            catch (RemoteException ex)
-            {
-                rmiFailure("Unable to obtain list of persons.", ex, i++);
-            }
-        }
-
-        EntitySelectionModel model = new EntitySelectionModel();
-
-        if (includeEmpty)
-            model.add(null, "");
-
-        for (i = 0; i < persons.length; i++)
-            model.add(persons[i].getId(), persons[i].getNaturalName());
-
-        return model;
-
-    }
-
-    /**
-     * Invoked after an operation on a home or remote interface throws a RemoteException; this
-     * clears any cache of home and remote interfaces.
-     * 
-     * @param message
-     *            the message for the exception, or for the log message
-     * @param ex
-     *            the exception thrown
-     * @param attempt
-     *            the attempt number. Attempt #0 simply clears the EJBs, attempt #1 is the real
-     *            failure.
-     */
-
-    public void rmiFailure(String message, RemoteException ex, int attempt)
-    {
-        LOG.error(message, ex);
-
-        clearEJBs();
-
-        if (attempt > 0)
-            punt(message, ex);
-
-    }
-
-    private void punt(String message, Throwable ex)
-    {
-        _applicationUnavailableMessage = message;
-
-        throw new ApplicationRuntimeException(message, ex);
-    }
-
-    private void clearEJBs()
-    {
-        Global global = (Global) getGlobal();
-
-        global.clear();
-
-        _operations = null;
     }
 
     protected void handleStaleSessionException(IRequestCycle cycle, StaleSessionException exception)

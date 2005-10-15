@@ -64,9 +64,24 @@
             <construct class="BookQuerySourceImpl">
                 <set-object property="nameLookup" value="service:hivemind.lib.NameLookup"/>
                 <set-object property="remoteTemplate" value="service:RemoteTemplate"/>
+                <event-listener service-id="hivemind.lib.RemoteExceptionCoordinator"/>
             </construct>
         </invoke-factory>
                 
+    </service-point>
+    
+    <service-point id="ModelSource">
+        
+        Source for common property selection models.
+        
+        <invoke-factory model="threaded">
+            <construct class="ModelSourceImpl">
+                <set-object property="operations" value="service:Operations"/>
+                <set-object property="remoteTemplate" value="service:RemoteTemplate"/>
+                <set-object property="coordinator" value="service:hivemind.lib.RemoteExceptionCoordinator"/>
+            </construct>
+        </invoke-factory>
+        
     </service-point>
     
     <contribution configuration-id="hivemind.ApplicationDefaults">

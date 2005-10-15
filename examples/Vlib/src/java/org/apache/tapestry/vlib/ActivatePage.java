@@ -21,7 +21,9 @@ import org.apache.tapestry.vlib.pages.Login;
 
 /**
  * Subclass of {@link org.apache.tapestry.vlib.VlibPage} that implements
- * {@link org.apache.tapestry.vlib.IActivate}. Overrides {@link #pageValidate(PageEvent)}.
+ * {@link org.apache.tapestry.vlib.IActivate}. Overrides {@link #pageValidate(PageEvent)}. All
+ * subclasses are assumed to require non-anonymous access (regardless of the anonymous-access meta
+ * data property).
  * 
  * @author Howard Lewis Ship
  * @since 3.0

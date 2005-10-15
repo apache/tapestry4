@@ -124,11 +124,7 @@ public abstract class NewBook extends VlibPage implements PageBeginRenderListene
         boolean clearCache = getRemoteTemplate().execute(callback, "Error adding new book.");
 
         if (clearCache)
-        {
-            VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-            vengine.clearCache();
-        }
+            getModelSource().clear();
 
         // Success. First, update the message property of the return page.
 
