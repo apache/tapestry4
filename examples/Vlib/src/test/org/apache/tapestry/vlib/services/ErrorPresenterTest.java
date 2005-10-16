@@ -18,6 +18,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.vlib.IErrorProperty;
 import org.apache.tapestry.vlib.Visit;
 
@@ -30,33 +31,33 @@ import org.apache.tapestry.vlib.Visit;
 public class ErrorPresenterTest extends HiveMindTestCase
 {
 
+    protected ErrorPresenter newErrorPresenter(ApplicationStateManager manager)
+    {
+        ErrorPresenterImpl result = new ErrorPresenterImpl();
+        result.setStateManager(manager);
+
+        return result;
+    }
+
     protected void trainGetPage(IRequestCycle cycle, String pageName, IPage page)
     {
         cycle.getPage(pageName);
         setReturnValue(cycle, page);
     }
 
-    protected void trainGetVisit(IEngine engine, Object visit)
+    protected Visit newVisit()
     {
-        engine.getVisit();
-        setReturnValue(engine, visit);
+        return (Visit) newMock(Visit.class);
     }
 
-    protected void trainGetEngine(IRequestCycle cycle, IEngine engine)
-    {
-        cycle.getEngine();
-        setReturnValue(cycle, engine);
-    }
-
-    public void testLoggedOut()
+    public void testNoVisit()
     {
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine();
         IErrorProperty page = newPage();
+        ApplicationStateManager manager = newApplicationStateManager();
 
-        trainGetEngine(cycle, engine);
-
-        trainGetVisit(engine, null);
+        manager.exists("visit");
+        setReturnValue(manager, false);
 
         trainGetPage(cycle, "Home", page);
 
@@ -66,9 +67,43 @@ public class ErrorPresenterTest extends HiveMindTestCase
 
         replayControls();
 
-        new ErrorPresenterImpl().presentError("An error.", cycle);
+        newErrorPresenter(manager).presentError("An error.", cycle);
 
         verifyControls();
+    }
+
+    public void testLoggedOff()
+    {
+        IRequestCycle cycle = newCycle();
+        IErrorProperty page = newPage();
+        ApplicationStateManager manager = newApplicationStateManager();
+        Visit visit = newVisit();
+
+        manager.exists("visit");
+        setReturnValue(manager, true);
+
+        manager.get("visit");
+        setReturnValue(manager, visit);
+
+        visit.isUserLoggedIn();
+        setReturnValue(visit, false);
+
+        trainGetPage(cycle, "Home", page);
+
+        page.setError("An error.");
+
+        cycle.activate(page);
+
+        replayControls();
+
+        newErrorPresenter(manager).presentError("An error.", cycle);
+
+        verifyControls();
+    }
+
+    private ApplicationStateManager newApplicationStateManager()
+    {
+        return (ApplicationStateManager) newMock(ApplicationStateManager.class);
     }
 
     private IErrorProperty newPage()
@@ -88,15 +123,16 @@ public class ErrorPresenterTest extends HiveMindTestCase
 
     public void testLoggedIn()
     {
-
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine();
         IErrorProperty page = newPage();
-        Visit visit = (Visit) newMock(Visit.class);
+        ApplicationStateManager manager = newApplicationStateManager();
+        Visit visit = newVisit();
 
-        trainGetEngine(cycle, engine);
+        manager.exists("visit");
+        setReturnValue(manager, true);
 
-        trainGetVisit(engine, visit);
+        manager.get("visit");
+        setReturnValue(manager, visit);
 
         visit.isUserLoggedIn();
         setReturnValue(visit, true);
@@ -109,7 +145,7 @@ public class ErrorPresenterTest extends HiveMindTestCase
 
         replayControls();
 
-        new ErrorPresenterImpl().presentError("An error.", cycle);
+        newErrorPresenter(manager).presentError("An error.", cycle);
 
         verifyControls();
     }
