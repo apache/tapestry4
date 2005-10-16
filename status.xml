@@ -50,7 +50,7 @@
     -->
   </todo>
   <changes>
-    <release version="4.0-beta-11" date="unreleased">
+    <release version="4.0-beta-11" date="Oct 16 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-650">ClassNotFoundException thrown when deserializing an object from a client persistent property</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-493">Document MultiplePropertySelection component</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-496">Document Palette component</action>
@@ -58,7 +58,7 @@
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-472">Document LinkSubmit component</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-470">Document Image component</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-482">Document Script component</action>
-      <action type="update" dev="HLS">Complete renovation of the Virtual Library to take advantage of Tapestry 4.0 features</action>
+      <action type="update" dev="HLS">Complete the renovation of the Virtual Library to take advantage of Tapestry 4.0 features</action>
     </release>
     <release version="4.0-beta-10" date="Oct 8 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-344">Unimplemented abstract method check broken</action>
@@ -66,7 +66,8 @@
       <action type="update" dev="HLS">Change For component to interleave rendering/rewinding with access to its primary key converter</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-696">Race condition during page loading can cause anomoylous exceptions related to annotations</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-685">Asset service sends a 200 response even when the provided md5 checksum is invalid</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-564">Automatically create an IPropertySelection model from a string</action>      
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-564">Automatically create an IPropertySelection model from a string</action>
+      <action type="remove" dev="HLS">Remove support for &lt;listener-binding&gt; and the dependency on Bean Scripting Framework</action>      
     </release>
     <release version="4.0-beta-9" date="Oct 1 2005">
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-663">Document Button component</action>
