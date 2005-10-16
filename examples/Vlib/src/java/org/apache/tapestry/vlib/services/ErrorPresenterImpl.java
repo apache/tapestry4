@@ -37,12 +37,7 @@ public class ErrorPresenterImpl implements ErrorPresenter
 
     public void presentError(String message, IRequestCycle cycle)
     {
-        IEngine engine = cycle.getEngine();
-
-        String pageName = "Home";
-
-        if (isLoggedIn())
-            pageName = "MyLibrary";
+        String pageName = isLoggedIn() ? "MyLibrary" : "Home";
 
         IErrorProperty page = (IErrorProperty) cycle.getPage(pageName);
 
