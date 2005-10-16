@@ -23,7 +23,7 @@
         <encoder id="viewbook" before="external" object="instance:ViewPageEncoder,pageName=ViewBook,url=/book"/>
         <encoder id="viewperson" before="external" object="instance:ViewPageEncoder,pageName=ViewPerson,url=/person"/>
         <page-service-encoder id="external" extension="external" service="external"/>    
-        <asset-encoder id="asset" path="/assets/"/>
+        <asset-encoder id="asset" path="/assets"/>
         <extension-encoder id="ext" extension="svc" after="*"/>
     </contribution>
      
@@ -52,7 +52,12 @@
     <service-point id="ErrorPresenter">
         
         Activates the Home or MyLibrary page to report an error.
-        
+
+        <invoke-factory>
+            <construct class="ErrorPresenterImpl">
+                <set-object property="stateManager" value="infrastructure:applicationStateManager"/>
+            </construct>
+        </invoke-factory>        
         <create-instance class="ErrorPresenterImpl"/>
         
     </service-point>

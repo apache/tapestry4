@@ -51,7 +51,8 @@ public interface ServiceEncoding
     public String[] getParameterValues(String name);
 
     /**
-     * Updates the servlet path for the encoding.
+     * Updates the servlet path for the encoding. In some cases, this is a combination of the
+     * servlet and additional path info.
      */
 
     public void setServletPath(String servletPath);
@@ -73,10 +74,20 @@ public interface ServiceEncoding
     public void setParameterValues(String name, String[] values);
 
     /**
-     * Returns the servlet path for the request.
+     * Returns the servlet path for the request. This is the portion of the URL recognized as the
+     * servlet. When the URL pattern (in web.xml) ends in a "*" (such as "/book/*"), this method
+     * will return the matched servlet portion ("/book/") and {#link #getPathInfo} will return the
+     * rest of the URL.
      */
 
     public String getServletPath();
+
+    /**
+     * Returns the portion of the URL after the servlet itself.
+     * 
+     * @return pathInfo if path info was supplied in the request, or null otherwise.
+     */
+    public String getPathInfo();
 
     /**
      * Returns an array of parameter names. The names are returned in alphabetically sorted order.
@@ -84,5 +95,4 @@ public interface ServiceEncoding
      */
 
     public String[] getParameterNames();
-
 }

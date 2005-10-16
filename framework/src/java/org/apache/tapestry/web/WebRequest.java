@@ -129,13 +129,22 @@ public interface WebRequest extends AttributeHolder, Describable
     public void forward(String URL);
 
     /**
-     * Returns the path of the resource which activated this request (this is the servlet path, plus
-     * path info, for a servlet request).
+     * Returns the path of the resource which activated this request (this is the equivalent of the
+     * servlet path for a servlet request). The activation path will not end with a slash.
      * 
      * @returns the full servlet path (for servlet requests), or a blank string (for portlet
      *          requests).
      */
     public String getActivationPath();
+
+    /**
+     * Return any additional path info beyond the servlet path itself. Path info, if non-null,
+     * begins with a path.
+     * 
+     * @return path info, or null if no path info
+     */
+
+    public String getPathInfo();
 
     /**
      * Returns the preferred locale to which content should be localized, as specified by the client

@@ -101,7 +101,8 @@ public class ViewPageEncoderTest extends HiveMindTestCase
     {
         ServiceEncoding encoding = newEncoding();
 
-        trainGetServletPath(encoding, "/book/2001");
+        trainGetServletPath(encoding, "/book");
+        trainGetPathInfo(encoding, "/2001");
 
         encoding.setParameterValue(ServiceConstants.SERVICE, Tapestry.EXTERNAL_SERVICE);
         encoding.setParameterValue(ServiceConstants.PAGE, "ViewBook");
@@ -114,6 +115,12 @@ public class ViewPageEncoderTest extends HiveMindTestCase
         _encoder.decode(encoding);
 
         verifyControls();
+    }
+
+    protected void trainGetPathInfo(ServiceEncoding encoding, String pathInfo)
+    {
+        encoding.getPathInfo();
+        setReturnValue(encoding, pathInfo);
     }
 
     private void trainGetServletPath(ServiceEncoding encoding, String servletPath)

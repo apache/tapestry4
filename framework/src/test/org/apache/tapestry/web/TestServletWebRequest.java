@@ -51,13 +51,11 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testGetParameterNames()
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = newRequest();
+        HttpServletResponse response = newResponse();
 
         request.getParameterNames();
-        control.setReturnValue(newEnumeration());
-
-        HttpServletResponse response = newResponse();
+        setReturnValue(request, newEnumeration());
 
         replayControls();
 
@@ -72,15 +70,13 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testGetParameterValue()
     {
+        HttpServletRequest request = newRequest();
+        HttpServletResponse response = newResponse();
+
         String value = "William Orbit";
 
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
-
         request.getParameter("artist");
-        control.setReturnValue(value);
-
-        HttpServletResponse response = newResponse();
+        setReturnValue(request, value);
 
         replayControls();
 
@@ -93,15 +89,14 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testGetParameterValues()
     {
+        HttpServletRequest request = newRequest();
+        HttpServletResponse response = newResponse();
+
         String[] values =
         { "William Orbit", "Steely Dan" };
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
 
         request.getParameterValues("artist");
-        control.setReturnValue(values);
-
-        HttpServletResponse response = newResponse();
+        setReturnValue(request, values);
 
         replayControls();
 
@@ -114,13 +109,11 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testGetContextPath()
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = newRequest();
+        HttpServletResponse response = newResponse();
 
         request.getContextPath();
-        control.setReturnValue("/foo");
-
-        HttpServletResponse response = newResponse();
+        setReturnValue(request, "/foo");
 
         replayControls();
 
@@ -133,13 +126,11 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testGetAttributeNames()
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = newRequest();
+        HttpServletResponse response = newResponse();
 
         request.getAttributeNames();
-        control.setReturnValue(newEnumeration());
-
-        HttpServletResponse response = newResponse();
+        setReturnValue(request, newEnumeration());
 
         replayControls();
 
@@ -154,14 +145,13 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testGetAttribute()
     {
+        HttpServletRequest request = newRequest();
+        HttpServletResponse response = newResponse();
+
         Object attribute = new Object();
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
 
         request.getAttribute("attr");
-        control.setReturnValue(attribute);
-
-        HttpServletResponse response = newResponse();
+        setReturnValue(request, attribute);
 
         replayControls();
 
@@ -174,14 +164,12 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testSetAttribute()
     {
+        HttpServletRequest request = newRequest();
+        HttpServletResponse response = newResponse();
+
         Object attribute = new Object();
 
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
-
         request.setAttribute("name", attribute);
-
-        HttpServletResponse response = newResponse();
 
         replayControls();
 
@@ -194,12 +182,10 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testSetAttributeToNull()
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = newRequest();
+        HttpServletResponse response = newResponse();
 
         request.removeAttribute("tonull");
-
-        HttpServletResponse response = newResponse();
 
         replayControls();
 
@@ -212,15 +198,11 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testGetSession()
     {
+        HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
+        HttpSession session = newSession();
 
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
-
-        HttpSession session = (HttpSession) newMock(HttpSession.class);
-
-        request.getSession(false);
-        control.setReturnValue(null);
+        trainGetSession(request, false, null);
 
         // Get it, doesn't exist, wreate false
 
@@ -232,8 +214,7 @@ public class TestServletWebRequest extends BaseWebTestCase
 
         verifyControls();
 
-        request.getSession(true);
-        control.setReturnValue(session);
+        trainGetSession(request, true, session);
 
         // #2: Get it, wreate is true, it is wreated.
 
@@ -253,15 +234,24 @@ public class TestServletWebRequest extends BaseWebTestCase
         verifyControls();
     }
 
+    private void trainGetSession(HttpServletRequest request, boolean create, HttpSession session)
+    {
+        request.getSession(create);
+        setReturnValue(request, session);
+    }
+
+    private HttpSession newSession()
+    {
+        return (HttpSession) newMock(HttpSession.class);
+    }
+
     public void testGetScheme()
     {
+        HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
-
         request.getScheme();
-        control.setReturnValue("http");
+        setReturnValue(request, "http");
 
         replayControls();
 
@@ -274,13 +264,11 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testGetServerName()
     {
+        HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
-
         request.getServerName();
-        control.setReturnValue("www.myhost.com");
+        setReturnValue(request, "www.myhost.com");
 
         replayControls();
 
@@ -293,13 +281,11 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testGetServerPort()
     {
+        HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
-
         request.getServerPort();
-        control.setReturnValue(80);
+        setReturnValue(request, 80);
 
         replayControls();
 
@@ -312,13 +298,11 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testGetRequestURI()
     {
+        HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
-
         request.getRequestURI();
-        control.setReturnValue("/foo/bar");
+        setReturnValue(request, "/foo/bar");
 
         replayControls();
 
@@ -331,15 +315,11 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testForwardInternal() throws Exception
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
-
+        HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
-
         RequestDispatcher dispatcher = newDispatcher();
 
-        request.getRequestDispatcher("/local.html");
-        control.setReturnValue(dispatcher);
+        trainGetRequestDispatcher(request, "/local.html", dispatcher);
 
         dispatcher.forward(request, response);
 
@@ -354,15 +334,11 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testForwardNull() throws Exception
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
-
+        HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
-
         RequestDispatcher dispatcher = newDispatcher();
 
-        request.getRequestDispatcher("/");
-        control.setReturnValue(dispatcher);
+        trainGetRequestDispatcher(request, "/", dispatcher);
 
         dispatcher.forward(request, response);
 
@@ -375,14 +351,19 @@ public class TestServletWebRequest extends BaseWebTestCase
         verifyControls();
     }
 
+    private void trainGetRequestDispatcher(HttpServletRequest request, String path,
+            RequestDispatcher dispatcher)
+    {
+        request.getRequestDispatcher(path);
+        setReturnValue(request, dispatcher);
+    }
+
     public void testForwardInternalNoDispatcher() throws Exception
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
-
+        HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
-        request.getRequestDispatcher("/local.html");
-        control.setReturnValue(null);
+
+        trainGetRequestDispatcher(request, "/local.html", null);
 
         replayControls();
 
@@ -405,21 +386,16 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     public void testForwardInternalFailure() throws Exception
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
-
+        HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
-
-        MockControl dispatcherc = newControl(RequestDispatcher.class);
-        RequestDispatcher dispatcher = (RequestDispatcher) dispatcherc.getMock();
+        RequestDispatcher dispatcher = newDispatcher();
 
         Throwable t1 = new ServletException("Mock Servlet Exception");
 
-        request.getRequestDispatcher("/servlet-exception.html");
-        control.setReturnValue(dispatcher);
+        trainGetRequestDispatcher(request, "/servlet-exception.html", dispatcher);
 
         dispatcher.forward(request, response);
-        dispatcherc.setThrowable(t1);
+        setThrowable(dispatcher, t1);
 
         replayControls();
 
@@ -442,11 +418,10 @@ public class TestServletWebRequest extends BaseWebTestCase
 
         Throwable t2 = new IOException("Mock IO Exception");
 
-        request.getRequestDispatcher("/io-exception.html");
-        control.setReturnValue(dispatcher);
+        trainGetRequestDispatcher(request, "/io-exception.html", dispatcher);
 
         dispatcher.forward(request, response);
-        dispatcherc.setThrowable(t2);
+        setThrowable(dispatcher, t2);
 
         replayControls();
 
@@ -469,11 +444,10 @@ public class TestServletWebRequest extends BaseWebTestCase
     public void testForwardExternal() throws Exception
     {
         HttpServletRequest request = newRequest();
-        MockControl responsec = newControl(HttpServletResponse.class);
-        HttpServletResponse response = (HttpServletResponse) responsec.getMock();
+        HttpServletResponse response = newResponse();
 
         response.encodeRedirectURL("http://foo.bar");
-        responsec.setReturnValue("<encoded: http://foo.bar>");
+        setReturnValue(response, "<encoded: http://foo.bar>");
 
         response.sendRedirect("<encoded: http://foo.bar>");
 
@@ -517,48 +491,38 @@ public class TestServletWebRequest extends BaseWebTestCase
 
         verifyControls();
     }
-    
-    public void testGetActivationPathNoPathInfo()
-    {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
 
+    public void testGetActivationPath()
+    {
+        HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
-        
+
         request.getServletPath();
-        control.setReturnValue("/foo");
-        
-        request.getPathInfo();
-        control.setReturnValue(null);
-        
+        setReturnValue(request, "/foo");
+
         replayControls();
-        
+
         WebRequest wr = new ServletWebRequest(request, response);
-        
+
         assertEquals("/foo", wr.getActivationPath());
-        
+
         verifyControls();
     }
-    
-    public void testGetActvationPathFull()
-    {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
 
+    public void testGetPathInfo()
+    {
+        HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
-        
-        request.getServletPath();
-        control.setReturnValue("/foo.direct");
-        
+
         request.getPathInfo();
-        control.setReturnValue("/bar/baz");
-        
+        setReturnValue(request, "bar/baz");
+
         replayControls();
-        
+
         WebRequest wr = new ServletWebRequest(request, response);
-        
-        assertEquals("/foo.direct/bar/baz", wr.getActivationPath());
-        
+
+        assertEquals("bar/baz", wr.getPathInfo());
+
         verifyControls();
     }
 }
