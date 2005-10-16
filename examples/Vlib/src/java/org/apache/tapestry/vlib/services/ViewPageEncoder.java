@@ -74,15 +74,17 @@ public class ViewPageEncoder implements ServiceEncoder
     {
         String servletPath = encoding.getServletPath();
 
-        if (!servletPath.startsWith(_url))
+        if (!servletPath.equals(_url))
             return;
 
-        // Skip the URL and the path, end up with a "/" seperated series of
+        // Skip the URL and the slash, end up with a "/" seperated series of
         // strings.
 
-        String pathInfo = servletPath.substring(_url.length() + 1);
+        String pathInfo = encoding.getPathInfo();
 
-        String[] params = TapestryUtils.split(pathInfo, '/');
+        // Skip the leading slash, then split the rest at each slash
+
+        String[] params = TapestryUtils.split(pathInfo.substring(1), '/');
 
         encoding.setParameterValue(ServiceConstants.SERVICE, Tapestry.EXTERNAL_SERVICE);
         encoding.setParameterValue(ServiceConstants.PAGE, _pageName);

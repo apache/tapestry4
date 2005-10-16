@@ -81,7 +81,7 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
         QueryParameterMap parameters = extractParameters(request);
 
-        decodeParameters(request.getActivationPath(), parameters);
+        decodeParameters(request.getActivationPath(), request.getPathInfo(), parameters);
 
         String serviceName = findService(parameters);
 
@@ -122,9 +122,9 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
         return result;
     }
 
-    private void decodeParameters(String servletPath, QueryParameterMap map)
+    private void decodeParameters(String servletPath, String pathInfo, QueryParameterMap map)
     {
-        ServiceEncodingImpl se = new ServiceEncodingImpl(servletPath, map);
+        ServiceEncodingImpl se = new ServiceEncodingImpl(servletPath, pathInfo, map);
 
         for (int i = 0; i < _encoders.length; i++)
         {

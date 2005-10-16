@@ -30,6 +30,8 @@ public class ServiceEncodingImpl implements ServiceEncoding
 {
     private String _servletPath;
 
+    private String _pathInfo;
+
     /**
      * Map of query parameter values; key is string name, value is either a string, an array of
      * strings, or null. Could have done this with subclassing rather than delegation.
@@ -55,20 +57,21 @@ public class ServiceEncodingImpl implements ServiceEncoding
 
     public ServiceEncodingImpl(String servletPath)
     {
-        this(servletPath, new QueryParameterMap());
+        this(servletPath, null, new QueryParameterMap());
     }
 
     public ServiceEncodingImpl(String servletPath, Map parametersMap)
     {
-        this(servletPath, new QueryParameterMap(parametersMap));
+        this(servletPath, null, new QueryParameterMap(parametersMap));
     }
 
-    public ServiceEncodingImpl(String servletPath, QueryParameterMap parameters)
+    public ServiceEncodingImpl(String servletPath, String pathInfo, QueryParameterMap parameters)
     {
         Defense.notNull(servletPath, "servletPath");
         Defense.notNull(parameters, "parameters");
 
         _servletPath = servletPath;
+        _pathInfo = pathInfo;
 
         _parameters = parameters;
     }
@@ -115,4 +118,8 @@ public class ServiceEncodingImpl implements ServiceEncoding
         return _parameters.getParameterNames();
     }
 
+    public String getPathInfo()
+    {
+        return _pathInfo;
+    }
 }

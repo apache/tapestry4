@@ -123,7 +123,7 @@
     </dl>
     
     <p>
-      This a typical URL might be
+      Following this scheme, a typical URL might be
       <code>/app?component=border.logout&amp;page=news/Thread&amp;service=direct</code>.  Yep, that's UGLY.
     </p>
     
@@ -251,11 +251,11 @@
       
       <source><![CDATA[
 <contribution configuration-id="tapestry.url.ServiceEncoders">
-  <asset-encoder id="asset" path="/assets/"/>
+  <asset-encoder id="asset" path="/assets"/>
 </contribution>]]></source>
       
       <p>
-        This contribution will encode asset URLs using the given path.  The provided path, <code>/assets/</code> comes first,
+        This contribution will encode asset URLs using the given path.  The provided path, <code>/assets</code> comes first,
         then the digest string, then the path for the URL.  An example URI would be <code>/assets/91ab6d51232df0384663312f405babbe/org/apache/tapestry/contrib/palette/select_right.gif</code>.
       </p>
       
@@ -309,7 +309,144 @@
   <url-pattern>*.svc</url-pattern>
 </servlet-mapping>]]></source>      
     </section>
+
+<section>
+  <title>encoder</title>
+
+  <p>
+    Finally, when one of the pre-defined encoders is insufficient, you can define your own.
+    The &lt;encoder&gt; element allows an arbitrary object that implements the &ServiceEncoder;
+    interface to be plugged into the pipeline.  The &lt;encoder&gt; element 
+    supports the (required) id attribute, and the optional before and
+    after attributes.
+  </p>    
+  
+  <p>
+    From the Virtual Library example, a custom encoder implementation is used as a 
+    special way to reference
+    the ViewBook and ViewPerson pages using the external service (see the &ExternalLink; component for more
+    information about using this engine service).  The end result is
+    that the URLs for these two pages look like
+    <code>/vlib/book/2096</code> rather than <code>/vlib/ViewBook.external?sp=2096</code> or
+    <code>/vlib/app?page=ViewBook&amp;service=external&amp;sp=2096</code>.  Certainly the
+    first option is by far the prettiest.
+  </p>
     
+  <p>
+    These encoders are configured in hivemodule.xml as follows:
+  </p>
+  
+  <source><![CDATA[
+<encoder id="viewbook" before="external" object="instance:ViewPageEncoder,pageName=ViewBook,url=/book"/>
+<encoder id="viewperson" before="external" object="instance:ViewPageEncoder,pageName=ViewPerson,url=/person"/>
+<page-service-encoder id="external" extension="external" service="external"/>    
+]]></source>  
+
+  <p>
+    The order of the encoders in the pipline is very important, so the use of the before attribute ensures that the specialized encoders for these two pages
+    are allowed to operate before the general purpose external service encoder.
+  </p>
+  
+  <p>
+    The two special pages are mapped in web.xml using their custom URLs:
+  </p>  
+    
+<source><![CDATA[  <servlet-mapping>
+    <servlet-name>vlib</servlet-name>
+    <url-pattern>/book/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>vlib</servlet-name>
+    <url-pattern>/person/*</url-pattern>
+  </servlet-mapping>
+]]></source>    
+    
+  <p>
+    The implementation of the ViewPageEncoder class is all about an encode() method and a matching decode()
+    method.
+  </p>    
+  
+  <p>
+    The encode() method must check to see if the link being generated is the right page name
+    and the right service, returning (without doing anything) if not.  The link
+    being constructed is represented as an instance of &ServiceEncoding;:
+  </p>
+  
+  <source><![CDATA[
+  public void encode(ServiceEncoding encoding)
+  {
+    if (!isExternalService(encoding))
+      return;
+
+    String pageName = encoding.getParameterValue(ServiceConstants.PAGE);
+
+    if (!pageName.equals(_pageName))
+      return;
+
+    StringBuilder builder = new StringBuilder(_url);
+
+    String[] params = encoding.getParameterValues(ServiceConstants.PARAMETER);
+
+    // params will not be null; in fact, pretty sure it will consist
+    // of just one element (an integer).
+
+    for (String param : params)
+    {
+      builder.append("/");
+      builder.append(param);
+    }
+
+    encoding.setServletPath(builder.toString());
+
+    encoding.setParameterValue(ServiceConstants.SERVICE, null);
+    encoding.setParameterValue(ServiceConstants.PAGE, null);
+    encoding.setParameterValue(ServiceConstants.PARAMETER, null);
+  }
+
+  private boolean isExternalService(ServiceEncoding encoding)
+  {
+    String service = encoding.getParameterValue(ServiceConstants.SERVICE);
+
+    return service.equals(Tapestry.EXTERNAL_SERVICE);
+  }  ]]></source>
+    
+  <p>
+    We cheat just a bit here because we know that the service parameters
+    will be a single numeric string.  You can see exactly how encoder works, by building
+    a new servlet path that encodes information that was stored as query parameters,
+    the setting those query parameters to null
+  </p>
+  
+  <p>
+    The flip side is the decode() method, which works by recognizing the URL
+    generated by the encode() method and restoring the query parameters by
+    parsing the URL:
+  </p>
+  
+  <source><![CDATA[  public void decode(ServiceEncoding encoding)
+  {
+    String servletPath = encoding.getServletPath();
+
+    if (!servletPath.equals(_url))
+      return;
+
+    String pathInfo = encoding.getPathInfo();
+
+    String[] params = TapestryUtils.split(pathInfo.substring(1), '/');
+
+    encoding.setParameterValue(ServiceConstants.SERVICE, Tapestry.EXTERNAL_SERVICE);
+    encoding.setParameterValue(ServiceConstants.PAGE, _pageName);
+    encoding.setParameterValues(ServiceConstants.PARAMETER, params);
+  } ]]></source>
+  
+  </section>
+  
+    <p>
+      When constructing this style of encoder, it is important to remember that
+      the servlet path does not end with a slash, but tthe path info, if non-null, will start
+      with a slash.
+    </p>
+  
   </section>
     
   </body>

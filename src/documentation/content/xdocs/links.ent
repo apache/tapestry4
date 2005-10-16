@@ -109,6 +109,7 @@
 <!ENTITY RedirectFilter 			'<link href="&apiroot;/RedirectFilter.html">RedirectFilter</link>'>
 <!ENTITY RequestContext 			'<link href="&apiroot;/RequestContext.html">RequestContext</link>'>
 <!ENTITY ServiceEncoder				'<link href="&apiroot;/engine/ServiceEncoder.html">ServiceEncoder</link>'>
+<!ENTITY ServiceEncoding			'<link href="&apiroot;/engine/ServiceEncoding.html">ServiceEncoding</link>'>
 <!ENTITY SessionStoreOptimized      '<link href="&apiroot;/SessionStoreOptimized.html">SessionStoreOptimized</link>'>
 <!ENTITY SimpleEngine 				'<link href="&apiroot;/engine/SimpleEngine.html">SimpleEngine</link>'>
 <!ENTITY SpecificationParser 		'<link href="&apiroot;/parse/SpecificationParser">SpecificationParser</link>'>

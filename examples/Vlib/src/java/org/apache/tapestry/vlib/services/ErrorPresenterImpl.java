@@ -16,6 +16,7 @@ package org.apache.tapestry.vlib.services;
 
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.vlib.IErrorProperty;
 import org.apache.tapestry.vlib.Visit;
 
@@ -27,15 +28,20 @@ import org.apache.tapestry.vlib.Visit;
  */
 public class ErrorPresenterImpl implements ErrorPresenter
 {
+    private ApplicationStateManager _stateManager;
+
+    public void setStateManager(ApplicationStateManager stateManager)
+    {
+        _stateManager = stateManager;
+    }
+
     public void presentError(String message, IRequestCycle cycle)
     {
         IEngine engine = cycle.getEngine();
 
         String pageName = "Home";
-        // Get, but don't create, the visit.
-        Visit visit = (Visit) engine.getVisit();
 
-        if (visit != null && visit.isUserLoggedIn())
+        if (isLoggedIn())
             pageName = "MyLibrary";
 
         IErrorProperty page = (IErrorProperty) cycle.getPage(pageName);
@@ -45,4 +51,15 @@ public class ErrorPresenterImpl implements ErrorPresenter
         cycle.activate(page);
     }
 
+    private boolean isLoggedIn()
+    {
+        if (_stateManager.exists("visit"))
+        {
+            Visit visit = (Visit) _stateManager.get("visit");
+
+            return visit.isUserLoggedIn();
+        }
+
+        return false;
+    }
 }

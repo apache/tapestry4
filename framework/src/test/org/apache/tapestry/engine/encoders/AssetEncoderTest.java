@@ -19,7 +19,6 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.asset.AssetService;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.services.ServiceConstants;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.encoders.AssetEncoder}.
@@ -27,15 +26,13 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestAssetEncoder extends HiveMindTestCase
+public class AssetEncoderTest extends HiveMindTestCase
 {
     public void testWrongService()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding encoding = (ServiceEncoding) control.getMock();
+        ServiceEncoding encoding = newEncoding();
 
-        encoding.getParameterValue(ServiceConstants.SERVICE);
-        control.setReturnValue("foo");
+        trainGetParameterValue(encoding, ServiceConstants.SERVICE, "foo");
 
         replayControls();
 
@@ -44,47 +41,56 @@ public class TestAssetEncoder extends HiveMindTestCase
         verifyControls();
     }
 
+    protected void trainGetParameterValue(ServiceEncoding encoding, String name, String value)
+    {
+        encoding.getParameterValue(name);
+        setReturnValue(encoding, value);
+    }
+
+    protected ServiceEncoding newEncoding()
+    {
+        return (ServiceEncoding) newMock(ServiceEncoding.class);
+    }
+
     public void testWrongPath()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding encoding = (ServiceEncoding) control.getMock();
+        ServiceEncoding encoding = newEncoding();
 
-        encoding.getServletPath();
-        control.setReturnValue("/Home.page");
+        trainGetServletPath(encoding, "/Home.page");
 
         replayControls();
 
         AssetEncoder encoder = new AssetEncoder();
-        encoder.setPath("/assets/");
+        encoder.setPath("/assets");
 
         encoder.decode(encoding);
 
         verifyControls();
     }
 
+    protected void trainGetServletPath(ServiceEncoding encoding, String servletPath)
+    {
+        encoding.getServletPath();
+        setReturnValue(encoding, servletPath);
+    }
+
     public void testEncode()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding encoding = (ServiceEncoding) control.getMock();
+        ServiceEncoding encoding = newEncoding();
 
-        encoding.getParameterValue(ServiceConstants.SERVICE);
-        control.setReturnValue(Tapestry.ASSET_SERVICE);
-
-        encoding.getParameterValue(AssetService.PATH);
-        control.setReturnValue("/foo/bar/Baz.gif");
-
-        encoding.getParameterValue(AssetService.DIGEST);
-        control.setReturnValue("12345");
+        trainGetParameterValue(encoding, ServiceConstants.SERVICE, Tapestry.ASSET_SERVICE);
+        trainGetParameterValue(encoding, AssetService.PATH, "/foo/bar/Baz.gif");
+        trainGetParameterValue(encoding, AssetService.DIGEST, "12345");
 
         encoding.setServletPath("/assets/12345/foo/bar/Baz.gif");
         encoding.setParameterValue(AssetService.PATH, null);
         encoding.setParameterValue(AssetService.DIGEST, null);
         encoding.setParameterValue(ServiceConstants.SERVICE, null);
-        
+
         replayControls();
 
         AssetEncoder encoder = new AssetEncoder();
-        encoder.setPath("/assets/");
+        encoder.setPath("/assets");
 
         encoder.encode(encoding);
 
@@ -93,23 +99,28 @@ public class TestAssetEncoder extends HiveMindTestCase
 
     public void testDecode()
     {
-        MockControl control = newControl(ServiceEncoding.class);
-        ServiceEncoding encoding = (ServiceEncoding) control.getMock();
+        ServiceEncoding encoding = newEncoding();
 
-        encoding.getServletPath();
-        control.setReturnValue("/assets/12345/foo/bar/Baz.gif");
+        trainGetServletPath(encoding, "/assets");
+        trainGetPathInfo(encoding, "/12345/foo/bar/Baz.gif");
 
         encoding.setParameterValue(ServiceConstants.SERVICE, Tapestry.ASSET_SERVICE);
         encoding.setParameterValue(AssetService.DIGEST, "12345");
         encoding.setParameterValue(AssetService.PATH, "/foo/bar/Baz.gif");
-        
+
         replayControls();
 
         AssetEncoder encoder = new AssetEncoder();
-        encoder.setPath("/assets/");
+        encoder.setPath("/assets");
 
         encoder.decode(encoding);
 
         verifyControls();
+    }
+
+    protected void trainGetPathInfo(ServiceEncoding encoding, String pathInfo)
+    {
+        encoding.getPathInfo();
+        setReturnValue(encoding, pathInfo);
     }
 }

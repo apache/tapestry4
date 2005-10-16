@@ -307,4 +307,16 @@ public class TestPortletWebRequest extends BasePortletWebTestCase
         verifyControls();
     }
 
+    public void testGetPathInfo()
+    {
+        PortletRequest request = newRequest();
+
+        replayControls();
+
+        WebRequest wr = new PortletWebRequest(request);
+
+        assertNull(wr.getPathInfo());
+
+        verifyControls();
+    }
 }

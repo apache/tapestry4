@@ -114,6 +114,14 @@ public class PortletWebRequest implements WebRequest
         return "";
     }
 
+    /**
+     * Returns null, always.
+     */
+    public String getPathInfo()
+    {
+        return null;
+    }
+
     public List getAttributeNames()
     {
         return WebUtils.toSortedList(_portletRequest.getAttributeNames());

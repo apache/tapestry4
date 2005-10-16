@@ -182,10 +182,12 @@ public class ServletWebRequest implements WebRequest
      */
     public String getActivationPath()
     {
-        String servletPath = _servletRequest.getServletPath();
-        String pathInfo = _servletRequest.getPathInfo();
+        return _servletRequest.getServletPath();
+    }
 
-        return pathInfo == null ? servletPath : servletPath + pathInfo;
+    public String getPathInfo()
+    {
+        return _servletRequest.getPathInfo();
     }
 
     public Locale getLocale()
