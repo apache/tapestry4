@@ -62,12 +62,13 @@
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-470">Document Image component</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-482">Document Script component</action>
       <action type="update" dev="HLS">Complete the renovation of the Virtual Library to take advantage of Tapestry 4.0 features</action>
+      <action type="fix" dev="DS" fixes-bug="TAPESTRY-455">Missing framework component documentation</action>
     </release>
     <release version="4.0-beta-10" date="Oct 8 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-344">Unimplemented abstract method check broken</action>
       <action type="add" dev="HLS">Add DefaultPrimaryKeyConverter for use with the For component</action>
       <action type="update" dev="HLS">Change For component to interleave rendering/rewinding with access to its primary key converter</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-696">Race condition during page loading can cause anomoylous exceptions related to annotations</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-696">Race condition during page loading can cause anomalous exceptions related to annotations</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-685">Asset service sends a 200 response even when the provided md5 checksum is invalid</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-564">Automatically create an IPropertySelection model from a string</action>
       <action type="remove" dev="HLS">Remove support for &lt;listener-binding&gt; and the dependency on Bean Scripting Framework</action>      
@@ -79,7 +80,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-676">Tapestry Inspector can throw an exception on the properties page, if a property is an array containing nulls</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-680">Need an injection type comparable to the state: binding prefix</action>
       <action type="update" dev="HLS">Re-organize Tapestry project site navigation to be more consistent</action>
-      <action type="update" dev="HLS">Rework build to create an seperate Tapestry examples distribution (which will be hosted from a non-ASF host)</action>
+      <action type="update" dev="HLS">Rework build to create a seperate Tapestry examples distribution (which will be hosted from a non-ASF host)</action>
       <action type="fix" dev="DS" fixes-bug="TAPESTRY-492">Document MaskEdit component</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-622">Add streamlined API for recording errors into a validation delegate</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-667">Methods marked deprecated in IComponent need to also be deprecated in AbstractComponent to avoid compiler warnings (when subclassing)</action>
