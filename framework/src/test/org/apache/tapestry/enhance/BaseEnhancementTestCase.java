@@ -30,11 +30,10 @@ public abstract class BaseEnhancementTestCase extends HiveMindTestCase
 {
     public IComponentSpecification newSpec(Location location)
     {
-        MockControl control = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) control.getMock();
+        IComponentSpecification spec = newSpec();
 
         spec.getLocation();
-        control.setReturnValue(location);
+        setReturnValue(spec, location);
 
         return spec;
     }
@@ -49,18 +48,12 @@ public abstract class BaseEnhancementTestCase extends HiveMindTestCase
         return (EnhancementOperation) newMock(EnhancementOperation.class);
     }
 
-    protected void trainGetAccessorMethodName(EnhancementOperation op, String propertyName, String methodName)
-    {
-        op.getAccessorMethodName(propertyName);
-        setReturnValue(op, methodName);
-    
-    }
-
-    protected void trainAddInjectedField(EnhancementOperation op, String fieldName, Class fieldType, Object injectedValue, String injectedFieldName)
+    protected void trainAddInjectedField(EnhancementOperation op, String fieldName,
+            Class fieldType, Object injectedValue, String injectedFieldName)
     {
         op.addInjectedField(fieldName, fieldType, injectedValue);
         setReturnValue(op, injectedFieldName);
-    
+
     }
 
     protected ApplicationStateManager newApplicationStateManager()
@@ -68,9 +61,28 @@ public abstract class BaseEnhancementTestCase extends HiveMindTestCase
         return (ApplicationStateManager) newMock(ApplicationStateManager.class);
     }
 
-    protected void trainGetPropertyType(EnhancementOperation op, String propertyName, Class propertyType)
+    protected EnhancementOperation newEnhancementOp()
+    {
+        return (EnhancementOperation) newMock(EnhancementOperation.class);
+    }
+
+    protected void trainGetAccessorMethodName(EnhancementOperation op, String propertyName,
+            String methodName)
+    {
+        op.getAccessorMethodName(propertyName);
+        setReturnValue(op, methodName);
+    }
+
+    protected void trainGetPropertyType(EnhancementOperation op, String propertyName,
+            Class propertyType)
     {
         op.getPropertyType(propertyName);
         setReturnValue(op, propertyType);
+    }
+
+    protected void trainGetBaseClass(EnhancementOperation op, Class baseClass)
+    {
+        op.getBaseClass();
+        setReturnValue(op, baseClass);
     }
 }
