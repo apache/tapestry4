@@ -14,14 +14,15 @@
 
 package org.apache.tapestry.enhance;
 
+import java.lang.reflect.Modifier;
 import java.util.Iterator;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -61,7 +62,8 @@ public class InjectAssetWorker implements EnhancementWorker
         }
     }
 
-    public void injectAsset(EnhancementOperation op, String assetName, String propertyName, Location location)
+    public void injectAsset(EnhancementOperation op, String assetName, String propertyName,
+            Location location)
     {
         Defense.notNull(op, "op");
         Defense.notNull(assetName, "assetName");
@@ -77,17 +79,13 @@ public class InjectAssetWorker implements EnhancementWorker
                     propertyType,
                     IAsset.class));
 
-        String fieldName = "_$" + propertyName;
+        String methodName = op.getAccessorMethodName(propertyName);
 
-        op.addField(fieldName, propertyType);
+        MethodSignature sig = new MethodSignature(propertyType, methodName, null, null);
 
-        EnhanceUtils.createSimpleAccessor(op, fieldName, propertyName, propertyType, location);
+        String code = "return getAsset(\"" + assetName + "\");";
 
-        // i.e. _$fred = getAsset("barney");
-
-        String code = fieldName + " = getAsset(\"" + assetName + "\");";
-
-        op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE, code);
+        op.addMethod(Modifier.PUBLIC, sig, code, location);
     }
 
     public void setErrorLog(ErrorLog errorLog)
