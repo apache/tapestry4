@@ -44,57 +44,56 @@ public class TestInjectAssetWorker extends HiveMindTestCase
         as.setPropertyName(propertyName);
         as.setLocation(location);
 
-        MockControl control = newControl(IComponentSpecification.class);
-        IComponentSpecification spec = (IComponentSpecification) control.getMock();
+        IComponentSpecification spec = newSpec();
 
         spec.getAssetNames();
-        control.setReturnValue(Collections.singletonList(assetName));
+        setReturnValue(spec, Collections.singletonList(assetName));
 
         spec.getAsset(assetName);
-        control.setReturnValue(as);
+        setReturnValue(spec, as);
 
         return spec;
+    }
+
+    protected IComponentSpecification newSpec()
+    {
+        return (IComponentSpecification) newMock(IComponentSpecification.class);
     }
 
     public void testNoWork()
     {
         IComponentSpecification spec = newSpec("fred", null, null);
-        EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
+        EnhancementOperation op = newEnhancementOp();
 
         replayControls();
 
         new InjectAssetWorker().performEnhancement(op, spec);
 
         verifyControls();
+    }
+
+    protected EnhancementOperation newEnhancementOp()
+    {
+        return (EnhancementOperation) newMock(EnhancementOperation.class);
     }
 
     public void testSuccess()
     {
         Location l = newLocation();
         IComponentSpecification spec = newSpec("fred", "barney", l);
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        EnhancementOperation op = newEnhancementOp();
 
-        op.getPropertyType("barney");
-        control.setReturnValue(IAsset.class);
+        trainGetPropertyType(op, "barney", IAsset.class);
 
         op.claimReadonlyProperty("barney");
 
-        op.addField("_$barney", IAsset.class);
-
-        op.getAccessorMethodName("barney");
-        control.setReturnValue("getBarney");
+        trainGetAccessorMethodName(op, "barney", "getBarney");
 
         op.addMethod(
                 Modifier.PUBLIC,
                 new MethodSignature(IAsset.class, "getBarney", null, null),
-                "return _$barney;",
+                "return getAsset(\"fred\");",
                 l);
-
-        op.extendMethodImplementation(
-                IComponent.class,
-                EnhanceUtils.FINISH_LOAD_SIGNATURE,
-                "_$barney = getAsset(\"fred\");");
 
         replayControls();
 
@@ -103,26 +102,36 @@ public class TestInjectAssetWorker extends HiveMindTestCase
         verifyControls();
     }
 
+    protected void trainGetAccessorMethodName(EnhancementOperation op, String propertyName,
+            String methodName)
+    {
+        op.getAccessorMethodName(propertyName);
+        setReturnValue(op, methodName);
+    }
+
+    protected void trainGetPropertyType(EnhancementOperation op, String propertyName,
+            Class propertyType)
+    {
+        op.getPropertyType(propertyName);
+        setReturnValue(op, propertyType);
+    }
+
     public void testFailure()
     {
         Location l = newLocation();
         Throwable ex = new ApplicationRuntimeException(EnhanceMessages.claimedProperty("barney"));
-
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        EnhancementOperation op = newEnhancementOp();
 
         IComponentSpecification spec = newSpec("fred", "barney", l);
 
         ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
-        op.getPropertyType("barney");
-        control.setReturnValue(IComponent.class);
+        trainGetPropertyType(op, "barney", IComponent.class);
 
         op.claimReadonlyProperty("barney");
-        control.setThrowable(ex);
+        setThrowable(op, ex);
 
-        op.getBaseClass();
-        control.setReturnValue(BaseComponent.class);
+        trainGetBaseClass(op, BaseComponent.class);
 
         log.error(EnhanceMessages.errorAddingProperty("barney", BaseComponent.class, ex), l, ex);
 
@@ -137,13 +146,17 @@ public class TestInjectAssetWorker extends HiveMindTestCase
         verifyControls();
     }
 
+    private void trainGetBaseClass(EnhancementOperation op, Class baseClass)
+    {
+        op.getBaseClass();
+        setReturnValue(op, baseClass);
+    }
+
     public void testWrongPropertyType()
     {
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        EnhancementOperation op = newEnhancementOp();
 
-        op.getPropertyType("barney");
-        control.setReturnValue(IComponent.class);
+        trainGetPropertyType(op, "barney", IComponent.class);
 
         op.claimReadonlyProperty("barney");
 
