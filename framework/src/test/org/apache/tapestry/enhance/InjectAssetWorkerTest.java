@@ -21,14 +21,12 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.AssetSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.enhance.InjectAssetWorker}.
@@ -36,7 +34,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestInjectAssetWorker extends HiveMindTestCase
+public class InjectAssetWorkerTest extends BaseEnhancementTestCase
 {
     private IComponentSpecification newSpec(String assetName, String propertyName, Location location)
     {
@@ -55,11 +53,6 @@ public class TestInjectAssetWorker extends HiveMindTestCase
         return spec;
     }
 
-    protected IComponentSpecification newSpec()
-    {
-        return (IComponentSpecification) newMock(IComponentSpecification.class);
-    }
-
     public void testNoWork()
     {
         IComponentSpecification spec = newSpec("fred", null, null);
@@ -70,11 +63,6 @@ public class TestInjectAssetWorker extends HiveMindTestCase
         new InjectAssetWorker().performEnhancement(op, spec);
 
         verifyControls();
-    }
-
-    protected EnhancementOperation newEnhancementOp()
-    {
-        return (EnhancementOperation) newMock(EnhancementOperation.class);
     }
 
     public void testSuccess()
@@ -100,20 +88,6 @@ public class TestInjectAssetWorker extends HiveMindTestCase
         new InjectAssetWorker().performEnhancement(op, spec);
 
         verifyControls();
-    }
-
-    protected void trainGetAccessorMethodName(EnhancementOperation op, String propertyName,
-            String methodName)
-    {
-        op.getAccessorMethodName(propertyName);
-        setReturnValue(op, methodName);
-    }
-
-    protected void trainGetPropertyType(EnhancementOperation op, String propertyName,
-            Class propertyType)
-    {
-        op.getPropertyType(propertyName);
-        setReturnValue(op, propertyType);
     }
 
     public void testFailure()
@@ -144,12 +118,6 @@ public class TestInjectAssetWorker extends HiveMindTestCase
         w.performEnhancement(op, spec);
 
         verifyControls();
-    }
-
-    private void trainGetBaseClass(EnhancementOperation op, Class baseClass)
-    {
-        op.getBaseClass();
-        setReturnValue(op, baseClass);
     }
 
     public void testWrongPropertyType()
