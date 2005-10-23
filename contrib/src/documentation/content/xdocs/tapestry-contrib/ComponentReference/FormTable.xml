@@ -28,7 +28,151 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+      <warning>
+          This component has been deprecated; The &Table; component in Tapestry 4.0 
+          automatically performs the &FormTable; functions if contained by &Form; components.
+      </warning>
+      
+<p> 
+	A version of the &Table; component designed for use in a form. 
+    Like Table, this component allows you to present a sortable and pagable table 
+    simply and easily. It also stores the items it dispays in hidden fields in the form, 
+    so that they are identical during the rewind cycle when the form is submitted, 
+    and generates links that submit the form, so that any other form information is preserved.
+</p>
+
+<p>
+The differences between FormTable and Table are the following:
+</p>
+
+    <ul>
+		<li>It uses &TableFormRows; instead of &TableRows; which stores the rendered items in hidden form fields</li>
+    	<li>It uses &TableFormPages; instead of &TablePages; which generates links that submit the form besides changing the page</li>
+    	<li>If the columns are defined using a string in the columns parameter, it ensures that the headers of the generated columns contain links that also submit the form.</li>
+    </ul>
+
+<p>    
+	The FormTable component allows you to manipulate its appearance by allowing you to 
+    define the 'class' attributes of its internal elements. If you want to change 
+    the structure of the table, however, you can instead build your own using the 
+    lower level components &TableView;, &TablePages;, &TableFormPages;, &TableColumns;, 
+    &TableRows;, &TableFormRows;, and &TableValues;.
+</p>
+
+<p>
+	The FormTable component delegates the handling of the table model and related 
+    activities to the TableView, and more detailed information about the process 
+    can be found in the documentation of that class.
+</p>
+
+    
+<p>
+<strong>Providing the data</strong>
+</p>
+
+<p>
+    There are many ways to provide the component with the data it has to render, 
+    but here are the three major ones:
+</p>
+
+	<ol>
+        <li>The data is passed to the source parameter in the form of an array, 
+            a collection, or an iterator, and the table columns are defined 
+            using the columns parameter (see further for details). 
+            Both of these parameters will be evaluated at every request by default, 
+            so changes in the data or the table columns will be displayed immediately.
+            <br/><br/>
+			This is the easiest and most straightforward approach. 
+            It has one performance limitation, however - if the table is sorting 
+            the data according to a given column, the sorting will be performed at 
+            every request. The next methods provide ways to resolve this possible 
+            performance issue.
+		</li>
+            
+   		<li>The data is passed to the source parameter via an object that implements 
+            the IBasicTableModel interface. Through that interface you are given 
+            the sorting column (if any) and the numbers of the items that will be 
+            displayed on the current page. You then need to provide the component 
+            with the corresponding data.
+            <br/><br/>
+			This method allows you to perform the sorting in the database and load 
+            only the data that will be displayed on the current page (e.g. by using 
+            the ORDER BY, LIMIT, and OFFSET clauses in SQL) and hence it could be 
+            far more efficient.
+        </li>
+
+   		<li>All of the information (data, columns, state) is packaged in an 
+            <link href="&apiroot;/table/model/ITableModel.html">ITableModel</link> 
+            and is passed to the <code>tableModel</code> parameter.
+            <br/><br/>
+      		This approach allows greatest flexibility, but is recommended only 
+            for advanced users of the Table components. 
+        </li>
+	</ol>
+
+<p>
+<strong>Defining the columns</strong>
+</p>
+
+<p>
+If you define the table columns using the <code>columns</code> parameter, you can either
+provide a list of <link href="&apiroot;/table/model/ITableColumn.html"><code>ITableColumn</code></link>
+objects, each defining a column in the table, or you can define the columns using 
+a string that describes each column. 
+</p>
+<p>
+The string describing the columns must be formatted in the following way:
+</p>
+<ul>
+    <li>The column definitions in the string are separated by commas
+        <br/><br/>
+    </li>
+    <li>Each column definition must be of one of the following types:
+        <ul>
+            <li>id</li>
+            <li>id:expression</li>
+            <li>id:description:expression</li>
+        </ul>
+        <br/>
+        Here the <strong>id</strong> defines the identification of the column, the <strong>expression</strong> is an
+        OGNL expression that extracts the column value from the row object, and <strong>description</strong>
+        is the title of the column if it is not defined otherwise.
+        <br/><br/>
+        Each column definition may be prefixed by the <strong>!</strong> character, 
+        which identifies the column as non-sortable.
+        <br/><br/>
+        If defined, a Block with a name that is starts with the column id and 
+        ends with <em>ColumnValue</em> will be used to render the column values.
+        Similarly, a Block with a name that starts with the column id and 
+        ends with <em>ColumnHeader</em> will be used to render the column headers.
+        <br/><br/>
+        Finally, the title of the column will be taken from translation strings of the component
+        by using the column id as a key.
+        <br/><br/>
+        Please see the <code>LocaleSelection</code> component for examples.
+        <br/><br/>
+    </li>
+    <li>A column definition may also be of the type
+        <br/><br/>
+        <ul>
+            <li>=expression</li>
+        </ul>
+        <br/>
+        in which case it identifies an OGNL expression that returns an 
+        <link href="&apiroot;/table/model/ITableColumn.html"><code>ITableColumn</code></link>
+        object defining the column.
+        <br/><br/>
+    </li>
+    <li>The full description string may be prefixed by the <strong>*</strong> character,
+        which means that the table is to be rendered within a form, and the 
+        column headers must submit the form if they are clickable (i.e. if the column is sortable).
+    </li>
+</ul>
+<p>
+Here is an example of the use of a description string to define columns:
+<code>
+  columns="locale:toString(), =currencyColumn, verbosity:Verbosity:currentRowVerbosity, !delete"
+</code>
 </p>
 
 <p>
