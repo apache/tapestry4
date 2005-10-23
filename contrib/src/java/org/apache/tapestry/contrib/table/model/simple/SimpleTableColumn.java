@@ -31,6 +31,9 @@ import org.apache.tapestry.contrib.table.model.common.AbstractTableColumn;
 public class SimpleTableColumn extends AbstractTableColumn
 {
 	private static final long serialVersionUID = 1L;
+
+	// TODO: Unify SimpleTableColumnRendererSource and SimpleTableColumnFormRendererSource
+	// and implement the configuration with HiveMind
 	
     public static final ITableRendererSource DEFAULT_COLUMN_RENDERER_SOURCE = new SimpleTableColumnRendererSource();
 

@@ -37,13 +37,6 @@ public class SimpleTableColumnFormRendererSource implements ITableRendererSource
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ComponentTableRendererSource m_objComponentRenderer;
-
-	public SimpleTableColumnFormRendererSource()
-	{
-		m_objComponentRenderer = null;
-	}
-
 	/**
 	 * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
 	 */
@@ -53,24 +46,15 @@ public class SimpleTableColumnFormRendererSource implements ITableRendererSource
 		ITableColumn objColumn,
 		Object objRow)
 	{
-		if (m_objComponentRenderer == null)
-		{
-			synchronized (this)
-			{
-				if (m_objComponentRenderer == null)
-				{
-					ComponentAddress objAddress =
-						new ComponentAddress(
-							objSource.getNamespace(),
-							"SimpleTableColumnPage",
-							"tableColumnFormComponent");
-					m_objComponentRenderer =
-						new ComponentTableRendererSource(objAddress);
-				}
-			}
-		}
+		ComponentAddress objAddress =
+			new ComponentAddress(
+				objSource.getNamespace(),
+				"SimpleTableColumnPage",
+				"tableColumnFormComponent");
+		ComponentTableRendererSource objComponentRenderer =
+			new ComponentTableRendererSource(objAddress);
 
-		return m_objComponentRenderer.getRenderer(
+		return objComponentRenderer.getRenderer(
 			objCycle,
 			objSource,
 			objColumn,
