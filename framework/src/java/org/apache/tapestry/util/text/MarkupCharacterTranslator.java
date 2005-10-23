@@ -72,7 +72,9 @@ public class MarkupCharacterTranslator implements ICharacterTranslator
 	 * @see org.apache.tapestry.util.text.IMarkupCharacterTranslator#translateAttribute(char)
 	 */
 	public String translate(char ch) {
-		if (ch >= 128 && !_encodeNonAscii)
+		// IE and Firefox do not handle characters between 128 and 159 well, 
+		// so they have to be quoted as well 
+		if (ch >= 160 && !_encodeNonAscii) 
 			return null;
 		
 		if (_safeMatcher.matches(ch))
