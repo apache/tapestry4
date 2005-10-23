@@ -37,11 +37,8 @@ public class SimpleTableColumnRendererSource implements ITableRendererSource
 {
 	private static final long serialVersionUID = 1L;
 	
-	private ComponentTableRendererSource m_objComponentRenderer;
-
 	public SimpleTableColumnRendererSource()
 	{
-		m_objComponentRenderer = null;
 	}
 
 	/**
@@ -53,24 +50,15 @@ public class SimpleTableColumnRendererSource implements ITableRendererSource
 		ITableColumn objColumn,
 		Object objRow)
 	{
-		if (m_objComponentRenderer == null)
-		{
-			synchronized (this)
-			{
-				if (m_objComponentRenderer == null)
-				{
-					ComponentAddress objAddress =
-						new ComponentAddress(
-							objSource.getNamespace(),
-							"SimpleTableColumnPage",
-							"tableColumnComponent");
-					m_objComponentRenderer =
-						new ComponentTableRendererSource(objAddress);
-				}
-			}
-		}
+		ComponentAddress objAddress =
+			new ComponentAddress(
+				objSource.getNamespace(),
+				"SimpleTableColumnPage",
+				"tableColumnComponent");
+		ComponentTableRendererSource objComponentRenderer =
+			new ComponentTableRendererSource(objAddress);
 
-		return m_objComponentRenderer.getRenderer(
+		return objComponentRenderer.getRenderer(
 			objCycle,
 			objSource,
 			objColumn,
