@@ -32,7 +32,7 @@
   Loops over a collection of source values.  May also emulate an element (like an Any
   component). If this component is placed in a Form, it will automatically store
   the collection in Hidden fields so that the structure of the page is preserved
-  during a rewind even if the values in the source change.
+  when the form is submitted even if the values in the source parameter have changed.
 </p>
 
 <p>
@@ -250,7 +250,7 @@
   <p><br/><strong>Edit a list of customers</strong></p>
   <p>This examples allows the user to edit a list of customers.
      The 'keyExpression' parameter is optional. It tells the component to use the 'id'
-     expression to obtain the primary key of the customer. 
+     expression to obtain the primary key of the customers. 
      The parameter is particularly useful when the Customer object is not Serializable,
      as only the primary key is stored in the hidden fields, 
      rather than the full Customer record.
@@ -266,7 +266,8 @@
   <tr>
     <td colspan="3"><hr></td>
   </tr>
-  <tr jwcid="@For" source="ognl:customerList" keyExpression="id" value="ognl:customer" element="tr">
+  <tr jwcid="@For" source="ognl:customerList" keyExpression="id"
+      value="ognl:customer" element="tr">
     <td><span jwcid="@Insert" value="ognl:customer.id"/></td>
     <td><span jwcid="@TextField" value="ognl:customer.fullName"/></td>
     <td><span jwcid="@PropertySelection" value="ognl:customer.memberLevel"
@@ -274,8 +275,70 @@
   </tr>
 </table>]]>
 </source>
-      
-  
+     
 </section>
+
+<section>
+  <title>Hints</title>
+
+  <p><strong>Representing data as a string</strong></p>
+  <p>If the &For; component is used in a form, it will automatically 
+	 convert the provided data to strings and store it in hidden fields 
+     in order to ensure that the form is processed correctly 
+     when submitted. 
+  </p>
+  <p>
+	 If the data is in one of the basic types or if the data is serializable, 
+     Tapestry will automatically build string representation of the objects.
+	 If it is not serializable however, an <code>ApplicationRuntimeException</code> 
+	 will be thrown with the message 'Could not find a strategy instance for class'.
+  </p>
+  <p>
+	 There are several options to resolve this problem:
+  </p>
+	 <ol>
+		<li>
+			<p>
+			<strong>Store only the primary keys of your data objects</strong> 
+			<br/>
+			You can define the name of a property that contains the primary keys 
+			using the <code>keyExpression</code> parameter. 
+			<br/>
+			The second example shows that approach and uses the <code>id</code>
+			property to represent the object. 
+			<br/>
+			Alternatively, you can implement the <code>IPrimaryKeyConverter</code> 
+			interface and use the <code>converter</code> parameter to define how
+			the primary key is obtained from the object.
+			</p>
+		</li>
+		<li>
+			<strong>Make your data class Serializable.</strong> 
+			<br/>
+			Tapestry will automatically convert Serializable data into a string 
+			and store it in the form. 
+		</li>
+		<li>
+			Define your own way to convert the class into a string.  
+			To do this, implement the <code>SqueezeAdaptor</code> interface 
+			and register your squeeze adaptor in the WEB-INF/hivemodule.xml file. 
+			Please refer to the documentation for more information.
+		</li>
+		<li>
+			Make the For component volatile by setting the <code>volatile</code> parameter 
+			to 'true'. 
+			This approach is discouraged, since the data will not be stored in the form 
+			as a result. That may cause a <code>StaleLinkException</code> to be thrown 
+			if the data changes between the form rendering and the form submission. 
+			To avoid this problem you must make sure that the data stays the same.
+		</li>
+	 </ol>
+  <p>
+	 Either of the above options will work, but the first two are preferred.
+  </p>
+
+</section>
+
+
 </body>
 </document>
