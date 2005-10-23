@@ -186,6 +186,16 @@
 <!ENTITY Otherwise 			'<link href="site:Otherwise">Otherwise</link>'>
 <!ENTITY Palette 			'<link href="site:Palette">Palette</link>'>
 <!ENTITY When 			    '<link href="site:When">When</link>'>
+<!ENTITY FormConditional    '<link href="site:When">FormConditional</link>'>
+<!ENTITY FormTable 			'<link href="site:FormTable">FormTable</link>'>
+<!ENTITY Table 			    '<link href="site:Table">Table</link>'>
+<!ENTITY TableColumns 		'<link href="site:When">TableColumns</link>'>
+<!ENTITY TableFormPages 	'<link href="site:TableFormPages">TableFormPages</link>'>
+<!ENTITY TableFormRows 		'<link href="site:TableFormRows">TableFormRows</link>'>
+<!ENTITY TablePages 		'<link href="site:TablePages">TablePages</link>'>
+<!ENTITY TableRows 			'<link href="site:TableRows">TableRows</link>'>
+<!ENTITY TableValues 		'<link href="site:TableValues">TableValues</link>'>
+<!ENTITY TableView 			'<link href="site:TableView">TableView</link>'>
 
 <!-- External links -->
 
