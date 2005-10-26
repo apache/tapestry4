@@ -37,6 +37,12 @@
 
 </p>
 
+    <warning>
+      This component has been deprecated and will be removed in the next major release
+      of Tapestry. ActionLink represents an inherently unstable approach, since it can easily
+      be confused by changing server-side state.
+    </warning>
+
 <section>
   <title>Parameters</title>
 

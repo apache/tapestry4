@@ -89,6 +89,9 @@ public interface IRequestCycle
     /**
      * Returns the next action id. ActionLink ids are used to identify different actions on a page
      * (URLs that are related to dynamic page state).
+     * 
+     * @deprecated To be removed in release 4.1 with no replacement.
+     * @see #getUniqueId(String)
      */
 
     public String getNextActionId();
@@ -148,6 +151,7 @@ public interface IRequestCycle
      * 
      * @see IAction
      * @see org.apache.tapestry.link.ActionLink
+     * @deprecated To be removed in 4.1 with no replacement.
      */
 
     public void rewindPage(String targetActionId, IComponent targetComponent);

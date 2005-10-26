@@ -220,6 +220,7 @@ public class RequestCycle implements IRequestCycle
         return _monitor;
     }
 
+    /** @deprecated */
     public String getNextActionId()
     {
         return Integer.toHexString(++_actionId);
@@ -481,6 +482,8 @@ public class RequestCycle implements IRequestCycle
      * valid, and a {@link ApplicationRuntimeException}is thrown.
      * <p>
      * This clears all attributes.
+     * 
+     * @deprecated To be removed in 4.1 with no replacement.
      */
 
     public void rewindPage(String targetActionId, IComponent targetComponent)
