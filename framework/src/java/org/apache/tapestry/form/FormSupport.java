@@ -39,8 +39,12 @@ public interface FormSupport extends FormBehavior
      * @param link
      *            The link to which the form will submit (encapsulating the URL and the query
      *            parameters)
+     * @param scheme
+     *            the desired scheme for the generated URL, typically "http" or "https". If
+     *            non-null, and the scheme does not match the current request's scheme, then an
+     *            absolute URL with the specified scheme will be generated, rather than a URI.
      */
-    public void render(String method, IRender informalParametersRenderer, ILink link);
+    public void render(String method, IRender informalParametersRenderer, ILink link, String scheme);
 
     /**
      * Invoked to rewind the form, which renders the body of the form, allowing form element

@@ -118,6 +118,12 @@ public class PortletLink implements ILink
         }
     }
 
+    public String getURL(String scheme, String server, int port, String anchor, boolean includeParameters)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     public String getAbsoluteURL()
     {
         throw new UnsupportedOperationException(PortletMessages.unsupportedMethod("getAbsoluteURL"));

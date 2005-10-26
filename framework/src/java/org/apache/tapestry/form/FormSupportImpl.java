@@ -443,7 +443,7 @@ public class FormSupportImpl implements FormSupport
             _elementIdAllocator.allocateId(ids[i]);
     }
 
-    public void render(String method, IRender informalParametersRenderer, ILink link)
+    public void render(String method, IRender informalParametersRenderer, ILink link, String scheme)
     {
         String formId = _form.getName();
 
@@ -465,7 +465,7 @@ public class FormSupportImpl implements FormSupport
 
         runDeferredRunnables();
 
-        writeTag(_writer, method, link.getURL(null, false));
+        writeTag(_writer, method, link.getURL(scheme, null, 0, null, false));
 
         // For HTML compatibility
         _writer.attribute("name", formId);

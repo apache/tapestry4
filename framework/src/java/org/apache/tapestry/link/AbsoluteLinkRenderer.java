@@ -15,23 +15,25 @@
 package org.apache.tapestry.link;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.ILink;
 
 /**
- *  Renders a link using an absolute URL, not simply a URI
- *  (as with {@link org.apache.tapestry.link.DefaultLinkRenderer}.  In addition,
- *  the scheme, server and port may be changed (this may be appropriate when
- *  switching between secure and insecure portions of an application).
- *
- *  @author Howard Lewis Ship
- *  @since 3.0
+ * Renders a link using an absolute URL, not simply a URI (as with
+ * {@link org.apache.tapestry.link.DefaultLinkRenderer}. In addition, the scheme, server and port
+ * may be changed (this may be appropriate when switching between secure and insecure portions of an
+ * application).
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 3.0
+ */
 
 public class AbsoluteLinkRenderer extends DefaultLinkRenderer
 {
     private String _scheme;
+
     private String _serverName;
+
     private int _port;
 
     public int getPort()
@@ -50,23 +52,21 @@ public class AbsoluteLinkRenderer extends DefaultLinkRenderer
     }
 
     /**
-     *  Used to override the port in the final URL, if specified.  If not specified,
-     *  the port provided by the {@link javax.servlet.ServletRequest#getServerPort() request}
-     *  is used (typically, the value 80).
-     *
-     **/
+     * Used to override the port in the final URL, if specified. If not specified, the port provided
+     * by the {@link javax.servlet.ServletRequest#getServerPort() request} is used (typically, the
+     * value 80).
+     */
 
     public void setPort(int port)
     {
         _port = port;
     }
-    
+
     /**
-     *  Used to override the scheme in the final URL, if specified.  If not specified,
-     *  the scheme provided by the {@link javax.servlet.ServletRequest#getScheme() request}
-     *  is used (typically, <code>http</code>).
-     *
-     **/
+     * Used to override the scheme in the final URL, if specified. If not specified, the scheme
+     * provided by the {@link javax.servlet.ServletRequest#getScheme() request} is used (typically,
+     * <code>http</code>).
+     */
 
     public void setScheme(String scheme)
     {
@@ -74,20 +74,20 @@ public class AbsoluteLinkRenderer extends DefaultLinkRenderer
     }
 
     /**
-     *  Used to override the server name in the final URL, if specified.  If not specified,
-     *  the port provided by the {@link javax.servlet.ServletRequest#getServerName() request}
-     *  is used.
-     *
-     **/
+     * Used to override the server name in the final URL, if specified. If not specified, the port
+     * provided by the {@link javax.servlet.ServletRequest#getServerName() request} is used.
+     */
 
     public void setServerName(String serverName)
     {
         _serverName = serverName;
     }
 
-    protected String constructURL(ILink link, String anchor, IRequestCycle cycle)
+    protected String constructURL(ILinkComponent component, IRequestCycle cycle)
     {
-        return link.getAbsoluteURL(_scheme, _serverName, _port, anchor, true);
+        ILink link = component.getLink(cycle);
+
+        return link.getAbsoluteURL(_scheme, _serverName, _port, component.getAnchor(), true);
     }
 
 }

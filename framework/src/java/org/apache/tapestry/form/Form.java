@@ -38,7 +38,7 @@ import org.apache.tapestry.web.WebResponse;
 /**
  * Component which contains form element components. Forms use the action or direct services to
  * handle the form submission. A Form will wrap other components and static HTML, including form
- * components such as {@link TextArea},{@link TextField},{@link Checkbox}, etc. [ <a
+ * components such as {@link TextArea}, {@link TextField}, {@link Checkbox}, etc. [ <a
  * href="../../../../../ComponentReference/Form.html">Component Reference </a>]
  * <p>
  * When a form is submitted, it continues through the rewind cycle until <em>after</em> all of its
@@ -53,7 +53,7 @@ import org.apache.tapestry.web.WebResponse;
  * default is the direct service, even though in earlier releases, only the action service was
  * available.
  * <p>
- * Release 4.0 adds two new listener, {@link #getCancel()} and {@link #getRefresh()} and
+ * Release 4.0 adds two new listeners, {@link #getCancel()} and {@link #getRefresh()} and
  * corresponding client-side behavior to force a form to refresh (update, bypassing input field
  * validation) or cancel (update immediately).
  * 
@@ -81,7 +81,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      * convienience method, the result will be null, or an instance of {@link IForm}, but not
      * necessarily a <code>Form</code>.
      * 
-     * @deprecated Use {@link TapestryUtils#getForm(IRequestCycle, IComponent)}&nbsp;instead.
+     * @deprecated Use {@link TapestryUtils#getForm(IRequestCycle, IComponent)} instead.
      */
 
     public static IForm get(IRequestCycle cycle)
@@ -247,7 +247,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
         ILink link = getLink(cycle, actionId);
 
-        _formSupport.render(getMethod(), _renderInformalParameters, link);
+        _formSupport.render(getMethod(), _renderInformalParameters, link, getScheme());
     }
 
     IActionListener findListener(String mode)
@@ -368,7 +368,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      */
 
     public abstract IValidationDelegate getDelegate();
-    
+
     /** listener parameter, may be null */
     public abstract IActionListener getListener();
 
@@ -386,6 +386,9 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     /** stateful parameter */
     public abstract boolean isStateful();
+
+    /** scheme parameter, may be null */
+    public abstract String getScheme();
 
     public void setEncodingType(String encodingType)
     {

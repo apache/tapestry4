@@ -110,6 +110,15 @@ public class EngineServiceLink implements ILink
         return getAbsoluteURL(null, null, 0, null, true);
     }
 
+    public String getURL(String scheme, String server, int port, String anchor,
+            boolean includeParameters)
+    {
+        boolean useAbsolute = EngineUtils.needAbsoluteURL(scheme, server, port, _request);
+
+        return useAbsolute ? getAbsoluteURL(scheme, server, port, anchor, includeParameters)
+                : getURL(anchor, includeParameters);
+    }
+
     public String getAbsoluteURL(String scheme, String server, int port, String anchor,
             boolean includeParameters)
     {

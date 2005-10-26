@@ -102,6 +102,13 @@
     </description>
   </parameter>
   
+  <parameter name="scheme">
+    <description>
+    Forces the link to be generated as an absolute URL with the given scheme
+    (unless the scheme matches the scheme for the current request).
+    </description>
+  </parameter>    
+  
   <reserved-parameter name="action"/>
   <reserved-parameter name="name"/>
   <reserved-parameter name="onsubmit"/>

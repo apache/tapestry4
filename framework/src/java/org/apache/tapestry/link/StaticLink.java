@@ -17,21 +17,19 @@ package org.apache.tapestry.link;
 import org.apache.tapestry.engine.ILink;
 
 /**
- *  Used by {@link org.apache.tapestry.link.GenericLink} to represent
- *  an external, static URL.
- *
- *  @author Howard Lewis Ship
- *  @since 3.0
+ * Used by {@link org.apache.tapestry.link.GenericLink} to represent an external, static URL.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 3.0
+ */
 public class StaticLink implements ILink
 {
-	private String _url;
+    private String _url;
 
-	public StaticLink(String url)
-	{
-		_url = url;
-	}
+    public StaticLink(String url)
+    {
+        _url = url;
+    }
 
     public String getURL()
     {
@@ -41,9 +39,9 @@ public class StaticLink implements ILink
     public String getURL(String anchor, boolean includeParameters)
     {
         if (anchor == null)
-        	return _url;
-        	
-        	return _url + "#" + anchor;
+            return _url;
+
+        return _url + "#" + anchor;
     }
 
     public String getAbsoluteURL()
@@ -51,12 +49,20 @@ public class StaticLink implements ILink
         return _url;
     }
 
-    public String getAbsoluteURL(
-        String scheme,
-        String server,
-        int port,
-        String anchor,
-        boolean includeParameters)
+    /**
+     * Ignores its parameter and return {@link #getURL(String, boolean)}.
+     */
+    public String getAbsoluteURL(String scheme, String server, int port, String anchor,
+            boolean includeParameters)
+    {
+        return getURL(anchor, false);
+    }
+
+    /**
+     * Ignores its parameter and return {@link #getURL(String, boolean)}.
+     */
+    public String getURL(String scheme, String server, int port, String anchor,
+            boolean includeParameters)
     {
         return getURL(anchor, false);
     }

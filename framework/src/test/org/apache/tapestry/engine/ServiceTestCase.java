@@ -19,14 +19,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
-import org.easymock.MockControl;
 
 /**
  * Common utilities for building tests for {@link org.apache.tapestry.engine.IEngineService}s.
@@ -34,91 +33,79 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class ServiceTestCase extends HiveMindTestCase
+public abstract class ServiceTestCase extends BaseComponentTestCase
 {
-    protected IRequestCycle newRequestCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
-    }
 
     protected IPage newPage(String name)
     {
-        MockControl control = newControl(IPage.class);
-        IPage result = (IPage) control.getMock();
+        IPage result = (IPage) newMock(IPage.class);
 
         result.getPageName();
-        control.setReturnValue(name);
+        setReturnValue(result, name);
 
         return result;
     }
 
     protected HttpServletRequest newRequest(HttpSession session)
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest result = (HttpServletRequest) control.getMock();
+        HttpServletRequest result = (HttpServletRequest) newMock(HttpServletRequest.class);
 
         result.getSession();
-        control.setReturnValue(session);
+        setReturnValue(result, session);
 
         return result;
     }
-    
+
     protected WebRequest newWebRequest(WebSession session)
     {
-        MockControl control = newControl(WebRequest.class);
-        WebRequest result = (WebRequest) control.getMock();
+        WebRequest result = (WebRequest) newMock(WebRequest.class);
 
         result.getSession(false);
-        control.setReturnValue(session);
+        setReturnValue(result, session);
 
         return result;
     }
 
     protected HttpServletRequest newRequest(boolean create, HttpSession session)
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest result = (HttpServletRequest) control.getMock();
+        HttpServletRequest result = (HttpServletRequest) newMock(HttpServletRequest.class);
 
         result.getSession(create);
-        control.setReturnValue(session);
+        setReturnValue(result, session);
 
         return result;
     }
 
     protected WebRequest newWebRequest(boolean create, WebSession session)
     {
-        MockControl control = newControl(WebRequest.class);
-        WebRequest result = (WebRequest) control.getMock();
+        WebRequest result = (WebRequest) newMock(WebRequest.class);
 
         result.getSession(create);
-        control.setReturnValue(session);
+        setReturnValue(result, session);
 
         return result;
     }
 
     protected HttpSession newSession(boolean isNew)
     {
-        MockControl control = newControl(HttpSession.class);
-        HttpSession session = (HttpSession) control.getMock();
+        HttpSession session = newSession();
 
         session.isNew();
-        control.setReturnValue(isNew);
+        setReturnValue(session, isNew);
 
         return session;
     }
 
     protected WebSession newWebSession(boolean isNew)
     {
-        MockControl control = newControl(WebSession.class);
-        WebSession session = (WebSession) control.getMock();
+        WebSession session = newWebSession();
 
         session.isNew();
-        control.setReturnValue(isNew);
+        setReturnValue(session, isNew);
 
         return session;
     }
 
-    
     protected HttpSession newSession()
     {
         return (HttpSession) newMock(HttpSession.class);
@@ -137,12 +124,11 @@ public abstract class ServiceTestCase extends HiveMindTestCase
     protected LinkFactory newLinkFactory(IRequestCycle cycle, Map parameters, boolean stateful,
             ILink link)
     {
-        MockControl control = newControl(LinkFactory.class);
-        LinkFactory lf = (LinkFactory) control.getMock();
+        LinkFactory lf = (LinkFactory) newMock(LinkFactory.class);
 
         lf.constructLink(cycle, false, parameters, stateful);
 
-        control.setReturnValue(link);
+        setReturnValue(lf, link);
 
         return lf;
     }

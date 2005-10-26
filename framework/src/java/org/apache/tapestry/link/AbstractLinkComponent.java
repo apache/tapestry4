@@ -34,7 +34,7 @@ import org.apache.tapestry.engine.ILink;
  * Base class for implementations of {@link ILinkComponent}. Includes a disabled attribute (that
  * should be bound to a disabled parameter), an anchor attribute, and a renderer attribute (that
  * should be bound to a renderer parameter). A default, shared instance of
- * {@link org.apache.tapestry.link.DefaultLinkRenderer}is used when no specific renderer is
+ * {@link org.apache.tapestry.link.DefaultLinkRenderer} is used when no specific renderer is
  * provided.
  * 
  * @author Howard Lewis Ship
