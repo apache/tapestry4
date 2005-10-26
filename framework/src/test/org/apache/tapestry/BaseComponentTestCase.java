@@ -21,7 +21,11 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.test.AggregateArgumentsMatcher;
+import org.apache.hivemind.test.ArgumentMatcher;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.hivemind.test.TypeMatcher;
+import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.markup.AsciiMarkupFilter;
@@ -29,6 +33,7 @@ import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.test.Creator;
+import org.apache.tapestry.web.WebRequest;
 import org.easymock.MockControl;
 
 /**
@@ -353,9 +358,23 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         return (IEngineService) newMock(IEngineService.class);
     }
 
-    protected void trainGetLink(IEngineService service, IRequestCycle cycle, boolean post, Object parameter, ILink link)
+    protected void trainGetLink(IEngineService service, IRequestCycle cycle, boolean post,
+            Object parameter, ILink link)
     {
         service.getLink(cycle, post, parameter);
+        setReturnValue(service, link);
+    }
+
+    protected void trainGetLinkCheckIgnoreParameter(IEngineService service, IRequestCycle cycle,
+            boolean post, Object parameter, ILink link)
+    {
+        service.getLink(cycle, post, parameter);
+
+        ArgumentMatcher ignore = new IgnoreMatcher();
+
+        getControl(service).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
+        { null, null, ignore, null }));
+
         setReturnValue(service, link);
     }
 
@@ -363,12 +382,6 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     {
         link.getURL();
         setReturnValue(link, URL);
-    }
-
-    protected ILink newLink()
-    {
-        ILink link = (ILink) newMock(ILink.class);
-        return link;
     }
 
     protected void trainGetPageRenderSupport(IRequestCycle cycle, PageRenderSupport support)
@@ -384,5 +397,83 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     protected Resource newResource()
     {
         return (Resource) newMock(Resource.class);
+    }
+
+    protected WebRequest newRequest()
+    {
+        return (WebRequest) newMock(WebRequest.class);
+    }
+
+    protected void trainEncodeURL(IRequestCycle rc, String URL, String encodedURL)
+    {
+        rc.encodeURL(URL);
+        setReturnValue(rc, encodedURL);
+    }
+
+    protected void trainGetServerPort(WebRequest request, int port)
+    {
+        request.getServerPort();
+        setReturnValue(request, port);
+    }
+
+    protected void trainGetServerName(WebRequest request, String serverName)
+    {
+        request.getServerName();
+        setReturnValue(request, serverName);
+    }
+
+    protected void trainGetScheme(WebRequest request, String scheme)
+    {
+        request.getScheme();
+        setReturnValue(request, scheme);
+    }
+
+    protected NestedMarkupWriter newNestedWriter()
+    {
+        return (NestedMarkupWriter) newMock(NestedMarkupWriter.class);
+    }
+
+    protected void trainGetNestedWriter(IMarkupWriter writer, NestedMarkupWriter nested)
+    {
+
+        writer.getNestedWriter();
+        setReturnValue(writer, nested);
+    }
+
+    protected void trainGetURL(ILink link, String scheme, String anchor, String URL)
+    {
+        link.getURL(scheme, null, 0, anchor, true);
+
+        setReturnValue(link, URL);
+    }
+
+    protected ILink newLink()
+    {
+        return (ILink) newMock(ILink.class);
+    }
+
+    protected void trainGetLink(ILinkComponent component, IRequestCycle cycle, ILink link)
+    {
+        component.getLink(cycle);
+        setReturnValue(component, link);
+    }
+
+    protected void trainGetEngine(IRequestCycle cycle, IEngine engine)
+    {
+        cycle.getEngine();
+        setReturnValue(cycle, engine);
+    }
+
+    protected void trainGetParameterValues(ILink link, String parameterName, String[] values)
+    {
+        link.getParameterValues(parameterName);
+        setReturnValue(link, values);
+    }
+
+    protected void trainGetParameterNames(ILink link, String[] names)
+    {
+        link.getParameterNames();
+
+        setReturnValue(link, names);
     }
 }

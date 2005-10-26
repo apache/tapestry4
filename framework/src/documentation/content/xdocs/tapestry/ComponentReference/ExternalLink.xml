@@ -86,6 +86,22 @@
         The name of an anchor or element to link to. The final URL will have '#' and the anchor appended to it.
     </td>
   </tr>
+  
+  <tr>
+    <td>scheme</td>
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+      The required scheme ("http" or "https", typically) for the URL.  This will force the creation
+      of an absolute URL when the current request's scheme does not match the value for this parameter.
+      This is most often used to switch to "https" for secure portions of an application
+      (such as a login page), before switching back to standard "http" for the majority of an application.
+    </td>
+  </tr>
+  
+  
   <tr>
     <td>target</td>
     <td>String</td>

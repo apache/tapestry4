@@ -39,7 +39,7 @@ import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
- * Mock object used by the {@link org.apache.tapestry.form.TestFormSupport}.
+ * Mock object used by the {@link org.apache.tapestry.form.FormSupportTest}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0

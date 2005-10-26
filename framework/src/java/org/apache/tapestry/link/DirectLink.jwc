@@ -48,6 +48,13 @@
   <parameter name="renderer"/>
   
   <reserved-parameter name="href"/>
+  
+  <parameter name="scheme">
+    <description>
+    Forces the link to be generated as an absolute URL with the given scheme
+    (unless the scheme matches the scheme for the current request).
+    </description>
+  </parameter>  
     
   <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
   

@@ -43,8 +43,8 @@ public class DefaultLinkRenderer implements ILinkRenderer
         IMarkupWriter wrappedWriter = null;
 
         if (cycle.getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(Tapestry
-                    .getMessage("AbstractLinkComponent.no-nesting"), linkComponent, null, null);
+            throw new ApplicationRuntimeException(LinkMessages.noNesting(), linkComponent, null,
+                    null);
 
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, linkComponent);
 
@@ -54,14 +54,12 @@ public class DefaultLinkRenderer implements ILinkRenderer
 
         if (!disabled)
         {
-            ILink l = linkComponent.getLink(cycle);
-
             if (hasBody)
                 writer.begin(getElement());
             else
                 writer.beginEmpty(getElement());
 
-            writer.attribute(getUrlAttribute(), constructURL(l, linkComponent.getAnchor(), cycle));
+            writer.attribute(getUrlAttribute(), constructURL(linkComponent, cycle));
 
             String target = linkComponent.getTarget();
 
@@ -104,13 +102,19 @@ public class DefaultLinkRenderer implements ILinkRenderer
     }
 
     /**
-     * Converts the EngineServiceLink into a URI or URL. This implementation simply invokes
-     * {@link ILink#getURL(String, boolean)}.
+     * Converts the EngineServiceLink into a URI or URL. This implementation gets the scheme and
+     * anchor from the component (both of which may be null), and invokes
+     * {@link ILink#getURL(String, String, int, String, boolean)}.
      */
 
-    protected String constructURL(ILink link, String anchor, IRequestCycle cycle)
+    protected String constructURL(ILinkComponent component, IRequestCycle cycle)
     {
-        return link.getURL(anchor, true);
+        ILink link = component.getLink(cycle);
+
+        String scheme = component.getScheme();
+        String anchor = component.getAnchor();
+
+        return link.getURL(scheme, null, 0, anchor, true);
     }
 
     /**
