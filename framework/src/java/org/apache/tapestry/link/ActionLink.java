@@ -28,6 +28,7 @@ import org.apache.tapestry.listener.ListenerInvoker;
  * href="../../../../../ComponentReference/ActionLink.html">Component Reference </a>]
  * 
  * @author Howard Lewis Ship
+ * @deprecated To be removed in 4.1
  */
 
 public abstract class ActionLink extends AbstractLinkComponent implements IAction

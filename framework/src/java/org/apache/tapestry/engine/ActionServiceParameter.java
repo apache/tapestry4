@@ -22,6 +22,7 @@ import org.apache.tapestry.IComponent;
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
+ * @deprecated To be removed in 4.1.
  */
 public class ActionServiceParameter
 {

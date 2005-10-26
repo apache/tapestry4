@@ -39,6 +39,7 @@ import org.apache.tapestry.web.WebSession;
  * 
  * @author Howard Lewis Ship
  * @since 1.0.9
+ * @deprecated To be removed in 4.1.
  */
 
 public class ActionService implements IEngineService
