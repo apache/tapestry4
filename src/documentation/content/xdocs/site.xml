@@ -147,8 +147,6 @@
          <NumericField label="NumericField" href="NumericField.html"/>
          <Otherwise label="Otherwise" href="Otherwise.html"/>
          <Palette label="Palette" href="Palette.html"/>
-         <SimpleTableColumnComponent label="SimpleTableColumnComponent" href="SimpleTableColumnComponent.html"/>
-         <SimpleTableColumnFormComponent label="SimpleTableColumnFormComponent" href="SimpleTableColumnFormComponent.html"/>
          <Table label="Table" href="Table.html"/>
          <TableColumns label="TableColumns" href="TableColumns.html"/>
          <TableFormPages label="TableFormPages" href="TableFormPages.html"/>

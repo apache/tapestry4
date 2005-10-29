@@ -186,10 +186,10 @@
 <!ENTITY Otherwise 			'<link href="site:Otherwise">Otherwise</link>'>
 <!ENTITY Palette 			'<link href="site:Palette">Palette</link>'>
 <!ENTITY When 			    '<link href="site:When">When</link>'>
-<!ENTITY FormConditional    '<link href="site:When">FormConditional</link>'>
+<!ENTITY FormConditional    '<link href="site:FormConditional">FormConditional</link>'>
 <!ENTITY FormTable 			'<link href="site:FormTable">FormTable</link>'>
 <!ENTITY Table 			    '<link href="site:Table">Table</link>'>
-<!ENTITY TableColumns 		'<link href="site:When">TableColumns</link>'>
+<!ENTITY TableColumns 		'<link href="site:TableColumns">TableColumns</link>'>
 <!ENTITY TableFormPages 	'<link href="site:TableFormPages">TableFormPages</link>'>
 <!ENTITY TableFormRows 		'<link href="site:TableFormRows">TableFormRows</link>'>
 <!ENTITY TablePages 		'<link href="site:TablePages">TablePages</link>'>
@@ -223,6 +223,8 @@
 
 <!ENTITY TapestryHomePage
 						'<link href="http://jakarta.apache.org/tapestry/">Tapestry Home Page</link>'>
+
+<!ENTITY apijava "http://java.sun.com/j2se/1.5.0/docs/api">
 
 <!-- HiveMind service and configuration extension points -->
 
