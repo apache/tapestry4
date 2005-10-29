@@ -114,6 +114,12 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
             {
                 rewindFormComponent(writer, cycle);
             }
+
+            // This is for the benefit of the couple of components (LinkSubmit) that allow a body.
+            // The body should render when the component rewinds.
+
+            if (getRenderBodyOnRewind())
+                renderBody(writer, cycle);
         }
         else if (!cycle.isRewinding())
         {
@@ -128,6 +134,21 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
             }
 
         }
+    }
+
+    /**
+     * A small number of components should always render their body on rewind (even if the component
+     * is itself disabled) and should override this method to return true. Components that
+     * explicitly render their body inside
+     * {@link #rewindFormComponent(IMarkupWriter, IRequestCycle)} should leave this method returning
+     * false. Remember that if the component is {@link IFormComponent#isDisabled() disabled} then
+     * {@link #rewindFormComponent(IMarkupWriter, IRequestCycle)} won't be invoked.
+     * 
+     * @return false; override this method to change.
+     */
+    protected boolean getRenderBodyOnRewind()
+    {
+        return false;
     }
 
     protected void renderDelegatePrefix(IMarkupWriter writer, IRequestCycle cycle)
