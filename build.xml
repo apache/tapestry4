@@ -45,26 +45,33 @@
 
 	<target name="package-examples" description="Packages the deployable examples.">
 
-		<announce message="Creating example files distribution"/>
-		
-		<!-- Package up the examples. -->
+		<fail message="jboss.dir not set" unless="jboss.dir" />
 
-		<property name="examples.dir" value="${local.target.dir}/examples" />
-		<mkdir dir="${examples.dir}/config/deploy" />
-		<copy todir="${examples.dir}">
-			<fileset dir="examples" includes="build.xml,README.txt"/>
-			<fileset dir="." includes="LICENSE*.txt,NOTICE.txt"/>
+		<announce message="Overwriting files in ${jboss.dir}" />
+
+		<copy todir="${jboss.dir}/server/default" overwrite="true">
+			<fileset dir="config/jboss" />
 		</copy>
-		<copy todir="${examples.dir}/config/deploy" flatten="true">
+
+		<copy todir="${jboss.dir}/server/default/deploy" overwrite="true" flatten="true">
 			<fileset dir="${local.target.dir}">
-				<include name="workbench.war"/>
-				<include name="vlib/*.ear"/>
+				<include name="workbench.war" />
+				<include name="vlib/vlib.ear" />
 			</fileset>
 		</copy>
-		<copy todir="${examples.dir}/config">
-			<fileset dir="config/jboss"/>
-		</copy>
-		<tar basedir="${examples.dir}" destfile="${local.target.dir}/tapestry-examples-${project.version}.tar.gz" compression="gzip"/>
+
+		<tar destfile="${local.target.dir}/tapestry-examples-${project.version}.tar.gz" compression="gzip">
+			<tarfileset dir="${jboss.dir}" prefix="jboss-tapestry-examples-${project.version}">
+				<include name="*.xml" />
+				<include name="*.html" />
+				<include name="bin/" />
+				<include name="lib/" />
+				<include name="server/default/" />
+				<exclude name="server/default/tmp/" />
+				<exclude name="server/default/log/" />
+				<exclude name="server/default/work/" />
+			</tarfileset>
+		</tar>
 	</target>
 
 </project>

@@ -43,59 +43,32 @@
         as
         <code>tapestry-examples-</code><em>version</em><code>.tar.gz</code>.
     </p>
-    <p> They require <link href="http://jboss.org/">JBoss 4.0.2</link>. Yes, we know there are several other open-source
-      application servers out there, but it was easiest to pick one easy download to make the installation scripts
-      turn-key. </p>
-      
-    <section>
-      <title>Installation</title>
-      
-      <p>
-        Unpack the examples to a temporary directory.
-      </p>
-      
-      <p>
-        From that directory, execute Ant.  You will be prompted for the directory into which
-        you installed JBoss.
-      </p>
-      
-      <source><![CDATA[bash-3.00$ ant
-Buildfile: build.xml
-
--jboss-dir:
-     [echo] Please provide the directory into which you installed JBoss 4.0.2
-     [echo] On windows systems, it is commonly C:/jboss-4.0.2
-
-c:/jboss-4.0.2
-
--confirm:
-     [echo] Installing the Tapestry demos WILL overwrite parts of your JBoss default configuration.
-     [echo] You should back up your JBoss installation before continuing; better yet, use a fresh
-     [echo] install just to run these Tapestry demos.
-     [echo] *** The demos are only guaranteed to run on a clean install of JBoss 4.0.2
-    [input] Enter 'continue' to continue(continue)
-continue
-
-deploy:
-     [echo] *** Shutting down JBoss
-     [java] Shutdown message has been posted to the server.
-     [java] Server shutdown may take a while - check logfiles for completion
-     [echo] *** Installing Tapestry examples to c:/jboss-4.0.2/server/default
-     [copy] Copying 4 files to C:\jboss-4.0.2\server\default
-
-     [echo] Examples, database and configuration have been installed.
-     [echo] You may now restart JBoss.
-
-BUILD SUCCESSFUL
-Total time: 12 seconds
-bash-3.00$]]></source>      
-    </section>
+ 
+    <p>
+      The distribution is a snapshot of a <a href="http://jboss.org/">JBoss</a> 4.0.2 instance, with two Tapestry applications
+      deployed into it.
+    </p>
+    
+    <p>
+      To make use of it, unpack the distribution, which will create
+      a <code>jboss-tapestry-examples-</code><em>version</em> directory.  Change to the
+      <code>bin</code> sub-directory and execute the <code>run.bat</code> or <code>run.sh</code>
+      startup script.
+    </p>
+    
+    <p>
+      JBoss will start up and you'll be able to access the two demonstration applications.
+    </p>
+ 
       
     <section>
       <title>Workbench</title>
       <p>
         <link href="http://localhost:8080/workbench/">http://localhost:8080/workbench/</link>
       </p>
+      
+      <figure src="../images/examples/workbench.png" alt="Workbench Screenshot"/>
+      
       <p> The workbench is a testbed for many common Tapestry components. The tabs across the top demonstrate different
         Tapestry features and components, including localization, input validation, exception reporting, and the Palette
         and Table components. </p>
@@ -105,6 +78,10 @@ bash-3.00$]]></source>
       <p>
         <link href="http://localhost:8080/vlib/">http://localhost:8080/vlib/</link>
       </p>
+      
+      <figure src="../images/examples/vlib.png" alt="Virtual Library Screenshot"/>
+
+      
       <p> The Virtual Library is a small but complete J2EE application. It uses J2EE Entity beans with container managed
         persistence, and a stateless session facade, with Tapestry on the front end. The application is used to manage a
         shared pool of books, tracking who owns and who is currently borrowing each book. </p>
@@ -114,7 +91,8 @@ bash-3.00$]]></source>
         <li>squeue@bug.org</li>
         <li>ringbearer@bagend.shire</li>
       </ul>
-      <p> The "ringbearer" user has administrative access. </p>
+      <p> The "ringbearer" user has administrative access.  When logged in as ringbearer, you'll see
+      additional menu options for managing users and publishers. </p>
     </section>
   </body>
 </document>
