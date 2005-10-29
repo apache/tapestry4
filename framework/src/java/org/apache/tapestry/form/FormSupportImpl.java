@@ -621,6 +621,7 @@ public class FormSupportImpl implements FormSupport
     protected void writeHiddenFields()
     {
         _writer.begin("div");
+        _writer.attribute("style", "display:none;");
 
         writeHiddenFieldList();
 
