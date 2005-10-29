@@ -150,7 +150,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        writer.begin("div");
+        trainDiv(writer);
 
         trainHidden(writer, "formids", "barney,wilma,barney_0");
         trainHidden(writer, "service", "fred");
@@ -174,6 +174,12 @@ public class FormSupportTest extends BaseComponentTestCase
         fs.render("post", render, link, null);
 
         verifyControls();
+    }
+
+    private void trainDiv(IMarkupWriter writer)
+    {
+        writer.begin("div");
+        writer.attribute("style", "display:none;");
     }
 
     protected void trainIsRewound(IRequestCycle cycle, IForm form, boolean isRewound)
@@ -311,7 +317,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        writer.begin("div");
+        trainDiv(writer);
 
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
@@ -400,7 +406,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        writer.begin("div");
+        trainDiv(writer);
 
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
@@ -478,7 +484,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        writer.begin("div");
+        trainDiv(writer);
 
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
@@ -617,7 +623,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        writer.begin("div");
+        trainDiv(writer);
 
         trainHidden(writer, "formids", "action_0");
         trainHidden(writer, "action", "fred");
@@ -696,7 +702,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        writer.begin("div");
+        trainDiv(writer);
 
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
@@ -982,7 +988,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        writer.begin("div");
+        trainDiv(writer);
 
         trainHidden(writer, "formids", "barney");
         trainHidden(writer, "service", "fred");
@@ -1061,7 +1067,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        writer.begin("div");
+        trainDiv(writer);
 
         trainHidden(writer, "formids", "barney");
         trainHidden(writer, "service", "fred");
@@ -1154,7 +1160,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        writer.begin("div");
+        trainDiv(writer);
 
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
@@ -1400,7 +1406,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        writer.begin("div");
+        trainDiv(writer);
 
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
