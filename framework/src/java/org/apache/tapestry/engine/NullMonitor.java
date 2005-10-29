@@ -19,6 +19,7 @@ package org.apache.tapestry.engine;
  * 
  * @author Howard Lewis Ship
  * @since 3.0
+ * @deprecated To be removed in 4.1 with no direct replacement
  */
 
 public class NullMonitor implements IMonitor

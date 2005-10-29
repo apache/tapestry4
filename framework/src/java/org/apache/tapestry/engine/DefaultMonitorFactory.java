@@ -17,10 +17,11 @@ package org.apache.tapestry.engine;
 import org.apache.tapestry.web.WebRequest;
 
 /**
- * Implementation of {@link org.apache.tapestry.engine.IMonitorFactory}&nbsp;that returns the
+ * Implementation of {@link org.apache.tapestry.engine.IMonitorFactory} that returns the
  * {@link org.apache.tapestry.engine.NullMonitor}.
  * 
  * @author Howard Lewis Ship
+ * @deprecated To be removed in 4.1 with no direct replacement.
  */
 public class DefaultMonitorFactory implements IMonitorFactory
 {
