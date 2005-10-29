@@ -42,13 +42,13 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
 
     /**
      * Returns true if the corresponding field, on the client side, can accept user focus (i.e.,
-     * implements the focus() method). Most components can take focus, but a few ({@link Hidden})
-     * override this method to return false.
+     * implements the focus() method). Most components can take focus (if not disabled), but a few ({@link Hidden})
+     * override this method to always return false.
      */
 
     protected boolean getCanTakeFocus()
     {
-        return true;
+        return !isDisabled();
     }
 
     /**
