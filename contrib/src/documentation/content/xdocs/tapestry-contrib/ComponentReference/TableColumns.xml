@@ -28,11 +28,21 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p> 
+ A low level &Table; component that renders the column headers in the table.
+ This component must be wrapped by &TableView;.
+ </p>
+ <p>
+ The component iterates over all column objects in the
+ <link href="&apicontrib;/contrib/table/model/ITableColumnModel.html">ITableColumnModel</link> and renders
+ a header for each one of them using the renderer provided by the
+ <code>getColumnRender()</code> method in 
+ <link href="&apicontrib;/contrib/table/model/ITableColumn.html">ITableColumn</link>.
+ The headers are wrapped in 'th' tags by default.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &Table;, &TableView;, &TablePages;, &TableRows;, &TableValues;</strong> 
 </p>
 
 <section>
@@ -42,20 +52,60 @@
   <tr> 
     <th>Name</th>
     <th>Type</th>
-	  <th>Direction</th>
+	<th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
     <th>Description</th>
   </tr>
 
-	</table>
+    <tr>
+      <td>element</td>
+      <td>String</td>
+      <td>in</td>
+      <td>no</td>
+      <td>th</td>
+
+      <td>The tag to use to wrap the column headers.</td>
+    </tr>
+    
+    <tr>
+      <td>column</td>
+      <td><link href="&apicontrib;/contrib/table/model/ITableColumn.html">ITableColumn</link></td>
+      <td>out</td>
+      <td>no</td>
+      <td>&nbsp;</td>
+
+      <td>The object representing the current column.</td>
+    </tr>
+    
+    <tr>
+      <td>arrowUpAsset</td>
+      <td><link href="&apiroot;/IAsset.html">IAsset</link></td>
+      <td>in</td>
+      <td>no</td>
+      <td>&nbsp;</td>
+
+      <td>The image to use to describe a column sorted in an ascending order.</td>
+    </tr>
+    
+    <tr>
+      <td>arrowDownAsset</td>
+      <td><link href="&apiroot;/IAsset.html">IAsset</link></td>
+      <td>in</td>
+      <td>no</td>
+      <td>&nbsp;</td>
+
+      <td>The image to use to describe a column sorted in a descending order.</td>
+    </tr>
+    
+</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>

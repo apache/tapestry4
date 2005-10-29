@@ -28,11 +28,20 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
-</p>
+<p>
+    A low level &Table; component that generates the columns in the current row in the table. 
+    This component must be wrapped by &TableRows;.
+    <br/>
+    The component iterates over the columns in the table and automatically renders 
+    the column values for the current table row. 
+    The columns are wrapped in 'td' tags by default.
+    <br/>
+    The column values are rendered using the renderer returned 
+    by the <code>getValueRenderer()</code> method in 
+    <link href="&apiroot;/table/model/ITableColumn.html">ITableColumn</link>. </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &Table;, &TableView;, &TablePages;, &TableColumns;, &TableRows;</strong> 
 </p>
 
 <section>
@@ -48,14 +57,34 @@
     <th>Description</th>
   </tr>
 
-	</table>
+    <tr>
+      <td>column</td>
+      <td><link href="&apiroot;/table/model/ITableColumn.html">ITableColumn</link></td>
+      <td>out</td>
+      <td>no</td>
+      <td>&nbsp;</td>
+
+      <td>The object representing the current column being rendered.</td>
+    </tr>
+    
+    <tr>
+      <td>element</td>
+      <td><link href="&apijava;/java/lang/String.html">String</link></td>
+      <td>in</td>
+      <td>no</td>
+      <td>tr</td>
+
+      <td>The tag to use to wrap the column values in.</td>
+    </tr>
+    
+</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
