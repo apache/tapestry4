@@ -29,6 +29,8 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.IScriptProcessor;
 import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
  * Tests for {@link org.apache.tapestry.form.LinkSubmit}
@@ -211,20 +213,72 @@ public class TestLinkSubmit extends BaseComponentTestCase
         IRequestCycle cycle = newCycle();
         IRender body = newRender();
         IForm form = newForm();
-
-        trainGetParameter(cycle, "fred", null);
-
-        body.render(writer, cycle);
-
-        replayControls();
+        IValidationDelegate delegate = newDelegate();
 
         LinkSubmit linkSubmit = (LinkSubmit) newInstance(LinkSubmit.class, new Object[]
         { "name", "fred", "form", form });
         linkSubmit.addBody(body);
 
-        linkSubmit.rewindFormComponent(writer, cycle);
+        trainGetForm(cycle, form);
+
+        trainWasPrerendered(form, writer, linkSubmit, false);
+
+        trainGetDelegate(form, delegate);
+
+        trainGetElementId(form, linkSubmit, "fred");
+
+        delegate.setFormComponent(linkSubmit);
+
+        trainIsRewinding(form, true);
+
+        // Finally, code inside LinkSubmit ...
+
+        trainGetParameter(cycle, "fred", null);
+
+        // ... and back to AbstractFormComponent
+
+        body.render(writer, cycle);
+
+        replayControls();
+
+        linkSubmit.renderComponent(writer, cycle);
 
         verifyControls();
+    }
+
+    private void trainIsRewinding(IForm form, boolean isRewindind)
+    {
+        form.isRewinding();
+        setReturnValue(form, isRewindind);
+    }
+
+    protected void trainGetElementId(IForm form, IFormComponent field, String name)
+    {
+        form.getElementId(field);
+        setReturnValue(form, name);
+    }
+
+    protected void trainGetDelegate(IForm form, IValidationDelegate delegate)
+    {
+        form.getDelegate();
+        setReturnValue(form, delegate);
+    }
+
+    protected void trainWasPrerendered(IForm form, IMarkupWriter writer, IFormComponent field,
+            boolean wasPrendered)
+    {
+        form.wasPrerendered(writer, field);
+        setReturnValue(form, wasPrendered);
+    }
+
+    protected void trainGetForm(IRequestCycle cycle, IForm form)
+    {
+        trainGetAttribute(cycle, TapestryUtils.FORM_ATTRIBUTE, form);
+    }
+
+    protected IValidationDelegate newDelegate()
+    {
+        return (IValidationDelegate) newMock(IValidationDelegate.class);
     }
 
 }
