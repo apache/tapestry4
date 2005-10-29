@@ -17,13 +17,14 @@ package org.apache.tapestry.engine;
 import org.apache.tapestry.web.WebRequest;
 
 /**
- * Interface for an object that can create a {@link IMonitor}instance for a particular
+ * Interface for an object that can create a {@link IMonitor} instance for a particular
  * {@link org.apache.tapestry.request.RequestContext}. The engine expects there to be a monitor
  * factory as application extension <code>org.apache.tapestry.monitor-factory</code>. If no such
  * extension exists, then {@link org.apache.tapestry.engine.DefaultMonitorFactory}is used instead.
  * 
  * @author Howard Lewis Ship
  * @since 3.0
+ * @deprecated To be removed in 4.1 with no direct replacement.
  */
 public interface IMonitorFactory
 {
