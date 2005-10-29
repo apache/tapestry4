@@ -133,7 +133,7 @@ public abstract class LinkSubmit extends AbstractSubmit
     }
 
     /**
-     * Links can not take focus.
+     * Links can not take focus, ever.
      */
     protected boolean getCanTakeFocus()
     {

@@ -57,6 +57,7 @@
       <action type="update" dev="HLS">Change the examples distribution to be a pre-configured JBoss distribution</action>
       <action type="update" dev="HLS">Deprecate IMonitor and IMonitorFactory (for removal in 4.1)</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-699">&lt;div&gt; tag around form hidden fields should not be visible</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-711">Do not give focus to disabled fields</action>
     </release>
     <release version="4.0-beta-11" date="Oct 16 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-650">ClassNotFoundException thrown when deserializing an object from a client persistent property</action>
