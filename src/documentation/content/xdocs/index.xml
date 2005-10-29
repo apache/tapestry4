@@ -225,6 +225,22 @@ of tutorials is being written.
   in October 2005.
 </p>
   
+  <warning>
+    <title>Upgrading from 4.0 beta-10</title>
+    
+    <p>
+      The way <link href="UsersGuide/friendly-urls.html">friendly URLs</link> are configured,
+      for the asset service, has changed between beta-10 and later releases.  In your
+      hivemodule.xml, change:
+
+    
+    <code><![CDATA[<asset-encoder id="asset" path="/assets/"/>]]></code> to
+    <code><![CDATA[<asset-encoder id="asset" path="/assets"/>]]></code>
+    (notice that the trailing slash has been removed).
+    </p>
+    
+  </warning>  
+  
 </section>
 
 <section>
