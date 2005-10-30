@@ -50,7 +50,7 @@
     -->
   </todo>
   <changes>
-    <release version="4.0-beta-12" date="unreleased">
+    <release version="4.0-beta-12" date="Oct 30 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-718">Asset injection makes assets appear as null inside finishLoad()</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-580">Form, PageLink, DirectLink, etc. should support a scheme parameter for controlling the scheme of the generated URL</action>
       <action type="update" dev="HLS">Deprecate the Action component and ActionService</action>
