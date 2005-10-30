@@ -94,4 +94,9 @@ class AnnotationMessages
     {
         return _formatter.format("missing-equals-in-meta", value);
     }
+
+    static String failureEnhancingMethod(Method method, Exception cause)
+    {
+        return _formatter.format("failure-enhancing-method", method, cause);
+    }
 }

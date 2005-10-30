@@ -26,6 +26,10 @@ import org.apache.tapestry.spec.PropertySpecification;
  * Allow a property to be marked as persistent, and (optionally) allows a strategy to be set. Works
  * by adding a new {@link org.apache.tapestry.spec.IPropertySpecification} to the
  * {@link org.apache.tapestry.spec.IComponentSpecification}.
+ * <p>
+ * The {@link org.apache.tapestry.annotations.Persist} annotation may <em>optionally</em> by
+ * accompanied by a {@link org.apache.tapestry.annotations.InitialValue} annotation; this sets the
+ * initial value, as a binding reference, used to initialize and re-initialize the property.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -37,6 +41,7 @@ public class PersistAnnotationWorker implements MethodAnnotationEnhancementWorke
             Method method, Location location)
     {
         Persist p = method.getAnnotation(Persist.class);
+        InitialValue iv = method.getAnnotation(InitialValue.class);
 
         String propertyName = AnnotationUtils.getPropertyName(method);
         String stategy = p.value();
@@ -46,6 +51,7 @@ public class PersistAnnotationWorker implements MethodAnnotationEnhancementWorke
         pspec.setName(propertyName);
         pspec.setPersistence(stategy);
         pspec.setLocation(location);
+        pspec.setInitialValue(iv == null ? null : iv.value());
 
         spec.addPropertySpecification(pspec);
     }

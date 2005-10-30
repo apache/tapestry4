@@ -15,7 +15,7 @@
 package org.apache.tapestry.annotations;
 
 /**
- * Used by {@link org.apache.tapestry.annotations.TestAnnotationEnhancementWorker} to check that
+ * Used by {@link org.apache.tapestry.annotations.AnnotationEnhancementWorkerTest} to check that
  * class annotation enhancements are recognized.
  * 
  * @author Howard Lewis Ship

@@ -21,12 +21,12 @@ import java.util.Map;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.DescribedLocation;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.annotations.AnnotationEnhancementWorker}.
@@ -35,15 +35,14 @@ import org.easymock.MockControl;
  * @since 4.0
  */
 
-public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
+public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 {
     protected EnhancementOperation newOp(Class baseClass)
     {
-        MockControl control = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) control.getMock();
+        EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
 
         op.getBaseClass();
-        control.setReturnValue(baseClass);
+        setReturnValue(op, baseClass);
 
         return op;
     }
@@ -51,6 +50,19 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
     protected Map newMap(Class annotationClass, Object worker)
     {
         return Collections.singletonMap(annotationClass, worker);
+    }
+
+    private class NoOp implements SecondaryAnnotationWorker
+    {
+        public boolean canEnhance(Method method)
+        {
+            return false;
+        }
+
+        public void peformEnhancement(EnhancementOperation op, IComponentSpecification spec,
+                Method method, Resource classResource)
+        {
+        }
     }
 
     /**
@@ -65,6 +77,7 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setMethodWorkers(Collections.EMPTY_MAP);
+        worker.setSecondaryAnnotationWorker(new NoOp());
 
         worker.performEnhancement(op, spec);
 
@@ -78,15 +91,11 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp(AnnotatedPage.class);
         IComponentSpecification spec = newSpec();
 
-        MethodAnnotationEnhancementWorker methodWorker = (MethodAnnotationEnhancementWorker) newMock(MethodAnnotationEnhancementWorker.class);
+        MethodAnnotationEnhancementWorker methodWorker = newMethodAnnotationEnhancementWorker();
 
         Method m = findMethod(AnnotatedPage.class, "getInjectedObject");
 
-        DescribedLocation location = newMethodLocation(
-                resolver,
-                AnnotatedPage.class,
-                m,
-                InjectObject.class);
+        Location location = newMethodLocation(AnnotatedPage.class, m, InjectObject.class);
 
         methodWorker.performEnhancement(op, spec, m, location);
 
@@ -95,25 +104,21 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setMethodWorkers(newMap(InjectObject.class, methodWorker));
         worker.setClassResolver(resolver);
+        worker.setSecondaryAnnotationWorker(new NoOp());
 
         worker.performEnhancement(op, spec);
 
         verifyControls();
     }
 
-    protected DescribedLocation newMethodLocation(ClassResolver resolver, Class baseClass,
-            Method m, Class annotationClass)
+    protected MethodAnnotationEnhancementWorker newMethodAnnotationEnhancementWorker()
     {
-        Resource classResource = newResource(resolver, baseClass);
-
-        return new DescribedLocation(classResource, AnnotationMessages.methodAnnotation(m
-                .getAnnotation(annotationClass), m));
+        return (MethodAnnotationEnhancementWorker) newMock(MethodAnnotationEnhancementWorker.class);
     }
 
-    private DescribedLocation newClassLocation(ClassResolver resolver, Class baseClass,
-            Class annotationClass)
+    private DescribedLocation newClassLocation(Class baseClass, Class annotationClass)
     {
-        Resource classResource = newResource(resolver, baseClass);
+        Resource classResource = newResource(baseClass);
         Annotation annotation = baseClass.getAnnotation(annotationClass);
 
         return new DescribedLocation(classResource, AnnotationMessages.classAnnotation(
@@ -128,15 +133,11 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp(AnnotatedPageSubclass.class);
         IComponentSpecification spec = newSpec();
 
-        MethodAnnotationEnhancementWorker methodWorker = (MethodAnnotationEnhancementWorker) newMock(MethodAnnotationEnhancementWorker.class);
+        MethodAnnotationEnhancementWorker methodWorker = newMethodAnnotationEnhancementWorker();
 
         Method m = findMethod(AnnotatedPageSubclass.class, "getInjectedObject");
 
-        DescribedLocation location = newMethodLocation(
-                resolver,
-                AnnotatedPageSubclass.class,
-                m,
-                InjectObject.class);
+        Location location = newMethodLocation(AnnotatedPageSubclass.class, m, InjectObject.class);
 
         methodWorker.performEnhancement(op, spec, m, location);
 
@@ -145,6 +146,7 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setMethodWorkers(newMap(InjectObject.class, methodWorker));
         worker.setClassResolver(resolver);
+        worker.setSecondaryAnnotationWorker(new NoOp());
 
         worker.performEnhancement(op, spec);
 
@@ -161,20 +163,14 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp(AnnotatedPage.class);
         IComponentSpecification spec = newSpec();
 
-        MockControl methodWorkerc = newControl(MethodAnnotationEnhancementWorker.class);
-        MethodAnnotationEnhancementWorker methodWorker = (MethodAnnotationEnhancementWorker) methodWorkerc
-                .getMock();
+        MethodAnnotationEnhancementWorker methodWorker = newMethodAnnotationEnhancementWorker();
 
         Method m = findMethod(AnnotatedPage.class, "getInjectedObject");
 
-        DescribedLocation location = newMethodLocation(
-                resolver,
-                AnnotatedPage.class,
-                m,
-                InjectObject.class);
+        Location location = newMethodLocation(AnnotatedPage.class, m, InjectObject.class);
 
         methodWorker.performEnhancement(op, spec, m, location);
-        methodWorkerc.setThrowable(t);
+        setThrowable(methodWorker, t);
 
         log
                 .error(
@@ -190,15 +186,11 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         worker.setMethodWorkers(newMap(InjectObject.class, methodWorker));
         worker.setErrorLog(log);
         worker.setClassResolver(resolver);
+        worker.setSecondaryAnnotationWorker(new NoOp());
 
         worker.performEnhancement(op, spec);
 
         verifyControls();
-    }
-
-    private ErrorLog newLog()
-    {
-        return (ErrorLog) newMock(ErrorLog.class);
     }
 
     public void testClassAnnotation()
@@ -210,10 +202,7 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
         ClassAnnotationEnhancementWorker classWorker = (ClassAnnotationEnhancementWorker) newMock(ClassAnnotationEnhancementWorker.class);
 
-        DescribedLocation location = newClassLocation(
-                resolver,
-                DeprecatedBean.class,
-                Deprecated.class);
+        DescribedLocation location = newClassLocation(DeprecatedBean.class, Deprecated.class);
 
         classWorker.performEnhancement(op, spec, DeprecatedBean.class, location);
 
@@ -222,6 +211,7 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setClassWorkers(newMap(Deprecated.class, classWorker));
         worker.setClassResolver(resolver);
+        worker.setSecondaryAnnotationWorker(new NoOp());
 
         worker.performEnhancement(op, spec);
 
@@ -236,19 +226,14 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         EnhancementOperation op = newOp(DeprecatedBean.class);
         IComponentSpecification spec = newSpec();
 
-        MockControl classWorkerc = newControl(ClassAnnotationEnhancementWorker.class);
-        ClassAnnotationEnhancementWorker classWorker = (ClassAnnotationEnhancementWorker) classWorkerc
-                .getMock();
+        ClassAnnotationEnhancementWorker classWorker = (ClassAnnotationEnhancementWorker) newMock(ClassAnnotationEnhancementWorker.class);
 
         Throwable t = new RuntimeException("Simulated failure.");
 
-        DescribedLocation location = newClassLocation(
-                resolver,
-                DeprecatedBean.class,
-                Deprecated.class);
+        DescribedLocation location = newClassLocation(DeprecatedBean.class, Deprecated.class);
 
         classWorker.performEnhancement(op, spec, DeprecatedBean.class, location);
-        classWorkerc.setThrowable(t);
+        setThrowable(classWorker, t);
 
         log
                 .error(
@@ -263,6 +248,7 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
         worker.setClassWorkers(newMap(Deprecated.class, classWorker));
         worker.setErrorLog(log);
         worker.setClassResolver(resolver);
+        worker.setSecondaryAnnotationWorker(new NoOp());
 
         worker.performEnhancement(op, spec);
 
@@ -278,9 +264,72 @@ public class TestAnnotationEnhancementWorker extends BaseAnnotationTestCase
 
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setClassWorkers(Collections.EMPTY_MAP);
+        worker.setSecondaryAnnotationWorker(new NoOp());
 
         worker.performEnhancement(op, spec);
 
         verifyControls();
+    }
+
+    public void testSecondaryEnhancementWorker()
+    {
+        SecondaryAnnotationWorker secondary = newSecondaryAnnotationWorker();
+
+        EnhancementOperation op = newOp();
+        IComponentSpecification spec = newSpec();
+        Method method = findMethod(AnnotatedPage.class, "getPropertyWithInitialValue");
+
+        Resource classResource = newResource(AnnotatedPage.class);
+
+        secondary.canEnhance(method);
+        setReturnValue(secondary, true);
+
+        secondary.peformEnhancement(op, spec, method, classResource);
+
+        replayControls();
+
+        AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
+        worker.setSecondaryAnnotationWorker(secondary);
+        worker.setMethodWorkers(Collections.EMPTY_MAP);
+
+        worker.performMethodEnhancement(op, spec, method, classResource);
+
+        verifyControls();
+    }
+
+    public void testSecondaryEnhancementWorkerFailure()
+    {
+        SecondaryAnnotationWorker secondary = newSecondaryAnnotationWorker();
+
+        EnhancementOperation op = newOp();
+        IComponentSpecification spec = newSpec();
+        ErrorLog log = newLog();
+
+        Method method = findMethod(AnnotatedPage.class, "getPropertyWithInitialValue");
+
+        Resource classResource = newResource(AnnotatedPage.class);
+
+        RuntimeException cause = new RuntimeException("Forced.");
+
+        secondary.canEnhance(method);
+        setThrowable(secondary, cause);
+
+        log.error(AnnotationMessages.failureEnhancingMethod(method, cause), null, cause);
+
+        replayControls();
+
+        AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
+        worker.setSecondaryAnnotationWorker(secondary);
+        worker.setMethodWorkers(Collections.EMPTY_MAP);
+        worker.setErrorLog(log);
+
+        worker.performMethodEnhancement(op, spec, method, classResource);
+
+        verifyControls();
+    }
+
+    protected SecondaryAnnotationWorker newSecondaryAnnotationWorker()
+    {
+        return (SecondaryAnnotationWorker) newMock(SecondaryAnnotationWorker.class);
     }
 }

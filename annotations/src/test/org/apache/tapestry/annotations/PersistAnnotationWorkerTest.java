@@ -28,9 +28,32 @@ import org.apache.tapestry.spec.IPropertySpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestPersistAnnotationWorker extends TestAnnotationEnhancementWorker
+public class PersistAnnotationWorkerTest extends AnnotationEnhancementWorkerTest
 {
-    public void testInject()
+    public void testDefaultStrategy()
+    {
+        Location l = newLocation();
+
+        EnhancementOperation op = newOp();
+        IComponentSpecification spec = new ComponentSpecification();
+
+        replayControls();
+
+        Method m = findMethod(AnnotatedPage.class, "getPersistentProperty");
+
+        new PersistAnnotationWorker().performEnhancement(op, spec, m, l);
+
+        verifyControls();
+
+        IPropertySpecification ps = spec.getPropertySpecification("persistentProperty");
+
+        assertEquals("session", ps.getPersistence());
+        assertEquals("persistentProperty", ps.getName());
+        assertSame(l, ps.getLocation());
+        assertNull(ps.getInitialValue());
+    }
+
+    public void testStrategySpecified()
     {
         Location l = newLocation();
 
@@ -50,5 +73,30 @@ public class TestPersistAnnotationWorker extends TestAnnotationEnhancementWorker
         assertEquals("client", ps.getPersistence());
         assertEquals("clientPersistentProperty", ps.getName());
         assertSame(l, ps.getLocation());
+        assertNull(ps.getInitialValue());
+    }
+
+    public void testWithInitialValue()
+    {
+        Location l = newLocation();
+
+        EnhancementOperation op = newOp();
+        IComponentSpecification spec = new ComponentSpecification();
+
+        replayControls();
+
+        Method m = findMethod(AnnotatedPage.class, "getPersistentPropertyWithInitialValue");
+
+        new PersistAnnotationWorker().performEnhancement(op, spec, m, l);
+
+        verifyControls();
+
+        IPropertySpecification ps = spec
+                .getPropertySpecification("persistentPropertyWithInitialValue");
+
+        assertEquals("session", ps.getPersistence());
+        assertEquals("persistentPropertyWithInitialValue", ps.getName());
+        assertSame(l, ps.getLocation());
+        assertEquals("user.naturalName", ps.getInitialValue());
     }
 }

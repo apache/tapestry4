@@ -16,7 +16,8 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
-import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
@@ -52,9 +53,24 @@ public abstract class BaseAnnotationTestCase extends HiveMindTestCase
         return (EnhancementOperation) newMock(EnhancementOperation.class);
     }
 
-    protected Resource newResource(ClassResolver resolver, Class clazz)
+    protected Resource newResource(Class clazz)
     {
-        return new ClasspathResource(resolver, clazz.getName().replace('.', '/'));
+        return new ClasspathResource(getClassResolver(), clazz.getName().replace('.', '/'));
+    }
+
+    protected ErrorLog newLog()
+    {
+        return (ErrorLog) newMock(ErrorLog.class);
+    }
+
+    protected Location newMethodLocation(Class baseClass, Method m, Class annotationClass)
+    {
+        Resource classResource = newResource(baseClass);
+    
+        return AnnotationUtils.buildLocationForAnnotation(
+                m,
+                m.getAnnotation(annotationClass),
+                classResource);
     }
 
 }
