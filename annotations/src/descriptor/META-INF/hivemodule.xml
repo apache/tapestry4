@@ -28,6 +28,7 @@
       <construct class="AnnotationEnhancementWorker">
         <set-configuration property="methodWorkers" configuration-id="MethodWorkers"/>
         <set-configuration property="classWorkers" configuration-id="ClassWorkers"/>
+        <set-service property="secondaryAnnotationWorker" service-id="SecondaryAnnotationWorkers"/>
       </construct>
     </invoke-factory>
     
@@ -133,6 +134,26 @@
       </construct>
     </invoke-factory>
     
+  </service-point>
+  
+  <configuration-point id="SecondaryAnnotationWorkers" schema-id="hivemind.lib.ChainContribution">
+    
+    Defines a chain of command for secondary annotation workers; workers that operate after
+    any MethodWorkers.
+    
+  </configuration-point>
+  
+  <contribution configuration-id="SecondaryAnnotationWorkers"> 
+    <command id="initial-value" object="instance:InitialValueAnnotationWorker"/>
+  </contribution>
+  
+  <service-point id="SecondaryAnnotationWorkers" interface="SecondaryAnnotationWorker">
+    
+    Chain of command for secondary annnotation workers that operate after any MethodWorkers.
+    
+    <invoke-factory service-id="hivemind.lib.ChainFactory">
+      <construct configuration-id="SecondaryAnnotationWorkers"/>
+    </invoke-factory>    
   </service-point>
   
 </module>

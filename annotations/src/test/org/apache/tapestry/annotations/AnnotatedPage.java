@@ -27,7 +27,7 @@ import org.apache.tapestry.form.TextField;
 import org.apache.tapestry.html.BasePage;
 
 /**
- * Used by {@link org.apache.tapestry.annotations.TestAnnotationEnhancementWorker}. Also a chance
+ * Used by {@link org.apache.tapestry.annotations.AnnotationEnhancementWorkerTest}. Also a chance
  * to try each of the annotations out.
  * 
  * @author Howard M. Lewis Ship
@@ -58,6 +58,10 @@ public abstract class AnnotatedPage extends BasePage
 
     @Persist("client")
     public abstract String getClientPersistentProperty();
+
+    @Persist
+    @InitialValue("user.naturalName")
+    public abstract int getPersistentPropertyWithInitialValue();
 
     @InjectAsset("stylesheet")
     public abstract IAsset getStylesheetAsset();
@@ -136,4 +140,7 @@ public abstract class AnnotatedPage extends BasePage
 
     @InjectScript("foo.script")
     public abstract IScript getScript();
+
+    @InitialValue("fred")
+    public abstract int getPropertyWithInitialValue();
 }

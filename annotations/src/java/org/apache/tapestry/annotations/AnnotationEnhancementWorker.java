@@ -47,6 +47,8 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
 
     private Map _classWorkers;
 
+    private SecondaryAnnotationWorker _secondaryAnnotationWorker;
+
     public void setClassWorkers(Map classWorkers)
     {
         _classWorkers = classWorkers;
@@ -107,6 +109,19 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
         {
             performMethodEnhancement(op, spec, method, a, classResource);
         }
+
+        try
+        {
+            // Remember; _secondaryWorker is a chain-of-command, so this returns true
+            // if any command in the chain returns true.
+
+            if (_secondaryAnnotationWorker.canEnhance(method))
+                _secondaryAnnotationWorker.peformEnhancement(op, spec, method, classResource);
+        }
+        catch (Exception ex)
+        {
+            _errorLog.error(AnnotationMessages.failureEnhancingMethod(method, ex), null, ex);
+        }
     }
 
     void performMethodEnhancement(EnhancementOperation op, IComponentSpecification spec,
@@ -120,8 +135,10 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
 
         try
         {
-            Location location = new DescribedLocation(classResource, AnnotationMessages
-                    .methodAnnotation(annotation, method));
+            Location location = AnnotationUtils.buildLocationForAnnotation(
+                    method,
+                    annotation,
+                    classResource);
             worker.performEnhancement(op, spec, method, location);
         }
         catch (Exception ex)
@@ -147,5 +164,10 @@ public class AnnotationEnhancementWorker implements EnhancementWorker
     public void setClassResolver(ClassResolver classResolver)
     {
         _classResolver = classResolver;
+    }
+
+    public void setSecondaryAnnotationWorker(SecondaryAnnotationWorker secondaryWorker)
+    {
+        _secondaryAnnotationWorker = secondaryWorker;
     }
 }

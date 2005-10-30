@@ -15,9 +15,13 @@
 package org.apache.tapestry.annotations;
 
 import java.beans.Introspector;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
+import org.apache.tapestry.util.DescribedLocation;
 
 /**
  * @author Howard M. Lewis Ship
@@ -26,6 +30,16 @@ import org.apache.hivemind.ApplicationRuntimeException;
 
 public class AnnotationUtils
 {
+    /**
+     * Determines the property name for a method, by stripping off the is/get/set prefix and
+     * decapitalizing the first name.
+     * 
+     * @param method
+     *            accessor method (get/set/is)
+     * @return the property name for the method
+     * @throws ApplicationRuntimeException
+     *             if the method is not an accessor or mutator method
+     */
     public static String getPropertyName(Method method)
     {
         String name = method.getName();
@@ -68,5 +82,13 @@ public class AnnotationUtils
 
         if (method.getParameterTypes().length != 1)
             throw new ApplicationRuntimeException(AnnotationMessages.wrongParameterCount(method));
+    }
+
+    public static Location buildLocationForAnnotation(Method method, Annotation annotation,
+            Resource classResource)
+    {
+        return new DescribedLocation(classResource, AnnotationMessages.methodAnnotation(
+                annotation,
+                method));
     }
 }

@@ -35,6 +35,8 @@ import org.apache.tapestry.spec.IPropertySpecification;
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
+ * @see org.apache.tapestry.annotations.PersistAnnotationWorker
+ * @see org.apache.tapestry.annotations.InitialValueAnnotationWorker
  */
 public class SpecifiedPropertyWorker implements EnhancementWorker
 {

@@ -223,6 +223,53 @@ public abstact class YeOldeComponent extends AbstractComponent
   
 </section>
         
+    <section>
+      <title>InitialValue</title>
+      
+      
+      <p>
+        The <link href="&javadoc;/InitialValue.html">InitialValue</link>
+        annotation allows a default value to be specified for a property.
+        The property may also be persistent (via the <link href="#Persist">@Persist</link>
+        annotation).
+      </p>
+      
+      <p>
+        The value is a binding reference; the reference will be evaluated
+        when the page is first loaded, and again when the page is detached and returned
+        to the page pool.  The default binding prefix is "ognl:".
+      </p>
+      
+      <p>
+        The annotation is attached to an accessor method:
+      </p>
+      
+      <source>
+  @InitialValue("request.serverName")
+  public abstract String getServerName();        
+      </source>      
+      
+      
+      <p>
+        In many cases, where the initial value is a constant, a better approach is to set the initial value
+        from the component's finishLoad() method.
+      </p>
+      
+      
+      <source>
+  public abstract int getMaxAttempts();
+  
+  public abstract void setMaxAttempts(int maxAttempts);
+  
+  protected void finishLoad()
+  {
+    setMaxAttempts(5);
+  }        
+      </source>      
+
+      
+    </section>        
+        
 <section>
   <title>InjectAsset</title>
   
@@ -563,7 +610,8 @@ The annotation supports several additional attributes, consult its <link href="&
 
 <p>
 This annotation works exactly like a <link href="&spec;#spec.property">&lt;property&gt;</link>
-element, except that the initial-value attribute can't be specified.
+element, except that the initial-value attribute can't be specified.  Use the <link href="#InitialValue">@InitialValue</link>
+annotation to set the property's initial value.
 </p>
 
 </section>
