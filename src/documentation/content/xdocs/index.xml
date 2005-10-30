@@ -224,11 +224,12 @@ of tutorials is being written.
   and fixing bugs. A final release for Tapestry 4.0 is expected (but not guaranteed)
   in October 2005.
 </p>
+
+</section>
   
-  <warning>
-    <title>Upgrading from 4.0 beta-10</title>
+<section><title>Upgrading from 4.0 beta-10</title>
     
-    <p>
+   <p>
       The way <link href="UsersGuide/friendly-urls.html">friendly URLs</link> are configured,
       for the asset service, has changed between beta-10 and later releases.  In your
       hivemodule.xml, change:
@@ -239,9 +240,8 @@ of tutorials is being written.
     (notice that the trailing slash has been removed).
     </p>
     
-  </warning>  
-  
-</section>
+</section>    
+
 
 <section>
   <title>Upgrading from Tapestry 3.0</title>
@@ -281,9 +281,6 @@ Things that will cause you trouble when upgrading:
    <li>The Jakarta commons-lang library is no longer a dependency of Tapestry; this means
     that the EnumPropertySelectionModel class is no longer available (however, you can easily
     copy the source from Tapestry 3.0). </li>
-    <li>For the Submit component (as well as LinkSubmit and ImageSubmit), the invocation of the listener
-      is (by default) deferred until the end of the form submission, just before the Form's listener is invoked.  In Tapestry 3.0, the invocation was immediate. Deferred is better for most, but
-      not all, situations. </li>
 </ul>
 
   
