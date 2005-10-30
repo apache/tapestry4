@@ -68,9 +68,10 @@ public abstract class AbstractTranslator extends AbstractFormComponentContributo
     public Object parse(IFormComponent field, ValidationMessages messages, String text)
             throws ValidatorException
     {
-        String value = _trim ? text.trim() : text;
+        String value = text == null ? null : (_trim ? text.trim() : text);
 
-        return HiveMind.isBlank(value) ? getEmpty() : parseText(field, messages, value);
+        return HiveMind.isBlank(value) ? getValueForEmptyInput()
+                : parseText(field, messages, value);
     }
 
     protected abstract String formatObject(IFormComponent field, Locale locale, Object object);
@@ -78,7 +79,14 @@ public abstract class AbstractTranslator extends AbstractFormComponentContributo
     protected abstract Object parseText(IFormComponent field, ValidationMessages messages,
             String text) throws ValidatorException;
 
-    protected Object getEmpty()
+    /**
+     * The value to be used when the value supplied in the request is blank (null or empty). The
+     * default value is null, but some subclasses may override.
+     * 
+     * @see #parse(IFormComponent, ValidationMessages, String)
+     * @return null, subclasses may override
+     */
+    protected Object getValueForEmptyInput()
     {
         return null;
     }
@@ -108,7 +116,8 @@ public abstract class AbstractTranslator extends AbstractFormComponentContributo
         super.renderContribution(writer, cycle, context, field);
 
         if (_trim)
-            context.addSubmitHandler("function (event) { Tapestry.trim_field_value('" + field.getClientId() + "'); }");
+            context.addSubmitHandler("function (event) { Tapestry.trim_field_value('"
+                    + field.getClientId() + "'); }");
     }
 
     public boolean isTrim()

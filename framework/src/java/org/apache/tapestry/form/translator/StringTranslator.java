@@ -49,8 +49,6 @@ public class StringTranslator extends AbstractTranslator
      */
     protected Object parseText(IFormComponent field, ValidationMessages messages, String text)
     {
-        // TODO: Do something with _empty here?
-
         return text;
     }
 
@@ -63,7 +61,7 @@ public class StringTranslator extends AbstractTranslator
         return object.toString();
     }
 
-    public Object getEmpty()
+    public Object getValueForEmptyInput()
     {
         return _empty;
     }
