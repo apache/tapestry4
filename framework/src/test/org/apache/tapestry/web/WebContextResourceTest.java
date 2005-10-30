@@ -19,9 +19,6 @@ import java.util.Locale;
 
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.web.WebContextResource;
-import org.apache.tapestry.web.WebContext;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.web.WebContextResource}.
@@ -29,7 +26,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestWebContextResource extends HiveMindTestCase
+public class WebContextResourceTest extends HiveMindTestCase
 {
     private WebContext newContext()
     {
@@ -57,11 +54,9 @@ public class TestWebContextResource extends HiveMindTestCase
 
     public void testLocalizationExists() throws Exception
     {
-        MockControl control = newControl(WebContext.class);
-        WebContext context = (WebContext) control.getMock();
+        WebContext context = newContext();
 
-        context.getResource("/foo/bar/baz_en.html");
-        control.setReturnValue(new URL("http://foo.com"));
+        trainGetResource(context, "/foo/bar/baz_en.html", new URL("http://foo.com"));
 
         replayControls();
 
@@ -75,16 +70,18 @@ public class TestWebContextResource extends HiveMindTestCase
         verifyControls();
     }
 
+    private void trainGetResource(WebContext context, String path, URL url)
+    {
+        context.getResource(path);
+        setReturnValue(context, url);
+    }
+
     public void testLocalizationSame() throws Exception
     {
-        MockControl control = newControl(WebContext.class);
-        WebContext context = (WebContext) control.getMock();
+        WebContext context = newContext();
 
-        context.getResource("/foo/bar/baz_en.html");
-        control.setReturnValue(null);
-
-        context.getResource("/foo/bar/baz.html");
-        control.setReturnValue(new URL("http://foo.com"));
+        trainGetResource(context, "/foo/bar/baz_en.html", null);
+        trainGetResource(context, "/foo/bar/baz.html", new URL("http://foo.com"));
 
         replayControls();
 
@@ -99,14 +96,10 @@ public class TestWebContextResource extends HiveMindTestCase
 
     public void testLocalizationMissing() throws Exception
     {
-        MockControl control = newControl(WebContext.class);
-        WebContext context = (WebContext) control.getMock();
+        WebContext context = newContext();
 
-        context.getResource("/foo/bar/baz_en.html");
-        control.setReturnValue(null);
-
-        context.getResource("/foo/bar/baz.html");
-        control.setReturnValue(null);
+        trainGetResource(context, "/foo/bar/baz_en.html", null);
+        trainGetResource(context, "/foo/bar/baz.html", null);
 
         replayControls();
 
@@ -127,6 +120,24 @@ public class TestWebContextResource extends HiveMindTestCase
         Resource r2 = r1.getRelativeResource("baz.gif");
 
         assertEquals("/foo/bar/baz.gif", r2.getPath());
+
+        verifyControls();
+    }
+
+    public void testGetExtensionlessResource() throws Exception
+    {
+        WebContext context = newContext();
+
+        trainGetResource(context, "/foo/bar/baz_en", new URL("http://foo.com"));
+
+        replayControls();
+
+        Resource r1 = new WebContextResource(context, "/foo/bar/baz");
+
+        Resource r2 = r1.getLocalization(Locale.ENGLISH);
+
+        assertEquals("/foo/bar/baz_en", r2.getPath());
+        assertEquals(Locale.ENGLISH, r2.getLocale());
 
         verifyControls();
     }

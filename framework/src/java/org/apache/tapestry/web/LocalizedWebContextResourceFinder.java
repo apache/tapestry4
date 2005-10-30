@@ -46,8 +46,18 @@ public class LocalizedWebContextResourceFinder
     public LocalizedResource resolve(String contextPath, Locale locale)
     {
         int dotx = contextPath.lastIndexOf('.');
-        String basePath = contextPath.substring(0, dotx);
-        String suffix = contextPath.substring(dotx);
+        String basePath;
+        String suffix;
+        if (dotx >= 0) {
+        	basePath = contextPath.substring(0, dotx);
+        	suffix = contextPath.substring(dotx);
+        }
+        else
+        {
+        	// Resource without extension
+        	basePath = contextPath;
+        	suffix = "";
+        }
 
         LocalizedNameGenerator generator = new LocalizedNameGenerator(basePath, locale, suffix);
 
