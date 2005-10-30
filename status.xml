@@ -62,6 +62,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-602">Add annotation to define default value of property</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-723">The "empty" property of StringTranslator is broken</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-526" due-to="Marcus Brito">Tapestry throws a NPE if you try to configure an asset without an extension</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-571">CookieSource service stores only session cookies (despite documentation) and provides no way to store a persistent cookie</action>
     </release>
     <release version="4.0-beta-11" date="Oct 16 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-650">ClassNotFoundException thrown when deserializing an object from a client persistent property</action>

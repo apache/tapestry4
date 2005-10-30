@@ -354,6 +354,15 @@ currently used in Tapestry:
 </tr>
 
   <tr>
+    <td>org.apache.tapestry.default-cookie-max-age</td>
+    <td>
+      The default max age (in seconds) for cookies written by Tapestry, including the cookie used
+      to track the user's locale.  A value of -1 means the cookie is a session cookie,
+      stored only until the user's browser exits.  The default value is equivalent to one week.
+    </td>
+  </tr>
+
+  <tr>
 
 	<td>org.apache.tapestry.default-page-class</td>
 	

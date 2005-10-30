@@ -30,13 +30,18 @@ import org.easymock.MockControl;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestCookieSource extends HiveMindTestCase
+public class CookieSourceTest extends HiveMindTestCase
 {
+    // In seconds
+
+    private static final int ONE_WEEK = 7 * 24 * 60 * 60;
+
     private static class ComparableCookie extends Cookie
     {
-        public ComparableCookie(String name, String value)
+        public ComparableCookie(String name, String value, int maxAge)
         {
             super(name, value);
+            setMaxAge(maxAge);
         }
 
         public boolean equals(Object obj)
@@ -44,7 +49,7 @@ public class TestCookieSource extends HiveMindTestCase
             Cookie c = (Cookie) obj;
 
             return equals(getName(), c.getName()) && equals(getValue(), c.getValue())
-                    && equals(getPath(), c.getPath());
+                    && equals(getPath(), c.getPath()) && getMaxAge() == c.getMaxAge();
         }
 
         private boolean equals(Object value, Object other)
@@ -53,7 +58,7 @@ public class TestCookieSource extends HiveMindTestCase
         }
     }
 
-    private HttpServletRequest setupRequest(String[] nameValues)
+    private HttpServletRequest newRequest(String[] nameValues)
     {
         Cookie[] cookies = null;
 
@@ -75,18 +80,22 @@ public class TestCookieSource extends HiveMindTestCase
             cookies = (Cookie[]) l.toArray(new Cookie[l.size()]);
         }
 
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = newRequest();
 
         request.getCookies();
-        control.setReturnValue(cookies);
+        setReturnValue(request, cookies);
 
         return request;
     }
 
+    protected HttpServletRequest newRequest()
+    {
+        return (HttpServletRequest) newMock(HttpServletRequest.class);
+    }
+
     private void attempt(String name, String expected, String[] nameValues)
     {
-        HttpServletRequest request = setupRequest(nameValues);
+        HttpServletRequest request = newRequest(nameValues);
 
         CookieSourceImpl cs = new CookieSourceImpl();
 
@@ -120,17 +129,14 @@ public class TestCookieSource extends HiveMindTestCase
 
     public void testWriteCookie()
     {
-        MockControl requestControl = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) requestControl.getMock();
-
-        HttpServletResponse response = (HttpServletResponse) newMock(HttpServletResponse.class);
+        HttpServletRequest request = newRequest();
+        HttpServletResponse response = newResponse();
 
         // Training
 
-        request.getContextPath();
-        requestControl.setReturnValue("/context");
+        trainGetContextPath(request, "/context");
 
-        Cookie cookie = new ComparableCookie("foo", "bar");
+        Cookie cookie = new ComparableCookie("foo", "bar", ONE_WEEK);
         cookie.setPath("/context/");
 
         response.addCookie(cookie);
@@ -140,25 +146,60 @@ public class TestCookieSource extends HiveMindTestCase
         CookieSourceImpl cs = new CookieSourceImpl();
         cs.setRequest(request);
         cs.setResponse(response);
+        cs.setDefaultMaxAge(ONE_WEEK);
 
         cs.writeCookieValue("foo", "bar");
 
         verifyControls();
     }
 
-    public void testRemoveCookie()
+    public void testWriteCookieWithMaxAge()
     {
-        MockControl requestControl = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) requestControl.getMock();
-
-        HttpServletResponse response = (HttpServletResponse) newMock(HttpServletResponse.class);
+        HttpServletRequest request = newRequest();
+        HttpServletResponse response = newResponse();
 
         // Training
 
-        request.getContextPath();
-        requestControl.setReturnValue("/context");
+        trainGetContextPath(request, "/ctx");
 
-        Cookie cookie = new ComparableCookie("foo", null);
+        Cookie cookie = new ComparableCookie("foo", "bar", -1);
+        cookie.setPath("/ctx/");
+
+        response.addCookie(cookie);
+
+        replayControls();
+
+        CookieSourceImpl cs = new CookieSourceImpl();
+        cs.setRequest(request);
+        cs.setResponse(response);
+        cs.setDefaultMaxAge(ONE_WEEK);
+
+        cs.writeCookieValue("foo", "bar", -1);
+
+        verifyControls();
+    }
+
+    private void trainGetContextPath(HttpServletRequest request, String contextPath)
+    {
+        request.getContextPath();
+        setReturnValue(request, contextPath);
+    }
+
+    private HttpServletResponse newResponse()
+    {
+        return (HttpServletResponse) newMock(HttpServletResponse.class);
+    }
+
+    public void testRemoveCookie()
+    {
+        HttpServletRequest request = newRequest();
+        HttpServletResponse response = newResponse();
+
+        // Training
+
+        trainGetContextPath(request, "/context");
+
+        Cookie cookie = new ComparableCookie("foo", null, 0);
         cookie.setPath("/context/");
 
         response.addCookie(cookie);

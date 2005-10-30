@@ -32,6 +32,8 @@ public class CookieSourceImpl implements CookieSource
 
     private HttpServletResponse _response;
 
+    private int _defaultMaxAge;
+
     public String readCookieValue(String name)
     {
         Cookie[] cookies = _request.getCookies();
@@ -50,8 +52,14 @@ public class CookieSourceImpl implements CookieSource
 
     public void writeCookieValue(String name, String value)
     {
+        writeCookieValue(name, value, _defaultMaxAge);
+    }
+
+    public void writeCookieValue(String name, String value, int maxAge)
+    {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath(_request.getContextPath() + "/");
+        cookie.setMaxAge(maxAge);
 
         _response.addCookie(cookie);
     }
@@ -73,5 +81,10 @@ public class CookieSourceImpl implements CookieSource
     public void setResponse(HttpServletResponse response)
     {
         _response = response;
+    }
+
+    public void setDefaultMaxAge(int defaultMaxAge)
+    {
+        _defaultMaxAge = defaultMaxAge;
     }
 }

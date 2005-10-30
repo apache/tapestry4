@@ -48,6 +48,8 @@
   
   <contribution configuration-id="hivemind.FactoryDefaults">
     <default symbol="org.apache.tapestry.accepted-locales" value=""/>
+    <!-- One week, in seconds -->
+    <default symbol="org.apache.tapestry.default-cookie-max-age" value="604800"/>
   </contribution>
   
   <service-point id="CookieSource">
@@ -58,6 +60,7 @@
       <construct class="impl.CookieSourceImpl">
         <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
         <set-service property="response" service-id="tapestry.globals.HttpServletResponse"/>
+        <set property="defaultMaxAge" value="${org.apache.tapestry.default-cookie-max-age}"/>
       </construct>
     </invoke-factory>    
   </service-point>  
