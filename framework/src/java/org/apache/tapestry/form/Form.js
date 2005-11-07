@@ -287,11 +287,13 @@ FormEventManager.prototype.add_postsubmit_handler = function(handler)
 // Submits a form programatically.
 // 
 
-FormEventManager.prototype.submit = function()
+FormEventManager.prototype.submit = function(name)
 {
 	if (this.onsubmit_handler())
 	{
 	  this.form.onsubmit = null;
+
+      this.form.submitname.value = name;    
 	  this.form.submit();
 	}
 }
@@ -316,6 +318,7 @@ FormEventManager.prototype.onsubmit_handler = function()
       return false;
 	  
 	this.form.submitmode.value = "submit";
+	this.form.submitname.value = "";
 	
 	return true;
 }
@@ -342,7 +345,7 @@ FormEventManager.prototype.add_refresh_handler = function(handler)
 // that another field be updated via a server round-trip.  Refresh listeners
 // can prevent the form submission by setting the event's abort flag.
 
-FormEventManager.prototype.refresh = function()
+FormEventManager.prototype.refresh = function(name)
 {
 	var event = new FormSubmitEvent(this.form, "refresh", this.invalid_field_handler);
 	
@@ -352,6 +355,7 @@ FormEventManager.prototype.refresh = function()
 	  return;
 	  
     this.form.submitmode.value = "refresh";
+    this.form.submitname.value = name;
 	this.form.onsubmit = null;
 	this.form.submit();
 }

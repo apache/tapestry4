@@ -42,4 +42,10 @@ public class FormConstants
      * is invoked.
      */
     public static final String SUBMIT_REFRESH = "refresh";
+
+    /**
+     * Query parameter reserved to identify the name of the component that triggered the form
+     * submit. This is primarily used by the {@link org.apache.tapestry.form.LinkSubmit} component.
+     */
+    public static final String SUBMIT_NAME_PARAMETER = "submitname";
 }

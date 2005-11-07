@@ -150,13 +150,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainDiv(writer);
-
-        trainHidden(writer, "formids", "barney,wilma,barney_0");
-        trainHidden(writer, "service", "fred");
-        trainHidden(writer, "submitmode", "");
-
-        writer.end();
+        trainHiddenBlock(writer, "fred", "barney,wilma,barney_0");
 
         nested.close();
 
@@ -176,7 +170,19 @@ public class FormSupportTest extends BaseComponentTestCase
         verifyControls();
     }
 
-    private void trainDiv(IMarkupWriter writer)
+    protected void trainHiddenBlock(IMarkupWriter writer, String serviceName, String formIds)
+    {
+        trainDiv(writer);
+
+        trainHidden(writer, "formids", formIds);
+        trainHidden(writer, "service", serviceName);
+        trainHidden(writer, "submitmode", "");
+        trainHidden(writer, FormConstants.SUBMIT_NAME_PARAMETER, "");
+
+        writer.end();
+    }
+
+    protected void trainDiv(IMarkupWriter writer)
     {
         writer.begin("div");
         writer.attribute("style", "display:none;");
@@ -317,13 +323,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainDiv(writer);
-
-        trainHidden(writer, "formids", "");
-        trainHidden(writer, "service", "fred");
-        trainHidden(writer, "submitmode", "");
-
-        writer.end();
+        trainHiddenBlock(writer, "fred", "");
 
         nested.close();
 
@@ -406,13 +406,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainDiv(writer);
-
-        trainHidden(writer, "formids", "");
-        trainHidden(writer, "service", "fred");
-        trainHidden(writer, "submitmode", "");
-
-        writer.end();
+        trainHiddenBlock(writer, "fred", "");
 
         nested.close();
 
@@ -489,6 +483,7 @@ public class FormSupportTest extends BaseComponentTestCase
         trainHidden(writer, "formids", "");
         trainHidden(writer, "service", "fred");
         trainHidden(writer, "submitmode", "");
+        trainHidden(writer, FormConstants.SUBMIT_NAME_PARAMETER, "");
         trainHidden(writer, "hidden1", "value1");
         trainHidden(writer, "hidden2", "id2", "value2");
 
@@ -629,6 +624,7 @@ public class FormSupportTest extends BaseComponentTestCase
         trainHidden(writer, "action", "fred");
         trainHidden(writer, "reservedids", "action");
         trainHidden(writer, "submitmode", "");
+        trainHidden(writer, FormConstants.SUBMIT_NAME_PARAMETER, "");
 
         writer.end();
 
@@ -702,14 +698,8 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainDiv(writer);
-
-        trainHidden(writer, "formids", "");
-        trainHidden(writer, "service", "fred");
-        trainHidden(writer, "submitmode", "");
-
-        writer.end();
-
+        trainHiddenBlock(writer, "fred", "");
+        
         nested.close();
 
         writer.end();
@@ -988,13 +978,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainDiv(writer);
-
-        trainHidden(writer, "formids", "barney");
-        trainHidden(writer, "service", "fred");
-        trainHidden(writer, "submitmode", "");
-
-        writer.end();
+        trainHiddenBlock(writer, "fred", "barney");
 
         nested.close();
 
@@ -1067,14 +1051,8 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainDiv(writer);
-
-        trainHidden(writer, "formids", "barney");
-        trainHidden(writer, "service", "fred");
-        trainHidden(writer, "submitmode", "");
-
-        writer.end();
-
+        trainHiddenBlock(writer, "fred", "barney");
+        
         nested.close();
 
         writer.end();
@@ -1160,13 +1138,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainDiv(writer);
-
-        trainHidden(writer, "formids", "");
-        trainHidden(writer, "service", "fred");
-        trainHidden(writer, "submitmode", "");
-
-        writer.end();
+        trainHiddenBlock(writer, "fred", "");
 
         // EasyMock can't fully verify that this gets called at the right moment, nor can we truly
         // prove (well, except by looking at the code), that the deferred runnables execute at the
@@ -1406,13 +1378,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.println();
 
-        trainDiv(writer);
-
-        trainHidden(writer, "formids", "");
-        trainHidden(writer, "service", "fred");
-        trainHidden(writer, "submitmode", "");
-
-        writer.end();
+        trainHiddenBlock(writer, "fred", "");
 
         nested.close();
 

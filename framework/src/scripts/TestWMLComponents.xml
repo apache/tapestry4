@@ -116,6 +116,7 @@
             <match>service</match>
             <match>reservedids</match>     
             <match>submitmode</match>       
+            <match>submitname</match>       
             <match>u</match>
             <match>l</match>
         </assert-output-matches>
@@ -130,6 +131,7 @@
             <match>Home</match>
             <match>action</match>
             <match>action</match>
+            <match></match>
             <match></match>
             <match>$(username)</match>
             <match>$(l)</match>

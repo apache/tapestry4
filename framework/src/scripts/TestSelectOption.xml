@@ -43,6 +43,7 @@
       <match>name="page" value="Home"</match>
 			<match>name="service" value="direct"</match>
       <match>name="submitmode" value=""</match>
+			<match>name="submitname" value=""</match>			
 		</assert-output-matches>
 
 		<assert-regexp name="Select Tag">
@@ -131,6 +132,7 @@ Selections: vegetable.
       <match>name="page" value="Two"</match>
 			<match>name="service" value="direct"</match>
       <match>name="submitmode" value=""</match>
+			<match>name="submitname" value=""</match>
 		</assert-output-matches>
 
 		<assert-output name="Select Tag">
@@ -230,6 +232,7 @@ Selections: vegetable, mineral.
 			<match>name="service" value="direct"</match>
       <match>name="session" value="T"</match>
       <match>name="submitmode" value=""</match>
+			<match>name="submitname" value=""</match>
 		</assert-output-matches>
 
 		<assert-output name="Select Tag">
