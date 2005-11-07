@@ -83,6 +83,7 @@
             <match>page</match>
             <match>service</match>
             <match>submitmode</match>
+            <match>submitname</match>
             <match>u</match>
             
             <match>formids</match>          
@@ -92,6 +93,7 @@
             <match>service</match>
             <match>reservedids</match>
             <match>submitmode</match>
+            <match>submitname</match>
             <match>v</match>
         </assert-output-matches>
 
@@ -104,6 +106,7 @@
             <match>Rewind</match>            
             <match>direct</match>
             <match></match>
+            <match></match>
             <match>$(u)</match>
             
             <match>v</match>
@@ -112,6 +115,7 @@
             <match>Rewind</match>
             <match>action</match>
             <match>action</match>
+            <match></match>
             <match></match>
             <match>$(v)</match>
         </assert-output-matches>

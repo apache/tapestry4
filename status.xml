@@ -52,6 +52,7 @@
   <changes>
     <release version="4.0-beta-13" date="unreleased">
       <action type="update" dev="HLS">Switch to HiveMind 1.1 (final)</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRT-678">LinkSubmit does not work correctly when the browser's back button is used and the form resubmitted normally</action>
     </release>
     <release version="4.0-beta-12" date="Oct 30 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-718">Asset injection makes assets appear as null inside finishLoad()</action>

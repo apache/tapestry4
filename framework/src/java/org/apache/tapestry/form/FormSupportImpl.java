@@ -95,6 +95,7 @@ public class FormSupportImpl implements FormSupport
         set.add(FORM_IDS);
         set.add(RESERVED_FORM_IDS);
         set.add(SUBMIT_MODE);
+        set.add(FormConstants.SUBMIT_NAME_PARAMETER);
 
         _standardReservedIds = Collections.unmodifiableSet(set);
     }
@@ -458,6 +459,11 @@ public class FormSupportImpl implements FormSupport
         // client-side JavaScript forces an update.
 
         addHiddenValue(SUBMIT_MODE, null);
+        
+        // And another for the name of the component that
+        // triggered the submit.
+        
+        addHiddenValue(FormConstants.SUBMIT_NAME_PARAMETER, null);
 
         IMarkupWriter nested = _writer.getNestedWriter();
 

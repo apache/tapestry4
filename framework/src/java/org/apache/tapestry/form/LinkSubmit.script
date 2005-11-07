@@ -20,7 +20,7 @@
 	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
 <script>
 
-<input-symbol key="hiddenId" class="java.lang.String" required="yes"/>
+<input-symbol key="name" class="java.lang.String" required="yes"/>
 <input-symbol key="form" class="org.apache.tapestry.IForm" required="yes"/>
 
 <let key="functionName" unique="yes">
@@ -36,12 +36,7 @@ function ${functionName}()
 {
   var form = Tapestry.find('${form.name}');
   
-  if (form.events.onsubmit_handler())
-  {
-    Tapestry.find('${hiddenId}').value = "T";
-    form.onsubmit = null;
-    form.submit();
-  }
+  form.events.submit('${name}');
 }
 
 </body>

@@ -38,17 +38,21 @@ public abstract class LinkSubmit extends AbstractSubmit
 {
 
     /**
-     * The name of an {@link org.apache.tapestry.IRequestCycle}attribute in which the current
+     * The name of an {@link org.apache.tapestry.IRequestCycle} attribute in which the current
      * submit link is stored. LinkSubmits do not nest.
      */
 
     public static final String ATTRIBUTE_NAME = "org.apache.tapestry.form.LinkSubmit";
 
+    /**
+     * Checks the submit name ({@link FormConstants#SUBMIT_NAME_PARAMETER}) to see if it matches
+     * this LinkSubmit's assigned element name.
+     */
     protected boolean isClicked(IRequestCycle cycle, String name)
     {
-        String value = cycle.getParameter(name);
+        String value = cycle.getParameter(FormConstants.SUBMIT_NAME_PARAMETER);
 
-        return HiveMind.isNonBlank(value);
+        return name.equals(value);
     }
 
     public abstract IScript getScript();
@@ -64,31 +68,21 @@ public abstract class LinkSubmit extends AbstractSubmit
         IForm form = getForm();
         String name = getName();
 
-        String hiddenId = cycle.getUniqueId(TapestryUtils
-                .convertTapestryIdToNMToken(getIdParameter()));
-
-        // Store for later access by the FieldLabel (or JavaScript).
-
-        setClientId(hiddenId);
-
-        // Add a hidden field used to identify the link that caused the submission.
-        // Client-side JavaScript will set the value to non-null when the link is clicked,
-        // then force the form to submit.
-
-        form.addHiddenValue(name, hiddenId, "");
-
         if (!disabled)
         {
             PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
 
             Map symbols = new HashMap();
             symbols.put("form", form);
-            symbols.put("hiddenId", hiddenId);
+            symbols.put("name", name);
 
             getScript().execute(cycle, pageRenderSupport, symbols);
 
             writer.begin("a");
             writer.attribute("href", (String) symbols.get("href"));
+
+            renderIdAttribute(writer, cycle);
+
             renderInformalParameters(writer, cycle);
         }
 
