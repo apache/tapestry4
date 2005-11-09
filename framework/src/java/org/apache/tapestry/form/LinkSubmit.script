@@ -23,22 +23,8 @@
 <input-symbol key="name" class="java.lang.String" required="yes"/>
 <input-symbol key="form" class="org.apache.tapestry.IForm" required="yes"/>
 
-<let key="functionName" unique="yes">
-  onclick_${hiddenId}
-</let>
-
 <let key="href">
-  javascript:${functionName}();
+  javascript:Tapestry.submit_form('${form.name}', '${name}');
 </let>
-
-<body>
-function ${functionName}()
-{
-  var form = Tapestry.find('${form.name}');
-  
-  form.events.submit('${name}');
-}
-
-</body>
 
 </script>

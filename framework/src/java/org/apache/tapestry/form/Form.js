@@ -110,6 +110,15 @@ Tapestry.require_field = function(event, fieldId, message)
       event.invalid_field(field, message);
 }
 
+// Used by LinkSubmit components to force the form to submit
+
+Tapestry.submit_form = function(form_id, field_name)
+{
+	var form = this.find(form_id);
+	
+	form.events.submit(field_name);
+}
+
 // FormSubmitEvent
 // 
 // Event object that identifies the form that was submitted,
