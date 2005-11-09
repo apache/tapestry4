@@ -21,6 +21,8 @@ import java.util.Collections;
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.impl.RegistryBuilder;
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.services.ApplicationGlobals;
+import org.apache.tapestry.services.Infrastructure;
 
 /**
  * Tests for {@link org.apache.tapestry.describe.HTMLDescriptionReceiver}and
@@ -29,19 +31,11 @@ import org.apache.tapestry.IMarkupWriter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
+public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
 {
     protected DescribableStrategy newStrategy()
     {
         return (DescribableStrategy) newMock(DescribableStrategy.class);
-    }
-
-    public static class NoOpStrategy implements DescribableStrategy
-    {
-        public void describeObject(Object object, DescriptionReceiver receiver)
-        {
-            // Does nothing; sufficient for the tests.
-        }
     }
 
     private void trainForTitle(IMarkupWriter writer, String title)
@@ -381,7 +375,7 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
 
         replayControls();
 
-        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, strategy);
+        RootDescriptionReciever dr = new HTMLDescriptionReceiver(writer, strategy);
 
         dr.describe(null);
 
@@ -412,6 +406,10 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         IMarkupWriter writer = newWriter();
         DescribableStrategy strategy = new NoOpStrategy();
 
+        RootDescriptionReceiverFactory factory = newReceiverFactory();
+
+        trainGetReciever(factory, writer, new HTMLDescriptionReceiver(writer, strategy));
+
         String object = "Tapestry";
 
         writer.print("Tapestry");
@@ -420,11 +418,24 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         replayControls();
 
         HTMLDescriberImpl d = new HTMLDescriberImpl();
-        d.setStrategy(strategy);
+        d.setReceiverFactory(factory);
 
         d.describeObject(object, writer);
 
         verifyControls();
+    }
+
+    protected void trainGetReciever(RootDescriptionReceiverFactory factory, IMarkupWriter writer,
+            RootDescriptionReciever receiver)
+    {
+        factory.newRootDescriptionReceiver(writer);
+        setReturnValue(factory, receiver);
+
+    }
+
+    protected RootDescriptionReceiverFactory newReceiverFactory()
+    {
+        return (RootDescriptionReceiverFactory) newMock(RootDescriptionReceiverFactory.class);
     }
 
     public void testDescribeAlternate()
@@ -441,42 +452,6 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         replayControls();
 
         dr.describeAlternate(alternate);
-
-        verifyControls();
-    }
-
-    public void testIntegration() throws Exception
-    {
-        IMarkupWriter writer = newWriter();
-
-        Registry r = RegistryBuilder.constructDefaultRegistry();
-        // The Portlet code, which may be in the classpath under Eclipse, adds a second
-        // implementation.
-        HTMLDescriber d = (HTMLDescriber) r.getService(
-                "tapestry.describe.HTMLDescriber",
-                HTMLDescriber.class);
-
-        writer.print("Tapestry");
-        writer.println();
-
-        replayControls();
-
-        d.describeObject("Tapestry", writer);
-
-        verifyControls();
-
-        writer.print("Anonymous Describable");
-        writer.println();
-
-        replayControls();
-
-        d.describeObject(new Describable()
-        {
-            public void describeTo(DescriptionReceiver receiver)
-            {
-                receiver.title("Anonymous Describable");
-            }
-        }, writer);
 
         verifyControls();
     }

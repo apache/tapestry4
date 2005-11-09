@@ -25,6 +25,8 @@ import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.enhance.EnhancedClassValidator;
 import org.apache.tapestry.enhance.EnhancementOperationImpl;
 import org.apache.tapestry.enhance.EnhancementWorker;
+import org.apache.tapestry.event.ReportStatusEvent;
+import org.apache.tapestry.event.ReportStatusListener;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.services.ComponentConstructorFactory;
@@ -38,8 +40,10 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @since 4.0
  */
 public class ComponentConstructorFactoryImpl implements ComponentConstructorFactory,
-        ResetEventListener
+        ResetEventListener, ReportStatusListener
 {
+    private String _serviceId;
+
     private Log _log;
 
     private ClassFactory _classFactory;
@@ -51,7 +55,7 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
     private EnhancementWorker _chain;
 
     /**
-     * Map of {@link org.apache.tapestry.services.ComponentConstructor}keyed on
+     * Map of {@link org.apache.tapestry.services.ComponentConstructor} keyed on
      * {@link org.apache.tapestry.spec.IComponentSpecification}.
      */
 
@@ -60,6 +64,14 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
     public void resetEventDidOccur()
     {
         _cachedConstructors.clear();
+    }
+
+    public synchronized void reportStatus(ReportStatusEvent event)
+    {
+        event.title(_serviceId);
+
+        event.property("enhanced class count", _cachedConstructors.size());
+        event.collection("enhanced classes", _cachedConstructors.keySet());
     }
 
     public ComponentConstructor getComponentConstructor(IComponentSpecification specification,
@@ -120,5 +132,10 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
     public void setLog(Log log)
     {
         _log = log;
+    }
+
+    public void setServiceId(String serviceId)
+    {
+        _serviceId = serviceId;
     }
 }

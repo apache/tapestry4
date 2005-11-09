@@ -28,6 +28,7 @@
       <construct class="org.apache.tapestry.services.impl.ComponentConstructorFactoryImpl">
         <set-service property="classFactory" service-id="hivemind.ClassFactory"/>
         <event-listener service-id="tapestry.ResetEventCoordinator"/>
+        <event-listener service-id="tapestry.describe.ReportStatusHub"/>
         <set-service property="validator" service-id="EnhancedClassValidator"/>
         <set-service property="chain" service-id="EnhancementWorkerChain"/>
       </construct>

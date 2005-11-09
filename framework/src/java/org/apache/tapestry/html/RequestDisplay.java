@@ -24,6 +24,7 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.describe.ReportStatusHub;
 import org.apache.tapestry.web.WebUtils;
 
 /**
@@ -36,6 +37,10 @@ import org.apache.tapestry.web.WebUtils;
 public abstract class RequestDisplay extends BaseComponent
 {
     private boolean _even;
+
+    // Injected
+
+    public abstract ReportStatusHub getReportStatusHub();
 
     public void renderSystemProperties(IMarkupWriter writer)
     {
@@ -112,6 +117,17 @@ public abstract class RequestDisplay extends BaseComponent
             public void render(IMarkupWriter writer, IRequestCycle cycle)
             {
                 renderSystemProperties(writer);
+            }
+        };
+    }
+
+    public IRender getReportStatusRenderer()
+    {
+        return new IRender()
+        {
+            public void render(IMarkupWriter writer, IRequestCycle cycle)
+            {
+                getReportStatusHub().fireReportStatus(writer);
             }
         };
     }

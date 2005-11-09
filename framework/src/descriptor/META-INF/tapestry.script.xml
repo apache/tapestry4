@@ -26,6 +26,7 @@
         <set-service property="expressionEvaluator" service-id="tapestry.ognl.ExpressionEvaluator"/>
         <set-object property="valueConverter" value="infrastructure:valueConverter"/>
         <event-listener service-id="tapestry.ResetEventCoordinator"/>
+        <event-listener service-id="tapestry.describe.ReportStatusHub"/>
       </construct>
     </invoke-factory>
   </service-point>

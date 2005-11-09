@@ -16,7 +16,7 @@ package org.apache.tapestry.describe;
 
 /**
  * Strategy class allowing objects that don't implement
- * {@link org.apache.tapestry.describe.Describable}&nbsp;to be described.
+ * {@link org.apache.tapestry.describe.Describable} to be described.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
