@@ -22,34 +22,18 @@ import org.apache.tapestry.IMarkupWriter;
  */
 public class HTMLDescriberImpl implements HTMLDescriber
 {
-    private DescribableStrategy _strategy;
-
-    private HTMLDescriptionReceiverStyles _styles = new HTMLDescriptionReceiverStyles();
+    private RootDescriptionReceiverFactory _receiverFactory;
 
     public void describeObject(Object object, IMarkupWriter writer)
     {
-        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, _strategy, _styles);
+        RootDescriptionReciever dr = _receiverFactory.newRootDescriptionReceiver(writer);
 
         dr.describe(object);
     }
 
-    public void setStrategy(DescribableStrategy strategy)
+    public void setReceiverFactory(RootDescriptionReceiverFactory receiverFactory)
     {
-        _strategy = strategy;
+        _receiverFactory = receiverFactory;
     }
 
-    public void setTableClass(String tableClass)
-    {
-        _styles.setTableClass(tableClass);
-    }
-
-    public void setHeaderClass(String headerClass)
-    {
-        _styles.setHeaderClass(headerClass);
-    }
-
-    public void setSubheaderClass(String subheaderClass)
-    {
-        _styles.setSubheaderClass(subheaderClass);
-    }
 }

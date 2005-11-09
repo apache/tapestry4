@@ -128,6 +128,7 @@ TABLE.described-object
 {
   border: 1px solid black;
   width: 100%;
+  margin-bottom: 15px;
 }
 
 TABLE.described-object TR.section TH

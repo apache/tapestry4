@@ -20,12 +20,15 @@ import java.io.InputStream;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.util.IOUtils;
+import org.apache.tapestry.event.ReportStatusEvent;
+import org.apache.tapestry.event.ReportStatusListener;
 import org.apache.tapestry.event.ResetEventListener;
 
 /**
@@ -35,8 +38,11 @@ import org.apache.tapestry.event.ResetEventListener;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class ResourceDigestSourceImpl implements ResourceDigestSource, ResetEventListener
+public class ResourceDigestSourceImpl implements ResourceDigestSource, ResetEventListener,
+        ReportStatusListener
 {
+    private String _serviceId;
+
     private ClassResolver _classResolver;
 
     private static final int BUFFER_SIZE = 5000;
@@ -63,6 +69,21 @@ public class ResourceDigestSourceImpl implements ResourceDigestSource, ResetEven
     public synchronized void resetEventDidOccur()
     {
         _cache.clear();
+    }
+
+    public synchronized void reportStatus(ReportStatusEvent event)
+    {
+        event.title(_serviceId);
+        event.property("resource count", _cache.size());
+
+        Iterator i = _cache.entrySet().iterator();
+
+        while (i.hasNext())
+        {
+            Map.Entry entry = (Map.Entry) i.next();
+
+            event.property(entry.getKey().toString(), entry.getValue());
+        }
     }
 
     private String computeMD5(String resourcePath)
@@ -124,5 +145,10 @@ public class ResourceDigestSourceImpl implements ResourceDigestSource, ResetEven
     public void setClassResolver(ClassResolver classResolver)
     {
         _classResolver = classResolver;
+    }
+
+    public void setServiceId(String serviceId)
+    {
+        _serviceId = serviceId;
     }
 }

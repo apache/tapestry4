@@ -20,6 +20,8 @@ import java.util.Map;
 import ognl.Ognl;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.tapestry.event.ReportStatusEvent;
+import org.apache.tapestry.event.ReportStatusListener;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.services.ExpressionCache;
 
@@ -27,14 +29,25 @@ import org.apache.tapestry.services.ExpressionCache;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener
+public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener,
+        ReportStatusListener
 {
+    private String _serviceId;
+
+    private Map _cache = new HashMap();
+
     public synchronized void resetEventDidOccur()
     {
         _cache.clear();
     }
 
-    private Map _cache = new HashMap();
+    public void reportStatus(ReportStatusEvent event)
+    {
+        event.title(_serviceId);
+
+        event.property("cached expression count", _cache.size());
+        event.collection("cached expressions", _cache.keySet());
+    }
 
     public synchronized Object getCompiledExpression(String expression)
     {
@@ -61,6 +74,11 @@ public class ExpressionCacheImpl implements ExpressionCache, ResetEventListener
                     expression,
                     ex), ex);
         }
+    }
+
+    public void setServiceId(String serviceId)
+    {
+        _serviceId = serviceId;
     }
 
 }

@@ -30,5 +30,6 @@
   <inject property="request" object="service:tapestry.globals.WebRequest"/>
   <inject property="context" object="service:tapestry.globals.WebContext"/>
   <inject property="activator" object="service-property:tapestry.globals.ApplicationGlobals:activator"/>  
-
+  <inject property="reportStatusHub" object="service:tapestry.describe.ReportStatusHub"/>
+  
 </component-specification>

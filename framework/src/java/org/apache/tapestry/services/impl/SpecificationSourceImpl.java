@@ -25,6 +25,8 @@ import org.apache.tapestry.INamespace;
 import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.Namespace;
+import org.apache.tapestry.event.ReportStatusEvent;
+import org.apache.tapestry.event.ReportStatusListener;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.parse.ISpecificationParser;
 import org.apache.tapestry.services.NamespaceResources;
@@ -38,12 +40,12 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  * Default implementation of {@link ISpecificationSource} that expects to use the normal class
  * loader to locate component specifications from within the classpath.
  * <p>
- * Caches specifications in memory forever, or until {@link #resetDidOccur()()} is invoked.
+ * Caches specifications in memory forever, or until {@link #resetDidOccur()} is invoked.
  * 
  * @author Howard Lewis Ship
  */
-
-public class SpecificationSourceImpl implements ISpecificationSource, ResetEventListener
+public class SpecificationSourceImpl implements ISpecificationSource, ResetEventListener,
+        ReportStatusListener
 {
     private ClassResolver _classResolver;
 
@@ -58,6 +60,8 @@ public class SpecificationSourceImpl implements ISpecificationSource, ResetEvent
     private INamespace _frameworkNamespace;
 
     private AssetSource _assetSource;
+
+    private String _serviceId;
 
     /**
      * Contains previously parsed component specifications.
@@ -87,6 +91,16 @@ public class SpecificationSourceImpl implements ISpecificationSource, ResetEvent
      */
 
     private Map _namespaceCache = new HashMap();
+
+    public void reportStatus(ReportStatusEvent event)
+    {
+        event.title(_serviceId);
+
+        event.property("page specification count", _pageCache.size());
+        event.collection("page specifications", _pageCache.keySet());
+        event.property("component specification count", _componentCache.size());
+        event.collection("component specifications", _componentCache.keySet());
+    }
 
     public void initializeService()
     {
@@ -236,4 +250,10 @@ public class SpecificationSourceImpl implements ISpecificationSource, ResetEvent
     {
         _assetSource = assetSource;
     }
+
+    public void setServiceId(String serviceId)
+    {
+        _serviceId = serviceId;
+    }
+
 }

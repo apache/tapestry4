@@ -182,6 +182,7 @@
     <invoke-factory>
       <construct class="impl.ObjectPoolImpl">
         <event-listener service-id="ResetEventCoordinator"/>
+        <event-listener service-id="tapestry.describe.ReportStatusHub"/>
       </construct>
     </invoke-factory> 
   </service-point> 

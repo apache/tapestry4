@@ -23,6 +23,8 @@ import org.apache.hivemind.Resource;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.tapestry.event.ReportStatusEvent;
+import org.apache.tapestry.event.ReportStatusListener;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.script.ScriptParser;
 import org.apache.tapestry.services.ExpressionEvaluator;
@@ -36,8 +38,10 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  * @since 1.0.2
  */
 
-public class DefaultScriptSource implements IScriptSource, ResetEventListener
+public class DefaultScriptSource implements IScriptSource, ResetEventListener, ReportStatusListener
 {
+    private String _serviceId;
+
     private ClassResolver _classResolver;
 
     /** @since 4.0 */
@@ -51,6 +55,13 @@ public class DefaultScriptSource implements IScriptSource, ResetEventListener
     public synchronized void resetEventDidOccur()
     {
         _cache.clear();
+    }
+
+    public synchronized void reportStatus(ReportStatusEvent event)
+    {
+        event.title(_serviceId);
+        event.property("parsed script count", _cache.size());
+        event.collection("parsed scripts", _cache.keySet());
     }
 
     public synchronized IScript getScript(Resource resource)
@@ -99,5 +110,10 @@ public class DefaultScriptSource implements IScriptSource, ResetEventListener
     public void setValueConverter(ValueConverter valueConverter)
     {
         _valueConverter = valueConverter;
+    }
+
+    public void setServiceId(String serviceId)
+    {
+        _serviceId = serviceId;
     }
 }

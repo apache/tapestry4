@@ -43,20 +43,46 @@
 		</invoke-factory>
 	</service-point>
 	
+	<service-point id="RootDescriptionReceiverFactory">
+		
+		Creates a RootDescriptionReceiver instances around a markup
+		writer and the DescribableStategy service.
+		
+		<invoke-factory>
+			<construct class="RootDescriptionReceiverFactoryImpl">
+				<set-service property="strategy" service-id="DescribableStrategy"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+	
 	<service-point id="HTMLDescriber">
 		
 		Describes an object in an HTML format.
 		
 		<invoke-factory>
 			<construct class="HTMLDescriberImpl">
-				<set-service property="strategy" service-id="DescribableStrategy"/>
+				<set-object property="receiverFactory" value="infrastructure:rootDescriptionReceiverFactory"/>
 			</construct>
 		</invoke-factory>
 	</service-point>
   
   <contribution configuration-id="tapestry.Infrastructure">
      <property name="HTMLDescriber" object="service:HTMLDescriber"/>
+     <property name="rootDescriptionReceiverFactory" object="service:RootDescriptionReceiverFactory"/>
   </contribution>  
+	
+	
+	<service-point id="ReportStatusHub">
+
+		Event hub used to get different service implementations to produce an HTML-based report
+		of their internal state.
+
+		<invoke-factory>
+			<construct class="ReportStatusHubImpl">
+				<set-object property="receiverFactory" value="infrastructure:rootDescriptionReceiverFactory"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
 	
 	<service-point id="DefaultRenderStrategy" interface="RenderStrategy">
 		

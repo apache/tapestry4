@@ -36,8 +36,7 @@ import org.apache.tapestry.util.MultiKey;
  * the pool using {@link #releasePage(IPage)}.
  * <p>
  * TBD: Pooled pages stay forever. Need a strategy for cleaning up the pool, tracking which pages
- * have been in the pool the longest, etc. A mechanism for reporting pool statistics would be
- * useful.
+ * have been in the pool the longest, etc. 
  * 
  * @author Howard Lewis Ship
  */

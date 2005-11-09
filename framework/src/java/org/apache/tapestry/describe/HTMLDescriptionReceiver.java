@@ -21,22 +21,22 @@ import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IMarkupWriter;
 
 /**
- * Implementation of {@link org.apache.tapestry.describe.DescriptionReceiver}that produces HTML
+ * Implementation of {@link org.apache.tapestry.describe.DescriptionReceiver} that produces HTML
  * output using a {@link org.apache.tapestry.IMarkupWriter}.
  * <p>
- * TODO: Make {@link #describeAlternate(Object)}&nbsp;exclusive with the other methods
- * {@link #title(String)},{@link #property(String, Object)}, etc.
+ * TODO: Make {@link #describeAlternate(Object)} exclusive with the other methods
+ * {@link #title(String)}, {@link #property(String, Object)}, etc.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class HTMLDescriptionReceiver implements DescriptionReceiver
+public class HTMLDescriptionReceiver implements RootDescriptionReciever
 {
     // Emitted for null values.
 
     static final String NULL_VALUE = "<NULL>";
 
-    private IMarkupWriter _writer;
+    private final IMarkupWriter _writer;
 
     private boolean _emitDefault = true;
 
@@ -67,6 +67,11 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
         _styles = styles;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.tapestry.describe.RootDescriptionReciever#describe(java.lang.Object)
+     */
     public void describe(Object object)
     {
         if (object == null)
@@ -85,6 +90,21 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
         _strategy.describeObject(alternate, this);
     }
 
+    public void finishUp()
+    {
+        // When false, a <table> was started, which must be closed.
+
+        if (!_emitDefault)
+            _writer.end("table");
+
+        _writer.println();
+
+        _emitDefault = true;
+        _title = null;
+        _section = null;
+        _even = true;
+    }
+
     void finishUp(Object object)
     {
         if (_emitDefault)
@@ -93,12 +113,8 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
 
             _writer.print(value);
         }
-        // Not emit default .. means a property was emitted, so a table was started and must be
-        // finished.
-        else
-            _writer.end("table");
 
-        _writer.println();
+        finishUp();
     }
 
     public void title(String title)

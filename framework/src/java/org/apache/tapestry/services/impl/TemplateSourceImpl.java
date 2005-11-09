@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
@@ -33,12 +34,16 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ITemplateSourceDelegate;
+import org.apache.tapestry.event.ReportStatusEvent;
+import org.apache.tapestry.event.ReportStatusListener;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.parse.ComponentTemplate;
 import org.apache.tapestry.parse.ITemplateParser;
 import org.apache.tapestry.parse.ITemplateParserDelegate;
 import org.apache.tapestry.parse.TemplateParseException;
 import org.apache.tapestry.parse.TemplateToken;
+import org.apache.tapestry.parse.TextToken;
+import org.apache.tapestry.parse.TokenType;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.services.TemplateSource;
@@ -52,8 +57,10 @@ import org.apache.tapestry.util.MultiKey;
  * @author Howard Lewis Ship
  */
 
-public class TemplateSourceImpl implements TemplateSource, ResetEventListener
+public class TemplateSourceImpl implements TemplateSource, ResetEventListener, ReportStatusListener
 {
+    private String _serviceId;
+
     private Log _log;
 
     // The name of the component/application/etc property that will be used to
@@ -100,6 +107,59 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
     {
         _cache.clear();
         _templates.clear();
+    }
+
+    public void reportStatus(ReportStatusEvent event)
+    {
+        event.title(_serviceId);
+
+        int templateCount = 0;
+        int tokenCount = 0;
+        int characterCount = 0;
+
+        Iterator i = _templates.values().iterator();
+
+        while (i.hasNext())
+        {
+            ComponentTemplate template = (ComponentTemplate) i.next();
+
+            templateCount++;
+
+            int count = template.getTokenCount();
+
+            tokenCount += count;
+
+            for (int j = 0; j < count; j++)
+            {
+                TemplateToken token = template.getToken(j);
+
+                if (token.getType() == TokenType.TEXT)
+                {
+                    TextToken tt = (TextToken) token;
+
+                    characterCount += tt.getLength();
+                }
+            }
+        }
+
+        event.property("parsed templates", templateCount);
+        event.property("total template tokens", tokenCount);
+        event.property("total template characters", characterCount);
+
+        event.section("Parsed template token counts");
+
+        i = _templates.entrySet().iterator();
+
+        while (i.hasNext())
+        {
+            Map.Entry entry = (Map.Entry) i.next();
+
+            String key = entry.getKey().toString();
+
+            ComponentTemplate template = (ComponentTemplate) entry.getValue();
+
+            event.property(key, template.getTokenCount());
+        }
     }
 
     /**
@@ -497,5 +557,11 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
     public void setComponentPropertySource(ComponentPropertySource componentPropertySource)
     {
         _componentPropertySource = componentPropertySource;
+    }
+
+    /** @since 4.0 */
+    public void setServiceId(String serviceId)
+    {
+        _serviceId = serviceId;
     }
 }
