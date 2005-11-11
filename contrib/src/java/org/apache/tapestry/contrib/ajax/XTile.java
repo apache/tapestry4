@@ -62,8 +62,8 @@ public abstract class XTile extends BaseComponent implements IXTile
         parameters.put(ServiceConstants.PAGE, getPage().getPageName());
         parameters.put(ServiceConstants.COMPONENT, getIdPath());
 		
-		ILink link = getLinkFactory().constructLink(getPage().getRequestCycle(), 
-				false, parameters, false);
+		ILink link = getLinkFactory().constructLink(false, 
+				parameters, false);
 
 		ret.put("url", link.getURL());
 		

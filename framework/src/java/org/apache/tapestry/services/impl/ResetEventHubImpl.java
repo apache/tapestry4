@@ -18,16 +18,16 @@ import java.util.Iterator;
 
 import org.apache.hivemind.util.EventListenerList;
 import org.apache.tapestry.event.ResetEventListener;
-import org.apache.tapestry.services.ResetEventCoordinator;
+import org.apache.tapestry.services.ResetEventHub;
 
 /**
- * Implementation of the <code>tapestry.ResetEventCoordinator</code>
+ * Implementation of the <code>tapestry.ResetEventHub</code>
  * service.
  *
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class ResetEventCoordinatorImpl implements ResetEventCoordinator
+public class ResetEventHubImpl implements ResetEventHub
 {
     private EventListenerList _listeners = new EventListenerList();
 

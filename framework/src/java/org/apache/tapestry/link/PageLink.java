@@ -41,7 +41,7 @@ public abstract class PageLink extends AbstractLinkComponent
         else
             parameter = namespace.constructQualifiedName(targetPage);
 
-        return getPageService().getLink(cycle, false, parameter);
+        return getPageService().getLink(false, parameter);
     }
 
     public abstract String getTargetPage();

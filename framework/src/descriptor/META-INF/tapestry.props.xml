@@ -96,7 +96,7 @@
       <construct class="org.apache.tapestry.services.impl.ComponentPropertySourceImpl">
         <set-service property="chainBuilder" service-id="hivemind.lib.ChainBuilder"/>
         <set-service property="globalProperties" service-id="GlobalPropertySource"/>
-        <event-listener service-id="tapestry.ResetEventCoordinator"/>
+        <event-listener service-id="tapestry.ResetEventHub"/>
       </construct>
       
     </invoke-factory>

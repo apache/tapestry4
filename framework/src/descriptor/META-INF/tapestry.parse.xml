@@ -52,7 +52,7 @@
         <set-service property="parser" service-id="SpecificationParser"/>
         <set-object property="specification" value="infrastructure:applicationSpecification"/>
         <set-object property="assetSource" value="service:tapestry.asset.AssetSource"/>
-        <event-listener service-id="tapestry.ResetEventCoordinator"/>
+        <event-listener service-id="tapestry.ResetEventHub"/>
         <event-listener service-id="tapestry.describe.ReportStatusHub"/>
       </construct>
     </invoke-factory>
@@ -84,7 +84,7 @@
         <set-object property="contextRoot" value="infrastructure:contextRoot"/>
         <set-service property="componentSpecificationResolver" service-id="tapestry.page.ComponentSpecificationResolver"/>
         <set-object property="componentPropertySource"  value="infrastructure:componentPropertySource"/>
-        <event-listener service-id="tapestry.ResetEventCoordinator"/>
+        <event-listener service-id="tapestry.ResetEventHub"/>
         <event-listener service-id="tapestry.describe.ReportStatusHub"/>
       </construct>
     </invoke-factory>

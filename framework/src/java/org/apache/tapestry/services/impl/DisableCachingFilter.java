@@ -18,7 +18,7 @@ import java.io.IOException;
 
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.HiveMind;
-import org.apache.tapestry.services.ResetEventCoordinator;
+import org.apache.tapestry.services.ResetEventHub;
 import org.apache.tapestry.services.WebRequestServicer;
 import org.apache.tapestry.services.WebRequestServicerFilter;
 import org.apache.tapestry.web.WebRequest;
@@ -26,7 +26,7 @@ import org.apache.tapestry.web.WebResponse;
 
 /**
  * Filter whose job is to invoke
- * {@link org.apache.tapestry.services.ResetEventCoordinator#fireResetEvent()}after the request has
+ * {@link org.apache.tapestry.services.ResetEventHub#fireResetEvent()}after the request has
  * been processed. This filter is only contributed into the
  * tapestry.request.WebRequestServicerPipeline configuration if the
  * org.apache.tapestry.disable-caching system property is true.
@@ -38,7 +38,7 @@ public class DisableCachingFilter implements WebRequestServicerFilter
 {
     private ErrorLog _errorLog;
 
-    private ResetEventCoordinator _resetEventCoordinator;
+    private ResetEventHub _resetEventHub;
 
     public void service(WebRequest request, WebResponse response, WebRequestServicer servicer)
             throws IOException
@@ -58,7 +58,7 @@ public class DisableCachingFilter implements WebRequestServicerFilter
     {
         try
         {
-            _resetEventCoordinator.fireResetEvent();
+            _resetEventHub.fireResetEvent();
         }
         catch (Exception ex)
         {
@@ -66,9 +66,9 @@ public class DisableCachingFilter implements WebRequestServicerFilter
         }
     }
 
-    public void setResetEventCoordinator(ResetEventCoordinator resetEventCoordinator)
+    public void setResetEventHub(ResetEventHub resetEventCoordinator)
     {
-        _resetEventCoordinator = resetEventCoordinator;
+        _resetEventHub = resetEventCoordinator;
     }
 
     public void setErrorLog(ErrorLog errorLog)

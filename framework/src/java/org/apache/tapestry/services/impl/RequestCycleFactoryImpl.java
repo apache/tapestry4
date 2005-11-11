@@ -34,6 +34,7 @@ import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.RequestCycleFactory;
+import org.apache.tapestry.services.RequestGlobals;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.QueryParameterMap;
 import org.apache.tapestry.web.WebRequest;
@@ -61,13 +62,12 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
     private RequestCycleEnvironment _environment;
 
-    private HttpServletRequest _servletRequest;
-
-    private HttpServletResponse _servletResponse;
+    private RequestGlobals _requestGlobals;
 
     public void initializeService()
     {
-        RequestContext context = new RequestContext(_servletRequest, _servletResponse);
+        RequestContext context = new RequestContext(_requestGlobals.getRequest(), _requestGlobals
+                .getResponse());
 
         _environment = new RequestCycleEnvironment(_errorHandler, _infrastructure, context,
                 _strategySource, _absoluteURLBuilder);
@@ -85,7 +85,12 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
         String serviceName = findService(parameters);
 
-        return new RequestCycle(engine, parameters, serviceName, monitor, _environment);
+        IRequestCycle cycle = new RequestCycle(engine, parameters, serviceName, monitor,
+                _environment);
+
+        _requestGlobals.store(cycle);
+
+        return cycle;
     }
 
     private String findService(QueryParameterMap parameters)
@@ -165,13 +170,8 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
         _absoluteURLBuilder = absoluteURLBuilder;
     }
 
-    public void setServletRequest(HttpServletRequest servletRequest)
+    public void setRequestGlobals(RequestGlobals requestGlobals)
     {
-        _servletRequest = servletRequest;
-    }
-
-    public void setServletResponse(HttpServletResponse servletResponse)
-    {
-        _servletResponse = servletResponse;
+        _requestGlobals = requestGlobals;
     }
 }

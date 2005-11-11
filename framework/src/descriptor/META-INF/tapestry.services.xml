@@ -109,6 +109,7 @@
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
         <set-object property="request" value="infrastructure:request"/>
         <set-object property="linkFactory" value="infrastructure:linkFactory"/>
+        <set-object property="requestCycle" value="infrastructure:requestCycle"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -119,6 +120,7 @@
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
         <set-object property="request" value="infrastructure:request"/>
         <set-object property="linkFactory" value="infrastructure:linkFactory"/>        
+        <set-object property="requestCycle" value="infrastructure:requestCycle"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -136,9 +138,10 @@
     <invoke-factory>
       <construct class="ResetService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
-        <set-service property="resetEventCoordinator" service-id="tapestry.ResetEventCoordinator"/>
+        <set-service property="resetEventHub" service-id="tapestry.ResetEventHub"/>
         <set property="enabled" value="${org.apache.tapestry.enable-reset-service}"/>
         <set-object property="linkFactory" value="infrastructure:linkFactory"/>
+        <set-object property="requestCycle" value="infrastructure:requestCycle"/>
       </construct>
     </invoke-factory>
   </service-point>

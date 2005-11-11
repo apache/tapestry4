@@ -57,7 +57,7 @@ public class XTileService implements IEngineService
 		return SERVICE_NAME;
 	}
 	
-	public ILink getLink(IRequestCycle cycle, boolean post, Object parameter) {
+	public ILink getLink(boolean post, Object parameter) {
 		throw new UnsupportedOperationException();
 	}
 	

@@ -131,7 +131,7 @@
   
   <contribution configuration-id="Infrastructure">
     <property name="componentMessagesSource" object="service:ComponentMessagesSource"/>
-    <property name="resetEventCoordinator" object="service:ResetEventCoordinator"/>
+    <property name="resetEventHub" object="service:ResetEventHub"/>
     <property name="objectPool" object="service:GlobalObjectPool"/>
     <property name="classFinder" object="service:ClassFinder"/>
    </contribution>
@@ -164,12 +164,12 @@
   </service-point>
   
   
-  <service-point id="ResetEventCoordinator">
+  <service-point id="ResetEventHub">
     
     Coordinator for services that have cached information that should be cleared out (this happens
     constantly in development, much more rarely in production).
     
-    <create-instance class="impl.ResetEventCoordinatorImpl"/>
+    <create-instance class="impl.ResetEventHubImpl"/>
   </service-point>
   
   <service-point id="GlobalObjectPool" interface="ObjectPool">
@@ -181,7 +181,7 @@
      
     <invoke-factory>
       <construct class="impl.ObjectPoolImpl">
-        <event-listener service-id="ResetEventCoordinator"/>
+        <event-listener service-id="ResetEventHub"/>
         <event-listener service-id="tapestry.describe.ReportStatusHub"/>
       </construct>
     </invoke-factory> 
@@ -194,7 +194,7 @@
     
     <invoke-factory>
       <construct class="impl.ComponentMessagesSourceImpl">
-        <event-listener service-id="ResetEventCoordinator"/>
+        <event-listener service-id="ResetEventHub"/>
         <set-object property="componentPropertySource" value="infrastructure:componentPropertySource"/>
       </construct>
     </invoke-factory>

@@ -66,7 +66,7 @@
   <service-point id="PagePool" interface="org.apache.tapestry.services.ObjectPool">
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.ObjectPoolImpl">
-        <event-listener service-id="tapestry.ResetEventCoordinator"/>
+        <event-listener service-id="tapestry.ResetEventHub"/>
         <event-listener service-id="tapestry.describe.ReportStatusHub"/>        
       </construct>
     </invoke-factory>

@@ -23,7 +23,7 @@ import org.apache.tapestry.event.ResetEventListener;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public interface ResetEventCoordinator
+public interface ResetEventHub
 {
     public void addResetEventListener(ResetEventListener l);
 

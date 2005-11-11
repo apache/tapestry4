@@ -41,9 +41,7 @@ public class TestPageService extends ServiceTestCase
         MockControl lfc = newControl(LinkFactory.class);
         LinkFactory lf = (LinkFactory) lfc.getMock();
 
-        IRequestCycle cycle = newCycle();
-
-        lf.constructLink(cycle, false, parameters, true);
+        lf.constructLink(false, parameters, true);
         lfc.setReturnValue(link);
 
         replayControls();
@@ -51,7 +49,7 @@ public class TestPageService extends ServiceTestCase
         PageService ps = new PageService();
         ps.setLinkFactory(lf);
 
-        assertSame(link, ps.getLink(cycle, false, "TargetPage"));
+        assertSame(link, ps.getLink(false, "TargetPage"));
 
         verifyControls();
     }

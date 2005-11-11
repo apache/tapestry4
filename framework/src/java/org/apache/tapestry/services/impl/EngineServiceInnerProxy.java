@@ -64,9 +64,9 @@ public class EngineServiceInnerProxy implements IEngineService
         return service;
     }
 
-    public synchronized ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
+    public synchronized ILink getLink(boolean post, Object parameter)
     {
-        return resolve().getLink(cycle, false, parameter);
+        return resolve().getLink(false, parameter);
     }
 
     public synchronized void service(IRequestCycle cycle) throws IOException

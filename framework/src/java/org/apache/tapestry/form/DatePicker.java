@@ -174,7 +174,7 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
         IAsset icon = getIcon();
 
         writer.beginEmpty("img");
-        writer.attribute("src", icon.buildURL(cycle));
+        writer.attribute("src", icon.buildURL());
         writer.attribute("border", 0);
 
         if (!disabled)

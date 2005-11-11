@@ -169,7 +169,7 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
             IAsset asset = _assetFactory.createAsset(scriptLocation, null);
 
-            String url = asset.buildURL(cycle);
+            String url = asset.buildURL();
 
             // Note: important to use begin(), not beginEmpty(), because browser don't
             // interpret <script .../> properly.

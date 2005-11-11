@@ -21,8 +21,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ClasspathResource;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
@@ -53,6 +52,8 @@ public class PrivateAsset extends AbstractAsset
     {
         super(resourceLocation, location);
 
+        Defense.notNull(assetService, "assetService");
+
         _assetService = assetService;
     }
 
@@ -62,23 +63,16 @@ public class PrivateAsset extends AbstractAsset
      * visible to the web server.
      */
 
-    public String buildURL(IRequestCycle cycle)
+    public String buildURL()
     {
         String path = getResourceLocation().getPath();
 
-        // ClasspathAssetFactory will provide the asset service as a constructor
-        // parameter, but there are a few odd uses of PrivateAsset where this
-        // is not handy.
-
-        if (_assetService == null)
-            _assetService = cycle.getEngine().getService(Tapestry.ASSET_SERVICE);
-
-        ILink link = _assetService.getLink(cycle, false, path);
+        ILink link = _assetService.getLink(false, path);
 
         return link.getURL();
     }
 
-    public InputStream getResourceAsStream(IRequestCycle cycle)
+    public InputStream getResourceAsStream()
     {
         Resource location = getResourceLocation();
 

@@ -107,7 +107,6 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
         MockControl requestc = newControl(WebRequest.class);
         WebRequest request = (WebRequest) requestc.getMock();
 
-        IRequestCycle cycle = (IRequestCycle) newMock(IRequestCycle.class);
         ServiceEncoding encoding = (ServiceEncoding) newMock(ServiceEncoding.class);
 
         request.getParameterNames();
@@ -128,7 +127,7 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
 
         strategy.initializeService();
 
-        strategy.addParametersForPersistentProperties(encoding, cycle, false);
+        strategy.addParametersForPersistentProperties(encoding, false);
 
         verifyControls();
     }
@@ -180,14 +179,17 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
 
         replayControls();
 
+        PageClientPropertyPersistenceScope scope = new PageClientPropertyPersistenceScope();
+        scope.setRequestCycle(cycle);
+
         ClientPropertyPersistenceStrategy strategy = new ClientPropertyPersistenceStrategy();
         strategy.setRequest(request);
-        strategy.setScope(new PageClientPropertyPersistenceScope());
+        strategy.setScope(scope);
         strategy.setEncoder(newEncoder());
 
         strategy.initializeService();
 
-        strategy.addParametersForPersistentProperties(encoding, cycle, false);
+        strategy.addParametersForPersistentProperties(encoding, false);
 
         verifyControls();
 

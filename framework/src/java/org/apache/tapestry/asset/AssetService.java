@@ -140,7 +140,7 @@ public class AssetService implements IEngineService
      * with a leading slash).
      */
 
-    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
+    public ILink getLink(boolean post, Object parameter)
     {
         Defense.isAssignable(parameter, String.class, "parameter");
 
@@ -156,7 +156,7 @@ public class AssetService implements IEngineService
 
         // Service is stateless, which is the exception to the rule.
 
-        return _linkFactory.constructLink(cycle, post, parameters, false);
+        return _linkFactory.constructLink(post, parameters, false);
     }
 
     public String getName()

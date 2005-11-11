@@ -37,7 +37,6 @@ public class TestEngineServiceOuterProxy extends HiveMindTestCase
 
     public void testGetLink()
     {
-        IRequestCycle cycle = newCycle();
         ILink link = (ILink) newMock(ILink.class);
 
         MockControl control = newControl(IEngineService.class);
@@ -45,7 +44,7 @@ public class TestEngineServiceOuterProxy extends HiveMindTestCase
 
         Object parameter = new Object();
 
-        delegate.getLink(cycle, false, parameter);
+        delegate.getLink(false, parameter);
         control.setReturnValue(link);
 
         replayControls();
@@ -53,7 +52,7 @@ public class TestEngineServiceOuterProxy extends HiveMindTestCase
         EngineServiceOuterProxy proxy = new EngineServiceOuterProxy("xxx");
         proxy.installDelegate(delegate);
 
-        assertSame(link, proxy.getLink(cycle, false, parameter));
+        assertSame(link, proxy.getLink(false, parameter));
 
         verifyControls();
     }

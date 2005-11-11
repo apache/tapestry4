@@ -47,14 +47,14 @@ public class ChartAsset extends AbstractAsset
         _chartProvider = chartProvider;
     }
 
-    public String buildURL(IRequestCycle cycle)
+    public String buildURL()
     {
-        ILink l = _chartService.getLink(cycle, false, _chartProvider);
+        ILink l = _chartService.getLink(false, _chartProvider);
 
         return l.getURL();
     }
 
-    public InputStream getResourceAsStream(IRequestCycle cycle)
+    public InputStream getResourceAsStream()
     {
         return null;
     }

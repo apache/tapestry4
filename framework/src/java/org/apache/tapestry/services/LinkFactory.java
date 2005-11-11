@@ -32,8 +32,6 @@ public interface LinkFactory
     /**
      * Constructs an {@link org.apache.tapestry.engine.ILink}.
      * 
-     * @param cycle
-     *            the current request cycle
      * @param post
      *            if true, then the link will be used for a post (not a get, i.e., for a HTML form);
      *            this may affect what information is encoded into the link
@@ -47,7 +45,7 @@ public interface LinkFactory
      *            If false, the session encoding should not occur. The latter case is useful for
      *            services that will absolutely not need any access to user-specific state.
      */
-    public ILink constructLink(IRequestCycle cycle, boolean post, Map parameters, boolean stateful);
+    public ILink constructLink(boolean post, Map parameters, boolean stateful);
 
     /**
      * A secondary function of the service is to convert encoded (aka "squeezed") listener

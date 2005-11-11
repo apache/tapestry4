@@ -22,7 +22,6 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -53,7 +52,7 @@ public class ContextAsset extends AbstractAsset implements IAsset
      * things are configured properly).
      */
 
-    public String buildURL(IRequestCycle cycle)
+    public String buildURL()
     {
         if (_resolvedURL == null)
             _resolvedURL = _contextPath + getResourceLocation().getPath();
@@ -61,7 +60,7 @@ public class ContextAsset extends AbstractAsset implements IAsset
         return _resolvedURL;
     }
 
-    public InputStream getResourceAsStream(IRequestCycle cycle)
+    public InputStream getResourceAsStream()
     {
         try
         {

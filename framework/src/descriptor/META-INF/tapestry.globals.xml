@@ -32,6 +32,15 @@
     <create-instance class="impl.RequestGlobalsImpl" model="threaded"/>
   </service-point>
   
+  <service-point id="IRequestCycle" interface="org.apache.tapestry.IRequestCycle">
+   
+    The request cycle for the current request.
+    
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+      <construct service-id="RequestGlobals" property="requestCycle"/>
+    </invoke-factory>   
+  </service-point>
+  
   <service-point id="HttpServletRequest" interface="javax.servlet.http.HttpServletRequest">
     
     Exposes the current thread's HttpServletRequest as a service. The request is actually
@@ -119,6 +128,7 @@
     <property name="request" object="service:WebRequest"/>
     <property name="response" object="service:WebResponse"/>    
     <property name="applicationId" object="service-property:ApplicationGlobals:activatorName"/>
-    <property name="context" object="service:WebContext"/>    
+    <property name="context" object="service:WebContext"/>
+    <property name="requestCycle" object="service:IRequestCycle"/>
   </contribution> 
 </module>

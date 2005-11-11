@@ -36,20 +36,26 @@ public class PortletLinkFactoryImpl extends LinkFactoryImpl
 {
     private RenderResponse _renderResponse;
 
+    private IRequestCycle _requestCycle;
+
     public void setRenderResponse(RenderResponse renderResponse)
     {
         _renderResponse = renderResponse;
     }
 
-    public ILink constructLink(IRequestCycle cycle, boolean post, Map parameters, boolean stateful)
+    public ILink constructLink(boolean post, Map parameters, boolean stateful)
     {
-        Defense.notNull(cycle, "cycle");
         Defense.notNull(parameters, "parameters");
 
         squeezeServiceParameters(parameters);
 
         PortletURL url = _renderResponse.createActionURL();
 
-        return new PortletLink(cycle, url, new QueryParameterMap(parameters), stateful);
+        return new PortletLink(_requestCycle, url, new QueryParameterMap(parameters), stateful);
+    }
+
+    public void setRequestCycle(IRequestCycle requestCycle)
+    {
+        _requestCycle = requestCycle;
     }
 }
