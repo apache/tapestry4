@@ -24,8 +24,8 @@
 input symbols:
 
 uniqueId - uniqueId used to build names
-focusImageURL - URL for focus (mouse over)
-blurImageURL - URL for blur image (mouse out)
+mouseOverImageURL - URL for focus (mouse over)
+mouseOutImageURL - URL for blur image (mouse out)
 
 output symbols:
 
@@ -35,35 +35,33 @@ onMouseOutName - name of mouse out function
 
 -->
 
-<input-symbol key="imageName" class="java.lang.String" required="yes"/>
-<input-symbol key="focusImageURL" class="java.lang.String" required="yes"/>
-<input-symbol key="blurImageURL" class="java.lang.String" required="yes"/>
+<input-symbol key="imageId" class="java.lang.String" required="yes"/>
+<input-symbol key="mouseOverImageURL" class="java.lang.String" required="yes"/>
+<input-symbol key="mouseOutImageURL" class="java.lang.String" required="yes"/>
 
 
 <let key="onMouseOverName">
-	focus_${imageName}
+  mouseOver_${imageId}
 </let>
 <let key="onMouseOutName">
-	blur_${imageName}
+  mouseOut_${imageId}
 </let>
 
 <let key="attribute">
-	document.${imageName}.src
+  document.getElementById('${imageId}').src
 </let>
 
 <body>
-
 function ${onMouseOverName}()
 {
   if (document.images)
-    ${attribute} = ${focusImageURL};
+    ${attribute} = ${mouseOverImageURL};
 }
 
 function ${onMouseOutName}()
 {
   if (document.images)
-    ${attribute} = ${blurImageURL};
+    ${attribute} = ${mouseOutImageURL};
 }
-
 </body>
 </script>

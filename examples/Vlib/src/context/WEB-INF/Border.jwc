@@ -27,7 +27,7 @@
   
   <component id="searchRollover" type="Rollover">
     <binding name="image" value="searchImage"/>
-    <binding name="focus" value="searchRolloverImage"/>	
+    <binding name="mouseOver" value="searchRolloverImage"/>	
   </component>
        
   <component id="myLibrary" type="DirectLink">
@@ -37,7 +37,7 @@
   
   <component id="myLibraryRollover" type="Rollover">
     <binding name="image" value="myLibraryImage"/>
-    <binding name="focus" value="myLibraryRolloverImage"/>
+    <binding name="mouseOver" value="myLibraryRolloverImage"/>
   </component>
   
   <component id="borrowedBooks" type="DirectLink">
@@ -47,7 +47,7 @@
   
   <component id="borrowedBooksRollover" type="Rollover">
     <binding name="image" value="borrowedBooksImage"/>
-    <binding name="focus" value="borrowedBooksRolloverImage"/>	
+    <binding name="mouseOver" value="borrowedBooksRolloverImage"/>	
   </component>
   
   <component id="newBook" type="PageLink">
@@ -56,7 +56,7 @@
   
   <component id="newBookRollover" type="Rollover">
     <binding name="image" value="newBookImage"/>
-    <binding name="focus" value="newBookRolloverImage"/>
+    <binding name="mouseOver" value="newBookRolloverImage"/>
   </component>
   
   <component id="editProfile" type="DirectLink">
@@ -66,7 +66,7 @@
   
   <component id="editProfileRollover" type="Rollover">
     <binding name="image" value="editProfileImage"/>
-    <binding name="focus" value="editProfileRolloverImage"/>	
+    <binding name="mouseOver" value="editProfileRolloverImage"/>	
   </component>
   
   <component id="giveAway" type="PageLink">
@@ -75,7 +75,7 @@
    
   <component id="giveAwayRollover" type="Rollover">
     <binding name="image" value="giveAwayImage"/>
-    <binding name="focus" value="giveAwayRolloverImage"/>	
+    <binding name="mouseOver" value="giveAwayRolloverImage"/>	
   </component>  
    
   <component id="editUsers" type="PageLink">
@@ -84,7 +84,7 @@
   
   <component id="editUsersRollover" type="Rollover">
     <binding name="image" value="editUsersImage"/>
-    <binding name="focus" value="editUsersRolloverImage"/>
+    <binding name="mouseOver" value="editUsersRolloverImage"/>
   </component>
   
   <component id="editPublishers" type="PageLink">
@@ -93,7 +93,7 @@
   
   <component id="editPublishersRollover" type="Rollover">
     <binding name="image" value="editPublishersImage"/>
-    <binding name="focus" value="editPublishersRolloverImage"/>	
+    <binding name="mouseOver" value="editPublishersRolloverImage"/>	
   </component>
   
   <component id="transferBooks" type="PageLink">
@@ -102,7 +102,7 @@
   
   <component id="transferBooksRollover" type="Rollover">
     <binding name="image" value="transferBooksImage"/>
-    <binding name="focus" value="transferBooksRolloverImage"/>
+    <binding name="mouseOver" value="transferBooksRolloverImage"/>
   </component>
    
   <component id="logout" type="DirectLink">
@@ -115,7 +115,7 @@
   	   
   <component id="logoutRollover" type="Rollover">
     <binding name="image" value="asset:logout"/>
-    <binding name="focus" value="asset:logout_h"/>	
+    <binding name="mouseOver" value="asset:logout_h"/>	
   </component>
   
   <component id="login" type="DirectLink">
@@ -125,7 +125,7 @@
   
   <component id="loginRollover" type="Rollover">
     <binding name="image" value="loginImage"/>
-    <binding name="focus" value="loginRolloverImage"/>	
+    <binding name="mouseOver" value="loginRolloverImage"/>	
   </component>
    
   <component id="first" type="DirectLink">
@@ -136,7 +136,7 @@
   
   <component id="firstRollover" type="Rollover">
     <binding name="image" value="asset:first"/>
-    <binding name="focus" value="asset:first_h"/>
+    <binding name="mouseOver" value="asset:first_h"/>
     <binding name="disabled" value="asset:first_d"/>	
   </component>
   
@@ -150,7 +150,7 @@
   
   <component id="previousRollover" type="Rollover">
     <binding name="image" value="asset:previous"/>
-    <binding name="focus" value="asset:previous_h"/>
+    <binding name="mouseOver" value="asset:previous_h"/>
     <binding name="disabled" value="asset:previous_d"/>
   </component>
   
@@ -164,7 +164,7 @@
   
   <component id="nextRollover" type="Rollover">
     <binding name="image" value="asset:next"/>
-    <binding name="focus" value="asset:next_h"/>
+    <binding name="mouseOver" value="asset:next_h"/>
     <binding name="disabled" value="asset:next_d"/>	
   </component>
   
@@ -176,7 +176,7 @@
   
   <component id="lastRollover" type="Rollover">
     <binding name="image" value="asset:last"/>
-    <binding name="focus" value="asset:last_h"/>
+    <binding name="mouseOver" value="asset:last_h"/>
     <binding name="disabled" value="asset:last_d"/>	
   </component>
    

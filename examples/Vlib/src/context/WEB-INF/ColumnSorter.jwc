@@ -25,7 +25,7 @@
   <component id="iconLink" copy-of="link"/>
   <component id="rollover" type="Rollover">
     <binding name="image"> descending ? assets.down : assets.up </binding>
-    <binding name="focus"> descending ? assets.down_h : assets.up_h </binding>
+    <binding name="mouseOver"> descending ? assets.down_h : assets.up_h </binding>
   </component>
   <asset name="up" path="images/sort-up.png"/>
   <asset name="up_h" path="images/sort-up_h.png"/>

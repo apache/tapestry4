@@ -45,7 +45,7 @@ public abstract class Rollover extends AbstractComponent
      * exist or the binding's value is null.
      */
 
-    protected String getAssetURL(IAsset asset, IRequestCycle cycle)
+    protected String getAssetURL(IAsset asset)
     {
         if (asset == null)
             return null;
@@ -62,10 +62,10 @@ public abstract class Rollover extends AbstractComponent
             return;
 
         String imageURL = null;
-        String focusURL = null;
-        String blurURL = null;
+        String mouseOverURL = null;
+        String mouseOutURL = null;
         boolean dynamic = false;
-        String imageName = null;
+        String imageId = null;
 
         PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
 
@@ -80,18 +80,18 @@ public abstract class Rollover extends AbstractComponent
 
         if (linkDisabled)
         {
-            imageURL = getAssetURL(getDisabled(), cycle);
+            imageURL = getAssetURL(getDisabled());
 
             if (imageURL == null)
-                imageURL = getAssetURL(getImage(), cycle);
+                imageURL = getAssetURL(getImage());
         }
         else
         {
-            imageURL = getAssetURL(getImage(), cycle);
-            focusURL = getAssetURL(getFocus(), cycle);
-            blurURL = getAssetURL(getBlur(), cycle);
+            imageURL = getAssetURL(getImage());
+            mouseOverURL = getAssetURL(getMouseOver());
+            mouseOutURL = getAssetURL(getMouseOut());
 
-            dynamic = (focusURL != null) || (blurURL != null);
+            dynamic = (mouseOverURL != null) || (mouseOutURL != null);
         }
 
         if (imageURL == null)
@@ -103,15 +103,15 @@ public abstract class Rollover extends AbstractComponent
 
         if (dynamic)
         {
-            if (focusURL == null)
-                focusURL = imageURL;
+            if (mouseOverURL == null)
+                mouseOverURL = imageURL;
 
-            if (blurURL == null)
-                blurURL = imageURL;
+            if (mouseOutURL == null)
+                mouseOutURL = imageURL;
 
-            imageName = writeScript(cycle, pageRenderSupport, serviceLink, focusURL, blurURL);
+            imageId = writeScript(cycle, pageRenderSupport, serviceLink, mouseOverURL, mouseOutURL);
 
-            writer.attribute("name", imageName);
+            writer.attribute("id", imageId);
         }
 
         renderInformalParameters(writer, cycle);
@@ -125,17 +125,19 @@ public abstract class Rollover extends AbstractComponent
     public abstract IScript getScript();
 
     private String writeScript(IRequestCycle cycle, PageRenderSupport pageRenderSupport,
-            ILinkComponent link, String focusURL, String blurURL)
+            ILinkComponent link, String mouseOverImageURL, String mouseOutImageURL)
     {
-        String imageName = pageRenderSupport.getUniqueString(getId());
-        String focusImageURL = pageRenderSupport.getPreloadedImageReference(focusURL);
-        String blurImageURL = pageRenderSupport.getPreloadedImageReference(blurURL);
+        String imageId = pageRenderSupport.getUniqueString(getId());
+        String preloadedMouseOverImageURL = pageRenderSupport
+                .getPreloadedImageReference(mouseOverImageURL);
+        String preloadedMouseOutImageURL = pageRenderSupport
+                .getPreloadedImageReference(mouseOutImageURL);
 
         Map symbols = new HashMap();
 
-        symbols.put("imageName", imageName);
-        symbols.put("focusImageURL", focusImageURL);
-        symbols.put("blurImageURL", blurImageURL);
+        symbols.put("imageId", imageId);
+        symbols.put("mouseOverImageURL", preloadedMouseOverImageURL);
+        symbols.put("mouseOutImageURL", preloadedMouseOutImageURL);
 
         getScript().execute(cycle, pageRenderSupport, symbols);
 
@@ -147,14 +149,14 @@ public abstract class Rollover extends AbstractComponent
         link.addEventHandler(LinkEventType.MOUSE_OVER, (String) symbols.get("onMouseOverName"));
         link.addEventHandler(LinkEventType.MOUSE_OUT, (String) symbols.get("onMouseOutName"));
 
-        return imageName;
+        return imageId;
     }
 
-    public abstract IAsset getBlur();
+    public abstract IAsset getMouseOut();
 
     public abstract IAsset getDisabled();
 
-    public abstract IAsset getFocus();
+    public abstract IAsset getMouseOver();
 
     public abstract IAsset getImage();
 }

@@ -60,7 +60,7 @@ window.
 
     <component id="rollover" type="Rollover">
     	<binding name="image" value="asset:logo"/>
-    	<binding name="focus" value="asset:inspector"/>
+    	<binding name="mouseOver" value="asset:inspector"/>
     </component>
 
     <asset name="logo" path="tapestry-logo.gif"/>
