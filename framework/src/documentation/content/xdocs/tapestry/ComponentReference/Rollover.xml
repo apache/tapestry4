@@ -69,7 +69,7 @@ enters and exits the button. However, the Rollover must be wrapped (ultimately) 
   </tr>
 
   <tr>
-    <td>focus</td>
+    <td>mouseOver</td>
     <td>&IAsset;</td>
     <td>in</td>
     <td>no</td>
@@ -78,11 +78,12 @@ enters and exits the button. However, the Rollover must be wrapped (ultimately) 
     <td>
        If provided (and the component is not disabled), then a JavaScript onMouseOver 
        event handler is added to change the image. An onMouseOut event handler is also 
-       provided, to change the button to either it's base image, or its blur image.
+       provided, to change the button to either it's base image, or its mouseOut image.
+      Deprecated alias: focus. 
     </td>
   </tr>
   <tr>
-    <td>blur</td>
+    <td>mouseOut</td>
     <td>&IAsset;</td>
     <td>in</td>
 
@@ -91,6 +92,7 @@ enters and exits the button. However, the Rollover must be wrapped (ultimately) 
     <td>
        If provided (and the component is not disabled), then a JavaScript onMouseOut event 
        handler is added to change the image when the mouse is moved off of the image.
+      Deprecated alias: blur. 
     </td>
   </tr>
   <tr>
