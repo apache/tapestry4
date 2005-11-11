@@ -57,6 +57,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-742">LinkSubmit renders overly verbose JavaScript</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-620">Expose the current IRequestCycle as an injectable service</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-517">Using a FieldLabel component after the decorated form component causes the FieldLabel's id attribute to be wrong</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-669,TAPESTRY-233,TAPESTRY-690,TAPESTRY-228">Fix a number of bugs in the DatePicker component's JavaScript</action>
     </release>
     <release version="4.0-beta-12" date="Oct 30 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-718">Asset injection makes assets appear as null inside finishLoad()</action>
