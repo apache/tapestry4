@@ -31,45 +31,61 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestFieldLabel extends BaseFormComponentTestCase
+public class FieldLabelTest extends BaseFormComponentTestCase
 {
     private IForm newForm(IValidationDelegate delegate)
     {
-        MockControl control = newControl(IForm.class);
-        IForm form = (IForm) control.getMock();
+        IForm form = (IForm) newMock(IForm.class);
 
-        form.getDelegate();
-        control.setReturnValue(delegate);
+        trainGetDelegate(delegate, form);
 
         return form;
     }
 
+    private void trainGetDelegate(IValidationDelegate delegate, IForm form)
+    {
+        form.getDelegate();
+        setReturnValue(form, delegate);
+    }
+
     private IPage newFred()
     {
-        MockControl control = newControl(IPage.class);
-        IPage page = (IPage) control.getMock();
+        IPage page = (IPage) newMock(IPage.class);
 
-        page.getPageName();
-        control.setReturnValue("Fred");
+        trainGetPageName(page, "Fred");
 
-        page.getIdPath();
-        control.setReturnValue(null);
+        trainGetIdPath(page, null);
 
         return page;
     }
 
+    private void trainGetIdPath(IPage page, String idPath)
+    {
+        page.getIdPath();
+        setReturnValue(page, idPath);
+    }
+
     private IFormComponent newField(String displayName, String clientId)
     {
-        MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent) control.getMock();
+        IFormComponent field = (IFormComponent) newMock(IFormComponent.class);
 
-        field.getDisplayName();
-        control.setReturnValue(displayName);
+        trainGetDisplayName(field, displayName);
 
-        field.getClientId();
-        control.setReturnValue(clientId);
+        trainGetClientId(clientId, field);
 
         return field;
+    }
+
+    private void trainGetClientId(String clientId, IFormComponent field)
+    {
+        field.getClientId();
+        setReturnValue(field, clientId);
+    }
+
+    private void trainGetDisplayName(IFormComponent field, String displayName)
+    {
+        field.getDisplayName();
+        setReturnValue(field, displayName);
     }
 
     public void testRewinding()
@@ -89,7 +105,7 @@ public class TestFieldLabel extends BaseFormComponentTestCase
         replayControls();
 
         FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
-        { "field", field, "location", l });
+        { "field", field, "location", l, "prerender", true });
 
         fl.render(writer, cycle);
 
@@ -187,8 +203,39 @@ public class TestFieldLabel extends BaseFormComponentTestCase
     {
         IValidationDelegate delegate = new MockDelegate();
 
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IForm form = newForm();
+
+        IMarkupWriter writer = newBufferWriter();
+        IFormComponent field = newField("MyLabel", null);
+        Location l = newLocation();
+
+        IRequestCycle cycle = newCycle();
+
+        trainGetForm(cycle, form);
+
+        trainIsRewinding(cycle, false);
+
+        FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
+        { "location", l, "field", field, "prerender", true });
+
+        form.prerenderField(writer, field, l);
+
+        trainGetDelegate(form, delegate);
+
+        replayControls();
+
+        fl.render(writer, cycle);
+
+        assertBuffer("{LABEL-PREFIX}<label>MyLabel</label>{LABEL-SUFFIX}");
+
+        verifyControls();
+    }
+
+    public void testPrerenderOff()
+    {
+        IValidationDelegate delegate = new MockDelegate();
+
+        IForm form = newForm();
 
         IMarkupWriter writer = newBufferWriter();
         IFormComponent field = newField("MyLabel", null);
@@ -203,10 +250,7 @@ public class TestFieldLabel extends BaseFormComponentTestCase
         FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
         { "location", l, "field", field });
 
-        form.prerenderField(writer, field, l);
-
-        form.getDelegate();
-        formc.setReturnValue(delegate);
+        trainGetDelegate(form, delegate);
 
         replayControls();
 
@@ -221,8 +265,7 @@ public class TestFieldLabel extends BaseFormComponentTestCase
     {
         IValidationDelegate delegate = new MockDelegate();
 
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IForm form = newForm();
 
         IMarkupWriter writer = newBufferWriter();
         IFormComponent field = newField("MyLabel", "clientId");
@@ -235,12 +278,11 @@ public class TestFieldLabel extends BaseFormComponentTestCase
         trainIsRewinding(cycle, false);
 
         FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
-        { "location", l, "field", field });
+        { "location", l, "field", field, "prerender", true });
 
         form.prerenderField(writer, field, l);
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
+        trainGetDelegate(form, delegate);
 
         replayControls();
 
@@ -253,13 +295,9 @@ public class TestFieldLabel extends BaseFormComponentTestCase
 
     public void testNoDisplayNameInField()
     {
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-
+        IForm form = newForm();
         IMarkupWriter writer = newBufferWriter();
-
-        MockControl fieldc = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent) fieldc.getMock();
+        IFormComponent field = newField();
 
         IRequestCycle cycle = newCycle();
 
@@ -271,15 +309,13 @@ public class TestFieldLabel extends BaseFormComponentTestCase
         IPage page = newFred();
 
         FieldLabel fl = (FieldLabel) newInstance(FieldLabel.class, new Object[]
-        { "id", "label", "location", l, "field", field, "page", page, "container", page });
+        { "id", "label", "location", l, "field", field, "page", page, "container", page,
+                "prerender", true });
 
         form.prerenderField(writer, field, l);
 
-        field.getDisplayName();
-        fieldc.setReturnValue(null);
-
-        field.getExtendedId();
-        fieldc.setReturnValue("Fred/field");
+        trainGetDisplayName(field, null);
+        trainGetExtendedId(field, "Fred/field");
 
         replayControls();
 

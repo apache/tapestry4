@@ -94,6 +94,17 @@
       the displayName includes markup text.
     </td>
   </tr>
+  
+  <tr>
+    <td>prerender</td>
+    <td>boolean</td>
+    <td>in</td> <td>no</td> <td>true</td>
+    <td>
+      If true (the default), then the field for this label is pre-renderered. This is necessary so that the
+      field can render itself, and set its client id (which is needed for the FieldLabel to render).  
+      When the FieldLabel is positioned <em>after</em> the field, prerender should be set to false.
+    </td>
+  </tr>
 
 	</table>
   
