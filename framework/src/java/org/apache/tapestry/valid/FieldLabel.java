@@ -34,6 +34,9 @@ import org.apache.tapestry.form.IFormComponent;
 
 public abstract class FieldLabel extends AbstractComponent
 {
+    // Parameter
+    public abstract boolean isPrerender();
+
     /**
      * Gets the {@link IForm}&nbsp;and {@link IValidationDelegate delegate}, then renders the
      * label obtained from the field. Does nothing when rewinding.
@@ -45,7 +48,7 @@ public abstract class FieldLabel extends AbstractComponent
 
         IFormComponent field = getField();
 
-        if (field != null)
+        if (field != null && isPrerender())
             form.prerenderField(writer, field, getLocation());
 
         if (cycle.isRewinding())

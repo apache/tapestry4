@@ -44,6 +44,15 @@
     </description>
   </parameter>
   
+  <parameter name="prerender">
+    <description>
+      If true (the default), then the field (if any) will be pre-rendered by the FieldLabel.
+      This is useful when the FieldLabel and field are inside a loop and the FieldLabel
+      precedes the field.  This parameter should be set to false if the FieldLabel occurs
+      after the field.
+    </description>
+  </parameter>
+  
   <reserved-parameter name="for"/>
 
 </component-specification>
