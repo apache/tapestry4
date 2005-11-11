@@ -92,6 +92,7 @@ function Calendar(date) {
 
 	this._calDiv = null;
 	
+	this._clearButtonLabel = "Clear";
 	
 }
 
@@ -315,8 +316,7 @@ Calendar.prototype.create = function() {
 	td = document.createElement("td");
 	this._clearButton = document.createElement("button");
 	var today = new Date();
-	buttonText = "Clear";
-	this._clearButton.appendChild(document.createTextNode(buttonText));
+	this._clearButton.appendChild(document.createTextNode(this._clearButtonLabel));
 	td.appendChild(this._clearButton);
 	tr.appendChild(td);
 	
@@ -573,7 +573,9 @@ Calendar.prototype.show = function(element) {
 		     this._underDiv = underDiv;
 	   }
 		/* -------- */
-		this._calDiv.focus();
+
+        if (this._calDiv.focus)
+          this._calDiv.focus();
 		
 	}
 };
@@ -651,6 +653,10 @@ Calendar.prototype.setIncludeWeek = function(v) {
 	}
 }
 
+Calendar.prototype.setClearButtonLabel = function(v) {
+  this._clearButtonLabel = v;
+}
+
 Calendar.prototype.getSelectedDate = function () {
 	if (this._selectedDate == null) {
 		return null;
@@ -659,6 +665,21 @@ Calendar.prototype.getSelectedDate = function () {
 	}
 }
 
+Calendar.prototype.initialize = function(monthNames, shortMonthNames, weekDayNames, shortWeekDayNames, format,
+  firstDayOfWeek, includeWeek, minimalDaysInFirstWeek, clearButtonLabel)
+{
+  this.setMonthNames(monthNames);
+  this.setShortMonthNames(shortMonthNames);
+  this.setWeekDayNames(weekDayNames);
+  this.setShortWeekDayNames(shortWeekDayNames);
+  this.setFormat(format);
+  this.setFirstDayOfWeek(firstDayOfWeek);
+  this.setIncludeWeek(includeWeek);
+  this.setMinimalDaysInFirstWeek(minimalDaysInFirstWeek);
+  this.setClearButtonLabel(clearButtonLabel);
+  
+  this.create();
+}
 
 
 Calendar.prototype._updateHeader = function () {
@@ -772,13 +793,25 @@ Calendar.prototype.formatDate = function() {
     bits['yyyy'] = yearStr;
     bits['yy'] = bits['yyyy'].toString().substr(2,2);
 
+    bits['s'] = date.getSeconds();
+    bits['ss'] = pad(date.getSeconds(),2);
+    
+    bits['m'] = date.getMinutes();
+    bits['mm'] = pad(date.getMinutes(),2);
+    
+    bits['H'] = date.getHours();
+    bits['HH'] = pad(date.getHours(),2); 
+
     // do some funky regexs to replace the format string
     // with the real values
     var frm = new String(this._format);
-    var sect;
-    for (sect in bits) {
-      frm = eval("frm.replace(/\\b" + sect + "\\b/,'" + bits[sect] + "');");
-    }
+    // TAPESTRY-669: Have to be very explicit about keys, to keep functions added
+    // to Array (by the Prototype library, if its around) from getting mixed in.
+    var keys = new Array('d','dd','ddd','dddd','M','MM','MMM','MMMM','yyyy','yy', 's', 'ss', 'm',
+        'mm', 'H', 'HH');
+    for (var i = 0; i < keys.length; i++) {
+      frm = eval("frm.replace(/\\b" + keys[i] + "\\b/,'" + bits[keys[i]] + "');");
+    }     
 
     return frm;
 }

@@ -33,6 +33,7 @@
 <input-symbol key="minimalDaysInFirstWeek" required="yes"/>
 <input-symbol key="format" required="yes"/>
 <input-symbol key="includeWeek" required="yes"/>
+<input-symbol key="clearButtonLabel" required="yes"/>
 <input-symbol key="value" required="no"/>
 
 <let key="calendarObject" unique="yes">
@@ -47,26 +48,18 @@
 var ${calendarObject};
 </body>
 
-<initialization>
-	
+<initialization>	
 <if expression="value == null">
 ${calendarObject} = new Calendar();
 </if>
 <if expression="value != null">
 ${calendarObject} = new Calendar(${value.time});
-</if>
-		
-${calendarObject}.setMonthNames(new Array(${monthNames}));
-${calendarObject}.setShortMonthNames(new Array(${shortMonthNames}));
-${calendarObject}.setWeekDayNames(new Array(${weekDayNames}));
-${calendarObject}.setShortWeekDayNames(new Array(${shortWeekDayNames}));
-${calendarObject}.setFormat("${format}");
-${calendarObject}.setFirstDayOfWeek(${firstDayInWeek});
-${calendarObject}.setMinimalDaysInFirstWeek(${minimalDaysInFirstWeek});
-${calendarObject}.setIncludeWeek(${includeWeek});
-
-${calendarObject}.create();
-
+</if>	
+${calendarObject}.initialize([${monthNames}],
+  [${shortMonthNames}],
+  [${weekDayNames}],
+  [${shortWeekDayNames}],
+  "${format}", ${firstDayInWeek}, ${includeWeek}, ${minimalDaysInFirstWeek}, "${clearButtonLabel}");	
 ${calendarObject}.onchange = function() {
   var field = document.${formName}.${name};
   var value = ${calendarObject}.formatDate();
@@ -75,7 +68,6 @@ ${calendarObject}.onchange = function() {
     if (field.onchange) field.onchange();
   }
 }
-
 </initialization>
 </script>
 

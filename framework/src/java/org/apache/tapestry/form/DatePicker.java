@@ -59,8 +59,6 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
 
     public abstract IAsset getIcon();
 
-    private IScript _script;
-
     private static final String SYM_NAME = "name";
 
     private static final String SYM_FORMNAME = "formName";
@@ -81,6 +79,8 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
 
     private static final String SYM_INCL_WEEK = "includeWeek";
 
+    private static final String SYM_CLEAR_BUTTON_LABEL = "clearButtonLabel";
+
     private static final String SYM_VALUE = "value";
 
     private static final String SYM_BUTTONONCLICKHANDLER = "buttonOnclickHandler";
@@ -90,25 +90,11 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
      * 
      * @since 4.0
      */
-    public abstract IScriptSource getScriptSource();
+    public abstract IScript getScript();
 
     /**
-     * @see org.apache.tapestry.AbstractComponent#finishLoad()
-     */
-    protected void finishLoad()
-    {
-        super.finishLoad();
-
-        IScriptSource source = getScriptSource();
-
-        Resource location = getSpecification().getSpecificationLocation().getRelativeResource(
-                "DatePicker.script");
-
-        _script = source.getScript(location);
-    }
-
-    /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -123,9 +109,9 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
         Calendar cal = Calendar.getInstance(locale);
 
         String name = getName();
-        
+
         String value = getTranslatedFieldSupport().format(this, getValue());
-        
+
         Map symbols = new HashMap();
 
         symbols.put(SYM_NAME, name);
@@ -138,10 +124,11 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
         symbols.put(SYM_SHORT_WEEKDAYNAMES, makeStringList(dfs.getShortWeekdays(), 1, 8));
         symbols.put(SYM_FIRSTDAYINWEEK, new Integer(cal.getFirstDayOfWeek() - 1));
         symbols.put(SYM_MINDAYSINFIRSTWEEK, new Integer(cal.getMinimalDaysInFirstWeek()));
+        symbols.put(SYM_CLEAR_BUTTON_LABEL, getMessages().getMessage("clear"));
         symbols.put(SYM_FORMNAME, getForm().getName());
         symbols.put(SYM_VALUE, getValue());
 
-        _script.execute(cycle, pageRenderSupport, symbols);
+        getScript().execute(cycle, pageRenderSupport, symbols);
 
         renderDelegatePrefix(writer, cycle);
 
@@ -184,18 +171,19 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
     }
 
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String value = cycle.getParameter(getName());
-        
+
         try
         {
             Date date = (Date) getTranslatedFieldSupport().parse(this, value);
-            
+
             getValidatableFieldSupport().validate(this, writer, cycle, date);
-            
+
             setValue(date);
         }
         catch (ValidatorException e)
