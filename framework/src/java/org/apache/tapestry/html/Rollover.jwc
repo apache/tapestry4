@@ -33,14 +33,14 @@
     </description>
   </parameter>
   
-  <parameter name="focus">
+  <parameter name="mouseOver" aliases="focus">
     <description>
     If specified, provides an image displayed when the cursor is moved
     over the link.
     </description>
   </parameter>
   
-  <parameter name="blur">
+  <parameter name="mouseOut" aliases="blur">
     <description>
     If specified, provides an image displayed when the cursor is moved
     off of the link.

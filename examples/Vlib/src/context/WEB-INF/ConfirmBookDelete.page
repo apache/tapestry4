@@ -28,7 +28,7 @@
   
   <component id="confirmRollover" type="Rollover">
     <binding name="image" value="asset:confirm"/>
-    <binding name="focus" value="asset:confirm_h"/>	
+    <binding name="mouseOver" value="asset:confirm_h"/>	
   </component>
   
   <component id="cancelRollover" type="Rollover">

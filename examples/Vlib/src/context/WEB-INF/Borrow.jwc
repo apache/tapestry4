@@ -27,9 +27,9 @@
   <component id="rollover" type="Rollover">
     <binding name="image" value="asset:enabled"/>
     <binding name="disabled" value="asset:disabled"/>
-    <binding name="focus" value="asset:focus"/>
+    <binding name="mouseOver" value="asset:mouseOver"/>
   </component>
   <asset name="enabled" path="images/checkout.png"/>
-  <asset name="focus" path="images/checkout_h.png"/>
+  <asset name="mouseOver" path="images/checkout_h.png"/>
   <asset name="disabled" path="images/spacer.png"/>
 </component-specification>

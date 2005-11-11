@@ -55,7 +55,7 @@
 
   <component id="editRollover" type="Rollover">
     <binding name="image" value="asset:edit"/>
-    <binding name="focus" value="asset:edit_h"/>	
+    <binding name="mouseOver" value="asset:edit_h"/>	
   </component>
 
   <component id="delete" type="DirectLink">
@@ -65,7 +65,7 @@
   
   <component id="deleteRollover" type="Rollover">
     <binding name="image" value="asset:delete"/>
-    <binding name="focus" value="asset:delete_h"/>	
+    <binding name="mouseOver" value="asset:delete_h"/>	
   </component>
   
   <asset name="edit" path="images/edit.png"/>
