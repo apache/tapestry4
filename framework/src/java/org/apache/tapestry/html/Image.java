@@ -47,7 +47,7 @@ public abstract class Image extends AbstractComponent
         if (imageAsset == null)
             throw Tapestry.createRequiredParameterException(this, "image");
 
-        String imageURL = imageAsset.buildURL(cycle);
+        String imageURL = imageAsset.buildURL();
 
         writer.beginEmpty("img");
 

@@ -42,7 +42,7 @@ public abstract class Image extends AbstractComponent
         {
             writer.beginEmpty("img");
 
-            writer.attribute("src", getImage().buildURL(cycle));
+            writer.attribute("src", getImage().buildURL());
 
             writer.attribute("alt", getAlt());
 

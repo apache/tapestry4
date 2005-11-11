@@ -50,7 +50,7 @@ public abstract class Rollover extends AbstractComponent
         if (asset == null)
             return null;
 
-        return asset.buildURL(cycle);
+        return asset.buildURL();
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)

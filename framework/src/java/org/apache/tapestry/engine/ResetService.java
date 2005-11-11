@@ -21,7 +21,7 @@ import java.util.Map;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.LinkFactory;
-import org.apache.tapestry.services.ResetEventCoordinator;
+import org.apache.tapestry.services.ResetEventHub;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
 
@@ -43,7 +43,7 @@ public class ResetService implements IEngineService
 
     /** @since 4.0 */
 
-    private ResetEventCoordinator _resetEventCoordinator;
+    private ResetEventHub _resetEventHub;
 
     /** @since 4.0 */
     private boolean _enabled;
@@ -52,7 +52,10 @@ public class ResetService implements IEngineService
 
     private LinkFactory _linkFactory;
 
-    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
+    /** @since 4.0 */
+    private IRequestCycle _requestCycle;
+
+    public ILink getLink(boolean post, Object parameter)
     {
         if (parameter != null)
             throw new IllegalArgumentException(EngineMessages.serviceNoParameter(this));
@@ -60,9 +63,9 @@ public class ResetService implements IEngineService
         Map parameters = new HashMap();
 
         parameters.put(ServiceConstants.SERVICE, getName());
-        parameters.put(ServiceConstants.PAGE, cycle.getPage().getPageName());
+        parameters.put(ServiceConstants.PAGE, _requestCycle.getPage().getPageName());
 
-        return _linkFactory.constructLink(cycle, post, parameters, true);
+        return _linkFactory.constructLink(post, parameters, true);
     }
 
     public String getName()
@@ -75,7 +78,7 @@ public class ResetService implements IEngineService
         String pageName = cycle.getParameter(ServiceConstants.PAGE);
 
         if (_enabled)
-            _resetEventCoordinator.fireResetEvent();
+            _resetEventHub.fireResetEvent();
 
         cycle.activate(pageName);
 
@@ -92,9 +95,9 @@ public class ResetService implements IEngineService
 
     /** @since 4.0 */
 
-    public void setResetEventCoordinator(ResetEventCoordinator resetEventCoordinator)
+    public void setResetEventHub(ResetEventHub resetEventHub)
     {
-        _resetEventCoordinator = resetEventCoordinator;
+        _resetEventHub = resetEventHub;
     }
 
     /** @since 4.0 */
@@ -108,5 +111,11 @@ public class ResetService implements IEngineService
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
+    }
+
+    /** @since 4.0 */
+    public void setRequestCycle(IRequestCycle requestCycle)
+    {
+        _requestCycle = requestCycle;
     }
 }

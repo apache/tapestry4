@@ -61,9 +61,7 @@ public class TestExternalService extends ServiceTestCase
 
         ILink link = (ILink) newMock(ILink.class);
 
-        IRequestCycle cycle = (IRequestCycle) newMock(IRequestCycle.class);
-
-        lf.constructLink(cycle, false, parameters, true);
+        lf.constructLink(false, parameters, true);
         lfc.setReturnValue(link);
 
         replayControls();
@@ -73,7 +71,7 @@ public class TestExternalService extends ServiceTestCase
 
         ExternalServiceParameter p = new ExternalServiceParameter("ActivePage", serviceParameters);
 
-        assertSame(link, es.getLink(cycle, false, p));
+        assertSame(link, es.getLink(false, p));
 
         verifyControls();
     }

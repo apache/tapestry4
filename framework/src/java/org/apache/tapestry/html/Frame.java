@@ -39,7 +39,7 @@ public abstract class Frame extends AbstractComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IEngineService pageService = getPageService();
-        ILink link = pageService.getLink(cycle, false, getTargetPage());
+        ILink link = pageService.getLink(false, getTargetPage());
 
         writer.beginEmpty("frame");
         writer.attribute("src", link.getURL());

@@ -237,7 +237,7 @@ public abstract class ShowTemplate extends BaseComponent implements IDirect
         // component itself (it's a Direct).
 
         DirectServiceParameter dsp = new DirectServiceParameter(this, serviceParameters);
-        ILink link = service.getLink(getPage().getRequestCycle(), false, dsp);
+        ILink link = service.getLink(false, dsp);
 
         writer.begin("span");
         writer.attribute("class", "jwc-tag");

@@ -77,7 +77,7 @@ public class TestDirectService extends ServiceTestCase
 
         ILink link = newLink();
 
-        lf.constructLink(cycle, false, parameters, true);
+        lf.constructLink(false, parameters, true);
         lfc.setReturnValue(link);
 
         replayControls();
@@ -86,12 +86,13 @@ public class TestDirectService extends ServiceTestCase
 
         ds.setLinkFactory(lf);
         ds.setRequest(request);
+        ds.setRequestCycle(cycle);
 
-        assertSame(link, ds.getLink(cycle, false, new DirectServiceParameter(c, serviceParameters)));
+        assertSame(link, ds.getLink(false, new DirectServiceParameter(c, serviceParameters)));
 
         verifyControls();
     }
-    
+
     public void testGetLinkOnSamePageForPost()
     {
         IPage page = newPage("ThePage");
@@ -129,7 +130,7 @@ public class TestDirectService extends ServiceTestCase
 
         ILink link = newLink();
 
-        lf.constructLink(cycle, true, parameters, true);
+        lf.constructLink(true, parameters, true);
         lfc.setReturnValue(link);
 
         replayControls();
@@ -138,8 +139,9 @@ public class TestDirectService extends ServiceTestCase
 
         ds.setLinkFactory(lf);
         ds.setRequest(request);
+        ds.setRequestCycle(cycle);
 
-        assertSame(link, ds.getLink(cycle, true, new DirectServiceParameter(c, serviceParameters)));
+        assertSame(link, ds.getLink(true, new DirectServiceParameter(c, serviceParameters)));
 
         verifyControls();
     }
@@ -180,7 +182,7 @@ public class TestDirectService extends ServiceTestCase
 
         ILink link = newLink();
 
-        lf.constructLink(cycle, false, parameters, true);
+        lf.constructLink(false, parameters, true);
         lfc.setReturnValue(link);
 
         replayControls();
@@ -188,8 +190,9 @@ public class TestDirectService extends ServiceTestCase
         DirectService ds = new DirectService();
         ds.setLinkFactory(lf);
         ds.setRequest(request);
+        ds.setRequestCycle(cycle);
 
-        assertSame(link, ds.getLink(cycle, false, new DirectServiceParameter(c, serviceParameters)));
+        assertSame(link, ds.getLink(false, new DirectServiceParameter(c, serviceParameters)));
 
         verifyControls();
     }
@@ -230,7 +233,7 @@ public class TestDirectService extends ServiceTestCase
 
         ILink link = newLink();
 
-        lf.constructLink(cycle, false, parameters, true);
+        lf.constructLink(false, parameters, true);
         lfc.setReturnValue(link);
 
         replayControls();
@@ -238,8 +241,9 @@ public class TestDirectService extends ServiceTestCase
         DirectService ds = new DirectService();
         ds.setLinkFactory(lf);
         ds.setRequest(request);
+        ds.setRequestCycle(cycle);
 
-        assertSame(link, ds.getLink(cycle, false, new DirectServiceParameter(c, serviceParameters)));
+        assertSame(link, ds.getLink(false, new DirectServiceParameter(c, serviceParameters)));
 
         verifyControls();
     }

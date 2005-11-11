@@ -84,8 +84,7 @@ public class TestLinkFactory extends HiveMindTestCase
         {
         }
 
-        public void addParametersForPersistentProperties(ServiceEncoding encoding,
-                IRequestCycle cycle, boolean post)
+        public void addParametersForPersistentProperties(ServiceEncoding encoding, boolean post)
         {
             encoding.setParameterValue("foo", "bar");
         }
@@ -134,13 +133,14 @@ public class TestLinkFactory extends HiveMindTestCase
         lf.setContextPath("/context");
         lf.setServletPath("/app");
         lf.setRequest(request);
+        lf.setRequestCycle(cycle);
 
         lf.initializeService();
 
         Map parameters = new HashMap();
         parameters.put(ServiceConstants.SERVICE, "myservice");
 
-        ILink link = lf.constructLink(cycle, false, parameters, false);
+        ILink link = lf.constructLink(false, parameters, false);
 
         verifyControls();
 
@@ -162,7 +162,7 @@ public class TestLinkFactory extends HiveMindTestCase
 
         engine.getOutputEncoding();
         enginec.setReturnValue("utf-8");
-        
+
         cycle.encodeURL("/context/app?foo=bar&service=myservice");
         cyclec.setReturnValue("{encoded}");
 
@@ -176,13 +176,14 @@ public class TestLinkFactory extends HiveMindTestCase
         lf.setServletPath("/app");
         lf.setRequest(request);
         lf.setPersistenceStrategySource(new MockSource());
+        lf.setRequestCycle(cycle);
 
         lf.initializeService();
 
         Map parameters = new HashMap();
         parameters.put(ServiceConstants.SERVICE, "myservice");
 
-        ILink link = lf.constructLink(cycle, false, parameters, true);
+        ILink link = lf.constructLink(false, parameters, true);
 
         assertEquals("{encoded}", link.getURL());
 
@@ -208,13 +209,14 @@ public class TestLinkFactory extends HiveMindTestCase
         lf.setContextPath("/context");
         lf.setServletPath("/app");
         lf.setRequest(request);
+        lf.setRequestCycle(cycle);
 
         lf.initializeService();
 
         Map parameters = new HashMap();
         parameters.put(ServiceConstants.SERVICE, "myservice");
 
-        ILink link = lf.constructLink(cycle, false, parameters, false);
+        ILink link = lf.constructLink(false, parameters, false);
 
         verifyControls();
 
@@ -241,6 +243,7 @@ public class TestLinkFactory extends HiveMindTestCase
         lf.setContextPath("/context");
         lf.setServletPath("/app");
         lf.setRequest(request);
+        lf.setRequestCycle(cycle);
 
         lf.initializeService();
 
@@ -248,7 +251,7 @@ public class TestLinkFactory extends HiveMindTestCase
         parameters.put(ServiceConstants.SERVICE, "page");
         parameters.put(ServiceConstants.PAGE, "Barney");
 
-        ILink link = lf.constructLink(cycle, false, parameters, false);
+        ILink link = lf.constructLink(false, parameters, false);
 
         verifyControls();
 
@@ -277,6 +280,7 @@ public class TestLinkFactory extends HiveMindTestCase
         lf.setServletPath("/app");
         lf.setDataSqueezer(DataSqueezerUtil.createUnitTestSqueezer());
         lf.setRequest(request);
+        lf.setRequestCycle(cycle);
 
         lf.initializeService();
 
@@ -286,7 +290,7 @@ public class TestLinkFactory extends HiveMindTestCase
         parameters.put(ServiceConstants.PARAMETER, new Object[]
         { Boolean.TRUE });
 
-        ILink link = lf.constructLink(cycle, false, parameters, false);
+        ILink link = lf.constructLink(false, parameters, false);
 
         verifyControls();
 

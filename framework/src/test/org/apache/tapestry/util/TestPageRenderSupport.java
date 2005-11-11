@@ -56,7 +56,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
         MockControl control = newControl(IAsset.class);
         IAsset asset = (IAsset) control.getMock();
 
-        asset.buildURL(cycle);
+        asset.buildURL();
         control.setReturnValue(url);
 
         return asset;

@@ -238,7 +238,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * For each acceptible key, the value is extracted using {@link IBinding#getObject()}. If the
      * value is null, no attribute is written.
      * <p>
-     * If the value is an instance of {@link IAsset}, then {@link IAsset#buildURL(IRequestCycle)}
+     * If the value is an instance of {@link IAsset}, then {@link IAsset#buildURL()}
      * is invoked to convert the asset to a URL.
      * <p>
      * Finally, {@link IMarkupWriter#attribute(String,String)}is invoked with the value (or the
@@ -280,7 +280,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
                 // Get the URL of the asset and insert that.
 
-                attribute = asset.buildURL(cycle);
+                attribute = asset.buildURL();
             }
             else
                 attribute = value.toString();

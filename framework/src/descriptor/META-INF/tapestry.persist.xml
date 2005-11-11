@@ -67,8 +67,11 @@
     
     Stores client persistent properties only if the page remains the same.
     
-    <create-instance class="PageClientPropertyPersistenceScope"/>
-    
+    <invoke-factory>
+      <construct class="PageClientPropertyPersistenceScope">
+        <set-object property="requestCycle" value="infrastructure:requestCycle"/>
+      </construct>
+    </invoke-factory> 
   </service-point>
     
   <service-point id="PageClientPropertyPersistenceStrategy" interface="PropertyPersistenceStrategy">

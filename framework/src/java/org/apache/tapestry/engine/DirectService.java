@@ -51,7 +51,10 @@ public class DirectService implements IEngineService
     /** @since 4.0 */
     protected WebRequest _request;
 
-    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
+    /** @since 4.0 */
+    private IRequestCycle _requestCycle;
+
+    public ILink getLink(boolean post, Object parameter)
     {
         Defense.isAssignable(parameter, DirectServiceParameter.class, "parameter");
 
@@ -67,7 +70,7 @@ public class DirectService implements IEngineService
         // In 1.0.6, we start to record *both* the render page
         // and the component page (if different).
 
-        IPage activePage = cycle.getPage();
+        IPage activePage = _requestCycle.getPage();
         IPage componentPage = component.getPage();
 
         Map parameters = new HashMap();
@@ -82,7 +85,7 @@ public class DirectService implements IEngineService
         parameters.put(ServiceConstants.SESSION, stateful ? "T" : null);
         parameters.put(ServiceConstants.PARAMETER, dsp.getServiceParameters());
 
-        return _linkFactory.constructLink(cycle, post, parameters, true);
+        return _linkFactory.constructLink(post, parameters, true);
     }
 
     public void service(IRequestCycle cycle) throws IOException
@@ -165,5 +168,11 @@ public class DirectService implements IEngineService
     public void setRequest(WebRequest request)
     {
         _request = request;
+    }
+
+    /** @since 4.0 */
+    public void setRequestCycle(IRequestCycle requestCycle)
+    {
+        _requestCycle = requestCycle;
     }
 }

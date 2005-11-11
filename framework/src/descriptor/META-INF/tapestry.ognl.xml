@@ -34,7 +34,7 @@
   <service-point id="ExpressionCache" interface="ExpressionCache">
     <invoke-factory>
       <construct class="impl.ExpressionCacheImpl">
-        <event-listener service-id="tapestry.ResetEventCoordinator"/>
+        <event-listener service-id="tapestry.ResetEventHub"/>
         <event-listener service-id="tapestry.describe.ReportStatusHub"/>
       </construct>
     </invoke-factory>

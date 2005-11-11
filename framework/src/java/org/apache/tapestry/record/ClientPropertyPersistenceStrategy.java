@@ -107,12 +107,10 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
         _data.remove(pageName);
     }
 
-    public void addParametersForPersistentProperties(ServiceEncoding encoding, IRequestCycle cycle,
-            boolean post)
+    public void addParametersForPersistentProperties(ServiceEncoding encoding, boolean post)
     {
         Defense.notNull(encoding, "encoding");
-        Defense.notNull(cycle, "cycle");
-
+ 
         Iterator i = _data.entrySet().iterator();
         while (i.hasNext())
         {
@@ -123,7 +121,7 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
 
             ClientPropertyPersistenceScope scope = getScope();
 
-            if (scope.shouldEncodeState(encoding, cycle, pageName, data))
+            if (scope.shouldEncodeState(encoding, pageName, data))
             {
                 String parameterName = _scope.constructParameterName(pageName);
                 encoding.setParameterValue(parameterName, data.getEncoded());

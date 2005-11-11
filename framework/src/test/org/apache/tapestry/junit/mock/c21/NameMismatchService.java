@@ -23,7 +23,7 @@ import org.apache.tapestry.engine.ILink;
 public class NameMismatchService implements IEngineService
 {
 
-    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter)
+    public ILink getLink(boolean post, Object parameter)
     {
         return null;
     }

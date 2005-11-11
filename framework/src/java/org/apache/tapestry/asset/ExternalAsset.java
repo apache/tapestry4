@@ -19,7 +19,6 @@ import java.net.URL;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -46,12 +45,12 @@ public class ExternalAsset extends AbstractAsset
      *
      **/
 
-    public String buildURL(IRequestCycle cycle)
+    public String buildURL()
     {
         return _URL;
     }
 
-    public InputStream getResourceAsStream(IRequestCycle cycle)
+    public InputStream getResourceAsStream()
     {
         URL url;
 

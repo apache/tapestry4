@@ -185,7 +185,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
 
     /**
      * Utility method for subclasses; Gets the named service from the engine and invokes
-     * {@link IEngineService#getLink(IRequestCycle, org.apache.tapestry.IComponent, Object[])}on
+     * {@link IEngineService#getLink(org.apache.tapestry.IComponent, Object[])}on
      * it.
      * 
      * @since 3.0
@@ -196,7 +196,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
     {
         IEngineService service = cycle.getEngine().getService(serviceName);
 
-        return service.getLink(cycle, false, parameter);
+        return service.getLink(false, parameter);
     }
 
     public abstract String getAnchor();

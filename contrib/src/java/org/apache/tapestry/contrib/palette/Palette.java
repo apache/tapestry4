@@ -363,7 +363,7 @@ public abstract class Palette extends BaseComponent implements ValidatableField
     private void setImage(PageRenderSupport pageRenderSupport, IRequestCycle cycle,
             String symbolName, IAsset asset)
     {
-        String URL = asset.buildURL(cycle);
+        String URL = asset.buildURL();
         String reference = pageRenderSupport.getPreloadedImageReference(URL);
 
         _symbols.put(symbolName, reference);

@@ -287,7 +287,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
     private ComponentTemplate readTemplateFromAsset(IRequestCycle cycle, IComponent component,
             IAsset asset)
     {
-        InputStream stream = asset.getResourceAsStream(cycle);
+        InputStream stream = asset.getResourceAsStream();
 
         char[] templateData = null;
 

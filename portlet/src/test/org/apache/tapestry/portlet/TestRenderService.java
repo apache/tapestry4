@@ -23,7 +23,7 @@ public class TestRenderService extends HiveMindTestCase
 
         try
         {
-            rs.getLink(null, false, null);
+            rs.getLink(false, null);
             unreachable();
         }
         catch (UnsupportedOperationException ex)

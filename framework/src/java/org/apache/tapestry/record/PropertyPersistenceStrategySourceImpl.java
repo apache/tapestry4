@@ -88,7 +88,7 @@ public class PropertyPersistenceStrategySourceImpl implements PropertyPersistenc
         }
     }
 
-    public void addParametersForPersistentProperties(ServiceEncoding encoding, IRequestCycle cycle, boolean post)
+    public void addParametersForPersistentProperties(ServiceEncoding encoding, boolean post)
     {
         Iterator i = _strategies.values().iterator();
 
@@ -96,7 +96,7 @@ public class PropertyPersistenceStrategySourceImpl implements PropertyPersistenc
         {
             PropertyPersistenceStrategy s = (PropertyPersistenceStrategy) i.next();
 
-            s.addParametersForPersistentProperties(encoding, cycle, post);
+            s.addParametersForPersistentProperties(encoding, post);
         }
     }
 

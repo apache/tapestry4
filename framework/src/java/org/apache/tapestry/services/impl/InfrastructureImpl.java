@@ -26,6 +26,7 @@ import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.service.ThreadLocale;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.describe.HTMLDescriber;
@@ -50,7 +51,7 @@ import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.RequestCycleFactory;
-import org.apache.tapestry.services.ResetEventCoordinator;
+import org.apache.tapestry.services.ResetEventHub;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceMap;
 import org.apache.tapestry.services.TemplateSource;
@@ -182,9 +183,9 @@ public class InfrastructureImpl implements Infrastructure
         return (RequestExceptionReporter) getProperty("requestExceptionReporter");
     }
 
-    public ResetEventCoordinator getResetEventCoordinator()
+    public ResetEventHub getResetEventHub()
     {
-        return (ResetEventCoordinator) getProperty("resetEventCoordinator");
+        return (ResetEventHub) getProperty("resetEventHub");
     }
 
     public WebResponse getResponse()
@@ -276,6 +277,11 @@ public class InfrastructureImpl implements Infrastructure
     public ClassFinder getClassFinder()
     {
         return (ClassFinder) getProperty("classFinder");
+    }
+
+    public IRequestCycle getRequestCycle()
+    {
+        return (IRequestCycle) getProperty("requestCycle");
     }
 
     public Object getProperty(String propertyName)

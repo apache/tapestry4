@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.record;
 
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ServiceEncoding;
 
 /**
@@ -32,16 +31,14 @@ public interface ClientPropertyPersistenceScope
      * 
      * @param encoding
      *            identifies the service, URL and base set of parameters
-     * @param cycle
-     *            current request
      * @param pageName
      *            the page for which data is potentially to be encoded
      * @param data
      * @return true if state should be encoded into the encoding, false otherwise
      */
 
-    public boolean shouldEncodeState(ServiceEncoding encoding, IRequestCycle cycle,
-            String pageName, PersistentPropertyData data);
+    public boolean shouldEncodeState(ServiceEncoding encoding, String pageName,
+            PersistentPropertyData data);
 
     /**
      * Constructs a parameter name for a particular page name. The parameter name can be recognized

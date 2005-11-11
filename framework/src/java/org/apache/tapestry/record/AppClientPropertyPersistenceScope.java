@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.record;
 
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ServiceEncoding;
 
 /**
@@ -37,8 +36,8 @@ public class AppClientPropertyPersistenceScope extends
      * Always returns true.
      */
 
-    public boolean shouldEncodeState(ServiceEncoding encoding, IRequestCycle cycle,
-            String pageName, PersistentPropertyData data)
+    public boolean shouldEncodeState(ServiceEncoding encoding, String pageName,
+            PersistentPropertyData data)
     {
         return true;
     }

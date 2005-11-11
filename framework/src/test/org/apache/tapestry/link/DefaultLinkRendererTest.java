@@ -150,7 +150,6 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
         ILinkComponent component = newComponent();
-        Location l = newLocation();
         ILink link = newLink();
 
         trainGetAttribute(cycle, Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, null);

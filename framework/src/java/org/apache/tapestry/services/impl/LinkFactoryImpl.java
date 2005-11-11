@@ -65,6 +65,8 @@ public class LinkFactoryImpl implements LinkFactory
 
     private WebRequest _request;
 
+    private IRequestCycle _requestCycle;
+
     private PropertyPersistenceStrategySource _persistenceStrategySource;
 
     public void initializeService()
@@ -94,14 +96,13 @@ public class LinkFactoryImpl implements LinkFactory
 
     }
 
-    public ILink constructLink(IRequestCycle cycle, boolean post, Map parameters, boolean stateful)
+    public ILink constructLink(boolean post, Map parameters, boolean stateful)
     {
-        Defense.notNull(cycle, "cycle");
         Defense.notNull(parameters, "parameters");
 
         squeezeServiceParameters(parameters);
 
-        IEngine engine = cycle.getEngine();
+        IEngine engine = _requestCycle.getEngine();
 
         ServiceEncoding serviceEncoding = createServiceEncoding(parameters);
 
@@ -109,15 +110,12 @@ public class LinkFactoryImpl implements LinkFactory
         // into the link.
 
         if (stateful)
-            _persistenceStrategySource.addParametersForPersistentProperties(
-                    serviceEncoding,
-                    cycle,
-                    post);
+            _persistenceStrategySource.addParametersForPersistentProperties(serviceEncoding, post);
 
         String fullServletPath = _contextPath + serviceEncoding.getServletPath();
 
-        return new EngineServiceLink(cycle, fullServletPath, engine.getOutputEncoding(), _codec,
-                _request, parameters, stateful);
+        return new EngineServiceLink(_requestCycle, fullServletPath, engine.getOutputEncoding(),
+                _codec, _request, parameters, stateful);
     }
 
     public ServiceEncoder[] getServiceEncoders()
@@ -226,5 +224,10 @@ public class LinkFactoryImpl implements LinkFactory
             PropertyPersistenceStrategySource persistenceStrategySource)
     {
         _persistenceStrategySource = persistenceStrategySource;
+    }
+
+    public void setRequestCycle(IRequestCycle requestCycle)
+    {
+        _requestCycle = requestCycle;
     }
 }

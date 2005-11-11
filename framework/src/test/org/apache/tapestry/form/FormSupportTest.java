@@ -699,7 +699,7 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.println();
 
         trainHiddenBlock(writer, "fred", "");
-        
+
         nested.close();
 
         writer.end();
@@ -719,7 +719,6 @@ public class FormSupportTest extends BaseComponentTestCase
     public void testRewindExtraReservedIds()
     {
         IMarkupWriter writer = newWriter();
-        NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
         IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
@@ -1052,7 +1051,7 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.println();
 
         trainHiddenBlock(writer, "fred", "barney");
-        
+
         nested.close();
 
         writer.end();

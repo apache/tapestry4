@@ -17,6 +17,7 @@ package org.apache.tapestry.services;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
@@ -28,15 +29,19 @@ import org.apache.tapestry.web.WebResponse;
  */
 public interface RequestGlobals
 {
-    public void store(HttpServletRequest request, HttpServletResponse response);
+    void store(HttpServletRequest request, HttpServletResponse response);
 
-    public void store(WebRequest request, WebResponse response);
+    void store(WebRequest request, WebResponse response);
 
-    public HttpServletRequest getRequest();
+    void store(IRequestCycle cycle);
 
-    public WebRequest getWebRequest();
+    HttpServletRequest getRequest();
 
-    public HttpServletResponse getResponse();
-    
-    public WebResponse getWebResponse();
+    WebRequest getWebRequest();
+
+    HttpServletResponse getResponse();
+
+    WebResponse getWebResponse();
+
+    IRequestCycle getRequestCycle();
 }

@@ -28,7 +28,7 @@ import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.services.ClasspathResourceFactory;
 import org.apache.tapestry.services.Infrastructure;
-import org.apache.tapestry.services.ResetEventCoordinator;
+import org.apache.tapestry.services.ResetEventHub;
 import org.easymock.MockControl;
 
 /**
@@ -150,9 +150,9 @@ public class TestBasicInfrastructure extends HiveMindTestCase
         MockControl ifrControl = newControl(Infrastructure.class);
         Infrastructure ifr = (Infrastructure) ifrControl.getMock();
 
-        ResetEventCoordinator coord = (ResetEventCoordinator) newMock(ResetEventCoordinator.class);
+        ResetEventHub coord = (ResetEventHub) newMock(ResetEventHub.class);
 
-        ifr.getResetEventCoordinator();
+        ifr.getResetEventHub();
         ifrControl.setReturnValue(coord);
 
         replayControls();
@@ -161,7 +161,7 @@ public class TestBasicInfrastructure extends HiveMindTestCase
 
         p.setInfrastructure(ifr);
 
-        Object actual = p.provideObject(null, null, "resetEventCoordinator", null);
+        Object actual = p.provideObject(null, null, "resetEventHub", null);
 
         assertSame(coord, actual);
 

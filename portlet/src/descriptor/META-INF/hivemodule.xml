@@ -198,6 +198,7 @@
         <set-object property="dataSqueezer" value="infrastructure:dataSqueezer"/>
         <set-configuration property="contributions" configuration-id="tapestry.url.ServiceEncoders"/>
         <set-service property="renderResponse" service-id="RenderResponse"/>
+        <set-object property="requestCycle" value="infrastructure:requestCycle"/>        
       </construct>
     </invoke-factory>
     
@@ -220,7 +221,7 @@
  
   <contribution configuration-id="tapestry.Infrastructure">
     <property name="linkFactory" mode="portlet" object="service:PortletLinkFactory"/>
-    <property name="rootDescriptionReceiverFactory " mode="portlet" object="PortletRootDescriptionReceiverFactory "/>
+    <property name="rootDescriptionReceiverFactory " mode="portlet" object="service:PortletRootDescriptionReceiverFactory"/>
     <property name="exceptionPresenter" mode="portlet" object="service:PortletExceptionPresenter"/>
     <property name="staleLinkExceptionPresenter" mode="portlet" object="service:PortletStaleLinkExceptionPresenter"/>
     <property name="staleSessionExceptionPresenter" mode="portlet" object="service:PortletStaleSessionExceptionPresenter"/>

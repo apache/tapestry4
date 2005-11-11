@@ -28,7 +28,8 @@ import org.apache.tapestry.engine.ServiceEncoding;
 public class PageClientPropertyPersistenceScope extends
         AbstractPrefixedClientPropertyPersistenceScope
 {
-
+    private IRequestCycle _requestCycle;
+    
     public PageClientPropertyPersistenceScope()
     {
         super("state:");
@@ -39,10 +40,15 @@ public class PageClientPropertyPersistenceScope extends
      * <em>after a new page has been activated</em>, the state is discarded.
      */
 
-    public boolean shouldEncodeState(ServiceEncoding encoding, IRequestCycle cycle,
-            String pageName, PersistentPropertyData data)
+    public boolean shouldEncodeState(ServiceEncoding encoding, String pageName,
+            PersistentPropertyData data)
     {
-        return pageName.equals(cycle.getPage().getPageName());
+        return pageName.equals(_requestCycle.getPage().getPageName());
+    }
+
+    public void setRequestCycle(IRequestCycle requestCycle)
+    {
+        _requestCycle = requestCycle;
     }
 
 }

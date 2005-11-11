@@ -123,9 +123,8 @@ public class TestPortletHomeService extends HiveMindTestCase
         LinkFactory factory = (LinkFactory) factoryc.getMock();
 
         ILink link = (ILink) newMock(ILink.class);
-        IRequestCycle cycle = newCycle();
 
-        factory.constructLink(cycle, false, parameters, true);
+        factory.constructLink(false, parameters, true);
         factoryc.setReturnValue(link);
 
         replayControls();
@@ -133,7 +132,7 @@ public class TestPortletHomeService extends HiveMindTestCase
         PortletHomeService phs = new PortletHomeService();
         phs.setLinkFactory(factory);
 
-        assertSame(link, phs.getLink(cycle, false, null));
+        assertSame(link, phs.getLink(false, null));
 
         verifyControls();
     }
@@ -142,7 +141,7 @@ public class TestPortletHomeService extends HiveMindTestCase
     {
         try
         {
-            new PortletHomeService().getLink(null, false, "PARAMETER");
+            new PortletHomeService().getLink(false, "PARAMETER");
             unreachable();
         }
         catch (IllegalArgumentException ex)

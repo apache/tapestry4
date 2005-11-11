@@ -27,7 +27,7 @@
     
     <invoke-factory>
       <construct class="impl.ObjectPoolImpl">
-        <event-listener service-id="tapestry.ResetEventCoordinator"/>
+        <event-listener service-id="tapestry.ResetEventHub"/>
         <event-listener service-id="tapestry.describe.ReportStatusHub"/>
       </construct>
     </invoke-factory> 
@@ -217,9 +217,8 @@
         <set-service property="monitorFactory" service-id="tapestry.monitor.MonitorFactory"/>
         <set-service property="strategySource" service-id="tapestry.persist.PropertyPersistenceStrategySource"/>       
         <set-service property="infrastructure" service-id="tapestry.Infrastructure"/>
-		    <set-service property="absoluteURLBuilder" service-id="AbsoluteURLBuilder"/>
-        <set-service property="servletRequest" service-id="tapestry.globals.HttpServletRequest"/>
-        <set-service property="servletResponse" service-id="tapestry.globals.HttpServletResponse"/>
+		<set-service property="absoluteURLBuilder" service-id="AbsoluteURLBuilder"/>
+		<set-service property="requestGlobals" service-id="tapestry.globals.RequestGlobals"/>    
       </construct>
     </invoke-factory>
     
@@ -238,12 +237,12 @@
   
   <service-point id="DisableCachingFilter" interface="WebRequestServicerFilter">
 	
-	Uses the ResetEventCoordinator to reset any cached data at the end of the request.
+	Uses the ResetEventHub  to reset any cached data at the end of the request.
 	Only used during development, not in production.
 	
 	  <invoke-factory>
 		  <construct class="impl.DisableCachingFilter">
-			  <set-object property="resetEventCoordinator" value="infrastructure:resetEventCoordinator"/>
+			  <set-object property="resetEventHub" value="infrastructure:resetEventHub"/>
 		  </construct>
 	  </invoke-factory>
   </service-point>

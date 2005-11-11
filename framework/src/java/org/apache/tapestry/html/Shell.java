@@ -141,7 +141,7 @@ public abstract class Shell extends AbstractComponent
         writer.beginEmpty("link");
         writer.attribute("rel", "stylesheet");
         writer.attribute("type", "text/css");
-        writer.attribute("href", stylesheet.buildURL(cycle));
+        writer.attribute("href", stylesheet.buildURL());
         writer.println();
     }
 
@@ -158,7 +158,7 @@ public abstract class Shell extends AbstractComponent
         IEngineService pageService = getPageService();
         String pageName = getPage().getPageName();
 
-        ILink link = pageService.getLink(cycle, false, pageName);
+        ILink link = pageService.getLink(false, pageName);
 
         StringBuffer buffer = new StringBuffer();
         buffer.append(refresh);

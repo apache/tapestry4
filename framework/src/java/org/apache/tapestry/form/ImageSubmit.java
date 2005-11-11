@@ -58,7 +58,7 @@ public abstract class ImageSubmit extends Submit
 
         IAsset finalImage = (disabled && disabledImage != null) ? disabledImage : getImage();
 
-        String imageURL = finalImage.buildURL(cycle);
+        String imageURL = finalImage.buildURL();
 
         writer.beginEmpty("input");
         writer.attribute("type", "image");

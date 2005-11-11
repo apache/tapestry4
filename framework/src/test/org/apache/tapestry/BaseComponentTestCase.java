@@ -292,7 +292,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected void trainBuildURL(IAsset asset, IRequestCycle cycle, String URL)
     {
-        asset.buildURL(cycle);
+        asset.buildURL();
 
         setReturnValue(asset, URL);
     }
@@ -361,19 +361,19 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     protected void trainGetLink(IEngineService service, IRequestCycle cycle, boolean post,
             Object parameter, ILink link)
     {
-        service.getLink(cycle, post, parameter);
+        service.getLink(post, parameter);
         setReturnValue(service, link);
     }
 
     protected void trainGetLinkCheckIgnoreParameter(IEngineService service, IRequestCycle cycle,
             boolean post, Object parameter, ILink link)
     {
-        service.getLink(cycle, post, parameter);
+        service.getLink(post, parameter);
 
         ArgumentMatcher ignore = new IgnoreMatcher();
 
         getControl(service).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, null, ignore, null }));
+        { null, ignore, null }));
 
         setReturnValue(service, link);
     }

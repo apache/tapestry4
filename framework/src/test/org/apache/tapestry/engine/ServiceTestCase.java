@@ -126,7 +126,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
     {
         LinkFactory lf = (LinkFactory) newMock(LinkFactory.class);
 
-        lf.constructLink(cycle, false, parameters, stateful);
+        lf.constructLink(false, parameters, stateful);
 
         setReturnValue(lf, link);
 

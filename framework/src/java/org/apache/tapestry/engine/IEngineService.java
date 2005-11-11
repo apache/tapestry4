@@ -24,7 +24,6 @@ import org.apache.tapestry.IRequestCycle;
  * represent dynamic application behavior, and for parsing those URLs when a subsequent request
  * involves them.
  * 
- * @see org.apache.tapestry.IEngine#getService(String)
  * @author Howard Lewis Ship
  */
 
@@ -36,9 +35,6 @@ public interface IEngineService
      * <p>
      * <b>This method changed incompatibly between release 3.0 and release 4.0. </b>
      * </p>
-     * 
-     * @param cycle
-     *            Defines the request cycle being processed.
      * @param post
      *            if true, then the link will be used for a post (not a get, i.e., for a HTML form);
      *            this may affect what information is encoded into the link
@@ -47,11 +43,12 @@ public interface IEngineService
      *            service implementation will expect that an object of the proper type be passed in.
      *            In some cases, a simple String will do; in others, a specific object (possibly
      *            implementing an interface) will be required.
+     * 
      * @return The URL for the service. The URL will have to be encoded via
      *         {@link javax.servlet.http.HttpServletResponse#encodeURL(java.lang.String)}.
      */
 
-    public ILink getLink(IRequestCycle cycle, boolean post, Object parameter);
+    public ILink getLink(boolean post, Object parameter);
 
     /**
      * Perform the service, interpreting the URL (from the

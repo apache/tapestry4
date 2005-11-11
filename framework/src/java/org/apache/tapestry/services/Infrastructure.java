@@ -18,6 +18,7 @@ import java.util.Locale;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.describe.HTMLDescriber;
@@ -91,7 +92,7 @@ public interface Infrastructure
      * services that they should discard cached data).
      */
 
-    public ResetEventCoordinator getResetEventCoordinator();
+    public ResetEventHub getResetEventHub();
 
     /**
      * Returns the source of component message bundles.
@@ -294,4 +295,9 @@ public interface Infrastructure
      */
 
     public ClassFinder getClassFinder();
+
+    /**
+     * Returns the request cycle for the current thread.
+     */
+    public IRequestCycle getRequestCycle();
 }
