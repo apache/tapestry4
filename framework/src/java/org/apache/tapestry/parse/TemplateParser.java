@@ -81,7 +81,7 @@ import org.apache.tapestry.util.IdAllocator;
  *       <p>
  *       The parser supports <em>invisible localization</em>: The parser recognizes HTML of the
  *       form: <code>&lt;span key="<i>value</i>"&gt; ... &lt;/span&gt;</code> and converts them
- *       into a {@link TokenType#LOCALIZATION}token. You may also specifify a <code>raw</code>
+ *       into a {@link TokenType#LOCALIZATION} token. You may also specifify a <code>raw</code>
  *       attribute ... if the value is <code>true</code>, then the localized value is sent to the
  *       client without filtering, which is appropriate if the value has any markup that should not
  *       be escaped.
@@ -115,7 +115,7 @@ public class TemplateParser implements ITemplateParser
     public static final String LOCALIZATION_KEY_ATTRIBUTE_NAME = "key";
 
     /**
-     * Used with {@link #LOCALIZATION_KEY_ATTRIBUTE_NAME}to indicate a string that should be
+     * Used with {@link #LOCALIZATION_KEY_ATTRIBUTE_NAME} to indicate a string that should be
      * rendered "raw" (without escaping HTML). If not specified, defaults to "false". The value must
      * equal "true" (caselessly).
      * 
@@ -180,7 +180,7 @@ public class TemplateParser implements ITemplateParser
     private Resource _resourceLocation;
 
     /**
-     * Shared instance of {@link Location}used by all {@link TextToken}instances in the template.
+     * Shared instance of {@link Location} used by all {@link TextToken} instances in the template.
      */
 
     private Location _templateLocation;
@@ -827,9 +827,9 @@ public class TemplateParser implements ITemplateParser
             }
             else
             {
-                // Cursor is at the closing carat, advance over it and any whitespace.
+                // Cursor is at the closing carat, advance over it.
                 advance();
-                advanceOverWhitespace();
+                // TAPESTRY-359: *don't* skip whitespace
             }
 
             // End any open block.

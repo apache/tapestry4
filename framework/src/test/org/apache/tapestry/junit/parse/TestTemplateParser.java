@@ -530,7 +530,7 @@ public class TestTemplateParser extends TestCase
         assertTokenCount(tokens, 3);
         assertTextToken(tokens[0], 0, 62);
         assertLocalizationToken(tokens[1], "empty.localization", null, 3);
-        assertTextToken(tokens[2], 97, 122);
+        assertTextToken(tokens[2], 95, 122);
     }
 
     /**
