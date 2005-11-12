@@ -62,6 +62,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-298">Wrong org.apache.tapestry.specification-path in javadoc</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-302">Palette component select arrows appear enabled on load</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-359">Localization directive cuts trailing space</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-741">PopupLinkRenderer overrides wrong method of DefaultLinkRenderer</action>
     </release>
     <release version="4.0-beta-12" date="Oct 30 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-718">Asset injection makes assets appear as null inside finishLoad()</action>

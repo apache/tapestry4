@@ -34,6 +34,8 @@ public class TapestryUtils
 
     private static final char BACKSLASH = '\\';
 
+    private static final String EMPTY_QUOTES = "''";
+
     /**
      * Stores an attribute into the request cycle, verifying that no object with that key is already
      * present.
@@ -221,7 +223,8 @@ public class TapestryUtils
 
     public static String enquote(String input)
     {
-        Defense.notNull(input, "input");
+        if (input == null)
+            return EMPTY_QUOTES;
 
         char[] chars = input.toCharArray();
 
