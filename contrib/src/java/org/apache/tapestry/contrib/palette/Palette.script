@@ -62,10 +62,10 @@ output symbols:
 <input-symbol key="downDisabledImage" class="java.lang.String"/>
 
 <set key="formName" expression="palette.form.name"/>
-<set key="name" expression="palette.name"/>
-<set key="sortLabel" expression="palette.sort eq @org.apache.tapestry.contrib.palette.SortMode@LABEL"/>
-<set key="sortValue" expression="palette.sort eq @org.apache.tapestry.contrib.palette.SortMode@VALUE"/>
-<set key="sortUser" expression="palette.sort eq @org.apache.tapestry.contrib.palette.SortMode@USER"/>
+<set key="name" expression="palette.clientId"/>
+<set key="sortLabel" expression="palette.sort == @org.apache.tapestry.contrib.palette.SortMode@LABEL"/>
+<set key="sortValue" expression="palette.sort == @org.apache.tapestry.contrib.palette.SortMode@VALUE"/>
+<set key="sortUser" expression="palette.sort == @org.apache.tapestry.contrib.palette.SortMode@USER"/>
 
 
 <!-- baseName - base name from which other names are generated -->
@@ -356,8 +356,7 @@ function ${availableChangeFunctionName}()
 ${selectedPath}.onchange = ${selectedChangeFunctionName};
 ${selectedPath}.ondblclick = ${deselectFunctionName};
 ${availablePath}.onchange = ${availableChangeFunctionName};
-${availablePath}.ondblclick = ${selectFunctionName};
-
+${updateFunctionName}();
 Tapestry.onrefresh('${formName}', ${formSubmitFunctionName});
 </initialization>
 </script>
