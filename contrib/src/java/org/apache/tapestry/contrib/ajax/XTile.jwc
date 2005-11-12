@@ -69,6 +69,6 @@
         <binding name="symbols" value="scriptSymbols"/>
     </component>
 
-    <inject property="linkFactory" object="infrastructure:linkFactory"/>
+    <inject property="service" object="engine-service:xtile"/>
         
 </component-specification>

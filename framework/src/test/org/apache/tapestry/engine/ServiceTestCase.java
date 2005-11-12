@@ -19,7 +19,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
 import org.apache.tapestry.BaseComponentTestCase;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.LinkFactory;
@@ -121,12 +123,11 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
         return (ILink) newMock(ILink.class);
     }
 
-    protected LinkFactory newLinkFactory(IRequestCycle cycle, Map parameters, boolean stateful,
-            ILink link)
+    protected LinkFactory newLinkFactory(Map parameters, boolean stateful, ILink link)
     {
         LinkFactory lf = (LinkFactory) newMock(LinkFactory.class);
 
-        lf.constructLink(false, parameters, stateful);
+        lf.constructLink(null, false, parameters, stateful);
 
         setReturnValue(lf, link);
 
@@ -136,6 +137,53 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
     protected ResponseRenderer newResponseRenderer()
     {
         return (ResponseRenderer) newMock(ResponseRenderer.class);
+    }
+
+    protected void trainConstructLink(LinkFactory linkFactory, IEngineService service,
+            boolean post, Map parameters, boolean stateful, ILink link)
+    {
+        linkFactory.constructLink(service, post, parameters, stateful);
+        setReturnValue(linkFactory, link);
+    }
+
+    protected LinkFactory newLinkFactory()
+    {
+        return (LinkFactory) newMock(LinkFactory.class);
+    }
+
+    protected void trainGetPage(IRequestCycle cycle, IPage page)
+    {
+        cycle.getPage();
+        setReturnValue(cycle, page);
+    }
+
+    protected void trainGetNestedComponent(IPage page, String idPath, IComponent component)
+    {
+        page.getNestedComponent(idPath);
+        setReturnValue(page, component);
+    }
+
+    protected void trainGetPage(IRequestCycle cycle, String pageName, IPage page)
+    {
+        cycle.getPage(pageName);
+        setReturnValue(cycle, page);
+    }
+
+    protected void trainExtractListenerParameters(LinkFactory factory, IRequestCycle cycle, Object[] parameters)
+    {
+        factory.extractListenerParameters(cycle);
+        setReturnValue(factory, parameters);
+    }
+
+    protected void trainGetAbsoluteURL(IRequestCycle cycle, String shortURL, String fullURL)
+    {
+        cycle.getAbsoluteURL(shortURL);
+        setReturnValue(cycle, fullURL);
+    }
+
+    protected Log newLog()
+    {
+        return (Log) newMock(Log.class);
     }
 
 }

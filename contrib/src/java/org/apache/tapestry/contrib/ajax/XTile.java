@@ -21,9 +21,8 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.services.LinkFactory;
-import org.apache.tapestry.services.ServiceConstants;
 
 /**
  * @author mindbridge
@@ -32,42 +31,43 @@ import org.apache.tapestry.services.ServiceConstants;
  */
 public abstract class XTile extends BaseComponent implements IXTile
 {
-    public abstract LinkFactory getLinkFactory();
-    
     public abstract IActionListener getListener();
+
     public abstract String getSendName();
+
     public abstract String getReceiveName();
+
     public abstract String getErrorName();
+
     public abstract boolean getDisableCaching();
 
-	public void trigger(IRequestCycle cycle) {
+    // Injected
+
+    public abstract IEngineService getService();
+
+    public void trigger(IRequestCycle cycle)
+    {
         IActionListener listener = getListener();
 
         if (listener == null)
-        	throw Tapestry.createRequiredParameterException(this, "listener");
+            throw Tapestry.createRequiredParameterException(this, "listener");
 
         listener.actionTriggered(this, cycle);
-	}
-	
-	public Map getScriptSymbols()
-	{
-		Map ret = new HashMap();
-		ret.put("sendFunctionName", getSendName());
-		ret.put("receiveFunctionName", getReceiveName());
-		ret.put("errorFunctionName", getErrorName());
-		ret.put("disableCaching", getDisableCaching() ? "true" : null);
+    }
 
-        Map parameters = new HashMap();
-        parameters.put(ServiceConstants.SERVICE, XTileService.SERVICE_NAME);
-        parameters.put(ServiceConstants.PAGE, getPage().getPageName());
-        parameters.put(ServiceConstants.COMPONENT, getIdPath());
-		
-		ILink link = getLinkFactory().constructLink(false, 
-				parameters, false);
+    public Map getScriptSymbols()
+    {
+        ILink link = getService().getLink(false, this);
 
-		ret.put("url", link.getURL());
-		
-		return ret;
-	}
+        Map result = new HashMap();
+
+        result.put("sendFunctionName", getSendName());
+        result.put("receiveFunctionName", getReceiveName());
+        result.put("errorFunctionName", getErrorName());
+        result.put("disableCaching", getDisableCaching() ? "true" : null);
+        result.put("url", link.getURL());
+
+        return result;
+    }
 
 }

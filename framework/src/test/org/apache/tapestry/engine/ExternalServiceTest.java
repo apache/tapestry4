@@ -22,11 +22,9 @@ import org.apache.hivemind.Location;
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.ExternalService}.
@@ -34,40 +32,24 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestExternalService extends ServiceTestCase
+public class ExternalServiceTest extends ServiceTestCase
 {
-    private LinkFactory newLinkFactory(IRequestCycle cycle, Object[] serviceParameters)
-    {
-        MockControl control = newControl(LinkFactory.class);
-        LinkFactory lf = (LinkFactory) control.getMock();
-
-        lf.extractListenerParameters(cycle);
-        control.setReturnValue(serviceParameters);
-
-        return lf;
-    }
-
     public void testGetLink()
     {
         Object[] serviceParameters = new Object[0];
+        LinkFactory lf = newLinkFactory();
+        ILink link = newLink();
 
         Map parameters = new HashMap();
-        parameters.put(ServiceConstants.SERVICE, Tapestry.EXTERNAL_SERVICE);
         parameters.put(ServiceConstants.PAGE, "ActivePage");
         parameters.put(ServiceConstants.PARAMETER, serviceParameters);
 
-        MockControl lfc = newControl(LinkFactory.class);
-        LinkFactory lf = (LinkFactory) lfc.getMock();
-
-        ILink link = (ILink) newMock(ILink.class);
-
-        lf.constructLink(false, parameters, true);
-        lfc.setReturnValue(link);
-
-        replayControls();
-
         ExternalService es = new ExternalService();
         es.setLinkFactory(lf);
+
+        trainConstructLink(lf, es, false, parameters, true, link);
+
+        replayControls();
 
         ExternalServiceParameter p = new ExternalServiceParameter("ActivePage", serviceParameters);
 
@@ -78,26 +60,22 @@ public class TestExternalService extends ServiceTestCase
 
     public void testService() throws Exception
     {
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
+        IRequestCycle cycle = newCycle();
         IExternalPage page = (IExternalPage) newMock(IExternalPage.class);
-
         Object[] parameters = new Object[0];
+        LinkFactory lf = newLinkFactory();
+        ResponseRenderer rr = newResponseRenderer();
 
-        cycle.getParameter(ServiceConstants.PAGE);
-        cyclec.setReturnValue("ActivePage");
+        trainGetParameter(cycle, ServiceConstants.PAGE, "ActivePage");
 
-        cycle.getPage("ActivePage");
-        cyclec.setReturnValue(page);
+        trainGetPage(cycle, "ActivePage", page);
 
-        LinkFactory lf = newLinkFactory(cycle, parameters);
+        trainExtractListenerParameters(lf, cycle, parameters);
 
         cycle.setListenerParameters(parameters);
         cycle.activate(page);
-        page.activateExternalPage(parameters, cycle);
 
-        ResponseRenderer rr = (ResponseRenderer) newMock(ResponseRenderer.class);
+        page.activateExternalPage(parameters, cycle);
 
         rr.renderResponse(cycle);
 
@@ -114,25 +92,17 @@ public class TestExternalService extends ServiceTestCase
 
     public void testServiceWrongType() throws Exception
     {
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
-        MockControl pagec = newControl(IPage.class);
-        IPage page = (IPage) pagec.getMock();
+        IRequestCycle cycle = newCycle();
+        IPage page = newPage();
+        Location l = newLocation();
 
-        cycle.getParameter(ServiceConstants.PAGE);
-        cyclec.setReturnValue("ActivePage");
+        trainGetParameter(cycle, ServiceConstants.PAGE, "ActivePage");
 
-        cycle.getPage("ActivePage");
-        cyclec.setReturnValue(page);
+        trainGetPage(cycle, "ActivePage", page);
 
-        page.getPageName();
-        pagec.setReturnValue("ActivePage");
-
-        Location l = fabricateLocation(17);
-
-        page.getLocation();
-        pagec.setReturnValue(l);
+        trainGetPageName(page, "ActivePage");
+        trainGetLocation(page, l);
 
         replayControls();
 

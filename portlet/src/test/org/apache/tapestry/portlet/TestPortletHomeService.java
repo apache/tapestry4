@@ -117,20 +117,17 @@ public class TestPortletHomeService extends HiveMindTestCase
     public void testGetLink()
     {
         Map parameters = new HashMap();
-        parameters.put(ServiceConstants.SERVICE, Tapestry.HOME_SERVICE);
 
-        MockControl factoryc = newControl(LinkFactory.class);
-        LinkFactory factory = (LinkFactory) factoryc.getMock();
-
+        LinkFactory factory = (LinkFactory) newMock(LinkFactory.class);
         ILink link = (ILink) newMock(ILink.class);
-
-        factory.constructLink(false, parameters, true);
-        factoryc.setReturnValue(link);
-
-        replayControls();
 
         PortletHomeService phs = new PortletHomeService();
         phs.setLinkFactory(factory);
+
+        factory.constructLink(phs, false, parameters, true);
+        setReturnValue(factory, link);
+
+        replayControls();
 
         assertSame(link, phs.getLink(false, null));
 

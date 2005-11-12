@@ -126,11 +126,11 @@ public class ExternalService implements IEngineService
         ExternalServiceParameter esp = (ExternalServiceParameter) parameter;
 
         Map parameters = new HashMap();
-        parameters.put(ServiceConstants.SERVICE, getName());
+
         parameters.put(ServiceConstants.PAGE, esp.getPageName());
         parameters.put(ServiceConstants.PARAMETER, esp.getServiceParameters());
 
-        return _linkFactory.constructLink(post, parameters, true);
+        return _linkFactory.constructLink(this, post, parameters, true);
     }
 
     public void service(IRequestCycle cycle) throws IOException

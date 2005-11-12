@@ -77,7 +77,6 @@ public class DirectService implements IEngineService
 
         boolean stateful = _request.getSession(false) != null;
 
-        parameters.put(ServiceConstants.SERVICE, getName());
         parameters.put(ServiceConstants.PAGE, activePage.getPageName());
         parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
         parameters.put(ServiceConstants.CONTAINER, componentPage == activePage ? null
@@ -85,7 +84,7 @@ public class DirectService implements IEngineService
         parameters.put(ServiceConstants.SESSION, stateful ? "T" : null);
         parameters.put(ServiceConstants.PARAMETER, dsp.getServiceParameters());
 
-        return _linkFactory.constructLink(post, parameters, true);
+        return _linkFactory.constructLink(this, post, parameters, true);
     }
 
     public void service(IRequestCycle cycle) throws IOException

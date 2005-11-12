@@ -21,6 +21,7 @@ import javax.portlet.RenderResponse;
 
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.services.impl.LinkFactoryImpl;
 import org.apache.tapestry.util.QueryParameterMap;
@@ -43,7 +44,7 @@ public class PortletLinkFactoryImpl extends LinkFactoryImpl
         _renderResponse = renderResponse;
     }
 
-    public ILink constructLink(boolean post, Map parameters, boolean stateful)
+    public ILink constructLink(IEngineService service, boolean post, Map parameters, boolean stateful)
     {
         Defense.notNull(parameters, "parameters");
 

@@ -17,6 +17,8 @@ package org.apache.tapestry.contrib.ajax;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,6 +29,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
@@ -34,6 +37,7 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.error.RequestExceptionReporter;
 import org.apache.tapestry.request.RequestContext;
+import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebResponse;
@@ -45,90 +49,108 @@ import org.w3c.dom.Node;
  * @author Paul Green
  * @since 4.0
  */
-public class XTileService implements IEngineService 
+public class XTileService implements IEngineService
 {
     public static final String SERVICE_NAME = "xtile";
 
     private RequestExceptionReporter _exceptionReporter;
+
     private WebResponse _response;
     
-	public String getName() 
-	{
-		return SERVICE_NAME;
-	}
-	
-	public ILink getLink(boolean post, Object parameter) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public void service(IRequestCycle cycle) throws IOException {
+    private LinkFactory _linkFactory;
+
+    public String getName()
+    {
+        return SERVICE_NAME;
+    }
+
+    public ILink getLink(boolean post, Object parameter)
+    {
+        Defense.isAssignable(parameter, IComponent.class, "parameter");
+
+        IComponent component = (IComponent) parameter;
+
+        Map parameters = new HashMap();
+        parameters.put(ServiceConstants.PAGE, component.getPage().getPageName());
+        parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
+
+        return _linkFactory.constructLink(this, false, parameters, false);
+    }
+
+    public void service(IRequestCycle cycle) throws IOException
+    {
         String pageName = cycle.getParameter(ServiceConstants.PAGE);
         String componentId = cycle.getParameter(ServiceConstants.COMPONENT);
-        
+
         IPage componentPage = cycle.getPage(pageName);
         IComponent component = componentPage.getNestedComponent(componentId);
-        
+
         if (!(component instanceof IXTile))
-        	throw new ApplicationRuntimeException("Incorrect component type: was " + component.getClass() + " but must be " + IXTile.class, 
-        			component, null, null);
-        
+            throw new ApplicationRuntimeException("Incorrect component type: was "
+                    + component.getClass() + " but must be " + IXTile.class, component, null, null);
+
         IXTile xtile = (IXTile) component;
-        
+
         // do not squeeze on input
-		RequestContext context = cycle.getRequestContext();
+        RequestContext context = cycle.getRequestContext();
         String[] params = context.getParameters(ServiceConstants.PARAMETER);
         cycle.setServiceParameters(params);
         xtile.trigger(cycle);
-        
+
         // do not squeeze on output either
         Object[] args = cycle.getServiceParameters();
         String strArgs = generateOutputString(args);
-        if (strArgs != null) {
-	        OutputStream output = _response.getOutputStream(new ContentType("text/xml"));
-	        output.write(strArgs.getBytes("utf-8"));
+        if (strArgs != null)
+        {
+            OutputStream output = _response.getOutputStream(new ContentType("text/xml"));
+            output.write(strArgs.getBytes("utf-8"));
         }
-	}
-	
-	protected String generateOutputString(Object[] args)
-	{
-		try {
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			dbf.setValidating(false);
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			Document doc = db.newDocument();
+    }
 
-			Node rootNode = doc.createElement("data");
-			doc.appendChild(rootNode);
-			
-			if (args != null) {
-				for (int i = 0; i < args.length; i++) {
-					Object value = args[i];
-					
-					Node spNode = doc.createElement("sp");
-					rootNode.appendChild(spNode);
-					
-					Node valueNode = doc.createTextNode(value.toString());
-					spNode.appendChild(valueNode);
-				}
-			}
-			
-			TransformerFactory trf = TransformerFactory.newInstance();
-			Transformer tr = trf.newTransformer();
-			tr.setOutputProperty(OutputKeys.INDENT, "yes");
+    protected String generateOutputString(Object[] args)
+    {
+        try
+        {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setValidating(false);
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.newDocument();
 
-			DOMSource domSrc = new DOMSource(doc);
-			StringWriter writer = new StringWriter();
-			StreamResult res = new StreamResult(writer);
-			tr.transform(domSrc, res);
-			writer.close();
-			
-			return writer.toString();
-		} 
-		catch (Exception e) {
-			_exceptionReporter.reportRequestException("Cannot generate XML", e);
-			return null;
-		}
-	}
+            Node rootNode = doc.createElement("data");
+            doc.appendChild(rootNode);
+
+            if (args != null)
+            {
+                for (int i = 0; i < args.length; i++)
+                {
+                    Object value = args[i];
+
+                    Node spNode = doc.createElement("sp");
+                    rootNode.appendChild(spNode);
+
+                    Node valueNode = doc.createTextNode(value.toString());
+                    spNode.appendChild(valueNode);
+                }
+            }
+
+            TransformerFactory trf = TransformerFactory.newInstance();
+            Transformer tr = trf.newTransformer();
+            tr.setOutputProperty(OutputKeys.INDENT, "yes");
+
+            DOMSource domSrc = new DOMSource(doc);
+            StringWriter writer = new StringWriter();
+            StreamResult res = new StreamResult(writer);
+            tr.transform(domSrc, res);
+            writer.close();
+
+            return writer.toString();
+        }
+        catch (Exception e)
+        {
+            _exceptionReporter.reportRequestException("Cannot generate XML", e);
+            return null;
+        }
+    }
 
     public void setExceptionReporter(RequestExceptionReporter exceptionReporter)
     {
@@ -139,11 +161,17 @@ public class XTileService implements IEngineService
     {
         _response = response;
     }
-    
-	public static void main(String[] args) {
-		XTileService objService = new XTileService();
-		System.out.println(objService.generateOutputString(new Object[] { "test > work", new Integer(20) }));
-	}
 
+    public static void main(String[] args)
+    {
+        XTileService objService = new XTileService();
+        System.out.println(objService.generateOutputString(new Object[]
+        { "test > work", new Integer(20) }));
+    }
+
+    public void setLinkFactory(LinkFactory linkFactory)
+    {
+        _linkFactory = linkFactory;
+    }
 
 }

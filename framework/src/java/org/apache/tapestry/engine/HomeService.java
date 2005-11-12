@@ -55,7 +55,7 @@ public class HomeService implements IEngineService
 
         parameters.put(ServiceConstants.SERVICE, getName());
 
-        return _linkFactory.constructLink(post, parameters, true);
+        return _linkFactory.constructLink(this, post, parameters, true);
     }
 
     public void service(IRequestCycle cycle) throws IOException
