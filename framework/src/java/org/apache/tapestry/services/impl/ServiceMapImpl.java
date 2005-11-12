@@ -128,7 +128,7 @@ public class ServiceMapImpl implements ServiceMap, EngineServiceSource
         IEngineService service = contribution.getService();
         String serviceName = service.getName();
 
-        if (!serviceName.equals(name))
+        if (!name.equals(serviceName))
             throw new ApplicationRuntimeException(ImplMessages.serviceNameMismatch(
                     service,
                     name,
