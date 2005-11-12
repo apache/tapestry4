@@ -19,6 +19,7 @@ import org.apache.hivemind.service.BodyBuilder;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.link.DefaultLinkRenderer;
 
@@ -57,14 +58,14 @@ public class PopupLinkRenderer extends DefaultLinkRenderer
      * @see DefaultLinkRenderer#constructURL(org.apache.tapestry.engine.ILink, String,
      *      org.apache.tapestry.IRequestCycle)
      */
-    protected String constructURL(ILink link, String anchor, IRequestCycle cycle)
+    protected String constructURL(ILinkComponent component, IRequestCycle cycle)
     {
+        String anchor = component.getAnchor();
+        ILink link = component.getLink(cycle);
+
         String url = link.getURL(anchor, true);
 
-        PageRenderSupport support = (PageRenderSupport) cycle
-                .getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE);
-
-        // TODO: Error if no Body!
+        PageRenderSupport support = TapestryUtils.getPageRenderSupport(cycle, component);
 
         String functionName = support.getUniqueString("popup_window");
 
@@ -74,47 +75,15 @@ public class PopupLinkRenderer extends DefaultLinkRenderer
         builder.begin();
         builder.addln(
                 "var newWindow = window.open({0}, {1}, {2});",
-                normalizeString(url),
-                normalizeString(getWindowName()),
-                normalizeString(getFeatures()));
+                TapestryUtils.enquote(url),
+                TapestryUtils.enquote(getWindowName()),
+                TapestryUtils.enquote(getFeatures()));
         builder.addln("newWindow.focus();");
         builder.end();
 
         support.addBodyScript(builder.toString());
 
         return "javascript:" + functionName + "();";
-    }
-
-    private static final String QUOTE = "\"";
-
-    static String normalizeString(String str)
-    {
-        if (HiveMind.isBlank(str))
-            return QUOTE + QUOTE;
-
-        int length = str.length();
-
-        // Doing this char by char is inefficient but Good Enough
-
-        StringBuffer buffer = new StringBuffer(length + 2);
-
-        buffer.append(QUOTE);
-
-        for (int i = 0; i < length; i++)
-        {
-            char ch = str.charAt(i);
-
-            // Embedded quotes and backslashes are escaped with a backslash.
-
-            if (ch == '"' || ch == '\\')
-                buffer.append('\\');
-
-            buffer.append(ch);
-        }
-
-        buffer.append(QUOTE);
-
-        return buffer.toString();
     }
 
     public String getWindowName()

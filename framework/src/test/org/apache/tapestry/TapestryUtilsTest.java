@@ -24,7 +24,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestTapestryUtils extends BaseComponentTestCase
+public class TapestryUtilsTest extends BaseComponentTestCase
 {
 
     private IRequestCycle newCycle(String key, Object attribute)
@@ -249,6 +249,11 @@ public class TestTapestryUtils extends BaseComponentTestCase
 
         assertEquals("'this is a \\'single quote\\''", TapestryUtils
                 .enquote("this is a 'single quote'"));
+    }
+
+    public void testEnquoteNull()
+    {
+        assertEquals("''", TapestryUtils.enquote(null));
     }
 
     public void testConvertTapestryIdToNMToken()
