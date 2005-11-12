@@ -40,40 +40,22 @@ import org.apache.tapestry.services.ServletRequestServicer;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
 
 /**
- * Links a servlet container with a Tapestry application. The servlet has some responsibilities
- * related to bootstrapping the application (in terms of logging, reading the
- * {@link ApplicationSpecification specification}, etc.). It is also responsible for creating or
- * locating the {@link IEngine}and delegating incoming requests to it.
- * <p>
- * The servlet init parameter <code>org.apache.tapestry.specification-path</code> should be set to
- * the complete resource path (within the classpath) to the application specification, i.e.,
- * <code>/com/foo/bar/MyApp.application</code>.
- * <p>
- * In some servlet containers (notably <a href="www.bea.com"/>WebLogic </a>) it is necessary to
- * invoke {@link HttpSession#setAttribute(String,Object)}in order to force a persistent value to be
- * replicated to the other servers in the cluster. Tapestry applications usually only have a single
- * persistent value, the {@link IEngine engine}. For persistence to work in such an environment,
- * the JVM system property <code>org.apache.tapestry.store-engine</code> must be set to
- * <code>true</code>. This will force the application servlet to restore the engine into the
- * {@link HttpSession}at the end of each request cycle.
- * <p>
- * As of release 1.0.1, it is no longer necessary for a {@link HttpSession}to be created on the
- * first request cycle. Instead, the HttpSession is created as needed by the {@link IEngine}...
- * that is, when a visit object is created, or when persistent page state is required. Otherwise,
- * for sessionless requests, an {@link IEngine}from a {@link Pool}is used. Additional work must be
- * done so that the {@link IEngine}can change locale <em>without</em> forcing the creation of a
- * session; this involves the servlet and the engine storing locale information in a {@link Cookie}.
- * <p>
- * As of release 4.0, this servlet will also create a HiveMind Registry and manage it.
+ * Links a servlet container with a Tapestry application. The servlet init parameter
+ * <code>org.apache.tapestry.application-specification</code> should be set to the complete
+ * resource path (within the classpath) to the application specification, i.e.,
+ * <code>/com/foo/bar/MyApp.application</code>. As of release 4.0, this servlet will also create
+ * a HiveMind Registry and manage it.
  * 
  * @author Howard Lewis Ship
+ * @see org.apache.tapestry.services.ApplicationInitializer
+ * @see org.apache.tapestry.services.ServletRequestServicer
  */
 
 public class ApplicationServlet extends HttpServlet
 {
     private static final long serialVersionUID = -8046042689991538059L;
 
-	/**
+    /**
      * Prefix used to store the HiveMind Registry into the ServletContext. This string is suffixed
      * with the servlet name (in case multiple Tapestry applications are executing within a single
      * web application).
