@@ -27,6 +27,7 @@ import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.EngineServiceLink;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.engine.ServiceEncoder;
 import org.apache.tapestry.engine.ServiceEncoding;
@@ -96,9 +97,18 @@ public class LinkFactoryImpl implements LinkFactory
 
     }
 
-    public ILink constructLink(boolean post, Map parameters, boolean stateful)
+    public ILink constructLink(IEngineService service, boolean post, Map parameters,
+            boolean stateful)
     {
+        Defense.notNull(service, "service");
         Defense.notNull(parameters, "parameters");
+
+        String serviceName = service.getName();
+
+        if (serviceName == null)
+            throw new ApplicationRuntimeException(ImplMessages.serviceNameIsNull());
+
+        parameters.put(ServiceConstants.SERVICE, serviceName);
 
         squeezeServiceParameters(parameters);
 

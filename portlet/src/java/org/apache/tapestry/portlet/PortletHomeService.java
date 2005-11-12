@@ -59,9 +59,7 @@ public class PortletHomeService implements IEngineService
 
         Map parameters = new HashMap();
 
-        parameters.put(ServiceConstants.SERVICE, getName());
-
-        return _linkFactory.constructLink(post, parameters, true);
+        return _linkFactory.constructLink(this, post, parameters, true);
     }
 
     public void setLinkFactory(LinkFactory linkFactory)

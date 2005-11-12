@@ -156,7 +156,7 @@ public class AssetService implements IEngineService
 
         // Service is stateless, which is the exception to the rule.
 
-        return _linkFactory.constructLink(post, parameters, false);
+        return _linkFactory.constructLink(this, post, parameters, false);
     }
 
     public String getName()

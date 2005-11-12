@@ -227,6 +227,16 @@ of tutorials is being written.
 
 </section>
   
+<section><title>Upgrading from 4.0-beta-12</title>
+
+  <p>
+    As part of the fix for <a href="http://issues.apache.org/jira/browse/TAPESTRY-620">TAPESTRY-620: Expose the current IRequestCycle as an injectable service</a>, a number
+    of other interfaces within Tapestry were simplified, removing the IRequestCycle parameter. This may require minor code changes
+    in a small number of places.
+  </p>
+
+</section>  
+  
 <section><title>Upgrading from 4.0 beta-10</title>
     
    <p>

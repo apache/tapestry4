@@ -18,36 +18,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
-import org.easymock.MockControl;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestPageService extends ServiceTestCase
+public class PageServiceTest extends ServiceTestCase
 {
     public void testGetLink()
     {
-        Map parameters = new HashMap();
-        parameters.put(ServiceConstants.SERVICE, Tapestry.PAGE_SERVICE);
-        parameters.put(ServiceConstants.PAGE, "TargetPage");
-
+        LinkFactory lf = newLinkFactory();
         ILink link = newLink();
 
-        MockControl lfc = newControl(LinkFactory.class);
-        LinkFactory lf = (LinkFactory) lfc.getMock();
-
-        lf.constructLink(false, parameters, true);
-        lfc.setReturnValue(link);
-
-        replayControls();
+        Map parameters = new HashMap();
+        parameters.put(ServiceConstants.PAGE, "TargetPage");
 
         PageService ps = new PageService();
         ps.setLinkFactory(lf);
+
+        trainConstructLink(lf, ps, false, parameters, true, link);
+
+        replayControls();
 
         assertSame(link, ps.getLink(false, "TargetPage"));
 
@@ -56,15 +50,12 @@ public class TestPageService extends ServiceTestCase
 
     public void testService() throws Exception
     {
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = newCycle();
+        ResponseRenderer rr = newResponseRenderer();
 
-        cycle.getParameter(ServiceConstants.PAGE);
-        cyclec.setReturnValue("TargetPage");
+        trainGetParameter(cycle, ServiceConstants.PAGE, "TargetPage");
 
         cycle.activate("TargetPage");
-
-        ResponseRenderer rr = newResponseRenderer();
 
         rr.renderResponse(cycle);
 

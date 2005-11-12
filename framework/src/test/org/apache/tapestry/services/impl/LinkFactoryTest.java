@@ -21,16 +21,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.engine.ServiceEncoder;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.engine.encoders.PageServiceEncoder;
 import org.apache.tapestry.record.PropertyPersistenceStrategy;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
+import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.io.DataSqueezerUtil;
 import org.apache.tapestry.web.WebRequest;
@@ -42,7 +45,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestLinkFactory extends HiveMindTestCase
+public class LinkFactoryTest extends HiveMindTestCase
 {
     private ErrorLog newErrorLog()
     {
@@ -101,28 +104,38 @@ public class TestLinkFactory extends HiveMindTestCase
         return result;
     }
 
+    private IEngine newEngine()
+    {
+        return (IEngine) newMock(IEngine.class);
+    }
+
     private IRequestCycle newCycle()
     {
-        MockControl enginec = newControl(IEngine.class);
-        IEngine engine = (IEngine) enginec.getMock();
+        return (IRequestCycle) newMock(IRequestCycle.class);
+    }
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        cycle.getEngine();
-        cyclec.setReturnValue(engine);
-
+    private void trainGetOutputEncoding(IEngine engine, String outputEncoding)
+    {
         engine.getOutputEncoding();
-        enginec.setReturnValue("utf-8");
+        setReturnValue(engine, outputEncoding);
+    }
 
-        return cycle;
+    private void trainGetEngine(IRequestCycle cycle, IEngine engine)
+    {
+        cycle.getEngine();
+        setReturnValue(cycle, engine);
     }
 
     public void testNoEncoders()
     {
         ErrorLog log = newErrorLog();
         WebRequest request = newRequest();
+        IEngine engine = newEngine();
         IRequestCycle cycle = newCycle();
+        IEngineService service = newService("myservice");
+
+        trainGetEngine(cycle, engine);
+        trainGetOutputEncoding(engine, "utf-8");
 
         replayControls();
 
@@ -138,33 +151,36 @@ public class TestLinkFactory extends HiveMindTestCase
         lf.initializeService();
 
         Map parameters = new HashMap();
-        parameters.put(ServiceConstants.SERVICE, "myservice");
 
-        ILink link = lf.constructLink(false, parameters, false);
+        ILink link = lf.constructLink(service, false, parameters, false);
 
         verifyControls();
 
         assertEquals("/context/app?service=myservice", link.getURL());
     }
 
+    private IEngineService newService(String name)
+    {
+        IEngineService service = (IEngineService) newMock(IEngineService.class);
+
+        service.getName();
+        setReturnValue(service, name);
+
+        return service;
+    }
+
     public void testStatefulRequest()
     {
         ErrorLog log = newErrorLog();
         WebRequest request = newRequest();
-        MockControl enginec = newControl(IEngine.class);
-        IEngine engine = (IEngine) enginec.getMock();
+        IEngine engine = newEngine();
+        IEngineService service = newService("myservice");
+        IRequestCycle cycle = newCycle();
 
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        trainGetEngine(cycle, engine);
+        trainGetOutputEncoding(engine, "utf-8");
 
-        cycle.getEngine();
-        cyclec.setReturnValue(engine);
-
-        engine.getOutputEncoding();
-        enginec.setReturnValue("utf-8");
-
-        cycle.encodeURL("/context/app?foo=bar&service=myservice");
-        cyclec.setReturnValue("{encoded}");
+        trainEncodeURL(cycle, "/context/app?foo=bar&service=myservice", "{encoded}");
 
         replayControls();
 
@@ -181,13 +197,18 @@ public class TestLinkFactory extends HiveMindTestCase
         lf.initializeService();
 
         Map parameters = new HashMap();
-        parameters.put(ServiceConstants.SERVICE, "myservice");
 
-        ILink link = lf.constructLink(false, parameters, true);
+        ILink link = lf.constructLink(service, false, parameters, true);
 
         assertEquals("{encoded}", link.getURL());
 
         verifyControls();
+    }
+
+    private void trainEncodeURL(IRequestCycle cycle, String inputURL, String encodeURL)
+    {
+        cycle.encodeURL(inputURL);
+        setReturnValue(cycle, encodeURL);
     }
 
     public void testNoopEncoders()
@@ -195,6 +216,11 @@ public class TestLinkFactory extends HiveMindTestCase
         WebRequest request = newRequest();
         IRequestCycle cycle = newCycle();
         ErrorLog log = newErrorLog();
+        IEngine engine = newEngine();
+        IEngineService service = newService("myservice");
+
+        trainGetEngine(cycle, engine);
+        trainGetOutputEncoding(engine, "utf-8");
 
         replayControls();
 
@@ -214,9 +240,8 @@ public class TestLinkFactory extends HiveMindTestCase
         lf.initializeService();
 
         Map parameters = new HashMap();
-        parameters.put(ServiceConstants.SERVICE, "myservice");
 
-        ILink link = lf.constructLink(false, parameters, false);
+        ILink link = lf.constructLink(service, false, parameters, false);
 
         verifyControls();
 
@@ -228,8 +253,14 @@ public class TestLinkFactory extends HiveMindTestCase
         WebRequest request = newRequest();
         IRequestCycle cycle = newCycle();
         ErrorLog log = newErrorLog();
+        IEngineService service = newService("page");
+        IEngine engine = newEngine();
+
+        trainGetEngine(cycle, engine);
+        trainGetOutputEncoding(engine, "utf-8");
 
         replayControls();
+
         PageServiceEncoder e = new PageServiceEncoder();
         e.setServiceName("page");
         e.setExtension("html");
@@ -248,14 +279,36 @@ public class TestLinkFactory extends HiveMindTestCase
         lf.initializeService();
 
         Map parameters = new HashMap();
-        parameters.put(ServiceConstants.SERVICE, "page");
         parameters.put(ServiceConstants.PAGE, "Barney");
 
-        ILink link = lf.constructLink(false, parameters, false);
+        ILink link = lf.constructLink(service, false, parameters, false);
 
         verifyControls();
 
         assertEquals("/context/Barney.html", link.getURL());
+    }
+
+    public void testServiceNameIsNull()
+    {
+        IEngineService service = newService(null);
+
+        Map parameters = new HashMap();
+
+        replayControls();
+
+        LinkFactory lf = new LinkFactoryImpl();
+
+        try
+        {
+            lf.constructLink(service, false, parameters, true);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(ImplMessages.serviceNameIsNull(), ex.getMessage());
+        }
+
+        verifyControls();
     }
 
     public void testWithServiceParameters()
@@ -263,6 +316,11 @@ public class TestLinkFactory extends HiveMindTestCase
         WebRequest request = newRequest();
         IRequestCycle cycle = newCycle();
         ErrorLog log = newErrorLog();
+        IEngineService service = newService("external");
+        IEngine engine = newEngine();
+
+        trainGetEngine(cycle, engine);
+        trainGetOutputEncoding(engine, "utf-8");
 
         replayControls();
 
@@ -285,12 +343,11 @@ public class TestLinkFactory extends HiveMindTestCase
         lf.initializeService();
 
         Map parameters = new HashMap();
-        parameters.put(ServiceConstants.SERVICE, "external");
         parameters.put(ServiceConstants.PAGE, "Barney");
         parameters.put(ServiceConstants.PARAMETER, new Object[]
         { Boolean.TRUE });
 
-        ILink link = lf.constructLink(false, parameters, false);
+        ILink link = lf.constructLink(service, false, parameters, false);
 
         verifyControls();
 

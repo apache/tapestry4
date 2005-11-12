@@ -73,7 +73,6 @@ public class ActionService implements IEngineService
 
         boolean stateful = _request.getSession(false) != null;
 
-        parameters.put(ServiceConstants.SERVICE, getName());
         parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
         parameters.put(ServiceConstants.PAGE, activePage.getPageName());
         parameters.put(ServiceConstants.CONTAINER, activePage == componentPage ? null
@@ -81,7 +80,7 @@ public class ActionService implements IEngineService
         parameters.put(ACTION, asp.getActionId());
         parameters.put(ServiceConstants.SESSION, stateful ? "T" : null);
 
-        return _linkFactory.constructLink(post, parameters, true);
+        return _linkFactory.constructLink(this, post, parameters, true);
     }
 
     public void service(IRequestCycle cycle) throws IOException

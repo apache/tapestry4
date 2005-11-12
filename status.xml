@@ -65,6 +65,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-741">PopupLinkRenderer overrides wrong method of DefaultLinkRenderer</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-652">Checkbox does not support FieldLabel</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-328">When an engine implementation is missing Tapestry does not throw an appropriate error</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-720">Tapestry should validate that all engine services provide a non-null service parameter</action>
     </release>
     <release version="4.0-beta-12" date="Oct 30 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-718">Asset injection makes assets appear as null inside finishLoad()</action>

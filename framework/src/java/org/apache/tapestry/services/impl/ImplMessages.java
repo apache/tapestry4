@@ -274,4 +274,9 @@ class ImplMessages
     {
         return _formatter.format("engine-class-not-found", engineClassName);
     }
+
+    static String serviceNameIsNull()
+    {
+        return _formatter.getMessage("service-name-is-null");
+    }
 }

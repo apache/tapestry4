@@ -50,9 +50,6 @@ public class RestartService implements IEngineService
     private HttpServletResponse _response;
 
     /** @since 4.0 */
-    private AbsoluteURLBuilder _builder;
-
-    /** @since 4.0 */
     private LinkFactory _linkFactory;
 
     /** @since 4.0 */
@@ -65,9 +62,7 @@ public class RestartService implements IEngineService
 
         Map parameters = new HashMap();
 
-        parameters.put(ServiceConstants.SERVICE, getName());
-
-        return _linkFactory.constructLink(post, parameters, true);
+        return _linkFactory.constructLink(this, post, parameters, true);
     }
 
     public void service(IRequestCycle cycle) throws IOException
@@ -88,7 +83,7 @@ public class RestartService implements IEngineService
             }
         }
 
-        String url = _builder.constructURL(cycle.getAbsoluteURL(_servletPath));
+        String url = cycle.getAbsoluteURL(_servletPath);
 
         _response.sendRedirect(url);
     }
@@ -108,12 +103,6 @@ public class RestartService implements IEngineService
     public void setRequest(HttpServletRequest request)
     {
         _request = request;
-    }
-
-    /** @since 4.0 */
-    public void setBuilder(AbsoluteURLBuilder builder)
-    {
-        _builder = builder;
     }
 
     /** @since 4.0 */
