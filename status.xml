@@ -59,6 +59,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-517">Using a FieldLabel component after the decorated form component causes the FieldLabel's id attribute to be wrong</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-669,TAPESTRY-233,TAPESTRY-690,TAPESTRY-228">Fix a number of bugs in the DatePicker component's JavaScript</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-734">Rollover component parameter names are wrong</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-298">Wrong org.apache.tapestry.specification-path in javadoc</action>
     </release>
     <release version="4.0-beta-12" date="Oct 30 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-718">Asset injection makes assets appear as null inside finishLoad()</action>
