@@ -17,13 +17,13 @@ package org.apache.tapestry.services.impl;
 import java.util.Locale;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.engine.AbstractEngine;
 import org.apache.tapestry.engine.BaseEngine;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.EngineFactoryImpl}.
@@ -31,17 +31,15 @@ import org.easymock.MockControl;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class TestEngineFactory extends HiveMindTestCase
+public class EngineFactoryTest extends HiveMindTestCase
 {
     public void testUseDefault()
     {
-        MockControl specControl = newControl(IApplicationSpecification.class);
-        IApplicationSpecification spec = (IApplicationSpecification) specControl.getMock();
+        IApplicationSpecification spec = newSpec();
 
         // Training
 
-        spec.getEngineClassName();
-        specControl.setReturnValue(null);
+        trainGetEngineClassName(spec, null);
 
         EngineFactoryImpl f = new EngineFactoryImpl();
 
@@ -61,15 +59,22 @@ public class TestEngineFactory extends HiveMindTestCase
         verifyControls();
     }
 
+    private void trainGetEngineClassName(IApplicationSpecification spec, String engineClassName)
+    {
+        spec.getEngineClassName();
+        setReturnValue(spec, engineClassName);
+    }
+
+    private IApplicationSpecification newSpec()
+    {
+        return (IApplicationSpecification) newMock(IApplicationSpecification.class);
+    }
+
     public void testDefinedInSpec()
     {
-        MockControl specControl = newControl(IApplicationSpecification.class);
-        IApplicationSpecification spec = (IApplicationSpecification) specControl.getMock();
+        IApplicationSpecification spec = newSpec();
 
-        // Training
-
-        spec.getEngineClassName();
-        specControl.setReturnValue(EngineFixture.class.getName());
+        trainGetEngineClassName(spec, EngineFixture.class.getName());
 
         EngineFactoryImpl f = new EngineFactoryImpl();
 
@@ -90,13 +95,11 @@ public class TestEngineFactory extends HiveMindTestCase
 
     public void testUnableToInstantiate()
     {
-        MockControl specControl = newControl(IApplicationSpecification.class);
-        IApplicationSpecification spec = (IApplicationSpecification) specControl.getMock();
+        IApplicationSpecification spec = newSpec();
 
         // Training
 
-        spec.getEngineClassName();
-        specControl.setReturnValue(AbstractEngine.class.getName());
+        trainGetEngineClassName(spec, AbstractEngine.class.getName());
 
         EngineFactoryImpl f = new EngineFactoryImpl();
 
@@ -124,30 +127,28 @@ public class TestEngineFactory extends HiveMindTestCase
 
     public void testInvalidClass()
     {
-        MockControl specControl = newControl(IApplicationSpecification.class);
-        IApplicationSpecification spec = (IApplicationSpecification) specControl.getMock();
+        IApplicationSpecification spec = newSpec();
 
-        // Training
+        trainGetEngineClassName(spec, "foo.XyzzYx");
 
-        spec.getEngineClassName();
-        specControl.setReturnValue("foo.XyzzYx");
+        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
+
+        log.error("Engine class 'foo.XyzzYx' not found.", null, null);
 
         EngineFactoryImpl f = new EngineFactoryImpl();
 
         f.setApplicationSpecification(spec);
         f.setClassResolver(new DefaultClassResolver());
+        f.setErrorLog(log);
+        f.setDefaultEngineClassName(BaseEngine.class.getName());
 
         replayControls();
 
-        try
-        {
-            f.initializeService();
-            unreachable();
-        }
-        catch (ApplicationRuntimeException ex)
-        {
-            assertExceptionSubstring(ex, "Could not load class foo.XyzzYx");
-        }
+        f.initializeService();
+
+        IEngine result = f.constructNewEngineInstance(Locale.CANADA_FRENCH);
+
+        assertTrue(result instanceof BaseEngine);
 
         verifyControls();
     }

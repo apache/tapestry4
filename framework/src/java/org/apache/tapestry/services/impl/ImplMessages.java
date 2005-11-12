@@ -269,4 +269,9 @@ class ImplMessages
         return _formatter.format("used-template-parameter-alias", new Object[]
         { HiveMind.getLocationString(token), token.getType(), attributeName, parameterName });
     }
+
+    static String engineClassNotFound(String engineClassName)
+    {
+        return _formatter.format("engine-class-not-found", engineClassName);
+    }
 }

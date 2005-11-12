@@ -21,7 +21,7 @@ import org.apache.tapestry.engine.AbstractEngine;
 import org.apache.tapestry.engine.IPageRecorder;
 
 /**
- * Used by {@link org.apache.tapestry.services.impl.TestEngineFactory}.
+ * Used by {@link org.apache.tapestry.services.impl.EngineFactoryTest}.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
