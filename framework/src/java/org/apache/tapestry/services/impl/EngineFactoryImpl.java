@@ -18,34 +18,40 @@ import java.util.Locale;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.ErrorLog;
 import org.apache.tapestry.IEngine;
+import org.apache.tapestry.engine.BaseEngine;
 import org.apache.tapestry.services.EngineFactory;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
- * Standard implementation of {@link org.apache.tapestry.services.EngineFactory} service.
- * This should do for most purposes, since a major focus of Tapestry 4.0 is to no longer
- * require subclassing of {@link org.apache.tapestry.engine.BaseEngine}.
- *
+ * Standard implementation of {@link org.apache.tapestry.services.EngineFactory} service. This
+ * should do for most purposes, since a major focus of Tapestry 4.0 is to no longer require
+ * subclassing of {@link org.apache.tapestry.engine.BaseEngine}.
+ * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public class EngineFactoryImpl implements EngineFactory
 {
     private IApplicationSpecification _applicationSpecification;
+
     private String _defaultEngineClassName;
+
     private EngineConstructor _constructor;
+
     private ClassResolver _classResolver;
+
+    private ErrorLog _errorLog;
 
     interface EngineConstructor
     {
         IEngine construct();
     }
 
-
-	// TODO: Create a BaseEngineConstructor that is hardcoded to
-	// instantiate a BaseEngine instance, without using reflection
-	// (for efficiency). 
+    // TODO: Create a BaseEngineConstructor that is hardcoded to
+    // instantiate a BaseEngine instance, without using reflection
+    // (for efficiency).
 
     static class ReflectiveEngineConstructor implements EngineConstructor
     {
@@ -64,9 +70,9 @@ public class EngineFactoryImpl implements EngineFactory
             }
             catch (Exception ex)
             {
-                throw new ApplicationRuntimeException(
-                    ImplMessages.errorInstantiatingEngine(_engineClass, ex),
-                    ex);
+                throw new ApplicationRuntimeException(ImplMessages.errorInstantiatingEngine(
+                        _engineClass,
+                        ex), ex);
             }
         }
     }
@@ -75,12 +81,18 @@ public class EngineFactoryImpl implements EngineFactory
     {
         String engineClassName = _applicationSpecification.getEngineClassName();
 
-		// TODO: Check in web.xml first.
+        // TODO: Check in web.xml first.
 
         if (engineClassName == null)
             engineClassName = _defaultEngineClassName;
 
-        Class engineClass = _classResolver.findClass(engineClassName);
+        Class engineClass = _classResolver.checkForClass(engineClassName);
+
+        if (engineClass == null)
+        {
+            _errorLog.error(ImplMessages.engineClassNotFound(engineClassName), null, null);
+            engineClass = BaseEngine.class;
+        }
 
         _constructor = new ReflectiveEngineConstructor(engineClass);
     }
@@ -107,6 +119,11 @@ public class EngineFactoryImpl implements EngineFactory
     public void setDefaultEngineClassName(String string)
     {
         _defaultEngineClassName = string;
+    }
+
+    public void setErrorLog(ErrorLog errorLog)
+    {
+        _errorLog = errorLog;
     }
 
 }
