@@ -28,10 +28,10 @@ import org.apache.tapestry.IComponent;
 public class LiteralBindingFactory extends AbstractBindingFactory
 {
 
-    public IBinding createBinding(IComponent root, String description, String path,
+    public IBinding createBinding(IComponent root, String description, String expression,
             Location location)
     {
-        return new LiteralBinding(description, getValueConverter(), location, path);
+        return new LiteralBinding(description, getValueConverter(), location, expression);
     }
 
 }

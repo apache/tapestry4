@@ -33,10 +33,10 @@ public class OGNLBindingFactory extends AbstractBindingFactory
 
     private ExpressionCache _expressionCache;
 
-    public IBinding createBinding(IComponent root, String description, String path,
+    public IBinding createBinding(IComponent root, String description, String expression,
             Location location)
     {
-        return new ExpressionBinding(description, location, getValueConverter(), root, path,
+        return new ExpressionBinding(description, location, getValueConverter(), root, expression,
                 _expressionEvaluator, _expressionCache);
     }
 

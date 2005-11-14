@@ -31,6 +31,8 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.PropertyHolderPropertySource;
 
 /**
+ * Implementation of tapestry.props.ComponentPropertySource.
+ * <p>
  * TODO: Figure out a testing strategy for this beast!
  * 
  * @author Howard M. Lewis Ship

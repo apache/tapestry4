@@ -32,11 +32,11 @@ public class StateBindingFactory extends AbstractBindingFactory
         _applicationStateManager = applicationStateManager;
     }
 
-    public IBinding createBinding(IComponent root, String bindingDescription, String path,
+    public IBinding createBinding(IComponent root, String bindingDescription, String expression,
             Location location)
     {
         return new StateBinding(bindingDescription, getValueConverter(), location,
-                _applicationStateManager, path);
+                _applicationStateManager, expression);
     }
 
 }

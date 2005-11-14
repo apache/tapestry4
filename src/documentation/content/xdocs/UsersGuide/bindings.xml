@@ -39,7 +39,7 @@ may occur inside a page or component template, or a page or component specificat
 When binding a component parameter, the value to be bound may be just a literal string, or
 it could be an &OGNL; expression, or subject to any of a number of other interpretations.  Tapestry
 uses a <em>prefix</em>   value, such as "ognl:", or "message:", to identify how the rest of the
-value is to be interprted.  The prefix identifies the <em>binding type</em>:
+value is to be interpreted.  The prefix identifies the <em>binding type</em>:
 </p>  
     
 
@@ -148,7 +148,8 @@ value is to be interprted.  The prefix identifies the <em>binding type</em>:
 
 <p>
 What happens when you omit a binding prefix?  In a page or component <em>template</em>, the value it is assumed to be a literal string, as with the "literal:" prefix.
-In a page or component specification, or inside a Java annotation, the value is assumed to be an &OGNL; expression, as with the "ognl:" prefix.  You will occasionally have
+In a page or component specification, or inside a Java annotation, the value is assumed to be an &OGNL; expression, as with the "ognl:" prefix
+(but even this can be configured).  You will occasionally have
 to use an explicit "literal:" prefix inside such files.
 </p>
 

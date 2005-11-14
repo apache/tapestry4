@@ -32,9 +32,9 @@ import org.apache.tapestry.coerce.ValueConverter;
  */
 public class UserAttributeBinding extends AbstractBinding
 {
-    private PortletRequest _request;
+    private final PortletRequest _request;
 
-    private String _attributeName;
+    private final String _attributeName;
 
     public UserAttributeBinding(String description, ValueConverter valueConverter,
             Location location, PortletRequest request, String attributeName)

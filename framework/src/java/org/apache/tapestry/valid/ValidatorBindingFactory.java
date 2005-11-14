@@ -19,8 +19,7 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.lib.BeanFactory;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.binding.BindingFactory;
-import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.tapestry.binding.AbstractBindingFactory;
 
 /**
  * Uses the tapestry.valid.ValidatorBeanFactory service to obtain configuration IValidator
@@ -30,20 +29,13 @@ import org.apache.tapestry.coerce.ValueConverter;
  * @since 4.0
  * @see org.apache.tapestry.valid.ValidatorBinding
  */
-public class ValidatorBindingFactory implements BindingFactory
+public class ValidatorBindingFactory extends AbstractBindingFactory
 {
     private BeanFactory _validatorBeanFactory;
-
-    private ValueConverter _valueConverter;
 
     public void setValidatorBeanFactory(BeanFactory validatorBeanFactory)
     {
         _validatorBeanFactory = validatorBeanFactory;
-    }
-
-    public void setValueConverter(ValueConverter valueConverter)
-    {
-        _valueConverter = valueConverter;
     }
 
     /**
@@ -52,19 +44,19 @@ public class ValidatorBindingFactory implements BindingFactory
      * properties.
      */
 
-    public IBinding createBinding(IComponent root, String bindingDescription, String path,
+    public IBinding createBinding(IComponent root, String bindingDescription, String expression,
             Location location)
     {
         try
         {
-            IValidator validator = (IValidator) _validatorBeanFactory.get(path);
+            IValidator validator = (IValidator) _validatorBeanFactory.get(expression);
 
-            return new ValidatorBinding(bindingDescription, _valueConverter, location, validator);
+            return new ValidatorBinding(bindingDescription, getValueConverter(), location,
+                    validator);
         }
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(ex.getMessage(), location, ex);
         }
     }
-
 }

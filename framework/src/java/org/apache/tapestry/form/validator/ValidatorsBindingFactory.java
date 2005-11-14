@@ -31,12 +31,12 @@ public class ValidatorsBindingFactory extends AbstractBindingFactory
         _validatorFactory = validatorFactory;
     }
 
-    public IBinding createBinding(IComponent root, String bindingDescription, String path,
+    public IBinding createBinding(IComponent root, String bindingDescription, String expression,
             Location location)
     {
         try
         {
-            List validators = _validatorFactory.constructValidatorList(root, path);
+            List validators = _validatorFactory.constructValidatorList(root, expression);
 
             return new ValidatorsBinding(bindingDescription, getValueConverter(), location,
                     validators);

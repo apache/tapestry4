@@ -28,10 +28,11 @@ import org.apache.tapestry.IComponent;
 public class ListenerBindingFactory extends AbstractBindingFactory
 {
 
-    public IBinding createBinding(IComponent root, String description, String path,
+    public IBinding createBinding(IComponent root, String description, String expression,
             Location location)
     {
-        return new ListenerMethodBinding(root, path, description, getValueConverter(), location);
+        return new ListenerMethodBinding(description, getValueConverter(), location, root,
+                expression);
     }
 
 }

@@ -34,15 +34,16 @@ public interface BindingFactory
      *            path is "evaluated", the root component provides a context.
      * @param description
      *            The {@link IBinding#getDescription() description}of the binding.
-     * @param path
-     *            The path used to get (or update) a value for the path. This may be an OGNL
-     *            expression, a message key, a literal value, or otherwise defined by the type of
-     *            binding. It is the value of the binding reference with the prefix (used to
-     *            identify the factory) stripped off.
+     * @param expression
+     *            The expression used to get (or update) a value. The interpretation of this
+     *            expression is determined by the type of {@link IBinding} created by this factory.
+     *            In some cases, it is simple the name of an object contained by the root component.
+     *            For the common "ognl:" binding prefix, it is an OGNL expression to be evaluated on
+     *            the root object.
      * @param location
      *            The location of the binding, used to report any errors related to the binding, or
      *            to the component parameter the binding is bound to.
      */
-    public IBinding createBinding(IComponent root, String bindingDescription, String path,
+    public IBinding createBinding(IComponent root, String bindingDescription, String expression,
             Location location);
 }

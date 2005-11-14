@@ -41,8 +41,8 @@ public class ListenerMethodBinding extends AbstractBinding implements IActionLis
 
     private IActionListener _listener;
 
-    public ListenerMethodBinding(IComponent component, String methodName, String description,
-            ValueConverter valueConverter, Location location)
+    public ListenerMethodBinding(String description, ValueConverter valueConverter, Location location,
+            IComponent component, String methodName)
     {
         super(description, valueConverter, location);
 
