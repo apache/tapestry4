@@ -56,10 +56,11 @@
   <changes>
     <release version="4.0-beta-14" date="unreleased">
       <action type="update" dev="HLS">Make default binding prefix configurable</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-752">XTile service passes null list of listener parameters to listener method</action>
     </release>
     <release version="4.0-beta-13" date="Nov 12 2005">
       <action type="update" dev="HLS">Switch to HiveMind 1.1 (final)</action>
-      <action type="fix" dev="HLS" fixes-bug="TAPESTRT-678">LinkSubmit does not work correctly when the browser's back button is used and the form resubmitted normally</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-678">LinkSubmit does not work correctly when the browser's back button is used and the form resubmitted normally</action>
       <action type="add" dev="HLS" fixes-bug="TAPESTRY-731">Extend RequestDisplay component (used on the Exception page) to also report the internal status of key Tapestry services</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-742">LinkSubmit renders overly verbose JavaScript</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-620">Expose the current IRequestCycle as an injectable service</action>
