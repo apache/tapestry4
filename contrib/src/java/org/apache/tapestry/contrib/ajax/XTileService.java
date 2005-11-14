@@ -36,7 +36,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.error.RequestExceptionReporter;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.ContentType;
@@ -56,7 +55,7 @@ public class XTileService implements IEngineService
     private RequestExceptionReporter _exceptionReporter;
 
     private WebResponse _response;
-    
+
     private LinkFactory _linkFactory;
 
     public String getName()
@@ -91,14 +90,13 @@ public class XTileService implements IEngineService
 
         IXTile xtile = (IXTile) component;
 
-        // do not squeeze on input
-        RequestContext context = cycle.getRequestContext();
-        String[] params = context.getParameters(ServiceConstants.PARAMETER);
-        cycle.setServiceParameters(params);
+        String[] params = cycle.getParameters(ServiceConstants.PARAMETER);
+        cycle.setListenerParameters(params);
+
         xtile.trigger(cycle);
 
         // do not squeeze on output either
-        Object[] args = cycle.getServiceParameters();
+        Object[] args = cycle.getListenerParameters();
         String strArgs = generateOutputString(args);
         if (strArgs != null)
         {
