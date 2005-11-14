@@ -17,17 +17,17 @@ package org.apache.tapestry.pageload;
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.BindingSource;
+import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.spec.BindingSpecification;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.ContainedComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ParameterSpecification;
-import org.easymock.MockControl;
 
 /**
  * Additional tests for {@link org.apache.tapestry.pageload.PageLoader}. Ultimately, testing this
@@ -36,48 +36,18 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestPageLoader extends HiveMindTestCase
+public class PageLoaderTest extends BaseComponentTestCase
 {
-    public IComponent newComponent(IComponentSpecification spec)
-    {
-        MockControl control = newControl(IComponent.class);
-        IComponent component = (IComponent) control.getMock();
-
-        component.getSpecification();
-        control.setReturnValue(spec);
-
-        return component;
-    }
-
-    private IBinding newBinding()
-    {
-        return (IBinding) newMock(IBinding.class);
-    }
-
-    private IBinding newBinding(Location l)
-    {
-        MockControl control = newControl(IBinding.class);
-        IBinding binding = (IBinding) control.getMock();
-
-        binding.getLocation();
-        control.setReturnValue(l);
-
-        return binding;
-    }
 
     public void testAddDuplicateBindingFails()
     {
-        MockControl componentc = newControl(IComponent.class);
-        IComponent component = (IComponent) componentc.getMock();
-
+        IComponent component = newComponent();
         Location l1 = newLocation();
         Location l2 = newLocation();
-
         IBinding oldBinding = newBinding(l1);
         IBinding newBinding = newBinding(l2);
 
-        component.getBinding("dupe");
-        componentc.setReturnValue(oldBinding);
+        trainGetBinding(component, "dupe", oldBinding);
 
         replayControls();
 
@@ -89,7 +59,7 @@ public class TestPageLoader extends HiveMindTestCase
         catch (ApplicationRuntimeException ex)
         {
             assertEquals(
-                    "A binding for parameter dupe conflicts with a previous binding (at classpath:/org/apache/tapestry/pageload/TestPageLoader, line 1).",
+                    "A binding for parameter dupe conflicts with a previous binding (at classpath:/org/apache/tapestry/pageload/PageLoaderTest, line 1).",
                     ex.getMessage());
             assertSame(component, ex.getComponent());
             assertSame(l2, ex.getLocation());
@@ -98,11 +68,11 @@ public class TestPageLoader extends HiveMindTestCase
 
     public void testBindAlias()
     {
-        MockControl containerc = newControl(IComponent.class);
-        IComponent container = (IComponent) containerc.getMock();
-
-        MockControl componentc = newControl(IComponent.class);
-        IComponent component = (IComponent) componentc.getMock();
+        IComponent container = newComponent();
+        IComponent component = newComponent();
+        Log log = newLog();
+        IBinding binding = newBinding();
+        BindingSource source = newBindingSource();
 
         ParameterSpecification pspec = new ParameterSpecification();
         pspec.setParameterName("fred");
@@ -122,23 +92,21 @@ public class TestPageLoader extends HiveMindTestCase
         IComponentSpecification spec = new ComponentSpecification();
         spec.addParameter(pspec);
 
-        component.getSpecification();
-        componentc.setReturnValue(spec);
-
-        Log log = (Log) newMock(Log.class);
+        trainGetSpecification(component, spec);
 
         log
-                .warn("Parameter barney (for component FredComponent, at classpath:/org/apache/tapestry/pageload/TestPageLoader, line 1) was bound; this parameter has been deprecated, bind parameter fred instead.");
+                .warn("Parameter barney (for component FredComponent, at classpath:/org/apache/tapestry/pageload/PageLoaderTest, line 1) was bound; this parameter has been deprecated, bind parameter fred instead.");
 
-        IBinding binding = newBinding();
-        MockControl sourcec = newControl(BindingSource.class);
-        BindingSource source = (BindingSource) sourcec.getMock();
+        trainCreateBinding(
+                source,
+                container,
+                "parameter barney",
+                "an-expression",
+                "ognl",
+                l,
+                binding);
 
-        source.createBinding(container, "parameter barney", "an-expression", "ognl", l);
-        sourcec.setReturnValue(binding);
-
-        component.getBinding("fred");
-        componentc.setReturnValue(null);
+        trainGetBinding(component, "fred", null);
 
         component.setBinding("fred", binding);
 
@@ -148,18 +116,30 @@ public class TestPageLoader extends HiveMindTestCase
         loader.setLog(log);
         loader.setBindingSource(source);
 
-        loader.bind(container, component, contained);
+        loader.bind(container, component, contained, "ognl");
 
         verifyControls();
     }
 
+    private void trainCreateBinding(BindingSource source, IComponent container, String description,
+            String expression, String defaultBindingPrefix, Location l, IBinding binding)
+    {
+        source.createBinding(container, description, expression, defaultBindingPrefix, l);
+        setReturnValue(source, binding);
+    }
+
+    protected BindingSource newBindingSource()
+    {
+        return (BindingSource) newMock(BindingSource.class);
+    }
+
     public void testBindDeprecated()
     {
-        MockControl containerc = newControl(IComponent.class);
-        IComponent container = (IComponent) containerc.getMock();
-
-        MockControl componentc = newControl(IComponent.class);
-        IComponent component = (IComponent) componentc.getMock();
+        IComponent container = newComponent();
+        IComponent component = newComponent();
+        IBinding binding = newBinding();
+        BindingSource source = newBindingSource();
+        Log log = newLog();
 
         ParameterSpecification pspec = new ParameterSpecification();
         pspec.setParameterName("fred");
@@ -179,25 +159,16 @@ public class TestPageLoader extends HiveMindTestCase
         IComponentSpecification spec = new ComponentSpecification();
         spec.addParameter(pspec);
 
-        component.getSpecification();
-        componentc.setReturnValue(spec);
-
-        Log log = (Log) newMock(Log.class);
+        trainGetSpecification(component, spec);
 
         log
-                .warn("Parameter fred (at classpath:/org/apache/tapestry/pageload/TestPageLoader, line 1) has been deprecated, "
+                .warn("Parameter fred (at classpath:/org/apache/tapestry/pageload/PageLoaderTest, line 1) has been deprecated, "
                         + "and may be removed in a future release. Consult the documentation for component FredComponent to "
                         + "determine an appropriate replacement.");
 
-        IBinding binding = newBinding();
-        MockControl sourcec = newControl(BindingSource.class);
-        BindingSource source = (BindingSource) sourcec.getMock();
+        trainCreateBinding(source, container, "parameter fred", "an-expression", "ognl", l, binding);
 
-        source.createBinding(container, "parameter fred", "an-expression", "ognl", l);
-        sourcec.setReturnValue(binding);
-
-        component.getBinding("fred");
-        componentc.setReturnValue(null);
+        trainGetBinding(component, "fred", null);
 
         component.setBinding("fred", binding);
 
@@ -207,8 +178,13 @@ public class TestPageLoader extends HiveMindTestCase
         loader.setLog(log);
         loader.setBindingSource(source);
 
-        loader.bind(container, component, contained);
+        loader.bind(container, component, contained, "ognl");
 
         verifyControls();
+    }
+
+    protected ComponentPropertySource newPropertySource()
+    {
+        return (ComponentPropertySource) newMock(ComponentPropertySource.class);
     }
 }

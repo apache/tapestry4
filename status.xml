@@ -37,6 +37,10 @@
       <action context="code" dev="open">Handle change of locale correctly, by reloading new instance of page in proper locale</action>
       <action context="code" dev="open">Intersertials</action>
       <action context="code" dev="open">POJO page and component classes</action>
+      <action context="documentation" dev="open">Extend the QuickStart tutorial</action>
+      <action context="code" dev="open">Proper management of page/component specification and template caches with
+      automatic invalidation</action>
+      <action context="code" dev="open">Integration testing framework</action>
     </actions>
     <!-- Add todo items. @context is an arbitrary string. Eg:
     <actions priority="high">
@@ -51,7 +55,7 @@
   </todo>
   <changes>
     <release version="4.0-beta-14" date="unreleased">
-      
+      <action type="update" dev="HLS">Make default binding prefix configurable</action>
     </release>
     <release version="4.0-beta-13" date="Nov 12 2005">
       <action type="update" dev="HLS">Switch to HiveMind 1.1 (final)</action>

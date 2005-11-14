@@ -29,9 +29,9 @@ import org.apache.tapestry.engine.state.ApplicationStateManager;
  */
 public class StateBinding extends AbstractBinding
 {
-    private ApplicationStateManager _applicationStateManager;
+    private final ApplicationStateManager _applicationStateManager;
 
-    private String _objectName;
+    private final String _objectName;
 
     public StateBinding(String description, ValueConverter valueConverter, Location location,
             ApplicationStateManager applicationStateManager, String objectName)

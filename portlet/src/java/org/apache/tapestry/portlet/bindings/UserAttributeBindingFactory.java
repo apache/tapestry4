@@ -19,8 +19,10 @@ import javax.portlet.PortletRequest;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.binding.AbstractBindingFactory;
 import org.apache.tapestry.binding.BindingFactory;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.tapestry.form.validator.AbstractValidatorWrapper;
 
 /**
  * Factory used to create {@link org.apache.tapestry.portlet.bindings.UserAttributeBinding}s.
@@ -28,30 +30,23 @@ import org.apache.tapestry.coerce.ValueConverter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class UserAttributeBindingFactory implements BindingFactory
+public class UserAttributeBindingFactory extends AbstractBindingFactory
 {
     private PortletRequest _request;
-
-    private ValueConverter _valueConverter;
 
     /**
      * Interprets the path as the Portlet user attribute name.
      */
 
-    public IBinding createBinding(IComponent root, String bindingDescription, String path,
+    public IBinding createBinding(IComponent root, String bindingDescription, String expression,
             Location location)
     {
-        return new UserAttributeBinding(bindingDescription, _valueConverter, location, _request,
-                path);
+        return new UserAttributeBinding(bindingDescription, getValueConverter(), location,
+                _request, expression);
     }
 
     public void setRequest(PortletRequest request)
     {
         _request = request;
-    }
-
-    public void setValueConverter(ValueConverter valueConverter)
-    {
-        _valueConverter = valueConverter;
     }
 }

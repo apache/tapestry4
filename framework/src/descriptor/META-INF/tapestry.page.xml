@@ -45,6 +45,7 @@
         <set-service property="assetSource" service-id="tapestry.asset.AssetSource"/>
         <set-service property="pageClassProvider" service-id="PageClassProvider"/>
         <set-service property="componentClassProvider" service-id="ComponentClassProvider"/>
+        <set-object property="componentPropertySource" value="infrastructure:componentPropertySource"/>
         <set-service property="threadLocale" service-id="hivemind.ThreadLocale"/>
       </construct>
     </invoke-factory>

@@ -37,6 +37,7 @@ import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.ITemplateComponent;
+import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingSource;
@@ -47,6 +48,7 @@ import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.services.ComponentConstructorFactory;
+import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.services.ComponentTemplateLoader;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.ContainedComponent;
@@ -58,7 +60,8 @@ import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.web.WebContextResource;
 
 /**
- * Runs the process of building the component hierarchy for an entire page.
+ * Implementation of tapestry.page.PageLoader. Runs the process of building the component hierarchy
+ * for an entire page.
  * <p>
  * This implementation is not threadsafe, therefore the pooled service model must be used.
  * 
@@ -118,6 +121,14 @@ public class PageLoader implements IPageLoader
      */
 
     private ComponentClassProvider _componentClassProvider;
+
+    /**
+     * Used to resolve meta-data properties related to a component.
+     * 
+     * @since 4.0
+     */
+
+    private ComponentPropertySource _componentPropertySource;
 
     /**
      * Tracks the current locale into which pages are loaded.
@@ -187,7 +198,8 @@ public class PageLoader implements IPageLoader
      *            {@link IComponentSpecification}).
      */
 
-    void bind(IComponent container, IComponent component, IContainedComponent contained)
+    void bind(IComponent container, IComponent component, IContainedComponent contained,
+            String defaultBindingPrefix)
     {
         IComponentSpecification spec = component.getSpecification();
         boolean formalOnly = !spec.getAllowInformalParameters();
@@ -281,7 +293,7 @@ public class PageLoader implements IPageLoader
 
             String description = PageloadMessages.parameterName(name);
 
-            IBinding binding = convert(container, description, BindingConstants.OGNL_PREFIX, bspec);
+            IBinding binding = convert(container, description, defaultBindingPrefix, bspec);
 
             addBindingToComponent(component, parameterName, binding);
         }
@@ -358,6 +370,10 @@ public class PageLoader implements IPageLoader
         if (_depth > _maxDepth)
             _maxDepth = _depth;
 
+        String defaultBindingPrefix = _componentPropertySource.getComponentProperty(
+                container,
+                TapestryConstants.DEFAULT_BINDING_PREFIX_NAME);
+
         List ids = new ArrayList(containerSpec.getComponentIds());
         int count = ids.size();
 
@@ -398,7 +414,7 @@ public class PageLoader implements IPageLoader
 
                 // Set up any bindings in the IContainedComponent specification
 
-                bind(container, component, contained);
+                bind(container, component, contained, defaultBindingPrefix);
 
                 // Now construct the component recusively; it gets its chance
                 // to create its subcomponents and set their bindings.
@@ -764,5 +780,11 @@ public class PageLoader implements IPageLoader
     public void setThreadLocale(ThreadLocale threadLocale)
     {
         _threadLocale = threadLocale;
+    }
+
+    /** @since 4.0 */
+    public void setComponentPropertySource(ComponentPropertySource componentPropertySource)
+    {
+        _componentPropertySource = componentPropertySource;
     }
 }

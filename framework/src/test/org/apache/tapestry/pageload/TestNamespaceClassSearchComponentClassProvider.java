@@ -61,7 +61,7 @@ public class TestNamespaceClassSearchComponentClassProvider extends HiveMindTest
         ClassFinder finder = newClassFinder(
                 "org.apache.tapestry.pageload",
                 "bar.Baz",
-                TestPageLoader.class);
+                PageLoaderTest.class);
 
         IComponentSpecification spec = newSpec();
 
@@ -74,7 +74,7 @@ public class TestNamespaceClassSearchComponentClassProvider extends HiveMindTest
         provider.setClassFinder(finder);
         provider.setPackagesName("zip");
 
-        assertEquals(TestPageLoader.class.getName(), provider.provideComponentClassName(context));
+        assertEquals(PageLoaderTest.class.getName(), provider.provideComponentClassName(context));
 
         verifyControls();
     }

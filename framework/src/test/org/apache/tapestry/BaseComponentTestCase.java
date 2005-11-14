@@ -17,6 +17,7 @@ package org.apache.tapestry;
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 
+import org.apache.commons.logging.Log;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
@@ -24,7 +25,6 @@ import org.apache.hivemind.Resource;
 import org.apache.hivemind.test.AggregateArgumentsMatcher;
 import org.apache.hivemind.test.ArgumentMatcher;
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.hivemind.test.TypeMatcher;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -164,11 +164,9 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IBinding newBinding(Location location)
     {
-        MockControl control = newControl(IBinding.class);
-        IBinding binding = (IBinding) control.getMock();
+        IBinding binding = newBinding();
 
-        binding.getLocation();
-        control.setReturnValue(location);
+        trainGetLocation(binding, location);
 
         return binding;
     }
@@ -475,5 +473,22 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         link.getParameterNames();
 
         setReturnValue(link, names);
+    }
+
+    protected void trainGetSpecification(IComponent component, IComponentSpecification spec)
+    {
+        component.getSpecification();
+        setReturnValue(component, spec);
+    }
+
+    protected void trainGetBinding(IComponent component, String name, IBinding binding)
+    {
+        component.getBinding(name);
+        setReturnValue(component, binding);
+    }
+
+    protected Log newLog()
+    {
+        return (Log) newMock(Log.class);
     }
 }

@@ -28,17 +28,19 @@ import org.apache.tapestry.binding.AbstractBindingFactory;
  * 
  * @author Howard Lewis Ship
  * @since 4.0
+ * @deprecated Support for the translator: will be removed in release 4.1, along with
+ *             {@link org.apache.tapestry.valid.ValidField}.
  */
 public class TranslatorBindingFactory extends AbstractBindingFactory
 {
     private BeanFactory _translatorBeanFactory;
 
-    public IBinding createBinding(IComponent root, String bindingDescription, String path,
+    public IBinding createBinding(IComponent root, String bindingDescription, String expression,
             Location location)
     {
         try
         {
-            Translator translator = (Translator) _translatorBeanFactory.get(path);
+            Translator translator = (Translator) _translatorBeanFactory.get(expression);
 
             return new TranslatorBinding(bindingDescription, getValueConverter(), location,
                     translator);

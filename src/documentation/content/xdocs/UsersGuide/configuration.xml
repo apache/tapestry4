@@ -354,6 +354,16 @@ currently used in Tapestry:
 </tr>
 
   <tr>
+    <td>org.apache.tapestry.default-binding-prefix</td>
+    <td>
+      The default binding to use when no explicit binding prefix is provided. This is typically set inside a page or
+      component specification, or within an application specification or library specification (to provide the default
+      for all pages and components). If not otherwise specified,
+      the default binding prefix is "ognl". 
+    </td>
+  </tr>
+
+  <tr>
     <td>org.apache.tapestry.default-cookie-max-age</td>
     <td>
       The default max age (in seconds) for cookies written by Tapestry, including the cookie used

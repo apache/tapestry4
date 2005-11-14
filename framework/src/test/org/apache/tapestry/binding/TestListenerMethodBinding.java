@@ -48,7 +48,7 @@ public class TestListenerMethodBinding extends BindingTestCase
 
         replayControls();
 
-        ListenerMethodBinding b = new ListenerMethodBinding(component, "foo", "param", vc, l);
+        ListenerMethodBinding b = new ListenerMethodBinding("param", vc, l, component, "foo");
 
         assertSame(b, b.getObject());
         assertSame(component, b.getComponent());
@@ -68,7 +68,7 @@ public class TestListenerMethodBinding extends BindingTestCase
 
         replayControls();
 
-        ListenerMethodBinding b = new ListenerMethodBinding(component, "foo", "param", vc, l);
+        ListenerMethodBinding b = new ListenerMethodBinding("param", vc, l, component, "foo");
 
         String toString = b.toString();
         String description = toString.substring(toString.indexOf('[') + 1, toString.length() - 1);
@@ -99,7 +99,7 @@ public class TestListenerMethodBinding extends BindingTestCase
 
         replayControls();
 
-        ListenerMethodBinding b = new ListenerMethodBinding(component, "foo", "param", vc, l);
+        ListenerMethodBinding b = new ListenerMethodBinding("param", vc, l, component, "foo");
 
         try
         {
@@ -133,7 +133,7 @@ public class TestListenerMethodBinding extends BindingTestCase
 
         replayControls();
 
-        ListenerMethodBinding b = new ListenerMethodBinding(component, "foo", "param", vc, l);
+        ListenerMethodBinding b = new ListenerMethodBinding("param", vc, l, component, "foo");
 
         try
         {
@@ -169,7 +169,7 @@ public class TestListenerMethodBinding extends BindingTestCase
 
         replayControls();
 
-        ListenerMethodBinding b = new ListenerMethodBinding(component, "foo", "param", vc, l);
+        ListenerMethodBinding b = new ListenerMethodBinding("param", vc, l, component, "foo");
 
         try
         {

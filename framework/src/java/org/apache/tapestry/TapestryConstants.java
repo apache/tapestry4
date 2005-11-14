@@ -32,6 +32,13 @@ public class TapestryConstants
 
     public static final String PAGE_CLASS_NAME = "org.apache.tapestry.default-page-class";
 
+    /**
+     * Name of meta-data property used to determine the default binding prefix. The meta default for
+     * this is "ognl".
+     */
+
+    public static final String DEFAULT_BINDING_PREFIX_NAME = "org.apache.tapestry.default-binding-prefix";
+
     private TapestryConstants()
     {
     }

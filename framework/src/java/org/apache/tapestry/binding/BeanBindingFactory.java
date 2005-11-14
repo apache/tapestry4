@@ -25,9 +25,9 @@ import org.apache.tapestry.IComponent;
 public class BeanBindingFactory extends AbstractBindingFactory
 {
 
-    public IBinding createBinding(IComponent root, String description, String path,
+    public IBinding createBinding(IComponent root, String description, String expression,
             Location location)
     {
-        return new BeanBinding(description, getValueConverter(), location, root, path);
+        return new BeanBinding(description, getValueConverter(), location, root, expression);
     }
 }

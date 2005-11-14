@@ -29,10 +29,10 @@ public class HiveMindBindingFactory extends AbstractBindingFactory
 {
     private InjectedValueProvider _injectedValueProvider;
 
-    public IBinding createBinding(IComponent root, String bindingDescription, String path,
+    public IBinding createBinding(IComponent root, String bindingDescription, String expression,
             Location location)
     {
-        return new HiveMindBinding(bindingDescription, getValueConverter(), location, path,
+        return new HiveMindBinding(bindingDescription, getValueConverter(), location, expression,
                 _injectedValueProvider);
     }
 
