@@ -19,5 +19,5 @@ Tapestry.validate_number = function(event, fieldId, message)
 	if (field.value == "") return;
 	
 	if (isNaN(field.value))
-		event.invalid_field(field, message)    
+		event.invalid_field(field, message);    
 }
