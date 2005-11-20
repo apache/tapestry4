@@ -74,7 +74,7 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
 
         strategy.initializeService();
 
-        assertSame(changes, strategy.getStoredChanges("MyPage", null));
+        assertSame(changes, strategy.getStoredChanges("MyPage"));
 
         verifyControls();
     }
@@ -83,7 +83,7 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
     {
         ClientPropertyPersistenceStrategy strategy = new ClientPropertyPersistenceStrategy();
 
-        assertTrue(strategy.getStoredChanges("UnknownPage", null).isEmpty());
+        assertTrue(strategy.getStoredChanges("UnknownPage").isEmpty());
     }
 
     public void testStoreAndRetrieve()
@@ -95,11 +95,11 @@ public class TestClientPropertyPersistenceStrategy extends HiveMindTestCase
 
         strategy.store("MyPage", "foo", "bar", "baz");
 
-        assertEquals(Collections.singletonList(pc), strategy.getStoredChanges("MyPage", null));
+        assertEquals(Collections.singletonList(pc), strategy.getStoredChanges("MyPage"));
 
-        strategy.discardStoredChanges("MyPage", null);
+        strategy.discardStoredChanges("MyPage");
 
-        assertEquals(Collections.EMPTY_LIST, strategy.getStoredChanges("MyPage", null));
+        assertEquals(Collections.EMPTY_LIST, strategy.getStoredChanges("MyPage"));
     }
 
     public void testAddParametersForPersistentProperties()

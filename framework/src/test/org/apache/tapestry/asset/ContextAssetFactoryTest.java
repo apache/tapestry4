@@ -22,6 +22,7 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.l10n.DefaultResourceLocalizer;
 import org.apache.tapestry.web.WebContext;
 
 public class ContextAssetFactoryTest extends HiveMindTestCase
@@ -51,6 +52,7 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
         replayControls();
 
         ContextAssetFactory factory = new ContextAssetFactory();
+        factory.setLocalizer(new DefaultResourceLocalizer());
 
         factory.setContextPath("/context");
 
@@ -75,7 +77,7 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
         replayControls();
 
         ContextAssetFactory factory = new ContextAssetFactory();
-
+        factory.setLocalizer(new DefaultResourceLocalizer());
         factory.setContextPath("/context");
 
         try
@@ -131,7 +133,7 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
         replayControls();
 
         ContextAssetFactory factory = new ContextAssetFactory();
-
+        factory.setLocalizer(new DefaultResourceLocalizer());
         factory.setContextPath("/context");
         factory.setWebContext(context);
 
@@ -155,7 +157,7 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
         replayControls();
 
         ContextAssetFactory factory = new ContextAssetFactory();
-
+        factory.setLocalizer(new DefaultResourceLocalizer());
         factory.setContextPath("/context");
         factory.setWebContext(context);
 

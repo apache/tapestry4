@@ -26,7 +26,6 @@ import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ServiceMap;
 import org.apache.tapestry.util.QueryParameterMap;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.RequestCycle}. Mostly just tests changes for 4.0
@@ -35,7 +34,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestRequestCycle extends HiveMindTestCase
+public class RequestCycleTest extends HiveMindTestCase
 {
     private IEngine newEngine()
     {
@@ -74,11 +73,10 @@ public class TestRequestCycle extends HiveMindTestCase
 
     private Infrastructure newInfrastructure(PageSource source)
     {
-        MockControl control = newControl(Infrastructure.class);
-        Infrastructure infrastructure = (Infrastructure) control.getMock();
+        Infrastructure infrastructure = (Infrastructure) newMock(Infrastructure.class);
 
         infrastructure.getPageSource();
-        control.setReturnValue(source);
+        setReturnValue(infrastructure, source);
 
         return infrastructure;
     }
@@ -95,24 +93,20 @@ public class TestRequestCycle extends HiveMindTestCase
         IEngineService service = newService();
         ServiceMap map = newServiceMap("fred", service);
 
-        MockControl control = newControl(Infrastructure.class);
-        Infrastructure infrastructure = (Infrastructure) control.getMock();
-
-        infrastructure.getPageSource();
-        control.setReturnValue(newPageSource());
+        Infrastructure infrastructure = newInfrastructure(newPageSource());
 
         infrastructure.getServiceMap();
-        control.setReturnValue(map);
+        setReturnValue(infrastructure, map);
 
         RequestCycleEnvironment env = new RequestCycleEnvironment(newErrorHandler(),
-                infrastructure, context, newStrategySource(), newBuilder());
+                infrastructure, newStrategySource(), newBuilder());
         IEngine engine = newEngine();
         IMonitor monitor = newMonitor();
 
         replayControls();
 
         IRequestCycle cycle = new RequestCycle(engine, new QueryParameterMap(), "fred", monitor,
-                env);
+                env, context);
 
         assertSame(infrastructure, cycle.getInfrastructure());
         assertSame(context, cycle.getRequestContext());
@@ -125,11 +119,10 @@ public class TestRequestCycle extends HiveMindTestCase
 
     private ServiceMap newServiceMap(String serviceName, IEngineService service)
     {
-        MockControl control = newControl(ServiceMap.class);
-        ServiceMap map = (ServiceMap) control.getMock();
+        ServiceMap map = (ServiceMap) newMock(ServiceMap.class);
 
         map.getService(serviceName);
-        control.setReturnValue(service);
+        setReturnValue(map, service);
 
         return map;
     }
@@ -140,19 +133,20 @@ public class TestRequestCycle extends HiveMindTestCase
         Infrastructure infrastructure = newInfrastructure();
         PropertyPersistenceStrategySource source = newStrategySource();
         RequestCycleEnvironment env = new RequestCycleEnvironment(newErrorHandler(),
-                infrastructure, context, source, newBuilder());
+                infrastructure, source, newBuilder());
         IEngine engine = newEngine();
         IMonitor monitor = newMonitor();
 
         replayControls();
 
-        IRequestCycle cycle = new RequestCycle(engine, new QueryParameterMap(), null, monitor, env);
+        IRequestCycle cycle = new RequestCycle(engine, new QueryParameterMap(), null, monitor, env,
+                context);
 
         cycle.getEngine();
 
         verifyControls();
 
-        source.discardAllStoredChanged("MyPage", cycle);
+        source.discardAllStoredChanged("MyPage");
 
         replayControls();
 
@@ -160,7 +154,7 @@ public class TestRequestCycle extends HiveMindTestCase
 
         verifyControls();
 
-        source.discardAllStoredChanged("MyPage", cycle);
+        source.discardAllStoredChanged("MyPage");
 
         replayControls();
 

@@ -17,11 +17,8 @@ package org.apache.tapestry.record;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
@@ -35,6 +32,8 @@ import org.apache.tapestry.web.WebSession;
  */
 public class SessionPropertyPersistenceStrategy implements PropertyPersistenceStrategy
 {
+    public static final String STRATEGY_ID = "session";
+
     // Really, the name of the servlet; used as a prefix on all HttpSessionAttribute keys
     // to keep things straight if multiple Tapestry apps are deployed
     // in the same WAR.
@@ -50,27 +49,17 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
 
         WebSession session = _request.getSession(true);
 
-        StringBuffer buffer = new StringBuffer();
+        String attributeName = RecordUtils.buildChangeKey(
+                STRATEGY_ID,
+                _applicationId,
+                pageName,
+                idPath,
+                propertyName);
 
-        buffer.append(_applicationId);
-        buffer.append(",");
-        buffer.append(pageName);
-
-        if (idPath != null)
-        {
-            buffer.append(",");
-            buffer.append(idPath);
-        }
-
-        buffer.append(",");
-        buffer.append(propertyName);
-
-        String key = buffer.toString();
-
-        session.setAttribute(key, newValue);
+        session.setAttribute(attributeName, newValue);
     }
 
-    public Collection getStoredChanges(String pageName, IRequestCycle cycle)
+    public Collection getStoredChanges(String pageName)
     {
         Defense.notNull(pageName, "pageName");
 
@@ -79,58 +68,49 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
         if (session == null)
             return Collections.EMPTY_LIST;
 
-        Collection result = new ArrayList();
+        final Collection result = new ArrayList();
 
-        String prefix = _applicationId + "," + pageName + ",";
-
-        Iterator i = session.getAttributeNames().iterator();
-        while (i.hasNext())
+        WebSessionAttributeCallback callback = new WebSessionAttributeCallback()
         {
-            String key = (String) i.next();
-
-            if (key.startsWith(prefix))
+            public void handleAttribute(WebSession session, String name)
             {
-                PropertyChange change = buildChange(key, session.getAttribute(key));
+                PropertyChange change = RecordUtils.buildChange(name, session.getAttribute(name));
 
                 result.add(change);
             }
-        }
+        };
+
+        RecordUtils.iterateOverMatchingAttributes(
+                STRATEGY_ID,
+                _applicationId,
+                pageName,
+                session,
+                callback);
 
         return result;
     }
 
-    private PropertyChange buildChange(String key, Object value)
+    public void discardStoredChanges(String pageName)
     {
-        String[] tokens = TapestryUtils.split(key);
-
-        // Either app-name,page-name,id-path,property
-        // or app-name,page-name,property
-
-        String idPath = (tokens.length == 4) ? tokens[2] : null;
-        String propertyName = tokens[tokens.length - 1];
-
-        return new PropertyChangeImpl(idPath, propertyName, value);
-    }
-
-    public void discardStoredChanges(String pageName, IRequestCycle cycle)
-    {
-        Defense.notNull(pageName, "pageName");
-
         WebSession session = _request.getSession(false);
 
         if (session == null)
             return;
 
-        String prefix = _applicationId + "," + pageName + ",";
-
-        Iterator i = session.getAttributeNames().iterator();
-        while (i.hasNext())
+        WebSessionAttributeCallback callback = new WebSessionAttributeCallback()
         {
-            String key = (String) i.next();
+            public void handleAttribute(WebSession session, String name)
+            {
+                session.setAttribute(name, null);
+            }
+        };
 
-            if (key.startsWith(prefix))
-                session.setAttribute(key, null);
-        }
+        RecordUtils.iterateOverMatchingAttributes(
+                STRATEGY_ID,
+                _applicationId,
+                pageName,
+                session,
+                callback);
     }
 
     /**

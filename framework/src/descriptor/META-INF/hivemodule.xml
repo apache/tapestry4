@@ -47,6 +47,7 @@
   <sub-module descriptor="tapestry.valid.xml"/>
   <sub-module descriptor="tapestry.listener.xml"/>
   <sub-module descriptor="tapestry.form.xml"/>
+  <sub-module descriptor="tapestry.l10n.xml"/>
   
   <service-point id="ClasspathResourceFactory">
   

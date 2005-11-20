@@ -54,6 +54,8 @@ public abstract class Login extends VlibPage implements PageBeginRenderListener
 
     private static final String COOKIE_NAME = "org.apache.tapestry.vlib.Login.email";
 
+    private static final int COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
+
     @Bean(VirtualLibraryDelegate.class)
     public abstract IValidationDelegate getValidationDelegate();
 
@@ -164,9 +166,7 @@ public abstract class Login extends VlibPage implements PageBeginRenderListener
         else
             callback.performCallback(cycle);
 
-        // TODO: Set max age of cookie once TAPESTRY-438 is fixed.
-
-        getCookieSource().writeCookieValue(COOKIE_NAME, email);
+        getCookieSource().writeCookieValue(COOKIE_NAME, email, COOKIE_MAX_AGE);
 
         cycle.forgetPage(getPageName());
     }

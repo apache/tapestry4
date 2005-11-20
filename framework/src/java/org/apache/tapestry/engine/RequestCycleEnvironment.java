@@ -15,10 +15,11 @@
 package org.apache.tapestry.engine;
 
 import org.apache.hivemind.ErrorHandler;
+import org.apache.tapestry.IEngine;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
+import org.apache.tapestry.util.QueryParameterMap;
 
 /**
  * An object that contains all the invariant parameters to the
@@ -30,23 +31,19 @@ import org.apache.tapestry.services.Infrastructure;
  */
 public class RequestCycleEnvironment
 {
-    private Infrastructure _infrastructure;
+    private final Infrastructure _infrastructure;
 
-    private PropertyPersistenceStrategySource _strategySource;
+    private final PropertyPersistenceStrategySource _strategySource;
 
-    private AbsoluteURLBuilder _absoluteURLBuilder;
+    private final AbsoluteURLBuilder _absoluteURLBuilder;
 
-    private ErrorHandler _errorHandler;
-
-    private RequestContext _requestContext;
+    private final ErrorHandler _errorHandler;
 
     public RequestCycleEnvironment(ErrorHandler errorHandler, Infrastructure infrastructure,
-            RequestContext requestContext, PropertyPersistenceStrategySource strategySource,
-            AbsoluteURLBuilder absoluteURLBuilder)
+            PropertyPersistenceStrategySource strategySource, AbsoluteURLBuilder absoluteURLBuilder)
     {
         _errorHandler = errorHandler;
         _infrastructure = infrastructure;
-        _requestContext = requestContext;
         _strategySource = strategySource;
         _absoluteURLBuilder = absoluteURLBuilder;
     }
@@ -69,10 +66,5 @@ public class RequestCycleEnvironment
     public PropertyPersistenceStrategySource getStrategySource()
     {
         return _strategySource;
-    }
-
-    public RequestContext getRequestContext()
-    {
-        return _requestContext;
     }
 }

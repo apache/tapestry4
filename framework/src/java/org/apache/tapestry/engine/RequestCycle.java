@@ -139,10 +139,12 @@ public class RequestCycle implements IRequestCycle
      *            informed of various events during the processing of the request
      * @param environment
      *            additional invariant services and objects needed by each RequestCycle instance
+     * @param context
+     *            Part of (partial) compatibility with Tapestry 3.0
      */
 
     public RequestCycle(IEngine engine, QueryParameterMap parameters, String serviceName,
-            IMonitor monitor, RequestCycleEnvironment environment)
+            IMonitor monitor, RequestCycleEnvironment environment, RequestContext context)
     {
         // Variant from instance to instance
 
@@ -157,7 +159,7 @@ public class RequestCycle implements IRequestCycle
         _pageSource = _infrastructure.getPageSource();
         _strategySource = environment.getStrategySource();
         _absoluteURLBuilder = environment.getAbsoluteURLBuilder();
-        _requestContext = environment.getRequestContext();
+        _requestContext = context;
         _log = new ErrorLogImpl(environment.getErrorHandler(), LOG);
 
     }
@@ -683,7 +685,7 @@ public class RequestCycle implements IRequestCycle
     {
         Defense.notNull(pageName, "pageName");
 
-        _strategySource.discardAllStoredChanged(pageName, this);
+        _strategySource.discardAllStoredChanged(pageName);
     }
 
     /** @since 4.0 */

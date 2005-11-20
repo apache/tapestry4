@@ -20,9 +20,7 @@ import java.util.List;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ServiceEncoding;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.record.PropertyPersistenceStrategySourceImpl}.
@@ -30,16 +28,11 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestPropertyPersistenceStrategySource extends HiveMindTestCase
+public class PropertyPersistenceStrategySourceTest extends HiveMindTestCase
 {
     private PropertyPersistenceStrategy newStrategy()
     {
         return (PropertyPersistenceStrategy) newMock(PropertyPersistenceStrategy.class);
-    }
-
-    private IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
     }
 
     private List newContributions(String name, PropertyPersistenceStrategy strategy)
@@ -82,17 +75,21 @@ public class TestPropertyPersistenceStrategySource extends HiveMindTestCase
         }
     }
 
+    protected void trainGetStoredChanges(PropertyPersistenceStrategy strategy, String pageName,
+            Collection changes)
+    {
+
+        strategy.getStoredChanges(pageName);
+        setReturnValue(strategy, changes);
+    }
+
     public void testGetAllStoredChanges()
     {
-        IRequestCycle cycle = newCycle();
+        PropertyPersistenceStrategy strategy = newStrategy();
 
-        MockControl control = newControl(PropertyPersistenceStrategy.class);
-        PropertyPersistenceStrategy strategy = (PropertyPersistenceStrategy) control.getMock();
+        PropertyChange change = newChange();
 
-        PropertyChange change = (PropertyChange) newMock(PropertyChange.class);
-
-        strategy.getStoredChanges("MyPage", cycle);
-        control.setReturnValue(Collections.singleton(change));
+        trainGetStoredChanges(strategy, "MyPage", Collections.singleton(change));
 
         replayControls();
 
@@ -100,7 +97,7 @@ public class TestPropertyPersistenceStrategySource extends HiveMindTestCase
         source.setContributions(newContributions("whatever", strategy));
         source.initializeService();
 
-        Collection result = source.getAllStoredChanges("MyPage", cycle);
+        Collection result = source.getAllStoredChanges("MyPage");
 
         assertEquals(1, result.size());
         assertSame(change, result.iterator().next());
@@ -108,10 +105,15 @@ public class TestPropertyPersistenceStrategySource extends HiveMindTestCase
         verifyControls();
     }
 
+    private PropertyChange newChange()
+    {
+        return (PropertyChange) newMock(PropertyChange.class);
+    }
+
     public void testAddParameters()
     {
         PropertyPersistenceStrategy strategy = newStrategy();
-        ServiceEncoding encoding = (ServiceEncoding) newMock(ServiceEncoding.class);
+        ServiceEncoding encoding = newEncoding();
 
         strategy.addParametersForPersistentProperties(encoding, false);
 
@@ -132,12 +134,16 @@ public class TestPropertyPersistenceStrategySource extends HiveMindTestCase
         source.addParametersForPersistentProperties(encoding, true);
     }
 
+    private ServiceEncoding newEncoding()
+    {
+        return (ServiceEncoding) newMock(ServiceEncoding.class);
+    }
+
     public void testDiscardStoredChanges()
     {
-        IRequestCycle cycle = newCycle();
         PropertyPersistenceStrategy strategy = newStrategy();
 
-        strategy.discardStoredChanges("Home", cycle);
+        strategy.discardStoredChanges("Home");
 
         replayControls();
 
@@ -145,7 +151,7 @@ public class TestPropertyPersistenceStrategySource extends HiveMindTestCase
         source.setContributions(newContributions("known", strategy));
         source.initializeService();
 
-        source.discardAllStoredChanged("Home", cycle);
+        source.discardAllStoredChanged("Home");
 
         verifyControls();
     }

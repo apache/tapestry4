@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ServiceEncoding;
 
 /**
@@ -60,7 +59,7 @@ public class PropertyPersistenceStrategySourceImpl implements PropertyPersistenc
         return (PropertyPersistenceStrategy) _strategies.get(name);
     }
 
-    public Collection getAllStoredChanges(String pageName, IRequestCycle cycle)
+    public Collection getAllStoredChanges(String pageName)
     {
         Collection result = new ArrayList();
 
@@ -70,13 +69,13 @@ public class PropertyPersistenceStrategySourceImpl implements PropertyPersistenc
         {
             PropertyPersistenceStrategy s = (PropertyPersistenceStrategy) i.next();
 
-            result.addAll(s.getStoredChanges(pageName, cycle));
+            result.addAll(s.getStoredChanges(pageName));
         }
 
         return result;
     }
 
-    public void discardAllStoredChanged(String pageName, IRequestCycle cycle)
+    public void discardAllStoredChanged(String pageName)
     {
         Iterator i = _strategies.values().iterator();
 
@@ -84,7 +83,7 @@ public class PropertyPersistenceStrategySourceImpl implements PropertyPersistenc
         {
             PropertyPersistenceStrategy s = (PropertyPersistenceStrategy) i.next();
 
-            s.discardStoredChanges(pageName, cycle);
+            s.discardStoredChanges(pageName);
         }
     }
 

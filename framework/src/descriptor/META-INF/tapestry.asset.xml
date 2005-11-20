@@ -64,6 +64,7 @@
         <set-service property="classpathAssetFactory" service-id="ClasspathAssetFactory"/>
         <set-object property="contextPath" value="infrastructure:contextPath"/>
         <set-service property="webContext" service-id="tapestry.globals.WebContext"/>
+        <set-object property="localizer" value="infrastructure:resourceLocalizer"/>
       </construct>
     </invoke-factory>
     

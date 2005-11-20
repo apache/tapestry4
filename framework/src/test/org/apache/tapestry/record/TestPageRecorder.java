@@ -61,7 +61,7 @@ public class TestPageRecorder extends HiveMindTestCase
 
         Collection expected = new ArrayList();
 
-        source.getAllStoredChanges("Foo", cycle);
+        source.getAllStoredChanges("Foo");
         sourcec.setReturnValue(expected);
 
         replayControls();
@@ -194,7 +194,7 @@ public class TestPageRecorder extends HiveMindTestCase
 
         PropertyChange pc = new PropertyChangeImpl(null, "cartoonName", "Dexter's Laboratory");
 
-        source.getAllStoredChanges("MyPage", cycle);
+        source.getAllStoredChanges("MyPage");
         sourcec.setReturnValue(Collections.singletonList(pc));
 
         replayControls();
@@ -224,7 +224,7 @@ public class TestPageRecorder extends HiveMindTestCase
 
         PropertyChange pc = new PropertyChangeImpl("fred.barney", "id", "ziff");
 
-        source.getAllStoredChanges("MyPage", cycle);
+        source.getAllStoredChanges("MyPage");
         sourcec.setReturnValue(Collections.singletonList(pc));
 
         page.getNestedComponent("fred.barney");

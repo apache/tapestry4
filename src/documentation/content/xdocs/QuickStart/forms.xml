@@ -97,7 +97,7 @@ it has quite a few other tricks up its sleeve).
 	
 <p>
 	One of the cornerstones of Tapestry is the ability to edit properties of value objects directly.
-	These value objects, in a real application, will be read from the databsae, editted by Tapestry
+	These value objects, in a real application, will be read from the database, editted by Tapestry
 	components, then written back into the database.
 </p>
 
@@ -279,7 +279,7 @@ public class ProjectRelease
         <tr>
           <th>Short Description</th>
           <td>
-            <input jwcid="short@TextField" value="ognl:project.shortDescription"/>
+            <input jwcid="short@TextField" value="ognl:project.shortDescription" size="40"/>
           </td>
         </tr>
         <tr>
@@ -323,7 +323,7 @@ This template introduces a number of new components:
     of the page</li>
   <li>&TextArea; -- as with &TextField;, but generates a multi-line &lt;textarea&gt;</li>
   <li>&DatePicker; -- a JavaScript popup calendar</li>
-  <li>&Checkbox;-- edits a <em>boolean</em> property of the page</li> 
+  <li>&Checkbox; -- edits a <em>boolean</em> property of the page</li> 
 </ul>
 
 <p>
@@ -406,14 +406,13 @@ public abstract class AddProject extends BasePage
 <p>
   What we need to do is create an instance of ProjectRelease and store it into
   the property so that the &TextField; components can edit it.  We have to be careful
-  because in a live application, pages will be pooled and reused constantly. The best approach in Tapestry is to
-  listen to a <em>page lifecycle event</em> and create the ProjectRelease object just as needed.
+  because in a live application, pages will be pooled and reused constantly.
 </p>
 
 <p>
   For this situation, the right approach is to listen for the PageBeginRender event, and
   store the new instance into the property then.  The ProjectRelease object will be used for the
-  duration of the request, then discarded ata the end of the request.
+  duration of the request, then discarded at the end of the request.
 </p>
 
 <p>
@@ -467,17 +466,102 @@ public abstract class AddProject extends BasePage implements PageBeginRenderList
 </p>  
   
 <p>
-  With this in place, the page will now render:
+  With this in place, the page will now render, and we can begin entering some data into it:
 </p>  
 
 <figure src="&images-url;/forms2.png" alt="AddProject Page"/>
   
   
 </section>
+
+<section>
+  <title>Form Submission</title>
+  
+  <p>
+    As implemented above, submitting the form doesn't appear to do anything.  Sure, the form submits, and information is pulled
+    out of the request and applied to the properties of the ProjectRelease object, but then the AddProject page
+    is re-rendered.  
+  </p>  
+  
+  <p>
+    So ... how did the ProjectRelease object stick around?  Shouldn't we have gotten a NullPointerException again, when
+    the form submitted and the &TextField; component updated property project.name?  What actually happened is that
+    the ProjectRelease object was discarded ... but when a form is submitted on a page, the PageBeginRender interface is
+    triggered again, just like for a form render. This means that the existing code does create a new ProjectRelease instance,
+    giving the TextField components a place to store the values from the form.
+  </p>
+
+  
+  <p>
+    As wonderful as it is that the new ProjectRelease object gets updated, what we 
+    really want is for <em>something to happen</em>.  We're going to change things so that a different page is
+    displayed when the form is submitted.  Further, that form will show the same information collected by
+    the AddProject page.
+  </p>
+  
+  <p>
+   To accomplish this, we're going to change the doSubmit() method, and have it obtain the ShowProject page. The easiest way to
+    make different pages work together is by <em>injecting</em> one page into another.  This can be done using
+    an annotation<sup>1</sup>:
+  </p>
+  
+  <source><![CDATA[
+    @InjectPage("ShowProject")
+    public abstract ShowProject getShowProject(); ]]>  </source>  
+  
+  <p>
+    This code, part of AddProject.java, establishes the connection from the AddProject page to the ShowProject page.
+  </p>
+  
+  <p>
+    We can leverage that code inside doSubmit() to pass information from the AddProject page to the ShowProject page; we can
+    also <em>activate</em> the ShowProject page, so that it renders the response.
+  </p>
+  
+  <source><![CDATA[  
+  public IPage doSubmit()
+  {
+    ShowProject showProject = getShowProject();
+
+    showProject.setProject(getProject());
+
+    return showProject;
+  }]]>  </source>  
+  
+  <p>
+  A lot is going on here in a very small amount of code.  First off, this method is no longer void, it returns
+  a page (&IPage; is the interface all page classes must implement). When a listener method returns a page,
+  that page becomes the <em>active page</em>, the page which will render the response to the client.
+  </p>
+  
+  <p>
+    This is an example of what we mean when we talk about objects, methods and properties. We don't talk about the
+    "ShowProject.html" template ... we talk about the ShowProject page, and leave the details about where its template is
+    and what's on that template to the ShowProject page.  Further, to pass information from the AddProject page
+    to the ShowProject page, we don't muck about with HttpServletRequest attributes ... we store an object into a
+    property of the ShowProject page.
+  </p>
+
+  <p>
+    With all this in place, we can now submit the form and see the ShowProject page:
+  </p>
+  
+<figure src="&images-url;/forms3.png" alt="ShowProject Page"/>
+  
+</section>  
 	
 </section>
 
+  <section>
+    <title>Next: ???</title>
+  </section>
+  
 <p><em>More coming soon ...</em></p>
 
+  <p>
+    <sup>1</sup> Of course, annotations required JDK 1.5, which you'll need for these tutorials.  If you can't use
+    JDK 1.5 in production, that's OK.  Tapestry is compatible with JDK 1.3 and has another approach, based on XML,
+    for injecting pages or doing just about anything else that shows up as an annotation in the tutorials.
+  </p>
 </body>
 </document>

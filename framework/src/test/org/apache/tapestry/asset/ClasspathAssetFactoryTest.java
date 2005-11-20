@@ -23,6 +23,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.l10n.DefaultResourceLocalizer;
 
 /**
  * Tests for {@link org.apache.tapestry.asset.ClasspathAssetFactory}.
@@ -41,6 +42,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
         ClasspathAssetFactory factory = new ClasspathAssetFactory();
         factory.setClassResolver(getClassResolver());
         factory.setAssetService(assetService);
+        factory.setLocalizer(new DefaultResourceLocalizer());
 
         Resource base = newBaseResource();
 
@@ -64,6 +66,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
         ClasspathAssetFactory factory = new ClasspathAssetFactory();
         factory.setClassResolver(getClassResolver());
         factory.setAssetService(assetService);
+        factory.setLocalizer(new DefaultResourceLocalizer());
 
         Resource base = newBaseResource();
 
@@ -93,6 +96,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
         ClasspathAssetFactory factory = new ClasspathAssetFactory();
         factory.setClassResolver(getClassResolver());
         factory.setAssetService(assetService);
+        factory.setLocalizer(new DefaultResourceLocalizer());
 
         IAsset asset = factory.createAbsoluteAsset(
                 "/org/apache/tapestry/asset/relative-resource.txt",
@@ -117,6 +121,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
         ClasspathAssetFactory factory = new ClasspathAssetFactory();
         factory.setClassResolver(getClassResolver());
         factory.setAssetService(assetService);
+        factory.setLocalizer(new DefaultResourceLocalizer());
 
         try
         {

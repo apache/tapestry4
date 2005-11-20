@@ -46,8 +46,6 @@ public abstract class ShowProperties extends BaseComponent implements PageBeginR
 
     public void pageBeginRender(PageEvent event)
     {
-        IRequestCycle cycle = event.getRequestCycle();
-
         Inspector inspector = (Inspector) getPage();
 
         IPage inspectedPage = inspector.getInspectedPage();
@@ -56,7 +54,7 @@ public abstract class ShowProperties extends BaseComponent implements PageBeginR
 
         PropertyPersistenceStrategySource source = getPropertySource();
 
-        Collection properties = source.getAllStoredChanges(pageName, cycle);
+        Collection properties = source.getAllStoredChanges(pageName);
 
         // TODO: sorting
 
