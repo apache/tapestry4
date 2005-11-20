@@ -36,7 +36,7 @@ import org.apache.tapestry.util.MultiKey;
  * the pool using {@link #releasePage(IPage)}.
  * <p>
  * TBD: Pooled pages stay forever. Need a strategy for cleaning up the pool, tracking which pages
- * have been in the pool the longest, etc. 
+ * have been in the pool the longest, etc.
  * 
  * @author Howard Lewis Ship
  */
@@ -114,6 +114,8 @@ public class PageSource implements IPageSource
 
             _pageSpecificationResolver.resolve(cycle, pageName);
 
+            // The loader is responsible for invoking attach()
+
             result = _loader.loadPage(
                     _pageSpecificationResolver.getSimplePageName(),
                     _pageSpecificationResolver.getNamespace(),
@@ -121,6 +123,12 @@ public class PageSource implements IPageSource
                     _pageSpecificationResolver.getSpecification());
 
             monitor.pageCreateEnd(pageName);
+        }
+        else
+        {
+            // But for pooled pages, we are responsible
+
+            result.attach(engine, cycle);
         }
 
         return result;

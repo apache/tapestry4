@@ -606,6 +606,11 @@ public class PageLoader implements IPageLoader
         {
             page = instantiatePage(name, namespace, specification);
 
+            // The page is now attached to the engine and request cycle; some code
+            // inside the page's finishLoad() method may require this. TAPESTRY-763
+
+            page.attach(cycle.getEngine(), cycle);
+
             constructComponent(cycle, page, page, specification, namespace);
 
             // Walk through the complete component tree to set up the default
