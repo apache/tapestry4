@@ -44,7 +44,7 @@
     </description>
   </parameter>
   
-  <parameter name="prerender">
+  <parameter name="prerender" default-value="true">
     <description>
       If true (the default), then the field (if any) will be pre-rendered by the FieldLabel.
       This is useful when the FieldLabel and field are inside a loop and the FieldLabel
