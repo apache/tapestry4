@@ -37,6 +37,7 @@ import org.apache.tapestry.engine.ITemplateSourceDelegate;
 import org.apache.tapestry.event.ReportStatusEvent;
 import org.apache.tapestry.event.ReportStatusListener;
 import org.apache.tapestry.event.ResetEventListener;
+import org.apache.tapestry.l10n.ResourceLocalizer;
 import org.apache.tapestry.parse.ComponentTemplate;
 import org.apache.tapestry.parse.ITemplateParser;
 import org.apache.tapestry.parse.ITemplateParserDelegate;
@@ -98,6 +99,10 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
     /** @since 4.0 */
 
     private ComponentPropertySource _componentPropertySource;
+
+    /** @since 4.0 */
+
+    private ResourceLocalizer _localizer;
 
     /**
      * Clears the template cache. This is used during debugging.
@@ -272,7 +277,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
             _log.debug("Checking for " + templateBaseName + " in application root");
 
         Resource baseLocation = _contextRoot.getRelativeResource(templateBaseName);
-        Resource localizedLocation = baseLocation.getLocalization(locale);
+        Resource localizedLocation = _localizer.findLocalization(baseLocation, locale);
 
         if (localizedLocation == null)
             return null;
@@ -325,7 +330,9 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
 
         Resource baseTemplateLocation = resource.getRelativeResource(templateBaseName);
 
-        Resource localizedTemplateLocation = baseTemplateLocation.getLocalization(locale);
+        Resource localizedTemplateLocation = _localizer.findLocalization(
+                baseTemplateLocation,
+                locale);
 
         if (localizedTemplateLocation == null)
             return null;
@@ -563,5 +570,11 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
     public void setServiceId(String serviceId)
     {
         _serviceId = serviceId;
+    }
+
+    /** @since 4.0 */
+    public void setLocalizer(ResourceLocalizer localizer)
+    {
+        _localizer = localizer;
     }
 }

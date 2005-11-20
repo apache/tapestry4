@@ -16,7 +16,6 @@ package org.apache.tapestry.record;
 
 import java.util.Collection;
 
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ServiceEncoding;
 
 /**
@@ -50,12 +49,12 @@ public interface PropertyPersistenceStrategy
      * part of rolling back a page to a prior state, before any further changes are possible).
      */
 
-    public Collection getStoredChanges(String pageName, IRequestCycle cycle);
+    public Collection getStoredChanges(String pageName);
 
     /**
      * Invoked to discard any stored changes for the specified page.
      */
-    public void discardStoredChanges(String pageName, IRequestCycle cycle);
+    public void discardStoredChanges(String pageName);
 
     /**
      * Invoked by a {@link org.apache.tapestry.services.LinkFactory}&nbsp;, the parameters may be

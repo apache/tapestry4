@@ -78,12 +78,12 @@ public class LinkFactoryTest extends HiveMindTestCase
             return null;
         }
 
-        public Collection getAllStoredChanges(String pageName, IRequestCycle cycle)
+        public Collection getAllStoredChanges(String pageName)
         {
             return null;
         }
 
-        public void discardAllStoredChanged(String pageName, IRequestCycle cycle)
+        public void discardAllStoredChanged(String pageName)
         {
         }
 

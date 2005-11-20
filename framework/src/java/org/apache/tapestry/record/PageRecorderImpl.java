@@ -65,7 +65,7 @@ public class PageRecorderImpl implements IPageRecorder
 
     public Collection getChanges()
     {
-        return _strategySource.getAllStoredChanges(_pageName, _requestCycle);
+        return _strategySource.getAllStoredChanges(_pageName);
     }
 
     public void rollback(IPage page)

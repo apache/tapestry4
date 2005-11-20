@@ -20,6 +20,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.l10n.ResourceLocalizer;
 import org.apache.tapestry.web.WebContext;
 import org.apache.tapestry.web.WebContextResource;
 
@@ -37,6 +38,8 @@ public class ContextAssetFactory implements AssetFactory
     private AssetFactory _classpathAssetFactory;
 
     private WebContext _webContext;
+
+    private ResourceLocalizer _localizer;
 
     public void setWebContext(WebContext webContext)
     {
@@ -59,7 +62,7 @@ public class ContextAssetFactory implements AssetFactory
         if (assetResource.getResourceURL() == null && path.startsWith("/"))
             return _classpathAssetFactory.createAbsoluteAsset(path, locale, location);
 
-        Resource localized = assetResource.getLocalization(locale);
+        Resource localized = _localizer.findLocalization(assetResource, locale);
 
         if (localized == null)
             throw new ApplicationRuntimeException(AssetMessages.missingAsset(path, baseResource),
@@ -71,7 +74,7 @@ public class ContextAssetFactory implements AssetFactory
     public IAsset createAbsoluteAsset(String path, Locale locale, Location location)
     {
         Resource base = new WebContextResource(_webContext, path);
-        Resource localized = base.getLocalization(locale);
+        Resource localized = _localizer.findLocalization(base, locale);
 
         if (localized == null)
             throw new ApplicationRuntimeException(AssetMessages.missingContextResource(path),
@@ -93,5 +96,10 @@ public class ContextAssetFactory implements AssetFactory
     public void setClasspathAssetFactory(AssetFactory classpathAssetFactory)
     {
         _classpathAssetFactory = classpathAssetFactory;
+    }
+
+    public void setLocalizer(ResourceLocalizer localizer)
+    {
+        _localizer = localizer;
     }
 }

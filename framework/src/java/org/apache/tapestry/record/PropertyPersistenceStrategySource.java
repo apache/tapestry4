@@ -16,7 +16,6 @@ package org.apache.tapestry.record;
 
 import java.util.Collection;
 
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ServiceEncoding;
 
 /**
@@ -41,16 +40,16 @@ public interface PropertyPersistenceStrategySource
      * Returns all changes ({@link PropertyChange}) collected by any persistence strategy for the
      * page. May return an empty list.
      * 
-     * @see PropertyPersistenceStrategy#getStoredChanges(String, IRequestCycle)
+     * @see PropertyPersistenceStrategy#getStoredChanges(String)
      */
 
-    public Collection getAllStoredChanges(String pageName, IRequestCycle cycle);
+    public Collection getAllStoredChanges(String pageName);
 
     /**
      * Discards any stored property changes for the named page.
      */
 
-    public void discardAllStoredChanged(String pageName, IRequestCycle cycle);
+    public void discardAllStoredChanged(String pageName);
 
     /**
      * Invoked by a {@link org.apache.tapestry.services.LinkFactory}&nbsp;, the parameters may be
@@ -59,7 +58,7 @@ public interface PropertyPersistenceStrategySource
      * 
      * @param encoding
      *            Service encoding, which indentifies the URL and the query parameters from which
-     *            the {@link org.apache.tapestry.engine.ILink}&nbsp;will be created.
+     *            the {@link org.apache.tapestry.engine.ILink} will be created.
      * @param post
      *            if true, then the link will be used for a post (not a get, i.e., for a HTML form);
      *            this may affect what information is encoded into the link

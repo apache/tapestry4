@@ -66,15 +66,15 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
     public void initializeService()
     {
-        RequestContext context = new RequestContext(_requestGlobals.getRequest(), _requestGlobals
-                .getResponse());
-
-        _environment = new RequestCycleEnvironment(_errorHandler, _infrastructure, context,
-                _strategySource, _absoluteURLBuilder);
+        _environment = new RequestCycleEnvironment(_errorHandler, _infrastructure, _strategySource,
+                _absoluteURLBuilder);
     }
 
     public IRequestCycle newRequestCycle(IEngine engine)
     {
+        RequestContext context = new RequestContext(_requestGlobals.getRequest(), _requestGlobals
+                .getResponse());
+
         WebRequest request = _infrastructure.getRequest();
 
         IMonitor monitor = _monitorFactory.createMonitor(request);
@@ -86,7 +86,7 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
         String serviceName = findService(parameters);
 
         IRequestCycle cycle = new RequestCycle(engine, parameters, serviceName, monitor,
-                _environment);
+                _environment, context);
 
         _requestGlobals.store(cycle);
 

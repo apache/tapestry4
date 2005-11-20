@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.web.WebRequest;
 
@@ -92,7 +91,7 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
         data.store(idPath, propertyName, newValue);
     }
 
-    public Collection getStoredChanges(String pageName, IRequestCycle cycle)
+    public Collection getStoredChanges(String pageName)
     {
         PersistentPropertyData data = (PersistentPropertyData) _data.get(pageName);
 
@@ -102,7 +101,7 @@ public class ClientPropertyPersistenceStrategy implements PropertyPersistenceStr
         return data.getPageChanges();
     }
 
-    public void discardStoredChanges(String pageName, IRequestCycle cycle)
+    public void discardStoredChanges(String pageName)
     {
         _data.remove(pageName);
     }

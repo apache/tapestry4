@@ -28,7 +28,7 @@ public interface CookieSource
      * not know about additional cookies added since then (via
      * {@link #writeCookieValue(String, String)}).
      */
-    public String readCookieValue(String name);
+    String readCookieValue(String name);
 
     /**
      * Creates or updates a cookie value. The value is stored using a max age (in seconds) defined
@@ -36,17 +36,24 @@ public interface CookieSource
      * for this value is the equivalent of one week.
      */
 
-    public void writeCookieValue(String name, String value);
+    void writeCookieValue(String name, String value);
 
     /**
      * As with {@link #writeCookieValue(String, String)} but an explicit maximum age may be set.
+     * 
+     * @param name
+     *            the name of the cookie
+     * @param value
+     *            the value to be stored in the cookie
+     * @param maxAge
+     *            the maximum age, in seconds, to store the cookie
      */
 
-    public void writeCookieValue(String name, String value, int maxAge);
+    void writeCookieValue(String name, String value, int maxAge);
 
     /**
      * Removes a previously written cookie, by writing a new cookie with a maxAge of 0.
      */
 
-    public void removeCookieValue(String name);
+    void removeCookieValue(String name);
 }

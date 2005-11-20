@@ -44,7 +44,7 @@
   <service-point id="SessionPropertyPersistenceStrategy" interface="PropertyPersistenceStrategy">
     
     The standard persistence strategy, mapped to the name "session". Simply stores each property as
-    an HttpSession attribute.
+    a session attribute.
     
     <invoke-factory>
       <construct class="SessionPropertyPersistenceStrategy">
@@ -66,6 +66,8 @@
   <service-point id="PageClientPropertyPersistenceScope" interface="ClientPropertyPersistenceScope">
     
     Stores client persistent properties only if the page remains the same.
+    When a new page is activated and rendered, the values for other pages
+    are discarded.
     
     <invoke-factory>
       <construct class="PageClientPropertyPersistenceScope">

@@ -33,13 +33,9 @@ import javax.servlet.http.HttpSession;
  * <p>
  * This is a limited and crippled version of the RequestContext as it was available in release 3.0,
  * that exists as a bridge for compatibility only. This saves developers from having to modify their
- * classes to have the {@link javax.servlet.http.HttpServletRequest}&nbsp;or
- * {@link org.apache.tapestry.web.WebRequest}injected into their pages, components, or services. It
+ * classes to have the {@link javax.servlet.http.HttpServletRequest} or (preferrably)
+ * {@link org.apache.tapestry.web.WebRequest} injected into their pages, components, or services. It
  * will be removed in the next release of Tapestry.
- * <p>
- * Interestingly, with the Tapestry 4.0 architecture, a single instance of RequestContext can be
- * shared by all request cycles (that's because the request and response are, in fact, threaded
- * proxies).
  * 
  * @author Howard Lewis Ship
  * @deprecated To be removed in 4.1. Use injection to gain access to the necessary objects.
@@ -53,7 +49,6 @@ public class RequestContext
 
     public RequestContext(HttpServletRequest request, HttpServletResponse response)
     {
-
         _request = request;
         _response = response;
     }
