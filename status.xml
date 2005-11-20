@@ -60,6 +60,7 @@
       <action type="update" dev="HLS">Make the logic for localizing resources extensible</action>
       <action type="update" dev="HLS">More work on the QuickStart documentation</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-759">Body.get(cycle) throws exception</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-763">RequestCycle is not available during page initialization</action>
     </release>
     <release version="4.0-beta-13" date="Nov 12 2005">
       <action type="update" dev="HLS">Switch to HiveMind 1.1 (final)</action>

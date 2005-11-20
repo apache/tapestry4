@@ -283,11 +283,6 @@ public class RequestCycle implements IRequestCycle
 
             result.setChangeObserver(recorder);
 
-            // Now that persistent properties have been restored, we can
-            // attach the page to this request.
-
-            result.attach(_engine, this);
-
             return result;
         }
         finally
