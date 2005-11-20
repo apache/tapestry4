@@ -109,7 +109,7 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
 
     public static Body get(IRequestCycle cycle)
     {
-        return (Body) TapestryUtils.getPageRenderSupport(cycle, null);
+        return (Body) TapestryUtils.getOptionalPageRenderSupport(cycle);
     }
 
     protected void prepareForRender(IRequestCycle cycle)
