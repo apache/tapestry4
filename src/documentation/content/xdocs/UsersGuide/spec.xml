@@ -91,7 +91,9 @@ The <em>root element</em> is different for each of the four types of specificati
 </table>
 
 <note>
-A fifth type of specification, the Script specification, is described seperately.  In addition, in Tapestry 4.0, 
+A fifth type of specification, the script template specification, is 
+<link href="script.html">described seperately</link>.  In addition, in Tapestry 4.0, 
+a significant 
 part of an application's behavior is defined by its &HiveMind; module deployment descriptor.
 </note>
 
