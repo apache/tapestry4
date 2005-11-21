@@ -67,6 +67,7 @@
       <proprties label="Tapestry Object Properties" href="properties.html"/>
       <upgrade label="Upgrading from 3.0" href="upgrade.html"/>
       <spec label="Specification DTDs" href="spec.html"/>
+      <script label="Script Template DTD" href="script.html"/>
     </UsersGuide>
     
   <Examples label="Examples"  href="examples/">
