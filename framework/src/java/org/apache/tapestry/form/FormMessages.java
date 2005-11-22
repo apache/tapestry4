@@ -61,7 +61,7 @@ class FormMessages
 
     static String fieldAlreadyPrerendered(IComponent field)
     {
-        return _formatter.format("field-already-prerenderer", field);
+        return _formatter.format("field-already-prerendered", field);
     }
 
     static String linkSubmitMayNotNest(IComponent inner, IComponent outer)
