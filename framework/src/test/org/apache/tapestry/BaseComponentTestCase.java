@@ -491,4 +491,10 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     {
         return (Log) newMock(Log.class);
     }
+
+    protected void trainGetId(IComponent component, String id)
+    {
+        component.getId();
+        setReturnValue(component, id);
+    }
 }

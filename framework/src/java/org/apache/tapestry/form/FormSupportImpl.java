@@ -182,6 +182,22 @@ public class FormSupportImpl implements FormSupport
     }
 
     /**
+     * Alternate constructor used for testing only.
+     * 
+     * @param cycle
+     */
+    FormSupportImpl(IRequestCycle cycle)
+    {
+        _cycle = cycle;
+        _form = null;
+        _rewinding = false;
+        _writer = null;
+        _delegate = null;
+        _pageRenderSupport = null;
+        _script = null;
+    }
+
+    /**
      * Adds an event handler for the form, of the given type.
      */
 
@@ -459,10 +475,10 @@ public class FormSupportImpl implements FormSupport
         // client-side JavaScript forces an update.
 
         addHiddenValue(SUBMIT_MODE, null);
-        
+
         // And another for the name of the component that
         // triggered the submit.
-        
+
         addHiddenValue(FormConstants.SUBMIT_NAME_PARAMETER, null);
 
         IMarkupWriter nested = _writer.getNestedWriter();
@@ -683,7 +699,7 @@ public class FormSupportImpl implements FormSupport
 
         if (_prerenderMap.containsKey(key))
             throw new ApplicationRuntimeException(FormMessages.fieldAlreadyPrerendered(field),
-                    location, null);
+                    field, location, null);
 
         NestedMarkupWriter nested = writer.getNestedWriter();
 

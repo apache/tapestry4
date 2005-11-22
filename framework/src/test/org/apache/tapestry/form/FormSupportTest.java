@@ -60,12 +60,26 @@ public class FormSupportTest extends BaseComponentTestCase
         };
     }
 
+    private IValidationDelegate newDelegate()
+    {
+        return (IValidationDelegate) newMock(IValidationDelegate.class);
+    }
+
+    protected IEngine newEngine()
+    {
+        return (IEngine) newMock(IEngine.class);
+    }
+
+    private IFormComponent newField()
+    {
+        return (IFormComponent) newMock(IFormComponent.class);
+    }
+
     private IFormComponent newFormComponent(String id, String name)
     {
         IFormComponent component = (IFormComponent) newMock(IFormComponent.class);
 
-        component.getId();
-        setReturnValue(component, id);
+        trainGetId(component, id);
 
         component.setName(name);
 
@@ -76,21 +90,48 @@ public class FormSupportTest extends BaseComponentTestCase
     {
         IFormComponent component = (IFormComponent) newMock(IFormComponent.class);
 
-        component.getId();
-        setReturnValue(component, id);
-
-        component.getExtendedId();
-        setReturnValue(component, extendedId);
-
-        component.getLocation();
-        setReturnValue(component, location);
+        trainGetId(component, id);
+        trainGetExtendedId(component, extendedId);
+        trainGetLocation(component, location);
 
         return component;
     }
 
-    private IValidationDelegate newDelegate()
+    public void testCancelRewind()
     {
-        return (IValidationDelegate) newMock(IValidationDelegate.class);
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        IValidationDelegate delegate = newDelegate();
+        IEngine engine = newEngine(getClassResolver());
+        MockForm form = new MockForm(delegate);
+
+        trainIsRewound(cycle, form, true);
+
+        trainGetEngine(cycle, engine);
+
+        trainGetPageRenderSupport(cycle, null);
+
+        replayControls();
+
+        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+
+        verifyControls();
+
+        delegate.clear();
+
+        trainGetParameter(cycle, FormSupportImpl.SUBMIT_MODE, "cancel");
+
+        // Create a body, just to provie it doesn't get invoked.
+
+        IRender body = (IRender) newMock(IRender.class);
+
+        form.setBody(body);
+
+        replayControls();
+
+        assertEquals(FormConstants.SUBMIT_CANCEL, fs.rewind());
+
+        verifyControls();
     }
 
     public void testComplexRender()
@@ -168,65 +209,6 @@ public class FormSupportTest extends BaseComponentTestCase
         fs.render("post", render, link, null);
 
         verifyControls();
-    }
-
-    protected void trainHiddenBlock(IMarkupWriter writer, String serviceName, String formIds)
-    {
-        trainDiv(writer);
-
-        trainHidden(writer, "formids", formIds);
-        trainHidden(writer, "service", serviceName);
-        trainHidden(writer, "submitmode", "");
-        trainHidden(writer, FormConstants.SUBMIT_NAME_PARAMETER, "");
-
-        writer.end();
-    }
-
-    protected void trainDiv(IMarkupWriter writer)
-    {
-        writer.begin("div");
-        writer.attribute("style", "display:none;");
-    }
-
-    protected void trainIsRewound(IRequestCycle cycle, IForm form, boolean isRewound)
-    {
-        cycle.isRewound(form);
-        setReturnValue(cycle, isRewound);
-    }
-
-    protected IEngine newEngine()
-    {
-        return (IEngine) newMock(IEngine.class);
-    }
-
-    private void trainRegister(PageRenderSupport support)
-    {
-        support.addExternalScript(new ClasspathResource(getClassResolver(),
-                "/org/apache/tapestry/form/Form.js"));
-
-        support.addInitializationScript("Tapestry.register_form('myform');");
-    }
-
-    private void trainFocus(PageRenderSupport support)
-    {
-        support.addInitializationScript("Tapestry.set_focus('wilma');");
-    }
-
-    private void trainSetFieldFocus(IRequestCycle cycle)
-    {
-        cycle.setAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
-    }
-
-    private void trainGetFieldFocus(IRequestCycle cycle, Object value)
-    {
-        cycle.getAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE);
-        setReturnValue(cycle, value);
-    }
-
-    private void trainGetFocusField(IValidationDelegate delegate, String fieldName)
-    {
-        delegate.getFocusField();
-        setReturnValue(delegate, fieldName);
     }
 
     public void testComplexRewind()
@@ -343,14 +325,6 @@ public class FormSupportTest extends BaseComponentTestCase
         verifyControls();
     }
 
-    private void trainGetURL(ILink link, String scheme, String URL)
-    {
-        // This will change shortly, with the new scheme parameter passed into FormSupport.render()
-
-        link.getURL(scheme, null, 0, null, false);
-        setReturnValue(link, URL);
-    }
-
     public void testEncodingType()
     {
         IMarkupWriter writer = newWriter();
@@ -419,6 +393,55 @@ public class FormSupportTest extends BaseComponentTestCase
         fs.render("post", render, link, null);
 
         verifyControls();
+    }
+
+    public void testFieldPrerenderTwice()
+    {
+        IFormComponent field = newField();
+        IMarkupWriter writer = newWriter();
+        NestedMarkupWriter nested = newNestedWriter();
+        IRequestCycle cycle = newCycle();
+        Location l = newLocation();
+
+        trainGetExtendedId(field, "foo.bar");
+
+        trainGetNestedWriter(writer, nested);
+
+        field.render(nested, cycle);
+
+        nested.getBuffer();
+        setReturnValue(nested, "NESTED CONTENT");
+
+        replayControls();
+
+        FormSupport fs = new FormSupportImpl(cycle);
+
+        fs.prerenderField(writer, field, l);
+
+        verifyControls();
+
+        trainGetExtendedId(field, "foo.bar");
+
+        replayControls();
+
+        try
+        {
+            fs.prerenderField(writer, field, l);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Field EasyMock for interface org.apache.tapestry.form.IFormComponent has already been pre-rendered. "
+                            + "This exception may indicate that a FieldLabel rendered, but the corresponding field did not.",
+                    ex.getMessage());
+
+            assertSame(l, ex.getLocation());
+            assertSame(field, ex.getComponent());
+        }
+
+        verifyControls();
+
     }
 
     public void testHiddenValues()
@@ -560,6 +583,43 @@ public class FormSupportTest extends BaseComponentTestCase
                     ex.getMessage());
             assertSame(form, ex.getComponent());
         }
+
+        verifyControls();
+    }
+
+    public void testRefreshRewind()
+    {
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        IValidationDelegate delegate = newDelegate();
+        IEngine engine = newEngine(getClassResolver());
+        MockForm form = new MockForm(delegate);
+
+        trainIsRewound(cycle, form, true);
+
+        trainGetEngine(cycle, engine);
+
+        trainGetPageRenderSupport(cycle, null);
+
+        replayControls();
+
+        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+
+        verifyControls();
+
+        delegate.clear();
+
+        trainCycleForRewind(cycle, "refresh", "barney", null);
+
+        final IFormComponent component = newFormComponent("barney", "barney");
+
+        IRender body = newComponentRenderBody(fs, component, writer);
+
+        form.setBody(body);
+
+        replayControls();
+
+        assertEquals(FormConstants.SUBMIT_REFRESH, fs.rewind());
 
         verifyControls();
     }
@@ -996,79 +1056,6 @@ public class FormSupportTest extends BaseComponentTestCase
         verifyControls();
     }
 
-    public void testSimpleRenderWithScheme()
-    {
-        IMarkupWriter writer = newWriter();
-        NestedMarkupWriter nested = newNestedWriter();
-        IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
-        IValidationDelegate delegate = newDelegate();
-        ILink link = newLink();
-        IRender render = newRender();
-
-        MockForm form = new MockForm(delegate);
-
-        trainIsRewound(cycle, form, false);
-
-        trainGetEngine(cycle, engine);
-
-        PageRenderSupport support = newPageRenderSupport();
-
-        trainGetPageRenderSupport(cycle, support);
-
-        replayControls();
-
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
-
-        verifyControls();
-
-        final IFormComponent component = newFormComponent("barney", "barney");
-
-        IRender body = newComponentRenderBody(fs, component, nested);
-
-        form.setBody(body);
-
-        trainRegister(support);
-
-        trainGetParameterNames(link, new String[]
-        { "service" });
-        trainGetParameterValues(link, "service", new String[]
-        { "fred" });
-
-        trainGetNestedWriter(writer, nested);
-
-        trainGetURL(link, "https", "https://foo.bar/app");
-
-        writer.begin("form");
-        writer.attribute("method", "post");
-        writer.attribute("action", "https://foo.bar/app");
-
-        writer.attribute("name", "myform");
-        writer.attribute("id", "myform");
-
-        render.render(writer, cycle);
-
-        writer.println();
-
-        trainHiddenBlock(writer, "fred", "barney");
-
-        nested.close();
-
-        writer.end();
-
-        trainGetFocusField(delegate, "barney");
-
-        // Side test: check for another form already grabbing focus
-
-        trainGetFieldFocus(cycle, Boolean.TRUE);
-
-        replayControls();
-
-        fs.render("post", render, link, "https");
-
-        verifyControls();
-    }
-
     public void testSimpleRenderWithDeferredRunnable()
     {
         IMarkupWriter writer = newWriter();
@@ -1158,6 +1145,79 @@ public class FormSupportTest extends BaseComponentTestCase
         verifyControls();
     }
 
+    public void testSimpleRenderWithScheme()
+    {
+        IMarkupWriter writer = newWriter();
+        NestedMarkupWriter nested = newNestedWriter();
+        IRequestCycle cycle = newCycle();
+        IEngine engine = newEngine(getClassResolver());
+        IValidationDelegate delegate = newDelegate();
+        ILink link = newLink();
+        IRender render = newRender();
+
+        MockForm form = new MockForm(delegate);
+
+        trainIsRewound(cycle, form, false);
+
+        trainGetEngine(cycle, engine);
+
+        PageRenderSupport support = newPageRenderSupport();
+
+        trainGetPageRenderSupport(cycle, support);
+
+        replayControls();
+
+        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
+
+        verifyControls();
+
+        final IFormComponent component = newFormComponent("barney", "barney");
+
+        IRender body = newComponentRenderBody(fs, component, nested);
+
+        form.setBody(body);
+
+        trainRegister(support);
+
+        trainGetParameterNames(link, new String[]
+        { "service" });
+        trainGetParameterValues(link, "service", new String[]
+        { "fred" });
+
+        trainGetNestedWriter(writer, nested);
+
+        trainGetURL(link, "https", "https://foo.bar/app");
+
+        writer.begin("form");
+        writer.attribute("method", "post");
+        writer.attribute("action", "https://foo.bar/app");
+
+        writer.attribute("name", "myform");
+        writer.attribute("id", "myform");
+
+        render.render(writer, cycle);
+
+        writer.println();
+
+        trainHiddenBlock(writer, "fred", "barney");
+
+        nested.close();
+
+        writer.end();
+
+        trainGetFocusField(delegate, "barney");
+
+        // Side test: check for another form already grabbing focus
+
+        trainGetFieldFocus(cycle, Boolean.TRUE);
+
+        replayControls();
+
+        fs.render("post", render, link, "https");
+
+        verifyControls();
+    }
+
     public void testSimpleRewind()
     {
         IMarkupWriter writer = newWriter();
@@ -1191,80 +1251,6 @@ public class FormSupportTest extends BaseComponentTestCase
         replayControls();
 
         assertEquals(FormConstants.SUBMIT_NORMAL, fs.rewind());
-
-        verifyControls();
-    }
-
-    public void testRefreshRewind()
-    {
-        IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle();
-        IValidationDelegate delegate = newDelegate();
-        IEngine engine = newEngine(getClassResolver());
-        MockForm form = new MockForm(delegate);
-
-        trainIsRewound(cycle, form, true);
-
-        trainGetEngine(cycle, engine);
-
-        trainGetPageRenderSupport(cycle, null);
-
-        replayControls();
-
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
-
-        verifyControls();
-
-        delegate.clear();
-
-        trainCycleForRewind(cycle, "refresh", "barney", null);
-
-        final IFormComponent component = newFormComponent("barney", "barney");
-
-        IRender body = newComponentRenderBody(fs, component, writer);
-
-        form.setBody(body);
-
-        replayControls();
-
-        assertEquals(FormConstants.SUBMIT_REFRESH, fs.rewind());
-
-        verifyControls();
-    }
-
-    public void testCancelRewind()
-    {
-        IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle();
-        IValidationDelegate delegate = newDelegate();
-        IEngine engine = newEngine(getClassResolver());
-        MockForm form = new MockForm(delegate);
-
-        trainIsRewound(cycle, form, true);
-
-        trainGetEngine(cycle, engine);
-
-        trainGetPageRenderSupport(cycle, null);
-
-        replayControls();
-
-        final FormSupport fs = new FormSupportImpl(writer, cycle, form);
-
-        verifyControls();
-
-        delegate.clear();
-
-        trainGetParameter(cycle, FormSupportImpl.SUBMIT_MODE, "cancel");
-
-        // Create a body, just to provie it doesn't get invoked.
-
-        IRender body = (IRender) newMock(IRender.class);
-
-        form.setBody(body);
-
-        replayControls();
-
-        assertEquals(FormConstants.SUBMIT_CANCEL, fs.rewind());
 
         verifyControls();
     }
@@ -1408,6 +1394,37 @@ public class FormSupportTest extends BaseComponentTestCase
         trainGetParameter(cycle, FormSupportImpl.RESERVED_FORM_IDS, reservedIds);
     }
 
+    protected void trainDiv(IMarkupWriter writer)
+    {
+        writer.begin("div");
+        writer.attribute("style", "display:none;");
+    }
+
+    private void trainFocus(PageRenderSupport support)
+    {
+        support.addInitializationScript("Tapestry.set_focus('wilma');");
+    }
+
+    private void trainGetFieldFocus(IRequestCycle cycle, Object value)
+    {
+        cycle.getAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE);
+        setReturnValue(cycle, value);
+    }
+
+    private void trainGetFocusField(IValidationDelegate delegate, String fieldName)
+    {
+        delegate.getFocusField();
+        setReturnValue(delegate, fieldName);
+    }
+
+    private void trainGetURL(ILink link, String scheme, String URL)
+    {
+        // This will change shortly, with the new scheme parameter passed into FormSupport.render()
+
+        link.getURL(scheme, null, 0, null, false);
+        setReturnValue(link, URL);
+    }
+
     private void trainHidden(IMarkupWriter writer, String name, String value)
     {
         writer.beginEmpty("input");
@@ -1425,5 +1442,36 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.attribute("id", id);
         writer.attribute("value", value);
         writer.println();
+    }
+
+    protected void trainHiddenBlock(IMarkupWriter writer, String serviceName, String formIds)
+    {
+        trainDiv(writer);
+
+        trainHidden(writer, "formids", formIds);
+        trainHidden(writer, "service", serviceName);
+        trainHidden(writer, "submitmode", "");
+        trainHidden(writer, FormConstants.SUBMIT_NAME_PARAMETER, "");
+
+        writer.end();
+    }
+
+    protected void trainIsRewound(IRequestCycle cycle, IForm form, boolean isRewound)
+    {
+        cycle.isRewound(form);
+        setReturnValue(cycle, isRewound);
+    }
+
+    private void trainRegister(PageRenderSupport support)
+    {
+        support.addExternalScript(new ClasspathResource(getClassResolver(),
+                "/org/apache/tapestry/form/Form.js"));
+
+        support.addInitializationScript("Tapestry.register_form('myform');");
+    }
+
+    private void trainSetFieldFocus(IRequestCycle cycle)
+    {
+        cycle.setAttribute(FormSupportImpl.FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
     }
 }
