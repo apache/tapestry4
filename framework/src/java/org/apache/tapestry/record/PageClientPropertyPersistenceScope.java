@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.record;
 
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ServiceEncoding;
 
@@ -29,7 +30,7 @@ public class PageClientPropertyPersistenceScope extends
         AbstractPrefixedClientPropertyPersistenceScope
 {
     private IRequestCycle _requestCycle;
-    
+
     public PageClientPropertyPersistenceScope()
     {
         super("state:");
@@ -43,7 +44,18 @@ public class PageClientPropertyPersistenceScope extends
     public boolean shouldEncodeState(ServiceEncoding encoding, String pageName,
             PersistentPropertyData data)
     {
-        return pageName.equals(_requestCycle.getPage().getPageName());
+        IPage page = _requestCycle.getPage();
+
+        // TAPESTRY-701: if you try to generate a link using, say, page or external service,
+        // from inside PageValidateListener.pageValidate(), then there may not be an active
+        // page yet. Seems like the right thing to do is hold onto any properties until
+        // we know what the active page is.  I know this one is going to cause a fight
+        // since its not clear whether keeping or discarding is the right way to go.
+        
+        if (page == null)
+            return true;
+
+        return pageName.equals(page.getPageName());
     }
 
     public void setRequestCycle(IRequestCycle requestCycle)

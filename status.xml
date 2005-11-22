@@ -67,6 +67,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-769">StateBinding doesn't override isInvariant()</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-768">FormMessages class has typo in message key for fieldAlreadyPrerendered()</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-275" due-to="Igor Grimaylo">Single quotes in a localization of DatePicker strings causes a failure</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-701">NPE creating a link from pageValidate() when there are client-persistent properties with page scope</action>
     </release>
     <release version="4.0-beta-13" date="Nov 12 2005">
       <action type="update" dev="HLS">Switch to HiveMind 1.1 (final)</action>
