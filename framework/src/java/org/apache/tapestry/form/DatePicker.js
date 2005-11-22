@@ -810,7 +810,7 @@ Calendar.prototype.formatDate = function() {
     var keys = new Array('d','dd','ddd','dddd','M','MM','MMM','MMMM','yyyy','yy', 's', 'ss', 'm',
         'mm', 'H', 'HH');
     for (var i = 0; i < keys.length; i++) {
-      frm = eval("frm.replace(/\\b" + keys[i] + "\\b/,'" + bits[keys[i]] + "');");
+       frm = eval("frm.replace(/\\b" + keys[i] + "\\b/,\"" + bits[keys[i]] + "\");");      
     }     
 
     return frm;
