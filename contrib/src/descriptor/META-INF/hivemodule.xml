@@ -55,6 +55,7 @@
       <construct class="org.apache.tapestry.contrib.ajax.XTileService">
         <set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
         <set-object property="response" value="infrastructure:response"/>
+        <set-object property="linkFactory" value="infrastructure:linkFactory"/>
       </construct>
     </invoke-factory>
   </service-point>  
