@@ -64,6 +64,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-756">FieldLabel's prerender property should default to true</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-748">NumberTranslator.js missing semicolon</action>
       <action type="add" dev="HLS">Add missing documentation for Tapestry script template specifications</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-769">StateBinding doesn't override isInvariant()</action>
     </release>
     <release version="4.0-beta-13" date="Nov 12 2005">
       <action type="update" dev="HLS">Switch to HiveMind 1.1 (final)</action>

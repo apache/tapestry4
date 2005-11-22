@@ -45,6 +45,14 @@ public class StateBinding extends AbstractBinding
         _objectName = objectName;
     }
 
+    /**
+     * Returns false; these ASO objects can be created at any time.
+     */
+    public boolean isInvariant()
+    {
+        return false;
+    }
+
     public Object getObject()
     {
         try

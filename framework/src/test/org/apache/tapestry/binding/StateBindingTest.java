@@ -29,7 +29,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestStateBinding extends HiveMindTestCase
+public class StateBindingTest extends HiveMindTestCase
 {
 
     private ValueConverter newValueConverter()
@@ -62,6 +62,7 @@ public class TestStateBinding extends HiveMindTestCase
         IBinding b = newBinding("fred", vc, asm, null);
 
         assertEquals(Boolean.TRUE, b.getObject());
+        assertEquals(false, b.isInvariant());
 
         verifyControls();
     }
@@ -84,7 +85,6 @@ public class TestStateBinding extends HiveMindTestCase
 
         IBinding b = newBinding("fred", vc, asm, l);
 
-        
         try
         {
             b.getObject();
