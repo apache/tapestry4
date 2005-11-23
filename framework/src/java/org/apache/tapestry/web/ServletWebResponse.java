@@ -35,17 +35,34 @@ import org.apache.tapestry.util.ContentType;
  */
 public class ServletWebResponse implements WebResponse
 {
-    private static final Log LOG = LogFactory.getLog(ServletWebResponse.class);
+    private static final Log DEFAULT_LOG = LogFactory.getLog(ServletWebResponse.class);
+
+    private final Log _log;
+
+    private final boolean _tomcatPatch;
 
     private final HttpServletResponse _servletResponse;
 
     private boolean _needsReset;
 
+    private ContentType _printWriterContentType;
+
     public ServletWebResponse(HttpServletResponse response)
     {
+        this(response, DEFAULT_LOG, Boolean.getBoolean("org.apache.tapestry.607-patch"));
+    }
+
+    /**
+     * Alternate constructor used by some tests.
+     */
+    ServletWebResponse(HttpServletResponse response, Log log, boolean tomcatPatch)
+    {
         Defense.notNull(response, "response");
+        Defense.notNull(log, "log");
 
         _servletResponse = response;
+        _log = log;
+        _tomcatPatch = tomcatPatch;
     }
 
     public OutputStream getOutputStream(ContentType contentType)
@@ -73,8 +90,20 @@ public class ServletWebResponse implements WebResponse
             reset();
 
         _needsReset = true;
+        
+        if (_printWriterContentType == null || ! _tomcatPatch)
+        {
+            _servletResponse.setContentType(contentType.toString());
+            _printWriterContentType = contentType;
+        }
+        else
+        {
+            // This is a workaround for a tomcat bug; it takes effect when a page is reset so that
+            // the exception page (typically) can be rendered. See TAPESTRY-607 for details.
 
-        _servletResponse.setContentType(contentType.toString());
+            if (!_printWriterContentType.equals(contentType))
+                _log.warn(WebMessages.contentTypeUnchanged(_printWriterContentType, contentType));
+        }
 
         try
         {
@@ -100,7 +129,7 @@ public class ServletWebResponse implements WebResponse
         }
         catch (IllegalStateException ex)
         {
-            LOG.error(WebMessages.resetFailed(ex), ex);
+            _log.error(WebMessages.resetFailed(ex), ex);
         }
     }
 

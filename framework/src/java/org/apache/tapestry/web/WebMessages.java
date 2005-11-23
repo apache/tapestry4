@@ -59,4 +59,9 @@ class WebMessages
     {
         return _formatter.format("reset-failed", cause);
     }
+
+    static String contentTypeUnchanged(ContentType existing, ContentType requested)
+    {
+        return _formatter.format("content-type-unchanged", existing, requested);
+    }
 }
