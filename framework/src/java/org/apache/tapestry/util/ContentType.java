@@ -19,48 +19,63 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.apache.hivemind.util.Defense;
+
 /**
- *  Represents an HTTP content type. Allows to set various elements like
- *  the mime type, the character set, and other parameters.
- *  This is similar to a number of other implementations of the same concept in JAF, etc.
- *  We have created this simple implementation to avoid including the whole libraries. 
+ * Represents an HTTP content type. Allows to set various elements like the mime type, the character
+ * set, and other parameters. This is similar to a number of other implementations of the same
+ * concept in JAF, etc. We have created this simple implementation to avoid including the whole
+ * libraries.
  * 
- *  @author mindbridge
- *  @since 3.0
- **/
+ * @author mindbridge
+ * @since 3.0
+ */
 public class ContentType
 {
-    private String _baseType;
-    private String _subType;
-    private Map _parameters;
+    private String _baseType = "";
+
+    private String _subType = "";
+
+    private final Map _parameters = new HashMap();
 
     /**
      * Creates a new empty content type
      */
     public ContentType()
     {
-        initialize();
     }
-    
+
     /**
-     * Creates a new content type from the argument.
-     * The format of the argument has to be basetype/subtype(;key=value)* 
+     * Creates a new content type from the argument. The format of the argument has to be
+     * basetype/subtype(;key=value)*
      * 
-     * @param contentType the content type that needs to be represented
+     * @param contentType
+     *            the content type that needs to be represented
      */
     public ContentType(String contentType)
     {
         this();
         parse(contentType);
     }
-    
-    private void initialize()
+
+    /**
+     * Returns true only if the other object is another instance of ContentType, and has the ssame
+     * baseType, subType and set of parameters.
+     */
+    public boolean equals(Object o)
     {
-        _baseType = "";
-        _subType = "";
-        _parameters = new HashMap();
+        if (o == null)
+            return false;
+
+        if (o.getClass() != this.getClass())
+            return false;
+
+        ContentType ct = (ContentType) o;
+
+        return _baseType.equals(ct._baseType) && _subType.equals(ct._subType)
+                && _parameters.equals(ct._parameters);
     }
-    
+
     /**
      * @return the base type of the content type
      */
@@ -74,6 +89,8 @@ public class ContentType
      */
     public void setBaseType(String baseType)
     {
+        Defense.notNull(baseType, "baseType");
+
         _baseType = baseType;
     }
 
@@ -90,6 +107,8 @@ public class ContentType
      */
     public void setSubType(String subType)
     {
+        Defense.notNull(subType, "subType");
+
         _subType = subType;
     }
 
@@ -102,52 +121,64 @@ public class ContentType
     }
 
     /**
-     * @return the list of names of parameters in this content type 
+     * @return the list of names of parameters in this content type
      */
     public String[] getParameterNames()
     {
-        Set parameterNames = _parameters.keySet(); 
+        Set parameterNames = _parameters.keySet();
         return (String[]) parameterNames.toArray(new String[parameterNames.size()]);
     }
 
     /**
-     * @param key the name of the content type parameter
+     * @param key
+     *            the name of the content type parameter
      * @return the value of the content type parameter
      */
     public String getParameter(String key)
     {
+        Defense.notNull(key, "key");
+
         return (String) _parameters.get(key);
     }
 
     /**
-     * @param key the name of the content type parameter
-     * @param value the value of the content type parameter
+     * @param key
+     *            the name of the content type parameter
+     * @param value
+     *            the value of the content type parameter
      */
     public void setParameter(String key, String value)
     {
+        Defense.notNull(key, "key");
+        Defense.notNull(value, "value");
+
         _parameters.put(key.toLowerCase(), value);
     }
 
     /**
-     * Parses the argument and configures the content type accordingly.
-     * The format of the argument has to be type/subtype(;key=value)* 
+     * Parses the argument and configures the content type accordingly. The format of the argument
+     * has to be type/subtype(;key=value)*
      * 
-     * @param contentType the content type that needs to be represented
+     * @param contentType
+     *            the content type that needs to be represented
      */
     public void parse(String contentType)
     {
-        initialize();
+        _baseType = "";
+        _subType = "";
+        _parameters.clear();
 
         StringTokenizer tokens = new StringTokenizer(contentType, ";");
-        if (!tokens.hasMoreTokens()) 
+        if (!tokens.hasMoreTokens())
             return;
-        
+
         String mimeType = tokens.nextToken();
         StringTokenizer mimeTokens = new StringTokenizer(mimeType, "/");
         setBaseType(mimeTokens.hasMoreTokens() ? mimeTokens.nextToken() : "");
         setSubType(mimeTokens.hasMoreTokens() ? mimeTokens.nextToken() : "");
-        
-        while (tokens.hasMoreTokens()) {
+
+        while (tokens.hasMoreTokens())
+        {
             String parameter = tokens.nextToken();
 
             StringTokenizer parameterTokens = new StringTokenizer(parameter, "=");
@@ -156,8 +187,6 @@ public class ContentType
             setParameter(key, value);
         }
     }
-
-    
 
     /**
      * @return the string representation of this content type
@@ -172,11 +201,11 @@ public class ContentType
             String key = parameterNames[i];
             String value = getParameter(key);
             buf.append(";" + key + "=" + value);
-        } 
-        
+        }
+
         return buf.toString();
     }
-    
+
     /**
      * @return the string representation of this content type. Same as unparse().
      */

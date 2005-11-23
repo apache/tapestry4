@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.util.ContentType;
@@ -31,7 +32,7 @@ import org.apache.tapestry.util.ContentType;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestServletWebResponse extends HiveMindTestCase
+public class ServletWebResponseTest extends HiveMindTestCase
 {
     private static class MockServletOutputStream extends ServletOutputStream
     {
@@ -94,8 +95,8 @@ public class TestServletWebResponse extends HiveMindTestCase
         HttpServletResponse response = newResponse();
 
         response.setContentType("foo/bar");
-        response.getWriter();
-        setReturnValue(response, writer);
+        
+        trainGetWriter(response, writer);
 
         replayControls();
 
@@ -106,6 +107,14 @@ public class TestServletWebResponse extends HiveMindTestCase
         verifyControls();
     }
 
+    private void trainGetWriter(HttpServletResponse response, PrintWriter writer) throws IOException
+    {
+        response.getWriter();
+        setReturnValue(response, writer);
+    }
+    
+    
+
     public void testGetSecondPrintWriter() throws Exception
     {
         PrintWriter writer1 = new PrintWriter(new CharArrayWriter());
@@ -114,9 +123,9 @@ public class TestServletWebResponse extends HiveMindTestCase
         HttpServletResponse response = newResponse();
 
         response.setContentType("foo/bar");
-        response.getWriter();
-        setReturnValue(response, writer1);
-
+        
+        trainGetWriter(response, writer1);
+        
         replayControls();
 
         ServletWebResponse swr = new ServletWebResponse(response);
@@ -126,16 +135,85 @@ public class TestServletWebResponse extends HiveMindTestCase
         verifyControls();
 
         response.reset();
-        response.setContentType("zip/zap");
-        response.getWriter();
-        setReturnValue(response, writer2);
-
+        response.setContentType("biff/bazz");
+        
+        trainGetWriter(response, writer2);
+        
         replayControls();
 
-        assertSame(writer2, swr.getPrintWriter(new ContentType("zip/zap")));
+        assertSame(writer2, swr.getPrintWriter(new ContentType("biff/bazz")));
 
         verifyControls();
     }
+    
+    public void testGetSecondPrintWriterTomcatPatch() throws Exception
+    {
+        PrintWriter writer1 = new PrintWriter(new CharArrayWriter());
+        PrintWriter writer2 = new PrintWriter(new CharArrayWriter());
+
+        HttpServletResponse response = newResponse();
+        Log log = newLog();
+
+        response.setContentType("foo/bar");
+        
+        trainGetWriter(response, writer1);
+        
+        replayControls();
+
+        ServletWebResponse swr = new ServletWebResponse(response, log, true);
+
+        assertSame(writer1, swr.getPrintWriter(new ContentType("foo/bar")));
+
+        verifyControls();
+
+        response.reset();
+
+        trainGetWriter(response, writer2);
+        
+        replayControls();
+
+        assertSame(writer2, swr.getPrintWriter(new ContentType("foo/bar")));
+
+        verifyControls();
+    }
+    
+    public void testGetSecondPrintWriterDifferentContentTypeTomcatPatch() throws Exception
+    {
+        PrintWriter writer1 = new PrintWriter(new CharArrayWriter());
+        PrintWriter writer2 = new PrintWriter(new CharArrayWriter());
+
+        HttpServletResponse response = newResponse();
+        Log log = newLog();
+
+        response.setContentType("foo/bar");
+        
+        trainGetWriter(response, writer1);
+        
+        replayControls();
+
+        ServletWebResponse swr = new ServletWebResponse(response, log, true);
+
+        assertSame(writer1, swr.getPrintWriter(new ContentType("foo/bar")));
+
+        verifyControls();
+
+        response.reset();
+        
+        log.warn("Unable to change response content type from 'foo/bar' to 'biff/bazz' (following a reset). See Tapestry issue TAPESTRY-607.");
+        
+        trainGetWriter(response, writer2);
+        
+        replayControls();
+
+        assertSame(writer2, swr.getPrintWriter(new ContentType("biff/bazz")));
+
+        verifyControls();
+    }    
+
+    private Log newLog()
+    {
+        return (Log)newMock(Log.class);
+    }    
 
     public void testGetPrintWriterFailure() throws Exception
     {

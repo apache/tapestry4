@@ -580,11 +580,17 @@ currently used in Tapestry:
 	</td>
   </tr>
   
-  
-	
-
-
-
+  <tr>
+    <td>org.apache.tapestry.607-patch</td>
+    
+    <td>
+      A workaround for <link href="http://issues.apache.org/jira/browse/TAPESTRY-607">TAPESTRY-607</link>, a problem
+      related to response character sets when using some versions of Tomcat 5. The Tomcat bug is
+      <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=37072">37072</a>.  This patch ensures that
+      HttpServletResponse.setContentType() is only invoked once, even if the output is reset (for instance, to
+      switch to the Tapestry exception page).  The value must be set to true as a JVM system property.
+    </td>
+  </tr>
 
   <tr>
 	<td>org.apache.tapestry.visit-class</td>
@@ -604,18 +610,7 @@ currently used in Tapestry:
   
   </td>
   </tr>
-
-
-
-
-
-
-
-
-
-
-
-
+  
 </table>
 </section>  <!-- configuration.properties -->
 

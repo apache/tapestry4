@@ -23,8 +23,38 @@ import org.apache.tapestry.util.ContentType;
  * @since 3.0
  */
 
-public class TestContentType extends TapestryTestCase
+public class ContentTypeTest extends TapestryTestCase
 {
+    public void testEquals()
+    {
+        ContentType master = new ContentType("text/html");
+
+        assertEquals(false, master.equals(null));
+        assertEquals(false, master.equals(this));
+        assertEquals(true, master.equals(master));
+        assertEquals(true, master.equals(new ContentType("text/html")));
+        assertEquals(false, master.equals(new ContentType("foo/bar")));
+        assertEquals(false, master.equals(new ContentType("text/plain")));
+    }
+
+    public void testEqualsWithParameters()
+    {
+        ContentType master = new ContentType("text/html;charset=utf-8");
+
+        assertEquals(false, master.equals(new ContentType("text/html")));
+        assertEquals(true, master.equals(new ContentType("text/html;charset=utf-8")));
+        assertEquals(false, master.equals(new ContentType("text/html;charset=utf-8;foo=bar")));
+        
+        // Check that keys are case insensitive
+        
+        assertEquals(true, master.equals(new ContentType("text/html;Charset=utf-8")));
+     
+        master = new ContentType("text/html;foo=bar;biff=bazz");
+        
+        assertEquals(true, master.equals(new ContentType("text/html;foo=bar;biff=bazz")));
+        assertEquals(true, master.equals(new ContentType("text/html;Foo=bar;Biff=bazz")));
+        assertEquals(true, master.equals(new ContentType("text/html;biff=bazz;foo=bar")));
+    }
 
     public void testParsing1() throws Exception
     {
