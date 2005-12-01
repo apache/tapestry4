@@ -22,47 +22,57 @@ import org.apache.tapestry.contrib.tree.model.ITreeNode;
 import org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager;
 import org.apache.tapestry.contrib.tree.model.ITreeStateModel;
 import org.apache.tapestry.contrib.tree.simple.SimpleTreeModel;
+import org.apache.tapestry.engine.IEngineService;
 
 /**
  * @author ceco
  */
-public class FileSystemStateManager implements ITreeSessionStateManager {
+public class FileSystemStateManager implements ITreeSessionStateManager
+{
     private String m_strRootDir;
+
+    private final IEngineService _assetService;
 
     /**
      * Constructor for FileSystemStateManager.
      */
-    public FileSystemStateManager(String strRootDir) {
+    public FileSystemStateManager(String strRootDir, IEngineService assetService)
+    {
         super();
         m_strRootDir = strRootDir;
+        _assetService = assetService;
     }
 
     /**
      * @see org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager#getSessionState(ITreeModel)
      */
-    public Object getSessionState(ITreeModel objModel) {
+    public Object getSessionState(ITreeModel objModel)
+    {
         return objModel.getTreeStateModel();
     }
 
     /**
      * @see org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager#getModel(Object)
      */
-    public ITreeModel getModel(Object objSessionState) {
+    public ITreeModel getModel(Object objSessionState)
+    {
         ITreeStateModel objStateModel = (ITreeStateModel) objSessionState;
 
         ITreeNode objParent;
 
-        if (m_strRootDir == null || "".equals(m_strRootDir)) {
-            objParent = new FileSystem();
-        } else {
-            FolderObject objFolder = new FolderObject(null, new File(m_strRootDir), true);
+        if (m_strRootDir == null || "".equals(m_strRootDir))
+        {
+            objParent = new FileSystem(_assetService);
+        }
+        else
+        {
+            FolderObject objFolder = new FolderObject(null, new File(m_strRootDir), true, _assetService);
             objFolder.reload();
             objParent = objFolder;
         }
 
         ITreeDataModel objDataModel = new FileSystemDataModel(objParent);
-        ITreeModel objModel = new SimpleTreeModel(objDataModel,
-                                                    objStateModel);
+        ITreeModel objModel = new SimpleTreeModel(objDataModel, objStateModel);
 
         return objModel;
     }

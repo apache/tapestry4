@@ -15,6 +15,7 @@
 package org.apache.tapestry.services.impl;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
@@ -32,7 +33,7 @@ import org.apache.tapestry.engine.ILink;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class EngineServiceOuterProxy implements IEngineService
+public class EngineServiceOuterProxy implements IEngineService, Serializable
 {
     private final String _serviceName;
 

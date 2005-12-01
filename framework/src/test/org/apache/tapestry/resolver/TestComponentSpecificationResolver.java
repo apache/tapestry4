@@ -203,13 +203,13 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         namespace.containsComponentType("MyComponent");
         namespacec.setReturnValue(false);
 
-        train(log, logc, ResolverMessages.resolvingComponent("MyComponent", namespace));
+        train(log, ResolverMessages.resolvingComponent("MyComponent", namespace));
 
         namespace.getSpecificationLocation();
         namespacec.setReturnValue(namespaceLocation);
 
-        train(log, logc, ResolverMessages.checkingResource(specLocation));
-        train(log, logc, ResolverMessages.installingComponent("MyComponent", namespace, spec));
+        train(log, ResolverMessages.checkingResource(specLocation));
+        train(log, ResolverMessages.installingComponent("MyComponent", namespace, spec));
 
         namespace.installComponentSpecification("MyComponent", spec);
 
@@ -251,12 +251,12 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         namespace.containsComponentType("FrameworkComponent");
         namespacec.setReturnValue(false);
 
-        train(log, logc, ResolverMessages.resolvingComponent("FrameworkComponent", namespace));
+        train(log, ResolverMessages.resolvingComponent("FrameworkComponent", namespace));
 
         namespace.getSpecificationLocation();
         namespacec.setReturnValue(namespaceLocation);
 
-        train(log, logc, ResolverMessages.checkingResource(namespaceLocation
+        train(log, ResolverMessages.checkingResource(namespaceLocation
                 .getRelativeResource("FrameworkComponent.jwc")));
 
         namespace.isApplicationNamespace();
@@ -273,7 +273,7 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         framework.getComponentSpecification("FrameworkComponent");
         frameworkc.setReturnValue(spec);
 
-        train(log, logc, ResolverMessages
+        train(log, ResolverMessages
                 .installingComponent("FrameworkComponent", namespace, spec));
         namespace.installComponentSpecification("FrameworkComponent", spec);
 
@@ -322,12 +322,12 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         namespace.containsComponentType("DelegateComponent");
         namespacec.setReturnValue(false);
 
-        train(log, logc, ResolverMessages.resolvingComponent("DelegateComponent", namespace));
+        train(log, ResolverMessages.resolvingComponent("DelegateComponent", namespace));
 
         namespace.getSpecificationLocation();
         namespacec.setReturnValue(namespaceLocation);
 
-        train(log, logc, ResolverMessages.checkingResource(namespaceLocation
+        train(log, ResolverMessages.checkingResource(namespaceLocation
                 .getRelativeResource("DelegateComponent.jwc")));
 
         namespace.isApplicationNamespace();
@@ -406,12 +406,12 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         namespace.containsComponentType("NotFoundComponent");
         namespacec.setReturnValue(false);
 
-        train(log, logc, ResolverMessages.resolvingComponent("NotFoundComponent", namespace));
+        train(log, ResolverMessages.resolvingComponent("NotFoundComponent", namespace));
 
         namespace.getSpecificationLocation();
         namespacec.setReturnValue(namespaceLocation);
 
-        train(log, logc, ResolverMessages.checkingResource(namespaceLocation
+        train(log, ResolverMessages.checkingResource(namespaceLocation
                 .getRelativeResource("NotFoundComponent.jwc")));
 
         namespace.isApplicationNamespace();
@@ -478,19 +478,19 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         namespace.containsComponentType("MyAppComponent");
         namespacec.setReturnValue(false);
 
-        train(log, logc, ResolverMessages.resolvingComponent("MyAppComponent", namespace));
+        train(log, ResolverMessages.resolvingComponent("MyAppComponent", namespace));
 
         namespace.getSpecificationLocation();
         namespacec.setReturnValue(namespaceLocation);
 
-        train(log, logc, ResolverMessages.checkingResource(namespaceLocation
+        train(log, ResolverMessages.checkingResource(namespaceLocation
                 .getRelativeResource("MyAppComponent.jwc")));
 
         namespace.isApplicationNamespace();
         namespacec.setReturnValue(true);
 
-        train(log, logc, ResolverMessages.checkingResource(specLocation));
-        train(log, logc, ResolverMessages.installingComponent("MyAppComponent", namespace, spec));
+        train(log, ResolverMessages.checkingResource(specLocation));
+        train(log, ResolverMessages.installingComponent("MyAppComponent", namespace, spec));
 
         namespace.installComponentSpecification("MyAppComponent", spec);
 
@@ -537,21 +537,21 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         namespace.containsComponentType("MyWebInfComponent");
         namespacec.setReturnValue(false);
 
-        train(log, logc, ResolverMessages.resolvingComponent("MyWebInfComponent", namespace));
+        train(log, ResolverMessages.resolvingComponent("MyWebInfComponent", namespace));
 
         namespace.getSpecificationLocation();
         namespacec.setReturnValue(namespaceLocation);
 
-        train(log, logc, ResolverMessages.checkingResource(namespaceLocation
+        train(log, ResolverMessages.checkingResource(namespaceLocation
                 .getRelativeResource("MyWebInfComponent.jwc")));
 
         namespace.isApplicationNamespace();
         namespacec.setReturnValue(true);
 
-        train(log, logc, ResolverMessages.checkingResource(contextRoot
+        train(log, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("WEB-INF/myapp/MyWebInfComponent.jwc")));
-        train(log, logc, ResolverMessages.checkingResource(specLocation));
-        train(log, logc, ResolverMessages.installingComponent("MyWebInfComponent", namespace, spec));
+        train(log, ResolverMessages.checkingResource(specLocation));
+        train(log, ResolverMessages.installingComponent("MyWebInfComponent", namespace, spec));
 
         namespace.installComponentSpecification("MyWebInfComponent", spec);
 
@@ -598,23 +598,23 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         namespace.containsComponentType("ContextRootComponent");
         namespacec.setReturnValue(false);
 
-        train(log, logc, ResolverMessages.resolvingComponent("ContextRootComponent", namespace));
+        train(log, ResolverMessages.resolvingComponent("ContextRootComponent", namespace));
 
         namespace.getSpecificationLocation();
         namespacec.setReturnValue(namespaceLocation);
 
-        train(log, logc, ResolverMessages.checkingResource(namespaceLocation
+        train(log, ResolverMessages.checkingResource(namespaceLocation
                 .getRelativeResource("ContextRootComponent.jwc")));
 
         namespace.isApplicationNamespace();
         namespacec.setReturnValue(true);
 
-        train(log, logc, ResolverMessages.checkingResource(contextRoot
+        train(log, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("WEB-INF/myapp/ContextRootComponent.jwc")));
-        train(log, logc, ResolverMessages.checkingResource(contextRoot
+        train(log, ResolverMessages.checkingResource(contextRoot
                 .getRelativeResource("WEB-INF/ContextRootComponent.jwc")));
-        train(log, logc, ResolverMessages.checkingResource(specLocation));
-        train(log, logc, ResolverMessages.installingComponent(
+        train(log, ResolverMessages.checkingResource(specLocation));
+        train(log, ResolverMessages.installingComponent(
                 "ContextRootComponent",
                 namespace,
                 spec));

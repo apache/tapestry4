@@ -42,12 +42,6 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
 {
     private static final Log LOG = LogFactory.getLog(TreeNodeView.class);
 
-    private IBinding m_objNodeRenderFactoryBinding;
-
-    private IBinding m_objShowNodeImagesBinding;
-
-    private IBinding m_objMakeNodeDirectBinding;
-
     private Boolean m_objNodeState;
 
     private Boolean m_objShowNodeImages;
@@ -61,6 +55,10 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
     private IAsset m_objCloseNodeImage;
 
     private int m_CurrentForeachConnectImageValue = TreeRowObject.LINE_CONN_IMG;
+
+    public abstract INodeRenderFactory getNodeRenderFactoryParameter();
+
+    public abstract Boolean getShowNodeImages();
 
     public TreeNodeView()
     {
@@ -122,7 +120,7 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
         ComponentAddress objModelSourceAddress = (ComponentAddress) context[2];
         ITreeModelSource objTreeModelSource = (ITreeModelSource) objModelSourceAddress
                 .findComponent(cycle);
-        //ITreeModelSource objTreeModelSource = getTreeModelSource();
+        // ITreeModelSource objTreeModelSource = getTreeModelSource();
         ITreeStateModel objStateModel = objTreeModelSource.getTreeModel().getTreeStateModel();
         boolean bState = objStateModel.isUniqueKeyExpanded(objValueUID);
 
@@ -156,14 +154,14 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
         ComponentAddress objModelSourceAddress = (ComponentAddress) context[2];
         ITreeModelSource objTreeModelSource = (ITreeModelSource) objModelSourceAddress
                 .findComponent(cycle);
-        //ITreeModelSource objTreeModelSource = getTreeModelSource();
+        // ITreeModelSource objTreeModelSource = getTreeModelSource();
         ITreeStateModel objStateModel = objTreeModelSource.getTreeModel().getTreeStateModel();
         Object objSelectedNodeInState = objStateModel.getSelectedNode();
 
         if (objValueUID.equals(objSelectedNodeInState))
         {
-            //do nothing, the selected node in UI is the same as the selected in
-            //state model. The user should use refresh of back button.
+            // do nothing, the selected node in UI is the same as the selected in
+            // state model. The user should use refresh of back button.
             return;
         }
 
@@ -420,27 +418,6 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
     }
 
     /**
-     * Returns the ShowNodeImagesBinding.
-     * 
-     * @return IBinding
-     */
-    public IBinding getShowNodeImagesBinding()
-    {
-        return m_objShowNodeImagesBinding;
-    }
-
-    /**
-     * Sets the ShowNodeImagesBinding.
-     * 
-     * @param ShowNodeImagesBinding
-     *            The ShowNodeImagesBinding to set
-     */
-    public void setShowNodeImagesBinding(IBinding ShowNodeImagesBinding)
-    {
-        m_objShowNodeImagesBinding = ShowNodeImagesBinding;
-    }
-
-    /**
      * Returns the ShowNodeImages.
      * 
      * @return Boolean
@@ -449,21 +426,15 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
     {
         if (m_objShowNodeImages == null)
         {
-            if (getNodeRenderFactoryBinding() == null)
+            if (isParameterBound("nodeRenderFactory"))
             {
-                m_objShowNodeImages = Boolean.TRUE;
+                m_objShowNodeImages = getShowNodeImages();
             }
             else
             {
-                if (m_objShowNodeImagesBinding != null)
-                {
-                    m_objShowNodeImages = (Boolean) m_objShowNodeImagesBinding.getObject();
-                }
-                else
-                {
-                    m_objShowNodeImages = Boolean.TRUE;
-                }
+                m_objShowNodeImages = Boolean.TRUE;
             }
+
         }
         return m_objShowNodeImages;
     }
@@ -482,7 +453,7 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
 
     public String getOffsetStyle()
     {
-        //return "width: " + getTreeDataView().getTreeDeep() * 15;
+        // return "width: " + getTreeDataView().getTreeDeep() * 15;
         ITreeRowSource objTreeRowSource = getTreeRowSource();
         TreeRowObject objTreeRowObject = objTreeRowSource.getTreeRow();
         int nTreeRowDepth = 0;
@@ -495,86 +466,19 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
         return "padding-left: " + nTreeRowDepth * 19 + "px";
     }
 
-    /**
-     * Returns the nodeRenderFactoryBinding.
-     * 
-     * @return IBinding
-     */
-    public IBinding getNodeRenderFactoryBinding()
-    {
-        return m_objNodeRenderFactoryBinding;
-    }
-
-    /**
-     * Sets the nodeRenderFactoryBinding.
-     * 
-     * @param nodeRenderFactoryBinding
-     *            The nodeRenderFactoryBinding to set
-     */
-    public void setNodeRenderFactoryBinding(IBinding nodeRenderFactoryBinding)
-    {
-        m_objNodeRenderFactoryBinding = nodeRenderFactoryBinding;
-    }
-
     public INodeRenderFactory getNodeRenderFactory()
     {
         if (m_objNodeRenderFactory == null)
         {
-            IBinding objBinding = getNodeRenderFactoryBinding();
-            if (objBinding != null)
-            {
-                m_objNodeRenderFactory = (INodeRenderFactory) objBinding.getObject();
-            }
+            if (isParameterBound("nodeRenderFactory"))
+                m_objNodeRenderFactory = getNodeRenderFactoryParameter();
             else
-            {
                 m_objNodeRenderFactory = new SimpleNodeRenderFactory();
-            }
         }
         return m_objNodeRenderFactory;
     }
 
-    /**
-     * Returns the makeNodeDirectBinding.
-     * 
-     * @return IBinding
-     */
-    public IBinding getMakeNodeDirectBinding()
-    {
-        return m_objMakeNodeDirectBinding;
-    }
-
-    /**
-     * Sets the makeNodeDirectBinding.
-     * 
-     * @param makeNodeDirectBinding
-     *            The makeNodeDirectBinding to set
-     */
-    public void setMakeNodeDirectBinding(IBinding makeNodeDirectBinding)
-    {
-        m_objMakeNodeDirectBinding = makeNodeDirectBinding;
-    }
-
-    /**
-     * Returns the makeNodeDirect.
-     * 
-     * @return Boolean
-     */
-    public boolean getMakeNodeDirect()
-    {
-        if (m_objMakeNodeDirect == null)
-        {
-            IBinding objBinding = getMakeNodeDirectBinding();
-            if (objBinding != null)
-            {
-                m_objMakeNodeDirect = (Boolean) objBinding.getObject();
-            }
-            else
-            {
-                m_objMakeNodeDirect = Boolean.TRUE;
-            }
-        }
-        return m_objMakeNodeDirect.booleanValue();
-    }
+    public abstract boolean getMakeNodeDirect();
 
     public boolean getMakeNodeNoDirect()
     {
@@ -603,7 +507,7 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
 
     private String getSelectedNodeID()
     {
-        //return getTreeDataView().getTreeView().getSelectedNodeID();
+        // return getTreeDataView().getTreeView().getSelectedNodeID();
         return "tree";
     }
 

@@ -20,12 +20,12 @@ import java.util.Collection;
 import java.util.Vector;
 
 import org.apache.tapestry.contrib.tree.model.ITreeNode;
+import org.apache.tapestry.engine.IEngineService;
 
 public class FolderObject extends SFObject
 {
-    private static final long serialVersionUID = 8237515756497487278L;
 
-	/**
+    /**
      * @associates <{File}>
      * @supplierCardinality 0..*
      * @link aggregation
@@ -38,55 +38,77 @@ public class FolderObject extends SFObject
      * @link aggregation
      */
     private Vector m_vFolders = null;
+
     private boolean m_bShared;
 
-    public FolderObject(ITreeNode objParent, File objFile, boolean bInvokeInit) {
+    private final IEngineService _assetService;
+
+    public FolderObject(ITreeNode objParent, File objFile, boolean bInvokeInit,
+            IEngineService assetService)
+    {
         super(objParent, objFile);
-        if(bInvokeInit)
-        	init();
+
+        _assetService = assetService;
+
+        if (bInvokeInit)
+            init();
     }
 
-    public void reload() {
+    public void reload()
+    {
         m_vFolders = new Vector();
         m_vFiles = new Vector();
 
         File[] arrFiles = getFile().listFiles();
 
-        if (arrFiles == null) {
+        if (arrFiles == null)
+        {
             return;
         }
 
-        for (int i=0; i<arrFiles.length; i++) {
-            if (arrFiles[i].isDirectory()) {
-                m_vFolders.addElement(new FolderObject(this, arrFiles[i], true));
-            } else {
-                m_vFiles.addElement(new FileObject(this, arrFiles[i]));
+        for (int i = 0; i < arrFiles.length; i++)
+        {
+            if (arrFiles[i].isDirectory())
+            {
+                m_vFolders.addElement(new FolderObject(this, arrFiles[i], true, _assetService));
+            }
+            else
+            {
+                m_vFiles.addElement(new FileObject(this, arrFiles[i], _assetService));
             }
         }
     }
 
-    public boolean isShared() {
+    public boolean isShared()
+    {
         return m_bShared;
     }
 
-    public Vector getFolders() {
-        if (m_vFolders == null) {
+    public Vector getFolders()
+    {
+        if (m_vFolders == null)
+        {
             reload();
         }
         return m_vFolders;
     }
 
-    public Vector getFiles() {
-        if (m_vFiles == null) {
+    public Vector getFiles()
+    {
+        if (m_vFiles == null)
+        {
             reload();
         }
         return m_vFiles;
     }
 
-    public int getChildNumber(Object objChild) {
-        for(int i = 0; i < m_vFolders.size(); i++) {
+    public int getChildNumber(Object objChild)
+    {
+        for (int i = 0; i < m_vFolders.size(); i++)
+        {
             Object objChildFolder = m_vFolders.elementAt(i);
-            if (objChildFolder.equals(objChild)) {
+            if (objChildFolder.equals(objChild))
+            {
                 return i;
             }
         }
@@ -96,28 +118,32 @@ public class FolderObject extends SFObject
     /**
      * @see org.apache.tapestry.contrib.tree.model.ITreeNode#containsChild(ITreeNode)
      */
-    public boolean containsChild(ITreeNode node) {
+    public boolean containsChild(ITreeNode node)
+    {
         return true;
     }
 
     /**
      * @see org.apache.tapestry.contrib.tree.model.ITreeNode#getAllowsChildren()
      */
-    public boolean getAllowsChildren() {
+    public boolean getAllowsChildren()
+    {
         return true;
     }
 
     /**
      * @see org.apache.tapestry.contrib.tree.model.ITreeNode#getChildCount()
      */
-    public int getChildCount() {
+    public int getChildCount()
+    {
         return getFolders().size() + getFiles().size();
     }
 
     /**
      * @see org.apache.tapestry.contrib.tree.model.ITreeNode#getChildren()
      */
-    public Collection getChildren() {
+    public Collection getChildren()
+    {
         ArrayList arrChildrens = new ArrayList();
         arrChildrens.addAll(getFolders());
         arrChildrens.addAll(getFiles());
@@ -127,19 +153,20 @@ public class FolderObject extends SFObject
     /**
      * @see org.apache.tapestry.contrib.tree.model.ITreeNode#isLeaf()
      */
-    public boolean isLeaf() {
+    public boolean isLeaf()
+    {
         return false;
     }
 
-    private final static String openImage =
-        "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeOpen.gif";
+    private final static String openImage = "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeOpen.gif";
 
-    private final static String closedImage =
-        "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeClosed.gif";
+    private final static String closedImage = "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeClosed.gif";
 
-    public AssetsHolder getAssets() {
-        if (m_objAssetsHolder == null) {
-            m_objAssetsHolder = new AssetsHolder(openImage, closedImage);
+    public AssetsHolder getAssets()
+    {
+        if (m_objAssetsHolder == null)
+        {
+            m_objAssetsHolder = new AssetsHolder(_assetService, openImage, closedImage);
         }
         return m_objAssetsHolder;
     }

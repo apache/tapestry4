@@ -15,6 +15,7 @@
 package org.apache.tapestry.resolver;
 
 import org.apache.commons.logging.Log;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.LocationImpl;
 import org.apache.tapestry.INamespace;
@@ -60,6 +61,8 @@ import org.apache.tapestry.spec.IComponentSpecification;
 public class PageSpecificationResolverImpl extends AbstractSpecificationResolver implements
         PageSpecificationResolver
 {
+    private static final String WEB_INF = "/WEB-INF/";
+
     /** set by container */
     private Log _log;
 
@@ -149,6 +152,12 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
         if (_log.isDebugEnabled())
             _log.debug(ResolverMessages.resolvingPage(_simpleName, namespace));
 
+        // Check with and without the leading slash
+
+        if (_simpleName.regionMatches(true, 0, WEB_INF, 0, WEB_INF.length())
+                || _simpleName.regionMatches(true, 0, WEB_INF, 1, WEB_INF.length() - 1))
+            throw new ApplicationRuntimeException(ResolverMessages.webInfNotAllowed(_simpleName));
+
         String expectedName = _simpleName + ".page";
 
         Resource namespaceLocation = namespace.getSpecificationLocation();
@@ -157,7 +166,7 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
         // as the library or application specification that's
         // supposed to contain the page.
 
-        if (found(namespaceLocation.getRelativeResource(expectedName)))
+        if (found(namespaceLocation, expectedName))
             return;
 
         if (namespace.isApplicationNamespace())
@@ -165,13 +174,13 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
 
             // The application namespace gets some extra searching.
 
-            if (found(getWebInfAppLocation().getRelativeResource(expectedName)))
+            if (found(getWebInfAppLocation(), expectedName))
                 return;
 
-            if (found(getWebInfLocation().getRelativeResource(expectedName)))
+            if (found(getWebInfLocation(), expectedName))
                 return;
 
-            if (found(getContextRoot().getRelativeResource(expectedName)))
+            if (found(getContextRoot(), expectedName))
                 return;
 
             // The wierd one ... where we see if there's a template in the application root
@@ -247,8 +256,10 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
         install();
     }
 
-    private boolean found(Resource resource)
+    private boolean found(Resource baseResource, String expectedName)
     {
+        Resource resource = baseResource.getRelativeResource(expectedName);
+
         if (_log.isDebugEnabled())
             _log.debug(ResolverMessages.checkingResource(resource));
 

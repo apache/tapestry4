@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
 import org.apache.tapestry.contrib.tree.components.INodeRenderFactory;
 import org.apache.tapestry.contrib.tree.components.table.TreeTable;
@@ -32,6 +33,9 @@ import org.apache.tapestry.contrib.tree.model.ITreeStateModel;
 import org.apache.tapestry.contrib.tree.model.TreeRowObject;
 import org.apache.tapestry.contrib.tree.model.TreeStateEvent;
 import org.apache.tapestry.contrib.tree.simple.SimpleTreeModel;
+import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.event.PageDetachListener;
+import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.workbench.tree.examples.fsmodel.FileSystem;
 import org.apache.tapestry.workbench.tree.examples.fsmodel.FileSystemDataModel;
@@ -41,7 +45,7 @@ import org.apache.tapestry.workbench.tree.examples.fsmodel.IFileSystemTreeNode;
 import org.apache.tapestry.workbench.tree.examples.fsmodel.NodeRenderFactory;
 
 public abstract class FileSystemTreeTable extends BasePage implements ISelectedFolderSource,
-        ITreeStateListener
+        ITreeStateListener, PageDetachListener
 {
     private ITreeSessionStateManager m_objTreeSessionStateManager = null;
 
@@ -61,14 +65,11 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
 
     public abstract String getTreeRootDir();
 
-    public FileSystemTreeTable()
-    {
-        super();
-    }
+    @InjectObject("engine-service:asset")
+    public abstract IEngineService getAssetService();
 
-    protected void initialize()
+    public void pageDetached(PageEvent event)
     {
-        super.initialize();
         m_objDataModel = null;
         m_objValue = null;
         m_objTreeSessionStateManager = null;
@@ -83,11 +84,12 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
 
         if (strRootDir == null || "".equals(strRootDir))
         {
-            objParent = new FileSystem();
+            objParent = new FileSystem(getAssetService());
         }
         else
         {
-            FolderObject objFolder = new FolderObject(null, new File(strRootDir), true);
+            FolderObject objFolder = new FolderObject(null, new File(strRootDir), true,
+                    getAssetService());
             objFolder.reload();
             objParent = objFolder;
         }
@@ -141,7 +143,7 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
         if (m_objTreeSessionStateManager == null)
         {
             String strRootDir = getTreeRootDir();
-            m_objTreeSessionStateManager = new FileSystemStateManager(strRootDir);
+            m_objTreeSessionStateManager = new FileSystemStateManager(strRootDir, getAssetService());
         }
         return m_objTreeSessionStateManager;
     }
@@ -158,10 +160,10 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
             {
                 private static final long serialVersionUID = -8211004113105081255L;
 
-				public Object getColumnValue(Object objValue)
+                public Object getColumnValue(Object objValue)
                 {
                     TreeRowObject objRowObject = (TreeRowObject) objValue;
-                    //SFObject objSFObject = (SFObject)objRowObject.getTreeNode();
+                    // SFObject objSFObject = (SFObject)objRowObject.getTreeNode();
                     IFileSystemTreeNode objFileSystemTreeNode = (IFileSystemTreeNode) objRowObject
                             .getTreeNode();
                     return objFileSystemTreeNode.getDate();
@@ -229,4 +231,5 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
         }
         return objSelectedNode.toString();
     }
+
 }
