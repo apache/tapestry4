@@ -100,17 +100,7 @@ public class LinkFactoryImpl implements LinkFactory
     public ILink constructLink(IEngineService service, boolean post, Map parameters,
             boolean stateful)
     {
-        Defense.notNull(service, "service");
-        Defense.notNull(parameters, "parameters");
-
-        String serviceName = service.getName();
-
-        if (serviceName == null)
-            throw new ApplicationRuntimeException(ImplMessages.serviceNameIsNull());
-
-        parameters.put(ServiceConstants.SERVICE, serviceName);
-
-        squeezeServiceParameters(parameters);
+        finalizeParameters(service, parameters);
 
         IEngine engine = _requestCycle.getEngine();
 
@@ -126,6 +116,21 @@ public class LinkFactoryImpl implements LinkFactory
 
         return new EngineServiceLink(_requestCycle, fullServletPath, engine.getOutputEncoding(),
                 _codec, _request, parameters, stateful);
+    }
+
+    protected void finalizeParameters(IEngineService service, Map parameters)
+    {
+        Defense.notNull(service, "service");
+        Defense.notNull(parameters, "parameters");
+
+        String serviceName = service.getName();
+
+        if (serviceName == null)
+            throw new ApplicationRuntimeException(ImplMessages.serviceNameIsNull());
+
+        parameters.put(ServiceConstants.SERVICE, serviceName);
+
+        squeezeServiceParameters(parameters);
     }
 
     public ServiceEncoder[] getServiceEncoders()

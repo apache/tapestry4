@@ -190,17 +190,48 @@ public class TestPortletLink extends HiveMindTestCase
 
         verifyControls();
     }
-    
+
+    public void testGetURLLongForm()
+    {
+        IRequestCycle cycle = newCycle();
+        PortletURL url = newPortletURL();
+
+        QueryParameterMap parameters = (QueryParameterMap) newMock(QueryParameterMap.class);
+
+        parameters.getParameterNames();
+        setReturnValue(parameters, new String[]
+        { "page" });
+
+        parameters.getParameterValues("page");
+        String[] values = new String[]
+        { "View" };
+        setReturnValue(parameters, values);
+
+        url.setParameter("page", values);
+
+        replayControls();
+
+        ILink link = new PortletLink(cycle, url, parameters, false);
+
+        assertEquals("EasyMock for interface javax.portlet.PortletURL#anchor", link.getURL(
+                "scheme",
+                "server",
+                99,
+                "anchor",
+                true));
+
+        verifyControls();
+    }
+
     public void testGetURLUnencoding()
     {
         IRequestCycle cycle = newCycle();
         PortletURL url = new PortletURLFixture("this=foo&amp;that=bar");
 
-        MockControl control = newControl(QueryParameterMap.class);
-        QueryParameterMap parameters = (QueryParameterMap) control.getMock();
+        QueryParameterMap parameters = (QueryParameterMap) newMock(QueryParameterMap.class);
 
         parameters.getParameterNames();
-        control.setReturnValue(new String[0]);
+        setReturnValue(parameters, new String[0]);
 
         replayControls();
 
@@ -209,7 +240,7 @@ public class TestPortletLink extends HiveMindTestCase
         assertEquals("this=foo&that=bar", link.getURL());
 
         verifyControls();
-    }    
+    }
 
     public void testGetURLIncludeParameters()
     {
