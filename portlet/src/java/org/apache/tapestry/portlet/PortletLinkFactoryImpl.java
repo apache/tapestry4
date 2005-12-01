@@ -44,11 +44,10 @@ public class PortletLinkFactoryImpl extends LinkFactoryImpl
         _renderResponse = renderResponse;
     }
 
-    public ILink constructLink(IEngineService service, boolean post, Map parameters, boolean stateful)
+    public ILink constructLink(IEngineService service, boolean post, Map parameters,
+            boolean stateful)
     {
-        Defense.notNull(parameters, "parameters");
-
-        squeezeServiceParameters(parameters);
+        finalizeParameters(service, parameters);
 
         PortletURL url = _renderResponse.createActionURL();
 

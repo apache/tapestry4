@@ -118,10 +118,12 @@ public class PortletLink implements ILink
         }
     }
 
-    public String getURL(String scheme, String server, int port, String anchor, boolean includeParameters)
+    public String getURL(String scheme, String server, int port, String anchor,
+            boolean includeParameters)
     {
-        // TODO Auto-generated method stub
-        return null;
+        // Ignore scheme, server and port ... those are under the control of the portlet container.
+
+        return getURL(anchor, includeParameters);
     }
 
     public String getAbsoluteURL()
