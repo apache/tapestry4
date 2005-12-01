@@ -34,9 +34,9 @@ import org.apache.tapestry.valid.ValidatorException;
  */
 public class Pattern extends BaseValidator
 {
-    // TODO: Possible thread safety issue if the validator
-    // is shared across threads, because the matcher
-    // will be too.
+    // It is expectd that each Pattern instance will be used by a single component instance,
+    // and therefore be restricted to a single thread.
+    
     private RegexpMatcher _matcher = new RegexpMatcher();
 
     private String _pattern;

@@ -38,8 +38,6 @@ public class ValidatorFactoryImpl implements ValidatorFactory
 {
     private static final String PATTERN = "^\\s*(\\$?\\w+)\\s*(=\\s*(((?!,|\\[).)*))?";
 
-    private RegexpMatcher _matcher = new RegexpMatcher();
-
     /**
      * Injected map of validator names to ValidatorContribution.
      */
@@ -56,6 +54,8 @@ public class ValidatorFactoryImpl implements ValidatorFactory
         List result = new ArrayList();
         String chopped = specification;
 
+        RegexpMatcher matcher = new RegexpMatcher();
+
         while (true)
         {
             if (chopped.length() == 0)
@@ -70,7 +70,7 @@ public class ValidatorFactoryImpl implements ValidatorFactory
                 chopped = chopped.substring(1);
             }
 
-            RegexpMatch[] matches = _matcher.getMatches(PATTERN, chopped);
+            RegexpMatch[] matches = matcher.getMatches(PATTERN, chopped);
 
             if (matches.length != 1)
                 throw new ApplicationRuntimeException(ValidatorMessages
