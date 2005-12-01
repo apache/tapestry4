@@ -60,10 +60,10 @@
           Unique id for this encoder, used when ordering encoder order.
         </attribute>
         <attribute name="before">
-          List of ids of encoders that must come before this encoder.
+          List of ids of encoders that must follow this encoder.
         </attribute>
         <attribute name="after">
-          List of ids of encoders that must follow this encoder.
+          List of ids of encoders that must precede this encoder.
         </attribute>
         <attribute name="object" required="true" translator="object">
           The object that implements the ServiceEncoder interface.

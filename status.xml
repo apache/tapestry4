@@ -71,6 +71,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-607">Output encoding problem with some versions of Tomcat 5</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-776">URLs for portlet links and forms are null</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-778" due-to="Jeff Lubetkin">ORO Perl5Matcher and Perl5Compiler are used in thread-unsafe manner</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-767">tapestry.url.ServiceEncoders has reversed the descriptions of the after and before attributes</action>
     </release>
     <release version="4.0-beta-13" date="Nov 12 2005">
       <action type="update" dev="HLS">Switch to HiveMind 1.1 (final)</action>
