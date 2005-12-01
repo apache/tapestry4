@@ -788,12 +788,12 @@
         patches ... but he's written an entire book on Tapestry. I think Kent would make a great addition to the team. </motion>
       <response>HLS, GL, RLS, PF, DS, HK: +1</response>
     </vote>
-    <vote title="Jesse Kuhnert as Tapestry Committer"> date="Nov 21 2005" dev="HLS"> <motion> Jesse Kuhnert has been
-        doing some outstanding work with Tacos (http://tacos.sf.net), powerful Ajax components for Tapestry. Further,
-        he's been very active on the mailing lists, providing support to new users and to Tacos users here and on the
-        Tacos mailing lists. I think Jesse would be a valuable addition to the team. We've talked about the emphasis for
-        Tapestry 4.1 being on the components, and Jesse brings a lot of expertise in that area ... and he uses Tapestry
-        at his day job. All of these indicate he has a place on the commiter list. </motion>
+    <vote title="Jesse Kuhnert as Tapestry Committer" date="Nov 21 2005" dev="HLS">
+      <motion> Jesse Kuhnert has been doing some outstanding work with Tacos (http://tacos.sf.net), powerful Ajax
+        components for Tapestry. Further, he's been very active on the mailing lists, providing support to new users and
+        to Tacos users here and on the Tacos mailing lists. I think Jesse would be a valuable addition to the team.
+        We've talked about the emphasis for Tapestry 4.1 being on the components, and Jesse brings a lot of expertise in
+        that area ... and he uses Tapestry at his day job. All of these indicate he has a place on the commiter list. </motion>
       <response> HLS, RLS, GL, HK, PF, DS, MB: +1 </response>
     </vote>
     <vote title="Regular beta releases" date="Sep 3 2005" dev="HLS">
