@@ -154,12 +154,11 @@ public class ListenerMapSourceImpl implements ListenerMapSource, ResetEventListe
     }
 
     /**
-     * This implementation returns a new
-     * {@link org.apache.tapestry.listener.ListenerMethodInvokerImpl}. Subclasses can override to
+     * This implementation returns a new {@link ListenerMethodInvoker}. Subclasses can override to
      * provide their own implementation.
      */
 
-    protected ListenerMethodInvokerImpl createListenerMethodInvoker(String name, Method[] methods)
+    protected ListenerMethodInvoker createListenerMethodInvoker(String name, Method[] methods)
     {
         return new ListenerMethodInvokerImpl(name, methods);
     }
