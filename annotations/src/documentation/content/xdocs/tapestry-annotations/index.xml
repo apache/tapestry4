@@ -444,7 +444,7 @@ with  a type of "state".
   
 <source>
     @Message
-    public abstract getPageTitle();
+    public abstract String getPageTitle();
 </source>
 
 <p>
