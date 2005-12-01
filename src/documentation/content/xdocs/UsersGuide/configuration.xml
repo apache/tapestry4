@@ -586,7 +586,7 @@ currently used in Tapestry:
     <td>
       A workaround for <link href="http://issues.apache.org/jira/browse/TAPESTRY-607">TAPESTRY-607</link>, a problem
       related to response character sets when using some versions of Tomcat 5. The Tomcat bug is
-      <a href="http://issues.apache.org/bugzilla/show_bug.cgi?id=37072">37072</a>.  This patch ensures that
+      <link href="http://issues.apache.org/bugzilla/show_bug.cgi?id=37072">37072</link>.  This patch ensures that
       HttpServletResponse.setContentType() is only invoked once, even if the output is reset (for instance, to
       switch to the Tapestry exception page).  The value must be set to true as a JVM system property.
     </td>
