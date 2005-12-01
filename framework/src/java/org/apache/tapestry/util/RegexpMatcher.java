@@ -54,7 +54,7 @@ public class RegexpMatcher
 
         try
         {
-            return _patternCompiler.compile(pattern, Perl5Compiler.SINGLELINE_MASK);
+            return _patternCompiler.compile(pattern, Perl5Compiler.SINGLELINE_MASK | Perl5Compiler.READ_ONLY_MASK);
         }
         catch (MalformedPatternException ex)
         {
