@@ -20,21 +20,25 @@ import java.util.Date;
 import java.util.Vector;
 
 import org.apache.tapestry.contrib.tree.model.ITreeNode;
+import org.apache.tapestry.engine.IEngineService;
 
 public class FileSystem implements IFileSystemTreeNode
 {
-    private static final long serialVersionUID = -6214030851378993747L;
-    
-	private transient AssetsHolder m_objAssetsHolder = null;
-    /** @associates <{Drive}>
+
+    private transient AssetsHolder m_objAssetsHolder = null;
+
+    /**
+     * @associates <{Drive}>
      * @supplierCardinality 0..*
      * @link aggregation
      */
     private Vector m_vDrives;
 
-    public FileSystem()
+    private final IEngineService _assetService;
+
+    public FileSystem(IEngineService assetService)
     {
-        //initDrives();
+        _assetService = assetService;
     }
 
     private void initDrives()
@@ -43,127 +47,148 @@ public class FileSystem implements IFileSystemTreeNode
         File[] arrFile = File.listRoots();
 
         if (arrFile != null)
-            for(int i=0; i<arrFile.length; i++)
+            for (int i = 0; i < arrFile.length; i++)
             {
                 File objFile = arrFile[i];
-                boolean bFloppy = objFile.getAbsolutePath().startsWith("A:") || objFile.getAbsolutePath().startsWith("B:");
-                if(!bFloppy)
-                        m_vDrives.addElement(new Drive(this, objFile));
+                boolean bFloppy = objFile.getAbsolutePath().startsWith("A:")
+                        || objFile.getAbsolutePath().startsWith("B:");
+                if (!bFloppy)
+                    m_vDrives.addElement(new Drive(this, objFile, _assetService));
             }
     }
 
     public Vector getDrives()
     {
-    	if(m_vDrives == null){
-    		initDrives();
-    	}
+        if (m_vDrives == null)
+        {
+            initDrives();
+        }
         return m_vDrives;
     }
+
     public int getChildNumber(Object objChild)
     {
-        for(int i=0;i<m_vDrives.size();i++)
+        for (int i = 0; i < m_vDrives.size(); i++)
         {
             Object objChildDrive = m_vDrives.elementAt(i);
-            if(objChildDrive.equals(objChild))
+            if (objChildDrive.equals(objChild))
             {
                 return i;
             }
         }
         return -1;
     }
-	/**
-	 * @see org.apache.tapestry.contrib.tree.model.ITreeNode#containsChild(ITreeNode)
-	 */
-	public boolean containsChild(ITreeNode node) {
-		return true;
-	}
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.model.ITreeNode#getAllowsChildren()
-	 */
-	public boolean getAllowsChildren() {
-		return true;
-	}
+    /**
+     * @see org.apache.tapestry.contrib.tree.model.ITreeNode#containsChild(ITreeNode)
+     */
+    public boolean containsChild(ITreeNode node)
+    {
+        return true;
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.model.ITreeNode#getChildCount()
-	 */
-	public int getChildCount() {
-		return getDrives().size();
-	}
+    /**
+     * @see org.apache.tapestry.contrib.tree.model.ITreeNode#getAllowsChildren()
+     */
+    public boolean getAllowsChildren()
+    {
+        return true;
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.model.ITreeNode#getChildren()
-	 */
-	public Collection getChildren() {
-		return getDrives();
-	}
+    /**
+     * @see org.apache.tapestry.contrib.tree.model.ITreeNode#getChildCount()
+     */
+    public int getChildCount()
+    {
+        return getDrives().size();
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.model.ITreeNode#getParent()
-	 */
-	public ITreeNode getParent() {
-		return null;
-	}
+    /**
+     * @see org.apache.tapestry.contrib.tree.model.ITreeNode#getChildren()
+     */
+    public Collection getChildren()
+    {
+        return getDrives();
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.model.ITreeNode#isLeaf()
-	 */
-	public boolean isLeaf() {
-		return false;
-	}
+    /**
+     * @see org.apache.tapestry.contrib.tree.model.ITreeNode#getParent()
+     */
+    public ITreeNode getParent()
+    {
+        return null;
+    }
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return getName();
-	}
-	public String getName(){
-		return "FileSystem";
-	}
-	
-	/**
-	 * @see java.lang.Object#equals(Object)
-	 */
-	public boolean equals(Object arg0) {
-		if(!(arg0 instanceof FileSystem))
-			return false;
-		FileSystem objFileSystem = (FileSystem)arg0;
-		if(getName().equals(objFileSystem.getName()))
-			return true;
-		return false;
-	}
+    /**
+     * @see org.apache.tapestry.contrib.tree.model.ITreeNode#isLeaf()
+     */
+    public boolean isLeaf()
+    {
+        return false;
+    }
 
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode() {
-		return getName().hashCode();
-	}
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString()
+    {
+        return getName();
+    }
 
-	/**
-	 * @see org.apache.tapestry.workbench.tree.examples.fsmodel.IFileSystemTreeNode#getAbsolutePath()
-	 */
-	public String getAbsolutePath() {
-		return "";
-	}
+    public String getName()
+    {
+        return "FileSystem";
+    }
 
-	/**
-	 * @see org.apache.tapestry.workbench.tree.examples.fsmodel.IFileSystemTreeNode#getAssets()
-	 */
-	public AssetsHolder getAssets() {
-		if(m_objAssetsHolder == null){
-			m_objAssetsHolder = new AssetsHolder("/org/apache/tapestry/workbench/tree/examples/fsmodel/computer.gif", "/org/apache/tapestry/workbench/tree/examples/fsmodel/computer.gif");
-		}
-		return m_objAssetsHolder;
-	}
+    /**
+     * @see java.lang.Object#equals(Object)
+     */
+    public boolean equals(Object arg0)
+    {
+        if (!(arg0 instanceof FileSystem))
+            return false;
+        FileSystem objFileSystem = (FileSystem) arg0;
+        if (getName().equals(objFileSystem.getName()))
+            return true;
+        return false;
+    }
 
-	/**
-	 * @see org.apache.tapestry.workbench.tree.examples.fsmodel.IFileSystemTreeNode#getObjectDate()
-	 */
-	public Date getDate() {
-		return null;
-	}
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return getName().hashCode();
+    }
+
+    /**
+     * @see org.apache.tapestry.workbench.tree.examples.fsmodel.IFileSystemTreeNode#getAbsolutePath()
+     */
+    public String getAbsolutePath()
+    {
+        return "";
+    }
+
+    /**
+     * @see org.apache.tapestry.workbench.tree.examples.fsmodel.IFileSystemTreeNode#getAssets()
+     */
+    public AssetsHolder getAssets()
+    {
+        if (m_objAssetsHolder == null)
+        {
+            m_objAssetsHolder = new AssetsHolder(_assetService,
+                    "/org/apache/tapestry/workbench/tree/examples/fsmodel/computer.gif",
+                    "/org/apache/tapestry/workbench/tree/examples/fsmodel/computer.gif");
+        }
+        return m_objAssetsHolder;
+    }
+
+    /**
+     * @see org.apache.tapestry.workbench.tree.examples.fsmodel.IFileSystemTreeNode#getObjectDate()
+     */
+    public Date getDate()
+    {
+        return null;
+    }
 
 }

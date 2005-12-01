@@ -18,6 +18,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.contrib.tree.components.INodeRenderFactory;
 import org.apache.tapestry.contrib.tree.components.TreeView;
 import org.apache.tapestry.contrib.tree.model.ITreeDataModel;
@@ -28,6 +29,9 @@ import org.apache.tapestry.contrib.tree.model.ITreeStateListener;
 import org.apache.tapestry.contrib.tree.model.ITreeStateModel;
 import org.apache.tapestry.contrib.tree.model.TreeStateEvent;
 import org.apache.tapestry.contrib.tree.simple.SimpleTreeModel;
+import org.apache.tapestry.engine.IEngineService;
+import org.apache.tapestry.event.PageDetachListener;
+import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.workbench.tree.examples.fsmodel.FileSystem;
 import org.apache.tapestry.workbench.tree.examples.fsmodel.FileSystemDataModel;
@@ -36,7 +40,7 @@ import org.apache.tapestry.workbench.tree.examples.fsmodel.FolderObject;
 import org.apache.tapestry.workbench.tree.examples.fsmodel.NodeRenderFactory;
 
 public abstract class FileSystemTree extends BasePage implements ISelectedFolderSource,
-        ITreeStateListener
+        ITreeStateListener, PageDetachListener
 {
     private ITreeSessionStateManager m_objTreeSessionStateManager = null;
 
@@ -46,6 +50,9 @@ public abstract class FileSystemTree extends BasePage implements ISelectedFolder
 
     private Object m_objValue;
 
+    @InjectObject("engine-service:asset")
+    public abstract IEngineService getAssetService();
+
     /**
      * Injected
      * 
@@ -53,14 +60,8 @@ public abstract class FileSystemTree extends BasePage implements ISelectedFolder
      */
     public abstract String getTreeRootDir();
 
-    public FileSystemTree()
+    public void pageDetached(PageEvent event)
     {
-        super();
-    }
-
-    protected void initialize()
-    {
-        super.initialize();
         m_objDataModel = null;
         m_objValue = null;
         m_objTreeSessionStateManager = null;
@@ -69,18 +70,19 @@ public abstract class FileSystemTree extends BasePage implements ISelectedFolder
     public void initTableModel()
     {
         ITreeNode objParent;
-        
+
         String strRootDir = getTreeRootDir();
 
         System.out.println("strRootDir = " + strRootDir);
 
         if (strRootDir == null || "".equals(strRootDir))
         {
-            objParent = new FileSystem();
+            objParent = new FileSystem(getAssetService());
         }
         else
         {
-            FolderObject objFolder = new FolderObject(null, new File(strRootDir), true);
+            FolderObject objFolder = new FolderObject(null, new File(strRootDir), true,
+                    getAssetService());
             objFolder.reload();
             objParent = objFolder;
         }
@@ -131,16 +133,16 @@ public abstract class FileSystemTree extends BasePage implements ISelectedFolder
 
     public ITreeSessionStateManager getSessionStateManager()
     {
-        //IPage objPage = getRequestCycle().getPage("contrib:TreeNodeViewPage");
-        //System.out.println("TreeNodeViewPage NamespaceId :
+        // IPage objPage = getRequestCycle().getPage("contrib:TreeNodeViewPage");
+        // System.out.println("TreeNodeViewPage NamespaceId :
         // "+objPage.getNamespace().getNamespaceId());
 
         if (m_objTreeSessionStateManager == null)
         {
             String strRootDir = getTreeRootDir();
-            //System.out.println("strRootDir = " + strRootDir);
+            // System.out.println("strRootDir = " + strRootDir);
 
-            m_objTreeSessionStateManager = new FileSystemStateManager(strRootDir);
+            m_objTreeSessionStateManager = new FileSystemStateManager(strRootDir, getAssetService());
         }
         return m_objTreeSessionStateManager;
     }

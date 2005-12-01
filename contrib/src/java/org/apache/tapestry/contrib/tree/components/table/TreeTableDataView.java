@@ -56,7 +56,7 @@ public abstract class TreeTableDataView extends BaseComponent implements ITreeRo
     public void initialize()
     {
         m_nTreeDeep = -1;
-        //		m_objTableModel = null;
+        // m_objTableModel = null;
         m_objTreeRowObject = null;
         m_arrAllExpandedNodes = null;
     }
@@ -79,7 +79,7 @@ public abstract class TreeTableDataView extends BaseComponent implements ITreeRo
         return objSource == null ? getTreeViewParameter() : objSource;
     }
 
-    public ArrayList generateNodeList()
+    public List generateNodeList()
     {
         if (m_arrAllExpandedNodes == null)
         {
@@ -211,7 +211,7 @@ public abstract class TreeTableDataView extends BaseComponent implements ITreeRo
 
     private ITableModel createTableModel()
     {
-        ArrayList arrAllNodes = generateNodeList();
+        List arrAllNodes = generateNodeList();
         Object[] arrAllExpandedNodes = new Object[arrAllNodes.size()];
         arrAllNodes.toArray(arrAllExpandedNodes);
 
@@ -256,20 +256,20 @@ public abstract class TreeTableDataView extends BaseComponent implements ITreeRo
         SimpleTableSessionStateManager objStateManager = new SimpleTableSessionStateManager(
                 objDataModel, objColumnModel);
         return objStateManager;
-        //return NullTableSessionStateManager.NULL_STATE_MANAGER;
+        // return NullTableSessionStateManager.NULL_STATE_MANAGER;
     }
 
     /**
      * @see org.apache.tapestry.BaseComponent#renderComponent(org.apache.tapestry.IMarkupWriter,
      *      org.apache.tapestry.IRequestCycle)
      */
-    protected void renderComponent(IMarkupWriter arg0, IRequestCycle cycle)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         Object objExistedTreeModelSource = cycle
                 .getAttribute(ITreeRowSource.TREE_ROW_SOURCE_ATTRIBUTE);
         cycle.setAttribute(ITreeRowSource.TREE_ROW_SOURCE_ATTRIBUTE, this);
 
-        super.renderComponent(arg0, cycle);
+        super.renderComponent(writer, cycle);
 
         cycle.setAttribute(ITreeRowSource.TREE_ROW_SOURCE_ATTRIBUTE, objExistedTreeModelSource);
     }

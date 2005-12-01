@@ -16,46 +16,25 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
-
-<component-specification class="org.apache.tapestry.contrib.tree.components.table.TreeTableDataView"
-    allow-body="yes" allow-informal-parameters="yes">
-
-    <parameter name="treeView"
-               type="org.apache.tapestry.contrib.tree.components.TreeView"
-               required="no" direction="custom"/>
-
-    <parameter name="nodeViewComponentAddress"
-               type="org.apache.tapestry.util.ComponentAddress"
-               required="no" direction="custom"/>
-
-    <parameter name="nodeRenderFactory"
-               type="org.apache.tapestry.contrib.tree.components.INodeRenderFactory"
-               required="no" direction="custom"/>
-    
-	<parameter name="entriesPerTablePage" 
-		type="int" 
-		required="no"
-		direction="custom"/>
-    <parameter name="showRootNode" type="boolean" required="no"
-               direction="custom"/>
-
-    <parameter name="tableColunms"
-               type="java.util.ArrayList"
-               required="no" direction="custom"/>
-
-    <bean name="tableClass" class="org.apache.tapestry.bean.EvenOdd" lifecycle="request"/>
-
-	<component id="table" type="Table">
-		<binding name="tableModel" expression="tableModel"/>
-		<binding name="tableSessionStateManager" expression="tableSessionStateManager"/>
-		<binding name="row" expression="treeRowObject"/>
-        <binding name="rowsClass" expression='beans.tableClass.next'/>
-        <static-binding name="class">treetable</static-binding>
-        <static-binding name="cellspacing">0</static-binding>
-        <static-binding name="cellpadding">0</static-binding>
-        <static-binding name="width">*</static-binding>
-	</component>
-
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+<component-specification class="org.apache.tapestry.contrib.tree.components.table.TreeTableDataView" allow-body="yes"
+           allow-informal-parameters="yes">
+           <parameter name="treeView" required="no"/>
+           <parameter name="nodeViewComponentAddress" required="no"/>
+           <parameter name="nodeRenderFactory" required="no"/>
+           <parameter name="entriesPerTablePage" required="no"/>
+           <parameter name="showRootNode" required="no"/>
+           <parameter name="tableColunms" property="tableColumnsParameter" required="no"/>
+           <bean name="tableClass" class="org.apache.tapestry.bean.EvenOdd" lifecycle="request"/>
+           <component id="table" type="Table">
+                      <binding name="tableModel" value="tableModel"/>
+                      <binding name="tableSessionStateManager" value="tableSessionStateManager"/>
+                      <binding name="row" value="treeRowObject"/>
+                      <binding name="rowsClass" value="beans.tableClass.next"/>
+                      <binding name="class" value="literal:treetable"/>
+                      <binding name="cellspacing" value="literal:0"/>
+                      <binding name="cellpadding" value="literal:0"/>
+                      <binding name="width" value="literal:*"/>
+           </component>
 </component-specification>

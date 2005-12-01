@@ -17,11 +17,11 @@ package org.apache.tapestry.services.impl;
 import org.apache.tapestry.engine.IEngineService;
 
 /**
- * Interface exposed to XXX that allows {@link IEngineService}&nbsp;proxies to be converted to real
- * instances.
+ * Interface that allows {@link IEngineService} proxies to be converted to real instances.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
+ * @see org.apache.tapestry.services.impl.EngineServiceInnerProxy
  */
 public interface EngineServiceSource
 {

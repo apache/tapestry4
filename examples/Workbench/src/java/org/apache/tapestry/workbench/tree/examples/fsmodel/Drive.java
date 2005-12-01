@@ -17,35 +17,48 @@ package org.apache.tapestry.workbench.tree.examples.fsmodel;
 import java.io.File;
 
 import org.apache.tapestry.contrib.tree.model.ITreeNode;
+import org.apache.tapestry.engine.IEngineService;
 
 public class Drive extends FolderObject
 {
-	private static final long serialVersionUID = -7032714277766590386L;
-	
-	private String m_strType;
-	private String m_strLabel;
-	private long m_lSize;
+    private String m_strType;
 
-	public Drive(ITreeNode objParent, File objFile) {
-		super(objParent, objFile, false);
-	}
-	public long getSize() {
-		return m_lSize;
-	}
-	public String getType() {
-		return m_strType;
-	}
-	public String getLabel() {
-		return m_strLabel;
-	}
+    private String m_strLabel;
 
-	public AssetsHolder getAssets() {
-		if (m_objAssetsHolder == null) {
-			m_objAssetsHolder =
-				new AssetsHolder(
-					"/org/apache/tapestry/workbench/tree/examples/fsmodel/harddrive.gif",
-					"/org/apache/tapestry/workbench/tree/examples/fsmodel/harddrive.gif");
-		}
-		return m_objAssetsHolder;
-	}
+    private long m_lSize;
+
+    private final IEngineService _assetService;
+
+    public Drive(ITreeNode objParent, File objFile, IEngineService assetService)
+    {
+        super(objParent, objFile, false, assetService);
+
+        _assetService = assetService;
+    }
+
+    public long getSize()
+    {
+        return m_lSize;
+    }
+
+    public String getType()
+    {
+        return m_strType;
+    }
+
+    public String getLabel()
+    {
+        return m_strLabel;
+    }
+
+    public AssetsHolder getAssets()
+    {
+        if (m_objAssetsHolder == null)
+        {
+            m_objAssetsHolder = new AssetsHolder(_assetService,
+                    "/org/apache/tapestry/workbench/tree/examples/fsmodel/harddrive.gif",
+                    "/org/apache/tapestry/workbench/tree/examples/fsmodel/harddrive.gif");
+        }
+        return m_objAssetsHolder;
+    }
 }

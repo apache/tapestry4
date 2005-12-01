@@ -16,26 +16,35 @@ package org.apache.tapestry.workbench.tree.examples.fsmodel;
 
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.asset.PrivateAsset;
+import org.apache.tapestry.engine.IEngineService;
 
 /**
- *
  * @author ceco
- *
  */
 public class AssetsHolder
 {
+    private final IEngineService _assetService;
 
-    private String m_strOpenAssetsURL;
-    private String m_strCloseAssetsURL;
+    private final String m_strOpenAssetsURL;
+
+    private final String m_strCloseAssetsURL;
+
     private PrivateAsset m_objOpenAsset = null;
+
     private PrivateAsset m_objCloseAsset = null;
+
     /**
      * Constructor for AssetsHolder.
      */
-    public AssetsHolder(String strOpenAssetsURL, String strCloseAssetsURL)
+    public AssetsHolder(IEngineService assetService, String strOpenAssetsURL,
+            String strCloseAssetsURL)
     {
-        super();
+        Defense.notNull(assetService, "assetService");
+
+        _assetService = assetService;
+
         m_strOpenAssetsURL = strOpenAssetsURL;
         m_strCloseAssetsURL = strCloseAssetsURL;
     }
@@ -44,23 +53,20 @@ public class AssetsHolder
     {
         if (m_objOpenAsset == null)
         {
-            //m_objOpenAsset = new PrivateAsset(m_strOpenAssetsURL);
-            m_objOpenAsset =
-                new PrivateAsset(
-                    new ClasspathResource(new DefaultClassResolver(), m_strOpenAssetsURL),
-                    null);
+            // m_objOpenAsset = new PrivateAsset(m_strOpenAssetsURL);
+            m_objOpenAsset = new PrivateAsset(new ClasspathResource(new DefaultClassResolver(),
+                    m_strOpenAssetsURL), _assetService, null);
         }
         return m_objOpenAsset;
     }
+
     public PrivateAsset getAssetForCloseNode()
     {
         if (m_objCloseAsset == null)
         {
-            //m_objCloseAsset = new PrivateAsset(m_strCloseAssetsURL);
-            m_objCloseAsset =
-                new PrivateAsset(
-                    new ClasspathResource(new DefaultClassResolver(), m_strCloseAssetsURL),
-                    null);
+            // m_objCloseAsset = new PrivateAsset(m_strCloseAssetsURL);
+            m_objCloseAsset = new PrivateAsset(new ClasspathResource(new DefaultClassResolver(),
+                    m_strCloseAssetsURL), _assetService, null);
         }
         return m_objCloseAsset;
     }

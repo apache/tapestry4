@@ -20,7 +20,9 @@ import org.apache.commons.logging.Log;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.URLResource;
+import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.easymock.MockControl;
 
@@ -64,12 +66,87 @@ public abstract class AbstractSpecificationResolverTestCase extends HiveMindTest
         return new URLResource(newURL(path));
     }
 
-    protected void train(Log log, MockControl control, String message)
+    protected void train(Log log, String message)
     {
         log.isDebugEnabled();
-        control.setReturnValue(true);
+        setReturnValue(log, true);
 
         log.debug(message);
+    }
+
+    protected Log newLog()
+    {
+        return (Log) newMock(Log.class);
+    }
+
+    protected INamespace newNamespace()
+    {
+        return (INamespace) newMock(INamespace.class);
+    }
+
+    protected ISpecificationSource newSource()
+    {
+        return (ISpecificationSource) newMock(ISpecificationSource.class);
+    }
+
+    protected void trainContainsPage(INamespace namespace, String pageName, boolean containsPage)
+    {
+        namespace.containsPage(pageName);
+        setReturnValue(namespace, containsPage);
+    }
+
+    protected void trainFindPageSpecification(ISpecificationResolverDelegate delegate, IRequestCycle cycle, INamespace application, String pageName, IComponentSpecification spec)
+    {
+        delegate.findPageSpecification(cycle, application, pageName);
+        setReturnValue(delegate, spec);
+    }
+
+    protected void trainGetApplicationNamespace(ISpecificationSource source, INamespace application)
+    {
+        source.getApplicationNamespace();
+        setReturnValue(source, application);
+    }
+
+    protected void trainGetChildNamespace(INamespace child, String name, INamespace application)
+    {
+        application.getChildNamespace(name);
+        setReturnValue(application, child);
+    }
+
+    protected void trainGetFrameworkNamespace(ISpecificationSource source, INamespace framework)
+    {
+        source.getFrameworkNamespace();
+        setReturnValue(source, framework);
+    }
+
+    protected void trainGetNamespaceId(INamespace namespace, String namespaceId)
+    {
+        namespace.getNamespaceId();
+        setReturnValue(namespace, namespaceId);
+    }
+
+    protected void trainGetSpecificationLocation(INamespace namespace, Resource resource)
+    {
+        namespace.getSpecificationLocation();
+        setReturnValue(namespace, resource);
+    }
+
+    protected void trainGetSpecificationLocation(INamespace namespace, Resource root, String path)
+    {
+        namespace.getSpecificationLocation();
+        setReturnValue(namespace, root.getRelativeResource(path));
+    }
+
+    protected void trainIsApplicationNamespace(INamespace namespace, boolean isApplicationNamespace)
+    {
+        namespace.isApplicationNamespace();
+        setReturnValue(namespace, isApplicationNamespace);
+    }
+
+    protected void trainIsDebugEnabled(Log log, boolean isDebugEnabled)
+    {
+        log.isDebugEnabled();
+        setReturnValue(log, isDebugEnabled);
     }
 
 }

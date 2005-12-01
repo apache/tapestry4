@@ -83,4 +83,9 @@ class ResolverMessages
         return _formatter.format("component-is-deprecated", componentType, HiveMind
                 .getLocationString(location));
     }
+
+    static String webInfNotAllowed(String simpleName)
+    {
+        return _formatter.format("web-inf-not-allowed", simpleName);
+    }
 }
