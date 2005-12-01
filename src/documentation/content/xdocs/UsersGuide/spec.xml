@@ -361,7 +361,7 @@ or via the bean: &binding-reference;.
 </p>
 
 <p>
-  Beans are only instantiated one demand, typically by using a bean: &binding-reference;.
+  Beans are only instantiated on demand, typically by using a bean: &binding-reference;.
 Once a bean is instantiated and initialized, it will be retained by the page or component
 for some period of time, specified by the bean's lifecycle.
 </p>

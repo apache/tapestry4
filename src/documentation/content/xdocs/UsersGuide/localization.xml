@@ -27,7 +27,7 @@
     <title>Localization</title>
   </header>
   <body>
-    <p> Proper localization is a pervasive aspects of web application development. Supporting users from different countries, with different languages, can be a tricky proposition ... it is more than just text that must be localized, but more subtle aspects of the application such as date and currency formats. It is also more than text ... in some cases, a localized application will want to change images or even color schemes. </p>
+    <p> Proper localization is a pervasive aspect of web application development. Supporting users from different countries, with different languages, can be a tricky proposition ... it is more than just text that must be localized, but more subtle aspects of the application such as date and currency formats. It is also more than text ... in some cases, a localized application will want to change images or even color schemes. </p>
     <p> Localization support in Tapestry is likewise pervasive. </p>
     <section id="localization.component-catalog">
       <title>Component Message Catalogs</title>
@@ -48,7 +48,7 @@
       <section id="localization.component-catalog.encoding">
         <title>Properties file encoding</title>
         <p> For Java's ResourceBundle, the properties files must be in UTF-8 character set. This can be problematic, as in non-western languages it is necessary to use Java's native2ascii tool to convert from non-native files into an ASCII encoding of UTF-8. </p>
-        <p> Tapestry can ready properties files in alternate character sets, but must be told what character set the file is encoded in (internally, the contents must be converted into standard multi-byte Unicode). </p>
+        <p> Tapestry can read properties files in alternate character sets, but must be told what character set the file is encoded in (internally, the contents must be converted into standard multi-byte Unicode). </p>
         <p> This is accomplished by providing some metadata inside the component (or page) specification. Metadata is specified using the &spec.meta; element. </p>
         <p> The resolution of the character set is somewhat complicated; it is  possible that each properties file will use a different 
           character set. At the same time, repetition is bad ... therefore it is possible to specify some of this information
@@ -147,7 +147,7 @@
       </p>
       
       <p>
-        In this case, it is possible to have multiple HTML templates. If a localized template (i.e.,
+        In this case, it is possible to have multiple HTML templates. If a localized template (e.g.,
         <code>Home_jp.html</code> for a Japanese locale) exists, it will be used as appropriate.
       </p>
       

@@ -137,7 +137,7 @@ The type of the parameter is determined from the accessor method:
 <source>
 public abstract class MyComponent . . .
 
-  public abstact int getIntParam();
+  public abstract int getIntParam();
 </source>
   
 <p>
@@ -340,7 +340,7 @@ the Java code does not define abstract accessors).
   
 <p>
 In addition, any abstract properties in the Java code will be converted into transient properties, even if there is no
-matching &spec.parameter; element.  Typically, the &spec.property; element is only used when the property is either
+matching &spec.property; element.  Typically, the &spec.property; element is only used when the property is either
 not referenced inside Java code (such as a listener method), or when when the property must be persistent.
 </p>
 

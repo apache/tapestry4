@@ -36,7 +36,7 @@ Listener methods are the main approach by which you add application-specific beh
 </p>  
 
 <p>
-Listener methods are a kind of call back; when a form is submitted, or a link is clicked.  The listener methods
+Listener methods are a kind of call back; they are triggered when a form is submitted or a link is clicked.  The listener methods
 exist within your page and component classes.  Components such as &DirectLink; and &Form; take a listener parameter,
 and you can use a listener: &binding-reference; to use a listener method in your class as the listener.
 </p>

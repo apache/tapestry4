@@ -64,7 +64,7 @@ validator:<em>name</em>[,<em>property</em>[=<em>value</em>]]*
 <p>
 The name corresponds to contributions to the tapestry.valid.Validators configuration point.  After the name is a list of properties to set.
 A simple conversion from string value to actual data type is performed.  For boolean properties, the value can be skipped and will default to true. 
-Alternatly, the value can be prefixed with an exclamation point, and the property will be set to false.  Example:
+Alternatively, the value can be prefixed with an exclamation point, and the property will be set to false.  Example:
 </p>
 
 <source>
