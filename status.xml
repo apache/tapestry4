@@ -84,6 +84,7 @@
         Documentation</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-724">Tapestry may, in some cases, look for a page class in the wrong package</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-783">contrib:Tree fails with NullPointerException</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-784" due-to="Brian Nelson">Double click doesn't work on 'Available' side of Palette component</action>
     </release>
     <release version="4.0-beta-13" date="Nov 12 2005">
       <action type="update" dev="HLS">Switch to HiveMind 1.1 (final)</action>
