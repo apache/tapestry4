@@ -54,7 +54,7 @@
     -->
   </todo>
   <changes>
-    <release version="4.0-beta-14" date="unreleased">
+    <release version="4.0-rc-1" date="Dec 6 2005">
       <action type="update" dev="HLS">Make default binding prefix configurable</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-752">XTile service passes null list of listener parameters to
         listener method</action>
@@ -785,6 +785,20 @@
     </release>
   </changes>
   <votes>
+    <vote title="Tapestry 4.0-rc-1" date="Nov 30 2005" dev="HLS">
+      <motion>
+        By the time this vote ends, we'll have some kind of fix for
+        TAPESTRY-724. I think, with that, Tapestry 4.0 is ready for prime
+        time.  We've already had the discussion of outstanding bugs needing
+        fixing. I think we should get 4.0 out the door.
+      </motion>
+      <response>
+        HLS, JK, HK, TK, RLS, PF: +1
+      </response>
+      <response>
+        GL: -0
+      </response>
+    </vote>
     <vote title="Kent Tong as Tapestry Committer" date="Nov 23 2005" dev="HLS">
       <motion> Kent Tong has been a great booster for Tapestry over the last year or two; not only has he been a
         constant presense on the mailing list, mentoring new and experienced users, as well as contributing bugs and
