@@ -211,19 +211,9 @@ of templates, and simplifying (or eliminating) XML files.
 <section>
   <title>Status</title>
   
-<p>
-Work on Tapestry 4.0 is in full swing.  Documentation is being converted
-from the old DocBook format, to the new Forrest format, leaving many temporary gaps. 
- A new <link href="QuickStart/index.html">Quick Start</link> series
-of tutorials is being written.
-</p>
-
-<p>
-  Tapestry 4.0 is nearing the end of its beta cycle; new features are being deferred
-  to Tapestry 4.1 and the emphasis is on filling gaps in the documentation
-  and fixing bugs. A final release for Tapestry 4.0 is expected (but not guaranteed)
-  in October 2005.
-</p>
+  <p>
+    Tapestry 4.0 is <em>finally</em> ready to go!
+  </p>
 
 </section>
   
