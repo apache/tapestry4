@@ -54,6 +54,9 @@
     -->
   </todo>
   <changes>
+    <release version="4.0" date="unreleased">
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-789">DefaultResourceLocalizerTest is under framework/src not framework/test</action>
+    </release>
     <release version="4.0-rc-1" date="Dec 6 2005">
       <action type="update" dev="HLS">Make default binding prefix configurable</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-752">XTile service passes null list of listener parameters to
