@@ -100,45 +100,42 @@
       </p>
       
       <source>
-      /**
-       * Provides more intelligent validation delegate support.
-       */
-      public class MyValidationDelegate extends ValidationDelegate {
-      
-      /**
-       * This method is overwritten so that the error message generated during 
-       * server-side validation actually appears next to the field in question.
-       *
-       * Don't be confused by the method names, there is a complimenting writeSuffix
-       * for fields, as well as a pair of writeLabelSuffix/writeLabelPrefix methods to
-       * do the same to labels.
-       * {@inheritDoc}
-       */
-       public void writePrefix(IMarkupWriter writer, IRequestCycle cycle, 
-               IFormComponent component, IValidator validator)
-       {
-           IFieldTracking ft = getCurrentFieldTracking();
-           //there is a default error renderer for fields which simply
-           //writes the message, which is what we want to have happen in this case
-           if (ft != null &amp;&amp; ft.getErrorRenderer() != null) 
-               ft.getErrorRenderer().render(writer, cycle);
-       }
-       
-       /**
-        * Wraps the label with a &lt;span&gt; element with an html style class of "labelError" 
-        * in order to control look and feel via css. There is no need to override writeLabelSuffix,
-        * as the delegate class already does the simple call to close the opened span tag.
-        * {@inheritDoc}
-        */
-       public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle) {
-            if (isInError(component))
-            {
-               writer.begin("span");
-               writer.attribute("class", "labelError");
-            }
-       }
-       
+/**
+ * Provides more intelligent validation delegate support.
+ */
+public class MyValidationDelegate extends ValidationDelegate {
+
+/**
+ * This method is overwritten so that the error message generated during 
+ * server-side validation actually appears next to the field in question.
+ *
+ * Don't be confused by the method names, there is a complimenting writeSuffix
+ * for fields, as well as a pair of writeLabelSuffix/writeLabelPrefix methods to
+ * do the same to labels.
+ * {@inheritDoc}
+ */
+ public void writePrefix(IMarkupWriter writer, IRequestCycle cycle, 
+         IFormComponent component, IValidator validator)
+ {
+     IFieldTracking ft = getCurrentFieldTracking();
+     //there is a default error renderer for fields which simply
+     //writes the message, which is what we want to have happen in this case
+     if (ft != null &amp;&amp; ft.getErrorRenderer() != null) 
+         ft.getErrorRenderer().render(writer, cycle);
+ }
+ 
+ /**
+  * Adds a class style attribute to the label if in error
+  * {@inheritDoc}
+  */
+ public void writeLabelAttributes(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component) {
+      if (isInError(component))
+      {
+         writer.attribute("class", "labelError");
       }
+ }
+ 
+ }
       </source>
   </section> <!-- validation.delegate -->
   
