@@ -48,19 +48,29 @@ public class WorkbenchValidationDelegate extends ValidationDelegate
             writer.attribute("width", 20);
         }
     }
-
+    
+    /**
+     * {@inheritDoc }
+     */
     public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (isInError(component))
-        {
-            writer.begin("span");
-            writer.attribute("class", "label-error");
-        }
+    	//just prevents font tags
     }
-
+    
+    /**
+     * {@inheritDoc }
+     */
     public void writeLabelSuffix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (isInError(component))
-            writer.end(); // <span>
+    	//just prevents font tags
     }
+    
+	/**
+	 * {@inheritDoc}
+	 */
+	public void writeLabelAttributes(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component) {
+		if (isInError(component)) {
+			writer.attribute("class", "error");
+		}
+	}
 }

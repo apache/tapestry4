@@ -45,9 +45,9 @@ public abstract class FieldLabel extends AbstractComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = TapestryUtils.getForm(cycle, this);
-
+        
         IFormComponent field = getField();
-
+        
         if (field != null && isPrerender())
             form.prerenderField(writer, field, getLocation());
 
@@ -78,10 +78,8 @@ public abstract class FieldLabel extends AbstractComponent
 
         if (id != null)
             writer.attribute("for", id);
-
-        // TODO: Introduce a IValidationDelegate decoration method for inside the
-        // <label> tag.
-
+        
+        delegate.writeLabelAttributes(writer, cycle, field);
         renderInformalParameters(writer, cycle);
 
         writer.print(displayName, getRaw());

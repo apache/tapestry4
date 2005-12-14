@@ -128,8 +128,12 @@ public class MockDelegate implements IValidationDelegate
     public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
     {
     }
+    
+    public void writeLabelAttributes(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component) 
+    {
+	}
 
-    public void writeLabelSuffix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
+	public void writeLabelSuffix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
     {
     }
 

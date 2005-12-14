@@ -93,6 +93,14 @@ public class ValidationDelegate implements IValidationDelegate
     }
 
     /**
+     * Does nothing by default.
+     * {@inheritDoc}
+     */
+    
+    public void writeLabelAttributes(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component) {
+	}
+
+	/**
      * Closes the &lt;font&gt; element,started by
      * {@link #writeLabelPrefix(IFormComponent,IMarkupWriter,IRequestCycle)}, if the form component
      * is in error.
