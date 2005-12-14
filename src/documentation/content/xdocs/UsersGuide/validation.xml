@@ -31,26 +31,238 @@
 <body>
 
 <p>
-  Coming soon ...
+  The tapestry validation system provides a very powerful means of validating data intuitively on most
+  <link href="&apiroot;/form/IFormComponent.html">IFormComponent</link> classes provided when working
+  with form submissions. 
+</p>
+<p>
+  Localization, server-side, and client side validation are handled by the framework,
+  as well as the ability to extend or override most of the built in functionality to suit your purposes as
+  you see fit.
 </p>
 
 <section id="validation.validfield">
   <title>ValidField component</title>
-  
+  <fixme author="Jesse Kuhnert" >
+   The ValidField component and it's associated validators under org.apache.tapestry.valid should be considered
+   deprecated in favor of the new system found under org.apache.tapestry.form.validator. 
+  </fixme>
 </section> <!-- validation.validfield -->
 
 <section id="validation.fieldlabel">
   <title>FieldLabel component</title>
+  <p>
+  By itself the <link href="&apiroot;/valid/FieldLabel.html">FieldLabel</link> component doesn't do very much
+  other than render the requisite labeling of form input fields as in:
+  </p>
+  
+  <source>
+  &lt;label&gt;Password&lt;label/&gt;
+  &lt;input type="password" /&gt;
+  </source>
+  
+  <p>
+   Combined with the validation system and some clever extensions to the 
+   <link href="&apiroot;/valid/ValidationDelegate.html">ValidationDelegate</link> form parameter(which can be used
+   to decorate both the label <strong>and</strong> the field) it becomes very
+   useful in applying formatting decorations to your fields when they contain validation errors.
+  </p>
+  
+  <section id="validation.delegate">
+      <title>Extending ValidationDelegate</title>    
+      <p>
+      By default all tapestry <link href="&apiroot;/form/IForm.html">IForm</link> components come with a built-in 
+      validation delegate that will take a label similar to the example given above and apply the 
+      following decorations to it:
+      </p>
+      
+      <source>
+      &lt;font color="red"&gt;&lt;label&gt;Password&lt;label/&gt;&lt;/font&gt;
+      &lt;input type="password" /&gt;&lt;font color="red"&gt;**&lt;/font&gt;
+      </source>
+      
+      <p>
+      The <code>delegate</code> parameter of the form component allows you to override the default
+      <link href="&apiroot;/valid/ValidationDelegate.html">ValidationDelegate</link> with one of your own,
+      in most cases simply extending the existing class to provide a little extra functionality.
+      
+      There are a lot of scenerios where you may wish to do something more than that provided by the 
+      default, like apply a css class to labels in error, or even provide the ability to render the error 
+      message directly in or around the label somehow.
+      </p>
+      
+      <p>
+      Luckily the functionality of the <link href="&apiroot;/valid/ValidationDelegate.html">ValidationDelegate</link>
+      component is almost identical to what you would do with any other component. Here is an example of a class
+      that does exactly what we suggested above, extends the existing delegate in order to apply a css class to
+      the label instead of decorating it with red font elements, as well as outputting the actual error message
+      in question next to the field.
+      </p>
+      
+      <source>
+      /**
+       * Provides more intelligent validation delegate support.
+       */
+      public class MyValidationDelegate extends ValidationDelegate {
+      
+      /**
+       * This method is overwritten so that the error message generated during 
+       * server-side validation actually appears next to the field in question.
+       *
+       * Don't be confused by the method names, there is a complimenting writeSuffix
+       * for fields, as well as a pair of writeLabelSuffix/writeLabelPrefix methods to
+       * do the same to labels.
+       * {@inheritDoc}
+       */
+       public void writePrefix(IMarkupWriter writer, IRequestCycle cycle, 
+               IFormComponent component, IValidator validator)
+       {
+           IFieldTracking ft = getCurrentFieldTracking();
+           //there is a default error renderer for fields which simply
+           //writes the message, which is what we want to have happen in this case
+           if (ft != null &amp;&amp; ft.getErrorRenderer() != null) 
+               ft.getErrorRenderer().render(writer, cycle);
+       }
+       
+       /**
+        * Wraps the label with a &lt;span&gt; element with an html style class of "labelError" 
+        * in order to control look and feel via css. There is no need to override writeLabelSuffix,
+        * as the delegate class already does the simple call to close the opened span tag.
+        * {@inheritDoc}
+        */
+       public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle) {
+            if (isInError(component))
+            {
+               writer.begin("span");
+               writer.attribute("class", "labelError");
+            }
+       }
+       
+      }
+      </source>
+  </section> <!-- validation.delegate -->
   
 </section> <!-- validation.fieldlabel -->
 
 <section id="validation.validators">
-  <title>Validators</title>
+  <title>Validators/validators: binding prefix</title>
+  <p>
+  The new and improved validation system based off of the <link href="&apiroot;/form/Validator.html">Validator</link> interface
+  and <code>validators:</code> binding prefix provide a lot of functionality while also minimizing the amount of
+  code that needs to be written to support validation.
+  </p>
+  
+  <p>
+  The <code>validators: binding prefix</code> is a powerful shorthand for
+  specifying validation properties that should be applied to a specific input field. Such an expression might
+  look something like:
+  </p>
+  <source>validators:required,minLength=4</source>
+  
+  <p>
+  Notice that the actual type of the data isn't specified in this instance, it is implied by which parameters
+  you specify. A specification is a comma-seperated list of entries. Each entry is in one of the following forms:
+  </p>
+  
+  <ul>
+   <li><em>name</em></li>
+   <li><em>name</em>=<em>value</em></li>
+   <li><em>name[<em>message</em>]</em></li>
+   <li><em>name</em>=<em>value</em>[<em>message</em>]</li>
+   <li>$<em>name</em></li>
+  </ul>
+  
+  <p>
+  Most validator classes are <em>configurable</em>: they have a property that matches their
+  name. For example, <link href="&apiroot;/form/validator/MinDate.html">MinDate</link> (which is named "minDate"
+  has a <code>minDate</code> property. A few validators are not configurable ("required" =>
+  <link href="&apiroot;/form/validator/Required.html">Required</link>, for example).
+  </p>
+  <p>
+  Validators are expected to have a public no-args constructor. They are also expected to have a
+  <code>message</code> property which is set from the value in brackets.
+  The message is either a literal string, or may be prefixed with a '%' character, to indicate
+  a localized key, resolved using the component's message catalog.
+  </p>
+  <p>
+  When the name is prefixed with a dollary sign, it indicates a reference to a &spec.bean;
+  with the given name.
+  </p>
+  <p>
+  A full validator specification might be:
+  <code>required,email[%email-format],minLength=20[Email addresses must be at least 20 characters long.]</code>
+  </p>
+  
+  <p>
+  Here is a partial list of the validator classes provided and their configurable attributes.
+  </p>
+  <fixme author="Jesse Kuhnert">
+  Fill in all of the possible attributes started in the table below.
+  </fixme>
+  <table>
+  <tr>
+    <th>&Validator;</th>
+    <th>attributes</th>
+  </tr>
+  <tr>
+    <td><link href="&apiroot;/form/validator/BaseValidator.html">BaseValidator</link></td>
+    <td><code>message</code></td>
+  </tr>
+  <tr>
+    <td><link href="&apiroot;/form/validator/Email.html">Email</link></td>
+    <td><code>none, uses standard email regexp "^\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,6}$"</code></td>
+  </tr>
+  <tr>
+    <td><link href="&apiroot;/form/validator/Max.html">Max</link></td>
+    <td><code>max=&lt;maximum value, 10&gt;</code></td>
+  </tr>
+  <tr>
+    <td><link href="&apiroot;/form/validator/MaxDate.html">MaxDate</link></td>
+    <td><code>maxDate=&lt;maximum date, 06/09/2010&gt;</code></td>
+  </tr>
+  <tr>
+    <td><link href="&apiroot;/form/validator/MaxLength.html">MaxLength</link></td>
+    <td><code>maxLength=&lt;maximum length, 23&gt;</code></td>
+  </tr>
+  <tr>
+    <td><link href="&apiroot;/form/validator/Min.html">Min</link></td>
+    <td><code>min=&lt;minimum value, 0.718&gt;</code></td>
+  </tr>
+  <tr>
+    <td><link href="&apiroot;/form/validator/MinDate.html">MinDate</link></td>
+    <td><code>minDate=&lt;minimum date, 04/23/05&gt;</code></td>
+  </tr>
+  <tr>
+    <td><link href="&apiroot;/form/validator/MinLength.html">MinLength</link></td>
+    <td><code>minLength=&lt;minmum length, 15&gt;</code></td>
+  </tr>
+ </table>
+  
+  <fixme author="Jesse Kuhnert">
+  Examples!
+  </fixme>
+  
+  <fixme author="Jesse Kuhnert">
+  Write about how the validation constraints specified with the above syntax are universally
+  applied on both the client and server-side, as well as how to override the default behaviour
+  for displaying client-side validation messages via subclassing the Tapestry.default_invalid_field_handler
+  javascript prototyped method.
+  </fixme>
   
 </section> <!-- validation.validators -->
 
 <section id="validation.validator-binding">
-  <title>validator: binding prefix </title>
+  <title>(deprecated)validator: binding prefix </title>
+  
+  <fixme author="Jesse Kuhnert">
+  The <code>validator:</code> binding prefix is actually valid, but causes endless amounts of confusion and
+  frustration as it is not obvious that this refers to the old validators( ie 
+  <link href="&apiroot;/valid/IValidator.html">IValidator</link> ), while assumedly it is much preferred that
+  people use the new validators via the <link href="&apiroot;/form/Validator.html">Validator</link> interface
+  instead. I don't even really understand what all the nuances and differences are between them. Only that
+  using the validators in here isn't really possible with any but the ValidField component because of the
+  interface changes.
+  </fixme>
   
 <p>The validator: <link href="bindings.html">binding prefix</link> is a powerful shorthand for specifying validators.
   The string provided does two things:  it identifies (by a short logical name) the Java class of the validator to create, and
