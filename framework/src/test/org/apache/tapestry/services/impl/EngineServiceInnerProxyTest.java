@@ -14,11 +14,9 @@
 
 package org.apache.tapestry.services.impl;
 
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.EngineServiceInnerProxy}.
@@ -26,25 +24,14 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestEngineServiceInnerProxy extends HiveMindTestCase
+public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestCase
 {
-    private ILink newLink()
-    {
-        return (ILink) newMock(ILink.class);
-    }
-
-    private IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
-    }
-
     private EngineServiceSource newSource(String name, IEngineService service)
     {
-        MockControl control = newControl(EngineServiceSource.class);
-        EngineServiceSource source = (EngineServiceSource) control.getMock();
+        EngineServiceSource source = newSource();
 
         source.resolveEngineService(name);
-        control.setReturnValue(service);
+        setReturnValue(source, service);
 
         return source;
     }
@@ -52,7 +39,7 @@ public class TestEngineServiceInnerProxy extends HiveMindTestCase
     public void testGetName()
     {
         EngineServiceOuterProxy outer = new EngineServiceOuterProxy("Outer");
-        EngineServiceSource source = (EngineServiceSource) newMock(EngineServiceSource.class);
+        EngineServiceSource source = newSource();
 
         replayControls();
 
@@ -64,17 +51,20 @@ public class TestEngineServiceInnerProxy extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testGetLink()
+    protected EngineServiceSource newSource()
+    {
+        return (EngineServiceSource) newMock(EngineServiceSource.class);
+    }
+
+    public void testGetLinkNonPost()
     {
         ILink link = newLink();
 
-        MockControl control = newControl(IEngineService.class);
-        IEngineService service = (IEngineService) control.getMock();
+        IEngineService service = newEngineService();
 
         Object parameter = new Object();
 
-        service.getLink(false, parameter);
-        control.setReturnValue(link);
+        trainGetLink(service, false, parameter, link);
 
         EngineServiceSource source = newSource("fred", service);
 
@@ -92,10 +82,35 @@ public class TestEngineServiceInnerProxy extends HiveMindTestCase
         verifyControls();
     }
 
+    public void testGetLinkPost()
+    {
+        ILink link = newLink();
+
+        IEngineService service = newEngineService();
+
+        Object parameter = new Object();
+
+        trainGetLink(service, true, parameter, link);
+
+        EngineServiceSource source = newSource("fred", service);
+
+        replayControls();
+
+        EngineServiceOuterProxy outer = new EngineServiceOuterProxy("fred");
+        EngineServiceInnerProxy inner = new EngineServiceInnerProxy("fred", outer, source);
+
+        outer.installDelegate(inner);
+
+        assertSame(link, outer.getLink(true, parameter));
+
+        assertSame(service, outer.getDelegate());
+
+        verifyControls();
+    }
     public void testService() throws Exception
     {
         IRequestCycle cycle = newCycle();
-        IEngineService service = (IEngineService) newMock(IEngineService.class);
+        IEngineService service = newEngineService();
 
         service.service(cycle);
 
