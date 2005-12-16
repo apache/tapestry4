@@ -58,7 +58,7 @@ public class EngineServiceOuterProxy implements IEngineService, Serializable
 
     public ILink getLink(boolean post, Object parameter)
     {
-        return _delegate.getLink(false, parameter);
+        return _delegate.getLink(post, parameter);
     }
 
     public void service(IRequestCycle cycle) throws IOException
