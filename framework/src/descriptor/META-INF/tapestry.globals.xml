@@ -120,7 +120,8 @@
  </service-point>
  
  <contribution configuration-id="tapestry.init.ApplicationInitializers">
-  <command id="SetupServletApplicationGlobals" object="service:SetupServletApplicationGlobals"/>
+  <command id="SetupServletApplicationGlobals" object="service:SetupServletApplicationGlobals"
+    after="tapestry.init.ApplicationSpecificationInitializer"/>
  </contribution>  
  
   <contribution configuration-id="tapestry.Infrastructure">
