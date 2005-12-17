@@ -61,6 +61,7 @@
       <action type="add" dev="HLS" fixes-bug="TAPESTRY-790">Add Tapestry @ JavaForge as related project</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-760">Application startup fails occasionally because of undefined order of contributions</action>
       <action type="add" dev="JK">Document validation inside the Users Guide</action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-459" due-to="Andreas Andreou">Documentation for DatePicker component is incomplete</action>
     </release>
     <release version="4.0-rc-1" date="Dec 6 2005">
       <action type="update" dev="HLS">Make default binding prefix configurable</action>
