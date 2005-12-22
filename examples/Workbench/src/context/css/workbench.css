@@ -3,6 +3,10 @@ SPAN.label-error
   color: Red;
 }
 
+label.error {
+	color: red;
+	font-style: oblique;
+}
 
 .field-error
 {
@@ -41,7 +45,11 @@ BODY
 {
   background-color: #808080;
   margin: 2px;
-  font-family : Verdana;
+}
+
+body, td, th {
+  font-family: Lucida Grande, Tahoma, Verdana, Arial, sans-serif;
+  font-size: 9pt;
 }
 
 TABLE.requestDebug
@@ -56,7 +64,6 @@ TABLE.requestDebug
 	border-left-width : 0px;
 	background-color: #839cd1;
 	padding: 0;
-
 }
 
 TABLE.requestDebug TR.control

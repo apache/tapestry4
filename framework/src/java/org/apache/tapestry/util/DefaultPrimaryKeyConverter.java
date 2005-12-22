@@ -225,7 +225,7 @@ public class DefaultPrimaryKeyConverter implements IPrimaryKeyConverter
      */
     protected final Set createUnmodifiableSet(Set valueSet)
     {
-        return valueSet == null ? Collections.emptySet() : Collections.unmodifiableSet(valueSet);
+        return valueSet == null ? Collections.EMPTY_SET : Collections.unmodifiableSet(valueSet);
     }
 
     /**

@@ -14,33 +14,38 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.tapestry.form.IPropertySelectionModel;
-import org.apache.tapestry.form.LabeledPropertySelectionModel;
-import org.apache.tapestry.junit.TapestryTestCase;
+import junit.framework.TestCase;
 
 /**
  * Test case for {@link org.apache.tapestry.form.LabeledPropertySelectionModel}.
  * 
  * @author Paul Ferraro
- * @since  4.0
+ * @since 4.0
  */
-public class TestLabeledPropertySelectionModel extends TapestryTestCase
+public class LabeledPropertySelectionModelTest extends TestCase
 {
+    public void testNullValue()
+    {
+        LabeledPropertySelectionModel model = new LabeledPropertySelectionModel();
+
+        assertEquals(null, model.translateValue(null));
+    }
+
     public void testEmptyModel()
     {
         LabeledPropertySelectionModel model = new LabeledPropertySelectionModel();
-        
+
         validateLabel(model, "", null, "");
-        
+
         assertEquals(model.getOptionCount(), 1);
     }
-    
+
     public void testDefaultLabeledModel()
     {
         LabeledPropertySelectionModel model = new LabeledPropertySelectionModel(createInnerModel());
-        
+
         validateLabel(model, "", null, "");
-        
+
         validateModel(model);
     }
 
@@ -49,32 +54,34 @@ public class TestLabeledPropertySelectionModel extends TapestryTestCase
         String label = "Select a value";
         Object option = null;
         String value = "-1";
-        
-        LabeledPropertySelectionModel model = new LabeledPropertySelectionModel(createInnerModel(), label, option, value);
-        
+
+        LabeledPropertySelectionModel model = new LabeledPropertySelectionModel(createInnerModel(),
+                label, option, value);
+
         assertEquals(label, model.getLabel());
         assertEquals(option, model.getOption());
         assertEquals(value, model.getValue());
-        
+
         validateLabel(model, label, option, value);
-        
+
         validateModel(model);
     }
-    
-    private void validateLabel(IPropertySelectionModel model, String label, Object option, String value)
+
+    private void validateLabel(IPropertySelectionModel model, String label, Object option,
+            String value)
     {
         assertTrue(model.getOptionCount() > 0);
-        
+
         assertEquals(model.getLabel(0), label);
         assertEquals(model.getOption(0), option);
         assertEquals(model.getValue(0), value);
         assertEquals(model.translateValue(value), option);
     }
-    
+
     private void validateModel(IPropertySelectionModel model)
     {
         assertEquals(model.getOptionCount(), 3);
-        
+
         assertEquals(model.getLabel(1), "true");
         assertEquals(model.getOption(1), Boolean.TRUE);
         assertEquals(model.getValue(1), "0");
@@ -85,13 +92,14 @@ public class TestLabeledPropertySelectionModel extends TapestryTestCase
         assertEquals(model.getValue(2), "1");
         assertEquals(model.translateValue("1"), Boolean.FALSE);
     }
-    
+
     private IPropertySelectionModel createInnerModel()
     {
         return new IPropertySelectionModel()
         {
-            private boolean[] values = new boolean[] { true, false };
-            
+            private boolean[] values = new boolean[]
+            { true, false };
+
             public int getOptionCount()
             {
                 return values.length;
