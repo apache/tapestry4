@@ -270,6 +270,24 @@ public interface IValidationDelegate extends Serializable
     public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle);
 
     /**
+     * Invoked just before the &lt;label&gt; element is closed. The delegate can write additional
+     * attributes. This is often used to set the CSS class of the label so that it can be displayed
+     * differently, if in error (or required). Any attributes written here will be overriden by any
+     * informal parameters specified in the {@link FieldLabel} implementation.
+     * 
+     * @param writer
+     *            the writer to which output should be sent
+     * @param cycle
+     *            the active request cycle
+     * @param component
+     *            the component field that label decorates
+     * @since 4.0.1
+     */
+
+    public void writeLabelAttributes(IMarkupWriter writer, IRequestCycle cycle,
+    		IFormComponent component);
+    
+    /**
      * Invoked by a {@link FieldLabel} just after writing the name of the form component.
      */
 

@@ -14,11 +14,9 @@
 
 package org.apache.tapestry.services.impl;
 
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.EngineServiceOuterProxy}.
@@ -26,7 +24,7 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestEngineServiceOuterProxy extends HiveMindTestCase
+public class EngineServiceOuterProxyTest extends AbstractEngineServiceProxyTestCase
 {
     public void testToString()
     {
@@ -35,36 +33,8 @@ public class TestEngineServiceOuterProxy extends HiveMindTestCase
         assertEquals("<OuterProxy for engine service 'fred'>", s.toString());
     }
 
-    public void testGetLink()
-    {
-        ILink link = (ILink) newMock(ILink.class);
-
-        MockControl control = newControl(IEngineService.class);
-        IEngineService delegate = (IEngineService) control.getMock();
-
-        Object parameter = new Object();
-
-        delegate.getLink(false, parameter);
-        control.setReturnValue(link);
-
-        replayControls();
-
-        EngineServiceOuterProxy proxy = new EngineServiceOuterProxy("xxx");
-        proxy.installDelegate(delegate);
-
-        assertSame(link, proxy.getLink(false, parameter));
-
-        verifyControls();
-    }
-
-    private IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
-    }
-
     public void testGetName()
     {
-
         EngineServiceOuterProxy proxy = new EngineServiceOuterProxy("Fred");
 
         assertEquals("Fred", proxy.getName());
@@ -73,7 +43,7 @@ public class TestEngineServiceOuterProxy extends HiveMindTestCase
     public void testService() throws Exception
     {
         IRequestCycle cycle = newCycle();
-        IEngineService delegate = (IEngineService) newMock(IEngineService.class);
+        IEngineService delegate = newEngineService();
 
         delegate.service(cycle);
 
@@ -85,6 +55,32 @@ public class TestEngineServiceOuterProxy extends HiveMindTestCase
         assertSame(delegate, proxy.getDelegate());
 
         proxy.service(cycle);
+
+        verifyControls();
+    }
+
+    public void testGetLink() throws Exception
+    {
+        IEngineService delegate = newEngineService();
+        ILink link = newLink();
+        Object parameter = new Object();
+
+        trainGetLink(delegate, false, parameter, link);
+
+        replayControls();
+
+        EngineServiceOuterProxy proxy = new EngineServiceOuterProxy("xxx");
+        proxy.installDelegate(delegate);
+
+        assertSame(link, proxy.getLink(false, parameter));
+
+        verifyControls();
+
+        trainGetLink(delegate, true, parameter, link);
+
+        replayControls();
+
+        assertSame(link, proxy.getLink(true, parameter));
 
         verifyControls();
     }

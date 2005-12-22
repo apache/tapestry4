@@ -64,15 +64,7 @@
           <td> The data value. Take care to ensure date time values are 'normalized' before performing any millisec based comparison or equality operations.
           </td>
       </tr>
-    <tr>
-      <td>format</td>
-      <td>String</td>
-      <td>in</td>
-         <td>no</td>
-          <td>dd MMM yyyy</td>
-          <td>The date format string. See SimpleDateFormat for format pattern letters.
-          </td>
-      </tr>
+
     <tr>
       <td>disabled</td>
       <td>boolean</td>
@@ -82,6 +74,40 @@
           <td> Controls whether the date field and calendar button is active or not.
           </td>
       </tr>
+	
+  <tr>
+    <td>displayName</td>
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+      The user-presentable name for the component, which will be used by a &FieldLabel; connected to the component.
+    </td>
+  </tr>
+	
+  <tr>
+    <td>validators</td>
+    <td>Array or collection of &Validator;, or &Validator;</td>
+    <td>in</td>
+    <td>no</td>
+    <td></td>
+    <td>
+      The validators to apply to the component.
+    </td>
+  </tr>
+	
+  <tr>
+    <td>translator</td>
+    <td>&Translator;</td>
+    <td>in</td>
+    <td>no</td>
+    <td>translator:date,pattern=dd MMM yyyy</td>
+    <td>
+      The translator to use when displaying and parsing the date.
+    </td>
+  </tr>	
+				
     <tr>
       <td>icon</td>
       <td>&IAsset;</td>
@@ -91,6 +117,28 @@
           <td>The icon used to toggle the calendar on and off. The calendar will automatically line itself up beneath the text input field.
           </td>
       </tr>
+	
+	<tr>
+	    <td>id</td>
+	    <td>String</td>
+	    <td>in</td>
+	    <td>no</td>
+	    <td></td>
+	    <td>
+	      Sets the id attribute for the rendered &lt;input&gt; element.
+	    </td>
+	</tr>	
+	
+	<tr>
+	    <td>includeWeek</td>
+	    <td>boolean</td>
+	    <td>in</td>
+	    <td>no</td>
+	    <td></td>
+	    <td>
+	      If true, displays in the calendar the week number for each week.
+	    </td>
+	</tr>	
 
 	</table>
   
