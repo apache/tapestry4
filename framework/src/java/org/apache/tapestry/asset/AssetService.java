@@ -68,7 +68,6 @@ public class AssetService implements IEngineService
     private WebContext _context;
 
     /** @since 4.0 */
-
     private WebRequest _request;
 
     /** @since 4.0 */
