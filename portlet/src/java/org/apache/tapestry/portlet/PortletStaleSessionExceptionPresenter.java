@@ -17,10 +17,8 @@ package org.apache.tapestry.portlet;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
-import org.apache.tapestry.error.RequestExceptionReporter;
 import org.apache.tapestry.error.StaleSessionExceptionPresenter;
 import org.apache.tapestry.services.ServiceConstants;
 

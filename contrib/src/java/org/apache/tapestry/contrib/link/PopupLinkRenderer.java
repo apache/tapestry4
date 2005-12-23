@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.contrib.link;
 
-import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;

@@ -21,7 +21,10 @@ import org.apache.tapestry.engine.IEngineService;
 
 public class Drive extends FolderObject
 {
-    private String m_strType;
+	/** serialver uid */
+	private static final long serialVersionUID = -4098885307563692077L;
+
+	private String m_strType;
 
     private String m_strLabel;
 

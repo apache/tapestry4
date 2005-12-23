@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.vlib.pages;
 
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.vlib.VlibPage;

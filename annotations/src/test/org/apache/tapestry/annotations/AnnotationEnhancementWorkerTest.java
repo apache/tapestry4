@@ -34,7 +34,7 @@ import org.apache.tapestry.util.DescribedLocation;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-
+@SuppressWarnings("deprecation")
 public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 {
     protected EnhancementOperation newOp(Class baseClass)
@@ -196,7 +196,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
     public void testClassAnnotation()
     {
         ClassResolver resolver = new DefaultClassResolver();
-
+        
         EnhancementOperation op = newOp(DeprecatedBean.class);
         IComponentSpecification spec = newSpec();
 

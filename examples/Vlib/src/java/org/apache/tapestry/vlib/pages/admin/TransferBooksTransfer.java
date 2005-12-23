@@ -31,7 +31,6 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.vlib.EntitySelectionModel;
-import org.apache.tapestry.vlib.IErrorProperty;
 import org.apache.tapestry.vlib.VirtualLibraryDelegate;
 import org.apache.tapestry.vlib.VlibPage;
 import org.apache.tapestry.vlib.ejb.Book;
