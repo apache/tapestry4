@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.vlib.services;
 
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.vlib.IErrorProperty;

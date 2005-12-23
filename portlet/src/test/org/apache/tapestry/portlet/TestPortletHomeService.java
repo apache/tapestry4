@@ -19,11 +19,9 @@ import java.util.Map;
 
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
-import org.apache.tapestry.services.ServiceConstants;
 import org.easymock.MockControl;
 
 /**

@@ -25,7 +25,6 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
-import org.apache.tapestry.services.ServiceConstants;
 
 /**
  * Replacement for the standard home service, used by Portlets. This exists to handle the special

@@ -56,7 +56,7 @@
   </todo>
   <changes>
     <release version="4.1-alpha-1" date="unreleased">
-      
+      <action type="update" dev="JK" >Cleaned up warnings/imports showing on eclipse problem pane.</action>
     </release>
     <release version="4.0-rc-2" date="unreleased">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-789">DefaultResourceLocalizerTest is under framework/src not framework/test</action>

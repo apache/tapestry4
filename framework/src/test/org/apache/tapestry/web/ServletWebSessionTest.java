@@ -18,10 +18,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.tapestry.web.ServletWebSession;
-import org.apache.tapestry.web.WebSession;
-import org.easymock.MockControl;
-
 /**
  * Tests for {@link org.apache.tapestry.web.ServletWebSession}.
  * 

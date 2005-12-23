@@ -31,7 +31,11 @@ import org.apache.tapestry.describe.DescriptionReceiver;
  */
 public class ReportStatusEvent extends EventObject implements DescriptionReceiver
 {
-    private final DescriptionReceiver _receiver;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7546818328708861783L;
+	private final DescriptionReceiver _receiver;
 
     public ReportStatusEvent(Object source, DescriptionReceiver receiver)
     {

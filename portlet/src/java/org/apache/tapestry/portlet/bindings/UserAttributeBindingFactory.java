@@ -20,9 +20,6 @@ import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.AbstractBindingFactory;
-import org.apache.tapestry.binding.BindingFactory;
-import org.apache.tapestry.coerce.ValueConverter;
-import org.apache.tapestry.form.validator.AbstractValidatorWrapper;
 
 /**
  * Factory used to create {@link org.apache.tapestry.portlet.bindings.UserAttributeBinding}s.
