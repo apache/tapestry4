@@ -622,6 +622,12 @@ public class PageLoader implements IPageLoader
             // Walk through the complete component tree to ensure that required
             // parameters are bound
             _verifyRequiredParametersWalker.walkComponentTree(page);
+
+            // Now that the page has been properly constructed, the page
+            // or any components on the page will have been registered as
+            // page attach listeners.
+
+            page.firePageAttached();
         }
         finally
         {

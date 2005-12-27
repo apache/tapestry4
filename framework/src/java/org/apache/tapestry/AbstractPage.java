@@ -406,7 +406,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      * @since 4.0
      */
 
-    protected void firePageAttached()
+    public void firePageAttached()
     {
         if (_listenerList == null)
             return;
