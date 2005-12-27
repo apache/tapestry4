@@ -54,6 +54,9 @@
     -->
   </todo>
   <changes>
+    <release version="4.0-rc-3" date="unreleased">
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-815">PageAttachListener not called on initial page load</action>
+    </release>
     <release version="4.0-rc-2" date="unreleased">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-789">DefaultResourceLocalizerTest is under framework/src not framework/test</action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-658" due-to="Leonardo Quijano Vincenzi">LabeledPropertySelectionModel throws NPE on null value</action>

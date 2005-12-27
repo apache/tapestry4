@@ -114,7 +114,8 @@ public class PageSource implements IPageSource
 
             _pageSpecificationResolver.resolve(cycle, pageName);
 
-            // The loader is responsible for invoking attach()
+            // The loader is responsible for invoking attach(),
+            // and for firing events to PageAttachListeners
 
             result = _loader.loadPage(
                     _pageSpecificationResolver.getSimplePageName(),
@@ -126,7 +127,8 @@ public class PageSource implements IPageSource
         }
         else
         {
-            // But for pooled pages, we are responsible
+            // But for pooled pages, we are responsible.
+            // This call will also fire events to any PageAttachListeners
 
             result.attach(engine, cycle);
         }
