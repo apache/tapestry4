@@ -22,28 +22,25 @@ import org.apache.hivemind.Location;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  A reference to an external URL.  {@link ExternalAsset}s are not
- *  localizable.
- *
- *  @author Howard Lewis Ship
+ * A reference to an external URL. {@link ExternalAsset}s are not localizable.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
-public class ExternalAsset extends AbstractAsset
-{
+public class ExternalAsset extends AbstractAsset {
+
     private String _URL;
 
     public ExternalAsset(String URL, Location location)
     {
-    	super(null, location);
-    	
+        super(null, location);
+
         _URL = URL;
     }
 
     /**
-     *  Simply returns the URL of the external asset.
-     *
-     **/
+     * Simply returns the URL of the external asset.
+     */
 
     public String buildURL()
     {
@@ -54,17 +51,15 @@ public class ExternalAsset extends AbstractAsset
     {
         URL url;
 
-        try
-        {
+        try {
             url = new URL(_URL);
 
             return url.openStream();
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             // MalrformedURLException or IOException
 
-            throw new ApplicationRuntimeException(Tapestry.format("ExternalAsset.resource-missing", _URL), ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "ExternalAsset.resource-missing", _URL), ex);
         }
 
     }
