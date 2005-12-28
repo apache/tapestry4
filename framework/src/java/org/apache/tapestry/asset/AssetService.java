@@ -15,6 +15,7 @@
 package org.apache.tapestry.asset;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -193,10 +194,11 @@ public class AssetService implements IEngineService
     {
         String path = cycle.getParameter(PATH);
         String md5Digest = cycle.getParameter(DIGEST);
-
+        boolean checkDigest = !_unprotectedMatcher.containsResource(path);
         try
         {
-            if (!_digestSource.getDigestForResource(path).equals(md5Digest))
+            if (checkDigest
+                    && !_digestSource.getDigestForResource(path).equals(md5Digest))
             {
                 _response.sendError(HttpServletResponse.SC_FORBIDDEN, AssetMessages
                         .md5Mismatch(path));
@@ -204,9 +206,9 @@ public class AssetService implements IEngineService
             }
             
             // If they were vended an asset in the past then it must be up-to date.
-            // Asset URIs change if the underlying file is modified.
+            // Asset URIs change if the underlying file is modified. (unless unprotected)
             
-            if (_request.getHeader("If-Modified-Since") != null)
+            if (checkDigest && _request.getHeader("If-Modified-Since") != null)
             {
                 _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
                 return;
@@ -216,6 +218,11 @@ public class AssetService implements IEngineService
             
             if (resourceURL == null)
                 throw new ApplicationRuntimeException(AssetMessages.noSuchResource(path));
+            
+            //check caching for unprotected resources
+            
+            if (!checkDigest && cachedResource(resourceURL))
+                return;
             
             URLConnection resourceConnection = resourceURL.openConnection();
             
@@ -227,7 +234,34 @@ public class AssetService implements IEngineService
         }
 
     }
-
+    
+    /**
+     * Checks if the resource contained within the specified URL 
+     * has a modified time greater than the request header value
+     * of <code>If-Modified-Since</code>. If it doesn't then the 
+     * response status is set to {@link HttpServletResponse#SC_NOT_MODIFIED}.
+     * 
+     * @param resourceURL Resource being checked
+     * @return True if resource should be cached and response header was set.
+     * @since 4.1
+     */
+    
+    protected boolean cachedResource(URL resourceURL)
+    {
+        File resource = new File(resourceURL.getFile());
+        if (!resource.exists()) return false;
+        
+        //even if it doesn't exist in header the value will be -1, 
+        //which means we need to write out the contents of the resource
+        
+        long modify = Long.parseLong(_request.getHeader("If-Modified-Since"));
+        if (resource.lastModified() > modify)
+            return false;
+        
+        _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+        return true;
+    }
+    
     /** @since 2.2 */
 
     private void writeAssetContent(IRequestCycle cycle, String resourcePath,
