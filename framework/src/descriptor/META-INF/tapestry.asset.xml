@@ -165,7 +165,7 @@
     
   </contribution>
   
-  <service-point id="UnprotectedResourceMatcher">
+  <service-point id="UnprotectedResourceMatcher" interface="ResourceMatcher" >
     
     Uses the UnprotectedAssets configuration point to dynamically determine
     which assets managed by the AssetService should be protected. The default
