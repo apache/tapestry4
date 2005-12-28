@@ -76,6 +76,9 @@ public class AssetService implements IEngineService
     /** @since 4.0 */
     private ResourceDigestSource _digestSource;
 
+    /** @since 4.1 */
+    private ResourceMatcher _unprotectedMatcher;
+    
     /**
      * Defaults MIME types, by extension, used when the servlet container doesn't provide MIME
      * types. ServletExec Debugger, for example, fails to provide these.
@@ -131,7 +134,7 @@ public class AssetService implements IEngineService
      */
 
     public static final String DIGEST = "digest";
-
+    
     /**
      * Builds a {@link ILink}for a {@link PrivateAsset}.
      * <p>
@@ -142,19 +145,19 @@ public class AssetService implements IEngineService
     public ILink getLink(boolean post, Object parameter)
     {
         Defense.isAssignable(parameter, String.class, "parameter");
-
+        
         String path = (String) parameter;
-
+        
         String digest = _digestSource.getDigestForResource(path);
-
+        
         Map parameters = new HashMap();
-
+        
         parameters.put(ServiceConstants.SERVICE, getName());
         parameters.put(PATH, path);
         parameters.put(DIGEST, digest);
-
+        
         // Service is stateless, which is the exception to the rule.
-
+        
         return _linkFactory.constructLink(this, post, parameters, false);
     }
 
@@ -199,23 +202,23 @@ public class AssetService implements IEngineService
                         .md5Mismatch(path));
                 return;
             }
-
+            
             // If they were vended an asset in the past then it must be up-to date.
             // Asset URIs change if the underlying file is modified.
-
+            
             if (_request.getHeader("If-Modified-Since") != null)
             {
                 _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
                 return;
             }
-
+            
             URL resourceURL = _classResolver.getResource(path);
-
+            
             if (resourceURL == null)
                 throw new ApplicationRuntimeException(AssetMessages.noSuchResource(path));
-
+            
             URLConnection resourceConnection = resourceURL.openConnection();
-
+            
             writeAssetContent(cycle, path, resourceConnection);
         }
         catch (Throwable ex)
@@ -231,7 +234,7 @@ public class AssetService implements IEngineService
             URLConnection resourceConnection) throws IOException
     {
         InputStream input = null;
-
+        
         try
         {
             // Getting the content type and length is very dependant
@@ -246,13 +249,13 @@ public class AssetService implements IEngineService
 
             _response.setDateHeader("Last-Modified", _startupTime);
             _response.setDateHeader("Expires", _expireTime);
-
+            
             // Set the content type. If the servlet container doesn't
             // provide it, try and guess it by the extension.
-
+            
             if (contentType == null || contentType.length() == 0)
                 contentType = getMimeType(resourcePath);
-
+            
             OutputStream output = _response.getOutputStream(new ContentType(contentType));
 
             input = new BufferedInputStream(resourceConnection.getInputStream());
@@ -319,5 +322,11 @@ public class AssetService implements IEngineService
     public void setRequest(WebRequest request)
     {
         _request = request;
+    }
+    
+    /** @since 4.1 */
+    public void setUnprotectedMatcher(ResourceMatcher matcher)
+    {
+        _unprotectedMatcher = matcher;
     }
 }
