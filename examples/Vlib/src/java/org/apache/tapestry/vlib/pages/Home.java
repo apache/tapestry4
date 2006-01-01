@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.vlib.pages;
 
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.vlib.VlibPage;
@@ -43,8 +42,7 @@ public abstract class Home extends VlibPage
     public abstract BookMatches getBookMatches();
 
     /**
-     * Listener method, invokes
-     * {@link BookMatches#performQuery(MasterQueryParameters)}.
+     * Listener method, invokes {@link BookMatches#performQuery(MasterQueryParameters)}.
      */
 
     public void search()

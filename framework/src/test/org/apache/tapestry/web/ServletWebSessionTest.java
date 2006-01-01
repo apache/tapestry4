@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,10 +17,6 @@ package org.apache.tapestry.web;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
-
-import org.apache.tapestry.web.ServletWebSession;
-import org.apache.tapestry.web.WebSession;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.web.ServletWebSession}.

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import java.util.List;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.record.PropertyChange;

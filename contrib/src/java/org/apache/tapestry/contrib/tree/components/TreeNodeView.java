@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;

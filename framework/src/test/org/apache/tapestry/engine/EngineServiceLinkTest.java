@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,14 +14,12 @@
 
 package org.apache.tapestry.engine;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.engine.EngineServiceLink;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.web.WebRequest;
 

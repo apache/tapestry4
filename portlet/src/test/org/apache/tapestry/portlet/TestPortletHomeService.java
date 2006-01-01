@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,11 +19,9 @@ import java.util.Map;
 
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
-import org.apache.tapestry.services.ServiceConstants;
 import org.easymock.MockControl;
 
 /**

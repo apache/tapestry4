@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,9 +25,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.LinkFactory;
-import org.apache.tapestry.services.ServiceConstants;
 
 /**
  * Restarts the Tapestry application. This is normally reserved for dealing with catastrophic

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
