@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.vlib.EntitySelectionModel;
-import org.apache.tapestry.vlib.IErrorProperty;
 import org.apache.tapestry.vlib.VirtualLibraryDelegate;
 import org.apache.tapestry.vlib.VlibPage;
 import org.apache.tapestry.vlib.ejb.Book;

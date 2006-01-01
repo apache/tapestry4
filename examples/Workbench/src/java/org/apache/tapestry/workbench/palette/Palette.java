@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.apache.tapestry.workbench.palette;
 import java.util.List;
 
 import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.contrib.palette.SortMode;

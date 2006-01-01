@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,7 +39,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.ITemplateComponent;
 import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.asset.AssetSource;
-import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.coerce.ValueConverter;
