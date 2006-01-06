@@ -54,6 +54,9 @@
     -->
   </todo>
   <changes>
+    <release version="4.0" date="Jan 6 2006">
+      <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>
+    </release>
     <release version="4.0-rc-3" date="Dec 27 2005">
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-815">PageAttachListener not called on initial page load</action>
     </release>
@@ -797,6 +800,34 @@
     </release>
   </changes>
   <votes>
+    <vote title="4.0 Final Release" date="Dec 30 2005" dev="HLS">
+      <motion>
+        I think 4.0 is ready for a wider release and a new release
+        announcement to ring in 2006. I know I'm anxious to start putting
+        together 4.1 features. The most critical missing documentation, about
+        validation, has been remedied by Jesse and some irritating bugs have
+        been fixed.
+      </motion>
+      <response>HLS: JK, KT, EH, RLS, GL, PF, HK, DS: +1</response>
+    </vote>
+    <vote title="4.0 Final Release" date="Dec 15 2005" dev="HLS">
+      <motion>
+        I think it is high time for a final 4.0 release.  The release
+        candidate has exposed a couple of minor issues, now fixed in the
+        trunk, and there's nothing stopping us from following up with a 4.0.1
+        release if anything else turns up.
+      </motion>
+      <response>
+        HLS, JK, DS, HK: +1
+      </response>
+      <response>
+        GL: +0
+      </response>
+      <response>
+        KT: -1
+      </response>
+    </vote>
+
     <vote title="Tapestry 4.0-rc-1" date="Nov 30 2005" dev="HLS">
       <motion>
         By the time this vote ends, we'll have some kind of fix for
