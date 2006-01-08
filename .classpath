@@ -33,7 +33,6 @@
 	<classpathentry kind="lib" path="ext-package/lib/jboss-j2ee-3.2.1.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/portlet-api-1.0.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/jcharts-0.6.0.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/jython-2.1.jar"/>
 	<classpathentry sourcepath="/jakarta-hivemind" kind="lib" path="ext-package/lib/hivemind-1.1.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
