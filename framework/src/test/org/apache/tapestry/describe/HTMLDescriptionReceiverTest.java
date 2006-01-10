@@ -29,6 +29,7 @@ import org.apache.tapestry.IMarkupWriter;
  */
 public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
 {
+	
     protected DescribableStrategy newStrategy()
     {
         return (DescribableStrategy) newMock(DescribableStrategy.class);

@@ -42,7 +42,8 @@ public abstract class Home extends VlibPage
     public abstract BookMatches getBookMatches();
 
     /**
-     * Listener method, invokes {@link BookMatches#performQuery(MasterQueryParameters)}.
+     * Listener method, invokes
+     * {@link BookMatches#performQuery(MasterQueryParameters)}.
      */
 
     public void search()

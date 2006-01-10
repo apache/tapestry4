@@ -137,4 +137,46 @@
   <contribution configuration-id="tapestry.Infrastructure">
     <property name="assetFactory" object="service:LookupAssetFactory"/>
   </contribution>
+  
+  <configuration-point id="UnprotectedAssets">
+    
+    Maps asset path regexp patterns to assets that won't be required
+    to have md5sum digests, making them visible and accessible to unauthenticated
+    url requests. Care should be taken contributing here. Most things should remain
+    protected, like .class files, database configuration files, etc.
+    
+    This configuration is mainly intended to help some resources that require being
+    able to dynamically load content on the browser client-side. One such resource
+    is the http://dojotoolkit.org javascript library, which loads javascript/css/other 
+    resources dynamically via XmlHttpRequests for resources that haven't been previously
+    digested.
+    
+    <schema>
+      <element name="unprotected-resource">
+        <attribute name="contains" required="true" unique="true">
+          The regexp pattern to match against.
+        </attribute>
+      </element>
+    </schema>    
+  </configuration-point>
+  
+  <contribution configuration-id="UnprotectedAssets">
+   List of unprotected asset regexps for ResourceMatcher service.
+    
+  </contribution>
+  
+  <service-point id="UnprotectedResourceMatcher" interface="ResourceMatcher" >
+    
+    Uses the UnprotectedAssets configuration point to dynamically determine
+    which assets managed by the AssetService should be protected. The default
+    is to protect all resources.
+    
+    <invoke-factory>
+      <construct class="ResourceMatcherImpl">
+        <event-listener service-id="tapestry.ResetEventHub"/>
+        <set-configuration configuration-id="UnprotectedAssets" property="contributions" />
+      </construct>
+    </invoke-factory>
+  </service-point>  
+  
 </module>

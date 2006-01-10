@@ -142,6 +142,33 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
         verifyControls();
     }
 
+    /**
+     * Tests relative sub-directory paths.
+     */
+    public void testRelativeDirectoryPath()
+    {
+        IEngineService assetService = newService();
+        Location l = newLocation();
+        
+        replayControls();
+        
+        ClasspathAssetFactory factory = new ClasspathAssetFactory();
+        factory.setClassResolver(getClassResolver());
+        factory.setAssetService(assetService);
+        factory.setLocalizer(new DefaultResourceLocalizer());
+        
+        Resource subResource = new ClasspathResource(getClassResolver(),
+                "/org/apache/tapestry/asset/subresource/sub-resource.txt");
+        IAsset asset = factory.createAsset(subResource, l);
+        
+        assertTrue(asset instanceof PrivateAsset);
+        assertEquals("/org/apache/tapestry/asset/subresource/sub-resource.txt",
+                asset.getResourceLocation().getPath());
+        assertSame(l, asset.getLocation());
+        
+        verifyControls();
+    }
+    
     private ClasspathResource newBaseResource()
     {
         return new ClasspathResource(getClassResolver(),

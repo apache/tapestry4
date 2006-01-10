@@ -43,11 +43,11 @@ public class AssetEncoder implements ServiceEncoder
 
         String path = encoding.getParameterValue(AssetService.PATH);
         String digest = encoding.getParameterValue(AssetService.DIGEST);
-
+        
         // _path ends with a slash, path starts with one.
-
+        
         String fullPath = _path + "/" + digest + path;
-
+        
         encoding.setServletPath(fullPath);
         encoding.setParameterValue(AssetService.PATH, null);
         encoding.setParameterValue(AssetService.DIGEST, null);
@@ -58,13 +58,13 @@ public class AssetEncoder implements ServiceEncoder
     {
         if (!encoding.getServletPath().equals(_path))
             return;
-
+        
         String pathInfo = encoding.getPathInfo();
-
+        
         // The lead character is a slash, so find the next slash (the divider between the
         // digest and the path).
         int slashx = pathInfo.indexOf('/', 1);
-
+        
         encoding.setParameterValue(ServiceConstants.SERVICE, Tapestry.ASSET_SERVICE);
         encoding.setParameterValue(AssetService.DIGEST, pathInfo.substring(1, slashx));
         encoding.setParameterValue(AssetService.PATH, pathInfo.substring(slashx));

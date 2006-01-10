@@ -276,9 +276,14 @@ public class TestListenerMapSource extends HiveMindTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(
-                    "Failure invoking listener method 'public void org.apache.tapestry.listener.ListenerMethodHolder.wrongTypes(java.util.Map)' on ListenerMethodHolder: argument type mismatch",
-                    ex.getMessage());
+        		assertEquals(IllegalArgumentException.class,
+        				ex.getRootCause().getClass());
+        		assertTrue(ex.getMessage()
+        				.startsWith("Failure invoking listener method 'public void "
+        						+ "org.apache.tapestry.listener.ListenerMethodHolder."
+        						+ "wrongTypes(java.util.Map)' on ListenerMethodHolder:"));
+        		//TODO: IBM jre doesn't format these messages the same as sun's jre,
+        		//IBM's message has no message string source for the IllegalArgumentException
             assertSame(holder, ex.getComponent());
         }
 

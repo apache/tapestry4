@@ -26,6 +26,11 @@ public class FolderObject extends SFObject
 {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1889745019885512018L;
+
+	/**
      * @associates <{File}>
      * @supplierCardinality 0..*
      * @link aggregation

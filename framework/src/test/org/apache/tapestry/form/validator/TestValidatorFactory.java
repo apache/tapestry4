@@ -264,9 +264,8 @@ public class TestValidatorFactory extends TapestryTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(
-                    "Error initializing validator 'fred' (class java.lang.Object): java.lang.Object",
-                    ex.getMessage());
+        		assertTrue(ex.getMessage()
+        				.startsWith("Error initializing validator 'fred' (class java.lang.Object): java.lang.Object"));
         }
 
         verifyControls();
