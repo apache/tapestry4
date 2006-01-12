@@ -25,6 +25,11 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.l10n.DefaultResourceLocalizer;
 import org.apache.tapestry.web.WebContext;
 
+/** Test for {@link org.apache.tapestry.asset.ContextAssetFactory}.
+ *  
+ * @author Howard M. Lewis Ship
+ * @since 4.0
+ */
 public class ContextAssetFactoryTest extends HiveMindTestCase
 {
     protected Resource newResource()

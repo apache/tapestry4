@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,8 +31,11 @@ import org.apache.tapestry.test.Creator;
 
 public class TestComponent extends TapestryTestCase
 {
+
+    /** Test fixture. */
     private static class TestRender implements IRender
     {
+
         private boolean rendered = false;
 
         public void render(IMarkupWriter writer, IRequestCycle cycle)
@@ -42,8 +45,10 @@ public class TestComponent extends TapestryTestCase
 
     }
 
+    /** Test fixture. */
     public abstract static class FakeComponent extends BaseComponent
     {
+
         void addOuterTest(IRender render)
         {
             addOuter(render);
@@ -56,19 +61,21 @@ public class TestComponent extends TapestryTestCase
     }
 
     /**
-     * Test the ability of {@link org.apache.tapestry.BaseComponent#addOuter(IRender)}to add a
+     * Test the ability of
+     * {@link org.apache.tapestry.BaseComponent#addOuter(IRender)}to add a
      * large number of objects.
      */
 
-    public void testOuter() throws Exception
+    public void testOuter()
+        throws Exception
     {
         Creator creator = new Creator();
 
-        FakeComponent c = (FakeComponent) creator.newInstance(FakeComponent.class);
+        FakeComponent c = (FakeComponent)creator.newInstance(FakeComponent.class);
 
         TestRender[] list = new TestRender[50];
 
-        for (int i = 0; i < list.length; i++)
+        for(int i = 0; i < list.length; i++)
         {
             list[i] = new TestRender();
             c.addOuterTest(list[i]);
@@ -78,7 +85,7 @@ public class TestComponent extends TapestryTestCase
 
         c.testRenderComponent(writer, null);
 
-        for (int i = 0; i < list.length; i++)
+        for(int i = 0; i < list.length; i++)
             assertTrue("Outer object #" + i + " did render.", list[i].rendered);
     }
 }

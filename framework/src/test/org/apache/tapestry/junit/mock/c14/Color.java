@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +14,14 @@
 
 package org.apache.tapestry.junit.mock.c14;
 
+/**
+ * A color for selection by the controls of the form.
+ * 
+ * @author Howard M. Lewis Ship
+ */
 public class Color
 {
+
     public static final String RED = "RED";
 
     public static final String GREEN = "GREEN";
@@ -30,7 +36,6 @@ public class Color
 
     public static final String WHITE = "WHITE";
 
-    public static final String[] ALL_COLORS =
-    { RED, GREEN, BLUE, YELLOW, BLACK, WHITE, PUECE };
+    public static final String[] ALL_COLORS = { RED, GREEN, BLUE, YELLOW, BLACK, WHITE, PUECE };
 
 }

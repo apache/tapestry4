@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,34 +17,38 @@ package org.apache.tapestry.junit.mock.c34;
 import java.io.Serializable;
 
 /**
- * A serializable Item with one volatile field that is not serialized.
- * 
- * Used to test whether the value string representation is matched,
- * or whether it is unsqueezed instead.
+ * A serializable Item with one volatile field that is not serialized. Used to
+ * test whether the value string representation is matched, or whether it is
+ * unsqueezed instead.
  * 
  * @author Mindbridge
  */
 public class Item implements Serializable
 {
-	private static final long serialVersionUID = 1L;
-	
-	private transient String _id = "unknown";
-	private String _value = "unknown";
 
-	public Item(String id, String value) {
-		_id = id;
-		_value = value;
-	}
+    private static final long serialVersionUID = 1L;
 
-	public String getId() {
-		return _id;
-	}
+    private transient String _id = "unknown";
+    private String _value = "unknown";
 
-	public String getValue() {
-		return _value;
-	}
+    public Item(String id, String value)
+    {
+        _id = id;
+        _value = value;
+    }
 
-	public String toString() {
-		return "Item[" + _id + " : " + _value + "]";
-	}
+    public String getId()
+    {
+        return _id;
+    }
+
+    public String getValue()
+    {
+        return _value;
+    }
+
+    public String toString()
+    {
+        return "Item[" + _id + " : " + _value + "]";
+    }
 }

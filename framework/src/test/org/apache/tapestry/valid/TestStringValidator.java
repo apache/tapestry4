@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,9 +15,6 @@
 package org.apache.tapestry.valid;
 
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.valid.StringValidator;
-import org.apache.tapestry.valid.ValidationConstraint;
-import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Tests the {@link StringValidator}class.
@@ -28,6 +25,7 @@ import org.apache.tapestry.valid.ValidatorException;
 
 public class TestStringValidator extends BaseValidatorTestCase
 {
+
     private StringValidator v = new StringValidator();
 
     public void testToString()
@@ -101,7 +99,8 @@ public class TestStringValidator extends BaseValidatorTestCase
         verifyControls();
     }
 
-    public void testToObjectRequiredPass() throws ValidatorException
+    public void testToObjectRequiredPass()
+        throws ValidatorException
     {
         IFormComponent field = newField();
 
@@ -132,8 +131,7 @@ public class TestStringValidator extends BaseValidatorTestCase
         }
         catch (ValidatorException ex)
         {
-            assertEquals("You must enter at least 10 characters for minimumLength.", ex
-                    .getMessage());
+            assertEquals("You must enter at least 10 characters for minimumLength.", ex.getMessage());
             assertEquals(ValidationConstraint.MINIMUM_WIDTH, ex.getConstraint());
         }
 
@@ -147,8 +145,7 @@ public class TestStringValidator extends BaseValidatorTestCase
         replayControls();
 
         v.setMinimumLength(10);
-        v
-                .setMinimumLengthMessage("You really think less than 10 characters for {0} is gonna cut it?");
+        v.setMinimumLengthMessage("You really think less than 10 characters for {0} is gonna cut it?");
 
         try
         {
@@ -156,13 +153,13 @@ public class TestStringValidator extends BaseValidatorTestCase
         }
         catch (ValidatorException ex)
         {
-            assertEquals(
-                    "You really think less than 10 characters for overrideMessage is gonna cut it?",
-                    ex.getMessage());
+            assertEquals("You really think less than 10 characters for overrideMessage is gonna cut it?", ex
+                    .getMessage());
         }
     }
 
-    public void testToObjectMinimumPass() throws ValidatorException
+    public void testToObjectMinimumPass()
+        throws ValidatorException
     {
         IFormComponent field = newField();
 
@@ -183,7 +180,8 @@ public class TestStringValidator extends BaseValidatorTestCase
      * An empty string is not subject to the minimum length constraint.
      */
 
-    public void testToObjectMinimumNull() throws ValidatorException
+    public void testToObjectMinimumNull()
+        throws ValidatorException
     {
         IFormComponent field = newField();
 

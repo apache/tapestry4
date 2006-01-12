@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,8 +41,9 @@ public class TestValueConverter extends HiveMindTestCase
     }
 
     /**
-     * Check that primitive types are converted to equivalent wrapper classes for the assignable
-     * check. Ok, maybe we should check all the primitive types.
+     * Check that primitive types are converted to equivalent wrapper classes
+     * for the assignable check. Ok, maybe we should check all the primitive
+     * types.
      */
 
     public void testAlreadyCorrectPrimitiveType()
@@ -70,7 +71,8 @@ public class TestValueConverter extends HiveMindTestCase
     }
 
     /**
-     * Verify that the message generated for a primtive type identifies the wrapper class.
+     * Verify that the message generated for a primtive type identifies the
+     * wrapper class.
      */
 
     public void testNoConverterPrimitive()
@@ -91,7 +93,7 @@ public class TestValueConverter extends HiveMindTestCase
     public void testConverterFound()
     {
         MockControl tcc = newControl(TypeConverter.class);
-        TypeConverter tc = (TypeConverter) tcc.getMock();
+        TypeConverter tc = (TypeConverter)tcc.getMock();
 
         Object input = new Integer(7);
         Object output = "SEVEN";
@@ -120,7 +122,7 @@ public class TestValueConverter extends HiveMindTestCase
     public void testConverterFoundForNullValue()
     {
         MockControl tcc = newControl(TypeConverter.class);
-        TypeConverter tc = (TypeConverter) tcc.getMock();
+        TypeConverter tc = (TypeConverter)tcc.getMock();
 
         Object output = "NULL";
 
@@ -181,9 +183,7 @@ public class TestValueConverter extends HiveMindTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertExceptionSubstring(
-                    ex,
-                    "Unable to convert 'fred12345' to an instance of java.lang.Double");
+            assertExceptionSubstring(ex, "Unable to convert 'fred12345' to an instance of java.lang.Double");
         }
 
     }
@@ -191,7 +191,7 @@ public class TestValueConverter extends HiveMindTestCase
     public void testStringToNonNumericPrimitive()
     {
         MockControl tcc = newControl(TypeConverter.class);
-        TypeConverter tc = (TypeConverter) tcc.getMock();
+        TypeConverter tc = (TypeConverter)tcc.getMock();
 
         Object input = "false";
         Object output = Boolean.FALSE;

@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,13 +29,14 @@ import org.easymock.MockControl;
  */
 public class TestValidatorBindingFactory extends HiveMindTestCase
 {
+
     public void testFactory()
     {
-        IValidator validator = (IValidator) newMock(IValidator.class);
-        ValueConverter vc = (ValueConverter) newMock(ValueConverter.class);
+        IValidator validator = (IValidator)newMock(IValidator.class);
+        ValueConverter vc = (ValueConverter)newMock(ValueConverter.class);
 
         MockControl vbfc = newControl(BeanFactory.class);
-        BeanFactory vbf = (BeanFactory) vbfc.getMock();
+        BeanFactory vbf = (BeanFactory)vbfc.getMock();
 
         vbf.get("foo,bar=baz");
         vbfc.setReturnValue(validator);

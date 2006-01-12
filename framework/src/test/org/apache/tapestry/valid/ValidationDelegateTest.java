@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,18 +29,19 @@ import org.easymock.MockControl;
 
 public class ValidationDelegateTest extends BaseValidatorTestCase
 {
+
+    private ValidationDelegate d = new ValidationDelegate();
+
     protected IFormComponent newField(String name, int count)
     {
         MockControl control = newControl(IFormComponent.class);
-        IFormComponent fc = (IFormComponent) control.getMock();
+        IFormComponent fc = (IFormComponent)control.getMock();
 
         fc.getName();
         control.setReturnValue(name, count);
 
         return fc;
     }
-
-    private ValidationDelegate d = new ValidationDelegate();
 
     public void testHasErrorsEmpty()
     {
@@ -68,7 +69,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
 
         assertEquals(1, fieldTracking.size());
 
-        IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
+        IFieldTracking t = (IFieldTracking)fieldTracking.get(0);
 
         assertSame(field, t.getComponent());
         checkRender(errorMessage, t);
@@ -77,7 +78,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         assertEquals(ValidationConstraint.TOO_LARGE, t.getConstraint());
 
         assertTrue(d.getHasErrors());
-        assertEquals(errorMessage, ((RenderString) (d.getFirstError())).getString());
+        assertEquals(errorMessage, ((RenderString)(d.getFirstError())).getString());
 
         verifyControls();
     }
@@ -92,14 +93,13 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
 
         d.setFormComponent(field);
         d.recordFieldInputValue("Bad Stuff");
-        d.record(new ValidatorException("Just don't like it.", errorRenderer,
-                ValidationConstraint.CONSISTENCY));
+        d.record(new ValidatorException("Just don't like it.", errorRenderer, ValidationConstraint.CONSISTENCY));
 
         List fieldTracking = d.getFieldTracking();
 
         assertEquals(1, fieldTracking.size());
 
-        IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
+        IFieldTracking t = (IFieldTracking)fieldTracking.get(0);
 
         assertSame(field, t.getComponent());
         assertSame(errorRenderer, t.getErrorRenderer());
@@ -125,7 +125,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         List fieldTracking = d.getFieldTracking();
         assertEquals(1, fieldTracking.size());
 
-        IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
+        IFieldTracking t = (IFieldTracking)fieldTracking.get(0);
 
         assertSame(field, t.getComponent());
         assertNull(t.getErrorRenderer());
@@ -156,11 +156,11 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         List fieldTracking = d.getFieldTracking();
         assertEquals(2, fieldTracking.size());
 
-        IFieldTracking t0 = (IFieldTracking) fieldTracking.get(0);
+        IFieldTracking t0 = (IFieldTracking)fieldTracking.get(0);
         assertEquals(false, t0.isInError());
         assertSame(field, t0.getComponent());
 
-        IFieldTracking t1 = (IFieldTracking) fieldTracking.get(1);
+        IFieldTracking t1 = (IFieldTracking)fieldTracking.get(1);
         assertNull(t1.getComponent());
         assertEquals(true, t1.isInError());
         checkRender("Overload!", t1);
@@ -187,7 +187,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
 
     private void checkRender(String errorMessage, IRender render)
     {
-        assertEquals(errorMessage, ((RenderString) render).getString());
+        assertEquals(errorMessage, ((RenderString)render).getString());
     }
 
     public void testMultipleInvalidInput()
@@ -211,12 +211,12 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         List fieldTracking = d.getFieldTracking();
         assertEquals(2, fieldTracking.size());
 
-        IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
+        IFieldTracking t = (IFieldTracking)fieldTracking.get(0);
 
         assertSame(f1, t.getComponent());
         checkRender(e1, t);
 
-        t = (IFieldTracking) fieldTracking.get(1);
+        t = (IFieldTracking)fieldTracking.get(1);
         assertEquals("Python", t.getInput());
         checkRender(e2, t);
         assertSame(f2, t.getComponent());
@@ -250,7 +250,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         List fieldTracking = d.getFieldTracking();
         assertEquals(1, fieldTracking.size());
 
-        IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
+        IFieldTracking t = (IFieldTracking)fieldTracking.get(0);
         assertEquals("Python", t.getInput());
         checkRender(e2, t);
         assertEquals(f2, t.getComponent());
@@ -299,7 +299,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
         IFormComponent f1 = newField("monty", 2);
         IFormComponent f2 = newField("python", 3);
 
-        IRender f2ErrorRenderer = (IRender) newMock(IRender.class);
+        IRender f2ErrorRenderer = (IRender)newMock(IRender.class);
 
         replayControls();
 
@@ -364,7 +364,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
     private IFormComponent newFieldWithClientId(String clientId)
     {
         MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent) control.getMock();
+        IFormComponent field = (IFormComponent)control.getMock();
 
         field.getClientId();
         control.setReturnValue(clientId);
@@ -394,7 +394,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
 
         assertEquals(1, list.size());
 
-        IFieldTracking ft = (IFieldTracking) list.get(0);
+        IFieldTracking ft = (IFieldTracking)list.get(0);
 
         assertEquals(true, ft.isInError());
         assertSame(field, ft.getComponent());
@@ -414,7 +414,7 @@ public class ValidationDelegateTest extends BaseValidatorTestCase
 
         assertEquals(1, list.size());
 
-        IFieldTracking ft = (IFieldTracking) list.get(0);
+        IFieldTracking ft = (IFieldTracking)list.get(0);
 
         assertEquals(true, ft.isInError());
         assertNull(ft.getComponent());

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -104,8 +104,7 @@ public class TestRegexpMatcher extends TapestryTestCase
 
         String[] matches = m.getMatches("\\d+", "57,232 89 147", 0);
 
-        assertListsEqual(new String[]
-        { "57", "232", "89", "147" }, matches);
+        assertListsEqual(new String[] { "57", "232", "89", "147" }, matches);
     }
 
     /** @since 4.0 */
@@ -117,15 +116,15 @@ public class TestRegexpMatcher extends TapestryTestCase
         RegexpMatch[] matches = m.getMatches("\\w+(=(\\w+))?", "fred,barney=rubble;wilma=flintstone");
 
         assertEquals(3, matches.length);
-        
+
         assertEquals("fred", matches[0].getInput());
         assertEquals("fred", matches[0].getGroup(0));
-        
+
         assertEquals("barney=rubble", matches[1].getInput());
         assertEquals("rubble", matches[1].getGroup(2));
-        
+
         assertEquals("wilma=flintstone", matches[2].getInput());
-        assertEquals("flintstone", matches[2].getGroup(2));        
+        assertEquals("flintstone", matches[2].getGroup(2));
     }
 
     /** @since 4.0 */
@@ -145,10 +144,9 @@ public class TestRegexpMatcher extends TapestryTestCase
     {
         RegexpMatcher m = new RegexpMatcher();
 
-        String matches[] = m.getMatches("A(B|C|fred)", "AA AC AB Afred AA AC", 1);
+        String[] matches = m.getMatches("A(B|C|fred)", "AA AC AB Afred AA AC", 1);
 
-        assertListsEqual(new String[]
-        { "C", "B", "fred", "C" }, matches);
+        assertListsEqual(new String[] { "C", "B", "fred", "C" }, matches);
     }
 
 }
