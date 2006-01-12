@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,23 +20,22 @@ import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- * Base class for resolving a {@link org.apache.tapestry.spec.IComponentSpecification}for a
- * particular page or component, within a specified {@link org.apache.tapestry.INamespace}. In some
- * cases, a search is necessary.
+ * Base class for resolving a
+ * {@link org.apache.tapestry.spec.IComponentSpecification}for a particular
+ * page or component, within a specified {@link org.apache.tapestry.INamespace}.
+ * In some cases, a search is necessary.
  * 
  * @author Howard Lewis Ship
  * @since 3.0
  */
 
-public class AbstractSpecificationResolver
-{
-    /** Set by resolve() */
+public class AbstractSpecificationResolver {
+
     private INamespace _namespace;
 
-    /** Set by resolve() */
     private IComponentSpecification _specification;
 
-    /** Set by container */
+    /** Set by container. */
     private ISpecificationSource _specificationSource;
 
     private ISpecificationResolverDelegate _delegate;
@@ -45,7 +44,7 @@ public class AbstractSpecificationResolver
 
     private Resource _contextRoot;
 
-    /** Initialized in initializeService() */
+    /** Initialized in initializeService(). */
 
     private Resource _webInfLocation;
 
@@ -55,13 +54,15 @@ public class AbstractSpecificationResolver
     {
         _webInfLocation = _contextRoot.getRelativeResource("WEB-INF/");
 
-        _webInfAppLocation = _webInfLocation.getRelativeResource(_applicationId + "/");
+        _webInfAppLocation = _webInfLocation.getRelativeResource(_applicationId
+                + "/");
     }
 
     /**
-     * Returns the {@link ISpecificationResolverDelegate}instance registered in the application
-     * specification as extension {@link Tapestry#SPECIFICATION_RESOLVER_DELEGATE_EXTENSION_NAME},
-     * or null if no such extension exists.
+     * Returns the {@link ISpecificationResolverDelegate}instance registered in
+     * the application specification as extension
+     * {@link Tapestry#SPECIFICATION_RESOLVER_DELEGATE_EXTENSION_NAME}, or null
+     * if no such extension exists.
      */
 
     public ISpecificationResolverDelegate getDelegate()
@@ -120,8 +121,8 @@ public class AbstractSpecificationResolver
     }
 
     /**
-     * Returns the location of the application-specific subdirectory, under /WEB-INF/, in the
-     * servlet context.
+     * Returns the location of the application-specific subdirectory, under
+     * /WEB-INF/, in the servlet context.
      */
 
     protected Resource getWebInfAppLocation()
@@ -139,7 +140,8 @@ public class AbstractSpecificationResolver
     }
 
     /**
-     * Invoked in subclass to set the final specification the initial inputs are resolved to.
+     * Invoked in subclass to set the final specification the initial inputs are
+     * resolved to.
      */
 
     protected void setSpecification(IComponentSpecification specification)
@@ -190,17 +192,17 @@ public class AbstractSpecificationResolver
     /**
      * @since 4.0
      */
-    protected INamespace findNamespaceForId(INamespace containerNamespace, String libraryId)
+    protected INamespace findNamespaceForId(INamespace containerNamespace,
+            String libraryId)
     {
-        if (libraryId == null)
-            return containerNamespace;
-    
+        if (libraryId == null) return containerNamespace;
+
         if (libraryId.equals(INamespace.APPLICATION_NAMESPACE))
             return getApplicationNamespace();
-    
+
         if (libraryId.equals(INamespace.FRAMEWORK_NAMESPACE))
             return getFrameworkNamespace();
-    
+
         return containerNamespace.getChildNamespace(libraryId);
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,8 +26,8 @@ import org.apache.tapestry.coerce.ValueConverter;
  * @author Howard Lewis Ship
  */
 
-public abstract class AbstractBinding implements IBinding
-{
+public abstract class AbstractBinding implements IBinding {
+
     /** @since 4.0 */
 
     private final String _description;
@@ -42,7 +42,8 @@ public abstract class AbstractBinding implements IBinding
 
     /** @since 3.0 */
 
-    protected AbstractBinding(String description, ValueConverter valueConverter, Location location)
+    protected AbstractBinding(String description,
+            ValueConverter valueConverter, Location location)
     {
         Defense.notNull(description, "description");
         Defense.notNull(valueConverter, "valueConverter");
@@ -86,21 +87,20 @@ public abstract class AbstractBinding implements IBinding
 
         Object raw = getObject();
 
-        try
-        {
+        try {
             return _valueConverter.coerceValue(raw, type);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             String message = BindingMessages.convertObjectError(this, ex);
 
-            throw new BindingException(message, getComponent(), _location, this, ex);
+            throw new BindingException(message, getComponent(), _location,
+                    this, ex);
         }
     }
 
     /**
-     * Returns the component to which this binding is connected; this is currently only used when
-     * building certain exceptions. This implementation returns null.
+     * Returns the component to which this binding is connected; this is
+     * currently only used when building certain exceptions. This implementation
+     * returns null.
      * 
      * @since 4.0
      */
@@ -114,7 +114,8 @@ public abstract class AbstractBinding implements IBinding
 
     protected BindingException createReadOnlyBindingException(IBinding binding)
     {
-        return new BindingException(BindingMessages.readOnlyBinding(binding), binding);
+        return new BindingException(BindingMessages.readOnlyBinding(binding),
+                binding);
     }
 
     /** @since 4.0 */

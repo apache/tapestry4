@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,6 +37,9 @@ import org.apache.tapestry.web.HttpServletWebActivator;
  */
 public class ApplicationSpecificationInitializer implements ApplicationInitializer
 {
+
+    public static final String APP_SPEC_PATH_PARAM = "org.apache.tapestry.application-specification";
+
     private Log _log;
 
     private ClasspathResourceFactory _classpathResourceFactory;
@@ -44,8 +47,6 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
     private ApplicationGlobals _globals;
 
     private ISpecificationParser _parser;
-
-    public static final String APP_SPEC_PATH_PARAM = "org.apache.tapestry.application-specification";
 
     public void initialize(HttpServlet servlet)
     {
@@ -59,8 +60,7 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
 
             spec = constructStandinSpecification(servlet);
         }
-        else
-            spec = _parser.parseApplicationSpecification(specResource);
+        else spec = _parser.parseApplicationSpecification(specResource);
 
         _globals.storeActivator(new HttpServletWebActivator(servlet));
         _globals.storeSpecification(spec);
@@ -70,8 +70,7 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
     {
         String path = servlet.getInitParameter(APP_SPEC_PATH_PARAM);
 
-        if (path != null)
-            return _classpathResourceFactory.newResource(path);
+        if (path != null) return _classpathResourceFactory.newResource(path);
 
         ServletContext context = servlet.getServletContext();
         String servletName = servlet.getServletName();
@@ -81,8 +80,7 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
         Resource webInfAppLocation = webInfLocation.getRelativeResource(servletName + "/");
 
         Resource result = check(webInfAppLocation, expectedName);
-        if (result != null)
-            return result;
+        if (result != null) return result;
 
         return check(webInfLocation, expectedName);
     }
@@ -91,8 +89,7 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
     {
         Resource result = resource.getRelativeResource(name);
 
-        if (_log.isDebugEnabled())
-            _log.debug("Checking for existence of " + result);
+        if (_log.isDebugEnabled()) _log.debug("Checking for existence of " + result);
 
         if (result.getResourceURL() != null)
         {
@@ -111,8 +108,8 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
 
         // Pretend the file exists in the most common expected location.
 
-        Resource virtualLocation = new ContextResource(servlet.getServletContext(), "/WEB-INF/"
-                + servletName + ".application");
+        Resource virtualLocation = new ContextResource(servlet.getServletContext(), "/WEB-INF/" + servletName
+                + ".application");
 
         result.setSpecificationLocation(virtualLocation);
 
@@ -140,5 +137,4 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
     {
         _parser = parser;
     }
-
 }

@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,21 +21,19 @@ import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.describe.DescriptionReceiver;
 
 /**
- * Event object used by {@link org.apache.tapestry.event.ReportStatusListener}; the event
- * implements {@link org.apache.tapestry.describe.DescriptionReceiver}; classes (typically,
- * HiveMind service implementations) that implement the listener interface will "describe"
- * themselves to the event.
+ * Event object used by {@link org.apache.tapestry.event.ReportStatusListener};
+ * the event implements {@link org.apache.tapestry.describe.DescriptionReceiver};
+ * classes (typically, HiveMind service implementations) that implement the
+ * listener interface will "describe" themselves to the event.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class ReportStatusEvent extends EventObject implements DescriptionReceiver
 {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 7546818328708861783L;
-	private final DescriptionReceiver _receiver;
+
+    private static final long serialVersionUID = 7546818328708861783L;
+    private final DescriptionReceiver _receiver;
 
     public ReportStatusEvent(Object source, DescriptionReceiver receiver)
     {

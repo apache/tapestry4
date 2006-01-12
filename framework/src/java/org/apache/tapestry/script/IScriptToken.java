@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,35 +16,31 @@ package org.apache.tapestry.script;
 
 import org.apache.hivemind.Locatable;
 
-
 /**
- *  Defines the responsibilities of a template token used by a
- *  {@link org.apache.tapestry.IScript}.
- *
- *  @author Howard Lewis Ship
+ * Defines the responsibilities of a template token used by a
+ * {@link org.apache.tapestry.IScript}.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public interface IScriptToken extends Locatable
 {
-	/**
-	 *  Invoked to have the token
-	 *  add its text to the buffer.  A token may need access
-	 *  to the symbols in order to produce its output.
-	 *
-	 *  <p>Top level tokens (such as BodyToken) can expect that
-	 *  buffer will be null.
-	 *
-	 **/
 
-	public void write(StringBuffer buffer, ScriptSession session);
+    /**
+     * Invoked to have the token add its text to the buffer. A token may need
+     * access to the symbols in order to produce its output.
+     * <p>
+     * Top level tokens (such as BodyToken) can expect that buffer will be null.
+     */
 
-	/**
-	 *  Invoked during parsing to add the token parameter as a child
-	 *  of this token.
-	 *
-	 *  @since 0.2.9
-	 **/
+    public void write(StringBuffer buffer, ScriptSession session);
 
-	public void addToken(IScriptToken token);
+    /**
+     * Invoked during parsing to add the token parameter as a child of this
+     * token.
+     * 
+     * @since 0.2.9
+     */
+
+    public void addToken(IScriptToken token);
 }

@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,13 +17,16 @@ package org.apache.tapestry.web;
 import org.apache.tapestry.describe.Describable;
 
 /**
- * A wrapper around a {@link javax.servlet.http.HttpServlet}&nbsp;or {@link *
+ * A wrapper around a {@link javax.servlet.http.HttpServlet} or
  * {@link javax.portlet.Portlet}.
+ * <p>
+ * A better name for this would have been <em>entry point</em>.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface WebActivator extends InitializationParameterHolder, Describable
 {
-    public String getActivatorName();
+
+    String getActivatorName();
 }

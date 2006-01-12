@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,35 +16,33 @@ package org.apache.tapestry.script;
 
 import org.apache.hivemind.Location;
 
-
 /**
- *  Generates a String from its child tokens, then applies it
- *  to {@link ScriptSessionImpl#setBody(String)}.
- *
- *  @author Howard Lewis Ship
- *  @since 0.2.9
+ * Generates a String from its child tokens, then applies it to
+ * {@link ScriptSessionImpl#setBody(String)}.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 0.2.9
+ */
 
 class BodyToken extends AbstractToken
 {
+
     private int _bufferLengthHighwater = 100;
 
-	public BodyToken(Location location)
-	{
-		super(location);
-	}
+    public BodyToken(Location location)
+    {
+        super(location);
+    }
 
     public void write(StringBuffer buffer, ScriptSession session)
     {
-        if (buffer != null)
-            throw new IllegalArgumentException();
+        if (buffer != null) throw new IllegalArgumentException();
 
         buffer = new StringBuffer(_bufferLengthHighwater);
 
         writeChildren(buffer, session);
 
-		session.addBodyScript(buffer.toString());
+        session.addBodyScript(buffer.toString());
 
         // Store the buffer length from this run for the next run, since its
         // going to be approximately the right size.

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.apache.tapestry.valid.ValidatorException;
 
 public abstract class Upload extends AbstractFormComponent implements ValidatableField
 {
+
     public abstract void setFile(IUploadFile file);
 
     /**
@@ -80,16 +81,16 @@ public abstract class Upload extends AbstractFormComponent implements Validatabl
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IUploadFile file = getDecoder().getFileUpload(getName());
-        
+
         if (HiveMind.isBlank(file.getFileName()))
         {
             file = null;
         }
-        
+
         try
         {
             getValidatableFieldSupport().validate(this, writer, cycle, file);
-            
+
             setFile(file);
         }
         catch (ValidatorException e)
@@ -97,7 +98,7 @@ public abstract class Upload extends AbstractFormComponent implements Validatabl
             getForm().getDelegate().record(e);
         }
     }
-    
+
     /**
      * Injected.
      */

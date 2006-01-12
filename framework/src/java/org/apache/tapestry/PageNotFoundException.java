@@ -17,17 +17,18 @@ package org.apache.tapestry;
 import org.apache.hivemind.ApplicationRuntimeException;
 
 /**
- * Subclass of {@link org.apache.hivemind.ApplicationRuntimeException}&nbsp;thrown when a requested
- * page does not exist.
+ * Subclass of {@link org.apache.hivemind.ApplicationRuntimeException}&nbsp;thrown
+ * when a requested page does not exist.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class PageNotFoundException extends ApplicationRuntimeException
 {
+
     private static final long serialVersionUID = -4776430599632429708L;
 
-	public PageNotFoundException(String message)
+    public PageNotFoundException(String message)
     {
         super(message);
     }

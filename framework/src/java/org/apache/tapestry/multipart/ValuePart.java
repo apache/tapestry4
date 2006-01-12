@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A portion of a multipart request that stores a value, or values, for a parameter.
+ * A portion of a multipart request that stores a value, or values, for a
+ * parameter.
  * 
  * @author Howard Lewis Ship
  * @since 2.0.1
@@ -26,6 +27,7 @@ import java.util.List;
 
 public class ValuePart
 {
+
     private int _count;
 
     // Stores either String or List of String
@@ -48,28 +50,25 @@ public class ValuePart
 
     public String getValue()
     {
-        if (_count == 1)
-            return (String) _value;
+        if (_count == 1) return (String)_value;
 
-        List l = (List) _value;
+        List l = (List)_value;
 
-        return (String) l.get(0);
+        return (String)l.get(0);
     }
 
     /**
-     * Returns the values as an array of strings. If there is only one value, it is returned wrapped
-     * as a single element array.
+     * Returns the values as an array of strings. If there is only one value, it
+     * is returned wrapped as a single element array.
      */
 
     public String[] getValues()
     {
-        if (_count == 1)
-            return new String[]
-            { (String) _value };
+        if (_count == 1) return new String[] { (String)_value };
 
-        List l = (List) _value;
+        List l = (List)_value;
 
-        return (String[]) l.toArray(new String[_count]);
+        return (String[])l.toArray(new String[_count]);
     }
 
     public void add(String newValue)
@@ -85,7 +84,7 @@ public class ValuePart
             return;
         }
 
-        List l = (List) _value;
+        List l = (List)_value;
         l.add(newValue);
         _count++;
     }

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@ import org.apache.tapestry.util.xml.RuleDirectedParser;
 import org.xml.sax.Attributes;
 
 /**
- * Constructs an {@link org.apache.tapestry.script.IncludeScriptToken}
- * from a &lt;include-script&gt; element, which contains no content.
- *
+ * Constructs an {@link org.apache.tapestry.script.IncludeScriptToken} from a
+ * &lt;include-script&gt; element, which contains no content.
+ * 
  * @author Howard Lewis Ship
  * @since 3.0
  */
@@ -31,10 +31,10 @@ class IncludeScriptRule extends BaseRule
     public void startElement(RuleDirectedParser parser, Attributes attributes)
     {
         String path = getAttribute(attributes, "resource-path");
-        
+
         IncludeScriptToken token = new IncludeScriptToken(path, parser.getLocation());
 
-		IScriptToken parent = (IScriptToken) parser.peek();
+        IScriptToken parent = (IScriptToken)parser.peek();
         parent.addToken(token);
     }
 

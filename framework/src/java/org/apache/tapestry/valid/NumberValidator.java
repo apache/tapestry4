@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,8 +29,8 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
- * Simple validation for standard number classes. This is probably insufficient for anything tricky
- * and application specific, such as parsing currency.
+ * Simple validation for standard number classes. This is probably insufficient
+ * for anything tricky and application specific, such as parsing currency.
  * 
  * @author Howard Lewis Ship
  * @since 1.0.8
@@ -38,6 +38,7 @@ import org.apache.tapestry.form.IFormComponent;
 
 public class NumberValidator extends AbstractNumericValidator
 {
+
     private static final Map TYPES = new HashMap();
 
     static
@@ -83,13 +84,15 @@ public class NumberValidator extends AbstractNumericValidator
     public final static int NUMBER_TYPE_REAL = 1;
 
     /**
-     * This class is not meant for use outside of NumberValidator; it is public only to fascilitate
-     * some unit testing.
+     * This class is not meant for use outside of NumberValidator; it is public
+     * only to fascilitate some unit testing.
      */
     public static abstract class NumberStrategy
     {
+
         /**
-         * Parses a non-empty {@link String}into the correct subclass of {@link Number}.
+         * Parses a non-empty {@link String}into the correct subclass of
+         * {@link Number}.
          * 
          * @throws NumberFormatException
          *             if the String can not be parsed.
@@ -98,9 +101,10 @@ public class NumberValidator extends AbstractNumericValidator
         abstract public Number parse(String value);
 
         /**
-         * Indicates the type of the number represented -- integer or real. The information is used
-         * to build the client-side validator. This method could return a boolean, but returns an
-         * int to allow future extensions of the validator.
+         * Indicates the type of the number represented -- integer or real. The
+         * information is used to build the client-side validator. This method
+         * could return a boolean, but returns an int to allow future extensions
+         * of the validator.
          * 
          * @return one of the predefined number types
          */
@@ -108,41 +112,46 @@ public class NumberValidator extends AbstractNumericValidator
 
         public int compare(Number left, Number right)
         {
-            if (!left.getClass().equals(right.getClass()))
-                right = coerce(right);
+            if (!left.getClass().equals(right.getClass())) right = coerce(right);
 
-            Comparable lc = (Comparable) left;
+            Comparable lc = (Comparable)left;
 
             return lc.compareTo(right);
         }
 
         /**
-         * Invoked when comparing two Numbers of different types. The number is cooerced from its
-         * ordinary type to the correct type for comparison.
+         * Invoked when comparing two Numbers of different types. The number is
+         * cooerced from its ordinary type to the correct type for comparison.
          * 
          * @since 3.0
          */
         protected abstract Number coerce(Number number);
     }
 
+    /** Placeholder comment. */
     private static abstract class IntegerNumberAdaptor extends NumberStrategy
     {
+
         public int getNumberType()
         {
             return NUMBER_TYPE_INTEGER;
         }
     }
 
+    /** Placeholder comment. */
     private static abstract class RealNumberAdaptor extends NumberStrategy
     {
+
         public int getNumberType()
         {
             return NUMBER_TYPE_REAL;
         }
     }
 
+    /** Placeholder comment. */
     private static class ByteAdaptor extends IntegerNumberAdaptor
     {
+
         public Number parse(String value)
         {
             return new Byte(value);
@@ -154,8 +163,10 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
+    /** Placeholder comment. */
     private static class ShortAdaptor extends IntegerNumberAdaptor
     {
+
         public Number parse(String value)
         {
             return new Short(value);
@@ -167,8 +178,10 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
+    /** Placeholder comment. */
     private static class IntAdaptor extends IntegerNumberAdaptor
     {
+
         public Number parse(String value)
         {
             return new Integer(value);
@@ -180,8 +193,10 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
+    /** Placeholder comment. */
     private static class LongAdaptor extends IntegerNumberAdaptor
     {
+
         public Number parse(String value)
         {
             return new Long(value);
@@ -193,8 +208,10 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
+    /** Placeholder comment. */
     private static class FloatAdaptor extends RealNumberAdaptor
     {
+
         public Number parse(String value)
         {
             return new Float(value);
@@ -206,8 +223,10 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
+    /** Placeholder comment. */
     private static class DoubleAdaptor extends RealNumberAdaptor
     {
+
         public Number parse(String value)
         {
             return new Double(value);
@@ -219,8 +238,10 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
+    /** Placeholder comment. */
     private static class BigDecimalAdaptor extends RealNumberAdaptor
     {
+
         public Number parse(String value)
         {
             return new BigDecimal(value);
@@ -232,8 +253,10 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
+    /** Placeholder comment. */
     private static class BigIntegerAdaptor extends IntegerNumberAdaptor
     {
+
         public Number parse(String value)
         {
             return new BigInteger(value);
@@ -277,7 +300,8 @@ public class NumberValidator extends AbstractNumericValidator
     }
 
     /**
-     * Initializes the NumberValidator with properties defined by the initializer.
+     * Initializes the NumberValidator with properties defined by the
+     * initializer.
      * 
      * @since 4.0
      */
@@ -289,15 +313,13 @@ public class NumberValidator extends AbstractNumericValidator
 
     public String toString(IFormComponent field, Object value)
     {
-        if (value == null)
-            return null;
+        if (value == null) return null;
 
         if (getZeroIsNull())
         {
-            Number number = (Number) value;
+            Number number = (Number)value;
 
-            if (number.doubleValue() == 0.0)
-                return null;
+            if (number.doubleValue() == 0.0) return null;
         }
 
         return value.toString();
@@ -308,9 +330,7 @@ public class NumberValidator extends AbstractNumericValidator
         NumberStrategy result = getStrategy(_valueTypeClass);
 
         if (result == null)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "NumberValidator.no-adaptor-for-field",
-                    field,
+            throw new ApplicationRuntimeException(Tapestry.format("NumberValidator.no-adaptor-for-field", field,
                     _valueTypeClass.getName()));
 
         return result;
@@ -319,8 +339,8 @@ public class NumberValidator extends AbstractNumericValidator
     /**
      * Returns an strategy for the given type.
      * <p>
-     * Note: this method exists only for testing purposes. It is not meant to be invoked by user
-     * code and is subject to change at any time.
+     * Note: this method exists only for testing purposes. It is not meant to be
+     * invoked by user code and is subject to change at any time.
      * 
      * @param type
      *            the type (a Number subclass) for which to return an adaptor
@@ -329,13 +349,13 @@ public class NumberValidator extends AbstractNumericValidator
      */
     public static NumberStrategy getStrategy(Class type)
     {
-        return (NumberStrategy) _numberAdaptors.getStrategy(type);
+        return (NumberStrategy)_numberAdaptors.getStrategy(type);
     }
 
-    public Object toObject(IFormComponent field, String value) throws ValidatorException
+    public Object toObject(IFormComponent field, String value)
+        throws ValidatorException
     {
-        if (checkRequired(field, value))
-            return null;
+        if (checkRequired(field, value)) return null;
 
         NumberStrategy adaptor = getStrategy(field);
         Number result = null;
@@ -346,17 +366,14 @@ public class NumberValidator extends AbstractNumericValidator
         }
         catch (NumberFormatException ex)
         {
-            throw new ValidatorException(buildInvalidNumericFormatMessage(field),
-                    ValidationConstraint.NUMBER_FORMAT);
+            throw new ValidatorException(buildInvalidNumericFormatMessage(field), ValidationConstraint.NUMBER_FORMAT);
         }
 
         if (_minimum != null && adaptor.compare(result, _minimum) < 0)
-            throw new ValidatorException(buildNumberTooSmallMessage(field, _minimum),
-                    ValidationConstraint.TOO_SMALL);
+            throw new ValidatorException(buildNumberTooSmallMessage(field, _minimum), ValidationConstraint.TOO_SMALL);
 
         if (_maximum != null && adaptor.compare(result, _maximum) > 0)
-            throw new ValidatorException(buildNumberTooLargeMessage(field, _maximum),
-                    ValidationConstraint.TOO_LARGE);
+            throw new ValidatorException(buildNumberTooLargeMessage(field, _maximum), ValidationConstraint.TOO_LARGE);
 
         return result;
     }
@@ -395,24 +412,19 @@ public class NumberValidator extends AbstractNumericValidator
      * @since 2.2
      */
 
-    public void renderValidatorContribution(IFormComponent field, IMarkupWriter writer,
-            IRequestCycle cycle)
+    public void renderValidatorContribution(IFormComponent field, IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (!isClientScriptingEnabled())
-            return;
+        if (!isClientScriptingEnabled()) return;
 
-        if (!(isRequired() || _minimum != null || _maximum != null))
-            return;
+        if (!(isRequired() || _minimum != null || _maximum != null)) return;
 
         Map symbols = new HashMap();
 
-        if (isRequired())
-            symbols.put("requiredMessage", buildRequiredMessage(field));
+        if (isRequired()) symbols.put("requiredMessage", buildRequiredMessage(field));
 
         if (isIntegerNumber())
             symbols.put("formatMessage", buildInvalidIntegerFormatMessage(field));
-        else
-            symbols.put("formatMessage", buildInvalidNumericFormatMessage(field));
+        else symbols.put("formatMessage", buildInvalidNumericFormatMessage(field));
 
         if (_minimum != null || _maximum != null)
             symbols.put("rangeMessage", buildRangeMessage(field, _minimum, _maximum));
@@ -421,21 +433,19 @@ public class NumberValidator extends AbstractNumericValidator
     }
 
     /**
-     * Sets the value type from a string type name. The name may be a scalar numeric type, a fully
-     * qualified class name, or the name of a numeric wrapper type from java.lang (with the package
-     * name omitted).
+     * Sets the value type from a string type name. The name may be a scalar
+     * numeric type, a fully qualified class name, or the name of a numeric
+     * wrapper type from java.lang (with the package name omitted).
      * 
      * @since 3.0
      */
 
     public void setValueType(String typeName)
     {
-        Class typeClass = (Class) TYPES.get(typeName);
+        Class typeClass = (Class)TYPES.get(typeName);
 
         if (typeClass == null)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "NumberValidator.unknown-type",
-                    typeName));
+            throw new ApplicationRuntimeException(Tapestry.format("NumberValidator.unknown-type", typeName));
 
         _valueTypeClass = typeClass;
     }
@@ -462,9 +472,8 @@ public class NumberValidator extends AbstractNumericValidator
 
     public boolean isIntegerNumber()
     {
-        NumberStrategy strategy = (NumberStrategy) _numberAdaptors.getStrategy(_valueTypeClass);
-        if (strategy == null)
-            return false;
+        NumberStrategy strategy = (NumberStrategy)_numberAdaptors.getStrategy(_valueTypeClass);
+        if (strategy == null) return false;
 
         return strategy.getNumberType() == NUMBER_TYPE_INTEGER;
     }

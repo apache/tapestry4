@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,9 +22,11 @@ import org.apache.tapestry.web.WebRequest;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class EngineUtils
+public final class EngineUtils
 {
-
+    /** @since 4.1 */
+    private EngineUtils(){}
+    
     /**
      * Invoked by {@link #getURL(String, String, int, String, boolean)} to see if an absolute URL is
      * needed (because a specific scheme, server or port was indicated that does not match the

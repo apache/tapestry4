@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,18 +27,20 @@ import org.apache.tapestry.IComponent;
 
 public class ObservedChangeEvent extends EventObject
 {
+
     private static final long serialVersionUID = -7693394232554811975L;
 
-	private IComponent _component;
+    private IComponent _component;
 
     private String _propertyName;
 
     private Object _newValue;
 
     /**
-     * Creates the event. The new value must be null, or be a serializable object. (It is declared
-     * as Object as a concession to the Java 2 collections framework, where the implementations are
-     * serializable but the interfaces (Map, List, etc.) don't extend Serializable ... so we wait
+     * Creates the event. The new value must be null, or be a serializable
+     * object. (It is declared as Object as a concession to the Java 2
+     * collections framework, where the implementations are serializable but the
+     * interfaces (Map, List, etc.) don't extend Serializable ... so we wait
      * until runtime to check).
      * 
      * @param component
@@ -48,7 +50,8 @@ public class ObservedChangeEvent extends EventObject
      * @param newValue
      *            The new value of the property.
      * @throws IllegalArgumentException
-     *             if propertyName is null, or if the new value is not serializable
+     *             if propertyName is null, or if the new value is not
+     *             serializable
      */
 
     public ObservedChangeEvent(IComponent component, String propertyName, Object newValue)

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,20 +23,21 @@ import org.apache.tapestry.IRender;
  * @since 1.0.8
  */
 
-public class ValidatorException extends Exception
-{
+public class ValidatorException extends Exception {
+
     private static final long serialVersionUID = 2451683137746501377L;
 
-	private IRender _errorRenderer;
+    private final IRender _errorRenderer;
 
-    private ValidationConstraint _constraint;
+    private final ValidationConstraint _constraint;
 
     public ValidatorException(String errorMessage)
     {
         this(errorMessage, null, null);
     }
 
-    public ValidatorException(String errorMessage, ValidationConstraint constraint)
+    public ValidatorException(String errorMessage,
+            ValidationConstraint constraint)
     {
         this(errorMessage, null, constraint);
     }
@@ -45,16 +46,17 @@ public class ValidatorException extends Exception
      * Creates a new instance.
      * 
      * @param errorMessage
-     *            the default error message to be used (this may be overriden by the
-     *            {@link IValidationDelegate})
+     *            the default error message to be used (this may be overriden by
+     *            the {@link IValidationDelegate})
      * @param errorRenderer
-     *            to use to render the error message (may be null). This is used with custom
-     *            validators that create renderers that produce rich markup (such as icons or links
-     *            to help pages). Such renderes are expected to implement a <code>toString()</code>
-     *            that returns a simple error message (without any markup).
+     *            to use to render the error message (may be null). This is used
+     *            with custom validators that create renderers that produce rich
+     *            markup (such as icons or links to help pages). Such renderes
+     *            are expected to implement a <code>toString()</code> that
+     *            returns a simple error message (without any markup).
      * @param constraint
-     *            a validation constraint that has been compromised, or null if no constraint is
-     *            applicable
+     *            a validation constraint that has been compromised, or null if
+     *            no constraint is applicable
      */
 
     public ValidatorException(String errorMessage, IRender errorRenderer,

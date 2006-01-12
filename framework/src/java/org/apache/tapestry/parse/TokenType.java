@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,8 +21,9 @@ package org.apache.tapestry.parse;
  * @author Howard Lewis Ship
  */
 
-public class TokenType
+public final class TokenType
 {
+
     /**
      * Raw HTML text.
      * 

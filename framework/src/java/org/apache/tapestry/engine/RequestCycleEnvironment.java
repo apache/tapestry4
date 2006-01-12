@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,11 +15,9 @@
 package org.apache.tapestry.engine;
 
 import org.apache.hivemind.ErrorHandler;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
-import org.apache.tapestry.util.QueryParameterMap;
 
 /**
  * An object that contains all the invariant parameters to the
@@ -31,6 +29,7 @@ import org.apache.tapestry.util.QueryParameterMap;
  */
 public class RequestCycleEnvironment
 {
+
     private final Infrastructure _infrastructure;
 
     private final PropertyPersistenceStrategySource _strategySource;

@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.record;
 
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.IComponent;
 
@@ -21,38 +22,44 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class RecordMessages
+final class RecordMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(RecordMessages.class);
+
+    private final static Messages MESSAGES = new MessageFormatter(RecordMessages.class);
+
+    /** @since 4.1 */
+    private RecordMessages()
+    {
+    }
 
     static String unknownPersistenceStrategy(String name)
     {
-        return _formatter.format("unknown-persistence-strategy", name);
+        return MESSAGES.format("unknown-persistence-strategy", name);
     }
 
     static String missingPropertySpecification(String propertyName, IComponent component)
     {
-        return _formatter.format("missing-property-specification", propertyName, component
-                .getExtendedId(), component.getSpecification().getSpecificationLocation());
+        return MESSAGES.format("missing-property-specification", propertyName, component.getExtendedId(), component
+                .getSpecification().getSpecificationLocation());
     }
 
     static String recorderLocked(String propertyName, IComponent component)
     {
-        return _formatter.format("recorder-locked", propertyName, component.getExtendedId());
+        return MESSAGES.format("recorder-locked", propertyName, component.getExtendedId());
     }
 
     static String decodeFailure(Throwable cause)
     {
-        return _formatter.format("decode-failure", cause);
+        return MESSAGES.format("decode-failure", cause);
     }
 
     static String encodeFailure(Throwable cause)
     {
-        return _formatter.format("encode-failure", cause);
+        return MESSAGES.format("encode-failure", cause);
     }
 
     static String unknownPrefix(String prefix)
     {
-        return _formatter.format("unknown-prefix", prefix);
+        return MESSAGES.format("unknown-prefix", prefix);
     }
 }

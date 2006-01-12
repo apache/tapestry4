@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,17 +19,19 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.AbstractFormComponent;
 
 /**
- * A base class for building components that correspond to WML postfield elements. All such
- * components must be wrapped (directly or indirectly) by a {@link Go}component.
+ * A base class for building components that correspond to WML postfield
+ * elements. All such components must be wrapped (directly or indirectly) by a
+ * {@link Go}component.
  * 
  * @author David Solis
  * @since 3.0
  */
 
-public abstract class AbstractPostfield extends AbstractFormComponent
-{
+public abstract class AbstractPostfield extends AbstractFormComponent {
+
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -38,7 +40,8 @@ public abstract class AbstractPostfield extends AbstractFormComponent
         writer.attribute("name", getName());
 
         String varName = getVarName();
-        writer.attributeRaw("value", varName != null ? getEncodedVarName(varName) : "");
+        writer.attributeRaw("value",
+                varName != null ? getEncodedVarName(varName) : "");
 
         renderInformalParameters(writer, cycle);
 

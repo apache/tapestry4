@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import org.apache.hivemind.Location;
 
 abstract class AbstractToken implements IScriptToken
 {
+
     private List _tokens;
 
     private Location _location;
@@ -46,27 +47,25 @@ abstract class AbstractToken implements IScriptToken
 
     public void addToken(IScriptToken token)
     {
-        if (_tokens == null)
-            _tokens = new ArrayList();
+        if (_tokens == null) _tokens = new ArrayList();
 
         _tokens.add(token);
     }
 
     /**
-     * Invokes {@link IScriptToken#write(StringBuffer,ScriptSession)}on each child token (if there
-     * are any).
+     * Invokes {@link IScriptToken#write(StringBuffer,ScriptSession)}on each
+     * child token (if there are any).
      */
 
     protected void writeChildren(StringBuffer buffer, ScriptSession session)
     {
-        if (_tokens == null)
-            return;
+        if (_tokens == null) return;
 
         Iterator i = _tokens.iterator();
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
-            IScriptToken token = (IScriptToken) i.next();
+            IScriptToken token = (IScriptToken)i.next();
 
             token.write(buffer, session);
         }
@@ -99,7 +98,7 @@ abstract class AbstractToken implements IScriptToken
     {
         try
         {
-            Boolean b = (Boolean) session.evaluate(expression, Boolean.class);
+            Boolean b = (Boolean)session.evaluate(expression, Boolean.class);
 
             return b.booleanValue();
         }

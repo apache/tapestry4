@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,11 +23,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.event.ChangeObserver;
+import org.apache.tapestry.event.PageAttachListener;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEndRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageAttachListener;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.util.StringSplitter;
@@ -39,13 +39,14 @@ import org.apache.tapestry.util.StringSplitter;
  * @since 0.2.9
  */
 
-public abstract class AbstractPage extends BaseComponent implements IPage
-{
+public abstract class AbstractPage extends BaseComponent implements IPage {
+
     private static final Log LOG = LogFactory.getLog(AbstractPage.class);
 
     /**
-     * Object to be notified when a observered property changes. Observered properties are the ones
-     * that will be persisted between request cycles. Unobserved properties are reconstructed.
+     * Object to be notified when a observered property changes. Observered
+     * properties are the ones that will be persisted between request cycles.
+     * Unobserved properties are reconstructed.
      */
 
     private ChangeObserver _changeObserver;
@@ -57,8 +58,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     private IEngine _engine;
 
     /**
-     * The visit object, if any, for the application. Set inside {@link #attach(IEngine)}and
-     * cleared by {@link #detach()}.
+     * The visit object, if any, for the application. Set inside
+     * {@link #attach(IEngine)}and cleared by {@link #detach()}.
      */
 
     private Object _visit;
@@ -78,7 +79,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     private IRequestCycle _requestCycle;
 
     /**
-     * The locale of the page, initially determined from the {@link IEngine engine}.
+     * The locale of the page, initially determined from the
+     * {@link IEngine engine}.
      */
 
     private Locale _locale;
@@ -95,16 +97,16 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     private EventListenerList _listenerList;
 
     /**
-     * The output encoding to be used when rendering this page. This value is cached from the
-     * engine.
+     * The output encoding to be used when rendering this page. This value is
+     * cached from the engine.
      * 
      * @since 3.0
      */
     private String _outputEncoding;
 
     /**
-     * Standard constructor; invokes {@link #initialize()}to configure initial values for
-     * properties of the page.
+     * Standard constructor; invokes {@link #initialize()}to configure initial
+     * values for properties of the page.
      * 
      * @since 2.2
      */
@@ -118,12 +120,14 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      * Prepares the page to be returned to the pool.
      * <ul>
      * <li>Clears the changeObserved property
-     * <li>Invokes {@link PageDetachListener#pageDetached(PageEvent)}on all listeners
+     * <li>Invokes {@link PageDetachListener#pageDetached(PageEvent)}on all
+     * listeners
      * <li>Invokes {@link #initialize()}to clear/reset any properties
      * <li>Clears the engine, visit and requestCycle properties
      * </ul>
      * <p>
-     * Subclasses may override this method, but must invoke this implementation (usually, last).
+     * Subclasses may override this method, but must invoke this implementation
+     * (usually, last).
      * 
      * @see PageDetachListener
      */
@@ -147,8 +151,9 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     * Method invoked from the constructor, and from {@link #detach()}to (re-)initialize properties
-     * of the page. This is most useful when properties have non-null initial values.
+     * Method invoked from the constructor, and from {@link #detach()}to
+     * (re-)initialize properties of the page. This is most useful when
+     * properties have non-null initial values.
      * <p>
      * Subclasses may override this implementation (which is empty).
      * 
@@ -192,8 +197,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     * Returns the locale for the page, which may be null if the locale is not known (null
-     * corresponds to the "default locale").
+     * Returns the locale for the page, which may be null if the locale is not
+     * known (null corresponds to the "default locale").
      */
 
     public Locale getLocale()
@@ -217,15 +222,13 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         String[] elements;
         int i;
 
-        if (path == null)
-            return this;
+        if (path == null) return this;
 
         splitter = new StringSplitter('.');
         current = this;
 
         elements = splitter.splitToArray(path);
-        for (i = 0; i < elements.length; i++)
-        {
+        for(i = 0; i < elements.length; i++) {
             current = current.getComponent(elements[i]);
         }
 
@@ -234,16 +237,18 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     * Called by the {@link IEngine engine}to attach the page to itself. Does <em>not</em> change
-     * the locale, but since a page is selected from the
-     * {@link org.apache.tapestry.engine.IPageSource}pool based on its locale matching the engine's
-     * locale, they should match anyway.
+     * Called by the {@link IEngine engine}to attach the page to itself. Does
+     * <em>not</em> change the locale, but since a page is selected from the
+     * {@link org.apache.tapestry.engine.IPageSource}pool based on its locale
+     * matching the engine's locale, they should match anyway.
      */
 
     public void attach(IEngine engine, IRequestCycle cycle)
     {
         if (_engine != null)
-            LOG.error(this + " attach(" + engine + "), but engine = " + _engine);
+            LOG
+                    .error(this + " attach(" + engine + "), but engine = "
+                            + _engine);
 
         _engine = engine;
         _requestCycle = cycle;
@@ -252,30 +257,28 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
+     * Renders the page, following a series of steps.
      * <ul>
      * <li>Invokes {@link PageBeginRenderListener#pageBeginRender(PageEvent)}
      * <li>Invokes {@link #beginResponse(IMarkupWriter, IRequestCycle)}
      * <li>Invokes {@link IRequestCycle#commitPageChanges()}(if not rewinding)
      * <li>Invokes {@link #render(IMarkupWriter, IRequestCycle)}
-     * <li>Invokes {@link PageEndRenderListener#pageEndRender(PageEvent)}(this occurs even if a
-     * previous step throws an exception)
+     * <li>Invokes {@link PageEndRenderListener#pageEndRender(PageEvent)}(this
+     * occurs even if a previous step throws an exception)
+     * </ul>
      */
 
     public void renderPage(IMarkupWriter writer, IRequestCycle cycle)
     {
-        try
-        {
+        try {
             firePageBeginRender();
 
             beginResponse(writer, cycle);
 
-            if (!cycle.isRewinding())
-                cycle.commitPageChanges();
+            if (!cycle.isRewinding()) cycle.commitPageChanges();
 
             render(writer, cycle);
-        }
-        finally
-        {
+        } finally {
             firePageEndRender();
         }
     }
@@ -323,15 +326,15 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     * Returns the visit object obtained from the engine via {@link IEngine#getVisit(IRequestCycle)}.
+     * Returns the visit object obtained from the engine via
+     * {@link IEngine#getVisit(IRequestCycle)}.
      * 
      * @deprecated
      */
 
     public Object getVisit()
     {
-        if (_visit == null)
-            _visit = _engine.getVisit(_requestCycle);
+        if (_visit == null) _visit = _engine.getVisit(_requestCycle);
 
         return _visit;
     }
@@ -355,8 +358,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     private void addListener(Class listenerClass, EventListener listener)
     {
-        if (_listenerList == null)
-            _listenerList = new EventListenerList();
+        if (_listenerList == null) _listenerList = new EventListenerList();
 
         _listenerList.add(listenerClass, listener);
     }
@@ -408,20 +410,16 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     protected void firePageAttached()
     {
-        if (_listenerList == null)
-            return;
+        if (_listenerList == null) return;
 
         PageEvent event = null;
         Object[] listeners = _listenerList.getListenerList();
 
-        for (int i = 0; i < listeners.length; i += 2)
-        {
-            if (listeners[i] == PageAttachListener.class)
-            {
-                PageAttachListener l = (PageAttachListener) listeners[i + 1];
+        for(int i = 0; i < listeners.length; i += 2) {
+            if (listeners[i] == PageAttachListener.class) {
+                PageAttachListener l = (PageAttachListener)listeners[i + 1];
 
-                if (event == null)
-                    event = new PageEvent(this, _requestCycle);
+                if (event == null) event = new PageEvent(this, _requestCycle);
 
                 l.pageAttached(event);
             }
@@ -434,20 +432,16 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     protected void firePageDetached()
     {
-        if (_listenerList == null)
-            return;
+        if (_listenerList == null) return;
 
         PageEvent event = null;
         Object[] listeners = _listenerList.getListenerList();
 
-        for (int i = 0; i < listeners.length; i += 2)
-        {
-            if (listeners[i] == PageDetachListener.class)
-            {
-                PageDetachListener l = (PageDetachListener) listeners[i + 1];
+        for(int i = 0; i < listeners.length; i += 2) {
+            if (listeners[i] == PageDetachListener.class) {
+                PageDetachListener l = (PageDetachListener)listeners[i + 1];
 
-                if (event == null)
-                    event = new PageEvent(this, _requestCycle);
+                if (event == null) event = new PageEvent(this, _requestCycle);
 
                 l.pageDetached(event);
             }
@@ -460,20 +454,16 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     protected void firePageBeginRender()
     {
-        if (_listenerList == null)
-            return;
+        if (_listenerList == null) return;
 
         PageEvent event = null;
         Object[] listeners = _listenerList.getListenerList();
 
-        for (int i = 0; i < listeners.length; i += 2)
-        {
-            if (listeners[i] == PageBeginRenderListener.class)
-            {
-                PageBeginRenderListener l = (PageBeginRenderListener) listeners[i + 1];
+        for(int i = 0; i < listeners.length; i += 2) {
+            if (listeners[i] == PageBeginRenderListener.class) {
+                PageBeginRenderListener l = (PageBeginRenderListener)listeners[i + 1];
 
-                if (event == null)
-                    event = new PageEvent(this, _requestCycle);
+                if (event == null) event = new PageEvent(this, _requestCycle);
 
                 l.pageBeginRender(event);
             }
@@ -486,20 +476,16 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     protected void firePageEndRender()
     {
-        if (_listenerList == null)
-            return;
+        if (_listenerList == null) return;
 
         PageEvent event = null;
         Object[] listeners = _listenerList.getListenerList();
 
-        for (int i = 0; i < listeners.length; i += 2)
-        {
-            if (listeners[i] == PageEndRenderListener.class)
-            {
-                PageEndRenderListener l = (PageEndRenderListener) listeners[i + 1];
+        for(int i = 0; i < listeners.length; i += 2) {
+            if (listeners[i] == PageEndRenderListener.class) {
+                PageEndRenderListener l = (PageEndRenderListener)listeners[i + 1];
 
-                if (event == null)
-                    event = new PageEvent(this, _requestCycle);
+                if (event == null) event = new PageEvent(this, _requestCycle);
 
                 l.pageEndRender(event);
             }
@@ -567,20 +553,16 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     protected void firePageValidate()
     {
-        if (_listenerList == null)
-            return;
+        if (_listenerList == null) return;
 
         PageEvent event = null;
         Object[] listeners = _listenerList.getListenerList();
 
-        for (int i = 0; i < listeners.length; i += 2)
-        {
-            if (listeners[i] == PageValidateListener.class)
-            {
-                PageValidateListener l = (PageValidateListener) listeners[i + 1];
+        for(int i = 0; i < listeners.length; i += 2) {
+            if (listeners[i] == PageValidateListener.class) {
+                PageValidateListener l = (PageValidateListener)listeners[i + 1];
 
-                if (event == null)
-                    event = new PageEvent(this, _requestCycle);
+                if (event == null) event = new PageEvent(this, _requestCycle);
 
                 l.pageValidate(event);
             }
@@ -588,8 +570,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     * Returns the output encoding to be used when rendering this page. This value is usually cached
-     * from the Engine.
+     * Returns the output encoding to be used when rendering this page. This
+     * value is usually cached from the Engine.
      * 
      * @since 3.0
      */

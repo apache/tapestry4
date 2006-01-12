@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,8 +26,9 @@ import org.apache.tapestry.Tapestry;
  * @since 1.0.5
  */
 
-abstract public class AbstractBeanInitializer extends BaseLocatable implements IBeanInitializer
-{
+public abstract class AbstractBeanInitializer extends BaseLocatable implements
+        IBeanInitializer {
+
     protected String _propertyName;
 
     public String getPropertyName()
@@ -44,17 +45,12 @@ abstract public class AbstractBeanInitializer extends BaseLocatable implements I
 
     protected void setBeanProperty(Object bean, Object value)
     {
-        try
-        {
+        try {
             PropertyUtils.write(bean, _propertyName, value);
-        }
-        catch (ApplicationRuntimeException ex)
-        {
+        } catch (ApplicationRuntimeException ex) {
             String message = Tapestry.format(
                     "AbstractBeanInitializer.unable-to-set-property",
-                    _propertyName,
-                    bean,
-                    value);
+                    _propertyName, bean, value);
 
             throw new ApplicationRuntimeException(message, getLocation(), ex);
         }

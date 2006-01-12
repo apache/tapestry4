@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,8 +20,16 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
 
+/**
+ * Default implementation of
+ * {@link org.apache.tapestry.form.TranslatedFieldSupport}.
+ * 
+ * @author Paul Ferraro
+ * @since 4.0
+ */
 public class TranslatedFieldSupportImpl implements TranslatedFieldSupport
 {
+
     private ThreadLocale _threadLocale;
 
     /**
@@ -45,13 +53,12 @@ public class TranslatedFieldSupportImpl implements TranslatedFieldSupport
     {
         IValidationDelegate delegate = field.getForm().getDelegate();
 
-        return delegate.isInError() ? delegate.getFieldInputValue() : field.getTranslator().format(
-                field,
-                _threadLocale.getLocale(),
-                object);
+        return delegate.isInError() ? delegate.getFieldInputValue() : field.getTranslator().format(field,
+                _threadLocale.getLocale(), object);
     }
 
-    public Object parse(TranslatedField field, String text) throws ValidatorException
+    public Object parse(TranslatedField field, String text)
+        throws ValidatorException
     {
         IValidationDelegate delegate = field.getForm().getDelegate();
 

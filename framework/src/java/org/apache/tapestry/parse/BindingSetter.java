@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,13 +19,14 @@ import org.apache.tapestry.spec.IBindingSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 
 /**
- * Carries name and value information while the body of
- * a &lt;binding&gt; or &lt;static-binding&gt; is being parsed.
- *
+ * Carries name and value information while the body of a &lt;binding&gt; or
+ * &lt;static-binding&gt; is being parsed.
+ * 
  * @author Howard Lewis Ship
  */
 class BindingSetter extends BaseLocatable
 {
+
     private IContainedComponent _component;
     private String _name;
     private String _value;
@@ -39,7 +40,7 @@ class BindingSetter extends BaseLocatable
 
     void apply(IBindingSpecification spec)
     {
-    	spec.setLocation(getLocation());
+        spec.setLocation(getLocation());
         _component.setBinding(_name, spec);
     }
 
