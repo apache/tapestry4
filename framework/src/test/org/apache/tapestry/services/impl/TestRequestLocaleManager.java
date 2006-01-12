@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,15 +31,16 @@ import org.easymock.MockControl;
  */
 public class TestRequestLocaleManager extends HiveMindTestCase
 {
+
     private ThreadLocale newThreadLocale()
     {
-        return (ThreadLocale) newMock(ThreadLocale.class);
+        return (ThreadLocale)newMock(ThreadLocale.class);
     }
 
     private ThreadLocale newThreadLocale(Locale locale)
     {
         MockControl control = newControl(ThreadLocale.class);
-        ThreadLocale threadLocale = (ThreadLocale) control.getMock();
+        ThreadLocale threadLocale = (ThreadLocale)control.getMock();
 
         threadLocale.getLocale();
         control.setReturnValue(locale);
@@ -50,10 +51,10 @@ public class TestRequestLocaleManager extends HiveMindTestCase
     public void testSuppliedByRequest()
     {
         MockControl sourceControl = newControl(CookieSource.class);
-        CookieSource source = (CookieSource) sourceControl.getMock();
+        CookieSource source = (CookieSource)sourceControl.getMock();
 
         MockControl requestControl = newControl(WebRequest.class);
-        WebRequest request = (WebRequest) requestControl.getMock();
+        WebRequest request = (WebRequest)requestControl.getMock();
 
         ThreadLocale tl = newThreadLocale();
 
@@ -84,7 +85,7 @@ public class TestRequestLocaleManager extends HiveMindTestCase
     private void attempt(String localeName, Locale expectedLocale)
     {
         MockControl sourceControl = newControl(CookieSource.class);
-        CookieSource source = (CookieSource) sourceControl.getMock();
+        CookieSource source = (CookieSource)sourceControl.getMock();
 
         ThreadLocale tl = newThreadLocale();
 
@@ -127,7 +128,7 @@ public class TestRequestLocaleManager extends HiveMindTestCase
     {
         Locale locale = Locale.SIMPLIFIED_CHINESE;
 
-        CookieSource source = (CookieSource) newMock(CookieSource.class);
+        CookieSource source = (CookieSource)newMock(CookieSource.class);
         ThreadLocale threadLocale = newThreadLocale(locale);
 
         // Training
@@ -148,13 +149,13 @@ public class TestRequestLocaleManager extends HiveMindTestCase
     public void testPersistNoChange()
     {
         MockControl sourceControl = newControl(CookieSource.class);
-        CookieSource source = (CookieSource) sourceControl.getMock();
+        CookieSource source = (CookieSource)sourceControl.getMock();
 
         MockControl requestControl = newControl(WebRequest.class);
-        WebRequest request = (WebRequest) requestControl.getMock();
+        WebRequest request = (WebRequest)requestControl.getMock();
 
         MockControl tlc = newControl(ThreadLocale.class);
-        ThreadLocale tl = (ThreadLocale) tlc.getMock();
+        ThreadLocale tl = (ThreadLocale)tlc.getMock();
 
         // Training
 

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.tapestry.form.ListEditMap;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.BeanLifecycle;
 
@@ -45,12 +44,11 @@ public class TestListEditMap extends TapestryTestCase
 
         assertEquals("render", m.getKey());
 
-        checkList("keys", new Object[]
-        { "request", "page", "render" }, m.getKeys());
-        checkList("all values", new Object[]
-        { BeanLifecycle.REQUEST, BeanLifecycle.PAGE, BeanLifecycle.RENDER }, m.getAllValues());
-        checkList("all values", new Object[]
-        { BeanLifecycle.REQUEST, BeanLifecycle.PAGE, BeanLifecycle.RENDER }, m.getValues());
+        checkList("keys", new Object[] { "request", "page", "render" }, m.getKeys());
+        checkList("all values", new Object[] { BeanLifecycle.REQUEST, BeanLifecycle.PAGE, BeanLifecycle.RENDER }, m
+                .getAllValues());
+        checkList("all values", new Object[] { BeanLifecycle.REQUEST, BeanLifecycle.PAGE, BeanLifecycle.RENDER }, m
+                .getValues());
 
         assertTrue(m.getDeletedKeys().isEmpty());
     }
@@ -86,14 +84,12 @@ public class TestListEditMap extends TapestryTestCase
 
         assertEquals(true, m.isDeleted());
 
-        checkList("all values", new Object[]
-        { BeanLifecycle.REQUEST, BeanLifecycle.PAGE, BeanLifecycle.RENDER }, m.getAllValues());
+        checkList("all values", new Object[] { BeanLifecycle.REQUEST, BeanLifecycle.PAGE, BeanLifecycle.RENDER }, m
+                .getAllValues());
 
-        checkList("undeleted values", new Object[]
-        { BeanLifecycle.REQUEST, BeanLifecycle.RENDER }, m.getValues());
+        checkList("undeleted values", new Object[] { BeanLifecycle.REQUEST, BeanLifecycle.RENDER }, m.getValues());
 
-        checkList("deleted keys", new Object[]
-        { "page" }, m.getDeletedKeys());
+        checkList("deleted keys", new Object[] { "page" }, m.getDeletedKeys());
     }
 
     public void testMarkAlreadyDeleted()
@@ -122,8 +118,7 @@ public class TestListEditMap extends TapestryTestCase
 
         assertEquals(true, m.isDeleted());
 
-        checkList("undeleted values", new Object[]
-        { BeanLifecycle.REQUEST }, m.getValues());
+        checkList("undeleted values", new Object[] { BeanLifecycle.REQUEST }, m.getValues());
     }
 
     public void testDeleteUndelete()
@@ -137,8 +132,7 @@ public class TestListEditMap extends TapestryTestCase
         m.setKey("render");
         m.setDeleted(true);
 
-        checkList("undeleted values", new Object[]
-        { BeanLifecycle.REQUEST, BeanLifecycle.PAGE }, m.getValues());
+        checkList("undeleted values", new Object[] { BeanLifecycle.REQUEST, BeanLifecycle.PAGE }, m.getValues());
     }
 
     /** @since 4.0 */
@@ -150,24 +144,21 @@ public class TestListEditMap extends TapestryTestCase
         m.setKey("render");
         m.setDeleted(true);
 
-        checkList("deleted keys before purge", new Object[]
-        { "render" }, m.getDeletedKeys());
+        checkList("deleted keys before purge", new Object[] { "render" }, m.getDeletedKeys());
 
         m.purgeDeletedKeys();
 
-        checkList("all values after purge", new Object[]
-        { BeanLifecycle.REQUEST, BeanLifecycle.PAGE }, m.getAllValues());
-        checkList("keys after purge", new Object[]
-        { "request", "page" }, m.getKeys());
+        checkList("all values after purge", new Object[] { BeanLifecycle.REQUEST, BeanLifecycle.PAGE }, m
+                .getAllValues());
+        checkList("keys after purge", new Object[] { "request", "page" }, m.getKeys());
 
         assertTrue(m.getDeletedKeys().isEmpty());
 
         m.purgeDeletedKeys();
 
-        checkList("all values after second purge", new Object[]
-        { BeanLifecycle.REQUEST, BeanLifecycle.PAGE }, m.getAllValues());
-        checkList("keys after second purge", new Object[]
-        { "request", "page" }, m.getKeys());
+        checkList("all values after second purge", new Object[] { BeanLifecycle.REQUEST, BeanLifecycle.PAGE }, m
+                .getAllValues());
+        checkList("keys after second purge", new Object[] { "request", "page" }, m.getKeys());
     }
 
 }

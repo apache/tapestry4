@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,12 +32,15 @@ import org.easymock.MockControl;
  */
 public class TestMultipartDecoderFilter extends HiveMindTestCase
 {
+
+    /** Test fixture. */
     private static class MockServicer implements ServletRequestServicer
     {
+
         HttpServletRequest _request;
 
         public void service(HttpServletRequest request, HttpServletResponse response)
-                throws IOException, ServletException
+            throws IOException, ServletException
         {
             _request = request;
         }
@@ -46,7 +49,7 @@ public class TestMultipartDecoderFilter extends HiveMindTestCase
     private HttpServletRequest newRequest(String contentType)
     {
         MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = (HttpServletRequest)control.getMock();
 
         request.getContentType();
         control.setReturnValue(contentType);
@@ -56,10 +59,11 @@ public class TestMultipartDecoderFilter extends HiveMindTestCase
 
     private HttpServletResponse newResponse()
     {
-        return (HttpServletResponse) newMock(HttpServletResponse.class);
+        return (HttpServletResponse)newMock(HttpServletResponse.class);
     }
 
-    public void testNormalRequest() throws Exception
+    public void testNormalRequest()
+        throws Exception
     {
         HttpServletRequest request = newRequest("application/x-www-form-urlencoded");
         HttpServletResponse response = newResponse();
@@ -77,14 +81,15 @@ public class TestMultipartDecoderFilter extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testUploadRequest() throws Exception
+    public void testUploadRequest()
+        throws Exception
     {
         HttpServletRequest request = newRequest("multipart/form-data");
         HttpServletResponse response = newResponse();
-        HttpServletRequest decoded = (HttpServletRequest) newMock(HttpServletRequest.class);
+        HttpServletRequest decoded = (HttpServletRequest)newMock(HttpServletRequest.class);
 
         MockControl control = newControl(MultipartDecoder.class);
-        MultipartDecoder decoder = (MultipartDecoder) control.getMock();
+        MultipartDecoder decoder = (MultipartDecoder)control.getMock();
 
         decoder.decode(request);
         control.setReturnValue(decoded);

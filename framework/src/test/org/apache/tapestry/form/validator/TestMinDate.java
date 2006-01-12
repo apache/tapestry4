@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,9 +33,11 @@ import org.apache.tapestry.valid.ValidatorException;
  */
 public class TestMinDate extends BaseValidatorTestCase
 {
-    private static final long ONE_DAY = 24 * 60 * 60 * 1000l;
 
-    public void testOK() throws Exception
+    private static final long ONE_DAY = 24 * 60 * 60 * 1000L;
+
+    public void testOK()
+        throws Exception
     {
         long now = System.currentTimeMillis();
 
@@ -55,7 +57,8 @@ public class TestMinDate extends BaseValidatorTestCase
         verifyControls();
     }
 
-    public void testFail() throws Exception
+    public void testFail()
+        throws Exception
     {
         long now = System.currentTimeMillis();
 
@@ -63,12 +66,8 @@ public class TestMinDate extends BaseValidatorTestCase
         Date tomorrow = new Date(now + ONE_DAY);
 
         IFormComponent field = newField("Fred");
-        ValidationMessages message = newMessages(
-                null,
-                ValidationStrings.DATE_TOO_EARLY,
-                new Object[]
-                { "Fred", tomorrow },
-                "default message");
+        ValidationMessages message = newMessages(null, ValidationStrings.DATE_TOO_EARLY, new Object[] { "Fred",
+                tomorrow }, "default message");
 
         replayControls();
 
@@ -89,7 +88,8 @@ public class TestMinDate extends BaseValidatorTestCase
         verifyControls();
     }
 
-    public void testFailCustomMessage() throws Exception
+    public void testFailCustomMessage()
+        throws Exception
     {
         long now = System.currentTimeMillis();
 
@@ -97,12 +97,8 @@ public class TestMinDate extends BaseValidatorTestCase
         Date tomorrow = new Date(now + ONE_DAY);
 
         IFormComponent field = newField("Fred");
-        ValidationMessages message = newMessages(
-                "custom",
-                ValidationStrings.DATE_TOO_EARLY,
-                new Object[]
-                { "Fred", tomorrow },
-                "custom message");
+        ValidationMessages message = newMessages("custom", ValidationStrings.DATE_TOO_EARLY, new Object[] { "Fred",
+                tomorrow }, "custom message");
 
         replayControls();
 

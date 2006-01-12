@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,8 +41,9 @@ import org.apache.tapestry.spec.SpecFactory;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**
- * Tests the specification parser (which reads page and component specifications). Came into being
- * somewhat late, so it just tests new features for the meantime.
+ * Tests the specification parser (which reads page and component
+ * specifications). Came into being somewhat late, so it just tests new features
+ * for the meantime.
  * 
  * @author Howard Lewis Ship
  * @since 2.0.4
@@ -60,7 +61,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * Test 3.0 &lt;message-binding&gt; element.
      */
 
-    public void tesMessageBinding() throws Exception
+    public void tesMessageBinding()
+        throws Exception
     {
         IComponentSpecification spec = parseComponent("TestMessageBinding.jwc");
 
@@ -76,7 +78,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * Tests the 4.0 style &lt;binding&gt; element.
      */
 
-    public void testBinding40() throws Exception
+    public void testBinding40()
+        throws Exception
     {
         IComponentSpecification spec = parseComponent("Binding40.jwc");
         IContainedComponent cc = spec.getComponent("component");
@@ -98,7 +101,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 2.2
      */
 
-    public void testValidParameterName() throws Exception
+    public void testValidParameterName()
+        throws Exception
     {
         IComponentSpecification spec = parseComponent("ValidParameterName.jwc");
 
@@ -114,7 +118,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 2.2
      */
 
-    public void testInvalidParameterName() throws Exception
+    public void testInvalidParameterName()
+        throws Exception
     {
         try
         {
@@ -135,7 +140,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 2.2
      */
 
-    public void testInvalidComponentId() throws Exception
+    public void testInvalidComponentId()
+        throws Exception
     {
         try
         {
@@ -156,7 +162,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 2.2
      */
 
-    public void testInvalidLibraryId() throws Exception
+    public void testInvalidLibraryId()
+        throws Exception
     {
         try
         {
@@ -177,20 +184,18 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 2.2
      */
 
-    public void testValidLibrary() throws Exception
+    public void testValidLibrary()
+        throws Exception
     {
         ILibrarySpecification spec = parseLib("ValidLibrary.library");
 
         checkLine(spec, 24);
 
-        checkList("pageNames", new String[]
-        { "FirstPage", "SecondPage" }, spec.getPageNames());
+        checkList("pageNames", new String[] { "FirstPage", "SecondPage" }, spec.getPageNames());
 
-        checkList("componentAliases", new String[]
-        { "FirstComponent", "SecondComponent" }, spec.getComponentTypes());
+        checkList("componentAliases", new String[] { "FirstComponent", "SecondComponent" }, spec.getComponentTypes());
 
-        checkList("libraryIds", new String[]
-        { "lib1", "lib2" }, spec.getLibraryIds());
+        checkList("libraryIds", new String[] { "lib1", "lib2" }, spec.getLibraryIds());
 
         assertNotNull(spec.getSpecificationLocation());
     }
@@ -201,7 +206,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 2.2
      */
 
-    public void testInvalidAssetName() throws Exception
+    public void testInvalidAssetName()
+        throws Exception
     {
         try
         {
@@ -222,7 +228,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 2.2
      */
 
-    public void testInvalidPageName() throws Exception
+    public void testInvalidPageName()
+        throws Exception
     {
         try
         {
@@ -243,7 +250,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 2.2
      */
 
-    public void testInvalidComponentAlias() throws Exception
+    public void testInvalidComponentAlias()
+        throws Exception
     {
         try
         {
@@ -264,7 +272,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 2.2
      */
 
-    public void testInvalidExtensionName() throws Exception
+    public void testInvalidExtensionName()
+        throws Exception
     {
         try
         {
@@ -280,12 +289,13 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Test case where the document does not have a DOCTYPE
+     * Test case where the document does not have a DOCTYPE.
      * 
      * @since 2.2
      */
 
-    public void testMissingDoctype() throws Exception
+    public void testMissingDoctype()
+        throws Exception
     {
         try
         {
@@ -305,7 +315,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * Test case where the public id of the document is not known.
      */
 
-    public void testInvalidPublicId() throws Exception
+    public void testInvalidPublicId()
+        throws Exception
     {
         try
         {
@@ -320,12 +331,14 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Test an an application specification can omit the name and engine-class attributes.
+     * Test an an application specification can omit the name and engine-class
+     * attributes.
      * 
      * @since 3.0
      */
 
-    public void testNulledApplication() throws Exception
+    public void testNulledApplication()
+        throws Exception
     {
         IApplicationSpecification spec = parseApp("NulledApplication.application");
 
@@ -342,7 +355,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 3.0
      */
 
-    public void testComponentType() throws Exception
+    public void testComponentType()
+        throws Exception
     {
         IApplicationSpecification spec = parseApp("ComponentType.application");
 
@@ -350,10 +364,12 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Test omitting the class name from a component specification (new, in DTD 1.4).
+     * Test omitting the class name from a component specification (new, in DTD
+     * 1.4).
      */
 
-    public void testNulledComponent() throws Exception
+    public void testNulledComponent()
+        throws Exception
     {
         IComponentSpecification spec = parseComponent("NulledComponent.jwc");
 
@@ -367,10 +383,12 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Test omitting the class name from a component specification (new, in DTD 1.4).
+     * Test omitting the class name from a component specification (new, in DTD
+     * 1.4).
      */
 
-    public void testNulledPage() throws Exception
+    public void testNulledPage()
+        throws Exception
     {
         IComponentSpecification spec = parsePage("NulledPage.page");
 
@@ -382,12 +400,14 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Test the value attribute for the property element (which is new in DTD 1.4).
+     * Test the value attribute for the property element (which is new in DTD
+     * 1.4).
      * 
      * @since 3.0
      */
 
-    public void testPropertyValue() throws Exception
+    public void testPropertyValue()
+        throws Exception
     {
         IComponentSpecification spec = parsePage("PropertyValue.page");
 
@@ -403,7 +423,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 3.0
      */
 
-    public void testStaticBindingValue() throws Exception
+    public void testStaticBindingValue()
+        throws Exception
     {
         IComponentSpecification spec = parsePage("StaticBindingValue.page");
 
@@ -428,7 +449,8 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("literal:hudson", b.getValue());
     }
 
-    public void testAttributeAndBody() throws Exception
+    public void testAttributeAndBody()
+        throws Exception
     {
         try
         {
@@ -450,14 +472,15 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 3.0
      */
 
-    public void testConfigureValue() throws Exception
+    public void testConfigureValue()
+        throws Exception
     {
         ILibrarySpecification spec = parseLib("ConfigureValue.library");
 
         checkLine(spec, 22);
         checkLine(spec.getExtensionSpecification("bedrock"), 24);
 
-        Bedrock bedrock = (Bedrock) spec.getExtension("bedrock", Bedrock.class);
+        Bedrock bedrock = (Bedrock)spec.getExtension("bedrock", Bedrock.class);
 
         assertEquals("flintstone", bedrock.getFred());
     }
@@ -468,9 +491,10 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 3.0
      */
 
-    public void testListenerBinding() throws Exception
+    public void testListenerBinding()
+        throws Exception
     {
-        Log log = (Log) newMock(Log.class);
+        Log log = (Log)newMock(Log.class);
 
         SpecificationParser parser = new SpecificationParser(new DefaultErrorHandler(), log,
                 new DefaultClassResolver(), new SpecFactory());
@@ -500,12 +524,13 @@ public class TestSpecificationParser extends TapestryTestCase
 
     /** @since 3.0 * */
 
-    public void testPropertySpecifications() throws Exception
+    public void testPropertySpecifications()
+        throws Exception
     {
         IComponentSpecification spec = parsePage("PropertySpecifications.page");
 
-        checkList("propertySpecificationNames", new String[]
-        { "bool", "init", "longInitialValue", "persist" }, spec.getPropertySpecificationNames());
+        checkList("propertySpecificationNames", new String[] { "bool", "init", "longInitialValue", "persist" }, spec
+                .getPropertySpecificationNames());
 
         IPropertySpecification ps = spec.getPropertySpecification("bool");
         assertEquals("name", "bool", ps.getName());
@@ -542,7 +567,8 @@ public class TestSpecificationParser extends TapestryTestCase
 
     /** @since 3.0 * */
 
-    public void testMissingRequiredExtendedAttribute() throws Exception
+    public void testMissingRequiredExtendedAttribute()
+        throws Exception
     {
         try
         {
@@ -552,21 +578,21 @@ public class TestSpecificationParser extends TapestryTestCase
         }
         catch (DocumentParseException ex)
         {
-            checkException(
-                    ex,
+            checkException(ex,
                     "Element <binding> does not specify a value for attribute 'expression', or contain a body value.");
         }
     }
 
     /** @since 3.0 * */
 
-    public void testMessageBeanInitializer() throws Exception
+    public void testMessageBeanInitializer()
+        throws Exception
     {
         IComponentSpecification spec = parsePage("MessageBeanInitializer.page");
 
         IBeanSpecification bs = spec.getBeanSpecification("fred");
         checkLine(bs, 24);
-        BindingBeanInitializer i = (BindingBeanInitializer) bs.getInitializers().get(0);
+        BindingBeanInitializer i = (BindingBeanInitializer)bs.getInitializers().get(0);
 
         assertEquals("barney", i.getPropertyName());
         assertEquals("message:rubble", i.getBindingReference());
@@ -574,23 +600,24 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Tests the DTD 3.0 <set-property>element
+     * Tests the DTD 3.0 &lt;set-property&gt; element.
      * 
      * @since 4.0
      */
 
-    public void testExpressionBeanInitializer() throws Exception
+    public void testExpressionBeanInitializer()
+        throws Exception
     {
         IComponentSpecification spec = parsePage("ExpressionBeanInitializer_3_0.page");
 
         IBeanSpecification bs = spec.getBeanSpecification("zebean");
 
-        BindingBeanInitializer i = (BindingBeanInitializer) bs.getInitializers().get(0);
+        BindingBeanInitializer i = (BindingBeanInitializer)bs.getInitializers().get(0);
 
         assertEquals("barney", i.getPropertyName());
         assertEquals("ognl:rubble", i.getBindingReference());
 
-        i = (BindingBeanInitializer) bs.getInitializers().get(1);
+        i = (BindingBeanInitializer)bs.getInitializers().get(1);
 
         assertEquals("fred", i.getPropertyName());
         assertEquals("ognl:flintstone", i.getBindingReference());
@@ -598,19 +625,21 @@ public class TestSpecificationParser extends TapestryTestCase
 
     /** @since 4.0 */
 
-    public void testBeanSet() throws Exception
+    public void testBeanSet()
+        throws Exception
     {
         IComponentSpecification spec = parsePage("BeanSet.page");
         IBeanSpecification bs = spec.getBeanSpecification("target");
 
-        BindingBeanInitializer i = (BindingBeanInitializer) bs.getInitializers().get(0);
+        BindingBeanInitializer i = (BindingBeanInitializer)bs.getInitializers().get(0);
 
         assertEquals("literal", i.getPropertyName());
         assertEquals("literal-string", i.getBindingReference());
 
     }
 
-    public void testInheritInformalParameters() throws Exception
+    public void testInheritInformalParameters()
+        throws Exception
     {
         IComponentSpecification spec = parseComponent("TestInheritInformal.jwc");
 
@@ -623,12 +652,14 @@ public class TestSpecificationParser extends TapestryTestCase
 
     /** @since 4.0 */
 
-    public void testConfigureExtension() throws Exception
+    public void testConfigureExtension()
+        throws Exception
     {
         IApplicationSpecification spec = parseApp("ConfigureExtension.application");
         IExtensionSpecification es = spec.getExtensionSpecification("my-extension");
 
-        // Note: this is in transition; under 3.0 and earlier, the spec parser was
+        // Note: this is in transition; under 3.0 and earlier, the spec parser
+        // was
         // responsible for converting values into object types ... that is now
         // done futher down stream.
 
@@ -638,7 +669,8 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("An extended string.", es.getConfiguration().get("string"));
     }
 
-    public void testConfigureExtensionProperty() throws Exception
+    public void testConfigureExtensionProperty()
+        throws Exception
     {
         IApplicationSpecification spec = parseApp("ConfigureExtension.application");
         IExtensionSpecification es = spec.getExtensionSpecification("my-extension");
@@ -648,7 +680,8 @@ public class TestSpecificationParser extends TapestryTestCase
 
     /** @since 4.0 */
 
-    public void testComponentProperty() throws Exception
+    public void testComponentProperty()
+        throws Exception
     {
         IComponentSpecification cs = parseComponent("ComponentProperty.jwc");
 
@@ -659,7 +692,8 @@ public class TestSpecificationParser extends TapestryTestCase
 
     /** @since 4.0 */
 
-    public void testComponentInjectProperty() throws Exception
+    public void testComponentInjectProperty()
+        throws Exception
     {
         IComponentSpecification cs = parseComponent("ComponentInjectProperty.jwc");
 
@@ -674,7 +708,8 @@ public class TestSpecificationParser extends TapestryTestCase
 
     /** @since 4.0 */
 
-    public void testBeanDescription() throws Exception
+    public void testBeanDescription()
+        throws Exception
     {
         IComponentSpecification cs = parseComponent("BeanDescription.jwc");
         IBeanSpecification bs = cs.getBeanSpecification("mybean");
@@ -685,7 +720,8 @@ public class TestSpecificationParser extends TapestryTestCase
 
     /** @since 4.0 */
 
-    public void testBeanProperty() throws Exception
+    public void testBeanProperty()
+        throws Exception
     {
         IComponentSpecification cs = parseComponent("BeanDescription.jwc");
         IBeanSpecification bs = cs.getBeanSpecification("mybean");
@@ -697,7 +733,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 4.0
      */
 
-    public void testBeanInject() throws Exception
+    public void testBeanInject()
+        throws Exception
     {
         IComponentSpecification cs = parseComponent("BeanInject.jwc");
         IBeanSpecification bs = cs.getBeanSpecification("bean");
@@ -708,20 +745,22 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 4.0
      */
 
-    public void testBeanInitializer() throws Exception
+    public void testBeanInitializer()
+        throws Exception
     {
         IComponentSpecification cs = parseComponent("BeanInitializer.jwc");
         IBeanSpecification bs = cs.getBeanSpecification("bean");
 
         List l = bs.getInitializers();
-        LightweightBeanInitializer lbi = (LightweightBeanInitializer) l.get(0);
+        LightweightBeanInitializer lbi = (LightweightBeanInitializer)l.get(0);
 
         assertEquals("foo=bar", lbi.getPropertyName());
     }
 
     /** @since 4.0 */
 
-    public void testLibraryDescription() throws Exception
+    public void testLibraryDescription()
+        throws Exception
     {
         ILibrarySpecification ls = parseLib("LibraryDescription.library");
 
@@ -730,7 +769,8 @@ public class TestSpecificationParser extends TapestryTestCase
 
     /** @since 4.0 */
 
-    public void testPageDescription() throws Exception
+    public void testPageDescription()
+        throws Exception
     {
         IComponentSpecification spec = parsePage("PageDescription.page");
 
@@ -743,7 +783,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 4.0
      */
 
-    public void testRootElementMismatch() throws Exception
+    public void testRootElementMismatch()
+        throws Exception
     {
         try
         {
@@ -752,20 +793,20 @@ public class TestSpecificationParser extends TapestryTestCase
         }
         catch (Exception ex)
         {
-            checkException(
-                    ex,
+            checkException(ex,
                     "Incorrect document type; expected page-specification but received component-specification.");
         }
     }
 
     /**
-     * Checks to make sure that a application or library may not defined a lbirary with id
-     * 'framework'.
+     * Checks to make sure that a application or library may not defined a
+     * lbirary with id 'framework'.
      * 
      * @since 4.0
      */
 
-    public void testLibraryFrameworkNamespace() throws Exception
+    public void testLibraryFrameworkNamespace()
+        throws Exception
     {
         try
         {
@@ -779,12 +820,14 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Tests that a &lt;component&gt; element may not have both type and copy-of attributes.
+     * Tests that a &lt;component&gt; element may not have both type and copy-of
+     * attributes.
      * 
      * @since 4.0
      */
 
-    public void testComponentWithTypeAndCopyOf() throws Exception
+    public void testComponentWithTypeAndCopyOf()
+        throws Exception
     {
         try
         {
@@ -803,7 +846,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 4.0
      */
 
-    public void testComponentWithoutType() throws Exception
+    public void testComponentWithoutType()
+        throws Exception
     {
         try
         {
@@ -812,9 +856,7 @@ public class TestSpecificationParser extends TapestryTestCase
         }
         catch (Exception ex)
         {
-            checkException(
-                    ex,
-                    "Contained component bad does not specify attribute type or copy-of.");
+            checkException(ex, "Contained component bad does not specify attribute type or copy-of.");
         }
     }
 
@@ -824,7 +866,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 4.0
      */
 
-    public void testComponentCopyOf() throws Exception
+    public void testComponentCopyOf()
+        throws Exception
     {
         IComponentSpecification cs = parseComponent("ComponentCopyOf.jwc");
 
@@ -879,7 +922,8 @@ public class TestSpecificationParser extends TapestryTestCase
      * @since 4.0
      */
 
-    public void testServiceElement() throws Exception
+    public void testServiceElement()
+        throws Exception
     {
         interceptLogging("org.apache.tapestry");
 
@@ -889,7 +933,8 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /** @since 4.0 */
-    public void testMeta() throws Exception
+    public void testMeta()
+        throws Exception
     {
         ILibrarySpecification spec = parseLib("Meta.library");
 
@@ -898,7 +943,8 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /** @since 4.0 */
-    public void testInject() throws Exception
+    public void testInject()
+        throws Exception
     {
         IComponentSpecification spec = parseComponent("Inject.jwc");
 
@@ -906,14 +952,14 @@ public class TestSpecificationParser extends TapestryTestCase
 
         assertEquals(2, l.size());
 
-        InjectSpecification i1 = (InjectSpecification) l.get(0);
+        InjectSpecification i1 = (InjectSpecification)l.get(0);
 
         assertEquals("fred", i1.getProperty());
         assertEquals("object", i1.getType());
         assertEquals("flintstone", i1.getObject());
         assertNotNull(i1.getLocation());
 
-        InjectSpecification i2 = (InjectSpecification) l.get(1);
+        InjectSpecification i2 = (InjectSpecification)l.get(1);
         assertEquals("barney", i2.getProperty());
         assertEquals("state", i2.getType());
         assertEquals("rubble", i2.getObject());
@@ -921,18 +967,19 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Test that the new &lt;property&gt; element (was &lt;property-specification&gt; in release
-     * 3.0) works correctly.
+     * Test that the new &lt;property&gt; element (was
+     * &lt;property-specification&gt; in release 3.0) works correctly.
      * 
      * @since 4.0
      */
 
-    public void testProperty() throws Exception
+    public void testProperty()
+        throws Exception
     {
         IComponentSpecification spec = parsePage("Property.page");
 
-        checkList("propertySpecificationNames", new String[]
-        { "bool", "init", "longInit", "persist" }, spec.getPropertySpecificationNames());
+        checkList("propertySpecificationNames", new String[] { "bool", "init", "longInit", "persist" }, spec
+                .getPropertySpecificationNames());
 
         IPropertySpecification ps = spec.getPropertySpecification("bool");
         assertEquals("name", "bool", ps.getName());
@@ -969,12 +1016,13 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Tests parameters specification from a 3.0 DTD
+     * Tests parameters specification from a 3.0 DTD.
      * 
      * @since 4.0
      */
 
-    public void testParameter_3_0() throws Exception
+    public void testParameter_3_0()
+        throws Exception
     {
         IComponentSpecification spec = parseComponent("Parameter_3_0.jwc");
 
@@ -1011,13 +1059,14 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Tests the new way default-value is interpreted (as a binding-like value, prefixed to indicate
-     * type).
+     * Tests the new way default-value is interpreted (as a binding-like value,
+     * prefixed to indicate type).
      * 
      * @since 4.0
      */
 
-    public void testParameter() throws Exception
+    public void testParameter()
+        throws Exception
     {
         IComponentSpecification spec = parseComponent("Parameter.jwc");
 
@@ -1040,8 +1089,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals(false, ps.getCache());
 
         ps = spec.getParameter("withAliases");
-        assertListsEqual(new String[]
-        { "fred", "barney" }, ps.getAliasNames().toArray());
+        assertListsEqual(new String[] { "fred", "barney" }, ps.getAliasNames().toArray());
 
         assertSame(ps, spec.getParameter("fred"));
         assertSame(ps, spec.getParameter("barney"));
@@ -1051,12 +1099,13 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Tests that assets read using the 3.0 DTD are converted properly into paths with the proper
-     * prefix.
+     * Tests that assets read using the 3.0 DTD are converted properly into
+     * paths with the proper prefix.
      * 
      * @since 4.0
      */
-    public void testAssets_3_0() throws Exception
+    public void testAssets_3_0()
+        throws Exception
     {
         IComponentSpecification cs = parsePage("Assets_3_0.page");
 
@@ -1072,13 +1121,13 @@ public class TestSpecificationParser extends TapestryTestCase
 
         assertEquals("http://myexternal/asset", as.getPath());
 
-        assertListsEqual(new String[]
-        { "mycontext", "myexternal", "myprivate" }, cs.getAssetNames());
+        assertListsEqual(new String[] { "mycontext", "myexternal", "myprivate" }, cs.getAssetNames());
     }
 
     /** @since 4.0 */
 
-    public void testAssets() throws Exception
+    public void testAssets()
+        throws Exception
     {
         IComponentSpecification cs = parsePage("Assets.page");
 
@@ -1090,7 +1139,8 @@ public class TestSpecificationParser extends TapestryTestCase
 
     /** @since 4.0 */
 
-    public void testDeprecatedComponent() throws Exception
+    public void testDeprecatedComponent()
+        throws Exception
     {
         IComponentSpecification cs = parseComponent("DeprecatedComponent.jwc");
 
@@ -1099,7 +1149,8 @@ public class TestSpecificationParser extends TapestryTestCase
 
     /** @since 4.0 */
 
-    public void testLibrarySlashInComponentType() throws Exception
+    public void testLibrarySlashInComponentType()
+        throws Exception
     {
         ILibrarySpecification ls = parseLib("SlashInComponentType.library");
 
@@ -1114,7 +1165,8 @@ public class TestSpecificationParser extends TapestryTestCase
 
     /** @since 4.0 */
 
-    public void testComponentSlashInComponentType() throws Exception
+    public void testComponentSlashInComponentType()
+        throws Exception
     {
         IComponentSpecification cs = parseComponent("SlashInComponentType.jwc");
 

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ public class CookieSourceTest extends HiveMindTestCase
 
     private static final int ONE_WEEK = 7 * 24 * 60 * 60;
 
+    /** Allows Cookies to be compared (which you'd think would be a natural). */
     private static class ComparableCookie extends Cookie
     {
         public ComparableCookie(String name, String value, int maxAge)

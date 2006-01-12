@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ import org.apache.tapestry.valid.IValidationDelegate;
  */
 public class LinkSubmitTest extends BaseComponentTestCase
 {
+    /** Test fixture. */
     private class ScriptFixture implements IScript
     {
 

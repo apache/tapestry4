@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,14 +34,19 @@ import org.apache.tapestry.util.ContentType;
  */
 public class ServletWebResponseTest extends HiveMindTestCase
 {
+
+    /** Test fixture. */
     private static class MockServletOutputStream extends ServletOutputStream
     {
-        public void write(int b) throws IOException
+
+        public void write(int b)
+            throws IOException
         {
         }
     }
 
-    public void testGetOutputStream() throws Exception
+    public void testGetOutputStream()
+        throws Exception
     {
         HttpServletResponse response = newResponse();
 
@@ -60,7 +65,8 @@ public class ServletWebResponseTest extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testGetOutputStreamFailure() throws Exception
+    public void testGetOutputStreamFailure()
+        throws Exception
     {
         HttpServletResponse response = newResponse();
 
@@ -81,21 +87,20 @@ public class ServletWebResponseTest extends HiveMindTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(
-                    "Error opening response stream for content type foo/bar: Simulated failure.",
-                    ex.getMessage());
+            assertEquals("Error opening response stream for content type foo/bar: Simulated failure.", ex.getMessage());
             assertSame(t, ex.getRootCause());
         }
     }
 
-    public void testGetPrintWriter() throws Exception
+    public void testGetPrintWriter()
+        throws Exception
     {
         PrintWriter writer = new PrintWriter(new CharArrayWriter());
 
         HttpServletResponse response = newResponse();
 
         response.setContentType("foo/bar");
-        
+
         trainGetWriter(response, writer);
 
         replayControls();
@@ -107,15 +112,15 @@ public class ServletWebResponseTest extends HiveMindTestCase
         verifyControls();
     }
 
-    private void trainGetWriter(HttpServletResponse response, PrintWriter writer) throws IOException
+    private void trainGetWriter(HttpServletResponse response, PrintWriter writer)
+        throws IOException
     {
         response.getWriter();
         setReturnValue(response, writer);
     }
-    
-    
 
-    public void testGetSecondPrintWriter() throws Exception
+    public void testGetSecondPrintWriter()
+        throws Exception
     {
         PrintWriter writer1 = new PrintWriter(new CharArrayWriter());
         PrintWriter writer2 = new PrintWriter(new CharArrayWriter());
@@ -123,9 +128,9 @@ public class ServletWebResponseTest extends HiveMindTestCase
         HttpServletResponse response = newResponse();
 
         response.setContentType("foo/bar");
-        
+
         trainGetWriter(response, writer1);
-        
+
         replayControls();
 
         ServletWebResponse swr = new ServletWebResponse(response);
@@ -136,17 +141,18 @@ public class ServletWebResponseTest extends HiveMindTestCase
 
         response.reset();
         response.setContentType("biff/bazz");
-        
+
         trainGetWriter(response, writer2);
-        
+
         replayControls();
 
         assertSame(writer2, swr.getPrintWriter(new ContentType("biff/bazz")));
 
         verifyControls();
     }
-    
-    public void testGetSecondPrintWriterTomcatPatch() throws Exception
+
+    public void testGetSecondPrintWriterTomcatPatch()
+        throws Exception
     {
         PrintWriter writer1 = new PrintWriter(new CharArrayWriter());
         PrintWriter writer2 = new PrintWriter(new CharArrayWriter());
@@ -155,9 +161,9 @@ public class ServletWebResponseTest extends HiveMindTestCase
         Log log = newLog();
 
         response.setContentType("foo/bar");
-        
+
         trainGetWriter(response, writer1);
-        
+
         replayControls();
 
         ServletWebResponse swr = new ServletWebResponse(response, log, true);
@@ -169,15 +175,16 @@ public class ServletWebResponseTest extends HiveMindTestCase
         response.reset();
 
         trainGetWriter(response, writer2);
-        
+
         replayControls();
 
         assertSame(writer2, swr.getPrintWriter(new ContentType("foo/bar")));
 
         verifyControls();
     }
-    
-    public void testGetSecondPrintWriterDifferentContentTypeTomcatPatch() throws Exception
+
+    public void testGetSecondPrintWriterDifferentContentTypeTomcatPatch()
+        throws Exception
     {
         PrintWriter writer1 = new PrintWriter(new CharArrayWriter());
         PrintWriter writer2 = new PrintWriter(new CharArrayWriter());
@@ -186,9 +193,9 @@ public class ServletWebResponseTest extends HiveMindTestCase
         Log log = newLog();
 
         response.setContentType("foo/bar");
-        
+
         trainGetWriter(response, writer1);
-        
+
         replayControls();
 
         ServletWebResponse swr = new ServletWebResponse(response, log, true);
@@ -198,24 +205,26 @@ public class ServletWebResponseTest extends HiveMindTestCase
         verifyControls();
 
         response.reset();
-        
-        log.warn("Unable to change response content type from 'foo/bar' to 'biff/bazz' (following a reset). See Tapestry issue TAPESTRY-607.");
-        
+
+        log
+                .warn("Unable to change response content type from 'foo/bar' to 'biff/bazz' (following a reset). See Tapestry issue TAPESTRY-607.");
+
         trainGetWriter(response, writer2);
-        
+
         replayControls();
 
         assertSame(writer2, swr.getPrintWriter(new ContentType("biff/bazz")));
 
         verifyControls();
-    }    
+    }
 
     private Log newLog()
     {
         return (Log)newMock(Log.class);
-    }    
+    }
 
-    public void testGetPrintWriterFailure() throws Exception
+    public void testGetPrintWriterFailure()
+        throws Exception
     {
         HttpServletResponse response = newResponse();
 
@@ -236,9 +245,7 @@ public class ServletWebResponseTest extends HiveMindTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(
-                    "Error opening response writer for content type foo/bar: Simulated failure.",
-                    ex.getMessage());
+            assertEquals("Error opening response writer for content type foo/bar: Simulated failure.", ex.getMessage());
             assertSame(t, ex.getRootCause());
         }
     }
@@ -260,10 +267,11 @@ public class ServletWebResponseTest extends HiveMindTestCase
 
     private HttpServletResponse newResponse()
     {
-        return (HttpServletResponse) newMock(HttpServletResponse.class);
+        return (HttpServletResponse)newMock(HttpServletResponse.class);
     }
 
-    public void testSetHeaderMethods() throws Exception
+    public void testSetHeaderMethods()
+        throws Exception
     {
         HttpServletResponse response = newResponse();
 

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -48,14 +48,17 @@ import org.apache.tapestry.util.IPropertyHolder;
 
 public abstract class TapestryTestCase extends HiveMindTestCase
 {
-    protected static final boolean IS_JDK13 = System.getProperty("java.specification.version")
-            .equals("1.3");
+
+    protected static final boolean IS_JDK13 = System.getProperty("java.specification.version").equals("1.3");
+
+    private static ValueConverter _sharedValueConverter;
 
     private ClassResolver _resolver = new DefaultClassResolver();
 
     /** @since 4.0 */
     private ValueConverter _valueConverter = new ValueConverter()
     {
+
         public Object coerceValue(Object value, Class desiredType)
         {
             return value;
@@ -79,7 +82,8 @@ public abstract class TapestryTestCase extends HiveMindTestCase
         return new BindingSourceFixture();
     }
 
-    protected IComponentSpecification parseComponent(String simpleName) throws Exception
+    protected IComponentSpecification parseComponent(String simpleName)
+        throws Exception
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
 
@@ -88,7 +92,8 @@ public abstract class TapestryTestCase extends HiveMindTestCase
         return parser.parseComponentSpecification(location);
     }
 
-    protected IComponentSpecification parsePage(String simpleName) throws Exception
+    protected IComponentSpecification parsePage(String simpleName)
+        throws Exception
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
 
@@ -99,7 +104,8 @@ public abstract class TapestryTestCase extends HiveMindTestCase
         return parser.parsePageSpecification(location);
     }
 
-    protected IApplicationSpecification parseApp(String simpleName) throws Exception
+    protected IApplicationSpecification parseApp(String simpleName)
+        throws Exception
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
 
@@ -119,7 +125,8 @@ public abstract class TapestryTestCase extends HiveMindTestCase
         return classResource.getRelativeResource(simpleName);
     }
 
-    protected ILibrarySpecification parseLib(String simpleName) throws Exception
+    protected ILibrarySpecification parseLib(String simpleName)
+        throws Exception
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
 
@@ -141,7 +148,7 @@ public abstract class TapestryTestCase extends HiveMindTestCase
 
         assertEquals(propertyName + " element count", expected.length, count);
 
-        for (int i = 0; i < count; i++)
+        for(int i = 0; i < count; i++)
         {
             assertEquals("propertyName[" + i + "]", expected[i], actual.get(i));
         }
@@ -154,18 +161,15 @@ public abstract class TapestryTestCase extends HiveMindTestCase
 
     public static void checkException(Throwable ex, String string)
     {
-        if (ex.getMessage().indexOf(string) >= 0)
-            return;
+        if (ex.getMessage().indexOf(string) >= 0) return;
 
-        throw new AssertionFailedError("Exception " + ex + " does not contain sub-string '"
-                + string + "'.");
+        throw new AssertionFailedError("Exception " + ex + " does not contain sub-string '" + string + "'.");
     }
-
-    private static ValueConverter _sharedValueConverter;
 
     protected ValueConverter createValueConverter()
     {
-        // Only build the Registry the first time this is called. The same Registry
+        // Only build the Registry the first time this is called. The same
+        // Registry
         // can then be used for any remaining calls.
 
         if (_sharedValueConverter == null)
@@ -173,9 +177,8 @@ public abstract class TapestryTestCase extends HiveMindTestCase
 
             Registry r = RegistryBuilder.constructDefaultRegistry();
 
-            _sharedValueConverter = (ValueConverter) r.getService(
-                    "tapestry.coerce.ValueConverter",
-                    ValueConverter.class);
+            _sharedValueConverter = (ValueConverter)r
+                    .getService("tapestry.coerce.ValueConverter", ValueConverter.class);
         }
 
         return _sharedValueConverter;
@@ -183,6 +186,6 @@ public abstract class TapestryTestCase extends HiveMindTestCase
 
     protected IComponent newComponent()
     {
-        return (IComponent) newMock(IComponent.class);
+        return (IComponent)newMock(IComponent.class);
     }
 }

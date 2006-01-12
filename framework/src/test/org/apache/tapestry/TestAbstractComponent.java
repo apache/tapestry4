@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,14 +19,16 @@ import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.test.Creator;
 
 /**
- * Tests a few new features of {@link org.apache.tapestry.AbstractComponent}&nbsp;added in release
- * 4.0.
+ * Tests a few new features of {@link org.apache.tapestry.AbstractComponent}&nbsp;added
+ * in release 4.0.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class TestAbstractComponent extends BaseComponentTestCase
 {
+
+    /** Test fixture. */
     private static class ConcreteComponent extends AbstractComponent
     {
 
@@ -59,8 +61,7 @@ public class TestAbstractComponent extends BaseComponentTestCase
         }
         catch (IllegalStateException ex)
         {
-            assertEquals(TapestryMessages.providedByEnhancement("getSpecification"), ex
-                    .getMessage());
+            assertEquals(TapestryMessages.providedByEnhancement("getSpecification"), ex.getMessage());
         }
     }
 
@@ -72,7 +73,7 @@ public class TestAbstractComponent extends BaseComponentTestCase
 
         replayControls();
 
-        IComponent component = (IComponent) creator.newInstance(BaseComponent.class);
+        IComponent component = (IComponent)creator.newInstance(BaseComponent.class);
 
         component.setContainedComponent(cc);
 
@@ -94,8 +95,8 @@ public class TestAbstractComponent extends BaseComponentTestCase
 
         replayControls();
 
-        IComponent component = (IComponent) creator.newInstance(BaseComponent.class, new Object[]
-        { "page", page, "container", page, "id", "barney" });
+        IComponent component = (IComponent)creator.newInstance(BaseComponent.class, new Object[] { "page", page,
+                "container", page, "id", "barney" });
 
         component.setContainedComponent(cc1);
 
@@ -107,8 +108,8 @@ public class TestAbstractComponent extends BaseComponentTestCase
         catch (ApplicationRuntimeException ex)
         {
             assertEquals(
-                    "Attempt to change containedComponent property of component Fred/barney, which is not allowed.",
-                    ex.getMessage());
+                    "Attempt to change containedComponent property of component Fred/barney, which is not allowed.", ex
+                            .getMessage());
         }
 
         verifyControls();
@@ -116,6 +117,6 @@ public class TestAbstractComponent extends BaseComponentTestCase
 
     private IContainedComponent newContainedComponent()
     {
-        return (IContainedComponent) newMock(IContainedComponent.class);
+        return (IContainedComponent)newMock(IContainedComponent.class);
     }
 }

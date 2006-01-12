@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,7 +53,8 @@ public class MockResponse implements HttpServletResponse
 
     private String _contentType = "text/html;charset=utf-8";
 
-    private class ServletOutputStreamImpl extends ServletOutputStream
+    /** Mock of a ServletOutputStream. */
+    private final class ServletOutputStreamImpl extends ServletOutputStream
     {
         private ServletOutputStreamImpl()
         {

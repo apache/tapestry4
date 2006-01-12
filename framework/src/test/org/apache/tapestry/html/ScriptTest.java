@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,8 +39,11 @@ import org.apache.tapestry.spec.IComponentSpecification;
  */
 public class ScriptTest extends BaseComponentTestCase
 {
+
+    /** Test fixture. */
     private static class MockScript implements IScript
     {
+
         Map _symbols;
 
         public void execute(IRequestCycle cycle, IScriptProcessor processor, Map symbols)
@@ -74,9 +77,9 @@ public class ScriptTest extends BaseComponentTestCase
 
         String scriptPath = "MyScript.script";
 
-        Script component = (Script) newInstance(Script.class, new Object[]
-        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
-                source, "scriptPath", scriptPath });
+        Script component = (Script)newInstance(Script.class,
+                new Object[] { "specification", new ComponentSpecification(), "container", container, "scriptSource",
+                        source, "scriptPath", scriptPath });
 
         trainGetPageRenderSupport(cycle, support);
 
@@ -115,9 +118,9 @@ public class ScriptTest extends BaseComponentTestCase
 
         String scriptPath = "MyScript.script";
 
-        Script component = (Script) newInstance(Script.class, new Object[]
-        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
-                source, "scriptPath", scriptPath, "baseSymbols", baseSymbols });
+        Script component = (Script)newInstance(Script.class, new Object[] { "specification",
+                new ComponentSpecification(), "container", container, "scriptSource", source, "scriptPath", scriptPath,
+                "baseSymbols", baseSymbols });
 
         trainGetPageRenderSupport(cycle, support);
 
@@ -161,9 +164,9 @@ public class ScriptTest extends BaseComponentTestCase
 
         String scriptPath = "MyScript.script";
 
-        Script component = (Script) newInstance(Script.class, new Object[]
-        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
-                source, "scriptPath", scriptPath, "baseSymbols", baseSymbols });
+        Script component = (Script)newInstance(Script.class, new Object[] { "specification",
+                new ComponentSpecification(), "container", container, "scriptSource", source, "scriptPath", scriptPath,
+                "baseSymbols", baseSymbols });
         component.setBinding("fred", informal);
 
         trainGetPageRenderSupport(cycle, support);
@@ -199,7 +202,7 @@ public class ScriptTest extends BaseComponentTestCase
 
         replayControls();
 
-        Script component = (Script) newInstance(Script.class);
+        Script component = (Script)newInstance(Script.class);
 
         component.addBody(body);
 
@@ -210,7 +213,7 @@ public class ScriptTest extends BaseComponentTestCase
 
     protected IScript newScript()
     {
-        return (IScript) newMock(IScript.class);
+        return (IScript)newMock(IScript.class);
     }
 
     protected void trainGetScript(IScriptSource source, Resource scriptLocation, IScript script)
@@ -221,11 +224,10 @@ public class ScriptTest extends BaseComponentTestCase
 
     protected IScriptSource newScriptSource()
     {
-        return (IScriptSource) newMock(IScriptSource.class);
+        return (IScriptSource)newMock(IScriptSource.class);
     }
 
-    protected void trainGetScriptLocation(IComponent component, String scriptPath,
-            Resource scriptLocation)
+    protected void trainGetScriptLocation(IComponent component, String scriptPath, Resource scriptLocation)
     {
         IComponentSpecification spec = newSpec();
         Resource resource = newResource();

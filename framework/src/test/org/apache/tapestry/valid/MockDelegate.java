@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,23 +19,24 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
- * Mock implementation of {@link org.apache.tapestry.valid.IValidationDelegate}used to test
- * decoration.
+ * Mock implementation of {@link org.apache.tapestry.valid.IValidationDelegate}used
+ * to test decoration.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class MockDelegate extends ValidationDelegate
 {
+
     private static final long serialVersionUID = -9197298078385854706L;
 
-	public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
+    public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
     {
         writer.print("{LABEL-PREFIX}");
     }
 
-    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle,
-            IFormComponent component, IValidator validator)
+    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component,
+            IValidator validator)
     {
         writer.attribute("class", "mock-delegate");
     }
@@ -45,14 +46,12 @@ public class MockDelegate extends ValidationDelegate
         writer.print("{LABEL-SUFFIX}");
     }
 
-    public void writePrefix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component,
-            IValidator validator)
+    public void writePrefix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component, IValidator validator)
     {
         writer.print("{PREFIX}");
     }
 
-    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component,
-            IValidator validator)
+    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component, IValidator validator)
     {
         writer.print("{SUFFIX}");
     }

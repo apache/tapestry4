@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import org.apache.tapestry.IMarkupWriter;
  */
 public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
 {
-	
+
     protected DescribableStrategy newStrategy()
     {
         return (DescribableStrategy) newMock(DescribableStrategy.class);
@@ -64,8 +64,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         writer.begin("tr");
         writer.attribute("class", even ? "even" : "odd");
         writer.begin("th");
-        if (key != null)
-            writer.print(key);
+        if (key != null) writer.print(key);
         writer.end();
         writer.begin("td");
         writer.print(value);
@@ -78,8 +77,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         writer.begin("tr");
         writer.attribute("class", even ? "even" : "odd");
         writer.begin("th");
-        if (key != null)
-            writer.print(key);
+        if (key != null) writer.print(key);
         writer.end();
         writer.begin("td");
         writer.print(value);
@@ -259,8 +257,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         IMarkupWriter writer = newWriter();
         DescribableStrategy adapter = new NoOpStrategy();
 
-        Object[] array = new Object[]
-        { "Fred", "Barney" };
+        Object[] array = new Object[] { "Fred", "Barney" };
 
         trainForTitle(writer, "Array");
         trainForNestedKeyValue(writer, "list", "Fred", true);
@@ -281,8 +278,7 @@ public class HTMLDescriptionReceiverTest extends BaseDescribeTestCase
         IMarkupWriter writer = newWriter();
         DescribableStrategy adapter = new NoOpStrategy();
 
-        Object[] array = new Object[]
-        { "Fred", "Barney" };
+        Object[] array = new Object[] { "Fred", "Barney" };
         Collection collection = Arrays.asList(array);
 
         trainForTitle(writer, "Collection");

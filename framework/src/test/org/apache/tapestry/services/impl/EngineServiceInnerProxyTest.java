@@ -24,8 +24,9 @@ import org.apache.tapestry.engine.ILink;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestCase
-{
+public class EngineServiceInnerProxyTest extends
+        AbstractEngineServiceProxyTestCase {
+
     private EngineServiceSource newSource(String name, IEngineService service)
     {
         EngineServiceSource source = newSource();
@@ -43,17 +44,19 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
 
         replayControls();
 
-        EngineServiceInnerProxy proxy = new EngineServiceInnerProxy("Inner", outer, source);
+        EngineServiceInnerProxy proxy = new EngineServiceInnerProxy("Inner",
+                outer, source);
 
         assertEquals("Inner", proxy.getName());
-        assertEquals("<InnerProxy for engine service 'Inner'>", proxy.toString());
+        assertEquals("<InnerProxy for engine service 'Inner'>", proxy
+                .toString());
 
         verifyControls();
     }
 
     protected EngineServiceSource newSource()
     {
-        return (EngineServiceSource) newMock(EngineServiceSource.class);
+        return (EngineServiceSource)newMock(EngineServiceSource.class);
     }
 
     public void testGetLinkNonPost()
@@ -71,7 +74,8 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
         replayControls();
 
         EngineServiceOuterProxy outer = new EngineServiceOuterProxy("fred");
-        EngineServiceInnerProxy inner = new EngineServiceInnerProxy("fred", outer, source);
+        EngineServiceInnerProxy inner = new EngineServiceInnerProxy("fred",
+                outer, source);
 
         outer.installDelegate(inner);
 
@@ -97,7 +101,8 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
         replayControls();
 
         EngineServiceOuterProxy outer = new EngineServiceOuterProxy("fred");
-        EngineServiceInnerProxy inner = new EngineServiceInnerProxy("fred", outer, source);
+        EngineServiceInnerProxy inner = new EngineServiceInnerProxy("fred",
+                outer, source);
 
         outer.installDelegate(inner);
 
@@ -107,7 +112,9 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
 
         verifyControls();
     }
-    public void testService() throws Exception
+
+    public void testService()
+        throws Exception
     {
         IRequestCycle cycle = newCycle();
         IEngineService service = newEngineService();
@@ -119,7 +126,8 @@ public class EngineServiceInnerProxyTest extends AbstractEngineServiceProxyTestC
         replayControls();
 
         EngineServiceOuterProxy outer = new EngineServiceOuterProxy("fred");
-        EngineServiceInnerProxy inner = new EngineServiceInnerProxy("fred", outer, source);
+        EngineServiceInnerProxy inner = new EngineServiceInnerProxy("fred",
+                outer, source);
 
         outer.installDelegate(inner);
 

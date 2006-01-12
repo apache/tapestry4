@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,17 +29,18 @@ import org.easymock.MockControl;
  */
 public class TestShell extends HiveMindTestCase
 {
+
     private Creator _creator = new Creator();
 
     private IMarkupWriter newMarkupWriter()
     {
-        return (IMarkupWriter) newMock(IMarkupWriter.class);
+        return (IMarkupWriter)newMock(IMarkupWriter.class);
     }
 
     private IRequestCycle newRequestCycle(boolean rewinding)
     {
         MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
+        IRequestCycle cycle = (IRequestCycle)control.getMock();
 
         cycle.isRewinding();
         control.setReturnValue(rewinding);
@@ -49,12 +50,12 @@ public class TestShell extends HiveMindTestCase
 
     private IRender newRender()
     {
-        return (IRender) newMock(IRender.class);
+        return (IRender)newMock(IRender.class);
     }
 
     /**
-     * Test that Shell does very little when the entire page is rewinding (which itself is a
-     * holdback to the action service).
+     * Test that Shell does very little when the entire page is rewinding (which
+     * itself is a holdback to the action service).
      */
 
     public void testRewinding()
@@ -68,7 +69,7 @@ public class TestShell extends HiveMindTestCase
 
         replayControls();
 
-        Shell shell = (Shell) _creator.newInstance(Shell.class);
+        Shell shell = (Shell)_creator.newInstance(Shell.class);
 
         shell.addBody(body);
 

@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,15 +34,16 @@ import org.easymock.MockControl;
  */
 public class TestRequestContext extends HiveMindTestCase
 {
+
     private HttpSession newSession()
     {
-        return (HttpSession) newMock(HttpSession.class);
+        return (HttpSession)newMock(HttpSession.class);
     }
 
     private HttpServletRequest newRequest(boolean create, HttpSession session)
     {
         MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = (HttpServletRequest)control.getMock();
 
         request.getSession(create);
         control.setReturnValue(session);
@@ -52,18 +53,18 @@ public class TestRequestContext extends HiveMindTestCase
 
     private HttpServletRequest newRequest()
     {
-        return (HttpServletRequest) newMock(HttpServletRequest.class);
+        return (HttpServletRequest)newMock(HttpServletRequest.class);
     }
 
     private HttpServletResponse newResponse()
     {
-        return (HttpServletResponse) newMock(HttpServletResponse.class);
+        return (HttpServletResponse)newMock(HttpServletResponse.class);
     }
 
     public void testGetParameter()
     {
         MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = (HttpServletRequest)control.getMock();
         HttpServletResponse response = newResponse();
 
         String value = "VALUE";
@@ -83,11 +84,10 @@ public class TestRequestContext extends HiveMindTestCase
     public void testGetParameters()
     {
         MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = (HttpServletRequest)control.getMock();
         HttpServletResponse response = newResponse();
 
-        String[] values =
-        { "this", "that" };
+        String[] values = { "this", "that" };
 
         request.getParameterValues("myparam");
         control.setReturnValue(values);
@@ -104,7 +104,7 @@ public class TestRequestContext extends HiveMindTestCase
     public void testGetParameterNames()
     {
         MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = (HttpServletRequest)control.getMock();
         HttpServletResponse response = newResponse();
 
         List names = new ArrayList();
@@ -122,8 +122,7 @@ public class TestRequestContext extends HiveMindTestCase
 
         String[] pnames = rc.getParameterNames();
 
-        assertListsEqual(new String[]
-        { "fred", "barney" }, pnames);
+        assertListsEqual(new String[] { "fred", "barney" }, pnames);
 
         verifyControls();
     }
@@ -146,7 +145,7 @@ public class TestRequestContext extends HiveMindTestCase
     public void testGetAttribute()
     {
         MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        HttpServletRequest request = (HttpServletRequest)control.getMock();
         HttpServletResponse response = newResponse();
 
         Object attribute = new Object();
