@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006  The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,58 +26,61 @@ import org.apache.tapestry.contrib.tree.model.ITreeStateModel;
 /**
  * @author ceco
  */
-public class NodeRenderFactory implements INodeRenderFactory {
+public class NodeRenderFactory implements INodeRenderFactory
+{
 
     /**
      * Constructor for NodeRenderFactory.
      */
-    public NodeRenderFactory() {
+    public NodeRenderFactory()
+    {
         super();
     }
 
-    public IRender getRenderByID(Object objUniqueKey,
-								 ITreeModelSource objTreeModelSource,
-                                 IRequestCycle objCycle) {
+    public IRender getRenderByID(Object objUniqueKey, ITreeModelSource objTreeModelSource, IRequestCycle objCycle)
+    {
         Object objValue = objTreeModelSource.getTreeModel().getTreeDataModel().getObject(objUniqueKey);
         return getRender(objValue, objTreeModelSource, objCycle);
     }
 
-    public IRender getRender(Object objValue,
-							 ITreeModelSource objTreeModelSource,
-                             IRequestCycle objCycle) {
+    public IRender getRender(Object objValue, ITreeModelSource objTreeModelSource, IRequestCycle objCycle)
+    {
         return new CFileSystemRender(objValue, objTreeModelSource);
     }
 
+    /** Renders a file system? */
 
-    public class CFileSystemRender implements IRender{
+    public class CFileSystemRender implements IRender
+    {
+
         private Object m_objNode;
         private ITreeModelSource m_objTreeModelSource;
 
-        public CFileSystemRender(Object objNode, ITreeModelSource objTreeModelSource) {
+        public CFileSystemRender(Object objNode, ITreeModelSource objTreeModelSource)
+        {
             super();
             m_objNode = objNode;
-			m_objTreeModelSource = objTreeModelSource;
+            m_objTreeModelSource = objTreeModelSource;
         }
 
-        public boolean isOpen() {
-            ITreeDataModel objDataModel =
-				m_objTreeModelSource.getTreeModel().getTreeDataModel();
-            ITreeStateModel objStateModel =
-				m_objTreeModelSource.getTreeModel().getTreeStateModel();
+        public boolean isOpen()
+        {
+            ITreeDataModel objDataModel = m_objTreeModelSource.getTreeModel().getTreeDataModel();
+            ITreeStateModel objStateModel = m_objTreeModelSource.getTreeModel().getTreeStateModel();
             Object objUniqueKey = objDataModel.getUniqueKey(m_objNode, null);
             return objStateModel.isUniqueKeyExpanded(objUniqueKey);
         }
 
-        public boolean isSelected(){
-            ITreeDataModel objDataModel =
-				m_objTreeModelSource.getTreeModel().getTreeDataModel();
-            ITreeStateModel objStateModel =
-				m_objTreeModelSource.getTreeModel().getTreeStateModel();
+        public boolean isSelected()
+        {
+            ITreeDataModel objDataModel = m_objTreeModelSource.getTreeModel().getTreeDataModel();
+            ITreeStateModel objStateModel = m_objTreeModelSource.getTreeModel().getTreeStateModel();
             Object objUniqueKey = objDataModel.getUniqueKey(m_objNode, null);
             return objUniqueKey.equals(objStateModel.getSelectedNode());
         }
 
-        public void render(IMarkupWriter objWriter, IRequestCycle objCycle) {
+        public void render(IMarkupWriter objWriter, IRequestCycle objCycle)
+        {
             PrivateAsset objAsset = getAsset();
             objWriter.begin("img");
             objWriter.attribute("border", "0");
@@ -93,16 +96,21 @@ public class NodeRenderFactory implements INodeRenderFactory {
             objWriter.end();
         }
 
-        public IFileSystemTreeNode getNode(){
-            return (IFileSystemTreeNode) m_objNode;
+        public IFileSystemTreeNode getNode()
+        {
+            return (IFileSystemTreeNode)m_objNode;
         }
 
-        private PrivateAsset getAsset(){
+        private PrivateAsset getAsset()
+        {
             PrivateAsset objAsset;
 
-            if (!isOpen()) {
+            if (!isOpen())
+            {
                 objAsset = getNode().getAssets().getAssetForCloseNode();
-            } else {
+            }
+            else
+            {
                 objAsset = getNode().getAssets().getAssetForOpenNode();
             }
 

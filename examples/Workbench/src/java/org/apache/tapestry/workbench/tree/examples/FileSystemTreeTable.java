@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,9 +44,11 @@ import org.apache.tapestry.workbench.tree.examples.fsmodel.FolderObject;
 import org.apache.tapestry.workbench.tree.examples.fsmodel.IFileSystemTreeNode;
 import org.apache.tapestry.workbench.tree.examples.fsmodel.NodeRenderFactory;
 
-public abstract class FileSystemTreeTable extends BasePage implements ISelectedFolderSource,
-        ITreeStateListener, PageDetachListener
+/** @author mindbridge ? */
+public abstract class FileSystemTreeTable extends BasePage implements ISelectedFolderSource, ITreeStateListener,
+        PageDetachListener
 {
+
     private ITreeSessionStateManager m_objTreeSessionStateManager = null;
 
     private ITreeDataModel m_objDataModel;
@@ -88,8 +90,7 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
         }
         else
         {
-            FolderObject objFolder = new FolderObject(null, new File(strRootDir), true,
-                    getAssetService());
+            FolderObject objFolder = new FolderObject(null, new File(strRootDir), true, getAssetService());
             objFolder.reload();
             objParent = objFolder;
         }
@@ -158,14 +159,15 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
             m_arrTableColumns = new ArrayList();
             m_arrTableColumns.add(new SimpleTableColumn("Date", true)
             {
+
                 private static final long serialVersionUID = -8211004113105081255L;
 
                 public Object getColumnValue(Object objValue)
                 {
-                    TreeRowObject objRowObject = (TreeRowObject) objValue;
-                    // SFObject objSFObject = (SFObject)objRowObject.getTreeNode();
-                    IFileSystemTreeNode objFileSystemTreeNode = (IFileSystemTreeNode) objRowObject
-                            .getTreeNode();
+                    TreeRowObject objRowObject = (TreeRowObject)objValue;
+                    // SFObject objSFObject =
+                    // (SFObject)objRowObject.getTreeNode();
+                    IFileSystemTreeNode objFileSystemTreeNode = (IFileSystemTreeNode)objRowObject.getTreeNode();
                     return objFileSystemTreeNode.getDate();
                 }
             });
@@ -178,17 +180,16 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
      */
     public Collection getSelectedFolderChildren()
     {
-        TreeTable objTreeTable = (TreeTable) getComponent("tree");
+        TreeTable objTreeTable = (TreeTable)getComponent("tree");
         ITreeModelSource objTreeModelSource = objTreeTable.getTreeModelSource();
         ITreeStateModel objTreeStateModel = objTreeModelSource.getTreeModel().getTreeStateModel();
         Object objSelectedNodeUID = objTreeStateModel.getSelectedNode();
         ITreeNode objSelectedNode = null;
         if (objSelectedNodeUID != null)
-            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel().getObject(
-                    objSelectedNodeUID);
+            objSelectedNode = (ITreeNode)getTreeModel().getTreeDataModel().getObject(objSelectedNodeUID);
         else
         {
-            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel().getRoot();
+            objSelectedNode = (ITreeNode)getTreeModel().getTreeDataModel().getRoot();
         }
         return objSelectedNode.getChildren();
     }
@@ -198,7 +199,7 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
      */
     public void treeStateChanged(TreeStateEvent objEvent)
     {
-        DirectoryTableView objDirectoryTableView = (DirectoryTableView) getComponent("directoryTableView");
+        DirectoryTableView objDirectoryTableView = (DirectoryTableView)getComponent("directoryTableView");
         objDirectoryTableView.resetState();
     }
 
@@ -217,17 +218,16 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
      */
     public String getSelectedNodeName()
     {
-        TreeTable objTreeTable = (TreeTable) getComponent("tree");
+        TreeTable objTreeTable = (TreeTable)getComponent("tree");
         ITreeModelSource objTreeModelSource = objTreeTable.getTreeModelSource();
         ITreeStateModel objTreeStateModel = objTreeModelSource.getTreeModel().getTreeStateModel();
         Object objSelectedNodeUID = objTreeStateModel.getSelectedNode();
         ITreeNode objSelectedNode = null;
         if (objSelectedNodeUID != null)
-            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel().getObject(
-                    objSelectedNodeUID);
+            objSelectedNode = (ITreeNode)getTreeModel().getTreeDataModel().getObject(objSelectedNodeUID);
         else
         {
-            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel().getRoot();
+            objSelectedNode = (ITreeNode)getTreeModel().getTreeDataModel().getRoot();
         }
         return objSelectedNode.toString();
     }

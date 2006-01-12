@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,21 +27,22 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
-import org.apache.tapestry.contrib.ejb.XEJBException;
-import org.apache.tapestry.vlib.ejb.IKeyAllocator;
-import org.apache.tapestry.vlib.ejb.IKeyAllocatorHome;
 import ognl.Ognl;
 import ognl.OgnlException;
 
+import org.apache.tapestry.contrib.ejb.XEJBException;
+import org.apache.tapestry.vlib.ejb.IKeyAllocator;
+import org.apache.tapestry.vlib.ejb.IKeyAllocatorHome;
+
 /**
- * Provides basic support for the entity context, empty or minimal implementations of the required
- * methods, and some utilties.
+ * Provides basic support for the entity context, empty or minimal
+ * implementations of the required methods, and some utilties.
  * 
  * @author Howard Lewis Ship
  */
 
-public abstract class AbstractEntityBean implements EntityBean
-{
+public abstract class AbstractEntityBean implements EntityBean {
+
     /**
      * The EntityContext provided by the application server.
      */
@@ -53,8 +54,8 @@ public abstract class AbstractEntityBean implements EntityBean
     private transient IKeyAllocatorHome _keyAllocatorHome;
 
     /**
-     * The environment naming context, which is configured for this bean in the deployment
-     * descriptor.
+     * The environment naming context, which is configured for this bean in the
+     * deployment descriptor.
      */
 
     private transient Context _environment;
@@ -73,27 +74,23 @@ public abstract class AbstractEntityBean implements EntityBean
      * Gets a named object from the bean's environment naming context.
      */
 
-    protected Object getEnvironmentObject(String name, Class objectClass) throws RemoteException,
-            NamingException
+    protected Object getEnvironmentObject(String name, Class objectClass)
+        throws RemoteException, NamingException
     {
         Object result = null;
 
-        if (_environment == null)
-        {
+        if (_environment == null) {
             Context initial = new InitialContext();
-            _environment = (Context) initial.lookup("java:comp/env");
+            _environment = (Context)initial.lookup("java:comp/env");
         }
 
         Object raw = _environment.lookup(name);
 
-        try
-        {
+        try {
             result = PortableRemoteObject.narrow(raw, objectClass);
-        }
-        catch (ClassCastException ex)
-        {
-            throw new RemoteException("Could not narrow " + raw + " (" + name + ") to class "
-                    + objectClass + ".");
+        } catch (ClassCastException ex) {
+            throw new RemoteException("Could not narrow " + raw + " (" + name
+                    + ") to class " + objectClass + ".");
         }
 
         return result;
@@ -103,7 +100,8 @@ public abstract class AbstractEntityBean implements EntityBean
      * Empty implementation; subclasses may override.
      */
 
-    public void ejbActivate() throws EJBException, RemoteException
+    public void ejbActivate()
+        throws EJBException, RemoteException
     {
         // does nothing
     }
@@ -112,7 +110,8 @@ public abstract class AbstractEntityBean implements EntityBean
      * Empty implementation; subclasses may override.
      */
 
-    public void ejbPassivate() throws EJBException, RemoteException
+    public void ejbPassivate()
+        throws EJBException, RemoteException
     {
         // does nothing
     }
@@ -121,7 +120,8 @@ public abstract class AbstractEntityBean implements EntityBean
      * Empty implementation; subclasses may override.
      */
 
-    public void ejbRemove() throws EJBException, RemoteException
+    public void ejbRemove()
+        throws EJBException, RemoteException
     {
         // does nothing
     }
@@ -130,7 +130,8 @@ public abstract class AbstractEntityBean implements EntityBean
      * Does nothing.
      */
 
-    public void ejbLoad() throws EJBException, RemoteException
+    public void ejbLoad()
+        throws EJBException, RemoteException
     {
     }
 
@@ -138,7 +139,8 @@ public abstract class AbstractEntityBean implements EntityBean
      * Does nothing.
      */
 
-    public void ejbStore() throws EJBException, RemoteException
+    public void ejbStore()
+        throws EJBException, RemoteException
     {
     }
 
@@ -146,39 +148,33 @@ public abstract class AbstractEntityBean implements EntityBean
      * Uses the KeyAllocator session bean to allocate a necessary key.
      */
 
-    protected Integer allocateKey() throws RemoteException
+    protected Integer allocateKey()
+        throws RemoteException
     {
         IKeyAllocator allocator;
 
-        if (_keyAllocatorHome == null)
-        {
-            try
-            {
+        if (_keyAllocatorHome == null) {
+            try {
                 Context initial = new InitialContext();
-                Context environment = (Context) initial.lookup("java:comp/env");
+                Context environment = (Context)initial.lookup("java:comp/env");
 
                 Object raw = environment.lookup("ejb/KeyAllocator");
-                _keyAllocatorHome = (IKeyAllocatorHome) PortableRemoteObject.narrow(
-                        raw,
-                        IKeyAllocatorHome.class);
-            }
-            catch (NamingException ex)
-            {
-                throw new XEJBException("Unable to locate IKeyAllocatorHome.", ex);
+                _keyAllocatorHome = (IKeyAllocatorHome)PortableRemoteObject
+                        .narrow(raw, IKeyAllocatorHome.class);
+            } catch (NamingException ex) {
+                throw new XEJBException("Unable to locate IKeyAllocatorHome.",
+                        ex);
             }
         }
 
         // Get a reference to *some* KeyAllocator bean ... it may be fresh,
         // or one reused from a pool.
 
-        try
-        {
+        try {
             allocator = _keyAllocatorHome.create();
-        }
-        catch (CreateException ex)
-        {
-            throw new RemoteException("Unable to create a KeyAllocator from " + _keyAllocatorHome
-                    + ".", ex);
+        } catch (CreateException ex) {
+            throw new RemoteException("Unable to create a KeyAllocator from "
+                    + _keyAllocatorHome + ".", ex);
         }
 
         // Finally, invoke the method that gets a key.
@@ -187,18 +183,20 @@ public abstract class AbstractEntityBean implements EntityBean
     }
 
     /**
-     * Implemented in subclasses to provide a list of property names to be included in the entity
-     * attributes map.
+     * Implemented in subclasses to provide a list of property names to be
+     * included in the entity attributes map.
      */
 
     protected abstract String[] getAttributePropertyNames();
 
     /**
-     * Returns a {@link Map} of the properties of the bean. This Map is returned to the client,
-     * where it can be modified and then used to update the entity bean in a single method
+     * Returns a {@link Map} of the properties of the bean. This Map is returned
+     * to the client, where it can be modified and then used to update the
+     * entity bean in a single method
      * <p>
-     * The properties included in the Map are defined by the {@link #getAttributePropertyNames()}
-     * method, which is implemented by concrete subclasses.
+     * The properties included in the Map are defined by the
+     * {@link #getAttributePropertyNames()} method, which is implemented by
+     * concrete subclasses.
      */
 
     public Map getEntityAttributes()
@@ -208,18 +206,14 @@ public abstract class AbstractEntityBean implements EntityBean
         if (_attributePropertyNames == null)
             _attributePropertyNames = getAttributePropertyNames();
 
-        for (int i = 0; i < _attributePropertyNames.length; i++)
-        {
+        for(int i = 0; i < _attributePropertyNames.length; i++) {
             String key = _attributePropertyNames[i];
 
-            try
-            {
+            try {
                 Object value = Ognl.getValue(key, this);
 
                 result.put(key, value);
-            }
-            catch (OgnlException ex)
-            {
+            } catch (OgnlException ex) {
             }
         }
 
@@ -227,13 +221,13 @@ public abstract class AbstractEntityBean implements EntityBean
     }
 
     /**
-     * Updates the bean with property changes from the update {@link Map}. Only the keys defined by
-     * {@link #getAttributePropertyNames()} will be accessed (keys and values that are not in that
-     * list are ignored).
+     * Updates the bean with property changes from the update {@link Map}. Only
+     * the keys defined by {@link #getAttributePropertyNames()} will be accessed
+     * (keys and values that are not in that list are ignored).
      * <p>
-     * The corresponding bean property will only be updated if the key is present ... this means
-     * that the update may contain just the <em>changed</em> keys. Remember that a Map may store
-     * null values.
+     * The corresponding bean property will only be updated if the key is
+     * present ... this means that the update may contain just the
+     * <em>changed</em> keys. Remember that a Map may store null values.
      */
 
     public void updateEntityAttributes(Map update)
@@ -241,20 +235,15 @@ public abstract class AbstractEntityBean implements EntityBean
         if (_attributePropertyNames == null)
             _attributePropertyNames = getAttributePropertyNames();
 
-        for (int i = 0; i < _attributePropertyNames.length; i++)
-        {
+        for(int i = 0; i < _attributePropertyNames.length; i++) {
             String key = _attributePropertyNames[i];
 
-            if (update.containsKey(key))
-            {
+            if (update.containsKey(key)) {
                 Object value = update.get(key);
 
-                try
-                {
+                try {
                     Ognl.setValue(key, this, value);
-                }
-                catch (OgnlException ex)
-                {
+                } catch (OgnlException ex) {
                 }
 
             }

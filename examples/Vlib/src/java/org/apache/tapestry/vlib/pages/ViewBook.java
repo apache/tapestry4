@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,11 +30,11 @@ import org.apache.tapestry.vlib.ejb.Book;
  * 
  * @author Howard Lewis Ship
  */
-@Meta(
-{ "page-type=Search", "anonymous-access=true" })
+@Meta( { "page-type=Search", "anonymous-access=true" })
 public abstract class ViewBook extends VlibPage implements IExternalPage, PageBeginRenderListener
 
 {
+
     private DateFormat _dateFormat;
 
     @Persist
@@ -48,14 +48,15 @@ public abstract class ViewBook extends VlibPage implements IExternalPage, PageBe
 
     public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
     {
-        Integer bookId = (Integer) parameters[0];
+        Integer bookId = (Integer)parameters[0];
 
         setBookId(bookId);
     }
 
     private void readBook()
     {
-        // This doesn't handle invalid book id as nicely as the 3.0 code did, but I'm
+        // This doesn't handle invalid book id as nicely as the 3.0 code did,
+        // but I'm
         // getting a bit lazy!
 
         Book book = getRemoteTemplate().getBook(getBookId());
@@ -66,18 +67,13 @@ public abstract class ViewBook extends VlibPage implements IExternalPage, PageBe
     public DateFormat getDateFormat()
     {
         if (_dateFormat == null)
-            _dateFormat = DateFormat.getDateTimeInstance(
-                    DateFormat.MEDIUM,
-                    DateFormat.SHORT,
-                    getLocale());
+            _dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, getLocale());
 
         return _dateFormat;
     }
 
     public void pageBeginRender(PageEvent event)
     {
-        if (getBook() == null)
-            readBook();
+        if (getBook() == null) readBook();
     }
-
 }

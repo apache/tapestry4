@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.callback.ICallback;
 
 /**
- * Callback implementation for pages which implement the {@link org.apache.tapestry.vlib.IActivate}
- * interface.
+ * Callback implementation for pages which implement the
+ * {@link org.apache.tapestry.vlib.IActivate} interface.
  * 
  * @author Howard Lewis Ship
  * @since 3.0
@@ -27,9 +27,10 @@ import org.apache.tapestry.callback.ICallback;
 
 public class ActivateCallback implements ICallback
 {
+
     private static final long serialVersionUID = 931074851273839081L;
-    
-	private String _pageName;
+
+    private String _pageName;
 
     public ActivateCallback(IActivate page)
     {
@@ -43,7 +44,7 @@ public class ActivateCallback implements ICallback
 
     public void performCallback(IRequestCycle cycle)
     {
-        IActivate page = (IActivate) cycle.getPage(_pageName);
+        IActivate page = (IActivate)cycle.getPage(_pageName);
 
         page.validate(cycle);
         page.activate();

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,8 +19,6 @@ import java.rmi.RemoteException;
 import javax.ejb.RemoveException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.Message;
 import org.apache.tapestry.annotations.Meta;
@@ -30,8 +28,9 @@ import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
- * Presents a confirmation page before deleting a book. If the user selects "yes", the book is
- * deleted; otherwise the user is returned to the {@link MyLibrary} page.
+ * Presents a confirmation page before deleting a book. If the user selects
+ * "yes", the book is deleted; otherwise the user is returned to the
+ * {@link MyLibrary} page.
  * 
  * @author Howard Lewis Ship
  */
@@ -39,6 +38,7 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
 @Meta("page-type=MyLibrary")
 public abstract class ConfirmBookDelete extends BasePage implements OperationsUser
 {
+
     public abstract void setBookId(Integer bookId);
 
     public abstract void setBookTitle(String title);
@@ -50,9 +50,9 @@ public abstract class ConfirmBookDelete extends BasePage implements OperationsUs
     public abstract String bookDeleted(String title);
 
     /**
-     * Invoked (by {@link MyLibrary}) to select a book to be deleted. This method sets the
-     * temporary page properties (bookPrimaryKey and bookTitle) and invoked
-     * {@link IRequestCycle#setPage(IPage)}.
+     * Invoked (by {@link MyLibrary}) to select a book to be deleted. This
+     * method sets the temporary page properties (bookPrimaryKey and bookTitle)
+     * and invoked {@link IRequestCycle#setPage(IPage)}.
      */
 
     public void selectBook(Integer bookId)
@@ -74,7 +74,9 @@ public abstract class ConfirmBookDelete extends BasePage implements OperationsUs
     {
         RemoteCallback<Book> callback = new RemoteCallback()
         {
-            public Book doRemote() throws RemoteException
+
+            public Book doRemote()
+                throws RemoteException
             {
                 try
                 {
