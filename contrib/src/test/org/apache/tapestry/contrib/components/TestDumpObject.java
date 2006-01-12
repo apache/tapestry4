@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,19 +28,21 @@ import org.apache.tapestry.test.Creator;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.contrib.components.DumpObject}
+ * Tests for {@link org.apache.tapestry.contrib.components.DumpObject}.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public class TestDumpObject extends HiveMindTestCase
 {
+
     /**
-     * Reads the content of a file, and forms a string. Converts line-number endings in the file
-     * into the correct platform value (this should help the test run properly on both Windows and
-     * *nix).
+     * Reads the content of a file, and forms a string. Converts line-number
+     * endings in the file into the correct platform value (this should help the
+     * test run properly on both Windows and *nix).
      */
-    private String contentsOf(String path) throws Exception
+    private String contentsOf(String path)
+        throws Exception
     {
         String sep = System.getProperty("line.separator");
 
@@ -56,12 +58,11 @@ public class TestDumpObject extends HiveMindTestCase
 
         StringBuffer buffer = new StringBuffer();
 
-        while (true)
+        while(true)
         {
             String line = lnr.readLine();
 
-            if (line == null)
-                break;
+            if (line == null) break;
 
             buffer.append(line);
             buffer.append(sep);
@@ -77,10 +78,9 @@ public class TestDumpObject extends HiveMindTestCase
         Creator creator = new Creator();
         Object object = new Object();
 
-        DumpObject dumpObject = (DumpObject) creator.newInstance(DumpObject.class);
+        DumpObject dumpObject = (DumpObject)creator.newInstance(DumpObject.class);
 
-        assertEquals("java.io.NotSerializableException: java.lang.Object", dumpObject
-                .convert(object));
+        assertEquals("java.io.NotSerializableException: java.lang.Object", dumpObject.convert(object));
     }
 
     public void testRewinding()
@@ -89,7 +89,7 @@ public class TestDumpObject extends HiveMindTestCase
         IRequestCycle cycle = newCycle(true);
 
         Creator creator = new Creator();
-        DumpObject dumpObject = (DumpObject) creator.newInstance(DumpObject.class);
+        DumpObject dumpObject = (DumpObject)creator.newInstance(DumpObject.class);
 
         replayControls();
 
@@ -98,14 +98,15 @@ public class TestDumpObject extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testNormal() throws Exception
+    public void testNormal()
+        throws Exception
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle(false);
 
         Creator creator = new Creator();
-        DumpObject dumpObject = (DumpObject) creator.newInstance(DumpObject.class, new Object[]
-        { "object", "a serialized string" });
+        DumpObject dumpObject = (DumpObject)creator.newInstance(DumpObject.class, new Object[] { "object",
+                "a serialized string" });
 
         String expected = contentsOf("Normal.txt");
 
@@ -121,7 +122,7 @@ public class TestDumpObject extends HiveMindTestCase
     private IRequestCycle newCycle(boolean isRewinding)
     {
         MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
+        IRequestCycle cycle = (IRequestCycle)control.getMock();
 
         cycle.isRewinding();
         control.setReturnValue(isRewinding);
@@ -131,6 +132,6 @@ public class TestDumpObject extends HiveMindTestCase
 
     private IMarkupWriter newWriter()
     {
-        return (IMarkupWriter) newMock(IMarkupWriter.class);
+        return (IMarkupWriter)newMock(IMarkupWriter.class);
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,135 +29,119 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.util.ComponentAddress;
 
 /**
- * A component that renders the default column header.
- * 
- * If the current column is sortable, it renders the header as a link.
- * Clicking on the link causes the table to be sorted on that column.
- * Clicking on the link again causes the sorting order to be reversed.
+ * A component that renders the default column header. If the current column is
+ * sortable, it renders the header as a link. Clicking on the link causes the
+ * table to be sorted on that column. Clicking on the link again causes the
+ * sorting order to be reversed.
  * 
  * @author mindbridge
  */
-public abstract class SimpleTableColumnComponent
-	extends BaseComponent
-	implements ITableRendererListener, PageDetachListener
+public abstract class SimpleTableColumnComponent extends BaseComponent implements ITableRendererListener,
+        PageDetachListener
 {
-	// transient
-	private ITableColumn m_objColumn;
-	private ITableModelSource m_objModelSource;
 
-	public SimpleTableColumnComponent()
-	{
-		init();
-	}
+    // transient
+    private ITableColumn m_objColumn;
+    private ITableModelSource m_objModelSource;
 
-	/**
-	 * @see org.apache.tapestry.event.PageDetachListener#pageDetached(PageEvent)
-	 */
-	public void pageDetached(PageEvent arg0)
-	{
-		init();
-	}
-
-	private void init()
-	{
-		m_objColumn = null;
-		m_objModelSource = null;
-	}
-
+    public SimpleTableColumnComponent()
+    {
+        init();
+    }
 
     /**
-     * @see org.apache.tapestry.contrib.table.model.ITableRendererListener#initializeRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
+     * @see org.apache.tapestry.event.PageDetachListener#pageDetached(PageEvent)
      */
-    public void initializeRenderer(
-        IRequestCycle objCycle,
-        ITableModelSource objSource,
-        ITableColumn objColumn,
-        Object objRow)
+    public void pageDetached(PageEvent arg0)
+    {
+        init();
+    }
+
+    private void init()
+    {
+        m_objColumn = null;
+        m_objModelSource = null;
+    }
+
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableRendererListener#initializeRenderer(IRequestCycle,
+     *      ITableModelSource, ITableColumn, Object)
+     */
+    public void initializeRenderer(IRequestCycle objCycle, ITableModelSource objSource, ITableColumn objColumn,
+            Object objRow)
     {
         m_objModelSource = objSource;
         m_objColumn = objColumn;
     }
 
-	public ITableModel getTableModel()
-	{
-		return m_objModelSource.getTableModel();
-	}
+    public ITableModel getTableModel()
+    {
+        return m_objModelSource.getTableModel();
+    }
 
-	public boolean getColumnSorted()
-	{
-		return m_objColumn.getSortable();
-	}
+    public boolean getColumnSorted()
+    {
+        return m_objColumn.getSortable();
+    }
 
-	public String getDisplayName()
-	{
-        if (m_objColumn instanceof SimpleTableColumn) {
-            SimpleTableColumn objSimpleColumn = (SimpleTableColumn) m_objColumn;
-    		return objSimpleColumn.getDisplayName();
+    public String getDisplayName()
+    {
+        if (m_objColumn instanceof SimpleTableColumn)
+        {
+            SimpleTableColumn objSimpleColumn = (SimpleTableColumn)m_objColumn;
+            return objSimpleColumn.getDisplayName();
         }
         return m_objColumn.getColumnName();
-	}
+    }
 
-	public boolean getIsSorted()
-	{
-		ITableSortingState objSortingState = getTableModel().getSortingState();
-		String strSortColumn = objSortingState.getSortColumn();
-		return m_objColumn.getColumnName().equals(strSortColumn);
-	}
+    public boolean getIsSorted()
+    {
+        ITableSortingState objSortingState = getTableModel().getSortingState();
+        String strSortColumn = objSortingState.getSortColumn();
+        return m_objColumn.getColumnName().equals(strSortColumn);
+    }
 
-	public IAsset getSortImage()
-	{
-		IAsset objImageAsset;
+    public IAsset getSortImage()
+    {
+        IAsset objImageAsset;
 
-		IRequestCycle objCycle = getPage().getRequestCycle();
-		ITableSortingState objSortingState = getTableModel().getSortingState();
-		if (objSortingState.getSortOrder()
-			== ITableSortingState.SORT_ASCENDING)
-		{
-			objImageAsset =
-				(IAsset) objCycle.getAttribute(
-					TableColumns.TABLE_COLUMN_ARROW_UP_ATTRIBUTE);
-			if (objImageAsset == null)
-				objImageAsset = getAsset("sortUp");
-		}
-		else
-		{
-			objImageAsset =
-				(IAsset) objCycle.getAttribute(
-					TableColumns.TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE);
-			if (objImageAsset == null)
-				objImageAsset = getAsset("sortDown");
-		}
+        IRequestCycle objCycle = getPage().getRequestCycle();
+        ITableSortingState objSortingState = getTableModel().getSortingState();
+        if (objSortingState.getSortOrder() == ITableSortingState.SORT_ASCENDING)
+        {
+            objImageAsset = (IAsset)objCycle.getAttribute(TableColumns.TABLE_COLUMN_ARROW_UP_ATTRIBUTE);
+            if (objImageAsset == null) objImageAsset = getAsset("sortUp");
+        }
+        else
+        {
+            objImageAsset = (IAsset)objCycle.getAttribute(TableColumns.TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE);
+            if (objImageAsset == null) objImageAsset = getAsset("sortDown");
+        }
 
-		return objImageAsset;
-	}
+        return objImageAsset;
+    }
 
-	public Object[] getColumnSelectedParameters()
-	{
-		return new Object[] {
-			new ComponentAddress(m_objModelSource),
-			m_objColumn.getColumnName()};
-	}
+    public Object[] getColumnSelectedParameters()
+    {
+        return new Object[] { new ComponentAddress(m_objModelSource), m_objColumn.getColumnName() };
+    }
 
-	public void columnSelected(IRequestCycle objCycle)
-	{
-		Object[] arrArgs = objCycle.getListenerParameters();
-		ComponentAddress objAddr = (ComponentAddress) arrArgs[0];
-		String strColumnName = (String) arrArgs[1];
+    public void columnSelected(IRequestCycle objCycle)
+    {
+        Object[] arrArgs = objCycle.getListenerParameters();
+        ComponentAddress objAddr = (ComponentAddress)arrArgs[0];
+        String strColumnName = (String)arrArgs[1];
 
-		ITableModelSource objSource =
-			(ITableModelSource) objAddr.findComponent(objCycle);
-		ITableModel objModel = objSource.getTableModel();
+        ITableModelSource objSource = (ITableModelSource)objAddr.findComponent(objCycle);
+        ITableModel objModel = objSource.getTableModel();
 
-		ITableSortingState objState = objModel.getSortingState();
-		if (strColumnName.equals(objState.getSortColumn()))
-			objState.setSortColumn(strColumnName, !objState.getSortOrder());
-		else
-			objState.setSortColumn(
-				strColumnName,
-				ITableSortingState.SORT_ASCENDING);
+        ITableSortingState objState = objModel.getSortingState();
+        if (strColumnName.equals(objState.getSortColumn()))
+            objState.setSortColumn(strColumnName, !objState.getSortOrder());
+        else objState.setSortColumn(strColumnName, ITableSortingState.SORT_ASCENDING);
 
-		// ensure that the change is saved
-		objSource.fireObservedStateChange();
-	}
+        // ensure that the change is saved
+        objSource.fireObservedStateChange();
+    }
 
 }

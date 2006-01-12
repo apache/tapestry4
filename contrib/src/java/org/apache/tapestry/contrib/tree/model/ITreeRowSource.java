@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,21 +15,22 @@
 package org.apache.tapestry.contrib.tree.model;
 
 /**
- * A Tapestry component that provides the current row value.
- * This interface is used for obtaining the row source by components 
- * wrapped by the row source
+ * A Tapestry component that provides the current row value. This interface is
+ * used for obtaining the row source by components wrapped by the row source
  * 
  * @author tsvetelin
  */
 public interface ITreeRowSource
 {
+
     final static String TREE_ROW_SOURCE_ATTRIBUTE = "org.apache.tapestry.contrib.tree.model.ITreeRowSource";
-    
-	/**
-	 * Method getTreeRow
-	 * @return Object the current tree row object.
-	 */
-	TreeRowObject getTreeRow();
-	//Object getTreeRowNodeUID();
-	//int getTreeNodeDeep();
+
+    /**
+     * Method getTreeRow
+     * 
+     * @return Object the current tree row object.
+     */
+    TreeRowObject getTreeRow();
+    // Object getTreeRowNodeUID();
+    // int getTreeNodeDeep();
 }

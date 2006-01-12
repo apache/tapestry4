@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,60 +23,59 @@ import org.apache.tapestry.contrib.table.model.ITableRendererSource;
 import org.apache.tapestry.util.ComponentAddress;
 
 /**
- * 
  * @author mindbridge
  * @since 2.3
  */
 public class ComponentTableRendererSource implements ITableRendererSource
 {
-	private static final long serialVersionUID = 1L;
-	
-	private ComponentAddress m_objComponentAddress;
 
-	public ComponentTableRendererSource(ITableRendererListener objComponent)
-	{
-		this(new ComponentAddress(objComponent));
-	}
+    private static final long serialVersionUID = 1L;
 
-	public ComponentTableRendererSource(ComponentAddress objComponentAddress)
-	{
-		setComponentAddress(objComponentAddress);
-	}
+    private ComponentAddress m_objComponentAddress;
 
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
-	 */
-	public IRender getRenderer(
-		IRequestCycle objCycle,
-		ITableModelSource objSource,
-		ITableColumn objColumn,
-		Object objRow)
-	{
-		ITableRendererListener objComponent =
-			(ITableRendererListener) getComponentAddress().findComponent(
-				objCycle);
+    public ComponentTableRendererSource(ITableRendererListener objComponent)
+    {
+        this(new ComponentAddress(objComponent));
+    }
 
-		objComponent.initializeRenderer(objCycle, objSource, objColumn, objRow);
+    public ComponentTableRendererSource(ComponentAddress objComponentAddress)
+    {
+        setComponentAddress(objComponentAddress);
+    }
 
-		return objComponent;
-	}
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle,
+     *      ITableModelSource, ITableColumn, Object)
+     */
+    public IRender getRenderer(IRequestCycle objCycle, ITableModelSource objSource, ITableColumn objColumn,
+            Object objRow)
+    {
+        ITableRendererListener objComponent = (ITableRendererListener)getComponentAddress().findComponent(objCycle);
 
-	/**
-	 * Returns the listenerAddress.
-	 * @return ComponentAddress
-	 */
-	public ComponentAddress getComponentAddress()
-	{
-		return m_objComponentAddress;
-	}
+        objComponent.initializeRenderer(objCycle, objSource, objColumn, objRow);
 
-	/**
-	 * Sets the listenerAddress.
-	 * @param listenerAddress The listenerAddress to set
-	 */
-	public void setComponentAddress(ComponentAddress listenerAddress)
-	{
-		m_objComponentAddress = listenerAddress;
-	}
+        return objComponent;
+    }
+
+    /**
+     * Returns the listenerAddress.
+     * 
+     * @return ComponentAddress
+     */
+    public ComponentAddress getComponentAddress()
+    {
+        return m_objComponentAddress;
+    }
+
+    /**
+     * Sets the listenerAddress.
+     * 
+     * @param listenerAddress
+     *            The listenerAddress to set
+     */
+    public void setComponentAddress(ComponentAddress listenerAddress)
+    {
+        m_objComponentAddress = listenerAddress;
+    }
 
 }

@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*
- * Created on Jun 4, 2005
- */
 package org.apache.tapestry.contrib.table.components;
 
 import org.apache.tapestry.contrib.table.model.IAdvancedTableColumn;
@@ -22,8 +19,14 @@ import org.apache.tapestry.contrib.table.model.IAdvancedTableColumnSource;
 import org.apache.tapestry.contrib.table.model.ognl.ExpressionTableColumn;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
+/**
+ * Default implementation of {@link IAdvancedTableColumnSource}.
+ * 
+ * @author mindbridge
+ */
 public class DefaultTableColumnSource implements IAdvancedTableColumnSource
 {
+
     /** @since 4.0 */
     private ExpressionEvaluator _expressionEvaluator;
 
@@ -32,9 +35,10 @@ public class DefaultTableColumnSource implements IAdvancedTableColumnSource
     {
         _expressionEvaluator = expressionEvaluator;
     }
-	
-	public IAdvancedTableColumn generateTableColumn(String strName, String strDisplayName, 
-			boolean bSortable, String strExpression) {
-		return new ExpressionTableColumn(strName, strDisplayName, strExpression, bSortable, _expressionEvaluator);
-	}
+
+    public IAdvancedTableColumn generateTableColumn(String strName, String strDisplayName, boolean bSortable,
+            String strExpression)
+    {
+        return new ExpressionTableColumn(strName, strDisplayName, strExpression, bSortable, _expressionEvaluator);
+    }
 }

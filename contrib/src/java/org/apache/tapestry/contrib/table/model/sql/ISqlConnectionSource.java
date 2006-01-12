@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,11 +18,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * 
  * @author mindbridge
  */
 public interface ISqlConnectionSource
 {
-	Connection obtainConnection() throws SQLException;
-	void returnConnection(Connection objConnection);
+
+    Connection obtainConnection()
+        throws SQLException;
+
+    void returnConnection(Connection objConnection);
 }

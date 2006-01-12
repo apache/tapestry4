@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,15 +23,16 @@ import org.apache.tapestry.contrib.table.model.CTableDataModelEvent;
 import org.apache.tapestry.contrib.table.model.common.AbstractTableDataModel;
 
 /**
- * A minimal set implementation of the 
+ * A minimal set implementation of the
  * {@link org.apache.tapestry.contrib.table.model.ITableDataModel} interface
  * 
  * @author mindbridge
  */
 public class SimpleSetTableDataModel extends AbstractTableDataModel implements Serializable
 {
-	private static final long serialVersionUID = 1L;
-	
+
+    private static final long serialVersionUID = 1L;
+
     private Set m_setRows;
 
     public SimpleSetTableDataModel(Set setRows)
@@ -56,9 +57,10 @@ public class SimpleSetTableDataModel extends AbstractTableDataModel implements S
     }
 
     /**
-     * Method addRow.
-     * Adds a row object to the model at its end
-     * @param objRow the row object to add
+     * Method addRow. Adds a row object to the model at its end
+     * 
+     * @param objRow
+     *            the row object to add
      */
     public void addRow(Object objRow)
     {
@@ -78,9 +80,10 @@ public class SimpleSetTableDataModel extends AbstractTableDataModel implements S
     }
 
     /**
-     * Method removeRow.
-     * Removes a row object from the model
-     * @param objRow the row object to remove
+     * Method removeRow. Removes a row object from the model
+     * 
+     * @param objRow
+     *            the row object to remove
      */
     public void removeRow(Object objRow)
     {

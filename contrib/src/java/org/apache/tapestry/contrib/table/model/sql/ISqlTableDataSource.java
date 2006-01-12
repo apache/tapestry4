@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,15 +20,16 @@ import java.sql.SQLException;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
 
 /**
- * 
  * @author mindbridge
  */
 public interface ISqlTableDataSource
 {
-	int getRowCount() throws SQLException;
-	ResultSet getCurrentRows(
-		SqlTableColumnModel objColumnModel,
-		SimpleTableState objState)
-		throws SQLException;
-	void closeResultSet(ResultSet objResultSet);
+
+    int getRowCount()
+        throws SQLException;
+
+    ResultSet getCurrentRows(SqlTableColumnModel objColumnModel, SimpleTableState objState)
+        throws SQLException;
+
+    void closeResultSet(ResultSet objResultSet);
 }

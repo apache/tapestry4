@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@ package org.apache.tapestry.contrib.inspector;
  * @author Howard Lewis Ship
  */
 
-public class View
+public final class View
 {
+
     /**
-     * View that displays the basic specification information, plus formal and informal parameters
-     * (and related bindings), and assets.
+     * View that displays the basic specification information, plus formal and
+     * informal parameters (and related bindings), and assets.
      */
 
     public static final String SPECIFICATION = "SPECIFICATION";
@@ -36,7 +37,8 @@ public class View
     public static final String TEMPLATE = "TEMPLATE";
 
     /**
-     * View that shows the persistent properties of the page containing the inspected component.
+     * View that shows the persistent properties of the page containing the
+     * inspected component.
      */
 
     public static final String PROPERTIES = "PROPERTIES";
@@ -46,4 +48,10 @@ public class View
      */
 
     public static final String ENGINE = "ENGINE";
+
+    /** @since 4.1 */
+    private View()
+    {
+    }
+
 }
