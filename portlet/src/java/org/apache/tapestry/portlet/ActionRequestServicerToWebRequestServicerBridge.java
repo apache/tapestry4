@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,20 +23,21 @@ import javax.portlet.PortletException;
 import org.apache.tapestry.services.WebRequestServicer;
 
 /**
- * Bridges from the <code>tapestry.portlet.ActionRequestServicerPipeline</code> to the standard
- * <code>tapestry.request.WebRequestServicerPipeline</code>.
+ * Bridges from the <code>tapestry.portlet.ActionRequestServicerPipeline</code>
+ * to the standard <code>tapestry.request.WebRequestServicerPipeline</code>.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class ActionRequestServicerToWebRequestServicerBridge implements ActionRequestServicer
 {
+
     private PortletRequestGlobals _portletRequestGlobals;
 
     private WebRequestServicer _webRequestServicer;
 
-    public void service(ActionRequest request, ActionResponse response) throws IOException,
-            PortletException
+    public void service(ActionRequest request, ActionResponse response)
+        throws IOException, PortletException
     {
         _portletRequestGlobals.store(request, response);
 

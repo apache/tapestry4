@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,13 +24,14 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * One of the two columns in a Palette component: the left column lists available options, the right
- * column lists the selected columns.
+ * One of the two columns in a Palette component: the left column lists
+ * available options, the right column lists the selected columns.
  * 
  * @author Howard Lewis Ship
  */
 public class PaletteColumn implements IRender
 {
+
     private String _name;
 
     private String _clientId;
@@ -39,23 +40,27 @@ public class PaletteColumn implements IRender
 
     private List _options = new ArrayList();
 
+    /** Compares two PaletteOptions by comparing their two values. */
     private static class ValueComparator implements Comparator
     {
+
         public int compare(Object o1, Object o2)
         {
-            PaletteOption option1 = (PaletteOption) o1;
-            PaletteOption option2 = (PaletteOption) o2;
+            PaletteOption option1 = (PaletteOption)o1;
+            PaletteOption option2 = (PaletteOption)o2;
 
             return option1.getValue().compareTo(option2.getValue());
         }
     }
 
+    /** Compares two PaletteOptions by comparing their labels. */
     private static class LabelComparator implements Comparator
     {
+
         public int compare(Object o1, Object o2)
         {
-            PaletteOption option1 = (PaletteOption) o1;
-            PaletteOption option2 = (PaletteOption) o2;
+            PaletteOption option1 = (PaletteOption)o1;
+            PaletteOption option2 = (PaletteOption)o2;
 
             return option1.getLabel().compareTo(option2.getLabel());
         }
@@ -63,9 +68,11 @@ public class PaletteColumn implements IRender
 
     /**
      * @param name
-     *            the name of the column (the name attribute of the &lt;select&gt;)
+     *            the name of the column (the name attribute of the
+     *            &lt;select&gt;)
      * @param rows
-     *            the number of visible rows (the size attribute of the &lt;select&gt;)
+     *            the number of visible rows (the size attribute of the
+     *            &lt;select&gt;)
      */
     public PaletteColumn(String name, String clientId, int rows)
     {
@@ -80,8 +87,9 @@ public class PaletteColumn implements IRender
     }
 
     /**
-     * Sorts the options by value (the hidden value for the option that represents the object
-     * value). This should be invoked before rendering this PaletteColumn.
+     * Sorts the options by value (the hidden value for the option that
+     * represents the object value). This should be invoked before rendering
+     * this PaletteColumn.
      */
     public void sortByValue()
     {
@@ -89,8 +97,8 @@ public class PaletteColumn implements IRender
     }
 
     /**
-     * Sorts the options by the label visible to the user. This should be invoked before rendering
-     * this PaletteColumn.
+     * Sorts the options by the label visible to the user. This should be
+     * invoked before rendering this PaletteColumn.
      */
     public void sortByLabel()
     {
@@ -106,16 +114,15 @@ public class PaletteColumn implements IRender
         writer.attribute("multiple", "multiple");
         writer.attribute("name", _name);
 
-        if (_clientId != null)
-            writer.attribute("id", _clientId);
+        if (_clientId != null) writer.attribute("id", _clientId);
 
         writer.attribute("size", _rows);
         writer.println();
 
         int count = _options.size();
-        for (int i = 0; i < count; i++)
+        for(int i = 0; i < count; i++)
         {
-            PaletteOption o = (PaletteOption) _options.get(i);
+            PaletteOption o = (PaletteOption)_options.get(i);
 
             o.render(writer, cycle);
         }

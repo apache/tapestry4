@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,16 +15,18 @@
 package org.apache.tapestry;
 
 /**
- * Constant values used inside Tapestry. 
- *
+ * Constant values used inside Tapestry.
+ * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public final class Constants
 {
-	/**
-	 * Key used to store and locate an {@link org.apache.tapestry.services.Infrastructure}
-	 * service instance as a request attribute.
-	 */
-	public static final String INFRASTRUCTURE_KEY = "org.apache.tapestry.Infrastructure";
+
+    /**
+     * Key used to store and locate an
+     * {@link org.apache.tapestry.services.Infrastructure} service instance as a
+     * request attribute.
+     */
+    public static final String INFRASTRUCTURE_KEY = "org.apache.tapestry.Infrastructure";
 }

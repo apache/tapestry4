@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -43,10 +43,12 @@ import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.spec.LibrarySpecification;
 
 /**
- * Tests the class {@link org.apache.tapestry.services.impl.ComponentMessagesSourceImpl}.
+ * Tests the class
+ * {@link org.apache.tapestry.services.impl.ComponentMessagesSourceImpl}.
  * <p>
- * TODO: Add tests realted to messages encoding (which can be specified as meta-data on the
- * component specification or, ultimately, in the namespace (library specification).
+ * TODO: Add tests realted to messages encoding (which can be specified as
+ * meta-data on the component specification or, ultimately, in the namespace
+ * (library specification).
  * 
  * @author Howard Lewis Ship
  * @since 2.0.4
@@ -54,8 +56,14 @@ import org.apache.tapestry.spec.LibrarySpecification;
 
 public class TestComponentMessages extends TapestryTestCase
 {
+
+    private static final String MOCK1 = "/org/apache/tapestry/junit/MockPage1.page";
+
+    private static final String MOCK2 = "/org/apache/tapestry/junit/MockPage2.page";
+
     private Location _locationFixture = new Location()
     {
+
         public Resource getResource()
         {
             return null;
@@ -72,6 +80,7 @@ public class TestComponentMessages extends TapestryTestCase
         }
     };
 
+    /** Test fixture. */
     private static class NullComponentPropertySource implements ComponentPropertySource
     {
 
@@ -80,8 +89,7 @@ public class TestComponentMessages extends TapestryTestCase
             return null;
         }
 
-        public String getLocalizedComponentProperty(IComponent component, Locale locale,
-                String propertyName)
+        public String getLocalizedComponentProperty(IComponent component, Locale locale, String propertyName)
         {
             return null;
         }
@@ -91,8 +99,7 @@ public class TestComponentMessages extends TapestryTestCase
             return null;
         }
 
-        public String getLocalizedNamespaceProperty(INamespace namespace, Locale locale,
-                String propertyName)
+        public String getLocalizedNamespaceProperty(INamespace namespace, Locale locale, String propertyName)
         {
             return null;
         }
@@ -105,8 +112,6 @@ public class TestComponentMessages extends TapestryTestCase
         assertEquals("Key " + key, expected, actual);
 
     }
-
-    private static final String MOCK1 = "/org/apache/tapestry/junit/MockPage1.page";
 
     private IComponentSpecification newSpec(String path)
     {
@@ -130,18 +135,18 @@ public class TestComponentMessages extends TapestryTestCase
     }
 
     /**
-     * Mocking up the page is too hard ... the relationship between the component messagess source
-     * and the page is too varied and complex. Instead, we use the tools to create the page itself,
-     * much as the full framework would do at runtime.
+     * Mocking up the page is too hard ... the relationship between the
+     * component messagess source and the page is too varied and complex.
+     * Instead, we use the tools to create the page itself, much as the full
+     * framework would do at runtime.
      */
 
-    private IPage newPage(IComponentSpecification specification, ComponentMessagesSource source,
-            Locale locale)
+    private IPage newPage(IComponentSpecification specification, ComponentMessagesSource source, Locale locale)
     {
         ClassFactory classFactory = new ClassFactoryImpl();
 
-        EnhancementOperationImpl op = new EnhancementOperationImpl(new DefaultClassResolver(),
-                specification, BasePage.class, classFactory, null);
+        EnhancementOperationImpl op = new EnhancementOperationImpl(new DefaultClassResolver(), specification,
+                BasePage.class, classFactory, null);
 
         InjectMessagesWorker injectMessages = new InjectMessagesWorker();
         injectMessages.setComponentMessagesSource(source);
@@ -150,7 +155,7 @@ public class TestComponentMessages extends TapestryTestCase
 
         new InjectSpecificationWorker().performEnhancement(op, specification);
 
-        IPage result = (IPage) op.getConstructor().newInstance();
+        IPage result = (IPage)op.getConstructor().newInstance();
 
         result.setLocale(locale);
         result.setPage(result);
@@ -203,10 +208,7 @@ public class TestComponentMessages extends TapestryTestCase
     {
         Messages messages = createMessages(MOCK1, new Locale("en", "US"));
 
-        check(
-                messages,
-                "component-overrides-namespace",
-                "MOCKPAGE1_BASE.component-overrides-namespace");
+        check(messages, "component-overrides-namespace", "MOCKPAGE1_BASE.component-overrides-namespace");
     }
 
     /** @since 4.0 */
@@ -214,9 +216,7 @@ public class TestComponentMessages extends TapestryTestCase
     {
         Messages messages = createMessages(MOCK1, new Locale("fr"));
 
-        check(
-                messages,
-                "localized-component-overrides-namespace",
+        check(messages, "localized-component-overrides-namespace",
                 "MOCKPAGE1_FR.localized-component-overrides-namespace");
     }
 
@@ -260,11 +260,9 @@ public class TestComponentMessages extends TapestryTestCase
         check(messages, "overwritten-in-variant", "VARIANT1_fr_CD_Foo");
     }
 
-    private static final String MOCK2 = "/org/apache/tapestry/junit/MockPage2.page";
-
     /**
-     * Tests that the code that locates properties files can deal with the base path (i.e.,
-     * Foo.properties) doesn't exist.
+     * Tests that the code that locates properties files can deal with the base
+     * path (i.e., Foo.properties) doesn't exist.
      */
 
     public void testMissingBase()
@@ -275,8 +273,8 @@ public class TestComponentMessages extends TapestryTestCase
     }
 
     /**
-     * Tests that naming and search works correctly for locales that specify language and variant,
-     * but no country.
+     * Tests that naming and search works correctly for locales that specify
+     * language and variant, but no country.
      */
 
     public void testMissingCountry()

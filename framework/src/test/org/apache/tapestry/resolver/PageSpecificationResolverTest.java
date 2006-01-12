@@ -38,6 +38,7 @@ import org.apache.tapestry.spec.ILibrarySpecification;
  */
 public class PageSpecificationResolverTest extends AbstractSpecificationResolverTestCase
 {
+    /** Test fixture. */
     private static class MockApplicationNamespace implements INamespace
     {
         String _pageName;

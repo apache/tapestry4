@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,45 +26,47 @@ import org.apache.tapestry.contrib.table.model.ITableSortingState;
  */
 public class SimpleTableState implements Serializable
 {
-	private static final long serialVersionUID = 1L;
-	
-	private ITablePagingState m_objPagingState;
-	private ITableSortingState m_objSortingState;
 
-	public SimpleTableState()
-	{
-		this(new SimpleTablePagingState(), new SimpleTableSortingState());
-	}
+    private static final long serialVersionUID = 1L;
 
-	public SimpleTableState(
-		ITablePagingState objPagingState,
-		ITableSortingState objSortingState)
-	{
-		m_objPagingState = objPagingState;
-		m_objSortingState = objSortingState;
-	}
+    private ITablePagingState m_objPagingState;
+    private ITableSortingState m_objSortingState;
 
-	public SimpleTableState(int nPageSize, int nCurrentPage, String strSortColumn, boolean bSortOrder) {
-		this(new SimpleTablePagingState(nPageSize, nCurrentPage), 
-				new SimpleTableSortingState(strSortColumn, bSortOrder));
-	}
-	
-	/**
-	 * Returns the pagingState.
-	 * @return ITablePagingState
-	 */
-	public ITablePagingState getPagingState()
-	{
-		return m_objPagingState;
-	}
+    public SimpleTableState()
+    {
+        this(new SimpleTablePagingState(), new SimpleTableSortingState());
+    }
 
-	/**
-	 * Returns the sortingState.
-	 * @return ITableSortingState
-	 */
-	public ITableSortingState getSortingState()
-	{
-		return m_objSortingState;
-	}
+    public SimpleTableState(ITablePagingState objPagingState, ITableSortingState objSortingState)
+    {
+        m_objPagingState = objPagingState;
+        m_objSortingState = objSortingState;
+    }
+
+    public SimpleTableState(int nPageSize, int nCurrentPage, String strSortColumn, boolean bSortOrder)
+    {
+        this(new SimpleTablePagingState(nPageSize, nCurrentPage),
+                new SimpleTableSortingState(strSortColumn, bSortOrder));
+    }
+
+    /**
+     * Returns the pagingState.
+     * 
+     * @return ITablePagingState
+     */
+    public ITablePagingState getPagingState()
+    {
+        return m_objPagingState;
+    }
+
+    /**
+     * Returns the sortingState.
+     * 
+     * @return ITableSortingState
+     */
+    public ITableSortingState getSortingState()
+    {
+        return m_objSortingState;
+    }
 
 }

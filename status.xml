@@ -55,7 +55,7 @@
     -->
   </todo>
   <changes>
-    <release version="5.0.0" date="unreleased">
+    <release version="4.1.0" date="unreleased">
       <action type="update" dev="JK" >Cleaned up warnings/imports showing on eclipse problem pane.</action>
       <action type="add" dev="JK" fixes-bug="TAPESTRY-821">ResourceMatcher service added with configurable regexp pattern 
       hivemind contributions to conditionally allow some resources to not
@@ -64,6 +64,7 @@
       Added japanese localized validator strings.
       </action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-787">Port late bug fixes from 4.0 branch to trunk</action>
+      <action type="update" dev="HLS">Add a checkstyle configuration for the project, and fix a number of related warnings and errors</action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>

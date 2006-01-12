@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,30 +23,33 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * The ComponentAddress class contains the path to a component, allowing it to locate an instance of
- * that component in a different {@link org.apache.tapestry.IRequestCycle}.
+ * The ComponentAddress class contains the path to a component, allowing it to
+ * locate an instance of that component in a different
+ * {@link org.apache.tapestry.IRequestCycle}.
  * <p>
- * This class needs to be used mostly when working with components accessed via the
- * {@link org.apache.tapestry.IRender}interface. It allows those components to serialize and pass
- * as a service parameter information about what component they have to talk to if control returns
- * back to them.
+ * This class needs to be used mostly when working with components accessed via
+ * the {@link org.apache.tapestry.IRender}interface. It allows those components
+ * to serialize and pass as a service parameter information about what component
+ * they have to talk to if control returns back to them.
  * <p>
- * This situation often occurs when the component used via IRender contains Direct or Action links.
+ * This situation often occurs when the component used via IRender contains
+ * Direct or Action links.
  * 
  * @author mindbridge
  * @since 2.2
  */
 public class ComponentAddress implements Serializable
 {
+
     private static final long serialVersionUID = 533068199722072804L;
 
-	private String _pageName;
+    private String _pageName;
 
     private String _idPath;
 
     /**
-     * Creates a new ComponentAddress object that carries the identification information of the
-     * given component (the page name and the ID path).
+     * Creates a new ComponentAddress object that carries the identification
+     * information of the given component (the page name and the ID path).
      * 
      * @param component
      *            the component to get the address of
@@ -73,8 +76,8 @@ public class ComponentAddress implements Serializable
     }
 
     /**
-     * Creates a new ComponentAddress using the given Page Name and ID Path relative on the provided
-     * Namespace
+     * Creates a new ComponentAddress using the given Page Name and ID Path
+     * relative on the provided Namespace
      * 
      * @param namespace
      *            the namespace of the page that contains the component
@@ -93,7 +96,8 @@ public class ComponentAddress implements Serializable
      * 
      * @param cycle
      *            the RequestCycle to use to locate the component
-     * @return IComponent a component that has been initialized for the given RequestCycle
+     * @return IComponent a component that has been initialized for the given
+     *         RequestCycle
      */
     public IComponent findComponent(IRequestCycle cycle)
     {
@@ -104,8 +108,8 @@ public class ComponentAddress implements Serializable
     /**
      * Returns the idPath of the component.
      * 
-     * @return String the ID path of the component, or null if the address references a page, not a
-     *         component within a page.
+     * @return String the ID path of the component, or null if the address
+     *         references a page, not a component within a page.
      */
     public String getIdPath()
     {
@@ -128,8 +132,7 @@ public class ComponentAddress implements Serializable
     public int hashCode()
     {
         int hash = _pageName.hashCode() * 31;
-        if (_idPath != null)
-            hash += _idPath.hashCode();
+        if (_idPath != null) hash += _idPath.hashCode();
         return hash;
     }
 
@@ -138,15 +141,12 @@ public class ComponentAddress implements Serializable
      */
     public boolean equals(Object obj)
     {
-        if (!(obj instanceof ComponentAddress))
-            return false;
+        if (!(obj instanceof ComponentAddress)) return false;
 
-        if (obj == this)
-            return true;
+        if (obj == this) return true;
 
-        ComponentAddress objAddress = (ComponentAddress) obj;
-        if (!getPageName().equals(objAddress.getPageName()))
-            return false;
+        ComponentAddress objAddress = (ComponentAddress)obj;
+        if (!getPageName().equals(objAddress.getPageName())) return false;
 
         String idPath1 = getIdPath();
         String idPath2 = objAddress.getIdPath();

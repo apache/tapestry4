@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.apache.tapestry.StaleSessionException;
  */
 public interface StaleSessionExceptionPresenter
 {
+
     /**
      * Reports the stale session exception.
      * 
@@ -35,6 +36,6 @@ public interface StaleSessionExceptionPresenter
      * @param cause
      *            the exception that was caught
      */
-    public void presentStaleSessionException(IRequestCycle cycle, StaleSessionException cause)
-            throws IOException;
+    void presentStaleSessionException(IRequestCycle cycle, StaleSessionException cause)
+        throws IOException;
 }

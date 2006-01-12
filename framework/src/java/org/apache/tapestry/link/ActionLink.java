@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,8 +24,9 @@ import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.listener.ListenerInvoker;
 
 /**
- * A component for creating a link that is handled using the action service. [ <a
- * href="../../../../../ComponentReference/ActionLink.html">Component Reference </a>]
+ * A component for creating a link that is handled using the action service. [
+ * <a href="../../../../../ComponentReference/ActionLink.html">Component
+ * Reference </a>]
  * 
  * @author Howard Lewis Ship
  * @deprecated To be removed in 4.1
@@ -33,14 +34,16 @@ import org.apache.tapestry.listener.ListenerInvoker;
 
 public abstract class ActionLink extends AbstractLinkComponent implements IAction
 {
+
     public abstract boolean isStateful();
 
     /**
-     * Returns true if the stateful parameter is bound to a true value. If stateful is not bound,
-     * also returns the default, true.
+     * Returns true if the stateful parameter is bound to a true value. If
+     * stateful is not bound, also returns the default, true.
      * <p>
-     * Note that this method can be called when the component is not rendering, therefore it must
-     * directly access the {@link IBinding}for the stateful parameter.
+     * Note that this method can be called when the component is not rendering,
+     * therefore it must directly access the {@link IBinding}for the stateful
+     * parameter.
      */
 
     public boolean getRequiresSession()

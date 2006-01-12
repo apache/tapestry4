@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,17 +32,17 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class AbstractSpecificationResolverTestCase extends HiveMindTestCase
-{
+public abstract class AbstractSpecificationResolverTestCase extends
+        HiveMindTestCase {
 
     protected IComponentSpecification newSpecification()
     {
-        return (IComponentSpecification) newMock(IComponentSpecification.class);
+        return (IComponentSpecification)newMock(IComponentSpecification.class);
     }
 
     protected IRequestCycle newCycle()
     {
-        return (IRequestCycle) newMock(IRequestCycle.class);
+        return (IRequestCycle)newMock(IRequestCycle.class);
     }
 
     protected URL newURL(String file)
@@ -53,7 +53,7 @@ public abstract class AbstractSpecificationResolverTestCase extends HiveMindTest
     protected Resource newResource(URL url)
     {
         MockControl control = newControl(Resource.class);
-        Resource resource = (Resource) control.getMock();
+        Resource resource = (Resource)control.getMock();
 
         resource.getResourceURL();
         control.setReturnValue(url);
@@ -76,44 +76,51 @@ public abstract class AbstractSpecificationResolverTestCase extends HiveMindTest
 
     protected Log newLog()
     {
-        return (Log) newMock(Log.class);
+        return (Log)newMock(Log.class);
     }
 
     protected INamespace newNamespace()
     {
-        return (INamespace) newMock(INamespace.class);
+        return (INamespace)newMock(INamespace.class);
     }
 
     protected ISpecificationSource newSource()
     {
-        return (ISpecificationSource) newMock(ISpecificationSource.class);
+        return (ISpecificationSource)newMock(ISpecificationSource.class);
     }
 
-    protected void trainContainsPage(INamespace namespace, String pageName, boolean containsPage)
+    protected void trainContainsPage(INamespace namespace, String pageName,
+            boolean containsPage)
     {
         namespace.containsPage(pageName);
         setReturnValue(namespace, containsPage);
     }
 
-    protected void trainFindPageSpecification(ISpecificationResolverDelegate delegate, IRequestCycle cycle, INamespace application, String pageName, IComponentSpecification spec)
+    protected void trainFindPageSpecification(
+            ISpecificationResolverDelegate delegate, IRequestCycle cycle,
+            INamespace application, String pageName,
+            IComponentSpecification spec)
     {
         delegate.findPageSpecification(cycle, application, pageName);
         setReturnValue(delegate, spec);
     }
 
-    protected void trainGetApplicationNamespace(ISpecificationSource source, INamespace application)
+    protected void trainGetApplicationNamespace(ISpecificationSource source,
+            INamespace application)
     {
         source.getApplicationNamespace();
         setReturnValue(source, application);
     }
 
-    protected void trainGetChildNamespace(INamespace child, String name, INamespace application)
+    protected void trainGetChildNamespace(INamespace child, String name,
+            INamespace application)
     {
         application.getChildNamespace(name);
         setReturnValue(application, child);
     }
 
-    protected void trainGetFrameworkNamespace(ISpecificationSource source, INamespace framework)
+    protected void trainGetFrameworkNamespace(ISpecificationSource source,
+            INamespace framework)
     {
         source.getFrameworkNamespace();
         setReturnValue(source, framework);
@@ -125,19 +132,22 @@ public abstract class AbstractSpecificationResolverTestCase extends HiveMindTest
         setReturnValue(namespace, namespaceId);
     }
 
-    protected void trainGetSpecificationLocation(INamespace namespace, Resource resource)
+    protected void trainGetSpecificationLocation(INamespace namespace,
+            Resource resource)
     {
         namespace.getSpecificationLocation();
         setReturnValue(namespace, resource);
     }
 
-    protected void trainGetSpecificationLocation(INamespace namespace, Resource root, String path)
+    protected void trainGetSpecificationLocation(INamespace namespace,
+            Resource root, String path)
     {
         namespace.getSpecificationLocation();
         setReturnValue(namespace, root.getRelativeResource(path));
     }
 
-    protected void trainIsApplicationNamespace(INamespace namespace, boolean isApplicationNamespace)
+    protected void trainIsApplicationNamespace(INamespace namespace,
+            boolean isApplicationNamespace)
     {
         namespace.isApplicationNamespace();
         setReturnValue(namespace, isApplicationNamespace);
@@ -148,5 +158,4 @@ public abstract class AbstractSpecificationResolverTestCase extends HiveMindTest
         log.isDebugEnabled();
         setReturnValue(log, isDebugEnabled);
     }
-
 }

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,9 +21,6 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.valid.DateValidator;
-import org.apache.tapestry.valid.ValidationConstraint;
-import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Tests the {@link DateValidator}class.
@@ -34,6 +31,7 @@ import org.apache.tapestry.valid.ValidatorException;
 
 public class TestDateValidator extends BaseValidatorTestCase
 {
+
     private Calendar calendar = new GregorianCalendar();
 
     private DateValidator v = new DateValidator();
@@ -65,8 +63,7 @@ public class TestDateValidator extends BaseValidatorTestCase
 
     public void testToStringFormat()
     {
-        if (IS_JDK13)
-            return;
+        if (IS_JDK13) return;
 
         DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, Locale.GERMAN);
 
@@ -77,7 +74,8 @@ public class TestDateValidator extends BaseValidatorTestCase
         assertEquals("Result.", "08.12.01", out);
     }
 
-    public void testToObjectNull() throws ValidatorException
+    public void testToObjectNull()
+        throws ValidatorException
     {
         IFormComponent field = newField();
 
@@ -90,7 +88,8 @@ public class TestDateValidator extends BaseValidatorTestCase
         verifyControls();
     }
 
-    public void testToObjectEmpty() throws ValidatorException
+    public void testToObjectEmpty()
+        throws ValidatorException
     {
         IFormComponent field = newField();
 
@@ -117,8 +116,7 @@ public class TestDateValidator extends BaseValidatorTestCase
         }
         catch (ValidatorException ex)
         {
-            assertEquals("Invalid date format for badDatesIndy.  Format is MM/dd/yyyy.", ex
-                    .getMessage());
+            assertEquals("Invalid date format for badDatesIndy.  Format is MM/dd/yyyy.", ex.getMessage());
             assertEquals(ValidationConstraint.DATE_FORMAT, ex.getConstraint());
         }
 
@@ -149,10 +147,10 @@ public class TestDateValidator extends BaseValidatorTestCase
         verifyControls();
     }
 
-    public void testToObjectFormat() throws ValidatorException
+    public void testToObjectFormat()
+        throws ValidatorException
     {
-        if (IS_JDK13)
-            return;
+        if (IS_JDK13) return;
 
         DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, Locale.GERMAN);
 
@@ -209,7 +207,8 @@ public class TestDateValidator extends BaseValidatorTestCase
         verifyControls();
     }
 
-    public void testToObjectMinimumNull() throws ValidatorException
+    public void testToObjectMinimumNull()
+        throws ValidatorException
     {
         v.setMinimum(buildDate(Calendar.DECEMBER, 24, 2001));
 
@@ -256,14 +255,14 @@ public class TestDateValidator extends BaseValidatorTestCase
         }
         catch (ValidatorException ex)
         {
-            assertEquals("Try again with a date before Dec 24 2001 in toObjectMaximum.", ex
-                    .getMessage());
+            assertEquals("Try again with a date before Dec 24 2001 in toObjectMaximum.", ex.getMessage());
         }
 
         verifyControls();
     }
 
-    public void testToObjectMaximumNull() throws ValidatorException
+    public void testToObjectMaximumNull()
+        throws ValidatorException
     {
         v.setMaximum(buildDate(Calendar.DECEMBER, 24, 2001));
 

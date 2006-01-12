@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,13 +17,14 @@ package org.apache.tapestry.util;
 import junit.framework.TestCase;
 
 /**
- * Tests for {@link org.apache.tapestry.util.ObjectIdentityMap}
+ * Tests for {@link org.apache.tapestry.util.ObjectIdentityMap}.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public class TestObjectIdentityMap extends TestCase
 {
+
     public void testGetNotFound()
     {
         ObjectIdentityMap map = new ObjectIdentityMap();
@@ -72,7 +73,7 @@ public class TestObjectIdentityMap extends TestCase
         Object[] keys = new Object[count];
         Object[] values = new Object[count];
 
-        for (int i = 0; i < count; i++)
+        for(int i = 0; i < count; i++)
         {
             keys[i] = new Object();
             values[i] = new Object();
@@ -80,7 +81,7 @@ public class TestObjectIdentityMap extends TestCase
             map.put(keys[i], values[i]);
         }
 
-        for (int i = 0; i < count; i++)
+        for(int i = 0; i < count; i++)
         {
             assertSame(values[i], map.get(keys[i]));
         }

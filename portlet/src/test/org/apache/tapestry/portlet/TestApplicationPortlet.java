@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,8 +33,11 @@ import org.easymock.MockControl;
  */
 public class TestApplicationPortlet extends HiveMindTestCase
 {
+
+    /** Test fixture. */
     public static class ApplicationPortletFixture extends ApplicationPortlet
     {
+
         private final Registry _constructRegistry;
 
         public ApplicationPortletFixture(Registry registry)
@@ -50,28 +53,26 @@ public class TestApplicationPortlet extends HiveMindTestCase
 
     private PortletApplicationInitializer newInitializer()
     {
-        return (PortletApplicationInitializer) newMock(PortletApplicationInitializer.class);
+        return (PortletApplicationInitializer)newMock(PortletApplicationInitializer.class);
     }
 
     private ActionRequestServicer newActionRequestServicer()
     {
-        return (ActionRequestServicer) newMock(ActionRequestServicer.class);
+        return (ActionRequestServicer)newMock(ActionRequestServicer.class);
     }
 
     private RenderRequestServicer newRenderRequestServicer()
     {
-        return (RenderRequestServicer) newMock(RenderRequestServicer.class);
+        return (RenderRequestServicer)newMock(RenderRequestServicer.class);
     }
 
     private Registry newRegistry(PortletApplicationInitializer initializer,
             ActionRequestServicer actionRequestServicer, RenderRequestServicer renderRequestServicer)
     {
         MockControl control = newControl(Registry.class);
-        Registry registry = (Registry) control.getMock();
+        Registry registry = (Registry)control.getMock();
 
-        registry.getService(
-                "tapestry.portlet.PortletApplicationInitializer",
-                PortletApplicationInitializer.class);
+        registry.getService("tapestry.portlet.PortletApplicationInitializer", PortletApplicationInitializer.class);
         control.setReturnValue(initializer);
 
         registry.getService("tapestry.portlet.ActionRequestServicer", ActionRequestServicer.class);
@@ -85,38 +86,39 @@ public class TestApplicationPortlet extends HiveMindTestCase
 
     private PortletConfig newConfig()
     {
-        return (PortletConfig) newMock(PortletConfig.class);
+        return (PortletConfig)newMock(PortletConfig.class);
     }
 
     private ActionRequest newActionRequest()
     {
-        return (ActionRequest) newMock(ActionRequest.class);
+        return (ActionRequest)newMock(ActionRequest.class);
     }
 
     private ActionResponse newActionResponse()
     {
-        return (ActionResponse) newMock(ActionResponse.class);
+        return (ActionResponse)newMock(ActionResponse.class);
     }
 
     private RenderRequest newRenderRequest()
     {
-        return (RenderRequest) newMock(RenderRequest.class);
+        return (RenderRequest)newMock(RenderRequest.class);
     }
 
     private RenderResponse newRenderResponse()
     {
-        return (RenderResponse) newMock(RenderResponse.class);
+        return (RenderResponse)newMock(RenderResponse.class);
     }
 
-    public void testParseOptionalDescriptors() throws Exception
+    public void testParseOptionalDescriptors()
+        throws Exception
     {
         MockControl configc = MockControl.createControl(PortletConfig.class);
         addControl(configc);
-        PortletConfig config = (PortletConfig) configc.getMock();
+        PortletConfig config = (PortletConfig)configc.getMock();
 
         MockControl contextc = MockControl.createControl(PortletContext.class);
         addControl(contextc);
-        PortletContext context = (PortletContext) contextc.getMock();
+        PortletContext context = (PortletContext)contextc.getMock();
 
         config.getPortletName();
         configc.setReturnValue("myportlet", 3);
@@ -153,7 +155,8 @@ public class TestApplicationPortlet extends HiveMindTestCase
         assertEquals("parsed", ap._registry.expandSymbols("${module-plain}", null));
     }
 
-    public void testInitAndDestroy() throws Exception
+    public void testInitAndDestroy()
+        throws Exception
     {
         PortletApplicationInitializer initializer = newInitializer();
         ActionRequestServicer actionRequestServicer = newActionRequestServicer();
@@ -181,7 +184,8 @@ public class TestApplicationPortlet extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testProcessAction() throws Exception
+    public void testProcessAction()
+        throws Exception
     {
         PortletApplicationInitializer initializer = newInitializer();
         ActionRequestServicer actionRequestServicer = newActionRequestServicer();
@@ -205,7 +209,7 @@ public class TestApplicationPortlet extends HiveMindTestCase
         ActionResponse response = newActionResponse();
 
         registry.setupThread();
-        
+
         actionRequestServicer.service(request, response);
 
         registry.cleanupThread();
@@ -217,7 +221,8 @@ public class TestApplicationPortlet extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testProcessRender() throws Exception
+    public void testProcessRender()
+        throws Exception
     {
         PortletApplicationInitializer initializer = newInitializer();
         ActionRequestServicer actionRequestServicer = newActionRequestServicer();
@@ -241,7 +246,7 @@ public class TestApplicationPortlet extends HiveMindTestCase
         RenderResponse response = newRenderResponse();
 
         registry.setupThread();
-        
+
         renderRequestServicer.service(request, response);
 
         registry.cleanupThread();

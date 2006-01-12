@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ import org.apache.tapestry.util.io.SqueezeAdaptor;
 
 public class TestDataSqueezer extends TestCase
 {
+
     private DataSqueezerImpl ds = DataSqueezerUtil.createUnitTestSqueezer();
 
     public TestDataSqueezer(String name)
@@ -82,9 +83,9 @@ public class TestDataSqueezer extends TestCase
 
     public void testByte()
     {
-        attempt(new Byte((byte) 0), "b0");
-        attempt(new Byte((byte) -5), "b-5");
-        attempt(new Byte((byte) 72), "b72");
+        attempt(new Byte((byte)0), "b0");
+        attempt(new Byte((byte)-5), "b-5");
+        attempt(new Byte((byte)72), "b72");
     }
 
     public void testFloat()
@@ -111,15 +112,15 @@ public class TestDataSqueezer extends TestCase
     public void testLong()
     {
         attempt(new Long(0), "l0");
-        attempt(new Long(800400300l), "l800400300");
-        attempt(new Long(-987654321l), "l-987654321");
+        attempt(new Long(800400300L), "l800400300");
+        attempt(new Long(-987654321L), "l-987654321");
     }
 
     public void testShort()
     {
-        attempt(new Short((short) 0), "s0");
-        attempt(new Short((short) -10), "s-10");
-        attempt(new Short((short) 57), "s57");
+        attempt(new Short((short)0), "s0");
+        attempt(new Short((short)-10), "s-10");
+        attempt(new Short((short)57), "s57");
     }
 
     /** @since 2.2 * */
@@ -139,8 +140,7 @@ public class TestDataSqueezer extends TestCase
 
     public void testComponentAddress()
     {
-        ComponentAddress objAddress = new ComponentAddress("framework:DirectLink",
-                "component.subcomponent");
+        ComponentAddress objAddress = new ComponentAddress("framework:DirectLink", "component.subcomponent");
         attempt(objAddress, "Aframework:DirectLink,component.subcomponent");
 
         objAddress = new ComponentAddress("framework:DirectLink", null);
@@ -149,8 +149,7 @@ public class TestDataSqueezer extends TestCase
 
     public void testArray()
     {
-        Object[] input =
-        { new Short((short) -82), "Time to encode an array.", new Long(38383833273789l), null,
+        Object[] input = { new Short((short)-82), "Time to encode an array.", new Long(38383833273789L), null,
                 Boolean.TRUE, new Double(22. / 7.) };
 
         String[] encoded = ds.squeeze(input);
@@ -161,7 +160,7 @@ public class TestDataSqueezer extends TestCase
 
         assertEquals("Output array length.", input.length, output.length);
 
-        for (int i = 0; i < input.length; i++)
+        for(int i = 0; i < input.length; i++)
         {
             assertEquals(input[i], output[i]);
         }
@@ -201,14 +200,15 @@ public class TestDataSqueezer extends TestCase
 
         map.put("alpha", Boolean.TRUE);
         map.put("beta", new StringHolder("FredFlintstone"));
-        map.put("gamma", new BigDecimal(
-                "2590742358742358972.234592348957230948578975248972390857490725"));
+        map.put("gamma", new BigDecimal("2590742358742358972.234592348957230948578975248972390857490725"));
 
-        attempt((Serializable) map, ds);
+        attempt((Serializable)map, ds);
     }
 
+    /** Test fixture. */
     public static class BooleanHolder
     {
+
         private boolean value;
 
         public BooleanHolder()
@@ -232,30 +232,29 @@ public class TestDataSqueezer extends TestCase
 
         public boolean equals(Object other)
         {
-            if (other == null)
-                return false;
+            if (other == null) return false;
 
-            if (this == other)
-                return true;
+            if (this == other) return true;
 
-            if (!(other instanceof BooleanHolder))
-                return false;
+            if (!(other instanceof BooleanHolder)) return false;
 
-            BooleanHolder otherHolder = (BooleanHolder) other;
+            BooleanHolder otherHolder = (BooleanHolder)other;
 
             return value == otherHolder.value;
         }
     }
 
+    /** Test fixture. */
     public static class BHSqueezer implements SqueezeAdaptor
     {
-        private final String prefix_;
-
-        private final Class dataClass_;
 
         private static final String TRUE = "BT";
 
         private static final String FALSE = "BF";
+
+        private final String _prefix;
+
+        private final Class _dataClass;
 
         public BHSqueezer()
         {
@@ -269,34 +268,32 @@ public class TestDataSqueezer extends TestCase
 
         public BHSqueezer(String prefix, Class dataClass)
         {
-            prefix_ = prefix;
-            dataClass_ = dataClass;
+            _prefix = prefix;
+            _dataClass = dataClass;
         }
 
         public String getPrefix()
         {
-            return prefix_;
+            return _prefix;
         }
 
         public Class getDataClass()
         {
-            return dataClass_;
+            return _dataClass;
         }
 
         public String squeeze(DataSqueezer squeezer, Object data)
         {
-            BooleanHolder h = (BooleanHolder) data;
+            BooleanHolder h = (BooleanHolder)data;
 
             return h.getValue() ? TRUE : FALSE;
         }
 
         public Object unsqueeze(DataSqueezer squeezer, String string)
         {
-            if (string.equals(TRUE))
-                return new BooleanHolder(true);
+            if (string.equals(TRUE)) return new BooleanHolder(true);
 
-            if (string.equals(FALSE))
-                return new BooleanHolder(false);
+            if (string.equals(FALSE)) return new BooleanHolder(false);
 
             throw new ApplicationRuntimeException("Unexpected value.");
         }
@@ -379,12 +376,12 @@ public class TestDataSqueezer extends TestCase
         }
     }
 
-    public void testClassLoader() throws Exception
+    public void testClassLoader()
+        throws Exception
     {
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
         File projectRoot = new File(tempDir, "jakarta-tapestry");
-        File springJAR = new File(projectRoot,
-                "tapestry/target/module-lib/test-subject/spring/spring-1.1.jar");
+        File springJAR = new File(projectRoot, "tapestry/target/module-lib/test-subject/spring/spring-1.1.jar");
 
         if (!springJAR.exists())
             throw new RuntimeException("File " + springJAR
@@ -393,11 +390,9 @@ public class TestDataSqueezer extends TestCase
         ClassResolver resolver = newClassResolver(springJAR);
 
         Class propertyValueClass = resolver.findClass("org.springframework.beans.PropertyValue");
-        Constructor constructor = propertyValueClass.getConstructor(new Class[]
-        { String.class, Object.class });
+        Constructor constructor = propertyValueClass.getConstructor(new Class[] { String.class, Object.class });
 
-        Serializable instance = (Serializable) constructor.newInstance(new Object[]
-        { "fred", "flintstone" });
+        Serializable instance = (Serializable)constructor.newInstance(new Object[] { "fred", "flintstone" });
 
         assertEquals("fred", PropertyUtils.read(instance, "name"));
         assertEquals("flintstone", PropertyUtils.read(instance, "value"));
@@ -419,10 +414,10 @@ public class TestDataSqueezer extends TestCase
         assertEquals("flintstone", PropertyUtils.read(output, "value"));
     }
 
-    private ClassResolver newClassResolver(File jarFile) throws Exception
+    private ClassResolver newClassResolver(File jarFile)
+        throws Exception
     {
-        URLClassLoader classLoader = new URLClassLoader(new URL[]
-        { jarFile.toURL() });
+        URLClassLoader classLoader = new URLClassLoader(new URL[] { jarFile.toURL() });
 
         return new DefaultClassResolver(classLoader);
 

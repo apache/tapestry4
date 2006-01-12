@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,10 +20,15 @@ import org.apache.tapestry.util.ComponentAddress;
 
 /**
  * @author ceco
-  */
-public interface ITreeComponent {
-	ComponentAddress getComponentPath();
-	ITreeModelSource getTreeModelSource();
-	ITreeRowSource getTreeRowSource();
-	void resetState();
+ */
+public interface ITreeComponent
+{
+
+    ComponentAddress getComponentPath();
+
+    ITreeModelSource getTreeModelSource();
+
+    ITreeRowSource getTreeRowSource();
+
+    void resetState();
 }

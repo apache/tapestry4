@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.contrib.table.components;
 
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.tapestry.IComponent;
@@ -22,39 +23,45 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TableMessages
+public final class TableMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(TableMessages.class);
+
+    private static final Messages MESSAGES = new MessageFormatter(TableMessages.class);
+
+    /** @since 4.1 */
+    private TableMessages()
+    {
+    }
 
     static String notAColumn(IComponent component, String expression)
     {
-        return _formatter.format("not-a-column", component.getExtendedId(), expression);
+        return MESSAGES.format("not-a-column", component.getExtendedId(), expression);
     }
 
     static String invalidTableSource(IComponent component, Object sourceValue)
     {
-        return _formatter.format("invalid-table-source", component.getExtendedId(), ClassFabUtils
+        return MESSAGES.format("invalid-table-source", component.getExtendedId(), ClassFabUtils
                 .getJavaClassName(sourceValue.getClass()));
     }
 
     static String invalidTableColumns(IComponent component, Object columnSource)
     {
-        return _formatter.format("invalid-table-column", component.getExtendedId(), ClassFabUtils
+        return MESSAGES.format("invalid-table-column", component.getExtendedId(), ClassFabUtils
                 .getJavaClassName(columnSource.getClass()));
     }
 
     static String missingTableModel(IComponent component)
     {
-        return _formatter.format("missing-table-model", component.getExtendedId());
+        return MESSAGES.format("missing-table-model", component.getExtendedId());
     }
 
     static String columnsOnlyPlease(IComponent component)
     {
-        return _formatter.format("columns-only-please", component.getExtendedId());
+        return MESSAGES.format("columns-only-please", component.getExtendedId());
     }
 
     public static String invalidTableStateFormat(String value)
     {
-        return _formatter.format("invalid-table-state-format", value);
+        return MESSAGES.format("invalid-table-state-format", value);
     }
 }

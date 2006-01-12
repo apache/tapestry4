@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,33 +23,36 @@ import org.apache.tapestry.web.WebActivator;
 import org.apache.tapestry.web.WebContext;
 
 /**
- * A "global" holder for various services and configurations. In many cases, these values end up as
- * properties of the {@link org.apache.tapestry.services.Infrastructure}. The servlet and portlet
- * implementations differentiate themselves by storing different values into these properties.
+ * A "global" holder for various services and configurations. In many cases,
+ * these values end up as properties of the
+ * {@link org.apache.tapestry.services.Infrastructure}. The servlet and portlet
+ * implementations differentiate themselves by storing different values into
+ * these properties.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public interface ApplicationGlobals
 {
-    /**
-     * Invoked by the (indirectly) by the servlet at init(), after parsing the application
-     * specification.
-     */
-    public void storeActivator(WebActivator activator);
-
-    public void storeSpecification(IApplicationSpecification applicationSpecification);
 
     /**
-     * Invoked (indirectly) by the servlet at init().
+     * Invoked by the (indirectly) by the servlet at init(), after parsing the
+     * application specification.
      */
-    public void storeServletContext(ServletContext context);
+    void storeActivator(WebActivator activator);
+
+    void storeSpecification(IApplicationSpecification applicationSpecification);
 
     /**
      * Invoked (indirectly) by the servlet at init().
      */
+    void storeServletContext(ServletContext context);
 
-    public void storeWebContext(WebContext context);
+    /**
+     * Invoked (indirectly) by the servlet at init().
+     */
+
+    void storeWebContext(WebContext context);
 
     /**
      * Returns the previously stored context.
@@ -57,35 +60,36 @@ public interface ApplicationGlobals
      * @see #store(WebContext)}.
      */
 
-    public WebContext getWebContext();
+    WebContext getWebContext();
 
     /**
      * Returns the previously stored context.
      * 
      * @see #storeServletContext(ServletContext)
      */
-    public ServletContext getServletContext();
+    ServletContext getServletContext();
 
-    public WebActivator getActivator();
+    WebActivator getActivator();
 
-    public IApplicationSpecification getSpecification();
+    IApplicationSpecification getSpecification();
 
-    public String getActivatorName();
+    String getActivatorName();
 
     /**
-     * Stores the default set of engine service definitions. Application services override factory
-     * services with the same {@link org.apache.tapestry.engine.IEngineService#getName()name}.
+     * Stores the default set of engine service definitions. Application
+     * services override factory services with the same
+     * {@link org.apache.tapestry.engine.IEngineService#getName()name}.
      * 
      * @param factoryServices
      *            List of {@link org.apache.tapestry.engine.IEngineService}.
      */
 
-    public void storeFactoryServices(List factoryServices);
+    void storeFactoryServices(List factoryServices);
 
     /**
      * Returns the factory default services as a List of
      * {@link org.apache.tapestry.engine.IEngineService}.
      */
 
-    public List getFactoryServices();
+    List getFactoryServices();
 }

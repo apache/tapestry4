@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.html.BasePage;
@@ -37,8 +36,8 @@ import org.jCharts.properties.PieChart2DProperties;
 import org.jCharts.test.TestDataGenerator;
 
 /**
- * Demonstrates more complex form handling (including loops and dynamic addition/deletion of rows)
- * as well as dynamic image generation using JCharts.
+ * Demonstrates more complex form handling (including loops and dynamic
+ * addition/deletion of rows) as well as dynamic image generation using JCharts.
  * 
  * @author Howard Lewis Ship, Luis Neves
  * @since 1.0.10
@@ -46,11 +45,13 @@ import org.jCharts.test.TestDataGenerator;
 
 public abstract class ChartPage extends BasePage implements IChartProvider, PageBeginRenderListener
 {
+
     public abstract IValidationDelegate getDelegate();
 
     /**
-     * Invokes {@link #getPlotValues()}, which ensures that (on the very first request cycle), the
-     * persistent values property is set <em>before</em> the page recorder is locked.
+     * Invokes {@link #getPlotValues()}, which ensures that (on the very first
+     * request cycle), the persistent values property is set <em>before</em>
+     * the page recorder is locked.
      */
 
     public void pageBeginRender(PageEvent event)
@@ -87,9 +88,10 @@ public abstract class ChartPage extends BasePage implements IChartProvider, Page
     }
 
     /**
-     * Invoked by the deleted checkbox (for each plotValue). If true, the the current plotValue is
-     * added to the list of plotValues to remove (though the actual removing is done inside
-     * {@link #delete(IRequestCycle)}, after the loop.
+     * Invoked by the deleted checkbox (for each plotValue). If true, the the
+     * current plotValue is added to the list of plotValues to remove (though
+     * the actual removing is done inside {@link #delete(IRequestCycle)}, after
+     * the loop.
      */
 
     public void setMarkedForDeletion(boolean value)
@@ -116,13 +118,13 @@ public abstract class ChartPage extends BasePage implements IChartProvider, Page
     }
 
     /**
-     * Listener method for the add button, adds an additional (blank) plot value.
+     * Listener method for the add button, adds an additional (blank) plot
+     * value.
      */
 
     public void add()
     {
-        if (getDelegate().getHasErrors())
-            return;
+        if (getDelegate().getHasErrors()) return;
 
         List plotValues = getPlotValues();
 
@@ -139,8 +141,7 @@ public abstract class ChartPage extends BasePage implements IChartProvider, Page
 
     public void delete()
     {
-        if (getDelegate().getHasErrors())
-            return;
+        if (getDelegate().getHasErrors()) return;
 
         List removeValues = getRemoveValues();
 
@@ -160,9 +161,10 @@ public abstract class ChartPage extends BasePage implements IChartProvider, Page
     }
 
     /**
-     * This method is invoked by the service (in a seperate request cycle from all the form handling
-     * stuff). The {@link #getChartImageAsset()}method provides an {@link IAsset}that is handled
-     * by the {@link ChartService}, and the asset encodes the identity of this page.
+     * This method is invoked by the service (in a seperate request cycle from
+     * all the form handling stuff). The {@link #getChartImageAsset()}method
+     * provides an {@link IAsset}that is handled by the {@link ChartService},
+     * and the asset encodes the identity of this page.
      */
 
     public Chart getChart()
@@ -186,14 +188,13 @@ public abstract class ChartPage extends BasePage implements IChartProvider, Page
         String[] labels = new String[count];
         PieChart2DProperties properties = new PieChart2DProperties();
 
-        for (int i = 0; i < count; i++)
+        for(int i = 0; i < count; i++)
         {
-            PlotValue pv = (PlotValue) plotValues.get(i);
+            PlotValue pv = (PlotValue)plotValues.get(i);
 
             String name = pv.getName();
 
-            if (HiveMind.isBlank(name))
-                name = "<New>";
+            if (HiveMind.isBlank(name)) name = "<New>";
 
             data[i] = new Double(pv.getValue()).doubleValue();
             labels[i] = new String(name);

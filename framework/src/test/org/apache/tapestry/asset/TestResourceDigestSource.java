@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import org.easymock.MockControl;
  */
 public class TestResourceDigestSource extends HiveMindTestCase
 {
+
     public void testSuccess()
     {
         ResourceDigestSourceImpl s = new ResourceDigestSourceImpl();
@@ -58,7 +59,7 @@ public class TestResourceDigestSource extends HiveMindTestCase
     public void testCache()
     {
         MockControl control = newControl(ClassResolver.class);
-        ClassResolver resolver = (ClassResolver) control.getMock();
+        ClassResolver resolver = (ClassResolver)control.getMock();
 
         URL url = getClass().getResource("tapestry-in-action.png");
 

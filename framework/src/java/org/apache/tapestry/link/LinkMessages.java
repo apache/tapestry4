@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.link;
 
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 
 /**
@@ -22,12 +23,18 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class LinkMessages
+public final class LinkMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(LinkMessages.class);
+
+    private static final Messages MESSAGES = new MessageFormatter(LinkMessages.class);
+
+    /** @since 4.1 */
+    private LinkMessages()
+    {
+    }
 
     public static String noNesting()
     {
-        return _formatter.getMessage("no-nesting");
+        return MESSAGES.getMessage("no-nesting");
     }
 }

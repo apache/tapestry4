@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,14 +20,15 @@ import java.util.Properties;
 import org.apache.tapestry.util.text.LocalizedProperties;
 
 /**
- * Tests to ensure that LocalizedProperties are fully backward compatible with java.util.Properties
- * and that non-latin characters are read correctly.
+ * Tests to ensure that LocalizedProperties are fully backward compatible with
+ * java.util.Properties and that non-latin characters are read correctly.
  * 
  * @author mb
  * @since 4.0
  */
 public class TestLocalizedProperties extends TapestryTestCase
 {
+
     private void ensureEquivalence(String fileName)
     {
         ensureEquivalence(fileName, fileName, "ISO-8859-1");
@@ -63,20 +64,21 @@ public class TestLocalizedProperties extends TapestryTestCase
         if (standardException == null && localizedException == null)
             assertEquals("The property content does not match", standard, localized);
         else if (standardException == null && localizedException != null)
-            fail("Properties did not throw an exception, but LocalizedProperties did: "
-                    + localizedException);
+            fail("Properties did not throw an exception, but LocalizedProperties did: " + localizedException);
         else if (standardException != null && localizedException == null)
-            fail("LocalizedProperties did not throw an exception, but Properties did: "
-                    + localizedException);
-        // this test is disabled because in some cases Properties throws an incorrect exception
+            fail("LocalizedProperties did not throw an exception, but Properties did: " + localizedException);
+        // this test is disabled because in some cases Properties throws an
+        // incorrect exception
         // probably due to a bug
-        //else if (standardException != null && localizedException != null)
-        //	assertEquals("The exception types do not match", standardException.getClass(),
+        // else if (standardException != null && localizedException != null)
+        // assertEquals("The exception types do not match",
+        // standardException.getClass(),
         // localizedException.getClass());
     }
 
     /**
-     * Test for the equivalence between Properties and LocalizedProperties for latin properties
+     * Test for the equivalence between Properties and LocalizedProperties for
+     * latin properties.
      */
     public void testEquivalence()
     {
@@ -86,15 +88,13 @@ public class TestLocalizedProperties extends TapestryTestCase
     }
 
     /**
-     * Tests the reading of files using different encodings. Compare it with the reading of files
-     * that have gone through native2ascii and read using Properties.
+     * Tests the reading of files using different encodings. Compare it with the
+     * reading of files that have gone through native2ascii and read using
+     * Properties.
      */
     public void testEncodings()
     {
         ensureEquivalence("StandardUTFProperties.properties", "UTFProperties.properties", "utf-8");
-        ensureEquivalence(
-                "StandardCyrillicProperties.properties",
-                "CyrillicProperties.properties",
-                "ISO-8859-5");
+        ensureEquivalence("StandardCyrillicProperties.properties", "CyrillicProperties.properties", "ISO-8859-5");
     }
 }

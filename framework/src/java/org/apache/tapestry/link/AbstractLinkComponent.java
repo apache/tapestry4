@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,17 +31,19 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
 /**
- * Base class for implementations of {@link ILinkComponent}. Includes a disabled attribute (that
- * should be bound to a disabled parameter), an anchor attribute, and a renderer attribute (that
- * should be bound to a renderer parameter). A default, shared instance of
- * {@link org.apache.tapestry.link.DefaultLinkRenderer} is used when no specific renderer is
- * provided.
+ * Base class for implementations of {@link ILinkComponent}. Includes a
+ * disabled attribute (that should be bound to a disabled parameter), an anchor
+ * attribute, and a renderer attribute (that should be bound to a renderer
+ * parameter). A default, shared instance of
+ * {@link org.apache.tapestry.link.DefaultLinkRenderer} is used when no specific
+ * renderer is provided.
  * 
  * @author Howard Lewis Ship
  */
 
-public abstract class AbstractLinkComponent extends AbstractComponent implements ILinkComponent
-{
+public abstract class AbstractLinkComponent extends AbstractComponent implements
+        ILinkComponent {
+
     private Map _eventHandlers;
 
     public abstract boolean isDisabled();
@@ -55,23 +57,20 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
     {
         Object currentValue;
 
-        if (_eventHandlers == null)
-            _eventHandlers = new HashMap();
+        if (_eventHandlers == null) _eventHandlers = new HashMap();
 
         currentValue = _eventHandlers.get(eventType);
 
         // The first value is added as a String
 
-        if (currentValue == null)
-        {
+        if (currentValue == null) {
             _eventHandlers.put(eventType, functionName);
             return;
         }
 
         // When adding the second value, convert to a List
 
-        if (currentValue instanceof String)
-        {
+        if (currentValue instanceof String) {
             List list = new ArrayList();
             list.add(currentValue);
             list.add(functionName);
@@ -82,7 +81,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
 
         // For the third and up, add the new function to the List
 
-        List list = (List) currentValue;
+        List list = (List)currentValue;
         list.add(functionName);
     }
 
@@ -106,40 +105,34 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
     {
         String name = null;
 
-        if (_eventHandlers == null)
-            return;
+        if (_eventHandlers == null) return;
 
-        PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
+        PageRenderSupport pageRenderSupport = TapestryUtils
+                .getPageRenderSupport(cycle, this);
 
         Iterator i = _eventHandlers.entrySet().iterator();
 
-        while (i.hasNext())
-        {
-            Map.Entry entry = (Map.Entry) i.next();
-            LinkEventType type = (LinkEventType) entry.getKey();
+        while(i.hasNext()) {
+            Map.Entry entry = (Map.Entry)i.next();
+            LinkEventType type = (LinkEventType)entry.getKey();
 
-            name = writeEventHandler(
-                    writer,
-                    pageRenderSupport,
-                    name,
-                    type.getAttributeName(),
-                    entry.getValue());
+            name = writeEventHandler(writer, pageRenderSupport, name, type
+                    .getAttributeName(), entry.getValue());
         }
 
     }
 
-    protected String writeEventHandler(IMarkupWriter writer, PageRenderSupport pageRenderSupport,
-            String name, String attributeName, Object value)
+    protected String writeEventHandler(IMarkupWriter writer,
+            PageRenderSupport pageRenderSupport, String name,
+            String attributeName, Object value)
     {
         String wrapperFunctionName;
 
-        if (value instanceof String)
-        {
-            wrapperFunctionName = (String) value;
-        }
-        else
-        {
-            String finalName = name == null ? pageRenderSupport.getUniqueString("Link") : name;
+        if (value instanceof String) {
+            wrapperFunctionName = (String)value;
+        } else {
+            String finalName = name == null ? pageRenderSupport
+                    .getUniqueString("Link") : name;
 
             wrapperFunctionName = attributeName + "_" + finalName;
 
@@ -149,10 +142,9 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
             buffer.append(wrapperFunctionName);
             buffer.append(" ()\n{\n");
 
-            Iterator i = ((List) value).iterator();
-            while (i.hasNext())
-            {
-                String functionName = (String) i.next();
+            Iterator i = ((List)value).iterator();
+            while(i.hasNext()) {
+                String functionName = (String)i.next();
                 buffer.append("  ");
                 buffer.append(functionName);
                 buffer.append("();\n");
@@ -163,7 +155,8 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
             pageRenderSupport.addBodyScript(buffer.toString());
         }
 
-        writer.attribute(attributeName, "javascript:" + wrapperFunctionName + "();");
+        writer.attribute(attributeName, "javascript:" + wrapperFunctionName
+                + "();");
 
         return name;
     }
@@ -174,7 +167,8 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
 
     public abstract void setRenderer(ILinkRenderer renderer);
 
-    public void renderAdditionalAttributes(IMarkupWriter writer, IRequestCycle cycle)
+    public void renderAdditionalAttributes(IMarkupWriter writer,
+            IRequestCycle cycle)
     {
         writeEventHandlers(writer, cycle);
 
@@ -184,15 +178,18 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
     }
 
     /**
-     * Utility method for subclasses; Gets the named service from the engine and invokes
+     * Utility method for subclasses; Gets the named service from the engine and
+     * invokes
      * {@link IEngineService#getLink(org.apache.tapestry.IComponent, Object[])}on
      * it.
      * 
      * @since 3.0
-     * @deprecated To be removed in 4.1; links may now have the necessary engine service injected.
+     * @deprecated To be removed in 4.1; links may now have the necessary engine
+     *             service injected.
      */
 
-    protected ILink getLink(IRequestCycle cycle, String serviceName, Object parameter)
+    protected ILink getLink(IRequestCycle cycle, String serviceName,
+            Object parameter)
     {
         IEngineService service = cycle.getEngine().getService(serviceName);
 

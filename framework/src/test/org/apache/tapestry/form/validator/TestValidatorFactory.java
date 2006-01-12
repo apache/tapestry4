@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ import org.easymock.MockControl;
  */
 public class TestValidatorFactory extends TapestryTestCase
 {
+
     private Map buildContributions(String name, boolean configurable)
     {
         ValidatorContribution vc = newContribution(configurable, ValidatorFixture.class);
@@ -76,7 +77,7 @@ public class TestValidatorFactory extends TapestryTestCase
 
         List result = vf.constructValidatorList(component, "value=foo");
 
-        ValidatorFixture fixture = (ValidatorFixture) result.get(0);
+        ValidatorFixture fixture = (ValidatorFixture)result.get(0);
 
         assertEquals("foo", fixture.getValue());
 
@@ -94,7 +95,7 @@ public class TestValidatorFactory extends TapestryTestCase
 
         List result = vf.constructValidatorList(component, "fred[fred's message]");
 
-        ValidatorFixture fixture = (ValidatorFixture) result.get(0);
+        ValidatorFixture fixture = (ValidatorFixture)result.get(0);
 
         assertEquals("fred's message", fixture.getMessage());
 
@@ -112,7 +113,7 @@ public class TestValidatorFactory extends TapestryTestCase
 
         List result = vf.constructValidatorList(component, "value=biff[fred's message]");
 
-        ValidatorFixture fixture = (ValidatorFixture) result.get(0);
+        ValidatorFixture fixture = (ValidatorFixture)result.get(0);
 
         assertEquals("biff", fixture.getValue());
         assertEquals("fred's message", fixture.getMessage());
@@ -137,8 +138,7 @@ public class TestValidatorFactory extends TapestryTestCase
         catch (ApplicationRuntimeException ex)
         {
             assertEquals("Validator 'name' must be configured in order to be used. "
-                    + "The value is configured by changing 'name' to 'name=value'.", ex
-                    .getMessage());
+                    + "The value is configured by changing 'name' to 'name=value'.", ex.getMessage());
         }
 
         verifyControls();
@@ -158,19 +158,17 @@ public class TestValidatorFactory extends TapestryTestCase
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(map);
 
-        List result = vf
-                .constructValidatorList(
-                        component,
-                        "required[EMail is required],email,minLength=10[EMail must be at least ten characters long]");
+        List result = vf.constructValidatorList(component,
+                "required[EMail is required],email,minLength=10[EMail must be at least ten characters long]");
 
         assertEquals(3, result.size());
 
-        Required r = (Required) result.get(0);
+        Required r = (Required)result.get(0);
         assertEquals("EMail is required", r.getMessage());
 
         assertTrue(result.get(1) instanceof Email);
 
-        MinLength minLength = (MinLength) result.get(2);
+        MinLength minLength = (MinLength)result.get(2);
 
         assertEquals(10, minLength.getMinLength());
         assertEquals("EMail must be at least ten characters long", minLength.getMessage());
@@ -215,8 +213,8 @@ public class TestValidatorFactory extends TapestryTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals("Validator 'fred' is not configurable, "
-                    + "'fred=biff' should be changed to just 'fred'.", ex.getMessage());
+            assertEquals("Validator 'fred' is not configurable, " + "'fred=biff' should be changed to just 'fred'.", ex
+                    .getMessage());
         }
 
         verifyControls();
@@ -264,8 +262,8 @@ public class TestValidatorFactory extends TapestryTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-        		assertTrue(ex.getMessage()
-        				.startsWith("Error initializing validator 'fred' (class java.lang.Object): java.lang.Object"));
+            assertTrue(ex.getMessage().startsWith(
+                    "Error initializing validator 'fred' (class java.lang.Object): java.lang.Object"));
         }
 
         verifyControls();
@@ -273,13 +271,13 @@ public class TestValidatorFactory extends TapestryTestCase
 
     private Validator newValidator()
     {
-        return (Validator) newMock(Validator.class);
+        return (Validator)newMock(Validator.class);
     }
 
     private IBeanProvider newBeanProvider(String beanName, Object bean)
     {
         MockControl control = newControl(IBeanProvider.class);
-        IBeanProvider provider = (IBeanProvider) control.getMock();
+        IBeanProvider provider = (IBeanProvider)control.getMock();
 
         provider.getBean(beanName);
         control.setReturnValue(bean);
@@ -290,7 +288,7 @@ public class TestValidatorFactory extends TapestryTestCase
     private IComponent newComponent(IBeanProvider provider)
     {
         MockControl control = newControl(IComponent.class);
-        IComponent component = (IComponent) control.getMock();
+        IComponent component = (IComponent)control.getMock();
 
         component.getBeans();
         control.setReturnValue(provider);
@@ -298,7 +296,8 @@ public class TestValidatorFactory extends TapestryTestCase
         return component;
     }
 
-    public void testBeanReference() throws Exception
+    public void testBeanReference()
+        throws Exception
     {
         Validator validator = newValidator();
         IBeanProvider provider = newBeanProvider("fred", validator);
@@ -319,7 +318,7 @@ public class TestValidatorFactory extends TapestryTestCase
 
         assertEquals(1, validators.size());
 
-        Validator wrapper = (Validator) validators.get(0);
+        Validator wrapper = (Validator)validators.get(0);
 
         wrapper.validate(field, messages, value);
 
@@ -328,12 +327,12 @@ public class TestValidatorFactory extends TapestryTestCase
 
     private ValidationMessages newMessages()
     {
-        return (ValidationMessages) newMock(ValidationMessages.class);
+        return (ValidationMessages)newMock(ValidationMessages.class);
     }
 
     private IFormComponent newField()
     {
-        return (IFormComponent) newMock(IFormComponent.class);
+        return (IFormComponent)newMock(IFormComponent.class);
     }
 
     public void testBeanReferenceNotValidator()
@@ -351,7 +350,7 @@ public class TestValidatorFactory extends TapestryTestCase
         {
             List l = vf.constructValidatorList(component, "$fred");
 
-            Validator wrapper = (Validator) l.get(0);
+            Validator wrapper = (Validator)l.get(0);
 
             wrapper.getAcceptsNull();
 
@@ -359,8 +358,7 @@ public class TestValidatorFactory extends TapestryTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(
-                    "Bean 'fred' does not implement the org.apache.tapestry.form.validator.Validator interface.",
+            assertEquals("Bean 'fred' does not implement the org.apache.tapestry.form.validator.Validator interface.",
                     ex.getMessage());
             assertSame(bean, ex.getComponent());
         }

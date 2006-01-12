@@ -33,7 +33,8 @@ public class TestMarkupWriter extends HiveMindTestCase
 
     private static final String NEWLINE = System.getProperty("line.separator");
 
-    private static class EchoMarkupFilter implements MarkupFilter
+    /** Test fixture. */
+       private static class EchoMarkupFilter implements MarkupFilter
     {
         public void print(PrintWriter writer, char[] data, int offset, int length,
                 boolean escapeQuotes)
@@ -44,7 +45,8 @@ public class TestMarkupWriter extends HiveMindTestCase
         }
     }
 
-    public static class PrintWriterFixture extends PrintWriter
+       /** Test fixture. */
+         public static class PrintWriterFixture extends PrintWriter
     {
 
         public PrintWriterFixture()

@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,31 +19,34 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * Implements the logic used by {@link RequiredField}s for required field checking on rewind and
- * generating client-side logic during render.
+ * Implements the logic used by {@link RequiredField}s for required field
+ * checking on rewind and generating client-side logic during render.
  * 
  * @author Paul Ferraro
  * @since 4.0
  */
 public interface ValidatableFieldSupport
 {
-    /**
-     * Called during render of the specified component. Renders any contributions from validators.
-     */
-    public void renderContributions(ValidatableField field, IMarkupWriter writer,
-            IRequestCycle cycle);
 
     /**
-     * Called during rewind of the specified component. Specified value is validated using the 
-     * component's validators.
+     * Called during render of the specified component. Renders any
+     * contributions from validators.
+     */
+    void renderContributions(ValidatableField field, IMarkupWriter writer, IRequestCycle cycle);
+
+    /**
+     * Called during rewind of the specified component. Specified value is
+     * validated using the component's validators.
      * 
-     * @throws ValidatorException if validation fails
+     * @throws ValidatorException
+     *             if validation fails
      */
-    public void validate(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle, Object value) throws ValidatorException;
+    void validate(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle, Object value)
+        throws ValidatorException;
 
     /**
-     * Returns true if this component is required. This usually entails a search of the component's
-     * validators.
+     * Returns true if this component is required. This usually entails a search
+     * of the component's validators.
      */
-    public boolean isRequired(ValidatableField field);
+    boolean isRequired(ValidatableField field);
 }

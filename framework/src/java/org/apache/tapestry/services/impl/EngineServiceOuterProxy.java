@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,22 +23,23 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
 /**
- * Outer proxy for engine services. The inner proxy resolves the engine service name to a engine
- * service implementation and installed it into the outer proxy as a delegate. Although HiveMind
- * does provide a similar system of inner and outer delegates, Tapestry's engine-service:
- * {@link org.apache.tapestry.services.impl.EngineServiceObjectProvider}&nbsp;object provider can
- * cause exceptions (recurive service build) when attempting to link two services together. This
- * extra layer of proxying resolves that issue.
+ * Outer proxy for engine services. The inner proxy resolves the engine service
+ * name to a engine service implementation and installed it into the outer proxy
+ * as a delegate. Although HiveMind does provide a similar system of inner and
+ * outer delegates, Tapestry's engine-service:
+ * {@link org.apache.tapestry.services.impl.EngineServiceObjectProvider}&nbsp;object
+ * provider can cause exceptions (recurive service build) when attempting to
+ * link two services together. This extra layer of proxying resolves that issue.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class EngineServiceOuterProxy implements IEngineService, Serializable
 {
-	/** serialver */
-	private static final long serialVersionUID = 2050789495671401625L;
 
-	private final String _serviceName;
+    private static final long serialVersionUID = 2050789495671401625L;
+
+    private final String _serviceName;
 
     private IEngineService _delegate;
 
@@ -64,7 +65,8 @@ public class EngineServiceOuterProxy implements IEngineService, Serializable
         return _delegate.getLink(post, parameter);
     }
 
-    public void service(IRequestCycle cycle) throws IOException
+    public void service(IRequestCycle cycle)
+        throws IOException
     {
         _delegate.service(cycle);
     }

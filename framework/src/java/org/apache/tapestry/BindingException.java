@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,18 +19,17 @@ import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 
 /**
- *  A general exception describing an {@link IBinding}
- *  and an {@link IComponent}.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * A general exception describing an {@link IBinding} and an {@link IComponent}.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public class BindingException extends ApplicationRuntimeException
 {
+
     private static final long serialVersionUID = 1336659143140967861L;
-    
-	private transient IBinding _binding;
+
+    private transient IBinding _binding;
 
     public BindingException(String message, IBinding binding)
     {
@@ -42,19 +41,9 @@ public class BindingException extends ApplicationRuntimeException
         this(message, null, null, binding, rootCause);
     }
 
-
-    public BindingException(
-        String message,
-        Object component,
-        Location location,
-        IBinding binding,
-        Throwable rootCause)
+    public BindingException(String message, Object component, Location location, IBinding binding, Throwable rootCause)
     {
-        super(
-            message,
-            component,
-            HiveMind.findLocation(new Object[] { location, binding, component }),
-            rootCause);
+        super(message, component, HiveMind.findLocation(new Object[] { location, binding, component }), rootCause);
 
         _binding = binding;
     }

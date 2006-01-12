@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,8 @@ public class ApplicationStateManagerImpl implements ApplicationStateManager, Poo
 {
 
     /**
-     * Keyed on application static object name, value is the current state object.
+     * Keyed on application static object name, value is the current state
+     * object.
      */
 
     private Map _stateObjects = new HashMap();
@@ -75,11 +76,11 @@ public class ApplicationStateManagerImpl implements ApplicationStateManager, Poo
     public void flush()
     {
         Iterator i = _stateObjects.entrySet().iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
-            Map.Entry e = (Map.Entry) i.next();
+            Map.Entry e = (Map.Entry)i.next();
 
-            String objectName = (String) e.getKey();
+            String objectName = (String)e.getKey();
             Object stateObject = e.getValue();
 
             // Slight bending of law-of-demeter

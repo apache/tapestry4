@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,22 +25,23 @@ import org.apache.tapestry.util.ComponentAddress;
  */
 public class TreeTableColumn extends SimpleTableColumn
 {
-	private static final long serialVersionUID = -8046804468741132535L;
 
-	/**
-	 * @param arg0
-	 * @param arg1
-	 */
-	public TreeTableColumn(String arg0, boolean arg1, ComponentAddress objComponentAddress) {
-		super(arg0, arg1);
-		setValueRendererSource(new TreeTableValueRenderSource(objComponentAddress));
-	}
+    private static final long serialVersionUID = -8046804468741132535L;
 
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.common.AbstractTableColumn#getValueRenderer(org.apache.tapestry.IRequestCycle, org.apache.tapestry.contrib.table.model.ITableModelSource, java.lang.Object)
-	 */
-	public IRender getValueRenderer(IRequestCycle arg0, ITableModelSource arg1, Object arg2) {
-		return super.getValueRenderer(arg0, arg1, arg2);
-	}
+    public TreeTableColumn(String arg0, boolean arg1, ComponentAddress objComponentAddress)
+    {
+        super(arg0, arg1);
+        setValueRendererSource(new TreeTableValueRenderSource(objComponentAddress));
+    }
+
+    /**
+     * @see org.apache.tapestry.contrib.table.model.common.AbstractTableColumn#getValueRenderer(org.apache.tapestry.IRequestCycle,
+     *      org.apache.tapestry.contrib.table.model.ITableModelSource,
+     *      java.lang.Object)
+     */
+    public IRender getValueRenderer(IRequestCycle arg0, ITableModelSource arg1, Object arg2)
+    {
+        return super.getValueRenderer(arg0, arg1, arg2);
+    }
 
 }

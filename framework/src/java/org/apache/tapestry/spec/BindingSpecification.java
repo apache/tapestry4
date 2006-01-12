@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,19 +17,19 @@ package org.apache.tapestry.spec;
 import org.apache.hivemind.impl.BaseLocatable;
 
 /**
- *  Stores a binding specification, which identifies the static value
- *  or OGNL expression for the binding.  The name of the binding (which
- *  matches a bindable property of the contined component) is implicitly known.
- *
- *  @author Howard Lewis Ship
+ * Stores a binding specification, which identifies the static value or OGNL
+ * expression for the binding. The name of the binding (which matches a bindable
+ * property of the contined component) is implicitly known.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public class BindingSpecification extends BaseLocatable implements IBindingSpecification
 {
+
     private BindingType _type;
     private String _value;
-	
+
     public BindingType getType()
     {
         return _type;

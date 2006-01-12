@@ -17,15 +17,15 @@ package org.apache.tapestry.binding;
 import org.apache.tapestry.coerce.ValueConverter;
 
 /**
- * Base class for {@link org.apache.tapestry.binding.BindingFactory}s. Manages a
- * {@link #getValueConverter() valueConverter property}, as all binding instances will need such a
- * value injected.
+ * Base class for {@link org.apache.tapestry.binding.BindingFactory}s. Manages
+ * a {@link #getValueConverter() valueConverter property}, as all binding
+ * instances will need such a value injected.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public abstract class AbstractBindingFactory implements BindingFactory
-{
+public abstract class AbstractBindingFactory implements BindingFactory {
+
     private ValueConverter _valueConverter;
 
     public ValueConverter getValueConverter()

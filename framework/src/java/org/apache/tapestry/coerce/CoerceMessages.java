@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.coerce;
 
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.hivemind.service.ClassFabUtils;
 
@@ -21,21 +22,23 @@ import org.apache.hivemind.service.ClassFabUtils;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class CoerceMessages
+final class CoerceMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(CoerceMessages.class);
+
+    private final static Messages MESSAGES = new MessageFormatter(CoerceMessages.class);
+
+    /** @since 4.1 */
+    private CoerceMessages()
+    {
+    }
 
     static String noConverter(Class desiredType)
     {
-        return _formatter.format("no-converter", ClassFabUtils.getJavaClassName(desiredType));
+        return MESSAGES.format("no-converter", ClassFabUtils.getJavaClassName(desiredType));
     }
 
     static String stringToNumberConversionError(String value, Class targetClass, Throwable cause)
     {
-        return _formatter.format(
-                "string-to-number-conversion-error",
-                value,
-                targetClass.getName(),
-                cause);
+        return MESSAGES.format("string-to-number-conversion-error", value, targetClass.getName(), cause);
     }
 }

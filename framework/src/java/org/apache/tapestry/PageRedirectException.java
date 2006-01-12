@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,18 +17,20 @@ package org.apache.tapestry;
 import org.apache.hivemind.ApplicationRuntimeException;
 
 /**
- *  Exception thrown by a {@link IComponent component} or {@link org.apache.tapestry.engine.IEngineService}
- *  that wishes to force the application to a particular page.  This is often used
- *  to protect a sensitive page until the user is authenticated.
- *
- *  @author Howard Lewis Ship
- **/
+ * Exception thrown by a {@link IComponent component} or
+ * {@link org.apache.tapestry.engine.IEngineService} that wishes to force the
+ * application to a particular page. This is often used to protect a sensitive
+ * page until the user is authenticated.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public class PageRedirectException extends ApplicationRuntimeException
 {
+
     private static final long serialVersionUID = -7693744317997065965L;
-    
-	private String _targetPageName;
+
+    private final String _targetPageName;
 
     public PageRedirectException(String targetPageName)
     {
@@ -40,11 +42,7 @@ public class PageRedirectException extends ApplicationRuntimeException
         this(page.getPageName());
     }
 
-    public PageRedirectException(
-        String message,
-        Object component,
-        Throwable rootCause,
-        String targetPageName)
+    public PageRedirectException(String message, Object component, Throwable rootCause, String targetPageName)
     {
         super(message, component, null, rootCause);
 

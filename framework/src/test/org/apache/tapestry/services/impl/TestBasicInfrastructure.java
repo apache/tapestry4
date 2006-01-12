@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import org.apache.tapestry.services.ResetEventHub;
 import org.easymock.MockControl;
 
 /**
- * Tests for:
+ * Tests for a number of related classes.
  * <ul>
  * <li>{@link org.apache.tapestry.services.impl.ServletInfoImpl}
  * <li>{@link org.apache.tapestry.services.impl.StoreServletInfoFilter}
@@ -45,12 +45,13 @@ import org.easymock.MockControl;
  */
 public class TestBasicInfrastructure extends HiveMindTestCase
 {
+
     public void testRequestGlobals()
     {
         RequestGlobalsImpl si = new RequestGlobalsImpl();
 
-        HttpServletRequest r = (HttpServletRequest) newMock(HttpServletRequest.class);
-        HttpServletResponse p = (HttpServletResponse) newMock(HttpServletResponse.class);
+        HttpServletRequest r = (HttpServletRequest)newMock(HttpServletRequest.class);
+        HttpServletResponse p = (HttpServletResponse)newMock(HttpServletResponse.class);
 
         replayControls();
 
@@ -76,7 +77,8 @@ public class TestBasicInfrastructure extends HiveMindTestCase
     }
 
     /**
-     * Validate that the factory is declared properly in the module deployment descriptor.
+     * Validate that the factory is declared properly in the module deployment
+     * descriptor.
      */
     public void testClasspathResourceFactoryIntegrated()
     {
@@ -84,8 +86,7 @@ public class TestBasicInfrastructure extends HiveMindTestCase
 
         Registry registry = RegistryBuilder.constructDefaultRegistry();
 
-        ClasspathResourceFactory f = (ClasspathResourceFactory) registry.getService(
-                "tapestry.ClasspathResourceFactory",
+        ClasspathResourceFactory f = (ClasspathResourceFactory)registry.getService("tapestry.ClasspathResourceFactory",
                 ClasspathResourceFactory.class);
 
         String path = "/foo/bar";
@@ -98,7 +99,7 @@ public class TestBasicInfrastructure extends HiveMindTestCase
     public void testGlobalPropertyObjectProviderSuccess()
     {
         MockControl sourceControl = newControl(IPropertySource.class);
-        IPropertySource source = (IPropertySource) sourceControl.getMock();
+        IPropertySource source = (IPropertySource)sourceControl.getMock();
 
         // Training
 
@@ -120,7 +121,7 @@ public class TestBasicInfrastructure extends HiveMindTestCase
         Location l = fabricateLocation(223);
 
         MockControl sourceControl = newControl(IPropertySource.class);
-        IPropertySource source = (IPropertySource) sourceControl.getMock();
+        IPropertySource source = (IPropertySource)sourceControl.getMock();
 
         // Training
 
@@ -148,9 +149,9 @@ public class TestBasicInfrastructure extends HiveMindTestCase
     public void testSuccessfulInfrastructureLookup()
     {
         MockControl ifrControl = newControl(Infrastructure.class);
-        Infrastructure ifr = (Infrastructure) ifrControl.getMock();
+        Infrastructure ifr = (Infrastructure)ifrControl.getMock();
 
-        ResetEventHub coord = (ResetEventHub) newMock(ResetEventHub.class);
+        ResetEventHub coord = (ResetEventHub)newMock(ResetEventHub.class);
 
         ifr.getResetEventHub();
         ifrControl.setReturnValue(coord);

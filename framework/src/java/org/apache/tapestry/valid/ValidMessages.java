@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.valid;
 
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.IComponent;
 
@@ -21,13 +22,18 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class ValidMessages
+final class ValidMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(ValidMessages.class);
+
+    private static final Messages MESSAGES = new MessageFormatter(ValidMessages.class);
+
+    /** @since 4.1 */
+    private ValidMessages()
+    {
+    }
 
     static String noDisplayName(IComponent label, IComponent field)
     {
-        return _formatter.format("no-display-name", label.getExtendedId(), field.getExtendedId());
+        return MESSAGES.format("no-display-name", label.getExtendedId(), field.getExtendedId());
     }
-
 }

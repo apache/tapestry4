@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.binding;
 
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
@@ -22,31 +23,33 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class BindingMessages
+final class BindingMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(BindingMessages.class);
+
+    private final static Messages MESSAGES = new MessageFormatter(BindingMessages.class);
+
+    /** @since 4.1 */
+    private BindingMessages()
+    {
+    }
 
     static String convertObjectError(IBinding binding, Throwable cause)
     {
-        return _formatter.format("convert-object-error", binding.getDescription(), cause);
+        return MESSAGES.format("convert-object-error", binding.getDescription(), cause);
     }
 
     static String readOnlyBinding(IBinding binding)
     {
-        return _formatter.format("read-only-binding", binding.getDescription(), binding);
+        return MESSAGES.format("read-only-binding", binding.getDescription(), binding);
     }
 
     static String missingAsset(IComponent component, String assetName)
     {
-        return _formatter.format("missing-asset", component.getExtendedId(), assetName);
+        return MESSAGES.format("missing-asset", component.getExtendedId(), assetName);
     }
 
     static String listenerMethodFailure(IComponent component, String methodName, Throwable cause)
     {
-        return _formatter.format(
-                "listener-method-failure",
-                methodName,
-                component.getExtendedId(),
-                cause);
+        return MESSAGES.format("listener-method-failure", methodName, component.getExtendedId(), cause);
     }
 }

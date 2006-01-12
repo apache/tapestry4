@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,21 +19,28 @@ import java.io.PrintWriter;
 import org.apache.tapestry.util.text.ICharacterTranslator;
 
 /**
- * For the meantime, implemenatations of {@link org.apache.tapestry.markup.MarkupFilter}&nbsp;are
- * wrappers around {@link org.apache.tapestry.util.text.ICharacterTranslator}. This class provides
- * handy methods for doing the grunt work.
+ * For the meantime, implemenatations of
+ * {@link org.apache.tapestry.markup.MarkupFilter}&nbsp;are wrappers around
+ * {@link org.apache.tapestry.util.text.ICharacterTranslator}. This class
+ * provides handy methods for doing the grunt work.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class MarkupFilterUtils
+public final class MarkupFilterUtils
 {
-    public static void print(PrintWriter writer, char[] data, int offset, int length,
-            boolean escapeQuotes, ICharacterTranslator translator)
+
+    /** @since 4.1 */
+    private MarkupFilterUtils()
+    {
+    }
+
+    public static void print(PrintWriter writer, char[] data, int offset, int length, boolean escapeQuotes,
+            ICharacterTranslator translator)
     {
         StringBuffer buffer = new StringBuffer(length);
 
-        for (int i = 0; i < length; i++)
+        for(int i = 0; i < length; i++)
         {
             char ch = data[offset + i];
 
@@ -54,9 +61,12 @@ public class MarkupFilterUtils
             buffer.append(translated);
         }
 
-        // We'll have to see if building up a buffer and then printing it in one go is the
-        // most efficient route. It's hard to predict what will give the best performance,
-        // but there's almost certainly a buffered writer between this code and the
+        // We'll have to see if building up a buffer and then printing it in one
+        // go is the
+        // most efficient route. It's hard to predict what will give the best
+        // performance,
+        // but there's almost certainly a buffered writer between this code and
+        // the
         // character set encoder.
 
         writer.print(buffer.toString());

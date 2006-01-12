@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,9 +19,10 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * Implements a component that manages an HTML &lt;input type=text&gt; or &lt;input
- * type=password&gt; form element. [ <a
- * href="../../../../../ComponentReference/TextField.html">Component Reference </a>]
+ * Implements a component that manages an HTML &lt;input type=text&gt; or
+ * &lt;input type=password&gt; form element. [ <a
+ * href="../../../../../ComponentReference/TextField.html">Component Reference
+ * </a>]
  * <p>
  * As of 4.0, this component can be configurably translated and validated.
  * 
@@ -30,18 +31,21 @@ import org.apache.tapestry.valid.ValidatorException;
  */
 public abstract class TextField extends AbstractFormComponent implements TranslatedField
 {
+
     public abstract boolean isHidden();
 
     public abstract Object getValue();
+
     public abstract void setValue(Object value);
 
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String value = getTranslatedFieldSupport().format(this, getValue());
-        
+
         renderDelegatePrefix(writer, cycle);
 
         writer.beginEmpty("input");
@@ -50,11 +54,9 @@ public abstract class TextField extends AbstractFormComponent implements Transla
 
         writer.attribute("name", getName());
 
-        if (isDisabled())
-            writer.attribute("disabled", "disabled");
+        if (isDisabled()) writer.attribute("disabled", "disabled");
 
-        if (value != null)
-            writer.attribute("value", value);
+        if (value != null) writer.attribute("value", value);
 
         renderIdAttribute(writer, cycle);
 
@@ -71,18 +73,19 @@ public abstract class TextField extends AbstractFormComponent implements Transla
     }
 
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String value = cycle.getParameter(getName());
-        
+
         try
         {
             Object object = getTranslatedFieldSupport().parse(this, value);
-            
+
             getValidatableFieldSupport().validate(this, writer, cycle, object);
-            
+
             setValue(object);
         }
         catch (ValidatorException e)
