@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,14 +31,14 @@ import org.apache.tapestry.contrib.table.model.common.ReverseComparator;
 
 /**
  * A simple generic table model implementation.
- *
+ * 
  * @author mindbridge
  */
-public class SimpleTableModel extends AbstractTableModel 
-	implements IFullTableModel, ITableDataModelListener
+public class SimpleTableModel extends AbstractTableModel implements IFullTableModel, ITableDataModelListener
 {
-	private static final long serialVersionUID = 1L;
-	
+
+    private static final long serialVersionUID = 1L;
+
     private ITableDataModel m_objDataModel = null;
     private Object[] m_arrRows = null;
     private ITableColumnModel m_objColumnModel = null;
@@ -63,7 +63,7 @@ public class SimpleTableModel extends AbstractTableModel
     public SimpleTableModel(ITableDataModel objDataModel, ITableColumnModel objColumnModel, SimpleTableState objState)
     {
         super(objState);
-        
+
         m_arrRows = null;
         m_objColumnModel = objColumnModel;
         m_objLastSortingState = new SimpleTableSortingState();
@@ -81,8 +81,7 @@ public class SimpleTableModel extends AbstractTableModel
         sortRows();
 
         int nPageSize = getPagingState().getPageSize();
-        if (nPageSize <= 0)
-            return new ArrayIterator(m_arrRows);
+        if (nPageSize <= 0) return new ArrayIterator(m_arrRows);
 
         int nCurrentPage = getPagingState().getCurrentPage();
         int nFrom = nCurrentPage * nPageSize;
@@ -100,8 +99,7 @@ public class SimpleTableModel extends AbstractTableModel
     private void updateRows()
     {
         // If it is not null, then there is no need to extract the data
-        if (m_arrRows != null)
-            return;
+        if (m_arrRows != null) return;
 
         // Extract the data from the model
         m_objLastSortingState = new SimpleTableSortingState();
@@ -110,7 +108,7 @@ public class SimpleTableModel extends AbstractTableModel
         Object[] arrRows = new Object[nRowCount];
 
         int i = 0;
-        for (Iterator it = m_objDataModel.getRows(); it.hasNext();)
+        for(Iterator it = m_objDataModel.getRows(); it.hasNext();)
             arrRows[i++] = it.next();
 
         m_arrRows = arrRows;
@@ -124,27 +122,22 @@ public class SimpleTableModel extends AbstractTableModel
 
         // see if there is sorting required
         String strSortColumn = objSortingState.getSortColumn();
-        if (strSortColumn == null)
-            return;
+        if (strSortColumn == null) return;
 
         boolean bSortOrder = objSortingState.getSortOrder();
 
         // See if the table is already sorted this way. If so, return.
         if (strSortColumn.equals(m_objLastSortingState.getSortColumn())
-            && m_objLastSortingState.getSortOrder() == bSortOrder)
-            return;
+                && m_objLastSortingState.getSortOrder() == bSortOrder) return;
 
         ITableColumn objColumn = getColumnModel().getColumn(strSortColumn);
-        if (objColumn == null || !objColumn.getSortable())
-            return;
+        if (objColumn == null || !objColumn.getSortable()) return;
 
         Comparator objCmp = objColumn.getComparator();
-        if (objCmp == null)
-            return;
+        if (objCmp == null) return;
 
         // Okay, we have everything in place. Sort the rows.
-        if (bSortOrder == ITableSortingState.SORT_DESCENDING)
-            objCmp = new ReverseComparator(objCmp);
+        if (bSortOrder == ITableSortingState.SORT_DESCENDING) objCmp = new ReverseComparator(objCmp);
 
         Arrays.sort(m_arrRows, objCmp);
 
@@ -158,6 +151,7 @@ public class SimpleTableModel extends AbstractTableModel
 
     /**
      * Returns the dataModel.
+     * 
      * @return ITableDataModel
      */
     public ITableDataModel getDataModel()
@@ -167,22 +161,24 @@ public class SimpleTableModel extends AbstractTableModel
 
     /**
      * Sets the dataModel.
-     * @param dataModel The dataModel to set
+     * 
+     * @param dataModel
+     *            The dataModel to set
      */
     public void setDataModel(ITableDataModel dataModel)
     {
-        if (m_objDataModel != null)
-            m_objDataModel.removeTableDataModelListener(this);
-            
+        if (m_objDataModel != null) m_objDataModel.removeTableDataModelListener(this);
+
         m_objDataModel = dataModel;
         m_objDataModel.addTableDataModelListener(this);
-        
+
         m_arrRows = null;
     }
 
-	public Iterator getRows() {
-		updateRows();
-		return new ArrayIterator(m_arrRows);
-	}
+    public Iterator getRows()
+    {
+        updateRows();
+        return new ArrayIterator(m_arrRows);
+    }
 
 }

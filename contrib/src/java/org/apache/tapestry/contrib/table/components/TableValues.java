@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,21 +22,27 @@ import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 
 /**
- * A low level Table component that generates the columns in the current row in the table. This
- * component must be wrapped by {@link org.apache.tapestry.contrib.table.components.TableRows}.
+ * A low level Table component that generates the columns in the current row in
+ * the table. This component must be wrapped by
+ * {@link org.apache.tapestry.contrib.table.components.TableRows}.
  * <p>
- * The component iterates over the columns in the table and automatically renders the column values
- * for the current table row. The columns are wrapped in 'td' tags by default. <br>
- * The column values are rendered using the renderer returned by the getValueRenderer() method in
+ * The component iterates over the columns in the table and automatically
+ * renders the column values for the current table row. The columns are wrapped
+ * in 'td' tags by default. <br>
+ * The column values are rendered using the renderer returned by the
+ * getValueRenderer() method in
  * {@link org.apache.tapestry.contrib.table.model.ITableColumn}.
  * <p>
- * Please see the Component Reference for details on how to use this component. [ <a
- * href="../../../../../../../ComponentReference/contrib.TableValues.html">Component Reference </a>]
+ * Please see the Component Reference for details on how to use this component. [
+ * <a
+ * href="../../../../../../../ComponentReference/contrib.TableValues.html">Component
+ * Reference </a>]
  * 
  * @author mindbridge
  */
 public abstract class TableValues extends AbstractTableRowComponent
 {
+
     public static final String TABLE_VALUE_CSS_CLASS_SUFFIX = "ColumnValue";
 
     // Transient
@@ -54,8 +60,8 @@ public abstract class TableValues extends AbstractTableRowComponent
     }
 
     /**
-     * Returns the currently rendered table column. You can call this method to obtain the current
-     * column.
+     * Returns the currently rendered table column. You can call this method to
+     * obtain the current column.
      * 
      * @return ITableColumn the current table column
      */
@@ -65,7 +71,8 @@ public abstract class TableValues extends AbstractTableRowComponent
     }
 
     /**
-     * Sets the currently rendered table column. This method is for internal use only.
+     * Sets the currently rendered table column. This method is for internal use
+     * only.
      * 
      * @param tableColumn
      *            The current table column
@@ -74,34 +81,31 @@ public abstract class TableValues extends AbstractTableRowComponent
     {
         m_objTableColumn = tableColumn;
 
-        if (isParameterBound("column"))
-            setColumnParameter(tableColumn);
+        if (isParameterBound("column")) setColumnParameter(tableColumn);
     }
 
     /**
-     * Returns the renderer to be used to generate the appearance of the current column
+     * Returns the renderer to be used to generate the appearance of the current
+     * column.
      * 
      * @return the value renderer of the current column
      */
     public IRender getTableValueRenderer()
     {
         Object objRow = getTableRowSource().getTableRow();
-        return getTableColumn().getValueRenderer(
-                getPage().getRequestCycle(),
-                getTableModelSource(),
-                objRow);
+        return getTableColumn().getValueRenderer(getPage().getRequestCycle(), getTableModelSource(), objRow);
     }
 
     /**
-     * Returns the CSS class of the generated table cell. It uses the class parameter if it has been
-     * bound, or the default value of "[column name]ColumnValue" otherwise.
+     * Returns the CSS class of the generated table cell. It uses the class
+     * parameter if it has been bound, or the default value of "[column
+     * name]ColumnValue" otherwise.
      * 
      * @return the CSS class of the cell
      */
     public String getValueClass()
     {
-        if (isParameterBound("class"))
-            return getCellClass();
+        if (isParameterBound("class")) return getCellClass();
 
         return getTableColumn().getColumnName() + TABLE_VALUE_CSS_CLASS_SUFFIX;
     }

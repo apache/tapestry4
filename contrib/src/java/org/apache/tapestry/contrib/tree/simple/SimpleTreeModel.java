@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,35 +25,41 @@ import org.apache.tapestry.contrib.tree.model.ITreeStateModel;
  */
 public class SimpleTreeModel implements ITreeModel, Serializable
 {
-	private static final long serialVersionUID = -6445877820084989017L;
-	
-	private ITreeDataModel m_objDataModel;
-	private ITreeStateModel m_objTreeStateModel;
-	
-	/**
-	 * Constructor for SimpleTreeModel.
-	 */
-	public SimpleTreeModel(ITreeDataModel objDataModel) {
-		this(objDataModel, new SimpleTreeStateModel());
-	}
 
-	public SimpleTreeModel(ITreeDataModel objDataModel, ITreeStateModel objTreeStateModel) {
-		super();
-		m_objDataModel = objDataModel;
-		m_objTreeStateModel = objTreeStateModel;
-	}
-	/**
-	 * @see org.apache.tapestry.contrib.tree.model.ITreeModel#getTreeDataModel()
-	 */
-	public ITreeDataModel getTreeDataModel() {
-		return m_objDataModel;
-	}
+    private static final long serialVersionUID = -6445877820084989017L;
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.model.ITreeModel#getTreeStateModel()
-	 */
-	public ITreeStateModel getTreeStateModel() {
-		return m_objTreeStateModel;
-	}
+    private ITreeDataModel m_objDataModel;
+    private ITreeStateModel m_objTreeStateModel;
+
+    /**
+     * Constructor for SimpleTreeModel.
+     */
+    public SimpleTreeModel(ITreeDataModel objDataModel)
+    {
+        this(objDataModel, new SimpleTreeStateModel());
+    }
+
+    public SimpleTreeModel(ITreeDataModel objDataModel, ITreeStateModel objTreeStateModel)
+    {
+        super();
+        m_objDataModel = objDataModel;
+        m_objTreeStateModel = objTreeStateModel;
+    }
+
+    /**
+     * @see org.apache.tapestry.contrib.tree.model.ITreeModel#getTreeDataModel()
+     */
+    public ITreeDataModel getTreeDataModel()
+    {
+        return m_objDataModel;
+    }
+
+    /**
+     * @see org.apache.tapestry.contrib.tree.model.ITreeModel#getTreeStateModel()
+     */
+    public ITreeStateModel getTreeStateModel()
+    {
+        return m_objTreeStateModel;
+    }
 
 }

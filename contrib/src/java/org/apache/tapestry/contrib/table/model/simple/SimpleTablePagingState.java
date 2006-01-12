@@ -19,16 +19,17 @@ import java.io.Serializable;
 import org.apache.tapestry.contrib.table.model.ITablePagingState;
 
 /**
- * A minimal implementation of 
+ * A minimal implementation of
  * {@link org.apache.tapestry.contrib.table.model.ITablePagingState}.
  * 
  * @author mindbridge
  */
 public class SimpleTablePagingState implements ITablePagingState, Serializable
 {
-	private static final long serialVersionUID = 1L;
 
-	private static final int DEFAULT_PAGE_SIZE = 10;
+    private static final long serialVersionUID = 1L;
+
+    private static final int DEFAULT_PAGE_SIZE = 10;
 
     private int m_nPageSize;
     private int m_nCurrentPage;
@@ -38,13 +39,15 @@ public class SimpleTablePagingState implements ITablePagingState, Serializable
         this(DEFAULT_PAGE_SIZE, 0);
     }
 
-    public SimpleTablePagingState(int nPageSize, int nCurrentPage) {
+    public SimpleTablePagingState(int nPageSize, int nCurrentPage)
+    {
         m_nPageSize = nPageSize;
         m_nCurrentPage = nCurrentPage;
     }
-    
+
     /**
      * Returns the pageSize.
+     * 
      * @return int
      */
     public int getPageSize()
@@ -54,7 +57,9 @@ public class SimpleTablePagingState implements ITablePagingState, Serializable
 
     /**
      * Sets the pageSize.
-     * @param pageSize The pageSize to set
+     * 
+     * @param pageSize
+     *            The pageSize to set
      */
     public void setPageSize(int pageSize)
     {
@@ -63,6 +68,7 @@ public class SimpleTablePagingState implements ITablePagingState, Serializable
 
     /**
      * Returns the currentPage.
+     * 
      * @return int
      */
     public int getCurrentPage()
@@ -72,7 +78,9 @@ public class SimpleTablePagingState implements ITablePagingState, Serializable
 
     /**
      * Sets the currentPage.
-     * @param currentPage The currentPage to set
+     * 
+     * @param currentPage
+     *            The currentPage to set
      */
     public void setCurrentPage(int currentPage)
     {

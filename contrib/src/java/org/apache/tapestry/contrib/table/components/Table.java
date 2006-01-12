@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,17 +22,20 @@ import org.apache.tapestry.contrib.table.model.ITableModel;
 import org.apache.tapestry.contrib.table.model.ITableModelSource;
 
 /**
- * The facade component in the Table family. Table allows you to present a sortable and pagable
- * table simply and easily by using only this one component. Please see the Component Reference for
- * details on how to use this component. [ <a
- * href="../../../../../../../ComponentReference/contrib.Table.html">Component Reference </a>]
+ * The facade component in the Table family. Table allows you to present a
+ * sortable and pagable table simply and easily by using only this one
+ * component. Please see the Component Reference for details on how to use this
+ * component. [ <a
+ * href="../../../../../../../ComponentReference/contrib.Table.html">Component
+ * Reference </a>]
  * 
  * @author mindbridge
  */
 public abstract class Table extends BaseComponent implements ITableModelSource
 {
-	public abstract boolean getVolatile();
-	
+
+    public abstract boolean getVolatile();
+
     /**
      * @see org.apache.tapestry.contrib.table.model.ITableModelSource#getTableModel()
      */
@@ -42,8 +45,8 @@ public abstract class Table extends BaseComponent implements ITableModelSource
     }
 
     /**
-     * Indicates that the table model has changed and it may need to saved. This method has to be
-     * invoked if modifications are made to the model.
+     * Indicates that the table model has changed and it may need to saved. This
+     * method has to be invoked if modifications are made to the model.
      * 
      * @see org.apache.tapestry.contrib.table.model.ITableModelSource#fireObservedStateChange()
      */
@@ -53,8 +56,8 @@ public abstract class Table extends BaseComponent implements ITableModelSource
     }
 
     /**
-     * Resets the state of the component and forces it to load a new TableModel from the tableModel
-     * binding the next time it renders.
+     * Resets the state of the component and forces it to load a new TableModel
+     * from the tableModel binding the next time it renders.
      */
     public void reset()
     {
@@ -62,8 +65,8 @@ public abstract class Table extends BaseComponent implements ITableModelSource
     }
 
     /**
-     * Returns the currently rendered table column. You can call this method to obtain the current
-     * column.
+     * Returns the currently rendered table column. You can call this method to
+     * obtain the current column.
      * 
      * @return ITableColumn the current table column
      */
@@ -71,16 +74,17 @@ public abstract class Table extends BaseComponent implements ITableModelSource
     {
         Object objCurrentRow = getTableRow();
 
-        // if the current row is null, then we are most likely rendering TableColumns
-        if (objCurrentRow == null)
-            return getTableColumnsComponent().getTableColumn();
+        // if the current row is null, then we are most likely rendering
+        // TableColumns
+        if (objCurrentRow == null) return getTableColumnsComponent().getTableColumn();
 
         return getTableValuesComponent().getTableColumn();
     }
 
     /**
-     * Returns the currently rendered table row or null if the rows are not rendered at the moment.
-     * You can call this method to obtain the current row.
+     * Returns the currently rendered table row or null if the rows are not
+     * rendered at the moment. You can call this method to obtain the current
+     * row.
      * 
      * @return Object the current table row
      */
@@ -91,30 +95,29 @@ public abstract class Table extends BaseComponent implements ITableModelSource
 
     protected TableView getTableViewComponent()
     {
-        return (TableView) getComponent("tableView");
+        return (TableView)getComponent("tableView");
     }
 
     protected TableColumns getTableColumnsComponent()
     {
-        return (TableColumns) getComponent("tableColumns");
+        return (TableColumns)getComponent("tableColumns");
     }
 
     protected TableRows getTableRowsComponent()
     {
-        return (TableRows) getComponent("tableRows");
+        return (TableRows)getComponent("tableRows");
     }
 
     protected TableValues getTableValuesComponent()
     {
-        return (TableValues) getComponent("tableValues");
+        return (TableValues)getComponent("tableValues");
     }
-    
+
     public boolean getShowNormalPages()
     {
-    	if (getVolatile())
-    		return true;
-    	
-    	IForm form = (IForm) getPage().getRequestCycle().getAttribute(TapestryUtils.FORM_ATTRIBUTE);
-    	return (form == null);
+        if (getVolatile()) return true;
+
+        IForm form = (IForm)getPage().getRequestCycle().getAttribute(TapestryUtils.FORM_ATTRIBUTE);
+        return (form == null);
     }
 }

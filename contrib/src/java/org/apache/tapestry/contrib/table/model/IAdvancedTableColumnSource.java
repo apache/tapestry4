@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*
- * Created on Jun 4, 2005
- */
 package org.apache.tapestry.contrib.table.model;
 
-
-public interface IAdvancedTableColumnSource 
+/**
+ * @author mindbridge ?
+ */
+public interface IAdvancedTableColumnSource
 {
-    IAdvancedTableColumn generateTableColumn(String strName, String strDisplayName,
-    		boolean bSortable, String strExpression);
+
+    IAdvancedTableColumn generateTableColumn(String strName, String strDisplayName, boolean bSortable,
+            String strExpression);
 }

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,28 +18,28 @@ import org.apache.tapestry.link.DefaultLinkRenderer;
 import org.apache.tapestry.link.ILinkRenderer;
 
 /**
- *  A subclass of {@link org.apache.tapestry.link.DefaultLinkRenderer} for
- *  the HTML area element.
- *
- *  @author David Solis
- *  @since 3.0
+ * A subclass of {@link org.apache.tapestry.link.DefaultLinkRenderer} for the
+ * HTML area element.
+ * 
+ * @author David Solis
+ * @since 3.0
  */
-public class AreaLinkRenderer extends DefaultLinkRenderer 
+public class AreaLinkRenderer extends DefaultLinkRenderer
 {
 
-	/**
-	 *  A singleton for the area link. 
-	 **/
+    /**
+     * A singleton for the area link.
+     */
 
-	public static final ILinkRenderer SHARED_INSTANCE = new AreaLinkRenderer();
+    public static final ILinkRenderer SHARED_INSTANCE = new AreaLinkRenderer();
 
-	public String getElement() 
-	{
-		return "area";
-	}
+    public String getElement()
+    {
+        return "area";
+    }
 
-	public boolean getHasBody() 
-	{
-		return false;
-	}
+    public boolean getHasBody()
+    {
+        return false;
+    }
 }

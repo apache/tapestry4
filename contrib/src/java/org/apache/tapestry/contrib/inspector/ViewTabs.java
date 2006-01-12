@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,12 +26,12 @@ import org.apache.tapestry.IRequestCycle;
 
 public abstract class ViewTabs extends BaseComponent
 {
-    private static String[] _views =
-    { View.SPECIFICATION, View.TEMPLATE, View.PROPERTIES, View.ENGINE };
+
+    private static final String[] VIEWS = { View.SPECIFICATION, View.TEMPLATE, View.PROPERTIES, View.ENGINE };
 
     public String[] getViews()
     {
-        return _views;
+        return VIEWS;
     }
 
     public abstract void setView(String value);
@@ -40,7 +40,7 @@ public abstract class ViewTabs extends BaseComponent
 
     private IAsset getImageForView(boolean focus)
     {
-        Inspector inspector = (Inspector) getPage();
+        Inspector inspector = (Inspector)getPage();
 
         String view = getView();
 
@@ -48,15 +48,13 @@ public abstract class ViewTabs extends BaseComponent
 
         StringBuffer buffer = new StringBuffer(view);
 
-        if (selected)
-            buffer.append("_selected");
+        if (selected) buffer.append("_selected");
 
-        if (focus)
-            buffer.append("_focus");
+        if (focus) buffer.append("_focus");
 
         String key = buffer.toString();
 
-        return (IAsset) getAssets().get(key);
+        return (IAsset)getAssets().get(key);
     }
 
     public IAsset getViewImage()
@@ -71,16 +69,16 @@ public abstract class ViewTabs extends BaseComponent
 
     public IAsset getBannerImage()
     {
-        Inspector inspector = (Inspector) getPage();
+        Inspector inspector = (Inspector)getPage();
         String selectedView = inspector.getView();
         String key = selectedView + "_banner";
 
-        return (IAsset) getAssets().get(key);
+        return (IAsset)getAssets().get(key);
     }
 
     public void selectTab(IRequestCycle cycle)
     {
-        Inspector inspector = (Inspector) getPage();
+        Inspector inspector = (Inspector)getPage();
         inspector.setView(getView());
     }
 }

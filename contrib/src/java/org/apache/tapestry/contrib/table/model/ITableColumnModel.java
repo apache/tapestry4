@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,22 +23,28 @@ import java.util.Iterator;
  */
 public interface ITableColumnModel
 {
-	/**
-	 * Method getColumnCount.
-	 * @return int the number of columns in the model
-	 */
-	int getColumnCount();
 
-	/**
-	 * Method getColumn.
-	 * @param strName the name of the requested column
-	 * @return ITableColumn the column with the given name. null if no such column exists.
-	 */
-	ITableColumn getColumn(String strName);
+    /**
+     * Method getColumnCount.
+     * 
+     * @return int the number of columns in the model
+     */
+    int getColumnCount();
 
-	/**
-	 * Method getColumns.
-	 * @return Iterator an iterator of all columns in the model
-	 */
-	Iterator getColumns();
+    /**
+     * Method getColumn.
+     * 
+     * @param strName
+     *            the name of the requested column
+     * @return ITableColumn the column with the given name. null if no such
+     *         column exists.
+     */
+    ITableColumn getColumn(String strName);
+
+    /**
+     * Method getColumns.
+     * 
+     * @return Iterator an iterator of all columns in the model
+     */
+    Iterator getColumns();
 }

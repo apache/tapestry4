@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,8 +21,10 @@ import org.apache.tapestry.contrib.tree.model.ITreeModelSource;
 /**
  * @author ceco
  */
-public interface INodeRenderFactory 
+public interface INodeRenderFactory
 {
-	IRender getRenderByID(Object objUniqueKey, ITreeModelSource objTreeModelSource, IRequestCycle objCycle);	
-	IRender getRender(Object objValue, ITreeModelSource objTreeModelSource, IRequestCycle objCycle);	
+
+    IRender getRenderByID(Object objUniqueKey, ITreeModelSource objTreeModelSource, IRequestCycle objCycle);
+
+    IRender getRender(Object objValue, ITreeModelSource objTreeModelSource, IRequestCycle objCycle);
 }

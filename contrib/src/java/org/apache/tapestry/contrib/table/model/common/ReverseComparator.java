@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,23 +18,23 @@ import java.util.Comparator;
 
 /**
  * @author mindbridge
- *
  */
 public class ReverseComparator implements Comparator
 {
-	private Comparator m_objComparator;
 
-	public ReverseComparator(Comparator objComparator)
-	{
-		m_objComparator = objComparator;
-	}
+    private Comparator m_objComparator;
 
-	/**
-	 * @see java.util.Comparator#compare(Object, Object)
-	 */
-	public int compare(Object objValue1, Object objValue2)
-	{
-		return -m_objComparator.compare(objValue1, objValue2);
-	}
+    public ReverseComparator(Comparator objComparator)
+    {
+        m_objComparator = objComparator;
+    }
+
+    /**
+     * @see java.util.Comparator#compare(Object, Object)
+     */
+    public int compare(Object objValue1, Object objValue2)
+    {
+        return -m_objComparator.compare(objValue1, objValue2);
+    }
 
 }

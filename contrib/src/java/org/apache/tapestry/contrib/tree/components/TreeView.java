@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,8 +34,8 @@ import org.apache.tapestry.util.ComponentAddress;
 
 /**
  */
-public abstract class TreeView extends BaseComponent implements PageDetachListener,
-        PageBeginRenderListener, ITreeModelSource
+public abstract class TreeView extends BaseComponent implements PageDetachListener, PageBeginRenderListener,
+        ITreeModelSource
 {
 
     private static final Log LOG = LogFactory.getLog(TreeView.class);
@@ -72,7 +72,8 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
     }
 
     /**
-     * @see org.apache.tapestry.AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
+     * @see org.apache.tapestry.AbstractComponent#renderComponent(IMarkupWriter,
+     *      IRequestCycle)
      */
 
     /**
@@ -88,10 +89,7 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
      */
     public void pageBeginRender(PageEvent arg0)
     {
-        if (arg0.getRequestCycle().isRewinding())
-        {
-            return;
-        }
+        if (arg0.getRequestCycle().isRewinding()) { return; }
         storeSesion();
     }
 
@@ -188,7 +186,7 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
                 LOG.debug("TreeView.extractTreeModel() from BINDING");
             }
 
-            m_objTreeModel = (ITreeModel) getTreeModelBinding().getObject();
+            m_objTreeModel = (ITreeModel)getTreeModelBinding().getObject();
         }
 
     }
@@ -216,10 +214,9 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
         }
         else
         {
-            //String strPath = "treeSessionState";
+            // String strPath = "treeSessionState";
             String strPath = getExtendedId();
-            if (LOG.isDebugEnabled())
-                LOG.debug("store(): setting state with: " + strPath);
+            if (LOG.isDebugEnabled()) LOG.debug("store(): setting state with: " + strPath);
             objHolder.setSessionState(this.getPage(), strPath, objSessionState);
         }
     }
@@ -246,8 +243,7 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
     {
         if (m_objSessionStoreManager == null && getSessionStoreManagerBinding() != null)
         {
-            m_objSessionStoreManager = (ISessionStoreManager) getSessionStoreManagerBinding()
-                    .getObject();
+            m_objSessionStoreManager = (ISessionStoreManager)getSessionStoreManagerBinding().getObject();
         }
 
         return m_objSessionStoreManager;
@@ -266,7 +262,7 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
             if (objBinding != null)
             {
                 Object objManager = objBinding.getObject();
-                m_objTreeSessionStateManager = (ITreeSessionStateManager) objManager;
+                m_objTreeSessionStateManager = (ITreeSessionStateManager)objManager;
             }
             else
             {
@@ -342,8 +338,7 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
      */
     protected void renderComponent(IMarkupWriter arg0, IRequestCycle arg1)
     {
-        Object objExistedTreeModelSource = arg1
-                .getAttribute(ITreeModelSource.TREE_MODEL_SOURCE_ATTRIBUTE);
+        Object objExistedTreeModelSource = arg1.getAttribute(ITreeModelSource.TREE_MODEL_SOURCE_ATTRIBUTE);
         arg1.setAttribute(ITreeModelSource.TREE_MODEL_SOURCE_ATTRIBUTE, this);
 
         super.renderComponent(arg0, arg1);
@@ -359,7 +354,7 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
         IBinding objBinding = getBinding("treeStateListener");
         if (objBinding != null)
         {
-            objListener = (ITreeStateListener) objBinding.getObject();
+            objListener = (ITreeStateListener)objBinding.getObject();
         }
         return objListener;
     }
