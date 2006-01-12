@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,43 +14,50 @@
 
 package org.apache.tapestry.portlet;
 
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class PortletMessages
+final class PortletMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(PortletMessages.class);
+
+    private final static Messages MESSAGES = new MessageFormatter(PortletMessages.class);
+
+    /** @since 4.1 */
+    private PortletMessages()
+    {
+    }
 
     static String unsupportedMethod(String methodName)
     {
-        return _formatter.format("unsupported-method", methodName);
+        return MESSAGES.format("unsupported-method", methodName);
     }
 
     static String errorGettingResource(String path, Throwable cause)
     {
-        return _formatter.format("error-getting-resource", path, cause);
+        return MESSAGES.format("error-getting-resource", path, cause);
     }
 
     static String errorProcessingAction(Throwable cause)
     {
-        return _formatter.format("error-processing-action", cause);
+        return MESSAGES.format("error-processing-action", cause);
     }
 
     static String errorProcessingRender(Throwable cause)
     {
-        return _formatter.format("error-processing-render", cause);
+        return MESSAGES.format("error-processing-render", cause);
     }
 
     static String errorReportingException(Throwable cause)
     {
-        return _formatter.format("error-reporting-exception", cause);
+        return MESSAGES.format("error-reporting-exception", cause);
     }
 
     static String staleSession()
     {
-        return _formatter.getMessage("stale-session");
+        return MESSAGES.getMessage("stale-session");
     }
 }
