@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,41 +20,42 @@ package org.apache.tapestry.util.text;
  * @author mb
  * @since 4.0
  */
-public class WhitespaceMatcher implements ICharacterMatcher 
+public class WhitespaceMatcher implements ICharacterMatcher
 {
+
     private boolean _matchEndLines;
-    
+
     /**
-     * Creates an object that matches all whitespace characters, line terminators included
+     * Creates an object that matches all whitespace characters, line
+     * terminators included.
      */
     public WhitespaceMatcher()
     {
         this(true);
     }
-    
+
     /**
-     * Creates an object that matches whitespace characters. 
-     * Line terminators are included only if this is specified.
+     * Creates an object that matches whitespace characters. Line terminators
+     * are included only if this is specified.
      * 
-     * @param matchEndLines match line terminators as well
+     * @param matchEndLines
+     *            match line terminators as well
      */
     public WhitespaceMatcher(boolean matchEndLines)
     {
         _matchEndLines = matchEndLines;
     }
-    
+
     /**
-     * Matches whitespace characters. Line terminators may be matched 
-     * depending on the constructor used to create the object.
+     * Matches whitespace characters. Line terminators may be matched depending
+     * on the constructor used to create the object.
      * 
      * @see org.apache.tapestry.util.text.ICharacterMatcher#matches(char)
      */
     public boolean matches(char ch)
     {
-        if (!_matchEndLines)
-            if (ch == '\n' || ch == '\r')
-                return false;
-        
+        if (!_matchEndLines) if (ch == '\n' || ch == '\r') return false;
+
         return Character.isWhitespace(ch);
     }
 }

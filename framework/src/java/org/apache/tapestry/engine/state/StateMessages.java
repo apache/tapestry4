@@ -14,34 +14,41 @@
 
 package org.apache.tapestry.engine.state;
 
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class StateMessages
+final class StateMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(StateMessages.class);
+
+    private static final Messages MESSAGES = new MessageFormatter(StateMessages.class);
+
+    /** @since 4.1 */
+    private StateMessages()
+    {
+    }
 
     static String unknownStateObjectName(String objectName)
     {
-        return _formatter.format("unknown-state-object-name", objectName);
+        return MESSAGES.format("unknown-state-object-name", objectName);
     }
 
     static String unableToInstantiateObject(Class objectClass, Throwable cause)
     {
-        return _formatter.format("unable-to-instantiate-object", objectClass, cause);
+        return MESSAGES.format("unable-to-instantiate-object", objectClass, cause);
     }
 
     static String unableToInstantiateObject(String className, Throwable cause)
     {
-        return _formatter.format("unable-to-instantiate-object", className, cause);
+        return MESSAGES.format("unable-to-instantiate-object", className, cause);
     }
 
     static String unknownScope(String objectName, String scope)
     {
-        return _formatter.format("unknown-scope", objectName, scope);
+        return MESSAGES.format("unknown-scope", objectName, scope);
     }
 
 }

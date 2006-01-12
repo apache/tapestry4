@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,18 +19,19 @@ import org.apache.tapestry.event.ResetEventListener;
 /**
  * Service interface for a source of <b>reset</b> events; this events are used
  * to inform other services that they should discard any cached data.
- *
+ * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public interface ResetEventHub
 {
+
     public void addResetEventListener(ResetEventListener l);
 
     public void removeResetEventListener(ResetEventListener l);
 
-	/**
-	 * Notifies registered listeners.
-	 */
+    /**
+     * Notifies registered listeners.
+     */
     public void fireResetEvent();
 }

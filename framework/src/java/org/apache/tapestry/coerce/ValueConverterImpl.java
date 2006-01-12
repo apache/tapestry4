@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,19 +26,20 @@ import org.apache.hivemind.util.ConstructorUtils;
 import org.apache.hivemind.util.Defense;
 
 /**
- * Implementation of {@link org.apache.tapestry.coerce.ValueConverter}. Selects an appropriate type
- * converter and delegates to it.
+ * Implementation of {@link org.apache.tapestry.coerce.ValueConverter}. Selects
+ * an appropriate type converter and delegates to it.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class ValueConverterImpl implements ValueConverter
 {
+
     private Map _converterMap = new HashMap();
 
     /** List of {@link org.apache.tapestry.coerce.TypeConverterContribution}. */
 
-    public List _contributions;
+    private List _contributions;
 
     private Map _primitiveToWrapper = new HashMap();
 
@@ -65,9 +66,9 @@ public class ValueConverterImpl implements ValueConverter
     public void initializeService()
     {
         Iterator i = _contributions.iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
-            TypeConverterContribution c = (TypeConverterContribution) i.next();
+            TypeConverterContribution c = (TypeConverterContribution)i.next();
 
             _converterMap.put(c.getSubjectClass(), c.getConverter());
         }
@@ -81,40 +82,37 @@ public class ValueConverterImpl implements ValueConverter
 
         // Already the correct type? Go no further!
 
-        if (value != null && effectiveType.isAssignableFrom(value.getClass()))
-            return value;
-        
+        if (value != null && effectiveType.isAssignableFrom(value.getClass())) return value;
+
         Object result = convertNumberToNumber(value, effectiveType);
 
-        if (result != null)
-            return result;
+        if (result != null) return result;
 
         result = convertUsingPropertyEditor(value, effectiveType);
 
-        if (result != null)
-            return result;
+        if (result != null) return result;
 
-        TypeConverter converter = (TypeConverter) _converterMap.get(effectiveType);
+        TypeConverter converter = (TypeConverter)_converterMap.get(effectiveType);
 
         // null value and no converter for the given type? Just return null.
 
-        if (value == null && converter == null)
-            return null;
+        if (value == null && converter == null) return null;
 
-        if (converter == null)
-            throw new ApplicationRuntimeException(CoerceMessages.noConverter(effectiveType));
+        if (converter == null) throw new ApplicationRuntimeException(CoerceMessages.noConverter(effectiveType));
 
         return converter.convertValue(value);
     }
 
     /**
-     * Attempts to use {@link java.beans.PropertyEditor}to perform a conversion from a string to a
-     * numeric type. Returns null if no property editor can be found.
+     * Attempts to use {@link java.beans.PropertyEditor}to perform a conversion
+     * from a string to a numeric type. Returns null if no property editor can
+     * be found.
      * 
      * @param value
      *            The value to convert
      * @param targetType
-     *            The type to convert to (must be a wrapper type, not a primitive type)
+     *            The type to convert to (must be a wrapper type, not a
+     *            primitive type)
      */
 
     private Number convertUsingPropertyEditor(Object value, Class targetType)
@@ -123,16 +121,14 @@ public class ValueConverterImpl implements ValueConverter
         // PropertyEditorManager expects primitive types not
         // wrapper types.
 
-        if (value == null || value.getClass() != String.class
-                || !Number.class.isAssignableFrom(targetType))
+        if (value == null || value.getClass() != String.class || !Number.class.isAssignableFrom(targetType))
             return null;
 
-        Class primitiveType = (Class) _wrapperToPrimitive.get(targetType);
+        Class primitiveType = (Class)_wrapperToPrimitive.get(targetType);
 
         // Note a primitive type.
 
-        if (primitiveType == null)
-            return null;
+        if (primitiveType == null) return null;
 
         // Looks like a conversion from String to Number, let's see.
 
@@ -141,23 +137,20 @@ public class ValueConverterImpl implements ValueConverter
         // This should not happen, since we've filtered down to just the
         // primitive types that do have property editors.
 
-        if (editor == null)
-            return null;
+        if (editor == null) return null;
 
-        String text = (String) value;
+        String text = (String)value;
 
         try
         {
             editor.setAsText(text);
 
-            return (Number) editor.getValue();
+            return (Number)editor.getValue();
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(CoerceMessages.stringToNumberConversionError(
-                    text,
-                    targetType,
-                    ex), ex);
+            throw new ApplicationRuntimeException(CoerceMessages.stringToNumberConversionError(text, targetType, ex),
+                    ex);
         }
 
     }
@@ -165,18 +158,16 @@ public class ValueConverterImpl implements ValueConverter
     private Number convertNumberToNumber(Object value, Class targetType)
     {
         if (value == null || !Number.class.isAssignableFrom(value.getClass())
-                || !Number.class.isAssignableFrom(targetType))
-            return null;
+                || !Number.class.isAssignableFrom(targetType)) return null;
 
         String valueAsString = value.toString();
 
-        return (Number) ConstructorUtils.invokeConstructor(targetType, new Object[]
-        { valueAsString });
+        return (Number)ConstructorUtils.invokeConstructor(targetType, new Object[] { valueAsString });
     }
 
     private Class convertType(Class possiblePrimitiveType)
     {
-        Class wrapperType = (Class) _primitiveToWrapper.get(possiblePrimitiveType);
+        Class wrapperType = (Class)_primitiveToWrapper.get(possiblePrimitiveType);
 
         return wrapperType == null ? possiblePrimitiveType : wrapperType;
     }

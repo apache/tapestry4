@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,14 +20,17 @@ import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
 /**
- * Interface for objects that can handle web requests; few classes implement this, instead they
- * implement {@link org.apache.tapestry.services.WebRequestServicerFilter}&nbsp;and plug into the
- * tapestry.request.WebRequestServicerPipeline configuration point.
+ * Interface for objects that can handle web requests; few classes implement
+ * this, instead they implement
+ * {@link org.apache.tapestry.services.WebRequestServicerFilter} and plug into
+ * the tapestry.request.WebRequestServicerPipeline configuration point.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface WebRequestServicer
 {
-    public void service(WebRequest request, WebResponse response) throws IOException;
+
+    void service(WebRequest request, WebResponse response)
+        throws IOException;
 }

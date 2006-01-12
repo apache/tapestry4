@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,8 +39,8 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.StringSplitter;
 
 /**
- * A placeholder for a number of (static) methods that don't belong elsewhere, as well as a global
- * location for static constants.
+ * A placeholder for a number of (static) methods that don't belong elsewhere,
+ * as well as a global location for static constants.
  * 
  * @since 1.0.1
  * @author Howard Lewis Ship
@@ -48,62 +48,77 @@ import org.apache.tapestry.util.StringSplitter;
 
 public final class Tapestry
 {
+
     /**
-     * The name ("action") of a service that allows behavior to be associated with an
-     * {@link IAction} component, such as {@link org.apache.tapestry.link.ActionLink }or
+     * The version of the framework; this is updated for major releases.
+     */
+
+    public static final String VERSION;
+
+    /**
+     * The name ("action") of a service that allows behavior to be associated
+     * with an {@link IAction} component, such as
+     * {@link org.apache.tapestry.link.ActionLink }or
      * {@link org.apache.tapestry.form.Form}.
      * <p>
-     * This service is used with actions that are tied to the dynamic state of the page, and which
-     * require a rewind of the page.
+     * This service is used with actions that are tied to the dynamic state of
+     * the page, and which require a rewind of the page.
      */
 
-    public final static String ACTION_SERVICE = "action";
+    public static final String ACTION_SERVICE = "action";
 
     /**
-     * The name ("direct") of a service that allows stateless behavior for an {@link
-     * org.apache.tapestry.link.DirectLink} component.
+     * The name ("direct") of a service that allows stateless behavior for an
+     * {@link org.apache.tapestry.link.DirectLink} component.
      * <p>
-     * This service rolls back the state of the page but doesn't rewind the the dynamic state of the
-     * page the was the action service does, which is more efficient but less powerful.
+     * This service rolls back the state of the page but doesn't rewind the the
+     * dynamic state of the page the was the action service does, which is more
+     * efficient but less powerful.
      * <p>
-     * An array of String parameters may be included with the service URL; these will be made
-     * available to the {@link org.apache.tapestry.link.DirectLink} component's listener.
+     * An array of String parameters may be included with the service URL; these
+     * will be made available to the {@link org.apache.tapestry.link.DirectLink}
+     * component's listener.
      */
 
-    public final static String DIRECT_SERVICE = "direct";
+    public static final String DIRECT_SERVICE = "direct";
 
     /**
-     * The name ("external") of a service that a allows {@link IExternalPage} to be selected.
-     * Associated with a {@link org.apache.tapestry.link.ExternalLink} component.
+     * The name ("external") of a service that a allows {@link IExternalPage} to
+     * be selected. Associated with a
+     * {@link org.apache.tapestry.link.ExternalLink} component.
      * <p>
-     * This service enables {@link IExternalPage}s to be accessed via a URL. External pages may be
-     * booked marked using their URL for future reference.
+     * This service enables {@link IExternalPage}s to be accessed via a URL.
+     * External pages may be booked marked using their URL for future reference.
      * <p>
-     * An array of Object parameters may be included with the service URL; these will be passed to
-     * the {@link IExternalPage#activateExternalPage(Object[], IRequestCycle)} method.
+     * An array of Object parameters may be included with the service URL; these
+     * will be passed to the
+     * {@link IExternalPage#activateExternalPage(Object[], IRequestCycle)}
+     * method.
      */
 
-    public final static String EXTERNAL_SERVICE = "external";
+    public static final String EXTERNAL_SERVICE = "external";
 
     /**
-     * The name ("page") of a service that allows a new page to be selected. Associated with a
-     * {@link org.apache.tapestry.link.PageLink} component.
+     * The name ("page") of a service that allows a new page to be selected.
+     * Associated with a {@link org.apache.tapestry.link.PageLink} component.
      * <p>
      * The service requires a single parameter: the name of the target page.
      */
 
-    public final static String PAGE_SERVICE = "page";
+    public static final String PAGE_SERVICE = "page";
 
     /**
-     * The name ("home") of a service that jumps to the home page. A stand-in for when no service is
-     * provided, which is typically the entrypoint to the application.
+     * The name ("home") of a service that jumps to the home page. A stand-in
+     * for when no service is provided, which is typically the entrypoint to the
+     * application.
      */
 
-    public final static String HOME_SERVICE = "home";
+    public static final String HOME_SERVICE = "home";
 
     /**
-     * The name ("restart") of a service that invalidates the session and restarts the application.
-     * Typically used just to recover from an exception.
+     * The name ("restart") of a service that invalidates the session and
+     * restarts the application. Typically used just to recover from an
+     * exception.
      */
 
     public static final String RESTART_SERVICE = "restart";
@@ -115,13 +130,15 @@ public final class Tapestry
     public static final String ASSET_SERVICE = "asset";
 
     /**
-     * The name ("reset") of a service used to clear cached template and specification data and
-     * remove all pooled pages. This is only used when debugging as a quick way to clear the out
-     * cached data, to allow updated versions of specifications and templates to be loaded (without
-     * stopping and restarting the servlet container).
+     * The name ("reset") of a service used to clear cached template and
+     * specification data and remove all pooled pages. This is only used when
+     * debugging as a quick way to clear the out cached data, to allow updated
+     * versions of specifications and templates to be loaded (without stopping
+     * and restarting the servlet container).
      * <p>
      * This service is only available if the Java system property
-     * <code>org.apache.tapestry.enable-reset-service</code> is set to <code>true</code>.
+     * <code>org.apache.tapestry.enable-reset-service</code> is set to
+     * <code>true</code>.
      */
 
     public static final String RESET_SERVICE = "reset";
@@ -131,30 +148,33 @@ public final class Tapestry
      * 
      * @since 1.0.3
      * @deprecated To be removed in 4.1. Use
-     *             {@link org.apache.tapestry.services.ServiceConstants#SERVICE} instead.
+     *             {@link org.apache.tapestry.services.ServiceConstants#SERVICE}
+     *             instead.
      */
 
     public static final String SERVICE_QUERY_PARAMETER_NAME = ServiceConstants.SERVICE;
 
     /**
-     * The query parameter for application specific parameters to the service (this is used with the
-     * direct service). Each of these values is encoded with
-     * {@link java.net.URLEncoder#encode(String)} before being added to the URL. Multiple values are
-     * handle by repeatedly establishing key/value pairs (this is a change from behavior in 2.1 and
-     * earlier).
+     * The query parameter for application specific parameters to the service
+     * (this is used with the direct service). Each of these values is encoded
+     * with {@link java.net.URLEncoder#encode(String)} before being added to the
+     * URL. Multiple values are handle by repeatedly establishing key/value
+     * pairs (this is a change from behavior in 2.1 and earlier).
      * 
      * @since 1.0.3
      * @deprecated To be removed in 4.1. Use
-     *             {@link org.apache.tapestry.services.ServiceConstants#PARAMETER} instead.
+     *             {@link org.apache.tapestry.services.ServiceConstants#PARAMETER}
+     *             instead.
      */
 
     public static final String PARAMETERS_QUERY_PARAMETER_NAME = ServiceConstants.PARAMETER;
 
     /**
-     * Property name used to get the extension used for templates. This may be set in the page or
-     * component specification, or in the page (or component's) immediate container (library or
-     * application specification). Unlike most properties, value isn't inherited all the way up the
-     * chain. The default template extension is "html".
+     * Property name used to get the extension used for templates. This may be
+     * set in the page or component specification, or in the page (or
+     * component's) immediate container (library or application specification).
+     * Unlike most properties, value isn't inherited all the way up the chain.
+     * The default template extension is "html".
      * 
      * @since 3.0
      */
@@ -162,16 +182,17 @@ public final class Tapestry
     public static final String TEMPLATE_EXTENSION_PROPERTY = "org.apache.tapestry.template-extension";
 
     /**
-     * The name of an {@link org.apache.tapestry.IRequestCycle} attribute in which the currently
-     * rendering {@link org.apache.tapestry.components.ILinkComponent} is stored. Link components do
-     * not nest.
+     * The name of an {@link org.apache.tapestry.IRequestCycle} attribute in
+     * which the currently rendering
+     * {@link org.apache.tapestry.components.ILinkComponent} is stored. Link
+     * components do not nest.
      */
 
     public static final String LINK_COMPONENT_ATTRIBUTE_NAME = "org.apache.tapestry.active-link-component";
 
     /**
-     * Suffix appended to a parameter name to form the name of a property that stores the binding
-     * for the parameter.
+     * Suffix appended to a parameter name to form the name of a property that
+     * stores the binding for the parameter.
      * 
      * @since 3.0
      */
@@ -179,8 +200,9 @@ public final class Tapestry
     public static final String PARAMETER_PROPERTY_NAME_SUFFIX = "Binding";
 
     /**
-     * Key used to obtain an extension from the application specification. The extension, if it
-     * exists, implements {@link org.apache.tapestry.request.IRequestDecoder}.
+     * Key used to obtain an extension from the application specification. The
+     * extension, if it exists, implements
+     * {@link org.apache.tapestry.request.IRequestDecoder}.
      * 
      * @since 2.2
      */
@@ -188,9 +210,10 @@ public final class Tapestry
     public static final String REQUEST_DECODER_EXTENSION_NAME = "org.apache.tapestry.request-decoder";
 
     /**
-     * Name of optional application extension for the multipart decoder used by the application. The
-     * extension must implement {@link org.apache.tapestry.multipart.IMultipartDecoder} (and is
-     * generally a configured instance of
+     * Name of optional application extension for the multipart decoder used by
+     * the application. The extension must implement
+     * {@link org.apache.tapestry.multipart.IMultipartDecoder} (and is generally
+     * a configured instance of
      * {@link org.apache.tapestry.multipart.DefaultMultipartDecoder}).
      * 
      * @since 3.0
@@ -199,7 +222,8 @@ public final class Tapestry
     public static final String MULTIPART_DECODER_EXTENSION_NAME = "org.apache.tapestry.multipart-decoder";
 
     /**
-     * Method id used to check that {@link IPage#validate(IRequestCycle)} is invoked.
+     * Method id used to check that {@link IPage#validate(IRequestCycle)} is
+     * invoked.
      * 
      * @see #checkMethodInvocation(Object, String, Object)
      * @since 3.0
@@ -217,9 +241,10 @@ public final class Tapestry
     public static final String ABSTRACTPAGE_DETACH_METHOD_ID = "AbstractPage.detach()";
 
     /**
-     * Regular expression defining a simple property name. Used by several different parsers. Simple
-     * property names match Java variable names; a leading letter (or underscore), followed by
-     * letters, numbers and underscores.
+     * Regular expression defining a simple property name. Used by several
+     * different parsers. Simple property names match Java variable names; a
+     * leading letter (or underscore), followed by letters, numbers and
+     * underscores.
      * 
      * @since 3.0
      */
@@ -228,8 +253,8 @@ public final class Tapestry
 
     /**
      * Name of an application extension used as a factory for
-     * {@link org.apache.tapestry.engine.IMonitor}instances. The extension must implement
-     * {@link org.apache.tapestry.engine.IMonitorFactory}.
+     * {@link org.apache.tapestry.engine.IMonitor}instances. The extension must
+     * implement {@link org.apache.tapestry.engine.IMonitorFactory}.
      * 
      * @since 3.0
      */
@@ -237,24 +262,19 @@ public final class Tapestry
     public static final String MONITOR_FACTORY_EXTENSION_NAME = "org.apache.tapestry.monitor-factory";
 
     /**
-     * Class name of an {@link ognl.TypeConverter}implementing class to use as a type converter for
-     * {@link org.apache.tapestry.binding.ExpressionBinding}
+     * Class name of an {@link ognl.TypeConverter}implementing class to use as
+     * a type converter for
+     * {@link org.apache.tapestry.binding.ExpressionBinding}.
      */
     public static final String OGNL_TYPE_CONVERTER = "org.apache.tapestry.ognl-type-converter";
 
     /**
-     * Prevent instantiation.
+     * Used for tracking if a particular super-class method has been invoked.
      */
 
-    private Tapestry()
-    {
-    }
+    private static final ThreadLocal INVOKED_METHOD_IDS_HOLDER = new ThreadLocal();
 
-    /**
-     * The version of the framework; this is updated for major releases.
-     */
-
-    public static final String VERSION = readVersion();
+    private static final String UNKNOWN_VERSION = "Unknown";
 
     /**
      * Contains strings loaded from TapestryStrings.properties.
@@ -265,46 +285,50 @@ public final class Tapestry
     private static ResourceBundle _strings;
 
     /**
-     * A {@link Map}that links Locale names (as in {@link Locale#toString()}to {@link Locale}
-     * instances. This prevents needless duplication of Locales.
+     * A {@link Map}that links Locale names (as in {@link Locale#toString()}to
+     * {@link Locale} instances. This prevents needless duplication of Locales.
      */
 
-    private static final Map _localeMap = new HashMap();
+    private static final Map LOCALE_MAP = new HashMap();
 
     static
     {
+        VERSION = readVersion();
+
         Locale[] locales = Locale.getAvailableLocales();
-        for (int i = 0; i < locales.length; i++)
+        for(int i = 0; i < locales.length; i++)
         {
-            _localeMap.put(locales[i].toString(), locales[i]);
+            LOCALE_MAP.put(locales[i].toString(), locales[i]);
         }
     }
 
     /**
-     * Used for tracking if a particular super-class method has been invoked.
+     * Prevent instantiation.
      */
 
-    private static final ThreadLocal _invokedMethodIds = new ThreadLocal();
+    private Tapestry()
+    {
+    }
 
     /**
-     * Copys all informal {@link IBinding bindings}from a source component to the destination
-     * component. Informal bindings are bindings for informal parameters. This will overwrite
-     * parameters (formal or informal) in the destination component if there is a naming conflict.
+     * Copys all informal {@link IBinding bindings}from a source component to
+     * the destination component. Informal bindings are bindings for informal
+     * parameters. This will overwrite parameters (formal or informal) in the
+     * destination component if there is a naming conflict.
      */
 
     public static void copyInformalBindings(IComponent source, IComponent destination)
     {
         Collection names = source.getBindingNames();
 
-        if (names == null)
-            return;
+        if (names == null) return;
 
         IComponentSpecification specification = source.getSpecification();
         Iterator i = names.iterator();
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
-            String name = (String) i.next();
+            String name = (String)i.next();
 
             // If not a formal parameter, then copy it over.
 
@@ -319,17 +343,17 @@ public final class Tapestry
 
     /**
      * Gets the {@link Locale}for the given string, which is the result of
-     * {@link Locale#toString()}. If no such locale is already registered, a new instance is
-     * created, registered and returned.
+     * {@link Locale#toString()}. If no such locale is already registered, a
+     * new instance is created, registered and returned.
      */
 
     public static Locale getLocale(String s)
     {
         Locale result = null;
 
-        synchronized (_localeMap)
+        synchronized(LOCALE_MAP)
         {
-            result = (Locale) _localeMap.get(s);
+            result = (Locale)LOCALE_MAP.get(s);
         }
 
         if (result == null)
@@ -337,31 +361,31 @@ public final class Tapestry
             StringSplitter splitter = new StringSplitter('_');
             String[] terms = splitter.splitToArray(s);
 
-            switch (terms.length)
+            switch(terms.length)
             {
-                case 1:
+            case 1:
 
-                    result = new Locale(terms[0], "");
-                    break;
+                result = new Locale(terms[0], "");
+                break;
 
-                case 2:
+            case 2:
 
-                    result = new Locale(terms[0], terms[1]);
-                    break;
+                result = new Locale(terms[0], terms[1]);
+                break;
 
-                case 3:
+            case 3:
 
-                    result = new Locale(terms[0], terms[1], terms[2]);
-                    break;
+                result = new Locale(terms[0], terms[1], terms[2]);
+                break;
 
-                default:
+            default:
 
-                    throw new IllegalArgumentException("Unable to convert '" + s + "' to a Locale.");
+                throw new IllegalArgumentException("Unable to convert '" + s + "' to a Locale.");
             }
 
-            synchronized (_localeMap)
+            synchronized(LOCALE_MAP)
             {
-                _localeMap.put(s, result);
+                LOCALE_MAP.put(s, result);
             }
 
         }
@@ -392,21 +416,20 @@ public final class Tapestry
     }
 
     /**
-     * Gets a string from the TapestryStrings resource bundle. The string in the bundle is treated
-     * as a pattern for {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
+     * Gets a string from the TapestryStrings resource bundle. The string in the
+     * bundle is treated as a pattern for
+     * {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
      * 
      * @since 1.0.8
      */
 
     public static String format(String key, Object[] args)
     {
-        if (_strings == null)
-            _strings = ResourceBundle.getBundle("org.apache.tapestry.TapestryStrings");
+        if (_strings == null) _strings = ResourceBundle.getBundle("org.apache.tapestry.TapestryStrings");
 
         String pattern = _strings.getString(key);
 
-        if (args == null)
-            return pattern;
+        if (args == null) return pattern;
 
         return MessageFormat.format(pattern, args);
     }
@@ -430,8 +453,7 @@ public final class Tapestry
 
     public static String format(String key, Object arg)
     {
-        return format(key, new Object[]
-        { arg });
+        return format(key, new Object[] { arg });
     }
 
     /**
@@ -442,8 +464,7 @@ public final class Tapestry
 
     public static String format(String key, Object arg1, Object arg2)
     {
-        return format(key, new Object[]
-        { arg1, arg2 });
+        return format(key, new Object[] { arg1, arg2 });
     }
 
     /**
@@ -454,17 +475,14 @@ public final class Tapestry
 
     public static String format(String key, Object arg1, Object arg2, Object arg3)
     {
-        return format(key, new Object[]
-        { arg1, arg2, arg3 });
+        return format(key, new Object[] { arg1, arg2, arg3 });
     }
-
-    private static final String UNKNOWN_VERSION = "Unknown";
 
     /**
      * Invoked when the class is initialized to read the current version file.
      */
 
-    private static final String readVersion()
+    private static String readVersion()
     {
         Properties props = new Properties();
 
@@ -472,8 +490,7 @@ public final class Tapestry
         {
             InputStream in = Tapestry.class.getResourceAsStream("version.properties");
 
-            if (in == null)
-                return UNKNOWN_VERSION;
+            if (in == null) return UNKNOWN_VERSION;
 
             props.load(in);
 
@@ -496,8 +513,7 @@ public final class Tapestry
 
     public static int size(Collection c)
     {
-        if (c == null)
-            return 0;
+        if (c == null) return 0;
 
         return c.size();
     }
@@ -510,8 +526,7 @@ public final class Tapestry
 
     public static int size(Object[] array)
     {
-        if (array == null)
-            return 0;
+        if (array == null) return 0;
 
         return array.length;
     }
@@ -539,21 +554,22 @@ public final class Tapestry
     }
 
     /**
-     * Converts a {@link Map} to an even-sized array of key/value pairs. This may be useful when
-     * using a Map as service parameters (with {@link org.apache.tapestry.link.DirectLink}.
-     * Assuming the keys and values are simple objects (String, Boolean, Integer, etc.), then the
+     * Converts a {@link Map} to an even-sized array of key/value pairs. This
+     * may be useful when using a Map as service parameters (with
+     * {@link org.apache.tapestry.link.DirectLink}. Assuming the keys and
+     * values are simple objects (String, Boolean, Integer, etc.), then the
      * representation as an array will encode more efficiently (via
-     * {@link org.apache.tapestry.util.io.DataSqueezerImpl} than serializing the Map and its
-     * contents.
+     * {@link org.apache.tapestry.util.io.DataSqueezerImpl} than serializing the
+     * Map and its contents.
      * 
-     * @return the array of keys and values, or null if the input Map is null or empty
+     * @return the array of keys and values, or null if the input Map is null or
+     *         empty
      * @since 2.2
      */
 
     public static Object[] convertMapToArray(Map map)
     {
-        if (isEmpty(map))
-            return null;
+        if (isEmpty(map)) return null;
 
         Set entries = map.entrySet();
 
@@ -561,9 +577,9 @@ public final class Tapestry
         int x = 0;
 
         Iterator i = entries.iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
-            Map.Entry entry = (Map.Entry) i.next();
+            Map.Entry entry = (Map.Entry)i.next();
 
             result[x++] = entry.getKey();
             result[x++] = entry.getValue();
@@ -582,16 +598,14 @@ public final class Tapestry
 
     public static Map convertArrayToMap(Object[] array)
     {
-        if (array == null || array.length == 0)
-            return null;
+        if (array == null || array.length == 0) return null;
 
-        if (array.length % 2 != 0)
-            throw new IllegalArgumentException(getMessage("Tapestry.even-sized-array"));
+        if (array.length % 2 != 0) throw new IllegalArgumentException(getMessage("Tapestry.even-sized-array"));
 
         Map result = new HashMap();
 
         int x = 0;
-        while (x < array.length)
+        while(x < array.length)
         {
             Object key = array[x++];
             Object value = array[x++];
@@ -603,8 +617,8 @@ public final class Tapestry
     }
 
     /**
-     * Given a Class, creates a presentable name for the class, even if the class is a scalar type
-     * or Array type.
+     * Given a Class, creates a presentable name for the class, even if the
+     * class is a scalar type or Array type.
      * 
      * @since 3.0
      * @deprecated To be removed in 4.1.
@@ -628,31 +642,28 @@ public final class Tapestry
 
     /** @since 3.0 * */
 
-    public static ApplicationRuntimeException createNoSuchComponentException(IComponent component,
-            String id, Location location)
+    public static ApplicationRuntimeException createNoSuchComponentException(IComponent component, String id,
+            Location location)
     {
-        return new ApplicationRuntimeException(format("no-such-component", component
-                .getExtendedId(), id), component, location, null);
+        return new ApplicationRuntimeException(format("no-such-component", component.getExtendedId(), id), component,
+                location, null);
     }
 
     /** @since 3.0 * */
 
-    public static BindingException createRequiredParameterException(IComponent component,
-            String parameterName)
+    public static BindingException createRequiredParameterException(IComponent component, String parameterName)
     {
-        return new BindingException(format("required-parameter", parameterName, component
-                .getExtendedId()), component, null, component.getBinding(parameterName), null);
+        return new BindingException(format("required-parameter", parameterName, component.getExtendedId()), component,
+                null, component.getBinding(parameterName), null);
     }
 
     /** @since 3.0 * */
 
-    public static ApplicationRuntimeException createRenderOnlyPropertyException(
-            IComponent component, String propertyName)
+    public static ApplicationRuntimeException createRenderOnlyPropertyException(IComponent component,
+            String propertyName)
     {
-        return new ApplicationRuntimeException(format(
-                "render-only-property",
-                propertyName,
-                component.getExtendedId()), component, null, null);
+        return new ApplicationRuntimeException(format("render-only-property", propertyName, component.getExtendedId()),
+                component, null, null);
     }
 
     /**
@@ -664,12 +675,12 @@ public final class Tapestry
 
     public static void clearMethodInvocations()
     {
-        _invokedMethodIds.set(null);
+        INVOKED_METHOD_IDS_HOLDER.set(null);
     }
 
     /**
-     * Adds a method invocation to the list of invocations. This is done in a super-class
-     * implementations.
+     * Adds a method invocation to the list of invocations. This is done in a
+     * super-class implementations.
      * 
      * @see #checkMethodInvocation(Object, String, Object)
      * @since 3.0
@@ -677,46 +688,47 @@ public final class Tapestry
 
     public static void addMethodInvocation(Object methodId)
     {
-        List methodIds = (List) _invokedMethodIds.get();
+        List methodIds = (List)INVOKED_METHOD_IDS_HOLDER.get();
 
         if (methodIds == null)
         {
             methodIds = new ArrayList();
-            _invokedMethodIds.set(methodIds);
+            INVOKED_METHOD_IDS_HOLDER.set(methodIds);
         }
 
         methodIds.add(methodId);
     }
 
     /**
-     * Checks to see if a particular method has been invoked. The method is identified by a methodId
-     * (usually a String). The methodName and object are used to create an error message.
+     * Checks to see if a particular method has been invoked. The method is
+     * identified by a methodId (usually a String). The methodName and object
+     * are used to create an error message.
      * <p>
-     * The caller should invoke {@link #clearMethodInvocations()}, then invoke a method on the
-     * object. The super-class implementation should invoke {@link #addMethodInvocation(Object)} to
-     * indicate that it was, in fact, invoked. The caller then invokes this method to validate that
-     * the super-class implementation was invoked.
+     * The caller should invoke {@link #clearMethodInvocations()}, then invoke
+     * a method on the object. The super-class implementation should invoke
+     * {@link #addMethodInvocation(Object)} to indicate that it was, in fact,
+     * invoked. The caller then invokes this method to validate that the
+     * super-class implementation was invoked.
      * <p>
-     * The list of method invocations is stored in a {@link ThreadLocal} variable.
+     * The list of method invocations is stored in a {@link ThreadLocal}
+     * variable.
      * 
      * @since 3.0
      */
 
     public static void checkMethodInvocation(Object methodId, String methodName, Object object)
     {
-        List methodIds = (List) _invokedMethodIds.get();
+        List methodIds = (List)INVOKED_METHOD_IDS_HOLDER.get();
 
-        if (methodIds != null && methodIds.contains(methodId))
-            return;
+        if (methodIds != null && methodIds.contains(methodId)) return;
 
-        throw new ApplicationRuntimeException(Tapestry.format(
-                "Tapestry.missing-method-invocation",
-                object.getClass().getName(),
-                methodName));
+        throw new ApplicationRuntimeException(Tapestry.format("Tapestry.missing-method-invocation", object.getClass()
+                .getName(), methodName));
     }
 
     /**
-     * Method used by pages and components to send notifications about property changes.
+     * Method used by pages and components to send notifications about property
+     * changes.
      * 
      * @param component
      *            the component containing the property
@@ -730,8 +742,7 @@ public final class Tapestry
     {
         ChangeObserver observer = component.getPage().getChangeObserver();
 
-        if (observer == null)
-            return;
+        if (observer == null) return;
 
         ObservedChangeEvent event = new ObservedChangeEvent(component, propertyName, newValue);
 
@@ -741,12 +752,13 @@ public final class Tapestry
     /**
      * Returns true if the input is null or contains only whitespace.
      * <p>
-     * Note: Yes, you'd think we'd use <code>StringUtils</code>, but with the change in names and
-     * behavior between releases, it is smarter to just implement our own little method!
+     * Note: Yes, you'd think we'd use <code>StringUtils</code>, but with the
+     * change in names and behavior between releases, it is smarter to just
+     * implement our own little method!
      * 
      * @since 3.0
-     * @deprecated To be removed in Tapestry 4.1. Use {@link HiveMind#isBlank(java.lang.String)}
-     *             instead.
+     * @deprecated To be removed in Tapestry 4.1. Use
+     *             {@link HiveMind#isBlank(java.lang.String)} instead.
      */
 
     public static boolean isBlank(String input)
@@ -758,8 +770,8 @@ public final class Tapestry
      * Returns true if the input is not null and not empty (or only whitespace).
      * 
      * @since 3.0
-     * @deprecated To be removed in Tapestry 4.1. Use {@link HiveMind#isNonBlank(java.lang.String)}
-     *             instead.
+     * @deprecated To be removed in Tapestry 4.1. Use
+     *             {@link HiveMind#isNonBlank(java.lang.String)} instead.
      */
 
     public static boolean isNonBlank(String input)

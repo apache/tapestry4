@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,9 +29,10 @@ import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
 /**
- * Bridges from the <code>tapestry.request.ServletRequestServicerPipeline</code> to the
- * <code>tapestry.request.WebRequestServicerPipeline</code>. Also, stores the web request and
- * web response into {@link org.apache.tapestry.services.RequestGlobals}. Intercepts runtime
+ * Bridges from the <code>tapestry.request.ServletRequestServicerPipeline</code>
+ * to the <code>tapestry.request.WebRequestServicerPipeline</code>. Also,
+ * stores the web request and web response into
+ * {@link org.apache.tapestry.services.RequestGlobals}. Intercepts runtime
  * exceptions and throws them wrapped as {@link javax.servlet.ServletException}.
  * 
  * @author Howard M. Lewis Ship
@@ -39,12 +40,13 @@ import org.apache.tapestry.web.WebResponse;
  */
 public class WebRequestServicerPipelineBridge implements ServletRequestServicer
 {
+
     private RequestGlobals _requestGlobals;
 
     private WebRequestServicer _webRequestServicer;
 
     public void service(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException
+        throws IOException, ServletException
     {
         _requestGlobals.store(request, response);
 

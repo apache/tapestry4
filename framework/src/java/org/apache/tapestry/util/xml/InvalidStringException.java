@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,8 @@ import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
 
 /**
- * Exception thrown if there is any kind of error validating a string during document parsing
+ * Exception thrown if there is any kind of error validating a string during
+ * document parsing
  * 
  * @author Geoffrey Longman
  * @since 2.2
@@ -26,9 +27,10 @@ import org.apache.hivemind.Location;
 
 public class InvalidStringException extends DocumentParseException implements Locatable
 {
+
     private static final long serialVersionUID = 8199998733585358584L;
-    
-	private String _invalidString;
+
+    private String _invalidString;
 
     public InvalidStringException(String message, String invalidString, Location location)
     {

@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,23 +14,30 @@
 
 package org.apache.tapestry.error;
 
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class ErrorMessages
+public final class ErrorMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(ErrorMessages.class);
+
+    private final static Messages MESSAGES = new MessageFormatter(ErrorMessages.class);
+
+    /** @since 4.1 */
+    private ErrorMessages()
+    {
+    }
 
     public static String unableToProcessClientRequest(Throwable cause)
     {
-        return _formatter.format("unable-to-process-client-request", cause);
+        return MESSAGES.format("unable-to-process-client-request", cause);
     }
 
     static String unableToPresentExceptionPage(Throwable cause)
     {
-        return _formatter.format("unable-to-present-exception-page", cause);
+        return MESSAGES.format("unable-to-present-exception-page", cause);
     }
 }

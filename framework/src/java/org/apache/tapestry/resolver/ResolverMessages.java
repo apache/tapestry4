@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ package org.apache.tapestry.resolver;
 
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.INamespace;
@@ -27,65 +28,68 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-class ResolverMessages
+final class ResolverMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(ResolverMessages.class);
+
+    private final static Messages MESSAGES = new MessageFormatter(ResolverMessages.class);
+
+    /** @since 4.1 */
+    private ResolverMessages()
+    {
+    }
 
     static String noSuchComponentType(String type, INamespace namespace)
     {
-        return _formatter.format("no-such-component-type", type, namespace);
+        return MESSAGES.format("no-such-component-type", type, namespace);
     }
 
     static String noSuchPage(String name, INamespace namespace)
     {
-        return _formatter.format("no-such-page", name, namespace.getNamespaceId());
+        return MESSAGES.format("no-such-page", name, namespace.getNamespaceId());
     }
 
     static String resolvingComponent(String type, INamespace namespace)
     {
-        return _formatter.format("resolving-component", type, namespace);
+        return MESSAGES.format("resolving-component", type, namespace);
     }
 
     static String checkingResource(Resource resource)
     {
-        return _formatter.format("checking-resource", resource);
+        return MESSAGES.format("checking-resource", resource);
     }
 
-    static String installingComponent(String type, INamespace namespace,
-            IComponentSpecification specification)
+    static String installingComponent(String type, INamespace namespace, IComponentSpecification specification)
     {
-        return _formatter.format("installing-component", type, namespace, specification);
+        return MESSAGES.format("installing-component", type, namespace, specification);
     }
 
-    static String installingPage(String pageName, INamespace namespace,
-            IComponentSpecification specification)
+    static String installingPage(String pageName, INamespace namespace, IComponentSpecification specification)
     {
-        return _formatter.format("installing-page", pageName, namespace, specification);
+        return MESSAGES.format("installing-page", pageName, namespace, specification);
     }
 
     static String resolvingPage(String pageName, INamespace namespace)
     {
-        return _formatter.format("resolving-page", pageName, namespace);
+        return MESSAGES.format("resolving-page", pageName, namespace);
     }
 
     static String foundFrameworkPage(String pageName)
     {
-        return _formatter.format("found-framework-page", pageName);
+        return MESSAGES.format("found-framework-page", pageName);
     }
 
     static String foundHTMLTemplate(Resource resource)
     {
-        return _formatter.format("found-html-template", resource);
+        return MESSAGES.format("found-html-template", resource);
     }
 
     public static String componentIsDeprecated(String componentType, Location location)
     {
-        return _formatter.format("component-is-deprecated", componentType, HiveMind
-                .getLocationString(location));
+        return MESSAGES.format("component-is-deprecated", componentType, HiveMind.getLocationString(location));
     }
 
     static String webInfNotAllowed(String simpleName)
     {
-        return _formatter.format("web-inf-not-allowed", simpleName);
+        return MESSAGES.format("web-inf-not-allowed", simpleName);
     }
 }

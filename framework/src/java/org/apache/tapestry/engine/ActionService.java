@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,8 +34,8 @@ import org.apache.tapestry.web.WebSession;
 
 /**
  * A context-sensitive service related to {@link org.apache.tapestry.form.Form}and
- * {@link org.apache.tapestry.link.ActionLink}. Encodes the page, component and an action id in the
- * service context.
+ * {@link org.apache.tapestry.link.ActionLink}. Encodes the page, component and
+ * an action id in the service context.
  * 
  * @author Howard Lewis Ship
  * @since 1.0.9
@@ -44,14 +44,15 @@ import org.apache.tapestry.web.WebSession;
 
 public class ActionService implements IEngineService
 {
+
+    /** @since 4.0 */
+    private static final String ACTION = "action";
+
     /** @since 4.0 */
     private ResponseRenderer _responseRenderer;
 
     /** @since 4.0 */
     private LinkFactory _linkFactory;
-
-    /** @since 4.0 */
-    private static final String ACTION = "action";
 
     /** @since 4.0 */
     private WebRequest _request;
@@ -63,7 +64,7 @@ public class ActionService implements IEngineService
     {
         Defense.isAssignable(parameter, ActionServiceParameter.class, "parameter");
 
-        ActionServiceParameter asp = (ActionServiceParameter) parameter;
+        ActionServiceParameter asp = (ActionServiceParameter)parameter;
 
         IComponent component = asp.getComponent();
         IPage activePage = _requestCycle.getPage();
@@ -75,15 +76,15 @@ public class ActionService implements IEngineService
 
         parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
         parameters.put(ServiceConstants.PAGE, activePage.getPageName());
-        parameters.put(ServiceConstants.CONTAINER, activePage == componentPage ? null
-                : componentPage.getPageName());
+        parameters.put(ServiceConstants.CONTAINER, activePage == componentPage ? null : componentPage.getPageName());
         parameters.put(ACTION, asp.getActionId());
         parameters.put(ServiceConstants.SESSION, stateful ? "T" : null);
 
         return _linkFactory.constructLink(this, post, parameters, true);
     }
 
-    public void service(IRequestCycle cycle) throws IOException
+    public void service(IRequestCycle cycle)
+        throws IOException
     {
         String componentId = cycle.getParameter(ServiceConstants.COMPONENT);
         String componentPageName = cycle.getParameter(ServiceConstants.CONTAINER);
@@ -105,13 +106,12 @@ public class ActionService implements IEngineService
 
         try
         {
-            action = (IAction) component;
+            action = (IAction)component;
         }
         catch (ClassCastException ex)
         {
-            throw new ApplicationRuntimeException(EngineMessages.wrongComponentType(
-                    component,
-                    IAction.class), component, null, ex);
+            throw new ApplicationRuntimeException(EngineMessages.wrongComponentType(component, IAction.class),
+                    component, null, ex);
         }
 
         // Only perform the stateful check if the application was stateful
@@ -122,8 +122,7 @@ public class ActionService implements IEngineService
             WebSession session = _request.getSession(false);
 
             if (session == null || session.isNew())
-                throw new StaleSessionException(EngineMessages.requestStateSession(component),
-                        componentPage);
+                throw new StaleSessionException(EngineMessages.requestStateSession(component), componentPage);
 
         }
 

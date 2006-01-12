@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.coerce;
 
-/** 
+/**
  * Converts a value to a specific (implicit) type.
  * 
  * @author Howard M. Lewis Ship
@@ -22,13 +22,16 @@ package org.apache.tapestry.coerce;
  */
 public interface TypeConverter
 {
+
     /**
      * Converts the value.
      * 
-     * @param value the value to be converted (which may be null)
-     * @return the value converted to a specific type; different implementations of TypeConverter
-     * will return different types.
-     * @throws org.apache.hivemind.ApplicationRuntimeException if the value can not be converted
+     * @param value
+     *            the value to be converted (which may be null)
+     * @return the value converted to a specific type; different implementations
+     *         of TypeConverter will return different types.
+     * @throws org.apache.hivemind.ApplicationRuntimeException
+     *             if the value can not be converted
      */
-    public Object convertValue(Object value);
+    Object convertValue(Object value);
 }

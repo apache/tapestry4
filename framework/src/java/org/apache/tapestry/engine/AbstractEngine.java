@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,54 +41,71 @@ import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
 /**
- * Basis for building real Tapestry applications. Immediate subclasses provide different strategies
- * for managing page state and other resources between request cycles.
+ * Basis for building real Tapestry applications. Immediate subclasses provide
+ * different strategies for managing page state and other resources between
+ * request cycles.
  * <p>
- * Note: much of this description is <em>in transition</em> as part of Tapestry 4.0. All ad-hoc
- * singletons and such are being replaced with HiveMind services.
+ * Note: much of this description is <em>in transition</em> as part of
+ * Tapestry 4.0. All ad-hoc singletons and such are being replaced with HiveMind
+ * services.
  * <p>
  * Uses a shared instance of {@link ITemplateSource},{@link ISpecificationSource},
- * {@link IScriptSource}and {@link IComponentMessagesSource}stored as attributes of the
- * {@link ServletContext}(they will be shared by all sessions).
+ * {@link IScriptSource}and {@link IComponentMessagesSource}stored as
+ * attributes of the {@link ServletContext}(they will be shared by all
+ * sessions).
  * <p>
- * An engine is designed to be very lightweight. Particularily, it should <b>never </b> hold
- * references to any {@link IPage}or {@link org.apache.tapestry.IComponent}objects. The entire
- * system is based upon being able to quickly rebuild the state of any page(s).
+ * An engine is designed to be very lightweight. Particularily, it should
+ * <b>never </b> hold references to any {@link IPage}or
+ * {@link org.apache.tapestry.IComponent}objects. The entire system is based
+ * upon being able to quickly rebuild the state of any page(s).
  * <p>
- * Where possible, instance variables should be transient. They can be restored inside
- * {@link #setupForRequest(RequestContext)}.
+ * Where possible, instance variables should be transient. They can be restored
+ * inside {@link #setupForRequest(RequestContext)}.
  * <p>
- * In practice, a subclass (usually {@link BaseEngine}) is used without subclassing. Instead, a
- * visit object is specified. To facilitate this, the application specification may include a
- * property, <code>org.apache.tapestry.visit-class</code> which is the class name to instantiate
- * when a visit object is first needed. See {@link #createVisit(IRequestCycle)}for more details.
+ * In practice, a subclass (usually {@link BaseEngine}) is used without
+ * subclassing. Instead, a visit object is specified. To facilitate this, the
+ * application specification may include a property,
+ * <code>org.apache.tapestry.visit-class</code> which is the class name to
+ * instantiate when a visit object is first needed. See
+ * {@link #createVisit(IRequestCycle)}for more details.
  * <p>
- * Some of the classes' behavior is controlled by JVM system properties (typically only used during
- * development): <table border=1>
+ * Some of the classes' behavior is controlled by JVM system properties
+ * (typically only used during development): <table border=1>
  * <tr>
  * <th>Property</th>
  * <th>Description</th>
  * </tr>
  * <tr>
  * <td>org.apache.tapestry.enable-reset-service</td>
- * <td>If true, enabled an additional service, reset, that allow page, specification and template
- * caches to be cleared on demand. See {@link #isResetServiceEnabled()}.</td>
+ * <td>If true, enabled an additional service, reset, that allow page,
+ * specification and template caches to be cleared on demand. See
+ * {@link #isResetServiceEnabled()}.</td>
  * </tr>
  * <tr>
  * <td>org.apache.tapestry.disable-caching</td>
- * <td>If true, then the page, specification, template and script caches will be cleared after each
- * request. This slows things down, but ensures that the latest versions of such files are used.
- * Care should be taken that the source directories for the files preceeds any versions of the files
- * available in JARs or WARs.</td>
+ * <td>If true, then the page, specification, template and script caches will
+ * be cleared after each request. This slows things down, but ensures that the
+ * latest versions of such files are used. Care should be taken that the source
+ * directories for the files preceeds any versions of the files available in
+ * JARs or WARs.</td>
  * </tr>
  * </table>
  * 
  * @author Howard Lewis Ship
  */
 
-public abstract class AbstractEngine implements IEngine
-{
+public abstract class AbstractEngine implements IEngine {
+
+    /**
+     * The name of the application specification property used to specify the
+     * class of the visit object.
+     */
+    public static final String VISIT_CLASS_PROPERTY_NAME = "org.apache.tapestry.visit-class";
+
     private static final Log LOG = LogFactory.getLog(AbstractEngine.class);
+
+    /** @since 4.1 */
+    private static final String VISIT_OBJECT_NAME = "visit";
 
     /**
      * The link to the world of HiveMind services.
@@ -104,13 +121,6 @@ public abstract class AbstractEngine implements IEngine
      */
 
     private Locale _locale;
-
-    /**
-     * The name of the application specification property used to specify the class of the visit
-     * object.
-     */
-
-    public static final String VISIT_CLASS_PROPERTY_NAME = "org.apache.tapestry.visit-class";
 
     /**
      * @see org.apache.tapestry.error.ExceptionPresenter
@@ -129,12 +139,14 @@ public abstract class AbstractEngine implements IEngine
 
     public void reportException(String reportTitle, Throwable ex)
     {
-        _infrastructure.getRequestExceptionReporter().reportRequestException(reportTitle, ex);
+        _infrastructure.getRequestExceptionReporter().reportRequestException(
+                reportTitle, ex);
     }
 
     /**
-     * Invoked at the end of the request cycle to release any resources specific to the request
-     * cycle. This implementation does nothing and may be overriden freely.
+     * Invoked at the end of the request cycle to release any resources specific
+     * to the request cycle. This implementation does nothing and may be
+     * overriden freely.
      */
 
     protected void cleanupAfterRequest(IRequestCycle cycle)
@@ -143,8 +155,8 @@ public abstract class AbstractEngine implements IEngine
     }
 
     /**
-     * Returns the locale for the engine. This is initially set by the {@link ApplicationServlet}
-     * but may be updated by the application.
+     * Returns the locale for the engine. This is initially set by the
+     * {@link ApplicationServlet} but may be updated by the application.
      */
 
     public Locale getLocale()
@@ -179,12 +191,13 @@ public abstract class AbstractEngine implements IEngine
     }
 
     /**
-     * Invoked, typically, when an exception occurs while servicing the request. This method resets
-     * the output, sets the new page and renders it.
+     * Invoked, typically, when an exception occurs while servicing the request.
+     * This method resets the output, sets the new page and renders it.
      */
 
     protected void redirect(String pageName, IRequestCycle cycle,
-            ApplicationRuntimeException exception) throws IOException
+            ApplicationRuntimeException exception)
+        throws IOException
     {
         IPage page = cycle.getPage(pageName);
 
@@ -198,7 +211,8 @@ public abstract class AbstractEngine implements IEngine
      * {@link org.apache.tapestry.services.ResponseRenderer#renderResponse(IRequestCycle)}.
      */
 
-    public void renderResponse(IRequestCycle cycle) throws IOException
+    public void renderResponse(IRequestCycle cycle)
+        throws IOException
     {
         _infrastructure.getResponseRenderer().renderResponse(cycle);
     }
@@ -207,90 +221,71 @@ public abstract class AbstractEngine implements IEngine
      * Delegate method for the servlet. Services the request.
      */
 
-    public void service(WebRequest request, WebResponse response) throws IOException
+    public void service(WebRequest request, WebResponse response)
+        throws IOException
     {
         IRequestCycle cycle = null;
         IMonitor monitor = null;
         IEngineService service = null;
 
         if (_infrastructure == null)
-            _infrastructure = (Infrastructure) request.getAttribute(Constants.INFRASTRUCTURE_KEY);
+            _infrastructure = (Infrastructure)request
+                    .getAttribute(Constants.INFRASTRUCTURE_KEY);
 
-        // Create the request cycle; if this fails, there's not much that can be done ... everything
+        // Create the request cycle; if this fails, there's not much that can be
+        // done ... everything
         // else in Tapestry relies on the RequestCycle.
 
-        try
-        {
-            cycle = _infrastructure.getRequestCycleFactory().newRequestCycle(this);
-        }
-        catch (RuntimeException ex)
-        {
+        try {
+            cycle = _infrastructure.getRequestCycleFactory().newRequestCycle(
+                    this);
+        } catch (RuntimeException ex) {
             throw ex;
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             throw new IOException(ex.getMessage());
         }
 
-        try
-        {
-            try
-            {
+        try {
+            try {
                 monitor = cycle.getMonitor();
 
                 service = cycle.getService();
 
-                monitor.serviceBegin(service.getName(), _infrastructure.getRequest()
-                        .getRequestURI());
+                monitor.serviceBegin(service.getName(), _infrastructure
+                        .getRequest().getRequestURI());
 
                 // Let the service handle the rest of the request.
 
                 service.service(cycle);
 
                 return;
-            }
-            catch (PageRedirectException ex)
-            {
+            } catch (PageRedirectException ex) {
                 handlePageRedirectException(cycle, ex);
-            }
-            catch (RedirectException ex)
-            {
+            } catch (RedirectException ex) {
                 handleRedirectException(cycle, ex);
-            }
-            catch (StaleLinkException ex)
-            {
+            } catch (StaleLinkException ex) {
                 handleStaleLinkException(cycle, ex);
-            }
-            catch (StaleSessionException ex)
-            {
+            } catch (StaleSessionException ex) {
                 handleStaleSessionException(cycle, ex);
             }
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             monitor.serviceException(ex);
 
             // Attempt to switch to the exception page. However, this may itself
-            // fail for a number of reasons, in which case an ApplicationRuntimeException is
+            // fail for a number of reasons, in which case an
+            // ApplicationRuntimeException is
             // thrown.
 
-            if (LOG.isDebugEnabled())
-                LOG.debug("Uncaught exception", ex);
+            if (LOG.isDebugEnabled()) LOG.debug("Uncaught exception", ex);
 
             activateExceptionPage(cycle, ex);
-        }
-        finally
-        {
-            if (service != null)
-                monitor.serviceEnd(service.getName());
+        } finally {
+            if (service != null) monitor.serviceEnd(service.getName());
 
-            try
-            {
+            try {
                 cycle.cleanup();
                 _infrastructure.getApplicationStateManager().flush();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 reportException(EngineMessages.exceptionDuringCleanup(ex), ex);
             }
         }
@@ -298,44 +293,42 @@ public abstract class AbstractEngine implements IEngine
 
     /**
      * Handles {@link PageRedirectException} which involves executing
-     * {@link IRequestCycle#activate(IPage)} on the target page (of the exception), until either a
-     * loop is found, or a page succesfully activates.
+     * {@link IRequestCycle#activate(IPage)} on the target page (of the
+     * exception), until either a loop is found, or a page succesfully
+     * activates.
      * <p>
      * This should generally not be overriden in subclasses.
      * 
      * @since 3.0
      */
 
-    protected void handlePageRedirectException(IRequestCycle cycle, PageRedirectException exception)
-            throws IOException
+    protected void handlePageRedirectException(IRequestCycle cycle,
+            PageRedirectException exception)
+        throws IOException
     {
         List pageNames = new ArrayList();
 
         String pageName = exception.getTargetPageName();
 
-        while (true)
-        {
-            if (pageNames.contains(pageName))
-            {
+        while(true) {
+            if (pageNames.contains(pageName)) {
                 pageNames.add(pageName);
 
-                throw new ApplicationRuntimeException(EngineMessages.validateCycle(pageNames));
+                throw new ApplicationRuntimeException(EngineMessages
+                        .validateCycle(pageNames));
             }
 
             // Record that this page has been a target.
 
             pageNames.add(pageName);
 
-            try
-            {
+            try {
                 // Attempt to activate the new page.
 
                 cycle.activate(pageName);
 
                 break;
-            }
-            catch (PageRedirectException secondRedirectException)
-            {
+            } catch (PageRedirectException secondRedirectException) {
                 pageName = secondRedirectException.getTargetPageName();
             }
         }
@@ -344,52 +337,60 @@ public abstract class AbstractEngine implements IEngine
     }
 
     /**
-     * Invoked by {@link #service(WebRequest, WebResponse)} if a {@link StaleLinkException} is
-     * thrown by the {@link IEngineService service}. This implementation sets the message property
-     * of the StaleLink page to the message provided in the exception, then invokes
-     * {@link #redirect(String, IRequestCycle, ApplicationRuntimeException)} to render the StaleLink
-     * page.
+     * Invoked by {@link #service(WebRequest, WebResponse)} if a
+     * {@link StaleLinkException} is thrown by the
+     * {@link IEngineService service}. This implementation sets the message
+     * property of the StaleLink page to the message provided in the exception,
+     * then invokes
+     * {@link #redirect(String, IRequestCycle, ApplicationRuntimeException)} to
+     * render the StaleLink page.
      * <p>
-     * Subclasses may overide this method (without invoking this implementation). A better practice
-     * is to contribute an alternative implementation of
+     * Subclasses may overide this method (without invoking this
+     * implementation). A better practice is to contribute an alternative
+     * implementation of
      * {@link org.apache.tapestry.error.StaleLinkExceptionPresenter} to the
      * tapestry.InfrastructureOverrides configuration point.
      * <p>
-     * A common practice is to present an error message on the application's Home page. Alternately,
-     * the application may provide its own version of the StaleLink page, overriding the framework's
-     * implementation (probably a good idea, because the default page hints at "application errors"
-     * and isn't localized). The overriding StaleLink implementation must implement a message
-     * property of type String.
+     * A common practice is to present an error message on the application's
+     * Home page. Alternately, the application may provide its own version of
+     * the StaleLink page, overriding the framework's implementation (probably a
+     * good idea, because the default page hints at "application errors" and
+     * isn't localized). The overriding StaleLink implementation must implement
+     * a message property of type String.
      * 
      * @since 0.2.10
      */
 
-    protected void handleStaleLinkException(IRequestCycle cycle, StaleLinkException exception)
-            throws IOException
+    protected void handleStaleLinkException(IRequestCycle cycle,
+            StaleLinkException exception)
+        throws IOException
     {
         _infrastructure.getStaleLinkExceptionPresenter()
                 .presentStaleLinkException(cycle, exception);
     }
 
     /**
-     * Invoked by {@link #service(WebRequest, WebResponse)} if a {@link StaleSessionException} is
-     * thrown by the {@link IEngineService service}. This implementation uses the
-     * {@link org.apache.tapestry.error.StaleSessionExceptionPresenter} to render the StaleSession
-     * page.
+     * Invoked by {@link #service(WebRequest, WebResponse)} if a
+     * {@link StaleSessionException} is thrown by the
+     * {@link IEngineService service}. This implementation uses the
+     * {@link org.apache.tapestry.error.StaleSessionExceptionPresenter} to
+     * render the StaleSession page.
      * <p>
-     * Subclasses may overide this method (without invoking this implementation), but it is better
-     * to override the tapestry.error.StaleSessionExceptionReporter service instead (or contribute a
-     * replacement to the tapestry.InfrastructureOverrides configuration point).
+     * Subclasses may overide this method (without invoking this
+     * implementation), but it is better to override the
+     * tapestry.error.StaleSessionExceptionReporter service instead (or
+     * contribute a replacement to the tapestry.InfrastructureOverrides
+     * configuration point).
      * 
      * @since 0.2.10
      */
 
-    protected void handleStaleSessionException(IRequestCycle cycle, StaleSessionException exception)
-            throws IOException
+    protected void handleStaleSessionException(IRequestCycle cycle,
+            StaleSessionException exception)
+        throws IOException
     {
-        _infrastructure.getStaleSessionExceptionPresenter().presentStaleSessionException(
-                cycle,
-                exception);
+        _infrastructure.getStaleSessionExceptionPresenter()
+                .presentStaleSessionException(cycle, exception);
     }
 
     /**
@@ -402,10 +403,10 @@ public abstract class AbstractEngine implements IEngine
 
         _locale = value;
 
-        // The locale may be set before the engine is initialized with the Infrastructure.
+        // The locale may be set before the engine is initialized with the
+        // Infrastructure.
 
-        if (_infrastructure != null)
-            _infrastructure.setLocale(value);
+        if (_infrastructure != null) _infrastructure.setLocale(value);
     }
 
     /**
@@ -418,8 +419,9 @@ public abstract class AbstractEngine implements IEngine
     }
 
     /**
-     * Generates a description of the instance. Invokes {@link #extendDescription(ToStringBuilder)}
-     * to fill in details about the instance.
+     * Generates a description of the instance. Invokes
+     * {@link #extendDescription(ToStringBuilder)} to fill in details about the
+     * instance.
      * 
      * @see #extendDescription(ToStringBuilder)
      */
@@ -435,27 +437,29 @@ public abstract class AbstractEngine implements IEngine
 
     /**
      * Gets the visit object from the
-     * {@link org.apache.tapestry.engine.state.ApplicationStateManager}, creating it if it does not
-     * already exist.
+     * {@link org.apache.tapestry.engine.state.ApplicationStateManager},
+     * creating it if it does not already exist.
      * <p>
-     * As of Tapestry 4.0, this will always create the visit object, possibly creating a new session
-     * in the process.
+     * As of Tapestry 4.0, this will always create the visit object, possibly
+     * creating a new session in the process.
      */
 
     public Object getVisit()
     {
-        return _infrastructure.getApplicationStateManager().get("visit");
+        return _infrastructure.getApplicationStateManager().get(
+                VISIT_OBJECT_NAME);
     }
 
     public void setVisit(Object visit)
     {
-        _infrastructure.getApplicationStateManager().store("visit", visit);
+        _infrastructure.getApplicationStateManager().store(VISIT_OBJECT_NAME,
+                visit);
     }
 
     /**
      * Gets the visit object from the
-     * {@link org.apache.tapestry.engine.state.ApplicationStateManager}, which will create it as
-     * necessary.
+     * {@link org.apache.tapestry.engine.state.ApplicationStateManager}, which
+     * will create it as necessary.
      */
 
     public Object getVisit(IRequestCycle cycle)
@@ -465,16 +469,17 @@ public abstract class AbstractEngine implements IEngine
 
     public boolean getHasVisit()
     {
-        return _infrastructure.getApplicationStateManager().exists("visit");
+        return _infrastructure.getApplicationStateManager().exists(
+                VISIT_OBJECT_NAME);
     }
 
     /**
-     * Returns the global object for the application. The global object is created at the start of
-     * the request ({@link #setupForRequest(RequestContext)}invokes
+     * Returns the global object for the application. The global object is
+     * created at the start of the request ({@link #setupForRequest(RequestContext)}invokes
      * {@link #createGlobal(RequestContext)}if needed), and is stored into the
-     * {@link ServletContext}. All instances of the engine for the application share the global
-     * object; however, the global object is explicitly <em>not</em> replicated to other servers
-     * within a cluster.
+     * {@link ServletContext}. All instances of the engine for the application
+     * share the global object; however, the global object is explicitly
+     * <em>not</em> replicated to other servers within a cluster.
      * 
      * @since 2.3
      */
@@ -498,26 +503,29 @@ public abstract class AbstractEngine implements IEngine
     public ListenerMap getListeners()
     {
         if (_listeners == null)
-            _listeners = _infrastructure.getListenerMapSource().getListenerMapForObject(this);
+            _listeners = _infrastructure.getListenerMapSource()
+                    .getListenerMapForObject(this);
 
         return _listeners;
     }
 
     /**
-     * Invoked when a {@link RedirectException} is thrown during the processing of a request.
+     * Invoked when a {@link RedirectException} is thrown during the processing
+     * of a request.
      * 
      * @throws ApplicationRuntimeException
-     *             if an {@link IOException},{@link ServletException}is thrown by the redirect,
-     *             or if no {@link RequestDispatcher}can be found for local resource.
+     *             if an {@link IOException},{@link ServletException}is
+     *             thrown by the redirect, or if no {@link RequestDispatcher}can
+     *             be found for local resource.
      * @since 2.2
      */
 
-    protected void handleRedirectException(IRequestCycle cycle, RedirectException redirectException)
+    protected void handleRedirectException(IRequestCycle cycle,
+            RedirectException redirectException)
     {
         String location = redirectException.getRedirectLocation();
 
-        if (LOG.isDebugEnabled())
-            LOG.debug("Redirecting to: " + location);
+        if (LOG.isDebugEnabled()) LOG.debug("Redirecting to: " + location);
 
         _infrastructure.getRequest().forward(location);
     }

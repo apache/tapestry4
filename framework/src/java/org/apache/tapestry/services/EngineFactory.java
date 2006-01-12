@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,14 +20,15 @@ import org.apache.tapestry.IEngine;
 
 /**
  * Responsible for creating new instance of {@link org.apache.tapestry.IEngine}.
- *
+ * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public interface EngineFactory
 {
-	/**
-	 * Creates and initializes a new engine instance for the specified locale.
-	 */
-	public IEngine constructNewEngineInstance(Locale locale);
+
+    /**
+     * Creates and initializes a new engine instance for the specified locale.
+     */
+    IEngine constructNewEngineInstance(Locale locale);
 }

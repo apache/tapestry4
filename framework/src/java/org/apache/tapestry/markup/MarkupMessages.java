@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ package org.apache.tapestry.markup;
 
 import java.util.List;
 
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.util.ContentType;
 
@@ -23,14 +24,19 @@ import org.apache.tapestry.util.ContentType;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class MarkupMessages
+final class MarkupMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(MarkupMessages.class,
-            "MarkupStrings");
+
+    private final static Messages MESSAGES = new MessageFormatter(MarkupMessages.class, "MarkupStrings");
+
+    /** @since 4.1 */
+    private MarkupMessages()
+    {
+    }
 
     static String tagNotOpen()
     {
-        return _formatter.getMessage("tag-not-open");
+        return MESSAGES.getMessage("tag-not-open");
     }
 
     static String elementNotOnStack(String name, List activeElementStack)
@@ -39,29 +45,28 @@ class MarkupMessages
 
         int count = activeElementStack.size();
 
-        for (int i = 0; i < count; i++)
+        for(int i = 0; i < count; i++)
         {
-            if (i > 0)
-                buffer.append(", ");
+            if (i > 0) buffer.append(", ");
 
             buffer.append(activeElementStack.get(i));
         }
 
-        return _formatter.format("element-not-on-stack", name, buffer.toString());
+        return MESSAGES.format("element-not-on-stack", name, buffer.toString());
     }
 
     static String endWithEmptyStack()
     {
-        return _formatter.getMessage("end-with-empty-stack");
+        return MESSAGES.getMessage("end-with-empty-stack");
     }
 
     static String noFilterMatch(ContentType contentType)
     {
-        return _formatter.format("no-filter-match", contentType);
+        return MESSAGES.format("no-filter-match", contentType);
     }
 
     static String closeOnce()
     {
-        return _formatter.getMessage("close-once");
+        return MESSAGES.getMessage("close-once");
     }
 }

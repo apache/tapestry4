@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,17 +28,27 @@ import org.apache.hivemind.util.Defense;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TapestryUtils
+public final class TapestryUtils
 {
+
+    public static final String PAGE_RENDER_SUPPORT_ATTRIBUTE = "org.apache.tapestry.PageRenderSupport";
+
+    public static final String FORM_ATTRIBUTE = "org.apache.tapestry.Form";
+
     private static final char QUOTE = '\'';
 
     private static final char BACKSLASH = '\\';
 
     private static final String EMPTY_QUOTES = "''";
 
+    /** @since 4.1 */
+    private TapestryUtils()
+    {
+    }
+
     /**
-     * Stores an attribute into the request cycle, verifying that no object with that key is already
-     * present.
+     * Stores an attribute into the request cycle, verifying that no object with
+     * that key is already present.
      * 
      * @param cycle
      *            the cycle to store the attribute into
@@ -47,7 +57,8 @@ public class TapestryUtils
      * @param object
      *            the attribute value to store
      * @throws IllegalStateException
-     *             if a non-null value has been stored into the cycle with the provided key.
+     *             if a non-null value has been stored into the cycle with the
+     *             provided key.
      */
 
     public static void storeUniqueAttribute(IRequestCycle cycle, String key, Object object)
@@ -58,20 +69,14 @@ public class TapestryUtils
 
         Object existing = cycle.getAttribute(key);
         if (existing != null)
-            throw new IllegalStateException(TapestryMessages.nonUniqueAttribute(
-                    object,
-                    key,
-                    existing));
+            throw new IllegalStateException(TapestryMessages.nonUniqueAttribute(object, key, existing));
 
         cycle.setAttribute(key, object);
     }
 
-    public static final String PAGE_RENDER_SUPPORT_ATTRIBUTE = "org.apache.tapestry.PageRenderSupport";
-
-    public static final String FORM_ATTRIBUTE = "org.apache.tapestry.Form";
-
     /**
-     * Stores the support object using {@link #storeUniqueAttribute(IRequestCycle, String, Object)}.
+     * Stores the support object using
+     * {@link #storeUniqueAttribute(IRequestCycle, String, Object)}.
      */
 
     public static void storePageRenderSupport(IRequestCycle cycle, PageRenderSupport support)
@@ -80,7 +85,8 @@ public class TapestryUtils
     }
 
     /**
-     * Store the IForm instance using {@link #storeUniqueAttribute(IRequestCycle, String, Object)}.
+     * Store the IForm instance using
+     * {@link #storeUniqueAttribute(IRequestCycle, String, Object)}.
      */
 
     public static void storeForm(IRequestCycle cycle, IForm form)
@@ -94,7 +100,8 @@ public class TapestryUtils
      * @param cycle
      *            the request cycle storing the support object
      * @param component
-     *            the component which requires the support (used to report exceptions)
+     *            the component which requires the support (used to report
+     *            exceptions)
      * @throws ApplicationRuntimeException
      *             if no support object has been stored
      */
@@ -105,8 +112,8 @@ public class TapestryUtils
 
         PageRenderSupport result = getOptionalPageRenderSupport(cycle);
         if (result == null)
-            throw new ApplicationRuntimeException(TapestryMessages.noPageRenderSupport(component),
-                    component.getLocation(), null);
+            throw new ApplicationRuntimeException(TapestryMessages.noPageRenderSupport(component), component
+                    .getLocation(), null);
 
         return result;
     }
@@ -117,7 +124,8 @@ public class TapestryUtils
      * @param cycle
      *            the request cycle storing the support object
      * @param component
-     *            the component which requires the form (used to report exceptions)
+     *            the component which requires the form (used to report
+     *            exceptions)
      * @throws ApplicationRuntimeException
      *             if no form object has been stored
      */
@@ -126,11 +134,10 @@ public class TapestryUtils
         Defense.notNull(cycle, "cycle");
         Defense.notNull(component, "component");
 
-        IForm result = (IForm) cycle.getAttribute(FORM_ATTRIBUTE);
+        IForm result = (IForm)cycle.getAttribute(FORM_ATTRIBUTE);
 
         if (result == null)
-            throw new ApplicationRuntimeException(TapestryMessages.noForm(component), component
-                    .getLocation(), null);
+            throw new ApplicationRuntimeException(TapestryMessages.noForm(component), component.getLocation(), null);
 
         return result;
     }
@@ -146,15 +153,16 @@ public class TapestryUtils
     }
 
     /**
-     * Returns the {@link PageRenderSupport}&nbsp;object if previously stored, or null otherwise.
-     * This is used in the rare case that a component wishes to adjust its behavior based on whether
-     * the page render support services are avaiable (typically, adjust for whether enclosed by a
-     * Body component, or not).
+     * Returns the {@link PageRenderSupport}&nbsp;object if previously stored,
+     * or null otherwise. This is used in the rare case that a component wishes
+     * to adjust its behavior based on whether the page render support services
+     * are avaiable (typically, adjust for whether enclosed by a Body component,
+     * or not).
      */
 
     public static PageRenderSupport getOptionalPageRenderSupport(IRequestCycle cycle)
     {
-        return (PageRenderSupport) cycle.getAttribute(PAGE_RENDER_SUPPORT_ATTRIBUTE);
+        return (PageRenderSupport)cycle.getAttribute(PAGE_RENDER_SUPPORT_ATTRIBUTE);
     }
 
     /**
@@ -167,13 +175,13 @@ public class TapestryUtils
     }
 
     /**
-     * Splits a single string into an array of strings, using a specific delimiter character.
+     * Splits a single string into an array of strings, using a specific
+     * delimiter character.
      */
 
     public static String[] split(String input, char delimiter)
     {
-        if (HiveMind.isBlank(input))
-            return new String[0];
+        if (HiveMind.isBlank(input)) return new String[0];
 
         List strings = new ArrayList();
 
@@ -182,7 +190,7 @@ public class TapestryUtils
         int start = 0;
         int length = 0;
 
-        for (int i = 0; i < buffer.length; i++)
+        for(int i = 0; i < buffer.length; i++)
         {
             if (buffer[i] != delimiter)
             {
@@ -203,28 +211,24 @@ public class TapestryUtils
         // If the string contains no delimiters, then
         // wrap it an an array and return it.
 
-        if (start == 0 && length == buffer.length)
-        {
-            return new String[]
-            { input };
-        }
+        if (start == 0 && length == buffer.length) { return new String[] { input }; }
 
         // The final token.
         String token = new String(buffer, start, length);
         strings.add(token);
 
-        return (String[]) strings.toArray(new String[strings.size()]);
+        return (String[])strings.toArray(new String[strings.size()]);
     }
 
     /**
-     * Enquotes a string within single quotes, ready for insertion as part of a block of JavaScript.
-     * Single quotes and backslashes within the input string are properly escaped.
+     * Enquotes a string within single quotes, ready for insertion as part of a
+     * block of JavaScript. Single quotes and backslashes within the input
+     * string are properly escaped.
      */
 
     public static String enquote(String input)
     {
-        if (input == null)
-            return EMPTY_QUOTES;
+        if (input == null) return EMPTY_QUOTES;
 
         char[] chars = input.toCharArray();
 
@@ -234,12 +238,11 @@ public class TapestryUtils
 
         buffer.append(QUOTE);
 
-        for (int i = 0; i < chars.length; i++)
+        for(int i = 0; i < chars.length; i++)
         {
             char ch = chars[i];
 
-            if (ch == QUOTE || ch == BACKSLASH)
-                buffer.append(BACKSLASH);
+            if (ch == QUOTE || ch == BACKSLASH) buffer.append(BACKSLASH);
 
             buffer.append(ch);
         }
@@ -250,16 +253,17 @@ public class TapestryUtils
     }
 
     /**
-     * A Tapestry component id is a little more liberal than an XML NMTOKEN. NMTOKEN must be
-     * [A-Za-z][A-Za-z0-9:_.-]*, but a component id might include a leading dollar sign (for an
-     * anonymous component with a fabricated id).
+     * A Tapestry component id is a little more liberal than an XML NMTOKEN.
+     * NMTOKEN must be [A-Za-z][A-Za-z0-9:_.-]*, but a component id might
+     * include a leading dollar sign (for an anonymous component with a
+     * fabricated id).
      */
 
     public static String convertTapestryIdToNMToken(String baseId)
     {
         String result = baseId.replace('$', '_');
 
-        while (result.startsWith("_"))
+        while(result.startsWith("_"))
             result = result.substring(1);
 
         return result;
@@ -278,11 +282,12 @@ public class TapestryUtils
     }
 
     /**
-     * Used by some generated code; obtains a component and ensures it is of the correct type.
+     * Used by some generated code; obtains a component and ensures it is of the
+     * correct type.
      */
 
-    public static IComponent getComponent(IComponent container, String componentId,
-            Class expectedType, Location location)
+    public static IComponent getComponent(IComponent container, String componentId, Class expectedType,
+            Location location)
     {
         Defense.notNull(container, "container");
         Defense.notNull(componentId, "componentId");
@@ -301,9 +306,8 @@ public class TapestryUtils
         }
 
         if (!expectedType.isAssignableFrom(component.getClass()))
-            throw new ApplicationRuntimeException(TapestryMessages.componentWrongType(
-                    component,
-                    expectedType), location, null);
+            throw new ApplicationRuntimeException(TapestryMessages.componentWrongType(component, expectedType),
+                    location, null);
 
         return component;
     }

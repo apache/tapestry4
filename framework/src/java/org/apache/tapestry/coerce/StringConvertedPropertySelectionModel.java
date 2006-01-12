@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,8 @@ import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.form.IPropertySelectionModel;
 
 /**
- * {@link org.apache.tapestry.form.IPropertySelectionModel} created from a comma-seperated string by
+ * {@link org.apache.tapestry.form.IPropertySelectionModel} created from a
+ * comma-seperated string by
  * {@link org.apache.tapestry.coerce.StringToPropertySelectionModelConverter}.
  * 
  * @author Howard M. Lewis Ship
@@ -29,8 +30,11 @@ import org.apache.tapestry.form.IPropertySelectionModel;
  */
 public final class StringConvertedPropertySelectionModel implements IPropertySelectionModel
 {
+
+    /** Stores a single label/value pair. */
     private static class Entry
     {
+
         String _label;
 
         String _value;
@@ -62,7 +66,7 @@ public final class StringConvertedPropertySelectionModel implements IPropertySel
 
         _entries = new ArrayList(terms.length);
 
-        for (int i = 0; i < terms.length; i++)
+        for(int i = 0; i < terms.length; i++)
         {
             _entries.add(new Entry(terms[i]));
         }
@@ -75,7 +79,7 @@ public final class StringConvertedPropertySelectionModel implements IPropertySel
 
     private Entry getEntry(int index)
     {
-        return (Entry) _entries.get(index);
+        return (Entry)_entries.get(index);
     }
 
     public Object getOption(int index)
@@ -96,7 +100,8 @@ public final class StringConvertedPropertySelectionModel implements IPropertySel
 
     public Object translateValue(String value)
     {
-        // Values are the same on the client and the server, so no translation needed.
+        // Values are the same on the client and the server, so no translation
+        // needed.
         return value;
     }
 

@@ -19,47 +19,48 @@ import org.apache.tapestry.util.xml.BaseRule;
 import org.apache.tapestry.util.xml.RuleDirectedParser;
 
 /**
- * Base class for the rules that build {@link org.apache.tapestry.script.IScriptToken}s.
- * Used with classes that can contain a mix of text and elements (those that
- * accept "full content").
+ * Base class for the rules that build
+ * {@link org.apache.tapestry.script.IScriptToken}s. Used with classes that can
+ * contain a mix of text and elements (those that accept "full content").
  * 
- *
  * @author Howard Lewis Ship
  * @since 3.0
- **/
+ */
 
 abstract class AbstractTokenRule extends BaseRule
 {
-
-    /**
-     * Adds a token to its parent, the top object on the stack.
-     */
-    protected void addToParent(RuleDirectedParser parser, IScriptToken token)
-    {
-        IScriptToken parent = (IScriptToken) parser.peek();
-
-        parent.addToken(token);
-    }
-
-    /**
-     * Peeks at the top object on the stack (which must be a {@link IScriptToken}),
-     * and converts the text into a series of {@link org.apache.tapestry.script.StaticToken} and
-     * {@link org.apache.tapestry.script.InsertToken}s.
-     */
-
-    public void content(RuleDirectedParser parser, String content)
-    {
-        IScriptToken token = (IScriptToken) parser.peek();
-
-        addTextTokens(token, content, parser.getLocation());
-    }
 
     private static final int STATE_START = 0;
     private static final int STATE_DOLLAR = 1;
     private static final int STATE_COLLECT_EXPRESSION = 2;
 
     /**
-     * Parses the provided text and converts it into a series of 
+     * Adds a token to its parent, the top object on the stack.
+     */
+    protected void addToParent(RuleDirectedParser parser, IScriptToken token)
+    {
+        IScriptToken parent = (IScriptToken)parser.peek();
+
+        parent.addToken(token);
+    }
+
+    /**
+     * Peeks at the top object on the stack (which must be a
+     * {@link IScriptToken}), and converts the text into a series of
+     * {@link org.apache.tapestry.script.StaticToken} and
+     * {@link org.apache.tapestry.script.InsertToken}s.
+     */
+
+    public void content(RuleDirectedParser parser, String content)
+    {
+        IScriptToken token = (IScriptToken)parser.peek();
+
+        addTextTokens(token, content, parser.getLocation());
+    }
+
+    /**
+     * Parses the provided text and converts it into a series of
+     * {@link IScriptToken}s.
      */
     protected void addTextTokens(IScriptToken token, String text, Location location)
     {
@@ -72,117 +73,110 @@ abstract class AbstractTokenRule extends BaseRule
         int i = 0;
         int braceDepth = 0;
 
-        while (i < buffer.length)
+        while(i < buffer.length)
         {
             char ch = buffer[i];
 
-            switch (state)
+            switch(state)
             {
-                case STATE_START :
+            case STATE_START:
 
-                    if (ch == '$')
-                    {
-                        state = STATE_DOLLAR;
-                        i++;
-                        continue;
-                    }
-
-                    blockLength++;
+                if (ch == '$')
+                {
+                    state = STATE_DOLLAR;
                     i++;
                     continue;
+                }
 
-                case STATE_DOLLAR :
+                blockLength++;
+                i++;
+                continue;
 
-                    if (ch == '{')
-                    {
-                        state = STATE_COLLECT_EXPRESSION;
-                        i++;
+            case STATE_DOLLAR:
 
-                        expressionStart = i;
-                        expressionLength = 0;
-                        braceDepth = 1;
+                if (ch == '{')
+                {
+                    state = STATE_COLLECT_EXPRESSION;
+                    i++;
 
-                        continue;
-                    }
+                    expressionStart = i;
+                    expressionLength = 0;
+                    braceDepth = 1;
 
-                    // The '$' was just what it was, not the start of a ${} expression
-                    // block, so include it as part of the static text block.
-
-                    blockLength++;
-
-                    state = STATE_START;
                     continue;
+                }
 
-                case STATE_COLLECT_EXPRESSION :
+                // The '$' was just what it was, not the start of a ${}
+                // expression
+                // block, so include it as part of the static text block.
 
-                    if (ch != '}')
-                    {
-                        if (ch == '{')
-                            braceDepth++;
+                blockLength++;
 
-                        i++;
-                        expressionLength++;
-                        continue;
-                    }
+                state = STATE_START;
+                continue;
 
-                    braceDepth--;
+            case STATE_COLLECT_EXPRESSION:
 
-                    if (braceDepth > 0)
-                    {
-                        i++;
-                        expressionLength++;
-                        continue;
-                    }
-
-                    // Hit the closing brace of an expression.
-
-                    // Degenerate case:  the string "${}".
-
-                    if (expressionLength == 0)
-                        blockLength += 3;
-
-                    if (blockLength > 0)
-                        token.addToken(constructStatic(text, blockStart, blockLength, location));
-
-                    if (expressionLength > 0)
-                    {
-                        String expression =
-                            text.substring(expressionStart, expressionStart + expressionLength);
-
-                        token.addToken(new InsertToken(expression, location));
-                    }
+                if (ch != '}')
+                {
+                    if (ch == '{') braceDepth++;
 
                     i++;
-                    blockStart = i;
-                    blockLength = 0;
-
-                    // And drop into state start
-
-                    state = STATE_START;
-
+                    expressionLength++;
                     continue;
+                }
+
+                braceDepth--;
+
+                if (braceDepth > 0)
+                {
+                    i++;
+                    expressionLength++;
+                    continue;
+                }
+
+                // Hit the closing brace of an expression.
+
+                // Degenerate case: the string "${}".
+
+                if (expressionLength == 0) blockLength += 3;
+
+                if (blockLength > 0) token.addToken(constructStatic(text, blockStart, blockLength, location));
+
+                if (expressionLength > 0)
+                {
+                    String expression = text.substring(expressionStart, expressionStart + expressionLength);
+
+                    token.addToken(new InsertToken(expression, location));
+                }
+
+                i++;
+                blockStart = i;
+                blockLength = 0;
+
+                // And drop into state start
+
+                state = STATE_START;
+
+                continue;
+
+            default:
+                throw new IllegalStateException();
             }
 
         }
 
-        // OK, to handle the end.  Couple of degenerate cases where
+        // OK, to handle the end. Couple of degenerate cases where
         // a ${...} was incomplete, so we adust the block length.
 
-        if (state == STATE_DOLLAR)
-            blockLength++;
+        if (state == STATE_DOLLAR) blockLength++;
 
-        if (state == STATE_COLLECT_EXPRESSION)
-            blockLength += expressionLength + 2;
+        if (state == STATE_COLLECT_EXPRESSION) blockLength += expressionLength + 2;
 
-        if (blockLength > 0)
-            token.addToken(constructStatic(text, blockStart, blockLength, location));
+        if (blockLength > 0) token.addToken(constructStatic(text, blockStart, blockLength, location));
     }
 
-    private IScriptToken constructStatic(
-        String text,
-        int blockStart,
-        int blockLength,
-        Location location)
+    private IScriptToken constructStatic(String text, int blockStart, int blockLength, Location location)
     {
         String literal = text.substring(blockStart, blockStart + blockLength);
 

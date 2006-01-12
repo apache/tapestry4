@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,11 +24,17 @@ import org.apache.hivemind.impl.DefaultClassResolver;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class DataSqueezerUtil
+public final class DataSqueezerUtil
 {
 
+    /** @since 4.1 */
+    private DataSqueezerUtil()
+    {
+    }
+
     /**
-     * Returns a data squeezer with a set of basic adaptors, ready to be used by JUnit-tests.
+     * Returns a data squeezer with a set of basic adaptors, ready to be used by
+     * JUnit-tests.
      */
     public static DataSqueezerImpl createUnitTestSqueezer(ClassResolver resolver)
     {
@@ -54,7 +60,8 @@ public class DataSqueezerUtil
     }
 
     /**
-     * Returns a data squeezer with a set of basic adaptors, ready to be used by JUnit-tests.
+     * Returns a data squeezer with a set of basic adaptors, ready to be used by
+     * JUnit-tests.
      */
 
     public static DataSqueezerImpl createUnitTestSqueezer()
