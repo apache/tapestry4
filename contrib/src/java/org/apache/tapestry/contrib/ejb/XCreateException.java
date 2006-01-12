@@ -16,23 +16,22 @@ package org.apache.tapestry.contrib.ejb;
 
 import javax.ejb.CreateException;
 
-
 /**
- *  Extended version of {@link CreateException} that includes a root cause.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Extended version of {@link CreateException} that includes a root cause.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public class XCreateException extends CreateException
 {
+
     private static final long serialVersionUID = 6807032467099102587L;
-    
-	private Throwable rootCause;
+
+    private final Throwable rootCause;
 
     public XCreateException(String message)
     {
-        super(message);
+        this(message, null);
     }
 
     public XCreateException(String message, Throwable rootCause)
@@ -44,9 +43,7 @@ public class XCreateException extends CreateException
 
     public XCreateException(Throwable rootCause)
     {
-        super(rootCause.getMessage());
-
-        this.rootCause = rootCause;
+        this(rootCause.getMessage(), rootCause);
     }
 
     public Throwable getRootCause()

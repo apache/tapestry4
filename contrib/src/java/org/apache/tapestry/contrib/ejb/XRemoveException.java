@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,21 +17,21 @@ package org.apache.tapestry.contrib.ejb;
 import javax.ejb.RemoveException;
 
 /**
- *  Extended version of {@link RemoveException} that includes a root cause.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Extended version of {@link RemoveException} that includes a root cause.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public class XRemoveException extends RemoveException
 {
+
     private static final long serialVersionUID = -8940644648555335217L;
-    
-	private Throwable rootCause;
+
+    private final Throwable rootCause;
 
     public XRemoveException(String message)
     {
-        super(message);
+        this(message, null);
     }
 
     public XRemoveException(String message, Throwable rootCause)
@@ -43,9 +43,7 @@ public class XRemoveException extends RemoveException
 
     public XRemoveException(Throwable rootCause)
     {
-        super(rootCause.getMessage());
-
-        this.rootCause = rootCause;
+        this(rootCause.getMessage(), rootCause);
     }
 
     public Throwable getRootCause()

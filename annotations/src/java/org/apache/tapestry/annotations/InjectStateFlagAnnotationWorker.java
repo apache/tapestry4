@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,11 +22,19 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
 
-public class InjectStateFlagAnnotationWorker implements MethodAnnotationEnhancementWorker
-{
+/**
+ * Converts an {@link org.apache.tapestry.annotations.InjectStateFlag}
+ * annotation into a {@link org.apache.tapestry.spec.InjectSpecification} (of
+ * type "state-flag") attached to the component specification.
+ * 
+ * @author Howard M. Lewis Ship
+ * @since 4.0
+ */
+public class InjectStateFlagAnnotationWorker implements
+        MethodAnnotationEnhancementWorker {
 
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
-            Method method, Location location)
+    public void performEnhancement(EnhancementOperation op,
+            IComponentSpecification spec, Method method, Location location)
     {
         InjectStateFlag isv = method.getAnnotation(InjectStateFlag.class);
 

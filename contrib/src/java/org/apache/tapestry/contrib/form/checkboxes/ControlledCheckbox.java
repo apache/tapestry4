@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,29 +27,31 @@ import org.apache.tapestry.form.Checkbox;
  */
 public abstract class ControlledCheckbox extends BaseComponent
 {
+
     public abstract CheckboxGroup getGroup();
-    
+
     public String getCheckboxName()
     {
-        Checkbox checkbox = (Checkbox) getComponent("checkbox");
+        Checkbox checkbox = (Checkbox)getComponent("checkbox");
         String name = checkbox.getName();
         return name;
     }
-    
+
     public IForm getForm()
     {
-    	Checkbox checkbox = (Checkbox) getComponent("checkbox");
-    	IForm form = checkbox.getForm();
-    	return form;
+        Checkbox checkbox = (Checkbox)getComponent("checkbox");
+        IForm form = checkbox.getForm();
+        return form;
     }
-    
+
     /**
-     * @see org.apache.tapestry.BaseComponent#renderComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.BaseComponent#renderComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         super.renderComponent(writer, cycle);
-        
+
         registerCheckbox();
     }
 
@@ -57,16 +59,18 @@ public abstract class ControlledCheckbox extends BaseComponent
     {
         getCheckboxGroup().registerControlledCheckbox(this);
     }
-    
+
     public CheckboxGroup getCheckboxGroup()
     {
         CheckboxGroup group = getGroup();
-        if (group == null) {
+        if (group == null)
+        {
             IRequestCycle cycle = getPage().getRequestCycle();
-            group = (CheckboxGroup) cycle.getAttribute(CheckboxGroup.CHECKBOX_GROUP_ATTRIBUTE);
+            group = (CheckboxGroup)cycle.getAttribute(CheckboxGroup.CHECKBOX_GROUP_ATTRIBUTE);
         }
         if (group == null)
-            throw new ApplicationRuntimeException("The component " + getExtendedId() + " must be wrapped by a CheckboxGroup or the 'group' parameter must be set.");
+            throw new ApplicationRuntimeException("The component " + getExtendedId()
+                    + " must be wrapped by a CheckboxGroup or the 'group' parameter must be set.");
 
         return group;
     }

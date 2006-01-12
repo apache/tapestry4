@@ -19,43 +19,41 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.components.Conditional;
 
 /**
- *  This component is a container for {@link When} or Otherwise components;
- *  it provides the context for mutually exclusive conditional evaluation.
- *
- *  [<a href="../../../../../../ComponentReference/contrib.Choose.html">Component Reference</a>]
- *
- *  @author David Solis
+ * This component is a container for {@link When} or Otherwise components; it
+ * provides the context for mutually exclusive conditional evaluation. [<a
+ * href="../../../../../../ComponentReference/contrib.Choose.html">Component
+ * Reference</a>]
  * 
+ * @author David Solis
  */
 public abstract class Choose extends Conditional {
 
+    public void addBody(IRender element)
+    {
+        super.addBody(element);
+        if (element instanceof When) ((When)element).setChoose(this);
+    }
 
-	public void addBody(IRender element)
-	{
-		super.addBody(element);
-		if (element instanceof When)
-			((When) element).setChoose(this);	
-	}
-	
-	protected void cleanupAfterRender(IRequestCycle cycle)
-	{
-		setConditionMet(false);
-		super.cleanupAfterRender(cycle);
-	}
-	
-	protected boolean evaluateCondition()
-	{
-		return getCondition();
-	}
+    protected void cleanupAfterRender(IRequestCycle cycle)
+    {
+        setConditionMet(false);
+        super.cleanupAfterRender(cycle);
+    }
 
-	public boolean getInvert()
-	{
-		// This component doesn't require invert parameter.
-		return false;
-	}
+    protected boolean evaluateCondition()
+    {
+        return getCondition();
+    }
 
-	public abstract boolean getCondition();
-	
-	public abstract boolean isConditionMet();
-	public abstract void setConditionMet(boolean value);
+    public boolean getInvert()
+    {
+        // This component doesn't require invert parameter.
+        return false;
+    }
+
+    public abstract boolean getCondition();
+
+    public abstract boolean isConditionMet();
+
+    public abstract void setConditionMet(boolean value);
 }

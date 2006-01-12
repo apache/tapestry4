@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,13 +25,14 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 
 /**
- * Tests for {@link org.apache.tapestry.annotations.ComponentAnnotationWorker}
+ * Tests for {@link org.apache.tapestry.annotations.ComponentAnnotationWorker}.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public class TestComponentAnnotationWorker extends BaseAnnotationTestCase
 {
+
     private IContainedComponent run(String id, String methodName, Location location)
     {
         Method method = findMethod(AnnotatedPage.class, methodName);
