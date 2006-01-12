@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.apache.tapestry.annotations;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.hivemind.service.ClassFabUtils;
 
@@ -25,78 +26,78 @@ import org.apache.hivemind.service.ClassFabUtils;
  * @since 4.0
  */
 
-class AnnotationMessages
+final class AnnotationMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(
-            AnnotationMessages.class);
+
+    private static final Messages MESSAGES = new MessageFormatter(AnnotationMessages.class);
+
+    /** @since 4.1 */
+    private AnnotationMessages()
+    {
+    }
 
     static String noParametersExpected(Method m)
     {
-        return _formatter.format("no-parameters-expected", m);
+        return MESSAGES.format("no-parameters-expected", m);
     }
 
     static String notAccessor(Method method)
     {
-        return _formatter.format("no-accessor", method);
+        return MESSAGES.format("no-accessor", method);
     }
 
     static String voidAccessor(Method method)
     {
-        return _formatter.format("void-accessor", method);
+        return MESSAGES.format("void-accessor", method);
     }
 
     static String nonVoidMutator(Method method)
     {
-        return _formatter.format("non-void-mutator", method);
+        return MESSAGES.format("non-void-mutator", method);
     }
 
     static String wrongParameterCount(Method method)
     {
-        return _formatter.format("wrong-parameter-count", method);
+        return MESSAGES.format("wrong-parameter-count", method);
     }
 
     static String failureProcessingAnnotation(Annotation annotation, Method method, Throwable cause)
     {
-        return _formatter.format("failure-processing-annotation", annotation, method, cause);
+        return MESSAGES.format("failure-processing-annotation", annotation, method, cause);
     }
 
-    static String failureProcessingClassAnnotation(Annotation annotation, Class clazz,
-            Throwable cause)
+    static String failureProcessingClassAnnotation(Annotation annotation, Class clazz, Throwable cause)
     {
-        return _formatter.format(
-                "failure-processing-class-annotation",
-                annotation,
-                clazz.getName(),
-                cause);
+        return MESSAGES.format("failure-processing-class-annotation", annotation, clazz.getName(), cause);
     }
 
     static String returnStringOnly(Class returnType)
     {
-        return _formatter.format("return-string-only", ClassFabUtils.getJavaClassName(returnType));
+        return MESSAGES.format("return-string-only", ClassFabUtils.getJavaClassName(returnType));
     }
 
     static String bindingWrongFormat(String binding)
     {
-        return _formatter.format("binding-wrong-format", binding);
+        return MESSAGES.format("binding-wrong-format", binding);
     }
 
     static String methodAnnotation(Annotation annotation, Method method)
     {
-        return _formatter.format("method-annotation", annotation, method);
+        return MESSAGES.format("method-annotation", annotation, method);
     }
 
     static String classAnnotation(Annotation annotation, Class clazz)
     {
-        return _formatter.format("class-annotation", annotation, clazz.getName());
+        return MESSAGES.format("class-annotation", annotation, clazz.getName());
     }
 
     static String missingEqualsInMeta(String value)
     {
-        return _formatter.format("missing-equals-in-meta", value);
+        return MESSAGES.format("missing-equals-in-meta", value);
     }
 
     static String failureEnhancingMethod(Method method, Exception cause)
     {
-        return _formatter.format("failure-enhancing-method", method, cause);
+        return MESSAGES.format("failure-enhancing-method", method, cause);
     }
 }
