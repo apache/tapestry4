@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,9 +25,10 @@ import java.io.Serializable;
 
 public class PlotValue implements Serializable
 {
+
     private static final long serialVersionUID = 4847193821463693432L;
 
-	private String name;
+    private String name;
 
     private int value;
 

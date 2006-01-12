@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,16 +32,17 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
 import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
- * Displays the book inventory list for a single {@link org.apache.tapestry.vlib.ejb.IPerson},
- * showing what books are owned by the person, who has them borrowed, etc. If the user is logged in,
- * then books can be borrowed from this page as well.
+ * Displays the book inventory list for a single
+ * {@link org.apache.tapestry.vlib.ejb.IPerson}, showing what books are owned
+ * by the person, who has them borrowed, etc. If the user is logged in, then
+ * books can be borrowed from this page as well.
  * 
  * @author Howard Lewis Ship
  */
-@Meta(
-{ "page-type=Search", "anonymous-access=true" })
+@Meta( { "page-type=Search", "anonymous-access=true" })
 public abstract class ViewPerson extends VlibPage implements IExternalPage, PageBeginRenderListener
 {
+
     public abstract Integer getPersonId();
 
     @Persist
@@ -78,7 +79,7 @@ public abstract class ViewPerson extends VlibPage implements IExternalPage, Page
 
     public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
     {
-        Integer personId = (Integer) parameters[0];
+        Integer personId = (Integer)parameters[0];
 
         setPersonId(personId);
 
@@ -93,8 +94,7 @@ public abstract class ViewPerson extends VlibPage implements IExternalPage, Page
     {
         int count = runQuery();
 
-        if (getBrowser().getResultCount() != count)
-            getBrowser().setResultCount(count);
+        if (getBrowser().getResultCount() != count) getBrowser().setResultCount(count);
     }
 
     private int runQuery()
@@ -104,7 +104,9 @@ public abstract class ViewPerson extends VlibPage implements IExternalPage, Page
 
         RemoteCallback<Integer> callback = new RemoteCallback()
         {
-            public Integer doRemote() throws RemoteException
+
+            public Integer doRemote()
+                throws RemoteException
             {
                 IBookQuery query = getQuery();
 
@@ -140,5 +142,4 @@ public abstract class ViewPerson extends VlibPage implements IExternalPage, Page
             setPerson(person);
         }
     }
-
 }

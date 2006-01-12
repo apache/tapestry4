@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,14 +20,16 @@ import java.sql.Timestamp;
 import org.apache.tapestry.vlib.ejb.Person;
 
 /**
- * The visit object for the {@link VirtualLibraryEngine}. Primarily, this is used to access the
- * home interfaces and EJB instances, and to identify who the logged in user is.
+ * The visit object for the {@link VirtualLibraryEngine}. Primarily, this is
+ * used to access the home interfaces and EJB instances, and to identify who the
+ * logged in user is.
  * 
  * @author Howard Lewis Ship
  */
 
 public class Visit implements Serializable
 {
+
     private static final long serialVersionUID = 8589862098677603655L;
 
     /**
@@ -37,8 +39,8 @@ public class Visit implements Serializable
     private Person _user;
 
     /**
-     * Returns the time the user last accessed the database, which may be null if the user hasn't
-     * logged in yet.
+     * Returns the time the user last accessed the database, which may be null
+     * if the user hasn't logged in yet.
      */
 
     public Timestamp getLastAccess()
@@ -56,7 +58,8 @@ public class Visit implements Serializable
     }
 
     /**
-     * Returns the id of the logged in user, or null if the user is not logged in.
+     * Returns the id of the logged in user, or null if the user is not logged
+     * in.
      */
 
     public Integer getUserId()
@@ -94,20 +97,18 @@ public class Visit implements Serializable
 
     public boolean isLoggedInUser(Integer id)
     {
-        if (_user == null)
-            return false;
+        if (_user == null) return false;
 
         return _user.getId().equals(id);
     }
 
     /**
-     * Invoked by pages after they perform an operation that changes the backend database in such a
-     * way that cached data is no longer valid.
+     * Invoked by pages after they perform an operation that changes the backend
+     * database in such a way that cached data is no longer valid.
      */
 
     public void clearCache()
     {
         _user = null;
     }
-
 }

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,12 +29,14 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 /**
  * Implementation of a stateful session bean used to query the
- * {@link org.apache.tapestry.vlib.ejb.IBook} entity and cache the results. It can then download the
- * results, in chunks, to the client ... this is used to support clients that which to display the
- * results a page at a time (with random access to the pages of results).
+ * {@link org.apache.tapestry.vlib.ejb.IBook} entity and cache the results. It
+ * can then download the results, in chunks, to the client ... this is used to
+ * support clients that which to display the results a page at a time (with
+ * random access to the pages of results).
  * <p>
- * To avoid a lot of duplicate code for things like finding the JDBC {@link Connection} and querying
- * the IBook entity, we subclass from {@link OperationsBean}.
+ * To avoid a lot of duplicate code for things like finding the JDBC
+ * {@link Connection} and querying the IBook entity, we subclass from
+ * {@link OperationsBean}.
  * 
  * @see org.apache.tapestry.vlib.ejb.IBookQuery
  * @see org.apache.tapestry.vlib.ejb.IBookQueryHome
@@ -43,9 +45,10 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 public class BookQueryBean extends OperationsBean
 {
+
     private static final long serialVersionUID = 8782046868254488388L;
-    
-	/**
+
+    /**
      * Stores the results from the most recent query.
      */
 
@@ -68,8 +71,7 @@ public class BookQueryBean extends OperationsBean
 
     public int getResultCount()
     {
-        if (_results == null)
-            return 0;
+        if (_results == null) return 0;
 
         return _results.length;
     }
@@ -82,13 +84,11 @@ public class BookQueryBean extends OperationsBean
     {
         Book[] result;
 
-        if (offset < 0)
-            return null;
+        if (offset < 0) return null;
 
         int finalLength = Math.min(length, _results.length - offset);
 
-        if (finalLength < 0)
-            return null;
+        if (finalLength < 0) return null;
 
         // Create a new array and copy the requested
         // results into it.
@@ -100,7 +100,8 @@ public class BookQueryBean extends OperationsBean
     }
 
     /**
-     * The master query is for querying by some mixture of title, author and publisher.
+     * The master query is for querying by some mixture of title, author and
+     * publisher.
      */
 
     public int masterQuery(MasterQueryParameters parameters, SortOrdering sortOrdering)
@@ -270,12 +271,13 @@ public class BookQueryBean extends OperationsBean
         }
     }
 
-    private void processQueryResults(ResultSet set) throws SQLException
+    private void processQueryResults(ResultSet set)
+        throws SQLException
     {
         List list = new ArrayList();
         Object[] columns = new Object[Book.N_COLUMNS];
 
-        while (set.next())
+        while(set.next())
         {
             Book book = convertRowToBook(set, columns);
 
@@ -283,11 +285,11 @@ public class BookQueryBean extends OperationsBean
         }
 
         _results = new Book[list.size()];
-        _results = (Book[]) list.toArray(_results);
+        _results = (Book[])list.toArray(_results);
     }
 
-    private IStatement buildMasterQuery(Connection connection, MasterQueryParameters parameters,
-            SortOrdering ordering) throws SQLException
+    private IStatement buildMasterQuery(Connection connection, MasterQueryParameters parameters, SortOrdering ordering)
+        throws SQLException
     {
         String title = parameters.getTitle();
         String author = parameters.getAuthor();
@@ -323,8 +325,9 @@ public class BookQueryBean extends OperationsBean
         return assembly.createStatement(connection);
     }
 
-    private IStatement buildPersonQuery(Connection connection, String personColumn,
-            Integer personId, SortOrdering sortOrdering) throws SQLException
+    private IStatement buildPersonQuery(Connection connection, String personColumn, Integer personId,
+            SortOrdering sortOrdering)
+        throws SQLException
     {
         StatementAssembly assembly = buildBaseBookQuery();
 
@@ -338,8 +341,8 @@ public class BookQueryBean extends OperationsBean
         return assembly.createStatement(connection);
     }
 
-    private IStatement buildBorrowerQuery(Connection connection, Integer borrowerId,
-            SortOrdering sortOrdering) throws SQLException
+    private IStatement buildBorrowerQuery(Connection connection, Integer borrowerId, SortOrdering sortOrdering)
+        throws SQLException
     {
         StatementAssembly assembly = buildBaseBookQuery();
 

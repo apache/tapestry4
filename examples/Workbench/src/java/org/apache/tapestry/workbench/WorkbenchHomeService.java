@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.HomeService;
 
 /**
- * Special version of the home service used to reset the visit tab when re-entering the Tapestry
- * application from a static HTML page.
+ * Special version of the home service used to reset the visit tab when
+ * re-entering the Tapestry application from a static HTML page.
  * 
  * @author Howard Lewis Ship
  * @see Redirect
@@ -29,12 +29,13 @@ import org.apache.tapestry.engine.HomeService;
 
 public class WorkbenchHomeService extends HomeService
 {
-    public void service(IRequestCycle cycle) throws IOException
-    {
-        Visit visit = (Visit) cycle.getEngine().getVisit();
 
-        if (visit != null)
-            visit.setActiveTabName("Home");
+    public void service(IRequestCycle cycle)
+        throws IOException
+    {
+        Visit visit = (Visit)cycle.getEngine().getVisit();
+
+        if (visit != null) visit.setActiveTabName("Home");
 
         super.service(cycle);
     }

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2004, 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
 package org.apache.tapestry.vlib.ejb;
 
 /**
- * Exception thrown by {@link IOperations#registerNewUser(String, String, String, String)} if the
+ * Exception thrown by
+ * {@link IOperations#registerNewUser(String, String, String, String)} if the
  * registration is not allowed (usually, because of a duplicate email or name).
  * 
  * @author Howard Lewis Ship
@@ -23,9 +24,10 @@ package org.apache.tapestry.vlib.ejb;
 
 public class RegistrationException extends Exception
 {
+
     private static final long serialVersionUID = 1359775792320102947L;
-    
-	private Throwable _rootCause;
+
+    private final Throwable _rootCause;
 
     public RegistrationException(Throwable rootCause)
     {
@@ -43,7 +45,7 @@ public class RegistrationException extends Exception
 
     public RegistrationException(String message)
     {
-        super(message);
+        this(message, null);
     }
 
     public Throwable getRootCause()

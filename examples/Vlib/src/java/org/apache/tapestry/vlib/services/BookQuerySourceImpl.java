@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,8 +24,14 @@ import org.apache.hivemind.lib.RemoteExceptionListener;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.IBookQueryHome;
 
+/**
+ * EJB Bean implementation for performing queires for books.
+ * 
+ * @author Howard M. Lewis Ship
+ */
 public class BookQuerySourceImpl implements BookQuerySource, RemoteExceptionListener
 {
+
     private NameLookup _nameLookup;
 
     private IBookQueryHome _home;
@@ -36,7 +42,9 @@ public class BookQuerySourceImpl implements BookQuerySource, RemoteExceptionList
     {
         RemoteCallback<IBookQuery> callback = new RemoteCallback()
         {
-            public IBookQuery doRemote() throws RemoteException
+
+            public IBookQuery doRemote()
+                throws RemoteException
             {
                 try
                 {
@@ -55,8 +63,7 @@ public class BookQuerySourceImpl implements BookQuerySource, RemoteExceptionList
 
     private IBookQueryHome getHome()
     {
-        if (_home == null)
-            _home = (IBookQueryHome) _nameLookup.lookup("vlib/BookQuery", IBookQueryHome.class);
+        if (_home == null) _home = (IBookQueryHome)_nameLookup.lookup("vlib/BookQuery", IBookQueryHome.class);
 
         return _home;
     }
