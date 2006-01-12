@@ -29,7 +29,6 @@ import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.DirectService}.

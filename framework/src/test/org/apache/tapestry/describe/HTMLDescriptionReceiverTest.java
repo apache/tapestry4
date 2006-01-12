@@ -18,11 +18,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.apache.hivemind.Registry;
-import org.apache.hivemind.impl.RegistryBuilder;
 import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.services.ApplicationGlobals;
-import org.apache.tapestry.services.Infrastructure;
 
 /**
  * Tests for {@link org.apache.tapestry.describe.HTMLDescriptionReceiver}and

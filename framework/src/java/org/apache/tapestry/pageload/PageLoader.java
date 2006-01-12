@@ -39,7 +39,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.ITemplateComponent;
 import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.asset.AssetSource;
-import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.coerce.ValueConverter;

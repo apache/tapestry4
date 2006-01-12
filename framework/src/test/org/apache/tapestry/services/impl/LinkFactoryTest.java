@@ -37,7 +37,6 @@ import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.io.DataSqueezerUtil;
 import org.apache.tapestry.web.WebRequest;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.LinkFactoryImpl}.

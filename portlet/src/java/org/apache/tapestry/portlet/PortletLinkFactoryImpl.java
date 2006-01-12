@@ -19,7 +19,6 @@ import java.util.Map;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderResponse;
 
-import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;

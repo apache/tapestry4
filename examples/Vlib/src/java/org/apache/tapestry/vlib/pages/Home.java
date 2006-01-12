@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.vlib.pages;
 
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.Meta;
 import org.apache.tapestry.vlib.VlibPage;
@@ -43,8 +42,7 @@ public abstract class Home extends VlibPage
     public abstract BookMatches getBookMatches();
 
     /**
-     * Listener method, invokes
-     * {@link BookMatches#performQuery(MasterQueryParameters)}.
+     * Listener method, invokes {@link BookMatches#performQuery(MasterQueryParameters)}.
      */
 
     public void search()

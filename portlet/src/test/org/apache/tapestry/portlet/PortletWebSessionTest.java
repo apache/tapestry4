@@ -18,9 +18,7 @@ import java.util.List;
 
 import javax.portlet.PortletSession;
 
-import org.apache.tapestry.portlet.PortletWebSession;
 import org.apache.tapestry.web.WebSession;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.portlet.PortletWebSession}.

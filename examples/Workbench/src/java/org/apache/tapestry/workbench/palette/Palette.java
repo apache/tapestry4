@@ -17,7 +17,6 @@ package org.apache.tapestry.workbench.palette;
 import java.util.List;
 
 import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.contrib.palette.SortMode;

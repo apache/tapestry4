@@ -25,9 +25,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.LinkFactory;
-import org.apache.tapestry.services.ServiceConstants;
 
 /**
  * Restarts the Tapestry application. This is normally reserved for dealing with catastrophic
