@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,8 +37,11 @@ import org.easymock.MockControl;
  */
 public class TestPortletLink extends HiveMindTestCase
 {
+
+    /** Test fixture. */
     private static class PortletURLFixture implements PortletURL
     {
+
         private final String _toString;
 
         public PortletURLFixture(String toString)
@@ -51,11 +54,13 @@ public class TestPortletLink extends HiveMindTestCase
             return _toString;
         }
 
-        public void setWindowState(WindowState arg0) throws WindowStateException
+        public void setWindowState(WindowState arg0)
+            throws WindowStateException
         {
         }
 
-        public void setPortletMode(PortletMode arg0) throws PortletModeException
+        public void setPortletMode(PortletMode arg0)
+            throws PortletModeException
         {
         }
 
@@ -71,7 +76,8 @@ public class TestPortletLink extends HiveMindTestCase
         {
         }
 
-        public void setSecure(boolean arg0) throws PortletSecurityException
+        public void setSecure(boolean arg0)
+            throws PortletSecurityException
         {
         }
 
@@ -79,17 +85,17 @@ public class TestPortletLink extends HiveMindTestCase
 
     private IRequestCycle newCycle()
     {
-        return (IRequestCycle) newMock(IRequestCycle.class);
+        return (IRequestCycle)newMock(IRequestCycle.class);
     }
 
     private PortletURL newPortletURL()
     {
-        return (PortletURL) newMock(PortletURL.class);
+        return (PortletURL)newMock(PortletURL.class);
     }
 
     private QueryParameterMap newParameters()
     {
-        return (QueryParameterMap) newMock(QueryParameterMap.class);
+        return (QueryParameterMap)newMock(QueryParameterMap.class);
     }
 
     public void testGetAbsoluteURL()
@@ -131,10 +137,9 @@ public class TestPortletLink extends HiveMindTestCase
         PortletURL url = newPortletURL();
 
         MockControl control = newControl(QueryParameterMap.class);
-        QueryParameterMap parameters = (QueryParameterMap) control.getMock();
+        QueryParameterMap parameters = (QueryParameterMap)control.getMock();
 
-        String[] names =
-        { "Fred", "Barney" };
+        String[] names = { "Fred", "Barney" };
 
         parameters.getParameterNames();
         control.setReturnValue(names);
@@ -154,10 +159,9 @@ public class TestPortletLink extends HiveMindTestCase
         PortletURL url = newPortletURL();
 
         MockControl control = newControl(QueryParameterMap.class);
-        QueryParameterMap parameters = (QueryParameterMap) control.getMock();
+        QueryParameterMap parameters = (QueryParameterMap)control.getMock();
 
-        String[] values =
-        { "Fred", "Barney" };
+        String[] values = { "Fred", "Barney" };
 
         parameters.getParameterValues("bedrock");
         control.setReturnValue(values);
@@ -177,7 +181,7 @@ public class TestPortletLink extends HiveMindTestCase
         PortletURL url = newPortletURL();
 
         MockControl control = newControl(QueryParameterMap.class);
-        QueryParameterMap parameters = (QueryParameterMap) control.getMock();
+        QueryParameterMap parameters = (QueryParameterMap)control.getMock();
 
         parameters.getParameterNames();
         control.setReturnValue(new String[0]);
@@ -196,15 +200,13 @@ public class TestPortletLink extends HiveMindTestCase
         IRequestCycle cycle = newCycle();
         PortletURL url = newPortletURL();
 
-        QueryParameterMap parameters = (QueryParameterMap) newMock(QueryParameterMap.class);
+        QueryParameterMap parameters = (QueryParameterMap)newMock(QueryParameterMap.class);
 
         parameters.getParameterNames();
-        setReturnValue(parameters, new String[]
-        { "page" });
+        setReturnValue(parameters, new String[] { "page" });
 
         parameters.getParameterValues("page");
-        String[] values = new String[]
-        { "View" };
+        String[] values = new String[] { "View" };
         setReturnValue(parameters, values);
 
         url.setParameter("page", values);
@@ -213,12 +215,8 @@ public class TestPortletLink extends HiveMindTestCase
 
         ILink link = new PortletLink(cycle, url, parameters, false);
 
-        assertEquals("EasyMock for interface javax.portlet.PortletURL#anchor", link.getURL(
-                "scheme",
-                "server",
-                99,
-                "anchor",
-                true));
+        assertEquals("EasyMock for interface javax.portlet.PortletURL#anchor", link.getURL("scheme", "server", 99,
+                "anchor", true));
 
         verifyControls();
     }
@@ -228,7 +226,7 @@ public class TestPortletLink extends HiveMindTestCase
         IRequestCycle cycle = newCycle();
         PortletURL url = new PortletURLFixture("this=foo&amp;that=bar");
 
-        QueryParameterMap parameters = (QueryParameterMap) newMock(QueryParameterMap.class);
+        QueryParameterMap parameters = (QueryParameterMap)newMock(QueryParameterMap.class);
 
         parameters.getParameterNames();
         setReturnValue(parameters, new String[0]);
@@ -248,14 +246,12 @@ public class TestPortletLink extends HiveMindTestCase
         PortletURL url = newPortletURL();
 
         MockControl control = newControl(QueryParameterMap.class);
-        QueryParameterMap parameters = (QueryParameterMap) control.getMock();
+        QueryParameterMap parameters = (QueryParameterMap)control.getMock();
 
-        String[] values =
-        { "Fred", "Barney" };
+        String[] values = { "Fred", "Barney" };
 
         parameters.getParameterNames();
-        control.setReturnValue(new String[]
-        { "bedrock" });
+        control.setReturnValue(new String[] { "bedrock" });
         parameters.getParameterValues("bedrock");
         control.setReturnValue(values);
 
@@ -275,7 +271,7 @@ public class TestPortletLink extends HiveMindTestCase
         PortletURL url = newPortletURL();
 
         MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = (IRequestCycle)cyclec.getMock();
 
         cycle.encodeURL(url.toString());
         cyclec.setReturnValue("/encoded-url");
