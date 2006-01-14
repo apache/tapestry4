@@ -1,5 +1,5 @@
 // Copyright 2004, 2005 The Apache Software Foundation
-//
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -43,7 +43,7 @@ import org.apache.tapestry.spec.IApplicationSpecification;
 
 public abstract class Shell extends AbstractComponent
 {
-    private static final String generatorContent = "Tapestry Application Framework, version "
+    private static final String GENERATOR_CONTENT = "Tapestry Application Framework, version "
             + Tapestry.VERSION;
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -70,7 +70,7 @@ public abstract class Shell extends AbstractComponent
             writer.begin("head");
             writer.println();
 
-            writeMetaTag(writer, "name", "generator", generatorContent);
+            writeMetaTag(writer, "name", "generator", GENERATOR_CONTENT);
 
             if (getRenderContentType())
                 writeMetaTag(writer, "http-equiv", "Content-Type", writer.getContentType());

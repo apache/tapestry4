@@ -71,6 +71,16 @@ import org.jdom.input.SAXBuilder;
 public class MockTester
 {
 
+    /**
+     * Shared cache of compiled patterns.
+     */
+
+    private static Map _patternCache = new HashMap();
+
+    private PatternMatcher _matcher;
+
+    private PatternCompiler _compiler;
+
     private String _testRootDirectory;
 
     private String _path;
@@ -94,22 +104,12 @@ public class MockTester
     private Throwable _exception;
 
     /**
-     * Shared cache of compiled patterns.
-     */
-
-    private static Map _patternCache = new HashMap();
-
-    private PatternMatcher _matcher;
-
-    private PatternCompiler _compiler;
-
-    /**
      * Constructs a new MockTester for the given resource path (which is the XML
      * file to read).
      */
 
     public MockTester(String testRootDirectory, String path)
-        throws JDOMException, ServletException, DocumentParseException, IOException
+        throws JDOMException, ServletException, IOException
     {
         _testRootDirectory = testRootDirectory;
         _path = path;
@@ -135,7 +135,7 @@ public class MockTester
      */
 
     public void execute()
-        throws IOException, DocumentParseException
+        throws IOException
     {
         Element root = _document.getRootElement();
 
@@ -144,7 +144,7 @@ public class MockTester
 
         for(int i = 0; i < count; i++)
         {
-            Element request = (Element)l.get(i);
+            Element request = (Element) l.get(i);
 
             _requestNumber = i + 1;
 
@@ -155,7 +155,7 @@ public class MockTester
     }
 
     private void executeRequest(Element request)
-        throws IOException, DocumentParseException
+        throws IOException
     {
         Cookie[] oldRequestCookies = (_request == null ? null : _request.getCookies());
 
@@ -200,10 +200,10 @@ public class MockTester
     }
 
     private void parse()
-        throws JDOMException, DocumentParseException, IOException
+    throws JDOMException, IOException
     {
         SAXBuilder builder = new SAXBuilder();
-
+        
         _document = builder.build(_path);
     }
 
@@ -270,7 +270,7 @@ public class MockTester
 
         for(int i = 0; i < count; i++)
         {
-            Element parameter = (Element)parameters.get(i);
+            Element parameter = (Element) parameters.get(i);
 
             setRequestParameter(parameter);
         }
@@ -295,13 +295,13 @@ public class MockTester
         int count = children.size();
         for(int i = 0; i < count; i++)
         {
-            Element e = (Element)children.get(i);
+            Element e = (Element) children.get(i);
             value = e.getTextTrim();
 
             values.add(value);
         }
 
-        String[] array = (String[])values.toArray(new String[values.size()]);
+        String[] array = (String[]) values.toArray(new String[values.size()]);
 
         _request.setParameter(name, array);
     }
@@ -313,7 +313,7 @@ public class MockTester
         int count = children.size();
         for(int i = 0; i < count; i++)
         {
-            Element e = (Element)children.get(i);
+            Element e = (Element) children.get(i);
 
             String name = e.getAttributeValue("name");
             String value = e.getAttributeValue("value");
@@ -329,7 +329,7 @@ public class MockTester
         {
             Class servletClass = Class.forName(className);
 
-            return (ApplicationServlet)servletClass.newInstance();
+            return (ApplicationServlet) servletClass.newInstance();
         }
         catch (ClassNotFoundException ex)
         {
@@ -371,7 +371,6 @@ public class MockTester
     }
 
     private void executeAssertions(Element request)
-        throws DocumentParseException
     {
         executeOutputAssertions(request);
         executeNoOutputAssertions(request);
@@ -389,14 +388,13 @@ public class MockTester
      */
 
     private void executeExpressionAssertions(Element request)
-        throws DocumentParseException
     {
         List l = request.getChildren("assert");
         int count = l.size();
 
         for(int i = 0; i < count; i++)
         {
-            Element a = (Element)l.get(i);
+            Element a = (Element) l.get(i);
 
             String name = a.getAttributeValue("name");
             String expression = a.getTextTrim();
@@ -406,7 +404,6 @@ public class MockTester
     }
 
     private void checkExpression(String name, String expression)
-        throws DocumentParseException
     {
 
         boolean result = evaluate(expression);
@@ -418,7 +415,6 @@ public class MockTester
     }
 
     private boolean evaluate(String expression)
-        throws DocumentParseException
     {
         if (_ognlContext == null) _ognlContext = Ognl.createDefaultContext(this);
 
@@ -435,11 +431,11 @@ public class MockTester
 
         if (value == null) return false;
 
-        if (value instanceof Boolean) return ((Boolean)value).booleanValue();
+        if (value instanceof Boolean) return ((Boolean) value).booleanValue();
 
-        if (value instanceof Number) return ((Number)value).longValue() != 0;
+        if (value instanceof Number) return ((Number) value).longValue() != 0;
 
-        if (value instanceof String) return ((String)value).length() > 0;
+        if (value instanceof String) return ((String) value).length() > 0;
 
         throw new DocumentParseException("Expression '" + expression + "' evaluates to (" + value.getClass().getName()
                 + ") " + value + ", which cannot be interpreted as a boolean.");
@@ -454,7 +450,6 @@ public class MockTester
      */
 
     private void executeRegexpAssertions(Element request)
-        throws DocumentParseException
     {
         String outputString = null;
 
@@ -463,7 +458,7 @@ public class MockTester
 
         for(int i = 0; i < count; i++)
         {
-            Element a = (Element)assertions.get(i);
+            Element a = (Element) assertions.get(i);
 
             String name = a.getAttributeValue("name");
             String pattern = a.getTextTrim();
@@ -486,7 +481,6 @@ public class MockTester
      */
 
     private void executeOutputAssertions(Element request)
-        throws DocumentParseException
     {
         String outputString = null;
 
@@ -495,7 +489,7 @@ public class MockTester
 
         for(int i = 0; i < count; i++)
         {
-            Element a = (Element)assertions.get(i);
+            Element a = (Element) assertions.get(i);
 
             String name = a.getAttributeValue("name");
             String substring = a.getTextTrim();
@@ -518,7 +512,6 @@ public class MockTester
      */
 
     private void executeNoOutputAssertions(Element request)
-        throws DocumentParseException
     {
         String outputString = null;
 
@@ -527,13 +520,13 @@ public class MockTester
 
         for(int i = 0; i < count; i++)
         {
-            Element a = (Element)assertions.get(i);
+            Element a = (Element) assertions.get(i);
 
             String name = a.getAttributeValue("name");
             String substring = a.getTextTrim();
 
             if (HiveMind.isBlank(substring))
-                throw new DocumentParseException("Substring is null in " + a, (Resource)null);
+                throw new DocumentParseException("Substring is null in " + a, (Resource) null);
 
             if (outputString == null) outputString = _response.getOutputString();
 
@@ -550,9 +543,8 @@ public class MockTester
     }
 
     private Pattern compile(String pattern)
-        throws DocumentParseException
     {
-        Pattern result = (Pattern)_patternCache.get(pattern);
+        Pattern result = (Pattern) _patternCache.get(pattern);
 
         if (result != null) return result;
 
@@ -574,7 +566,6 @@ public class MockTester
     }
 
     private void matchRegexp(String name, String text, String pattern)
-        throws DocumentParseException
     {
         Pattern compiled = compile(pattern);
 
@@ -609,7 +600,6 @@ public class MockTester
     }
 
     private void executeOutputMatchesAssertions(Element request)
-        throws DocumentParseException
     {
         List l = request.getChildren("assert-output-matches");
         int count = l.size();
@@ -617,7 +607,7 @@ public class MockTester
 
         for(int i = 0; i < count; i++)
         {
-            Element e = (Element)l.get(i);
+            Element e = (Element) l.get(i);
 
             if (outputString == null) outputString = _response.getOutputString();
 
@@ -627,7 +617,6 @@ public class MockTester
     }
 
     private void executeOutputMatchAssertion(Element element, String outputString)
-        throws DocumentParseException
     {
         String name = element.getAttributeValue("name");
         String value = element.getAttributeValue("subgroup");
@@ -656,7 +645,7 @@ public class MockTester
                 throw new AssertionFailedError(buildTestName(name) + ": Too many matches for '" + pattern + "'.");
             }
 
-            Element e = (Element)l.get(i);
+            Element e = (Element) l.get(i);
             String expected = e.getTextTrim();
             String actual = match.group(subgroup);
 
@@ -685,7 +674,7 @@ public class MockTester
 
         for(int i = 0; i < count; i++)
         {
-            Element assertion = (Element)l.get(i);
+            Element assertion = (Element) l.get(i);
 
             executeExceptionAssertion(assertion);
         }
@@ -713,7 +702,7 @@ public class MockTester
 
         for(int i = 0; i < count; i++)
         {
-            Element assertion = (Element)l.get(i);
+            Element assertion = (Element) l.get(i);
 
             executeCookieAssertion(assertion);
         }
@@ -746,14 +735,13 @@ public class MockTester
     }
 
     private void executeOutputStreamAssertions(Element request)
-        throws DocumentParseException
     {
         List l = request.getChildren("assert-output-stream");
         int count = l.size();
 
         for(int i = 0; i < count; i++)
         {
-            Element assertion = (Element)l.get(i);
+            Element assertion = (Element) l.get(i);
 
             executeOutputStreamAssertion(assertion);
         }
@@ -761,7 +749,6 @@ public class MockTester
     }
 
     private void executeOutputStreamAssertion(Element element)
-        throws DocumentParseException
     {
         String name = element.getAttributeValue("name");
         String contentType = element.getAttributeValue("content-type");
