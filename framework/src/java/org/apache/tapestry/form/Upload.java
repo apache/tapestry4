@@ -82,7 +82,7 @@ public abstract class Upload extends AbstractFormComponent implements Validatabl
     {
         IUploadFile file = getDecoder().getFileUpload(getName());
 
-        if (HiveMind.isBlank(file.getFileName()))
+        if (file == null || HiveMind.isBlank(file.getFileName()))
         {
             file = null;
         }
