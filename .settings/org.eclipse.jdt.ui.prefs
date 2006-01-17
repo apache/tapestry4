@@ -1,15 +1,16 @@
-#Thu Jan 12 09:03:08 PST 2006
+#Sun Jan 15 15:15:58 EST 2006
 =\=\=\=\=\=\=
 <<<<<<<=.working
 >>>>>>>=.merge-right.r368223
 eclipse.preferences.version=1
 formatter_profile=_tapestry
-formatter_settings_version=8
+formatter_settings_version=9
 internal.default.compliance=default
 org.eclipse.jdt.ui.exception.name=ex
 org.eclipse.jdt.ui.gettersetter.use.is=true
 org.eclipse.jdt.ui.ignorelowercasenames=true
 org.eclipse.jdt.ui.importorder=java;javax;org;com;
+org.eclipse.jdt.ui.javadoc=true
 org.eclipse.jdt.ui.keywordthis=false
 org.eclipse.jdt.ui.ondemandthreshold=99
 org.eclipse.jdt.ui.overrideannotation=true
