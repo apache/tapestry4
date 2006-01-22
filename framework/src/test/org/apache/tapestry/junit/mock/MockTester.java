@@ -261,7 +261,7 @@ public class MockTester
         if (method != null) _request.setMethod(method);
 
         // It's really just the language from the locale.
-
+        
         String locale = request.getAttributeValue("locale");
         if (locale != null) _request.setLocale(new Locale(locale, "", ""));
 
