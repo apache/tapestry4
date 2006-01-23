@@ -13,4 +13,7 @@ jboss.dir=
 # Required to execute the run-workbench target.
 jetty.dir=
 
+# The absolute path to the directory containing the dojo build scripts
+#  Typically something like dojo/buildscripts
+dojo.dir=
 
