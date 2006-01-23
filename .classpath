@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="framework/src/java"/>
+	<classpathentry kind="src" path="framework/src/js"/>
 	<classpathentry kind="src" path="framework/src/test"/>
 	<classpathentry kind="src" path="contrib/src/java"/>
 	<classpathentry kind="src" path="contrib/src/test"/>
@@ -28,13 +29,14 @@
 	<classpathentry exported="true" kind="lib" path="ext-package/lib/ognl-2.6.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="ext-package/lib/oro-2.0.8.jar"/>
 	<classpathentry exported="true" kind="lib" path="ext-package/lib/servletapi-2.3.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/cglib-full-2.0.2.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/easymockclassextension-1.1.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/jboss-j2ee-3.2.1.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/portlet-api-1.0.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/jcharts-0.6.0.jar"/>
-	<classpathentry sourcepath="/jakarta-hivemind" kind="lib" path="ext-package/lib/hivemind-1.1.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="ext-package/lib/cglib-full-2.0.1.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/hivemind-1.2-alpha-1.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/hivemind-jmx-1.2-alpha-1.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.2-alpha-1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

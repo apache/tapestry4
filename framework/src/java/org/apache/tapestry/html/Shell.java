@@ -59,12 +59,12 @@ public abstract class Shell extends AbstractComponent
             writeDocType(writer, cycle);
 
             IPage page = getPage();
-
+            
             writer.comment("Application: " + getApplicationSpecification().getName());
-
+            
             writer.comment("Page: " + page.getPageName());
             writer.comment("Generated: " + new Date());
-
+            
             writer.begin("html");
             writer.println();
             writer.begin("head");

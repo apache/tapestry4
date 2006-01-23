@@ -238,7 +238,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
         int dotx = name.lastIndexOf('.');
         String templateExtension = getTemplateExtension(component);
         String templateBaseName = name.substring(0, dotx + 1) + templateExtension;
-
+        
         ComponentTemplate result = findStandardTemplate(cycle, resource, component, templateBaseName, locale);
 
         if (result == null && component.getSpecification().isPageSpecification()
@@ -319,11 +319,11 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
         if (_log.isDebugEnabled())
             _log.debug("Searching for localized version of template for " + resource + " in locale "
                     + locale.getDisplayName());
-
+        
         Resource baseTemplateLocation = resource.getRelativeResource(templateBaseName);
-
+        
         Resource localizedTemplateLocation = _localizer.findLocalization(baseTemplateLocation, locale);
-
+        
         if (localizedTemplateLocation == null) return null;
 
         return getOrParseTemplate(cycle, localizedTemplateLocation, component);
