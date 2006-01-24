@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2004, 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE component-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 4.0//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+
+<component-specification allow-informal-parameters="no">
+
+  <component id="tabCell" type="Any">
+  	<binding name="element" value="literal:td"/>
+  	<binding name="background" value="midTabAsset"/>
+  </component>
+
+
+  <component id="pageLink" type="DirectLink">
+    <binding name="listener" value="listener:selectPage"/>
+    <binding name="parameters" value="pageName"/>
+    <binding name="stateful" value="false"/>
+  </component>
+
+  <component id="inputRequestDebug" type="Checkbox">
+    <binding name="value" value="visit.requestDebug"/>
+    <binding name="onclick" value="literal:javascript:this.form.events.submit();"/>
+  </component>
+
+  <component id="inputDisableInspector" type="Checkbox">
+    <binding name="value" value="page.visit.disableInspector"/>
+    <binding name="onclick" value="literal:javascript:this.form.events.submit();"/>
+  </component>
+
+  <asset name="inactiveLeft" path="images/tab-inactive-left.gif"/>
+  <asset name="inactiveMid" path="images/tab-inactive-mid.gif"/>
+  <asset name="inactiveRight" path="images/tab-inactive-right.gif"/>
+
+  <asset name="stylesheet" path="css/workbench.css"/>  
+
+</component-specification>

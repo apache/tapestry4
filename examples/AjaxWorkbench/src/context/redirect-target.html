@@ -1,0 +1,39 @@
+<html>
+<head>
+<title>Redirect Target</title>
+<link rel="stylesheet" type="text/css" href="css/workbench.css">
+</head>
+<body>
+
+<!-- This is where the tabs would go.  Alas, used private assets for
+     the tabs. -->
+     
+<table class="tabs" cellspacing=0 border=0>
+<tr height="20">
+<td>&nbsp;</td>
+</tr>
+</table>
+
+<table class="content">
+<tr>
+<td>
+
+This is a static page, forwarded to from a Tapestry listener method.
+
+<p>
+Note that internal resources are <em>forwarded to</em>, not
+<em>redirected to</em>.  Tapestry uses 
+<code>RequestDispatcher.forward(ServletRequest, ServletResponse)</code>
+for internal resources (this is the same way an ordinary servlet would
+forward to a JSP to render a response).
+
+<p>
+You may <a href="app">return to the Workbench</a>.
+
+</td>
+</tr>
+</table>
+
+
+</body>
+</html>
