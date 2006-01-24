@@ -25,8 +25,7 @@
   	<binding name="element" value="literal:td"/>
   	<binding name="background" value="midTabAsset"/>
   </component>
-
-
+  
   <component id="pageLink" type="DirectLink">
     <binding name="listener" value="listener:selectPage"/>
     <binding name="parameters" value="pageName"/>

@@ -1,16 +1,27 @@
 <html jwcid="@Shell" stylesheet="asset:stylesheet" title="message:window.title">
 <body jwcid="@Body">
 
+<h2>AJAX Workbench</h2>
+
+<div id="navcontainer">
+<ul id="navlist">
+<span jwcid="@For" source="ognl:pageTabNames" value="ognl:pageName">
+<li jwcid="@Any" id="ognl:tabClass"><a jwcid="pageLink" >
+<span jwcid="@Insert" value="ognl:pageTitle">Page Title</span></a></li>
+</span>
+</ul>
+</div>
+
+<!-- 
 <table class="tabs" cellspacing="0" border="0">
 <tr>
 <span jwcid="@For" source="ognl:pageTabNames" value="ognl:pageName">
-<td><img jwcid="@Image" image="ognl:leftTabAsset" width="2" height="20" alt=""/></td>
 <td jwcid="tabCell" align="center"><a class="nav" jwcid="pageLink">
 <span jwcid="@Insert" value="ognl:pageTitle">Page Title</span></a></td>
-<td><img jwcid="@Image" image="ognl:rightTabAsset" width="13" height="20" alt=""/></td>
 </span>
 </tr>
 </table>
+-->
 
 <table class="content">
 <tr>
@@ -22,7 +33,7 @@
 </tr>
 </table>
 
-<br>
+<br/>
 
 <form jwcid="form@Form" focus="false">
       
