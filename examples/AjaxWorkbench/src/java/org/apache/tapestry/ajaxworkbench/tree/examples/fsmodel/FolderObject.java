@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.workbench.tree.examples.fsmodel;
+package org.apache.tapestry.ajaxworkbench.tree.examples.fsmodel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,10 +28,6 @@ public class FolderObject extends SFObject
 
     private static final long serialVersionUID = 1889745019885512018L;
 
-    private static final String OPEN_IMAGE = "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeOpen.gif";
-
-    private static final String CLOSED_IMAGE = "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeClosed.gif";
-    
     /**
      * @associates <{File}>
      * @supplierCardinality 0..*
@@ -157,11 +153,15 @@ public class FolderObject extends SFObject
         return false;
     }
 
+    private final static String openImage = "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeOpen.gif";
+
+    private final static String closedImage = "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeClosed.gif";
+
     public AssetsHolder getAssets()
     {
         if (m_objAssetsHolder == null)
         {
-            m_objAssetsHolder = new AssetsHolder(_assetService, OPEN_IMAGE, CLOSED_IMAGE);
+            m_objAssetsHolder = new AssetsHolder(_assetService, openImage, closedImage);
         }
         return m_objAssetsHolder;
     }
