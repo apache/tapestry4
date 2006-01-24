@@ -1,3 +1,55 @@
+H1, H2, H3,H4 {
+	border-bottom:2px solid #156e6a;
+	float: left;
+}
+
+H2 {
+	clear: both;
+}
+
+#navcontainer {
+	float: left;
+	clear: both;
+}
+
+ul#navlist
+{
+	font: bold 11px verdana, arial, sans-serif;
+	list-style-type: none;
+	padding-bottom: 24px;
+	border-bottom: 1px solid #125E5A;
+	margin: 0;
+}
+
+ul#navlist li
+{
+	float: left;
+	height: 21px;
+	background-color: #8BB7B5;
+	margin: 2px 2px 0 2px;
+	border: 1px solid #125E5A;
+}
+
+li#active a
+{
+	border-bottom: 1px solid #fff;
+	background-color: #fff;
+}
+
+li#active a { color: #000; }
+
+#navlist a
+{
+	float: left;
+	display: block;
+	color: #000000;
+	text-decoration: none;
+	padding: 4px;
+}
+
+#navlist a:hover { background: #fff; }
+
+
 SPAN.label-error
 {
   color: Red;
@@ -14,6 +66,11 @@ label.error {
   background-color: Red;
 }
 
+TABLE {
+	float: left;
+	clear: left;
+}
+
 TABLE.inputerror TD.message
 {
   font-weight: bold;
@@ -22,7 +79,6 @@ TABLE.inputerror TD.message
 
 TABLE.content
 {
-	background-color: #ffffcc;
   	border-color : Black;
 	border-style : solid;
 	border-width : thin;
@@ -33,6 +89,8 @@ TABLE.content
 	font-size : smaller;
 	clear: all;
 	width: 700px;
+	float: left;
+     -moz-border-radius: 5px;
 }
 
 
@@ -43,8 +101,8 @@ TABLE.tabs TD
 
 BODY
 {
-  background-color: #808080;
-  margin: 2px;
+  background-color: #ffffff;
+  margin: 8px;
 }
 
 body, td, th {
@@ -64,6 +122,7 @@ TABLE.requestDebug
 	border-left-width : 0px;
 	background-color: #839cd1;
 	padding: 0;
+	float: left;
 }
 
 TABLE.requestDebug TR.control
