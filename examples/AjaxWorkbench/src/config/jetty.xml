@@ -16,35 +16,57 @@
 -->
 
 <!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure 1.2//EN"
-	"http://jetty.mortbay.org/configure_1_2.dtd">
+	"http://jetty.mortbay.org/configure.dtd">
 <Configure class="org.mortbay.jetty.Server">
-	<Call name="addListener">
-		<Arg>
-			<New class="org.mortbay.http.SocketListener">
-				<Set name="Port">8080</Set>
-				<Set name="MinThreads">1</Set>
-				<Set name="MaxThreads">10</Set>
-				<Set name="MaxIdleTimeMs">50000</Set>
-			</New>
-		</Arg>
-	</Call>
-	<Call name="addWebApplication">
-		<Arg>/ajaxworkbench</Arg>
-		<Arg>src/context</Arg>
-	</Call>
-	<Call name="addContext">
-		<Arg>/</Arg>
-		<Set name="realmName">Jetty Demo Realm</Set>
-		<Call name="addServlet">
-			<Arg>Admin</Arg>
-			<Arg>/</Arg>
-			<Arg>org.mortbay.servlet.AdminServlet</Arg>
-		</Call>
-		<Call name="setAttribute">
-			<Arg>org.mortbay.http.HttpServer</Arg>
-			<Arg>
-				<Call name="getHttpServer"/>
-			</Arg>
-		</Call>
-	</Call>
+    
+    <Set name="ThreadPool">
+      <New class="org.mortbay.thread.BoundedThreadPool">
+        <Set name="minThreads">10</Set>
+        <Set name="maxThreads">100</Set>
+      </New>
+    </Set>
+    
+    <Set name="connectors">
+      <Array type="org.mortbay.jetty.Connector">
+      
+        <Item>
+          <New class="org.mortbay.jetty.bio.SocketConnector">
+            <Set name="port">8080</Set>
+            <Set name="maxIdleTime">50000</Set>
+          </New>
+        </Item>
+      
+      <!--
+        <Item>
+          <New class="org.mortbay.jetty.nio.SelectChannelConnector">
+            <Set name="port">8080</Set>
+            <Set name="maxIdleTime">50000</Set>
+            <Set name="Acceptors">10</Set>
+          </New>
+        </Item>
+         -->
+      </Array>
+    </Set>
+    
+   <Set name="handlers">
+      <Array type="org.mortbay.jetty.Handler">
+
+        <!-- ======================================================= -->
+        <!-- Configure a test web application with web.xml           -->
+        <!-- ======================================================= -->
+        <Item>
+          <New id="demoContext"  class="org.mortbay.jetty.webapp.WebAppContext">
+            <Set name="contextPath">/</Set>
+            <Set name="resourceBase">src/context</Set>
+            <Set name="VirtualHosts"><Array type="java.lang.String"></Array></Set>
+            <Get name="SessionHandler">
+              <Set name="SessionManager"><New class="org.mortbay.jetty.servlet.HashSessionManager"/></Set>
+            </Get>
+          </New>
+        </Item>
+       </Array>
+    </Set>
+   
+   <Set name="stopAtShutdown">true</Set>
+   <Call name="start"/>
 </Configure>
