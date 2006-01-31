@@ -43,7 +43,7 @@ public class AjaxShellDelegate implements IRender
         
         //include the js package
         str.append("<script type=\"text/javascript\" src=\"")
-        .append(_dojoSource.getResourceLocation().getPath()).append("/dojo.js\"></script>");
+        .append(_dojoSource.getResourceLocation().getPath()).append("\"></script>");
         
         writer.printRaw(str.toString());
     }

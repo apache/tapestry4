@@ -114,6 +114,6 @@
    <set name="dojoSource" value="dojoSource" />
   </bean>
   
-  <asset name="defaultDojoSource" path="/org/apache/tapestry/ajax/dojo" />
+  <asset name="defaultDojoSource" path="classpath:/org/apache/tapestry/ajax/dojo/dojo.js" />
   
 </component-specification>
