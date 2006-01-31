@@ -106,13 +106,13 @@ dojo.lang.extend(dojo.widget.EditorTreeMenuItem, {
 
 		var source = menu.getTopOpenEvent().target;
 
-		while (!source.treeNode && source.tagName != 'body') {
+		while (!source.getAttribute('treeNode') && source.tagName != 'body') {
 			source = source.parentNode;
 		}
 		if (source.tagName == 'body') {
 			dojo.raise("treeNode not detected");
 		}
-		var treeNode = dojo.widget.manager.getWidgetById(source.treeNode);
+		var treeNode = dojo.widget.manager.getWidgetById(source.getAttribute('treeNode'));
 
 		return treeNode;
 	},
@@ -126,11 +126,7 @@ dojo.lang.extend(dojo.widget.EditorTreeMenuItem, {
 		var _this = this;
 		dojo.lang.forEach(_this.treeActions,
 			function(action) {
-				if(treeNode.actionIsDisabled(action)) {
-					_this.setDisabled(true);
-				} else {
-					//dojo.debug("Allowed "+action)
-				}
+				_this.setDisabled( treeNode.actionIsDisabled(action) );
 			}
 		);
 

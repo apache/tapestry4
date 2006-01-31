@@ -674,7 +674,7 @@ dojo.hostenv.findModule = function(modulename, must_exist) {
 /**
 * @file hostenv_browser.js
 *
-* Implements the hostenv interface for a browser environment. 
+* Implements the hostenv interface for a browser environment.
 *
 * Perhaps it could be called a "dom" or "useragent" environment.
 *
@@ -771,7 +771,7 @@ if(typeof window == 'undefined'){
 	drs.support.plugin = f;
 	drs.support.builtin = f;
 	drs.adobe = f;
-	if (document.implementation 
+	if (document.implementation
 		&& document.implementation.hasFeature
 		&& document.implementation.hasFeature("org.w3c.dom.svg", "1.0")
 	){
@@ -779,7 +779,7 @@ if(typeof window == 'undefined'){
 		drs.support.builtin = t;
 		drs.support.plugin = f;
 		drs.adobe = f;
-	}else{ 
+	}else{
 		//	check for ASVG
 		if(navigator.mimeTypes && navigator.mimeTypes.length > 0){
 			var result = navigator.mimeTypes["image/svg+xml"] ||
@@ -787,7 +787,7 @@ if(typeof window == 'undefined'){
 				navigator.mimeTypes["image/svg-xml"];
 			if (result){
 				drs.adobe = result && result.enabledPlugin &&
-					result.enabledPlugin.description && 
+					result.enabledPlugin.description &&
 					(result.enabledPlugin.description.indexOf("Adobe") > -1);
 				if(drs.adobe) {
 					drs.capable = t;
@@ -864,13 +864,13 @@ dojo.hostenv.getXmlhttpObject = function(){
  *
  * @param fail_ok Default false. If fail_ok and !async_cb and loading fails,
  * return null instead of throwing.
- */ 
+ */
 dojo.hostenv.getText = function(uri, async_cb, fail_ok){
-	
+
 	var http = this.getXmlhttpObject();
 
 	if(async_cb){
-		http.onreadystatechange = function(){ 
+		http.onreadystatechange = function(){
 			if((4==http.readyState)&&(http["status"])){
 				if(http.status==200){
 					// dojo.debug("LOADED URI: "+uri);
@@ -885,7 +885,7 @@ dojo.hostenv.getText = function(uri, async_cb, fail_ok){
 	if(async_cb){
 		return null;
 	}
-	
+
 	return http.responseText;
 }
 
@@ -898,8 +898,8 @@ dojo.hostenv.getText = function(uri, async_cb, fail_ok){
  /*
 function dj_last_script_src() {
     var scripts = window.document.getElementsByTagName('script');
-    if(scripts.length < 1){ 
-		dojo.raise("No script elements in window.document, so can't figure out my script src"); 
+    if(scripts.length < 1){
+		dojo.raise("No script elements in window.document, so can't figure out my script src");
 	}
     var script = scripts[scripts.length - 1];
     var src = script.src;
@@ -956,12 +956,41 @@ function dj_addNodeEvtHdlr (node, evtName, fp, capture){
 	return true;
 }
 
-dj_addNodeEvtHdlr(window, "load", function(){
+
+// dj_load_init should be called right after DOM is loaded and parsed. Needs testing.
+
+dj_load_init = function(){
+	// allow multiple calls, only first one will take effect
+   if (arguments.callee.initialized) return;
+   arguments.callee.initialized = true;
+
+   // perform initialization
 	if(dojo.render.html.ie){
 		dojo.hostenv.makeWidgets();
 	}
 	dojo.hostenv.modulesLoaded();
-});
+};
+/*
+
+// Mozilla exposes the event we could use
+if (dojo.render.html.mozilla) {
+   document.addEventListener("DOMContentLoaded", dj_load_init, null);
+}
+
+// for Internet Explorer. readyState will not be achieved on init call, but dojo doesn't need it
+if (dojo.render.html.ie) {
+   document.write("<script defer>dj_load_init()<"+"/script>");
+}
+*/
+
+// default for other browsers
+// potential TODO: apply setTimeout approach for other browsers
+// that will cause flickering though ( document is loaded and THEN is processed)
+// maybe show/hide required in this case..
+// TODO: other browsers may support DOMContentLoaded/defer attribute. Add them to above.
+dj_addNodeEvtHdlr(window, "load", dj_load_init);
+
+
 
 dojo.hostenv.makeWidgets = function(){
 	// you can put searchIds in djConfig and dojo.hostenv at the moment
@@ -1015,7 +1044,7 @@ try {
 
 // stub, over-ridden by debugging code. This will at least keep us from
 // breaking when it's not included
-dojo.hostenv.writeIncludes = function(){} 
+dojo.hostenv.writeIncludes = function(){}
 
 dojo.hostenv.byId = dojo.byId = function(id, doc){
 	if(id && (typeof id == "string" || id instanceof String)){
@@ -3144,7 +3173,7 @@ dojo.io.XMLHTTPTransport = new function(){
 
 	// moved successful load stuff here
 	function doLoad(kwArgs, http, url, query, useCache) {
-		if((http.status==200)||(location.protocol=="file:" && http.status==0)) {
+		if((http.status==200)||(location.protocol=="file:" && (http.status==0 || http.status==undefined))) {
 			var ret;
 			if(kwArgs.method.toLowerCase() == "head"){
 				var headers = http.getAllResponseHeaders();
@@ -3552,7 +3581,7 @@ dojo.io.XMLHTTPTransport = new function(){
 
 		// much of this is from getText, but reproduced here because we need
 		// more flexibility
-		var http = dojo.hostenv.getXmlhttpObject();
+		var http = dojo.hostenv.getXmlhttpObject(kwArgs);
 		var received = false;
 
 		// build a handler function that calls back to the handler obj
@@ -4434,7 +4463,8 @@ dojo.event.browser = new function(){
 
 dojo.hostenv.conditionalLoadModule({
 	common: ["dojo.event", "dojo.event.topic"],
-	browser: ["dojo.event.browser"]
+	browser: ["dojo.event.browser"],
+	dashboard: ["dojo.event.browser"]
 });
 dojo.hostenv.moduleLoaded("dojo.event.*");
 
@@ -4836,7 +4866,7 @@ dojo.widget.manager = new function(){
 	var knownWidgetImplementations = {};
 
 	// support manually registered widget packages
-	var widgetPackages = ["dojo.widget", "dojo.webui.widgets"];
+	var widgetPackages = ["dojo.widget"];
 	for (var i=0; i<widgetPackages.length; i++) {
 		// convenience for checking if a package exists (reverse lookup)
 		widgetPackages[widgetPackages[i]] = true;

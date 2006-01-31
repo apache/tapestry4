@@ -28,6 +28,7 @@ dojo.lang.extend(dojo.widget.html.ContentPane, {
 	extractContent: true,
 	parseContent: true,
 	cacheContent: true,
+	executeScripts: false,
 	
 	// To generate pane content from a java function
 	handler: "",
@@ -81,10 +82,6 @@ dojo.lang.extend(dojo.widget.html.ContentPane, {
 			mimetype: "text/html",
 			handler: function(type, data, e) {
 				if(type == "load") {
-					if(self.extractContent) {
-						var matches = data.match(/<body[^>]*>\s*([\s\S]+)\s*<\/body>/im);
-						if(matches) { data = matches[1]; }
-					}
 					self.setContent.call(self, data);
 				} else {
 					self.setContent.call(self, "Error loading '" + url + "' (" + e.status + " " + e.statusText + ")");
@@ -96,7 +93,14 @@ dojo.lang.extend(dojo.widget.html.ContentPane, {
 	setContent: function(data){
 		var node = this.containerNode || this.domNode;
 		node.innerHTML = data;
-		if(this.parseContent) {
+		if(this.executeScripts){
+			data = this._executeScripts(data);
+		}
+		if(this.extractContent) {
+			var matches = data.match(/<body[^>]*>\s*([\s\S]+)\s*<\/body>/im);
+			if(matches) { data = matches[1]; }
+		}
+		if(this.parseContent){
 			var parser = new dojo.xml.Parse();
 			var frag = parser.parseElement(node, null, true);
 			dojo.widget.getParser().createComponents(frag);
@@ -122,6 +126,70 @@ dojo.lang.extend(dojo.widget.html.ContentPane, {
 			return false;
 		}
 		return true;
+	},
+
+	_executeScripts: function(content) {
+		// handle <script src="foo"> first
+		var src = new RegExp('<script.*?src=".*?"');
+		var repl = new RegExp('<script.*?src="');
+		var matches = src.exec(content);
+		var semaphore = 0;
+	   
+		if (matches != null)
+		{
+			for (i = 0; i < matches.length; i++)
+			{
+				// get the src of the script
+				var scriptSrc = matches[i].replace(repl, '');
+				scriptSrc = scriptSrc.substring(0, scriptSrc.length-1);
+	
+				// this evals remote scripts
+				dojo.io.bind({
+					url:      scriptSrc,
+					load:     function(type, evaldObj) {/* do nothing */ },
+					error:    function(type, error) {alert(type); alert(error); /* do nothing */ },
+					mimetype: "text/javascript",
+					sync:     true
+				});
+			}   
+		}
+	
+		// Remove the script tags we matched
+		repl = new RegExp('<script.*?src=".*?".*?</script>');
+		content = content.replace(repl, '');
+
+		// Next, handle inline scripts
+
+		// Clean up content: remove inline script  comments
+		repl = new RegExp('//.*?$', 'gm');
+		content = content.replace(repl, '\n');
+
+		// Clean up content: remove carraige returns
+		repl = new RegExp('[\n\r]', 'g');
+		content = content.replace(repl, ' ');
+	   
+		// Match anything inside <script> tags
+		src = new RegExp('<script.*?</script>', 'g');
+		matches = content.match(src);
+
+		// For each match that is found...
+		if (matches != null)
+		{
+			for (i = 0; i < matches.length; i++)
+			{
+				// Remove begin tag
+				var repl = new RegExp('<script.*?>', 'gm');
+				var script = matches[i].replace(repl, '');
+
+				// Remove end tag
+				repl = new RegExp('</script>', 'gm');
+				script = script.replace(repl, '');
+	
+				// Execute commands
+				eval(script);
+			}   
+		}
+		return content;
 	}
 });
 

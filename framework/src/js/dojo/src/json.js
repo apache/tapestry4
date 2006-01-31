@@ -46,7 +46,6 @@ dojo.json = {
 			return eval("(" + json + ")");
 		}catch(e){
 			dojo.debug(e);
-		}finally{
 			return json;
 		}
 	},

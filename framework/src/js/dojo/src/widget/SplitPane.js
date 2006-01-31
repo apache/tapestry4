@@ -101,16 +101,16 @@ dojo.lang.extend(dojo.widget.html.SplitPane, {
 
 		for(var i=0; i<this.children.length-1; i++){
 
-			// i still don't understand this closure black magic :) [CH]
-			var self = this;
-			var handler = (function(){ var sizer_i = i; return function(e){ self.beginSizing(e, sizer_i); } })();
 
 			this.sizers[i] = document.createElement('div');
 			this.sizers[i].style.position = 'absolute';
-			this.sizers[i].onmousedown = handler;
 			this.sizers[i].className = this.isHorizontal ? 'dojoHtmlSplitPaneSizerH' : 'dojoHtmlSplitPaneSizerV';
-			this.domNode.appendChild(this.sizers[i]);
 
+			var self = this;
+			var handler = (function(){ var sizer_i = i; return function(e){ self.beginSizing(e, sizer_i); } })();
+			dojo.event.connect(this.sizers[i], "onmousedown", handler);
+
+			this.domNode.appendChild(this.sizers[i]);
 			dojo.html.disableSelection(this.sizers[i]);
 
 		}

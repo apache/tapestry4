@@ -105,7 +105,13 @@ dojo.lang.extend(dojo.dnd.DropTarget, {
 	onDragMove: function(){
 	},
 
+	onDropStart: function(){
+	},
+
 	onDrop: function(){
+	},
+
+	onDropEnd: function(){
 	}
 });
 

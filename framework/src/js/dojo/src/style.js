@@ -303,11 +303,13 @@ dojo.style.getTotalOffset = function (node, type, includeScroll){
 		// soemtimes need to be "tickled" before they will display their
 		// offset correctly
 		do {
-			offset += node[typeStr];
+			var n = node[typeStr];
+			offset += isNaN(n) ? 0 : n;
 			node = node.offsetParent;
 		} while (node != endNode && node != null);
 	}else if(node[coord]){
-		offset += node[coord];
+		var n = node[coord];
+		offset += isNaN(n) ? 0 : n;
 	}
 	return offset;
 }

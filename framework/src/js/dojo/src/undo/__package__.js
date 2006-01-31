@@ -8,8 +8,5 @@
 		http://dojotoolkit.org/community/licensing.shtml
 */
 
-dojo.hostenv.conditionalLoadModule({
-	browser: ["dojo.fx.html"],
-	dashboard: ["dojo.fx.html"]
-});
-dojo.hostenv.moduleLoaded("dojo.fx.*");
+dojo.require("dojo.undo.Manager");
+dojo.provide("dojo.undo.*");

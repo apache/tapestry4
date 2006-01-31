@@ -9,8 +9,9 @@
 */
 
 dojo.hostenv.conditionalLoadModule({
-	common: ["dojo.io", false, false],
-	rhino: ["dojo.io.RhinoIO", false, false],
-	browser: [["dojo.io.BrowserIO", false, false], ["dojo.io.cookie", false, false]]
+	common: ["dojo.io"],
+	rhino: ["dojo.io.RhinoIO"],
+	browser: ["dojo.io.BrowserIO", "dojo.io.cookie"],
+	dashboard: ["dojo.io.BrowserIO", "dojo.io.cookie"]
 });
 dojo.hostenv.moduleLoaded("dojo.io.*");

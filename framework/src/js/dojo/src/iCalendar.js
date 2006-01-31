@@ -156,27 +156,18 @@ dojo.lang.extend(dojo.iCalendar.Component, {
 
 				//add a place to cache dates we have checked for recurrance
 				this.rrule[x].cache = function() {};
-
+				
 				var temp = rule.split(";");
 				for (var y=0; y<temp.length; y++) {
 					var pair = temp[y].split("=");
 					var key = pair[0].toLowerCase();
 					var val = pair[1];
 
-					var unavailable = ["secondly","minutely","hourly","bysecond","byminute","byhour","count","bysetpos"];
-					var intervalTypes = ["day","weekly","monthly","yearly"];
-					var byTypes = ["byday","bymonthday","byweekno","bymonth","byyearday"];
-					this.rrule[x].intervals = []
-					this.rrule[x].bys = [];
-
-					if (!dojo.lang.inArray(unavailable, key)) { 
-						if (dojo.lang.inArray(intervalTypes,key)) {
-							this.rrule[x].intervals.push(pair);
-						} else if (dojo.lang.inArray(byTypes,key)) {
-							this.rrule[x].bys.push(pair);
-						} else {
-							this.rrule[x][key] = val;
-						}
+					if ((key == "freq") || (key=="interval") || (key=="until")) {
+						this.rrule[x][key]= val;
+					} else {
+						var valArray = val.split(",");
+						this.rrule[x][key] = valArray; 
 					}
 				}	
 			}
@@ -228,7 +219,7 @@ dojo.iCalendar.VCalendar = function (/* string */ calbody) {
 	// VCALENDAR Component
 
 	this.name = "VCALENDAR";
-	this.recurringEvents = [];
+	this.recurring = [];
 	dojo.iCalendar.Component.call(this, calbody);
 }
 
@@ -236,13 +227,16 @@ dojo.inherits(dojo.iCalendar.VCalendar, dojo.iCalendar.Component);
 
 dojo.lang.extend(dojo.iCalendar.VCalendar, {
 
+	nonRecurringEvents: function() {},
+	recurringEvents: function() {},
+	
 	addComponent: function (prop) {
 		// summary
 		// add component to the calenadar that makes it easy to pull them out again later.
 		this.components.push(prop);
 		if (prop.name.toLowerCase() == "vevent") {
 			if (prop.rrule) {
-				this.recurringEvents.push(prop);
+				this.recurring.push(prop);
 			} else {
 				startDate = prop.getDate();
 				month = startDate.getMonth() + 1;
@@ -256,25 +250,43 @@ dojo.lang.extend(dojo.iCalendar.VCalendar, {
 		}
 	},
 
+	preComputeRecurringEvents: function(until) {
+		for(var x=0; x<this.recurring.length; x++) {
+			var dates = this.recurring[x].getDates(until);
+			for (var y=0; y<dates.length;y++) {
+				month = dates[y].getMonth() + 1;
+				dateStr = month + "-" + dates[y].getDate() + "-" + dates[y].getFullYear();
+				if (!dojo.lang.isArray(this.recurringEvents[dateStr])) {
+					this.recurringEvents[dateStr] = [];
+				}
+
+				if (!dojo.lang.inArray(this.recurringEvents[dateStr], this.recurring[x])) { 
+					this.recurringEvents[dateStr].push(this.recurring[x]);
+				} 
+			}
+		}
+	
+	},
+
 	getEvents: function(/* Date */ date) {
 		// summary
 		// Gets all events occuring on a particular date
 		var events = [];
-
+		var recur = [];
+		var nonRecur = [];
 		month = date.getMonth() + 1;
-		var dateStr= date.getFullYear() + "-" + month + "-" + date.getDate();
-
-		if (dojo.lang.isArray(this[dateStr])) {
-			var tmp = events.concat(this[dateStr]);
-			events = tmp;
+		var dateStr= month + "-" + date.getDate() + "-" + date.getFullYear();
+		if (dojo.lang.isArray(this.nonRecurringEvents[dateStr])) {
+			nonRecur= this.nonRecurringEvents[dateStr];
 		} 
 
-		for(var x=0; x<this.recurringEvents.length; x++) {
-			if (this.recurringEvents[x].fallsOn(date)) {
-				events.push(this.recurringEvents[x]);
-			}
-		}
-	
+		if (dojo.lang.isArray(this.recurringEvents[dateStr])) {
+			recur= this.recurringEvents[dateStr];
+		} 
+
+		//events = recur.concat(nonRecur);
+		events = recur.concat(nonRecur);
+
 		if (events.length > 0) {
 			return events;
 		} 
@@ -354,210 +366,318 @@ dojo.iCalendar.VEvent = function (/* string */ body) {
 dojo.inherits(dojo.iCalendar.VEvent, dojo.iCalendar.Component);
 
 dojo.lang.extend(dojo.iCalendar.VEvent, {
-		fallsOn: function(startingDate){
-			// summary
-			// checks to see if any occurance of this (if its recurring) event falls on date
-			this.startDate = this.getDate();
-			var date = new Date(startingDate);
-			date.setHours(this.startDate.getHours());
-			date.setMinutes(this.startDate.getMinutes());
-			date.setSeconds(this.startDate.getSeconds());
-			dateString = date.getMonth() + "-" + date.getDate() + "-" + date.getFullYear();
+		getDates: function(until) {
+			var dtstart = this.getDate();
 
-			var rrule = this.rrule[0];
+			var recurranceSet = [];
+			var weekdays=["su","mo","tu","we","th","fr","sa"];
+			var order = { 
+				"daily": 1, "weekly": 2, "monthly": 3, "yearly": 4,
+				"byday": 1, "bymonthday": 1, "byweekno": 2, "bymonth": 3, "byyearday": 4};
 
-			if (rrule.cache[dateString]) {
-				return true;
-			}
+			// expand rrules into the recurrance 
+			for (var x=0; x<this.rrule.length; x++) {
+				var rrule = this.rrule[x];
+				var freq = rrule.freq.toLowerCase();
+				var interval = 1;
 
-			if (date < this.startDate) {
-				return false;
-			}
-
-			if (this.dtend) {
-				if (date < dojo.date.fromIso8601(this.dtend.value)) {
-					rrule.cache[dateString] = true;				
-					return true;
+				if (rrule.interval > interval) {
+					interval = rrule.interval;
 				}
-			}
-			// TODO: add one for duration here same as above
 
-			// find miniumum unit
-			var order = function() {};
-			order["daily"] = 1;
-			order["weekly"] = 2;
-			order["monthly"] = 3;
-			order["yearly"] = 4;
-			order["byday"] = 1;
-			order["bymonthday"] = 1;
-			order["byweekno"] = 2;
-			order["bymonth"] = 3;
-			order["byyearday"] = 4;
+				var set = [];
+				var freqInt = order[freq];
 
-
-			var minimumUnit = order[rrule.freq.toLowerCase()];
-	
-			for (var x=0; x< rrule.bys.length; x++) {
-				var tmp = rrule.bys[x];
-				var by = tmp.toString().split(",");
-				var name = by[0].toLowerCase();
-				if (order[name] < minimumUnit) { 
-					minimumUnit = order[name]; 
-				}	
-			}
-
-			candidateStartDate = new Date(date);
- 			//weekly
-			if (minimumUnit==2) {
-				if (candidateStartDate.getDay()>this.startDate.getDay()) {
-					while (candidateStartDate.getDay()>this.startDate.getDay()) {
-						candidateStartDate.setDate(candidateStartDate.getDate()-1);
-					}
+				if (rrule.until) {
+					tmpUntil = dojo.date.fromIso8601(rrule.until);
 				} else {
-					while (candidateStartDate.getDay()<this.startDate.getDay()) {
-						candidateStartDate.setDate(candidateStartDate.getDate()+1);
-					}
+					tmpUntil = until
 				}
-			} else if (minimumUnit == 3) { 
-					if (candidateStartDate.getDate() > dojo.date.getDaysInMonth(this.startDate)) {
-							candidateStartDate.setDate(dojo.date.getDaysInMonth(this.startDate));
-					} else {
-						if (candidateStartDate.getDate() > this.startDate.getDate()) {
-							while(candidateStartDate.getDate() > this.startDate.getDate()) {
-								candidateStartDate.setDate(candidateStartDate.getDate()-1);
+
+				if (tmpUntil > until) {
+					tmpUntil = until
+				}
+
+
+				if (dtstart<tmpUntil) {
+
+					var expandingRules = function(){};
+					var cullingRules = function(){};
+					expandingRules.length=0;
+					cullingRules.length =0;
+
+					switch(freq) {
+						case "yearly":
+							nextDate = new Date(dtstart);
+							set.push(nextDate);
+							while(nextDate < tmpUntil) {
+								nextDate.setYear(nextDate.getFullYear()+interval);
+								tmpDate = new Date(nextDate);
+								if(tmpDate < tmpUntil) {
+									set.push(tmpDate);
+								}
 							}
-						}else {
-							while (candidateStartDate.getDate()<this.startDate.getDate()) {
-								candidateStartDate.setDate(candidateStartDate.getDate()+1);
+							break;
+						case "monthly":
+							nextDate = new Date(dtstart);
+							set.push(nextDate);
+							while(nextDate < tmpUntil) {
+								nextDate.setMonth(nextDate.getMonth()+interval);
+								var tmpDate = new Date(nextDate);
+								if (tmpDate < tmpUntil) {
+									set.push(tmpDate);
+								}
 							}
-						}
+							break;
+						case "weekly":
+							nextDate = new Date(dtstart);
+							set.push(nextDate);
+							while(nextDate < tmpUntil) {
+								nextDate.setDate(nextDate.getDate()+(7*interval));
+								var tmpDate = new Date(nextDate);
+								if (tmpDate < tmpUntil) {
+									set.push(tmpDate);
+								}
+							}
+							break;	
+						case "daily":
+							nextDate = new Date(dtstart);
+							set.push(nextDate);
+							while(nextDate < tmpUntil) {
+								nextDate.setDate(nextDate.getDate()+interval);
+								var tmpDate = new Date(nextDate);
+								if (tmpDate < tmpUntil) {
+									set.push(tmpDate);
+								}
+							}
+							break;
+	
 					}
-			} else if (minimumUnit == 4) { // yearly
-					if (candidateStartDate.getMonth() > this.startDate.getMonth()) {
-						while(candidateStartDate.getMonth() > this.startDate.getMonth()){
-							candidateStartDate.setMonth(candidateStartDate.getMonth()-1);
-						}
-					} else {
-						while(candidateStartDate.getMonth() < this.startDate.getMonth()){
-							candidateStartDate.setMonth(candidateStartDate.getMonth()+1);
+
+					if ((rrule["bymonth"]) && (order["bymonth"]<freqInt))	{
+						for (var z=0; z<rrule["bymonth"].length; z++) {
+							if (z==0) {
+								for (var zz=0; zz < set.length; zz++) {
+									set[zz].setMonth(rrule["bymonth"][z]-1);
+								}
+							} else {
+								var subset=[];
+								for (var zz=0; zz < set.length; zz++) {
+									var newDate = new Date(set[zz]);
+									newDate.setMonth(rrule[z]);
+									subset.push(newDate);
+								}
+								tmp = set.concat(subset);
+								set = tmp;
+							}
 						}
 					}
 
-					if (candidateStartDate.getDate() != this.startDate.getDate()) {
-						if (candidateStartDate.getDate() > dojo.date.getDaysInMonth(this.startDate)) {
-								candidateStartDate.setDate(dojo.date.getDaysInMonth(this.startDate));
+					
+					// while the spec doesn't prohibit it, it makes no sense to have a bymonth and a byweekno at the same time
+					// and if i'm wrong then i don't know how to apply that rule.  This is also documented elsewhere on the web
+					if (rrule["byweekno"] && !rrule["bymonth"]) {	
+						dojo.debug("TODO: no support for byweekno yet");
+					}
+
+
+					// while the spec doesn't prohibit it, it makes no sense to have a bymonth and a byweekno at the same time
+					// and if i'm wrong then i don't know how to apply that rule.  This is also documented elsewhere on the web
+					if (rrule["byyearday"] && !rrule["bymonth"] && !rrule["byweekno"] ) {	
+						if (rrule["byyearday"].length > 1) {
+							var regex = "([+-]?)([0-9]{1,3})";
+							for (var z=1; x<rrule["byyearday"].length; z++) {
+								var regexResult = rrule["byyearday"][z].match(regex);
+								if (z==1) {
+									for (var zz=0; zz < set.length; zz++) {
+										if (regexResult[1] == "-") {
+											dojo.date.setDayOfYear(set[zz],366-regexResult[2]);
+										} else {
+											dojo.date.setDayOfYear(set[zz],regexResult[2]);
+										}
+									}
+								}	else {
+									var subset=[];
+									for (var zz=0; zz < set.length; zz++) {
+										var newDate = new Date(set[zz]);
+										if (regexResult[1] == "-") {
+											dojo.date.setDayOfYear(newDate,366-regexResult[2]);
+										} else {
+											dojo.date.setDayOfYear(newDate,regexResult[2]);
+										}
+										subset.push(newDate);
+									}
+									tmp = set.concat(subset);
+									set = tmp;
+								}
+							}
+						}
+					}
+
+					if (rrule["bymonthday"]  && (order["bymonthday"]<freqInt)) {	
+						if (rrule["bymonthday"].length > 0) {
+							var regex = "([+-]?)([0-9]{1,3})";
+							for (var z=0; z<rrule["bymonthday"].length; z++) {
+								var regexResult = rrule["bymonthday"][z].match(regex);
+								if (z==0) {
+									for (var zz=0; zz < set.length; zz++) {
+										if (regexResult[1] == "-") {
+											if (regexResult[2] < dojo.date.getDaysInMonth(set[zz])) {
+												set[zz].setDate(dojo.date.getDaysInMonth(set[zz]) - regexResult[2]);
+											}
+										} else {
+											if (regexResult[2] < dojo.date.getDaysInMonth(set[zz])) {
+												set[zz].setDate(regexResult[2]);
+											}
+										}
+									}
+								}	else {
+									var subset=[];
+									for (var zz=0; zz < set.length; zz++) {
+										var newDate = new Date(set[zz]);
+										if (regexResult[1] == "-") {
+											if (regexResult[2] < dojo.date.getDaysInMonth(set[zz])) {
+												newDate.setDate(dojo.date.getDaysInMonth(set[zz]) - regexResult[2]);
+											}
+										} else {
+											if (regexResult[2] < dojo.date.getDaysInMonth(set[zz])) {
+												newDate.setDate(regexResult[2]);
+											}
+										}
+										subset.push(newDate);
+									}
+									tmp = set.concat(subset);
+									set = tmp;
+								}
+							}
+						}
+					}
+
+					if (rrule["byday"]  && (order["byday"]<freqInt)) {	
+						if (rrule["bymonth"]) {
+							if (rrule["byday"].length > 0) {
+								var regex = "([+-]?)([0-9]{0,1}?)([A-Za-z]{1,2})";
+								for (var z=0; z<rrule["byday"].length; z++) {
+									var regexResult = rrule["byday"][z].match(regex);
+									var occurance = regexResult[2];
+									day = regexResult[3].toLowerCase();
+
+
+									if (z==0) {
+										for (var zz=0; zz < set.length; zz++) {
+											if (regexResult[1] == "-") {
+												//find the nth to last occurance of date 
+												var numDaysFound = 0;
+												var lastDayOfMonth = dojo.date.getDaysInMonth(set[zz]);
+												daysToSubtract = 1;
+												set[zz].setDate(lastDayOfMonth); 
+												if (weekdays[set[zz].getDay()] == day) {
+													numDaysFound++;
+													daysToSubtract=7;
+												}
+												daysToSubtract = 1;
+												while (numDaysFound < occurance) {
+													set[zz].setDate(set[zz].getDate()-daysToSubtract);	
+													if (weekdays[set[zz].getDay()] == day) {
+														numDaysFound++;
+														daysToSubtract=7;	
+													}
+												}
+											} else {
+												if (occurance) {
+													var numDaysFound=0;
+													set[zz].setDate(1);
+													daysToAdd=1;
+
+													if(weekdays[set[zz].getDay()] == day) {
+														numDaysFound++;
+														daysToAdd=7;
+													}
+
+													while(numDaysFound < occurance) {
+														set[zz].setDate(set[zz].getDate()+daysToAdd);
+														if(weekdays[set[zz].getDay()] == day) {
+															numDaysFound++;
+															daysToAdd=7;
+														}
+													}
+												} else {
+													//we're gonna expand here to add a date for each of the specified days for each month
+													var numDaysFound=0;
+													var subset = [];
+
+													lastDayOfMonth = new Date(set[zz]);
+													daysInMonth = dojo.date.getDaysInMonth(set[zz]);
+													lastDayOfMonth.setDate(daysInMonth);
+
+													set[zz].setDate(1);
+												
+													if (weekdays[set[zz].getDay()] == day) {
+														numDaysFound++;
+													}
+													var tmpDate = new Date(set[zz]);
+													daysToAdd = 1;
+													while(tmpDate.getDate() < lastDayOfMonth) {
+														if (weekdays[tmpDate.getDay()] == day) {
+															numDaysFound++;
+															if (numDaysFound==1) {
+																set[zz] = tmpDate;
+															} else {
+																subset.push(tmpDate);
+																tmpDate = new Date(tmpDate);
+																daysToAdd=7;	
+																tmpDate.setDate(tmpDate.getDate() + daysToAdd);
+															}
+														} else {
+															tmpDate.setDate(tmpDate.getDate() + daysToAdd);
+														}
+													}
+													var t = set.concat(subset);
+													set = t; 
+												}
+											}
+										}
+									}	else {
+										var subset=[];
+										for (var zz=0; zz < set.length; zz++) {
+											var newDate = new Date(set[zz]);
+											if (regexResult[1] == "-") {
+												if (regexResult[2] < dojo.date.getDaysInMonth(set[zz])) {
+													newDate.setDate(dojo.date.getDaysInMonth(set[zz]) - regexResult[2]);
+												}
+											} else {
+												if (regexResult[2] < dojo.date.getDaysInMonth(set[zz])) {
+													newDate.setDate(regexResult[2]);
+												}
+											}
+											subset.push(newDate);
+										}
+										tmp = set.concat(subset);
+										set = tmp;
+									}
+								}
+							}
 						} else {
-							if (candidateStartDate.getDate() > this.startDate.getDate()) {
-								while(candidateStartDate.getDate() > this.startDate.getDate()) {
-									candidateStartDate.setDate(candidateStartDate.getDate()-1);
-								}
-							}else {
-	
-								while (candidateStartDate.getDate()<this.startDate.getDate()) {
-									candidateStartDate.setDate(candidateStartDate.getDate()+1);
-								}
-							}
+							dojo.debug("TODO: byday within a yearly rule without a bymonth");
 						}
 					}
-			} 
 
-			if (!((candidateStartDate.getMonth() == date.getMonth()) &&
-				 (candidateStartDate.getDate() == date.getDate()) &&
-				 (candidateStartDate.getFullYear() == date.getFullYear()))) {
-					return false;
-			}
-
-
-			if (rrule.until) {
-				if (candidateStartDate>dojo.date.fromIso8601(rrule.until) ) {
-					return false;
-				}
-			}
-
-			var freq = rrule.freq.toLowerCase();     
-			if (freq=="daily") {
-				if (candidateStartDate.getFullYear() == this.startDate.getFullYear()) {
-					var diff = dojo.date.getDayOfYear(candidateStartDate) - dojo.date.getDayOfYear(this.startDate)
-				} else {
-					var beginning = 365 - dojo.date.getDayOfYear(this.startDate);
-					if ((candidateStartDate.getFullYear() - this.startDate.getFullYear()) > 1) {
-						var diff = beginning + dojo.date.getDayOfYear(candidateStartDate) + ((candiDateStartDate.getFullYear() - this.startDate.getFullYear())*365);
-					} else {
-						var diff = beginning + dojo.date.getDayOfYear(candidateStartDate);
-					}
-				}
-			} else if (freq == "weekly")	{
-				if (candidateStartDate.getFullYear() == this.startDate.getFullYear()) {
-					var diff = (dojo.date.getDayOfYear(candidateStartDate) - dojo.date.getDayOfYear(this.startDate))/7;
-				} else {
-					var beginning = 365 - dojo.date.getDayOfYear(this.startDate);
-					if ((candidateStartDate.getFullYear() - this.startDate.getFullYear()) > 1) {
-						var diff = (beginning + dojo.date.getDayOfYear(candidateStartDate) + ((candiDateStartDate.getFullYear() - this.startDate.getFullYear())*365))/7;
-					} else {
-						var diff = (beginning + dojo.date.getDayOfYear(candidateStartDate))/7;
-					}
-				}
-				//get weeks between set as diff
-			} else if (freq == "monthly")	{
-				if (candidateStartDate.getFullYear() == this.startDate.getFullYear()) {
-						var diff = (candidateStartDate.getMonth() - this.startDate.getMonth());
-				} else {
-					var beginning = 12 - this.startDate.getMonth();
-					if ((candidateStartDate.getFullYear() - this.startDate.getFullYear()) > 1) {
-						var diff = (beginning + candidateStartDate.getMonth()) + ((candidateStartDate.getFullYear() - this.startDate.getFullYear())*12);
-					} else {
-						var diff = (beginning + candidateStartDate.getMonth());
-					}	
-				}
-				//get months between set as diff
-			} else if (freq == "yearly") {
-				//get years between set as diff
-				var diff = candidateStartDate.getFullYear() - this.startDate.getFullYear();
-		   }	
-
-	
-			if (rrule.interval) {
-				if ((diff % rrule.interval) != 0 ) {
-					return false;
-				}
-			}
+					dojo.debug("TODO: Process BYrules for units larger than frequency");
 			
-			var weekdays=["SU","MO","TU","WE","TH","FR","SA"];
-			for (var x=0; x< rrule.bys.length; x++) {
-				var tmp = rrule.bys[x].toString();
-				var by= tmp.split(",");
-				var name = by[0].toLowerCase();
-			   var found=false;
-				for (var x=1; x<by.length; x++) {
-					if (name == "byday") {
-						if (weekdays[candidateStartDate.getDay()] == by[x]) {
-
-							rrule.cache[dateString] = true;				
-							return true;
-						}
-					} else if (name == "bymonthday") {
-						if (by[x] > dojo.date.getDaysInMonth(candidateStartDate)) {
-							var tmp = dojo.date.getDaysInMonth(candidateStartDate);
-						} else {
-							var tmp = by[x];
-						}
-						if (tmp == candidateStartDate.getDate()) {
-
-							rrule.cache[dateString] = true;				
-							return true;
-						}
-					} else if (name == "bymonth") {
-						if (by[x] == candidateStartDate.getMonth() + 1) {
-							rrule.cache[dateString] = true;				
-							return true;
-						}
-					}
+					//add this set of events to the complete recurranceSet	
+					var tmp = recurranceSet.concat(set);
+					recurranceSet = tmp;
 				}
-				if (!found) { return false; }
 			}
-	
-			rrule.cache[dateString] = true;				
-			return true;
+
+			// TODO: add rdates to the recurrance set here
+
+			// TODO: subtract exdates from the recurrance set here
+
+			//TODO:  subtract dates generated by exrules from recurranceSet here
+
+			recurranceSet.push(dtstart);
+			return recurranceSet;
 		},
 
 		getDate: function() {
