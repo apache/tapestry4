@@ -162,7 +162,15 @@
   
   <contribution configuration-id="UnprotectedAssets">
    List of unprotected asset regexps for ResourceMatcher service.
-    
+   
+   <unprotected-resource contains="**/dojo/**/*.js" />
+   <unprotected-resource contains="**/dojo/**/*.css" />
+   <unprotected-resource contains="**/dojo/**/*.html" />
+   <unprotected-resource contains="**/dojo/**/*.htm" />
+   <unprotected-resource contains="**/dojo/**/*.gif" />
+   <unprotected-resource contains="**/dojo/**/*.jpg" />
+   <unprotected-resource contains="**/dojo/**/*.svg" />
+   <unprotected-resource contains="**/dojo/**/*.png" />
   </contribution>
   
   <service-point id="UnprotectedResourceMatcher" interface="ResourceMatcher" >

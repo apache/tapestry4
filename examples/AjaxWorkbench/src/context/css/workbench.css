@@ -1,3 +1,7 @@
+BODY, H1, H2, H3, H4,a {
+   color: #1e1e1e;
+}
+
 H1, H2, H3,H4 {
 	border-bottom:2px solid #156e6a;
 	float: left;
@@ -17,7 +21,7 @@ ul#navlist
 	font: bold 11px verdana, arial, sans-serif;
 	list-style-type: none;
 	padding-bottom: 24px;
-	border-bottom: 1px solid #125E5A;
+	border-bottom: 1px solid #181008;
 	margin: 0;
 }
 
@@ -25,15 +29,20 @@ ul#navlist li
 {
 	float: left;
 	height: 21px;
-	background-color: #8BB7B5;
+	background-color: #849cce;
 	margin: 2px 2px 0 2px;
-	border: 1px solid #125E5A;
+	border: 1px solid #181008;
+	-moz-border-radius-topleft: 6px;
+	-moz-border-radius-topright: 6px;
 }
 
 li#active a
 {
 	border-bottom: 1px solid #fff;
+	color: #1e1e1e;
 	background-color: #fff;
+	-moz-border-radius-topleft: 6px;
+	-moz-border-radius-topright: 6px;
 }
 
 li#active a { color: #000; }
@@ -42,12 +51,16 @@ li#active a { color: #000; }
 {
 	float: left;
 	display: block;
-	color: #000000;
 	text-decoration: none;
 	padding: 4px;
+	color: #1e1e1e;
 }
 
-#navlist a:hover { background: #fff; }
+#navlist li a:hover { 
+    background: #efad18;
+    -moz-border-radius-topleft: 6px;
+	-moz-border-radius-topright: 6px;
+}
 
 
 SPAN.label-error
@@ -90,6 +103,7 @@ TABLE.content
 	clear: all;
 	width: 700px;
 	float: left;
+	color: #1e1e1e;
      -moz-border-radius: 5px;
 }
 

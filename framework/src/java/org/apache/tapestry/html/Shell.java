@@ -88,15 +88,20 @@ public abstract class Shell extends AbstractComponent
             if (delegate != null)
                 delegate.render(writer, cycle);
 
+            IRender ajaxDelegate = getAjaxDelegate();
+            
+            if (isAjaxEnabled() && ajaxDelegate != null)
+                ajaxDelegate.render(writer, cycle);
+            
             IAsset stylesheet = getStylesheet();
-
+            
             if (stylesheet != null)
                 writeStylesheetLink(writer, cycle, stylesheet);
-
+            
             Iterator i = (Iterator) getValueConverter().coerceValue(
                     getStylesheets(),
                     Iterator.class);
-
+            
             while (i.hasNext())
             {
                 stylesheet = (IAsset) i.next();
@@ -167,7 +172,7 @@ public abstract class Shell extends AbstractComponent
 
         writeMetaTag(writer, "http-equiv", "Refresh", buffer.toString());
     }
-
+    
     private void writeMetaTag(IMarkupWriter writer, String key, String value, String content)
     {
         writer.beginEmpty("meta");
@@ -175,7 +180,11 @@ public abstract class Shell extends AbstractComponent
         writer.attribute("content", content);
         writer.println();
     }
-
+    
+    public abstract boolean isAjaxEnabled();
+    
+    public abstract IRender getAjaxDelegate();
+    
     public abstract IRender getDelegate();
 
     public abstract int getRefresh();

@@ -20,32 +20,23 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
 
 <component-specification allow-informal-parameters="no">
-
-  <component id="tabCell" type="Any">
-  	<binding name="element" value="literal:td"/>
-  	<binding name="background" value="midTabAsset"/>
-  </component>
   
   <component id="pageLink" type="DirectLink">
     <binding name="listener" value="listener:selectPage"/>
     <binding name="parameters" value="pageName"/>
     <binding name="stateful" value="false"/>
   </component>
-
+    
   <component id="inputRequestDebug" type="Checkbox">
     <binding name="value" value="visit.requestDebug"/>
     <binding name="onclick" value="literal:javascript:this.form.events.submit();"/>
   </component>
-
+  
   <component id="inputDisableInspector" type="Checkbox">
     <binding name="value" value="page.visit.disableInspector"/>
     <binding name="onclick" value="literal:javascript:this.form.events.submit();"/>
   </component>
-
-  <asset name="inactiveLeft" path="images/tab-inactive-left.gif"/>
-  <asset name="inactiveMid" path="images/tab-inactive-mid.gif"/>
-  <asset name="inactiveRight" path="images/tab-inactive-right.gif"/>
-
+  
   <asset name="stylesheet" path="css/workbench.css"/>  
 
 </component-specification>
