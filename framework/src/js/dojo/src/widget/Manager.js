@@ -133,7 +133,7 @@ dojo.widget.manager = new function(){
 	var knownWidgetImplementations = {};
 
 	// support manually registered widget packages
-	var widgetPackages = ["dojo.widget", "dojo.webui.widgets"];
+	var widgetPackages = ["dojo.widget"];
 	for (var i=0; i<widgetPackages.length; i++) {
 		// convenience for checking if a package exists (reverse lookup)
 		widgetPackages[widgetPackages[i]] = true;

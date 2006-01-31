@@ -42,10 +42,10 @@ dojo.lang.extend(dojo.widget.HtmlWidget, {
 	},
 
 	postMixInProperties: function(args, frag){
-		// now that we know the setting for toggle, define show()&hide()
-		dojo.lang.mixin(this,
+		// now that we know the setting for toggle, get toggle object
+		this.toggleObj =
 			dojo.widget.HtmlWidget.toggle[this.toggle.toLowerCase()] ||
-			dojo.widget.HtmlWidget.toggle.plain);
+			dojo.widget.HtmlWidget.toggle.plain;
 	},
 
 	getContainerHeight: function(){
@@ -111,7 +111,8 @@ dojo.lang.extend(dojo.widget.HtmlWidget, {
 
 	show: function(){
 		this.animationInProgress=true;
-		this.showMe();
+		this.toggleObj.show(this.domNode, this.toggleDuration, this.explodeSrc,
+			dojo.lang.hitch(this, this.onShow));
 	},
 
 	onShow: function(){
@@ -120,7 +121,8 @@ dojo.lang.extend(dojo.widget.HtmlWidget, {
 
 	hide: function(){
 		this.animationInProgress=true;
-		this.hideMe();
+		this.toggleObj.hide(this.domNode, this.toggleDuration, this.explodeSrc,
+			dojo.lang.hitch(this, this.onHide));
 	},
 
 	onHide: function(){
@@ -136,45 +138,43 @@ dojo.lang.extend(dojo.widget.HtmlWidget, {
 dojo.widget.HtmlWidget.toggle={}
 
 dojo.widget.HtmlWidget.toggle.plain = {
-	showMe: function(){
-		dojo.style.show(this.domNode);
-		if(dojo.lang.isFunction(this.onShow)){ this.onShow(); }
+	show: function(node, duration, explodeSrc, callback){
+		dojo.style.show(node);
+		if(dojo.lang.isFunction(callback)){ callback(); }
 	},
 
-	hideMe: function(){
-		dojo.html.hide(this.domNode);
-		if(dojo.lang.isFunction(this.onHide)){ this.onHide(); }
+	hide: function(node, duration, explodeSrc, callback){
+		dojo.html.hide(node);
+		if(dojo.lang.isFunction(callback)){ callback(); }
 	}
 }
 
 dojo.widget.HtmlWidget.toggle.fade = {
-	showMe: function(){
-		dojo.fx.html.fadeShow(this.domNode, this.toggleDuration, dojo.lang.hitch(this, this.onShow));
+	show: function(node, duration, explodeSrc, callback){
+		dojo.fx.html.fadeShow(node, duration, callback);
 	},
 
-	hideMe: function(){
-		dojo.fx.html.fadeHide(this.domNode, this.toggleDuration, dojo.lang.hitch(this, this.onHide));
+	hide: function(node, duration, explodeSrc, callback){
+		dojo.fx.html.fadeHide(node, duration, callback);
 	}
 }
 
 dojo.widget.HtmlWidget.toggle.wipe = {
-	showMe: function(){
-		dojo.fx.html.wipeIn(this.domNode, this.toggleDuration, dojo.lang.hitch(this, this.onShow));
+	show: function(node, duration, explodeSrc, callback){
+		dojo.fx.html.wipeIn(node, duration, callback);
 	},
 
-	hideMe: function(){
-		dojo.fx.html.wipeOut(this.domNode, this.toggleDuration, dojo.lang.hitch(this, this.onHide));
+	hide: function(node, duration, explodeSrc, callback){
+		dojo.fx.html.wipeOut(node, duration, callback);
 	}
 }
 
 dojo.widget.HtmlWidget.toggle.explode = {
-	showMe: function(){
-		dojo.fx.html.explode(this.explodeSrc||[0,0,0,0], this.domNode, this.toggleDuration,
-			dojo.lang.hitch(this, this.onShow));
+	show: function(node, duration, explodeSrc, callback){
+		dojo.fx.html.explode(explodeSrc||[0,0,0,0], node, duration, callback);
 	},
 
-	hideMe: function(){
-		dojo.fx.html.implode(this.domNode, this.explodeSrc||[0,0,0,0], this.toggleDuration,
-			dojo.lang.hitch(this, this.onHide));
+	hide: function(node, duration, explodeSrc, callback){
+		dojo.fx.html.implode(node, explodeSrc||[0,0,0,0], duration, callback);
 	}
 }

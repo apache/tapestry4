@@ -60,7 +60,7 @@ dojo.widget.Parse = function(fragment) {
 							built = true;
 							// var tic = new Date();
 							fragment[item].tagName = ltn;
-							var ret = djTags[ltn](fragment[item], this, parentComp, fragment[item]["index"])
+							var ret = djTags[ltn](fragment[item], this, parentComp, fragment[item]["index"]);
 							returnValue.push(ret);
 						}else{
 							if((dojo.lang.isString(ltn))&&(ltn.substr(0, 5)=="dojo:")){

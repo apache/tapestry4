@@ -118,10 +118,22 @@ dojo.collections.SortedList = function(dictionary){
 		build();
 		this.count = q.length;
 	};
+	
 	this.removeAt = function(i){
 		delete items[q[i].key];
 		build();
 		this.count = q.length;
+	};
+
+	this.replace = function(k,v){
+		if (!items[k]) {
+			this.add(k,v);
+			return false; // returning false because we added rather than replaced
+		} else {
+			items[k] = new dojo.collections.DictionaryEntry(k,v);
+			q.sort(sorter);
+			return true; // returning true because we replaced a value
+		}
 	};
 
 	this.setByIndex = function(i,o){

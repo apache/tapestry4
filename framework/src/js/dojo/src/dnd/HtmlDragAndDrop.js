@@ -81,6 +81,7 @@ dojo.dnd.HtmlDragObject = function(node, type){
 dojo.lang.extend(dojo.dnd.HtmlDragObject, {
 	dragClass: "",
 	opacity: 0.5,
+	createIframe: true,		// workaround IE6 bug
 
 	// if true, node will not move in X and/or Y direction
 	disableX: false,
@@ -90,6 +91,14 @@ dojo.lang.extend(dojo.dnd.HtmlDragObject, {
 		var node = this.domNode.cloneNode(true);
 		if(this.dragClass) { dojo.html.addClass(node, this.dragClass); }
 		if(this.opacity < 1) { dojo.style.setOpacity(node, this.opacity); }
+		if(dojo.render.html.ie && this.createIframe){
+			var outer = document.createElement("div");
+			outer.appendChild(node);
+			this.bgIframe = new dojo.html.BackgroundIframe();
+			this.bgIframe.size([0,0,dojo.style.getOuterWidth(node),dojo.style.getOuterHeight(node)]);
+			outer.appendChild(this.bgIframe.iframe);
+			node = outer;
+		}
 		node.style.zIndex = 500;
 		return node;
 	},
@@ -235,6 +244,9 @@ dojo.dnd.HtmlDropTarget = function(node, types){
 	if (arguments.length == 0) { return; }
 	this.domNode = dojo.byId(node);
 	dojo.dnd.DropTarget.call(this);
+	if(types && dojo.lang.isString(types)) {
+		types = [types];
+	}
 	this.acceptedTypes = types || [];
 }
 dojo.inherits(dojo.dnd.HtmlDropTarget, dojo.dnd.DropTarget);
@@ -330,8 +342,10 @@ dojo.lang.extend(dojo.dnd.HtmlDropTarget, {
 	},
 
 	onDragOut: function(e) {
-		dojo.dom.removeNode(this.dropIndicator);
-		delete this.dropIndicator;
+		if(this.dropIndicator) {
+			dojo.dom.removeNode(this.dropIndicator);
+			delete this.dropIndicator;
+		}
 	},
 
 	/**

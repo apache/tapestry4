@@ -29,6 +29,9 @@ dojo.widget.html.MonthlyCalendar= function(){
 dojo.inherits(dojo.widget.html.MonthlyCalendar, dojo.widget.html.DatePicker);
 
 dojo.lang.extend(dojo.widget.html.MonthlyCalendar, {
+	cache: function() {
+	},
+
 	addCalendar: function(/* dojo.iCalendar */ cal) {
 		dojo.debug("Adding Calendar");
 		this.iCalendars.push(cal);
@@ -37,12 +40,9 @@ dojo.lang.extend(dojo.widget.html.MonthlyCalendar, {
 
 	createDayContents: function(node,mydate) {
 		dojo.dom.removeChildren(node);
-		node.appendChild(document.createTextNode(mydate.getDate()));
-		for(var x=0; x<this.iCalendars.length; x++) {
-			//month = mydate.getMonth() + 1;
-			//var tmp = mydate.getFullYear() + "-" + month + "-" + mydate.getDate();
-			//dojo.debug("getting events for " + mydate);
-			evts = this.iCalendars[x].getEvents(mydate);
+		node.appendChild(document.createTextNode(mydate.getDate()));	
+		if (this.cache[mydate]) {
+			evts = this.cache[mydate];
 			if ((dojo.lang.isArray(evts)) && (evts.length>0)) {
 				for(var y=0;y<evts.length;y++) {
 					var el = document.createElement("div");
@@ -52,7 +52,23 @@ dojo.lang.extend(dojo.widget.html.MonthlyCalendar, {
 					node.appendChild(el);
 				}
 			}
-			
+		} else {
+			for(var x=0; x<this.iCalendars.length; x++) {
+				evts = this.iCalendars[x].getEvents(mydate);
+
+				if ((dojo.lang.isArray(evts)) && (evts.length>0)) {
+					this.cache[mydate]=evts;
+					for(var y=0;y<evts.length;y++) {
+						var el = document.createElement("div");
+						dojo.html.addClass(el, "dojoMonthlyCalendarEvent");          
+						el.appendChild(document.createTextNode(evts[y].summary.value));
+						el.width = dojo.style.getContentWidth(node);
+						node.appendChild(el);
+					}
+				} else {
+					this.cache[mydate]=[];
+				}
+			}
 		}
 	},
 
@@ -67,8 +83,14 @@ dojo.lang.extend(dojo.widget.html.MonthlyCalendar, {
 		// time change in local time zones
 		previousDate.setHours(8);
 		var nextDate = new Date(this.firstSaturday.year, this.firstSaturday.month, this.firstSaturday.date, 8);
-
+		var lastDay = new Date(this.firstSaturday.year, this.firstSaturday.month, this.firstSaturday.date + 42, 8);
 		
+		if (this.iCalendars.length > 0) {
+			for (var x=0; x<this.iCalendars.length;x++) {
+				this.iCalendars[x].preComputeRecurringEvents(lastDay);
+			}
+		}
+
 		if(this.firstSaturday.date < 7) {
 			// this means there are days to show from the previous month
 			var dayInWeek = 6;

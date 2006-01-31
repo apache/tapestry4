@@ -139,6 +139,13 @@ dojo.lang.extend(dojo.dnd.HtmlDragManager, {
 	onMouseDown: function(e){
 		if(this.disabled) { return; }
 
+		// only begin on left click
+		if(dojo.render.html.ie) {
+			if(e.button != 0) { return; }
+		} else if(e.which != 1) {
+			return;
+		}
+
 		this.mouseDownX = e.clientX;
 		this.mouseDownY = e.clientY;
 
@@ -152,10 +159,8 @@ dojo.lang.extend(dojo.dnd.HtmlDragManager, {
 		*/
 		// do not start drag involvement if the user is interacting with
 		// a form element.
-		switch(target.tagName.toLowerCase()) {
-			case "a": case "button": case "textarea":
-			case "input":
-				return;
+		if(dojo.html.isTag(target, "a", "button", "textarea", "input")) {
+			return;
 		}
 
 		// find a selection object, if one is a parent of the source node
@@ -167,7 +172,7 @@ dojo.lang.extend(dojo.dnd.HtmlDragManager, {
 
 		// WARNING: preventing the default action on all mousedown events
 		// prevents user interaction with the contents.
-		e.preventDefault();
+		//e.preventDefault();
 
 		dojo.event.connect(document, "onmousemove", this, "onMouseMove");
 	},
@@ -177,8 +182,12 @@ dojo.lang.extend(dojo.dnd.HtmlDragManager, {
 		this.mouseDownY = null;
 		this._dragTriggered = false;
 		var _this = this;
+		e.preventDefault();
 		e.dragSource = this.dragSource;
 		if((!e.shiftKey)&&(!e.ctrlKey)){
+			if(_this.currentDropTarget) {
+				_this.currentDropTarget.onDropStart();
+			}
 			dojo.lang.forEach(this.dragObjects, function(tempDragObj){
 				var ret = null;
 				if(!tempDragObj){ return; }
@@ -211,6 +220,9 @@ dojo.lang.extend(dojo.dnd.HtmlDragManager, {
 			this.selectedSources = [];
 			this.dragObjects = [];
 			this.dragSource = null;
+			if(_this.currentDropTarget) {
+				_this.currentDropTarget.onDropEnd();
+			}
 		}
 		dojo.event.disconnect(document, "onmousemove", this, "onMouseMove");
 		this.currentDropTarget = null;

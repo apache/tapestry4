@@ -147,7 +147,14 @@ dojo.lang.extend(dojo.widget.PopupMenu2, {
 
 	layoutMenu: function(){
 
-		// determine menu width
+        // menu must be attached to DOM for size calculations to work
+
+        var parent = this.domNode.parentNode;
+        if (! parent || parent == undefined) {
+            document.body.appendChild(this.domNode);
+        }
+
+        // determine menu width
 
 		var max_label_w = 0;
 		var max_accel_w = 0;

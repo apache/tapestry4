@@ -458,18 +458,6 @@ dojo.lang.extend(dojo.widget.Widget, {
  
 		return this.getSiblings()[idx+1];
  
-	},
-
-	getDescendants: function() {
-		var result = [];
-		var stack = [this];
-		var elem;
-		while (elem = stack.pop()) {
-			result.push(elem);
-			dojo.lang.forEach(elem.children, function(elem) { stack.push(elem); });
-		}
- 
-		return result;
 	}
 });
 

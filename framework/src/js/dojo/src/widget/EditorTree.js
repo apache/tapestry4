@@ -66,8 +66,6 @@ dojo.lang.extend(dojo.widget.EditorTree, {
 	eventNames: null,
 	eventNaming: "default",
 
-	toggler: null,
-
 	isExpanded: true, // consider this "root node" to be always expanded
 
 	isTree: true,
@@ -106,8 +104,6 @@ dojo.lang.extend(dojo.widget.EditorTree, {
 	showGrid: true,
 	showRootGrid: true,
 
-	toggle: "default",
-	toggleDuration: 150,
 	selector: null,
 
 
@@ -123,10 +119,9 @@ dojo.lang.extend(dojo.widget.EditorTree, {
 
 
 	getInfo: function() {
-		var _this = this;
 		var info = {
-			widgetId: _this.widgetId,
-			objectId: _this.objectId
+			widgetId: this.widgetId,
+			objectId: this.objectId
 		}
 
 		return info;
@@ -135,26 +130,13 @@ dojo.lang.extend(dojo.widget.EditorTree, {
 	initialize: function(args, frag){
 
 		var _this = this;
-		//this.acceptDropSources = this.acceptDropSources.split(',');
-		/*
-		var sources;
-		if ( (sources = args['acceptDropSources']) || (sources = args['acceptDropSources']) ) {
 
-		}
-		*/
+
 		//this.actionsDisabled = this.actionsDisabled.split(",");
 		for(var i=0; i<this.actionsDisabled.length; i++) {
 			this.actionsDisabled[i] = this.actionsDisabled[i].toUpperCase();
 		}
 
-
-		switch (this.toggle) {
-
-			case "fade": this.toggler = new dojo.widget.EditorTree.FadeToggle(); break;
-			// buggy - try to open many nodes in FF (IE is ok)
-			case "wipe": this.toggler = new dojo.widget.EditorTree.WipeToggle(); break;
-			default    : this.toggler = new dojo.widget.EditorTree.DefaultToggle();
-		}
 
 
 		if (this.eventNaming == "default") { // IE || FF
@@ -162,18 +144,6 @@ dojo.lang.extend(dojo.widget.EditorTree, {
 			for (eventName in this.eventNames) {
 				this.eventNames[eventName] = this.widgetId+"/"+eventName;
 			}
-			/*
-			this.eventNames.watch("nodeCreate",
-   				function (id,oldval,newval) {
-      				alert("o." + id + " changed from " + oldval + " to " + newval);
-      				return newval;
-			   }
-			  );
-			 */
-
-		//	alert(dojo.widget.manager.getWidgetById('firstTree').widgetId)
-		//	alert(dojo.widget.manager.getWidgetById('firstTree').eventNames.nodeCreate);
-
 		}
 
 
@@ -204,9 +174,6 @@ dojo.lang.extend(dojo.widget.EditorTree, {
 		dojo.html.disableSelection(this.domNode);
 
 		for(var i=0; i<this.children.length; i++){
-
-			this.children[i].isFirstNode = (i == 0) ? true : false;
-			this.children[i].isLastNode = (i == this.children.length-1) ? true : false;
 			this.children[i].parent = this; // root nodes have tree as parent
 
 			var node = this.children[i].buildNode(this, 0);
@@ -216,9 +183,6 @@ dojo.lang.extend(dojo.widget.EditorTree, {
 		}
 
 
-		//
-		// when we don't show root toggles, we need to auto-expand root nodes
-		//
 
 		if (!this.showRootGrid){
 			for(var i=0; i<this.children.length; i++){
@@ -255,6 +219,10 @@ dojo.lang.extend(dojo.widget.EditorTree, {
 
 	},
 
+	// FIXME: removeChild may leak because events do not get cleaned on removal like:
+	// dojo.event.browser.clean( parent.removeChild( child ) );
+	// From the other hand, if I clean events I have to reinsert'em later..
+	// maybe supply "clean" parameter ?
 	removeChild: function(child) {
 
 		var parent = child.parent;
@@ -263,14 +231,6 @@ dojo.lang.extend(dojo.widget.EditorTree, {
 
 		for(var i=0; i<children.length; i++){
 			if(children[i] === child){
-				if (children.length>1) {
-					if (i==0) {
-						children[i+1].isFirstNode = true;
-					}
-					if (i==children.length-1) {
-						children[i-1].isLastNode = true;
-					}
-				}
 				children.splice(i, 1);
 				break;
 			}
@@ -279,25 +239,12 @@ dojo.lang.extend(dojo.widget.EditorTree, {
 		dojo.dom.removeNode(child.domNode);
 
 
-		//dojo.debug("removeChild: "+child.title+" from "+parent.title);
-
-		/*
-		if (children.length == 0) {
-			// toggle empty container off
-			if (!parent.isTree) { // if has container
-				parent.containerNode.style.display = 'none';
-			}
-
-		}
-		*/
-
 		parent.updateIconTree();
-
-
 
 		return child;
 
 	},
+
 
 
 	// not called for initial tree building. See buildNode instead.
@@ -312,40 +259,10 @@ dojo.lang.extend(dojo.widget.EditorTree, {
 			index = this.children.length;
 		}
 
-
-		//dojo.debug("This "+this+" Child "+child+" index "+index+" children.length "+this.children.length);
-
-		//
-		// this function gets called to add nodes to both trees and nodes, so it's a little confusing :)
-		//
-
 		if (!child.isTreeNode){
 			dojo.raise("You can only add EditorTreeNode widgets to a "+this.widgetType+" widget!");
 			return;
 		}
-
-		// set/clean isFirstNode and isLastNode
-		if (this.children.length){
-			if (index == 0) {
-				this.children[0].isFirstNode = false;
-				child.isFirstNode = true;
-			} else {
-				child.isFirstNode = false;
-			}
-			if (index == this.children.length) {
-				this.children[index-1].isLastNode = false;
-				child.isLastNode = true;
-			} else {
-				child.isLastNode = false;
-			}
-		} else {
-			child.isLastNode = true;
-			child.isFirstNode = true;
-		}
-
-
-		//dojo.debug("For new child set first:"+child.isFirstNode+" last:"+child.isLastNode);
-
 
 		// usually it is impossible to change "isFolder" state, but if anyone wants to add a child to leaf,
 		// it is possible program-way.
@@ -358,17 +275,6 @@ dojo.lang.extend(dojo.widget.EditorTree, {
 		// adjust tree
 		var _this = this;
 		dojo.lang.forEach(child.getDescendants(), function(elem) { elem.tree = _this.tree; });
-
-		/*
-		var stack = [child];
-		var elem;
-		// change tree for all subnodes
-		while (elem = stack.pop()) {
-			//dojo.debug("Tree for "+elem.title);
-			elem.tree = tree;
-			dojo.lang.forEach(elem.children, function(elem) { stack.push(elem); });
-		}
-		*/
 
 		// fix parent
 		child.parent = this;
@@ -412,73 +318,25 @@ dojo.lang.extend(dojo.widget.EditorTree, {
 
 		this.children.splice(index, 0, child);
 
-		//dojo.lang.forEach(this.children, function(child) { dojo.debug("Child "+child.title); } );
-
-		//dojo.debugShallow(child);
-
-		//this.expand();
-
-
-
 		dojo.profile.end("AddChild");
 
 		dojo.profile.start("updateIconTree");
 
 		//this.updateIconTree();
+		//dojo.debug("Update my icons: "+child)
 		child.updateIcons();
-		if (this.children.length>1) {
-			if (child.isFirstNode) {
-				this.children[1].updateIcons();
-			}
-			if (child.isLastNode) {
-				this.children[this.children.length-2].updateIcons();
-			}
+		if (child.isFirstNode() && child.getNextSibling()) {
+			//dojo.debug("Update expand for"+child.getNextSibling())
+			child.getNextSibling().updateExpandIcon();
 		}
+		if (child.isLastNode() && child.getPreviousSibling()) {
+			//dojo.debug("Update expand for"+child.getPreviousSibling())
+			child.getPreviousSibling().updateExpandIcon();
+		}
+
 
 		dojo.profile.end("updateIconTree");
 
-
-	},
-
-	// adds an array of children in "batch mode" into empty node
-	// optimized for fast loading of large collections into empty nodes
-	addAllChildren: function(children) {
-
-		if (children.length == 0) return;
-
-		dojo.profile.start("addAllChildren");
-
-		var _this = this;
-
-		children[0].isFirstNode = true;
-		children[children.length-1].isLastNode = true;
-
-		if (this.isTreeNode){
-			if (!this.isFolder) { // just became a folder.
-				this.setFolder();
-			}
-		}
-
-		dojo.lang.forEach(children,
-			function(child) {
-				child.parent = _this;
-				child.buildNode(_this.tree, _this.isTreeNode ? _this.depth+1 : 0);
-				_this.containerNode.appendChild(child.domNode);
-			}
-
-		);
-
-		// no dynamic loading for those who are parents already
-		if (this.isTreeNode) {
-			this.state = this.loadStates.LOADED;
-		}
-
-
-		this.children = children;
-
-		//this.updateIconTree();
-
-		dojo.profile.end("addAllChildren");
 
 	},
 
@@ -492,8 +350,6 @@ dojo.lang.extend(dojo.widget.EditorTree, {
 
 		return img;
 	},
-
-
 
 
 	updateIconTree: function(){
@@ -518,43 +374,3 @@ dojo.lang.extend(dojo.widget.EditorTree, {
 
 
 });
-
-
-
-dojo.widget.EditorTree.DefaultToggle = function(){
-
-	this.show = function(node){
-		node.style.display = 'block';
-	}
-
-	this.hide = function(node){
-		node.style.display = 'none';
-	}
-}
-
-dojo.widget.EditorTree.FadeToggle = function(duration){
-	this.toggleDuration = duration ? duration : 150;
-
-	this.show = function(node){
-		node.style.display = 'block';
-		dojo.fx.html.fade(node, this.toggleDuration, 0, 1);
-	}
-
-	this.hide = function(node){
-		dojo.fx.html.fadeOut(node, this.toggleDuration, function(node){ node.style.display = 'none'; });
-	}
-}
-
-dojo.widget.EditorTree.WipeToggle = function(duration){
-	this.toggleDuration = duration ? duration : 150;
-
-	this.show = function(node){
-		node.style.display = 'block';
-		dojo.fx.html.wipeIn(node, this.toggleDuration);
-	}
-
-	this.hide = function(node){
-		dojo.fx.html.wipeOut(node, this.toggleDuration, function(node){ node.style.display = 'none'; });
-	}
-}
-

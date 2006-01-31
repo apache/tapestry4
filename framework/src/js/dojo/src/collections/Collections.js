@@ -42,7 +42,9 @@ dojo.collections.Iterator = function(a){
 
 dojo.collections.DictionaryIterator = function(obj){
 	var arr = [] ;	//	Create an indexing array
-	for (var p in obj) arr.push(obj[p]) ;	//	fill it up
+	for (var p in obj) {
+		arr.push(obj[p]);	//	fill it up
+	}
 	var position = 0 ;
 	this.atEnd = (position>=arr.length-1);
 	this.current = arr[position]||null ;
