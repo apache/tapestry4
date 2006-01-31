@@ -82,9 +82,38 @@
     </description>
   </parameter>
   
+  <parameter name="ajaxDelegate" 
+             default-value="bean:coreAjaxDelegate" >
+     <description>
+     If specified, allows for the default ajaxDelegate that renders the dojo script
+     includes to be overriden.
+     </description>
+  </parameter>
+  
+  <parameter name="ajaxEnabled" 
+             default-value="false" >
+     <description>
+     If set to true, will include the required javascript libraries that make all
+     of the ajax functionality possible.
+     </description>
+  </parameter>
+  
+  <parameter name="dojoSource" 
+             default-value="asset:defaultDojoSource" >
+     <description>
+     If specified, allows for the default dojo source included to be overriden.
+     </description>
+  </parameter>
+  
   <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
   <inject property="pageService" object="engine-service:page"/>
   <inject property="applicationSpecification" object="infrastructure:applicationSpecification"/>
   <inject property="baseTagWriter" object="service:tapestry.url.BaseTagWriter"/>
+  
+  <bean name="coreAjaxDelegate" class="org.apache.tapestry.ajax.AjaxShellDelegate">
+   <set name="dojoSource" value="dojoSource" />
+  </bean>
+  
+  <asset name="defaultDojoSource" path="/org/apache/tapestry/ajax/dojo" />
   
 </component-specification>

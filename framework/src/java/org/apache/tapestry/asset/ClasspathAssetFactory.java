@@ -44,14 +44,14 @@ public class ClasspathAssetFactory implements AssetFactory
     {
         Resource asset = baseResource.getRelativeResource(path);
         Resource localized = _localizer.findLocalization(asset, locale);
-
+        
         if (localized == null)
             throw new ApplicationRuntimeException(AssetMessages.missingAsset(path, baseResource),
                     location, null);
-
+        
         return createAsset(localized, location);
     }
-
+    
     public IAsset createAbsoluteAsset(String path, Locale locale, Location location)
     {
         Resource base = new ClasspathResource(_classResolver, path);
