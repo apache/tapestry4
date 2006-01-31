@@ -182,7 +182,7 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
         factory.setAssetService(assetService);
         factory.setLocalizer(new DefaultResourceLocalizer());
         
-        String path = "/org/apache/tapestry/ajax/dojo";
+        String path = "/org/apache/tapestry/ajax/dojo/dojo.js";
         
         IAsset asset = factory.createAsset(shell, path, 
                 Locale.getDefault(),
