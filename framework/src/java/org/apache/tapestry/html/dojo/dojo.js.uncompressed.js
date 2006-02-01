@@ -19,6 +19,7 @@
 * $Id: bootstrap1.js 2889 2006-01-20 18:17:40Z alex $
 */
 
+
 /**
  * The global djConfig can be set prior to loading the library, to override
  * certain settings.  It does not exist under dojo.* so that it can be set

@@ -17,7 +17,7 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-
+import org.apache.tapestry.engine.IEngineService;
 
 /**
  * The default rendering delegate responseible for include the 
@@ -28,6 +28,8 @@ import org.apache.tapestry.IRequestCycle;
 public class AjaxShellDelegate implements IRender
 {
     protected IAsset _dojoSource;
+    
+    protected IEngineService _assetService;
     
     /**
      * {@inheritDoc}
@@ -43,7 +45,9 @@ public class AjaxShellDelegate implements IRender
         
         //include the js package
         str.append("<script type=\"text/javascript\" src=\"")
-        .append(_dojoSource.getResourceLocation().getPath()).append("\"></script>");
+        .append(_assetService.getLink(true,
+                _dojoSource.getResourceLocation()
+                .getPath()).getAbsoluteURL()).append("\"></script>");
         
         writer.printRaw(str.toString());
     }
@@ -56,5 +60,14 @@ public class AjaxShellDelegate implements IRender
     public void setDojoSource(IAsset dojoSource)
     {
         _dojoSource = dojoSource;
+    }
+    
+    /**
+     * Injected asset service.
+     * @param service
+     */
+    public void setAssetService(IEngineService service)
+    {
+        _assetService = service;
     }
 }
