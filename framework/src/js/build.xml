@@ -26,12 +26,18 @@
 	<!-- ====================================================== -->
 	<!-- Properties/environment checks							-->
 	<!-- ====================================================== -->
+	<property name="module.name" value="framework-js"/>
+	<property name="module.javac.target" value="1.5"/>
+	<property name="module.javac.source" value="1.5"/>
+	<property name="module.install.dir" value="${root.dir}/target/js"/>
 	
 	<property name="root.dir" value="../../.." />
 	<property file="${root.dir}/config/build.properties" />
 	<property name="profile.file" value="tapestry.profile.js" />
 	
 	<property name="release.dir" value="${dojo.dir}/../release/" />
+	
+	<import file="${hivebuild.dir}/jar-module.xml"/>
 	
 	<target name="check-dependencies"
 			description="Ensures that dojo.dir is set." >
@@ -56,15 +62,11 @@
 			<property name="profile" value="tapestry" />
 		</ant>
 		
-		<!-- 
-		<delete dir="dojo" />
-		
-		<copy todir="." overwrite="true" >
+		<copy todir="${root.dir}/bin/org/apache/tapestry/html" overwrite="true" >
 			<fileset dir="${release.dir}">
 				<exclude name="dojo/demos/**" />
 			</fileset>
 		</copy>
-		-->
 	</target>
 	
 </project>

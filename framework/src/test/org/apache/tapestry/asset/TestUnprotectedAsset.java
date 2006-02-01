@@ -109,7 +109,7 @@ public class TestUnprotectedAsset extends HiveMindTestCase
         patterns.add("/org/apache/tapestry/asset/[%$4]rew\\invalidpattern");
         rm.setContributions(patterns);
         rm.initializeService();
-
+        
         assertFalse(rm.containsResource("/org/apache/tapestry/asset/AbstractAsset.class"));
         assertFalse(rm.containsResource("/org/apache/tapestry/.*.class"));
         assertTrue(rm.containsResource("/org/apache/tapestry/asset/assetBuilder.js"));
