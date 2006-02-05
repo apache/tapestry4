@@ -40,7 +40,7 @@ public class AjaxShellDelegate implements IRender
         StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");
         str.append("djConfig = { isDebug: false,")
         .append(" baseRelativePath:\"").append(_dojoSource.getResourceLocation().getPath())
-        .append("\", preventBackButtonFix: false };")
+        .append("\", preventBackButtonFix: false, parseWidgets: false };")
         .append(" </script>\n\n ");
         
         //include the js package
