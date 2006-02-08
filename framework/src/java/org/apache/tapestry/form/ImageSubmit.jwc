@@ -57,15 +57,19 @@
   
   <parameter name="listener">
   	<description>
-  	Notified when the button is clicked.
+          A listener that is notified when this component is triggered. 
+          The listener is notified immediately when the component is identified as clicked.
+          This behaviour is useful when the component is in a loop, but not all elements
+          enclosed by the Form would have had a chance to update their properties at the
+          time of the listener invocation. Please see the 'action' parameter as an alternative.
   	</description>
   </parameter>
   
   <parameter name="action">
       <description>
-          A listener that is notified if this component is triggered
-          just before the form's listener, after all components 
-          enclosed by the Form have had a chance to update their properties.
+          A listener that is notified when this component is triggered.
+          The listener notification is delayed until all components enclosed by the Form 
+          have had a chance to update their properties.
       </description>
   </parameter>
 
