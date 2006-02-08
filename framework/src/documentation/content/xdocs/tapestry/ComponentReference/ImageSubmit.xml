@@ -135,19 +135,6 @@
     </td>
    </tr>    
    
- <tr>
- 		<td>listener</td>
- 		<td>
-    &IActionListener;
-    </td>
- 		<td>in</td>
- 		<td>no</td>
- 		<td>&nbsp;</td>
- 		<td>
-    An optional listener (typically specified as the name of a listener method), notified
-    when the Submit is triggered.
- 		</td>
-   </tr>   
 	<tr>
  		<td>action</td>
  		<td>&IActionListener;</td>
@@ -155,11 +142,25 @@
  		<td>no</td>
  		<td>&nbsp;</td>
  		<td>
-          A listener that is notified if this component is triggered
-          just before the form's listener, after all components 
-          enclosed by the Form have had a chance to update their properties.
+          A listener that is notified when this component is triggered.
+          The listener notification is delayed until all components enclosed by the Form 
+          have had a chance to update their properties.
  		</td>
 	</tr>   
+	<tr>
+ 		<td>listener</td>
+ 		<td>&IActionListener;</td>
+ 		<td>in</td>
+ 		<td>no</td>
+ 		<td>&nbsp;</td>
+ 		<td>
+          A listener that is notified when this component is triggered. 
+          The listener is notified immediately when the component is identified as clicked.
+          This behaviour is useful when the component is in a loop, but not all elements
+          enclosed by the Form would have had a chance to update their properties at the
+          time of the listener invocation. Please see the 'action' parameter as an alternative.
+ 		</td>
+   </tr>   
    <tr>
     <td>parameters</td>
     <td>Object</td>
