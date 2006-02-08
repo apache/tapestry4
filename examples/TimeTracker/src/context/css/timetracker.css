@@ -1,0 +1,18 @@
+@import url("undohtml.css");  /* CSS to undo some default browser css that gets in the way more than it helps */
+
+body {
+  width: 100%;
+}
+
+body, td, th {
+  font-family: Lucida Grande, Tahoma, Verdana, Arial, sans-serif;
+  font-size: 9pt;
+}
+
+.even {
+  background-color: #f0f0f0;
+}
+
+.odd {
+  background-color: #f9f9f9;
+}
