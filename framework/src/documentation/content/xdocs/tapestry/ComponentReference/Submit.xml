@@ -47,11 +47,11 @@ Submit component (if any) caused the form to be submitted:
   
 <p>
 It is even possible to combine the two, in which case the property is set first,
-then the listener is notified.  The listener may be notified immediately
-(i.e., in the middle of processing the form submission) if provided 
-via the 'listener' parameter, but if it is provided via the 'action' parameter,
-the listener will be notified later, just before the form's listener (if any)
-is invoked.
+then the listener is notified. The listener may provided via the 'action' parameter and
+it will be notified when all components enclosed by the Form have had a chance 
+to update their properties. Alternatively, the listener can be provided via the 
+'listener' parameter and it will be notified immediately in the middle of processing 
+the form submission.
 </p>
   
 
@@ -120,28 +120,29 @@ is invoked.
    </tr>    
    
 	<tr>
- 		<td>listener</td>
- 		<td>
-    &IActionListener;
-    </td>
- 		<td>in</td>
- 		<td>no</td>
- 		<td>&nbsp;</td>
- 		<td>
-		An optional listener (typically specified as the name of a listener method), notified
-		when the Submit is triggered.
- 		</td>
-	</tr>   
-	<tr>
  		<td>action</td>
  		<td>&IActionListener;</td>
  		<td>in</td>
  		<td>no</td>
  		<td>&nbsp;</td>
  		<td>
-          A listener that is notified if this component is triggered
-          just before the form's listener, after all components 
-          enclosed by the Form have had a chance to update their properties.
+          A listener that is notified when this component is triggered.
+          The listener notification is delayed until all components enclosed by the Form 
+          have had a chance to update their properties.
+ 		</td>
+	</tr>   
+	<tr>
+ 		<td>listener</td>
+ 		<td>&IActionListener;</td>
+ 		<td>in</td>
+ 		<td>no</td>
+ 		<td>&nbsp;</td>
+ 		<td>
+          A listener that is notified when this component is triggered. 
+          The listener is notified immediately when the component is identified as clicked.
+          This behaviour is useful when the component is in a loop, but not all elements
+          enclosed by the Form would have had a chance to update their properties at the
+          time of the listener invocation. Please see the 'action' parameter as an alternative.
  		</td>
 	</tr>   
    <tr>
