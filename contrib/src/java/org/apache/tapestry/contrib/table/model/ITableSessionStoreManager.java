@@ -28,7 +28,7 @@ public interface ITableSessionStoreManager
 {
 
     /**
-     * Method saveState saves the session sate
+     * Method saveState saves the session sate.
      * 
      * @param objCycle
      *            the current request cycle
@@ -38,7 +38,7 @@ public interface ITableSessionStoreManager
     void saveState(IRequestCycle objCycle, Serializable objState);
 
     /**
-     * Method loadState loads the session state
+     * Method loadState loads the session state.
      * 
      * @param objCycle
      *            the current request cycle

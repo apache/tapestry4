@@ -28,7 +28,7 @@ import org.apache.tapestry.contrib.table.model.ITableSessionStateManager;
 public class FullTableSessionStateManager implements ITableSessionStateManager
 {
 
-    public final static FullTableSessionStateManager FULL_STATE_MANAGER = new FullTableSessionStateManager();
+    public static final FullTableSessionStateManager FULL_STATE_MANAGER = new FullTableSessionStateManager();
 
     /**
      * @see org.apache.tapestry.contrib.table.model.ITableSessionStateManager#getSessionState(ITableModel)

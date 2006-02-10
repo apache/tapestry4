@@ -34,16 +34,16 @@ public class XFinderException extends FinderException
         this(message, null);
     }
 
-    public XFinderException(String message, Throwable rootCause)
+    public XFinderException(String message, Throwable cause)
     {
         super(message);
 
-        this.rootCause = rootCause;
+        this.rootCause = cause;
     }
 
-    public XFinderException(Throwable rootCause)
+    public XFinderException(Throwable cause)
     {
-        this(rootCause.getMessage(), rootCause);
+        this(cause.getMessage(), cause);
     }
 
     public Throwable getRootCause()

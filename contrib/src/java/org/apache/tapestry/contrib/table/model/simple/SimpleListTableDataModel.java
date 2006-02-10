@@ -27,7 +27,7 @@ import org.apache.tapestry.contrib.table.model.common.ArrayIterator;
 
 /**
  * A minimal list implementation of the
- * {@link org.apache.tapestry.contrib.table.model.ITableDataModel} interface
+ * {@link org.apache.tapestry.contrib.table.model.ITableDataModel} interface.
  * 
  * @author mindbridge
  */
@@ -74,7 +74,7 @@ public class SimpleListTableDataModel extends AbstractTableDataModel implements 
     }
 
     /**
-     * Returns the row element at the given position
+     * Returns the row element at the given position.
      * 
      * @param nRow
      *            the index of the element to return
@@ -90,7 +90,7 @@ public class SimpleListTableDataModel extends AbstractTableDataModel implements 
     }
 
     /**
-     * Returns an Iterator with the elements from the given range
+     * Returns an Iterator with the elements from the given range.
      * 
      * @param nFrom
      *            the start of the range (inclusive)
@@ -111,7 +111,7 @@ public class SimpleListTableDataModel extends AbstractTableDataModel implements 
     }
 
     /**
-     * Method addRow. Adds a row object to the model at its end
+     * Method addRow. Adds a row object to the model at its end.
      * 
      * @param objRow
      *            the row object to add
@@ -133,7 +133,7 @@ public class SimpleListTableDataModel extends AbstractTableDataModel implements 
     }
 
     /**
-     * Method removeRow. Removes a row object from the model
+     * Method removeRow. Removes a row object from the model.
      * 
      * @param objRow
      *            the row object to remove

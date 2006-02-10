@@ -17,7 +17,7 @@ package org.apache.tapestry.contrib.table.model;
 import java.util.Iterator;
 
 /**
- * Defines a list model of ITableColumn objects
+ * Defines a list model of ITableColumn objects.
  * 
  * @author mindbridge
  */

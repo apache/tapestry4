@@ -20,7 +20,7 @@ import org.apache.tapestry.contrib.table.model.ITableSortingState;
 
 /**
  * A minimal implementation of
- * {@link org.apache.tapestry.contrib.table.model.ITableSortingState}
+ * {@link org.apache.tapestry.contrib.table.model.ITableSortingState}.
  * 
  * @author mindbridge
  */

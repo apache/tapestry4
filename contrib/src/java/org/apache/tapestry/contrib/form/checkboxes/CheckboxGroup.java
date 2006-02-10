@@ -29,7 +29,7 @@ import org.apache.tapestry.TapestryUtils;
 public abstract class CheckboxGroup extends BaseComponent
 {
 
-    public final static String CHECKBOX_GROUP_ATTRIBUTE = "org.apache.tapestry.contrib.form.CheckboxGroup";
+    public static final String CHECKBOX_GROUP_ATTRIBUTE = "org.apache.tapestry.contrib.form.CheckboxGroup";
 
     public abstract Collection getCheckboxNames();
 

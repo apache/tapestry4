@@ -37,18 +37,18 @@ public class XEJBException extends EJBException
         this(message, null);
     }
 
-    public XEJBException(String message, Throwable rootCause)
+    public XEJBException(String message, Throwable cause)
     {
         super(message);
 
-        this.rootCause = rootCause;
+        this.rootCause = cause;
     }
 
-    public XEJBException(Throwable rootCause)
+    public XEJBException(Throwable cause)
     {
-        super(rootCause.getMessage());
+        super(cause.getMessage());
 
-        this.rootCause = rootCause;
+        this.rootCause = cause;
     }
 
     public Throwable getRootCause()

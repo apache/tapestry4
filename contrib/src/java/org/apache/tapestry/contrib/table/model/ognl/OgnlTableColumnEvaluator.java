@@ -28,12 +28,12 @@ public class OgnlTableColumnEvaluator implements ITableColumnEvaluator
 
     private static final long serialVersionUID = 1L;
 
+    private static final Log LOG = LogFactory.getLog(OgnlTableColumnEvaluator.class);
+    
     /** @since 4.0 */
 
     private ExpressionEvaluator _expressionEvaluator;
-
-    private static final Log LOG = LogFactory.getLog(OgnlTableColumnEvaluator.class);
-
+    
     private String m_strExpression;
 
     public OgnlTableColumnEvaluator(String strExpression, ExpressionEvaluator expressionEvaluator)

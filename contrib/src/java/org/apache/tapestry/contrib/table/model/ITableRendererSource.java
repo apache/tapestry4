@@ -41,7 +41,7 @@ public interface ITableRendererSource extends Serializable
      * @see org.apache.tapestry.contrib.table.model.ITableColumn#getValueRenderer(IRequestCycle,
      *      ITableModelSource, Object)
      */
-    public IRender getRenderer(IRequestCycle objCycle, ITableModelSource objSource, ITableColumn objColumn,
+    IRender getRenderer(IRequestCycle objCycle, ITableModelSource objSource, ITableColumn objColumn,
             Object objRow);
 
 }

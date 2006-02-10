@@ -23,10 +23,10 @@ package org.apache.tapestry.contrib.table.model;
 public interface ITableRowSource
 {
 
-    final static String TABLE_ROW_SOURCE_ATTRIBUTE = "org.apache.tapestry.contrib.table.model.ITableRowSource";
+    String TABLE_ROW_SOURCE_ATTRIBUTE = "org.apache.tapestry.contrib.table.model.ITableRowSource";
 
     /**
-     * Method getTableRow
+     * Method getTableRow.
      * 
      * @return Object the current table row object
      */

@@ -26,7 +26,7 @@ import java.util.Iterator;
 public interface IBasicTableModel
 {
     /**
-     *  Returns the number of all records
+     *  Returns the number of all records.
      *  @return the number of all rows
      **/
     int getRowCount();

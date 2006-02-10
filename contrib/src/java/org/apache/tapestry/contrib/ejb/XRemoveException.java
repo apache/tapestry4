@@ -34,16 +34,16 @@ public class XRemoveException extends RemoveException
         this(message, null);
     }
 
-    public XRemoveException(String message, Throwable rootCause)
+    public XRemoveException(String message, Throwable cause)
     {
         super(message);
 
-        this.rootCause = rootCause;
+        this.rootCause = cause;
     }
 
-    public XRemoveException(Throwable rootCause)
+    public XRemoveException(Throwable cause)
     {
-        this(rootCause.getMessage(), rootCause);
+        this(cause.getMessage(), cause);
     }
 
     public Throwable getRootCause()

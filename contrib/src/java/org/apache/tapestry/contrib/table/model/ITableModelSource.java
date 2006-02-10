@@ -20,17 +20,17 @@ import org.apache.tapestry.IComponent;
  * A Tapestry component that provides the current table model. This interface is
  * used for obtaining the table model source by components wrapped by it, as
  * well as by external renderers, such as those provided by the column
- * implementations
+ * implementations.
  * 
  * @author mindbridge
  */
 public interface ITableModelSource extends IComponent
 {
 
-    final static String TABLE_MODEL_SOURCE_ATTRIBUTE = "org.apache.tapestry.contrib.table.model.ITableModelSource";
+    String TABLE_MODEL_SOURCE_ATTRIBUTE = "org.apache.tapestry.contrib.table.model.ITableModelSource";
 
     /**
-     * Returns the table model currently used
+     * Returns the table model currently used.
      * 
      * @return ITableModel the current table model
      */
