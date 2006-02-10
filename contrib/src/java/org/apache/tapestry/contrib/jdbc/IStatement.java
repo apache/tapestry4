@@ -35,7 +35,7 @@ public interface IStatement
      *
      **/
 
-    public String getSQL();
+    String getSQL();
 
     /**
      *  Returns the underlying {@link java.sql.Statement} 
@@ -43,21 +43,21 @@ public interface IStatement
      *
      **/
 
-    public Statement getStatement();
+    Statement getStatement();
 
     /**
      *  Closes the underlying statement, and nulls the reference to it.
      *
      **/
 
-    public void close() throws SQLException;
+    void close() throws SQLException;
 
     /**
      *  Executes the statement as a query, returning a {@link ResultSet}.
      *
      **/
 
-    public ResultSet executeQuery() throws SQLException;
+    ResultSet executeQuery() throws SQLException;
 
     /**
      *  Executes the statement as an update, returning the number of rows
@@ -65,5 +65,5 @@ public interface IStatement
      *
      **/
 
-    public int executeUpdate() throws SQLException;
+    int executeUpdate() throws SQLException;
 }

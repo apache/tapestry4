@@ -56,7 +56,7 @@ public class FormLinkRenderer extends DefaultLinkRenderer
      * Since the <code>FormLinkRenderer</code> is stateless, this instance can
      * serve all links within your application without interference.
      */
-    public final static ILinkRenderer RENDERER = new FormLinkRenderer();
+    public static final ILinkRenderer RENDERER = new FormLinkRenderer();
 
     public void renderLink(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent linkComponent)
     {

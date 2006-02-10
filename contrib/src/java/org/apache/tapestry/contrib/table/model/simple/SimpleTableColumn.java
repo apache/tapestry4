@@ -30,25 +30,24 @@ import org.apache.tapestry.contrib.table.model.common.AbstractTableColumn;
  */
 public class SimpleTableColumn extends AbstractTableColumn
 {
-
-    private static final long serialVersionUID = 1L;
-
-    // TODO: Unify SimpleTableColumnRendererSource and
-    // SimpleTableColumnFormRendererSource
-    // and implement the configuration with HiveMind
-
     public static final ITableRendererSource DEFAULT_COLUMN_RENDERER_SOURCE = new SimpleTableColumnRendererSource();
 
     public static final ITableRendererSource FORM_COLUMN_RENDERER_SOURCE = new SimpleTableColumnFormRendererSource();
 
     public static final ITableRendererSource DEFAULT_VALUE_RENDERER_SOURCE = new SimpleTableValueRendererSource();
+    
+    private static final long serialVersionUID = 1L;
+    
+    // TODO: Unify SimpleTableColumnRendererSource and
+    // SimpleTableColumnFormRendererSource
+    // and implement the configuration with HiveMind
 
     private String m_strDisplayName;
 
     private ITableColumnEvaluator m_objEvaluator;
 
     /**
-     * Creates a SimpleTableColumn
+     * Creates a SimpleTableColumn.
      * 
      * @param strColumnName
      *            the identifying name and display name of the column
@@ -59,7 +58,7 @@ public class SimpleTableColumn extends AbstractTableColumn
     }
 
     /**
-     * Creates a SimpleTableColumn
+     * Creates a SimpleTableColumn.
      * 
      * @param strColumnName
      *            the identifying name and display name of the column
@@ -72,7 +71,7 @@ public class SimpleTableColumn extends AbstractTableColumn
     }
 
     /**
-     * Creates a SimpleTableColumn
+     * Creates a SimpleTableColumn.
      * 
      * @param strColumnName
      *            the identifying name and display name of the column
@@ -87,7 +86,7 @@ public class SimpleTableColumn extends AbstractTableColumn
     }
 
     /**
-     * Creates a SimpleTableColumn
+     * Creates a SimpleTableColumn.
      * 
      * @param strColumnName
      *            the identifying name of the column
@@ -100,7 +99,7 @@ public class SimpleTableColumn extends AbstractTableColumn
     }
 
     /**
-     * Creates a SimpleTableColumn
+     * Creates a SimpleTableColumn.
      * 
      * @param strColumnName
      *            the identifying name of the column
@@ -115,7 +114,7 @@ public class SimpleTableColumn extends AbstractTableColumn
     }
 
     /**
-     * Creates a SimpleTableColumn
+     * Creates a SimpleTableColumn.
      * 
      * @param strColumnName
      *            the identifying name of the column
@@ -196,7 +195,7 @@ public class SimpleTableColumn extends AbstractTableColumn
     }
 
     /**
-     * Extracts the value of the column from the row object
+     * Extracts the value of the column from the row object.
      * 
      * @param objRow
      *            the row object

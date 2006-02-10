@@ -34,16 +34,16 @@ public class XCreateException extends CreateException
         this(message, null);
     }
 
-    public XCreateException(String message, Throwable rootCause)
+    public XCreateException(String message, Throwable cause)
     {
         super(message);
 
-        this.rootCause = rootCause;
+        this.rootCause = cause;
     }
 
-    public XCreateException(Throwable rootCause)
+    public XCreateException(Throwable cause)
     {
-        this(rootCause.getMessage(), rootCause);
+        this(cause.getMessage(), cause);
     }
 
     public Throwable getRootCause()

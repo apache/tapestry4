@@ -29,7 +29,7 @@ public interface ITableSessionStateManager
 
     /**
      * Method getSessionState extracts the "persistent" portion of the table
-     * model
+     * model.
      * 
      * @param objModel
      *            the table model to extract the session state from
@@ -39,7 +39,7 @@ public interface ITableSessionStateManager
 
     /**
      * Method recreateTableModel recreates a table model from the saved session
-     * state
+     * state.
      * 
      * @param objState
      *            the saved session state

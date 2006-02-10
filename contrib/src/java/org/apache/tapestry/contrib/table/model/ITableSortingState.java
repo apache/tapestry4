@@ -22,12 +22,12 @@ package org.apache.tapestry.contrib.table.model;
 public interface ITableSortingState
 {
 
-    static final boolean SORT_ASCENDING = false;
-    static final boolean SORT_DESCENDING = true;
+    boolean SORT_ASCENDING = false;
+    boolean SORT_DESCENDING = true;
 
     /**
      * Method getSortColumn defines the column that the table should be sorted
-     * upon
+     * upon.
      * 
      * @return String the name of the sorting column or null if the table is not
      *         sorted
@@ -35,14 +35,14 @@ public interface ITableSortingState
     String getSortColumn();
 
     /**
-     * Method getSortOrder defines the direction of the table sorting
+     * Method getSortOrder defines the direction of the table sorting.
      * 
      * @return boolean the sorting order (see constants)
      */
     boolean getSortOrder();
 
     /**
-     * Method setSortColumn updates the table sorting column and order
+     * Method setSortColumn updates the table sorting column and order.
      * 
      * @param strName
      *            the name of the column to sort by

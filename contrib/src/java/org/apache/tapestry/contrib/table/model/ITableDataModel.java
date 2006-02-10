@@ -33,7 +33,7 @@ public interface ITableDataModel
     int getRowCount();
 
     /**
-     * Iterates over all of the rows in the model
+     * Iterates over all of the rows in the model.
      * 
      * @return Iterator the iterator for access to the data
      */
@@ -41,7 +41,7 @@ public interface ITableDataModel
 
     /**
      * Method addTableDataModelListener Adds a listener that is notified when
-     * the data in the model is changed
+     * the data in the model is changed.
      * 
      * @param objListener
      *            the listener to add
@@ -50,7 +50,7 @@ public interface ITableDataModel
 
     /**
      * Method removeTableDataModelListener. Removes a listener that is notified
-     * when the data in the model is changed
+     * when the data in the model is changed.
      * 
      * @param objListener
      *            the listener to remove

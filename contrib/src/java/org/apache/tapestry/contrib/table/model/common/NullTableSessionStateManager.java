@@ -28,7 +28,7 @@ import org.apache.tapestry.contrib.table.model.ITableSessionStateManager;
 public class NullTableSessionStateManager implements ITableSessionStateManager
 {
 
-    public final static NullTableSessionStateManager NULL_STATE_MANAGER = new NullTableSessionStateManager();
+    public static final NullTableSessionStateManager NULL_STATE_MANAGER = new NullTableSessionStateManager();
 
     /**
      * @see org.apache.tapestry.contrib.table.model.ITableSessionStateManager#getSessionState(ITableModel)

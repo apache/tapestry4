@@ -24,7 +24,7 @@ import org.apache.tapestry.contrib.table.model.common.AbstractTableDataModel;
 
 /**
  * A minimal set implementation of the
- * {@link org.apache.tapestry.contrib.table.model.ITableDataModel} interface
+ * {@link org.apache.tapestry.contrib.table.model.ITableDataModel} interface.
  * 
  * @author mindbridge
  */
@@ -57,7 +57,7 @@ public class SimpleSetTableDataModel extends AbstractTableDataModel implements S
     }
 
     /**
-     * Method addRow. Adds a row object to the model at its end
+     * Method addRow. Adds a row object to the model at its end.
      * 
      * @param objRow
      *            the row object to add
@@ -80,7 +80,7 @@ public class SimpleSetTableDataModel extends AbstractTableDataModel implements S
     }
 
     /**
-     * Method removeRow. Removes a row object from the model
+     * Method removeRow. Removes a row object from the model.
      * 
      * @param objRow
      *            the row object to remove

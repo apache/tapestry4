@@ -26,7 +26,7 @@ public interface IFullTableModel extends ITableModel
 {
 
     /**
-     * Iterates over all of the rows in the model
+     * Iterates over all of the rows in the model.
      * 
      * @return Iterator the iterator for access to the data
      */
