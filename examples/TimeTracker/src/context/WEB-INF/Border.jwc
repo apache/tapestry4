@@ -21,4 +21,5 @@
 
 <component-specification allow-informal-parameters="no">
     
+    <inject property="conn" object="service:timetracker.db.DerbyConnection" />
 </component-specification>
