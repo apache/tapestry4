@@ -3,7 +3,6 @@
 	<classpathentry excluding="org/apache/tapestry/html/dojo/" kind="src" path="framework/src/java"/>
 	<classpathentry kind="src" path="examples/TimeTracker/src/java"/>
 	<classpathentry kind="src" path="framework/src/java/org/apache/tapestry/html/dojo"/>
-	<classpathentry kind="src" path="examples/AjaxWorkbench/src/java"/>
 	<classpathentry kind="src" path="framework/src/js"/>
 	<classpathentry kind="src" path="framework/src/test"/>
 	<classpathentry kind="src" path="contrib/src/java"/>
@@ -40,5 +39,9 @@
 	<classpathentry kind="lib" path="ext-package/lib/jboss-j2ee-4.0.0DR4.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/hivemind-1.1.1.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.1.1.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/commons-dbcp-1.2.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/commons-io-1.1.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/commons-pool-1.2.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/commons-collections-3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

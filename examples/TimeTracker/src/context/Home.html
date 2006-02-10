@@ -1,15 +1,36 @@
 <span jwcid="@Border">
 
-<p>This is the Tapestry Workbench.  It is a testing ground for Tapestry.
-Each tab above links to a new page, or set of pages, that demonstrate Tapestry components and
-features.
+<p/>This is the Tapestry TimeTracker application. It is a demonstration of some of the new
+core features available in tapestry, as well as how a sample application might be built
+using them.
 
-<p>The check box control below is used to enable or disable the display of request information.  This is
-a detailed description of incoming request and session data, the same as provided by
-the Tapestry Inspector.  This is very useful when trying to understand or debug a form component.
-
-<p>The Tapestry icon in the lower right corner raises the Tapestry Inspector in a new window.
-The Inspector is a mini-application used
-to explore a running Tapestry application.
+<form >
+    <fieldset>
+    <legend><span jwcid="@Insert" value="message:new.task"/></legend>
+    <div class="fm-hopt">
+      <label for="fm-state">Project</label>
+      <select id="fm-state" name="fm-state">
+        <option value="" selected="selected">Select..</option>
+        <option value="UNK">Tapestry</option>
+        <option value="AL">Code zigest</option>
+      </select>
+    </div>
+    <div class="fm-hreq">
+      <label for="fm-firstname">Start</label>
+      <input style="width:auto" size="10" name="fm-firstname" id="fm-firstname" type="text" />
+    </div>
+    <div class="fm-hopt">
+      <label for="fm-middlename">End</label>
+      <input style="width:auto" size="10" id="fm-middlename" name="fm-middlename" type="text" />
+    </div>
+    <div class="fm-hreq">
+      <label for="fm-lastname">Description</label>
+      <input name="fm-lastname" id="fm-lastname" type="text" />
+    </div>
+    <div id="fm-hsubmit" class="fm-req">
+      <input name="Submit" value="add" type="submit" />
+    </div>
+    </fieldset>
+</form>
 
 </span>

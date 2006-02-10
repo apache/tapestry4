@@ -2,11 +2,26 @@
 
 <link rel="shortcut icon" href="favicon.ico" type="image/gif" />
 <link href="css/timetracker.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/forms.css" rel="stylesheet" type="text/css" media="all" />
 
 <body jwcid="@Body">
 
-<h2>Home</h2>
-This is home.
-again again
+<div id="header" >
+    <span class="headertxt"><span jwcid="@Insert" value="message:header.display"/></span>
+</div>
+
+<div id="navigation" >
+    <ul>
+        <li><a class="here" href="" >home</a></li>
+        <li><a href="others">others</a></li>
+        <li><a href="and more">more things</a></li>
+    </ul>
+</div>
+
+<div id="content">
+<span jwcid="@RenderBody" />
+</div>
+
 </body>
+
 </html>
