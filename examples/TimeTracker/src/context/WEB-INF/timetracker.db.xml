@@ -50,6 +50,7 @@
                 <set property="initialSize" value="1" />
                 <set property="maxActive" value="2" />
                 <set property="maxWait" value="40000" />
+                <set property="username" value="trackadmin" />
                 <set property="poolPreparedStatements" value="true" />
                 <set property="maxOpenPreparedStatements" value="20" />
             </construct>
