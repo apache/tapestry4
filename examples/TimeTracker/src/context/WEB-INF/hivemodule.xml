@@ -22,4 +22,5 @@
     </contribution>
     
     <sub-module descriptor="timetracker.db.xml" />
+    <sub-module descriptor="timetracker.dao.xml" />
 </module>
