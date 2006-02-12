@@ -47,8 +47,10 @@ import org.easymock.MockControl;
  */
 public abstract class BaseComponentTestCase extends HiveMindTestCase
 {
+    protected CharArrayWriter _charArrayWriter;
+    
     private Creator _creator;
-
+    
     protected Creator getCreator()
     {
         if (_creator == null)
@@ -56,9 +58,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
         return _creator;
     }
-
-    protected CharArrayWriter _charArrayWriter;
-
+    
     protected IMarkupWriter newBufferWriter()
     {
         _charArrayWriter = new CharArrayWriter();
