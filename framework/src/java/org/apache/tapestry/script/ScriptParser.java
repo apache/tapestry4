@@ -50,8 +50,6 @@ import org.apache.tapestry.util.xml.RuleDirectedParser;
 
 public class ScriptParser
 {
-    private RuleDirectedParser _parser;
-
     public static final String SCRIPT_DTD_1_0_PUBLIC_ID = "-//Primix Solutions//Tapestry Script 1.0//EN";
 
     public static final String SCRIPT_DTD_1_1_PUBLIC_ID = "-//Howard Ship//Tapestry Script 1.1//EN";
@@ -60,6 +58,8 @@ public class ScriptParser
 
     /** @since 3.0 */
     public static final String SCRIPT_DTD_3_0_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN";
+
+    private RuleDirectedParser _parser;
 
     public ScriptParser(ClassResolver resolver, ExpressionEvaluator evaluator,
             ValueConverter valueConverter)

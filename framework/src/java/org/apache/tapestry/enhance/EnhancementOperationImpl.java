@@ -55,6 +55,8 @@ import org.apache.tapestry.util.ObjectIdentityMap;
  */
 public class EnhancementOperationImpl implements EnhancementOperation
 {
+    static int _uid = 0;
+    
     private ClassResolver _resolver;
 
     private IComponentSpecification _specification;
@@ -135,6 +137,16 @@ public class EnhancementOperationImpl implements EnhancementOperation
         _log = log;
     }
 
+    /**
+     * Alternate package private constructor used by the test suite, to bypass the defense checks
+     * above.
+     */
+
+    EnhancementOperationImpl()
+    {
+        _log = null;
+    }
+    
     public String toString()
     {
         ToStringBuilder builder = new ToStringBuilder(this);
@@ -221,16 +233,6 @@ public class EnhancementOperationImpl implements EnhancementOperation
             if (!_properties.containsKey(name))
                 _properties.put(name, pd);
         }
-    }
-
-    /**
-     * Alternate package private constructor used by the test suite, to bypass the defense checks
-     * above.
-     */
-
-    EnhancementOperationImpl()
-    {
-        _log = null;
     }
 
     public void claimProperty(String propertyName)
@@ -505,8 +507,6 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         return componentClass.getConstructors()[0];
     }
-
-    static int _uid = 0;
 
     private String newClassName()
     {

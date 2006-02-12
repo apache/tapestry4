@@ -28,10 +28,16 @@ import org.apache.tapestry.bean.IBeanInitializer;
 
 public class BeanSpecification extends LocatablePropertyHolder implements IBeanSpecification
 {
-    protected String className;
+    protected String _className;
 
-    protected BeanLifecycle lifecycle;
+    protected BeanLifecycle _lifecycle;
 
+    /**
+     * A List of {@link IBeanInitializer}.
+     */
+
+    protected List initializers;
+    
     /** @since 1.0.9 * */
     private String description;
 
@@ -39,20 +45,14 @@ public class BeanSpecification extends LocatablePropertyHolder implements IBeanS
 
     private String _propertyName;
 
-    /**
-     * A List of {@link IBeanInitializer}.
-     */
-
-    protected List initializers;
-
     public String getClassName()
     {
-        return className;
+        return _className;
     }
 
     public BeanLifecycle getLifecycle()
     {
-        return lifecycle;
+        return _lifecycle;
     }
 
     /**
@@ -83,9 +83,9 @@ public class BeanSpecification extends LocatablePropertyHolder implements IBeanS
     {
         StringBuffer buffer = new StringBuffer("BeanSpecification[");
 
-        buffer.append(className);
+        buffer.append(_className);
         buffer.append(", lifecycle ");
-        buffer.append(lifecycle.getName());
+        buffer.append(_lifecycle.getName());
 
         if (initializers != null && initializers.size() > 0)
         {
@@ -113,14 +113,14 @@ public class BeanSpecification extends LocatablePropertyHolder implements IBeanS
 
     public void setClassName(String className)
     {
-        this.className = className;
+        this._className = className;
     }
 
     /** @since 3.0 * */
 
     public void setLifecycle(BeanLifecycle lifecycle)
     {
-        this.lifecycle = lifecycle;
+        this._lifecycle = lifecycle;
     }
 
     /** @since 4.0 */

@@ -40,9 +40,9 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements
 {
     private static final Log LOG = LogFactory.getLog(ExtensionSpecification.class);
 
-    private String _className;
-
     protected Map _configuration = new HashMap();
+    
+    private String _className;
 
     private boolean _immediate;
 
@@ -150,16 +150,17 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements
 
     private Object instantiateInstance(Class extensionClass, Object result)
     {
+        Object ret = null;
         try
         {
-            result = extensionClass.newInstance();
+            ret = extensionClass.newInstance();
         }
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(ex.getMessage(), getLocation(), ex);
         }
-
-        return result;
+        
+        return ret;
     }
 
     public String toString()

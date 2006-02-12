@@ -14,9 +14,9 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.hivemind.util.ClasspathResource;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.util.ClasspathResource;
 
 /**
  *  A token for included scripts.

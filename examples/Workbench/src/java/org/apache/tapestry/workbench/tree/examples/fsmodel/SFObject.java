@@ -28,9 +28,9 @@ public abstract class SFObject implements IFileSystemTreeNode
 
     protected File m_objFile;
     protected ITreeNode m_objParent;
-    private Date m_objDate;
     protected transient AssetsHolder m_objAssetsHolder = null;
-
+    private Date m_objDate;
+    
     public SFObject(ITreeNode objParent, File objFile)
     {
         m_objParent = objParent;

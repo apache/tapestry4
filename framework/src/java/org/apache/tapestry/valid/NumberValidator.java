@@ -38,9 +38,14 @@ import org.apache.tapestry.form.IFormComponent;
 
 public class NumberValidator extends AbstractNumericValidator
 {
+    public static final int NUMBER_TYPE_INTEGER = 0;
 
+    public static final int NUMBER_TYPE_REAL = 1;
+    
     private static final Map TYPES = new HashMap();
-
+    
+    private static StrategyRegistry _numberAdaptors = new StrategyRegistryImpl();
+    
     static
     {
         TYPES.put("boolean", boolean.class);
@@ -77,17 +82,11 @@ public class NumberValidator extends AbstractNumericValidator
 
     private Number _maximum;
 
-    private static StrategyRegistry _numberAdaptors = new StrategyRegistryImpl();
-
-    public final static int NUMBER_TYPE_INTEGER = 0;
-
-    public final static int NUMBER_TYPE_REAL = 1;
-
     /**
      * This class is not meant for use outside of NumberValidator; it is public
      * only to fascilitate some unit testing.
      */
-    public static abstract class NumberStrategy
+    public abstract static class NumberStrategy
     {
 
         /**
@@ -98,7 +97,7 @@ public class NumberValidator extends AbstractNumericValidator
          *             if the String can not be parsed.
          */
 
-        abstract public Number parse(String value);
+        public abstract Number parse(String value);
 
         /**
          * Indicates the type of the number represented -- integer or real. The
@@ -108,14 +107,14 @@ public class NumberValidator extends AbstractNumericValidator
          * 
          * @return one of the predefined number types
          */
-        abstract public int getNumberType();
+        public abstract int getNumberType();
 
         public int compare(Number left, Number right)
         {
             if (!left.getClass().equals(right.getClass())) right = coerce(right);
-
+            
             Comparable lc = (Comparable)left;
-
+            
             return lc.compareTo(right);
         }
 

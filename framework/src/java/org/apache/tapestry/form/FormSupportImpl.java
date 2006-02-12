@@ -78,14 +78,14 @@ public class FormSupportImpl implements FormSupport
 
     public static final String SCRIPT = "/org/apache/tapestry/form/Form.js";
 
-    private final static Set _standardReservedIds;
-
     /**
      * Attribute set to true when a field has been focused; used to prevent conflicting JavaScript
      * for field focusing from being emitted.
      */
 
     public static final String FIELD_FOCUS_ATTRIBUTE = "org.apache.tapestry.field-focused";
+    
+    private static final Set RESERVED_IDS;
 
     static
     {
@@ -97,10 +97,10 @@ public class FormSupportImpl implements FormSupport
         set.add(SUBMIT_MODE);
         set.add(FormConstants.SUBMIT_NAME_PARAMETER);
 
-        _standardReservedIds = Collections.unmodifiableSet(set);
+        RESERVED_IDS = Collections.unmodifiableSet(set);
     }
 
-    private final static Set _submitModes;
+    private static final Set SUBMIT_MODES;
 
     static
     {
@@ -109,7 +109,7 @@ public class FormSupportImpl implements FormSupport
         set.add(FormConstants.SUBMIT_NORMAL);
         set.add(FormConstants.SUBMIT_REFRESH);
 
-        _submitModes = Collections.unmodifiableSet(set);
+        SUBMIT_MODES = Collections.unmodifiableSet(set);
     }
 
     /**
@@ -253,7 +253,7 @@ public class FormSupportImpl implements FormSupport
 
             // Reserve the name.
 
-            if (!_standardReservedIds.contains(name))
+            if (!RESERVED_IDS.contains(name))
             {
                 _elementIdAllocator.allocateId(name);
 
@@ -579,7 +579,7 @@ public class FormSupportImpl implements FormSupport
 
         runDeferredRunnables();
 
-        if (_submitModes.contains(mode))
+        if (SUBMIT_MODES.contains(mode))
             return mode;
 
         // Either something wacky on the client side, or a client without

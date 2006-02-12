@@ -73,9 +73,9 @@ import org.xml.sax.SAXParseException;
  */
 public class SpecificationParser extends AbstractParser implements ISpecificationParser
 {
-    private static final String IDENTIFIER_PATTERN = "_?[a-zA-Z]\\w*";
+    public static final String IDENTIFIER_PATTERN = "_?[a-zA-Z]\\w*";
 
-    private static final String EXTENDED_IDENTIFIER_PATTERN = "_?[a-zA-Z](\\w|-)*";
+    public static final String EXTENDED_IDENTIFIER_PATTERN = "_?[a-zA-Z](\\w|-)*";
 
     /**
      * Perl5 pattern for asset names. Letter, followed by letter, number or underscore. Also allows
@@ -128,13 +128,6 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             + IDENTIFIER_PATTERN + "/)*" + IDENTIFIER_PATTERN + "$";
 
     /**
-     * We can share a single map for all the XML attribute to object conversions, since the keys are
-     * unique.
-     */
-
-    private final Map CONVERSION_MAP = new HashMap();
-
-    /**
      * Extended version of {@link Tapestry.SIMPLE_PROPERTY_NAME_PATTERN}, but allows a series of
      * individual property names, seperated by periods. In addition, each name within the dotted
      * sequence is allowed to contain dashes.
@@ -161,21 +154,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      */
 
     public static final String LIBRARY_ID_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
-
-    /** @since 4.0 */
-    private final Log _log;
-
-    /** @since 4.0 */
-    private final ErrorHandler _errorHandler;
-
-    /**
-     * Set to true if parsing the 4.0 DTD.
-     * 
-     * @since 4.0
-     */
-
-    private boolean _DTD_4_0;
-
+    
     /**
      * Perl5 pattern for page names. Page names appear in library and application specifications, in
      * the &lt;page&gt; element. Starting with 4.0, the page name may look more like a path name,
@@ -216,7 +195,15 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      */
 
     public static final String SERVICE_NAME_PATTERN = EXTENDED_PROPERTY_NAME_PATTERN;
+    
+    /** @since 3.0 */
 
+    public static final String TAPESTRY_DTD_3_0_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Specification 3.0//EN";
+
+    /** @since 4.0 */
+
+    public static final String TAPESTRY_DTD_4_0_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Specification 4.0//EN";
+    
     private static final int STATE_ALLOW_DESCRIPTION = 2000;
 
     private static final int STATE_ALLOW_PROPERTY = 2001;
@@ -225,7 +212,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private static final int STATE_BEAN = 4;
 
-    /** Very different between 3.0 and 4.0 DTD */
+    /** Very different between 3.0 and 4.0 DTD. */
 
     private static final int STATE_BINDING_3_0 = 7;
 
@@ -263,17 +250,31 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private static final int STATE_SET = 5;
 
-    /** 3.0 DTD only */
+    /** 3.0 DTD only. */
     private static final int STATE_STATIC_BINDING = 9;
 
-    /** @since 3.0 */
+    /**
+     * We can share a single map for all the XML attribute to object conversions, since the keys are
+     * unique.
+     */
 
-    public static final String TAPESTRY_DTD_3_0_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Specification 3.0//EN";
+    private final Map _conversionMap = new HashMap();
+
+    
+    /** @since 4.0 */
+    private final Log _log;
 
     /** @since 4.0 */
+    private final ErrorHandler _errorHandler;
 
-    public static final String TAPESTRY_DTD_4_0_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Specification 4.0//EN";
+    /**
+     * Set to true if parsing the 4.0 DTD.
+     * 
+     * @since 4.0
+     */
 
+    private boolean _dtd40;
+    
     /**
      * The attributes of the current element, as a map (string keyed on string).
      */
@@ -324,26 +325,26 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     {
 
-        CONVERSION_MAP.put("true", Boolean.TRUE);
-        CONVERSION_MAP.put("t", Boolean.TRUE);
-        CONVERSION_MAP.put("1", Boolean.TRUE);
-        CONVERSION_MAP.put("y", Boolean.TRUE);
-        CONVERSION_MAP.put("yes", Boolean.TRUE);
-        CONVERSION_MAP.put("on", Boolean.TRUE);
-        CONVERSION_MAP.put("aye", Boolean.TRUE);
+        _conversionMap.put("true", Boolean.TRUE);
+        _conversionMap.put("t", Boolean.TRUE);
+        _conversionMap.put("1", Boolean.TRUE);
+        _conversionMap.put("y", Boolean.TRUE);
+        _conversionMap.put("yes", Boolean.TRUE);
+        _conversionMap.put("on", Boolean.TRUE);
+        _conversionMap.put("aye", Boolean.TRUE);
 
-        CONVERSION_MAP.put("false", Boolean.FALSE);
-        CONVERSION_MAP.put("f", Boolean.FALSE);
-        CONVERSION_MAP.put("0", Boolean.FALSE);
-        CONVERSION_MAP.put("off", Boolean.FALSE);
-        CONVERSION_MAP.put("no", Boolean.FALSE);
-        CONVERSION_MAP.put("n", Boolean.FALSE);
-        CONVERSION_MAP.put("nay", Boolean.FALSE);
+        _conversionMap.put("false", Boolean.FALSE);
+        _conversionMap.put("f", Boolean.FALSE);
+        _conversionMap.put("0", Boolean.FALSE);
+        _conversionMap.put("off", Boolean.FALSE);
+        _conversionMap.put("no", Boolean.FALSE);
+        _conversionMap.put("n", Boolean.FALSE);
+        _conversionMap.put("nay", Boolean.FALSE);
 
-        CONVERSION_MAP.put("none", BeanLifecycle.NONE);
-        CONVERSION_MAP.put("request", BeanLifecycle.REQUEST);
-        CONVERSION_MAP.put("page", BeanLifecycle.PAGE);
-        CONVERSION_MAP.put("render", BeanLifecycle.RENDER);
+        _conversionMap.put("none", BeanLifecycle.NONE);
+        _conversionMap.put("request", BeanLifecycle.REQUEST);
+        _conversionMap.put("page", BeanLifecycle.PAGE);
+        _conversionMap.put("render", BeanLifecycle.RENDER);
 
         _parserFactory.setNamespaceAware(false);
         _parserFactory.setValidating(true);
@@ -476,7 +477,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void allowMetaData()
     {
-        if (_DTD_4_0)
+        if (_dtd40)
         {
             if (_elementName.equals("meta"))
             {
@@ -486,7 +487,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         }
         else if (_elementName.equals("property"))
         {
-            enterProperty_3_0();
+            enterProperty3();
             return;
         }
 
@@ -522,13 +523,13 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         if (_elementName.equals("set-property"))
         {
-            enterSetProperty_3_0();
+            enterSetProperty3();
             return;
         }
 
         if (_elementName.equals("set-message-property"))
         {
-            enterSetMessage_3_0();
+            enterSetMessage3();
             return;
         }
 
@@ -553,19 +554,19 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         if (_elementName.equals("static-binding"))
         {
-            enterStaticBinding_3_0();
+            enterStaticBinding3();
             return;
         }
 
         if (_elementName.equals("message-binding"))
         {
-            enterMessageBinding_3_0();
+            enterMessageBinding3();
             return;
         }
 
         if (_elementName.equals("inherited-binding"))
         {
-            enterInheritedBinding_3_0();
+            enterInheritedBinding3();
             return;
         }
 
@@ -655,7 +656,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         if (_elementName.equals("service"))
         {
-            enterService_3_0();
+            enterService3();
             return;
         }
 
@@ -703,7 +704,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         // Have to be careful, because <meta> in 4.0 was <property> in 3.0
 
         if (_elementName.equals("property-specification")
-                || (_DTD_4_0 && _elementName.equals("property")))
+                || (_dtd40 && _elementName.equals("property")))
         {
             enterProperty();
             return;
@@ -729,19 +730,19 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         if (_elementName.equals("context-asset"))
         {
-            enterContextAsset_3_0();
+            enterContextAsset3();
             return;
         }
 
         if (_elementName.equals("private-asset"))
         {
-            enterPrivateAsset_3_0();
+            enterPrivateAsset3();
             return;
         }
 
         if (_elementName.equals("external-asset"))
         {
-            enterExternalAsset_3_0();
+            enterExternalAsset3();
             return;
 
         }
@@ -832,7 +833,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
             case STATE_BINDING_3_0:
 
-                endBinding_3_0();
+                endBinding3();
                 break;
 
             case STATE_BINDING:
@@ -869,7 +870,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         pop();
     }
 
-    private void endBinding_3_0()
+    private void endBinding3()
     {
         BindingSetter bs = (BindingSetter) peekObject();
 
@@ -928,7 +929,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         // In the 3.0 DTD, the initial value was always an OGNL expression.
         // In the 4.0 DTD, it is a binding reference, qualified with a prefix.
 
-        if (initialValue != null && !_DTD_4_0)
+        if (initialValue != null && !_dtd40)
             initialValue = BindingConstants.OGNL_PREFIX + ":" + initialValue;
 
         ps.setInitialValue(initialValue);
@@ -1019,9 +1020,9 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void enterBinding()
     {
-        if (!_DTD_4_0)
+        if (!_dtd40)
         {
-            enterBinding_3_0();
+            enterBinding3();
             return;
         }
 
@@ -1058,7 +1059,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      * Handles a binding in a 3.0 DTD.
      */
 
-    private void enterBinding_3_0()
+    private void enterBinding3()
     {
         String name = getAttribute("name");
         String expression = getAttribute("expression");
@@ -1134,7 +1135,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void enterConfigure()
     {
-        String attributeName = _DTD_4_0 ? "property" : "property-name";
+        String attributeName = _dtd40 ? "property" : "property-name";
 
         String propertyName = getValidatedAttribute(
                 attributeName,
@@ -1151,7 +1152,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         push(_elementName, setter, STATE_CONFIGURE, false);
     }
 
-    private void enterContextAsset_3_0()
+    private void enterContextAsset3()
     {
         enterAsset("path", "context:");
     }
@@ -1197,7 +1198,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         push(_elementName, es, STATE_EXTENSION);
     }
 
-    private void enterExternalAsset_3_0()
+    private void enterExternalAsset3()
     {
         // External URLs get no prefix, but will have a scheme (i.e., "http:") that
         // fulfils much the same purpose.
@@ -1205,9 +1206,9 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         enterAsset("URL", null);
     }
 
-    /** A throwback to the 3.0 DTD */
+    /** A throwback to the 3.0 DTD. */
 
-    private void enterInheritedBinding_3_0()
+    private void enterInheritedBinding3()
     {
         String name = getAttribute("name");
         String parameterName = getAttribute("parameter-name");
@@ -1247,7 +1248,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         push(_elementName, null, STATE_LISTENER_BINDING, false);
     }
 
-    private void enterMessageBinding_3_0()
+    private void enterMessageBinding3()
     {
         String name = getAttribute("name");
         String key = getAttribute("key");
@@ -1285,7 +1286,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
                 PARAMETER_NAME_PATTERN,
                 "invalid-parameter-name");
 
-        String attributeName = _DTD_4_0 ? "property" : "property-name";
+        String attributeName = _dtd40 ? "property" : "property-name";
 
         String propertyName = getValidatedAttribute(
                 attributeName,
@@ -1306,12 +1307,12 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         String defaultValue = getAttribute("default-value");
 
-        if (defaultValue != null && !_DTD_4_0)
+        if (defaultValue != null && !_dtd40)
             defaultValue = BindingConstants.OGNL_PREFIX + ":" + defaultValue;
 
         ps.setDefaultValue(defaultValue);
 
-        if (!_DTD_4_0)
+        if (!_dtd40)
         {
             // When direction=auto (in a 3.0 DTD), turn caching off
 
@@ -1345,7 +1346,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         push(_elementName, ps, STATE_ALLOW_DESCRIPTION);
     }
 
-    private void enterPrivateAsset_3_0()
+    private void enterPrivateAsset3()
     {
         enterAsset("resource-path", "classpath:");
     }
@@ -1363,7 +1364,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         push(_elementName, new PropertyValueSetter(ph, key, value), STATE_META, false);
     }
 
-    private void enterProperty_3_0()
+    private void enterProperty3()
     {
         String name = getAttribute("name");
         String value = getAttribute("value");
@@ -1376,7 +1377,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     }
 
     /**
-     * &tl;property&gt; in 4.0, or &lt;property-specification&gt; in 3.0
+     * &tl;property&gt; in 4.0, or &lt;property-specification&gt; in 3.0 .
      */
 
     private void enterProperty()
@@ -1386,7 +1387,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         String persistence = null;
 
-        if (_DTD_4_0)
+        if (_dtd40)
             persistence = getAttribute("persist");
         else
             persistence = getBooleanAttribute("persistent", false) ? "session" : null;
@@ -1443,14 +1444,14 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         push(_elementName, null, STATE_NO_CONTENT);
     }
 
-    private void enterService_3_0()
+    private void enterService3()
     {
         _errorHandler.error(_log, ParseMessages.serviceElementNotSupported(), getLocation(), null);
 
         push(_elementName, null, STATE_NO_CONTENT);
     }
 
-    private void enterSetMessage_3_0()
+    private void enterSetMessage3()
     {
         String name = getAttribute("name");
         String key = getAttribute("key");
@@ -1482,7 +1483,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         push(_elementName, new BeanSetPropertySetter(bs, bi, null, reference), STATE_SET, false);
     }
 
-    private void enterSetProperty_3_0()
+    private void enterSetProperty3()
     {
         String name = getAttribute("name");
         String expression = getAttribute("expression");
@@ -1497,7 +1498,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
                 expression), STATE_SET, false);
     }
 
-    private void enterStaticBinding_3_0()
+    private void enterStaticBinding3()
     {
         String name = getAttribute("name");
         String expression = getAttribute("value");
@@ -1532,7 +1533,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         if (value == null)
             return defaultValue;
 
-        Boolean b = (Boolean) CONVERSION_MAP.get(value);
+        Boolean b = (Boolean) _conversionMap.get(value);
 
         return b.booleanValue();
     }
@@ -1544,7 +1545,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         if (key == null)
             return defaultValue;
 
-        return CONVERSION_MAP.get(key);
+        return _conversionMap.get(key);
     }
 
     private InputSource getDTDInputSource(String name)
@@ -1733,7 +1734,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     protected void resetParser()
     {
         _rootObject = null;
-        _DTD_4_0 = false;
+        _dtd40 = false;
 
         _attributes.clear();
     }
@@ -1746,7 +1747,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     {
         if (TAPESTRY_DTD_4_0_PUBLIC_ID.equals(publicId))
         {
-            _DTD_4_0 = true;
+            _dtd40 = true;
             return getDTDInputSource("Tapestry_4_0.dtd");
         }
 
