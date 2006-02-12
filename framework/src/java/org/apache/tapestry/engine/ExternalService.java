@@ -92,7 +92,7 @@ import org.apache.tapestry.services.ServiceConstants;
  * <td>&nbsp;other chars</td>
  * <td>&nbsp; <tt>String</tt> without truncation of first char</td>
  * </tr>
- * <table>
+ * </table>
  * <p>
  * <p>
  * A good rule of thumb is to keep the information encoded in the URL short and simple, and restrict

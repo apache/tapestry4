@@ -38,7 +38,7 @@ public interface ISpecificationSource
      * @since 2.2
      */
 
-    public IComponentSpecification getComponentSpecification(Resource specificationLocation);
+    IComponentSpecification getComponentSpecification(Resource specificationLocation);
 
     /**
      * Retrieves a page specification, parsing it as necessary.
@@ -50,7 +50,7 @@ public interface ISpecificationSource
      * @since 2.2
      */
 
-    public IComponentSpecification getPageSpecification(Resource specificationLocation);
+    IComponentSpecification getPageSpecification(Resource specificationLocation);
 
     /**
      * Returns a {@link org.apache.tapestry.spec.LibrarySpecification} with the given path.
@@ -62,7 +62,7 @@ public interface ISpecificationSource
      * @since 2.2
      */
 
-    public ILibrarySpecification getLibrarySpecification(Resource specificationLocation);
+    ILibrarySpecification getLibrarySpecification(Resource specificationLocation);
 
     /**
      * Returns the {@link INamespace} for the application.
@@ -70,7 +70,7 @@ public interface ISpecificationSource
      * @since 2.2
      */
 
-    public INamespace getApplicationNamespace();
+    INamespace getApplicationNamespace();
 
     /**
      * Returns the {@link INamespace} for the framework itself.
@@ -78,5 +78,5 @@ public interface ISpecificationSource
      * @since 2.2
      */
 
-    public INamespace getFrameworkNamespace();
+    INamespace getFrameworkNamespace();
 }

@@ -44,5 +44,5 @@ public interface IComponentClassEnhancer
      *             if the class does not exist, is invalid, or may not be enhanced.
      */
 
-    public Class getEnhancedClass(IComponentSpecification specification, String className);
+    Class getEnhancedClass(IComponentSpecification specification, String className);
 }

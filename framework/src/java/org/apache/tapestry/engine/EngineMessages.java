@@ -28,7 +28,7 @@ import org.apache.tapestry.IPage;
 public final class EngineMessages
 {
 
-    private final static Messages MESSAGES = new MessageFormatter(EngineMessages.class);
+    private static final Messages MESSAGES = new MessageFormatter(EngineMessages.class);
 
     /** @since 4.1 */
     private EngineMessages()
