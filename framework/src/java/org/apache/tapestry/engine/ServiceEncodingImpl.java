@@ -41,16 +41,6 @@ public class ServiceEncodingImpl implements ServiceEncoding
 
     private boolean _modified;
 
-    public boolean isModified()
-    {
-        return _modified;
-    }
-
-    public void resetModified()
-    {
-        _modified = false;
-    }
-
     /**
      * Creates a new instance with a new map of parameters.
      */
@@ -74,6 +64,16 @@ public class ServiceEncodingImpl implements ServiceEncoding
         _pathInfo = pathInfo;
 
         _parameters = parameters;
+    }
+    
+    public boolean isModified()
+    {
+        return _modified;
+    }
+
+    public void resetModified()
+    {
+        _modified = false;
     }
 
     public String getParameterValue(String name)

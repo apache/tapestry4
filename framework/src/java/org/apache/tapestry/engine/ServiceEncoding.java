@@ -40,7 +40,7 @@ public interface ServiceEncoding
      * @return the value, or null if no such query parameter exists
      */
 
-    public String getParameterValue(String name);
+    String getParameterValue(String name);
 
     /**
      * Returns the value for the named parameter.
@@ -48,14 +48,14 @@ public interface ServiceEncoding
      * @parameter name the name of the query parameter to access
      * @return the values, or null if no such query parameter exists
      */
-    public String[] getParameterValues(String name);
+    String[] getParameterValues(String name);
 
     /**
      * Updates the servlet path for the encoding. In some cases, this is a combination of the
      * servlet and additional path info.
      */
 
-    public void setServletPath(String servletPath);
+    void setServletPath(String servletPath);
 
     /**
      * Sets the value for the named query parameter to the provided string.
@@ -65,13 +65,13 @@ public interface ServiceEncoding
      * @param value
      *            the new value, which may be null.
      */
-    public void setParameterValue(String name, String value);
+    void setParameterValue(String name, String value);
 
     /**
      * Sets the values for a named query parameter.
      */
 
-    public void setParameterValues(String name, String[] values);
+    void setParameterValues(String name, String[] values);
 
     /**
      * Returns the servlet path for the request. This is the portion of the URL recognized as the
@@ -80,19 +80,19 @@ public interface ServiceEncoding
      * rest of the URL.
      */
 
-    public String getServletPath();
+    String getServletPath();
 
     /**
      * Returns the portion of the URL after the servlet itself.
      * 
      * @return pathInfo if path info was supplied in the request, or null otherwise.
      */
-    public String getPathInfo();
+    String getPathInfo();
 
     /**
      * Returns an array of parameter names. The names are returned in alphabetically sorted order.
      * This list includes all parameter names, even those for which the stored value is null.
      */
 
-    public String[] getParameterNames();
+    String[] getParameterNames();
 }

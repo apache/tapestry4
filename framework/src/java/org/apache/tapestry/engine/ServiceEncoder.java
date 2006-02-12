@@ -34,12 +34,12 @@ public interface ServiceEncoder
      * encoders, stopping once the ServiceRequestEncoding is modified in any way.
      */
 
-    public void encode(ServiceEncoding encoding);
+    void encode(ServiceEncoding encoding);
 
     /**
      * Invoked to decode a request. The encoder is responsible for recognizing a request it may have
      * encoded, and for restoring any query parameters is may have removed.
      */
 
-    public void decode(ServiceEncoding encoding);
+    void decode(ServiceEncoding encoding);
 }
