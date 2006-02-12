@@ -23,10 +23,6 @@ package org.apache.tapestry.components;
 
 public class LinkEventType
 {
-    private final String _name;
-
-    private final String _attributeName;
-
     /**
      * Type for <code>onMouseOver</code>. This may also be called "focus".
      */
@@ -70,6 +66,10 @@ public class LinkEventType
      */
 
     public static final LinkEventType MOUSE_UP = new LinkEventType("MOUSE_UP", "onMouseUp");
+
+    private final String _name;
+
+    private final String _attributeName;
 
     /**
      * Constructs a new type of event. The name should match the static final variable (i.e.,

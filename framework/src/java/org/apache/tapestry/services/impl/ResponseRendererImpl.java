@@ -34,18 +34,18 @@ import org.apache.tapestry.web.WebResponse;
  */
 public class ResponseRendererImpl implements ResponseRenderer
 {
-    private RequestLocaleManager _localeManager;
-
-    private MarkupWriterSource _markupWriterSource;
-
-    private WebResponse _webResponse;
-
     /**
      * Inside a {@link org.apache.tapestry.util.ContentType}, the output encoding is called
      * "charset".
      */
 
     public static final String ENCODING_KEY = "charset";
+
+    private RequestLocaleManager _localeManager;
+
+    private MarkupWriterSource _markupWriterSource;
+
+    private WebResponse _webResponse;
 
     public void renderResponse(IRequestCycle cycle) throws IOException
     {

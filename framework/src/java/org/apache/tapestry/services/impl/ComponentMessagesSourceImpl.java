@@ -48,18 +48,17 @@ import org.apache.tapestry.util.text.LocalizedProperties;
 
 public class ComponentMessagesSourceImpl implements ComponentMessagesSource, ResetEventListener
 {
-
-    private Properties _emptyProperties = new Properties();
-
-    private static final String SUFFIX = ".properties";
-
     /**
      * The name of the component/application/etc property that will be used to
-     * determine the encoding to use when loading the messages
+     * determine the encoding to use when loading the messages.
      */
 
     public static final String MESSAGES_ENCODING_PROPERTY_NAME = "org.apache.tapestry.messages-encoding";
 
+    private static final String SUFFIX = ".properties";
+
+    private Properties _emptyProperties = new Properties();
+    
     /**
      * Map of Maps. The outer map is keyed on component specification location
      * (a{@link Resource}. This inner map is keyed on locale and the value is
