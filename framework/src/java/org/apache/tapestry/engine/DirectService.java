@@ -52,8 +52,12 @@ public class DirectService implements IEngineService
     protected WebRequest _request;
 
     /** @since 4.0 */
-    private IRequestCycle _requestCycle;
+    protected IRequestCycle _requestCycle;
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
     public ILink getLink(boolean post, Object parameter)
     {
         Defense.isAssignable(parameter, DirectServiceParameter.class, "parameter");
@@ -87,6 +91,10 @@ public class DirectService implements IEngineService
         return _linkFactory.constructLink(this, post, parameters, true);
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
     public void service(IRequestCycle cycle) throws IOException
     {
         String componentId = cycle.getParameter(ServiceConstants.COMPONENT);
