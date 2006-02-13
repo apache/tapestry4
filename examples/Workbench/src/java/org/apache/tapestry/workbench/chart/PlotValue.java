@@ -28,9 +28,9 @@ public class PlotValue implements Serializable
 
     private static final long serialVersionUID = 4847193821463693432L;
 
-    private String name;
+    private String _name;
 
-    private int value;
+    private int _value;
 
     public PlotValue()
     {
@@ -38,28 +38,28 @@ public class PlotValue implements Serializable
 
     public PlotValue(String name, int value)
     {
-        this.name = name;
-        this.value = value;
+        this._name = name;
+        this._value = value;
     }
 
     public String getName()
     {
-        return name;
+        return _name;
     }
 
     public void setName(String name)
     {
-        this.name = name;
+        this._name = name;
     }
 
     public int getValue()
     {
-        return value;
+        return _value;
     }
 
     public void setValue(int value)
     {
-        this.value = value;
+        this._value = value;
     }
 
     public String toString()
@@ -67,9 +67,9 @@ public class PlotValue implements Serializable
         StringBuffer buffer = new StringBuffer("PlotValue@");
         buffer.append(Integer.toHexString(hashCode()));
         buffer.append('[');
-        buffer.append(name);
+        buffer.append(_name);
         buffer.append(' ');
-        buffer.append(value);
+        buffer.append(_value);
         buffer.append(']');
 
         return buffer.toString();

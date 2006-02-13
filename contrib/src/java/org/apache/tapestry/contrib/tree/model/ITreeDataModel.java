@@ -26,7 +26,7 @@ public interface ITreeDataModel
 {
 
     /**
-     * Returns the root node of the tree
+     * Returns the root node of the tree.
      */
     Object getRoot();
 
@@ -40,7 +40,7 @@ public interface ITreeDataModel
 
     /**
      * Get an iterator to the Collection of children belonging to the parent
-     * node object
+     * node object.
      * 
      * @param objParent
      *            is the parent object whose children are requested
@@ -48,7 +48,7 @@ public interface ITreeDataModel
     Iterator getChildren(Object objParent);
 
     /**
-     * Get the actual node object based on some identifier (for example an UUID)
+     * Get the actual node object based on some identifier (for example an UUID).
      * 
      * @param objUniqueKey
      *            is the unique identifier of the node object being retrieved
@@ -58,7 +58,7 @@ public interface ITreeDataModel
 
     /**
      * Get the unique identifier (UUID) of the node object with a certain parent
-     * node
+     * node.
      * 
      * @param objTarget
      *            is the Object whose identifier is required
@@ -69,7 +69,7 @@ public interface ITreeDataModel
     Object getUniqueKey(Object objTarget, Object objParentUniqueKey);
 
     /**
-     * Get the unique identifier of the parent of an object
+     * Get the unique identifier of the parent of an object.
      * 
      * @param objChildUniqueKey
      *            is the identifier of the Object for which the parent
@@ -80,7 +80,7 @@ public interface ITreeDataModel
 
     /**
      * Check to see (on the basis of some node object identifier) whether the
-     * parent node is indeed the parent of the object
+     * parent node is indeed the parent of the object.
      * 
      * @param objChildUniqueKey
      *            is the identifier of the object whose parent is being checked

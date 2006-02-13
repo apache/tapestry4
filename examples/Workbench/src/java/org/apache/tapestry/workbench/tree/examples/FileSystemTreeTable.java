@@ -60,7 +60,7 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
     private ArrayList m_arrTableColumns = null;
 
     /**
-     * Injected
+     * Injected.
      * 
      * @since 4.0
      */

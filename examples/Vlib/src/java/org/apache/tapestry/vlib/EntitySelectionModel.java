@@ -32,14 +32,14 @@ public class EntitySelectionModel implements IPropertySelectionModel
     /** Stores a primaryKey/label pair. */
     private static class Entry
     {
-        Integer primaryKey;
+        Integer _primaryKey;
 
-        String label;
+        String _label;
 
         Entry(Integer primaryKey, String label)
         {
-            this.primaryKey = primaryKey;
-            this.label = label;
+            this._primaryKey = primaryKey;
+            this._label = label;
         }
 
     }
@@ -68,19 +68,19 @@ public class EntitySelectionModel implements IPropertySelectionModel
 
     public Object getOption(int index)
     {
-        return get(index).primaryKey;
+        return get(index)._primaryKey;
     }
 
     public String getLabel(int index)
     {
-        return get(index).label;
+        return get(index)._label;
     }
 
     public String getValue(int index)
     {
         Integer primaryKey;
 
-        primaryKey = get(index).primaryKey;
+        primaryKey = get(index)._primaryKey;
 
         if (primaryKey == null)
             return "";

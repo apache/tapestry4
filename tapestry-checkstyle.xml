@@ -1,112 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+	This configuration file was written by the eclipse-cs plugin configuration editor
+-->
+<!--
+Checkstyle-Configuration: Tapestry
+Description:
+
+-->
 <!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.2//EN" "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 <module name="Checker">
-<property name="severity" value="warning"/>
-<module name="TreeWalker">
-<module name="FileContentsHolder">
-</module>
-<module name="JavadocStyle">
-<property name="excludeScope" value="nothing"/>
-</module>
-<module name="ConstantName">
-</module>
-<module name="LocalFinalVariableName">
-</module>
-<module name="LocalVariableName">
-</module>
-<module name="MemberName">
-<metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Normal naming, but allow either &quot;m_&quot; or &quot;_&quot; as a prefix."/>
-<property name="format" value="^(m_|_)?[a-z][a-zA-Z0-9]*$"/>
-</module>
-<module name="MethodName">
-</module>
-<module name="PackageName">
-<property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
-</module>
-<module name="ParameterName">
-<metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Either a normal name (w/o underscores) or an all uppercase acronym (rarely used)"/>
-<property name="format" value="^([a-z][a-zA-Z0-9]*|[A-Z]+)$"/>
-</module>
-<module name="StaticVariableName">
-<property name="format" value="^_?[a-z][a-zA-Z0-9]*$"/>
-</module>
-<module name="TypeName">
-</module>
-<module name="AvoidStarImport">
-</module>
-<module name="ImportOrder">
-</module>
-<module name="RedundantImport">
-</module>
-<module name="UnusedImports">
-<property name="severity" value="error"/>
-</module>
-<module name="TabCharacter">
-<property name="severity" value="error"/>
-</module>
-<module name="ModifierOrder">
-</module>
-<module name="RedundantModifier">
-</module>
-<module name="DefaultComesLast">
-</module>
-<module name="DeclarationOrder">
-</module>
-<module name="DoubleCheckedLocking">
-<property name="severity" value="error"/>
-</module>
-<module name="EmptyStatement">
-</module>
-<module name="HiddenField">
-</module>
-<module name="JUnitTestCase">
-<property name="severity" value="error"/>
-</module>
-<module name="MissingSwitchDefault">
-<property name="severity" value="error"/>
-</module>
-<module name="PackageDeclaration">
-<property name="severity" value="error"/>
-</module>
-<module name="ParameterAssignment">
-</module>
-<module name="RedundantThrows">
-</module>
-<module name="SimplifyBooleanExpression">
-<property name="severity" value="error"/>
-</module>
-<module name="SimplifyBooleanReturn">
-<property name="severity" value="error"/>
-</module>
-<module name="StringLiteralEquality">
-<property name="severity" value="error"/>
-</module>
-<module name="SuperClone">
-<property name="severity" value="error"/>
-</module>
-<module name="SuperFinalize">
-<property name="severity" value="error"/>
-</module>
-<module name="FinalClass">
-<property name="severity" value="error"/>
-</module>
-<module name="HideUtilityClassConstructor">
-<property name="severity" value="error"/>
-</module>
-<module name="InterfaceIsType">
-</module>
-<module name="MutableException">
-</module>
-<module name="ArrayTypeStyle">
-</module>
-<module name="UpperEll">
-</module>
-<module name="JavadocType">
-<property name="severity" value="error"/>
-</module>
-</module>
-<module name="PackageHtml">
-</module>
-<module name="NewlineAtEndOfFile">
-</module>
+    <property name="severity" value="warning"/>
+    <module name="TreeWalker">
+        <module name="JavadocStyle"/>
+        <module name="ConstantName"/>
+        <module name="LocalFinalVariableName"/>
+        <module name="LocalVariableName"/>
+        <module name="MemberName">
+            <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Normal naming, but allow either &quot;m_&quot; or &quot;_&quot; as a prefix."/>
+            <property name="format" value="^(m_|_)?[a-z][a-zA-Z0-9]*$"/>
+        </module>
+        <module name="MethodName"/>
+        <module name="PackageName">
+            <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+        </module>
+        <module name="ParameterName">
+            <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Either a normal name (w/o underscores) or an all uppercase acronym (rarely used)"/>
+            <property name="format" value="^([a-z][a-zA-Z0-9]*|[A-Z]+)$"/>
+        </module>
+        <module name="StaticVariableName">
+            <property name="format" value="^_?[a-z][a-zA-Z0-9]*$"/>
+        </module>
+        <module name="TypeName"/>
+        <module name="AvoidStarImport"/>
+        <module name="ImportOrder"/>
+        <module name="RedundantImport"/>
+        <module name="UnusedImports">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="TabCharacter">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="ModifierOrder"/>
+        <module name="RedundantModifier"/>
+        <module name="DefaultComesLast"/>
+        <module name="DeclarationOrder"/>
+        <module name="DoubleCheckedLocking">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="EmptyStatement"/>
+        <module name="HiddenField"/>
+        <module name="JUnitTestCase">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="MissingSwitchDefault">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="PackageDeclaration">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="ParameterAssignment">
+            <property name="severity" value="info"/>
+        </module>
+        <module name="RedundantThrows"/>
+        <module name="SimplifyBooleanExpression">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="SimplifyBooleanReturn">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="StringLiteralEquality">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="SuperClone">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="SuperFinalize">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="FinalClass">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="HideUtilityClassConstructor">
+            <property name="severity" value="error"/>
+        </module>
+        <module name="InterfaceIsType"/>
+        <module name="MutableException"/>
+        <module name="ArrayTypeStyle"/>
+        <module name="UpperEll"/>
+        <module name="JavadocType">
+            <property name="severity" value="error"/>
+        </module>
+    </module>
+    <module name="PackageHtml"/>
+    <module name="NewlineAtEndOfFile"/>
 </module>

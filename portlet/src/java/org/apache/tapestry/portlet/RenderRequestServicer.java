@@ -29,6 +29,6 @@ import javax.portlet.RenderResponse;
  */
 public interface RenderRequestServicer
 {
-    public void service(RenderRequest request, RenderResponse response) throws IOException,
+    void service(RenderRequest request, RenderResponse response) throws IOException,
             PortletException;
 }

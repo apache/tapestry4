@@ -25,5 +25,5 @@ import javax.portlet.PortletConfig;
  */
 public interface PortletApplicationInitializer
 {
-    public void initialize(PortletConfig portletConfig);
+    void initialize(PortletConfig portletConfig);
 }

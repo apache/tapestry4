@@ -36,7 +36,7 @@ public interface IOperations extends EJBObject
      * increments the lend count on the book.
      */
 
-    public Book borrowBook(Integer bookdId, Integer borrowerId) throws BorrowException,
+    Book borrowBook(Integer bookdId, Integer borrowerId) throws BorrowException,
             FinderException, RemoteException;
 
     /**

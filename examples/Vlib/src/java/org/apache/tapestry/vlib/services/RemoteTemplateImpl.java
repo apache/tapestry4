@@ -32,7 +32,7 @@ import org.apache.tapestry.vlib.ejb.Person;
  */
 public class RemoteTemplateImpl implements RemoteTemplate
 {
-    private final static int MAX_ATTEMPTS = 2;
+    private static final int MAX_ATTEMPTS = 2;
 
     private RemoteExceptionCoordinator _coordinator;
 

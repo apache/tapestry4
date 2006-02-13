@@ -34,7 +34,7 @@ public interface FormBehavior
      * @deprecated Wiring of form event handlers is now managed on the client side. This method may
      *             be removed in a future release of Tapestry.
      */
-    public void addEventHandler(FormEventType type, String functionName);
+    void addEventHandler(FormEventType type, String functionName);
 
     /**
      * Adds a hidden field value to be stored in the form. This ensures that all of the &lt;input
@@ -45,7 +45,7 @@ public interface FormBehavior
      * the order they are received.
      */
 
-    public void addHiddenValue(String name, String value);
+    void addHiddenValue(String name, String value);
 
     /**
      * Adds a hidden field value to be stored in the form. This ensures that all of the &lt;input
@@ -58,7 +58,7 @@ public interface FormBehavior
      * @since 3.0
      */
 
-    public void addHiddenValue(String name, String id, String value);
+    void addHiddenValue(String name, String id, String value);
 
     /**
      * Constructs a unique identifier (within the Form). The identifier consists of the component's
@@ -71,7 +71,7 @@ public interface FormBehavior
      * is different, and should be unique within the rendered page.
      */
 
-    public String getElementId(IFormComponent component);
+    String getElementId(IFormComponent component);
 
     /**
      * Constructs a unique identifier from the base id. If possible, the id is used as-is.
@@ -89,14 +89,14 @@ public interface FormBehavior
      *             time it was submitted.
      */
 
-    public String getElementId(IFormComponent component, String baseId);
+    String getElementId(IFormComponent component, String baseId);
 
     /**
      * Returns true if the form is rewinding (meaning, the form was the subject of the request
      * cycle).
      */
 
-    public boolean isRewinding();
+    boolean isRewinding();
 
     /**
      * May be invoked by a component to force the encoding type of the form to a particular value.
@@ -107,7 +107,7 @@ public interface FormBehavior
      *             type
      */
 
-    public void setEncodingType(String encodingType);
+    void setEncodingType(String encodingType);
 
     /**
      * Pre-renders the specified field, buffering the result for later use by
@@ -124,7 +124,7 @@ public interface FormBehavior
      * @param location
      *            an optional location (of the FieldLabel component) used when reporting errors.
      */
-    public void prerenderField(IMarkupWriter writer, IComponent field, Location location);
+    void prerenderField(IMarkupWriter writer, IComponent field, Location location);
 
     /**
      * Invoked by a form control component (a field) that may have been pre-rendered. If the field
@@ -134,7 +134,7 @@ public interface FormBehavior
      * @return true if the field was pre-rendered and should do nothing during its render phase,
      *         false if the field should continue as normal.
      */
-    public boolean wasPrerendered(IMarkupWriter writer, IComponent field);
+    boolean wasPrerendered(IMarkupWriter writer, IComponent field);
 
     /**
      * Adds a deferred runnable, an object to be executed either before the &lt;/form&gt; tag is
@@ -145,7 +145,7 @@ public interface FormBehavior
      *            the object to execute (which may not be null)
      */
 
-    public void addDeferredRunnable(Runnable runnable);
+    void addDeferredRunnable(Runnable runnable);
 
     /**
      * Registers a field for automatic focus. The goal is for the first field that is in error to
@@ -159,6 +159,6 @@ public interface FormBehavior
      * @since 4.0
      */
 
-    public void registerForFocus(IFormComponent field, int priority);
+    void registerForFocus(IFormComponent field, int priority);
 
 }

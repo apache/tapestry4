@@ -26,6 +26,6 @@ import org.apache.tapestry.IRequestCycle;
  */
 public interface PortletRenderer
 {
-    public void renderPage(IRequestCycle cycle, String pageName)
+    void renderPage(IRequestCycle cycle, String pageName)
             throws IOException;
 }

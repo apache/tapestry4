@@ -30,7 +30,7 @@ public interface ITreeStateModel
      */
     Object getSelectedNode();
 
-    public void setSelectedNode(Object objUniqueKey);
+    void setSelectedNode(Object objUniqueKey);
 
     void expand(Object objUniqueKey);
 

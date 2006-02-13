@@ -25,31 +25,31 @@ import java.sql.Timestamp;
 
 public interface IPerson extends IEntityBean
 {
-    public void setLastName(String value) throws RemoteException;
+    void setLastName(String value) throws RemoteException;
 
-    public String getLastName() throws RemoteException;
+    String getLastName() throws RemoteException;
 
-    public void setFirstName(String value) throws RemoteException;
+    void setFirstName(String value) throws RemoteException;
 
-    public String getFirstName() throws RemoteException;
+    String getFirstName() throws RemoteException;
 
-    public void setPassword(String value) throws RemoteException;
+    void setPassword(String value) throws RemoteException;
 
-    public String getPassword() throws RemoteException;
+    String getPassword() throws RemoteException;
 
-    public void setEmail(String value) throws RemoteException;
+    void setEmail(String value) throws RemoteException;
 
-    public String getEmail() throws RemoteException;
+    String getEmail() throws RemoteException;
 
-    public boolean getAdmin() throws RemoteException;
+    boolean getAdmin() throws RemoteException;
 
-    public void setAdmin(boolean value) throws RemoteException;
+    void setAdmin(boolean value) throws RemoteException;
 
-    public boolean getLockedOut() throws RemoteException;
+    boolean getLockedOut() throws RemoteException;
 
-    public void setLockedOut(boolean value) throws RemoteException;
+    void setLockedOut(boolean value) throws RemoteException;
 
-    public void setLastAccess(Timestamp value) throws RemoteException;
+    void setLastAccess(Timestamp value) throws RemoteException;
 
-    public Timestamp getLastAccess() throws RemoteException;
+    Timestamp getLastAccess() throws RemoteException;
 }

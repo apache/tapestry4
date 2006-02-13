@@ -31,7 +31,7 @@ public class SqlTableColumn extends SimpleTableColumn
     private static final Log LOG = LogFactory.getLog(SqlTableColumn.class);
 
     /**
-     * Creates an SqlTableColumn
+     * Creates an SqlTableColumn.
      * 
      * @param strSqlField
      *            the identifying name of the column and the SQL field it refers
@@ -45,7 +45,7 @@ public class SqlTableColumn extends SimpleTableColumn
     }
 
     /**
-     * Creates an SqlTableColumn
+     * Creates an SqlTableColumn.
      * 
      * @param strSqlField
      *            the identifying name of the column and the SQL field it refers

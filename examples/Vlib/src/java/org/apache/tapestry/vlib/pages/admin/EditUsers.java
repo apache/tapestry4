@@ -47,6 +47,8 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
 public abstract class EditUsers extends VlibPage implements PageBeginRenderListener, PageDetachListener
 {
 
+    private UserConverter _userConverter;
+    
     public abstract String getPassword();
 
     public abstract void setPassword(String password);
@@ -103,8 +105,6 @@ public abstract class EditUsers extends VlibPage implements PageBeginRenderListe
             return createUnmodifiableSet(_resetPasswordValues);
         }
     }
-
-    private UserConverter _userConverter;
 
     public UserConverter getUserConverter()
     {

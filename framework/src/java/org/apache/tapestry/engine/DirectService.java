@@ -76,18 +76,18 @@ public class DirectService implements IEngineService
 
         IPage activePage = _requestCycle.getPage();
         IPage componentPage = component.getPage();
-
+        
         Map parameters = new HashMap();
-
+        
         boolean stateful = _request.getSession(false) != null;
-
+        
         parameters.put(ServiceConstants.PAGE, activePage.getPageName());
         parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
         parameters.put(ServiceConstants.CONTAINER, componentPage == activePage ? null
                 : componentPage.getPageName());
         parameters.put(ServiceConstants.SESSION, stateful ? "T" : null);
         parameters.put(ServiceConstants.PARAMETER, dsp.getServiceParameters());
-
+        
         return _linkFactory.constructLink(this, post, parameters, true);
     }
 
