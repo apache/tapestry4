@@ -29,10 +29,6 @@ import org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor;
  */
 public abstract class LocaleList extends BaseComponent
 {
-
-    @Parameter(required = true)
-    public abstract ILocaleSelectionListener getLocaleSelectionListener();
-
     // immutable values
     private IPrimaryKeyConvertor m_objLocaleConvertor;
 
@@ -69,6 +65,9 @@ public abstract class LocaleList extends BaseComponent
         };
     }
 
+    @Parameter(required = true)
+    public abstract ILocaleSelectionListener getLocaleSelectionListener();
+    
     public IPrimaryKeyConvertor getLocaleConvertor()
     {
         return m_objLocaleConvertor;

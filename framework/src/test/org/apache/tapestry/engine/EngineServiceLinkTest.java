@@ -31,9 +31,9 @@ import org.apache.tapestry.web.WebRequest;
  */
 public class EngineServiceLinkTest extends BaseComponentTestCase
 {
-    private URLCodec _urlCodec = new URLCodec();
-
     private static final String ENCODING = "utf-8";
+    
+    private URLCodec _urlCodec = new URLCodec();
 
     private Map buildParameters(String serviceName, String[] serviceParameters)
     {

@@ -27,5 +27,5 @@ import javax.ejb.EJBHome;
 
 public interface IOperationsHome extends EJBHome
 {
-    public IOperations create() throws CreateException, RemoteException;
+    IOperations create() throws CreateException, RemoteException;
 }

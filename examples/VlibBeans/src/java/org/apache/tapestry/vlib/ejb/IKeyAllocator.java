@@ -31,12 +31,12 @@ public interface IKeyAllocator extends EJBObject
      * guarenteed to not have been previously returned by any instance.
      */
 
-    public Integer allocateKey() throws RemoteException;
+    Integer allocateKey() throws RemoteException;
 
     /**
      * Allocates several keys, as if invoking {@link #allocateKey} multiple times. No guarentees are
      * made that the values are sequential or in any order, just that they are unique.
      */
 
-    public Integer[] allocateKeys(int count) throws RemoteException;
+    Integer[] allocateKeys(int count) throws RemoteException;
 }

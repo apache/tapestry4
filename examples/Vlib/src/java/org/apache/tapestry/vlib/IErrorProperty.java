@@ -27,7 +27,7 @@ import org.apache.tapestry.IPage;
 
 public interface IErrorProperty extends IPage
 {
-    public String getError();
+    String getError();
 
-    public void setError(String value);
+    void setError(String value);
 }

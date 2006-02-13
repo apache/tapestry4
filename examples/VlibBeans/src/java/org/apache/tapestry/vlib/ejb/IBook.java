@@ -25,43 +25,43 @@ import java.sql.Timestamp;
 
 public interface IBook extends IEntityBean
 {
-    public void setAuthor(String value) throws RemoteException;
+    void setAuthor(String value) throws RemoteException;
 
-    public String getAuthor() throws RemoteException;
+    String getAuthor() throws RemoteException;
 
-    public void setTitle(String value) throws RemoteException;
+    void setTitle(String value) throws RemoteException;
 
-    public String getTitle() throws RemoteException;
+    String getTitle() throws RemoteException;
 
-    public void setDescription(String value) throws RemoteException;
+    void setDescription(String value) throws RemoteException;
 
-    public String getDescription() throws RemoteException;
+    String getDescription() throws RemoteException;
 
-    public void setISBN(String value) throws RemoteException;
+    void setISBN(String value) throws RemoteException;
 
-    public String getISBN() throws RemoteException;
+    String getISBN() throws RemoteException;
 
-    public void setOwnerId(Integer value) throws RemoteException;
+    void setOwnerId(Integer value) throws RemoteException;
 
-    public Integer getOwnerId() throws RemoteException;
+    Integer getOwnerId() throws RemoteException;
 
-    public void setHolderId(Integer value) throws RemoteException;
+    void setHolderId(Integer value) throws RemoteException;
 
-    public Integer getHolderId() throws RemoteException;
+    Integer getHolderId() throws RemoteException;
 
-    public void setPublisherId(Integer value) throws RemoteException;
+    void setPublisherId(Integer value) throws RemoteException;
 
-    public Integer getPublisherId() throws RemoteException;
+    Integer getPublisherId() throws RemoteException;
 
-    public boolean getHidden() throws RemoteException;
+    boolean getHidden() throws RemoteException;
 
-    public void setHidden(boolean value) throws RemoteException;
+    void setHidden(boolean value) throws RemoteException;
 
-    public boolean getLendable() throws RemoteException;
+    boolean getLendable() throws RemoteException;
 
-    public void setLendable(boolean value) throws RemoteException;
+    void setLendable(boolean value) throws RemoteException;
 
-    public Timestamp getDateAdded() throws RemoteException;
+    Timestamp getDateAdded() throws RemoteException;
 
-    public void setDateAdded(Timestamp value) throws RemoteException;
+    void setDateAdded(Timestamp value) throws RemoteException;
 }

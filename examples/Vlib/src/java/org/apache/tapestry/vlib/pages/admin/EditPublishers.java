@@ -49,6 +49,9 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
 public abstract class EditPublishers extends VlibPage implements PageBeginRenderListener,
         PageDetachListener
 {
+    
+    private DefaultPrimaryKeyConverter _converter;
+    
     public abstract Publisher getPublisher();
 
     @Message
@@ -62,8 +65,6 @@ public abstract class EditPublishers extends VlibPage implements PageBeginRender
 
     @InjectPage("MyLibrary")
     public abstract MyLibrary getMyLibrary();
-
-    private DefaultPrimaryKeyConverter _converter;
 
     public DefaultPrimaryKeyConverter getConverter()
     {

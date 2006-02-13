@@ -1,5 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?><fileset-config file-format-version="1.1.0" simple-config="true">
-<fileset name="all" enabled="true" check-config-name="Tapestry" type="project" location="tapestry-checkstyle.xml" description=""><file-match-pattern match-pattern="." include-pattern="true"/>
-</fileset>
-<filter name="NonSrcDirs" enabled="true"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<fileset-config file-format-version="1.2.0" simple-config="true">
+    <fileset name="all" enabled="true" check-config-name="Tapestry" local="false">
+        <file-match-pattern match-pattern="." include-pattern="true"/>
+    </fileset>
+    <filter name="FilesFromPackage" enabled="true">
+        <filter-data value="framework/src/test"/>
+        <filter-data value="contrib/src/test"/>
+        <filter-data value="portlet/src/test"/>
+        <filter-data value="annotations/src/test"/>
+        <filter-data value="examples/Vlib/src/test"/>
+    </filter>
+    <filter name="NonSrcDirs" enabled="true"/>
 </fileset-config>

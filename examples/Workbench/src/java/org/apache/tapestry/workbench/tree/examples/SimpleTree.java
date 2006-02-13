@@ -33,7 +33,7 @@ public abstract class SimpleTree extends BasePage
 
     private ITreeModel treeModel;
 
-    private Object value;
+    private Object _value;
 
     public SimpleTree()
     {
@@ -43,7 +43,7 @@ public abstract class SimpleTree extends BasePage
     {
         super.detach();
         treeDataModel = null;
-        value = null;
+        _value = null;
     }
 
     public void init()
@@ -89,7 +89,7 @@ public abstract class SimpleTree extends BasePage
      */
     public Object getValue()
     {
-        return value;
+        return _value;
     }
 
     /**
@@ -100,6 +100,6 @@ public abstract class SimpleTree extends BasePage
      */
     public void setValue(Object value)
     {
-        this.value = value;
+        this._value = value;
     }
 }

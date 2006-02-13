@@ -42,7 +42,7 @@ public interface ITreeNode extends Serializable
 
     /**
      * Returns the true if current node contains received children, otherwise
-     * return false;
+     * return false.
      */
     boolean containsChild(ITreeNode node);
 

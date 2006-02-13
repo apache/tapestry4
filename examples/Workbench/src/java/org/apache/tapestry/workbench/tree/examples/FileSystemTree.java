@@ -55,7 +55,7 @@ public abstract class FileSystemTree extends BasePage implements ISelectedFolder
     public abstract IEngineService getAssetService();
 
     /**
-     * Injected
+     * Injected.
      * 
      * @since 4.0
      */

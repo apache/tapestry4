@@ -40,7 +40,7 @@ public interface IComponent extends IRender, LocationHolder
      * Adds an asset to the component. This is invoked from the page loader.
      */
 
-    public void addAsset(String name, IAsset asset);
+    void addAsset(String name, IAsset asset);
 
     /**
      * Adds a component to a container. Should only be called during the page loading process, which
@@ -49,7 +49,7 @@ public interface IComponent extends IRender, LocationHolder
      * @see IPageLoader
      */
 
-    public void addComponent(IComponent component);
+    void addComponent(IComponent component);
 
     /**
      * Adds a new renderable element to the receiver's body. The element may be either another
@@ -62,7 +62,7 @@ public interface IComponent extends IRender, LocationHolder
      * @since 2.2
      */
 
-    public void addBody(IRender element);
+    void addBody(IRender element);
 
     /**
      * Returns the asset map for the component, which may be empty but will not be null.
@@ -70,13 +70,13 @@ public interface IComponent extends IRender, LocationHolder
      * The return value is unmodifiable.
      */
 
-    public Map getAssets();
+    Map getAssets();
 
     /**
      * Returns the named asset, or null if not found.
      */
 
-    public IAsset getAsset(String name);
+    IAsset getAsset(String name);
 
     /**
      * Returns the binding with the given name or null if not found.
@@ -84,7 +84,7 @@ public interface IComponent extends IRender, LocationHolder
      * Bindings are added to a component using {@link #setBinding(String,IBinding)}.
      */
 
-    public IBinding getBinding(String name);
+    IBinding getBinding(String name);
 
     /**
      * Returns a {@link Collection}of the names of all bindings (which includes bindings for both
@@ -94,7 +94,7 @@ public interface IComponent extends IRender, LocationHolder
      * empty for a component with no bindings.
      */
 
-    public Collection getBindingNames();
+    Collection getBindingNames();
 
     /**
      * Returns a {@link Map}of the {@link IBinding bindings}for this component; this includes
@@ -103,7 +103,7 @@ public interface IComponent extends IRender, LocationHolder
      * @since 1.0.5
      */
 
-    public Map getBindings();
+    Map getBindings();
 
     /**
      * Retrieves an contained component by its id. Contained components have unique ids within their
@@ -113,7 +113,7 @@ public interface IComponent extends IRender, LocationHolder
      *                runtime exception thrown if the named component does not exist.
      */
 
-    public IComponent getComponent(String id);
+    IComponent getComponent(String id);
 
     /**
      * Returns the component which embeds the receiver. All components are contained within other
@@ -122,14 +122,14 @@ public interface IComponent extends IRender, LocationHolder
      * A page returns null.
      */
 
-    public IComponent getContainer();
+    IComponent getContainer();
 
     /**
      * Sets the container of the component. This is write-once, an attempt to change it later will
      * throw an {@link ApplicationRuntimeException}.
      */
 
-    public void setContainer(IComponent value);
+    void setContainer(IComponent value);
 
     /**
      * Returns a string identifying the name of the page and the id path of the reciever within the
@@ -140,7 +140,7 @@ public interface IComponent extends IRender, LocationHolder
      * @see #getIdPath()
      */
 
-    public String getExtendedId();
+    String getExtendedId();
 
     /**
      * Returns the simple id of the component, as defined in its specification.
@@ -150,14 +150,14 @@ public interface IComponent extends IRender, LocationHolder
      * A {@link IPage page}will always return null.
      */
 
-    public String getId();
+    String getId();
 
     /**
      * Sets the id of the component. This is write-once, an attempt to change it later will throw an
      * {@link ApplicationRuntimeException}.
      */
 
-    public void setId(String value);
+    void setId(String value);
 
     /**
      * Returns the qualified id of the component. This represents a path from the {@link IPage page}
@@ -170,26 +170,26 @@ public interface IComponent extends IRender, LocationHolder
      * @see #getId()
      */
 
-    public String getIdPath();
+    String getIdPath();
 
     /**
      * Returns the page which ultimately contains the receiver. A page will return itself.
      */
 
-    public IPage getPage();
+    IPage getPage();
 
     /**
      * Sets the page which ultimiately contains the component. This is write-once, an attempt to
      * change it later will throw an {@link ApplicationRuntimeException}.
      */
 
-    public void setPage(IPage value);
+    void setPage(IPage value);
 
     /**
      * Returns the specification which defines the component.
      */
 
-    public IComponentSpecification getSpecification();
+    IComponentSpecification getSpecification();
 
     /**
      * Invoked to make the receiver render its body (the elements and components its tag wraps
@@ -199,7 +199,7 @@ public interface IComponent extends IRender, LocationHolder
      * @since 2.2
      */
 
-    public void renderBody(IMarkupWriter writer, IRequestCycle cycle);
+    void renderBody(IMarkupWriter writer, IRequestCycle cycle);
 
     /**
      * Adds a binding to a container. Should only be called during the page loading process (which
@@ -208,7 +208,7 @@ public interface IComponent extends IRender, LocationHolder
      * @see IPageLoader
      */
 
-    public void setBinding(String name, IBinding binding);
+    void setBinding(String name, IBinding binding);
 
     /**
      * Returns the contained components as an unmodifiable {@link Map}. This allows peer components
@@ -225,7 +225,7 @@ public interface IComponent extends IRender, LocationHolder
      *         null.
      */
 
-    public Map getComponents();
+    Map getComponents();
 
     /**
      * Allows a component to finish any setup after it has been constructed.
@@ -241,7 +241,7 @@ public interface IComponent extends IRender, LocationHolder
      * @since 0.2.12
      */
 
-    public void finishLoad(IRequestCycle cycle, IPageLoader loader,
+    void finishLoad(IRequestCycle cycle, IPageLoader loader,
             IComponentSpecification specification);
 
     /**
@@ -251,7 +251,7 @@ public interface IComponent extends IRender, LocationHolder
      * @since 3.0
      */
 
-    public Messages getMessages();
+    Messages getMessages();
 
     /**
      * Returns the {@link INamespace}in which the component was defined (as an alias).
@@ -259,7 +259,7 @@ public interface IComponent extends IRender, LocationHolder
      * @since 2.2
      */
 
-    public INamespace getNamespace();
+    INamespace getNamespace();
 
     /**
      * Sets the {@link INamespace}for the component. The namespace should only be set once.
@@ -267,7 +267,7 @@ public interface IComponent extends IRender, LocationHolder
      * @since 2.2
      */
 
-    public void setNamespace(INamespace namespace);
+    void setNamespace(INamespace namespace);
 
     /**
      * Sets a property of a component.
@@ -279,7 +279,7 @@ public interface IComponent extends IRender, LocationHolder
      * @deprecated To be removed in 4.1. Use
      *             {@link org.apache.hivemind.util.PropertyUtils#read(java.lang.Object, java.lang.String) instead.
      */
-    public void setProperty(String propertyName, Object value);
+    void setProperty(String propertyName, Object value);
 
     /**
      * Gets a property of a component.
@@ -291,7 +291,7 @@ public interface IComponent extends IRender, LocationHolder
      *             {@link org.apache.hivemind.util.PropertyUtils#read(java.lang.Object, java.lang.String)}
      *             instead
      */
-    public Object getProperty(String propertyName);
+    Object getProperty(String propertyName);
 
     /**
      * Returns true if the component is currently rendering.
@@ -299,7 +299,7 @@ public interface IComponent extends IRender, LocationHolder
      * @since 4.0
      */
 
-    public boolean isRendering();
+    boolean isRendering();
 
     /**
      * Invoked after {@link #finishLoad(IRequestCycle, IPageLoader, IComponentSpecification)}to
@@ -310,7 +310,7 @@ public interface IComponent extends IRender, LocationHolder
      * @since 4.0
      */
 
-    public void enterActiveState();
+    void enterActiveState();
 
     /**
      * Returns a {@link IBeanProvider} from which managed beans can be obtained.
@@ -318,7 +318,7 @@ public interface IComponent extends IRender, LocationHolder
      * @since 4.0
      */
 
-    public IBeanProvider getBeans();
+    IBeanProvider getBeans();
 
     /**
      * Returns a {@link ListenerMap} for the component. The map contains a number of synthetic
@@ -328,7 +328,7 @@ public interface IComponent extends IRender, LocationHolder
      * @since 4.0
      */
 
-    public ListenerMap getListeners();
+    ListenerMap getListeners();
 
     /**
      * Returns a localized string message. Each component has an optional set of localized message
@@ -342,7 +342,7 @@ public interface IComponent extends IRender, LocationHolder
      * @deprecated To be removed in release 4.1. Use {@link #getMessages()} instead.
      */
 
-    public String getMessage(String key);
+    String getMessage(String key);
 
     /**
      * Returns the {@link org.apache.tapestry.spec.IContainedComponent}. This will be null for
@@ -354,7 +354,7 @@ public interface IComponent extends IRender, LocationHolder
      * @since 4.0
      */
 
-    public IContainedComponent getContainedComponent();
+    IContainedComponent getContainedComponent();
 
     /**
      * Sets the {@link #getContainedComponent()} property; this may only be done once.
@@ -363,5 +363,5 @@ public interface IComponent extends IRender, LocationHolder
      *            may not be null
      * @since 4.0
      */
-    public void setContainedComponent(IContainedComponent containedComponent);
+    void setContainedComponent(IContainedComponent containedComponent);
 }

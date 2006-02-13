@@ -24,7 +24,7 @@ import org.apache.hivemind.impl.MessageFormatter;
 final class PortletMessages
 {
 
-    private final static Messages MESSAGES = new MessageFormatter(PortletMessages.class);
+    private static final Messages MESSAGES = new MessageFormatter(PortletMessages.class);
 
     /** @since 4.1 */
     private PortletMessages()

@@ -28,26 +28,26 @@ import javax.portlet.RenderResponse;
  */
 public interface PortletRequestGlobals
 {
-    public void store(ActionRequest request, ActionResponse response);
+    void store(ActionRequest request, ActionResponse response);
 
-    public void store(RenderRequest request, RenderResponse response);
+    void store(RenderRequest request, RenderResponse response);
 
-    public ActionRequest getActionRequest();
+    ActionRequest getActionRequest();
 
-    public ActionResponse getActionResponse();
+    ActionResponse getActionResponse();
 
-    public RenderRequest getRenderRequest();
+    RenderRequest getRenderRequest();
 
-    public RenderResponse getRenderResponse();
+    RenderResponse getRenderResponse();
 
     /**
      * Returns true if {@link #store(RenderRequest, RenderResponse)}has been invoked, false
      * otherwise.
      */
-    public boolean isRenderRequest();
+    boolean isRenderRequest();
 
     /**
      * Returns whatever is available; the ActionRequest or the PortletRequest.
      */
-    public PortletRequest getPortletRequest();
+    PortletRequest getPortletRequest();
 }
