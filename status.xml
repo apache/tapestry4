@@ -64,6 +64,11 @@
         Applied patch upgrading tapestry to use commons-fileupload 1.1 as well as adding new
         functionality enabling a more dynamic fileupload system for normal or portlet environments.
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-831" >
+        Added error hint to encode message properties. It seems that 80% of the time the error
+        is caused by a class that doesn't implement Serializable. Added message hinting at this
+        in error strings.
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>
