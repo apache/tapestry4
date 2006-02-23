@@ -14,9 +14,11 @@
 
 package org.apache.tapestry.web;
 
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 
@@ -37,18 +39,18 @@ public class ServletWebContext implements WebContext
 
     private final ServletContext _servletContext;
 
-    public void describeTo(DescriptionReceiver receiver)
-    {
-        receiver.describeAlternate(_servletContext);
-    }
-
     public ServletWebContext(ServletContext context)
     {
         Defense.notNull(context, "context");
 
         _servletContext = context;
     }
-
+    
+    public void describeTo(DescriptionReceiver receiver)
+    {
+        receiver.describeAlternate(_servletContext);
+    }
+    
     public List getAttributeNames()
     {
         return WebUtils.toSortedList(_servletContext.getAttributeNames());
@@ -96,4 +98,16 @@ public class ServletWebContext implements WebContext
     {
         return _servletContext.getMimeType(resourcePath);
     }
+
+	public String getRealPath(String path) {
+		return _servletContext.getRealPath(path);
+	}
+
+	public InputStream getResourceAsStream(String path) {
+		return _servletContext.getResourceAsStream(path);
+	}
+
+	public Set getResourcePaths(String path) {
+		return _servletContext.getResourcePaths(path);
+	}
 }

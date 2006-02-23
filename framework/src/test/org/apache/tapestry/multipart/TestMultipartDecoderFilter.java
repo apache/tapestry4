@@ -83,8 +83,8 @@ public class TestMultipartDecoderFilter extends HiveMindTestCase
         HttpServletResponse response = newResponse();
         HttpServletRequest decoded = (HttpServletRequest) newMock(HttpServletRequest.class);
 
-        MockControl control = newControl(MultipartDecoder.class);
-        MultipartDecoder decoder = (MultipartDecoder) control.getMock();
+        MockControl control = newControl(ServletMultipartDecoder.class);
+        ServletMultipartDecoder decoder = (ServletMultipartDecoder) control.getMock();
 
         decoder.decode(request);
         control.setReturnValue(decoded);

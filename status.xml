@@ -60,6 +60,10 @@
       Form.set_focus() not compatible with some ie fields. Patch adds logic to check
       more cross-browser friendly functions for setting focus.
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-635" due-to="Raphael Jean" >
+        Applied patch upgrading tapestry to use commons-fileupload 1.1 as well as adding new
+        functionality enabling a more dynamic fileupload system for normal or portlet environments.
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>

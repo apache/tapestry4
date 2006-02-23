@@ -14,7 +14,9 @@
 
 package org.apache.tapestry.web;
 
+import java.io.InputStream;
 import java.net.URL;
+import java.util.Set;
 
 import org.apache.tapestry.describe.Describable;
 
@@ -38,4 +40,38 @@ public interface WebContext extends AttributeHolder, InitializationParameterHold
      * Returns the MIME type of the specified file, or null if the MIME type is not known.
      */
     public String getMimeType(String resourcePath);
+    
+    /**
+     * Returns a directory-like listing of all the paths to resources within 
+     * the web application whose longest sub-path matches the supplied 
+     * path argument. Paths indicating subdirectory paths end with a slash (/). 
+     * The returned paths are all relative to the root of the web application 
+     * and have a leading '/'. 
+     * @param path  partial path used to match the resources, which must start with a '/'
+     * @return a Set containing the directory listing, or null if there are no resources 
+     * in the web application whose path begins with the supplied path.
+     */
+    public Set getResourcePaths(String path);
+    
+    /**
+     * Returns the resource located at the named path as an <code>InputStream</code>
+     * object.
+     * @param path a <code>String</code> specifying the path to the resource
+     * @return the <code>InputStream</code> returned to the servlet, 
+     * 	or <code>null</code> if no resource exists at the specified path
+     */
+    public InputStream getResourceAsStream(String path);
+    
+    /**
+     * Returns a <code>String</code> containing the real path for a given virtual path. 
+     * For example, the path "/index.html" returns the absolute file path 
+     * on the server's filesystem would be served by a request for 
+     * "http://host/contextPath/index.html", where contextPath is the 
+     * context path of this WebContext.
+     * 
+     * @param path a <code>String</code> specifying a virtual path
+     * @return a <code>String</code> specifying the real path, or <code>null</code> if the 
+     * 	translation cannot be performed
+     */
+    public String getRealPath(String path);
 }

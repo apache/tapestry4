@@ -22,11 +22,11 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class MultipartMessages
+public class MultipartMessages
 {
     private final static MessageFormatter _formatter = new MessageFormatter(MultipartMessages.class);
 
-    static String unableToDecode(Throwable cause)
+    public static String unableToDecode(Throwable cause)
     {
         return _formatter.format("unable-to-decode", cause);
     }

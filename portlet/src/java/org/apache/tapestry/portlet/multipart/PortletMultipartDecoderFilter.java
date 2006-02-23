@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,32 +11,28 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-package org.apache.tapestry.multipart;
+package org.apache.tapestry.portlet.multipart;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletException;
 
-import org.apache.tapestry.services.ServletRequestServicer;
-import org.apache.tapestry.services.ServletRequestServicerFilter;
+import org.apache.tapestry.portlet.ActionRequestServicer;
+import org.apache.tapestry.portlet.ActionRequestServicerFilter;
 
 /**
- * Checks to see if the request is a file upload and, if so, uses the
- * {@link org.apache.tapestry.multipart.MultipartDecoder}&nbsp;to obtain form parameters.
- * 
- * @author Howard M. Lewis Ship
- * @since 4.0
+ * @author Raphael Jean
+ *
  */
-public class MultipartDecoderFilter implements ServletRequestServicerFilter
+public class PortletMultipartDecoderFilter implements ActionRequestServicerFilter 
 {
-    private ServletMultipartDecoder _decoder;
-    
-    public void service(HttpServletRequest request, HttpServletResponse response,
-            ServletRequestServicer servicer) throws IOException, ServletException
-    {
+    private PortletMultipartDecoder _decoder;
+
+	public void service(ActionRequest request, ActionResponse response,
+			ActionRequestServicer servicer) throws IOException, PortletException 
+	{
         String contentType = request.getContentType();
 
         // contentType is occasionally null in testing. The browser tacks on additional
@@ -47,7 +43,7 @@ public class MultipartDecoderFilter implements ServletRequestServicerFilter
 
         try
         {
-            HttpServletRequest newRequest = encoded ? _decoder.decode(request) : request;
+            ActionRequest newRequest = encoded ? _decoder.decode(request) : request;
 
             servicer.service(newRequest, response);
         }
@@ -56,10 +52,10 @@ public class MultipartDecoderFilter implements ServletRequestServicerFilter
             if (encoded)
                 _decoder.cleanup();
         }
-    }
+	}
 
-    public void setDecoder(ServletMultipartDecoder decoder)
-    {
-        _decoder = decoder;
-    }
+	public void setDecoder(PortletMultipartDecoder decoder) {
+		this._decoder = decoder;
+	}
+
 }

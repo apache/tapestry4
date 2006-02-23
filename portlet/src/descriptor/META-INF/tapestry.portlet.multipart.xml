@@ -15,38 +15,37 @@
    limitations under the License.
 -->
 
-<module id="tapestry.multipart" version="4.0.0" package="org.apache.tapestry.multipart">
+<module id="tapestry.portlet.multipart" version="4.0.0" package="org.apache.tapestry.portlet.multipart">
   
   Support for multipart/form-data encoded requests used for file uploads.
   
-  <service-point id="ServletMultipartDecoder">
+  <service-point id="PortletMultipartDecoder">
     
     Service responsible for parsing and decoding multipart form submissions. 
     
-    <create-instance class="MultipartDecoderImpl" model="threaded"/>
+    <create-instance class="PortletMultipartDecoderImpl" model="threaded"/>
     
   </service-point>
   
-  <service-point id="ServletMultipartDecoderFilter" interface="org.apache.tapestry.services.ServletRequestServicerFilter">
+  <service-point id="PortletMultipartDecoderFilter" interface="org.apache.tapestry.portlet.ActionRequestServicerFilter">
     
-    Identifies upload requests and passes them to the MultipartDecoder service
+    Identifies upload requests and passes them to the PortletMultipartDecoder service
     for decoding.
     
     <invoke-factory>
-      <construct class="MultipartDecoderFilter">
-        <set-service property="decoder" service-id="ServletMultipartDecoder"/>
+      <construct class="PortletMultipartDecoderFilter">
+        <set-service property="decoder" service-id="PortletMultipartDecoder"/>
       </construct>
     </invoke-factory>
     
   </service-point>
   
-  <contribution configuration-id="tapestry.request.ServletRequestServicerPipeline">
-    <filter name="ServletMultipartDecoderFilter" 
-      object="service:ServletMultipartDecoderFilter" 
-      after="tapestry.request.SetupRequestEncoding"/>
+  <contribution configuration-id="tapestry.portlet.ActionRequestServicerPipeline">
+    <filter name="PortletMultipartDecoderFilter" 
+      object="service:PortletMultipartDecoderFilter"/>
   </contribution>
   
   <contribution configuration-id="tapestry.Infrastructure">
-    <property name="multipartDecoder" object="service:ServletMultipartDecoder"/>
+    <property name="multipartDecoder" mode="portlet" object="service:PortletMultipartDecoder"/>
   </contribution>
 </module>

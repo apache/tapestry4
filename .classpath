@@ -35,6 +35,6 @@
 	<classpathentry kind="lib" path="ext-package/lib/hivemind-1.1.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="ext-package/lib/commons-fileupload-1.0.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/commons-fileupload-1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
