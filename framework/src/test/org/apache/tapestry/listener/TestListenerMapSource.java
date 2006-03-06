@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import org.easymock.MockControl;
  */
 public class TestListenerMapSource extends HiveMindTestCase
 {
+
     private IRequestCycle newCycle(Object[] listenerParameters)
     {
         MockControl control = newControl(IRequestCycle.class);
@@ -47,10 +48,9 @@ public class TestListenerMapSource extends HiveMindTestCase
     {
         Method[] methods = clazz.getMethods();
 
-        for (int i = 0; i < methods.length; i++)
+        for(int i = 0; i < methods.length; i++)
         {
-            if (methods[i].getName().equals(name))
-                return methods[i];
+            if (methods[i].getName().equals(name)) return methods[i];
         }
 
         throw new IllegalArgumentException("No method '" + name + "' in " + clazz + ".");
@@ -79,8 +79,7 @@ public class TestListenerMapSource extends HiveMindTestCase
 
     public void testFoundWithParameters()
     {
-        IRequestCycle cycle = newCycle(new Object[]
-        { "Hello", new Integer(7) });
+        IRequestCycle cycle = newCycle(new Object[] { "Hello", new Integer(7) });
         ListenerMethodHolder holder = newHolder();
 
         holder.fred("Hello", 7);
@@ -98,8 +97,7 @@ public class TestListenerMapSource extends HiveMindTestCase
 
     public void testFoundWithCycleAndParameters()
     {
-        IRequestCycle cycle = newCycle(new Object[]
-        { new Integer(7) });
+        IRequestCycle cycle = newCycle(new Object[] { new Integer(7) });
         ListenerMethodHolder holder = newHolder();
 
         holder.wilma(cycle, 7);
@@ -116,13 +114,13 @@ public class TestListenerMapSource extends HiveMindTestCase
     }
 
     /**
-     * No exact match on parameter count, fall through to the no-arguments method implementation.
+     * No exact match on parameter count, fall through to the no-arguments
+     * method implementation.
      */
 
     public void testNoParameterMatch()
     {
-        IRequestCycle cycle = newCycle(new Object[]
-        { "Hello", new Integer(7) });
+        IRequestCycle cycle = newCycle(new Object[] { "Hello", new Integer(7) });
         ListenerMethodHolder holder = newHolder();
 
         holder.barney();
@@ -140,8 +138,7 @@ public class TestListenerMapSource extends HiveMindTestCase
 
     public void testFallbackToJustCycle()
     {
-        IRequestCycle cycle = newCycle(new Object[]
-        { "Hello", new Integer(7) });
+        IRequestCycle cycle = newCycle(new Object[] { "Hello", new Integer(7) });
 
         ListenerMethodHolder holder = newHolder();
 
@@ -179,13 +176,13 @@ public class TestListenerMapSource extends HiveMindTestCase
     public void testReturnLink()
     {
         ILink link = newLink("http://foo/bar");
-        
+
         IRequestCycle cycle = newCycle(null);
-        
+
         cycle.sendRedirect("http://foo/bar");
-        
+
         ListenerMethodHolder holder = new ListenerMethodHolder(link);
-        
+
         replayControls();
 
         ListenerMapSource source = new ListenerMapSourceImpl();
@@ -194,7 +191,7 @@ public class TestListenerMapSource extends HiveMindTestCase
 
         map.getListener("returnsLink").actionTriggered(null, cycle);
 
-        verifyControls();    
+        verifyControls();
     }
 
     private ILink newLink(String absoluteURL)
@@ -229,8 +226,7 @@ public class TestListenerMapSource extends HiveMindTestCase
 
     public void testNoMatch()
     {
-        IRequestCycle cycle = newCycle(new Object[]
-        { "Hello", new Integer(7) });
+        IRequestCycle cycle = newCycle(new Object[] { "Hello", new Integer(7) });
 
         replayControls();
 
@@ -258,8 +254,7 @@ public class TestListenerMapSource extends HiveMindTestCase
 
     public void testMismatchedTypes()
     {
-        IRequestCycle cycle = newCycle(new Object[]
-        { "Hello" });
+        IRequestCycle cycle = newCycle(new Object[] { "Hello" });
 
         replayControls();
 
@@ -276,9 +271,15 @@ public class TestListenerMapSource extends HiveMindTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(
-                    "Failure invoking listener method 'public void org.apache.tapestry.listener.ListenerMethodHolder.wrongTypes(java.util.Map)' on ListenerMethodHolder: argument type mismatch",
-                    ex.getMessage());
+            assertEquals(IllegalArgumentException.class, ex.getRootCause().getClass());
+            assertTrue(ex.getMessage().startsWith(
+                    "Failure invoking listener method 'public void "
+                            + "org.apache.tapestry.listener.ListenerMethodHolder."
+                            + "wrongTypes(java.util.Map)' on ListenerMethodHolder:"));
+            // TODO: IBM jre doesn't format these messages the same as sun's
+            // jre,
+            // IBM's message has no message string source for the
+            // IllegalArgumentException
             assertSame(holder, ex.getComponent());
         }
 
@@ -287,8 +288,7 @@ public class TestListenerMapSource extends HiveMindTestCase
 
     public void testInvocationTargetException()
     {
-        IRequestCycle cycle = newCycle(new Object[]
-        { "Hello", new Integer(7) });
+        IRequestCycle cycle = newCycle(new Object[] { "Hello", new Integer(7) });
 
         ListenerMethodHolder holder = new ListenerMethodHolder();
 
@@ -321,8 +321,7 @@ public class TestListenerMapSource extends HiveMindTestCase
 
     public void testInvocationTargetExceptionForApplicationRuntimeException()
     {
-        IRequestCycle cycle = newCycle(new Object[]
-        { "Hello", new Integer(7) });
+        IRequestCycle cycle = newCycle(new Object[] { "Hello", new Integer(7) });
 
         ListenerMethodHolder holder = new ListenerMethodHolder();
 

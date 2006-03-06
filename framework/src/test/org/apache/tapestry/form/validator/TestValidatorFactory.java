@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2005, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ import org.easymock.MockControl;
  */
 public class TestValidatorFactory extends TapestryTestCase
 {
+
     private Map buildContributions(String name, boolean configurable)
     {
         ValidatorContribution vc = newContribution(configurable, ValidatorFixture.class);
@@ -137,8 +138,7 @@ public class TestValidatorFactory extends TapestryTestCase
         catch (ApplicationRuntimeException ex)
         {
             assertEquals("Validator 'name' must be configured in order to be used. "
-                    + "The value is configured by changing 'name' to 'name=value'.", ex
-                    .getMessage());
+                    + "The value is configured by changing 'name' to 'name=value'.", ex.getMessage());
         }
 
         verifyControls();
@@ -158,10 +158,8 @@ public class TestValidatorFactory extends TapestryTestCase
         ValidatorFactoryImpl vf = new ValidatorFactoryImpl();
         vf.setValidators(map);
 
-        List result = vf
-                .constructValidatorList(
-                        component,
-                        "required[EMail is required],email,minLength=10[EMail must be at least ten characters long]");
+        List result = vf.constructValidatorList(component,
+                "required[EMail is required],email,minLength=10[EMail must be at least ten characters long]");
 
         assertEquals(3, result.size());
 
@@ -215,8 +213,8 @@ public class TestValidatorFactory extends TapestryTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals("Validator 'fred' is not configurable, "
-                    + "'fred=biff' should be changed to just 'fred'.", ex.getMessage());
+            assertEquals("Validator 'fred' is not configurable, " + "'fred=biff' should be changed to just 'fred'.", ex
+                    .getMessage());
         }
 
         verifyControls();
@@ -264,9 +262,8 @@ public class TestValidatorFactory extends TapestryTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(
-                    "Error initializing validator 'fred' (class java.lang.Object): java.lang.Object",
-                    ex.getMessage());
+            assertTrue(ex.getMessage().startsWith(
+                    "Error initializing validator 'fred' (class java.lang.Object): java.lang.Object"));
         }
 
         verifyControls();
@@ -299,7 +296,8 @@ public class TestValidatorFactory extends TapestryTestCase
         return component;
     }
 
-    public void testBeanReference() throws Exception
+    public void testBeanReference()
+        throws Exception
     {
         Validator validator = newValidator();
         IBeanProvider provider = newBeanProvider("fred", validator);
@@ -360,8 +358,7 @@ public class TestValidatorFactory extends TapestryTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(
-                    "Bean 'fred' does not implement the org.apache.tapestry.form.validator.Validator interface.",
+            assertEquals("Bean 'fred' does not implement the org.apache.tapestry.form.validator.Validator interface.",
                     ex.getMessage());
             assertSame(bean, ex.getComponent());
         }
