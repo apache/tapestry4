@@ -144,9 +144,10 @@ public class SimpleTableColumn extends AbstractTableColumn
      */
     public String getDisplayName()
     {
+    	m_strDisplayName.replace('.', '_'); //added from patch
         return m_strDisplayName;
     }
-
+    
     /**
      * Sets the displayName.
      * 
