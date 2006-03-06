@@ -69,6 +69,10 @@
         is caused by a class that doesn't implement Serializable. Added message hinting at this
         in error strings.
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-234" due-to="Matt Raible" >
+      	Display name of SimpleTableColumn now replaces all instances of "." character with
+      	"_".
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>
