@@ -49,7 +49,15 @@
         <td>
           <link href="&maven;/commons-fileupload/jars/">commons-fileupload</link>
         </td>
-        <td>1.0</td>
+        <td>1.1</td>
+        <td>ASL</td>
+        <td>File upload support.</td>
+      </tr>
+      <tr>
+        <td>
+          <link href="&maven;/commons-io/jars/">commons-io</link>
+        </td>
+        <td>1.1</td>
         <td>ASL</td>
         <td>File upload support.</td>
       </tr>
@@ -65,7 +73,7 @@
         <td>
           <link href="&maven;/hivemind/jars/">hivemind</link>
         </td>
-        <td> 1.1 </td>
+        <td> 1.1.1 </td>
         <td> ASL </td>
         <td> Services and configuration microkernel; provides service infrastructure for the framework. </td>
       </tr>
@@ -73,7 +81,7 @@
         <td>
           <link href="&maven;/hivemind/jars/">hivemind-lib</link>
         </td>
-        <td>1.1</td>
+        <td>1.1.1</td>
         <td>ASL</td>
         <td> Library of additional HiveMind services. </td>
       </tr>
