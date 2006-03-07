@@ -50,7 +50,7 @@
     <ibiblio-dependency artifact="oro"                version="${oro.version}"      group="oro"               use="run"/>
     <ibiblio-dependency artifact="servletapi"         version="${servlet.version}"  group="servletapi"/>
   	
-  	<ibiblio-dependency artifact="derby"   version="${derby.version}"	group="org.apache.derby"/>
+  	<ibiblio-dependency artifact="hsqldb"   version="${hsqldb.version}"	group="hsqldb"/>
   </target>	
   
 </project>

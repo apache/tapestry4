@@ -32,7 +32,7 @@ public interface IMarkupWriter
      *             if there is no open tag.
      */
 
-    public void attribute(String name, int value);
+    void attribute(String name, int value);
 
     /**
      * Writes a boolean attribute into the currently open tag.
@@ -42,7 +42,7 @@ public interface IMarkupWriter
      * @since 3.0
      */
 
-    public void attribute(String name, boolean value);
+    void attribute(String name, boolean value);
 
     /**
      * Writes an attribute into the most recently opened tag. This must be called after
@@ -54,7 +54,7 @@ public interface IMarkupWriter
      *             if there is no open tag.
      */
 
-    public void attribute(String name, String value);
+    void attribute(String name, String value);
 
     /**
      * Similar to {@link #attribute(String, String)}but no escaping of invalid elements is done for
@@ -65,27 +65,27 @@ public interface IMarkupWriter
      * @since 3.0
      */
 
-    public void attributeRaw(String name, String value);
+    void attributeRaw(String name, String value);
 
     /**
      * Closes any existing tag then starts a new element. The new element is pushed onto the active
      * element stack.
      */
 
-    public void begin(String name);
+    void begin(String name);
 
     /**
      * Starts an element that will not later be matched with an <code>end()</code> call. This is
      * useful for elements that do not need closing tags.
      */
 
-    public void beginEmpty(String name);
+    void beginEmpty(String name);
 
     /**
      * Invokes checkError() on the <code>PrintWriter</code> used to format output.
      */
 
-    public boolean checkError();
+    boolean checkError();
 
     /**
      * Closes this <code>IMarkupWriter</code>. Close tags are written for any active elements.
@@ -93,7 +93,7 @@ public interface IMarkupWriter
      * commit its buffer to its containing writer.
      */
 
-    public void close();
+    void close();
 
     /**
      * Closes the most recently opened element by writing the '&gt;' that ends it. Once this is
@@ -101,7 +101,7 @@ public interface IMarkupWriter
      * with {@link #begin(String)}or or {@link #beginEmpty(String)}.
      */
 
-    public void closeTag();
+    void closeTag();
 
     /**
      * Writes an XML/HTML comment. Any open tag is first closed. The method takes care of providing
@@ -112,28 +112,28 @@ public interface IMarkupWriter
      * (much like {@link #printRaw(String)}.
      */
 
-    public void comment(String value);
+    void comment(String value);
 
     /**
      * Ends the element most recently started by {@link#begin(String)}. The name of the tag is
      * popped off of the active element stack and used to form an HTML close tag.
      */
 
-    public void end();
+    void end();
 
     /**
      * Ends the most recently started element with the given name. This will also end any other
      * intermediate elements. This is very useful for easily ending a table or even an entire page.
      */
 
-    public void end(String name);
+    void end(String name);
 
     /**
      * Forwards <code>flush()</code> to this <code>IMarkupWriter</code>'s
      * <code>PrintWriter</code>.
      */
 
-    public void flush();
+    void flush();
 
     /**
      * Returns a nested writer, one that accumulates its changes in a buffer. When the nested writer
@@ -141,14 +141,14 @@ public interface IMarkupWriter
      * using {@link #printRaw(String)}.
      */
 
-    public NestedMarkupWriter getNestedWriter();
+    NestedMarkupWriter getNestedWriter();
 
     /**
      * Version of {@link #print(char[], int, int, boolean)}&nbsp;that assumes filter is
      * <em>enabled</em>.
      */
 
-    public void print(char[] data, int offset, int length);
+    void print(char[] data, int offset, int length);
 
     /**
      * The primary <code>print()</code> method, used by most other methods.
@@ -171,7 +171,7 @@ public interface IMarkupWriter
      * @since 4.0
      */
 
-    public void print(char[] data, int offset, int length, boolean raw);
+    void print(char[] data, int offset, int length, boolean raw);
 
     /**
      * Prints a single character, or its equivalent entity.
@@ -179,7 +179,7 @@ public interface IMarkupWriter
      * Closes any open tag.
      */
 
-    public void print(char value);
+    void print(char value);
 
     /**
      * Prints an integer.
@@ -187,44 +187,44 @@ public interface IMarkupWriter
      * Closes any open tag.
      */
 
-    public void print(int value);
+    void print(int value);
 
     /**
      * As with {@link #print(char[], int, int, boolean)}, but the data to print is defined by the
      * String. Assumes filtering is <em>enabled</em>.
      */
 
-    public void print(String value);
+    void print(String value);
 
     /**
      * As with {@link #print(char[], int, int, boolean)}, but the data to print is defined by the
      * String.
      */
 
-    public void print(String value, boolean raw);
+    void print(String value, boolean raw);
 
     /**
      * Closes the open tag (if any), then prints a line seperator to the output stream.
      */
 
-    public void println();
+    void println();
 
     /**
      * Version of {@link #print(char[], int, int, boolean)}that assumes filter is <em>enabled</em>.
      */
 
-    public void printRaw(char[] buffer, int offset, int length);
+    void printRaw(char[] buffer, int offset, int length);
 
     /**
      * As with {@link #print(char[], int, int, boolean)}, but the data to print is defined by the
      * String. Assumes filtering is <em>disabled</em>.
      */
 
-    public void printRaw(String value);
+    void printRaw(String value);
 
     /**
      * Returns the type of content generated by this response writer, as a MIME type.
      */
 
-    public String getContentType();
+    String getContentType();
 }

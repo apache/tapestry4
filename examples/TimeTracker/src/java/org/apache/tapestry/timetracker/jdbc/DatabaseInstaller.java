@@ -60,7 +60,7 @@ public class DatabaseInstaller
     /**
      * Checks for existance of database tables.
      * @return True, if any row exists in a table called "projects".
-     * @throws SQLException
+     * @throws SQLException on error
      */
     public boolean tablesExist()
     throws SQLException
@@ -69,7 +69,7 @@ public class DatabaseInstaller
         ResultSet rs = null;
         
         try {
-            ps = _conn.prepareStatement("select 'X' from projects");
+            ps = _conn.prepareStatement("select 'x' from INFORMATION_SCHEMA.SYSTEM_TABLES where TABLE_NAME = 'PROJECTS'");
             rs = ps.executeQuery();
             
             return rs.next();
@@ -89,6 +89,7 @@ public class DatabaseInstaller
     protected void createDatabase()
     throws Exception
     {
+        _log.debug("createDatabase() creating database tables..");
         PreparedStatement ps = null;
         try {
             

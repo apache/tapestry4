@@ -30,15 +30,18 @@ import java.io.Writer;
 
 public class BinaryDumpOutputStream extends OutputStream
 {
-    private PrintWriter out;
+    private static final char[] HEX =
+    { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+    
+    private PrintWriter _out;
 
     private boolean locked = false;
 
-    private boolean showOffset = true;
+    private boolean _showOffset = true;
 
     private int bytesPerLine = 16;
 
-    private int spacingInterval = 4;
+    private int _spacingInterval = 4;
 
     private char substituteChar = '.';
 
@@ -58,9 +61,6 @@ public class BinaryDumpOutputStream extends OutputStream
 
     private String asciiEnd = "|";
 
-    private static final char[] HEX =
-    { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
-
     /**
      * Creates a <code>PrintWriter</code> for <code>System.out</code>.
      */
@@ -72,25 +72,25 @@ public class BinaryDumpOutputStream extends OutputStream
 
     public BinaryDumpOutputStream(PrintWriter out)
     {
-        this.out = out;
+        this._out = out;
     }
 
     public BinaryDumpOutputStream(Writer out)
     {
-        this.out = new PrintWriter(out);
+        this._out = new PrintWriter(out);
     }
 
     public void close() throws IOException
     {
-        if (out != null)
+        if (_out != null)
         {
             if (lineCount > 0)
                 finishFinalLine();
 
-            out.close();
+            _out.close();
         }
 
-        out = null;
+        _out = null;
     }
 
     private void finishFinalLine()
@@ -103,15 +103,15 @@ public class BinaryDumpOutputStream extends OutputStream
         {
             // After every <n> bytes, emit a space.
 
-            if (spacingInterval > 0 && bytesSinceSpace == spacingInterval)
+            if (_spacingInterval > 0 && bytesSinceSpace == _spacingInterval)
             {
-                out.print(' ');
+                _out.print(' ');
                 bytesSinceSpace = 0;
             }
 
             // Two spaces to substitute for the two hex digits.
 
-            out.print("  ");
+            _out.print("  ");
 
             if (showAscii)
                 ascii[lineCount] = ' ';
@@ -122,12 +122,12 @@ public class BinaryDumpOutputStream extends OutputStream
 
         if (showAscii)
         {
-            out.print(asciiBegin);
-            out.print(ascii);
-            out.print(asciiEnd);
+            _out.print(asciiBegin);
+            _out.print(ascii);
+            _out.print(asciiEnd);
         }
 
-        out.println();
+        _out.println();
     }
 
     /**
@@ -136,7 +136,7 @@ public class BinaryDumpOutputStream extends OutputStream
 
     public void flush() throws IOException
     {
-        out.flush();
+        _out.flush();
     }
 
     public String getAsciiBegin()
@@ -239,29 +239,29 @@ public class BinaryDumpOutputStream extends OutputStream
         {
             if (showAscii)
             {
-                out.print(asciiBegin);
-                out.print(ascii);
-                out.print(asciiEnd);
+                _out.print(asciiBegin);
+                _out.print(ascii);
+                _out.print(asciiEnd);
             }
 
-            out.println();
+            _out.println();
 
             bytesSinceSpace = 0;
             lineCount = 0;
             offset += bytesPerLine;
         }
 
-        if (lineCount == 0 && showOffset)
+        if (lineCount == 0 && _showOffset)
         {
             writeHex(offset, 4);
-            out.print(offsetSeperator);
+            _out.print(offsetSeperator);
         }
 
         // After every <n> bytes, emit a space.
 
-        if (spacingInterval > 0 && bytesSinceSpace == spacingInterval)
+        if (_spacingInterval > 0 && bytesSinceSpace == _spacingInterval)
         {
-            out.print(' ');
+            _out.print(' ');
             bytesSinceSpace = 0;
         }
 
@@ -290,27 +290,27 @@ public class BinaryDumpOutputStream extends OutputStream
         {
             nybble = (value >> 4 * (digits - i - 1)) & 0x0f;
 
-            out.print(HEX[nybble]);
+            _out.print(HEX[nybble]);
         }
     }
 
     public void setSpacingInterval(int spacingInterval)
     {
-        this.spacingInterval = spacingInterval;
+        this._spacingInterval = spacingInterval;
     }
 
     public boolean isShowOffset()
     {
-        return showOffset;
+        return _showOffset;
     }
 
     public void setShowOffset(boolean showOffset)
     {
-        this.showOffset = showOffset;
+        this._showOffset = showOffset;
     }
 
     public int getSpacingInterval()
     {
-        return spacingInterval;
+        return _spacingInterval;
     }
 }
