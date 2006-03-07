@@ -32,14 +32,14 @@ public interface IPropertySelectionRenderer
      *
      **/
 
-    public void beginRender(PropertySelection component, IMarkupWriter writer, IRequestCycle cycle);
+    void beginRender(PropertySelection component, IMarkupWriter writer, IRequestCycle cycle);
 
     /**
      *  Invoked for each element obtained from the {@link IPropertySelectionModel model}.
      *
      **/
 
-    public void renderOption(
+    void renderOption(
         PropertySelection component,
         IMarkupWriter writer,
         IRequestCycle cycle,
@@ -53,5 +53,5 @@ public interface IPropertySelectionRenderer
      *
      **/
 
-    public void endRender(PropertySelection component, IMarkupWriter writer, IRequestCycle cycle);
+    void endRender(PropertySelection component, IMarkupWriter writer, IRequestCycle cycle);
 }

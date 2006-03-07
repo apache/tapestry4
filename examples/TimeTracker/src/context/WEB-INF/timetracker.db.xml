@@ -23,19 +23,19 @@
                 class="org.apache.hivemind.impl.SystemPropertiesSymbolSource" />  
     </contribution>
     
-    <service-point id="DerbyConnProxyFactory"
+    <service-point id="HsqlConnProxyFactory"
         interface="org.apache.hivemind.ServiceImplementationFactory"
         parameters-occurs="none">
         Core service implementation factory that constructs dynamic
         proxies to dbcp connection pools
         <invoke-factory service-id="hivemind.BuilderFactory">
             <construct class="DataSourceProxyFactory" autowire-services="false">
-                <set-service property="dataSource" service-id="DerbyDataSource" />
+                <set-service property="dataSource" service-id="HsqlDataSource" />
             </construct>
         </invoke-factory>
     </service-point>
     
-    <service-point id="DerbyDataSource"
+    <service-point id="HsqlDataSource"
         interface="org.apache.commons.dbcp.BasicDataSource"
         parameters-occurs="none">
         
@@ -44,29 +44,30 @@
             <construct
                 class="org.apache.commons.dbcp.BasicDataSource">
                 <set property="driverClassName"
-                    value="org.apache.derby.jdbc.EmbeddedDriver" />
+                    value="org.hsqldb.jdbcDriver" />
                 <set property="url"
-                    value="jdbc:derby:${java.io.tmpdir}/tapestry-timetrackerdb;create=true" />
+                    value="jdbc:hsqldb:file:tapestry-timetrackerdb" />
                 <set property="initialSize" value="1" />
                 <set property="maxActive" value="2" />
                 <set property="maxWait" value="40000" />
-                <set property="username" value="trackadmin" />
+                <set property="username" value="sa" />
                 <set property="poolPreparedStatements" value="true" />
                 <set property="maxOpenPreparedStatements" value="20" />
             </construct>
         </invoke-factory>
     </service-point>
     
-    <service-point id="DerbyConnection" interface="java.sql.Connection">
+    <service-point id="HsqlConnection" interface="java.sql.Connection">
         DB Connection for derby database
-        <invoke-factory service-id="DerbyConnProxyFactory" model="threaded" />
+        <invoke-factory service-id="HsqlConnProxyFactory" model="threaded" />
     </service-point>
     
     <service-point id="DatabaseInstaller" interface="DatabaseInstaller">
         Ensures the database has been created/initialised. 
         <invoke-factory service-id="hivemind.BuilderFactory">
-            <construct class="DatabaseInstaller" autowire-services="false">
-                <set-service property="connection" service-id="DerbyConnection" />
+            <construct class="DatabaseInstaller" autowire-services="false"
+                       initialize-method="initialise" >
+                <set-service property="connection" service-id="HsqlConnection" />
                 <set property="filePath" value="src/config/createDatabase.sql" />
             </construct>
         </invoke-factory>

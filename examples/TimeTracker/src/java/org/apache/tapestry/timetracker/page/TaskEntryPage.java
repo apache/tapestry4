@@ -13,11 +13,13 @@
 // limitations under the License.
 package org.apache.tapestry.timetracker.page;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.form.BeanPropertySelectionModel;
+import org.apache.tapestry.form.DatePicker;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.form.PropertySelection;
 import org.apache.tapestry.html.BasePage;
@@ -42,6 +44,12 @@ public abstract class TaskEntryPage extends BasePage
     public abstract ProjectDao getProjectDao();
     
     public abstract Project getSelectedProject();
+    
+    @Component(type = "DatePicker", id = "startPicker",
+            bindings = {"value=startTime"})
+    public abstract DatePicker getStartPicker();
+    
+    public abstract Date getStartTime();
     
     /**
      * Selection model for projects.

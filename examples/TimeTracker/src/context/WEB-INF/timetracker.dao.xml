@@ -21,7 +21,7 @@
     <service-point id="ProjectDao" interface="ProjectDao" >
         <invoke-factory service-id="hivemind.BuilderFactory">
             <construct class="ProjectDao" autowire-services="false">
-                <set-service property="connection" service-id="timetracker.db.DerbyConnection" />
+                <set-service property="connection" service-id="timetracker.db.HsqlConnection" />
             </construct>
         </invoke-factory>
     </service-point>

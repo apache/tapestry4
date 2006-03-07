@@ -23,6 +23,52 @@ package org.apache.tapestry.form;
  */
 public class LabeledPropertySelectionModel implements IPropertySelectionModel
 {
+    /**
+     * Empty model implementation. Avoids NullPointerExceptions when default constructor is used.
+     */
+    private static final IPropertySelectionModel EMPTY_MODEL = new IPropertySelectionModel()
+    {
+        /**
+         * @see org.apache.tapestry.form.IPropertySelectionModel#getOptionCount()
+         */
+        public int getOptionCount()
+        {
+            return 0;
+        }
+
+        /**
+         * @see org.apache.tapestry.form.IPropertySelectionModel#getOption(int)
+         */
+        public Object getOption(int index)
+        {
+            return null;
+        }
+
+        /**
+         * @see org.apache.tapestry.form.IPropertySelectionModel#getLabel(int)
+         */
+        public String getLabel(int index)
+        {
+            return null;
+        }
+
+        /**
+         * @see org.apache.tapestry.form.IPropertySelectionModel#getValue(int)
+         */
+        public String getValue(int index)
+        {
+            return null;
+        }
+
+        /**
+         * @see org.apache.tapestry.form.IPropertySelectionModel#translateValue(java.lang.String)
+         */
+        public Object translateValue(String value)
+        {
+            return null;
+        }
+    };
+    
     private IPropertySelectionModel _model;
 
     private String _label = "";
@@ -109,7 +155,7 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
     }
 
     /**
-     * Returns the underlying IPropertySelectionModel
+     * Returns the underlying IPropertySelectionModel.
      * 
      * @return the underlying IPropertySelectionModel
      */
@@ -119,7 +165,7 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
     }
 
     /**
-     * Sets the underlying IPropertySelectionModel
+     * Sets the underlying IPropertySelectionModel.
      * 
      * @param model
      *            the IPropertySelectionModel to set
@@ -173,7 +219,7 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
     }
 
     /**
-     * Returns the label of the initial IPropertySelectionModel option
+     * Returns the label of the initial IPropertySelectionModel option.
      * 
      * @return a IPropertySelectionModel option label
      */
@@ -183,7 +229,7 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
     }
 
     /**
-     * Sets the label of the initial IPropertySelectionModel option
+     * Sets the label of the initial IPropertySelectionModel option.
      * 
      * @param label
      *            a IPropertySelectionModel option label
@@ -194,7 +240,7 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
     }
 
     /**
-     * Returns the value of the initial IPropertySelectionModel option
+     * Returns the value of the initial IPropertySelectionModel option.
      * 
      * @return a IPropertySelectionModel option value
      */
@@ -204,7 +250,7 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
     }
 
     /**
-     * Sets the value of the initial IPropertySelectionModel option
+     * Sets the value of the initial IPropertySelectionModel option.
      * 
      * @param value
      *            a IPropertySelectionModel option value
@@ -215,7 +261,7 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
     }
 
     /**
-     * Returns the initial option
+     * Returns the initial option.
      * 
      * @return a PropertySelectionModel option
      */
@@ -225,7 +271,7 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
     }
 
     /**
-     * Sets the initial IPropertySelectionModel option
+     * Sets the initial IPropertySelectionModel option.
      * 
      * @param option
      *            a IPropertySelectionModel option
@@ -234,50 +280,4 @@ public class LabeledPropertySelectionModel implements IPropertySelectionModel
     {
         _option = option;
     }
-
-    /**
-     * Empty model implementation. Avoids NullPointerExceptions when default constructor is used.
-     */
-    private static final IPropertySelectionModel EMPTY_MODEL = new IPropertySelectionModel()
-    {
-        /**
-         * @see org.apache.tapestry.form.IPropertySelectionModel#getOptionCount()
-         */
-        public int getOptionCount()
-        {
-            return 0;
-        }
-
-        /**
-         * @see org.apache.tapestry.form.IPropertySelectionModel#getOption(int)
-         */
-        public Object getOption(int index)
-        {
-            return null;
-        }
-
-        /**
-         * @see org.apache.tapestry.form.IPropertySelectionModel#getLabel(int)
-         */
-        public String getLabel(int index)
-        {
-            return null;
-        }
-
-        /**
-         * @see org.apache.tapestry.form.IPropertySelectionModel#getValue(int)
-         */
-        public String getValue(int index)
-        {
-            return null;
-        }
-
-        /**
-         * @see org.apache.tapestry.form.IPropertySelectionModel#translateValue(java.lang.String)
-         */
-        public Object translateValue(String value)
-        {
-            return null;
-        }
-    };
 }

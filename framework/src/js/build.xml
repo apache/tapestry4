@@ -22,51 +22,57 @@
 	http://svn.dojotoolkit.org
 -->
 <project name="Tapestry Javascript" default="package">
-	
+
 	<!-- ====================================================== -->
 	<!-- Properties/environment checks							-->
 	<!-- ====================================================== -->
-	<property name="module.name" value="framework-js"/>
-	<property name="module.javac.target" value="1.5"/>
-	<property name="module.javac.source" value="1.5"/>
-	<property name="module.install.dir" value="${root.dir}/target/js"/>
-	
+	<property name="module.name" value="framework-js" />
+	<property name="module.javac.target" value="1.5" />
+	<property name="module.javac.source" value="1.5" />
+	<property name="module.install.dir" value="${root.dir}/target/js" />
+
 	<property name="root.dir" value="../../.." />
 	<property file="${root.dir}/config/build.properties" />
 	<property name="profile.file" value="tapestry.profile.js" />
-	
+
 	<property name="release.dir" value="${dojo.dir}/../release/" />
-	
-	<import file="${hivebuild.dir}/jar-module.xml"/>
-	
-	<target name="check-dependencies"
-			description="Ensures that dojo.dir is set." >
-		
+
+	<import file="${hivebuild.dir}/jar-module.xml" />
+
+	<target name="check-dependencies" description="Ensures that dojo.dir is set.">
+
 		<fail message="dojo.dir not set" unless="dojo.dir" />
 	</target>
-	
+
 	<!-- ====================================================== -->
 	<!-- Building												-->
 	<!-- ====================================================== -->
-	
-	<target name="package" depends="check-dependencies"
-			description="Builds tapestry dojo package and copies it into source tree." >
+
+	<target name="package" depends="check-dependencies" description="Builds tapestry dojo package and copies it into source tree.">
 		<echo>Building dojo package</echo>
-		
+
 		<echo>Copying tapestry profile to dojo build directory.</echo>
 		<copy todir="${dojo.dir}/profiles" file="${profile.file}" />
-		
+
 		<echo>Building dojo tapestry release</echo>
-		<ant dir="${dojo.dir}" target="release" >
+		<ant dir="${dojo.dir}" target="release">
 			<property name="docless" value="true" />
 			<property name="profile" value="tapestry" />
 		</ant>
-		
-		<copy todir="${root.dir}/bin/org/apache/tapestry/html" overwrite="true" >
+
+		<copy todir="${root.dir}/bin/org/apache/tapestry/html" overwrite="true">
 			<fileset dir="${release.dir}">
 				<exclude name="dojo/demos/**" />
 			</fileset>
 		</copy>
 	</target>
 	
+	<target name="copy-libs">
+		<copy todir="${root.dir}/bin/org/apache/tapestry/html" overwrite="true">
+			<fileset dir="${release.dir}">
+				<exclude name="dojo/demos/**" />
+			</fileset>
+		</copy>
+	</target>
+
 </project>
