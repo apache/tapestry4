@@ -156,6 +156,7 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, component);
 
         trainIsDisabled(component, false);
+        trainIsRewinding(cycle, false);
 
         writer.begin("a");
 
@@ -207,6 +208,7 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, component);
 
         trainIsDisabled(component, false);
+        trainIsRewinding(cycle, false);
 
         writer.begin("a");
 
@@ -265,6 +267,29 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         verifyControls();
     }
 
+    public void testRewinding()
+    {
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        ILinkComponent component = newComponent();
+
+        trainGetAttribute(cycle, Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, null);
+        cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, component);
+
+        trainIsDisabled(component, false);
+        trainIsRewinding(cycle, true);
+
+        component.renderBody(writer, cycle);
+
+        cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
+
+        replayControls();
+
+        new DefaultLinkRenderer().renderLink(writer, cycle, component);
+
+        verifyControls();
+    }
+
     public void testWithSubclass()
     {
         IMarkupWriter writer = newWriter();
@@ -277,6 +302,7 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, component);
 
         trainIsDisabled(component, false);
+        trainIsRewinding(cycle, false);
 
         writer.begin("xlink");
 
@@ -333,6 +359,7 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, component);
 
         trainIsDisabled(component, false);
+        trainIsRewinding(cycle, false);
 
         writer.beginEmpty("xlink");
 

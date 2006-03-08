@@ -17,7 +17,6 @@ package org.apache.tapestry.portlet;
 import javax.portlet.PortletURL;
 
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.util.QueryParameterMap;
 
@@ -29,25 +28,17 @@ import org.apache.tapestry.util.QueryParameterMap;
  */
 public class PortletLink implements ILink
 {
-    private final IRequestCycle _cycle;
-
     private final PortletURL _portletURL;
-
-    private final boolean _stateful;
 
     private final QueryParameterMap _parameters;
 
-    public PortletLink(IRequestCycle cycle, PortletURL portletURL, QueryParameterMap parameters,
-            boolean stateful)
+    public PortletLink(PortletURL portletURL, QueryParameterMap parameters)
     {
-        Defense.notNull(cycle, "cycle");
         Defense.notNull(portletURL, "portletURL");
         Defense.notNull(parameters, "parameters");
 
-        _cycle = cycle;
         _portletURL = portletURL;
         _parameters = parameters;
-        _stateful = stateful;
     }
 
     public String getURL()
@@ -63,9 +54,6 @@ public class PortletLink implements ILink
         String url = _portletURL.toString();
 
         url = unencode(url);
-
-        if (_stateful)
-            url = _cycle.encodeURL(url);
 
         if (anchor != null)
             url = url + "#" + anchor;

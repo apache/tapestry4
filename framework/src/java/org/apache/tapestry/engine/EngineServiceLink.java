@@ -165,8 +165,7 @@ public class EngineServiceLink implements ILink
 
         String result = buffer.toString();
 
-        if (_stateful)
-            result = _cycle.encodeURL(result);
+        result = _cycle.encodeURL(result);
 
         return result;
     }

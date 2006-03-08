@@ -199,7 +199,6 @@
         <set-object property="dataSqueezer" value="infrastructure:dataSqueezer"/>
         <set-configuration property="contributions" configuration-id="tapestry.url.ServiceEncoders"/>
         <set-service property="renderResponse" service-id="RenderResponse"/>
-        <set-object property="requestCycle" value="infrastructure:requestCycle"/>        
       </construct>
     </invoke-factory>
     

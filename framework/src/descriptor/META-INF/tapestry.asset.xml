@@ -65,6 +65,7 @@
         <set-object property="contextPath" value="infrastructure:contextPath"/>
         <set-service property="webContext" service-id="tapestry.globals.WebContext"/>
         <set-object property="localizer" value="infrastructure:resourceLocalizer"/>
+  		<set-object property="requestCycle" value="infrastructure:requestCycle" />
       </construct>
     </invoke-factory>
     

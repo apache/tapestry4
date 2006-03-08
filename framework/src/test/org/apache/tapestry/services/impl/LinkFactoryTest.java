@@ -136,6 +136,8 @@ public class LinkFactoryTest extends HiveMindTestCase
         trainGetEngine(cycle, engine);
         trainGetOutputEncoding(engine, "utf-8");
 
+        trainEncodeURL(cycle, "/context/app?service=myservice", "/context/app?service=myservice");
+        
         replayControls();
 
         LinkFactoryImpl lf = new LinkFactoryImpl();
@@ -153,9 +155,9 @@ public class LinkFactoryTest extends HiveMindTestCase
 
         ILink link = lf.constructLink(service, false, parameters, false);
 
-        verifyControls();
-
         assertEquals("/context/app?service=myservice", link.getURL());
+        
+        verifyControls();
     }
 
     private IEngineService newService(String name)
@@ -220,6 +222,7 @@ public class LinkFactoryTest extends HiveMindTestCase
 
         trainGetEngine(cycle, engine);
         trainGetOutputEncoding(engine, "utf-8");
+        trainEncodeURL(cycle, "/context/app?service=myservice", "/context/app?service=myservice");
 
         replayControls();
 
@@ -242,9 +245,9 @@ public class LinkFactoryTest extends HiveMindTestCase
 
         ILink link = lf.constructLink(service, false, parameters, false);
 
-        verifyControls();
-
         assertEquals("/context/app?service=myservice", link.getURL());
+        
+        verifyControls();
     }
 
     public void testActiveEncoder()
@@ -257,6 +260,7 @@ public class LinkFactoryTest extends HiveMindTestCase
 
         trainGetEngine(cycle, engine);
         trainGetOutputEncoding(engine, "utf-8");
+        trainEncodeURL(cycle, "/context/Barney.html", "/context/Barney.html");
 
         replayControls();
 
@@ -282,9 +286,9 @@ public class LinkFactoryTest extends HiveMindTestCase
 
         ILink link = lf.constructLink(service, false, parameters, false);
 
-        verifyControls();
-
         assertEquals("/context/Barney.html", link.getURL());
+
+        verifyControls();
     }
 
     public void testServiceNameIsNull()
@@ -320,6 +324,7 @@ public class LinkFactoryTest extends HiveMindTestCase
 
         trainGetEngine(cycle, engine);
         trainGetOutputEncoding(engine, "utf-8");
+        trainEncodeURL(cycle, "/context/Barney.ext?sp=T", "/context/Barney.ext?sp=T");
 
         replayControls();
 
@@ -348,8 +353,8 @@ public class LinkFactoryTest extends HiveMindTestCase
 
         ILink link = lf.constructLink(service, false, parameters, false);
 
-        verifyControls();
-
         assertEquals("/context/Barney.ext?sp=T", link.getURL());
+
+        verifyControls();
     }
 }

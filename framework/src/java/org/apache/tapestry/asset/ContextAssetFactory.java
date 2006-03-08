@@ -20,6 +20,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.l10n.ResourceLocalizer;
 import org.apache.tapestry.web.WebContext;
 import org.apache.tapestry.web.WebContextResource;
@@ -40,6 +41,8 @@ public class ContextAssetFactory implements AssetFactory
     private WebContext _webContext;
 
     private ResourceLocalizer _localizer;
+
+    private IRequestCycle _requestCycle;
 
     public void setWebContext(WebContext webContext)
     {
@@ -85,7 +88,7 @@ public class ContextAssetFactory implements AssetFactory
 
     public IAsset createAsset(Resource resource, Location location)
     {
-        return new ContextAsset(_contextPath, resource, location);
+        return new ContextAsset(_contextPath, resource, location, _requestCycle);
     }
 
     public void setContextPath(String contextPath)
@@ -101,5 +104,10 @@ public class ContextAssetFactory implements AssetFactory
     public void setLocalizer(ResourceLocalizer localizer)
     {
         _localizer = localizer;
+    }
+
+    public void setRequestCycle(IRequestCycle cycle)
+    {
+    	_requestCycle = cycle;
     }
 }

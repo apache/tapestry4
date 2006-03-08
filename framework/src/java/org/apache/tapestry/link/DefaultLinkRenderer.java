@@ -50,7 +50,7 @@ public class DefaultLinkRenderer implements ILinkRenderer
 
         boolean hasBody = getHasBody();
 
-        boolean disabled = linkComponent.isDisabled();
+        boolean disabled = linkComponent.isDisabled() || cycle.isRewinding();
 
         if (!disabled)
         {

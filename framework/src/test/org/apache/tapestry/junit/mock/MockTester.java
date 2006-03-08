@@ -505,10 +505,10 @@ public class MockTester
 
             String name = a.getAttributeValue("name");
             String substring = a.getTextTrim();
-
+            
             if (HiveMind.isBlank(substring))
                 throw new DocumentParseException("Substring is null in " + a);
-
+            
             if (outputString == null)
                 outputString = _response.getOutputString();
 
@@ -604,10 +604,10 @@ public class MockTester
 
         if (text.indexOf(substring) >= 0)
             return;
-
+        
         System.err.println(text);
-
-        throw new AssertionFailedError(buildTestName(name) + ": Response does not contain string '"
+        
+        throw new AssertionFailedError(buildTestName(name) + ":" + text + "\n Response does not contain string '"
                 + substring + "'.");
     }
 

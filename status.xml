@@ -73,6 +73,21 @@
       	Display name of SimpleTableColumn now replaces all instances of "." character with
       	"_".
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-802" due-to="Raphael Jean" >
+		In portlet mode, the portlet URLs obtained by createActionURL() or createRenderURL() 
+		should NOT be encoded. 
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-525" due-to="Raphael Jean" >
+		When a Link component attempts to render its link during rewind, the 
+		PortletLinkFactoryImpl crashes because _renderResponse is null. 
+      </action>
+      <action type="fix" dev="JK" due-to="Andreas Andreou" >
+		Upload test was failing due to incorrect line number matching for
+		"Contents Match." string assertion.
+      </action>
+      <action type="fix" dev="JK" due-to="ZedroS Schwart" >
+      	Fixed links.ent reference to ExternalAsset, was missing asset package.
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>

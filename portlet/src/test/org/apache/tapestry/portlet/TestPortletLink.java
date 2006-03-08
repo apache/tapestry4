@@ -24,7 +24,6 @@ import javax.portlet.WindowState;
 import javax.portlet.WindowStateException;
 
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.util.QueryParameterMap;
 import org.easymock.MockControl;
@@ -77,11 +76,6 @@ public class TestPortletLink extends HiveMindTestCase
 
     }
 
-    private IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
-    }
-
     private PortletURL newPortletURL()
     {
         return (PortletURL) newMock(PortletURL.class);
@@ -94,13 +88,12 @@ public class TestPortletLink extends HiveMindTestCase
 
     public void testGetAbsoluteURL()
     {
-        IRequestCycle cycle = newCycle();
         PortletURL url = newPortletURL();
         QueryParameterMap parameters = newParameters();
 
         replayControls();
 
-        ILink link = new PortletLink(cycle, url, parameters, false);
+        ILink link = new PortletLink(url, parameters);
 
         try
         {
@@ -127,7 +120,6 @@ public class TestPortletLink extends HiveMindTestCase
 
     public void testGetParameterNames()
     {
-        IRequestCycle cycle = newCycle();
         PortletURL url = newPortletURL();
 
         MockControl control = newControl(QueryParameterMap.class);
@@ -141,7 +133,7 @@ public class TestPortletLink extends HiveMindTestCase
 
         replayControls();
 
-        ILink link = new PortletLink(cycle, url, parameters, false);
+        ILink link = new PortletLink(url, parameters);
 
         assertSame(names, link.getParameterNames());
 
@@ -150,7 +142,6 @@ public class TestPortletLink extends HiveMindTestCase
 
     public void testGetParameterValues()
     {
-        IRequestCycle cycle = newCycle();
         PortletURL url = newPortletURL();
 
         MockControl control = newControl(QueryParameterMap.class);
@@ -164,7 +155,7 @@ public class TestPortletLink extends HiveMindTestCase
 
         replayControls();
 
-        ILink link = new PortletLink(cycle, url, parameters, false);
+        ILink link = new PortletLink(url, parameters);
 
         assertSame(values, link.getParameterValues("bedrock"));
 
@@ -173,7 +164,6 @@ public class TestPortletLink extends HiveMindTestCase
 
     public void testGetURL()
     {
-        IRequestCycle cycle = newCycle();
         PortletURL url = newPortletURL();
 
         MockControl control = newControl(QueryParameterMap.class);
@@ -184,7 +174,7 @@ public class TestPortletLink extends HiveMindTestCase
 
         replayControls();
 
-        ILink link = new PortletLink(cycle, url, parameters, false);
+        ILink link = new PortletLink(url, parameters);
 
         assertEquals(url.toString(), link.getURL());
 
@@ -193,7 +183,6 @@ public class TestPortletLink extends HiveMindTestCase
 
     public void testGetURLLongForm()
     {
-        IRequestCycle cycle = newCycle();
         PortletURL url = newPortletURL();
 
         QueryParameterMap parameters = (QueryParameterMap) newMock(QueryParameterMap.class);
@@ -211,7 +200,7 @@ public class TestPortletLink extends HiveMindTestCase
 
         replayControls();
 
-        ILink link = new PortletLink(cycle, url, parameters, false);
+        ILink link = new PortletLink(url, parameters);
 
         assertEquals("EasyMock for interface javax.portlet.PortletURL#anchor", link.getURL(
                 "scheme",
@@ -225,7 +214,6 @@ public class TestPortletLink extends HiveMindTestCase
 
     public void testGetURLUnencoding()
     {
-        IRequestCycle cycle = newCycle();
         PortletURL url = new PortletURLFixture("this=foo&amp;that=bar");
 
         QueryParameterMap parameters = (QueryParameterMap) newMock(QueryParameterMap.class);
@@ -235,7 +223,7 @@ public class TestPortletLink extends HiveMindTestCase
 
         replayControls();
 
-        ILink link = new PortletLink(cycle, url, parameters, false);
+        ILink link = new PortletLink(url, parameters);
 
         assertEquals("this=foo&that=bar", link.getURL());
 
@@ -244,7 +232,6 @@ public class TestPortletLink extends HiveMindTestCase
 
     public void testGetURLIncludeParameters()
     {
-        IRequestCycle cycle = newCycle();
         PortletURL url = newPortletURL();
 
         MockControl control = newControl(QueryParameterMap.class);
@@ -263,30 +250,24 @@ public class TestPortletLink extends HiveMindTestCase
 
         replayControls();
 
-        ILink link = new PortletLink(cycle, url, parameters, false);
+        ILink link = new PortletLink(url, parameters);
 
         assertEquals(url.toString(), link.getURL());
 
         verifyControls();
     }
 
-    public void testGetURLStatefulWithAnchor()
+    public void testGetURLWithAnchor()
     {
         PortletURL url = newPortletURL();
-
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
-        cycle.encodeURL(url.toString());
-        cyclec.setReturnValue("/encoded-url");
 
         QueryParameterMap parameters = newParameters();
 
         replayControls();
 
-        ILink link = new PortletLink(cycle, url, parameters, true);
+        ILink link = new PortletLink(url, parameters);
 
-        assertEquals("/encoded-url#anchor", link.getURL("anchor", false));
+        assertEquals("EasyMock for interface javax.portlet.PortletURL#anchor", link.getURL("anchor", false));
 
         verifyControls();
     }
