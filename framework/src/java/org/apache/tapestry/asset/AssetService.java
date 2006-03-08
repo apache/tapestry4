@@ -167,14 +167,15 @@ public class AssetService implements IEngineService
     private String getMimeType(String path)
     {
         String result = _context.getMimeType(path);
-
+        
         if (result == null)
         {
             int dotx = path.lastIndexOf('.');
-            String key = path.substring(dotx + 1).toLowerCase();
-
-            result = (String) _mimeTypes.get(key);
-
+            if (dotx > -1) {
+            	String key = path.substring(dotx + 1).toLowerCase();
+            	result = (String) _mimeTypes.get(key);
+            }
+            
             if (result == null)
                 result = "text/plain";
         }

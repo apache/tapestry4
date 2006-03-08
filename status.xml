@@ -85,8 +85,27 @@
 		Upload test was failing due to incorrect line number matching for
 		"Contents Match." string assertion.
       </action>
-      <action type="fix" dev="JK" due-to="ZedroS Schwart" >
+      <action type="fix" dev="JK" due-to="Zedros Schwart" >
       	Fixed links.ent reference to ExternalAsset, was missing asset package.
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-875" due-to="Matthias Zitzmann/Brian K. Wallace" >
+      	Using the DatePicker for a date format containing no "word delimiter" 
+      	doesn't work because of an inefficient limitational replacement-method 
+      	in DatePicker.js. I added a patch for this, because I've to work with a 
+      	date format of ddMMyy (without delimiter). With that patch it won't break 
+      	any more neither for regular date formats nor for this delimiter-free format 
+      	used in financial or touristics for example. 
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-170" due-to="Vjeran Marcinko/Brian K. Wallace">
+      	Modified contrib table column headers to use inlined style and css classes to
+      	do table and image style definitions. Much more compatible with css now.
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-876" due-to="Brian K. Wallace" >
+      	  Tapestry's resource finder throws a StringIndexOutOfBoundsException when
+      	  an asset doesn't contains a "." (the search result of 'lastIndexOf' is -1).
+      	  
+      	  The patch against trunk simply adds a check in the lastIndexOf as it is
+      	  assumed to be > -1 although the results of the check are used differently
       </action>
     </release>
     <release version="4.0" date="Jan 6 2006">

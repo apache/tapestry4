@@ -807,10 +807,10 @@ Calendar.prototype.formatDate = function() {
     var frm = new String(this._format);
     // TAPESTRY-669: Have to be very explicit about keys, to keep functions added
     // to Array (by the Prototype library, if its around) from getting mixed in.
-    var keys = new Array('d','dd','ddd','dddd','M','MM','MMM','MMMM','yyyy','yy', 's', 'ss', 'm',
-        'mm', 'H', 'HH');
+    var keys = new Array('dddd','ddd','dd','d','MMMM','MMM','MM','M','yyyy','yy', 'ss', 's', 'mm',
+        'm', 'HH', 'H');
     for (var i = 0; i < keys.length; i++) {
-       frm = eval("frm.replace(/\\b" + keys[i] + "\\b/,\"" + bits[keys[i]] + "\");");      
+       frm = eval("frm.replace(/" + keys[i] + "/,\"" + bits[keys[i]] + "\");");      
     }     
 
     return frm;
