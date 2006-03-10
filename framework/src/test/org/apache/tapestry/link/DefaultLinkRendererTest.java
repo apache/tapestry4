@@ -163,6 +163,7 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         trainGetLink(component, cycle, link);
 
         trainGetScheme(component, null);
+        trainGetPort(component, null);
         trainGetAnchor(component, null);
 
         trainGetURL(link, null, null, "/foo/bar.baz");
@@ -195,7 +196,13 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         component.getScheme();
         setReturnValue(component, scheme);
     }
-
+    
+    protected void trainGetPort(ILinkComponent component, Integer port)
+    {
+        component.getPort();
+        setReturnValue(component, port);
+    }
+    
     public void testStandardWithSchemaAnchorAndTarget()
     {
         IMarkupWriter writer = newWriter();
@@ -216,6 +223,8 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
         trainGetScheme(component, "https");
 
+        trainGetPort(component, null);
+        
         trainGetAnchor(component, "my-anchor");
 
         trainGetURL(link, "https", "my-anchor", "http://zap.com/foo/bar.baz#my-anchor");
@@ -231,11 +240,11 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         component.renderBody(nested, cycle);
 
         component.renderAdditionalAttributes(writer, cycle);
-
+        
         nested.close();
-
+        
         writer.end();
-
+        
         cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
 
         replayControls();
@@ -310,6 +319,8 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
         trainGetScheme(component, null);
 
+        trainGetPort(component, null);
+        
         trainGetAnchor(component, "my-anchor");
 
         trainGetURL(link, null, "my-anchor", "/foo/bar.baz#my-anchor");
@@ -367,6 +378,8 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
         trainGetScheme(component, null);
 
+        trainGetPort(component, null);
+        
         trainGetAnchor(component, "my-anchor");
 
         trainGetURL(link, null, "my-anchor", "/foo/bar.baz#my-anchor");

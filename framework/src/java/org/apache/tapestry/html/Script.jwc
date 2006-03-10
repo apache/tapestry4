@@ -25,9 +25,15 @@
   Constructs dynamic JavaScript which is added to the page.
   </description>
   
-  <parameter name="script" property="scriptPath" required="yes">
+  <parameter name="script" property="scriptPath" >
     <description>
     The resource path of the script to execute.
+    </description>
+  </parameter>
+
+  <parameter name="scriptAsset" property="scriptAsset" >
+  	<description>
+      IAsset reference to script.
     </description>
   </parameter>
 

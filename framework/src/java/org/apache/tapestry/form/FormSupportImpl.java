@@ -459,8 +459,9 @@ public class FormSupportImpl implements FormSupport
         for (int i = 0; i < ids.length; i++)
             _elementIdAllocator.allocateId(ids[i]);
     }
-
-    public void render(String method, IRender informalParametersRenderer, ILink link, String scheme)
+    
+    public void render(String method, IRender informalParametersRenderer, ILink link, 
+    		String scheme, Integer port)
     {
         String formId = _form.getName();
 
@@ -486,9 +487,10 @@ public class FormSupportImpl implements FormSupport
         _form.renderBody(nested, _cycle);
 
         runDeferredRunnables();
-
-        writeTag(_writer, method, link.getURL(scheme, null, 0, null, false));
-
+        
+        int portI = (port == null) ? 0 : port.intValue();
+        writeTag(_writer, method, link.getURL(scheme, null, portI, null, false));
+        
         // For HTML compatibility
         _writer.attribute("name", formId);
 

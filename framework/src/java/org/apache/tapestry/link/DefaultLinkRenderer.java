@@ -112,9 +112,11 @@ public class DefaultLinkRenderer implements ILinkRenderer
         ILink link = component.getLink(cycle);
 
         String scheme = component.getScheme();
+        Integer port = component.getPort();
+        int portI = (port == null) ? 0 : port.intValue();
         String anchor = component.getAnchor();
-
-        return link.getURL(scheme, null, 0, anchor, true);
+        
+        return link.getURL(scheme, null, portI, anchor, true);
     }
 
     /**

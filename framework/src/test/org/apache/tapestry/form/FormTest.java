@@ -165,7 +165,7 @@ public class FormTest extends BaseComponentTestCase
                 new DirectServiceParameter(form),
                 link);
 
-        trainRender(support, link, render, null);
+        trainRender(support, link, render, null, null);
 
         delegate.setFormComponent(null);
 
@@ -192,7 +192,7 @@ public class FormTest extends BaseComponentTestCase
         Form form = (Form) newInstance(FormFixture.class, new Object[]
         { "id", "myform", "direct", true, "expectedWriter", writer, "expectedRequestCycle", cycle,
                 "formSupport", support, "response", response, "directService", direct, "method",
-                "post", "delegate", delegate, "scheme", "https" });
+                "post", "delegate", delegate, "scheme", "https", "port", new Integer(443) });
 
         trainStoreForm(cycle, form);
 
@@ -211,7 +211,7 @@ public class FormTest extends BaseComponentTestCase
                 new DirectServiceParameter(form),
                 link);
 
-        trainRender(support, link, render, "https");
+        trainRender(support, link, render, "https", new Integer(443));
 
         delegate.setFormComponent(null);
 
@@ -231,9 +231,9 @@ public class FormTest extends BaseComponentTestCase
         cycle.setAttribute(TapestryUtils.FORM_ATTRIBUTE, form);
     }
 
-    private void trainRender(FormSupport support, ILink link, IRender render, String scheme)
+    private void trainRender(FormSupport support, ILink link, IRender render, String scheme, Integer port)
     {
-        support.render("post", render, link, scheme);
+        support.render("post", render, link, scheme, port);
         getControl(support).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
         { null, new IgnoreMatcher(), null, null }));
     }

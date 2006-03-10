@@ -206,7 +206,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replayControls();
 
-        fs.render("post", render, link, null);
+        fs.render("post", render, link, null, null);
 
         verifyControls();
     }
@@ -320,7 +320,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replayControls();
 
-        fs.render("post", render, link, null);
+        fs.render("post", render, link, null, null);
 
         verifyControls();
     }
@@ -390,7 +390,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replayControls();
 
-        fs.render("post", render, link, null);
+        fs.render("post", render, link, null, null);
 
         verifyControls();
     }
@@ -520,7 +520,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replayControls();
 
-        fs.render("post", render, link, null);
+        fs.render("post", render, link, null, null);
 
         verifyControls();
     }
@@ -573,7 +573,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         try
         {
-            fs.render("post", render, link, null);
+            fs.render("post", render, link, null, null);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -696,7 +696,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replayControls();
 
-        fs.render("post", render, link, null);
+        fs.render("post", render, link, null, null);
 
         verifyControls();
     }
@@ -771,7 +771,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replayControls();
 
-        fs.render("post", render, link, null);
+        fs.render("post", render, link, null, null);
 
         verifyControls();
     }
@@ -1051,7 +1051,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replayControls();
 
-        fs.render("post", render, link, null);
+        fs.render("post", render, link, null, null);
 
         verifyControls();
     }
@@ -1140,7 +1140,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replayControls();
 
-        fs.render("post", render, link, null);
+        fs.render("post", render, link, null, null);
 
         verifyControls();
     }
@@ -1154,9 +1154,9 @@ public class FormSupportTest extends BaseComponentTestCase
         IValidationDelegate delegate = newDelegate();
         ILink link = newLink();
         IRender render = newRender();
-
+        
         MockForm form = new MockForm(delegate);
-
+        
         trainIsRewound(cycle, form, false);
 
         trainGetEngine(cycle, engine);
@@ -1186,7 +1186,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         trainGetNestedWriter(writer, nested);
 
-        trainGetURL(link, "https", "https://foo.bar/app");
+        trainGetURL(link, "https", "https://foo.bar/app", 443);
 
         writer.begin("form");
         writer.attribute("method", "post");
@@ -1213,7 +1213,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replayControls();
 
-        fs.render("post", render, link, "https");
+        fs.render("post", render, link, "https", new Integer(443));
 
         verifyControls();
     }
@@ -1376,7 +1376,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         replayControls();
 
-        fs.render("post", render, link, null);
+        fs.render("post", render, link, null, null);
 
         verifyControls();
     }
@@ -1417,12 +1417,17 @@ public class FormSupportTest extends BaseComponentTestCase
         setReturnValue(delegate, fieldName);
     }
 
-    private void trainGetURL(ILink link, String scheme, String URL)
+    private void trainGetURL(ILink link, String scheme, String URL, int port)
     {
         // This will change shortly, with the new scheme parameter passed into FormSupport.render()
 
-        link.getURL(scheme, null, 0, null, false);
+        link.getURL(scheme, null, port, null, false);
         setReturnValue(link, URL);
+    }
+    
+    private void trainGetURL(ILink link, String scheme, String URL)
+    {
+    	trainGetURL(link, scheme, URL, 0);
     }
 
     private void trainHidden(IMarkupWriter writer, String name, String value)

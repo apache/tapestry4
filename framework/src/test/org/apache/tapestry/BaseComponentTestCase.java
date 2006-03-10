@@ -437,10 +437,15 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         writer.getNestedWriter();
         setReturnValue(writer, nested);
     }
-
+    
     protected void trainGetURL(ILink link, String scheme, String anchor, String URL)
     {
-        link.getURL(scheme, null, 0, anchor, true);
+        trainGetURL(link, scheme, anchor, URL, 0);
+    }
+    
+    protected void trainGetURL(ILink link, String scheme, String anchor, String URL, int port)
+    {
+        link.getURL(scheme, null, port, anchor, true);
 
         setReturnValue(link, URL);
     }

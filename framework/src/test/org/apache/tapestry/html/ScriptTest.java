@@ -17,8 +17,10 @@ package org.apache.tapestry.html;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.BaseComponentTestCase;
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
@@ -79,9 +81,9 @@ public class ScriptTest extends BaseComponentTestCase
                 source, "scriptPath", scriptPath });
 
         trainGetPageRenderSupport(cycle, support);
-
+        
         trainGetScriptLocation(container, scriptPath, scriptLocation);
-
+        
         trainGetScript(source, scriptLocation, script);
 
         script.execute(cycle, support, new HashMap());
@@ -208,6 +210,79 @@ public class ScriptTest extends BaseComponentTestCase
         verifyControls();
     }
 
+    public void testMultiParamException() 
+    {
+    	IScriptSource source = newScriptSource();
+        
+        PageRenderSupport support = newPageRenderSupport();
+        IRequestCycle cycle = newCycle(false);
+        IMarkupWriter writer = newWriter();
+        IRender body = newRender();
+        
+        IComponent container = newComponent();
+
+        String scriptPath = "MyScript.script";
+        
+        IAsset scriptAsset = newAsset();
+        
+        Script component = (Script) newInstance(Script.class, new Object[]
+        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
+                source, "scriptPath", scriptPath, "scriptAsset", scriptAsset });
+        
+        trainGetPageRenderSupport(cycle, support);
+        
+        replayControls();
+        
+        component.addBody(body);
+        
+        try {
+        	component.renderComponent(writer, cycle);
+        } catch (ApplicationRuntimeException ex) {
+        	assertExceptionSubstring(ex, "Script component has both script IAsset");
+        }
+        
+        verifyControls();
+    }
+    
+    public void testIAssetParamRender()
+    {
+        IScriptSource source = newScriptSource();
+        IScript script = newScript();
+        
+        PageRenderSupport support = newPageRenderSupport();
+        IRequestCycle cycle = newCycle(false);
+        IMarkupWriter writer = newWriter();
+        Resource scriptLocation = newResource();
+        IRender body = newRender();
+        
+        IComponent container = newComponent();
+        
+        IAsset scriptAsset = newAsset();
+        
+        scriptAsset.getResourceLocation();
+        setReturnValue(scriptAsset, scriptLocation);
+        
+        Script component = (Script) newInstance(Script.class, new Object[]
+        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
+                source, "scriptAsset", scriptAsset });
+        
+        trainGetPageRenderSupport(cycle, support);
+        
+        trainGetScript(source, scriptLocation, script);
+        
+        script.execute(cycle, support, new HashMap());
+        
+        body.render(writer, cycle);
+        
+        replayControls();
+        
+        component.addBody(body);
+        
+        component.renderComponent(writer, cycle);
+        
+        verifyControls();
+    }
+    
     protected IScript newScript()
     {
         return (IScript) newMock(IScript.class);

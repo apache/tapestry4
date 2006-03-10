@@ -15,6 +15,7 @@
 package org.apache.tapestry.html;
 
 import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.tapestry.IBinding;
 
 /**
  * @author Howard M. Lewis Ship
@@ -27,5 +28,15 @@ class HTMLMessages
     static String textConversionError(Throwable cause)
     {
         return _formatter.format("text-conversion-error", cause);
+    }
+    
+    static String multiAssetParameterError(IBinding asset, IBinding scriptPath)
+    {
+    	return _formatter.format("script-multiscript-error", new Object[] {asset, scriptPath});
+    }
+    
+    static String noScriptPathError()
+    {
+    	return _formatter.getMessage("script-required-path-error");
     }
 }

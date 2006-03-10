@@ -246,8 +246,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             _renderInformalParameters = new RenderInformalParameters();
 
         ILink link = getLink(cycle, actionId);
-
-        _formSupport.render(getMethod(), _renderInformalParameters, link, getScheme());
+        
+        _formSupport.render(getMethod(), _renderInformalParameters, link, getScheme(), getPort());
     }
 
     IActionListener findListener(String mode)
@@ -389,6 +389,9 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     /** scheme parameter, may be null */
     public abstract String getScheme();
+    
+    /** port , may be null */
+    public abstract Integer getPort();
 
     public void setEncodingType(String encodingType)
     {

@@ -40,6 +40,15 @@ public interface ILinkComponent extends IComponent
     public String getScheme();
 
     /**
+     * Returns the desired port (i.e., "80" or "443") for the link, or null to not output a
+     * specific port (in which case the URL will fall under the incoming request's port).
+     * 
+     * @since 4.1
+     */
+
+    public Integer getPort();
+
+    /**
      * Returns whether this service link component is enabled or disabled.
      * 
      * @since 0.2.9

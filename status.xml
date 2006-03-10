@@ -107,6 +107,18 @@
       	  The patch against trunk simply adds a check in the lastIndexOf as it is
       	  assumed to be > -1 although the results of the check are used differently
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-880" due-to="Fernando Padilla" >
+      	need 'port' parameter to supplement 'scheme' parameter for correct generation of urls
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-879" due-to="Olve Sæther Hansen" >
+      	http://jakarta.apache.org/tapestry/UsersGuide/page-class.html
+		Has broken links to documentation about
+		tapestry.page.PageClassProviderChain and tapestry.page.ComponentClassProviderChain 
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-453" >
+      	Added new scriptAsset parameter, as well as param checking to be sure that only one 
+      	of scriptPath or scriptAsset can be set.
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>

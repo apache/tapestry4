@@ -49,6 +49,13 @@
     </description>
   </parameter>  
   	
+  <parameter name="port">
+    <description>
+      Forces the link to be generated as an absolute URL with the given port
+      (unless the port matches the port for the current request).
+    </description>
+  </parameter>  
+  
   <reserved-parameter name="href"/>
   
   <inject property="externalService" object="engine-service:external"/>
