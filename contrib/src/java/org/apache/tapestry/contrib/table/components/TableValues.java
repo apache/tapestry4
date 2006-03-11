@@ -16,6 +16,7 @@ package org.apache.tapestry.contrib.table.components;
 
 import java.util.Iterator;
 
+import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
@@ -100,8 +101,9 @@ public abstract class TableValues extends AbstractTableRowComponent
      */
     public String getValueClass()
     {
-        if (isParameterBound("class"))
-            return getCellClass();
+        IBinding classBinding = getBinding("class");
+        if (classBinding != null) 
+            return classBinding.getObject(String.class).toString();
 
         return getTableColumn().getColumnName() + TABLE_VALUE_CSS_CLASS_SUFFIX;
     }
