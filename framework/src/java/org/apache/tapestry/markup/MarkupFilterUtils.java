@@ -26,8 +26,11 @@ import org.apache.tapestry.util.text.ICharacterTranslator;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class MarkupFilterUtils
+public final class MarkupFilterUtils
 {
+    /* defeat instantiation */
+    private MarkupFilterUtils() { }
+    
     public static void print(PrintWriter writer, char[] data, int offset, int length,
             boolean escapeQuotes, ICharacterTranslator translator)
     {

@@ -25,11 +25,14 @@ import org.apache.hivemind.service.ClassFabUtils;
  * @since 4.0
  */
 
-class AnnotationMessages
+final class AnnotationMessages
 {
     private static final MessageFormatter _formatter = new MessageFormatter(
             AnnotationMessages.class);
-
+    
+    /* defeat instantiation */
+    private AnnotationMessages() { }
+    
     static String noParametersExpected(Method m)
     {
         return _formatter.format("no-parameters-expected", m);

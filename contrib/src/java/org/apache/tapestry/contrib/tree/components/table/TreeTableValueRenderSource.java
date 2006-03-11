@@ -27,53 +27,45 @@ import org.apache.tapestry.util.ComponentAddress;
  */
 public class TreeTableValueRenderSource implements ITableRendererSource
 {
-	private static final long serialVersionUID = 3237638859391458116L;
-	
-	private ComponentTableRendererSource m_objComponentRenderer;
-	private ComponentAddress m_objComponentAddress = null;
 
-	public TreeTableValueRenderSource()
-	{
-		m_objComponentRenderer = null;
-	}
+    private static final long serialVersionUID = 3237638859391458116L;
 
-	public TreeTableValueRenderSource(ComponentAddress objComponentAddress)
-	{
-		m_objComponentAddress = objComponentAddress;
-	}
+    private ComponentTableRendererSource m_objComponentRenderer;
+    private ComponentAddress m_objComponentAddress = null;
 
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
-	 */
-	public IRender getRenderer(
-		IRequestCycle objCycle,
-		ITableModelSource objSource,
-		ITableColumn objColumn,
-		Object objRow)
-	{
-		if (m_objComponentRenderer == null)
-		{
-			synchronized (this)
-			{
-				if (m_objComponentRenderer == null)
-				{
-					
-					ComponentAddress objAddress = m_objComponentAddress;
-					if(m_objComponentAddress == null)
-						objAddress = new ComponentAddress(
-							"contrib:TreeTableNodeViewPage",
-							"treeTableNodeViewDelegator");
-					m_objComponentRenderer =
-						new ComponentTableRendererSource(objAddress);
-				}
-			}
-		}
+    public TreeTableValueRenderSource()
+    {
+        m_objComponentRenderer = null;
+    }
 
-		return m_objComponentRenderer.getRenderer(
-			objCycle,
-			objSource,
-			objColumn,
-			objRow);
-	}
+    public TreeTableValueRenderSource(ComponentAddress objComponentAddress)
+    {
+        m_objComponentAddress = objComponentAddress;
+    }
+
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle,
+     *      ITableModelSource, ITableColumn, Object)
+     */
+    public IRender getRenderer(IRequestCycle objCycle, ITableModelSource objSource, ITableColumn objColumn,
+            Object objRow)
+    {
+        if (m_objComponentRenderer == null)
+        {
+            synchronized(this)
+            {
+                if (m_objComponentRenderer == null)
+                {
+
+                    ComponentAddress objAddress = m_objComponentAddress;
+                    if (m_objComponentAddress == null)
+                        objAddress = new ComponentAddress("contrib:TreeTableNodeViewPage", "treeTableNodeViewDelegator");
+                    m_objComponentRenderer = new ComponentTableRendererSource(objAddress);
+                }
+            }
+        }
+
+        return m_objComponentRenderer.getRenderer(objCycle, objSource, objColumn, objRow);
+    }
 
 }

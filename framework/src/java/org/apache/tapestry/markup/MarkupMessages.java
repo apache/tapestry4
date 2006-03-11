@@ -23,11 +23,14 @@ import org.apache.tapestry.util.ContentType;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class MarkupMessages
+final class MarkupMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(MarkupMessages.class,
+    private static final MessageFormatter _formatter = new MessageFormatter(MarkupMessages.class,
             "MarkupStrings");
 
+    /* defeat insantiation */
+    private MarkupMessages() { }
+    
     static String tagNotOpen()
     {
         return _formatter.getMessage("tag-not-open");

@@ -42,5 +42,5 @@ public interface MarkupWriterSource
      * @return The configured markup writer instance.
      */
 
-    public IMarkupWriter newMarkupWriter(PrintWriter writer, ContentType contentType);
+    IMarkupWriter newMarkupWriter(PrintWriter writer, ContentType contentType);
 }

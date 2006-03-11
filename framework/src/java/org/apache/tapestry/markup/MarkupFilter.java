@@ -45,6 +45,6 @@ public interface MarkupFilter
      *            through unchanged.
      */
 
-    public void print(PrintWriter writer, char[] data, int offset, int length, boolean escapeQuotes);
+    void print(PrintWriter writer, char[] data, int offset, int length, boolean escapeQuotes);
 
 }
