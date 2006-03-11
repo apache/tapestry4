@@ -40,7 +40,7 @@ public interface IPageLoader
      * @since 3.0
      */
 
-    IComponent createImplicitComponent(IRequestCycle cycle, IComponent container, String componentId,
+    public IComponent createImplicitComponent(IRequestCycle cycle, IComponent container, String componentId,
             String componentType, Location location);
 
     /**
@@ -60,7 +60,7 @@ public interface IPageLoader
      *            the specification for the page
      */
 
-    IPage loadPage(String name, INamespace namespace, IRequestCycle cycle, IComponentSpecification specification);
+    public IPage loadPage(String name, INamespace namespace, IRequestCycle cycle, IComponentSpecification specification);
 
     /**
      * Invoked by a component (from within its
@@ -71,5 +71,5 @@ public interface IPageLoader
      * @see ITemplateComponent
      * @since 4.0
      */
-    void loadTemplateForComponent(IRequestCycle cycle, ITemplateComponent component);
+    public void loadTemplateForComponent(IRequestCycle cycle, ITemplateComponent component);
 }

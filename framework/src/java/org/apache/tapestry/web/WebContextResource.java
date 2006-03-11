@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import org.apache.hivemind.util.AbstractResource;
 import org.apache.hivemind.util.LocalizedResource;
 
 /**
- * Implementation of {@link org.apache.hivemind.Resource}for resources found
- * within a {@link org.apache.tapestry.web.WebContext}.
+ * Implementation of {@link org.apache.hivemind.Resource}for resources found within a
+ * {@link org.apache.tapestry.web.WebContext}.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
@@ -31,7 +31,6 @@ import org.apache.hivemind.util.LocalizedResource;
 
 public class WebContextResource extends AbstractResource
 {
-
     private WebContext _context;
 
     public WebContextResource(WebContext context, String path)
@@ -58,14 +57,17 @@ public class WebContextResource extends AbstractResource
         String path = getPath();
         LocalizedResource localizedResource = finder.resolve(path, locale);
 
-        if (localizedResource == null) return null;
+        if (localizedResource == null)
+            return null;
 
         String localizedPath = localizedResource.getResourcePath();
         Locale pathLocale = localizedResource.getResourceLocale();
 
-        if (localizedPath == null) return null;
+        if (localizedPath == null)
+            return null;
 
-        if (path.equals(localizedPath)) return this;
+        if (path.equals(localizedPath))
+            return this;
 
         return new WebContextResource(_context, localizedPath, pathLocale);
     }

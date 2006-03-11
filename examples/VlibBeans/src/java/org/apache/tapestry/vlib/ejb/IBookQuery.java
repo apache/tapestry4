@@ -30,13 +30,13 @@ public interface IBookQuery extends EJBObject
      * Returns the total number of results rows in the query.
      */
 
-    int getResultCount() throws RemoteException;
+    public int getResultCount() throws RemoteException;
 
     /**
      * Returns a selected subset of the results.
      */
 
-    Book[] get(int offset, int length) throws RemoteException;
+    public Book[] get(int offset, int length) throws RemoteException;
 
     /**
      * Performs a query of books with the matching title and (optionally) publisher.
@@ -47,24 +47,24 @@ public interface IBookQuery extends EJBObject
      *            order of items in result set.
      */
 
-    int masterQuery(MasterQueryParameters parameters, SortOrdering sortOrdering)
+    public int masterQuery(MasterQueryParameters parameters, SortOrdering sortOrdering)
             throws RemoteException;
 
     /**
      * Queries on books owned by a given person.
      */
 
-    int ownerQuery(Integer ownerPK, SortOrdering sortOrdering) throws RemoteException;
+    public int ownerQuery(Integer ownerPK, SortOrdering sortOrdering) throws RemoteException;
 
     /**
      * Queries on books held by a given person.
      */
 
-    int holderQuery(Integer holderPK, SortOrdering sortOrdering) throws RemoteException;
+    public int holderQuery(Integer holderPK, SortOrdering sortOrdering) throws RemoteException;
 
     /**
      * Queries the list of books held by the borrower but not owned by the borrower.
      */
 
-    int borrowerQuery(Integer borrowerPK, SortOrdering sortOrdering) throws RemoteException;
+    public int borrowerQuery(Integer borrowerPK, SortOrdering sortOrdering) throws RemoteException;
 }

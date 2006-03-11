@@ -57,7 +57,7 @@ public abstract class BookLink extends BaseComponent
      * logged in.
      */
 
-    private static final long ONE_WEEK_MILLIS = 1000L * 60L * 60L * 24L * 7L;
+    private static final long ONE_WEEK_MILLIS = 1000l * 60l * 60l * 24l * 7l;
 
     @Parameter(required = true)
     public abstract Book getBook();

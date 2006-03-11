@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,44 +22,39 @@ import org.apache.tapestry.contrib.tree.simple.TreeNode;
  */
 public class TestTreeNode extends TreeNode
 {
-
     private static final long serialVersionUID = -2513375115143901815L;
-
-    private String m_strValue;
+    
+	private String m_strValue;
 
     /**
      * Constructor for TestTreeNode.
      */
-    public TestTreeNode(String strValue)
-    {
+    public TestTreeNode(String strValue) {
         this(null, strValue);
     }
 
     /**
      * Constructor for TestTreeNode.
-     * 
      * @param parentNode
      */
-    public TestTreeNode(IMutableTreeNode parentNode, String strValue)
-    {
+    public TestTreeNode(IMutableTreeNode parentNode, String strValue) {
         super(parentNode);
         m_strValue = strValue;
     }
 
-    public String toString()
-    {
+    public String toString(){
         return m_strValue;
     }
 
-    public int hashCode()
-    {
+    public int hashCode(){
         return m_strValue.hashCode();
     }
 
-    public boolean equals(Object objTarget)
-    {
-        if (objTarget == this) return true;
-        if (!(objTarget instanceof TestTreeNode)) return false;
+    public boolean equals(Object objTarget){
+        if(objTarget == this)
+            return true;
+        if(! (objTarget instanceof TestTreeNode))
+            return false;
 
         TestTreeNode objTargetNode = (TestTreeNode)objTarget;
         return this.getValue().equals(objTargetNode.getValue());
@@ -67,11 +62,9 @@ public class TestTreeNode extends TreeNode
 
     /**
      * Returns the value.
-     * 
      * @return String
      */
-    public String getValue()
-    {
+    public String getValue() {
         return m_strValue;
     }
 

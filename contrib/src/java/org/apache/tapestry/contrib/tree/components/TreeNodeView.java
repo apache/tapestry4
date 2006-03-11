@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,7 +39,6 @@ import org.apache.tapestry.util.ComponentAddress;
  */
 public abstract class TreeNodeView extends BaseComponent implements PageDetachListener
 {
-
     private static final Log LOG = LogFactory.getLog(TreeNodeView.class);
 
     private Boolean m_objNodeState;
@@ -54,7 +53,11 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
 
     private IAsset m_objCloseNodeImage;
 
-    private int m_currentForeachConnectImageValue = TreeRowObject.LINE_CONN_IMG;
+    private int m_CurrentForeachConnectImageValue = TreeRowObject.LINE_CONN_IMG;
+
+    public abstract INodeRenderFactory getNodeRenderFactoryParameter();
+
+    public abstract Boolean getShowNodeImages();
 
     public TreeNodeView()
     {
@@ -68,19 +71,17 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
         m_objShowNodeImages = null;
         m_objNodeRenderFactory = null;
         m_objMakeNodeDirect = null;
-        m_currentForeachConnectImageValue = TreeRowObject.LINE_CONN_IMG;
+        m_CurrentForeachConnectImageValue = TreeRowObject.LINE_CONN_IMG;
     }
-
-    public abstract INodeRenderFactory getNodeRenderFactoryParameter();
-
-    public abstract Boolean getShowNodeImages();
 
     public IRender getCurrentRenderer()
     {
         INodeRenderFactory objRenderFactory = getNodeRenderFactory();
         ITreeRowSource objTreeRowSource = getTreeRowSource();
-        return objRenderFactory.getRender(objTreeRowSource.getTreeRow().getTreeNode(), getTreeModelSource(), getPage()
-                .getRequestCycle());
+        return objRenderFactory.getRender(
+                objTreeRowSource.getTreeRow().getTreeNode(),
+                getTreeModelSource(),
+                getPage().getRequestCycle());
     }
 
     public Object[] getNodeContext()
@@ -95,27 +96,29 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
             LOG.debug("getNodeContext objValueUID = " + objValueUID);
         }
 
-        return new Object[] { objValueUID, new Boolean(isNodeOpen()), objModelSourceAddress };
+        return new Object[]
+        { objValueUID, new Boolean(isNodeOpen()), objModelSourceAddress };
     }
 
     /**
-     * Called when a node in the tree is clicked by the user. If the node is
-     * expanded, it will be collapsed, and vice-versa, that is, the tree state
-     * model is retrieved, and it is told to collapse or expand the node.
+     * Called when a node in the tree is clicked by the user. If the node is expanded, it will be
+     * collapsed, and vice-versa, that is, the tree state model is retrieved, and it is told to
+     * collapse or expand the node.
      * 
      * @param cycle
      *            The Tapestry request cycle object.
      */
     public void nodeExpandCollaps(IRequestCycle cycle)
     {
-        Object[] context = cycle.getListenerParameters();
+        Object context[] = cycle.getListenerParameters();
         Object objValueUID = null;
         if (context != null && context.length > 0)
         {
             objValueUID = context[0];
         }
-        ComponentAddress objModelSourceAddress = (ComponentAddress)context[2];
-        ITreeModelSource objTreeModelSource = (ITreeModelSource)objModelSourceAddress.findComponent(cycle);
+        ComponentAddress objModelSourceAddress = (ComponentAddress) context[2];
+        ITreeModelSource objTreeModelSource = (ITreeModelSource) objModelSourceAddress
+                .findComponent(cycle);
         // ITreeModelSource objTreeModelSource = getTreeModelSource();
         ITreeStateModel objStateModel = objTreeModelSource.getTreeModel().getTreeStateModel();
         boolean bState = objStateModel.isUniqueKeyExpanded(objValueUID);
@@ -133,30 +136,30 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
     }
 
     /**
-     * Called when a node in the tree is selected by the user. the tree state
-     * model is retrieved, and it is told to select the node.
+     * Called when a node in the tree is selected by the user. the tree state model is retrieved,
+     * and it is told to select the node.
      * 
      * @param cycle
      *            The Tapestry request cycle object.
      */
     public void nodeSelect(IRequestCycle cycle)
     {
-        Object[] context = cycle.getListenerParameters();
+        Object context[] = cycle.getListenerParameters();
         Object objValueUID = null;
         if (context != null && context.length > 0)
         {
             objValueUID = context[0];
         }
-        ComponentAddress objModelSourceAddress = (ComponentAddress)context[2];
-        ITreeModelSource objTreeModelSource = (ITreeModelSource)objModelSourceAddress.findComponent(cycle);
+        ComponentAddress objModelSourceAddress = (ComponentAddress) context[2];
+        ITreeModelSource objTreeModelSource = (ITreeModelSource) objModelSourceAddress
+                .findComponent(cycle);
         // ITreeModelSource objTreeModelSource = getTreeModelSource();
         ITreeStateModel objStateModel = objTreeModelSource.getTreeModel().getTreeStateModel();
         Object objSelectedNodeInState = objStateModel.getSelectedNode();
 
         if (objValueUID.equals(objSelectedNodeInState))
         {
-            // do nothing, the selected node in UI is the same as the selected
-            // in
+            // do nothing, the selected node in UI is the same as the selected in
             // state model. The user should use refresh of back button.
             return;
         }
@@ -185,8 +188,8 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
         ITreeStateListener objListener = objTreeModelSource.getTreeStateListener();
         if (objListener != null)
         {
-            TreeStateEvent objEvent = new TreeStateEvent(nEventUID, objValueUID, objTreeModelSource.getTreeModel()
-                    .getTreeStateModel());
+            TreeStateEvent objEvent = new TreeStateEvent(nEventUID, objValueUID, objTreeModelSource
+                    .getTreeModel().getTreeStateModel());
             objListener.treeStateChanged(objEvent);
         }
 
@@ -236,108 +239,108 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
         {
             if (isNodeOpen())
             {
-                switch(nRowType)
+                switch (nRowType)
                 {
-                case TreeRowObject.FIRST_LAST_ROW:
-                {
-                    objResult = getAsset("_topLastOpenNodeImage");
-                    break;
-                }
+                    case TreeRowObject.FIRST_LAST_ROW:
+                    {
+                        objResult = getAsset("_topLastOpenNodeImage");
+                        break;
+                    }
 
-                case TreeRowObject.FIRST_ROW:
-                {
-                    objResult = getAsset("_topOpenNodeImage");
-                    break;
-                }
+                    case TreeRowObject.FIRST_ROW:
+                    {
+                        objResult = getAsset("_topOpenNodeImage");
+                        break;
+                    }
 
-                case TreeRowObject.MIDDLE_ROW:
-                {
-                    objResult = getAsset("_middleOpenNodeImage");
-                    break;
-                }
+                    case TreeRowObject.MIDDLE_ROW:
+                    {
+                        objResult = getAsset("_middleOpenNodeImage");
+                        break;
+                    }
 
-                case TreeRowObject.LAST_ROW:
-                {
-                    objResult = getAsset("_bottomOpenNodeImage");
-                    break;
-                }
+                    case TreeRowObject.LAST_ROW:
+                    {
+                        objResult = getAsset("_bottomOpenNodeImage");
+                        break;
+                    }
 
-                default:
-                {
-                    objResult = getAsset("_openNodeImage");
-                    break;
-                }
+                    default:
+                    {
+                        objResult = getAsset("_openNodeImage");
+                        break;
+                    }
                 }
             }
             else
             {
-                switch(nRowType)
+                switch (nRowType)
                 {
-                case TreeRowObject.FIRST_LAST_ROW:
-                {
-                    objResult = getAsset("_topLastCloseNodeImage");
-                    break;
-                }
+                    case TreeRowObject.FIRST_LAST_ROW:
+                    {
+                        objResult = getAsset("_topLastCloseNodeImage");
+                        break;
+                    }
 
-                case TreeRowObject.FIRST_ROW:
-                {
-                    objResult = getAsset("_topCloseNodeImage");
-                    break;
-                }
+                    case TreeRowObject.FIRST_ROW:
+                    {
+                        objResult = getAsset("_topCloseNodeImage");
+                        break;
+                    }
 
-                case TreeRowObject.MIDDLE_ROW:
-                {
-                    objResult = getAsset("_middleCloseNodeImage");
-                    break;
-                }
+                    case TreeRowObject.MIDDLE_ROW:
+                    {
+                        objResult = getAsset("_middleCloseNodeImage");
+                        break;
+                    }
 
-                case TreeRowObject.LAST_ROW:
-                {
-                    objResult = getAsset("_bottomCloseNodeImage");
-                    break;
-                }
+                    case TreeRowObject.LAST_ROW:
+                    {
+                        objResult = getAsset("_bottomCloseNodeImage");
+                        break;
+                    }
 
-                default:
-                {
-                    objResult = getAsset("_closeNodeImage");
-                    break;
-                }
+                    default:
+                    {
+                        objResult = getAsset("_closeNodeImage");
+                        break;
+                    }
                 }
             }
         }
         else
         {
-            switch(nRowType)
+            switch (nRowType)
             {
-            case TreeRowObject.FIRST_LAST_ROW:
-            {
-                objResult = getAsset("_topLineImage");
-                break;
-            }
+                case TreeRowObject.FIRST_LAST_ROW:
+                {
+                    objResult = getAsset("_topLineImage");
+                    break;
+                }
 
-            case TreeRowObject.FIRST_ROW:
-            {
-                objResult = getAsset("_topLineImage");
-                break;
-            }
+                case TreeRowObject.FIRST_ROW:
+                {
+                    objResult = getAsset("_topLineImage");
+                    break;
+                }
 
-            case TreeRowObject.MIDDLE_ROW:
-            {
-                objResult = getAsset("_middleCrossLineImage");
-                break;
-            }
+                case TreeRowObject.MIDDLE_ROW:
+                {
+                    objResult = getAsset("_middleCrossLineImage");
+                    break;
+                }
 
-            case TreeRowObject.LAST_ROW:
-            {
-                objResult = getAsset("_bottomLineImage");
-                break;
-            }
+                case TreeRowObject.LAST_ROW:
+                {
+                    objResult = getAsset("_bottomLineImage");
+                    break;
+                }
 
-            default:
-            {
-                objResult = getAsset("_bottomLineImage");
-                break;
-            }
+                default:
+                {
+                    objResult = getAsset("_bottomLineImage");
+                    break;
+                }
             }
 
         }
@@ -405,8 +408,7 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
     }
 
     /**
-     * @see org.apache.tapestry.AbstractComponent#renderComponent(IMarkupWriter,
-     *      IRequestCycle)
+     * @see org.apache.tapestry.AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
      */
     protected void renderComponent(IMarkupWriter arg0, IRequestCycle arg1)
     {
@@ -457,7 +459,8 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
         if (objTreeRowObject != null)
         {
             nTreeRowDepth = objTreeRowObject.getTreeRowDepth();
-            if (nTreeRowDepth != 0) nTreeRowDepth = nTreeRowDepth - 1;
+            if (nTreeRowDepth != 0)
+                nTreeRowDepth = nTreeRowDepth - 1;
         }
         return "padding-left: " + nTreeRowDepth * 19 + "px";
     }
@@ -468,7 +471,8 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
         {
             if (isParameterBound("nodeRenderFactory"))
                 m_objNodeRenderFactory = getNodeRenderFactoryParameter();
-            else m_objNodeRenderFactory = new SimpleNodeRenderFactory();
+            else
+                m_objNodeRenderFactory = new SimpleNodeRenderFactory();
         }
         return m_objNodeRenderFactory;
     }
@@ -491,8 +495,12 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
         ITreeModelSource objTreeModelSource = getTreeModelSource();
         TreeRowObject objTreeRowObject = objTreeRowSource.getTreeRow();
         Object objNodeValueUID = objTreeRowObject.getTreeNodeUID();
-        Object objSelectedNode = objTreeModelSource.getTreeModel().getTreeStateModel().getSelectedNode();
-        if (objNodeValueUID.equals(objSelectedNode)) { return getSelectedNodeID(); }
+        Object objSelectedNode = objTreeModelSource.getTreeModel().getTreeStateModel()
+                .getSelectedNode();
+        if (objNodeValueUID.equals(objSelectedNode))
+        {
+            return getSelectedNodeID();
+        }
         return "";
     }
 
@@ -511,24 +519,28 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
         if (objTreeRowObject != null)
         {
             Object objNodeValueUID = objTreeRowObject.getTreeNodeUID();
-            Object objSelectedNode = objTreeModelSource.getTreeModel().getTreeStateModel().getSelectedNode();
+            Object objSelectedNode = objTreeModelSource.getTreeModel().getTreeStateModel()
+                    .getSelectedNode();
             bResult = objNodeValueUID.equals(objSelectedNode);
         }
-        if (bResult) { return "selectedNodeViewClass"; }
+        if (bResult)
+        {
+            return "selectedNodeViewClass";
+        }
 
         return "notSelectedNodeViewClass";
     }
 
     public ITreeRowSource getTreeRowSource()
     {
-        ITreeRowSource objSource = (ITreeRowSource)getPage().getRequestCycle().getAttribute(
+        ITreeRowSource objSource = (ITreeRowSource) getPage().getRequestCycle().getAttribute(
                 ITreeRowSource.TREE_ROW_SOURCE_ATTRIBUTE);
         return objSource;
     }
 
     public ITreeModelSource getTreeModelSource()
     {
-        ITreeModelSource objSource = (ITreeModelSource)getPage().getRequestCycle().getAttribute(
+        ITreeModelSource objSource = (ITreeModelSource) getPage().getRequestCycle().getAttribute(
                 ITreeModelSource.TREE_MODEL_SOURCE_ATTRIBUTE);
         return objSource;
     }
@@ -537,7 +549,8 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
     {
         ITreeRowSource objRowSource = getTreeRowSource();
         int nRowType = objRowSource.getTreeRow().getTreeRowPossiotionType();
-        if (TreeRowObject.MIDDLE_ROW == nRowType) return true;
+        if (TreeRowObject.MIDDLE_ROW == nRowType)
+            return true;
         return false;
     }
 
@@ -564,25 +577,25 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
     {
         IAsset objResult = null;
         int nConnectImageType = getCurrentForeachConnectImageValue();
-        switch(nConnectImageType)
+        switch (nConnectImageType)
         {
-        case TreeRowObject.EMPTY_CONN_IMG:
-        {
-            objResult = getAsset("_whiteSpaceImage");
-            break;
-        }
+            case TreeRowObject.EMPTY_CONN_IMG:
+            {
+                objResult = getAsset("_whiteSpaceImage");
+                break;
+            }
 
-        case TreeRowObject.LINE_CONN_IMG:
-        {
-            objResult = getAsset("_middleLineImage");
-            break;
-        }
+            case TreeRowObject.LINE_CONN_IMG:
+            {
+                objResult = getAsset("_middleLineImage");
+                break;
+            }
 
-        default:
-        {
-            objResult = getAsset("_whiteSpaceImage");
-            break;
-        }
+            default:
+            {
+                objResult = getAsset("_whiteSpaceImage");
+                break;
+            }
         }
         return objResult;
     }
@@ -592,7 +605,7 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
      */
     public int getCurrentForeachConnectImageValue()
     {
-        return m_currentForeachConnectImageValue;
+        return m_CurrentForeachConnectImageValue;
     }
 
     /**
@@ -601,6 +614,6 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
      */
     public void setCurrentForeachConnectImageValue(int currentForeachConnectImageValue)
     {
-        m_currentForeachConnectImageValue = currentForeachConnectImageValue;
+        m_CurrentForeachConnectImageValue = currentForeachConnectImageValue;
     }
 }

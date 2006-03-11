@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,10 +23,9 @@ package org.apache.tapestry.vlib.ejb;
 
 public class BorrowException extends Exception
 {
-
     private static final long serialVersionUID = 7761447010967099141L;
 
-    public BorrowException(String message)
+	public BorrowException(String message)
     {
         super(message);
     }

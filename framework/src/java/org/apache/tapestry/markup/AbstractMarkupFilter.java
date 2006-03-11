@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,8 +26,8 @@ import org.apache.tapestry.util.text.ICharacterTranslator;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class AbstractMarkupFilter implements MarkupFilter {
-
+public class AbstractMarkupFilter implements MarkupFilter
+{
     private final ICharacterTranslator _translator;
 
     protected AbstractMarkupFilter(ICharacterTranslator translator)
@@ -37,10 +37,8 @@ public class AbstractMarkupFilter implements MarkupFilter {
         _translator = translator;
     }
 
-    public void print(PrintWriter writer, char[] data, int offset, int length,
-            boolean escapeQuotes)
+    public void print(PrintWriter writer, char[] data, int offset, int length, boolean escapeQuotes)
     {
-        MarkupFilterUtils.print(writer, data, offset, length, escapeQuotes,
-                _translator);
+        MarkupFilterUtils.print(writer, data, offset, length, escapeQuotes, _translator);
     }
 }

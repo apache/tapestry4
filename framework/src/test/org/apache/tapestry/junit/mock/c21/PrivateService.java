@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import org.apache.tapestry.engine.ILink;
  * @author Howard Lewis Ship
  * @since 3.0
  */
-public final class PrivateService implements IEngineService
+public class PrivateService implements IEngineService
 {
     // Can't be instantiated!
     private PrivateService()

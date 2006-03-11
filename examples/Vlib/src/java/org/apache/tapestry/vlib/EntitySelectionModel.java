@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,17 +29,16 @@ import org.apache.tapestry.form.IPropertySelectionModel;
 
 public class EntitySelectionModel implements IPropertySelectionModel
 {
-    /** Stores a primaryKey/label pair. */
     private static class Entry
     {
-        Integer _primaryKey;
+        Integer primaryKey;
 
-        String _label;
+        String label;
 
         Entry(Integer primaryKey, String label)
         {
-            this._primaryKey = primaryKey;
-            this._label = label;
+            this.primaryKey = primaryKey;
+            this.label = label;
         }
 
     }
@@ -68,19 +67,19 @@ public class EntitySelectionModel implements IPropertySelectionModel
 
     public Object getOption(int index)
     {
-        return get(index)._primaryKey;
+        return get(index).primaryKey;
     }
 
     public String getLabel(int index)
     {
-        return get(index)._label;
+        return get(index).label;
     }
 
     public String getValue(int index)
     {
         Integer primaryKey;
 
-        primaryKey = get(index)._primaryKey;
+        primaryKey = get(index).primaryKey;
 
         if (primaryKey == null)
             return "";

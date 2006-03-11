@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,22 +23,23 @@ import org.apache.tapestry.contrib.table.model.ITableRendererListener;
 /**
  * @author ceco
  */
-public abstract class TreeTableNodeViewDelegator extends BaseComponent implements ITableRendererListener
-{
+public abstract class TreeTableNodeViewDelegator extends BaseComponent implements ITableRendererListener{
 
-    public TreeTableNodeViewDelegator()
-    {
+	/**
+	 * 
+	 */
+	public TreeTableNodeViewDelegator() {
+		super();
+	}
 
-    }
-
-    /**
-     * @see org.apache.tapestry.contrib.table.model.ITableRendererListener#initializeRenderer(org.apache.tapestry.IRequestCycle,
-     *      org.apache.tapestry.contrib.table.model.ITableModelSource,
-     *      org.apache.tapestry.contrib.table.model.ITableColumn,
-     *      java.lang.Object)
-     */
-    public void initializeRenderer(IRequestCycle arg0, ITableModelSource arg1, ITableColumn arg2, Object arg3)
-    {
-    }
+	/**
+	 * @see org.apache.tapestry.contrib.table.model.ITableRendererListener#initializeRenderer(org.apache.tapestry.IRequestCycle, org.apache.tapestry.contrib.table.model.ITableModelSource, org.apache.tapestry.contrib.table.model.ITableColumn, java.lang.Object)
+	 */
+	public void initializeRenderer(
+		IRequestCycle arg0,
+		ITableModelSource arg1,
+		ITableColumn arg2,
+		Object arg3) {
+	}
 
 }

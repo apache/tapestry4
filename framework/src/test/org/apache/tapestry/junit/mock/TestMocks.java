@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,28 +34,27 @@ import org.apache.tapestry.junit.TapestryTestCase;
 
 public class TestMocks extends TapestryTestCase
 {
-
     public static final String LOGS_DIR = "/target/logs";
 
     public static final String DEFAULT_BASE_DIR = ".";
 
     public static final String SCRIPTS_DIR = "/src/scripts";
 
-    private static String _baseDir;
-
     private PrintStream _savedOut;
 
     private PrintStream _savedErr;
 
+    private static String _baseDir;
+
     public static String getBaseDirectory()
     {
-        if (_baseDir == null) _baseDir = System.getProperty("BASEDIR", DEFAULT_BASE_DIR);
+        if (_baseDir == null)
+            _baseDir = System.getProperty("BASEDIR", DEFAULT_BASE_DIR);
 
         return _baseDir;
     }
 
-    protected void runTest()
-        throws Throwable
+    protected void runTest() throws Throwable
     {
         String path = getBaseDirectory() + SCRIPTS_DIR + "/" + getName();
 
@@ -91,7 +90,7 @@ public class TestMocks extends TapestryTestCase
 
         String[] names = scriptsDir.list();
 
-        for(int i = 0; i < names.length; i++)
+        for (int i = 0; i < names.length; i++)
         {
             String name = names[i];
 
@@ -110,7 +109,8 @@ public class TestMocks extends TapestryTestCase
     {
         File file = new File(path);
 
-        if (!file.exists()) return;
+        if (!file.exists())
+            return;
 
         deleteRecursive(file);
     }
@@ -125,7 +125,7 @@ public class TestMocks extends TapestryTestCase
 
         String[] names = file.list();
 
-        for(int i = 0; i < names.length; i++)
+        for (int i = 0; i < names.length; i++)
         {
             File f = new File(file, names[i]);
             deleteRecursive(f);
@@ -135,15 +135,15 @@ public class TestMocks extends TapestryTestCase
     }
 
     /**
-     * Ensures that the log directory exists, then redirects System.out and
-     * System.err to files within the log.
+     * Ensures that the log directory exists, then redirects System.out and System.err to files
+     * within the log.
      */
-    protected void setUp()
-        throws Exception
+    protected void setUp() throws Exception
     {
         File outDir = new File(getBaseDirectory() + LOGS_DIR);
 
-        if (!outDir.isDirectory()) outDir.mkdirs();
+        if (!outDir.isDirectory())
+            outDir.mkdirs();
 
         _savedOut = System.out;
         _savedErr = System.err;
@@ -152,8 +152,7 @@ public class TestMocks extends TapestryTestCase
         System.setErr(createPrintStream(outDir, "err"));
     }
 
-    protected PrintStream createPrintStream(File directory, String extension)
-        throws Exception
+    protected PrintStream createPrintStream(File directory, String extension) throws Exception
     {
         String name = getName() + "." + extension;
 
@@ -169,11 +168,9 @@ public class TestMocks extends TapestryTestCase
     }
 
     /**
-     * Closes System.out and System.err, then restores them to their original
-     * values.
+     * Closes System.out and System.err, then restores them to their original values.
      */
-    protected void tearDown()
-        throws Exception
+    protected void tearDown() throws Exception
     {
         System.err.close();
         System.setErr(_savedErr);

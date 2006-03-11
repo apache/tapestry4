@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,10 @@ package org.apache.tapestry.valid;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.valid.PatternDelegate;
+import org.apache.tapestry.valid.PatternValidator;
+import org.apache.tapestry.valid.ValidationConstraint;
+import org.apache.tapestry.valid.ValidatorException;
 import org.easymock.MockControl;
 
 /**
@@ -27,18 +31,15 @@ import org.easymock.MockControl;
  */
 public class TestPatternValidator extends BaseValidatorTestCase
 {
-
     PatternValidator pv = new PatternValidator();
 
-    private void positiveTest(IFormComponent field, String input)
-        throws ValidatorException
+    private void positiveTest(IFormComponent field, String input) throws ValidatorException
     {
         Object result = pv.toObject(field, input);
         assertEquals(input, result);
     }
 
-    public void testFulfillingPatterns()
-        throws ValidatorException
+    public void testFulfillingPatterns() throws ValidatorException
     {
         IFormComponent field = newField();
 
@@ -53,8 +54,8 @@ public class TestPatternValidator extends BaseValidatorTestCase
     private void assertValidatorException(ValidatorException e)
     {
         assertEquals(ValidationConstraint.PATTERN_MISMATCH, e.getConstraint());
-        assertEquals("PatternField does not fulfill the required pattern " + pv.getPatternString() + ".", e
-                .getMessage());
+        assertEquals("PatternField does not fulfill the required pattern " + pv.getPatternString()
+                + ".", e.getMessage());
     }
 
     private void negativeTest(String input)
@@ -86,13 +87,12 @@ public class TestPatternValidator extends BaseValidatorTestCase
         negativeTest("06514-314");
     }
 
-    public void testMalformedPattern()
-        throws ValidatorException
+    public void testMalformedPattern() throws ValidatorException
     {
         Location l = fabricateLocation(11);
 
         MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent)control.getMock();
+        IFormComponent field = (IFormComponent) control.getMock();
 
         field.getDisplayName();
         control.setReturnValue("badPattern");
@@ -111,7 +111,8 @@ public class TestPatternValidator extends BaseValidatorTestCase
         }
         catch (ApplicationRuntimeException e)
         {
-            checkException(e, "Unable to match pattern " + pv.getPatternString() + " for field badPattern.");
+            checkException(e, "Unable to match pattern " + pv.getPatternString()
+                    + " for field badPattern.");
             assertSame(l, e.getLocation());
         }
 
@@ -134,7 +135,8 @@ public class TestPatternValidator extends BaseValidatorTestCase
         catch (ValidatorException e)
         {
             assertEquals(ValidationConstraint.PATTERN_MISMATCH, e.getConstraint());
-            assertEquals("Field: PatternField, Pattern: ^(\\d{5}(-\\d{4})?)$, you figure!", e.getMessage());
+            assertEquals("Field: PatternField, Pattern: ^(\\d{5}(-\\d{4})?)$, you figure!", e
+                    .getMessage());
         }
 
         verifyControls();
@@ -142,10 +144,8 @@ public class TestPatternValidator extends BaseValidatorTestCase
 
     public void testOverridePatternMatcher()
     {
-        /** Test fixture. */
         class MatcherDelegate implements PatternDelegate
         {
-
             public boolean contains(String value, String patternString)
             {
                 return false;
@@ -167,7 +167,8 @@ public class TestPatternValidator extends BaseValidatorTestCase
     public void testGetEscapedPatternString()
     {
         pv.setPatternString("^(\\d{5}(-\\d{4})?)$");
-        assertEquals("\\^\\(\\\\d\\{5\\}\\(\\-\\\\d\\{4\\}\\)\\?\\)\\$", pv.getEscapedPatternString());
+        assertEquals("\\^\\(\\\\d\\{5\\}\\(\\-\\\\d\\{4\\}\\)\\?\\)\\$", pv
+                .getEscapedPatternString());
     }
 
 }

@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,15 +34,12 @@ import org.easymock.MockControl;
  */
 public class TestDecodedRequestInjector extends HiveMindTestCase
 {
-
-    /** Test fixture. */
     private static class ServicerFixture implements ServletRequestServicer
     {
-
         HttpServletRequest _request;
 
         public void service(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException
+                throws IOException, ServletException
         {
             _request = request;
         }
@@ -50,18 +47,18 @@ public class TestDecodedRequestInjector extends HiveMindTestCase
 
     private HttpServletRequest newRequest()
     {
-        return (HttpServletRequest)newMock(HttpServletRequest.class);
+        return (HttpServletRequest) newMock(HttpServletRequest.class);
     }
 
     private HttpServletResponse newResponse()
     {
-        return (HttpServletResponse)newMock(HttpServletResponse.class);
+        return (HttpServletResponse) newMock(HttpServletResponse.class);
     }
 
     private ILibrarySpecification newSpec(boolean exists, IRequestDecoder decoder)
     {
         MockControl control = newControl(ILibrarySpecification.class);
-        ILibrarySpecification spec = (ILibrarySpecification)control.getMock();
+        ILibrarySpecification spec = (ILibrarySpecification) control.getMock();
 
         spec.checkExtension(Tapestry.REQUEST_DECODER_EXTENSION_NAME);
         control.setReturnValue(exists);
@@ -75,14 +72,13 @@ public class TestDecodedRequestInjector extends HiveMindTestCase
         return spec;
     }
 
-    public void testNoExtension()
-        throws Exception
+    public void testNoExtension() throws Exception
     {
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
         ILibrarySpecification spec = newSpec(false, null);
 
-        ServletRequestServicer servicer = (ServletRequestServicer)newMock(ServletRequestServicer.class);
+        ServletRequestServicer servicer = (ServletRequestServicer) newMock(ServletRequestServicer.class);
 
         servicer.service(request, response);
 
@@ -98,14 +94,13 @@ public class TestDecodedRequestInjector extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testWithExtension()
-        throws Exception
+    public void testWithExtension() throws Exception
     {
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
         MockControl decoderc = newControl(IRequestDecoder.class);
-        IRequestDecoder decoder = (IRequestDecoder)decoderc.getMock();
+        IRequestDecoder decoder = (IRequestDecoder) decoderc.getMock();
         ILibrarySpecification spec = newSpec(true, decoder);
 
         ServicerFixture servicer = new ServicerFixture();

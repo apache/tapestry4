@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,11 +27,10 @@ import org.easymock.MockControl;
  */
 public class TestTypeConverterWrapper extends HiveMindTestCase
 {
-
     public void testNonNull()
     {
         MockControl tcc = newControl(TypeConverter.class);
-        TypeConverter tc = (TypeConverter)tcc.getMock();
+        TypeConverter tc = (TypeConverter) tcc.getMock();
 
         Object expected = "BARNEY";
 
@@ -60,7 +59,7 @@ public class TestTypeConverterWrapper extends HiveMindTestCase
     public void testNull()
     {
         MockControl tcc = newControl(TypeConverter.class);
-        TypeConverter tc = (TypeConverter)tcc.getMock();
+        TypeConverter tc = (TypeConverter) tcc.getMock();
 
         Object expected = "NULL";
 

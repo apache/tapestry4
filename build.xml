@@ -26,8 +26,8 @@
 			portlet/build.xml 
 			contrib/build.xml 
 			annotations/build.xml 
+			examples/TimeTracker/build.xml 
 			examples/Workbench/build.xml 
-			examples/TimeTracker/build.xml
 			examples/VlibBeans/build.xml
 			examples/Vlib/build.xml" />
 

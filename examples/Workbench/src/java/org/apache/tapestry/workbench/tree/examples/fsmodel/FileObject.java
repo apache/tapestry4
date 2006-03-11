@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,12 +21,8 @@ import java.util.Collection;
 import org.apache.tapestry.contrib.tree.model.ITreeNode;
 import org.apache.tapestry.engine.IEngineService;
 
-/** @author tsv? * */
 public class FileObject extends SFObject
 {
-
-    private static final long serialVersionUID = -4552981105079058185L;
-
     private long m_lSize;
 
     private final IEngineService _assetService;

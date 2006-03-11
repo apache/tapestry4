@@ -16,6 +16,7 @@ package org.apache.tapestry;
 
 import java.util.Locale;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageAttachListener;
 import org.apache.tapestry.event.PageBeginRenderListener;
@@ -117,6 +118,18 @@ public interface IPage extends IComponent
      */
 
     public void attach(IEngine engine, IRequestCycle cycle);
+
+    /**
+     * Used to explicitly fire {@link PageAttachListener}s for this page. This is used when a page
+     * is first loaded; The page loader attaches the newly created page <em>instance</em> before
+     * the rest of the page and components is loaded. In order to have meaningful event
+     * notifications when a page is first loaded (rather than pulled from the pool), it is necessary
+     * to fire page attach listeners at the end of the load.
+     * 
+     * @since 4.0
+     */
+
+    public void firePageAttached();
 
     /**
      * Invoked to render the entire page. This should only be invoked by

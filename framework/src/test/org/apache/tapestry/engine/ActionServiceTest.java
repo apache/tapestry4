@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,7 +38,6 @@ import org.apache.tapestry.web.WebSession;
  */
 public class ActionServiceTest extends ServiceTestCase
 {
-
     public void testGetLinkSimple()
     {
         IComponent component = newComponent();
@@ -154,8 +153,7 @@ public class ActionServiceTest extends ServiceTestCase
         verifyControls();
     }
 
-    public void testServiceSimple()
-        throws Exception
+    public void testServiceSimple() throws Exception
     {
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
@@ -190,11 +188,10 @@ public class ActionServiceTest extends ServiceTestCase
 
     private IAction newAction()
     {
-        return (IAction)newMock(IAction.class);
+        return (IAction) newMock(IAction.class);
     }
 
-    public void testSeviceActiveSession()
-        throws Exception
+    public void testSeviceActiveSession() throws Exception
     {
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
@@ -232,8 +229,7 @@ public class ActionServiceTest extends ServiceTestCase
         verifyControls();
     }
 
-    public void testServiceNotAction()
-        throws Exception
+    public void testServiceNotAction() throws Exception
     {
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
@@ -277,8 +273,7 @@ public class ActionServiceTest extends ServiceTestCase
         verifyControls();
     }
 
-    public void testServiceStaleSession()
-        throws Exception
+    public void testServiceStaleSession() throws Exception
     {
         IRequestCycle cycle = newCycle();
         IPage page = newPage();
@@ -329,8 +324,7 @@ public class ActionServiceTest extends ServiceTestCase
         verifyControls();
     }
 
-    public void testServiceComplex()
-        throws Exception
+    public void testServiceComplex() throws Exception
     {
         IRequestCycle cycle = newCycle();
         IPage activePage = newPage();

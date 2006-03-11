@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.valid.NumberValidator;
+import org.apache.tapestry.valid.ValidationConstraint;
+import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Test the {@link NumberValidator}.
@@ -28,11 +31,9 @@ import org.apache.tapestry.form.IFormComponent;
 
 public class TestNumberValidator extends BaseValidatorTestCase
 {
-
     private NumberValidator v = new NumberValidator();
 
-    private void testPassThru(Class valueTypeClass, Number input)
-        throws ValidatorException
+    private void testPassThru(Class valueTypeClass, Number input) throws ValidatorException
     {
         IFormComponent field = newField();
 
@@ -44,7 +45,7 @@ public class TestNumberValidator extends BaseValidatorTestCase
     }
 
     private void testPassThru(IFormComponent field, Class valueTypeClass, Number input)
-        throws ValidatorException
+            throws ValidatorException
     {
         v.setValueTypeClass(valueTypeClass);
 
@@ -55,44 +56,37 @@ public class TestNumberValidator extends BaseValidatorTestCase
         assertEquals("Input and output.", input, o);
     }
 
-    public void testShort()
-        throws ValidatorException
+    public void testShort() throws ValidatorException
     {
-        testPassThru(Short.class, new Short((short)1000));
+        testPassThru(Short.class, new Short((short) 1000));
     }
 
-    public void testInteger()
-        throws ValidatorException
+    public void testInteger() throws ValidatorException
     {
         testPassThru(Integer.class, new Integer(373));
     }
 
-    public void testByte()
-        throws ValidatorException
+    public void testByte() throws ValidatorException
     {
-        testPassThru(Byte.class, new Byte((byte)131));
+        testPassThru(Byte.class, new Byte((byte) 131));
     }
 
-    public void testFloat()
-        throws ValidatorException
+    public void testFloat() throws ValidatorException
     {
         testPassThru(Float.class, new Float(3.1415));
     }
 
-    public void testDouble()
-        throws ValidatorException
+    public void testDouble() throws ValidatorException
     {
         testPassThru(Double.class, new Double(348348.484854848));
     }
 
-    public void testLong()
-        throws ValidatorException
+    public void testLong() throws ValidatorException
     {
-        testPassThru(Long.class, new Long(37373218723L));
+        testPassThru(Long.class, new Long(37373218723l));
     }
 
-    public void testInRange()
-        throws ValidatorException
+    public void testInRange() throws ValidatorException
     {
         v.setMinimum(new Integer(100));
         v.setMaximum(new Integer(200));
@@ -186,7 +180,8 @@ public class TestNumberValidator extends BaseValidatorTestCase
         }
         catch (ValidatorException ex)
         {
-            assertEquals("You think I want a value larger than 200 for overMaximum?", ex.getMessage());
+            assertEquals("You think I want a value larger than 200 for overMaximum?", ex
+                    .getMessage());
         }
 
         verifyControls();
@@ -236,20 +231,19 @@ public class TestNumberValidator extends BaseValidatorTestCase
         verifyControls();
     }
 
-    public void testBigInteger()
-        throws ValidatorException
+    public void testBigInteger() throws ValidatorException
     {
-        testPassThru(BigInteger.class, new BigInteger("234905873490587234905724908252390487590234759023487523489075"));
+        testPassThru(BigInteger.class, new BigInteger(
+                "234905873490587234905724908252390487590234759023487523489075"));
     }
 
-    public void testBigDecimal()
-        throws ValidatorException
+    public void testBigDecimal() throws ValidatorException
     {
         testPassThru(BigDecimal.class, new BigDecimal(
                 "-29574923857342908744.19058734289734907543289752345897234590872349085"));
     }
 
-    /** @since 3.0 */
+    /** @since 3.0 * */
 
     private void checkAdaptorType(int expectedType, Class numberType)
     {
@@ -260,8 +254,7 @@ public class TestNumberValidator extends BaseValidatorTestCase
 
     /** @since 3.0 * */
 
-    public void testAdaptorTypes()
-        throws Exception
+    public void testAdaptorTypes() throws Exception
     {
         checkAdaptorType(NumberValidator.NUMBER_TYPE_INTEGER, Byte.class);
         checkAdaptorType(NumberValidator.NUMBER_TYPE_INTEGER, Short.class);
@@ -284,12 +277,12 @@ public class TestNumberValidator extends BaseValidatorTestCase
 
     public void testByteCompare()
     {
-        checkCompare(new Byte((byte)3), new Long(3));
+        checkCompare(new Byte((byte) 3), new Long(3));
     }
 
     public void testShortCompare()
     {
-        checkCompare(new Short((short)14), new Double(14.0));
+        checkCompare(new Short((short) 14), new Double(14.0));
     }
 
     public void testIntegerCompare()
@@ -299,7 +292,7 @@ public class TestNumberValidator extends BaseValidatorTestCase
 
     public void testLongCompare()
     {
-        checkCompare(new Long(-22), new Short((short)-22));
+        checkCompare(new Long(-22), new Short((short) -22));
     }
 
     public void testBigIntegerCompare()

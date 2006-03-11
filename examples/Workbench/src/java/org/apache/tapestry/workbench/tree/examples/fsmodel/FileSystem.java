@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,11 +22,8 @@ import java.util.Vector;
 import org.apache.tapestry.contrib.tree.model.ITreeNode;
 import org.apache.tapestry.engine.IEngineService;
 
-/** @author tsv? */
 public class FileSystem implements IFileSystemTreeNode
 {
-
-    private static final long serialVersionUID = -3895257178984217762L;
 
     private transient AssetsHolder m_objAssetsHolder = null;
 
@@ -49,12 +46,15 @@ public class FileSystem implements IFileSystemTreeNode
         m_vDrives = new Vector();
         File[] arrFile = File.listRoots();
 
-        if (arrFile != null) for(int i = 0; i < arrFile.length; i++)
-        {
-            File objFile = arrFile[i];
-            boolean bFloppy = objFile.getAbsolutePath().startsWith("A:") || objFile.getAbsolutePath().startsWith("B:");
-            if (!bFloppy) m_vDrives.addElement(new Drive(this, objFile, _assetService));
-        }
+        if (arrFile != null)
+            for (int i = 0; i < arrFile.length; i++)
+            {
+                File objFile = arrFile[i];
+                boolean bFloppy = objFile.getAbsolutePath().startsWith("A:")
+                        || objFile.getAbsolutePath().startsWith("B:");
+                if (!bFloppy)
+                    m_vDrives.addElement(new Drive(this, objFile, _assetService));
+            }
     }
 
     public Vector getDrives()
@@ -68,10 +68,13 @@ public class FileSystem implements IFileSystemTreeNode
 
     public int getChildNumber(Object objChild)
     {
-        for(int i = 0; i < m_vDrives.size(); i++)
+        for (int i = 0; i < m_vDrives.size(); i++)
         {
             Object objChildDrive = m_vDrives.elementAt(i);
-            if (objChildDrive.equals(objChild)) { return i; }
+            if (objChildDrive.equals(objChild))
+            {
+                return i;
+            }
         }
         return -1;
     }
@@ -142,9 +145,11 @@ public class FileSystem implements IFileSystemTreeNode
      */
     public boolean equals(Object arg0)
     {
-        if (!(arg0 instanceof FileSystem)) return false;
-        FileSystem objFileSystem = (FileSystem)arg0;
-        if (getName().equals(objFileSystem.getName())) return true;
+        if (!(arg0 instanceof FileSystem))
+            return false;
+        FileSystem objFileSystem = (FileSystem) arg0;
+        if (getName().equals(objFileSystem.getName()))
+            return true;
         return false;
     }
 

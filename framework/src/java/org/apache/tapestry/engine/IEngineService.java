@@ -48,7 +48,7 @@ public interface IEngineService
      *         {@link javax.servlet.http.HttpServletResponse#encodeURL(java.lang.String)}.
      */
 
-    ILink getLink(boolean post, Object parameter);
+    public ILink getLink(boolean post, Object parameter);
 
     /**
      * Perform the service, interpreting the URL (from the
@@ -60,7 +60,7 @@ public interface IEngineService
      * @see org.apache.tapestry.IEngine#service(org.apache.tapestry.request.RequestContext)
      */
 
-    void service(IRequestCycle cycle) throws IOException;
+    public void service(IRequestCycle cycle) throws IOException;
 
     /**
      * Returns the name of the service.
@@ -68,5 +68,5 @@ public interface IEngineService
      * @since 1.0.1
      */
 
-    String getName();
+    public String getName();
 }

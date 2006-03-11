@@ -32,11 +32,11 @@ public interface IEntityBean extends EJBObject
      * Returns the simple attributes of the entity as a Map.
      */
 
-    Map getEntityAttributes() throws RemoteException;
+    public Map getEntityAttributes() throws RemoteException;
 
     /**
      * Updates some or all of the properties of the entity.
      */
 
-    void updateEntityAttributes(Map data) throws RemoteException;
+    public void updateEntityAttributes(Map data) throws RemoteException;
 }

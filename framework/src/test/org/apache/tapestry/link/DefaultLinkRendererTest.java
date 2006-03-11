@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ import org.apache.tapestry.engine.ILink;
  */
 public class DefaultLinkRendererTest extends BaseComponentTestCase
 {
-    /** Test fixture. */
     class RendererFixture extends DefaultLinkRenderer
     {
         private IMarkupWriter _writer;
@@ -157,12 +156,14 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, component);
 
         trainIsDisabled(component, false);
+        trainIsRewinding(cycle, false);
 
         writer.begin("a");
 
         trainGetLink(component, cycle, link);
 
         trainGetScheme(component, null);
+        trainGetPort(component, null);
         trainGetAnchor(component, null);
 
         trainGetURL(link, null, null, "/foo/bar.baz");
@@ -195,7 +196,13 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         component.getScheme();
         setReturnValue(component, scheme);
     }
-
+    
+    protected void trainGetPort(ILinkComponent component, Integer port)
+    {
+        component.getPort();
+        setReturnValue(component, port);
+    }
+    
     public void testStandardWithSchemaAnchorAndTarget()
     {
         IMarkupWriter writer = newWriter();
@@ -208,6 +215,7 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, component);
 
         trainIsDisabled(component, false);
+        trainIsRewinding(cycle, false);
 
         writer.begin("a");
 
@@ -215,6 +223,8 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
         trainGetScheme(component, "https");
 
+        trainGetPort(component, null);
+        
         trainGetAnchor(component, "my-anchor");
 
         trainGetURL(link, "https", "my-anchor", "http://zap.com/foo/bar.baz#my-anchor");
@@ -230,11 +240,11 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         component.renderBody(nested, cycle);
 
         component.renderAdditionalAttributes(writer, cycle);
-
+        
         nested.close();
-
+        
         writer.end();
-
+        
         cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
 
         replayControls();
@@ -266,6 +276,29 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         verifyControls();
     }
 
+    public void testRewinding()
+    {
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle();
+        ILinkComponent component = newComponent();
+
+        trainGetAttribute(cycle, Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, null);
+        cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, component);
+
+        trainIsDisabled(component, false);
+        trainIsRewinding(cycle, true);
+
+        component.renderBody(writer, cycle);
+
+        cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
+
+        replayControls();
+
+        new DefaultLinkRenderer().renderLink(writer, cycle, component);
+
+        verifyControls();
+    }
+
     public void testWithSubclass()
     {
         IMarkupWriter writer = newWriter();
@@ -278,6 +311,7 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, component);
 
         trainIsDisabled(component, false);
+        trainIsRewinding(cycle, false);
 
         writer.begin("xlink");
 
@@ -285,6 +319,8 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
         trainGetScheme(component, null);
 
+        trainGetPort(component, null);
+        
         trainGetAnchor(component, "my-anchor");
 
         trainGetURL(link, null, "my-anchor", "/foo/bar.baz#my-anchor");
@@ -334,6 +370,7 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, component);
 
         trainIsDisabled(component, false);
+        trainIsRewinding(cycle, false);
 
         writer.beginEmpty("xlink");
 
@@ -341,6 +378,8 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
         trainGetScheme(component, null);
 
+        trainGetPort(component, null);
+        
         trainGetAnchor(component, "my-anchor");
 
         trainGetURL(link, null, "my-anchor", "/foo/bar.baz#my-anchor");

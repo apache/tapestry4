@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,15 +31,8 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.easymock.MockControl;
 import org.easymock.internal.ArrayMatcher;
 
-/**
- * Test suite for
- * {@link org.apache.tapestry.annotations.MessageAnnotationWorker}.
- * 
- * @author Howard M. Lewis Ship
- * @since 4.0
- */
-public class TestMessageAnnotationWorker extends BaseAnnotationTestCase {
-
+public class TestMessageAnnotationWorker extends BaseAnnotationTestCase
+{
     public void testConvertMethodNameToKeyName()
     {
         MessageAnnotationWorker w = new MessageAnnotationWorker();
@@ -52,36 +45,30 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase {
 
     public void testNoArgsMessage()
     {
-        attempt("noArgsMessage",
-                "{\n  return getMessages().getMessage(\"no-args-message\");\n}\n");
+        attempt("noArgsMessage", "{\n  return getMessages().getMessage(\"no-args-message\");\n}\n");
     }
 
     public void testMessageWithSpecificKey()
     {
-        attempt("messageWithSpecificKey",
+        attempt(
+                "messageWithSpecificKey",
                 "{\n  return getMessages().getMessage(\"message-key\");\n}\n");
     }
 
     public void testMessageWithParameters()
     {
-        attempt(
-                "messageWithParameters",
-                "{\n"
-                        + "  java.lang.Object[] params = new java.lang.Object[2];\n"
-                        + "  params[0] = $1;\n"
-                        + "  params[1] = $2;\n"
-                        + "  return getMessages().format(\"message-with-parameters\", params);\n}\n");
+        attempt("messageWithParameters", "{\n"
+                + "  java.lang.Object[] params = new java.lang.Object[2];\n"
+                + "  params[0] = $1;\n" + "  params[1] = $2;\n"
+                + "  return getMessages().format(\"message-with-parameters\", params);\n}\n");
     }
 
     public void testMessageWithPrimitiveParameters()
     {
-        attempt(
-                "messageWithPrimitives",
-                "{\n"
-                        + "  java.lang.Object[] params = new java.lang.Object[2];\n"
-                        + "  params[0] = ($w) $1;\n"
-                        + "  params[1] = ($w) $2;\n"
-                        + "  return getMessages().format(\"message-with-primitives\", params);\n}\n");
+        attempt("messageWithPrimitives", "{\n"
+                + "  java.lang.Object[] params = new java.lang.Object[2];\n"
+                + "  params[0] = ($w) $1;\n" + "  params[1] = ($w) $2;\n"
+                + "  return getMessages().format(\"message-with-primitives\", params);\n}\n");
     }
 
     public void testNotStringReturnType()
@@ -93,11 +80,13 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase {
 
         replayControls();
 
-        try {
-            new MessageAnnotationWorker().performEnhancement(op, spec, method,
-                    null);
+        try
+        {
+            new MessageAnnotationWorker().performEnhancement(op, spec, method, null);
             unreachable();
-        } catch (ApplicationRuntimeException ex) {
+        }
+        catch (ApplicationRuntimeException ex)
+        {
             assertEquals(
                     "The method's return type is void; this annotation is only allowed on methods that return java.lang.String.",
                     ex.getMessage());
@@ -115,7 +104,9 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase {
 
         Method method = findMethod(AnnotatedPage.class, "getLikeGetter");
 
-        op.addMethod(Modifier.PUBLIC, new MethodSignature(method),
+        op.addMethod(
+                Modifier.PUBLIC,
+                new MethodSignature(method),
                 "{\n  return getMessages().getMessage(\"like-getter\");\n}\n",
                 l);
         op.claimReadonlyProperty("likeGetter");
@@ -135,9 +126,7 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase {
 
         Method method = findMethod(AnnotatedPage.class, methodName);
 
-        op
-                .addMethod(Modifier.PUBLIC, new MethodSignature(method),
-                        codeBlock, l);
+        op.addMethod(Modifier.PUBLIC, new MethodSignature(method), codeBlock, l);
 
         replayControls();
 
@@ -146,20 +135,17 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase {
         verifyControls();
     }
 
-    private Object construct(Class baseClass, String methodName,
-            Messages messages)
+    private Object construct(Class baseClass, String methodName, Messages messages)
     {
         Location l = newLocation();
 
         ComponentSpecification spec = new ComponentSpecification();
-        EnhancementOperationImpl op = new EnhancementOperationImpl(
-                getClassResolver(), spec, baseClass, new ClassFactoryImpl(),
-                null);
+        EnhancementOperationImpl op = new EnhancementOperationImpl(getClassResolver(), spec,
+                baseClass, new ClassFactoryImpl(), null);
 
         op.addInjectedField("_messages", Messages.class, messages);
 
-        EnhanceUtils.createSimpleAccessor(op, "_messages", "messages",
-                Messages.class, l);
+        EnhanceUtils.createSimpleAccessor(op, "_messages", "messages", Messages.class, l);
 
         Method method = findMethod(baseClass, methodName);
 
@@ -173,13 +159,12 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase {
     public void testNoParams()
     {
         MockControl control = newControl(Messages.class);
-        Messages messages = (Messages)control.getMock();
+        Messages messages = (Messages) control.getMock();
 
         messages.getMessage("no-params");
         control.setReturnValue("<no params>");
 
-        MessagesTarget mt = (MessagesTarget)construct(MessagesTarget.class,
-                "noParams", messages);
+        MessagesTarget mt = (MessagesTarget) construct(MessagesTarget.class, "noParams", messages);
 
         replayControls();
 
@@ -191,16 +176,19 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase {
     public void testObjectParam()
     {
         MockControl control = newControl(Messages.class);
-        Messages messages = (Messages)control.getMock();
+        Messages messages = (Messages) control.getMock();
 
-        Object[] params = new Object[] { "PinkFloyd" };
+        Object[] params = new Object[]
+        { "PinkFloyd" };
 
         messages.format("object-param", params);
         control.setMatcher(new ArrayMatcher());
         control.setReturnValue("<object param>");
 
-        MessagesTarget mt = (MessagesTarget)construct(MessagesTarget.class,
-                "objectParam", messages);
+        MessagesTarget mt = (MessagesTarget) construct(
+                MessagesTarget.class,
+                "objectParam",
+                messages);
 
         replayControls();
 
@@ -213,16 +201,19 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase {
     {
 
         MockControl control = newControl(Messages.class);
-        Messages messages = (Messages)control.getMock();
+        Messages messages = (Messages) control.getMock();
 
-        Object[] params = new Object[] { 451 };
+        Object[] params = new Object[]
+        { 451 };
 
         messages.format("primitive-param", params);
         control.setMatcher(new ArrayMatcher());
         control.setReturnValue("<primitive param>");
 
-        MessagesTarget mt = (MessagesTarget)construct(MessagesTarget.class,
-                "primitiveParam", messages);
+        MessagesTarget mt = (MessagesTarget) construct(
+                MessagesTarget.class,
+                "primitiveParam",
+                messages);
 
         replayControls();
 
@@ -241,12 +232,14 @@ public class TestMessageAnnotationWorker extends BaseAnnotationTestCase {
 
     private void invalidBinding(String binding)
     {
-        try {
+        try
+        {
             new ComponentAnnotationWorker().addBinding(null, binding, null);
             unreachable();
-        } catch (ApplicationRuntimeException ex) {
-            assertEquals(AnnotationMessages.bindingWrongFormat(binding), ex
-                    .getMessage());
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(AnnotationMessages.bindingWrongFormat(binding), ex.getMessage());
         }
     }
 }

@@ -36,7 +36,7 @@ public interface SecondaryAnnotationWorker
      *            to check
      * @return true if the worker should be invoked, false otherwise
      */
-    boolean canEnhance(Method method);
+    public boolean canEnhance(Method method);
 
     /**
      * Invoked an <em>all</em> workers in the command chain, if <em>any</em> worker returns true
@@ -52,6 +52,6 @@ public interface SecondaryAnnotationWorker
      *            a resource representing the class; combined with the method a
      *            {@link org.apache.hivemind.Location} can be created
      */
-    void peformEnhancement(EnhancementOperation op, IComponentSpecification spec,
+    public void peformEnhancement(EnhancementOperation op, IComponentSpecification spec,
             Method method, Resource classResource);
 }

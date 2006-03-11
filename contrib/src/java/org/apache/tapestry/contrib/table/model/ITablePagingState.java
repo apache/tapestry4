@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,38 +21,29 @@ package org.apache.tapestry.contrib.table.model;
  */
 public interface ITablePagingState
 {
+	/**
+	 * Method getPageSize provides the size of a page in a number of records.
+	 * This value may be meaningless if the model uses a different method for pagination.
+	 * @return int the current page size
+	 */
+	int getPageSize();
 
-    /**
-     * Method getPageSize provides the size of a page in a number of records.
-     * This value may be meaningless if the model uses a different method for
-     * pagination.
-     * 
-     * @return int the current page size
-     */
-    int getPageSize();
+	/**
+	 * Method setPageSize updates the size of a page in a number of records.
+	 * This value may be meaningless if the model uses a different method for pagination.
+	 * @param nPageSize the new page size
+	 */
+	void setPageSize(int nPageSize);
 
-    /**
-     * Method setPageSize updates the size of a page in a number of records.
-     * This value may be meaningless if the model uses a different method for
-     * pagination.
-     * 
-     * @param nPageSize
-     *            the new page size
-     */
-    void setPageSize(int nPageSize);
+	/**
+	 * Gets the currently selected page. The page number is counted from 0.
+	 * @return int the current active page
+	 */
+	int getCurrentPage();
 
-    /**
-     * Gets the currently selected page. The page number is counted from 0.
-     * 
-     * @return int the current active page
-     */
-    int getCurrentPage();
-
-    /**
-     * Sets the newly selected page. The page number is counted from 0.
-     * 
-     * @param nPage
-     *            the new active page
-     */
-    void setCurrentPage(int nPage);
+	/**
+	 * Sets the newly selected page. The page number is counted from 0.
+	 * @param nPage the new active page
+	 */
+	void setCurrentPage(int nPage);
 }

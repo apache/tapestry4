@@ -81,10 +81,10 @@
   <host-logo></host-logo>
 
   <!-- relative url of a favicon file, normally favicon.ico -->
-  <favicon-url></favicon-url>
+  <favicon-url>favicon.ico</favicon-url>
 
   <!-- The following are used to construct a copyright statement -->
-  <year>2005</year>
+  <year>2006</year>
   <vendor>Apache Software Foundation</vendor>
   <!-- The optional copyright-link URL will be used as a link in the
     copyright statement

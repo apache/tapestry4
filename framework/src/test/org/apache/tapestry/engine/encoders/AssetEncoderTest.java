@@ -31,16 +31,16 @@ public class AssetEncoderTest extends HiveMindTestCase
     public void testWrongService()
     {
         ServiceEncoding encoding = newEncoding();
-        
+
         trainGetParameterValue(encoding, ServiceConstants.SERVICE, "foo");
-        
+
         replayControls();
-        
+
         new AssetEncoder().encode(encoding);
-        
+
         verifyControls();
     }
-    
+
     protected void trainGetParameterValue(ServiceEncoding encoding, String name, String value)
     {
         encoding.getParameterValue(name);
@@ -67,7 +67,7 @@ public class AssetEncoderTest extends HiveMindTestCase
 
         verifyControls();
     }
-    
+
     protected void trainGetServletPath(ServiceEncoding encoding, String servletPath)
     {
         encoding.getServletPath();
@@ -77,18 +77,18 @@ public class AssetEncoderTest extends HiveMindTestCase
     public void testEncode()
     {
         ServiceEncoding encoding = newEncoding();
-        
+
         trainGetParameterValue(encoding, ServiceConstants.SERVICE, Tapestry.ASSET_SERVICE);
         trainGetParameterValue(encoding, AssetService.PATH, "/foo/bar/Baz.gif");
         trainGetParameterValue(encoding, AssetService.DIGEST, "12345");
-        
+
         encoding.setServletPath("/assets/12345/foo/bar/Baz.gif");
         encoding.setParameterValue(AssetService.PATH, null);
         encoding.setParameterValue(AssetService.DIGEST, null);
         encoding.setParameterValue(ServiceConstants.SERVICE, null);
-        
+
         replayControls();
-        
+
         AssetEncoder encoder = new AssetEncoder();
         encoder.setPath("/assets");
 
@@ -100,14 +100,14 @@ public class AssetEncoderTest extends HiveMindTestCase
     public void testDecode()
     {
         ServiceEncoding encoding = newEncoding();
-        
+
         trainGetServletPath(encoding, "/assets");
         trainGetPathInfo(encoding, "/12345/foo/bar/Baz.gif");
-        
+
         encoding.setParameterValue(ServiceConstants.SERVICE, Tapestry.ASSET_SERVICE);
         encoding.setParameterValue(AssetService.DIGEST, "12345");
         encoding.setParameterValue(AssetService.PATH, "/foo/bar/Baz.gif");
-        
+
         replayControls();
 
         AssetEncoder encoder = new AssetEncoder();

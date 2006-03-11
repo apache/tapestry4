@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,20 +15,19 @@
 package org.apache.tapestry.coerce;
 
 /**
- * Converts a value (possibly null) to an alternate data type; typically from
- * String to boolean or a number type.
+ * Converts a value (possibly null) to an alternate data type; typically from String to boolean or a
+ * number type.
  * <p>
  * Typically, a ValueConverter will select a particular
- * {@link org.apache.tapestry.coerce.TypeConverter} to perform the conversion.
- * The {@link org.apache.tapestry.coerce.ValueConverterImpl} implementation also
- * makes use of built-in {@link java.beans.PropertyEditor}s.
+ * {@link org.apache.tapestry.coerce.TypeConverter}to perform the conversion. The
+ * {@link org.apache.tapestry.coerce.ValueConverterImpl}implementation also makes use of built-in
+ * {@link java.beans.PropertyEditor}s.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface ValueConverter
 {
-
     /**
      * Performs a conversion of a value to a particular type.
      * 
@@ -36,10 +35,10 @@ public interface ValueConverter
      *            The value to be converted (may be null)
      * @param desiredType
      *            the type that will be converted to
-     * @returns the value converted to the indicated type. May return the input
-     *          value if it is already assignable to the desiredType.
+     * @returns the value converted to the indicated type. May return the input value if it is
+     *          already assignable to the desiredType.
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if the value can not be converted
      */
-    Object coerceValue(Object value, Class desiredType);
+    public Object coerceValue(Object value, Class desiredType);
 }

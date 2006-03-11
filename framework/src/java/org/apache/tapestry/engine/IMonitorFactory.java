@@ -33,5 +33,5 @@ public interface IMonitorFactory
      * may be invoked by multiple threads.
      */
 
-    IMonitor createMonitor(WebRequest request);
+    public IMonitor createMonitor(WebRequest request);
 }

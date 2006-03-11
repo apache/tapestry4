@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,50 +17,42 @@ package org.apache.tapestry.contrib.tree.model;
 /**
  * @author ceco
  */
-public class TreeStateEvent
-{
+public class TreeStateEvent {
+	public static final int SELECTED_NODE_CHANGED 	= 1;
+	public static final int NODE_EXPANDED 			= 2;
+	public static final int NODE_COLLAPSED 			= 4;
+	
+	private int m_nEventType;
+	private transient ITreeStateModel m_objTreeStateModel = null;
+	private transient Object m_objNodeUID = null;
 
-    public static final int SELECTED_NODE_CHANGED = 1;
-    public static final int NODE_EXPANDED = 2;
-    public static final int NODE_COLLAPSED = 4;
+	/**
+	 * Constructor for TreeStateEvent.
+	 */
+	public TreeStateEvent(int nEventType, Object objNodeUID, ITreeStateModel objTreeStateModel) {
+		super();
+		m_nEventType = nEventType;
+		m_objNodeUID = objNodeUID;
+		m_objTreeStateModel = objTreeStateModel;
+	}
 
-    private int m_nEventType;
-    private transient ITreeStateModel m_objTreeStateModel = null;
-    private transient Object m_objNodeUID = null;
+	/**
+	 * Returns the EventType.
+	 * @return int
+	 */
+	public int getEventType() {
+		return m_nEventType;
+	}
 
-    /**
-     * Constructor for TreeStateEvent.
-     */
-    public TreeStateEvent(int nEventType, Object objNodeUID, ITreeStateModel objTreeStateModel)
-    {
-        super();
-        m_nEventType = nEventType;
-        m_objNodeUID = objNodeUID;
-        m_objTreeStateModel = objTreeStateModel;
-    }
+    public boolean isEvent(int nEventType){
+		return (getEventType() & nEventType) > 0;
+	}
 
-    /**
-     * Returns the EventType.
-     * 
-     * @return int
-     */
-    public int getEventType()
-    {
-        return m_nEventType;
-    }
+	public Object getNodeUID() {
+		return m_objNodeUID;
+	}
 
-    public boolean isEvent(int nEventType)
-    {
-        return (getEventType() & nEventType) > 0;
-    }
-
-    public Object getNodeUID()
-    {
-        return m_objNodeUID;
-    }
-
-    public ITreeStateModel getTreeStateModel()
-    {
-        return m_objTreeStateModel;
-    }
+	public ITreeStateModel getTreeStateModel() {
+		return m_objTreeStateModel;
+	}
 }

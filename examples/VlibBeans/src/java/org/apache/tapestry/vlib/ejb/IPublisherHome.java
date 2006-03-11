@@ -28,7 +28,7 @@ import javax.ejb.FinderException;
 
 public interface IPublisherHome extends EJBHome
 {
-    IPublisher create(String name) throws CreateException, RemoteException;
+    public IPublisher create(String name) throws CreateException, RemoteException;
 
     public IPublisher findByPrimaryKey(Integer key) throws FinderException, RemoteException;
 

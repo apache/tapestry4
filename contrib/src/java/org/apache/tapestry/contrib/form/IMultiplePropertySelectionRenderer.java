@@ -33,7 +33,7 @@ public interface IMultiplePropertySelectionRenderer
      *
      **/
 
-    void beginRender(
+    public void beginRender(
         MultiplePropertySelection component,
         IMarkupWriter writer,
         IRequestCycle cycle);
@@ -43,7 +43,7 @@ public interface IMultiplePropertySelectionRenderer
      *
      **/
 
-    void renderOption(
+    public void renderOption(
         MultiplePropertySelection component,
         IMarkupWriter writer,
         IRequestCycle cycle,
@@ -57,7 +57,7 @@ public interface IMultiplePropertySelectionRenderer
      *
      **/
 
-    void endRender(
+    public void endRender(
         MultiplePropertySelection component,
         IMarkupWriter writer,
         IRequestCycle cycle);

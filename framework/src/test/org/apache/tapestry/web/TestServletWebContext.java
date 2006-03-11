@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
+import org.apache.tapestry.web.ServletWebContext;
+import org.apache.tapestry.web.WebContext;
 import org.easymock.MockControl;
 
 /**
@@ -34,7 +36,7 @@ public class TestServletWebContext extends BaseWebTestCase
     public void testGetInitParameterNames()
     {
         MockControl control = newControl(ServletContext.class);
-        ServletContext context = (ServletContext)control.getMock();
+        ServletContext context = (ServletContext) control.getMock();
 
         context.getInitParameterNames();
         control.setReturnValue(newEnumeration());
@@ -55,7 +57,7 @@ public class TestServletWebContext extends BaseWebTestCase
         String value = "William Orbit";
 
         MockControl control = newControl(ServletContext.class);
-        ServletContext context = (ServletContext)control.getMock();
+        ServletContext context = (ServletContext) control.getMock();
 
         context.getInitParameter("artist");
         control.setReturnValue(value);
@@ -72,7 +74,7 @@ public class TestServletWebContext extends BaseWebTestCase
     public void testGetAttributeNames()
     {
         MockControl control = newControl(ServletContext.class);
-        ServletContext context = (ServletContext)control.getMock();
+        ServletContext context = (ServletContext) control.getMock();
 
         context.getAttributeNames();
         control.setReturnValue(newEnumeration());
@@ -93,7 +95,7 @@ public class TestServletWebContext extends BaseWebTestCase
         Object attribute = new Object();
 
         MockControl control = newControl(ServletContext.class);
-        ServletContext context = (ServletContext)control.getMock();
+        ServletContext context = (ServletContext) control.getMock();
 
         context.getAttribute("attr");
         control.setReturnValue(attribute);
@@ -112,7 +114,7 @@ public class TestServletWebContext extends BaseWebTestCase
         Object attribute = new Object();
 
         MockControl control = newControl(ServletContext.class);
-        ServletContext context = (ServletContext)control.getMock();
+        ServletContext context = (ServletContext) control.getMock();
 
         context.setAttribute("name", attribute);
 
@@ -128,7 +130,7 @@ public class TestServletWebContext extends BaseWebTestCase
     public void testSetAttributeToNull()
     {
         MockControl control = newControl(ServletContext.class);
-        ServletContext context = (ServletContext)control.getMock();
+        ServletContext context = (ServletContext) control.getMock();
 
         context.removeAttribute("tonull");
 
@@ -141,13 +143,12 @@ public class TestServletWebContext extends BaseWebTestCase
         verifyControls();
     }
 
-    public void testGetResource()
-        throws Exception
+    public void testGetResource() throws Exception
     {
         URL url = new URL("http://jakarta.apache.org/tapestry");
 
         MockControl control = newControl(ServletContext.class);
-        ServletContext context = (ServletContext)control.getMock();
+        ServletContext context = (ServletContext) control.getMock();
 
         context.getResource("/tapestry");
         control.setReturnValue(url);
@@ -161,13 +162,12 @@ public class TestServletWebContext extends BaseWebTestCase
         verifyControls();
     }
 
-    public void testGetResourceFailure()
-        throws Exception
+    public void testGetResourceFailure() throws Exception
     {
         Throwable t = new MalformedURLException("Like this ever happens.");
 
         MockControl control = newControl(ServletContext.class);
-        ServletContext context = (ServletContext)control.getMock();
+        ServletContext context = (ServletContext) control.getMock();
 
         context.getResource("/tapestry");
         control.setThrowable(t);

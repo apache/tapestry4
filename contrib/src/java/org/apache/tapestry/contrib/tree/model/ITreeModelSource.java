@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,11 +21,9 @@ import org.apache.tapestry.IComponent;
  */
 public interface ITreeModelSource extends IComponent
 {
+    final static String TREE_MODEL_SOURCE_ATTRIBUTE = "org.apache.tapestry.contrib.tree.model.ITreeModelSource";
 
-    String TREE_MODEL_SOURCE_ATTRIBUTE = "org.apache.tapestry.contrib.tree.model.ITreeModelSource";
-
-    ITreeModel getTreeModel();
-
-    ITreeStateListener getTreeStateListener();
+	ITreeModel getTreeModel();
+	ITreeStateListener getTreeStateListener();
 
 }

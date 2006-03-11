@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,16 +28,12 @@ import org.apache.tapestry.services.ResponseRenderer;
  */
 public class TestExceptionPresenter extends BaseErrorTestCase
 {
-
-    /** Test fixture. */
     public abstract static class ExceptionFixture extends BasePage
     {
-
         public abstract void setException(Throwable exception);
     }
 
-    public void testSuccess()
-        throws Exception
+    public void testSuccess() throws Exception
     {
         Throwable cause = new IllegalArgumentException();
         IPage page = newPage();
@@ -60,8 +56,7 @@ public class TestExceptionPresenter extends BaseErrorTestCase
         assertSame(cause, page.getProperty("exception"));
     }
 
-    public void testFailure()
-        throws Exception
+    public void testFailure() throws Exception
     {
         Throwable cause = new IllegalArgumentException();
         Throwable renderCause = new ApplicationRuntimeException("Some failure.");
@@ -75,7 +70,9 @@ public class TestExceptionPresenter extends BaseErrorTestCase
         cycle.activate(page);
 
         reporter.reportRequestException(ErrorMessages.unableToProcessClientRequest(cause), cause);
-        reporter.reportRequestException(ErrorMessages.unableToPresentExceptionPage(renderCause), renderCause);
+        reporter.reportRequestException(
+                ErrorMessages.unableToPresentExceptionPage(renderCause),
+                renderCause);
 
         replayControls();
 

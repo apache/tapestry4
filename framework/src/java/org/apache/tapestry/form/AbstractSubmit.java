@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,8 +29,8 @@ import org.apache.tapestry.listener.ListenerInvoker;
  * @since 4.0
  */
 
-abstract class AbstractSubmit extends AbstractFormComponent {
-
+abstract class AbstractSubmit extends AbstractFormComponent
+{
     /**
      * Determine if this submit component was clicked.
      * 
@@ -41,71 +41,76 @@ abstract class AbstractSubmit extends AbstractFormComponent {
     protected abstract boolean isClicked(IRequestCycle cycle, String name);
 
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter,
-     *      org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (isClicked(cycle, getName())) handleClick(cycle, getForm());
+        if (isClicked(cycle, getName()))
+            handleClick(cycle, getForm());
     }
 
     void handleClick(final IRequestCycle cycle, IForm form)
     {
-        if (isParameterBound("selected")) setSelected(getTag());
+        if (isParameterBound("selected"))
+            setSelected(getTag());
 
         final IActionListener listener = getListener();
         final IActionListener action = getAction();
 
-        if (listener == null && action == null) return;
+        if (listener == null && action == null)
+            return;
 
         final ListenerInvoker listenerInvoker = getListenerInvoker();
 
         Object parameters = getParameters();
-        if (parameters != null) {
-            if (parameters instanceof Collection) {
-                cycle.setListenerParameters(((Collection)parameters).toArray());
-            } else {
-                cycle.setListenerParameters(new Object[] { parameters });
+        if (parameters != null)
+        {
+            if (parameters instanceof Collection)
+            {
+                cycle.setListenerParameters(((Collection) parameters).toArray());
+            }
+            else
+            {
+                cycle.setListenerParameters(new Object[]
+                { parameters });
             }
         }
 
         // Invoke 'listener' now, but defer 'action' for later
         if (listener != null)
-            listenerInvoker
-                    .invokeListener(listener, AbstractSubmit.this, cycle);
-
+        	listenerInvoker.invokeListener(listener, AbstractSubmit.this, cycle);
+        
         if (action != null) {
-            Runnable notify = new Runnable() {
-
-                public void run()
-                {
-                    listenerInvoker.invokeListener(action, AbstractSubmit.this,
-                            cycle);
-                }
-            };
-
+	        Runnable notify = new Runnable()
+	        {
+	            public void run()
+	            {
+	                listenerInvoker.invokeListener(action, AbstractSubmit.this, cycle);
+	            }
+	        };
+	
             form.addDeferredRunnable(notify);
         }
     }
 
-    /** Parameter. */
+    /** parameter */
     public abstract IActionListener getListener();
 
-    /** Parameter. */
+    /** parameter */
     public abstract IActionListener getAction();
 
-    /** Parameter. */
+    /** parameter */
     public abstract Object getTag();
 
-    /** Parameter. */
+    /** parameter */
     public abstract void setSelected(Object tag);
 
-    /** Parameter. */
+    /** parameter */
     public abstract boolean getDefer();
 
-    /** Parameter. */
+    /** parameter */
     public abstract Object getParameters();
 
-    /** Injected. */
+    /** Injected */
     public abstract ListenerInvoker getListenerInvoker();
 }

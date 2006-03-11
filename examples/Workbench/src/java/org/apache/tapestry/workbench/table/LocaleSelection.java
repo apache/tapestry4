@@ -111,7 +111,7 @@ public abstract class LocaleSelection extends BaseComponent implements ILocaleSe
     }
 
     /**
-     * A class defining the logic for getting the currency symbol from a locale.
+     * A class defining the logic for getting the currency symbol from a locale
      */
     private static class CurrencyEvaluator implements ITableColumnEvaluator
     {
@@ -134,7 +134,7 @@ public abstract class LocaleSelection extends BaseComponent implements ILocaleSe
     }
 
     /**
-     * A class defining a column for displaying the date format.
+     * A class defining a column for displaying the date format
      */
     private static class DateFormatColumn extends SimpleTableColumn
     {

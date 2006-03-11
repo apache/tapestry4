@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,17 +24,10 @@ import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
 import org.easymock.MockControl;
 
-/**
- * Tests for {@link org.apache.tapestry.form.validator.MaxLength}.
- * 
- * @author Howard M. Lewis Ship
- * @since 4.0
- */
 public class TestMaxLength extends BaseValidatorTestCase
 {
 
-    public void testOK()
-        throws Exception
+    public void testOK() throws Exception
     {
         IFormComponent field = newField();
         ValidationMessages messages = newMessages();
@@ -51,14 +44,19 @@ public class TestMaxLength extends BaseValidatorTestCase
     public void testFail()
     {
         IFormComponent field = newField("My Field");
-        ValidationMessages messages = newMessages(null, ValidationStrings.VALUE_TOO_LONG, new Object[] {
-                new Integer(10), "My Field" }, "Exception!");
+        ValidationMessages messages = newMessages(
+                null,
+                ValidationStrings.VALUE_TOO_LONG,
+                new Object[]
+                { new Integer(10), "My Field" },
+                "Exception!");
 
         replayControls();
 
         try
         {
-            new MaxLength("maxLength=10").validate(field, messages, "brevity is the essence of wit");
+            new MaxLength("maxLength=10")
+                    .validate(field, messages, "brevity is the essence of wit");
         }
         catch (ValidatorException ex)
         {
@@ -70,14 +68,20 @@ public class TestMaxLength extends BaseValidatorTestCase
     public void testFailCustomMessage()
     {
         IFormComponent field = newField("My Field");
-        ValidationMessages messages = newMessages("Too Long", ValidationStrings.VALUE_TOO_LONG, new Object[] {
-                new Integer(10), "My Field" }, "Exception!");
+        ValidationMessages messages = newMessages(
+                "Too Long",
+                ValidationStrings.VALUE_TOO_LONG,
+                new Object[]
+                { new Integer(10), "My Field" },
+                "Exception!");
 
         replayControls();
 
         try
         {
-            new MaxLength("maxLength=10,message=Too Long").validate(field, messages,
+            new MaxLength("maxLength=10,message=Too Long").validate(
+                    field,
+                    messages,
                     "this should be more than ten characters");
         }
         catch (ValidatorException ex)
@@ -93,12 +97,13 @@ public class TestMaxLength extends BaseValidatorTestCase
         IRequestCycle cycle = newCycle();
         IFormComponent field = newField("My Field", "myfield");
         MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext)contextc.getMock();
+        FormComponentContributorContext context = (FormComponentContributorContext) contextc
+                .getMock();
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/StringValidator.js");
 
-        trainFormatMessage(contextc, context, null, ValidationStrings.VALUE_TOO_LONG, new Object[] { new Integer(20),
-                "My Field" }, "default\\message");
+        trainFormatMessage(contextc, context, null, ValidationStrings.VALUE_TOO_LONG, new Object[]
+        { new Integer(20), "My Field" }, "default\\message");
 
         context
                 .addSubmitHandler("function(event) { Tapestry.validate_max_length(event, 'myfield', 20, 'default\\\\message'); }");

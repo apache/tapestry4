@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,13 +44,13 @@ import org.easymock.MockControl;
  */
 public class TestSpecifiedPropertyWorker extends HiveMindTestCase
 {
-
     private List buildPropertySpecs(String name, String type, boolean persistent)
     {
         return buildPropertySpecs(name, type, persistent, null, null);
     }
 
-    private List buildPropertySpecs(String name, String type, boolean persistent, Location location, String initialValue)
+    private List buildPropertySpecs(String name, String type, boolean persistent,
+            Location location, String initialValue)
     {
         PropertySpecification ps = new PropertySpecification();
         ps.setName(name);
@@ -66,23 +66,23 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
     {
         List names = new ArrayList();
         Iterator i = propertySpecs.iterator();
-        while(i.hasNext())
+        while (i.hasNext())
         {
-            IPropertySpecification ps = (IPropertySpecification)i.next();
+            IPropertySpecification ps = (IPropertySpecification) i.next();
 
             names.add(ps.getName());
         }
 
         MockControl c = newControl(IComponentSpecification.class);
-        IComponentSpecification result = (IComponentSpecification)c.getMock();
+        IComponentSpecification result = (IComponentSpecification) c.getMock();
 
         result.getPropertySpecificationNames();
         c.setReturnValue(names);
 
         i = propertySpecs.iterator();
-        while(i.hasNext())
+        while (i.hasNext())
         {
-            IPropertySpecification ps = (IPropertySpecification)i.next();
+            IPropertySpecification ps = (IPropertySpecification) i.next();
 
             result.getPropertySpecification(ps.getName());
             c.setReturnValue(ps);
@@ -91,22 +91,27 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         return result;
     }
 
-    private IComponentSpecification buildComponentSpecification(String name, String type, boolean persistent)
+    private IComponentSpecification buildComponentSpecification(String name, String type,
+            boolean persistent)
     {
         return buildComponentSpecification(buildPropertySpecs(name, type, persistent));
     }
 
-    public void testAddNormal()
-        throws Exception
+    public void testAddNormal() throws Exception
     {
         Location l = newLocation();
 
-        IComponentSpecification spec = buildComponentSpecification(buildPropertySpecs("fred", "boolean", false, l, null));
+        IComponentSpecification spec = buildComponentSpecification(buildPropertySpecs(
+                "fred",
+                "boolean",
+                false,
+                l,
+                null));
 
         // Training
 
         MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation)opc.getMock();
+        EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
         op.convertTypeName("boolean");
         opc.setReturnValue(boolean.class);
@@ -118,16 +123,25 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         op.getAccessorMethodName("fred");
         opc.setReturnValue("isFred");
 
-        op.addMethod(Modifier.PUBLIC, new MethodSignature(boolean.class, "isFred", null, null), "return _$fred;", l);
+        op.addMethod(
+                Modifier.PUBLIC,
+                new MethodSignature(boolean.class, "isFred", null, null),
+                "return _$fred;",
+                l);
 
-        op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[] { boolean.class }, null),
-                "{\n  _$fred = $1;\n}\n", l);
+        op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[]
+        { boolean.class }, null), "{\n  _$fred = $1;\n}\n", l);
 
         op.addField("_$fred$default", boolean.class);
 
-        op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE, "_$fred$default = _$fred;");
+        op.extendMethodImplementation(
+                IComponent.class,
+                EnhanceUtils.FINISH_LOAD_SIGNATURE,
+                "_$fred$default = _$fred;");
 
-        op.extendMethodImplementation(PageDetachListener.class, EnhanceUtils.PAGE_DETACHED_SIGNATURE,
+        op.extendMethodImplementation(
+                PageDetachListener.class,
+                EnhanceUtils.PAGE_DETACHED_SIGNATURE,
                 "_$fred = _$fred$default;");
 
         replayControls();
@@ -139,22 +153,25 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testAddWithInitialValue()
-        throws Exception
+    public void testAddWithInitialValue() throws Exception
     {
-        BindingSource bs = (BindingSource)newMock(BindingSource.class);
+        BindingSource bs = (BindingSource) newMock(BindingSource.class);
         Location l = fabricateLocation(12);
 
-        IComponentSpecification spec = buildComponentSpecification(buildPropertySpecs("fred", "java.util.List", false,
-                l, "ognl:foo()"));
+        IComponentSpecification spec = buildComponentSpecification(buildPropertySpecs(
+                "fred",
+                "java.util.List",
+                false,
+                l,
+                "ognl:foo()"));
 
-        InitialValueBindingCreator expectedCreator = new InitialValueBindingCreator(bs, EnhanceMessages
-                .initialValueForProperty("fred"), "ognl:foo()", l);
+        InitialValueBindingCreator expectedCreator = new InitialValueBindingCreator(bs,
+                EnhanceMessages.initialValueForProperty("fred"), "ognl:foo()", l);
 
         // Training
 
         MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation)opc.getMock();
+        EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
         op.convertTypeName("java.util.List");
         opc.setReturnValue(List.class);
@@ -166,16 +183,26 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         op.getAccessorMethodName("fred");
         opc.setReturnValue("getFred");
 
-        op.addMethod(Modifier.PUBLIC, new MethodSignature(List.class, "getFred", null, null), "return _$fred;", l);
+        op.addMethod(
+                Modifier.PUBLIC,
+                new MethodSignature(List.class, "getFred", null, null),
+                "return _$fred;",
+                l);
 
-        op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[] { List.class }, null),
-                "{\n  _$fred = $1;\n}\n", l);
+        op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[]
+        { List.class }, null), "{\n  _$fred = $1;\n}\n", l);
 
-        op.addInjectedField("_$fred$initialValueBindingCreator", InitialValueBindingCreator.class, expectedCreator);
+        op.addInjectedField(
+                "_$fred$initialValueBindingCreator",
+                InitialValueBindingCreator.class,
+                expectedCreator);
         opc.setReturnValue("_$fred$initialValueBindingCreator");
         op.addField("_$fred$initialValueBinding", IBinding.class);
-        op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE,
-                "_$fred$initialValueBinding = _$fred$initialValueBindingCreator.createBinding(this);\n");
+        op
+                .extendMethodImplementation(
+                        IComponent.class,
+                        EnhanceUtils.FINISH_LOAD_SIGNATURE,
+                        "_$fred$initialValueBinding = _$fred$initialValueBindingCreator.createBinding(this);\n");
 
         op.getClassReference(List.class);
         opc.setReturnValue("_$class$java$util$List");
@@ -183,7 +210,10 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         String code = "_$fred = (java.util.List) _$fred$initialValueBinding.getObject(_$class$java$util$List);\n";
 
         op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE, code);
-        op.extendMethodImplementation(PageDetachListener.class, EnhanceUtils.PAGE_DETACHED_SIGNATURE, code);
+        op.extendMethodImplementation(
+                PageDetachListener.class,
+                EnhanceUtils.PAGE_DETACHED_SIGNATURE,
+                code);
 
         replayControls();
 
@@ -195,15 +225,17 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testAddPersistent()
-        throws Exception
+    public void testAddPersistent() throws Exception
     {
-        IComponentSpecification spec = buildComponentSpecification("barney", "java.lang.String", true);
+        IComponentSpecification spec = buildComponentSpecification(
+                "barney",
+                "java.lang.String",
+                true);
 
         // Training
 
         MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation)opc.getMock();
+        EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
         op.convertTypeName("java.lang.String");
         opc.setReturnValue(String.class);
@@ -215,7 +247,10 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         op.getAccessorMethodName("barney");
         opc.setReturnValue("getBarney");
 
-        op.addMethod(Modifier.PUBLIC, new MethodSignature(String.class, "getBarney", null, null), "return _$barney;",
+        op.addMethod(
+                Modifier.PUBLIC,
+                new MethodSignature(String.class, "getBarney", null, null),
+                "return _$barney;",
                 null);
 
         BodyBuilder b = new BodyBuilder();
@@ -224,15 +259,19 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         b.addln("_$barney = $1;");
         b.end();
 
-        op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setBarney", new Class[] { String.class }, null),
-                b.toString(), null);
+        op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setBarney", new Class[]
+        { String.class }, null), b.toString(), null);
 
         op.addField("_$barney$default", String.class);
 
-        op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE,
+        op.extendMethodImplementation(
+                IComponent.class,
+                EnhanceUtils.FINISH_LOAD_SIGNATURE,
                 "_$barney$default = _$barney;");
 
-        op.extendMethodImplementation(PageDetachListener.class, EnhanceUtils.PAGE_DETACHED_SIGNATURE,
+        op.extendMethodImplementation(
+                PageDetachListener.class,
+                EnhanceUtils.PAGE_DETACHED_SIGNATURE,
                 "_$barney = _$barney$default;");
 
         replayControls();
@@ -244,8 +283,7 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testFailure()
-        throws Exception
+    public void testFailure() throws Exception
     {
         Location l = fabricateLocation(207);
         // Should be "java.lang.Long"
@@ -253,7 +291,7 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         IComponentSpecification spec = buildComponentSpecification(propertySpecs);
 
         MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation)opc.getMock();
+        EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
         op.convertTypeName("Long");
         Throwable ex = new ApplicationRuntimeException("Simulated error.");
@@ -262,9 +300,13 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         op.getBaseClass();
         opc.setReturnValue(BaseComponent.class);
 
-        ErrorLog log = (ErrorLog)newMock(ErrorLog.class);
+        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
-        log.error("Error adding property wilma to class org.apache.tapestry.BaseComponent: Simulated error.", l, ex);
+        log
+                .error(
+                        "Error adding property wilma to class org.apache.tapestry.BaseComponent: Simulated error.",
+                        l,
+                        ex);
 
         replayControls();
 

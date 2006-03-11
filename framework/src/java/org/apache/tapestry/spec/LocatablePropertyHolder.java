@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,20 +19,20 @@ import org.apache.hivemind.LocationHolder;
 import org.apache.tapestry.util.BasePropertyHolder;
 
 /**
- * Base class for implementing both interfaces
- * {@link org.apache.tapestry.util.IPropertyHolder} and
- * {@link org.apache.tapestry.ILocationHolder}. This is used by all the
- * specification classes.
- * 
- * @author Howard Lewis Ship
- * @since 3.0
- */
+ *  Base class for implementing both
+ *  interfaces {@link org.apache.tapestry.util.IPropertyHolder} and
+ *  {@link org.apache.tapestry.ILocationHolder}.  This is
+ *  used by all the specification classes.
+ *
+ *  @author Howard Lewis Ship
+ *  @since 3.0
+ *
+ **/
 
 public class LocatablePropertyHolder extends BasePropertyHolder implements LocationHolder
 {
-
-    private Location _location;
-
+	private Location _location;
+	
     public Location getLocation()
     {
         return _location;

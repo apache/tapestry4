@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,15 +21,14 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
 
 /**
- * Used to define the commands in the
- * <code>tapestry.portlet.ActionRequestServicerPipeline</code> configuration.
+ * Used to define the commands in the <code>tapestry.portlet.ActionRequestServicerPipeline</code>
+ * configuration. 
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface ActionRequestServicer
 {
-
-    void service(ActionRequest request, ActionResponse response)
-        throws IOException, PortletException;
+    public void service(ActionRequest request, ActionResponse response) throws IOException,
+            PortletException;
 }

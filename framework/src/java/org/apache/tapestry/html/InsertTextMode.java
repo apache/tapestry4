@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import org.apache.tapestry.IMarkupWriter;
 
 public abstract class InsertTextMode
 {
-
     /**
      * Mode where each line (after the first) is preceded by a &lt;br&gt; tag.
      */
@@ -53,8 +52,7 @@ public abstract class InsertTextMode
      * Invoked by the {@link InsertText} component to write the next line.
      * 
      * @param lineNumber
-     *            the line number of the line, starting with 0 for the first
-     *            line.
+     *            the line number of the line, starting with 0 for the first line.
      * @param line
      *            the String for the current line.
      * @param writer
@@ -65,10 +63,8 @@ public abstract class InsertTextMode
 
     public abstract void writeLine(int lineNumber, String line, IMarkupWriter writer, boolean raw);
 
-    /** Writes &lt;br;gt; elements between lines. */
-    private final static class BreakMode extends InsertTextMode
+    private static class BreakMode extends InsertTextMode
     {
-
         private BreakMode()
         {
             super("BREAK");
@@ -76,16 +72,15 @@ public abstract class InsertTextMode
 
         public void writeLine(int lineNumber, String line, IMarkupWriter writer, boolean raw)
         {
-            if (lineNumber > 0) writer.beginEmpty("br");
+            if (lineNumber > 0)
+                writer.beginEmpty("br");
 
             writer.print(line, raw);
         }
     }
 
-    /** Writes &lt;p&gt; elements around lines. */
-    private final static class ParagraphMode extends InsertTextMode
+    private static class ParagraphMode extends InsertTextMode
     {
-
         private ParagraphMode()
         {
             super("PARAGRAPH");

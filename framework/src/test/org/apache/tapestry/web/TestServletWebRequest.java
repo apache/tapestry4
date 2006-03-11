@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,20 +34,19 @@ import org.easymock.MockControl;
  */
 public class TestServletWebRequest extends BaseWebTestCase
 {
-
     private HttpServletRequest newRequest()
     {
-        return (HttpServletRequest)newMock(HttpServletRequest.class);
+        return (HttpServletRequest) newMock(HttpServletRequest.class);
     }
 
     private HttpServletResponse newResponse()
     {
-        return (HttpServletResponse)newMock(HttpServletResponse.class);
+        return (HttpServletResponse) newMock(HttpServletResponse.class);
     }
 
     private RequestDispatcher newDispatcher()
     {
-        return (RequestDispatcher)newMock(RequestDispatcher.class);
+        return (RequestDispatcher) newMock(RequestDispatcher.class);
     }
 
     public void testGetParameterNames()
@@ -93,7 +92,8 @@ public class TestServletWebRequest extends BaseWebTestCase
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
-        String[] values = { "William Orbit", "Steely Dan" };
+        String[] values =
+        { "William Orbit", "Steely Dan" };
 
         request.getParameterValues("artist");
         setReturnValue(request, values);
@@ -242,7 +242,7 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     private HttpSession newSession()
     {
-        return (HttpSession)newMock(HttpSession.class);
+        return (HttpSession) newMock(HttpSession.class);
     }
 
     public void testGetScheme()
@@ -313,8 +313,7 @@ public class TestServletWebRequest extends BaseWebTestCase
         verifyControls();
     }
 
-    public void testForwardInternal()
-        throws Exception
+    public void testForwardInternal() throws Exception
     {
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
@@ -333,8 +332,7 @@ public class TestServletWebRequest extends BaseWebTestCase
         verifyControls();
     }
 
-    public void testForwardNull()
-        throws Exception
+    public void testForwardNull() throws Exception
     {
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
@@ -353,14 +351,14 @@ public class TestServletWebRequest extends BaseWebTestCase
         verifyControls();
     }
 
-    private void trainGetRequestDispatcher(HttpServletRequest request, String path, RequestDispatcher dispatcher)
+    private void trainGetRequestDispatcher(HttpServletRequest request, String path,
+            RequestDispatcher dispatcher)
     {
         request.getRequestDispatcher(path);
         setReturnValue(request, dispatcher);
     }
 
-    public void testForwardInternalNoDispatcher()
-        throws Exception
+    public void testForwardInternalNoDispatcher() throws Exception
     {
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
@@ -378,14 +376,15 @@ public class TestServletWebRequest extends BaseWebTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals("Unable to find a request dispatcher for local resource '/local.html'.", ex.getMessage());
+            assertEquals(
+                    "Unable to find a request dispatcher for local resource '/local.html'.",
+                    ex.getMessage());
         }
 
         verifyControls();
     }
 
-    public void testForwardInternalFailure()
-        throws Exception
+    public void testForwardInternalFailure() throws Exception
     {
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
@@ -409,8 +408,9 @@ public class TestServletWebRequest extends BaseWebTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals("Unable to forward to local resource '/servlet-exception.html': Mock Servlet Exception", ex
-                    .getMessage());
+            assertEquals(
+                    "Unable to forward to local resource '/servlet-exception.html': Mock Servlet Exception",
+                    ex.getMessage());
             assertSame(t1, ex.getRootCause());
         }
 
@@ -432,15 +432,16 @@ public class TestServletWebRequest extends BaseWebTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals("Unable to forward to local resource '/io-exception.html': Mock IO Exception", ex.getMessage());
+            assertEquals(
+                    "Unable to forward to local resource '/io-exception.html': Mock IO Exception",
+                    ex.getMessage());
             assertSame(t2, ex.getRootCause());
         }
 
         verifyControls();
     }
 
-    public void testForwardExternal()
-        throws Exception
+    public void testForwardExternal() throws Exception
     {
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
@@ -459,12 +460,11 @@ public class TestServletWebRequest extends BaseWebTestCase
         verifyControls();
     }
 
-    public void testForwardExternalFailure()
-        throws Exception
+    public void testForwardExternalFailure() throws Exception
     {
         HttpServletRequest request = newRequest();
         MockControl responsec = newControl(HttpServletResponse.class);
-        HttpServletResponse response = (HttpServletResponse)responsec.getMock();
+        HttpServletResponse response = (HttpServletResponse) responsec.getMock();
 
         Throwable t = new IOException("Mock IO Exception");
 

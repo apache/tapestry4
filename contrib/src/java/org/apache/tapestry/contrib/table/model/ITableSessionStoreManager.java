@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,30 +19,23 @@ import java.io.Serializable;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * An interface responsible for determining <b>where</b> the session state will
- * be saved between requests.
- * 
+ * An interface responsible for determining <b>where</b> the session state 
+ * will be saved between requests.
+ *  
  * @author mindbridge
  */
 public interface ITableSessionStoreManager
 {
-
-    /**
-     * Method saveState saves the session sate.
-     * 
-     * @param objCycle
-     *            the current request cycle
-     * @param objState
-     *            the session state to be saved
-     */
-    void saveState(IRequestCycle objCycle, Serializable objState);
-
-    /**
-     * Method loadState loads the session state.
-     * 
-     * @param objCycle
-     *            the current request cycle
-     * @return Object the loaded sessions state
-     */
-    Serializable loadState(IRequestCycle objCycle);
+	/**
+	 * Method saveState saves the session sate
+	 * @param objCycle the current request cycle
+	 * @param objState the session state to be saved
+	 */
+	void saveState(IRequestCycle objCycle, Serializable objState);
+	/**
+	 * Method loadState loads the session state
+	 * @param objCycle the current request cycle
+	 * @return Object the loaded sessions state
+	 */
+	Serializable loadState(IRequestCycle objCycle);
 }

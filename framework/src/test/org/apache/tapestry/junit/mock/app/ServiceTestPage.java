@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,22 +19,17 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.junit.mock.lib.Dumper;
 
-/**
- * Test fixture.
- * 
- * @author Howard M. Lewis Ship
- */
 public abstract class ServiceTestPage extends BasePage implements IExternalPage
 {
-
     public Object[] getServiceParameters()
     {
-        return new Object[] { "Sopranos", new Integer(20705), new Double(22. / 7.) };
+        return new Object[]
+        { "Sopranos", new Integer(20705), new Double(22. / 7.) };
     }
 
     public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
     {
-        Dumper dumper = (Dumper)cycle.getPage("lib:Dumper");
+        Dumper dumper = (Dumper) cycle.getPage("lib:Dumper");
 
         dumper.setObjects(parameters);
 

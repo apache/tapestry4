@@ -14,19 +14,17 @@
 
 package org.apache.tapestry.multipart;
 
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.fileupload.DiskFileUpload;
-import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.request.IUploadFile;
 
 /**
  * Implementation of {@link org.apache.tapestry.multipart.MultipartDecoder}that is based on <a
@@ -36,37 +34,17 @@ import org.apache.tapestry.request.IUploadFile;
  * @author Joe Panico
  * @since 4.0
  */
-public class MultipartDecoderImpl implements MultipartDecoder
+public class MultipartDecoderImpl extends AbstractMultipartDecoder implements ServletMultipartDecoder
 {
-    /**
-     * Map of UploadPart (which implements IUploadFile), keyed on parameter name.
-     */
-
-    private Map _uploadParts = new HashMap();
-
-    /**
-     * Map of ValuePart, keyed on parameter name.
-     */
-    private Map _valueParts = new HashMap();
-
-    private int _maxSize = 10000000;
-
-    private int _thresholdSize = 1024;
-
-    private String _repositoryPath = System.getProperty("java.io.tmpdir");
-
-    private String _encoding;
-
     public HttpServletRequest decode(HttpServletRequest request)
     {
         _encoding = request.getCharacterEncoding();
 
-        DiskFileUpload upload = createUpload(request);
+        ServletFileUpload upload = createFileUpload();
 
         try
         {
-            List fileItems = upload
-                    .parseRequest(request, _thresholdSize, _maxSize, _repositoryPath);
+            List fileItems = upload.parseRequest(request);
 
             processFileItems(fileItems);
         }
@@ -80,112 +58,14 @@ public class MultipartDecoderImpl implements MultipartDecoder
         return new UploadFormParametersWrapper(request, parameterMap);
     }
 
-    private Map buildParameterMap()
-    {
-        Map result = new HashMap();
-
-        Iterator i = _valueParts.entrySet().iterator();
-        while (i.hasNext())
-        {
-            Map.Entry e = (Map.Entry) i.next();
-
-            String name = (String) e.getKey();
-            ValuePart part = (ValuePart) e.getValue();
-
-            result.put(name, part.getValues());
-        }
-
-        return result;
-    }
-
-    private void processFileItems(List parts)
-    {
-        if (parts == null)
-            return;
-
-        Iterator i = parts.iterator();
-
-        while (i.hasNext())
-        {
-            FileItem item = (FileItem) i.next();
-
-            processFileItem(item);
-        }
-    }
-
-    private void processFileItem(FileItem item)
-    {
-        if (item.isFormField())
-        {
-            processFormFieldItem(item);
-            return;
-        }
-
-        processUploadFileItem(item);
-    }
-
-    private void processUploadFileItem(FileItem item)
-    {
-        String name = item.getFieldName();
-
-        UploadPart part = new UploadPart(item);
-
-        _uploadParts.put(name, part);
-    }
-
-    void processFormFieldItem(FileItem item)
-    {
-        String name = item.getFieldName();
-
-        String value = extractFileItemValue(item);
-
-        ValuePart part = (ValuePart) _valueParts.get(name);
-
-        if (part == null)
-            _valueParts.put(name, new ValuePart(value));
-        else
-            part.add(value);
-    }
-
-    private String extractFileItemValue(FileItem item)
-    {
-        try
-        {
-            return (_encoding == null) ? item.getString() : item.getString(_encoding);
-        }
-        catch (UnsupportedEncodingException ex)
-        {
-            throw new ApplicationRuntimeException(MultipartMessages.unsupportedEncoding(
-                    _encoding,
-                    ex), ex);
-        }
-    }
-
-    protected DiskFileUpload createUpload(HttpServletRequest request)
-    {
-        DiskFileUpload upload = new DiskFileUpload();
+	private ServletFileUpload createFileUpload() {
+    	FileItemFactory factory = new DiskFileItemFactory(_thresholdSize, new File(_repositoryPath));
+    	ServletFileUpload upload = new ServletFileUpload(factory);
 
         if (_encoding != null)
             upload.setHeaderEncoding(_encoding);
 
         return upload;
-    }
-
-    public IUploadFile getFileUpload(String parameterName)
-    {
-        return (IUploadFile) _uploadParts.get(parameterName);
-    }
-
-    public void cleanup()
-    {
-        Iterator i = _uploadParts.values().iterator();
-
-        while (i.hasNext())
-        {
-            UploadPart part = (UploadPart) i.next();
-
-            part.cleanup();
-        }
-    }
+	}
 
 }

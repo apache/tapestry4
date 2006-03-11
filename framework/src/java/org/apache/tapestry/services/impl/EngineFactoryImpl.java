@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,17 +25,15 @@ import org.apache.tapestry.services.EngineFactory;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
- * Standard implementation of {@link org.apache.tapestry.services.EngineFactory}
- * service. This should do for most purposes, since a major focus of Tapestry
- * 4.0 is to no longer require subclassing of
- * {@link org.apache.tapestry.engine.BaseEngine}.
+ * Standard implementation of {@link org.apache.tapestry.services.EngineFactory} service. This
+ * should do for most purposes, since a major focus of Tapestry 4.0 is to no longer require
+ * subclassing of {@link org.apache.tapestry.engine.BaseEngine}.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public class EngineFactoryImpl implements EngineFactory
 {
-
     private IApplicationSpecification _applicationSpecification;
 
     private String _defaultEngineClassName;
@@ -46,10 +44,8 @@ public class EngineFactoryImpl implements EngineFactory
 
     private ErrorLog _errorLog;
 
-    /** Defines an object that can construct an IEngine instance. */
     interface EngineConstructor
     {
-
         IEngine construct();
     }
 
@@ -57,10 +53,8 @@ public class EngineFactoryImpl implements EngineFactory
     // instantiate a BaseEngine instance, without using reflection
     // (for efficiency).
 
-    /** Constructs the engine via reflection (and a class name). */
     static class ReflectiveEngineConstructor implements EngineConstructor
     {
-
         private Class _engineClass;
 
         ReflectiveEngineConstructor(Class engineClass)
@@ -72,11 +66,13 @@ public class EngineFactoryImpl implements EngineFactory
         {
             try
             {
-                return (IEngine)_engineClass.newInstance();
+                return (IEngine) _engineClass.newInstance();
             }
             catch (Exception ex)
             {
-                throw new ApplicationRuntimeException(ImplMessages.errorInstantiatingEngine(_engineClass, ex), ex);
+                throw new ApplicationRuntimeException(ImplMessages.errorInstantiatingEngine(
+                        _engineClass,
+                        ex), ex);
             }
         }
     }
@@ -87,7 +83,8 @@ public class EngineFactoryImpl implements EngineFactory
 
         // TODO: Check in web.xml first.
 
-        if (engineClassName == null) engineClassName = _defaultEngineClassName;
+        if (engineClassName == null)
+            engineClassName = _defaultEngineClassName;
 
         Class engineClass = _classResolver.checkForClass(engineClassName);
 

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * Represents static text in the template that may be passed through to the
- * client unchanged (except, perhaps, for the removal of some whitespace).
+ * Represents static text in the template that may be passed through to the client unchanged
+ * (except, perhaps, for the removal of some whitespace).
  * 
  * @see TokenType#TEXT
  * @author Howard Lewis Ship
@@ -32,7 +32,6 @@ import org.apache.tapestry.IRequestCycle;
 
 public class TextToken extends TemplateToken implements IRender
 {
-
     private char[] _templateData;
 
     private int _offset;
@@ -43,9 +42,11 @@ public class TextToken extends TemplateToken implements IRender
     {
         super(TokenType.TEXT, location);
 
-        if (startIndex < 0 || endIndex < 0 || startIndex > templateData.length || endIndex > templateData.length)
-            throw new ApplicationRuntimeException(ParseMessages.rangeError(this, templateData.length), this,
-                    getLocation(), null);
+        if (startIndex < 0 || endIndex < 0 || startIndex > templateData.length
+                || endIndex > templateData.length)
+            throw new ApplicationRuntimeException(ParseMessages.rangeError(
+                    this,
+                    templateData.length), this, getLocation(), null);
 
         _templateData = templateData;
 
@@ -55,14 +56,14 @@ public class TextToken extends TemplateToken implements IRender
 
     public void render(IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (_length == 0) return;
+        if (_length == 0)
+            return;
 
         // At one time, we would check to see if the cycle was rewinding and
         // only invoke printRaw() if it was. However, that slows down
         // normal rendering (microscopically) and, with the new
         // NullResponseWriter class, the "cost" of invoking cycle.isRewinding()
-        // is approximately the same as the "cost" of invoking
-        // writer.printRaw().
+        // is approximately the same as the "cost" of invoking writer.printRaw().
 
         writer.printRaw(_templateData, _offset, _length);
     }

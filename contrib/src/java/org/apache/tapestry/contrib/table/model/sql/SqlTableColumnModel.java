@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,25 +17,25 @@ package org.apache.tapestry.contrib.table.model.sql;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnModel;
 
 /**
+ * 
  * @author mindbridge
  */
 public class SqlTableColumnModel extends SimpleTableColumnModel
 {
+	private static final long serialVersionUID = 1L;
+	
+	public SqlTableColumnModel(SqlTableColumn[] arrColumns)
+	{
+		super(arrColumns);
+	}
 
-    private static final long serialVersionUID = 1L;
+	public SqlTableColumn getSqlColumn(int nColumn)
+	{
+		return (SqlTableColumn) getColumn(nColumn);
+	}
 
-    public SqlTableColumnModel(SqlTableColumn[] arrColumns)
-    {
-        super(arrColumns);
-    }
-
-    public SqlTableColumn getSqlColumn(int nColumn)
-    {
-        return (SqlTableColumn)getColumn(nColumn);
-    }
-
-    public SqlTableColumn getSqlColumn(String strColumn)
-    {
-        return (SqlTableColumn)getColumn(strColumn);
-    }
+	public SqlTableColumn getSqlColumn(String strColumn)
+	{
+		return (SqlTableColumn) getColumn(strColumn);
+	}
 }

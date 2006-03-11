@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@ package org.apache.tapestry.asset;
 
 import java.io.IOException;
 
-import org.apache.hivemind.Messages;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.MessageFormatter;
 
@@ -24,48 +23,42 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-final class AssetMessages
+class AssetMessages
 {
-
-    private final static Messages MESSAGES = new MessageFormatter(AssetMessages.class);
-
-    /** @since 4.1 */
-    private AssetMessages()
-    {
-    }
+    private final static MessageFormatter _formatter = new MessageFormatter(AssetMessages.class);
 
     static String missingAsset(String path, Resource resource)
     {
-        return MESSAGES.format("missing-asset", path, resource);
+        return _formatter.format("missing-asset", path, resource);
     }
 
     static String noSuchResource(String resourcePath)
     {
-        return MESSAGES.format("no-such-resource", resourcePath);
+        return _formatter.format("no-such-resource", resourcePath);
     }
 
     static String unableToReadResource(String resourcePath, IOException cause)
     {
-        return MESSAGES.format("unable-to-read-resource", resourcePath, cause);
+        return _formatter.format("unable-to-read-resource", resourcePath, cause);
     }
 
     static String md5Mismatch(String path)
     {
-        return MESSAGES.format("md5-mismatch", path);
+        return _formatter.format("md5-mismatch", path);
     }
 
     static String exceptionReportTitle(String path)
     {
-        return MESSAGES.format("exception-report-title", path);
+        return _formatter.format("exception-report-title", path);
     }
 
     static String missingClasspathResource(String path)
     {
-        return MESSAGES.format("missing-classpath-resource", path);
+        return _formatter.format("missing-classpath-resource", path);
     }
 
     static String missingContextResource(String path)
     {
-        return MESSAGES.format("missing-context-resource", path);
+        return _formatter.format("missing-context-resource", path);
     }
 }

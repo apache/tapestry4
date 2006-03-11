@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,15 +16,7 @@ package org.apache.tapestry.form;
 
 import org.apache.tapestry.form.translator.Translator;
 
-/**
- * Translated fields provide a read-only property to access their translator
- * object.
- * 
- * @author Paul Ferraro
- * @since 4.0
- */
 public interface TranslatedField extends ValidatableField
 {
-
-    Translator getTranslator();
+	public Translator getTranslator();
 }

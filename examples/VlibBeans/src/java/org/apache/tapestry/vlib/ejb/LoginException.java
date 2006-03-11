@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,10 +22,9 @@ package org.apache.tapestry.vlib.ejb;
 
 public class LoginException extends Exception
 {
-
     private static final long serialVersionUID = -1472279052871024178L;
-
-    private final boolean _passwordError;
+    
+	private boolean _passwordError;
 
     public LoginException(String message, boolean passwordError)
     {
@@ -35,9 +34,8 @@ public class LoginException extends Exception
     }
 
     /**
-     * Returns true if the error is related to the password. Otherwise, the
-     * error is related to the email address (either not found, or the user has
-     * been invalidated or otherwise locked out).
+     * Returns true if the error is related to the password. Otherwise, the error is related to the
+     * email address (either not found, or the user has been invalidated or otherwise locked out).
      */
 
     public boolean isPasswordError()

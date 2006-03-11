@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,10 +27,12 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.service.ThreadLocale;
 import org.apache.hivemind.util.ContextResource;
+import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IEngine;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
@@ -38,8 +40,10 @@ import org.apache.tapestry.ITemplateComponent;
 import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.binding.BindingSource;
+import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.IPageLoader;
+import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.services.ComponentConstructorFactory;
@@ -617,6 +621,12 @@ public class PageLoader implements IPageLoader
             // Walk through the complete component tree to ensure that required
             // parameters are bound
             _verifyRequiredParametersWalker.walkComponentTree(page);
+
+            // Now that the page has been properly constructed, the page
+            // or any components on the page will have been registered as
+            // page attach listeners.
+
+            page.firePageAttached();
         }
         finally
         {

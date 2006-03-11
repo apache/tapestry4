@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,10 +27,9 @@ import org.easymock.MockControl;
  */
 public class TestRenderWebResponse extends BasePortletWebTestCase
 {
-
     private RenderResponse newResponse()
     {
-        return (RenderResponse)newMock(RenderResponse.class);
+        return (RenderResponse) newMock(RenderResponse.class);
     }
 
     public void testReset()
@@ -48,11 +47,10 @@ public class TestRenderWebResponse extends BasePortletWebTestCase
         verifyControls();
     }
 
-    public void testGetOutputStream()
-        throws Exception
+    public void testGetOutputStream() throws Exception
     {
         MockControl control = newControl(RenderResponse.class);
-        RenderResponse response = (RenderResponse)control.getMock();
+        RenderResponse response = (RenderResponse) control.getMock();
         replayControls();
 
         RenderWebResponse rwr = new RenderWebResponse(response);
@@ -73,7 +71,7 @@ public class TestRenderWebResponse extends BasePortletWebTestCase
     public void testGetNamespace()
     {
         MockControl control = newControl(RenderResponse.class);
-        RenderResponse response = (RenderResponse)control.getMock();
+        RenderResponse response = (RenderResponse) control.getMock();
 
         response.getNamespace();
         control.setReturnValue("_NAMESPACE_");

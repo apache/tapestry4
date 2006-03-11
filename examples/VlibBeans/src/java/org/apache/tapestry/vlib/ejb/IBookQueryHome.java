@@ -27,5 +27,5 @@ import javax.ejb.EJBHome;
 
 public interface IBookQueryHome extends EJBHome
 {
-    IBookQuery create() throws CreateException, RemoteException;
+    public IBookQuery create() throws CreateException, RemoteException;
 }

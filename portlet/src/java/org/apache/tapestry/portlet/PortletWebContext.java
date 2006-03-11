@@ -14,9 +14,11 @@
 
 package org.apache.tapestry.portlet;
 
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
 import javax.portlet.PortletContext;
 
@@ -97,4 +99,16 @@ public class PortletWebContext implements WebContext
     {
         receiver.describeAlternate(_portletContext);
     }
+
+	public String getRealPath(String path) {
+		return _portletContext.getRealPath(path);
+	}
+
+	public InputStream getResourceAsStream(String path) {
+		return _portletContext.getResourceAsStream(path);
+	}
+
+	public Set getResourcePaths(String path) {
+		return _portletContext.getResourcePaths(path);
+	}
 }

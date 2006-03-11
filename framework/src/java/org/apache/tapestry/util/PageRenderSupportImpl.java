@@ -185,9 +185,9 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
     /**
      * Writes a single large JavaScript block containing:
      * <ul>
-     * <li>Any image initializations (via {@link #getPreloadedImageReference(String)})
-     * <li>Any included scripts (via {@link #addExternalScript(Resource)})
-     * <li>Any contributions (via {@link #addBodyScript(String)})
+     * <li>Any image initializations (via {@link #getPreloadedImageReference(String)}).
+     * <li>Any included scripts (via {@link #addExternalScript(Resource)}).
+     * <li>Any contributions (via {@link #addBodyScript(String)}).
      * </ul>
      * 
      * @see #writeInitializationScript(IMarkupWriter)

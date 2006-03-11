@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,8 +26,8 @@ import org.apache.tapestry.event.ReportStatusListener;
  */
 public class ReportStatusHubTest extends BaseDescribeTestCase
 {
-
-    public RootDescriptionReceiverFactory newReceiverFactory(IMarkupWriter writer, RootDescriptionReciever receiver)
+    public RootDescriptionReceiverFactory newReceiverFactory(IMarkupWriter writer,
+            RootDescriptionReciever receiver)
     {
         RootDescriptionReceiverFactory factory = newReceiverFactory();
 
@@ -40,10 +40,9 @@ public class ReportStatusHubTest extends BaseDescribeTestCase
 
     protected RootDescriptionReceiverFactory newReceiverFactory()
     {
-        return (RootDescriptionReceiverFactory)newMock(RootDescriptionReceiverFactory.class);
+        return (RootDescriptionReceiverFactory) newMock(RootDescriptionReceiverFactory.class);
     }
 
-    /** Test fixture that checks that the listener gets invoked. */
     public static class ListenerFixture implements ReportStatusListener
     {
 
@@ -100,6 +99,6 @@ public class ReportStatusHubTest extends BaseDescribeTestCase
 
     protected RootDescriptionReciever newRootReceiver()
     {
-        return (RootDescriptionReciever)newMock(RootDescriptionReciever.class);
+        return (RootDescriptionReciever) newMock(RootDescriptionReciever.class);
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,63 +21,58 @@ import java.io.PrintWriter;
 import org.apache.tapestry.util.ContentType;
 
 /**
- * Controls the response to the client, and specifically allows for creating the
- * output stream (or print writer) to which content is sent. This is essentially
- * a generic version of {@link javax.servlet.http.HttpServletResponse}. Some
- * operations may be unsupported in some implementations (for example, the
- * portlet implementation can't handle any of the setHeader methods).
+ * Controls the response to the client, and specifically allows for creating the output stream (or
+ * print writer) to which content is sent. This is essentially a generic version of
+ * {@link javax.servlet.http.HttpServletResponse}. Some operations may be unsupported in some
+ * implementations (for example, the portlet implementation can't handle any of the setHeader
+ * methods).
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface WebResponse
 {
-
     /**
-     * Returns a output stream to which output should be sent. This method
-     * should only be invoked once on a response.
+     * Returns a output stream to which output should be sent. This method should only be invoked
+     * once on a response.
      * 
      * @return the output stream, configured for the given type.
      */
 
-    OutputStream getOutputStream(ContentType contentType)
-        throws IOException;
+    public OutputStream getOutputStream(ContentType contentType) throws IOException;
 
     /**
-     * Returns a {@link PrintWriter} to which output should be sent. This method
-     * should be invoked once on a response. A second call is expected to be so
-     * that an exception page can be rendered, and the underlying request data
-     * is reset.
+     * Returns a {@link PrintWriter} to which output should be sent. This method should be invoked
+     * once on a response. A second call is expected to be so that an exception page can be
+     * rendered, and the underlying request data is reset.
      */
 
-    PrintWriter getPrintWriter(ContentType contentType)
-        throws IOException;
+    public PrintWriter getPrintWriter(ContentType contentType) throws IOException;
 
     /**
-     * Encodes a URL, which adds information to the URL needed to ensure that
-     * the request triggered by the URL will be associated with the current
-     * session (if any). In most cases, the string is returned unchanged.
+     * Encodes a URL, which adds information to the URL needed to ensure that the request triggered
+     * by the URL will be associated with the current session (if any). In most cases, the string is
+     * returned unchanged.
      */
 
-    String encodeURL(String url);
+    public String encodeURL(String url);
 
     /**
-     * Resets any buffered content. This may be used after an error to radically
-     * change what the output will be.
+     * Resets any buffered content. This may be used after an error to radically change what the
+     * output will be.
      */
 
-    void reset();
+    public void reset();
 
-    void setContentLength(int contentLength);
+    public void setContentLength(int contentLength);
 
     /**
-     * Returns a value to be prefixed or suffixed with any client-side
-     * JavaScript elements (variables and function names) to ensure that they
-     * are unique with the context of the entire page. For servlets, this is the
-     * empty string.
+     * Returns a value to be prefixed or suffixed with any client-side JavaScript elements
+     * (variables and function names) to ensure that they are unique with the context of the entire
+     * page. For servlets, this is the empty string.
      */
 
-    String getNamespace();
+    public String getNamespace();
 
     /**
      * Sets a response header as a date.
@@ -87,7 +82,7 @@ public interface WebResponse
      * @param date
      *            the date value to set, in milliseconds since the epoch
      */
-    void setDateHeader(String name, long date);
+    public void setDateHeader(String name, long date);
 
     /**
      * Sets a response header as a string.
@@ -98,7 +93,7 @@ public interface WebResponse
      *            the value for the named header
      */
 
-    void setHeader(String name, String value);
+    public void setHeader(String name, String value);
 
     /**
      * Sets a response header with the given name and integer value.
@@ -108,17 +103,16 @@ public interface WebResponse
      * @param value
      *            the value for the named header
      */
-    void setIntHeader(String name, int value);
+    public void setIntHeader(String name, int value);
 
     /**
      * Sets the status code for this response.
      */
-    void setStatus(int status);
+    public void setStatus(int status);
 
     /**
      * Sends an error response.
      */
 
-    void sendError(int statusCode, String message)
-        throws IOException;
+    public void sendError(int statusCode, String message) throws IOException;
 }

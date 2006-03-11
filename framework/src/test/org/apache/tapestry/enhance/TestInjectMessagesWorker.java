@@ -50,7 +50,7 @@ public class TestInjectMessagesWorker extends BaseEnhancementTestCase
         MockControl control = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) control.getMock();
 
-        op.claimReadonlyProperty(w._messagesProperty);
+        op.claimReadonlyProperty(w.MESSAGES_PROPERTY);
         op.addInjectedField("_$componentMessagesSource", ComponentMessagesSource.class, source);
         control.setReturnValue("fred");
 
@@ -62,7 +62,7 @@ public class TestInjectMessagesWorker extends BaseEnhancementTestCase
         builder.end();
 
         op.addField("_$messages", Messages.class);
-        op.addMethod(Modifier.PUBLIC, w._methodSignature, builder.toString(), l);
+        op.addMethod(Modifier.PUBLIC, w.METHOD_SIGNATURE, builder.toString(), l);
 
         replayControls();
 
@@ -79,14 +79,14 @@ public class TestInjectMessagesWorker extends BaseEnhancementTestCase
         InjectMessagesWorker w = new InjectMessagesWorker();
 
         Throwable ex = new ApplicationRuntimeException(EnhanceMessages
-                .claimedProperty(w._messagesProperty));
+                .claimedProperty(w.MESSAGES_PROPERTY));
 
         IComponentSpecification spec = newSpec(l);
 
         MockControl control = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) control.getMock();
 
-        op.claimReadonlyProperty(w._messagesProperty);
+        op.claimReadonlyProperty(w.MESSAGES_PROPERTY);
         control.setThrowable(ex);
 
         op.getBaseClass();
@@ -95,7 +95,7 @@ public class TestInjectMessagesWorker extends BaseEnhancementTestCase
         ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
         log.error(
-                EnhanceMessages.errorAddingProperty(w._messagesProperty, BaseComponent.class, ex),
+                EnhanceMessages.errorAddingProperty(w.MESSAGES_PROPERTY, BaseComponent.class, ex),
                 l,
                 ex);
 

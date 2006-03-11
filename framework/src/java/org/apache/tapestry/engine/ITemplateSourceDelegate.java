@@ -47,5 +47,5 @@ public interface ITemplateSourceDelegate
      * 
      **/
 
-    ComponentTemplate findTemplate(IRequestCycle cycle, IComponent component, Locale locale);
+    public ComponentTemplate findTemplate(IRequestCycle cycle, IComponent component, Locale locale);
 }

@@ -78,14 +78,14 @@ public class FormSupportImpl implements FormSupport
 
     public static final String SCRIPT = "/org/apache/tapestry/form/Form.js";
 
+    private final static Set _standardReservedIds;
+
     /**
      * Attribute set to true when a field has been focused; used to prevent conflicting JavaScript
      * for field focusing from being emitted.
      */
 
     public static final String FIELD_FOCUS_ATTRIBUTE = "org.apache.tapestry.field-focused";
-    
-    private static final Set RESERVED_IDS;
 
     static
     {
@@ -97,10 +97,10 @@ public class FormSupportImpl implements FormSupport
         set.add(SUBMIT_MODE);
         set.add(FormConstants.SUBMIT_NAME_PARAMETER);
 
-        RESERVED_IDS = Collections.unmodifiableSet(set);
+        _standardReservedIds = Collections.unmodifiableSet(set);
     }
 
-    private static final Set SUBMIT_MODES;
+    private final static Set _submitModes;
 
     static
     {
@@ -109,7 +109,7 @@ public class FormSupportImpl implements FormSupport
         set.add(FormConstants.SUBMIT_NORMAL);
         set.add(FormConstants.SUBMIT_REFRESH);
 
-        SUBMIT_MODES = Collections.unmodifiableSet(set);
+        _submitModes = Collections.unmodifiableSet(set);
     }
 
     /**
@@ -253,7 +253,7 @@ public class FormSupportImpl implements FormSupport
 
             // Reserve the name.
 
-            if (!RESERVED_IDS.contains(name))
+            if (!_standardReservedIds.contains(name))
             {
                 _elementIdAllocator.allocateId(name);
 
@@ -459,8 +459,9 @@ public class FormSupportImpl implements FormSupport
         for (int i = 0; i < ids.length; i++)
             _elementIdAllocator.allocateId(ids[i]);
     }
-
-    public void render(String method, IRender informalParametersRenderer, ILink link, String scheme)
+    
+    public void render(String method, IRender informalParametersRenderer, ILink link, 
+    		String scheme, Integer port)
     {
         String formId = _form.getName();
 
@@ -486,9 +487,10 @@ public class FormSupportImpl implements FormSupport
         _form.renderBody(nested, _cycle);
 
         runDeferredRunnables();
-
-        writeTag(_writer, method, link.getURL(scheme, null, 0, null, false));
-
+        
+        int portI = (port == null) ? 0 : port.intValue();
+        writeTag(_writer, method, link.getURL(scheme, null, portI, null, false));
+        
         // For HTML compatibility
         _writer.attribute("name", formId);
 
@@ -579,7 +581,7 @@ public class FormSupportImpl implements FormSupport
 
         runDeferredRunnables();
 
-        if (SUBMIT_MODES.contains(mode))
+        if (_submitModes.contains(mode))
             return mode;
 
         // Either something wacky on the client side, or a client without

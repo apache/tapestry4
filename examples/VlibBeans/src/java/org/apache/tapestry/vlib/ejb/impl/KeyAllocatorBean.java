@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,29 +30,26 @@ import javax.sql.DataSource;
 import org.apache.tapestry.contrib.ejb.XEJBException;
 
 /**
- * Implementation of the {@link org.apache.tapestry.vlib.ejb.IKeyAllocator}
- * stateless session bean.
+ * Implementation of the {@link org.apache.tapestry.vlib.ejb.IKeyAllocator} stateless session bean.
  * <p>
- * We're cheating a little; they KeyAllocator does have state, it just doesn't
- * get persisted ever. Since the operation on it is atomic ("gimme a key") it
- * doesn't need to have conversational state with its clients.
+ * We're cheating a little; they KeyAllocator does have state, it just doesn't get persisted ever.
+ * Since the operation on it is atomic ("gimme a key") it doesn't need to have conversational state
+ * with its clients.
  * <p>
- * The KeyAllocator records in the database the "next key to allocate". When it
- * needs a key, it allocates a block of keys (by advancing the next key by a
- * some number).
+ * The KeyAllocator records in the database the "next key to allocate". When it needs a key, it
+ * allocates a block of keys (by advancing the next key by a some number).
  * <p>
- * If the KeyAllocator instance is purged from the pool, then some number of
- * keys that it has allocated will be lost. Big deal.
+ * If the KeyAllocator instance is purged from the pool, then some number of keys that it has
+ * allocated will be lost. Big deal.
  * 
  * @author Howard Lewis Ship
  */
 
 public class KeyAllocatorBean implements SessionBean
 {
-
     private static final long serialVersionUID = -6783018767284081244L;
 
-    private static final String PROPERTY_NAME = "next-key";
+	private static final String PROPERTY_NAME = "next-key";
 
     /**
      * List of Integer instances; these are keys acquired from the database.
@@ -61,8 +58,8 @@ public class KeyAllocatorBean implements SessionBean
     private LinkedList keys;
 
     /**
-     * Number of keys to allocate from the database at a time. Set from the ENC
-     * property "blockSize".
+     * Number of keys to allocate from the database at a time. Set from the ENC property
+     * "blockSize".
      */
 
     private int blockSize = 0;
@@ -74,8 +71,7 @@ public class KeyAllocatorBean implements SessionBean
     private DataSource dataSource;
 
     /**
-     * Activates the bean. Gets the block size and DataSource from the
-     * environment.
+     * Activates the bean. Gets the block size and DataSource from the environment.
      */
 
     public void ejbCreate()
@@ -87,7 +83,7 @@ public class KeyAllocatorBean implements SessionBean
         try
         {
             initial = new InitialContext();
-            environment = (Context)initial.lookup("java:comp/env");
+            environment = (Context) initial.lookup("java:comp/env");
         }
         catch (NamingException ex)
         {
@@ -96,7 +92,7 @@ public class KeyAllocatorBean implements SessionBean
 
         try
         {
-            blockSizeProperty = (Integer)environment.lookup("blockSize");
+            blockSizeProperty = (Integer) environment.lookup("blockSize");
         }
         catch (NamingException ex)
         {
@@ -107,14 +103,15 @@ public class KeyAllocatorBean implements SessionBean
 
         try
         {
-            dataSource = (DataSource)environment.lookup("jdbc/dataSource");
+            dataSource = (DataSource) environment.lookup("jdbc/dataSource");
         }
         catch (NamingException ex)
         {
             throw new XEJBException("Could not lookup data source.", ex);
         }
 
-        if (keys == null) keys = new LinkedList();
+        if (keys == null)
+            keys = new LinkedList();
     }
 
     /**
@@ -138,10 +135,9 @@ public class KeyAllocatorBean implements SessionBean
     }
 
     /**
-     * Does nothing. This is invoked when the bean moves from the method ready
-     * pool to the "does not exist" state. The EJB container will lost its
-     * reference to the bean, and the garbage collector will take it (including
-     * any keys it has cached from the database).
+     * Does nothing. This is invoked when the bean moves from the method ready pool to the "does not
+     * exist" state. The EJB container will lost its reference to the bean, and the garbage
+     * collector will take it (including any keys it has cached from the database).
      */
 
     public void ejbRemove()
@@ -150,20 +146,20 @@ public class KeyAllocatorBean implements SessionBean
     }
 
     /**
-     * Allocates a single key, going to the database only if it has no keys in
-     * its internal cache.
+     * Allocates a single key, going to the database only if it has no keys in its internal cache.
      */
 
     public Integer allocateKey()
     {
-        if (keys.isEmpty()) allocateBlock(1);
+        if (keys.isEmpty())
+            allocateBlock(1);
 
-        return (Integer)keys.removeFirst();
+        return (Integer) keys.removeFirst();
     }
 
     /**
-     * Allocates a block of keys, going to the database if there are
-     * insufficient keys in its internal cache.
+     * Allocates a block of keys, going to the database if there are insufficient keys in its
+     * internal cache.
      */
 
     public Integer[] allocateKeys(int count)
@@ -171,21 +167,22 @@ public class KeyAllocatorBean implements SessionBean
         Integer[] result;
         int i;
 
-        if (keys.size() < count) allocateBlock(count);
+        if (keys.size() < count)
+            allocateBlock(count);
 
         result = new Integer[count];
 
-        for(i = 0; i < count; i++)
+        for (i = 0; i < count; i++)
         {
-            result[i] = (Integer)keys.removeFirst();
+            result[i] = (Integer) keys.removeFirst();
         }
 
         return result;
     }
 
     /**
-     * Allocates a block of keys from the database. Allocates count keys, or the
-     * configured block size, whichever is greater.
+     * Allocates a block of keys from the database. Allocates count keys, or the configured block
+     * size, whichever is greater.
      * <p>
      * It is assumed that this operation takes place within a transaction.
      */
@@ -224,12 +221,13 @@ public class KeyAllocatorBean implements SessionBean
 
             // Now, take those keys and advance nextKey
 
-            for(i = 0; i < allocationCount; i++)
+            for (i = 0; i < allocationCount; i++)
                 keys.add(new Integer(nextKey++));
 
             // Update nextKey back to the database.
 
-            statement = connection.prepareStatement("update PROP\n" + "set PROP_VALUE = ?\n" + "where NAME = ?");
+            statement = connection.prepareStatement("update PROP\n" + "set PROP_VALUE = ?\n"
+                    + "where NAME	 = ?");
             statement.setInt(1, nextKey);
             statement.setString(2, PROPERTY_NAME);
 

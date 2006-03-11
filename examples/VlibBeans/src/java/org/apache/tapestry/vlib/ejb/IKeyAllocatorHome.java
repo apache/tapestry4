@@ -27,5 +27,5 @@ import javax.ejb.EJBHome;
 
 public interface IKeyAllocatorHome extends EJBHome
 {
-    IKeyAllocator create() throws CreateException, RemoteException;
+    public IKeyAllocator create() throws CreateException, RemoteException;
 }

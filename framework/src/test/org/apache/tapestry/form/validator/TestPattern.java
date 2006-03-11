@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import org.apache.tapestry.valid.ValidatorException;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.form.validator.Pattern}.
+ * Tests for {@link org.apache.tapestry.form.validator.Pattern}
  * 
  * @author Howard Lewis Ship
  * @since 4.0
@@ -34,8 +34,7 @@ import org.easymock.MockControl;
 public class TestPattern extends BaseValidatorTestCase
 {
 
-    public void testOK()
-        throws Exception
+    public void testOK() throws Exception
     {
         IFormComponent field = newField();
         ValidationMessages messages = newMessages();
@@ -50,8 +49,12 @@ public class TestPattern extends BaseValidatorTestCase
     public void testFail()
     {
         IFormComponent field = newField("My Pattern");
-        ValidationMessages messages = newMessages(null, ValidationStrings.REGEX_MISMATCH,
-                new Object[] { "My Pattern" }, "default message");
+        ValidationMessages messages = newMessages(
+                null,
+                ValidationStrings.REGEX_MISMATCH,
+                new Object[]
+                { "My Pattern" },
+                "default message");
 
         replayControls();
 
@@ -72,8 +75,12 @@ public class TestPattern extends BaseValidatorTestCase
     public void testFailCustomMessage()
     {
         IFormComponent field = newField("My Pattern");
-        ValidationMessages messages = newMessages("custom", ValidationStrings.REGEX_MISMATCH,
-                new Object[] { "My Pattern" }, "custom message");
+        ValidationMessages messages = newMessages(
+                "custom",
+                ValidationStrings.REGEX_MISMATCH,
+                new Object[]
+                { "My Pattern" },
+                "custom message");
 
         replayControls();
 
@@ -99,17 +106,19 @@ public class TestPattern extends BaseValidatorTestCase
         IRequestCycle cycle = newCycle();
 
         MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext)contextc.getMock();
+        FormComponentContributorContext context = (FormComponentContributorContext) contextc
+                .getMock();
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
 
         IFormComponent field = newField("Fred", "myfield");
 
-        trainFormatMessage(contextc, context, null, ValidationStrings.REGEX_MISMATCH, new Object[] { "Fred" },
-                "default message");
+        trainFormatMessage(contextc, context, null, ValidationStrings.REGEX_MISMATCH, new Object[]
+        { "Fred" }, "default message");
 
-        context.addSubmitHandler("function(event) { Tapestry.validate_regex(event, 'myfield', '" + pattern
-                + "', 'default message'); }");
+        context
+                .addSubmitHandler("function(event) { Tapestry.validate_regex(event, 'myfield', '"
+                        + pattern + "', 'default message'); }");
 
         replayControls();
 
@@ -126,17 +135,25 @@ public class TestPattern extends BaseValidatorTestCase
         IRequestCycle cycle = newCycle();
 
         MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext)contextc.getMock();
+        FormComponentContributorContext context = (FormComponentContributorContext) contextc
+                .getMock();
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
 
         IFormComponent field = newField("Fred", "myfield");
 
-        trainFormatMessage(contextc, context, "custom", ValidationStrings.REGEX_MISMATCH, new Object[] { "Fred" },
+        trainFormatMessage(
+                contextc,
+                context,
+                "custom",
+                ValidationStrings.REGEX_MISMATCH,
+                new Object[]
+                { "Fred" },
                 "custom\\message");
 
-        context.addSubmitHandler("function(event) { Tapestry.validate_regex(event, 'myfield', '" + pattern
-                + "', 'custom\\\\message'); }");
+        context
+                .addSubmitHandler("function(event) { Tapestry.validate_regex(event, 'myfield', '"
+                        + pattern + "', 'custom\\\\message'); }");
 
         replayControls();
 

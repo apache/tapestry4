@@ -19,7 +19,7 @@
   
   Support for multipart/form-data encoded requests used for file uploads.
   
-  <service-point id="MultipartDecoder">
+  <service-point id="ServletMultipartDecoder">
     
     Service responsible for parsing and decoding multipart form submissions. 
     
@@ -27,23 +27,26 @@
     
   </service-point>
   
-  <service-point id="MultipartDecoderFilter" interface="org.apache.tapestry.services.ServletRequestServicerFilter">
+  <service-point id="ServletMultipartDecoderFilter" interface="org.apache.tapestry.services.ServletRequestServicerFilter">
     
     Identifies upload requests and passes them to the MultipartDecoder service
     for decoding.
     
     <invoke-factory>
       <construct class="MultipartDecoderFilter">
-        <set-service property="decoder" service-id="MultipartDecoder"/>
+        <set-service property="decoder" service-id="ServletMultipartDecoder"/>
       </construct>
     </invoke-factory>
     
   </service-point>
   
   <contribution configuration-id="tapestry.request.ServletRequestServicerPipeline">
-    <filter name="MultipartDecoderFilter" 
-      object="service:MultipartDecoderFilter" 
+    <filter name="ServletMultipartDecoderFilter" 
+      object="service:ServletMultipartDecoderFilter" 
       after="tapestry.request.SetupRequestEncoding"/>
   </contribution>
   
+  <contribution configuration-id="tapestry.Infrastructure">
+    <property name="multipartDecoder" object="service:ServletMultipartDecoder"/>
+  </contribution>
 </module>

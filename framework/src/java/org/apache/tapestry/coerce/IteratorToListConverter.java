@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,10 +27,10 @@ public final class IteratorToListConverter implements TypeConverter
 
     public Object convertValue(Object value)
     {
-        Iterator it = (Iterator)value;
+        Iterator it = (Iterator) value;
         List list = new ArrayList();
-        while(it.hasNext())
-            list.add(it.next());
+        while (it.hasNext())
+        	list.add(it.next());
         return list;
     }
 

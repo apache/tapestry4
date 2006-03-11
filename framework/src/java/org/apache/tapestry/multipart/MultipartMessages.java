@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,41 +16,34 @@ package org.apache.tapestry.multipart;
 
 import java.io.File;
 
-import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-final class MultipartMessages
+public class MultipartMessages
 {
+    private final static MessageFormatter _formatter = new MessageFormatter(MultipartMessages.class);
 
-    private final static Messages MESSAGES = new MessageFormatter(MultipartMessages.class);
-
-    /** @since 4.1 */
-    private MultipartMessages()
+    public static String unableToDecode(Throwable cause)
     {
-    }
-
-    static String unableToDecode(Throwable cause)
-    {
-        return MESSAGES.format("unable-to-decode", cause);
+        return _formatter.format("unable-to-decode", cause);
     }
 
     static String unsupportedEncoding(String encoding, Throwable cause)
     {
-        return MESSAGES.format("unsupported-encoding", encoding, cause);
+        return _formatter.format("unsupported-encoding", encoding, cause);
     }
 
     static String unableToOpenContentFile(UploadPart part, Throwable cause)
     {
-        return MESSAGES.format("unable-to-open-content-file", part.getFilePath(), cause);
+        return _formatter.format("unable-to-open-content-file", part.getFilePath(), cause);
     }
 
     static String writeFailure(File file, Throwable cause)
     {
-        return MESSAGES.format("write-failure", file, cause);
+        return _formatter.format("write-failure", file, cause);
     }
 
 }

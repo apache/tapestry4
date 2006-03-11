@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,8 +17,10 @@ package org.apache.tapestry.html;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.BaseComponentTestCase;
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
@@ -39,11 +41,8 @@ import org.apache.tapestry.spec.IComponentSpecification;
  */
 public class ScriptTest extends BaseComponentTestCase
 {
-
-    /** Test fixture. */
     private static class MockScript implements IScript
     {
-
         Map _symbols;
 
         public void execute(IRequestCycle cycle, IScriptProcessor processor, Map symbols)
@@ -77,14 +76,14 @@ public class ScriptTest extends BaseComponentTestCase
 
         String scriptPath = "MyScript.script";
 
-        Script component = (Script)newInstance(Script.class,
-                new Object[] { "specification", new ComponentSpecification(), "container", container, "scriptSource",
-                        source, "scriptPath", scriptPath });
+        Script component = (Script) newInstance(Script.class, new Object[]
+        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
+                source, "scriptPath", scriptPath });
 
         trainGetPageRenderSupport(cycle, support);
-
+        
         trainGetScriptLocation(container, scriptPath, scriptLocation);
-
+        
         trainGetScript(source, scriptLocation, script);
 
         script.execute(cycle, support, new HashMap());
@@ -118,9 +117,9 @@ public class ScriptTest extends BaseComponentTestCase
 
         String scriptPath = "MyScript.script";
 
-        Script component = (Script)newInstance(Script.class, new Object[] { "specification",
-                new ComponentSpecification(), "container", container, "scriptSource", source, "scriptPath", scriptPath,
-                "baseSymbols", baseSymbols });
+        Script component = (Script) newInstance(Script.class, new Object[]
+        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
+                source, "scriptPath", scriptPath, "baseSymbols", baseSymbols });
 
         trainGetPageRenderSupport(cycle, support);
 
@@ -164,9 +163,9 @@ public class ScriptTest extends BaseComponentTestCase
 
         String scriptPath = "MyScript.script";
 
-        Script component = (Script)newInstance(Script.class, new Object[] { "specification",
-                new ComponentSpecification(), "container", container, "scriptSource", source, "scriptPath", scriptPath,
-                "baseSymbols", baseSymbols });
+        Script component = (Script) newInstance(Script.class, new Object[]
+        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
+                source, "scriptPath", scriptPath, "baseSymbols", baseSymbols });
         component.setBinding("fred", informal);
 
         trainGetPageRenderSupport(cycle, support);
@@ -202,7 +201,7 @@ public class ScriptTest extends BaseComponentTestCase
 
         replayControls();
 
-        Script component = (Script)newInstance(Script.class);
+        Script component = (Script) newInstance(Script.class);
 
         component.addBody(body);
 
@@ -211,9 +210,82 @@ public class ScriptTest extends BaseComponentTestCase
         verifyControls();
     }
 
+    public void testMultiParamException() 
+    {
+    	IScriptSource source = newScriptSource();
+        
+        PageRenderSupport support = newPageRenderSupport();
+        IRequestCycle cycle = newCycle(false);
+        IMarkupWriter writer = newWriter();
+        IRender body = newRender();
+        
+        IComponent container = newComponent();
+
+        String scriptPath = "MyScript.script";
+        
+        IAsset scriptAsset = newAsset();
+        
+        Script component = (Script) newInstance(Script.class, new Object[]
+        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
+                source, "scriptPath", scriptPath, "scriptAsset", scriptAsset });
+        
+        trainGetPageRenderSupport(cycle, support);
+        
+        replayControls();
+        
+        component.addBody(body);
+        
+        try {
+        	component.renderComponent(writer, cycle);
+        } catch (ApplicationRuntimeException ex) {
+        	assertExceptionSubstring(ex, "Script component has both script IAsset");
+        }
+        
+        verifyControls();
+    }
+    
+    public void testIAssetParamRender()
+    {
+        IScriptSource source = newScriptSource();
+        IScript script = newScript();
+        
+        PageRenderSupport support = newPageRenderSupport();
+        IRequestCycle cycle = newCycle(false);
+        IMarkupWriter writer = newWriter();
+        Resource scriptLocation = newResource();
+        IRender body = newRender();
+        
+        IComponent container = newComponent();
+        
+        IAsset scriptAsset = newAsset();
+        
+        scriptAsset.getResourceLocation();
+        setReturnValue(scriptAsset, scriptLocation);
+        
+        Script component = (Script) newInstance(Script.class, new Object[]
+        { "specification", new ComponentSpecification(), "container", container, "scriptSource",
+                source, "scriptAsset", scriptAsset });
+        
+        trainGetPageRenderSupport(cycle, support);
+        
+        trainGetScript(source, scriptLocation, script);
+        
+        script.execute(cycle, support, new HashMap());
+        
+        body.render(writer, cycle);
+        
+        replayControls();
+        
+        component.addBody(body);
+        
+        component.renderComponent(writer, cycle);
+        
+        verifyControls();
+    }
+    
     protected IScript newScript()
     {
-        return (IScript)newMock(IScript.class);
+        return (IScript) newMock(IScript.class);
     }
 
     protected void trainGetScript(IScriptSource source, Resource scriptLocation, IScript script)
@@ -224,10 +296,11 @@ public class ScriptTest extends BaseComponentTestCase
 
     protected IScriptSource newScriptSource()
     {
-        return (IScriptSource)newMock(IScriptSource.class);
+        return (IScriptSource) newMock(IScriptSource.class);
     }
 
-    protected void trainGetScriptLocation(IComponent component, String scriptPath, Resource scriptLocation)
+    protected void trainGetScriptLocation(IComponent component, String scriptPath,
+            Resource scriptLocation)
     {
         IComponentSpecification spec = newSpec();
         Resource resource = newResource();

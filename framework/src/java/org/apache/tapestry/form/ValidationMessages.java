@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,34 +17,32 @@ package org.apache.tapestry.form;
 import java.util.Locale;
 
 /**
- * Support interface used to provide access to validation messages. Typically
- * used by {@link org.apache.tapestry.form.validator.Validator}s.
+ * Support interface used to provide access to validation messages. Typically used by
+ * {@link org.apache.tapestry.form.validator.Validator}s.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public interface ValidationMessages
 {
-
     /**
-     * Formats a validation message. Automatically chooses the correct
-     * localization.
+     * Formats a validation message. Automatically chooses the correct localization.
      * 
      * @param messageOverride
-     *            a supplied override to the default message format taken from
-     *            the ValidationStrings.properties message catalog.
+     *            a supplied override to the default message format taken from the
+     *            ValidationStrings.properties message catalog.
      * @param messageKey
-     *            used to look up pa message format when messageOverride is
-     *            blank (null or empty)
+     *            used to look up pa message format when messageOverride is blank (null or empty)
      * @param arguments
      *            array of arguments formatted with the message format
      */
 
-    String formatValidationMessage(String messageOverride, String messageKey, Object[] arguments);
+    public String formatValidationMessage(String messageOverride, String messageKey,
+            Object[] arguments);
 
     /**
      * Returns the locale for which messages are generated.
      */
 
-    Locale getLocale();
+    public Locale getLocale();
 }

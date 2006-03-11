@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,31 +20,27 @@ import org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager;
 /**
  * @author ceco
  */
-public class FullTreeSessionStateManager implements ITreeSessionStateManager
-{
+public class FullTreeSessionStateManager implements ITreeSessionStateManager {
 
-    /**
-     * Constructor for FullTreeSessionStateManager.
-     */
-    public FullTreeSessionStateManager()
-    {
-        super();
-    }
+	/**
+	 * Constructor for FullTreeSessionStateManager.
+	 */
+	public FullTreeSessionStateManager() {
+		super();
+	}
 
-    /**
-     * @see org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager#getSessionState(ITreeModel)
-     */
-    public Object getSessionState(ITreeModel objModel)
-    {
-        return objModel;
-    }
+	/**
+	 * @see org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager#getSessionState(ITreeModel)
+	 */
+	public Object getSessionState(ITreeModel objModel) {
+		return objModel;
+	}
 
-    /**
-     * @see org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager#getModel(Object)
-     */
-    public ITreeModel getModel(Object objSessionState)
-    {
-        return (ITreeModel)objSessionState;
-    }
+	/**
+	 * @see org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager#getModel(Object)
+	 */
+	public ITreeModel getModel(Object objSessionState) {
+		return (ITreeModel)objSessionState;
+	}
 
 }

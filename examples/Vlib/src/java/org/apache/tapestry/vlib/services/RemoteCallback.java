@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,22 +17,18 @@ package org.apache.tapestry.vlib.services;
 import java.rmi.RemoteException;
 
 /**
- * Callback interface used when performing.
+ * Callback interface used when performing
  * 
- * @param <T>
- *            the return type of the callback.
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface RemoteCallback<T>
 {
-
     /**
      * Invoked by {@link RemoteTemplate}.
      * 
      * @return
      * @throws RemoteException
      */
-    T doRemote()
-        throws RemoteException;
+    T doRemote() throws RemoteException;
 }

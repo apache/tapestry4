@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,19 +17,17 @@ package org.apache.tapestry.services.impl;
 import org.apache.hivemind.impl.BaseLocatable;
 
 /**
- * Parameters to the
- * {@link org.apache.tapestry.services.impl.ExtensionLookupFactory} service
- * implementation factory.
- * 
+ * Parameters to the {@link org.apache.tapestry.services.impl.ExtensionLookupFactory}
+ * service implementation factory.
+ *
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public class ExtensionLookupParameter extends BaseLocatable
 {
-
-    private String _extensionName;
-    private Object _default;
-
+	private String _extensionName;
+    private Object _default; 
+	
     public String getExtensionName()
     {
         return _extensionName;
@@ -44,7 +42,7 @@ public class ExtensionLookupParameter extends BaseLocatable
     {
         return _default;
     }
-
+    
     public void setDefault(Object defaultValue)
     {
         _default = defaultValue;

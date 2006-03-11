@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,44 +24,42 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.coerce.ValueConverter;
 
 /**
- * Repeatedly renders its wrapped contents while iterating through a list of
- * values. [ <a href="../../../../../ComponentReference/Foreach.html">Component
- * Reference </a>]
+ * Repeatedly renders its wrapped contents while iterating through a list of values. [ <a
+ * href="../../../../../ComponentReference/Foreach.html">Component Reference </a>]
  * <p>
- * While the component is rendering, the property {@link #getValue() value}(accessed
- * as <code>components.<i>foreach</i>.value</code> is set to each successive
- * value from the source, and the property {@link #getIndex() index}is set to
- * each successive index into the source (starting with zero).
+ * While the component is rendering, the property {@link #getValue() value}(accessed as
+ * <code>components.<i>foreach</i>.value</code> is set to each successive value from the source,
+ * and the property {@link #getIndex() index}is set to each successive index into the source
+ * (starting with zero).
  * 
  * @author Howard Lewis Ship
  */
 
 public abstract class Foreach extends AbstractComponent
 {
-
     private Object _value;
 
     private int _index;
 
     /**
-     * Gets the source binding and returns an {@link Iterator}representing the
-     * values identified by the source. Returns an empty {@link Iterator}if the
-     * binding, or the binding value, is null.
+     * Gets the source binding and returns an {@link Iterator}representing the values identified by
+     * the source. Returns an empty {@link Iterator}if the binding, or the binding value, is null.
      * <p>
-     * Invokes {@link Tapestry#coerceToIterator(Object)}to perform the actual
-     * conversion.
+     * Invokes {@link Tapestry#coerceToIterator(Object)}to perform the actual conversion.
      */
 
     protected Iterator getSourceData()
     {
-        Object source = null;
+    	Object source = null;
+    	
+    	IBinding sourceBinding = getBinding("source");
+    	if (sourceBinding != null)
+    		source = sourceBinding.getObject();
 
-        IBinding sourceBinding = getBinding("source");
-        if (sourceBinding != null) source = sourceBinding.getObject();
+        if (source == null)
+            return null;
 
-        if (source == null) return null;
-
-        return (Iterator)getValueConverter().coerceValue(source, Iterator.class);
+        return (Iterator) getValueConverter().coerceValue(source, Iterator.class);
     }
 
     protected void prepareForRender(IRequestCycle cycle)
@@ -76,8 +74,8 @@ public abstract class Foreach extends AbstractComponent
     }
 
     /**
-     * Gets the source binding and iterates through its values. For each, it
-     * updates the value binding and render's its wrapped elements.
+     * Gets the source binding and iterates through its values. For each, it updates the value
+     * binding and render's its wrapped elements.
      */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -86,7 +84,8 @@ public abstract class Foreach extends AbstractComponent
 
         // The dataSource was either not convertable, or was empty.
 
-        if (dataSource == null) return;
+        if (dataSource == null)
+            return;
 
         boolean indexBound = isParameterBound("index");
         boolean valueBound = isParameterBound("value");
@@ -95,14 +94,16 @@ public abstract class Foreach extends AbstractComponent
 
         boolean hasNext = dataSource.hasNext();
 
-        while(hasNext)
+        while (hasNext)
         {
             _value = dataSource.next();
             hasNext = dataSource.hasNext();
 
-            if (indexBound) setIndexParameter(_index);
+            if (indexBound)
+                setIndexParameter(_index);
 
-            if (valueBound) setValueParameter(_value);
+            if (valueBound)
+                setValueParameter(_value);
 
             if (element != null)
             {
@@ -112,7 +113,8 @@ public abstract class Foreach extends AbstractComponent
 
             renderBody(writer, cycle);
 
-            if (element != null) writer.end();
+            if (element != null)
+                writer.end();
 
             _index++;
         }
@@ -128,14 +130,14 @@ public abstract class Foreach extends AbstractComponent
 
     public Object getValue()
     {
-        if (!isRendering()) throw Tapestry.createRenderOnlyPropertyException(this, "value");
+        if (!isRendering())
+            throw Tapestry.createRenderOnlyPropertyException(this, "value");
 
         return _value;
     }
 
     /**
-     * The index number, within the {@link #getSource() source}, of the the
-     * current value.
+     * The index number, within the {@link #getSource() source}, of the the current value.
      * 
      * @throws org.apache.tapestry.ApplicationRuntimeException
      *             if the Foreach is not currently rendering.
@@ -144,11 +146,12 @@ public abstract class Foreach extends AbstractComponent
 
     public int getIndex()
     {
-        if (!isRendering()) throw Tapestry.createRenderOnlyPropertyException(this, "index");
+        if (!isRendering())
+            throw Tapestry.createRenderOnlyPropertyException(this, "index");
 
         return _index;
     }
-
+    
     public abstract String getElement();
 
     /** @since 4.0 */

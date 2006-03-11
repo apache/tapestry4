@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,18 +37,16 @@ import org.apache.tapestry.vlib.ejb.Person;
 import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
- * Allows editting of the users. Simple flags about the user can be changed;
- * additionally, the user can have their password reset (to a random value,
- * which is mailed to them), or the user can be out-right deleted.
+ * Allows editting of the users. Simple flags about the user can be changed; additionally, the user
+ * can have their password reset (to a random value, which is mailed to them), or the user can be
+ * out-right deleted.
  * 
  * @author Howard Lewis Ship
  */
-@Meta( { "page-type=EditUsers", "admin-page=true" })
-public abstract class EditUsers extends VlibPage implements PageBeginRenderListener, PageDetachListener
+@Meta({"page-type=EditUsers", "admin-page=true"})
+public abstract class EditUsers extends VlibPage implements PageBeginRenderListener,
+        PageDetachListener
 {
-
-    private UserConverter _userConverter;
-    
     public abstract String getPassword();
 
     public abstract void setPassword(String password);
@@ -75,13 +73,8 @@ public abstract class EditUsers extends VlibPage implements PageBeginRenderListe
     @InjectComponent("password")
     public abstract IFormComponent getPasswordField();
 
-    /**
-     * Converts from user ids to Users, and tracks users that need to have their
-     * password reset.
-     */
     public class UserConverter extends DefaultPrimaryKeyConverter
     {
-
         private Set _resetPasswordValues;
 
         public void clear()
@@ -106,9 +99,12 @@ public abstract class EditUsers extends VlibPage implements PageBeginRenderListe
         }
     }
 
+    private UserConverter _userConverter;
+
     public UserConverter getUserConverter()
     {
-        if (_userConverter == null) _userConverter = new UserConverter();
+        if (_userConverter == null)
+            _userConverter = new UserConverter();
 
         return _userConverter;
     }
@@ -131,9 +127,7 @@ public abstract class EditUsers extends VlibPage implements PageBeginRenderListe
 
         RemoteCallback<Person[]> callback = new RemoteCallback()
         {
-
-            public Person[] doRemote()
-                throws RemoteException
+            public Person[] doRemote() throws RemoteException
             {
                 return getOperations().getPersons();
             }
@@ -145,13 +139,14 @@ public abstract class EditUsers extends VlibPage implements PageBeginRenderListe
 
         converter.clear();
 
-        for(int i = 0; i < users.length; i++)
+        for (int i = 0; i < users.length; i++)
         {
             Integer id = users[i].getId();
 
             // Skip the current user; you aren't allowed to edit yourself
 
-            if (id.equals(userId)) continue;
+            if (id.equals(userId))
+                continue;
 
             converter.add(id, users[i]);
         }
@@ -167,7 +162,7 @@ public abstract class EditUsers extends VlibPage implements PageBeginRenderListe
 
         UserConverter converter = getUserConverter();
 
-        final Person[] updates = (Person[])converter.getValues().toArray(new Person[0]);
+        final Person[] updates = (Person[]) converter.getValues().toArray(new Person[0]);
         final Integer[] deletedIds = extractIds(converter.getDeletedValues());
         final Integer[] resetPasswordIds = extractIds(converter.getResetPasswordValues());
 
@@ -184,13 +179,16 @@ public abstract class EditUsers extends VlibPage implements PageBeginRenderListe
 
         RemoteCallback callback = new RemoteCallback()
         {
-
-            public Object doRemote()
-                throws RemoteException
+            public Object doRemote() throws RemoteException
             {
                 try
                 {
-                    getOperations().updatePersons(updates, resetPasswordIds, password, deletedIds, adminId);
+                    getOperations().updatePersons(
+                            updates,
+                            resetPasswordIds,
+                            password,
+                            deletedIds,
+                            adminId);
                 }
                 catch (RemoveException ex)
                 {
@@ -220,9 +218,9 @@ public abstract class EditUsers extends VlibPage implements PageBeginRenderListe
         Iterator i = valueSet.iterator();
         int index = 0;
 
-        while(i.hasNext())
+        while (i.hasNext())
         {
-            Person person = (Person)i.next();
+            Person person = (Person) i.next();
 
             result[index++] = person.getId();
         }

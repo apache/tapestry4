@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,40 +24,38 @@ import java.util.ResourceBundle;
  */
 public final class ValidationStrings
 {
-
     public static final String REQUIRED_FIELD = "field-is-required";
 
     public static final String INVALID_DATE = "invalid-date-format";
     public static final String INVALID_NUMBER = "invalid-numeric-format";
     public static final String INVALID_EMAIL = "invalid-email-format";
-
+    
     public static final String REGEX_MISMATCH = "regex-mismatch";
-
+    
     public static final String VALUE_TOO_SHORT = "field-too-short";
     public static final String VALUE_TOO_LONG = "field-too-long";
-
+    
     public static final String VALUE_TOO_SMALL = "number-too-small";
     public static final String VALUE_TOO_LARGE = "number-too-large";
-
+    
     public static final String DATE_TOO_EARLY = "date-too-early";
     public static final String DATE_TOO_LATE = "date-too-late";
-
+    
     public static final String INVALID_FIELD_EQUALITY = "invalid-field-equality";
-
+    
     private static final String RESOURCE_BUNDLE = ValidationStrings.class.getName();
-
-    private ValidationStrings()
-    {
-        // Disable construction
-    }
-
+    
     /**
-     * Fetches the appropriate validation message pattern from the appropriate
-     * localized resource. This method should be called with the locale of the
-     * current request.
+     * Fetches the appropriate validation message pattern from the appropriate localized resource.
+     * This method should be called with the locale of the current request.
      */
     public static String getMessagePattern(String key, Locale locale)
     {
         return ResourceBundle.getBundle(RESOURCE_BUNDLE, locale).getString(key);
+    }
+    
+    private ValidationStrings()
+    {
+        // Disable construction
     }
 }

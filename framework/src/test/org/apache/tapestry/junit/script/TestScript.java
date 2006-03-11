@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,7 +44,6 @@ import org.apache.tapestry.util.xml.DocumentParseException;
 
 public class TestScript extends TapestryTestCase
 {
-
     private MockScriptProcessor _processor = new MockScriptProcessor();
 
     protected static ExpressionEvaluator createExpressionEvaluator()
@@ -56,7 +55,7 @@ public class TestScript extends TapestryTestCase
         return result;
     }
 
-    private IScript read(String file)
+    private IScript read(String file) throws DocumentParseException
     {
         ClassResolver resolver = new DefaultClassResolver();
         ScriptParser parser = new ScriptParser(resolver, createExpressionEvaluator(), null);
@@ -69,11 +68,11 @@ public class TestScript extends TapestryTestCase
         return parser.parse(scriptLocation);
     }
 
-    private IScript execute(String file, Map symbols)
+    private IScript execute(String file, Map symbols) throws DocumentParseException
     {
         IScript script = read(file);
 
-        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) newMock(IRequestCycle.class);
 
         replayControls();
 
@@ -95,8 +94,7 @@ public class TestScript extends TapestryTestCase
      * Simple test where the body and initialization are static.
      */
 
-    public void testSimple()
-        throws Exception
+    public void testSimple() throws Exception
     {
         execute("simple.script", null);
 
@@ -106,13 +104,12 @@ public class TestScript extends TapestryTestCase
     }
 
     /**
-     * Test the &lt;unique&gt; element, new in the 1.3 DTD.
+     * Test the &lt;unique&gt; element, new in the 1.3 DTD
      * 
      * @since 3.0
      */
 
-    public void testUnique()
-        throws Exception
+    public void testUnique() throws Exception
     {
         IScript script = read("unique.script");
 
@@ -128,8 +125,7 @@ public class TestScript extends TapestryTestCase
      * Test omitting body and initialization, ensure they return null.
      */
 
-    public void testEmpty()
-        throws Exception
+    public void testEmpty() throws Exception
     {
         execute("empty.script", null);
 
@@ -138,12 +134,11 @@ public class TestScript extends TapestryTestCase
     }
 
     /**
-     * Test the ability of the let element to create an output symbol. Also,
-     * test the insert element.
+     * Test the ability of the let element to create an output symbol. Also, test the insert
+     * element.
      */
 
-    public void testLet()
-        throws Exception
+    public void testLet() throws Exception
     {
         String inputSymbol = Long.toHexString(System.currentTimeMillis());
         Map symbols = new HashMap();
@@ -163,8 +158,7 @@ public class TestScript extends TapestryTestCase
      * 
      * @since 3.0
      */
-    public void testUniqueLet()
-        throws Exception
+    public void testUniqueLet() throws Exception
     {
         Map symbols = new HashMap();
 
@@ -175,21 +169,22 @@ public class TestScript extends TapestryTestCase
         assertSymbol(symbols, "gamma", "Alpha_1");
     }
 
-    public void testIncludeScript()
-        throws Exception
+    public void testIncludeScript() throws Exception
     {
         IScript script = execute("include-script.script", null);
 
         Resource scriptLocation = script.getScriptResource();
 
-        Resource[] expected = new Resource[] { scriptLocation.getRelativeResource("first"),
-                scriptLocation.getRelativeResource("second"), scriptLocation.getRelativeResource("third") };
+        Resource[] expected = new Resource[]
+        { scriptLocation.getRelativeResource("first"),
+                scriptLocation.getRelativeResource("second"),
+                scriptLocation.getRelativeResource("third") };
 
-        assertEquals("included scripts", Arrays.asList(expected), Arrays.asList(_processor.getExternalScripts()));
+        assertEquals("included scripts", Arrays.asList(expected), Arrays.asList(_processor
+                .getExternalScripts()));
     }
 
-    public void testAntSyntax()
-        throws Exception
+    public void testAntSyntax() throws Exception
     {
         Map form = new HashMap();
 
@@ -211,8 +206,7 @@ public class TestScript extends TapestryTestCase
         assertSymbol(symbols, "OGNL", "This is a brace: }.");
     }
 
-    public void testSet()
-        throws Exception
+    public void testSet() throws Exception
     {
         Map symbols = new HashMap();
 
@@ -221,8 +215,7 @@ public class TestScript extends TapestryTestCase
         assertSymbol(symbols, "element2", new Character('p'));
     }
 
-    public void testInvalidKeyLet()
-        throws Exception
+    public void testInvalidKeyLet() throws Exception
     {
         try
         {
@@ -236,8 +229,7 @@ public class TestScript extends TapestryTestCase
         }
     }
 
-    public void testInvalidKeySet()
-        throws Exception
+    public void testInvalidKeySet() throws Exception
     {
         try
         {
@@ -251,8 +243,7 @@ public class TestScript extends TapestryTestCase
         }
     }
 
-    public void testInputSymbolClass()
-        throws Exception
+    public void testInputSymbolClass() throws Exception
     {
         try
         {
@@ -270,8 +261,7 @@ public class TestScript extends TapestryTestCase
         }
     }
 
-    public void testInputSymbol()
-        throws Exception
+    public void testInputSymbol() throws Exception
     {
         Map symbols = new HashMap();
         symbols.put("input", new Long(20));
@@ -281,8 +271,7 @@ public class TestScript extends TapestryTestCase
         assertSymbol(symbols, "success", "Success");
     }
 
-    public void testInputSymbolRequired()
-        throws Exception
+    public void testInputSymbolRequired() throws Exception
     {
         try
         {
@@ -296,8 +285,7 @@ public class TestScript extends TapestryTestCase
         }
     }
 
-    public void testInputSymbolInvalidKey()
-        throws Exception
+    public void testInputSymbolInvalidKey() throws Exception
     {
         try
         {
@@ -314,8 +302,7 @@ public class TestScript extends TapestryTestCase
 
     /** @since 3.0 */
 
-    public void testNameAppend()
-        throws Exception
+    public void testNameAppend() throws Exception
     {
         Map symbols = new HashMap();
 
@@ -328,8 +315,7 @@ public class TestScript extends TapestryTestCase
     /**
      * A bunch of quickies to push up the code coverage numbers.
      */
-    public void testCheats()
-        throws Exception
+    public void testCheats() throws Exception
     {
         IScript script = execute("simple.script", null);
 

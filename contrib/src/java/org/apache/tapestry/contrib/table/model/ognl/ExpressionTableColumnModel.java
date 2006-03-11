@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,14 +23,13 @@ import org.apache.tapestry.services.ExpressionEvaluator;
  */
 public class ExpressionTableColumnModel extends SimpleTableColumnModel
 {
-
-    private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = 1L;
+	
     /**
      * Constructs a table column model containting OGNL expression columns. <br>
-     * The data for the columns is provided in the form of a string array, where
-     * the info of each column is stored in two consecutive fields in the array,
-     * hence its size must be even. The expected info is the following:
+     * The data for the columns is provided in the form of a string array, where the info of each
+     * column is stored in two consecutive fields in the array, hence its size must be even. The
+     * expected info is the following:
      * <ul>
      * <li>Column Name
      * <li>OGNL expression
@@ -41,28 +40,30 @@ public class ExpressionTableColumnModel extends SimpleTableColumnModel
      * @param bSorted
      *            Whether all columns are sorted or not
      */
-    public ExpressionTableColumnModel(String[] arrColumnInfo, boolean bSorted, ExpressionEvaluator expressionEvaluator)
+    public ExpressionTableColumnModel(String[] arrColumnInfo, boolean bSorted,
+            ExpressionEvaluator expressionEvaluator)
     {
         this(convertToDetailedArray(arrColumnInfo, bSorted), expressionEvaluator);
     }
 
     /**
      * Constructs a table column model containting OGNL expression columns. <br>
-     * The data for the columns is provided in the form of a string array, where
-     * the info of each column is stored in four consecutive fields in the
-     * array, hence its size must be divisible by 4.<br>
+     * The data for the columns is provided in the form of a string array, where the info of each
+     * column is stored in four consecutive fields in the array, hence its size must be divisible by
+     * 4.<br>
      * The expected info is the following:
      * <ul>
      * <li>Column Name
      * <li>Display Name
      * <li>OGNL expression
-     * <li>Sorting of the column. This is either a Boolean, or a String
-     * representation of a boolean.
+     * <li>Sorting of the column. This is either a Boolean, or a String representation of a
+     * boolean.
      * </ul>
      * 
      * @param arrColumnInfo
      */
-    public ExpressionTableColumnModel(Object[] arrColumnInfo, ExpressionEvaluator expressionEvaluator)
+    public ExpressionTableColumnModel(Object[] arrColumnInfo,
+            ExpressionEvaluator expressionEvaluator)
     {
         super(convertToColumns(arrColumnInfo, expressionEvaluator));
     }
@@ -80,7 +81,7 @@ public class ExpressionTableColumnModel extends SimpleTableColumnModel
         int nSize = nColumns * 4;
         Object[] arrDetailedInfo = new Object[nSize];
 
-        for(int i = 0; i < nColumns; i++)
+        for (int i = 0; i < nColumns; i++)
         {
             int nInputBaseIndex = 2 * i;
             String strColumnName = arrColumnInfo[nInputBaseIndex];
@@ -102,39 +103,44 @@ public class ExpressionTableColumnModel extends SimpleTableColumnModel
      * @param arrDetailedInfo
      * @return ITableColumn[]
      */
-    protected static ITableColumn[] convertToColumns(Object[] arrDetailedInfo, ExpressionEvaluator expressionEvaluator)
+    protected static ITableColumn[] convertToColumns(Object[] arrDetailedInfo,
+            ExpressionEvaluator expressionEvaluator)
     {
         int nColumns = arrDetailedInfo.length / 4;
         ITableColumn[] arrColumns = new ITableColumn[nColumns];
 
-        for(int i = 0; i < nColumns; i++)
+        for (int i = 0; i < nColumns; i++)
         {
             Object objTempValue;
             int nBaseIndex = 4 * i;
 
             String strColumnName = "";
             objTempValue = arrDetailedInfo[nBaseIndex];
-            if (objTempValue != null) strColumnName = objTempValue.toString();
+            if (objTempValue != null)
+                strColumnName = objTempValue.toString();
 
             String strDisplayName = "";
             objTempValue = arrDetailedInfo[nBaseIndex + 1];
-            if (objTempValue != null) strDisplayName = objTempValue.toString();
+            if (objTempValue != null)
+                strDisplayName = objTempValue.toString();
 
             String strExpression = "";
             objTempValue = arrDetailedInfo[nBaseIndex + 2];
-            if (objTempValue != null) strExpression = objTempValue.toString();
+            if (objTempValue != null)
+                strExpression = objTempValue.toString();
 
             boolean bSorted = false;
             objTempValue = arrDetailedInfo[nBaseIndex + 3];
             if (objTempValue != null)
             {
                 if (objTempValue instanceof Boolean)
-                    bSorted = ((Boolean)objTempValue).booleanValue();
-                else bSorted = Boolean.valueOf(objTempValue.toString()).booleanValue();
+                    bSorted = ((Boolean) objTempValue).booleanValue();
+                else
+                    bSorted = Boolean.valueOf(objTempValue.toString()).booleanValue();
             }
 
-            arrColumns[i] = new ExpressionTableColumn(strColumnName, strDisplayName, strExpression, bSorted,
-                    expressionEvaluator);
+            arrColumns[i] = new ExpressionTableColumn(strColumnName, strDisplayName, strExpression,
+                    bSorted, expressionEvaluator);
         }
 
         return arrColumns;

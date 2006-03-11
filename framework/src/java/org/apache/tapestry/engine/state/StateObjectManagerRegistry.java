@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,21 +15,16 @@
 package org.apache.tapestry.engine.state;
 
 /**
- * Used to access the
- * {@link org.apache.tapestry.engine.state.StateObjectManager} for a particular
- * Application State Object (by name).
- * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface StateObjectManagerRegistry
 {
-
     /**
      * Returns the named {@link StateObjectManager}.
      * 
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if no such SOPM is defined.
      */
-    StateObjectManager get(String objectName);
+    public StateObjectManager get(String objectName);
 }

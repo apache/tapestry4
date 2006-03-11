@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,11 +19,8 @@ import java.io.File;
 import org.apache.tapestry.contrib.tree.model.ITreeNode;
 import org.apache.tapestry.engine.IEngineService;
 
-/** @author tsv? * */
 public class Drive extends FolderObject
 {
-    private static final long serialVersionUID = -4098885307563692077L;
-
     private String m_strType;
 
     private String m_strLabel;

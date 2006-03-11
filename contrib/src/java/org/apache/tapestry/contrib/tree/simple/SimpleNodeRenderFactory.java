@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,25 +23,32 @@ import org.apache.tapestry.valid.RenderString;
 /**
  * @author ceco
  */
-public class SimpleNodeRenderFactory implements INodeRenderFactory
-{
+public class SimpleNodeRenderFactory implements INodeRenderFactory {
 
+	/**
+	 * Constructor for SimpleNodeRenderFactory.
+	 */
+	public SimpleNodeRenderFactory() {
+		super();
+	}
 
-    /**
-     * @see INodeRenderFactory#getRender
-     */
-    public IRender getRenderByID(Object objUniqueKey, ITreeModelSource objTreeModelSource, IRequestCycle cycle)
-    {
-        Object objValue = objTreeModelSource.getTreeModel().getTreeDataModel().getObject(objUniqueKey);
-        return getRender(objValue, objTreeModelSource, cycle);
-    }
+	/**
+	 * @see INodeRenderFactory#getRender
+	 */
+	public IRender getRenderByID(
+		Object objUniqueKey,
+		ITreeModelSource objTreeModelSource,
+		IRequestCycle cycle)
+	{
+		Object objValue = objTreeModelSource.getTreeModel().getTreeDataModel().getObject(objUniqueKey);
+		return getRender(objValue, objTreeModelSource, cycle);
+	}
 
-    /**
-     * @see INodeRenderFactory#getRender
-     */
-    public IRender getRender(Object objValue, ITreeModelSource objTreeModelSource, IRequestCycle objCycle)
-    {
-        return new RenderString(objValue.toString());
-    }
+	/**
+	 * @see INodeRenderFactory#getRender
+	 */
+	public IRender getRender(Object objValue, ITreeModelSource objTreeModelSource, IRequestCycle objCycle) {
+		return new RenderString(objValue.toString());
+	}
 
 }

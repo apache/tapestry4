@@ -35,10 +35,9 @@
 </p>
 
 <warning>
-  This component may  only be used in Tapestry Servlet Applications; Upload currently
-  does not work with Portlet Applications.  See
-  <link href="http://issues.apache.org/jira/browse/TAPESTRY-635">TAPESTRY-635</link> for more details.
-
+	There is a bug in the current fileupload 1.1 version which resolves all filenames to lowercase, this may
+	break certain conditions for people if they are doing file name comparisons. This issue has already
+	been fixed in commons-fileupload version 1.2, which should hopefully be released soon.
 </warning>
 
 <section>

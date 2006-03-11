@@ -41,6 +41,19 @@
  The headers are wrapped in 'th' tags by default.
 </p>
 
+ <info>
+    <p>
+ 	The table header rendered by this component has two main css class definitions. The embedded
+ 	table html markup within each <code>th</code> element has the class <code>tableHeaderImage</code>. 
+ 	The image used to sort table columns has an embedded style class definition for <code>tableHeaderImage</code>
+ 	that defines <code>align:center</code>.
+ 	</p>
+ 	
+ 	<p>
+ 	You may override these definitions with your own css rules. 
+ 	</p>
+ </info>
+
 <p>
   <strong>See also: &Table;, &TableView;, &TablePages;, &TableRows;, &TableValues;</strong> 
 </p>

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -48,21 +48,20 @@ import org.apache.tapestry.util.text.LocalizedProperties;
 
 public class ComponentMessagesSourceImpl implements ComponentMessagesSource, ResetEventListener
 {
+    private Properties _emptyProperties = new Properties();
+
+    private static final String SUFFIX = ".properties";
+
     /**
-     * The name of the component/application/etc property that will be used to
-     * determine the encoding to use when loading the messages.
+     * The name of the component/application/etc property that will be used to determine the
+     * encoding to use when loading the messages
      */
 
     public static final String MESSAGES_ENCODING_PROPERTY_NAME = "org.apache.tapestry.messages-encoding";
 
-    private static final String SUFFIX = ".properties";
-
-    private Properties _emptyProperties = new Properties();
-    
     /**
-     * Map of Maps. The outer map is keyed on component specification location
-     * (a{@link Resource}. This inner map is keyed on locale and the value is
-     * a {@link Properties}.
+     * Map of Maps. The outer map is keyed on component specification location (a{@link Resource}.
+     * This inner map is keyed on locale and the value is a {@link Properties}.
      */
 
     private Map _componentCache = new HashMap();
@@ -70,9 +69,8 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
     private ComponentPropertySource _componentPropertySource;
 
     /**
-     * Returns an instance of {@link Properties}containing the properly
-     * localized messages for the component, in the {@link Locale}identified by
-     * the component's containing page.
+     * Returns an instance of {@link Properties}containing the properly localized messages for the
+     * component, in the {@link Locale}identified by the component's containing page.
      */
 
     protected synchronized Properties getLocalizedProperties(IComponent component)
@@ -84,14 +82,18 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
         Map propertiesMap = findPropertiesMapForResource(specificationLocation);
 
-        Properties result = (Properties)propertiesMap.get(locale);
+        Properties result = (Properties) propertiesMap.get(locale);
 
         if (result == null)
         {
 
             // Not found, create it now.
 
-            result = assembleComponentProperties(component, specificationLocation, propertiesMap, locale);
+            result = assembleComponentProperties(
+                    component,
+                    specificationLocation,
+                    propertiesMap,
+                    locale);
 
             propertiesMap.put(locale, result);
         }
@@ -101,7 +103,7 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
     private Map findPropertiesMapForResource(Resource resource)
     {
-        Map result = (Map)_componentCache.get(resource);
+        Map result = (Map) _componentCache.get(resource);
 
         if (result == null)
         {
@@ -120,7 +122,7 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
         Map propertiesMap = findPropertiesMapForResource(namespaceLocation);
 
-        Properties result = (Properties)propertiesMap.get(locale);
+        Properties result = (Properties) propertiesMap.get(locale);
 
         if (result == null)
         {
@@ -132,42 +134,43 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
         return result;
     }
 
-    private Properties assembleComponentProperties(IComponent component, Resource baseResourceLocation,
-            Map propertiesMap, Locale locale)
+    private Properties assembleComponentProperties(IComponent component,
+            Resource baseResourceLocation, Map propertiesMap, Locale locale)
     {
         List localizations = findLocalizationsForResource(baseResourceLocation, locale);
 
         Properties parent = null;
         Properties assembledProperties = null;
-
+        
         Iterator i = localizations.iterator();
 
-        while(i.hasNext())
+        while (i.hasNext())
         {
-            ResourceLocalization rl = (ResourceLocalization)i.next();
+            ResourceLocalization rl = (ResourceLocalization) i.next();
 
             Locale l = rl.getLocale();
 
-            // Retrieve namespace properties for current locale (and parent
-            // locales)
-            Properties namespaceProperties = getNamespaceProperties(component, l);
-
-            // Use the namespace properties as default for assembled properties
+            // Retrieve namespace properties for current locale (and parent locales)
+        	Properties namespaceProperties = getNamespaceProperties(component, l);
+        	
+        	// Use the namespace properties as default for assembled properties
             assembledProperties = new Properties(namespaceProperties);
-
+            
             // Read localized properties for component
             Properties properties = readComponentProperties(component, l, rl.getResource(), null);
 
             // Override parent properties with current locale
-            if (parent != null)
-            {
-                if (properties != null) parent.putAll(properties);
+            if (parent != null) {
+            	if (properties != null)
+            		parent.putAll(properties);
             }
-            else parent = properties;
-
+            else
+            	parent = properties;
+            
             // Add to assembled properties
-            if (parent != null) assembledProperties.putAll(parent);
-
+            if (parent != null)
+            	assembledProperties.putAll(parent);
+            
             // Save result in cache
             propertiesMap.put(l, assembledProperties);
         }
@@ -175,9 +178,12 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
         return assembledProperties;
     }
 
-    private Properties assembleNamespaceProperties(INamespace namespace, Map propertiesMap, Locale locale)
+    private Properties assembleNamespaceProperties(INamespace namespace, Map propertiesMap,
+            Locale locale)
     {
-        List localizations = findLocalizationsForResource(namespace.getSpecificationLocation(), locale);
+        List localizations = findLocalizationsForResource(
+                namespace.getSpecificationLocation(),
+                locale);
 
         // Build them back up in reverse order.
 
@@ -185,13 +191,13 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
         Iterator i = localizations.iterator();
 
-        while(i.hasNext())
+        while (i.hasNext())
         {
-            ResourceLocalization rl = (ResourceLocalization)i.next();
+            ResourceLocalization rl = (ResourceLocalization) i.next();
 
             Locale l = rl.getLocale();
 
-            Properties properties = (Properties)propertiesMap.get(l);
+            Properties properties = (Properties) propertiesMap.get(l);
 
             if (properties == null)
             {
@@ -209,9 +215,9 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
     /**
      * Finds the localizations of the provided resource. Returns a List of
-     * {@link ResourceLocalization}(each pairing a locale with a localized
-     * resource). The list is ordered from most general (i.e., "foo.properties")
-     * to most specific (i.e., "foo_en_US_yokel.properties").
+     * {@link ResourceLocalization}(each pairing a locale with a localized resource). The list is
+     * ordered from most general (i.e., "foo.properties") to most specific (i.e.,
+     * "foo_en_US_yokel.properties").
      */
 
     private List findLocalizationsForResource(Resource resource, Locale locale)
@@ -222,7 +228,7 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
         LocalizedNameGenerator g = new LocalizedNameGenerator(baseName, locale, SUFFIX);
 
-        while(g.more())
+        while (g.more())
         {
             String localizedName = g.next();
             Locale l = g.getCurrentLocale();
@@ -244,16 +250,16 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
         return fileName.substring(0, dotx);
     }
 
-    private Properties readComponentProperties(IComponent component, Locale locale, Resource propertiesResource,
-            Properties parent)
+    private Properties readComponentProperties(IComponent component, Locale locale,
+            Resource propertiesResource, Properties parent)
     {
         String encoding = getComponentMessagesEncoding(component, locale);
 
         return readPropertiesResource(propertiesResource.getResourceURL(), encoding, parent);
     }
 
-    private Properties readNamespaceProperties(INamespace namespace, Locale locale, Resource propertiesResource,
-            Properties parent)
+    private Properties readNamespaceProperties(INamespace namespace, Locale locale,
+            Resource propertiesResource, Properties parent)
     {
         String encoding = getNamespaceMessagesEncoding(namespace, locale);
 
@@ -262,7 +268,8 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
     private Properties readPropertiesResource(URL resourceURL, String encoding, Properties parent)
     {
-        if (resourceURL == null) return parent;
+        if (resourceURL == null)
+            return parent;
 
         Properties result = new Properties(parent);
 
@@ -276,13 +283,16 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
             if (encoding == null)
                 wrapper.load(input);
-            else wrapper.load(input, encoding);
+            else
+                wrapper.load(input, encoding);
 
             input.close();
         }
         catch (IOException ex)
         {
-            throw new ApplicationRuntimeException(ImplMessages.unableToLoadProperties(resourceURL, ex), ex);
+            throw new ApplicationRuntimeException(ImplMessages.unableToLoadProperties(
+                    resourceURL,
+                    ex), ex);
         }
         finally
         {
@@ -294,14 +304,15 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
     private void close(InputStream is)
     {
-        if (is != null) try
-        {
-            is.close();
-        }
-        catch (IOException ex)
-        {
-            // Ignore.
-        }
+        if (is != null)
+            try
+            {
+                is.close();
+            }
+            catch (IOException ex)
+            {
+                // Ignore.
+            }
     }
 
     /**
@@ -315,16 +326,21 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
     public Messages getMessages(IComponent component)
     {
-        return new ComponentMessages(component.getPage().getLocale(), getLocalizedProperties(component));
+        return new ComponentMessages(component.getPage().getLocale(),
+                getLocalizedProperties(component));
     }
 
     private String getComponentMessagesEncoding(IComponent component, Locale locale)
     {
-        String encoding = _componentPropertySource.getLocalizedComponentProperty(component, locale,
+        String encoding = _componentPropertySource.getLocalizedComponentProperty(
+                component,
+                locale,
                 MESSAGES_ENCODING_PROPERTY_NAME);
 
         if (encoding == null)
-            encoding = _componentPropertySource.getLocalizedComponentProperty(component, locale,
+            encoding = _componentPropertySource.getLocalizedComponentProperty(
+                    component,
+                    locale,
                     TemplateSourceImpl.TEMPLATE_ENCODING_PROPERTY_NAME);
 
         return encoding;
@@ -332,7 +348,9 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
     private String getNamespaceMessagesEncoding(INamespace namespace, Locale locale)
     {
-        return _componentPropertySource.getLocalizedNamespaceProperty(namespace, locale,
+        return _componentPropertySource.getLocalizedNamespaceProperty(
+                namespace,
+                locale,
                 MESSAGES_ENCODING_PROPERTY_NAME);
     }
 

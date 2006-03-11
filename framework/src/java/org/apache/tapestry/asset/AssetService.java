@@ -15,7 +15,6 @@
 package org.apache.tapestry.asset;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -58,45 +57,7 @@ import org.apache.tapestry.web.WebResponse;
 
 public class AssetService implements IEngineService
 {
-    
-    /**
-     * Query parameter that stores the path to the resource (with a leading slash).
-     * 
-     * @since 4.0
-     */
 
-    public static final String PATH = "path";
-
-    /**
-     * Query parameter that stores the digest for the file; this is used to authenticate that the
-     * client is allowed to access the file.
-     * 
-     * @since 4.0
-     */
-
-    public static final String DIGEST = "digest";
-    
-
-    /**
-     * Defaults MIME types, by extension, used when the servlet container doesn't provide MIME
-     * types. ServletExec Debugger, for example, fails to provide these.
-     */
-
-    private static final Map MIME_TYPES;
-
-    static
-    {
-        MIME_TYPES = new HashMap(17);
-        MIME_TYPES.put("css", "text/css");
-        MIME_TYPES.put("gif", "image/gif");
-        MIME_TYPES.put("jpg", "image/jpeg");
-        MIME_TYPES.put("jpeg", "image/jpeg");
-        MIME_TYPES.put("htm", "text/html");
-        MIME_TYPES.put("html", "text/html");
-    }
-
-    private static final int BUFFER_SIZE = 10240;
-    
     /** @since 4.0 */
     private ClassResolver _classResolver;
 
@@ -107,6 +68,7 @@ public class AssetService implements IEngineService
     private WebContext _context;
 
     /** @since 4.0 */
+
     private WebRequest _request;
 
     /** @since 4.0 */
@@ -115,9 +77,26 @@ public class AssetService implements IEngineService
     /** @since 4.0 */
     private ResourceDigestSource _digestSource;
 
-    /** @since 4.1 */
-    private ResourceMatcher _unprotectedMatcher;
-    
+    /**
+     * Defaults MIME types, by extension, used when the servlet container doesn't provide MIME
+     * types. ServletExec Debugger, for example, fails to provide these.
+     */
+
+    private final static Map _mimeTypes;
+
+    static
+    {
+        _mimeTypes = new HashMap(17);
+        _mimeTypes.put("css", "text/css");
+        _mimeTypes.put("gif", "image/gif");
+        _mimeTypes.put("jpg", "image/jpeg");
+        _mimeTypes.put("jpeg", "image/jpeg");
+        _mimeTypes.put("htm", "text/html");
+        _mimeTypes.put("html", "text/html");
+    }
+
+    private static final int BUFFER_SIZE = 10240;
+
     /**
      * Startup time for this service; used to set the Last-Modified response header.
      * 
@@ -136,7 +115,24 @@ public class AssetService implements IEngineService
     /** @since 4.0 */
 
     private RequestExceptionReporter _exceptionReporter;
-    
+
+    /**
+     * Query parameter that stores the path to the resource (with a leading slash).
+     * 
+     * @since 4.0
+     */
+
+    public static final String PATH = "path";
+
+    /**
+     * Query parameter that stores the digest for the file; this is used to authenticate that the
+     * client is allowed to access the file.
+     * 
+     * @since 4.0
+     */
+
+    public static final String DIGEST = "digest";
+
     /**
      * Builds a {@link ILink}for a {@link PrivateAsset}.
      * <p>
@@ -147,19 +143,19 @@ public class AssetService implements IEngineService
     public ILink getLink(boolean post, Object parameter)
     {
         Defense.isAssignable(parameter, String.class, "parameter");
-        
+
         String path = (String) parameter;
-        
+
         String digest = _digestSource.getDigestForResource(path);
-        
+
         Map parameters = new HashMap();
-        
+
         parameters.put(ServiceConstants.SERVICE, getName());
         parameters.put(PATH, path);
         parameters.put(DIGEST, digest);
-        
+
         // Service is stateless, which is the exception to the rule.
-        
+
         return _linkFactory.constructLink(this, post, parameters, false);
     }
 
@@ -171,14 +167,15 @@ public class AssetService implements IEngineService
     private String getMimeType(String path)
     {
         String result = _context.getMimeType(path);
-
+        
         if (result == null)
         {
             int dotx = path.lastIndexOf('.');
-            String key = path.substring(dotx + 1).toLowerCase();
-
-            result = (String) MIME_TYPES.get(key);
-
+            if (dotx > -1) {
+            	String key = path.substring(dotx + 1).toLowerCase();
+            	result = (String) _mimeTypes.get(key);
+            }
+            
             if (result == null)
                 result = "text/plain";
         }
@@ -195,38 +192,32 @@ public class AssetService implements IEngineService
     {
         String path = cycle.getParameter(PATH);
         String md5Digest = cycle.getParameter(DIGEST);
-        boolean checkDigest = !_unprotectedMatcher.containsResource(path);
+
         try
         {
-            if (checkDigest
-                    && !_digestSource.getDigestForResource(path).equals(md5Digest))
+            if (!_digestSource.getDigestForResource(path).equals(md5Digest))
             {
                 _response.sendError(HttpServletResponse.SC_FORBIDDEN, AssetMessages
                         .md5Mismatch(path));
                 return;
             }
-            
+
             // If they were vended an asset in the past then it must be up-to date.
-            // Asset URIs change if the underlying file is modified. (unless unprotected)
-            
-            if (checkDigest && _request.getHeader("If-Modified-Since") != null)
+            // Asset URIs change if the underlying file is modified.
+
+            if (_request.getHeader("If-Modified-Since") != null)
             {
                 _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
                 return;
             }
-            
+
             URL resourceURL = _classResolver.getResource(path);
-            
+
             if (resourceURL == null)
                 throw new ApplicationRuntimeException(AssetMessages.noSuchResource(path));
-            
-            //check caching for unprotected resources
-            
-            if (!checkDigest && cachedResource(resourceURL))
-                return;
-            
+
             URLConnection resourceConnection = resourceURL.openConnection();
-            
+
             writeAssetContent(cycle, path, resourceConnection);
         }
         catch (Throwable ex)
@@ -235,41 +226,14 @@ public class AssetService implements IEngineService
         }
 
     }
-    
-    /**
-     * Checks if the resource contained within the specified URL 
-     * has a modified time greater than the request header value
-     * of <code>If-Modified-Since</code>. If it doesn't then the 
-     * response status is set to {@link HttpServletResponse#SC_NOT_MODIFIED}.
-     * 
-     * @param resourceURL Resource being checked
-     * @return True if resource should be cached and response header was set.
-     * @since 4.1
-     */
-    
-    protected boolean cachedResource(URL resourceURL)
-    {
-        File resource = new File(resourceURL.getFile());
-        if (!resource.exists()) return false;
-        
-        //even if it doesn't exist in header the value will be -1, 
-        //which means we need to write out the contents of the resource
-        
-        long modify = Long.parseLong(_request.getHeader("If-Modified-Since"));
-        if (resource.lastModified() > modify)
-            return false;
-        
-        _response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-        return true;
-    }
-    
+
     /** @since 2.2 */
 
     private void writeAssetContent(IRequestCycle cycle, String resourcePath,
             URLConnection resourceConnection) throws IOException
     {
         InputStream input = null;
-        
+
         try
         {
             // Getting the content type and length is very dependant
@@ -284,13 +248,13 @@ public class AssetService implements IEngineService
 
             _response.setDateHeader("Last-Modified", _startupTime);
             _response.setDateHeader("Expires", _expireTime);
-            
+
             // Set the content type. If the servlet container doesn't
             // provide it, try and guess it by the extension.
-            
+
             if (contentType == null || contentType.length() == 0)
                 contentType = getMimeType(resourcePath);
-            
+
             OutputStream output = _response.getOutputStream(new ContentType(contentType));
 
             input = new BufferedInputStream(resourceConnection.getInputStream());
@@ -357,11 +321,5 @@ public class AssetService implements IEngineService
     public void setRequest(WebRequest request)
     {
         _request = request;
-    }
-    
-    /** @since 4.1 */
-    public void setUnprotectedMatcher(ResourceMatcher matcher)
-    {
-        _unprotectedMatcher = matcher;
     }
 }

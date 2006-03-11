@@ -25,5 +25,5 @@ import org.apache.tapestry.IPage;
 
 public interface IActivate extends IPage
 {
-    void activate();
+    public void activate();
 }

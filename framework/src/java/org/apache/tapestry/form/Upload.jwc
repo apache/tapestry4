@@ -42,7 +42,7 @@
   <reserved-parameter name="type"/>
   <reserved-parameter name="name"/>
   
-  <inject property="decoder" object="service:tapestry.multipart.MultipartDecoder"/>
+  <inject property="decoder" object="infrastructure:multipartDecoder"/>
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
   
 </component-specification>

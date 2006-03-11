@@ -35,6 +35,6 @@ public interface IParameter
      * 
      **/
     
-    void set(PreparedStatement statement, int index)
+    public void set(PreparedStatement statement, int index)
     throws SQLException;
 }

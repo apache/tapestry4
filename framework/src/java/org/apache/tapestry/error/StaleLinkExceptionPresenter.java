@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,15 +20,13 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleLinkException;
 
 /**
- * Service interface for informing the user about a
- * {@link org.apache.tapestry.StaleLinkException}.
+ * Service interface for informing the user about a {@link org.apache.tapestry.StaleLinkException}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface StaleLinkExceptionPresenter
 {
-
     /**
      * Reports the stale link exception.
      * 
@@ -37,6 +35,6 @@ public interface StaleLinkExceptionPresenter
      * @param cause
      *            the exception that was caught
      */
-    void presentStaleLinkException(IRequestCycle cycle, StaleLinkException cause)
-        throws IOException;
+    public void presentStaleLinkException(IRequestCycle cycle, StaleLinkException cause)
+            throws IOException;
 }

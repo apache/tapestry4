@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,23 +21,24 @@ import org.apache.tapestry.web.WebRequest;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class AbsoluteURLBuilderImpl implements AbsoluteURLBuilder {
-
+public class AbsoluteURLBuilderImpl implements AbsoluteURLBuilder
+{
     private WebRequest _request;
 
-    public String constructURL(String URI, String scheme, String server,
-            int port)
+    public String constructURL(String URI, String scheme, String server, int port)
     {
         // Though, really, what does a leading colon with no scheme before it
         // mean?
 
-        if (URI.indexOf(':') >= 0) return URI;
+        if (URI.indexOf(':') >= 0)
+            return URI;
 
         StringBuffer buffer = new StringBuffer();
 
         // Should check the length here, first.
 
-        if (URI.length() > 2 && URI.substring(0, 2).equals("//")) {
+        if (URI.length()> 2 && URI.substring(0, 2).equals("//"))
+        {
             buffer.append(scheme);
             buffer.append(':');
             buffer.append(URI);
@@ -48,12 +49,14 @@ public class AbsoluteURLBuilderImpl implements AbsoluteURLBuilder {
         buffer.append("://");
         buffer.append(server);
 
-        if (port > 0) {
+        if (port > 0)
+        {
             buffer.append(':');
             buffer.append(port);
         }
 
-        if (URI.charAt(0) != '/') buffer.append('/');
+        if (URI.charAt(0) != '/')
+            buffer.append('/');
 
         buffer.append(URI);
 
@@ -71,7 +74,8 @@ public class AbsoluteURLBuilderImpl implements AbsoluteURLBuilder {
         // Some of the Tomcat code indicates that port 443 is the default
         // for https, and that needs to be researched.
 
-        if (scheme.equals("http") && port == 80) port = 0;
+        if (scheme.equals("http") && port == 80)
+            port = 0;
 
         return constructURL(URI, scheme, server, port);
     }

@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,10 +28,9 @@ import org.apache.hivemind.test.HiveMindTestCase;
  */
 public class WebContextResourceTest extends HiveMindTestCase
 {
-
     private WebContext newContext()
     {
-        return (WebContext)newMock(WebContext.class);
+        return (WebContext) newMock(WebContext.class);
     }
 
     public void testConstructor()
@@ -53,8 +52,7 @@ public class WebContextResourceTest extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testLocalizationExists()
-        throws Exception
+    public void testLocalizationExists() throws Exception
     {
         WebContext context = newContext();
 
@@ -78,8 +76,7 @@ public class WebContextResourceTest extends HiveMindTestCase
         setReturnValue(context, url);
     }
 
-    public void testLocalizationSame()
-        throws Exception
+    public void testLocalizationSame() throws Exception
     {
         WebContext context = newContext();
 
@@ -97,8 +94,7 @@ public class WebContextResourceTest extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testLocalizationMissing()
-        throws Exception
+    public void testLocalizationMissing() throws Exception
     {
         WebContext context = newContext();
 
@@ -128,8 +124,7 @@ public class WebContextResourceTest extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testGetExtensionlessResource()
-        throws Exception
+    public void testGetExtensionlessResource() throws Exception
     {
         WebContext context = newContext();
 

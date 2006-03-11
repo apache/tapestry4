@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,20 +24,20 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.tapestry.portlet.bindings.UserAttributeBindingFactory;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.portlet.bindings.UserAttributeBinding}
- * and {@link org.apache.tapestry.portlet.bindings.UserAttributeBindingFactory}.
+ * Tests for {@link org.apache.tapestry.portlet.bindings.UserAttributeBinding} and
+ * {@link org.apache.tapestry.portlet.bindings.UserAttributeBindingFactory}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class TestUserAttributeBinding extends HiveMindTestCase
 {
-
-    private IBinding newBinding(String bindingDescription, ValueConverter converter, Location location,
-            PortletRequest request, String attributeName)
+    private IBinding newBinding(String bindingDescription, ValueConverter converter,
+            Location location, PortletRequest request, String attributeName)
     {
         UserAttributeBindingFactory factory = new UserAttributeBindingFactory();
         factory.setValueConverter(converter);
@@ -49,7 +49,7 @@ public class TestUserAttributeBinding extends HiveMindTestCase
     private Map newMap(String key, String value)
     {
         MockControl control = newControl(Map.class);
-        Map map = (Map)control.getMock();
+        Map map = (Map) control.getMock();
 
         map.get(key);
         control.setReturnValue(value);
@@ -59,13 +59,13 @@ public class TestUserAttributeBinding extends HiveMindTestCase
 
     private ValueConverter newConverter()
     {
-        return (ValueConverter)newMock(ValueConverter.class);
+        return (ValueConverter) newMock(ValueConverter.class);
     }
 
     private PortletRequest newRequest(Map userInfo)
     {
         MockControl control = newControl(PortletRequest.class);
-        PortletRequest request = (PortletRequest)control.getMock();
+        PortletRequest request = (PortletRequest) control.getMock();
 
         request.getAttribute(PortletRequest.USER_INFO);
         control.setReturnValue(userInfo);
@@ -124,7 +124,7 @@ public class TestUserAttributeBinding extends HiveMindTestCase
         Map map = new HashMap();
 
         MockControl converterc = newControl(ValueConverter.class);
-        ValueConverter converter = (ValueConverter)converterc.getMock();
+        ValueConverter converter = (ValueConverter) converterc.getMock();
         PortletRequest request = newRequest(map);
         Location l = newLocation();
 

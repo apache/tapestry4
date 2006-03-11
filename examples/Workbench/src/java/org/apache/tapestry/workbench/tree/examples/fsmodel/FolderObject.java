@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,16 +22,9 @@ import java.util.Vector;
 import org.apache.tapestry.contrib.tree.model.ITreeNode;
 import org.apache.tapestry.engine.IEngineService;
 
-/** @author tsv? */
 public class FolderObject extends SFObject
 {
 
-    private static final long serialVersionUID = 1889745019885512018L;
-
-    private static final String OPEN_IMAGE = "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeOpen.gif";
-
-    private static final String CLOSED_IMAGE = "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeClosed.gif";
-    
     /**
      * @associates <{File}>
      * @supplierCardinality 0..*
@@ -50,13 +43,15 @@ public class FolderObject extends SFObject
 
     private final IEngineService _assetService;
 
-    public FolderObject(ITreeNode objParent, File objFile, boolean bInvokeInit, IEngineService assetService)
+    public FolderObject(ITreeNode objParent, File objFile, boolean bInvokeInit,
+            IEngineService assetService)
     {
         super(objParent, objFile);
 
         _assetService = assetService;
 
-        if (bInvokeInit) init();
+        if (bInvokeInit)
+            init();
     }
 
     public void reload()
@@ -66,9 +61,12 @@ public class FolderObject extends SFObject
 
         File[] arrFiles = getFile().listFiles();
 
-        if (arrFiles == null) { return; }
+        if (arrFiles == null)
+        {
+            return;
+        }
 
-        for(int i = 0; i < arrFiles.length; i++)
+        for (int i = 0; i < arrFiles.length; i++)
         {
             if (arrFiles[i].isDirectory())
             {
@@ -106,10 +104,13 @@ public class FolderObject extends SFObject
 
     public int getChildNumber(Object objChild)
     {
-        for(int i = 0; i < m_vFolders.size(); i++)
+        for (int i = 0; i < m_vFolders.size(); i++)
         {
             Object objChildFolder = m_vFolders.elementAt(i);
-            if (objChildFolder.equals(objChild)) { return i; }
+            if (objChildFolder.equals(objChild))
+            {
+                return i;
+            }
         }
         return -1;
     }
@@ -157,11 +158,15 @@ public class FolderObject extends SFObject
         return false;
     }
 
+    private final static String openImage = "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeOpen.gif";
+
+    private final static String closedImage = "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeClosed.gif";
+
     public AssetsHolder getAssets()
     {
         if (m_objAssetsHolder == null)
         {
-            m_objAssetsHolder = new AssetsHolder(_assetService, OPEN_IMAGE, CLOSED_IMAGE);
+            m_objAssetsHolder = new AssetsHolder(_assetService, openImage, closedImage);
         }
         return m_objAssetsHolder;
     }

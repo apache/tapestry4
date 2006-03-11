@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,13 +16,11 @@ package org.apache.tapestry.junit.mock.c26;
 
 import java.io.Serializable;
 
-/** Test ASO. */
 public class Global implements Serializable
 {
-
     private static final long serialVersionUID = 7284303490795022189L;
-
-    private String _name = "Osamu Tezuka";
+    
+	private String _name = "Osamu Tezuka";
 
     public String getName()
     {

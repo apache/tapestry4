@@ -52,14 +52,27 @@
     <th>Description</th>
   </tr>
     <tr>
-      <td>script</td>
+      <td>scriptPath</td>
       <td>String</td>
 
       <td>in</td>
-      <td>yes</td>
+      <td>no</td>
       <td>&nbsp;</td>
       <td>
-        The path of a resource (on the classpath) containing the script.
+        The path of a resource (on the classpath) containing the script. One of either
+        scriptPath or scriptAsset must be specified.
+      </td>
+    </tr>
+    <tr>
+      <td>scriptAsset</td>
+      <td>&IAsset;</td>
+
+      <td>in</td>
+      <td>no</td>
+      <td>&nbsp;</td>
+      <td>
+        A reference to a script as an &IAsset; parameter. One of either
+        scriptPath or scriptAsset must be specified.
       </td>
     </tr>
     <tr>

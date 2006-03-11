@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -91,24 +91,22 @@ public abstract class DirectoryTableView extends BaseComponent implements PageDe
             ArrayList arrColumnsList = new ArrayList();
             arrColumnsList.add(new SimpleTableColumn("Name", true)
             {
-
                 private static final long serialVersionUID = -5394217017984056107L;
 
-                public Object getColumnValue(Object objValue)
+				public Object getColumnValue(Object objValue)
                 {
-                    SFObject objSFObject = (SFObject)objValue;
+                    SFObject objSFObject = (SFObject) objValue;
                     return objSFObject.getName();
                 }
             });
 
             arrColumnsList.add(new SimpleTableColumn("Date", true)
             {
-
                 private static final long serialVersionUID = -3258043732869364037L;
 
-                public Object getColumnValue(Object objValue)
+				public Object getColumnValue(Object objValue)
                 {
-                    SFObject objSFObject = (SFObject)objValue;
+                    SFObject objSFObject = (SFObject) objValue;
                     return objSFObject.getDate();
                 }
             });
@@ -124,7 +122,7 @@ public abstract class DirectoryTableView extends BaseComponent implements PageDe
         if (m_objSelectedFolderSource == null)
         {
             IBinding objBinding = getBinding("selectedFolderSource");
-            m_objSelectedFolderSource = (ISelectedFolderSource)objBinding.getObject();
+            m_objSelectedFolderSource = (ISelectedFolderSource) objBinding.getObject();
         }
         return m_objSelectedFolderSource;
     }
@@ -132,7 +130,7 @@ public abstract class DirectoryTableView extends BaseComponent implements PageDe
     public void resetState()
     {
         initialize();
-        Table objTable = (Table)getComponent("table");
+        Table objTable = (Table) getComponent("table");
         objTable.reset();
     }
 

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,15 +33,15 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 
 /**
- * Component of the {@link Inspector} page used to display the specification,
- * parameters and bindings and assets of the inspected component.
+ * Component of the {@link Inspector} page used to display the specification, parameters and
+ * bindings and assets of the inspected component.
  * 
  * @author Howard Lewis Ship
  */
 
-public abstract class ShowSpecification extends BaseComponent implements PageBeginRenderListener, PageEndRenderListener
+public abstract class ShowSpecification extends BaseComponent implements PageBeginRenderListener,
+        PageEndRenderListener
 {
-
     private IComponent _inspectedComponent;
 
     private IComponentSpecification _inspectedSpecification;
@@ -68,10 +68,8 @@ public abstract class ShowSpecification extends BaseComponent implements PageBeg
 
     private IBeanSpecification _beanSpecification;
 
-    /** Sorts two components by their id's. */
     private static class ComponentComparitor implements Comparator
     {
-
         public int compare(Object left, Object right)
         {
             IComponent leftComponent;
@@ -79,10 +77,11 @@ public abstract class ShowSpecification extends BaseComponent implements PageBeg
             IComponent rightComponent;
             String rightId;
 
-            if (left == right) return 0;
+            if (left == right)
+                return 0;
 
-            leftComponent = (IComponent)left;
-            rightComponent = (IComponent)right;
+            leftComponent = (IComponent) left;
+            rightComponent = (IComponent) right;
 
             leftId = leftComponent.getId();
             rightId = rightComponent.getId();
@@ -92,8 +91,8 @@ public abstract class ShowSpecification extends BaseComponent implements PageBeg
     }
 
     /**
-     * Clears all cached information about the component and such after each
-     * render (including the rewind phase render used to process the tab view).
+     * Clears all cached information about the component and such after each render (including the
+     * rewind phase render used to process the tab view).
      * 
      * @since 1.0.5
      */
@@ -116,15 +115,14 @@ public abstract class ShowSpecification extends BaseComponent implements PageBeg
     }
 
     /**
-     * Gets the inspected component and specification from the {@link Inspector}
-     * page.
+     * Gets the inspected component and specification from the {@link Inspector} page.
      * 
      * @since 1.0.5
      */
 
     public void pageBeginRender(PageEvent event)
     {
-        Inspector inspector = (Inspector)getPage();
+        Inspector inspector = (Inspector) getPage();
 
         _inspectedComponent = inspector.getInspectedComponent();
         _inspectedSpecification = _inspectedComponent.getSpecification();
@@ -146,19 +144,21 @@ public abstract class ShowSpecification extends BaseComponent implements PageBeg
 
     public List getFormalParameterNames()
     {
-        if (_formalParameterNames == null) _formalParameterNames = sort(_inspectedSpecification.getParameterNames());
+        if (_formalParameterNames == null)
+            _formalParameterNames = sort(_inspectedSpecification.getParameterNames());
 
         return _formalParameterNames;
     }
 
     /**
-     * Returns a sorted list of informal parameter names. This is the list of
-     * all bindings, with the list of parameter names removed, sorted.
+     * Returns a sorted list of informal parameter names. This is the list of all bindings, with the
+     * list of parameter names removed, sorted.
      */
 
     public List getInformalParameterNames()
     {
-        if (_informalParameterNames != null) return _informalParameterNames;
+        if (_informalParameterNames != null)
+            return _informalParameterNames;
 
         Collection names = _inspectedComponent.getBindingNames();
         if (names != null && names.size() > 0)
@@ -171,7 +171,8 @@ public abstract class ShowSpecification extends BaseComponent implements PageBeg
             // name).
 
             names = _inspectedSpecification.getParameterNames();
-            if (names != null) _informalParameterNames.removeAll(names);
+            if (names != null)
+                _informalParameterNames.removeAll(names);
 
             Collections.sort(_informalParameterNames);
         }
@@ -190,8 +191,8 @@ public abstract class ShowSpecification extends BaseComponent implements PageBeg
     }
 
     /**
-     * Returns the {@link org.apache.tapestry.spec.ParameterSpecification}
-     * corresponding to the value of the parameterName property.
+     * Returns the {@link org.apache.tapestry.spec.ParameterSpecification} corresponding to the
+     * value of the parameterName property.
      */
 
     public IParameterSpecification getParameterSpecification()
@@ -200,8 +201,7 @@ public abstract class ShowSpecification extends BaseComponent implements PageBeg
     }
 
     /**
-     * Returns the {@link IBinding} corresponding to the value of the
-     * parameterName property.
+     * Returns the {@link IBinding} corresponding to the value of the parameterName property.
      */
 
     public IBinding getBinding()
@@ -220,32 +220,32 @@ public abstract class ShowSpecification extends BaseComponent implements PageBeg
     }
 
     /**
-     * Returns the {@link IAsset} corresponding to the value of the assetName
-     * property.
+     * Returns the {@link IAsset} corresponding to the value of the assetName property.
      */
 
     public IAsset getAsset()
     {
-        return (IAsset)_inspectedComponent.getAssets().get(_assetName);
+        return (IAsset) _inspectedComponent.getAssets().get(_assetName);
     }
 
     /**
-     * Returns a sorted list of asset names, or null if the component contains
-     * no assets.
+     * Returns a sorted list of asset names, or null if the component contains no assets.
      */
 
     public List getAssetNames()
     {
-        if (_assetNames == null) _assetNames = sort(_inspectedComponent.getAssets().keySet());
+        if (_assetNames == null)
+            _assetNames = sort(_inspectedComponent.getAssets().keySet());
 
         return _assetNames;
     }
 
     public List getSortedComponents()
     {
-        if (_sortedComponents != null) return _sortedComponents;
+        if (_sortedComponents != null)
+            return _sortedComponents;
 
-        Inspector inspector = (Inspector)getPage();
+        Inspector inspector = (Inspector) getPage();
         IComponent inspectedComponent = inspector.getInspectedComponent();
 
         // Get a Map of the components and simply return null if there
@@ -265,13 +265,14 @@ public abstract class ShowSpecification extends BaseComponent implements PageBeg
     public abstract IComponent getCurrentComponent();
 
     /**
-     * Returns a list of the properties for the component (from its
-     * specification), or null if the component has no properties.
+     * Returns a list of the properties for the component (from its specification), or null if the
+     * component has no properties.
      */
 
     public List getSortedPropertyNames()
     {
-        if (_sortedPropertyNames == null) _sortedPropertyNames = sort(_inspectedSpecification.getPropertyNames());
+        if (_sortedPropertyNames == null)
+            _sortedPropertyNames = sort(_inspectedSpecification.getPropertyNames());
 
         return _sortedPropertyNames;
     }
@@ -293,7 +294,8 @@ public abstract class ShowSpecification extends BaseComponent implements PageBeg
 
     public List getBeanNames()
     {
-        if (_beanNames == null) _beanNames = sort(_inspectedSpecification.getBeanNames());
+        if (_beanNames == null)
+            _beanNames = sort(_inspectedSpecification.getBeanNames());
 
         return _beanNames;
     }
@@ -316,7 +318,8 @@ public abstract class ShowSpecification extends BaseComponent implements PageBeg
 
     private List sort(Collection c)
     {
-        if (c == null || c.size() == 0) return null;
+        if (c == null || c.size() == 0)
+            return null;
 
         List result = new ArrayList(c);
 

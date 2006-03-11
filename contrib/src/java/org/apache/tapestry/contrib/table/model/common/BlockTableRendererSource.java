@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,96 +25,102 @@ import org.apache.tapestry.contrib.table.model.ITableRendererSource;
 import org.apache.tapestry.util.ComponentAddress;
 
 /**
+ * 
  * @author mindbridge
  * @since 2.3
  */
 public class BlockTableRendererSource implements ITableRendererSource
 {
+	private static final long serialVersionUID = 1L;
+	
+	private ComponentAddress m_objBlockAddress;
+	private ComponentAddress m_objListenerAddress;
 
-    private static final long serialVersionUID = 1L;
+	public BlockTableRendererSource(Block objBlock)
+	{
+		this(new ComponentAddress(objBlock));
+	}
 
-    private ComponentAddress m_objBlockAddress;
-    private ComponentAddress m_objListenerAddress;
+	public BlockTableRendererSource(
+		Block objBlock,
+		ITableRendererListener objListener)
+	{
+		this(new ComponentAddress(objBlock), new ComponentAddress(objListener));
+	}
 
-    public BlockTableRendererSource(Block objBlock)
-    {
-        this(new ComponentAddress(objBlock));
-    }
+	public BlockTableRendererSource(ComponentAddress objBlockAddress)
+	{
+		this(objBlockAddress, null);
+	}
 
-    public BlockTableRendererSource(Block objBlock, ITableRendererListener objListener)
-    {
-        this(new ComponentAddress(objBlock), new ComponentAddress(objListener));
-    }
+	public BlockTableRendererSource(
+		ComponentAddress objBlockAddress,
+		ComponentAddress objListenerAddress)
+	{
+		setBlockAddress(objBlockAddress);
+		setListenerAddress(objListenerAddress);
+	}
 
-    public BlockTableRendererSource(ComponentAddress objBlockAddress)
-    {
-        this(objBlockAddress, null);
-    }
+	/**
+	 * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
+	 */
+	public IRender getRenderer(
+		IRequestCycle objCycle,
+		ITableModelSource objSource,
+		ITableColumn objColumn,
+		Object objRow)
+	{
+		ComponentAddress objListenerAddress = getListenerAddress();
+		if (objListenerAddress != null)
+		{
+			ITableRendererListener objListener =
+				(ITableRendererListener) objListenerAddress.findComponent(
+					objCycle);
+			objListener.initializeRenderer(
+				objCycle,
+				objSource,
+				objColumn,
+				objRow);
+		}
 
-    public BlockTableRendererSource(ComponentAddress objBlockAddress, ComponentAddress objListenerAddress)
-    {
-        setBlockAddress(objBlockAddress);
-        setListenerAddress(objListenerAddress);
-    }
+		Block objBlock = (Block) getBlockAddress().findComponent(objCycle);
+		return new BlockRenderer(objBlock);
+	}
 
-    /**
-     * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle,
-     *      ITableModelSource, ITableColumn, Object)
-     */
-    public IRender getRenderer(IRequestCycle objCycle, ITableModelSource objSource, ITableColumn objColumn,
-            Object objRow)
-    {
-        ComponentAddress objListenerAddress = getListenerAddress();
-        if (objListenerAddress != null)
-        {
-            ITableRendererListener objListener = (ITableRendererListener)objListenerAddress.findComponent(objCycle);
-            objListener.initializeRenderer(objCycle, objSource, objColumn, objRow);
-        }
+	/**
+	 * Returns the blockAddress.
+	 * @return ComponentAddress
+	 */
+	public ComponentAddress getBlockAddress()
+	{
+		return m_objBlockAddress;
+	}
 
-        Block objBlock = (Block)getBlockAddress().findComponent(objCycle);
-        return new BlockRenderer(objBlock);
-    }
+	/**
+	 * Sets the blockAddress.
+	 * @param blockAddress The blockAddress to set
+	 */
+	public void setBlockAddress(ComponentAddress blockAddress)
+	{
+		m_objBlockAddress = blockAddress;
+	}
 
-    /**
-     * Returns the blockAddress.
-     * 
-     * @return ComponentAddress
-     */
-    public ComponentAddress getBlockAddress()
-    {
-        return m_objBlockAddress;
-    }
+	/**
+	 * Returns the listenerAddress.
+	 * @return ComponentAddress
+	 */
+	public ComponentAddress getListenerAddress()
+	{
+		return m_objListenerAddress;
+	}
 
-    /**
-     * Sets the blockAddress.
-     * 
-     * @param blockAddress
-     *            The blockAddress to set
-     */
-    public void setBlockAddress(ComponentAddress blockAddress)
-    {
-        m_objBlockAddress = blockAddress;
-    }
-
-    /**
-     * Returns the listenerAddress.
-     * 
-     * @return ComponentAddress
-     */
-    public ComponentAddress getListenerAddress()
-    {
-        return m_objListenerAddress;
-    }
-
-    /**
-     * Sets the listenerAddress.
-     * 
-     * @param listenerAddress
-     *            The listenerAddress to set
-     */
-    public void setListenerAddress(ComponentAddress listenerAddress)
-    {
-        m_objListenerAddress = listenerAddress;
-    }
+	/**
+	 * Sets the listenerAddress.
+	 * @param listenerAddress The listenerAddress to set
+	 */
+	public void setListenerAddress(ComponentAddress listenerAddress)
+	{
+		m_objListenerAddress = listenerAddress;
+	}
 
 }

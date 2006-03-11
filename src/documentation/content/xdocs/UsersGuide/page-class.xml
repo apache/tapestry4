@@ -84,7 +84,7 @@ default page class names in the application specification and beyond.
 
 <note>
 These steps are specified in the
-<link href="&hivedoc;/config/tapestry.page.PageClassProviderChain">tapestry.page.PageClassProviderChain</link>
+<link href="&hivedoc;/config/tapestry.page.PageClassProviderChain.html">tapestry.page.PageClassProviderChain</link>
 configuration point.
 </note>
 
@@ -112,7 +112,7 @@ A similar search occurs for components (again, with the express desire that the 
 
 <note>
 These steps are specified in the
-<link href="&hivedoc;/config/tapestry.page.ComponentClassProviderChain">tapestry.page.ComponentClassProviderChain</link>
+<link href="&hivedoc;/config/tapestry.page.ComponentClassProviderChain.html">tapestry.page.ComponentClassProviderChain</link>
 configuration point.
 </note>
 </section>

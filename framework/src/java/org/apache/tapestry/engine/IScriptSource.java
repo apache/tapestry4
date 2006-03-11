@@ -31,5 +31,5 @@ public interface IScriptSource
      * reading and parsing the script if necessary.
      */
 
-    IScript getScript(Resource resource);
+    public IScript getScript(Resource resource);
 }

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,16 +23,14 @@ import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- * No, this class isn't abstract ... this worker locates abstract properties in
- * the base component class and provides a concrete implementation for them in
- * the enhanced class.
+ * No, this class isn't abstract ... this worker locates abstract properties in the base component
+ * class and provides a concrete implementation for them in the enhanced class.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class AbstractPropertyWorker implements EnhancementWorker
 {
-
     private ErrorLog _errorLog;
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
@@ -41,9 +39,9 @@ public class AbstractPropertyWorker implements EnhancementWorker
 
         Iterator i = op.findUnclaimedAbstractProperties().iterator();
 
-        while(i.hasNext())
+        while (i.hasNext())
         {
-            String name = (String)i.next();
+            String name = (String) i.next();
 
             try
             {
@@ -51,7 +49,10 @@ public class AbstractPropertyWorker implements EnhancementWorker
             }
             catch (Exception ex)
             {
-                _errorLog.error(EnhanceMessages.errorAddingProperty(name, op.getBaseClass(), ex), location, ex);
+                _errorLog.error(
+                        EnhanceMessages.errorAddingProperty(name, op.getBaseClass(), ex),
+                        location,
+                        ex);
             }
         }
     }
@@ -74,13 +75,17 @@ public class AbstractPropertyWorker implements EnhancementWorker
         // Copy the real attribute into the default attribute inside finish load
         // (allowing a default value to be set inside finishLoad()).
 
-        op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE, defaultFieldName + " = "
-                + fieldName + ";");
+        op.extendMethodImplementation(
+                IComponent.class,
+                EnhanceUtils.FINISH_LOAD_SIGNATURE,
+                defaultFieldName + " = " + fieldName + ";");
 
         // On page detach, restore the attribute to its default value.
 
-        op.extendMethodImplementation(PageDetachListener.class, EnhanceUtils.PAGE_DETACHED_SIGNATURE, fieldName + " = "
-                + defaultFieldName + ";");
+        op.extendMethodImplementation(
+                PageDetachListener.class,
+                EnhanceUtils.PAGE_DETACHED_SIGNATURE,
+                fieldName + " = " + defaultFieldName + ";");
 
         // This is not all that necessary, but is proper.
 

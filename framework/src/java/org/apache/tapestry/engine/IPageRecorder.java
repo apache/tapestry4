@@ -37,7 +37,7 @@ public interface IPageRecorder extends ChangeObserver
      * After commiting, a page recorder automatically locks itself.
      */
 
-    void commit();
+    public void commit();
 
     /**
      * Rolls back the page to the currently persisted state.
@@ -47,5 +47,5 @@ public interface IPageRecorder extends ChangeObserver
      * {@link org.apache.tapestry.event.PageDetachListener#pageDetached(org.apache.tapestry.event.PageEvent)}.
      */
 
-    void rollback(IPage page);
+    public void rollback(IPage page);
 }

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@ import java.util.Locale;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.valid.UrlValidator;
+import org.apache.tapestry.valid.ValidationConstraint;
+import org.apache.tapestry.valid.ValidatorException;
 import org.easymock.MockControl;
 
 /**
@@ -30,11 +33,9 @@ import org.easymock.MockControl;
 
 public class TestUrlValidator extends BaseValidatorTestCase
 {
-
     private UrlValidator v = new UrlValidator();
 
-    public void testValidUrl()
-        throws ValidatorException
+    public void testValidUrl() throws ValidatorException
     {
         IFormComponent field = newField();
 
@@ -81,7 +82,8 @@ public class TestUrlValidator extends BaseValidatorTestCase
         }
         catch (ValidatorException ex)
         {
-            assertEquals("Try a valid URL (for url), like \"http://www.google.com\"", ex.getMessage());
+            assertEquals("Try a valid URL (for url), like \"http://www.google.com\"", ex
+                    .getMessage());
         }
 
         verifyControls();
@@ -135,7 +137,7 @@ public class TestUrlValidator extends BaseValidatorTestCase
     {
         IPage page = newPage(Locale.ENGLISH);
         MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent)control.getMock();
+        IFormComponent field = (IFormComponent) control.getMock();
 
         field.getPage();
         control.setReturnValue(page);

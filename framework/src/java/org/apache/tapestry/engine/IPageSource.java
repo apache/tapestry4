@@ -48,19 +48,19 @@ public interface IPageSource
      * @see org.apache.tapestry.resolver.PageSpecificationResolver#resolve(IRequestCycle, String)
      */
 
-    IPage getPage(IRequestCycle cycle, String pageName, IMonitor monitor);
+    public IPage getPage(IRequestCycle cycle, String pageName, IMonitor monitor);
 
     /**
      * Invoked after the engine is done with the page (typically, after the response to the client
      * has been sent). The page is returned to the pool for later reuse.
      */
 
-    void releasePage(IPage page);
+    public void releasePage(IPage page);
 
     /**
      * @since 3.0
      */
 
-    ClassResolver getClassResolver();
+    public ClassResolver getClassResolver();
 
 }

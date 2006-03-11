@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,27 +20,20 @@ import java.util.Set;
  * @author ceco
  */
 
-public interface ITreeStateModel
-{
+public interface ITreeStateModel {
+	Set getExpandSelection();
+	/*
+	 * Return the selected node unique key
+	 */
+	Object getSelectedNode();	
+	public void setSelectedNode(Object objUniqueKey);
 
-    Set getExpandSelection();
+	void expand(Object objUniqueKey);
+	void expandPath(Object objUniqueKey);
+	void collapse(Object objUniqueKey);
+	void collapsePath(Object objUniqueKey);
 
-    /*
-     * Return the selected node unique key
-     */
-    Object getSelectedNode();
-
-    void setSelectedNode(Object objUniqueKey);
-
-    void expand(Object objUniqueKey);
-
-    void expandPath(Object objUniqueKey);
-
-    void collapse(Object objUniqueKey);
-
-    void collapsePath(Object objUniqueKey);
-
-    boolean isUniqueKeyExpanded(Object objUniqueKey);
-
-    void resetState();
+	boolean isUniqueKeyExpanded(Object objUniqueKey);
+	
+	void resetState();
 }

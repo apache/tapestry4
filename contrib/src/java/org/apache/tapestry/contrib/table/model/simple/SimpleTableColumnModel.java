@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 import org.apache.tapestry.contrib.table.model.common.ArrayIterator;
 
 /**
- * A minimal implementation of the
+ * A minimal implementation of the 
  * {@link org.apache.tapestry.contrib.table.model.ITableColumnModel} interface
  * that stores columns as an array.
  * 
@@ -33,9 +33,8 @@ import org.apache.tapestry.contrib.table.model.common.ArrayIterator;
  */
 public class SimpleTableColumnModel implements ITableColumnModel, Serializable
 {
-
-    private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = 1L;
+	
     private ITableColumn[] m_arrColumns;
     private Map m_mapColumns;
 
@@ -44,13 +43,13 @@ public class SimpleTableColumnModel implements ITableColumnModel, Serializable
         m_arrColumns = arrColumns;
 
         m_mapColumns = new HashMap();
-        for(int i = 0; i < m_arrColumns.length; i++)
+        for (int i = 0; i < m_arrColumns.length; i++)
             m_mapColumns.put(m_arrColumns[i].getColumnName(), m_arrColumns[i]);
     }
 
     public SimpleTableColumnModel(List arrColumns)
     {
-        this((ITableColumn[])arrColumns.toArray(new ITableColumn[arrColumns.size()]));
+        this((ITableColumn[]) arrColumns.toArray(new ITableColumn[arrColumns.size()]));
     }
 
     public int getColumnCount()
@@ -70,7 +69,7 @@ public class SimpleTableColumnModel implements ITableColumnModel, Serializable
 
     public ITableColumn getColumn(String strColumn)
     {
-        return (ITableColumn)m_mapColumns.get(strColumn);
+        return (ITableColumn) m_mapColumns.get(strColumn);
     }
 
     public Iterator getColumns()

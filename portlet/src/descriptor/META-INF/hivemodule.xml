@@ -25,6 +25,7 @@
   <sub-module descriptor="tapestry.portlet.services.xml"/>
   <sub-module descriptor="tapestry.portlet.resolver.xml"/>
   <sub-module descriptor="tapestry.portlet.bindings.xml"/>
+  <sub-module descriptor="tapestry.portlet.multipart.xml"/>
   
   <configuration-point id="PortletApplicationInitializers" schema-id="hivemind.lib.ChainContribution">
     
@@ -198,7 +199,6 @@
         <set-object property="dataSqueezer" value="infrastructure:dataSqueezer"/>
         <set-configuration property="contributions" configuration-id="tapestry.url.ServiceEncoders"/>
         <set-service property="renderResponse" service-id="RenderResponse"/>
-        <set-object property="requestCycle" value="infrastructure:requestCycle"/>        
       </construct>
     </invoke-factory>
     

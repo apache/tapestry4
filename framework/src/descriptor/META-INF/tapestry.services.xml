@@ -77,8 +77,6 @@
         <set-service property="context" service-id="tapestry.globals.WebContext"/>
         <set-object property="response" value="service:tapestry.globals.WebResponse"/>
         <set-service property="digestSource" service-id="tapestry.asset.ResourceDigestSource"/>
-        <set-service property="unprotectedMatcher" 
-                     service-id="tapestry.asset.UnprotectedResourceMatcher" />
       </construct>
     </invoke-factory>
   </service-point>  

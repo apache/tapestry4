@@ -19,8 +19,8 @@ import java.util.Locale;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.services.EngineFactory;
 import org.apache.tapestry.services.EngineManager;
-import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.RequestLocaleManager;
+import org.apache.tapestry.services.ObjectPool;
 
 /**
  * Implementation of service {@link org.apache.tapestry.services.EngineManager}.

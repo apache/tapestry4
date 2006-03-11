@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,32 +14,19 @@
 
 package org.apache.tapestry.util.io;
 
-import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 
-/**
- * Messages for this package.
- * 
- * @author Howard M. Lewis Ship
- * @since 4.0
- */
-final class IoMessages
+class IoMessages
 {
-
-    private static final Messages MESSAGES = new MessageFormatter(IoMessages.class);
-
-    /** @since 4.1 */
-    private IoMessages()
-    {
-    }
+    private static final MessageFormatter _formatter = new MessageFormatter(IoMessages.class);
 
     static String encodeFailure(Object object, Throwable cause)
     {
-        return MESSAGES.format("encode-failure", object, cause);
+        return _formatter.format("encode-failure", object, cause);
     }
 
     static String decodeFailure(Throwable cause)
     {
-        return MESSAGES.format("decode-failure", cause);
+        return _formatter.format("decode-failure", cause);
     }
 }

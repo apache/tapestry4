@@ -22,16 +22,8 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.AbstractBindingFactory;
 
-/**
- * Binding factory that creates instances of
- * {@link org.apache.tapestry.form.validator.ValidatorsBinding}.
- * 
- * @author Howard M. Lewis Ship
- * @since 4.0
- */
 public class ValidatorsBindingFactory extends AbstractBindingFactory
 {
-
     private ValidatorFactory _validatorFactory;
 
     public void setValidatorFactory(ValidatorFactory validatorFactory)
@@ -39,13 +31,15 @@ public class ValidatorsBindingFactory extends AbstractBindingFactory
         _validatorFactory = validatorFactory;
     }
 
-    public IBinding createBinding(IComponent root, String bindingDescription, String expression, Location location)
+    public IBinding createBinding(IComponent root, String bindingDescription, String expression,
+            Location location)
     {
         try
         {
             List validators = _validatorFactory.constructValidatorList(root, expression);
 
-            return new ValidatorsBinding(bindingDescription, getValueConverter(), location, validators);
+            return new ValidatorsBinding(bindingDescription, getValueConverter(), location,
+                    validators);
         }
         catch (Exception ex)
         {

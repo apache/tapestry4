@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,16 +17,18 @@ package org.apache.tapestry.spec;
 import org.apache.hivemind.util.ToStringBuilder;
 
 /**
- * Defines the configuration for a Tapestry application. An
- * ApplicationSpecification extends {@link LibrarySpecification} by adding new
- * properties name and engineClassName.
- * 
- * @author Howard Lewis Ship
- */
+ *  Defines the configuration for a Tapestry application.  An ApplicationSpecification
+ *  extends {@link LibrarySpecification} by adding new properties
+ *  name and engineClassName.
+ *
+ *  @author Howard Lewis Ship
+ *
+ **/
 
-public class ApplicationSpecification extends LibrarySpecification implements IApplicationSpecification
+public class ApplicationSpecification
+    extends LibrarySpecification
+    implements IApplicationSpecification
 {
-
     private String _name;
     private String _engineClassName;
 

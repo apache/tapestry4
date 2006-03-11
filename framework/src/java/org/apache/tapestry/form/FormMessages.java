@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 package org.apache.tapestry.form;
 
 import org.apache.hivemind.HiveMind;
-import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.IComponent;
 
@@ -23,48 +22,51 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-final class FormMessages
+class FormMessages
 {
-
-    private final static Messages MESSAGES = new MessageFormatter(FormMessages.class);
-
-    /** @since 4.1 */
-    private FormMessages()
-    {
-    }
+    private final static MessageFormatter _formatter = new MessageFormatter(FormMessages.class);
 
     static String formTooManyIds(IComponent form, int actualCount, IComponent component)
     {
-        return MESSAGES.format("form-too-many-ids", form.getExtendedId(), new Integer(actualCount), component
-                .getExtendedId());
+        return _formatter.format(
+                "form-too-many-ids",
+                form.getExtendedId(),
+                new Integer(actualCount),
+                component.getExtendedId());
     }
 
-    static String formIdMismatch(IComponent form, int mismatchIndex, String expectedId, String actualId,
-            IComponent component)
+    static String formIdMismatch(IComponent form, int mismatchIndex, String expectedId,
+            String actualId, IComponent component)
     {
-        return MESSAGES.format("form-id-mismatch", new Object[] { form.getExtendedId(), new Integer(mismatchIndex + 1),
-                expectedId, actualId, component.getExtendedId() });
+        return _formatter.format("form-id-mismatch", new Object[]
+        { form.getExtendedId(), new Integer(mismatchIndex + 1), expectedId, actualId,
+                component.getExtendedId() });
     }
 
     static String formTooFewIds(IComponent form, int remainingCount, String nextExpectedId)
     {
-        return MESSAGES.format("form-too-few-ids", form.getExtendedId(), new Integer(remainingCount), nextExpectedId);
+        return _formatter.format("form-too-few-ids", form.getExtendedId(), new Integer(
+                remainingCount), nextExpectedId);
     }
 
-    static String encodingTypeContention(IComponent form, String establishedEncodingType, String newEncodingType)
+    static String encodingTypeContention(IComponent form, String establishedEncodingType,
+            String newEncodingType)
     {
-        return MESSAGES.format("encoding-type-contention", form.getExtendedId(), establishedEncodingType,
+        return _formatter.format(
+                "encoding-type-contention",
+                form.getExtendedId(),
+                establishedEncodingType,
                 newEncodingType);
     }
 
     static String fieldAlreadyPrerendered(IComponent field)
     {
-        return MESSAGES.format("field-already-prerendered", field);
+        return _formatter.format("field-already-prerendered", field);
     }
 
     static String linkSubmitMayNotNest(IComponent inner, IComponent outer)
     {
-        return MESSAGES.format("link-submit-may-not-nest", inner.getExtendedId(), outer.getExtendedId(), HiveMind
-                .getLocationString(outer));
+        return _formatter.format("link-submit-may-not-nest", inner.getExtendedId(), outer
+                .getExtendedId(), HiveMind.getLocationString(outer));
     }
 }

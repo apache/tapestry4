@@ -36,8 +36,6 @@ public class PortletLinkFactoryImpl extends LinkFactoryImpl
 {
     private RenderResponse _renderResponse;
 
-    private IRequestCycle _requestCycle;
-
     public void setRenderResponse(RenderResponse renderResponse)
     {
         _renderResponse = renderResponse;
@@ -50,11 +48,6 @@ public class PortletLinkFactoryImpl extends LinkFactoryImpl
 
         PortletURL url = _renderResponse.createActionURL();
 
-        return new PortletLink(_requestCycle, url, new QueryParameterMap(parameters), stateful);
-    }
-
-    public void setRequestCycle(IRequestCycle requestCycle)
-    {
-        _requestCycle = requestCycle;
+        return new PortletLink(url, new QueryParameterMap(parameters));
     }
 }

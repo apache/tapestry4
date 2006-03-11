@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,31 +19,29 @@ import org.apache.tapestry.contrib.table.model.ITableModelSource;
 import org.apache.tapestry.util.ComponentAddress;
 
 /**
- * A low level Table component that renders the pages in the table. This
- * component must be wrapped by
- * {@link org.apache.tapestry.contrib.table.components.TableView}.
+ * A low level Table component that renders the pages in the table.
+ * This component must be wrapped by {@link org.apache.tapestry.contrib.table.components.TableView}.
  * <p>
- * The component generates a list of pages in the Table centered around the
+ * The component generates a list of pages in the Table centered around the 
  * current one and allows you to navigate to other pages.
- * <p>
- * Please see the Component Reference for details on how to use this component. [<a
- * href="../../../../../../../ComponentReference/contrib.TablePages.html">Component
- * Reference</a>]
+ * <p> 
+ * Please see the Component Reference for details on how to use this component. 
+ * 
+ *  [<a href="../../../../../../../ComponentReference/contrib.TablePages.html">Component Reference</a>]
  * 
  * @author mindbridge
+ *
  */
 public abstract class TablePages extends AbstractTableViewComponent
 {
+    // Bindings    
+    public abstract int getPagesDisplayed();
 
     // Transient
     private int m_nDisplayPage;
 
-    // Bindings
-    public abstract int getPagesDisplayed();
-
     /**
      * Returns the displayPage.
-     * 
      * @return int
      */
     public int getDisplayPage()
@@ -53,9 +51,7 @@ public abstract class TablePages extends AbstractTableViewComponent
 
     /**
      * Sets the displayPage.
-     * 
-     * @param displayPage
-     *            The displayPage to set
+     * @param displayPage The displayPage to set
      */
     public void setDisplayPage(int displayPage)
     {
@@ -97,12 +93,14 @@ public abstract class TablePages extends AbstractTableViewComponent
         int nLastPage = getPageCount();
 
         int nLeftAddon = 0;
-        if (nStop > nLastPage) nLeftAddon = nStop - nLastPage;
+        if (nStop > nLastPage)
+            nLeftAddon = nStop - nLastPage;
 
         int nLeftMargin = (nPagesDisplayed - 1) / 2 + nLeftAddon;
         int nStart = nCurrent - nLeftMargin;
         int nFirstPage = 1;
-        if (nStart < nFirstPage) nStart = nFirstPage;
+        if (nStart < nFirstPage)
+            nStart = nFirstPage;
         return nStart;
     }
 
@@ -116,12 +114,14 @@ public abstract class TablePages extends AbstractTableViewComponent
         int nFirstPage = 1;
 
         int nRightAddon = 0;
-        if (nStart < nFirstPage) nRightAddon = nFirstPage - nStart;
+        if (nStart < nFirstPage)
+            nRightAddon = nFirstPage - nStart;
 
         int nRightMargin = nPagesDisplayed / 2 + nRightAddon;
         int nStop = nCurrent + nRightMargin;
         int nLastPage = getPageCount();
-        if (nStop > nLastPage) nStop = nLastPage;
+        if (nStop > nLastPage)
+            nStop = nLastPage;
         return nStop;
     }
 
@@ -131,7 +131,7 @@ public abstract class TablePages extends AbstractTableViewComponent
         int nStop = getStopPage();
 
         Integer[] arrPages = new Integer[nStop - nStart + 1];
-        for(int i = nStart; i <= nStop; i++)
+        for (int i = nStart; i <= nStop; i++)
             arrPages[i - nStart] = new Integer(i);
 
         return arrPages;
@@ -140,46 +140,47 @@ public abstract class TablePages extends AbstractTableViewComponent
     public Object[] getFirstPageContext()
     {
         ComponentAddress objAddress = new ComponentAddress(getTableModelSource());
-        return new Object[] { objAddress, new Integer(1) };
+        return new Object[] { objAddress, new Integer(1)};
     }
 
     public Object[] getLastPageContext()
     {
         ComponentAddress objAddress = new ComponentAddress(getTableModelSource());
-        return new Object[] { objAddress, new Integer(getPageCount()) };
+        return new Object[] { objAddress, new Integer(getPageCount())};
     }
 
     public Object[] getBackPageContext()
     {
         ComponentAddress objAddress = new ComponentAddress(getTableModelSource());
-        return new Object[] { objAddress, new Integer(getCurrentPage() - 1) };
+        return new Object[] { objAddress, new Integer(getCurrentPage() - 1)};
     }
 
     public Object[] getFwdPageContext()
     {
         ComponentAddress objAddress = new ComponentAddress(getTableModelSource());
-        return new Object[] { objAddress, new Integer(getCurrentPage() + 1) };
+        return new Object[] { objAddress, new Integer(getCurrentPage() + 1)};
     }
 
     public Object[] getDisplayPageContext()
     {
         ComponentAddress objAddress = new ComponentAddress(getTableModelSource());
-        return new Object[] { objAddress, new Integer(m_nDisplayPage) };
+        return new Object[] { objAddress, new Integer(m_nDisplayPage)};
     }
 
     public void changePage(IRequestCycle objCycle)
     {
         Object[] arrParameters = objCycle.getListenerParameters();
-        if (arrParameters.length != 2 && !(arrParameters[0] instanceof ComponentAddress)
-                && !(arrParameters[1] instanceof Integer))
+        if (arrParameters.length != 2
+            && !(arrParameters[0] instanceof ComponentAddress)
+            && !(arrParameters[1] instanceof Integer))
         {
             // error
             return;
         }
 
-        ComponentAddress objAddress = (ComponentAddress)arrParameters[0];
-        ITableModelSource objSource = (ITableModelSource)objAddress.findComponent(objCycle);
-        setCurrentPage(objSource, ((Integer)arrParameters[1]).intValue());
+        ComponentAddress objAddress = (ComponentAddress) arrParameters[0];
+        ITableModelSource objSource = (ITableModelSource) objAddress.findComponent(objCycle);
+        setCurrentPage(objSource, ((Integer) arrParameters[1]).intValue());
 
         // ensure that the change is saved
         objSource.fireObservedStateChange();

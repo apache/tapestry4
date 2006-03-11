@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,11 +27,10 @@ import org.easymock.MockControl;
  */
 public class TestServiceExtensionEncoder extends HiveMindTestCase
 {
-
     public void testEncode()
     {
         MockControl c = newControl(ServiceEncoding.class);
-        ServiceEncoding sec = (ServiceEncoding)c.getMock();
+        ServiceEncoding sec = (ServiceEncoding) c.getMock();
 
         sec.getParameterValue(ServiceConstants.SERVICE);
         c.setReturnValue("heavy");
@@ -52,7 +51,7 @@ public class TestServiceExtensionEncoder extends HiveMindTestCase
     public void testDecodeWrongExtension()
     {
         MockControl c = newControl(ServiceEncoding.class);
-        ServiceEncoding sec = (ServiceEncoding)c.getMock();
+        ServiceEncoding sec = (ServiceEncoding) c.getMock();
 
         sec.getServletPath();
         c.setReturnValue("/foo/bar/baz.direct");
@@ -66,17 +65,17 @@ public class TestServiceExtensionEncoder extends HiveMindTestCase
 
         verifyControls();
     }
-
+    
     public void testDecode()
     {
         MockControl c = newControl(ServiceEncoding.class);
-        ServiceEncoding sec = (ServiceEncoding)c.getMock();
+        ServiceEncoding sec = (ServiceEncoding) c.getMock();
 
         sec.getServletPath();
         c.setReturnValue("/hitter.svc");
 
         sec.setParameterValue(ServiceConstants.SERVICE, "hitter");
-
+        
         replayControls();
 
         ServiceExtensionEncoder e = new ServiceExtensionEncoder();
@@ -84,6 +83,6 @@ public class TestServiceExtensionEncoder extends HiveMindTestCase
 
         e.decode(sec);
 
-        verifyControls();
+        verifyControls();     
     }
 }

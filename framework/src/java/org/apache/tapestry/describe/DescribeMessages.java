@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,28 +20,22 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-final class DescribeMessages
+class DescribeMessages
 {
-
-    private final static MessageFormatter MESSAGES = new MessageFormatter(DescribeMessages.class);
-
-    /** @since 4.1 */
-    private DescribeMessages()
-    {
-    }
+    private final static MessageFormatter _formatter = new MessageFormatter(DescribeMessages.class);
 
     static String mustSetTitleBeforeSection()
     {
-        return MESSAGES.getMessage("must-set-title-before-section");
+        return _formatter.getMessage("must-set-title-before-section");
     }
 
     static String setTitleOnce()
     {
-        return MESSAGES.getMessage("set-title-once");
+        return _formatter.getMessage("set-title-once");
     }
 
     static String mustSetTitleBeforeProperty()
     {
-        return MESSAGES.getMessage("must-set-title-before-property");
+        return _formatter.getMessage("must-set-title-before-property");
     }
 }

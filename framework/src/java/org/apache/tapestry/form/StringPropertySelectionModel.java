@@ -28,7 +28,7 @@ package org.apache.tapestry.form;
 
 public class StringPropertySelectionModel implements IPropertySelectionModel
 {
-    private String[] _options;
+    private String[] options;
 
     /**
      * Standard constructor.
@@ -38,17 +38,17 @@ public class StringPropertySelectionModel implements IPropertySelectionModel
 
     public StringPropertySelectionModel(String[] options)
     {
-        this._options = options;
+        this.options = options;
     }
 
     public int getOptionCount()
     {
-        return _options.length;
+        return options.length;
     }
 
     public Object getOption(int index)
     {
-        return _options[index];
+        return options[index];
     }
 
     /**
@@ -58,7 +58,7 @@ public class StringPropertySelectionModel implements IPropertySelectionModel
 
     public String getLabel(int index)
     {
-        return _options[index];
+        return options[index];
     }
 
     /**
@@ -77,7 +77,7 @@ public class StringPropertySelectionModel implements IPropertySelectionModel
 
         index = Integer.parseInt(value);
 
-        return _options[index];
+        return options[index];
     }
 
 }

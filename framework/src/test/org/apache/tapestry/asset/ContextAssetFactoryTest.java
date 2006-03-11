@@ -22,14 +22,10 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.l10n.DefaultResourceLocalizer;
 import org.apache.tapestry.web.WebContext;
 
-/** Test for {@link org.apache.tapestry.asset.ContextAssetFactory}.
- *  
- * @author Howard M. Lewis Ship
- * @since 4.0
- */
 public class ContextAssetFactoryTest extends HiveMindTestCase
 {
     protected Resource newResource()
@@ -178,6 +174,32 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
         }
         verifyControls();
     }
+    
+    public void testCreateAssetEncodeURL()
+    {
+        Location l = newLocation();
+        URL url = newURL();
+        WebContext context = (WebContext) newMock(WebContext.class);
+        IRequestCycle rc = (IRequestCycle) newMock(IRequestCycle.class);
+
+        trainGetResource(context, "/asset_fr.png", url);
+
+        trainEncodeURL(rc, "/context/asset_fr.png", "/context/asset_fr.png?encoded");
+        
+        replayControls();
+
+        ContextAssetFactory factory = new ContextAssetFactory();
+        factory.setLocalizer(new DefaultResourceLocalizer());
+        factory.setContextPath("/context");
+        factory.setWebContext(context);
+        factory.setRequestCycle(rc);
+
+        String assetUrl = factory.createAbsoluteAsset("/asset.png", Locale.FRENCH, l).buildURL();
+
+        assertTrue(assetUrl.endsWith("?encoded"));
+
+        verifyControls();
+    }
 
     private void trainGetLocalization(Resource resource, Locale locale, Resource localized)
     {
@@ -201,5 +223,11 @@ public class ContextAssetFactoryTest extends HiveMindTestCase
     {
         base.getRelativeResource(path);
         setReturnValue(base, relative);
+    }
+
+    protected void trainEncodeURL(IRequestCycle rc, String URL, String encodedURL)
+    {
+        rc.encodeURL(URL);
+        setReturnValue(rc, encodedURL);
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,18 +16,11 @@ package org.apache.tapestry.junit.utils;
 
 import java.io.Serializable;
 
-/**
- * Used when testing the data squeezer.
- * 
- * @author Howard M. Lewis Ship
- * @since 4.0
- */
 public class StringHolder implements Serializable
 {
-
     private static final long serialVersionUID = 2681665795452343714L;
-
-    private String _string;
+    
+	private String _string;
 
     public StringHolder(String string)
     {
@@ -41,6 +34,6 @@ public class StringHolder implements Serializable
 
     public boolean equals(Object other)
     {
-        return ((StringHolder)other)._string.equals(_string);
+        return ((StringHolder) other)._string.equals(_string);
     }
 }

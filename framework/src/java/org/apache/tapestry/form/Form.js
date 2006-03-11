@@ -85,14 +85,22 @@ Tapestry.oncancel = function(formId, handler)
 
 Tapestry.set_focus = function (field)
 {
-	if (typeof field == "string")
-	  field = this.find(field);
-	
-	if (field.focus)
-		field.focus();
-    
-    if (field.select)
-        field.select();
+	if (typeof field == "string") {
+	    field = this.find(field);
+		
+        if (field) {
+            if (!field.disabled && field.clientWidth > 0) {
+            	if (field.focus) {
+	            	field.focus();
+                }
+                if (field.isContentEditable || field.isContentEditable == null) {
+                    if (field.select) {
+                        field.select();
+                    }
+                }
+            }
+        }
+    }
 }
 
 Tapestry.trim_field_value = function(fieldId)

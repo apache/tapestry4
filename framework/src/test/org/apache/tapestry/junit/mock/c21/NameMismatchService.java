@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,11 +20,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
-/**
- * Test fixture.
- * 
- * @author Howard M. Lewis Ship
- */
 public class NameMismatchService implements IEngineService
 {
 
@@ -33,8 +28,7 @@ public class NameMismatchService implements IEngineService
         return null;
     }
 
-    public void service(IRequestCycle cycle)
-        throws IOException
+    public void service(IRequestCycle cycle) throws IOException
     {
     }
 

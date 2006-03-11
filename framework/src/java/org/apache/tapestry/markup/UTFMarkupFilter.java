@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,15 +17,14 @@ package org.apache.tapestry.markup;
 import org.apache.tapestry.util.text.MarkupCharacterTranslator;
 
 /**
- * Implementation for UTF markups, where out-of-range ascii characters don't
- * have to be encoded (they can pass right through).
+ * Implementation for UTF markups, where out-of-range ascii characters don't have to be encoded
+ * (they can pass right through).
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class UTFMarkupFilter extends AbstractMarkupFilter
 {
-
     public UTFMarkupFilter()
     {
         // No special encoding necessary.

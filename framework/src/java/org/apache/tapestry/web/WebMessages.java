@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.web;
 
-import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.util.ContentType;
 
@@ -22,53 +21,47 @@ import org.apache.tapestry.util.ContentType;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-final class WebMessages
+class WebMessages
 {
-
-    private static final Messages MESSAGES = new MessageFormatter(WebMessages.class);
-
-    /** @since 4.1 */
-    private WebMessages()
-    {
-    }
+    private final static MessageFormatter _formatter = new MessageFormatter(WebMessages.class);
 
     static String streamOpenError(ContentType contentType, Throwable cause)
     {
-        return MESSAGES.format("stream-open-error", contentType, cause);
+        return _formatter.format("stream-open-error", contentType, cause);
     }
 
     static String errorGettingResource(String path, Throwable ex)
     {
-        return MESSAGES.format("error-getting-resource", path, ex);
+        return _formatter.format("error-getting-resource", path, ex);
     }
 
     static String unableToFindDispatcher(String url)
     {
-        return MESSAGES.format("unable-to-find-dispatcher", url);
+        return _formatter.format("unable-to-find-dispatcher", url);
     }
 
     static String unableToForward(String url, Throwable cause)
     {
-        return MESSAGES.format("unable-to-forward", url, cause);
+        return _formatter.format("unable-to-forward", url, cause);
     }
 
     static String unableToRedirect(String url, Throwable cause)
     {
-        return MESSAGES.format("unable-to-redirect", url, cause);
+        return _formatter.format("unable-to-redirect", url, cause);
     }
 
     static String writerOpenError(ContentType contentType, Throwable cause)
     {
-        return MESSAGES.format("writer-open-error", contentType, cause);
+        return _formatter.format("writer-open-error", contentType, cause);
     }
 
     static String resetFailed(Throwable cause)
     {
-        return MESSAGES.format("reset-failed", cause);
+        return _formatter.format("reset-failed", cause);
     }
 
     static String contentTypeUnchanged(ContentType existing, ContentType requested)
     {
-        return MESSAGES.format("content-type-unchanged", existing, requested);
+        return _formatter.format("content-type-unchanged", existing, requested);
     }
 }
