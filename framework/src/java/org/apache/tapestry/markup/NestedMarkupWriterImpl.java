@@ -36,18 +36,6 @@ public class NestedMarkupWriterImpl extends MarkupWriterImpl implements NestedMa
 
     private boolean _closed;
 
-    public String getBuffer()
-    {
-        if (_closed)
-            throw new IllegalStateException(MarkupMessages.closeOnce());
-
-        _closed = true;
-
-        super.close();
-
-        return _charArrayWriter.toString();
-    }
-
     public NestedMarkupWriterImpl(IMarkupWriter parent, MarkupFilter filter)
     {
         // Need to do this awkward double constructor because we want
@@ -63,6 +51,18 @@ public class NestedMarkupWriterImpl extends MarkupWriterImpl implements NestedMa
 
         _parent = parent;
         _charArrayWriter = writer;
+    }
+    
+    public String getBuffer()
+    {
+        if (_closed)
+            throw new IllegalStateException(MarkupMessages.closeOnce());
+
+        _closed = true;
+
+        super.close();
+
+        return _charArrayWriter.toString();
     }
 
     /**

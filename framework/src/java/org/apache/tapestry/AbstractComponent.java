@@ -42,6 +42,16 @@ import org.apache.tapestry.spec.IContainedComponent;
 
 public abstract class AbstractComponent extends BaseLocatable implements IComponent
 {
+    private static final int MAP_SIZE = 5;
+    
+    private static final int BODY_INIT_SIZE = 5;
+
+    /**
+     * Used in place of JDK 1.3's Collections.EMPTY_MAP (which is not available in JDK 1.2).
+     */
+
+    private static final Map EMPTY_MAP = Collections.unmodifiableMap(new HashMap(1));
+
     /**
      * The page that contains the component, possibly itself (if the component is in fact, a page).
      */
@@ -68,8 +78,6 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     private String _idPath;
 
-    private static final int MAP_SIZE = 5;
-
     /**
      * A {@link Map}of all bindings (for which there isn't a corresponding JavaBeans property); the
      * keys are the names of formal and informal parameters.
@@ -79,15 +87,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     private Map _components;
 
-    private static final int BODY_INIT_SIZE = 5;
-
     private INamespace _namespace;
-
-    /**
-     * Used in place of JDK 1.3's Collections.EMPTY_MAP (which is not available in JDK 1.2).
-     */
-
-    private static final Map EMPTY_MAP = Collections.unmodifiableMap(new HashMap(1));
 
     /**
      * The number of {@link IRender}objects in the body of this component.
@@ -740,7 +740,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     /**
      * Returns true if the component has been transitioned into its active state by invoking
-     * {@link #enterActiveState()}
+     * {@link #enterActiveState()}.
      * 
      * @since 4.0
      */
@@ -804,7 +804,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     }
 
     /**
-     * Convienience method for invoking {@link IMessages#format(String, Locale, Object)}
+     * Convienience method for invoking {@link IMessages#format(String, Locale, Object)}.
      * 
      * @since 3.0
      * @deprecated To be removed in 4.1. Use {@link #getMessages()} instead.

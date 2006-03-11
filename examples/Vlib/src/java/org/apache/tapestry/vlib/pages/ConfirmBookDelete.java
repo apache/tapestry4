@@ -19,8 +19,7 @@ import java.rmi.RemoteException;
 import javax.ejb.RemoveException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
+
 import org.apache.tapestry.annotations.InjectPage;
 import org.apache.tapestry.annotations.Message;
 import org.apache.tapestry.annotations.Meta;
