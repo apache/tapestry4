@@ -1,0 +1,89 @@
+
+.dojoFloatingPane {
+	/* essential css */
+	position: absolute;
+	overflow: visible;		/* so drop shadow is displayed */
+	z-index: 5;
+	-moz-box-sizing: border-box;
+	-khtml-box-sizing: border-box;
+	
+	/* styling css */
+	border: 1px solid;
+	border-color: ThreeDHighlight ThreeDShadow ThreeDShadow ThreeDHighlight;
+	background-color: ThreeDFace;
+}
+
+.dojoFloatingPaneTitleBar {
+	/* essential css */
+	z-index: 2;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+
+	/* styling css */
+	vertical-align: middle;
+	height: 22px;
+	color: CaptionText;
+	font: small-caption;
+	background-color: #7596c6;
+	cursor: default;
+}
+.dojoFloatingPaneTitleText {
+	padding: 2px 4px 2px 2px;
+}
+
+/* minimize/maximize icons are specified by CSS only */
+.dojoFloatingPaneMinimizeIcon,
+.dojoFloatingPaneMaximizeIcon,
+.dojoFloatingPaneRestoreIcon,
+.dojoFloatingPaneCloseIcon {
+	vertical-align: middle;
+	height: 22px;
+	width: 22px;
+	float: right;
+}
+.dojoFloatingPaneMinimizeIcon {
+	background-image: url(images/floatingPaneMinimize.gif);
+}
+.dojoFloatingPaneMaximizeIcon {
+	background-image: url(images/floatingPaneMaximize.gif);
+}
+.dojoFloatingPaneRestoreIcon {
+	background-image: url(images/floatingPaneRestore.gif);
+}
+.dojoFloatingPaneCloseIcon {
+	background-image: url(images/floatingPaneClose.gif);
+}
+
+/* bar at bottom of window that holds resize handle */
+.dojoFloatingPaneResizebar {
+	/* essential css */
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 13px;
+	z-index: 2;
+	
+	/* styling css */
+	background-color: ThreeDFace;
+}
+
+/* the part that holds the actual content of the floating pane (text or whatever) */
+.dojoFloatingPaneClient {
+	/* essential css */
+	position: relative;
+	width: 100%;
+	height: 100%;
+	-moz-box-sizing: border-box;
+	-khtml-box-sizing: border-box;
+	z-index: 2;
+	overflow: auto;
+	
+	/* styling css */
+	background-color: ThreeDFace;
+	padding: 8px;
+	font-family: Verdana, Helvetica, Garamond, sans-serif;
+	font-size: 12px;
+}
