@@ -30,5 +30,5 @@ public interface PortletPageResolver
      * @returns The page name to activate and render (never null).
      */
 
-    String getPageNameForRequest(IRequestCycle cycle);
+    public String getPageNameForRequest(IRequestCycle cycle);
 }

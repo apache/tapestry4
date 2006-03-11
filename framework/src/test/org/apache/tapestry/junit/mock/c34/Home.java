@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,37 +26,33 @@ import org.apache.tapestry.html.BasePage;
  */
 public abstract class Home extends BasePage
 {
-
-    public abstract List getRewindedIndexes();
-
-    public abstract List getRewindedValues();
-
-    public void setIndex(int index)
-    {
-        if (getRequestCycle().isRewinding()) getRewindedIndexes().add(new Integer(index));
-    }
-
-    public void setValue(Object value)
-    {
-        if (getRequestCycle().isRewinding()) getRewindedValues().add(value);
-    }
-
-    public List getItems()
-    {
-        List items = new ArrayList();
-        items.add(new Item("id1", "value1"));
-        items.add(new Item("id2", "value2"));
-        return items;
-    }
-
-    public List getAllItems()
-    {
-        List items = new ArrayList();
-        items.add(new Item("id1", "value1"));
-        items.add(new Item("id2", "value2"));
-        items.add(new Item("id3", "value3"));
-        items.add(new Item("id4", "value4"));
-        items.add(new Item("id5", "value5"));
-        return items;
-    }
+	public abstract List getRewindedIndexes();
+	public abstract List getRewindedValues();
+	
+	public void setIndex(int index) {
+		if (getRequestCycle().isRewinding())
+			getRewindedIndexes().add(new Integer(index));
+	}
+	
+	public void setValue(Object value) {
+		if (getRequestCycle().isRewinding())
+			getRewindedValues().add(value);
+	}
+	
+	public List getItems() {
+		List items = new ArrayList();
+		items.add(new Item("id1", "value1"));
+		items.add(new Item("id2", "value2"));
+		return items;
+	}
+	
+	public List getAllItems() {
+		List items = new ArrayList();
+		items.add(new Item("id1", "value1"));
+		items.add(new Item("id2", "value2"));
+		items.add(new Item("id3", "value3"));
+		items.add(new Item("id4", "value4"));
+		items.add(new Item("id5", "value5"));
+		return items;
+	}
 }

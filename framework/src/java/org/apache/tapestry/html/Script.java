@@ -21,12 +21,12 @@ import java.util.Map;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.PageRenderSupport;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.IScriptSource;
 
@@ -102,19 +102,30 @@ public abstract class Script extends AbstractComponent
 
     private IScript getParsedScript()
     {
+    	IAsset scriptAsset = getScriptAsset();
         String scriptPath = getScriptPath();
-
-        if (scriptPath == null)
-            throw Tapestry.createRequiredParameterException(this, "scriptPath");
-
+        
+        //only one of the two is allowed
+        if (scriptAsset != null && scriptPath != null)
+        	throw new ApplicationRuntimeException(HTMLMessages.multiAssetParameterError(getBinding("scriptAsset"), 
+        			getBinding("scriptPath")));
+        
+        if (scriptPath == null && scriptAsset == null)
+        	throw new ApplicationRuntimeException(HTMLMessages.noScriptPathError());
+        
         IScriptSource source = getScriptSource();
-
-        // If the script path is relative, it should be relative to the Script component's
-        // container (i.e., relative to a page in the application).
-
-        Resource rootLocation = getContainer().getSpecification().getSpecificationLocation();
-        Resource scriptLocation = rootLocation.getRelativeResource(scriptPath);
-
+        
+        Resource scriptLocation = null;
+        if (scriptPath != null) {
+        	
+        	// If the script path is relative, it should be relative to the Script component's
+            // container (i.e., relative to a page in the application).
+        	
+        	Resource rootLocation = getContainer().getSpecification().getSpecificationLocation();
+        	scriptLocation = rootLocation.getRelativeResource(scriptPath);
+        } else
+        	scriptLocation = scriptAsset.getResourceLocation();
+        
         try
         {
             return source.getScript(scriptLocation);
@@ -144,6 +155,8 @@ public abstract class Script extends AbstractComponent
 
     public abstract String getScriptPath();
 
+    public abstract IAsset getScriptAsset();
+    
     // Parameter
 
     public abstract Map getBaseSymbols();

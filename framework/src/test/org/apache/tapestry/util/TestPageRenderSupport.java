@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,34 +36,33 @@ import org.easymock.MockControl;
  */
 public class TestPageRenderSupport extends HiveMindTestCase
 {
-
-    private CharArrayWriter _writer;
-
     private AssetFactory newAssetFactory()
     {
-        return (AssetFactory)newMock(AssetFactory.class);
+        return (AssetFactory) newMock(AssetFactory.class);
     }
 
     private IRequestCycle newCycle()
     {
-        return (IRequestCycle)newMock(IRequestCycle.class);
+        return (IRequestCycle) newMock(IRequestCycle.class);
     }
 
     private Resource newResource()
     {
-        return (Resource)newMock(Resource.class);
+        return (Resource) newMock(Resource.class);
     }
 
     private IAsset newAsset(IRequestCycle cycle, String url)
     {
         MockControl control = newControl(IAsset.class);
-        IAsset asset = (IAsset)control.getMock();
+        IAsset asset = (IAsset) control.getMock();
 
         asset.buildURL();
         control.setReturnValue(url);
 
         return asset;
     }
+
+    private CharArrayWriter _writer;
 
     private IMarkupWriter newWriter()
     {
@@ -75,15 +74,14 @@ public class TestPageRenderSupport extends HiveMindTestCase
     private void assertOutput(String[] expectedLines)
     {
         StringBuffer buffer = new StringBuffer();
-        for(int i = 0; i < expectedLines.length; i++)
+        for (int i = 0; i < expectedLines.length; i++)
         {
-            // Note: PageRenderSupport is a bit sloppy; a lot of code just uses
-            // \n for
-            // a newline seperator, other parts go through
-            // IMarkupWriter.println() and get
+            // Note: PageRenderSupport is a bit sloppy; a lot of code just uses \n for
+            // a newline seperator, other parts go through IMarkupWriter.println() and get
             // a proper newline seperator (which may be different).
 
-            if (i > 0) buffer.append("\n");
+            if (i > 0)
+                buffer.append("\n");
 
             buffer.append(expectedLines[i]);
         }
@@ -133,10 +131,14 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         prs.writeBodyScript(writer, cycle);
 
-        assertOutput(new String[] { "<script type=\"text/javascript\"><!--", "", "var tapestry_preload = new Array();",
-                "if (document.images)", "{", "  tapestry_preload[0] = new Image();",
-                "  tapestry_preload[0].src = \"/foo/bar.gif\";", "  tapestry_preload[1] = new Image();",
-                "  tapestry_preload[1].src = \"/zip/zap.png\";", "}", "", "", "myBodyScript();", "", "// --></script>" });
+        assertOutput(new String[]
+        { "<script type=\"text/javascript\"><!--", "",
+                "var tapestry_preload = new Array();", "if (document.images)", "{",
+                "  tapestry_preload[0] = new Image();",
+                "  tapestry_preload[0].src = \"/foo/bar.gif\";",
+                "  tapestry_preload[1] = new Image();",
+                "  tapestry_preload[1].src = \"/zip/zap.png\";", "}", "", "", "myBodyScript();",
+                "", "// --></script>" });
 
         verifyControls();
     }
@@ -156,10 +158,11 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         prs.writeBodyScript(writer, cycle);
 
-        assertOutput(new String[] { "<script type=\"text/javascript\"><!--", "",
+        assertOutput(new String[]
+        { "<script type=\"text/javascript\"><!--", "",
                 "var NAMESPACE_preload = new Array();", "if (document.images)", "{",
-                "  NAMESPACE_preload[0] = new Image();", "  NAMESPACE_preload[0].src = \"/foo/bar.gif\";", "}", "", "",
-                "// --></script>" });
+                "  NAMESPACE_preload[0] = new Image();",
+                "  NAMESPACE_preload[0].src = \"/foo/bar.gif\";", "}", "", "", "// --></script>" });
 
         verifyControls();
     }
@@ -179,8 +182,9 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         prs.writeBodyScript(writer, cycle);
 
-        assertOutput(new String[] { "<script type=\"text/javascript\"><!--", "", "myBodyScript();", "",
-                "// --></script>" });
+        assertOutput(new String[]
+        { "<script type=\"text/javascript\"><!--", "", "myBodyScript();",
+                "", "// --></script>" });
 
         verifyControls();
     }
@@ -234,14 +238,14 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         prs.writeInitializationScript(writer);
 
-        assertOutput(new String[] { "<script language=\"JavaScript\" type=\"text/javascript\"><!--",
+        assertOutput(new String[]
+        { "<script language=\"JavaScript\" type=\"text/javascript\"><!--",
                 "myInitializationScript1();", "myInitializationScript2();", "", "// --></script>" });
 
         verifyControls();
     }
 
-    public void testAddExternalScript()
-        throws Exception
+    public void testAddExternalScript() throws Exception
     {
         String newline = System.getProperty("line.separator");
 
@@ -250,7 +254,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
         IMarkupWriter writer = newWriter();
 
         MockControl assetFactoryc = newControl(AssetFactory.class);
-        AssetFactory assetFactory = (AssetFactory)assetFactoryc.getMock();
+        AssetFactory assetFactory = (AssetFactory) assetFactoryc.getMock();
 
         Resource script1 = newResource();
         IAsset asset1 = newAsset(cycle, "/script1.js");
@@ -273,8 +277,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         prs.writeBodyScript(writer, cycle);
 
-        // PageRenderSupport is a little sloppy about using \n for a newline,
-        // vs. using
+        // PageRenderSupport is a little sloppy about using \n for a newline, vs. using
         // the property line seperator sequence and it bites us right here.
 
         assertOutput(scriptTagFor("/script1.js") + newline + scriptTagFor("/script2.js") + newline);
@@ -284,6 +287,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
     private String scriptTagFor(String url)
     {
-        return "<script type=\"text/javascript\" src=\"" + url + "\"></script>";
+        return "<script type=\"text/javascript\" src=\"" + url
+                + "\"></script>";
     }
 }

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.html.BasePage;
@@ -33,7 +34,6 @@ import org.apache.tapestry.request.IUploadFile;
 
 public abstract class Two extends BasePage
 {
-
     public abstract IUploadFile getFile();
 
     public abstract void setFile(IUploadFile file);
@@ -45,33 +45,17 @@ public abstract class Two extends BasePage
 
         InputStream expected = null;
         InputStream actual = null;
-
+        
         String baseDir = TestMocks.getBaseDirectory() + "/src/test-data/";
-
+        
         try
         {
             expected = new FileInputStream(baseDir + path);
             actual = file.getStream();
-
-            int i = 0;
-
-            while(true)
-            {
-                int actualByte = actual.read();
-                int expectedByte = expected.read();
-
-                if (actualByte != expectedByte)
-                {
-                    System.err.println("Input deviation at index " + i + "; expected " + expectedByte + ", not "
-                            + actualByte);
-
-                    return false;
-                }
-
-                if (actualByte < 0) break;
-
-                i++;
-            }
+            
+            //this replaced the previous manual compare which didn't work
+            //across different platforms
+            IOUtils.contentEquals(expected, actual);
         }
         catch (IOException ex)
         {

@@ -25,6 +25,10 @@ import java.sql.Timestamp;
 
 public class Person implements Serializable
 {
+    private static final long serialVersionUID = 37148852625594728L;
+
+    private Object[] columns;
+
     public static final int ID_COLUMN = 0;
 
     public static final int FIRST_NAME_COLUMN = 1;
@@ -40,11 +44,7 @@ public class Person implements Serializable
     public static final int LAST_ACCESS_COLUMN = 6;
 
     public static final int N_COLUMNS = 7;
-    
-    private static final long serialVersionUID = 37148852625594728L;
 
-    private Object[] _columns;
-    
     public Person(Object[] columns)
     {
         if (columns == null)
@@ -53,41 +53,41 @@ public class Person implements Serializable
         if (columns.length != N_COLUMNS)
             throw new IllegalArgumentException("Wrong number of columns for a Person.");
 
-        this._columns = new Object[N_COLUMNS];
-        System.arraycopy(columns, 0, this._columns, 0, N_COLUMNS);
+        this.columns = new Object[N_COLUMNS];
+        System.arraycopy(columns, 0, this.columns, 0, N_COLUMNS);
     }
 
     public Integer getId()
     {
-        return (Integer) _columns[ID_COLUMN];
+        return (Integer) columns[ID_COLUMN];
     }
 
     public String getFirstName()
     {
-        return (String) _columns[FIRST_NAME_COLUMN];
+        return (String) columns[FIRST_NAME_COLUMN];
     }
 
     public String getLastName()
     {
-        return (String) _columns[LAST_NAME_COLUMN];
+        return (String) columns[LAST_NAME_COLUMN];
     }
 
     public String getEmail()
     {
-        return (String) _columns[EMAIL_COLUMN];
+        return (String) columns[EMAIL_COLUMN];
     }
 
     public String getNaturalName()
     {
-        if (_columns[FIRST_NAME_COLUMN] == null)
-            return (String) _columns[LAST_NAME_COLUMN];
+        if (columns[FIRST_NAME_COLUMN] == null)
+            return (String) columns[LAST_NAME_COLUMN];
 
-        return (String) _columns[FIRST_NAME_COLUMN] + " " + (String) _columns[LAST_NAME_COLUMN];
+        return (String) columns[FIRST_NAME_COLUMN] + " " + (String) columns[LAST_NAME_COLUMN];
     }
 
     public Timestamp getLastAccess()
     {
-        return (Timestamp) _columns[LAST_ACCESS_COLUMN];
+        return (Timestamp) columns[LAST_ACCESS_COLUMN];
     }
 
     public String toString()
@@ -96,13 +96,13 @@ public class Person implements Serializable
 
         buffer = new StringBuffer("Person[");
 
-        if (_columns[FIRST_NAME_COLUMN] != null)
+        if (columns[FIRST_NAME_COLUMN] != null)
         {
-            buffer.append((String) _columns[FIRST_NAME_COLUMN]);
+            buffer.append((String) columns[FIRST_NAME_COLUMN]);
             buffer.append(' ');
         }
 
-        buffer.append((String) _columns[LAST_NAME_COLUMN]);
+        buffer.append((String) columns[LAST_NAME_COLUMN]);
         buffer.append(']');
 
         return buffer.toString();
@@ -130,12 +130,12 @@ public class Person implements Serializable
 
     private void setBit(int column, boolean value)
     {
-        _columns[column] = value ? Boolean.TRUE : Boolean.FALSE;
+        columns[column] = value ? Boolean.TRUE : Boolean.FALSE;
     }
 
     private boolean getBit(int column)
     {
-        Boolean b = (Boolean) _columns[column];
+        Boolean b = (Boolean) columns[column];
 
         return b.booleanValue();
     }

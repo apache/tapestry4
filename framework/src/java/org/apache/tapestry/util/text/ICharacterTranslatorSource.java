@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,10 +20,8 @@ package org.apache.tapestry.util.text;
  * @author mb
  * @since 4.0
  */
-public interface ICharacterTranslatorSource
+public interface ICharacterTranslatorSource 
 {
-
-    ICharacterTranslator getDefaultTranslator();
-
-    ICharacterTranslator getTranslator(String encoding);
+	ICharacterTranslator getDefaultTranslator();
+	ICharacterTranslator getTranslator(String encoding);
 }

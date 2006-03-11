@@ -29,7 +29,7 @@ import javax.ejb.FinderException;
 
 public interface IBookHome extends EJBHome
 {
-    IBook create(Map attributes) throws CreateException, RemoteException;
+    public IBook create(Map attributes) throws CreateException, RemoteException;
 
     public IBook findByPrimaryKey(Integer key) throws FinderException, RemoteException;
 }

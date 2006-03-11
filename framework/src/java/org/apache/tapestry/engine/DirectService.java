@@ -52,12 +52,8 @@ public class DirectService implements IEngineService
     protected WebRequest _request;
 
     /** @since 4.0 */
-    protected IRequestCycle _requestCycle;
+    private IRequestCycle _requestCycle;
 
-    /**
-     * 
-     * {@inheritDoc}
-     */
     public ILink getLink(boolean post, Object parameter)
     {
         Defense.isAssignable(parameter, DirectServiceParameter.class, "parameter");
@@ -76,25 +72,21 @@ public class DirectService implements IEngineService
 
         IPage activePage = _requestCycle.getPage();
         IPage componentPage = component.getPage();
-        
+
         Map parameters = new HashMap();
-        
+
         boolean stateful = _request.getSession(false) != null;
-        
+
         parameters.put(ServiceConstants.PAGE, activePage.getPageName());
         parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
         parameters.put(ServiceConstants.CONTAINER, componentPage == activePage ? null
                 : componentPage.getPageName());
         parameters.put(ServiceConstants.SESSION, stateful ? "T" : null);
         parameters.put(ServiceConstants.PARAMETER, dsp.getServiceParameters());
-        
+
         return _linkFactory.constructLink(this, post, parameters, true);
     }
 
-    /**
-     * 
-     * {@inheritDoc}
-     */
     public void service(IRequestCycle cycle) throws IOException
     {
         String componentId = cycle.getParameter(ServiceConstants.COMPONENT);

@@ -38,7 +38,7 @@ public interface ILink
      * @return the relative URL, with no anchor, but including query parameters.
      */
 
-    String getURL();
+    public String getURL();
 
     /**
      * Returns the relative URL as a String. This is used for most links.
@@ -49,14 +49,14 @@ public interface ILink
      *            if true, parameters are included
      */
 
-    String getURL(String anchor, boolean includeParameters);
+    public String getURL(String anchor, boolean includeParameters);
 
     /**
      * Returns the absolute URL as a String, using default scheme, server and port, including
      * parameters, and no anchor.
      */
 
-    String getAbsoluteURL();
+    public String getAbsoluteURL();
 
     /**
      * Returns the absolute URL as a String.
@@ -73,7 +73,7 @@ public interface ILink
      *            if true, parameters are included
      */
 
-    String getAbsoluteURL(String scheme, String server, int port, String anchor,
+    public String getAbsoluteURL(String scheme, String server, int port, String anchor,
             boolean includeParameters);
 
     /**
@@ -95,7 +95,7 @@ public interface ILink
      * @since 4.0
      */
 
-    String getURL(String scheme, String server, int port, String anchor,
+    public String getURL(String scheme, String server, int port, String anchor,
             boolean includeParameters);
 
     /**
@@ -104,12 +104,12 @@ public interface ILink
      * @see #getParameterValues(String)
      */
 
-    String[] getParameterNames();
+    public String[] getParameterNames();
 
     /**
      * Returns the values for the named parameter. Will return null if the no value is defined for
      * the parameter.
      */
 
-    String[] getParameterValues(String name);
+    public String[] getParameterValues(String name);
 }

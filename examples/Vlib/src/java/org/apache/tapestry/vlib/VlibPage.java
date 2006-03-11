@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,27 +33,26 @@ import org.apache.tapestry.vlib.pages.Login;
 import org.apache.tapestry.vlib.services.ModelSource;
 
 /**
- * Base page used for pages that should be protected by the {@link Login} page.
- * If the user is not logged in, they are redirected to the Login page first.
- * Also, implements an error property and a validationDelegate.
+ * Base page used for pages that should be protected by the {@link Login} page. If the user is not
+ * logged in, they are redirected to the Login page first. Also, implements an error property and a
+ * validationDelegate.
  * <p>
  * Meta properties (overridden in some subclasses)
  * <dl>
  * <dt>anonymous-access=false</dt>
  * <dd>If true, the page may be accessed without the user being logged in.</dd>
  * <dt>admin-page=false</dt>
- * <dd>If true, the user must be logged in as an administrator to access this
- * page.</dd>
+ * <dd>If true, the user must be logged in as an administrator to access this page.</dd>
  * </dl>
  * 
  * @author Howard Lewis Ship
  */
 
-@Meta( { "anonymous-access=false", "admin-page=false" })
-public abstract class VlibPage extends BasePage implements IErrorProperty, IMessageProperty, PageValidateListener,
-        OperationsUser
+@Meta(
+{ "anonymous-access=false", "admin-page=false" })
+public abstract class VlibPage extends BasePage implements IErrorProperty, IMessageProperty,
+        PageValidateListener, OperationsUser
 {
-
     @Bean(VirtualLibraryDelegate.class)
     public abstract IValidationDelegate getValidationDelegate();
 
@@ -77,7 +76,7 @@ public abstract class VlibPage extends BasePage implements IErrorProperty, IMess
 
     protected void setErrorField(String componentId, String message)
     {
-        IFormComponent component = (IFormComponent)getComponent(componentId);
+        IFormComponent component = (IFormComponent) getComponent(componentId);
 
         IValidationDelegate delegate = getValidationDelegate();
 
@@ -86,8 +85,7 @@ public abstract class VlibPage extends BasePage implements IErrorProperty, IMess
     }
 
     /**
-     * Returns true if the delegate indicates an error, or the error property is
-     * not null.
+     * Returns true if the delegate indicates an error, or the error property is not null.
      */
 
     protected boolean isInError()
@@ -96,20 +94,23 @@ public abstract class VlibPage extends BasePage implements IErrorProperty, IMess
     }
 
     /**
-     * Checks if the user is logged in. If not, they are sent to the
-     * {@link Login} page before coming back to whatever this page is.
+     * Checks if the user is logged in. If not, they are sent to the {@link Login} page before
+     * coming back to whatever this page is.
      */
 
     public void pageValidate(PageEvent event)
     {
-        if (isAdminPage()) ensureUserIsLoggedInAsAdmin();
+        if (isAdminPage())
+            ensureUserIsLoggedInAsAdmin();
 
-        if (!getAllowAnonymousAccess()) ensureUserIsLoggedIn();
+        if (!getAllowAnonymousAccess())
+            ensureUserIsLoggedIn();
     }
 
     private void ensureUserIsLoggedIn()
     {
-        if (isUserLoggedIn()) return;
+        if (isUserLoggedIn())
+            return;
 
         // User not logged in ... redirect through the Login page.
 
@@ -121,8 +122,7 @@ public abstract class VlibPage extends BasePage implements IErrorProperty, IMess
     }
 
     /**
-     * Returns true if the {@link Visit} exists, and the user is logged in as
-     * well.
+     * Returns true if the {@link Visit} exists, and the user is logged in as well.
      * 
      * @return true if logged in
      */
@@ -146,7 +146,9 @@ public abstract class VlibPage extends BasePage implements IErrorProperty, IMess
 
         if (!getVisitState().getUser().isAdmin())
         {
-            getErrorPresenter().presentError("That function is restricted to administrators.", cycle);
+            getErrorPresenter().presentError(
+                    "That function is restricted to administrators.",
+                    cycle);
 
             throw new PageRedirectException(cycle.getPage());
         }

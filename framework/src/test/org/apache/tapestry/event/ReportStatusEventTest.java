@@ -57,7 +57,7 @@ public class ReportStatusEventTest extends HiveMindTestCase
         receiver.property("boolean-false", false);
         receiver.property("byte", (byte) 37);
         receiver.property("char", 'z');
-        receiver.property("double", 3.14);
+        receiver.property("double", (double) 3.14);
         receiver.property("float", (float) 9.99);
         receiver.property("int", -373);
         receiver.property("long", 373737l);
@@ -76,7 +76,7 @@ public class ReportStatusEventTest extends HiveMindTestCase
         event.property("boolean-false", false);
         event.property("byte", (byte) 37);
         event.property("char", 'z');
-        event.property("double", 3.14);
+        event.property("double", (double) 3.14);
         event.property("float", (float) 9.99);
         event.property("int", -373);
         event.property("long", 373737l);

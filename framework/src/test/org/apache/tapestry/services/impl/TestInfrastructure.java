@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,11 +31,8 @@ import org.apache.hivemind.test.HiveMindTestCase;
  */
 public class TestInfrastructure extends HiveMindTestCase
 {
-
-    /** Test fixture. */
     private static class DeferredObjectFixture implements DeferredObject
     {
-
         private Object _object;
 
         private Location _location;
@@ -57,13 +54,14 @@ public class TestInfrastructure extends HiveMindTestCase
         }
     }
 
-    private InfrastructureContribution newContribution(String propertyName, String mode, Object object)
+    private InfrastructureContribution newContribution(String propertyName, String mode,
+            Object object)
     {
         return newContribution(propertyName, mode, object, null);
     }
 
-    private InfrastructureContribution newContribution(String propertyName, String mode, Object object,
-            Location location)
+    private InfrastructureContribution newContribution(String propertyName, String mode,
+            Object object, Location location)
     {
         DeferredObject deferred = new DeferredObjectFixture(object, location);
 
@@ -127,13 +125,14 @@ public class TestInfrastructure extends HiveMindTestCase
         }
         catch (IllegalStateException ex)
         {
-            assertEquals(ImplMessages.infrastructureAlreadyInitialized("TWO", "ONE"), ex.getMessage());
+            assertEquals(ImplMessages.infrastructureAlreadyInitialized("TWO", "ONE"), ex
+                    .getMessage());
         }
     }
 
     /**
-     * Test that a contribution for a mode quietly overrides a contribution for
-     * the same property that does not specify a mode.
+     * Test that a contribution for a mode quietly overrides a contribution for the same property
+     * that does not specify a mode.
      */
 
     public void testModeOverridesNonMode()
@@ -154,7 +153,7 @@ public class TestInfrastructure extends HiveMindTestCase
 
         assertSame(fredModal, infra.getProperty("fred"));
     }
-
+    
     public void testWrongModeIgnored()
     {
         Object fredModal = new Object();
@@ -175,8 +174,7 @@ public class TestInfrastructure extends HiveMindTestCase
     }
 
     /**
-     * Test that override contributions trump contributions from the normal
-     * path.
+     * Test that override contributions trump contributions from the normal path.
      */
 
     public void testOverrides()
@@ -186,8 +184,14 @@ public class TestInfrastructure extends HiveMindTestCase
 
         InfrastructureImpl infra = new InfrastructureImpl();
 
-        infra.setNormalContributions(Collections.singletonList(newContribution("fred", null, normalFred)));
-        infra.setOverrideContributions(Collections.singletonList(newContribution("fred", null, overrideFred)));
+        infra.setNormalContributions(Collections.singletonList(newContribution(
+                "fred",
+                null,
+                normalFred)));
+        infra.setOverrideContributions(Collections.singletonList(newContribution(
+                "fred",
+                null,
+                overrideFred)));
 
         infra.initialize("bedrock");
 
@@ -196,7 +200,7 @@ public class TestInfrastructure extends HiveMindTestCase
 
     public void testDuplicate()
     {
-        ErrorLog log = (ErrorLog)newMock(ErrorLog.class);
+        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
         Location l1 = fabricateLocation(99);
         Location l2 = fabricateLocation(132);

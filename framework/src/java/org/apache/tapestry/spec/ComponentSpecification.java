@@ -58,6 +58,12 @@ import org.apache.hivemind.util.ToStringBuilder;
 public class ComponentSpecification extends LocatablePropertyHolder implements
         IComponentSpecification
 {
+    private String _componentClassName;
+
+    /** @since 1.0.9 * */
+
+    private String _description;
+
     /**
      * Keyed on component id, value is {@link IContainedComponent}.
      */
@@ -94,12 +100,6 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
 
     protected Set _reservedParameterNames;
 
-    private String _componentClassName;
-
-    /** @since 1.0.9 * */
-
-    private String _description;
-    
     /**
      * Is the component allowed to have a body (that is, wrap other elements?).
      */
@@ -292,7 +292,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
     }
 
     /**
-     * Returns a <code>List</code> of the String names of all assets, in alphabetical order.
+     * Returns a <code>List</code> of the String names of all assets, in alphabetical order
      */
 
     public List getAssetNames()

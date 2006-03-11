@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,15 +24,14 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import org.apache.hivemind.util.Defense;
 
 /**
- * {@link javax.servlet.http.HttpServletRequest} wrapper that provides access to
- * the form field values uploaded in a multipart request.
+ * {@link javax.servlet.http.HttpServletRequest}&nbsp; wrapper that provides access to the form
+ * field values uploaded in a multipart request.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class UploadFormParametersWrapper extends HttpServletRequestWrapper
 {
-
     /**
      * Map of {@link ValuePart}&nbsp;keyed on parameter name.
      */
@@ -40,8 +39,7 @@ public class UploadFormParametersWrapper extends HttpServletRequestWrapper
 
     /**
      * @param parameterMap
-     *            a map whose keys are parameter names and whose values are
-     *            arrays of Strings.
+     *            a map whose keys are parameter names and whose values are arrays of Strings.
      */
     public UploadFormParametersWrapper(HttpServletRequest request, Map parameterMap)
     {
@@ -71,7 +69,7 @@ public class UploadFormParametersWrapper extends HttpServletRequestWrapper
 
     public String[] getParameterValues(String name)
     {
-        return (String[])_parameterMap.get(name);
+        return (String[]) _parameterMap.get(name);
     }
 
     public String toString()

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,75 +21,73 @@ import org.apache.hivemind.LocationHolder;
 import org.apache.tapestry.util.IPropertyHolder;
 
 /**
- * Defines a contained component. This includes the information needed to get
- * the contained component's specification, as well as any bindings for the
- * component.
- * 
+ * Defines a contained component.  This includes the information needed to
+ * get the contained component's specification, as well as any bindings
+ * for the component.
+
  * @author glongman@intelligentworks.com
  */
 public interface IContainedComponent extends IPropertyHolder, LocationHolder, Locatable, PropertyInjectable
 {
-
     /**
-     * Returns the named binding, or null if the binding does not exist.
-     */
+     *  Returns the named binding, or null if the binding does not
+     *  exist.
+     *
+     **/
     public abstract IBindingSpecification getBinding(String name);
-
     /**
-     * Returns an umodifiable <code>Collection</code> of Strings, each the
-     * name of one binding for the component.
-     */
+     *  Returns an umodifiable <code>Collection</code>
+     *  of Strings, each the name of one binding
+     *  for the component.
+     *
+     **/
     public abstract Collection getBindingNames();
-
     public abstract String getType();
-
     public abstract void setBinding(String name, IBindingSpecification spec);
-
     public abstract void setType(String value);
-
     /**
-     * Sets the String Id of the component being copied from. For use by IDE
-     * tools like Spindle.
+     * 	Sets the String Id of the component being copied from.
+     *  For use by IDE tools like Spindle.
      * 
-     * @since 1.0.9
-     */
+     *  @since 1.0.9
+     **/
     public abstract void setCopyOf(String id);
-
     /**
-     * Returns the id of the component being copied from. For use by IDE tools
-     * like Spindle.
+     * 	Returns the id of the component being copied from.
+     *  For use by IDE tools like Spindle.
      * 
-     * @since 1.0.9
-     */
+     *  @since 1.0.9
+     **/
     public abstract String getCopyOf();
 
     /**
-     * Returns whether the contained component will inherit the informal
-     * parameters of its parent.
+     * Returns whether the contained component will inherit 
+     * the informal parameters of its parent. 
      * 
      * @since 3.0
-     */
+     **/
     public abstract boolean getInheritInformalParameters();
 
     /**
-     * Sets whether the contained component will inherit the informal parameters
-     * of its parent.
+     * Sets whether the contained component will inherit 
+     * the informal parameters of its parent. 
      * 
      * @since 3.0
      */
     public abstract void setInheritInformalParameters(boolean value);
-
+    
     /**
-     * Returns the name of the property to be created for this component, or
-     * null if no property should be created.
+     * Returns the name of the property to be created for this component,
+     * or null if no property should be created.
      * 
      * @since 4.0
      */
     public String getPropertyName();
-
+    
     /**
-     * @since 4.0
+     * 
+     * @since 4.0 
      */
-
+    
     public void setPropertyName(String propertyName);
 }

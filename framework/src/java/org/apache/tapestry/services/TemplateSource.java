@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,55 +19,54 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.parse.ComponentTemplate;
 
 /**
- * A source of localized HTML templates for components. The cache is the means
- * of access for components to load thier templates, which they need not do
- * until just before rendering.
- * <p>
- * The template cache must be able to locate and parse templates as needed. It
- * may maintain templates in memory.
- * 
+ * A source of localized HTML templates for components.  
+ * The cache is the means of access for components to load thier templates,
+ * which they need not do until just before rendering.
+ *
+ * <p>The template cache must be able to locate and parse templates as needed.
+ * It may maintain templates in memory.
+ *
  * @author Howard Ship
  */
 
 public interface TemplateSource
 {
+    /**
+     *  Name of an {@link org.apache.tapestry.IAsset} of a component that provides the template
+     *  for the asset.  This overrides the default (that the template is in
+     *  the same directory as the specification).  This allows
+     *  pages or component templates to be located properly, relative to static
+     *  assets (such as images and stylesheets).
+     * 
+     *  @since 2.2
+     * 
+     */
+    
+    public static final String TEMPLATE_ASSET_NAME = "$template";
 
     /**
-     * Name of an {@link org.apache.tapestry.IAsset} of a component that
-     * provides the template for the asset. This overrides the default (that the
-     * template is in the same directory as the specification). This allows
-     * pages or component templates to be located properly, relative to static
-     * assets (such as images and stylesheets).
+     *  Name of the component parameter that will be automatically bound to
+     *  the HTML tag that is used to insert the component in the parent template.
+     *  If the parent component does not have a template (i.e. it extends 
+     *  AbstractComponent, not BaseComponent), then this parameter is bound to null.
      * 
-     * @since 2.2
+     *  @since 3.0
+     * 
      */
-
-    String TEMPLATE_ASSET_NAME = "$template";
-
+    
+    public static final String TEMPLATE_TAG_PARAMETER_NAME = "templateTag";
+    
     /**
-     * Name of the component parameter that will be automatically bound to the
-     * HTML tag that is used to insert the component in the parent template. If
-     * the parent component does not have a template (i.e. it extends
-     * AbstractComponent, not BaseComponent), then this parameter is bound to
-     * null.
+     *  Locates the template for the component.
      * 
-     * @since 3.0
+     *  @param cycle The request cycle loading the template; this is required
+     *  in some cases when the template is loaded from an {@link org.apache.tapestry.IAsset}.
+     *  @param component The component for which a template should be loaded.
+     *
+     *  @throws org.apache.tapestry.ApplicationRuntimeException if the resource cannot be located or loaded.
+     * 
      */
 
-    String TEMPLATE_TAG_PARAMETER_NAME = "templateTag";
+    public ComponentTemplate getTemplate(IRequestCycle cycle, IComponent component);
 
-    /**
-     * Locates the template for the component.
-     * 
-     * @param cycle
-     *            The request cycle loading the template; this is required in
-     *            some cases when the template is loaded from an
-     *            {@link org.apache.tapestry.IAsset}.
-     * @param component
-     *            The component for which a template should be loaded.
-     * @throws org.apache.tapestry.ApplicationRuntimeException
-     *             if the resource cannot be located or loaded.
-     */
-
-    ComponentTemplate getTemplate(IRequestCycle cycle, IComponent component);
 }

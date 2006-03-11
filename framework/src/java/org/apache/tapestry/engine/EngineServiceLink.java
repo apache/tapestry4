@@ -39,6 +39,7 @@ import org.apache.tapestry.web.WebRequest;
 public class EngineServiceLink implements ILink
 {
     private static final int DEFAULT_HTTP_PORT = 80;
+    private static final int DEFAULT_HTTPS_PORT = 443;
 
     private final IRequestCycle _cycle;
 
@@ -123,28 +124,25 @@ public class EngineServiceLink implements ILink
             boolean includeParameters)
     {
         StringBuffer buffer = new StringBuffer();
-        String schemeParm = scheme;
-        String serverParm = server;
-        int portParm = port;
-        
-        if (schemeParm == null)
-            schemeParm = _request.getScheme();
 
-        buffer.append(schemeParm);
+        if (scheme == null)
+            scheme = _request.getScheme();
+
+        buffer.append(scheme);
         buffer.append("://");
 
-        if (serverParm == null)
-            serverParm = _request.getServerName();
+        if (server == null)
+            server = _request.getServerName();
 
-        buffer.append(serverParm);
+        buffer.append(server);
 
-        if (portParm == 0)
-            portParm = _request.getServerPort();
+        if (port == 0)
+            port = _request.getServerPort();
 
-        if (!(schemeParm.equals("http") && portParm == DEFAULT_HTTP_PORT))
+        if (!(scheme.equals("http") && port == DEFAULT_HTTP_PORT))
         {
             buffer.append(':');
-            buffer.append(portParm);
+            buffer.append(port);
         }
 
         // Add the servlet path and the rest of the URL & query parameters.
@@ -168,8 +166,7 @@ public class EngineServiceLink implements ILink
 
         String result = buffer.toString();
 
-        if (_stateful)
-            result = _cycle.encodeURL(result);
+        result = _cycle.encodeURL(result);
 
         return result;
     }

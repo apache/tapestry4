@@ -46,6 +46,8 @@
     <ibiblio-dependency artifact="log4j"              version="${log4j.version}"    group="log4j"    use="test"/>
     <ibiblio-dependency artifact="javassist"          version="${javassist.version}" group="javassist"/>
     <ibiblio-dependency artifact="servletapi"         version="${servlet.version}"  group="servletapi"/>
+    <ibiblio-dependency artifact="commons-fileupload" version="${fileupload.version}" group="commons-fileupload"/>    
+    <ibiblio-dependency artifact="commons-io"         version="${io.version}"  group="commons-io"/>
       
 
   </target>	

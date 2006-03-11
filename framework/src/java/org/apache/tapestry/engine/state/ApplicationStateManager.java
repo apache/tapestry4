@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ package org.apache.tapestry.engine.state;
  */
 public interface ApplicationStateManager
 {
-
     /**
      * Checks to see if the named object exists.
      * 
@@ -29,7 +28,7 @@ public interface ApplicationStateManager
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if no such object is declared
      */
-    boolean exists(String objectName);
+    public boolean exists(String objectName);
 
     /**
      * Gets the named application state object, creating it if necessary.
@@ -40,25 +39,23 @@ public interface ApplicationStateManager
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if no such object is declared
      */
-    Object get(String objectName);
-
+    public Object get(String objectName);
+    
     /**
-     * Stores a new state object, replacing the old one. The new object may be
-     * null.
+     * Stores a new state object, replacing the old one. The
+     * new object may be null.
      * 
-     * @param objectName
-     *            the name of the object to store
-     * @param stateObject
-     *            the new object, possibly null
+     * @param objectName the name of the object to store
+     * @param stateObject the new object, possibly null
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if no such object is declared
      */
-
-    void store(String objectName, Object stateObject);
+    
+    public void store(String objectName, Object stateObject);
 
     /**
      * Asks each {@link StateObjectManager} to store each object obtained.
      */
 
-    void flush();
+    public void flush();
 }

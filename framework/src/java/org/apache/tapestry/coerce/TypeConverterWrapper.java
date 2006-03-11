@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,18 +22,16 @@ import org.apache.hivemind.lib.util.StrategyRegistryImpl;
 
 /**
  * A service implementation that works around an
- * {@link org.apache.hivemind.lib.util.StrategyRegistry}. The registry is
- * contructed from a configuration that follows the
- * <code>tapestry.coerce.Converters</code> schema (a List of
- * {@link org.apache.tapestry.coerce.TypeConverterContribution}plus an
- * additional converter for nulls.
+ * {@link org.apache.hivemind.lib.util.StrategyRegistry}. The registry is contructed from a
+ * configuration that follows the <code>tapestry.coerce.Converters</code> schema (a List of
+ * {@link org.apache.tapestry.coerce.TypeConverterContribution}plus an additional converter for
+ * nulls.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public final class TypeConverterWrapper implements TypeConverter
 {
-
     private StrategyRegistry _registry = new StrategyRegistryImpl();
 
     private List _contributions;
@@ -44,9 +42,9 @@ public final class TypeConverterWrapper implements TypeConverter
     {
         Iterator i = _contributions.iterator();
 
-        while(i.hasNext())
+        while (i.hasNext())
         {
-            TypeConverterContribution c = (TypeConverterContribution)i.next();
+            TypeConverterContribution c = (TypeConverterContribution) i.next();
 
             _registry.register(c.getSubjectClass(), c.getConverter());
         }
@@ -56,19 +54,19 @@ public final class TypeConverterWrapper implements TypeConverter
     {
         if (value == null)
         {
-            if (_nullConverter == null) return null;
+            if (_nullConverter == null)
+                return null;
 
             return _nullConverter.convertValue(null);
         }
 
-        TypeConverter delegate = (TypeConverter)_registry.getStrategy(value.getClass());
+        TypeConverter delegate = (TypeConverter) _registry.getStrategy(value.getClass());
 
         return delegate.convertValue(value);
     }
 
     /**
-     * Sets the List of
-     * {@link org.apache.tapestry.coerce.TypeConverterContribution}s.
+     * Sets the List of {@link org.apache.tapestry.coerce.TypeConverterContribution}s.
      */
 
     public void setContributions(List contributions)

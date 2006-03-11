@@ -32,8 +32,8 @@ import org.apache.tapestry.services.ServletRequestServicerFilter;
  */
 public class MultipartDecoderFilter implements ServletRequestServicerFilter
 {
-    private MultipartDecoder _decoder;
-
+    private ServletMultipartDecoder _decoder;
+    
     public void service(HttpServletRequest request, HttpServletResponse response,
             ServletRequestServicer servicer) throws IOException, ServletException
     {
@@ -58,7 +58,7 @@ public class MultipartDecoderFilter implements ServletRequestServicerFilter
         }
     }
 
-    public void setDecoder(MultipartDecoder decoder)
+    public void setDecoder(ServletMultipartDecoder decoder)
     {
         _decoder = decoder;
     }

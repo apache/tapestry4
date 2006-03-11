@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,42 +27,53 @@ import org.apache.tapestry.util.ComponentAddress;
  */
 public class TreeTableValueRenderSource implements ITableRendererSource
 {
+	private static final long serialVersionUID = 3237638859391458116L;
+	
+	private ComponentTableRendererSource m_objComponentRenderer;
+	private ComponentAddress m_objComponentAddress = null;
 
-    private static final long serialVersionUID = 3237638859391458116L;
+	public TreeTableValueRenderSource()
+	{
+		m_objComponentRenderer = null;
+	}
 
-    private ComponentTableRendererSource m_objComponentRenderer;
-    private ComponentAddress m_objComponentAddress = null;
+	public TreeTableValueRenderSource(ComponentAddress objComponentAddress)
+	{
+		m_objComponentAddress = objComponentAddress;
+	}
 
-    public TreeTableValueRenderSource()
-    {
-        m_objComponentRenderer = null;
-    }
+	/**
+	 * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
+	 */
+	public IRender getRenderer(
+		IRequestCycle objCycle,
+		ITableModelSource objSource,
+		ITableColumn objColumn,
+		Object objRow)
+	{
+		if (m_objComponentRenderer == null)
+		{
+			synchronized (this)
+			{
+				if (m_objComponentRenderer == null)
+				{
+					
+					ComponentAddress objAddress = m_objComponentAddress;
+					if(m_objComponentAddress == null)
+						objAddress = new ComponentAddress(
+							"contrib:TreeTableNodeViewPage",
+							"treeTableNodeViewDelegator");
+					m_objComponentRenderer =
+						new ComponentTableRendererSource(objAddress);
+				}
+			}
+		}
 
-    public TreeTableValueRenderSource(ComponentAddress objComponentAddress)
-    {
-        m_objComponentAddress = objComponentAddress;
-    }
-
-    /**
-     * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle,
-     *      ITableModelSource, ITableColumn, Object)
-     */
-    public IRender getRenderer(IRequestCycle objCycle, ITableModelSource objSource, ITableColumn objColumn,
-            Object objRow)
-    {
-        synchronized(this)
-        {
-            if (m_objComponentRenderer == null)
-            {
-
-                ComponentAddress objAddress = m_objComponentAddress;
-                if (m_objComponentAddress == null)
-                    objAddress = new ComponentAddress("contrib:TreeTableNodeViewPage", "treeTableNodeViewDelegator");
-                m_objComponentRenderer = new ComponentTableRendererSource(objAddress);
-            }
-        }
-
-        return m_objComponentRenderer.getRenderer(objCycle, objSource, objColumn, objRow);
-    }
+		return m_objComponentRenderer.getRenderer(
+			objCycle,
+			objSource,
+			objColumn,
+			objRow);
+	}
 
 }

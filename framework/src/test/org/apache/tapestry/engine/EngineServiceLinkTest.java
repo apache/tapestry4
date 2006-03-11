@@ -31,9 +31,9 @@ import org.apache.tapestry.web.WebRequest;
  */
 public class EngineServiceLinkTest extends BaseComponentTestCase
 {
-    private static final String ENCODING = "utf-8";
-    
     private URLCodec _urlCodec = new URLCodec();
+
+    private static final String ENCODING = "utf-8";
 
     private Map buildParameters(String serviceName, String[] serviceParameters)
     {
@@ -79,6 +79,10 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
                 buildParameters("foo", new String[]
                 { "godzilla", "frodo" }), false);
 
+        trainEncodeURL(rc, 
+        		"/ctx/app?service=foo&sp=godzilla&sp=frodo", 
+        		"/ctx/app?service=foo&sp=godzilla&sp=frodo");
+        
         replayControls();
 
         assertEquals("/ctx/app?service=foo&sp=godzilla&sp=frodo", l.getURL());
@@ -115,6 +119,8 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
                 request, buildParameters("myservice", null), false);
 
+        trainEncodeURL(rc, "/context/servlet#anchor", "/context/servlet#anchor");
+        
         replayControls();
 
         assertEquals("/context/servlet#anchor", l.getURL("anchor", false));
@@ -130,6 +136,10 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         EngineServiceLink l = new EngineServiceLink(rc, "/context/servlet", ENCODING, _urlCodec,
                 request, buildParameters("myservice", null), false);
 
+        trainEncodeURL(rc, 
+        		"/context/servlet?service=myservice#anchor", 
+        		"/context/servlet?service=myservice#anchor");
+        
         replayControls();
 
         assertEquals("/context/servlet?service=myservice#anchor", l.getURL("anchor", true));
@@ -151,6 +161,10 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
 
         trainGetServerPort(request, 9187);
 
+        trainEncodeURL(rc, 
+        		"HTTP://TESTSERVER.COM:9187/ctx/app?service=myservice", 
+        		"HTTP://TESTSERVER.COM:9187/ctx/app?service=myservice");
+        
         replayControls();
 
         assertEquals("HTTP://TESTSERVER.COM:9187/ctx/app?service=myservice", l.getAbsoluteURL());
@@ -166,6 +180,10 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,
                 buildParameters("myservice", null), false);
 
+        trainEncodeURL(rc, 
+        		"https://myserver.net:9100/ctx/app?service=myservice", 
+        		"https://myserver.net:9100/ctx/app?service=myservice");
+        
         replayControls();
 
         assertEquals("https://myserver.net:9100/ctx/app?service=myservice", l.getAbsoluteURL(
@@ -187,6 +205,10 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         trainGetServerName(request, "myserver.net");
         trainGetServerPort(request, 80);
 
+        trainEncodeURL(rc, 
+        		"/ctx/app?service=myservice#myanchor", 
+        		"/ctx/app?service=myservice#myanchor");
+        
         replayControls();
 
         EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,
@@ -209,6 +231,10 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
 
         trainGetScheme(request, "http");
 
+        trainEncodeURL(rc, 
+        		"https://override.net:8080/ctx/app?service=myservice#myanchor", 
+        		"https://override.net:8080/ctx/app?service=myservice#myanchor");
+        
         replayControls();
 
         EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,

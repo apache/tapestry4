@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,10 +28,9 @@ import org.apache.tapestry.IRequestCycle;
  */
 public class TestRenderStrategy extends BaseDescribeTestCase
 {
-
     private RenderStrategy newStrategy()
     {
-        return (RenderStrategy)newMock(RenderStrategy.class);
+        return (RenderStrategy) newMock(RenderStrategy.class);
     }
 
     public void testRenderBridge()

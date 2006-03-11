@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,18 +21,17 @@ import org.apache.tapestry.valid.IValidator;
 import org.apache.tapestry.valid.ValidationDelegate;
 
 /**
- * Implementation of {@link org.apache.tapestry.valid.IValidationDelegate} which
- * uses the correct CSS class when rendering errors.
+ * Implementation of {@link org.apache.tapestry.valid.IValidationDelegate} which uses the correct
+ * CSS class when rendering errors.
  * 
  * @author Howard Lewis Ship
  */
 
 public class VirtualLibraryDelegate extends ValidationDelegate
 {
-
     private static final long serialVersionUID = -1295233610266112824L;
 
-    public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
+	public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
     {
         if (isInError(component))
         {
@@ -43,16 +42,20 @@ public class VirtualLibraryDelegate extends ValidationDelegate
 
     public void writeLabelSuffix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (isInError(component)) writer.end();
+        if (isInError(component))
+            writer.end();
     }
 
-    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component,
+    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle,
+            IFormComponent component, IValidator validator)
+    {
+        if (isInError())
+            writer.attribute("class", "error");
+    }
+
+    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component,
             IValidator validator)
     {
-        if (isInError()) writer.attribute("class", "error");
     }
 
-    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component, IValidator validator)
-    {
-    }
 }

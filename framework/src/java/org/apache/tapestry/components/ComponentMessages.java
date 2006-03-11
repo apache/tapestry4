@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.components;
 
-import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.IComponent;
 
@@ -22,20 +21,17 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-final class ComponentMessages
+class ComponentMessages
 {
-    private final static Messages MESSAGES = new MessageFormatter(ComponentMessages.class);
+    private final static MessageFormatter _formatter = new MessageFormatter(ComponentMessages.class);
 
-    /** @since 4.1 */
-    private ComponentMessages(){}
-    
     static String unableToFormat(IComponent component, Object value, Throwable cause)
     {
-        return MESSAGES.format("unable-to-format", component.getExtendedId(), value, cause);
+        return _formatter.format("unable-to-format", component.getExtendedId(), value, cause);
     }
 
     static String anyElementNotDefined()
     {
-        return MESSAGES.getMessage("any-element-not-defined");
+        return _formatter.getMessage("any-element-not-defined");
     }
 }

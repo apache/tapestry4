@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,20 +18,11 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.valid.ValidatorException;
 
-/**
- * Basis for handling fields that must be parsed and translated (part of form
- * submission semantics).
- * 
- * @author Howard M. Lewis Ship
- * @since 4.0
- */
 public interface TranslatedFieldSupport
 {
+    public String format(TranslatedField field, Object object);
+    
+    public Object parse(TranslatedField field, String text) throws ValidatorException;
 
-    String format(TranslatedField field, Object object);
-
-    Object parse(TranslatedField field, String text)
-        throws ValidatorException;
-
-    void renderContributions(TranslatedField field, IMarkupWriter writer, IRequestCycle cycle);
+    public void renderContributions(TranslatedField field, IMarkupWriter writer, IRequestCycle cycle);
 }

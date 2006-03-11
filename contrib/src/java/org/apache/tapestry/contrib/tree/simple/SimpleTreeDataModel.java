@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,100 +27,85 @@ import org.apache.tapestry.contrib.tree.model.ITreeNode;
  */
 public class SimpleTreeDataModel implements ITreeDataModel, Serializable
 {
+	private static final long serialVersionUID = 9215832847660213349L;
+	
+	protected ITreeNode m_objRootNode;
+	/**
+	 * Constructor for SimpleTreeDataModel.
+	 */
+	public SimpleTreeDataModel(ITreeNode objRootNode) {
+		super();
+		m_objRootNode = objRootNode;
+	}
 
-    private static final long serialVersionUID = 9215832847660213349L;
+	/**
+	 * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getRoot()
+	 */
+	public Object getRoot() {
+		return m_objRootNode;
+	}
 
-    protected ITreeNode m_objRootNode;
+	/**
+	 * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getChildCount(Object)
+	 */
+	public int getChildCount(Object objParent) {
+		ITreeNode objParentNode = (ITreeNode)objParent;
+		
+		return objParentNode.getChildCount();
+	}
 
-    /**
-     * Constructor for SimpleTreeDataModel.
-     */
-    public SimpleTreeDataModel(ITreeNode objRootNode)
-    {
-        super();
-        m_objRootNode = objRootNode;
-    }
+	/**
+	 * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getChildren(Object)
+	 */
+	public Iterator getChildren(Object objParent) {
+		ITreeNode objParentNode = (ITreeNode)objParent;
+		return objParentNode.getChildren().iterator();
+	}
 
-    /**
-     * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getRoot()
-     */
-    public Object getRoot()
-    {
-        return m_objRootNode;
-    }
+	/**
+	 * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getObject(Object)
+	 */
+	public Object getObject(Object objUniqueKey) {
+		if(objUniqueKey != null) {
+			TreePath objPath = (TreePath)objUniqueKey;
+			return objPath.getLastPathComponent();
+		}
+		return null;
+	}
 
-    /**
-     * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getChildCount(Object)
-     */
-    public int getChildCount(Object objParent)
-    {
-        ITreeNode objParentNode = (ITreeNode)objParent;
+	/**
+	 * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getUniqueKey(Object, Object)
+	 */
+	public Object getUniqueKey(Object objTarget, Object objParentUniqueKey) {
+		TreePath objPath = (TreePath)objParentUniqueKey;
+		Object objTargetUID = null;
+		if(objPath != null){
+			objTargetUID = objPath.pathByAddingChild(objTarget);
+		}else{
+			objTargetUID = new TreePath(objTarget);
+		}
+		return objTargetUID;
+	}
 
-        return objParentNode.getChildCount();
-    }
+	/**
+	 * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#isAncestorOf(Object, Object)
+	 */
+	public boolean isAncestorOf(Object objTargetUniqueKey, Object objParentUniqueKey) {
+		TreePath objParentPath = (TreePath)objParentUniqueKey;
+		TreePath objTargetPath = (TreePath)objTargetUniqueKey;
+		boolean bResult = objParentPath.isDescendant(objTargetPath);
+		return bResult;
+	}
 
-    /**
-     * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getChildren(Object)
-     */
-    public Iterator getChildren(Object objParent)
-    {
-        ITreeNode objParentNode = (ITreeNode)objParent;
-        return objParentNode.getChildren().iterator();
-    }
-
-    /**
-     * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getObject(Object)
-     */
-    public Object getObject(Object objUniqueKey)
-    {
-        if (objUniqueKey != null)
-        {
-            TreePath objPath = (TreePath)objUniqueKey;
-            return objPath.getLastPathComponent();
-        }
-        return null;
-    }
-
-    /**
-     * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getUniqueKey(Object,
-     *      Object)
-     */
-    public Object getUniqueKey(Object objTarget, Object objParentUniqueKey)
-    {
-        TreePath objPath = (TreePath)objParentUniqueKey;
-        Object objTargetUID = null;
-        if (objPath != null)
-        {
-            objTargetUID = objPath.pathByAddingChild(objTarget);
-        }
-        else
-        {
-            objTargetUID = new TreePath(objTarget);
-        }
-        return objTargetUID;
-    }
-
-    /**
-     * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#isAncestorOf(Object,
-     *      Object)
-     */
-    public boolean isAncestorOf(Object objTargetUniqueKey, Object objParentUniqueKey)
-    {
-        TreePath objParentPath = (TreePath)objParentUniqueKey;
-        TreePath objTargetPath = (TreePath)objTargetUniqueKey;
-        boolean bResult = objParentPath.isDescendant(objTargetPath);
-        return bResult;
-    }
-
-    /**
-     * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getParentUniqueKey
-     */
-    public Object getParentUniqueKey(Object objChildUniqueKey)
-    {
-        TreePath objChildPath = (TreePath)objChildUniqueKey;
-        TreePath objParentPath = objChildPath.getParentPath();
-        if (objParentPath == null) return null;
-        return objParentPath.getLastPathComponent();
-    }
+	/**
+	 * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getParentUniqueKey
+	 */
+	public Object getParentUniqueKey(Object objChildUniqueKey) {
+		TreePath objChildPath = (TreePath)objChildUniqueKey;
+		TreePath objParentPath = objChildPath.getParentPath();
+		if(objParentPath == null)
+			return null;
+		return objParentPath.getLastPathComponent();
+	}
 
 }

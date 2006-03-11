@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,21 +24,19 @@ import org.apache.tapestry.describe.Describable;
  */
 public interface WebSession extends AttributeHolder, Describable
 {
-
     /**
-     * Returns a unique string identifier used to identify the session. This
-     * value is provided by the container, and is typically incorporated into
-     * URLs, or stored as a HTTP cookie.
+     * Returns a unique string identifier used to identify the session. This value is provided by
+     * the container, and is typically incorporated into URLs, or stored as a HTTP cookie.
      * 
      * @see org.apache.tapestry.web.WebResponse#encodeURL(String).
      */
-    String getId();
+    public String getId();
 
     /**
-     * Returns true if the client does not yet know about the session or if the
-     * client chooses not to join the session.
+     * Returns true if the client does not yet know about the session or if the client chooses not
+     * to join the session.
      */
-    boolean isNew();
+    public boolean isNew();
 
     /**
      * Invalidates this session then unbinds any objects bound to it.
@@ -47,5 +45,5 @@ public interface WebSession extends AttributeHolder, Describable
      *             if the session is already invalidated.
      */
 
-    void invalidate();
+    public void invalidate();
 }

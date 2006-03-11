@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,8 +19,7 @@ import org.apache.tapestry.valid.StringValidator;
 import org.apache.tapestry.valid.ValidField;
 
 /**
- * Backwards compatible version of the 1.0.7 ValidatingTextField component.
- * <table border=1>
+ * Backwards compatible version of the 1.0.7 ValidatingTextField component. <table border=1>
  * <tr>
  * <td>Parameter</td>
  * <td>Type</td>
@@ -37,8 +36,7 @@ import org.apache.tapestry.valid.ValidField;
  * <td>&nbsp;</td>
  * <td>The text inside the text field.
  * <p>
- * When the form is submitted, the binding is only updated if the value is
- * valid.</td>
+ * When the form is submitted, the binding is only updated if the value is valid.</td>
  * </tr>
  * <tr>
  * <td>minimumLength</td>
@@ -46,12 +44,11 @@ import org.apache.tapestry.valid.ValidField;
  * <td>R</td>
  * <td>no</td>
  * <td>0</td>
- * <td>The minimum length (number of characters read) for the field. The value
- * provided in the request is trimmed of leading and trailing whitespace.
+ * <td>The minimum length (number of characters read) for the field. The value provided in the
+ * request is trimmed of leading and trailing whitespace.
  * <p>
- * If a field is not required and no value is given, then minimumLength is
- * ignored. Minimum length only applies if <em>some</em> non-null value is
- * given.</td>
+ * If a field is not required and no value is given, then minimumLength is ignored. Minimum length
+ * only applies if <em>some</em> non-null value is given.</td>
  * </tr>
  * <tr>
  * <td>required</td>
@@ -59,8 +56,8 @@ import org.apache.tapestry.valid.ValidField;
  * <td>R</td>
  * <td>no</td>
  * <td>false</td>
- * <td>If true, then a non-null value must be provided. A value consisting only
- * of whitespace is considered null.</td>
+ * <td>If true, then a non-null value must be provided. A value consisting only of whitespace is
+ * considered null.</td>
  * </tr>
  * <tr>
  * <td>displayName</td>
@@ -68,8 +65,7 @@ import org.apache.tapestry.valid.ValidField;
  * <td>R</td>
  * <td>yes</td>
  * <td>&nbsp;</td>
- * <td>A textual name for the field that is used when formulating error
- * messages.</td>
+ * <td>A textual name for the field that is used when formulating error messages.</td>
  * </tr>
  * </table>
  * <p>
@@ -82,7 +78,6 @@ import org.apache.tapestry.valid.ValidField;
 
 public abstract class ValidatingTextField extends ValidField
 {
-
     public abstract int getMinimumLength();
 
     public abstract boolean isRequired();
@@ -108,20 +103,21 @@ public abstract class ValidatingTextField extends ValidField
      */
     public void setValue(Object value)
     {
-        setText((String)value);
+        setText((String) value);
     }
 
     /**
-     * Overrides {@link ValidField#getValidator()}to construct a validator on
-     * the fly.
+     * Overrides {@link ValidField#getValidator()}to construct a validator on the fly.
      */
     public IValidator getValidator()
     {
         StringValidator validator = new StringValidator();
 
-        if (isParameterBound("required")) validator.setRequired(isRequired());
+        if (isParameterBound("required"))
+            validator.setRequired(isRequired());
 
-        if (isParameterBound("minimumLength")) validator.setMinimumLength(getMinimumLength());
+        if (isParameterBound("minimumLength"))
+            validator.setMinimumLength(getMinimumLength());
 
         return validator;
     }

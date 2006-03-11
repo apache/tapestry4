@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,11 +34,10 @@ import org.easymock.MockControl;
  */
 public class TestServiceMap extends HiveMindTestCase
 {
-
     private IEngineService newService(String name)
     {
         MockControl control = newControl(IEngineService.class);
-        IEngineService service = (IEngineService)control.getMock();
+        IEngineService service = (IEngineService) control.getMock();
 
         service.getName();
         control.setReturnValue(name);
@@ -48,12 +47,12 @@ public class TestServiceMap extends HiveMindTestCase
 
     private IEngineService newService()
     {
-        return (IEngineService)newMock(IEngineService.class);
+        return (IEngineService) newMock(IEngineService.class);
     }
 
     private IRequestCycle newCycle()
     {
-        return (IRequestCycle)newMock(IRequestCycle.class);
+        return (IRequestCycle) newMock(IRequestCycle.class);
     }
 
     private EngineServiceContribution constructService(String name, IEngineService service)
@@ -66,12 +65,11 @@ public class TestServiceMap extends HiveMindTestCase
     }
 
     /**
-     * Gets an application-defined and factory-defined service where there are
-     * no naming conflicts. Because ServiceMap now returns proxies, we have to
-     * do a little extra indirection to ensure that we get what's expected.
+     * Gets an application-defined and factory-defined service where there are no naming conflicts.
+     * Because ServiceMap now returns proxies, we have to do a little extra indirection to ensure
+     * that we get what's expected.
      */
-    public void testGetNoConflict()
-        throws Exception
+    public void testGetNoConflict() throws Exception
     {
         IRequestCycle cycle1 = newCycle();
         IRequestCycle cycle2 = newCycle();
@@ -105,8 +103,7 @@ public class TestServiceMap extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testNameMismatch()
-        throws Exception
+    public void testNameMismatch() throws Exception
     {
         IRequestCycle cycle = newCycle();
         Location l = fabricateLocation(1289);
@@ -163,8 +160,7 @@ public class TestServiceMap extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testApplicationOverridesFactory()
-        throws Exception
+    public void testApplicationOverridesFactory() throws Exception
     {
         IRequestCycle cycle = newCycle();
         IEngineService factory = newService();
@@ -222,8 +218,7 @@ public class TestServiceMap extends HiveMindTestCase
         }
     }
 
-    public void testDuplicateName()
-        throws Exception
+    public void testDuplicateName() throws Exception
     {
         Location l = fabricateLocation(37);
         IRequestCycle cycle = newCycle();
@@ -240,7 +235,7 @@ public class TestServiceMap extends HiveMindTestCase
         list.add(firstc);
         list.add(secondc);
 
-        ErrorLog log = (ErrorLog)newMock(ErrorLog.class);
+        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
         first.service(cycle);
 

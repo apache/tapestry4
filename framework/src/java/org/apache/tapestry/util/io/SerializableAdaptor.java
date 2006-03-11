@@ -40,6 +40,8 @@ import org.apache.tapestry.services.DataSqueezer;
 
 public class SerializableAdaptor implements SqueezeAdaptor
 {
+    private ClassResolver _resolver;
+
     private static final char BYTESTREAM_PREFIX = 'O';
 
     private static final char GZIP_BYTESTREAM_PREFIX = 'Z';
@@ -49,8 +51,6 @@ public class SerializableAdaptor implements SqueezeAdaptor
 
     private static final String PREFIX = "OZ";
 
-    private ClassResolver _resolver;
-    
     public String getPrefix()
     {
         return PREFIX;

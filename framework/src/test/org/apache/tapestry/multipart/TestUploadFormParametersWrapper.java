@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,10 +30,9 @@ import org.apache.hivemind.test.HiveMindTestCase;
  */
 public class TestUploadFormParametersWrapper extends HiveMindTestCase
 {
-
     private HttpServletRequest newRequest()
     {
-        return (HttpServletRequest)newMock(HttpServletRequest.class);
+        return (HttpServletRequest) newMock(HttpServletRequest.class);
     }
 
     public void testMapIsNotModifiable()
@@ -44,7 +43,8 @@ public class TestUploadFormParametersWrapper extends HiveMindTestCase
 
         Map map = new HashMap();
 
-        map.put("key", new String[] { "value" });
+        map.put("key", new String[]
+        { "value" });
 
         HttpServletRequest r = new UploadFormParametersWrapper(request, map);
 
@@ -99,7 +99,8 @@ public class TestUploadFormParametersWrapper extends HiveMindTestCase
 
     public void testGetParameterValues()
     {
-        String[] values = { "fred", "barney" };
+        String[] values =
+        { "fred", "barney" };
 
         HttpServletRequest request = newRequest();
 

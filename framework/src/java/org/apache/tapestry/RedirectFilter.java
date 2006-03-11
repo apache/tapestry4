@@ -47,9 +47,9 @@ import org.apache.hivemind.HiveMind;
 
 public class RedirectFilter implements Filter
 {
-    public static final String REDIRECT_PATH_PARAM = "redirect-path";
-
     private static final Log LOG = LogFactory.getLog(RedirectFilter.class);
+
+    public static final String REDIRECT_PATH_PARAM = "redirect-path";
 
     private String _redirectPath;
 

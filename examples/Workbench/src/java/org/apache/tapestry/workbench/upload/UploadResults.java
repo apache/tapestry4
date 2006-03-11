@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,7 +33,6 @@ import org.apache.tapestry.util.io.BinaryDumpOutputStream;
 
 public abstract class UploadResults extends BasePage
 {
-
     public abstract void setFile(IUploadFile file);
 
     public abstract void setFileDump(String fileDump);
@@ -58,11 +57,12 @@ public abstract class UploadResults extends BasePage
 
             byte[] buffer = new byte[1000];
 
-            while(true)
+            while (true)
             {
                 int length = in.read(buffer);
 
-                if (length < 0) break;
+                if (length < 0)
+                    break;
 
                 out.write(buffer, 0, length);
             }

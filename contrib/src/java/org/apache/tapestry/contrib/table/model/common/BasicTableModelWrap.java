@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,12 +24,11 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
 /**
  * @author mindbridge
  */
-public class BasicTableModelWrap extends AbstractTableModel
+public class BasicTableModelWrap extends AbstractTableModel 
 {
-
-    private static final long serialVersionUID = 1L;
-
-    private IBasicTableModel m_objBasicTableModel;
+	private static final long serialVersionUID = 1L;
+	
+	private IBasicTableModel m_objBasicTableModel;
     private ITableColumnModel m_objTableColumnModel;
 
     public BasicTableModelWrap(IBasicTableModel objBasicTableModel, ITableColumnModel objColumnModel)
@@ -37,8 +36,7 @@ public class BasicTableModelWrap extends AbstractTableModel
         this(objBasicTableModel, objColumnModel, new SimpleTableState());
     }
 
-    public BasicTableModelWrap(IBasicTableModel objBasicTableModel, ITableColumnModel objColumnModel,
-            SimpleTableState objState)
+    public BasicTableModelWrap(IBasicTableModel objBasicTableModel, ITableColumnModel objColumnModel, SimpleTableState objState)
     {
         super(objState);
         m_objBasicTableModel = objBasicTableModel;
@@ -67,15 +65,16 @@ public class BasicTableModelWrap extends AbstractTableModel
     public Iterator getCurrentPageRows()
     {
         int nPageSize = getPagingState().getPageSize();
-        if (nPageSize <= 0) nPageSize = getRowCount();
+        if (nPageSize <= 0)
+            nPageSize = getRowCount();
 
         int nCurrentPage = getPagingState().getCurrentPage();
         int nFrom = nCurrentPage * nPageSize;
-
+        
         String strSortColumn = getSortingState().getSortColumn();
-        ITableColumn objSortColumn = getColumnModel().getColumn(strSortColumn);
+        ITableColumn objSortColumn = getColumnModel().getColumn(strSortColumn); 
         boolean bSortOrder = getSortingState().getSortOrder();
-
+        
         return m_objBasicTableModel.getCurrentPageRows(nFrom, nPageSize, objSortColumn, bSortOrder);
     }
 

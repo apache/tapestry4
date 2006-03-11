@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,20 +15,19 @@
 package org.apache.tapestry.contrib.table.model;
 
 /**
- * A Tapestry component that provides the current row value. This interface is
- * used for obtaining the row source by components wrapped by the row source
+ * A Tapestry component that provides the current row value.
+ * This interface is used for obtaining the row source by components 
+ * wrapped by the row source
  * 
  * @author mindbridge
  */
 public interface ITableRowSource
 {
+    final static String TABLE_ROW_SOURCE_ATTRIBUTE = "org.apache.tapestry.contrib.table.model.ITableRowSource";
 
-    String TABLE_ROW_SOURCE_ATTRIBUTE = "org.apache.tapestry.contrib.table.model.ITableRowSource";
-
-    /**
-     * Method getTableRow.
-     * 
-     * @return Object the current table row object
-     */
+	/**
+	 * Method getTableRow
+	 * @return Object the current table row object
+	 */
     Object getTableRow();
 }

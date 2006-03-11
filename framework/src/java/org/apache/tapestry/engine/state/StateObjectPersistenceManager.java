@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,19 +15,18 @@
 package org.apache.tapestry.engine.state;
 
 /**
- * Interface for the nuts and bolts of getting and storing application state
- * objects. These are intended to be stateless, and manage a number of state
- * objects, mapping objectNames to internal storage in some way.
+ * Interface for the nuts and bolts of getting and storing application state objects. These are
+ * intended to be stateless, and manage a number of state objects, mapping objectNames to internal
+ * storage in some way.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface StateObjectPersistenceManager
 {
+    public boolean exists(String objectName);
 
-    boolean exists(String objectName);
+    public Object get(String objectName, StateObjectFactory factory);
 
-    Object get(String objectName, StateObjectFactory factory);
-
-    void store(String objectName, Object stateObject);
+    public void store(String objectName, Object stateObject);
 }

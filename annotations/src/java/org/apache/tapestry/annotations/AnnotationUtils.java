@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,16 +28,11 @@ import org.apache.tapestry.util.DescribedLocation;
  * @since 4.0
  */
 
-public final class AnnotationUtils {
-
-    /** @since 4.1 */
-    private AnnotationUtils()
-    {
-    }
-
+public class AnnotationUtils
+{
     /**
-     * Determines the property name for a method, by stripping off the
-     * is/get/set prefix and decapitalizing the first name.
+     * Determines the property name for a method, by stripping off the is/get/set prefix and
+     * decapitalizing the first name.
      * 
      * @param method
      *            accessor method (get/set/is)
@@ -49,52 +44,51 @@ public final class AnnotationUtils {
     {
         String name = method.getName();
 
-        if (name.startsWith("is")) {
+        if (name.startsWith("is"))
+        {
             checkGetter(method);
             return Introspector.decapitalize(name.substring(2));
         }
 
-        if (name.startsWith("get")) {
+        if (name.startsWith("get"))
+        {
             checkGetter(method);
             return Introspector.decapitalize(name.substring(3));
         }
 
-        if (name.startsWith("set")) {
+        if (name.startsWith("set"))
+        {
             checkSetter(method);
             return Introspector.decapitalize(name.substring(3));
         }
 
-        throw new ApplicationRuntimeException(AnnotationMessages
-                .notAccessor(method));
+        throw new ApplicationRuntimeException(AnnotationMessages.notAccessor(method));
     }
 
     private static void checkGetter(Method method)
     {
         if (method.getParameterTypes().length > 0)
-            throw new ApplicationRuntimeException(AnnotationMessages
-                    .noParametersExpected(method));
+            throw new ApplicationRuntimeException(AnnotationMessages.noParametersExpected(method));
 
         if (method.getReturnType().equals(void.class))
-            throw new ApplicationRuntimeException(AnnotationMessages
-                    .voidAccessor(method));
+            throw new ApplicationRuntimeException(AnnotationMessages.voidAccessor(method));
 
     }
 
     private static void checkSetter(Method method)
     {
         if (!method.getReturnType().equals(void.class))
-            throw new ApplicationRuntimeException(AnnotationMessages
-                    .nonVoidMutator(method));
+            throw new ApplicationRuntimeException(AnnotationMessages.nonVoidMutator(method));
 
         if (method.getParameterTypes().length != 1)
-            throw new ApplicationRuntimeException(AnnotationMessages
-                    .wrongParameterCount(method));
+            throw new ApplicationRuntimeException(AnnotationMessages.wrongParameterCount(method));
     }
 
-    public static Location buildLocationForAnnotation(Method method,
-            Annotation annotation, Resource classResource)
+    public static Location buildLocationForAnnotation(Method method, Annotation annotation,
+            Resource classResource)
     {
-        return new DescribedLocation(classResource, AnnotationMessages
-                .methodAnnotation(annotation, method));
+        return new DescribedLocation(classResource, AnnotationMessages.methodAnnotation(
+                annotation,
+                method));
     }
 }

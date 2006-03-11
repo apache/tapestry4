@@ -32,13 +32,13 @@ public interface SqueezeAdaptor
      * Returns one or more characters, each of which will be a prefix for this adaptor.
      */
 
-    String getPrefix();
+    public String getPrefix();
 
     /**
      * Returns the class (or interface) which can be encoded by this adaptor.
      */
 
-    Class getDataClass();
+    public Class getDataClass();
 
     /**
      * Converts the data object into a String.
@@ -47,7 +47,7 @@ public interface SqueezeAdaptor
      *             if the object can't be converted.
      */
 
-    String squeeze(DataSqueezer squeezer, Object data);
+    public String squeeze(DataSqueezer squeezer, Object data);
 
     /**
      * Converts a String back into an appropriate object.
@@ -56,5 +56,5 @@ public interface SqueezeAdaptor
      *             if the String can't be converted.
      */
 
-    Object unsqueeze(DataSqueezer squeezer, String string);
+    public Object unsqueeze(DataSqueezer squeezer, String string);
 }

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,15 +20,14 @@ package org.apache.tapestry.services;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public interface AbsoluteURLBuilder {
-
+public interface AbsoluteURLBuilder
+{
     /**
-     * Constructs a URL from the given URI (that is, service path), schema,
-     * server and port.
+     * Constructs a URL from the given URI (that is, service path), schema, server and port.
      * 
      * @param URI
-     *            either a complete URL (that is, containing a colon), in which
-     *            case it is returned unchanged, or the path within the server.
+     *            either a complete URL (that is, containing a colon), in which case it is returned
+     *            unchanged, or the path within the server.
      * @param scheme
      *            scheme to prefix URI with
      * @param server
@@ -36,12 +35,11 @@ public interface AbsoluteURLBuilder {
      * @param port
      *            to suffix the server with (unless the URI begins with "//")
      */
-    String constructURL(String URI, String scheme, String server, int port);
+    public String constructURL(String URI, String scheme, String server, int port);
 
     /**
-     * Constructs a URL, defaulting scheme, server and port to the values for
-     * the current request.
+     * Constructs a URL, defaulting scheme, server and port to the values for the current request.
      */
 
-    String constructURL(String URI);
+    public String constructURL(String URI);
 }

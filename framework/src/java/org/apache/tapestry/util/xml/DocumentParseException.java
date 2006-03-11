@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,12 +30,11 @@ import org.xml.sax.SAXParseException;
 
 public class DocumentParseException extends ApplicationRuntimeException
 {
-
     private static final long serialVersionUID = 4630222650675402789L;
 
-    public DocumentParseException(String message)
+	public DocumentParseException(String message)
     {
-        this(message, (Resource)null);
+        this(message, (Resource) null);
     }
 
     public DocumentParseException(String message, Throwable rootCause)
@@ -55,13 +54,13 @@ public class DocumentParseException extends ApplicationRuntimeException
 
     public DocumentParseException(String message, Resource resource, SAXParseException rootCause)
     {
-        this(message, resource == null ? null : new LocationImpl(resource, rootCause.getLineNumber(), rootCause
-                .getColumnNumber()), rootCause);
+        this(message, resource == null ? null : new LocationImpl(resource, rootCause
+                .getLineNumber(), rootCause.getColumnNumber()), rootCause);
     }
 
     public DocumentParseException(String message, Resource resource)
     {
-        this(message, resource, (Throwable)null);
+        this(message, resource, (Throwable) null);
     }
 
     public DocumentParseException(String message, Resource resource, Throwable rootCause)

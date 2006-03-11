@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.callback;
 
-import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.IComponent;
 
@@ -22,23 +21,17 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-final class CallbackMessages
+class CallbackMessages
 {
-
-    private final static Messages MESSAGES = new MessageFormatter(CallbackMessages.class);
-
-    /** @since 4.1 */
-    private CallbackMessages()
-    {
-    }
+    private final static MessageFormatter _formatter = new MessageFormatter(CallbackMessages.class);
 
     static String pageNotExternal(String pageName)
     {
-        return MESSAGES.format("page-not-external", pageName);
+        return _formatter.format("page-not-external", pageName);
     }
 
     static String componentNotDirect(IComponent component)
     {
-        return MESSAGES.format("component-not-direct", component.getExtendedId());
+        return _formatter.format("component-not-direct", component.getExtendedId());
     }
 }

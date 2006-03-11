@@ -33,5 +33,5 @@ public interface IPropertySource
      * 
      **/
     
-    String getPropertyValue(String propertyName);
+    public String getPropertyValue(String propertyName);
 }

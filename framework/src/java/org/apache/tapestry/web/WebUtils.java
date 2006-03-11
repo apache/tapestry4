@@ -25,18 +25,11 @@ import org.apache.hivemind.util.Defense;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public final class WebUtils
+public class WebUtils
 {
-
-    /** @since 4.1 */
-
-    private WebUtils()
-    {
-    }
-
     /**
-     * Converts an Enumeration of Strings into an unmodifiable List of Strings,
-     * sorted into ascending order.
+     * Converts an Enumeration of Strings into an unmodifiable List of Strings, sorted into
+     * ascending order.
      */
 
     public static List toSortedList(Enumeration e)
@@ -44,13 +37,15 @@ public final class WebUtils
         Defense.notNull(e, "e");
 
         List list = new ArrayList();
-        while(e.hasMoreElements())
+        while (e.hasMoreElements())
             list.add(e.nextElement());
 
-        if (list.isEmpty()) return Collections.EMPTY_LIST;
+        if (list.isEmpty())
+            return Collections.EMPTY_LIST;
 
         Collections.sort(list);
 
         return Collections.unmodifiableList(list);
     }
+
 }

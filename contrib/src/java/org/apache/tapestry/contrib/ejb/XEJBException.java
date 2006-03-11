@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,38 +17,38 @@ package org.apache.tapestry.contrib.ejb;
 import javax.ejb.EJBException;
 
 /**
- * Extended version of {@link EJBException} that includes a root cause.
- * {@link EJBException} doesn't have quite the right constructor for this ... it
- * has an equivalent to the rootCause property, (causedByException), but doesn't
- * have a constructor that allows us to set a custom message.
- * 
- * @author Howard Lewis Ship
- */
+ *  Extended version of {@link EJBException} that includes a root cause.
+ *  {@link EJBException} doesn't have quite the right constructor for this ...
+ *  it has an equivalent to the rootCause property, (causedByException), but
+ *  doesn't have a constructor that allows us to set a custom message.
+ *
+ *  @author Howard Lewis Ship
+ *
+ **/
 
 public class XEJBException extends EJBException
 {
-
     private static final long serialVersionUID = 3712108893575174833L;
-
-    private final Throwable rootCause;
+    
+	private Throwable rootCause;
 
     public XEJBException(String message)
     {
-        this(message, null);
+        super(message);
     }
 
-    public XEJBException(String message, Throwable cause)
+    public XEJBException(String message, Throwable rootCause)
     {
         super(message);
 
-        this.rootCause = cause;
+        this.rootCause = rootCause;
     }
 
-    public XEJBException(Throwable cause)
+    public XEJBException(Throwable rootCause)
     {
-        super(cause.getMessage());
+        super(rootCause.getMessage());
 
-        this.rootCause = cause;
+        this.rootCause = rootCause;
     }
 
     public Throwable getRootCause()

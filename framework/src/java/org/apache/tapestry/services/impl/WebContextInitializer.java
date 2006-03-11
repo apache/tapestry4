@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,16 +23,14 @@ import org.apache.tapestry.web.ServletWebContext;
 import org.apache.tapestry.web.WebContext;
 
 /**
- * Gets the context from the servlet, creates a
- * {@link org.apache.tapestry.web.ServletWebContext}, and stores that into the
- * {@link org.apache.tapestry.services.ApplicationGlobals}.
+ * Gets the context from the servlet, creates a {@link org.apache.tapestry.web.ServletWebContext},
+ * and stores that into the {@link org.apache.tapestry.services.ApplicationGlobals}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class WebContextInitializer implements ApplicationInitializer
 {
-
     private ApplicationGlobals _globals;
 
     public void initialize(HttpServlet servlet)

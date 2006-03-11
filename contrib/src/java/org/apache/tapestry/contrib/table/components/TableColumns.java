@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,35 +24,28 @@ import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 
 /**
- * A low level Table component that renders the column headers in the table.
- * This component must be wrapped by
- * {@link org.apache.tapestry.contrib.table.components.TableView}.
+ * A low level Table component that renders the column headers in the table. This component must be
+ * wrapped by {@link org.apache.tapestry.contrib.table.components.TableView}.
  * <p>
  * The component iterates over all column objects in the
- * {@link org.apache.tapestry.contrib.table.model.ITableColumnModel}and renders
- * a header for each one of them using the renderer provided by the
- * getColumnRender() method in
- * {@link org.apache.tapestry.contrib.table.model.ITableColumn}. The headers
- * are wrapped in 'th' tags by default.
+ * {@link org.apache.tapestry.contrib.table.model.ITableColumnModel}and renders a header for each
+ * one of them using the renderer provided by the getColumnRender() method in
+ * {@link org.apache.tapestry.contrib.table.model.ITableColumn}. The headers are wrapped in 'th'
+ * tags by default.
  * <p>
- * Please see the Component Reference for details on how to use this component. [
- * <a
- * href="../../../../../../../ComponentReference/contrib.TableColumns.html">Component
- * Reference </a>]
+ * Please see the Component Reference for details on how to use this component. [ <a
+ * href="../../../../../../../ComponentReference/contrib.TableColumns.html">Component Reference
+ * </a>]
  * 
  * @author mindbridge
  */
 public abstract class TableColumns extends AbstractTableViewComponent
 {
-
     public static final String TABLE_COLUMN_ARROW_UP_ATTRIBUTE = "org.apache.tapestry.contrib.table.components.TableColumns.arrowUp";
 
     public static final String TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE = "org.apache.tapestry.contrib.table.components.TableColumns.arrowDown";
 
     public static final String TABLE_COLUMN_CSS_CLASS_SUFFIX = "ColumnHeader";
-
-    // Transient
-    private ITableColumn m_objTableColumn = null;
 
     public abstract IAsset getArrowDownAsset();
 
@@ -60,9 +53,12 @@ public abstract class TableColumns extends AbstractTableViewComponent
 
     public abstract void setColumn(ITableColumn column);
 
+    // Transient
+    private ITableColumn m_objTableColumn = null;
+
     /**
-     * Returns the currently rendered table column. You can call this method to
-     * obtain the current column.
+     * Returns the currently rendered table column. You can call this method to obtain the current
+     * column.
      * 
      * @return ITableColumn the current table column
      */
@@ -72,8 +68,7 @@ public abstract class TableColumns extends AbstractTableViewComponent
     }
 
     /**
-     * Sets the currently rendered table column. This method is for internal use
-     * only.
+     * Sets the currently rendered table column. This method is for internal use only.
      * 
      * @param tableColumn
      *            The current table column
@@ -82,7 +77,8 @@ public abstract class TableColumns extends AbstractTableViewComponent
     {
         m_objTableColumn = tableColumn;
 
-        if (isParameterBound("column")) setColumn(tableColumn);
+        if (isParameterBound("column"))
+            setColumn(tableColumn);
     }
 
     /**
@@ -97,35 +93,35 @@ public abstract class TableColumns extends AbstractTableViewComponent
     }
 
     /**
-     * Returns the renderer to be used to generate the header of the current
-     * column.
+     * Returns the renderer to be used to generate the header of the current column
      * 
      * @return the header renderer of the current column
      */
     public IRender getTableColumnRenderer()
     {
-        return getTableColumn().getColumnRenderer(getPage().getRequestCycle(), getTableModelSource());
+        return getTableColumn().getColumnRenderer(
+                getPage().getRequestCycle(),
+                getTableModelSource());
     }
 
     public abstract String getColumnClassParameter();
 
     /**
-     * Returns the CSS class of the generated table cell. It uses the class
-     * parameter if it has been bound, or the default value of "[column
-     * name]ColumnHeader" otherwise.
+     * Returns the CSS class of the generated table cell. It uses the class parameter if it has been
+     * bound, or the default value of "[column name]ColumnHeader" otherwise.
      * 
      * @return the CSS class of the cell
      */
     public String getColumnClass()
     {
-        if (isParameterBound("class")) return getColumnClassParameter();
+        if (isParameterBound("class"))
+            return getColumnClassParameter();
 
         return getTableColumn().getColumnName() + TABLE_COLUMN_CSS_CLASS_SUFFIX;
     }
 
     /**
-     * @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter,
-     *      IRequestCycle)
+     * @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter, IRequestCycle)
      */
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {

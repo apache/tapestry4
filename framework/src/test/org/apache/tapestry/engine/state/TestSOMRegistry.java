@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,14 +32,13 @@ import org.easymock.MockControl;
  */
 public class TestSOMRegistry extends HiveMindTestCase
 {
-
     public void testInitializeAndGet()
     {
         Object stateObject = new Object();
         MockControl pmc = newControl(StateObjectPersistenceManager.class);
-        StateObjectPersistenceManager pm = (StateObjectPersistenceManager)pmc.getMock();
+        StateObjectPersistenceManager pm = (StateObjectPersistenceManager) pmc.getMock();
 
-        StateObjectFactory f = (StateObjectFactory)newMock(StateObjectFactory.class);
+        StateObjectFactory f = (StateObjectFactory) newMock(StateObjectFactory.class);
 
         pm.get("fred", f);
         pmc.setReturnValue(stateObject);
@@ -73,7 +72,7 @@ public class TestSOMRegistry extends HiveMindTestCase
     public void testInitializeUnknownScope()
     {
         Location l = fabricateLocation(55);
-        ErrorLog log = (ErrorLog)newMock(ErrorLog.class);
+        ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
         StateObjectContribution c = new StateObjectContribution();
         c.setName("fred");

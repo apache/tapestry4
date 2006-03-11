@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,18 +18,18 @@ import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
 
 /**
- * Exception thrown indicating a problem parsing an HTML template.
+ *  Exception thrown indicating a problem parsing an HTML template.
+ *
+ *  @author Howard Ship
  * 
- * @author Howard Ship
- */
+ **/
 
 public class TemplateParseException extends Exception implements Locatable
 {
-
     private static final long serialVersionUID = 3741503276431589982L;
-
-    private final Location _location;
-    private final Throwable _rootCause;
+    
+	private Location _location;
+    private Throwable _rootCause;
 
     public TemplateParseException(String message)
     {

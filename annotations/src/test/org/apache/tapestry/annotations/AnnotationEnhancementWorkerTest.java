@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,12 +34,12 @@ import org.apache.tapestry.util.DescribedLocation;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-@SuppressWarnings("deprecation")
-public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase {
 
+public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
+{
     protected EnhancementOperation newOp(Class baseClass)
     {
-        EnhancementOperation op = (EnhancementOperation)newMock(EnhancementOperation.class);
+        EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
 
         op.getBaseClass();
         setReturnValue(op, baseClass);
@@ -52,17 +52,15 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase {
         return Collections.singletonMap(annotationClass, worker);
     }
 
-    /** Test fixture. */
-    private class NoOp implements SecondaryAnnotationWorker {
-
+    private class NoOp implements SecondaryAnnotationWorker
+    {
         public boolean canEnhance(Method method)
         {
             return false;
         }
 
-        public void peformEnhancement(EnhancementOperation op,
-                IComponentSpecification spec, Method method,
-                Resource classResource)
+        public void peformEnhancement(EnhancementOperation op, IComponentSpecification spec,
+                Method method, Resource classResource)
         {
         }
     }
@@ -97,8 +95,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase {
 
         Method m = findMethod(AnnotatedPage.class, "getInjectedObject");
 
-        Location location = newMethodLocation(AnnotatedPage.class, m,
-                InjectObject.class);
+        Location location = newMethodLocation(AnnotatedPage.class, m, InjectObject.class);
 
         methodWorker.performEnhancement(op, spec, m, location);
 
@@ -116,17 +113,17 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase {
 
     protected MethodAnnotationEnhancementWorker newMethodAnnotationEnhancementWorker()
     {
-        return (MethodAnnotationEnhancementWorker)newMock(MethodAnnotationEnhancementWorker.class);
+        return (MethodAnnotationEnhancementWorker) newMock(MethodAnnotationEnhancementWorker.class);
     }
 
-    private DescribedLocation newClassLocation(Class baseClass,
-            Class annotationClass)
+    private DescribedLocation newClassLocation(Class baseClass, Class annotationClass)
     {
         Resource classResource = newResource(baseClass);
         Annotation annotation = baseClass.getAnnotation(annotationClass);
 
-        return new DescribedLocation(classResource, AnnotationMessages
-                .classAnnotation(annotation, baseClass));
+        return new DescribedLocation(classResource, AnnotationMessages.classAnnotation(
+                annotation,
+                baseClass));
     }
 
     public void testAnnotationWithSubclass()
@@ -140,8 +137,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase {
 
         Method m = findMethod(AnnotatedPageSubclass.class, "getInjectedObject");
 
-        Location location = newMethodLocation(AnnotatedPageSubclass.class, m,
-                InjectObject.class);
+        Location location = newMethodLocation(AnnotatedPageSubclass.class, m, InjectObject.class);
 
         methodWorker.performEnhancement(op, spec, m, location);
 
@@ -171,8 +167,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase {
 
         Method m = findMethod(AnnotatedPage.class, "getInjectedObject");
 
-        Location location = newMethodLocation(AnnotatedPage.class, m,
-                InjectObject.class);
+        Location location = newMethodLocation(AnnotatedPage.class, m, InjectObject.class);
 
         methodWorker.performEnhancement(op, spec, m, location);
         setThrowable(methodWorker, t);
@@ -182,7 +177,8 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase {
                         "An error occured processing annotation "
                                 + "@org.apache.tapestry.annotations.InjectObject(value=barney) of "
                                 + "public abstract java.lang.Object org.apache.tapestry.annotations.AnnotatedPage.getInjectedObject(): Woops!",
-                        null, t);
+                        null,
+                        t);
 
         replayControls();
 
@@ -204,13 +200,11 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase {
         EnhancementOperation op = newOp(DeprecatedBean.class);
         IComponentSpecification spec = newSpec();
 
-        ClassAnnotationEnhancementWorker classWorker = (ClassAnnotationEnhancementWorker)newMock(ClassAnnotationEnhancementWorker.class);
+        ClassAnnotationEnhancementWorker classWorker = (ClassAnnotationEnhancementWorker) newMock(ClassAnnotationEnhancementWorker.class);
 
-        DescribedLocation location = newClassLocation(DeprecatedBean.class,
-                Deprecated.class);
+        DescribedLocation location = newClassLocation(DeprecatedBean.class, Deprecated.class);
 
-        classWorker
-                .performEnhancement(op, spec, DeprecatedBean.class, location);
+        classWorker.performEnhancement(op, spec, DeprecatedBean.class, location);
 
         replayControls();
 
@@ -232,22 +226,21 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase {
         EnhancementOperation op = newOp(DeprecatedBean.class);
         IComponentSpecification spec = newSpec();
 
-        ClassAnnotationEnhancementWorker classWorker = (ClassAnnotationEnhancementWorker)newMock(ClassAnnotationEnhancementWorker.class);
+        ClassAnnotationEnhancementWorker classWorker = (ClassAnnotationEnhancementWorker) newMock(ClassAnnotationEnhancementWorker.class);
 
         Throwable t = new RuntimeException("Simulated failure.");
 
-        DescribedLocation location = newClassLocation(DeprecatedBean.class,
-                Deprecated.class);
+        DescribedLocation location = newClassLocation(DeprecatedBean.class, Deprecated.class);
 
-        classWorker
-                .performEnhancement(op, spec, DeprecatedBean.class, location);
+        classWorker.performEnhancement(op, spec, DeprecatedBean.class, location);
         setThrowable(classWorker, t);
 
         log
                 .error(
                         "An error occured processing annotation @java.lang.Deprecated() of "
                                 + "class org.apache.tapestry.annotations.DeprecatedBean: Simulated failure.",
-                        null, t);
+                        null,
+                        t);
 
         replayControls();
 
@@ -284,8 +277,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase {
 
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
-        Method method = findMethod(AnnotatedPage.class,
-                "getPropertyWithInitialValue");
+        Method method = findMethod(AnnotatedPage.class, "getPropertyWithInitialValue");
 
         Resource classResource = newResource(AnnotatedPage.class);
 
@@ -313,8 +305,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase {
         IComponentSpecification spec = newSpec();
         ErrorLog log = newLog();
 
-        Method method = findMethod(AnnotatedPage.class,
-                "getPropertyWithInitialValue");
+        Method method = findMethod(AnnotatedPage.class, "getPropertyWithInitialValue");
 
         Resource classResource = newResource(AnnotatedPage.class);
 
@@ -323,8 +314,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase {
         secondary.canEnhance(method);
         setThrowable(secondary, cause);
 
-        log.error(AnnotationMessages.failureEnhancingMethod(method, cause),
-                null, cause);
+        log.error(AnnotationMessages.failureEnhancingMethod(method, cause), null, cause);
 
         replayControls();
 
@@ -340,6 +330,6 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase {
 
     protected SecondaryAnnotationWorker newSecondaryAnnotationWorker()
     {
-        return (SecondaryAnnotationWorker)newMock(SecondaryAnnotationWorker.class);
+        return (SecondaryAnnotationWorker) newMock(SecondaryAnnotationWorker.class);
     }
 }

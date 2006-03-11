@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,11 +31,10 @@ import org.easymock.MockControl;
  */
 public class TestCheckbox extends BaseFormComponentTestCase
 {
-
     public void testRenderChecked()
     {
-        Checkbox cb = (Checkbox)newInstance(Checkbox.class, new Object[] { "name", "assignedName", "value",
-                Boolean.TRUE });
+        Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
+        { "name", "assignedName", "value", Boolean.TRUE });
 
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
@@ -51,8 +50,8 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
     public void testRenderDisabled()
     {
-        Checkbox cb = (Checkbox)newInstance(Checkbox.class, new Object[] { "name", "assignedName", "disabled",
-                Boolean.TRUE });
+        Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
+        { "name", "assignedName", "disabled", Boolean.TRUE });
 
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
@@ -68,8 +67,9 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
     public void testRenderInformalParameters()
     {
-        Checkbox cb = (Checkbox)newInstance(Checkbox.class, new Object[] { "name", "assignedName", "value",
-                Boolean.TRUE, "specification", new ComponentSpecification() });
+        Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
+        { "name", "assignedName", "value", Boolean.TRUE, "specification",
+                new ComponentSpecification() });
 
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
@@ -89,8 +89,8 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
     public void testRenderWithId()
     {
-        Checkbox cb = (Checkbox)newInstance(Checkbox.class, new Object[] { "idParameter", "foo", "name",
-                "assignedName", "value", Boolean.TRUE });
+        Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
+        { "idParameter", "foo", "name", "assignedName", "value", Boolean.TRUE });
 
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycleGetUniqueId("foo", "foo$unique");
@@ -106,27 +106,27 @@ public class TestCheckbox extends BaseFormComponentTestCase
 
     public void testSubmitNull()
     {
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport)newMock(ValidatableFieldSupport.class);
-
-        Checkbox cb = (Checkbox)newInstance(Checkbox.class, new Object[] { "value", Boolean.TRUE, "name", "checkbox",
-                "validatableFieldSupport", vfs });
+        ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
+    	
+        Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
+        { "value", Boolean.TRUE, "name", "checkbox", "validatableFieldSupport", vfs });
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycleGetParameter("checkbox", null);
 
         try
         {
-            vfs.validate(cb, writer, cycle, null);
+	        vfs.validate(cb, writer, cycle, null);
         }
         catch (ValidatorException e)
         {
-            unreachable();
+        	unreachable();
         }
-
+    	
         replayControls();
 
         cb.rewindFormComponent(writer, cycle);
-
+        
         verifyControls();
 
         assertEquals(false, cb.getValue());
@@ -135,64 +135,64 @@ public class TestCheckbox extends BaseFormComponentTestCase
     public void testSubmitValidateFailed()
     {
         MockControl vfsc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport)vfsc.getMock();
-
+        ValidatableFieldSupport vfs = (ValidatableFieldSupport) vfsc.getMock();
+    	
         MockControl formc = newControl(IForm.class);
-        IForm form = (IForm)formc.getMock();
-
+        IForm form = (IForm) formc.getMock();
+        
         IValidationDelegate delegate = newDelegate();
-
-        Checkbox cb = (Checkbox)newInstance(Checkbox.class, new Object[] { "form", form, "value", Boolean.FALSE,
-                "name", "checkbox", "validatableFieldSupport", vfs });
+        
+        Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
+        { "form", form, "value", Boolean.FALSE, "name", "checkbox", "validatableFieldSupport", vfs });
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycleGetParameter("checkbox", "foo");
 
         ValidatorException exception = new ValidatorException("failed");
-
+        
         try
         {
-            vfs.validate(cb, writer, cycle, "foo");
-            vfsc.setThrowable(exception);
-        }
+	        vfs.validate(cb, writer, cycle, "foo");
+	        vfsc.setThrowable(exception);
+	    }
         catch (ValidatorException e)
         {
-            unreachable();
+        	unreachable();
         }
 
         form.getDelegate();
         formc.setReturnValue(delegate);
-
+        
         delegate.record(exception);
 
         replayControls();
 
         cb.rewindFormComponent(writer, cycle);
-
+        
         verifyControls();
-
+        
         assertEquals(false, cb.getValue());
     }
 
     public void testSubmitNonNull()
     {
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport)newMock(ValidatableFieldSupport.class);
-
-        Checkbox cb = (Checkbox)newInstance(Checkbox.class, new Object[] { "value", Boolean.FALSE, "name", "checkbox",
-                "validatableFieldSupport", vfs });
+        ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
+        
+        Checkbox cb = (Checkbox) newInstance(Checkbox.class, new Object[]
+        { "value", Boolean.FALSE, "name", "checkbox", "validatableFieldSupport", vfs });
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycleGetParameter("checkbox", "foo");
 
         try
         {
-            vfs.validate(cb, writer, cycle, "foo");
+        	vfs.validate(cb, writer, cycle, "foo");
         }
         catch (ValidatorException e)
         {
-            unreachable();
+        	unreachable();
         }
-
+        
         replayControls();
 
         cb.rewindFormComponent(writer, cycle);

@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.bean;
 
-import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.IComponent;
 
@@ -22,41 +21,38 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-final class BeanMessages
+class BeanMessages
 {
-    private final static Messages MESSAGES = new MessageFormatter(BeanMessages.class);
+    private final static MessageFormatter _formatter = new MessageFormatter(BeanMessages.class);
 
-    /** @since 4.1 */
-    private BeanMessages(){}
-    
     static String propertyInitializerName(String propertyName)
     {
-        return MESSAGES.format("property-initializer-name", propertyName);
+        return _formatter.format("property-initializer-name", propertyName);
     }
 
     static String beanNotDefined(IComponent component, String name)
     {
-        return MESSAGES.format("bean-not-defined", component.getExtendedId(), name);
+        return _formatter.format("bean-not-defined", component.getExtendedId(), name);
     }
 
     static String instantiationError(String name, IComponent component, Class beanClass,
             Throwable cause)
     {
-        return MESSAGES.format("instantiation-error", new Object[]
+        return _formatter.format("instantiation-error", new Object[]
         { name, component.getExtendedId(), beanClass.getName(), cause });
     }
 
     static String initializationError(IComponent component, String beanName, String propertyName,
             Throwable cause)
     {
-        return MESSAGES.format("initialization-error", new Object[]
+        return _formatter.format("initialization-error", new Object[]
         { propertyName, beanName, component.getExtendedId(), cause });
     }
 
     static String missingBeanClass(IComponent component, String beanName, String className,
             String packageList)
     {
-        return MESSAGES.format("missing-bean-class", new Object[]
+        return _formatter.format("missing-bean-class", new Object[]
         { beanName, component.getExtendedId(), className, packageList });
     }
 }

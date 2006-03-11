@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,39 +15,35 @@
 package org.apache.tapestry.engine.state;
 
 /**
- * Interface for an object that manages a single application state object.
- * Represents the named intersection of a
- * {@link org.apache.tapestry.engine.state.StateObjectPersistenceManager}for
+ * Interface for an object that manages a single application state object. Represents the named
+ * intersection of a {@link org.apache.tapestry.engine.state.StateObjectPersistenceManager}for
  * storing the state object between request cycles, and a
- * {@link org.apache.tapestry.engine.state.StateObjectFactory}to create the
- * object in the first place.
+ * {@link org.apache.tapestry.engine.state.StateObjectFactory}to create the object in the first
+ * place.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface StateObjectManager
 {
-
     /**
-     * Returns true if the application state object exists (i.e., a value has
-     * been stored).
+     * Returns true if the application state object exists (i.e., a value has been stored).
      */
-    boolean exists();
+    public boolean exists();
 
     /**
      * Gets or creates the application state object.
      */
 
-    Object get();
+    public Object get();
 
     /**
-     * Stores (if necessary) the object back into persistent storage. This is
-     * not application to all storage scopes.
+     * Stores (if necessary) the object back into persistent storage. This is not application to all
+     * storage scopes.
      * 
      * @param stateObject
-     *            the application state object previously obtained from
-     *            {@link #get()}.
+     *            the application state object previously obtained from {@link #get()}.
      */
 
-    void store(Object stateObject);
+    public void store(Object stateObject);
 }

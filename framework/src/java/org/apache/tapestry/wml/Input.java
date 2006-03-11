@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -46,18 +46,22 @@ public abstract class Input extends AbstractComponent
             writer.attribute("name", getName());
 
             String title = getTitle();
-            if (HiveMind.isNonBlank(title)) writer.attribute("title", title);
+            if (HiveMind.isNonBlank(title))
+                writer.attribute("title", title);
 
             String format = getFormat();
-            if (HiveMind.isNonBlank(format)) writer.attribute("format", format);
+            if (HiveMind.isNonBlank(format))
+                writer.attribute("format", format);
 
             boolean emptyok = isEmptyok();
-            if (emptyok) writer.attribute("emptyok", emptyok);
+            if (emptyok != false)
+                writer.attribute("emptyok", emptyok);
 
             renderInformalParameters(writer, cycle);
 
             String value = getValue();
-            if (HiveMind.isNonBlank(value)) writer.attribute("value", value);
+            if (HiveMind.isNonBlank(value))
+                writer.attribute("value", value);
 
             writer.closeTag();
         }

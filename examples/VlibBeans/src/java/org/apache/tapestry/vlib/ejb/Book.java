@@ -29,6 +29,8 @@ import java.sql.Timestamp;
 
 public class Book implements Serializable
 {
+    private static final long serialVersionUID = -3423550323411938995L;
+
     /**
      * Column index for the Book's primary key.
      */
@@ -77,9 +79,7 @@ public class Book implements Serializable
 
     public static final int N_COLUMNS = 14;
 
-    private static final long serialVersionUID = -3423550323411938995L;
-    
-    private Object[] _columns;
+    private Object[] columns;
 
     /**
      * Constructs a new BookQueryResult, making an internal copy of the columns passed.
@@ -93,13 +93,13 @@ public class Book implements Serializable
         if (columns.length != N_COLUMNS)
             throw new IllegalArgumentException("Wrong number of columns for a Book.");
 
-        this._columns = new Object[N_COLUMNS];
-        System.arraycopy(columns, 0, this._columns, 0, N_COLUMNS);
+        this.columns = new Object[N_COLUMNS];
+        System.arraycopy(columns, 0, this.columns, 0, N_COLUMNS);
     }
 
     private Object get(int index)
     {
-        return _columns[index];
+        return columns[index];
     }
 
     public Integer getId()

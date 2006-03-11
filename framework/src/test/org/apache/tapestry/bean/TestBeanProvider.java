@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,19 +30,16 @@ import org.apache.tapestry.spec.BeanSpecification;
 import org.apache.tapestry.spec.IBeanSpecification;
 
 /**
- * Tests for {@link org.apache.tapestry.bean.BeanProvider} (mostly new features
- * added in release 4.0).
+ * Tests for {@link org.apache.tapestry.bean.BeanProvider} (mostly new features added in release
+ * 4.0).
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class TestBeanProvider extends BaseComponentTestCase
 {
-
-    /** Test fixture. */
     public static class BeanInitializerFixture extends AbstractBeanInitializer
     {
-
         private final RuntimeException _exception;
 
         public BeanInitializerFixture(String propertyName, RuntimeException exception)
@@ -60,7 +57,7 @@ public class TestBeanProvider extends BaseComponentTestCase
 
     protected IBeanSpecification newBeanSpec()
     {
-        return (IBeanSpecification)newMock(IBeanSpecification.class);
+        return (IBeanSpecification) newMock(IBeanSpecification.class);
     }
 
     protected void trainGetClassName(IBeanSpecification spec, String className)
@@ -161,11 +158,12 @@ public class TestBeanProvider extends BaseComponentTestCase
         verifyControls();
     }
 
-    private void trainForConstructor(IPage page, IComponent component, ClassResolver resolver, ClassFinder classFinder)
+    private void trainForConstructor(IPage page, IComponent component, ClassResolver resolver,
+            ClassFinder classFinder)
     {
         IRequestCycle cycle = newCycle();
-        Infrastructure infrastructure = (Infrastructure)newMock(Infrastructure.class);
-        INamespace namespace = (INamespace)newMock(INamespace.class);
+        Infrastructure infrastructure = (Infrastructure) newMock(Infrastructure.class);
+        INamespace namespace = (INamespace) newMock(INamespace.class);
 
         trainGetPage(component, page);
 
@@ -190,12 +188,12 @@ public class TestBeanProvider extends BaseComponentTestCase
 
     protected ClassFinder newClassFinder()
     {
-        return (ClassFinder)newMock(ClassFinder.class);
+        return (ClassFinder) newMock(ClassFinder.class);
     }
 
     private ClassResolver newResolver()
     {
-        return (ClassResolver)newMock(ClassResolver.class);
+        return (ClassResolver) newMock(ClassResolver.class);
     }
 
     public void testInitializeFailure()
@@ -240,8 +238,9 @@ public class TestBeanProvider extends BaseComponentTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals("Error initializing property foo of bean 'wilma' (of component Fred/barney): Blat!", ex
-                    .getMessage());
+            assertEquals(
+                    "Error initializing property foo of bean 'wilma' (of component Fred/barney): Blat!",
+                    ex.getMessage());
             assertSame(TargetBean.class, ex.getComponent().getClass());
             assertSame(l, ex.getLocation());
             assertSame(t, ex.getRootCause());

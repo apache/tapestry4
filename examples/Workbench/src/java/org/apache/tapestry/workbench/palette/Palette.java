@@ -31,11 +31,6 @@ import org.apache.tapestry.valid.IValidationDelegate;
 
 public abstract class Palette extends BasePage
 {
-    private IPropertySelectionModel colorModel;
-
-    private String[] colors =
-    { "Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet" };
-    
     public abstract List getSelectedColors();
 
     @Persist("client:app")
@@ -70,6 +65,11 @@ public abstract class Palette extends BasePage
 
         return results;
     }
+
+    private IPropertySelectionModel colorModel;
+
+    private String[] colors =
+    { "Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet" };
 
     public IPropertySelectionModel getColorModel()
     {

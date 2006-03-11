@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,12 +20,11 @@ import org.apache.tapestry.binding.AbstractBinding;
 import org.apache.tapestry.coerce.ValueConverter;
 
 /**
- * Implementation of {@link IBinding} that provides
- * {@link org.apache.tapestry.valid.IValidator} &nbsp;instances based on a
- * validator bean descriptor. The descriptor is of the form "type[,properties]".
- * The types are values such as "string", "date" or "number" defined in the
- * tapestry.valid.Validators configuration point. The properties are a
- * properties initialization string.
+ * Implementation of {@link IBinding} that provides {@link org.apache.tapestry.valid.IValidator}
+ * &nbsp;instances based on a validator bean descriptor. The descriptor is of the form
+ * "type[,properties]". The types are values such as "string", "date" or "number" defined in the
+ * tapestry.valid.Validators configuration point. The properties are a properties initialization
+ * string.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -34,10 +33,10 @@ import org.apache.tapestry.coerce.ValueConverter;
  */
 public class ValidatorBinding extends AbstractBinding
 {
-
     private final IValidator _validator;
 
-    public ValidatorBinding(String description, ValueConverter valueConverter, Location location, IValidator validator)
+    public ValidatorBinding(String description, ValueConverter valueConverter, Location location,
+            IValidator validator)
     {
         super(description, valueConverter, location);
 

@@ -18,21 +18,18 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * Implements a component that manages an HTML &lt;input type=submit&gt; form
- * element. [ <a href="../../../../../ComponentReference/Submit.html">Component
- * Reference </a>]
+ * Implements a component that manages an HTML &lt;input type=submit&gt; form element. [ <a
+ * href="../../../../../ComponentReference/Submit.html">Component Reference </a>]
  * <p>
- * This component is generally only used when the form has multiple submit
- * buttons, and it is important for the application to know which one was
- * pressed. You may also want to use {@link ImageSubmit}which accomplishes much
- * the same thing, but uses a graphic image instead.
+ * This component is generally only used when the form has multiple submit buttons, and it is
+ * important for the application to know which one was pressed. You may also want to use
+ * {@link ImageSubmit}which accomplishes much the same thing, but uses a graphic image instead.
  * 
  * @author Howard Lewis Ship
  */
 
 public abstract class Submit extends AbstractSubmit
 {
-
     protected boolean isClicked(IRequestCycle cycle, String name)
     {
         // How to know which Submit button was actually
@@ -55,11 +52,13 @@ public abstract class Submit extends AbstractSubmit
         writer.attribute("type", "submit");
         writer.attribute("name", getName());
 
-        if (isDisabled()) writer.attribute("disabled", "disabled");
+        if (isDisabled())
+            writer.attribute("disabled", "disabled");
 
         String label = getLabel();
 
-        if (label != null) writer.attribute("value", label);
+        if (label != null)
+            writer.attribute("value", label);
 
         renderIdAttribute(writer, cycle);
 
@@ -68,7 +67,7 @@ public abstract class Submit extends AbstractSubmit
         writer.closeTag();
     }
 
-    /** Parameter. */
+    /** parameter */
     public abstract String getLabel();
 
 }

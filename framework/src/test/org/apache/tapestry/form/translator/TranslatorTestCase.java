@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
 
 package org.apache.tapestry.form.translator;
 
-import org.apache.tapestry.form.FormComponentContributorTestCase;
 import org.apache.tapestry.form.FormEventType;
+import org.apache.tapestry.form.FormComponentContributorTestCase;
 
 /**
  * Abstract test case for {@link Translator}.
@@ -25,18 +25,17 @@ import org.apache.tapestry.form.FormEventType;
  */
 public abstract class TranslatorTestCase extends FormComponentContributorTestCase
 {
-
     protected void trim()
     {
         _component.getForm();
         _componentControl.setReturnValue(_form);
-
+        
         _form.getName();
         _formControl.setReturnValue("formName");
-
+        
         _component.getName();
         _componentControl.setReturnValue("fieldName");
-
+        
         _form.addEventHandler(FormEventType.SUBMIT, "trim(document.formName.fieldName)");
         _formControl.setVoidCallable();
     }

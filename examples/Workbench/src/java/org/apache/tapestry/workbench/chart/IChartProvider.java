@@ -25,5 +25,5 @@ import org.jCharts.Chart;
 
 public interface IChartProvider
 {
-    Chart getChart();
+    public Chart getChart();
 }

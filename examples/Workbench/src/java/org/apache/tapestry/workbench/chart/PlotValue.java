@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,12 +25,11 @@ import java.io.Serializable;
 
 public class PlotValue implements Serializable
 {
-
     private static final long serialVersionUID = 4847193821463693432L;
 
-    private String _name;
+	private String name;
 
-    private int _value;
+    private int value;
 
     public PlotValue()
     {
@@ -38,28 +37,28 @@ public class PlotValue implements Serializable
 
     public PlotValue(String name, int value)
     {
-        this._name = name;
-        this._value = value;
+        this.name = name;
+        this.value = value;
     }
 
     public String getName()
     {
-        return _name;
+        return name;
     }
 
     public void setName(String name)
     {
-        this._name = name;
+        this.name = name;
     }
 
     public int getValue()
     {
-        return _value;
+        return value;
     }
 
     public void setValue(int value)
     {
-        this._value = value;
+        this.value = value;
     }
 
     public String toString()
@@ -67,9 +66,9 @@ public class PlotValue implements Serializable
         StringBuffer buffer = new StringBuffer("PlotValue@");
         buffer.append(Integer.toHexString(hashCode()));
         buffer.append('[');
-        buffer.append(_name);
+        buffer.append(name);
         buffer.append(' ');
-        buffer.append(_value);
+        buffer.append(value);
         buffer.append(']');
 
         return buffer.toString();

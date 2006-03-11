@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,24 +20,27 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * Encapsulates information related to the page listener interfaces.
+ *  Encapsulates information related to the page listener
+ *  interfaces.
+ *
+ *  @author Howard Lewis Ship
+ *  @since 1.0.5
  * 
- * @author Howard Lewis Ship
- * @since 1.0.5
- */
+ **/
 
 public class PageEvent extends EventObject
 {
-
     private static final long serialVersionUID = -6167989946862112436L;
-
-    private final transient IPage page;
-    private final transient IRequestCycle requestCycle;
+    
+	private transient IPage page;
+    private transient IRequestCycle requestCycle;
 
     /**
-     * Constructs a new instance of the event. The
-     * {@link EventObject#getSource()} of the event will be the {@link IPage}.
-     */
+     *  Constructs a new instance of the event.  The
+     *  {@link EventObject#getSource()} of the event will
+     *  be the {@link IPage}.
+     *
+     **/
 
     public PageEvent(IPage page, IRequestCycle cycle)
     {

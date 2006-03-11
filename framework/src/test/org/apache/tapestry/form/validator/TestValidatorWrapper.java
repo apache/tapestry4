@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,18 +22,15 @@ import org.apache.tapestry.form.ValidationMessages;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.form.validator.AbstractValidatorWrapper}.
+ * Tests for {@link org.apache.tapestry.form.validator.AbstractValidatorWrapper}
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public class TestValidatorWrapper extends BaseValidatorTestCase
 {
-
-    /** Fixture. */
     public static class Fixture extends AbstractValidatorWrapper
     {
-
         private final Validator _delegate;
 
         public Fixture(Validator delegate)
@@ -49,11 +46,10 @@ public class TestValidatorWrapper extends BaseValidatorTestCase
 
     private Validator newValidator()
     {
-        return (Validator)newMock(Validator.class);
+        return (Validator) newMock(Validator.class);
     }
 
-    public void testValidate()
-        throws Exception
+    public void testValidate() throws Exception
     {
         IFormComponent field = newField();
         ValidationMessages messages = newMessages();
@@ -91,7 +87,7 @@ public class TestValidatorWrapper extends BaseValidatorTestCase
     public void testGetAcceptsNull()
     {
         MockControl delegatec = newControl(Validator.class);
-        Validator delegate = (Validator)delegatec.getMock();
+        Validator delegate = (Validator) delegatec.getMock();
 
         delegate.getAcceptsNull();
         delegatec.setReturnValue(true);
@@ -117,7 +113,7 @@ public class TestValidatorWrapper extends BaseValidatorTestCase
     public void testIsRequired()
     {
         MockControl delegatec = newControl(Validator.class);
-        Validator delegate = (Validator)delegatec.getMock();
+        Validator delegate = (Validator) delegatec.getMock();
 
         delegate.isRequired();
         delegatec.setReturnValue(true);

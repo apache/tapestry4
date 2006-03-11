@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,18 +20,12 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.spec.ComponentSpecification;
 
-/**
- * Tests the {@link org.apache.tapestry.form.Button} component.
- * 
- * @author Howard M. Lewis Ship
- * @since 4.0
- */
 public class TestButton extends BaseComponentTestCase
 {
-
     public void testRender()
     {
-        Button b = (Button)newInstance(Button.class, new Object[] { "name", "assignedName" });
+        Button b = (Button) newInstance(Button.class, new Object[]
+        { "name", "assignedName" });
 
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
@@ -47,7 +41,8 @@ public class TestButton extends BaseComponentTestCase
 
     public void testRenderLabel()
     {
-        Button b = (Button)newInstance(Button.class, new Object[] { "name", "assignedName", "label", "Label" });
+        Button b = (Button) newInstance(Button.class, new Object[]
+        { "name", "assignedName", "label", "Label" });
 
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
@@ -63,8 +58,8 @@ public class TestButton extends BaseComponentTestCase
 
     public void testRenderInformalParameters()
     {
-        Button b = (Button)newInstance(Button.class, new Object[] { "name", "assignedName", "specification",
-                new ComponentSpecification() });
+        Button b = (Button) newInstance(Button.class, new Object[]
+        { "name", "assignedName", "specification", new ComponentSpecification() });
 
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycle();
@@ -84,7 +79,8 @@ public class TestButton extends BaseComponentTestCase
 
     public void testRenderWithId()
     {
-        Button b = (Button)newInstance(Button.class, new Object[] { "idParameter", "foo", "name", "assignedName" });
+        Button b = (Button) newInstance(Button.class, new Object[]
+        { "idParameter", "foo", "name", "assignedName" });
 
         IMarkupWriter writer = newBufferWriter();
         IRequestCycle cycle = newCycleGetUniqueId("foo", "foo$unique");
@@ -100,7 +96,7 @@ public class TestButton extends BaseComponentTestCase
 
     public void testSubmit()
     {
-        Button b = (Button)newInstance(Button.class);
+        Button b = (Button) newInstance(Button.class);
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();

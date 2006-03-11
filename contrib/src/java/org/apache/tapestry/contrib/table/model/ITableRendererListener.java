@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,12 +18,16 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 
 /**
+ * 
  * @see org.apache.tapestry.contrib.table.model.common.AbstractTableColumn
  * @author mindbridge
  * @since 2.3
  */
 public interface ITableRendererListener extends IComponent
 {
-
-    void initializeRenderer(IRequestCycle objCycle, ITableModelSource objSource, ITableColumn objColumn, Object objRow);
+	void initializeRenderer(
+		IRequestCycle objCycle,
+		ITableModelSource objSource,
+		ITableColumn objColumn,
+		Object objRow);
 }

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,24 +14,24 @@
 
 package org.apache.tapestry.services;
 
+
 /**
- * An pool for objects. Objects may be stored in a Pool for later reuse.
- * 
+ * An pool for objects.  Objects may be stored in a Pool for later reuse.
+ *
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public interface ObjectPool
 {
-
-    /**
-     * Returns an object from the pool, previously stored with the given key.
-     * May return null if no such object exists.
-     */
-    Object get(Object key);
-
-    /**
-     * Stores an object into the pool for later retrieval with the provided key.
-     */
-
-    void store(Object key, Object value);
+	/**
+	 * Returns an object from the pool, previously stored with the given key. May
+	 * return null if no such object exists.
+	 */
+	Object get(Object key);
+	
+	/**
+	 * Stores an object into the pool for later retrieval with the provided key.
+	 */
+	
+	void store(Object key, Object value);
 }

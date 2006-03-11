@@ -50,6 +50,8 @@ import org.apache.tapestry.util.io.TeeOutputStream;
  */
 public class PersistentPropertyDataEncoderImpl implements PersistentPropertyDataEncoder
 {
+    private ClassResolver _classResolver;
+
     /**
      * Prefix on the MIME encoding that indicates that the encoded data is not encoded.
      */
@@ -62,8 +64,6 @@ public class PersistentPropertyDataEncoderImpl implements PersistentPropertyData
 
     public static final String GZIP_BYTESTREAM_PREFIX = "Z";
 
-    private ClassResolver _classResolver;
-    
     public String encodePageChanges(List changes)
     {
         Defense.notNull(changes, "changes");

@@ -27,19 +27,18 @@ import org.apache.tapestry.vlib.services.RemoteTemplate;
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
- * @SuppressWarnings("all")
  */
 public interface OperationsUser
 {
     @InjectObject("service:vlib.Operations")
-    abstract IOperations getOperations();
+    public abstract IOperations getOperations();
 
     @InjectObject("service:vlib.RemoteTemplate")
-    abstract RemoteTemplate getRemoteTemplate();
+    public abstract RemoteTemplate getRemoteTemplate();
 
     @InjectObject("service:vlib.ErrorPresenter")
-    abstract ErrorPresenter getErrorPresenter();
+    public abstract ErrorPresenter getErrorPresenter();
 
     @InjectObject("service:vlib.BookQuerySource")
-    abstract BookQuerySource getBookQuerySource();
+    public abstract BookQuerySource getBookQuerySource();
 }

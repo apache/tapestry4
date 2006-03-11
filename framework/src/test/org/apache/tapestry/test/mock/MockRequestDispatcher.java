@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,53 +26,55 @@ import javax.servlet.ServletResponse;
 
 /**
  * Used to enable mock testing of internal request forwarding.
- * 
+ *
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public class MockRequestDispatcher implements RequestDispatcher
-{
-
-    private String _resourcePath;
-
+{	
+	private String _resourcePath;
+	
     public MockRequestDispatcher(String resourcePath)
     {
-        _resourcePath = resourcePath;
+    	_resourcePath = resourcePath;
     }
 
     public void forward(ServletRequest request, ServletResponse response)
         throws ServletException, IOException
     {
-        if (_resourcePath.endsWith("/FAIL_SERVLET"))
-            throw new ServletException("Test-directed ServletException from RequestDispatcher forward().");
+    	if (_resourcePath.endsWith("/FAIL_SERVLET"))
+    		throw new ServletException("Test-directed ServletException from RequestDispatcher forward().");
+    	
+    	// For testing purposes, assume we only forward to static HTML files.
+    	
+     	
+    	InputStream in = new FileInputStream(_resourcePath);
 
-        // For testing purposes, assume we only forward to static HTML files.
+   		response.setContentType("test/html");
+    	
+    	OutputStream out =	response.getOutputStream();
 
-        InputStream in = new FileInputStream(_resourcePath);
-
-        response.setContentType("test/html");
-
-        OutputStream out = response.getOutputStream();
-
-        byte[] buffer = new byte[1000];
-
-        while(true)
-        {
-            int length = in.read(buffer);
-
-            if (length < 0) break;
-
-            out.write(buffer, 0, length);
-        }
-
-        in.close();
-        out.close();
+    	
+    	byte[] buffer = new byte[1000];
+    	
+    	while (true)
+    	{
+    		int length = in.read(buffer);
+    		
+    		if (length < 0)
+    			break;
+    			
+    		out.write(buffer, 0, length);
+    	}
+    	
+    	in.close();
+    	out.close();
     }
 
     public void include(ServletRequest request, ServletResponse response)
         throws ServletException, IOException
     {
-        throw new ServletException("MockRequestDispatcher.include() not supported.");
+    	throw new ServletException("MockRequestDispatcher.include() not supported.");
     }
 
 }

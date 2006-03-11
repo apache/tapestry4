@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,25 +14,29 @@
 
 package org.apache.tapestry.html;
 
-import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.tapestry.IBinding;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-final class HTMLMessages
+class HTMLMessages
 {
-
-    private static final Messages MESSAGES = new MessageFormatter(HTMLMessages.class);
-
-    /** @since 4.1 */
-    private HTMLMessages()
-    {
-    }
+    private static final MessageFormatter _formatter = new MessageFormatter(HTMLMessages.class);
 
     static String textConversionError(Throwable cause)
     {
-        return MESSAGES.format("text-conversion-error", cause);
+        return _formatter.format("text-conversion-error", cause);
+    }
+    
+    static String multiAssetParameterError(IBinding asset, IBinding scriptPath)
+    {
+    	return _formatter.format("script-multiscript-error", new Object[] {asset, scriptPath});
+    }
+    
+    static String noScriptPathError()
+    {
+    	return _formatter.getMessage("script-required-path-error");
     }
 }

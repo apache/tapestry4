@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,19 +25,16 @@ import java.util.Date;
 
 public class Visit implements Serializable
 {
-
     private static final long serialVersionUID = -8506455811411321232L;
 
     /**
-     * The name of the page for which the corresponding tab should be visibly
-     * active.
+     * The name of the page for which the corresponding tab should be visibly active.
      */
 
     private String _activeTabName = "Home";
 
     /**
-     * If true, then a detailed report about the request is appended to the
-     * bottom of each page.
+     * If true, then a detailed report about the request is appended to the bottom of each page.
      */
 
     private boolean _requestDebug;

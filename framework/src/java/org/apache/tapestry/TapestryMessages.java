@@ -14,65 +14,62 @@
 
 package org.apache.tapestry;
 
-import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 
 /**
  * @author Howard Lewis Ship
  * @since 4.0
  */
-final class TapestryMessages
+class TapestryMessages
 {
-
-    private static final Messages MESSAGES = new MessageFormatter(TapestryMessages.class, "TapestryStrings2");
-
-    /** @since 4.1 */
-    private TapestryMessages()
-    {
-    }
+    private final static MessageFormatter _formatter = new MessageFormatter(TapestryMessages.class,
+            "TapestryStrings2");
 
     static String servletInitFailure(Throwable cause)
     {
-        return MESSAGES.format("servlet-init-failure", cause);
+        return _formatter.format("servlet-init-failure", cause);
     }
 
     static String componentIsLocked(IComponent component)
     {
-        return MESSAGES.format("component-is-locked", component.getExtendedId());
+        return _formatter.format("component-is-locked", component.getExtendedId());
     }
 
     static String servletInit(String name, long elapsedToRegistry, long elapsedOverall)
     {
-        return MESSAGES.format("servlet-init", name, new Long(elapsedToRegistry), new Long(elapsedOverall));
+        return _formatter.format("servlet-init", name, new Long(elapsedToRegistry), new Long(
+                elapsedOverall));
     }
 
     static String nonUniqueAttribute(Object newInstance, String key, Object existingInstance)
     {
-        return MESSAGES.format("non-unique-attribute", newInstance, key, existingInstance);
+        return _formatter.format("non-unique-attribute", newInstance, key, existingInstance);
     }
 
     static String noPageRenderSupport(IComponent component)
     {
-        return MESSAGES.format("no-page-render-support", component.getExtendedId());
+        return _formatter.format("no-page-render-support", component.getExtendedId());
     }
 
     static String noForm(IComponent component)
     {
-        return MESSAGES.format("no-form", component.getExtendedId());
+        return _formatter.format("no-form", component.getExtendedId());
     }
 
     static String providedByEnhancement(String methodName)
     {
-        return MESSAGES.format("provided-by-enhancement", methodName);
+        return _formatter.format("provided-by-enhancement", methodName);
     }
 
     static String attemptToChangeContainedComponent(IComponent component)
     {
-        return MESSAGES.format("attempt-to-change-contained-component", component.getExtendedId());
+        return _formatter
+                .format("attempt-to-change-contained-component", component.getExtendedId());
     }
 
     static String componentWrongType(IComponent component, Class expectedType)
     {
-        return MESSAGES.format("component-wrong-type", component.getExtendedId(), expectedType.getName());
+        return _formatter.format("component-wrong-type", component.getExtendedId(), expectedType
+                .getName());
     }
 }

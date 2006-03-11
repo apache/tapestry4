@@ -35,7 +35,7 @@ public class ParameterizedStatement implements IStatement
 {
     private static final Log LOG = LogFactory.getLog(ParameterizedStatement.class);
 
-    private String _sql;
+    private String _SQL;
     private PreparedStatement _statement;
     private IParameter[] _parameters;
 
@@ -50,7 +50,7 @@ public class ParameterizedStatement implements IStatement
     
     public ParameterizedStatement(String SQL, Connection connection, List parameters) throws SQLException
     {
-        _sql = SQL;
+        _SQL = SQL;
 
         _statement = connection.prepareStatement(SQL);
 
@@ -71,7 +71,7 @@ public class ParameterizedStatement implements IStatement
 
     public String getSQL()
     {
-        return _sql;
+        return _SQL;
     }
 
     /**
@@ -94,7 +94,7 @@ public class ParameterizedStatement implements IStatement
         _statement.close();
 
         _statement = null;
-        _sql = null;
+        _SQL = null;
     }
 
     /**
@@ -129,7 +129,7 @@ public class ParameterizedStatement implements IStatement
         StringBuffer buffer = new StringBuffer("ParameterizedStatement@");
         buffer.append(Integer.toHexString(hashCode()));
         buffer.append("[SQL=\n<");
-        buffer.append(_sql);
+        buffer.append(_SQL);
         buffer.append("\n>");
 
         for (int i = 0; i < _parameters.length; i++)

@@ -20,7 +20,7 @@ import org.apache.tapestry.IRequestCycle;
  * @author mindbridge
  * @since 4.0
  */
-public interface IXTile {
-
-    void trigger(IRequestCycle cycle);
+public interface IXTile 
+{
+	public void trigger(IRequestCycle cycle);
 }

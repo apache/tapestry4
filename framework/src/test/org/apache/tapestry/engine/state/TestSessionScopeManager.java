@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,11 +28,10 @@ import org.easymock.MockControl;
  */
 public class TestSessionScopeManager extends HiveMindTestCase
 {
-
     private WebRequest newRequest(boolean create, WebSession session)
     {
         MockControl control = newControl(WebRequest.class);
-        WebRequest request = (WebRequest)control.getMock();
+        WebRequest request = (WebRequest) control.getMock();
 
         request.getSession(create);
         control.setReturnValue(session);
@@ -43,7 +42,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
     private WebRequest newRequest(WebSession session)
     {
         MockControl control = newControl(WebRequest.class);
-        WebRequest request = (WebRequest)control.getMock();
+        WebRequest request = (WebRequest) control.getMock();
 
         request.getSession(true);
         control.setReturnValue(session);
@@ -63,7 +62,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
     private StateObjectFactory newFactory(Object stateObject)
     {
         MockControl control = newControl(StateObjectFactory.class);
-        StateObjectFactory factory = (StateObjectFactory)control.getMock();
+        StateObjectFactory factory = (StateObjectFactory) control.getMock();
 
         factory.createStateObject();
         control.setReturnValue(stateObject);
@@ -162,7 +161,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
     {
         session.getAttribute(name);
 
-        setReturnValue(session, attribute);
+        setReturnValue(session,attribute);
     }
 
     public void testStore()
@@ -188,15 +187,15 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
     protected WebSession newSession()
     {
-        return (WebSession)newMock(WebSession.class);
+        return (WebSession) newMock(WebSession.class);
     }
 
     protected SessionStoreOptimized newOptimized(boolean dirty)
     {
-        SessionStoreOptimized optimized = (SessionStoreOptimized)newMock(SessionStoreOptimized.class);
+        SessionStoreOptimized optimized = (SessionStoreOptimized) newMock(SessionStoreOptimized.class);
 
         optimized.isStoreToSessionNeeded();
-        setReturnValue(optimized, dirty);
+        setReturnValue(optimized,dirty);
 
         return optimized;
     }

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,11 +29,6 @@ import org.apache.tapestry.valid.IValidationDelegate;
 
 public abstract class Upload extends BasePage
 {
-
-    private static final String[] BPL_OPTIONS = new String[] { "8", "16", "24", "32", "40", "48" };
-
-    private IPropertySelectionModel bplModel;
-
     public abstract IUploadFile getFile();
 
     public abstract boolean isShowAscii();
@@ -41,6 +36,11 @@ public abstract class Upload extends BasePage
     public abstract String getBytesPerLine();
 
     public abstract IValidationDelegate getDelegate();
+
+    private static final String[] bytesPerLineOptions = new String[]
+    { "8", "16", "24", "32", "40", "48" };
+
+    private IPropertySelectionModel bplModel;
 
     @InjectPage("UploadResults")
     public abstract UploadResults getUploadResults();
@@ -56,7 +56,8 @@ public abstract class Upload extends BasePage
 
     public IPropertySelectionModel getBytesPerLineModel()
     {
-        if (bplModel == null) bplModel = new StringPropertySelectionModel(BPL_OPTIONS);
+        if (bplModel == null)
+            bplModel = new StringPropertySelectionModel(bytesPerLineOptions);
 
         return bplModel;
     }

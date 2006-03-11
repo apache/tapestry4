@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,19 +26,17 @@ import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
- * Mock implementation of {@link org.apache.tapestry.valid.IValidationDelegate}
- * used for testing (particularily, to test how the delegate decorates fields
- * and field labels.
+ * Mock implementation of {@link org.apache.tapestry.valid.IValidationDelegate} used for testing
+ * (particularily, to test how the delegate decorates fields and field labels.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class MockDelegate implements IValidationDelegate
 {
-
     private static final long serialVersionUID = -1940135823929783031L;
 
-    private IFormComponent _component;
+	private IFormComponent _component;
 
     private String _input;
 
@@ -108,19 +106,21 @@ public class MockDelegate implements IValidationDelegate
     {
     }
 
-    public void writePrefix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component, IValidator validator)
+    public void writePrefix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component,
+            IValidator validator)
     {
         writer.begin("span");
         writer.attribute("class", "prefix");
     }
 
-    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component,
-            IValidator validator)
+    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle,
+            IFormComponent component, IValidator validator)
     {
         writer.attribute("class", "validation-delegate");
     }
 
-    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component, IValidator validator)
+    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component,
+            IValidator validator)
     {
         writer.end();
     }
@@ -128,12 +128,12 @@ public class MockDelegate implements IValidationDelegate
     public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
     {
     }
-
-    public void writeLabelAttributes(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component)
+    
+    public void writeLabelAttributes(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component) 
     {
-    }
+	}
 
-    public void writeLabelSuffix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
+	public void writeLabelSuffix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
     {
     }
 
@@ -164,7 +164,7 @@ public class MockDelegate implements IValidationDelegate
     public void record(IFormComponent field, String message)
     {
         // TODO Auto-generated method stub
-
+        
     }
 
 }

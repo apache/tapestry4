@@ -34,14 +34,14 @@ import org.apache.tapestry.spec.IComponentSpecification;
  */
 public class InjectMessagesWorker implements EnhancementWorker
 {
-    final String _messagesProperty = "messages";
+    final String MESSAGES_PROPERTY = "messages";
 
-    final MethodSignature _methodSignature = new MethodSignature(Messages.class, "getMessages",
-            null, null);
-    
     private ErrorLog _errorLog;
 
     private ComponentMessagesSource _componentMessagesSource;
+
+    final MethodSignature METHOD_SIGNATURE = new MethodSignature(Messages.class, "getMessages",
+            null, null);
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
     {
@@ -53,7 +53,7 @@ public class InjectMessagesWorker implements EnhancementWorker
         }
         catch (Exception ex)
         {
-            _errorLog.error(EnhanceMessages.errorAddingProperty(_messagesProperty, op
+            _errorLog.error(EnhanceMessages.errorAddingProperty(MESSAGES_PROPERTY, op
                     .getBaseClass(), ex), location, ex);
         }
     }
@@ -62,7 +62,7 @@ public class InjectMessagesWorker implements EnhancementWorker
     {
         Defense.notNull(op, "op");
 
-        op.claimReadonlyProperty(_messagesProperty);
+        op.claimReadonlyProperty(MESSAGES_PROPERTY);
 
         String sourceField = op.addInjectedField(
                 "_$componentMessagesSource",
@@ -78,7 +78,7 @@ public class InjectMessagesWorker implements EnhancementWorker
         builder.addln("return _$messages;");
         builder.end();
 
-        op.addMethod(Modifier.PUBLIC, _methodSignature, builder.toString(), location);
+        op.addMethod(Modifier.PUBLIC, METHOD_SIGNATURE, builder.toString(), location);
     }
 
     public void setComponentMessagesSource(ComponentMessagesSource componentMessagesSource)

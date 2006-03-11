@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ import org.apache.tapestry.request.IUploadFile;
  */
 public class UploadPart extends Object implements IUploadFile
 {
-
     private FileItem _fileItem;
 
     public UploadPart(FileItem fileItem)
@@ -48,8 +47,7 @@ public class UploadPart extends Object implements IUploadFile
     }
 
     /**
-     * Leverages {@link File}to convert the full file path and extract the
-     * name.
+     * Leverages {@link File}to convert the full file path and extract the name.
      */
     public String getFileName()
     {
@@ -75,7 +73,9 @@ public class UploadPart extends Object implements IUploadFile
         }
         catch (IOException ex)
         {
-            throw new ApplicationRuntimeException(MultipartMessages.unableToOpenContentFile(this, ex), ex);
+            throw new ApplicationRuntimeException(MultipartMessages.unableToOpenContentFile(
+                    this,
+                    ex), ex);
         }
     }
 
@@ -89,9 +89,8 @@ public class UploadPart extends Object implements IUploadFile
     }
 
     /**
-     * Writes the uploaded content to a file. This should be invoked at most
-     * once (perhaps we should add a check for this). This will often be a
-     * simple file rename.
+     * Writes the uploaded content to a file. This should be invoked at most once (perhaps we should
+     * add a check for this). This will often be a simple file rename.
      * 
      * @since 3.0
      */
@@ -103,8 +102,10 @@ public class UploadPart extends Object implements IUploadFile
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(Tapestry.format("UploadPart.write-failure", file, ex.getMessage()),
-                    ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "UploadPart.write-failure",
+                    file,
+                    ex.getMessage()), ex);
         }
     }
 

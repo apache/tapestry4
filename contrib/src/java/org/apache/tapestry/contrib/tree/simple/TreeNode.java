@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,98 +27,83 @@ import org.apache.tapestry.contrib.tree.model.ITreeNode;
  */
 public class TreeNode implements IMutableTreeNode
 {
+	private static final long serialVersionUID = 677919478017303186L;
+	
+	protected Set m_setChildren;
+	protected IMutableTreeNode m_objParentNode;
+	
+	/**
+	 * Constructor for TreeNode.
+	 */
+	public TreeNode() {
+		this(null);
+	}
+	public TreeNode(IMutableTreeNode parentNode) {
+		super();
+		m_objParentNode = parentNode;
+		m_setChildren = new HashSet();
+	}
 
-    private static final long serialVersionUID = 677919478017303186L;
 
-    protected Set m_setChildren;
-    protected IMutableTreeNode m_objParentNode;
+	public int getChildCount() {
+		return m_setChildren.size();
+	}
 
-    /**
-     * Constructor for TreeNode.
-     */
-    public TreeNode()
-    {
-        this(null);
-    }
+	public ITreeNode getParent() {
+		return m_objParentNode;
+	}
 
-    public TreeNode(IMutableTreeNode parentNode)
-    {
-        super();
-        m_objParentNode = parentNode;
-        m_setChildren = new HashSet();
-    }
+	public boolean getAllowsChildren() {
+		return true;
+	}
 
-    public int getChildCount()
-    {
-        return m_setChildren.size();
-    }
+	public boolean isLeaf() {
+		return m_setChildren.size() == 0 ? true:false;
+	}
 
-    public ITreeNode getParent()
-    {
-        return m_objParentNode;
-    }
+	public Collection children() {
+		return m_setChildren;
+	}
 
-    public boolean getAllowsChildren()
-    {
-        return true;
-    }
 
-    public boolean isLeaf()
-    {
-        return m_setChildren.size() == 0 ? true : false;
-    }
+	public void insert(IMutableTreeNode child) {
+		child.setParent(this);
+		m_setChildren.add(child);
+	}
 
-    public Collection children()
-    {
-        return m_setChildren;
-    }
+	public void remove(IMutableTreeNode node) {
+		m_setChildren.remove(node);
+	}
 
-    public void insert(IMutableTreeNode child)
-    {
-        child.setParent(this);
-        m_setChildren.add(child);
-    }
+	public void removeFromParent() {
+		m_objParentNode.remove(this);
+		m_objParentNode = null;
+	}
 
-    public void remove(IMutableTreeNode node)
-    {
-        m_setChildren.remove(node);
-    }
+	public void setParent(IMutableTreeNode newParent) {
+		m_objParentNode = newParent;
+	}
 
-    public void removeFromParent()
-    {
-        m_objParentNode.remove(this);
-        m_objParentNode = null;
-    }
+	public void insert(Collection colChildren){
+		for (Iterator iter = colChildren.iterator(); iter.hasNext();) {
+			IMutableTreeNode element = (IMutableTreeNode) iter.next();
+			element.setParent(this);
+			m_setChildren.add(element);
+		}
+	}
 
-    public void setParent(IMutableTreeNode newParent)
-    {
-        m_objParentNode = newParent;
-    }
+	/**
+	 * @see org.apache.tapestry.contrib.tree.model.ITreeNode#containsChild(ITreeNode)
+	 */
+	public boolean containsChild(ITreeNode node) {
+		return m_setChildren.contains(node);
+	}
 
-    public void insert(Collection colChildren)
-    {
-        for(Iterator iter = colChildren.iterator(); iter.hasNext();)
-        {
-            IMutableTreeNode element = (IMutableTreeNode)iter.next();
-            element.setParent(this);
-            m_setChildren.add(element);
-        }
-    }
-
-    /**
-     * @see org.apache.tapestry.contrib.tree.model.ITreeNode#containsChild(ITreeNode)
-     */
-    public boolean containsChild(ITreeNode node)
-    {
-        return m_setChildren.contains(node);
-    }
-
-    /**
-     * @see org.apache.tapestry.contrib.tree.model.ITreeNode#getChildren()
-     */
-    public Collection getChildren()
-    {
-        return m_setChildren;
-    }
+	/**
+	 * @see org.apache.tapestry.contrib.tree.model.ITreeNode#getChildren()
+	 */
+	public Collection getChildren() {
+		return m_setChildren;
+	}
 
 }

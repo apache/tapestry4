@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,50 +15,45 @@
 package org.apache.tapestry.spec;
 
 import org.apache.hivemind.HiveMind;
-import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-final class SpecMessages
+class SpecMessages
 {
-
-    private static final Messages MESSAGES = new MessageFormatter(SpecMessages.class);
-
-    /** @since 4.1 */
-    private SpecMessages()
-    {
-    }
+    private static final MessageFormatter _formatter = new MessageFormatter(SpecMessages.class);
 
     static String claimedProperty(String propertyName, Object existing)
     {
-        return MESSAGES.format("claimed-property", propertyName, HiveMind.getLocationString(existing));
+        return _formatter.format("claimed-property", propertyName, HiveMind
+                .getLocationString(existing));
     }
 
     static String duplicateAsset(String name, IAssetSpecification previousAsset)
     {
-        return MESSAGES.format("duplicate-asset", name, HiveMind.getLocationString(previousAsset));
+        return _formatter
+                .format("duplicate-asset", name, HiveMind.getLocationString(previousAsset));
     }
 
     static String duplicateParameter(String name, IParameterSpecification existing)
     {
-        return MESSAGES.format("duplicate-parameter", name, HiveMind.getLocationString(existing));
+        return _formatter.format("duplicate-parameter", name, HiveMind.getLocationString(existing));
     }
 
     static String duplicateBean(String name, IBeanSpecification spec)
     {
-        return MESSAGES.format("duplicate-bean", name, HiveMind.getLocationString(spec));
+        return _formatter.format("duplicate-bean", name, HiveMind.getLocationString(spec));
     }
 
     static String duplicateProperty(String name, IPropertySpecification existing)
     {
-        return MESSAGES.format("duplicate-property", name, HiveMind.getLocationString(existing));
+        return _formatter.format("duplicate-property", name, HiveMind.getLocationString(existing));
     }
 
     static String duplicateComponent(String name, IContainedComponent existing)
     {
-        return MESSAGES.format("duplicate-component", name, HiveMind.getLocationString(existing));
+        return _formatter.format("duplicate-component", name, HiveMind.getLocationString(existing));
     }
 }

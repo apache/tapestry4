@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,6 +15,9 @@
 package org.apache.tapestry.valid;
 
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.valid.EmailValidator;
+import org.apache.tapestry.valid.ValidationConstraint;
+import org.apache.tapestry.valid.ValidatorException;
 
 /**
  * Tests for {@link org.apache.tapestry.valid.EmailValidator}.
@@ -25,11 +28,9 @@ import org.apache.tapestry.form.IFormComponent;
 
 public class TestEmailValidator extends BaseValidatorTestCase
 {
-
     private EmailValidator v = new EmailValidator();
 
-    public void testValidEmail()
-        throws ValidatorException
+    public void testValidEmail() throws ValidatorException
     {
         IFormComponent field = newField();
 
@@ -56,7 +57,8 @@ public class TestEmailValidator extends BaseValidatorTestCase
         catch (ValidatorException ex)
         {
             assertEquals(ValidationConstraint.EMAIL_FORMAT, ex.getConstraint());
-            assertEquals("Invalid email format for email.  Format is user@hostname.", ex.getMessage());
+            assertEquals("Invalid email format for email.  Format is user@hostname.", ex
+                    .getMessage());
         }
 
         verifyControls();
@@ -68,7 +70,8 @@ public class TestEmailValidator extends BaseValidatorTestCase
 
         replayControls();
 
-        v.setInvalidEmailFormatMessage("Try a valid e-mail address (for {0}), like ''dick@wad.com.''");
+        v
+                .setInvalidEmailFormatMessage("Try a valid e-mail address (for {0}), like ''dick@wad.com.''");
 
         try
         {
@@ -77,7 +80,8 @@ public class TestEmailValidator extends BaseValidatorTestCase
         }
         catch (ValidatorException ex)
         {
-            assertEquals("Try a valid e-mail address (for email), like 'dick@wad.com.'", ex.getMessage());
+            assertEquals("Try a valid e-mail address (for email), like 'dick@wad.com.'", ex
+                    .getMessage());
         }
 
         verifyControls();

@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,7 +35,6 @@ import org.easymock.MockControl;
  */
 public class TestExpressionEvaluator extends HiveMindTestCase
 {
-
     private ExpressionEvaluatorImpl create()
     {
         ExpressionCache cache = new ExpressionCacheImpl();
@@ -47,17 +46,17 @@ public class TestExpressionEvaluator extends HiveMindTestCase
         return result;
     }
 
-    /** Test fixture. */
     private static class NullMeansIgnoreMatcher extends AbstractMatcher
     {
-
         public boolean matches(Object[] expected, Object[] actual)
         {
-            for(int i = 0; i < expected.length; i++)
+            for (int i = 0; i < expected.length; i++)
             {
-                if (expected[i] == null) continue;
+                if (expected[i] == null)
+                    continue;
 
-                if (!argumentMatches(expected[i], actual[i])) return false;
+                if (!argumentMatches(expected[i], actual[i]))
+                    return false;
             }
 
             return true;
@@ -65,10 +64,8 @@ public class TestExpressionEvaluator extends HiveMindTestCase
 
     }
 
-    /** Test fixture. */
     public static class Fixture
     {
-
         private String _value;
 
         public Fixture()
@@ -170,7 +167,7 @@ public class TestExpressionEvaluator extends HiveMindTestCase
     private IApplicationSpecification newAppSpec()
     {
         MockControl control = newControl(IApplicationSpecification.class);
-        IApplicationSpecification spec = (IApplicationSpecification)control.getMock();
+        IApplicationSpecification spec = (IApplicationSpecification) control.getMock();
 
         spec.checkExtension(Tapestry.OGNL_TYPE_CONVERTER);
         control.setReturnValue(false);
@@ -194,14 +191,13 @@ public class TestExpressionEvaluator extends HiveMindTestCase
 
     }
 
-    public void testTypeConverter()
-        throws Exception
+    public void testTypeConverter() throws Exception
     {
         MockControl asc = newControl(IApplicationSpecification.class);
-        IApplicationSpecification as = (IApplicationSpecification)asc.getMock();
+        IApplicationSpecification as = (IApplicationSpecification) asc.getMock();
 
         MockControl tcc = newControl(TypeConverter.class);
-        TypeConverter tc = (TypeConverter)tcc.getMock();
+        TypeConverter tc = (TypeConverter) tcc.getMock();
 
         // Training
 
@@ -227,7 +223,8 @@ public class TestExpressionEvaluator extends HiveMindTestCase
 
         Fixture f = new Fixture();
 
-        Method m = Fixture.class.getMethod("setValue", new Class[] { String.class });
+        Method m = Fixture.class.getMethod("setValue", new Class[]
+        { String.class });
 
         Date d = new Date();
 

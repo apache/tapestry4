@@ -39,7 +39,7 @@ public abstract class ShowProperties extends BaseComponent implements PageBeginR
 
     public abstract PropertyChange getChange();
 
-    /** Injected. */
+    /** Injected */
 
     public abstract PropertyPersistenceStrategySource getPropertySource();
 

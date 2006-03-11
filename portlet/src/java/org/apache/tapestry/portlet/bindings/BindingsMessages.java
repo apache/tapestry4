@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,25 +14,18 @@
 
 package org.apache.tapestry.portlet.bindings;
 
-import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 
 /**
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-final class BindingsMessages
+class BindingsMessages
 {
-
-    private final static Messages MESSAGES = new MessageFormatter(BindingsMessages.class);
-
-    /** @since 4.1 */
-    private BindingsMessages()
-    {
-    }
+    private final static MessageFormatter _formatter = new MessageFormatter(BindingsMessages.class);
 
     static String noUserInfo()
     {
-        return MESSAGES.getMessage("no-user-info");
+        return _formatter.getMessage("no-user-info");
     }
 }

@@ -29,7 +29,7 @@ import javax.ejb.FinderException;
 
 public interface IPersonHome extends EJBHome
 {
-    IPerson create(Map attributes) throws CreateException, RemoteException;
+    public IPerson create(Map attributes) throws CreateException, RemoteException;
 
     public IPerson findByPrimaryKey(Integer key) throws FinderException, RemoteException;
 

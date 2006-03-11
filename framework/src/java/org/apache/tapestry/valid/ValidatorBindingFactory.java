@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.AbstractBindingFactory;
 
 /**
- * Uses the tapestry.valid.ValidatorBeanFactory service to obtain configuration
- * IValidator instances.
+ * Uses the tapestry.valid.ValidatorBeanFactory service to obtain configuration IValidator
+ * instances.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -31,7 +31,6 @@ import org.apache.tapestry.binding.AbstractBindingFactory;
  */
 public class ValidatorBindingFactory extends AbstractBindingFactory
 {
-
     private BeanFactory _validatorBeanFactory;
 
     public void setValidatorBeanFactory(BeanFactory validatorBeanFactory)
@@ -40,18 +39,20 @@ public class ValidatorBindingFactory extends AbstractBindingFactory
     }
 
     /**
-     * Creates and returns a {@link ValidatorBinding}. Interprets the path as a
-     * bean initializer, used to locate a particular type of validator and a
-     * particular configuration of its properties.
+     * Creates and returns a {@link ValidatorBinding}. Interprets the path as a bean initializer,
+     * used to locate a particular type of validator and a particular configuration of its
+     * properties.
      */
 
-    public IBinding createBinding(IComponent root, String bindingDescription, String expression, Location location)
+    public IBinding createBinding(IComponent root, String bindingDescription, String expression,
+            Location location)
     {
         try
         {
-            IValidator validator = (IValidator)_validatorBeanFactory.get(expression);
+            IValidator validator = (IValidator) _validatorBeanFactory.get(expression);
 
-            return new ValidatorBinding(bindingDescription, getValueConverter(), location, validator);
+            return new ValidatorBinding(bindingDescription, getValueConverter(), location,
+                    validator);
         }
         catch (Exception ex)
         {

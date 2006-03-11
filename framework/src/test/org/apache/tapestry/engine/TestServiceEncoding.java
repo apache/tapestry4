@@ -1,4 +1,4 @@
-// Copyright 2004, 2005, 2006 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import org.apache.hivemind.test.HiveMindTestCase;
  */
 public class TestServiceEncoding extends HiveMindTestCase
 {
-
     public void testSetServletPath()
     {
         ServiceEncodingImpl se = new ServiceEncodingImpl("/bar");
@@ -61,7 +60,8 @@ public class TestServiceEncoding extends HiveMindTestCase
 
         assertEquals("bar", se.getParameterValue("foo"));
 
-        se.setParameterValues("flintstone", new String[] { "fred", "wilma", "dino" });
+        se.setParameterValues("flintstone", new String[]
+        { "fred", "wilma", "dino" });
 
         assertEquals("fred", se.getParameterValue("flintstone"));
 
@@ -71,15 +71,18 @@ public class TestServiceEncoding extends HiveMindTestCase
     public void testGetParameterValues()
     {
         ServiceEncodingImpl se = new ServiceEncodingImpl("/foo");
-        se.setParameterValues("flintstone", new String[] { "fred", "wilma", "dino" });
+        se.setParameterValues("flintstone", new String[]
+        { "fred", "wilma", "dino" });
 
-        assertListsEqual(new String[] { "fred", "wilma", "dino" }, se.getParameterValues("flintstone"));
+        assertListsEqual(new String[]
+        { "fred", "wilma", "dino" }, se.getParameterValues("flintstone"));
 
         assertEquals(true, se.isModified());
 
         se.setParameterValue("foo", "bar");
 
-        assertListsEqual(new String[] { "bar" }, se.getParameterValues("foo"));
+        assertListsEqual(new String[]
+        { "bar" }, se.getParameterValues("foo"));
 
         assertNull(se.getParameterValue("unknown"));
     }
@@ -106,6 +109,7 @@ public class TestServiceEncoding extends HiveMindTestCase
         se.setParameterValue("foo", "bar");
         se.setParameterValue("alpha", "beta");
 
-        assertListsEqual(new String[] { "alpha", "foo" }, se.getParameterNames());
+        assertListsEqual(new String[]
+        { "alpha", "foo" }, se.getParameterNames());
     }
 }

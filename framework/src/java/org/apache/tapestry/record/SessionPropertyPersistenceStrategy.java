@@ -72,9 +72,9 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
 
         WebSessionAttributeCallback callback = new WebSessionAttributeCallback()
         {
-            public void handleAttribute(WebSession sess, String name)
+            public void handleAttribute(WebSession session, String name)
             {
-                PropertyChange change = RecordUtils.buildChange(name, sess.getAttribute(name));
+                PropertyChange change = RecordUtils.buildChange(name, session.getAttribute(name));
 
                 result.add(change);
             }
@@ -99,9 +99,9 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
 
         WebSessionAttributeCallback callback = new WebSessionAttributeCallback()
         {
-            public void handleAttribute(WebSession sess, String name)
+            public void handleAttribute(WebSession session, String name)
             {
-                sess.setAttribute(name, null);
+                session.setAttribute(name, null);
             }
         };
 

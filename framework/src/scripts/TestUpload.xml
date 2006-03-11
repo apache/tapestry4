@@ -110,6 +110,11 @@
 		
 	</request>
 	
+	<!-- IMPORTANT NOTE: commons-fileupload-1.1 has a bug that converts file path and
+	     file name to lowercase. This is accounted for in the next test: the name
+	     of the file should be Tapestry-Banner.png.
+	     When this bug is fixed (fileupload 1.2), this test should be updated accordingly
+	  -->
 	<request 
 		content-type="multipart/form-data; boundary=---------------------------9d33212e1c03e3" 
 		content-path="context19/upload-image.request">
@@ -125,11 +130,11 @@
 		</assert-output>
 		
 		<assert-output name="Path">
-		Path: [context19/Tapestry-Banner.png]
+		Path: [context19/tapestry-banner.png]
 		</assert-output>
 		
 		<assert-output name="Name">
-		Name: [Tapestry-Banner.png]
+		Name: [tapestry-banner.png]
 		</assert-output>
 		
 		<assert-output name="Match Confirmation">

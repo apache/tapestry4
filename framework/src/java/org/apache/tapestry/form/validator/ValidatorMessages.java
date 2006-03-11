@@ -14,55 +14,53 @@
 
 package org.apache.tapestry.form.validator;
 
-import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.MessageFormatter;
 
 /**
  * @author Howard Lewis Ship
  * @since 4.0
  */
-final class ValidatorMessages
+class ValidatorMessages
 {
-
-    private static final Messages MESSAGES = new MessageFormatter(ValidatorMessages.class);
-
-    /** @since 4.1 */
-    private ValidatorMessages()
-    {
-    }
+    private static final MessageFormatter _formatter = new MessageFormatter(ValidatorMessages.class);
 
     static String unknownValidator(String name)
     {
-        return MESSAGES.format("unknown-validator", name);
+        return _formatter.format("unknown-validator", name);
     }
 
     static String needsConfiguration(String name)
     {
-        return MESSAGES.format("needs-configuration", name);
+        return _formatter.format("needs-configuration", name);
     }
 
     public static String notConfigurable(String name, String value)
     {
-        return MESSAGES.format("not-configurable", name, value);
+        return _formatter.format("not-configurable", name, value);
     }
 
-    public static String errorInitializingValidator(String name, Class validatorClass, Throwable cause)
+    public static String errorInitializingValidator(String name, Class validatorClass,
+            Throwable cause)
     {
-        return MESSAGES.format("error-initializing-validator", name, validatorClass.getName(), cause);
+        return _formatter.format(
+                "error-initializing-validator",
+                name,
+                validatorClass.getName(),
+                cause);
     }
 
     public static String badSpecification(String specification)
     {
-        return MESSAGES.format("bad-specification", specification);
+        return _formatter.format("bad-specification", specification);
     }
 
     public static String noValueOrMessageForBean(String name)
     {
-        return MESSAGES.format("no-value-or-message-for-bean", name);
+        return _formatter.format("no-value-or-message-for-bean", name);
     }
 
     public static String beanNotValidator(String name)
     {
-        return MESSAGES.format("bean-not-validator", name, Validator.class.getName());
+        return _formatter.format("bean-not-validator", name, Validator.class.getName());
     }
 }

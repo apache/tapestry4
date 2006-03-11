@@ -1,4 +1,4 @@
-// Copyright 2005, 2006 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,11 +32,10 @@ import org.easymock.MockControl;
  */
 public class TestSetupRequestEncoding extends HiveMindTestCase
 {
-
     private HttpServletRequest newRequest(String encoding)
     {
         MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest)control.getMock();
+        HttpServletRequest request = (HttpServletRequest) control.getMock();
 
         request.getCharacterEncoding();
         control.setReturnValue(encoding);
@@ -46,16 +45,15 @@ public class TestSetupRequestEncoding extends HiveMindTestCase
 
     private HttpServletResponse newResponse()
     {
-        return (HttpServletResponse)newMock(HttpServletResponse.class);
+        return (HttpServletResponse) newMock(HttpServletResponse.class);
     }
 
     private ServletRequestServicer newServicer()
     {
-        return (ServletRequestServicer)newMock(ServletRequestServicer.class);
+        return (ServletRequestServicer) newMock(ServletRequestServicer.class);
     }
 
-    public void testEncodingNotNull()
-        throws Exception
+    public void testEncodingNotNull() throws Exception
     {
         HttpServletRequest request = newRequest("utf-8");
         HttpServletResponse response = newResponse();
@@ -73,8 +71,7 @@ public class TestSetupRequestEncoding extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testEncodingNull()
-        throws Exception
+    public void testEncodingNull() throws Exception
     {
         HttpServletRequest request = newRequest(null);
         HttpServletResponse response = newResponse();
@@ -94,11 +91,10 @@ public class TestSetupRequestEncoding extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testUnsupportedEncoding()
-        throws Exception
+    public void testUnsupportedEncoding() throws Exception
     {
         MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest)control.getMock();
+        HttpServletRequest request = (HttpServletRequest) control.getMock();
 
         HttpServletResponse response = newResponse();
         ServletRequestServicer servicer = newServicer();
@@ -123,19 +119,19 @@ public class TestSetupRequestEncoding extends HiveMindTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals("Unable to set request character encoding to 'output-encoding': Bad encoding.", ex
-                    .getMessage());
+            assertEquals(
+                    "Unable to set request character encoding to 'output-encoding': Bad encoding.",
+                    ex.getMessage());
             assertSame(t, ex.getRootCause());
         }
 
         verifyControls();
     }
 
-    public void testNoSuchMethodError()
-        throws Exception
+    public void testNoSuchMethodError() throws Exception
     {
         MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest)control.getMock();
+        HttpServletRequest request = (HttpServletRequest) control.getMock();
 
         HttpServletResponse response = newResponse();
         ServletRequestServicer servicer = newServicer();
@@ -169,12 +165,11 @@ public class TestSetupRequestEncoding extends HiveMindTestCase
 
         verifyControls();
     }
-
-    public void testAbstractMethodError()
-        throws Exception
+    
+    public void testAbstractMethodError() throws Exception
     {
         MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest)control.getMock();
+        HttpServletRequest request = (HttpServletRequest) control.getMock();
 
         HttpServletResponse response = newResponse();
         ServletRequestServicer servicer = newServicer();
@@ -207,5 +202,5 @@ public class TestSetupRequestEncoding extends HiveMindTestCase
         sre.service(request, response, servicer);
 
         verifyControls();
-    }
+    }    
 }
