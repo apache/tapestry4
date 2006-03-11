@@ -1,0 +1,9 @@
+.dojoHtmlResizeHandle {
+	float: right;
+	width: 13px;
+	height: 13px;
+	z-index: 20;
+	cursor: nw-resize;
+	background-image: url(grabCorner.gif);
+	line-height: 0px;
+}
