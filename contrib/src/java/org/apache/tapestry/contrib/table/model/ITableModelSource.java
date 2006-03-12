@@ -42,4 +42,10 @@ public interface ITableModelSource extends IComponent
      * and automatic state storage will therefore be hard to implement.
 	 */
     void fireObservedStateChange();
+
+    /**
+     * Stores the provided table action
+     */
+    public void storeTableAction(ITableAction action);
+
 }
