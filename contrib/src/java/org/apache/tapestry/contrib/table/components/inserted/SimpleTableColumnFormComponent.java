@@ -41,7 +41,6 @@ public abstract class SimpleTableColumnFormComponent
 	extends BaseComponent
 	implements ITableRendererListener
 {
-
     public abstract ITableColumn getTableColumn();
     public abstract void setTableColumn(ITableColumn objColumn);
 
@@ -121,16 +120,8 @@ public abstract class SimpleTableColumnFormComponent
 	public void columnSelected(IRequestCycle objCycle)
 	{
         String strColumnName = getSelectedColumnName();
-		ITableSortingState objState = getTableModel().getSortingState();
-		if (strColumnName.equals(objState.getSortColumn()))
-			objState.setSortColumn(strColumnName, !objState.getSortOrder());
-		else
-			objState.setSortColumn(
-				strColumnName,
-				ITableSortingState.SORT_ASCENDING);
-
-		// ensure that the change is saved
-		getTableModelSource().fireObservedStateChange();
-	}
+        ITableModelSource objSource = getTableModelSource();
+        objSource.storeTableAction(new TableActionColumnSort(strColumnName));
+    }
 
 }
