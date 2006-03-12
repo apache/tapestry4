@@ -40,7 +40,7 @@ public interface ClassAnnotationEnhancementWorker
      *            the location associated with the annotation
      */
 
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
+    void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
             Class baseClass, Location location);
 
 }

@@ -28,8 +28,11 @@ import org.apache.tapestry.util.DescribedLocation;
  * @since 4.0
  */
 
-public class AnnotationUtils
+public final class AnnotationUtils
 {
+    /* defeat instantiation */
+    private AnnotationUtils() { }
+    
     /**
      * Determines the property name for a method, by stripping off the is/get/set prefix and
      * decapitalizing the first name.
