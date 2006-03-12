@@ -87,10 +87,7 @@ public abstract class TableFormPages extends TablePages
     public void changePage(IRequestCycle objCycle)
     {
         ITableModelSource objSource = getTableModelSource(); 
-        setCurrentPage(objSource, getSelectedPage());
-
-        // ensure that the change is saved
-        objSource.fireObservedStateChange();
+        objSource.storeTableAction(new TableActionPageChange(getSelectedPage()));
     }
 
     // defined in the JWC file

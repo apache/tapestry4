@@ -27,6 +27,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.table.model.IAdvancedTableColumnSource;
 import org.apache.tapestry.contrib.table.model.IBasicTableModel;
+import org.apache.tapestry.contrib.table.model.ITableAction;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 import org.apache.tapestry.contrib.table.model.ITableDataModel;
@@ -149,6 +150,10 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
 
     public abstract void setClientAppState(Serializable sessionState);
 
+    public abstract List getTableActions();
+    
+    public abstract void setTableActions(List actions); 
+    
     /**
      * The component constructor. Invokes the component member initializations.
      */
@@ -396,6 +401,8 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
      */
     public void pageBeginRender(PageEvent event)
     {
+        executeTableActions();
+        
         // 'suspenders': save the table model if it has been already loaded.
         // this means that if a change has been made explicitly in a listener,
         // it will be saved. this is the last place before committing the changes
@@ -500,4 +507,42 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
         cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE, objOldValue);
     }
 
+    /**
+     * Stores the provided table action
+     */
+    public void storeTableAction(ITableAction action)
+    {
+        List actions = getTableActions();
+        if (actions == null) {
+            actions = new ArrayList(5);
+            setTableActions(actions);
+        }
+        
+        actions.add(action);
+    }
+    
+    /**
+     * Executes the stored table actions
+     */
+    public void executeTableActions()
+    {
+        List actions = getTableActions();
+        if (actions == null || actions.isEmpty())
+            return;
+
+        // save the actions and clear the list
+        List savedActions = new ArrayList(actions);
+        actions.clear();
+
+        ITableModel objTableModel = getTableModel();
+        for(Iterator it = savedActions.iterator(); it.hasNext();)
+        {
+            ITableAction action = (ITableAction) it.next();
+            action.executeTableAction(objTableModel);
+        }
+        
+        // ensure that the changes are saved
+        fireObservedStateChange();
+    }
+    
 }

@@ -178,12 +178,11 @@ public abstract class TablePages extends AbstractTableViewComponent
             return;
         }
 
-        ComponentAddress objAddress = (ComponentAddress) arrParameters[0];
-        ITableModelSource objSource = (ITableModelSource) objAddress.findComponent(objCycle);
-        setCurrentPage(objSource, ((Integer) arrParameters[1]).intValue());
-
-        // ensure that the change is saved
-        objSource.fireObservedStateChange();
+        ComponentAddress objAddress = (ComponentAddress)arrParameters[0];
+        ITableModelSource objSource = (ITableModelSource)objAddress.findComponent(objCycle);
+        int page = ((Integer)arrParameters[1]).intValue();
+        
+        objSource.storeTableAction(new TableActionPageChange(page));
     }
 
     public void setCurrentPage(ITableModelSource objSource, int nPage)

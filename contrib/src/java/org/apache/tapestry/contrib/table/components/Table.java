@@ -17,6 +17,7 @@ package org.apache.tapestry.contrib.table.components;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.contrib.table.model.ITableAction;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableModel;
 import org.apache.tapestry.contrib.table.model.ITableModelSource;
@@ -116,5 +117,13 @@ public abstract class Table extends BaseComponent implements ITableModelSource
     	
     	IForm form = (IForm) getPage().getRequestCycle().getAttribute(TapestryUtils.FORM_ATTRIBUTE);
     	return (form == null);
+    }
+    
+    /* (non-Javadoc)
+     * @see org.apache.tapestry.contrib.table.model.ITableModelSource#storeTableAction(org.apache.tapestry.contrib.table.model.ITableAction)
+     */
+    public void storeTableAction(ITableAction action)
+    {
+        getTableViewComponent().storeTableAction(action);
     }
 }
