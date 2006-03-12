@@ -22,6 +22,10 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.InjectSpecification;
 import org.apache.tapestry.spec.InjectSpecificationImpl;
 
+/**
+ * 
+ * @author Howard Lewis Ship
+ */
 public class InjectStateFlagAnnotationWorker implements MethodAnnotationEnhancementWorker
 {
 

@@ -24,5 +24,35 @@ package org.apache.tapestry;
  */
 public interface IJSONWriter
 {
+    /** begin json block. */
+    String BEGIN = "{";
+    /** end of json block. */
+    String END = "}";
     
+    /**
+     * Writes the key value pair as a <code>key:value</code> 
+     * property pair.
+     * 
+     * @param key 
+     *          The key value of the JSON property
+     * @param value
+     *          The value of the key property
+     */
+    void write(Object key, Object value);
+    
+    /**
+     * Begins a new block using the {@link #BEGIN} character.
+     */
+    void begin();
+    
+    /**
+     * Ends any open blocks using the {@link #END} character.
+     */
+    void end();
+    
+    /**
+     * Causes any un-ended blocks to be closed, as well as 
+     * any reasources associated with writer to be flushed/written.
+     */
+    void close();
 }

@@ -42,6 +42,6 @@ public interface MethodAnnotationEnhancementWorker
      * @param location TODO
      */
 
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
+    void performEnhancement(EnhancementOperation op, IComponentSpecification spec,
             Method method, Location location);
 }
