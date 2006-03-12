@@ -144,20 +144,8 @@ public abstract class SimpleTableColumnComponent
 		ComponentAddress objAddr = (ComponentAddress) arrArgs[0];
 		String strColumnName = (String) arrArgs[1];
 
-		ITableModelSource objSource =
-			(ITableModelSource) objAddr.findComponent(objCycle);
-		ITableModel objModel = objSource.getTableModel();
-
-		ITableSortingState objState = objModel.getSortingState();
-		if (strColumnName.equals(objState.getSortColumn()))
-			objState.setSortColumn(strColumnName, !objState.getSortOrder());
-		else
-			objState.setSortColumn(
-				strColumnName,
-				ITableSortingState.SORT_ASCENDING);
-
-		// ensure that the change is saved
-		objSource.fireObservedStateChange();
-	}
+        ITableModelSource objSource = (ITableModelSource)objAddr.findComponent(objCycle);
+        objSource.storeTableAction(new TableActionColumnSort(strColumnName));
+    }
 
 }
