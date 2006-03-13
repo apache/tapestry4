@@ -22,6 +22,7 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.test.AggregateArgumentsMatcher;
 import org.apache.hivemind.test.ArgumentMatcher;
 import org.apache.hivemind.test.HiveMindTestCase;
@@ -304,8 +305,8 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     {
         IEngine engine = (IEngine) newMock(IEngine.class);
 
-        engine.getClassResolver();
-        setReturnValue(engine, resolver);
+        ClassResolver cr = new DefaultClassResolver();
+        setReturnValue(engine, cr);
 
         return engine;
     }

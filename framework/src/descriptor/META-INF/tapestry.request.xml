@@ -214,7 +214,6 @@
       <construct class="impl.RequestCycleFactoryImpl">
         <set-object property="encoders"
                     value="service-property:tapestry.url.LinkFactory:serviceEncoders"/>
-        <set-service property="monitorFactory" service-id="tapestry.monitor.MonitorFactory"/>
         <set-service property="strategySource" service-id="tapestry.persist.PropertyPersistenceStrategySource"/>       
         <set-service property="infrastructure" service-id="tapestry.Infrastructure"/>
 		<set-service property="absoluteURLBuilder" service-id="AbsoluteURLBuilder"/>

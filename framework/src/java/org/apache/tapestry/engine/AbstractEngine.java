@@ -88,6 +88,13 @@ import org.apache.tapestry.web.WebResponse;
 
 public abstract class AbstractEngine implements IEngine
 {
+    /**
+     * The name of the application specification property used to specify the class of the visit
+     * object.
+     */
+
+    public static final String VISIT_CLASS_PROPERTY_NAME = "org.apache.tapestry.visit-class";
+    
     private static final Log LOG = LogFactory.getLog(AbstractEngine.class);
 
     /**
@@ -104,13 +111,6 @@ public abstract class AbstractEngine implements IEngine
      */
 
     private Locale _locale;
-
-    /**
-     * The name of the application specification property used to specify the class of the visit
-     * object.
-     */
-
-    public static final String VISIT_CLASS_PROPERTY_NAME = "org.apache.tapestry.visit-class";
 
     /**
      * @see org.apache.tapestry.error.ExceptionPresenter
@@ -210,7 +210,6 @@ public abstract class AbstractEngine implements IEngine
     public void service(WebRequest request, WebResponse response) throws IOException
     {
         IRequestCycle cycle = null;
-        IMonitor monitor = null;
         IEngineService service = null;
 
         if (_infrastructure == null)
@@ -236,17 +235,11 @@ public abstract class AbstractEngine implements IEngine
         {
             try
             {
-                monitor = cycle.getMonitor();
-
                 service = cycle.getService();
-
-                monitor.serviceBegin(service.getName(), _infrastructure.getRequest()
-                        .getRequestURI());
-
                 // Let the service handle the rest of the request.
-
+                
                 service.service(cycle);
-
+                
                 return;
             }
             catch (PageRedirectException ex)
@@ -268,8 +261,6 @@ public abstract class AbstractEngine implements IEngine
         }
         catch (Exception ex)
         {
-            monitor.serviceException(ex);
-
             // Attempt to switch to the exception page. However, this may itself
             // fail for a number of reasons, in which case an ApplicationRuntimeException is
             // thrown.
@@ -281,9 +272,6 @@ public abstract class AbstractEngine implements IEngine
         }
         finally
         {
-            if (service != null)
-                monitor.serviceEnd(service.getName());
-
             try
             {
                 cycle.cleanup();

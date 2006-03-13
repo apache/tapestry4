@@ -65,6 +65,7 @@
   	<binding name="listener" value="listener:delete"/>
   	<binding name="label" value="literal:Delete Selected"/>
   </component>
-
+    
+  <inject object="service:workbench.Chart" property="chartService"/>
 </page-specification>
 

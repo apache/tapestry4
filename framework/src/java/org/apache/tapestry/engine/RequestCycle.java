@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -37,7 +38,6 @@ import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.record.PageRecorderImpl;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.util.IdAllocator;
@@ -59,8 +59,6 @@ public class RequestCycle implements IRequestCycle
     private IEngine _engine;
 
     private String _serviceName;
-
-    private IMonitor _monitor;
 
     /** @since 4.0 */
 
@@ -119,8 +117,6 @@ public class RequestCycle implements IRequestCycle
 
     private ErrorLog _log;
 
-    private RequestContext _requestContext;
-
     /** @since 4.0 */
 
     private IdAllocator _idAllocator = new IdAllocator();
@@ -135,23 +131,18 @@ public class RequestCycle implements IRequestCycle
      *            information)
      * @param serviceName
      *            the name of engine service
-     * @param monitor
-     *            informed of various events during the processing of the request
      * @param environment
      *            additional invariant services and objects needed by each RequestCycle instance
-     * @param context
-     *            Part of (partial) compatibility with Tapestry 3.0
      */
 
     public RequestCycle(IEngine engine, QueryParameterMap parameters, String serviceName,
-            IMonitor monitor, RequestCycleEnvironment environment, RequestContext context)
+            RequestCycleEnvironment environment)
     {
         // Variant from instance to instance
 
         _engine = engine;
         _parameters = parameters;
         _serviceName = serviceName;
-        _monitor = monitor;
 
         // Invariant from instance to instance
 
@@ -159,7 +150,6 @@ public class RequestCycle implements IRequestCycle
         _pageSource = _infrastructure.getPageSource();
         _strategySource = environment.getStrategySource();
         _absoluteURLBuilder = environment.getAbsoluteURLBuilder();
-        _requestContext = context;
         _log = new ErrorLogImpl(environment.getErrorHandler(), LOG);
 
     }
@@ -217,11 +207,6 @@ public class RequestCycle implements IRequestCycle
         return _attributes.get(name);
     }
 
-    public IMonitor getMonitor()
-    {
-        return _monitor;
-    }
-
     /** @deprecated */
     public String getNextActionId()
     {
@@ -261,34 +246,25 @@ public class RequestCycle implements IRequestCycle
 
     private IPage loadPage(String name)
     {
-        try
-        {
-            _monitor.pageLoadBegin(name);
+        IPage result = _pageSource.getPage(this, name);
 
-            IPage result = _pageSource.getPage(this, name, _monitor);
+        // Get the recorder that will eventually observe and record
+        // changes to persistent properties of the page.
 
-            // Get the recorder that will eventually observe and record
-            // changes to persistent properties of the page.
+        IPageRecorder recorder = getPageRecorder(name);
 
-            IPageRecorder recorder = getPageRecorder(name);
+        // Have it rollback the page to the prior state. Note that
+        // the page has a null observer at this time (which keeps
+        // these changes from being sent to the page recorder).
 
-            // Have it rollback the page to the prior state. Note that
-            // the page has a null observer at this time (which keeps
-            // these changes from being sent to the page recorder).
+        recorder.rollback(result);
 
-            recorder.rollback(result);
+        // Now, have the page use the recorder for any future
+        // property changes.
 
-            // Now, have the page use the recorder for any future
-            // property changes.
+        result.setChangeObserver(recorder);
 
-            result.setChangeObserver(recorder);
-
-            return result;
-        }
-        finally
-        {
-            _monitor.pageLoadEnd(name);
-        }
+        return result;
 
     }
 
@@ -354,9 +330,6 @@ public class RequestCycle implements IRequestCycle
 
     public void renderPage(IMarkupWriter writer)
     {
-        String pageName = _page.getPageName();
-        _monitor.pageRenderBegin(pageName);
-
         _rewinding = false;
         _actionId = -1;
         _targetActionId = 0;
@@ -383,8 +356,6 @@ public class RequestCycle implements IRequestCycle
         {
             reset();
         }
-
-        _monitor.pageRenderEnd(pageName);
 
     }
 
@@ -415,11 +386,7 @@ public class RequestCycle implements IRequestCycle
     public void rewindForm(IForm form)
     {
         IPage page = form.getPage();
-        String pageName = page.getPageName();
-
         _rewinding = true;
-
-        _monitor.pageRewindBegin(pageName);
 
         // Fake things a little for getNextActionId() / isRewound()
         // This used to be more involved (and include service parameters, and a parameter
@@ -464,8 +431,6 @@ public class RequestCycle implements IRequestCycle
         {
             page.endPageRender();
 
-            _monitor.pageRewindEnd(pageName);
-
             reset();
             _rewinding = false;
         }
@@ -485,11 +450,7 @@ public class RequestCycle implements IRequestCycle
 
     public void rewindPage(String targetActionId, IComponent targetComponent)
     {
-        String pageName = _page.getPageName();
-
         _rewinding = true;
-
-        _monitor.pageRewindBegin(pageName);
 
         _actionId = -1;
 
@@ -525,8 +486,6 @@ public class RequestCycle implements IRequestCycle
         }
         finally
         {
-            _monitor.pageRewindEnd(pageName);
-
             _rewinding = false;
 
             reset();
@@ -688,11 +647,6 @@ public class RequestCycle implements IRequestCycle
     public Infrastructure getInfrastructure()
     {
         return _infrastructure;
-    }
-
-    public RequestContext getRequestContext()
-    {
-        return _requestContext;
     }
 
     /** @since 4.0 */

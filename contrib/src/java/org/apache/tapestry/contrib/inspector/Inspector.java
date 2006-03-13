@@ -129,7 +129,7 @@ public abstract class Inspector extends BasePage
 
     public String getInspectorTitle()
     {
-        return "Tapestry Inspector: " + getEngine().getSpecification().getName();
+        return "Tapestry Inspector ";
     }
 
     /**

@@ -56,5 +56,5 @@
   <reserved-parameter name="href"/>
   
   <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
-  
+  <inject object="service:tapestry.services.Action" property="engine"/>
 </component-specification>

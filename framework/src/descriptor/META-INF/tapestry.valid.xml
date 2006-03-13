@@ -45,6 +45,7 @@
       <construct class="ValidatorBindingFactory">
         <set-service property="validatorBeanFactory" service-id="ValidatorBeanFactory"/>
         <set-object property="valueConverter" value="infrastructure:valueConverter"/>
+        <set-service property="scriptSource" service-id="tapestry.script.ScriptSource" />
       </construct>
     </invoke-factory>
   </service-point>  

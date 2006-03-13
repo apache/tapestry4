@@ -27,7 +27,6 @@ import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.components.LinkEventType;
-import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
 /**
@@ -181,22 +180,6 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
         // Generate additional attributes from informal parameters.
 
         renderInformalParameters(writer, cycle);
-    }
-
-    /**
-     * Utility method for subclasses; Gets the named service from the engine and invokes
-     * {@link IEngineService#getLink(org.apache.tapestry.IComponent, Object[])}on
-     * it.
-     * 
-     * @since 3.0
-     * @deprecated To be removed in 4.1; links may now have the necessary engine service injected.
-     */
-
-    protected ILink getLink(IRequestCycle cycle, String serviceName, Object parameter)
-    {
-        IEngineService service = cycle.getEngine().getService(serviceName);
-
-        return service.getLink(false, parameter);
     }
 
     public abstract String getAnchor();

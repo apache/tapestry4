@@ -69,11 +69,9 @@ Description:
             <property name="severity" value="error"/>
         </module>
         <module name="SuperClone">
-            <property name="severity" value="error"/>
+            <property name="severity" value="info"/>
         </module>
-        <module name="SuperFinalize">
-            <property name="severity" value="error"/>
-        </module>
+        <module name="SuperFinalize"/>
         <module name="FinalClass"/>
         <module name="HideUtilityClassConstructor"/>
         <module name="InterfaceIsType"/>

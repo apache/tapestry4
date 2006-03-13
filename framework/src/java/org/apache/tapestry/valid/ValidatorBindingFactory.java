@@ -20,6 +20,7 @@ import org.apache.hivemind.lib.BeanFactory;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.AbstractBindingFactory;
+import org.apache.tapestry.engine.IScriptSource;
 
 /**
  * Uses the tapestry.valid.ValidatorBeanFactory service to obtain configuration IValidator
@@ -33,11 +34,18 @@ public class ValidatorBindingFactory extends AbstractBindingFactory
 {
     private BeanFactory _validatorBeanFactory;
 
+    private IScriptSource _scriptSource;
+    
     public void setValidatorBeanFactory(BeanFactory validatorBeanFactory)
     {
         _validatorBeanFactory = validatorBeanFactory;
     }
 
+    public void setScriptSource(IScriptSource scriptSource)
+    {
+        _scriptSource = scriptSource;
+    }
+    
     /**
      * Creates and returns a {@link ValidatorBinding}. Interprets the path as a bean initializer,
      * used to locate a particular type of validator and a particular configuration of its
@@ -50,7 +58,8 @@ public class ValidatorBindingFactory extends AbstractBindingFactory
         try
         {
             IValidator validator = (IValidator) _validatorBeanFactory.get(expression);
-
+            validator.setScriptSource(_scriptSource);
+            
             return new ValidatorBinding(bindingDescription, getValueConverter(), location,
                     validator);
         }

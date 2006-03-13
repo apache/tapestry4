@@ -14,9 +14,8 @@
 
 package org.apache.tapestry;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.engine.IEngineService;
-import org.apache.tapestry.engine.IMonitor;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.Infrastructure;
 
 /**
@@ -60,7 +59,7 @@ public interface IRequestCycle
      * This includes releasing any loaded pages back to the page source.
      */
 
-    public void cleanup();
+    void cleanup();
 
     /**
      * Passes the String through
@@ -68,13 +67,13 @@ public interface IRequestCycle
      * that the session id is encoded in the URL (if necessary).
      */
 
-    public String encodeURL(String URL);
+    String encodeURL(String URL);
 
     /**
      * Returns the engine which is processing this request cycle.
      */
 
-    public IEngine getEngine();
+    IEngine getEngine();
 
     /**
      * Retrieves a previously stored attribute, returning null if not found. Attributes allow
@@ -82,9 +81,7 @@ public interface IRequestCycle
      * component which wraps it. Attributes are cleared at the end of the render (or rewind).
      */
 
-    public Object getAttribute(String name);
-
-    public IMonitor getMonitor();
+    Object getAttribute(String name);
 
     /**
      * Returns the next action id. ActionLink ids are used to identify different actions on a page
@@ -94,13 +91,13 @@ public interface IRequestCycle
      * @see #getUniqueId(String)
      */
 
-    public String getNextActionId();
+    String getNextActionId();
 
     /**
      * Identifies the active page, the page which will ultimately render the response.
      */
 
-    public IPage getPage();
+    IPage getPage();
 
     /**
      * Returns the page with the given name. If the page has been previously loaded in the current
@@ -112,14 +109,14 @@ public interface IRequestCycle
      * @see org.apache.tapestry.engine.IPageSource#getPage(IRequestCycle, String, IMonitor)
      */
 
-    public IPage getPage(String name);
+    IPage getPage(String name);
 
     /**
      * Returns true if the context is being used to rewind a prior state of the page. This is only
      * true when there is a target action id.
      */
 
-    public boolean isRewinding();
+    boolean isRewinding();
 
     /**
      * Checks to see if the current action id matches the target action id. Returns true only if
@@ -129,7 +126,7 @@ public interface IRequestCycle
      * If there's a mismatch then a {@link StaleLinkException}is thrown.
      */
 
-    public boolean isRewound(IComponent component) throws StaleLinkException;
+    boolean isRewound(IComponent component) throws StaleLinkException;
 
     /**
      * Removes a previously stored attribute, if one with the given name exists.
@@ -200,32 +197,6 @@ public interface IRequestCycle
     public void rewindForm(IForm form);
 
     /**
-     * Much like {@link #forgetPage(String)}, but the page stays active and can even record
-     * changes, until the end of the request cycle, at which point it is discarded (and any recorded
-     * changes are lost). This is used in certain rare cases where a page has persistent state but
-     * is being renderred "for the last time".
-     * 
-     * @since 2.0.2
-     * @deprecated To be removed in 4.1. Use {@link #forgetPage(String)}.
-     */
-
-    public void discardPage(String name);
-
-    /**
-     * Invoked by a {@link IEngineService service}&nbsp;to store an array of application-specific
-     * parameters. These can later be retrieved (typically, by an application-specific listener
-     * method) by invoking {@link #getServiceParameters()}.
-     * <p>
-     * Through release 2.1, parameters was of type String[]. This is an incompatible change in 2.2.
-     * 
-     * @see org.apache.tapestry.engine.DirectService
-     * @since 2.0.3
-     * @deprecated To be removed in 4.1. Use {@link #setListenerParameters(Object[])}instead.
-     */
-
-    public void setServiceParameters(Object[] parameters);
-
-    /**
      * Invoked by a {@link IEngineService service}&nbsp;to store an array of application-specific
      * parameters. These can later be retrieved (typically, by an application-specific listener
      * method) by invoking {@link #getListenerParameters()}.
@@ -234,17 +205,6 @@ public interface IRequestCycle
      * @since 4.0
      */
     public void setListenerParameters(Object[] parameters);
-
-    /**
-     * Returns parameters previously stored by {@link #setServiceParameters(Object[])}.
-     * <p>
-     * Through release 2.1, the return type was String[]. This is an incompatible change in 2.2.
-     * 
-     * @since 2.0.3
-     * @deprecated To be removed in 4.1. Use {@link #getListenerParameters()}instead.
-     */
-
-    public Object[] getServiceParameters();
 
     /**
      * Returns parameters previously stored by {@link #setListenerParameters(Object[])}.
@@ -327,14 +287,6 @@ public interface IRequestCycle
      */
 
     public Infrastructure getInfrastructure();
-
-    /**
-     * Returns the {@link RequestContext}. This is provided to ease the upgrade from Tapestry 3.0.
-     * 
-     * @deprecated To be removed in 4.1.
-     */
-
-    public RequestContext getRequestContext();
 
     /**
      * Returns the provided string, possibly modified (with an appended suffix) to make it unique.

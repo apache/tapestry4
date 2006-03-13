@@ -30,13 +30,13 @@ public interface WebSession extends AttributeHolder, Describable
      * 
      * @see org.apache.tapestry.web.WebResponse#encodeURL(String).
      */
-    public String getId();
+    String getId();
 
     /**
      * Returns true if the client does not yet know about the session or if the client chooses not
      * to join the session.
      */
-    public boolean isNew();
+    boolean isNew();
 
     /**
      * Invalidates this session then unbinds any objects bound to it.
@@ -45,5 +45,5 @@ public interface WebSession extends AttributeHolder, Describable
      *             if the session is already invalidated.
      */
 
-    public void invalidate();
+    void invalidate();
 }

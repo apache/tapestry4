@@ -79,4 +79,6 @@
         <binding name="script" value="literal:/org/apache/tapestry/contrib/ajax/Timeout.script"/>
         <binding name="symbols" value="scriptSymbols"/>
     </component>
+    
+    <inject object="service:tapestry.globals.WebRequest" property="request"/>
 </component-specification>

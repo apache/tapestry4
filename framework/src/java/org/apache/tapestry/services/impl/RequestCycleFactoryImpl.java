@@ -20,14 +20,11 @@ import org.apache.hivemind.ErrorHandler;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.engine.IMonitor;
-import org.apache.tapestry.engine.IMonitorFactory;
 import org.apache.tapestry.engine.RequestCycle;
 import org.apache.tapestry.engine.RequestCycleEnvironment;
 import org.apache.tapestry.engine.ServiceEncoder;
 import org.apache.tapestry.engine.ServiceEncodingImpl;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.RequestCycleFactory;
@@ -46,9 +43,7 @@ import org.apache.tapestry.web.WebRequest;
 public class RequestCycleFactoryImpl implements RequestCycleFactory
 {
     private ServiceEncoder[] _encoders;
-
-    private IMonitorFactory _monitorFactory;
-
+    
     private PropertyPersistenceStrategySource _strategySource;
 
     private ErrorHandler _errorHandler;
@@ -69,22 +64,16 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
     public IRequestCycle newRequestCycle(IEngine engine)
     {
-        RequestContext context = new RequestContext(_requestGlobals.getRequest(), _requestGlobals
-                .getResponse());
-
         WebRequest request = _infrastructure.getRequest();
-
-        IMonitor monitor = _monitorFactory.createMonitor(request);
-
+        
         QueryParameterMap parameters = extractParameters(request);
 
         decodeParameters(request.getActivationPath(), request.getPathInfo(), parameters);
 
         String serviceName = findService(parameters);
-
-        IRequestCycle cycle = new RequestCycle(engine, parameters, serviceName, monitor,
-                _environment, context);
-
+        
+        IRequestCycle cycle = new RequestCycle(engine, parameters, serviceName, _environment);
+        
         _requestGlobals.store(cycle);
 
         return cycle;
@@ -140,11 +129,6 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
     public void setEncoders(ServiceEncoder[] encoders)
     {
         _encoders = encoders;
-    }
-
-    public void setMonitorFactory(IMonitorFactory monitorFactory)
-    {
-        _monitorFactory = monitorFactory;
     }
 
     public void setStrategySource(PropertyPersistenceStrategySource strategySource)

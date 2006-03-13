@@ -31,11 +31,12 @@ public class WorkbenchHomeService extends HomeService
 {
     public void service(IRequestCycle cycle) throws IOException
     {
-        Visit visit = (Visit) cycle.getEngine().getVisit();
-
-        if (visit != null)
-            visit.setActiveTabName("Home");
-
+        //TODO: Make this work again
+        //Visit visit = (Visit) cycle.getEngine().getVisit();
+        
+       // if (visit != null)
+         //   visit.setActiveTabName("Home");
+        
         super.service(cycle);
     }
 

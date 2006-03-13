@@ -109,9 +109,6 @@ public abstract class FormComponentContributorTestCase extends TapestryTestCase
         _cycle.getEngine();
         _cycleControl.setReturnValue(_engine);
 
-        _engine.getClassResolver();
-        _engineControl.setReturnValue(null);
-
         _cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
         _cycleControl.setReturnValue(_pageRenderSupport);
 

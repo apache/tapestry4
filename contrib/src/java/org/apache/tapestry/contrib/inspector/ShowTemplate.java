@@ -23,7 +23,6 @@ import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -48,6 +47,9 @@ public abstract class ShowTemplate extends BaseComponent implements IDirect
     /** @since 4.0 */
     public abstract TemplateSource getTemplateSource();
 
+    /** @since 4.1 */
+    public abstract IEngineService getDirectService();
+    
     public boolean getHasTemplate()
     {
         Inspector inspector;
@@ -223,7 +225,7 @@ public abstract class ShowTemplate extends BaseComponent implements IDirect
     private void write(IMarkupWriter writer, boolean nextIsClose, OpenToken token)
     {
         IComponent component = getInspectedComponent();
-        IEngineService service = getPage().getEngine().getService(Tapestry.DIRECT_SERVICE);
+        IEngineService service = getDirectService();
 
         // Each id references a component embedded in the inspected component.
         // Get that component.

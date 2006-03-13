@@ -20,11 +20,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.hivemind.util.PropertyUtils;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -33,6 +34,7 @@ import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.html.Body;
 
 /**
  * Abstract base class for {@link IValidator}. Supports a required and locale property.
@@ -93,7 +95,12 @@ public abstract class BaseValidator implements IValidator
      */
 
     private boolean _clientScriptingEnabled = false;
-
+    
+    /**
+     * @since 4.1
+     */
+    private IScriptSource _scriptSource;
+    
     /**
      * Standard constructor. Leaves locale as system default and required as false.
      */
@@ -116,7 +123,7 @@ public abstract class BaseValidator implements IValidator
     {
         _required = required;
     }
-
+    
     public boolean isRequired()
     {
         return _required;
@@ -126,7 +133,12 @@ public abstract class BaseValidator implements IValidator
     {
         _required = required;
     }
-
+    
+    public void setScriptSource(IScriptSource scriptSource)
+    {
+        _scriptSource = scriptSource;
+    }
+    
     /**
      * Gets a pattern, either as the default value, or as a localized key. If override is null, then
      * the key from the <code>org.apache.tapestry.valid.ValidationStrings</code>
@@ -269,19 +281,17 @@ public abstract class BaseValidator implements IValidator
     protected void processValidatorScript(String scriptPath, IRequestCycle cycle,
             IFormComponent field, Map symbols)
     {
-        IEngine engine = field.getPage().getEngine();
-        IScriptSource source = engine.getScriptSource();
         IForm form = field.getForm();
-
+        
         Map finalSymbols = (symbols == null) ? new HashMap() : symbols;
-
+        
         finalSymbols.put(FIELD_SYMBOL, field);
         finalSymbols.put(FORM_SYMBOL, form);
         finalSymbols.put(VALIDATOR_SYMBOL, this);
-
-        Resource location = new ClasspathResource(engine.getClassResolver(), scriptPath);
-
-        IScript script = source.getScript(location);
+        
+        Resource location = new ClasspathResource(new DefaultClassResolver(), scriptPath);
+        
+        IScript script = _scriptSource.getScript(location);
 
         // If there's an error, report it against the field (this validator object doesn't
         // have a location).

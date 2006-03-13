@@ -49,5 +49,5 @@
   </component>
 
   <component id="renderBody" type="RenderBody"/>
-
+  <inject object="infrastructure:specificationSource" property="specificationSource"/>
 </component-specification>

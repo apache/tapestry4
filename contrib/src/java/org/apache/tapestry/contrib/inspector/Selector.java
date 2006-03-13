@@ -38,6 +38,8 @@ import org.apache.tapestry.form.StringPropertySelectionModel;
 
 public abstract class Selector extends BaseComponent
 {
+    public abstract ISpecificationSource getSpecificationSource();
+    
     /**
      *  When the form is submitted,
      *  the inspectedPageName of the {@link Inspector} page will be updated,
@@ -101,16 +103,16 @@ public abstract class Selector extends BaseComponent
 
         return result;
     }
-
+    
     private String[] getPageNames()
     {
         Set names = new HashSet();
-
-        ISpecificationSource source = getPage().getEngine().getSpecificationSource();
-
+        
+        ISpecificationSource source = getSpecificationSource();
+        
         addPageNames(names, source.getFrameworkNamespace());
         addPageNames(names, source.getApplicationNamespace());
-
+        
         List l = new ArrayList(names);
         Collections.sort(l);
 
@@ -133,7 +135,7 @@ public abstract class Selector extends BaseComponent
             else
                 names.add(idPrefix + ":" + name);
         }
-
+        
         List ids = namespace.getChildIds();
         count = ids.size();
 

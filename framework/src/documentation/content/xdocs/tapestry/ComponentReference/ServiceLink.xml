@@ -53,13 +53,13 @@
 
   <tr>
     <td>service</td>
-    <td>String</td>
+    <td>&IEngineService;</td>
  
     <td>in</td>
     <td>yes</td>
     <td></td>
     <td>
-      The name of the &IEngineService; to invoke.
+      The &IEngineService; to invoke.
     </td>
   </tr>
   <tr>

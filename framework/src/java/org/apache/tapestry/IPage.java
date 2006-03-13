@@ -16,13 +16,11 @@ package org.apache.tapestry;
 
 import java.util.Locale;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageAttachListener;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEndRenderListener;
-import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.util.ContentType;
 
@@ -49,34 +47,34 @@ public interface IPage extends IComponent
      * @see org.apache.tapestry.engine.IPageSource#releasePage(IPage)
      */
 
-    public void detach();
+    void detach();
 
     /**
      * Returns the {@link IEngine}that the page is currently attached to.
      */
 
-    public IEngine getEngine();
+    IEngine getEngine();
 
     /**
      * Returns the object (effectively, an {@link org.apache.tapestry.engine.IPageRecorder}) that
      * is notified of any changes to persistant properties of the page.
      */
 
-    public ChangeObserver getChangeObserver();
+    ChangeObserver getChangeObserver();
 
     /**
      * Returns the <code>Locale</code> of the page. The locale may be used to determine what
      * template is used by the page and the components contained by the page.
      */
 
-    public Locale getLocale();
+    Locale getLocale();
 
     /**
      * Updates the page's locale. This is write-once, a subsequent attempt will throw an
      * {@link ApplicationRuntimeException}.
      */
 
-    public void setLocale(Locale value);
+    void setLocale(Locale value);
 
     /**
      * Returns the fully qualified name of the page, including its namespace prefix, if any.
@@ -84,7 +82,7 @@ public interface IPage extends IComponent
      * @since 2.3
      */
 
-    public String getPageName();
+    String getPageName();
 
     /**
      * Sets the name of the page.
@@ -94,7 +92,7 @@ public interface IPage extends IComponent
      * @since 3.0
      */
 
-    public void setPageName(String pageName);
+    void setPageName(String pageName);
 
     /**
      * Returns a particular component from within the page. The path is a dotted name sequence
@@ -104,7 +102,7 @@ public interface IPage extends IComponent
      *                runtime exception thrown if the path does not identify a component.
      */
 
-    public IComponent getNestedComponent(String path);
+    IComponent getNestedComponent(String path);
 
     /**
      * Attaches the page to the {@link IEngine engine}. This method is used when a pooled page is
@@ -117,7 +115,7 @@ public interface IPage extends IComponent
      * {@link PageBeginRenderListener}interface.
      */
 
-    public void attach(IEngine engine, IRequestCycle cycle);
+    void attach(IEngine engine, IRequestCycle cycle);
 
     /**
      * Used to explicitly fire {@link PageAttachListener}s for this page. This is used when a page
@@ -129,7 +127,7 @@ public interface IPage extends IComponent
      * @since 4.0
      */
 
-    public void firePageAttached();
+    void firePageAttached();
 
     /**
      * Invoked to render the entire page. This should only be invoked by
@@ -147,7 +145,7 @@ public interface IPage extends IComponent
      * </ul>
      */
 
-    public void renderPage(IMarkupWriter writer, IRequestCycle cycle);
+    void renderPage(IMarkupWriter writer, IRequestCycle cycle);
 
     /**
      * Invoked before a partial render of the page occurs (this happens when rewinding a
@@ -157,7 +155,7 @@ public interface IPage extends IComponent
      * @since 2.2
      */
 
-    public void beginPageRender();
+    void beginPageRender();
 
     /**
      * Invoked after a partial render of the page occurs (this happens when rewinding a
@@ -167,9 +165,9 @@ public interface IPage extends IComponent
      * @since 2.2
      */
 
-    public void endPageRender();
+    void endPageRender();
 
-    public void setChangeObserver(ChangeObserver value);
+    void setChangeObserver(ChangeObserver value);
 
     /**
      * Method invoked by the page, action and direct services to validate that the user is allowed
@@ -186,14 +184,14 @@ public interface IPage extends IComponent
      * {@link PageValidateListener}interface instead.
      */
 
-    public void validate(IRequestCycle cycle);
+    void validate(IRequestCycle cycle);
 
     /**
      * Invoked to obtain the content type to be used for the response. The implementation of this
      * method is the primary difference between an HTML page and an XML/WML/etc. page.
      */
 
-    public ContentType getResponseContentType();
+    ContentType getResponseContentType();
 
     /**
      * Invoked just before rendering of the page is initiated. This gives the page a chance to
@@ -206,99 +204,58 @@ public interface IPage extends IComponent
      * changes to dynamic page properties.
      */
 
-    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle);
+    void beginResponse(IMarkupWriter writer, IRequestCycle cycle);
 
     /**
      * Returns the current {@link IRequestCycle}. This is set when the page is loaded (or obtained
      * from the pool) and attached to the {@link IEngine engine}.
      */
 
-    public IRequestCycle getRequestCycle();
-
-    /**
-     * Returns the visit object for the application; the visit object contains application-specific
-     * information.
-     * 
-     * @deprecated To be removed in 4.1. Inject an application state object instead. <strong>Do not
-     *             attempt to inject property visit</strong>.
-     */
-
-    public Object getVisit();
-
-    /**
-     * Returns the globally shared application object. The global object is stored in the servlet
-     * context.
-     * <p>
-     * Returns the global object, if it exists, or null if not defined.
-     * 
-     * @since 2.3
-     * @deprecated To be removed in 4.1. Inject an application state object instead. <strong>Do not
-     *             attempt to inject property global.</strong>
-     */
-
-    public Object getGlobal();
-
-    /**
-     * @since 1.0.5
-     * @deprecated To be removed in 4.1 Use
-     *             {@link #addPageBeginRenderListener(PageBeginRenderListener)}or
-     *             {@link #addPageEndRenderListener(PageEndRenderListener)}.
-     */
-
-    public void addPageRenderListener(PageRenderListener listener);
-
-    /**
-     * @since 2.1
-     * @deprecated To be removed in 4.1. Use
-     *             {@link #removePageBeginRenderListener(PageBeginRenderListener)}or
-     *             {@link #removePageEndRenderListener(PageEndRenderListener)}.
-     */
-
-    public void removePageRenderListener(PageRenderListener listener);
+    IRequestCycle getRequestCycle();
 
     /** @since 4.0 */
-    public void addPageBeginRenderListener(PageBeginRenderListener listener);
+    void addPageBeginRenderListener(PageBeginRenderListener listener);
 
     /** @since 4.0 */
-    public void removePageBeginRenderListener(PageBeginRenderListener listener);
+    void removePageBeginRenderListener(PageBeginRenderListener listener);
 
     /** @since 4.0 */
 
-    public void addPageEndRenderListener(PageEndRenderListener listener);
+    void addPageEndRenderListener(PageEndRenderListener listener);
 
     /** @since 4.0 */
 
-    public void removePageEndRenderListener(PageEndRenderListener listener);
+    void removePageEndRenderListener(PageEndRenderListener listener);
 
     /**
      * @since 1.0.5
      */
 
-    public void addPageDetachListener(PageDetachListener listener);
+    void addPageDetachListener(PageDetachListener listener);
 
     /**
      * @since 2.1
      */
 
-    public void removePageDetachListener(PageDetachListener listener);
+    void removePageDetachListener(PageDetachListener listener);
 
     /**
      * @since 3.0
      */
 
-    public void addPageValidateListener(PageValidateListener listener);
+    void addPageValidateListener(PageValidateListener listener);
 
     /**
      * @since 3.0
      */
 
-    public void removePageValidateListener(PageValidateListener listener);
+    void removePageValidateListener(PageValidateListener listener);
 
     /** @since 4.0 */
 
-    public void addPageAttachListener(PageAttachListener listener);
+    void addPageAttachListener(PageAttachListener listener);
 
     /** @since 4.0 */
 
-    public void removePageAttachListener(PageAttachListener listener);
+    void removePageAttachListener(PageAttachListener listener);
 }

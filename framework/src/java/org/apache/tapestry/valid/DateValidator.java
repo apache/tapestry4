@@ -37,6 +37,10 @@ import org.apache.tapestry.form.IFormComponent;
 
 public class DateValidator extends BaseValidator
 {
+    private static DateFormat defaultDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+    private static final String defaultDateDisplayFormat = "MM/DD/YYYY";
+    
     private DateFormat _format;
 
     private String _displayFormat;
@@ -48,10 +52,6 @@ public class DateValidator extends BaseValidator
     private Calendar _calendar;
 
     private String _scriptPath = "/org/apache/tapestry/valid/DateValidator.script";
-
-    private static DateFormat defaultDateFormat = new SimpleDateFormat("MM/dd/yyyy");
-
-    private static final String defaultDateDisplayFormat = "MM/DD/YYYY";
 
     private String _dateTooEarlyMessage;
 
@@ -233,14 +233,14 @@ public class DateValidator extends BaseValidator
     {
         if (!(isClientScriptingEnabled() && isRequired()))
             return;
-
+        
         Map symbols = new HashMap();
-
+        
         symbols.put("requiredMessage", buildRequiredMessage(field));
-
+        
         processValidatorScript(_scriptPath, cycle, field, symbols);
     }
-
+    
     /**
      * @since 2.2
      */

@@ -64,5 +64,5 @@
   </parameter>  
   
   <inject property="listenerInvoker" object="infrastructure:listenerInvoker"/>
-  
+  <inject object="service:tapestry.services.Direct" property="engine"/>
 </component-specification>

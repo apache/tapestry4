@@ -28,7 +28,6 @@ import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEndRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.util.StringSplitter;
 
@@ -55,13 +54,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      */
 
     private IEngine _engine;
-
-    /**
-     * The visit object, if any, for the application. Set inside {@link #attach(IEngine)}and
-     * cleared by {@link #detach()}.
-     */
-
-    private Object _visit;
 
     /**
      * The qualified name of the page, which may be prefixed by the namespace.
@@ -111,7 +103,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public AbstractPage()
     {
-        initialize();
     }
 
     /**
@@ -139,28 +130,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
         firePageDetached();
 
-        initialize();
-
         _engine = null;
-        _visit = null;
         _requestCycle = null;
-    }
-
-    /**
-     * Method invoked from the constructor, and from {@link #detach()}to (re-)initialize properties
-     * of the page. This is most useful when properties have non-null initial values.
-     * <p>
-     * Subclasses may override this implementation (which is empty).
-     * 
-     * @since 2.2
-     * @deprecated To be removed in 4.1 with no replacement.
-     * @see PageDetachListener
-     * @see PageAttachListener
-     */
-
-    protected void initialize()
-    {
-        // Does nothing.
     }
 
     public IEngine getEngine()
@@ -252,6 +223,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
+     * Renders the page.
      * <ul>
      * <li>Invokes {@link PageBeginRenderListener#pageBeginRender(PageEvent)}
      * <li>Invokes {@link #beginResponse(IMarkupWriter, IRequestCycle)}
@@ -259,6 +231,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      * <li>Invokes {@link #render(IMarkupWriter, IRequestCycle)}
      * <li>Invokes {@link PageEndRenderListener#pageEndRender(PageEvent)}(this occurs even if a
      * previous step throws an exception)
+     * </ul>
      */
 
     public void renderPage(IMarkupWriter writer, IRequestCycle cycle)
@@ -322,32 +295,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         return _requestCycle;
     }
 
-    /**
-     * Returns the visit object obtained from the engine via {@link IEngine#getVisit(IRequestCycle)}.
-     * 
-     * @deprecated
-     */
-
-    public Object getVisit()
-    {
-        if (_visit == null)
-            _visit = _engine.getVisit(_requestCycle);
-
-        return _visit;
-    }
-
-    /**
-     * Convienience methods, simply invokes {@link IEngine#getGlobal()}.
-     * 
-     * @since 2.3
-     * @deprecated
-     */
-
-    public Object getGlobal()
-    {
-        return _engine.getGlobal();
-    }
-
     public void addPageDetachListener(PageDetachListener listener)
     {
         addListener(PageDetachListener.class, listener);
@@ -369,13 +316,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     {
         if (_listenerList != null)
             _listenerList.remove(listenerClass, listener);
-    }
-
-    /** @deprecated */
-    public void addPageRenderListener(PageRenderListener listener)
-    {
-        addPageBeginRenderListener(listener);
-        addPageEndRenderListener(listener);
     }
 
     /** @since 4.0 */
@@ -513,13 +453,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     public void removePageDetachListener(PageDetachListener listener)
     {
         removeListener(PageDetachListener.class, listener);
-    }
-
-    /** @deprecated */
-    public void removePageRenderListener(PageRenderListener listener)
-    {
-        removePageBeginRenderListener(listener);
-        removePageEndRenderListener(listener);
     }
 
     /** @since 2.2 * */

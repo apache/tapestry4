@@ -28,6 +28,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
@@ -175,9 +176,9 @@ public class FormSupportImpl implements FormSupport
 
         _rewinding = cycle.isRewound(form);
         _allocatedIdIndex = 0;
-
-        _script = new ClasspathResource(cycle.getEngine().getClassResolver(), SCRIPT);
-
+        
+        _script = new ClasspathResource(new DefaultClassResolver(), SCRIPT);
+        
         _pageRenderSupport = TapestryUtils.getOptionalPageRenderSupport(cycle);
     }
 
