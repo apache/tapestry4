@@ -19,7 +19,6 @@ import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.engine.IMonitor;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.resolver.PageSpecificationResolver;
@@ -43,7 +42,7 @@ import org.apache.tapestry.util.MultiKey;
 
 public class PageSource implements IPageSource
 {
-    /** set by container */
+    /** set by container. */
     private ClassResolver _classResolver;
 
     /** @since 4.0 */
@@ -102,7 +101,7 @@ public class PageSource implements IPageSource
      * Gets the page from a pool, or otherwise loads the page. This operation is threadsafe.
      */
 
-    public IPage getPage(IRequestCycle cycle, String pageName, IMonitor monitor)
+    public IPage getPage(IRequestCycle cycle, String pageName)
     {
         IEngine engine = cycle.getEngine();
         Object key = buildKey(engine, pageName);
@@ -110,8 +109,6 @@ public class PageSource implements IPageSource
 
         if (result == null)
         {
-            monitor.pageCreateBegin(pageName);
-
             _pageSpecificationResolver.resolve(cycle, pageName);
 
             // The loader is responsible for invoking attach(),
@@ -122,8 +119,6 @@ public class PageSource implements IPageSource
                     _pageSpecificationResolver.getNamespace(),
                     cycle,
                     _pageSpecificationResolver.getSpecification());
-
-            monitor.pageCreateEnd(pageName);
         }
         else
         {

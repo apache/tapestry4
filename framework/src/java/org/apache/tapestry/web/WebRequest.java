@@ -40,7 +40,7 @@ public interface WebRequest extends AttributeHolder, Describable
      * @returns List of Strings, in ascending alphabetical order
      */
 
-    public List getParameterNames();
+    List getParameterNames();
 
     /**
      * Returns a parameter value. If the parameter was submitted with multiple values, then the
@@ -54,7 +54,7 @@ public interface WebRequest extends AttributeHolder, Describable
      * @see #getParameterValues(String)
      */
 
-    public String getParameterValue(String parameterName);
+    String getParameterValue(String parameterName);
 
     /**
      * Returns all parameter values for a particular parameter name. May return null.
@@ -68,7 +68,7 @@ public interface WebRequest extends AttributeHolder, Describable
      * @see #getParameterValue(String)
      */
 
-    public String[] getParameterValues(String parameterName);
+    String[] getParameterValues(String parameterName);
 
     /**
      * Returns the portion of the request URI that indicates the context of the request. The context
@@ -76,7 +76,7 @@ public interface WebRequest extends AttributeHolder, Describable
      * end with a "/" character.
      */
 
-    public String getContextPath();
+    String getContextPath();
 
     /**
      * Returns the current {@link WebSession}associated with this request, possibly creating it if
@@ -88,13 +88,13 @@ public interface WebRequest extends AttributeHolder, Describable
      *            if true, the session will be created and returned if it does not already exist
      * @returns The session, or null if it does not exist (and create is false)
      */
-    public WebSession getSession(boolean create);
+    WebSession getSession(boolean create);
 
     /**
      * Returns the name of the scheme used to make this request. For example, http, https, or ftp.
      * Different schemes have different rules for constructing URLs, as noted in RFC 1738.
      */
-    public String getScheme();
+    String getScheme();
 
     /**
      * Returns the host name of the server that received the request. Note that behind a firewall,
@@ -104,13 +104,13 @@ public interface WebRequest extends AttributeHolder, Describable
      * @see org.apache.tapestry.request.IRequestDecoder
      */
 
-    public String getServerName();
+    String getServerName();
 
     /**
      * Returns the port number on which this request was received.
      */
 
-    public int getServerPort();
+    int getServerPort();
 
     /**
      * Returns the path portion of the request which triggered this request. Query parameters,
@@ -119,14 +119,14 @@ public interface WebRequest extends AttributeHolder, Describable
      * Note: portlets do not know their request URI.
      */
 
-    public String getRequestURI();
+    String getRequestURI();
 
     /**
      * Redirects to the indicated URL. If the URL is local, then a forward occurs. Otherwise, a
      * client side redirect is returned to the client browser.
      */
 
-    public void forward(String URL);
+    void forward(String URL);
 
     /**
      * Returns the path of the resource which activated this request (this is the equivalent of the
@@ -135,7 +135,7 @@ public interface WebRequest extends AttributeHolder, Describable
      * @returns the full servlet path (for servlet requests), or a blank string (for portlet
      *          requests).
      */
-    public String getActivationPath();
+    String getActivationPath();
 
     /**
      * Return any additional path info beyond the servlet path itself. Path info, if non-null,
@@ -144,13 +144,13 @@ public interface WebRequest extends AttributeHolder, Describable
      * @return path info, or null if no path info
      */
 
-    public String getPathInfo();
+    String getPathInfo();
 
     /**
      * Returns the preferred locale to which content should be localized, as specified by the client
      * or by the container. May return null.
      */
-    public Locale getLocale();
+    Locale getLocale();
 
     /**
      * Returns the value of the specified request header.
@@ -160,7 +160,7 @@ public interface WebRequest extends AttributeHolder, Describable
      * @return the header value as a string, or null if the header is not in the request.
      */
 
-    public String getHeader(String name);
+    String getHeader(String name);
 
     /**
      * Returns the login of the user making this request, if the user has been authenticated, or
@@ -170,7 +170,7 @@ public interface WebRequest extends AttributeHolder, Describable
      *         login is not known.
      */
 
-    public String getRemoteUser();
+    String getRemoteUser();
 
     /**
      * Returns a java.security.Principal object containing the name of the current authenticated
@@ -179,7 +179,7 @@ public interface WebRequest extends AttributeHolder, Describable
      * @return a java.security.Principal containing the name of the user making this request, or
      *         null if the user has not been authenticated.
      */
-    public Principal getUserPrincipal();
+    Principal getUserPrincipal();
 
     /**
      * * Returns a boolean indicating whether the authenticated user is included in the specified
@@ -191,5 +191,5 @@ public interface WebRequest extends AttributeHolder, Describable
      * @return a boolean indicating whether the user making this request belongs to a given role;
      *         false if the user has not been authenticated.
      */
-    public boolean isUserInRole(String role);
+    boolean isUserInRole(String role);
 }

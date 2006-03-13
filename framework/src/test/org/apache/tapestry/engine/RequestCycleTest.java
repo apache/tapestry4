@@ -21,7 +21,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RedirectException;
 import org.apache.tapestry.pageload.PageSource;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ServiceMap;
@@ -39,11 +38,6 @@ public class RequestCycleTest extends HiveMindTestCase
     private IEngine newEngine()
     {
         return (IEngine) newMock(IEngine.class);
-    }
-
-    private IMonitor newMonitor()
-    {
-        return (IMonitor) newMock(IMonitor.class);
     }
 
     private PropertyPersistenceStrategySource newStrategySource()
@@ -88,8 +82,6 @@ public class RequestCycleTest extends HiveMindTestCase
 
     public void testGetters()
     {
-        RequestContext context = new RequestContext(null, null);
-
         IEngineService service = newService();
         ServiceMap map = newServiceMap("fred", service);
 
@@ -101,18 +93,14 @@ public class RequestCycleTest extends HiveMindTestCase
         RequestCycleEnvironment env = new RequestCycleEnvironment(newErrorHandler(),
                 infrastructure, newStrategySource(), newBuilder());
         IEngine engine = newEngine();
-        IMonitor monitor = newMonitor();
 
         replayControls();
 
-        IRequestCycle cycle = new RequestCycle(engine, new QueryParameterMap(), "fred", monitor,
-                env, context);
+        IRequestCycle cycle = new RequestCycle(engine, new QueryParameterMap(), "fred", env);
 
         assertSame(infrastructure, cycle.getInfrastructure());
-        assertSame(context, cycle.getRequestContext());
         assertSame(service, cycle.getService());
         assertSame(engine, cycle.getEngine());
-        assertSame(monitor, cycle.getMonitor());
 
         verifyControls();
     }
@@ -129,18 +117,15 @@ public class RequestCycleTest extends HiveMindTestCase
 
     public void testForgetPage()
     {
-        RequestContext context = new RequestContext(null, null);
         Infrastructure infrastructure = newInfrastructure();
         PropertyPersistenceStrategySource source = newStrategySource();
         RequestCycleEnvironment env = new RequestCycleEnvironment(newErrorHandler(),
                 infrastructure, source, newBuilder());
         IEngine engine = newEngine();
-        IMonitor monitor = newMonitor();
 
         replayControls();
 
-        IRequestCycle cycle = new RequestCycle(engine, new QueryParameterMap(), null, monitor, env,
-                context);
+        IRequestCycle cycle = new RequestCycle(engine, new QueryParameterMap(), null, env);
 
         cycle.getEngine();
 
@@ -153,20 +138,18 @@ public class RequestCycleTest extends HiveMindTestCase
         cycle.forgetPage("MyPage");
 
         verifyControls();
-
+        
         source.discardAllStoredChanged("MyPage");
-
+        
         replayControls();
-
-        cycle.discardPage("MyPage");
-
+        
         verifyControls();
     }
 
     public void testSendRedirect()
     {
         IRequestCycle cycle = new RequestCycle();
-
+        
         try
         {
             cycle.sendRedirect("http://foo/bar");

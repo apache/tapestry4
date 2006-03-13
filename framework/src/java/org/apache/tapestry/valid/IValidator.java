@@ -16,6 +16,7 @@ package org.apache.tapestry.valid;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
@@ -38,14 +39,14 @@ public interface IValidator
      * value.
      */
 
-    public boolean isRequired();
+    boolean isRequired();
 
     /**
      * Invoked during rendering to convert an object value (which may be null) to a String. It is
      * acceptible to return null. The string will be the VALUE attribute of the HTML text field.
      */
 
-    public String toString(IFormComponent field, Object value);
+    String toString(IFormComponent field, Object value);
 
     /**
      * Converts input, submitted by the client, into an object value. May return null if the input
@@ -58,7 +59,7 @@ public interface IValidator
      *             to other constraints).
      */
 
-    public Object toObject(IFormComponent field, String input) throws ValidatorException;
+    Object toObject(IFormComponent field, String input) throws ValidatorException;
 
     /**
      * Invoked by the field after it finishes rendering its tag (but before the tag is closed) to
@@ -71,4 +72,10 @@ public interface IValidator
     public void renderValidatorContribution(IFormComponent field, IMarkupWriter writer,
             IRequestCycle cycle);
 
+    /**
+     * Sets the script source used to resolve script paths.
+     * 
+     * @param scriptSource
+     */
+    void setScriptSource(IScriptSource scriptSource);
 }

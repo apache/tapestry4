@@ -18,8 +18,8 @@ import org.apache.tapestry.IAction;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RenderRewoundException;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ActionServiceParameter;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.listener.ListenerInvoker;
 
@@ -58,10 +58,12 @@ public abstract class ActionLink extends AbstractLinkComponent implements IActio
 
             throw new RenderRewoundException(this);
         }
-
-        return getLink(cycle, Tapestry.ACTION_SERVICE, new ActionServiceParameter(this, actionId));
+        
+        return getEngine().getLink(isStateful(), new ActionServiceParameter(this, actionId));
     }
-
+    
+    public abstract IEngineService getEngine();
+    
     public abstract IActionListener getListener();
 
     public abstract ListenerInvoker getListenerInvoker();

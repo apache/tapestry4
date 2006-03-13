@@ -15,7 +15,6 @@
 package org.apache.tapestry.vlib.services;
 
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
@@ -109,11 +108,6 @@ public class ErrorPresenterTest extends HiveMindTestCase
     private IErrorProperty newPage()
     {
         return (IErrorProperty) newMock(IErrorProperty.class);
-    }
-
-    private IEngine newEngine()
-    {
-        return (IEngine) newMock(IEngine.class);
     }
 
     private IRequestCycle newCycle()

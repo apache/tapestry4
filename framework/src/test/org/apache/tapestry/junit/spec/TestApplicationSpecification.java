@@ -15,7 +15,6 @@
 package org.apache.tapestry.junit.spec;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.engine.IMonitor;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IExtensionSpecification;
@@ -65,22 +64,6 @@ public class TestApplicationSpecification extends TapestryTestCase
         catch (ApplicationRuntimeException ex)
         {
             checkException(ex, "does not inherit from class java.lang.Number");
-        }
-
-    }
-
-    public void testExtensionTypeFailInterface() throws Exception
-    {
-        IApplicationSpecification spec = parseApp("BasicExtension.application");
-
-        try
-        {
-            spec.getExtension("testBean", IMonitor.class);
-            unreachable();
-        }
-        catch (ApplicationRuntimeException ex)
-        {
-            checkException(ex, "does not implement interface org.apache.tapestry.engine.IMonitor");
         }
 
     }

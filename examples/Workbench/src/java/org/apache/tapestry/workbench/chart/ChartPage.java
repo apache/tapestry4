@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.html.BasePage;
@@ -48,6 +48,11 @@ public abstract class ChartPage extends BasePage implements IChartProvider, Page
 {
     public abstract IValidationDelegate getDelegate();
 
+    /**
+     * Injected.
+     */
+    public abstract IEngineService getChartService();
+    
     /**
      * Invokes {@link #getPlotValues()}, which ensures that (on the very first request cycle), the
      * persistent values property is set <em>before</em> the page recorder is locked.
@@ -156,7 +161,7 @@ public abstract class ChartPage extends BasePage implements IChartProvider, Page
 
     public IAsset getChartImageAsset()
     {
-        return new ChartAsset(getRequestCycle(), this);
+        return new ChartAsset(getRequestCycle(), this, getChartService());
     }
 
     /**

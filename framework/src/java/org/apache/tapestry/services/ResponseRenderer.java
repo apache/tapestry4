@@ -32,6 +32,6 @@ public interface ResponseRenderer
      * Renders the reponse, using the current active page defined by the request cycle.
      */
 
-    public void renderResponse(IRequestCycle cycle) throws IOException;
+    void renderResponse(IRequestCycle cycle) throws IOException;
 
 }

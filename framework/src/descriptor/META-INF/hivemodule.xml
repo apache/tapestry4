@@ -36,7 +36,6 @@
   <sub-module descriptor="tapestry.ognl.xml"/>
   <sub-module descriptor="tapestry.coerce.xml"/>
   <sub-module descriptor="tapestry.url.xml"/>
-  <sub-module descriptor="tapestry.monitor.xml"/>
   <sub-module descriptor="tapestry.asset.xml"/>
   <sub-module descriptor="tapestry.persist.xml"/>
   <sub-module descriptor="tapestry.state.xml"/>

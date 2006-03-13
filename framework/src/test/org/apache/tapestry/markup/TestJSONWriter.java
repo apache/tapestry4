@@ -16,7 +16,7 @@ package org.apache.tapestry.markup;
 import java.io.PrintWriter;
 
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.IJSONWriter;
+import org.apache.tapestry.json.IJSONWriter;
 
 import java.io.ByteArrayOutputStream;
 
@@ -34,15 +34,15 @@ public class TestJSONWriter extends HiveMindTestCase
      */
     public void testPropertyList() 
     {
-        String listGoal = "{\"red\":\"ball\",\"black\":\"cat\",\"orange\":\"orange\"}";
+        String listGoal = "{\"red\":\"ball\",\"orange\":\"orange\",\"black\":\"cat\"}";
         
         IJSONWriter writer = newWriter();
         
-        writer.write("red", "ball");
-        writer.write("black", "cat");
-        writer.write("orange", "orange");
+        writer.put("red", "ball");
+        writer.put("black", "cat");
+        writer.put("orange", "orange");
         
-        assertEquals(output(writer), listGoal);
+        assertEquals(listGoal, output(writer));
     }
     
     /**

@@ -17,6 +17,7 @@ package org.apache.tapestry.markup;
 import java.io.PrintWriter;
 
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.json.IJSONWriter;
 import org.apache.tapestry.util.ContentType;
 
 /**
@@ -43,4 +44,18 @@ public interface MarkupWriterSource
      */
 
     IMarkupWriter newMarkupWriter(PrintWriter writer, ContentType contentType);
+    
+    /**
+     * Creates and returns a new instance of {@link IJSONWriter}. The content type is used
+     * to find the proper implementation. Any additional content type data (after a ';')
+     * is ignored.
+     * 
+     * @param writer
+     *          The {@link PrintWriter}&nbsp;to which the markup writer should send output.
+     * @param contentType
+     *          Used to locate the correct markup writer implementation (used to select a
+     *          {@link MarkupFilter}.
+     * @return The configured json writer instance.
+     */
+    IJSONWriter newJSONWriter(PrintWriter writer, ContentType contentType);
 }

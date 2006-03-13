@@ -33,5 +33,5 @@
   </component>
   
   <inject property="templateSource" object="infrastructure:templateSource"/>
-  
+  <inject property="directService" object="service:tapestry.services.Direct" />
 </component-specification>

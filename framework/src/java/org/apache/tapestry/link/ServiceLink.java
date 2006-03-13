@@ -15,6 +15,7 @@
 package org.apache.tapestry.link;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
 /**
@@ -34,11 +35,11 @@ public abstract class ServiceLink extends AbstractLinkComponent
     public ILink getLink(IRequestCycle cycle)
     {
         Object[] parameters = DirectLink.constructServiceParameters(getParameters());
-
-        return getLink(cycle, getService(), parameters);
+        
+        return getService().getLink(false, parameters);
     }
 
-    public abstract String getService();
+    public abstract IEngineService getService();
 
     public abstract Object getParameters();
 }

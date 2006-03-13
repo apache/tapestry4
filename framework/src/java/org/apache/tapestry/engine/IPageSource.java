@@ -40,27 +40,25 @@ public interface IPageSource
      *            the name of the page. May be qualified with a library id prefix, which may even be
      *            nested. Unqualified names are searched for extensively in the application
      *            namespace, and then in the framework namespace.
-     * @param monitor
-     *            informed of any page loading activity
      * @throws org.apache.tapestry.PageNotFoundException
      *             if pageName can't be resolved to a page specification (from which a page instance
      *             can be generated).
      * @see org.apache.tapestry.resolver.PageSpecificationResolver#resolve(IRequestCycle, String)
      */
 
-    public IPage getPage(IRequestCycle cycle, String pageName, IMonitor monitor);
+    IPage getPage(IRequestCycle cycle, String pageName);
 
     /**
      * Invoked after the engine is done with the page (typically, after the response to the client
      * has been sent). The page is returned to the pool for later reuse.
      */
 
-    public void releasePage(IPage page);
+    void releasePage(IPage page);
 
     /**
      * @since 3.0
      */
 
-    public ClassResolver getClassResolver();
+    ClassResolver getClassResolver();
 
 }

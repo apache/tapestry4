@@ -20,6 +20,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.json.IJSONWriter;
 import org.apache.tapestry.util.ContentType;
 
 /**
@@ -48,7 +49,18 @@ public class MarkupWriterSourceImpl implements MarkupWriterSource
 
         return new MarkupWriterImpl(contentType.toString(), writer, filter);
     }
-
+    
+    public IJSONWriter newJSONWriter(PrintWriter writer, ContentType contentType)
+    {
+        Defense.notNull(writer, "writer");
+        Defense.notNull(contentType, "contentType");
+        
+        //TODO: Use the content type to add a filter
+        //MarkupFilter filter = findFilter(contentType);
+        
+        return new JSONWriterImpl(writer);
+    }
+    
     private MarkupFilter findFilter(ContentType contentType)
     {
         // Look for an exact match (caseless).

@@ -14,9 +14,10 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.hivemind.util.ClasspathResource;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.util.ClasspathResource;
 
 /**
  *  A token for included scripts.
@@ -44,8 +45,7 @@ class IncludeScriptToken extends AbstractToken
         if (_resourcePath.startsWith("/"))
         {
             includeLocation =
-                new ClasspathResource(
-                    session.getRequestCycle().getEngine().getClassResolver(),
+                new ClasspathResource(new DefaultClassResolver(),
                     _resourcePath);
         }
         else

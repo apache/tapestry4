@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.util.Locale;
 
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.asset.AbstractAsset;
 import org.apache.tapestry.engine.IEngineService;
@@ -37,13 +36,11 @@ public class ChartAsset extends AbstractAsset
 
     private IComponent _chartProvider;
 
-    public ChartAsset(IRequestCycle cycle, IComponent chartProvider)
+    public ChartAsset(IRequestCycle cycle, IComponent chartProvider, IEngineService chartService)
     {
         super(null, null);
-
-        IEngine engine = cycle.getEngine();
-
-        _chartService = engine.getService(ChartService.SERVICE_NAME);
+        
+        _chartService = chartService;
         _chartProvider = chartProvider;
     }
 
