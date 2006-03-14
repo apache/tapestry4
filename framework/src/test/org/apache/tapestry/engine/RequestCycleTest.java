@@ -130,18 +130,12 @@ public class RequestCycleTest extends HiveMindTestCase
         cycle.getEngine();
 
         verifyControls();
-
+        
         source.discardAllStoredChanged("MyPage");
-
+        
         replayControls();
-
+        
         cycle.forgetPage("MyPage");
-
-        verifyControls();
-        
-        source.discardAllStoredChanged("MyPage");
-        
-        replayControls();
         
         verifyControls();
     }

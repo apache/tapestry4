@@ -22,6 +22,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
@@ -85,37 +86,28 @@ public class TestTemplateParser extends TestCase
         TemplateParser parser = new TemplateParser();
 
         parser.setFactory(new TemplateTokenFactory());
-
+        
         return parser.parse(templateData, delegate, location);
     }
 
     protected TemplateToken[] run(InputStream stream, ITemplateParserDelegate delegate,
             Resource location) throws TemplateParseException
     {
-        StringBuffer buffer = new StringBuffer();
-        char[] block = new char[1000];
         InputStreamReader reader = new InputStreamReader(stream);
-
+        char[] data = null;
+        
         try
         {
-            while (true)
-            {
-                int count = reader.read(block, 0, block.length);
-
-                if (count < 0)
-                    break;
-
-                buffer.append(block, 0, count);
-            }
-
+            data = IOUtils.toCharArray(reader);
+            
             reader.close();
         }
         catch (IOException ex)
         {
             fail("Unable to read from stream.");
         }
-
-        return run(buffer.toString().toCharArray(), delegate, location);
+        
+        return run(data, delegate, location);
     }
 
     protected TemplateToken[] run(String file) throws TemplateParseException
@@ -155,16 +147,16 @@ public class TestTemplateParser extends TestCase
     protected void assertTextToken(TemplateToken token, int startIndex, int endIndex)
     {
         TextToken t = (TextToken) token;
-
+        
         int expectedLength = endIndex - startIndex + 1;
-
+        
         assertEquals("Text token type.", TokenType.TEXT, t.getType());
         assertEquals("Text token start index.", startIndex, t.getOffset());
         assertEquals("Text token end index.", expectedLength, t.getLength());
     }
-
+    
     /** @since 3.0 * */
-
+    
     protected void checkLine(TemplateToken token, int line)
     {
         assertEquals("Token line", line, token.getLocation().getLineNumber());

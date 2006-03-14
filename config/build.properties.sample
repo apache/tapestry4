@@ -13,6 +13,6 @@ jboss.dir=
 # Required to execute the run-workbench target.
 jetty.dir=
 
-# Absolute path to dojo source installation directory.
-# 
+# Absolute path to dojo source installation buildscripts directory.
+# ie: /home/<username>/dojo/buildscripts
 #dojo.dir=

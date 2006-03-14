@@ -15,8 +15,8 @@
 package org.apache.tapestry.link;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.services.ServiceMap;
 
 /**
  *  A component for creating a link for an arbitrary {@link org.apache.tapestry.engine.IEngineService
@@ -36,10 +36,16 @@ public abstract class ServiceLink extends AbstractLinkComponent
     {
         Object[] parameters = DirectLink.constructServiceParameters(getParameters());
         
-        return getService().getLink(false, parameters);
+        return getServiceMap().getService(getService()).getLink(false, parameters);
     }
 
-    public abstract IEngineService getService();
+    public abstract String getService();
 
+    /**
+     * Injected.
+     * @since 4.1
+     */
+    public abstract ServiceMap getServiceMap();
+    
     public abstract Object getParameters();
 }

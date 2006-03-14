@@ -102,12 +102,9 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         IValidationDelegate delegate = newDelegate();
-        IEngine engine = newEngine(getClassResolver());
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, true);
-
-        trainGetEngine(cycle, engine);
 
         trainGetPageRenderSupport(cycle, null);
 
@@ -118,19 +115,19 @@ public class FormSupportTest extends BaseComponentTestCase
         verifyControls();
 
         delegate.clear();
-
+        
         trainGetParameter(cycle, FormSupportImpl.SUBMIT_MODE, "cancel");
-
+        
         // Create a body, just to provie it doesn't get invoked.
-
+        
         IRender body = (IRender) newMock(IRender.class);
-
+        
         form.setBody(body);
-
+        
         replayControls();
-
+        
         assertEquals(FormConstants.SUBMIT_CANCEL, fs.rewind());
-
+        
         verifyControls();
     }
 
@@ -139,7 +136,6 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
         ILink link = newLink();
         IRender render = newRender();
@@ -147,8 +143,6 @@ public class FormSupportTest extends BaseComponentTestCase
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, false);
-
-        trainGetEngine(cycle, engine);
 
         PageRenderSupport support = newPageRenderSupport();
 
@@ -216,11 +210,9 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         IValidationDelegate delegate = newDelegate();
-        IEngine engine = newEngine(getClassResolver());
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, true);
-        trainGetEngine(cycle, engine);
         trainGetPageRenderSupport(cycle, null);
 
         replayControls();
@@ -254,7 +246,6 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
         PageRenderSupport support = newPageRenderSupport();
         ILink link = newLink();
@@ -263,7 +254,6 @@ public class FormSupportTest extends BaseComponentTestCase
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, false);
-        trainGetEngine(cycle, engine);
         trainGetPageRenderSupport(cycle, support);
 
         replayControls();
@@ -330,7 +320,6 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
         PageRenderSupport support = newPageRenderSupport();
         ILink link = newLink();
@@ -339,7 +328,6 @@ public class FormSupportTest extends BaseComponentTestCase
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, false);
-        trainGetEngine(cycle, engine);
 
         trainGetPageRenderSupport(cycle, support);
 
@@ -449,7 +437,6 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
         PageRenderSupport support = newPageRenderSupport();
         ILink link = newLink();
@@ -458,8 +445,6 @@ public class FormSupportTest extends BaseComponentTestCase
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, false);
-
-        trainGetEngine(cycle, engine);
 
         trainGetPageRenderSupport(cycle, support);
 
@@ -530,7 +515,6 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
         PageRenderSupport support = newPageRenderSupport();
         ILink link = newLink();
@@ -539,8 +523,6 @@ public class FormSupportTest extends BaseComponentTestCase
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, false);
-
-        trainGetEngine(cycle, engine);
 
         trainGetPageRenderSupport(cycle, support);
 
@@ -592,12 +574,9 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         IValidationDelegate delegate = newDelegate();
-        IEngine engine = newEngine(getClassResolver());
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, true);
-
-        trainGetEngine(cycle, engine);
 
         trainGetPageRenderSupport(cycle, null);
 
@@ -629,7 +608,6 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
         PageRenderSupport support = newPageRenderSupport();
         ILink link = newLink();
@@ -638,8 +616,6 @@ public class FormSupportTest extends BaseComponentTestCase
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, false);
-
-        trainGetEngine(cycle, engine);
 
         trainGetPageRenderSupport(cycle, support);
 
@@ -706,7 +682,6 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
         PageRenderSupport support = newPageRenderSupport();
         ILink link = newLink();
@@ -715,8 +690,6 @@ public class FormSupportTest extends BaseComponentTestCase
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, false);
-
-        trainGetEngine(cycle, engine);
 
         trainGetPageRenderSupport(cycle, support);
 
@@ -780,14 +753,11 @@ public class FormSupportTest extends BaseComponentTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
 
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, true);
-
-        trainGetEngine(cycle, engine);
 
         trainGetPageRenderSupport(cycle, null);
 
@@ -818,13 +788,11 @@ public class FormSupportTest extends BaseComponentTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
 
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, true);
-        trainGetEngine(cycle, engine);
         trainGetPageRenderSupport(cycle, null);
 
         replayControls();
@@ -875,13 +843,11 @@ public class FormSupportTest extends BaseComponentTestCase
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
 
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, true);
-        trainGetEngine(cycle, engine);
         trainGetPageRenderSupport(cycle, null);
 
         replayControls();
@@ -933,13 +899,11 @@ public class FormSupportTest extends BaseComponentTestCase
         Location l = newLocation();
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
 
         MockForm form = new MockForm(delegate, l);
 
         trainIsRewound(cycle, form, true);
-        trainGetEngine(cycle, engine);
         trainGetPageRenderSupport(cycle, null);
 
         replayControls();
@@ -988,7 +952,6 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
         ILink link = newLink();
         IRender render = newRender();
@@ -996,8 +959,6 @@ public class FormSupportTest extends BaseComponentTestCase
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, false);
-
-        trainGetEngine(cycle, engine);
 
         PageRenderSupport support = newPageRenderSupport();
 
@@ -1061,7 +1022,6 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
         ILink link = newLink();
         IRender render = newRender();
@@ -1069,8 +1029,6 @@ public class FormSupportTest extends BaseComponentTestCase
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, false);
-
-        trainGetEngine(cycle, engine);
 
         PageRenderSupport support = newPageRenderSupport();
 
@@ -1150,7 +1108,6 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
         ILink link = newLink();
         IRender render = newRender();
@@ -1158,8 +1115,6 @@ public class FormSupportTest extends BaseComponentTestCase
         MockForm form = new MockForm(delegate);
         
         trainIsRewound(cycle, form, false);
-
-        trainGetEngine(cycle, engine);
 
         PageRenderSupport support = newPageRenderSupport();
 
@@ -1223,12 +1178,9 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         IValidationDelegate delegate = newDelegate();
-        IEngine engine = newEngine(getClassResolver());
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, true);
-
-        trainGetEngine(cycle, engine);
 
         trainGetPageRenderSupport(cycle, null);
 
@@ -1260,12 +1212,9 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         IValidationDelegate delegate = newDelegate();
-        IEngine engine = newEngine(getClassResolver());
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, true);
-
-        trainGetEngine(cycle, engine);
 
         trainGetPageRenderSupport(cycle, null);
 
@@ -1312,7 +1261,6 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         NestedMarkupWriter nested = newNestedWriter();
         IRequestCycle cycle = newCycle();
-        IEngine engine = newEngine(getClassResolver());
         IValidationDelegate delegate = newDelegate();
         ILink link = newLink();
         IRender render = newRender();
@@ -1320,8 +1268,6 @@ public class FormSupportTest extends BaseComponentTestCase
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, false);
-
-        trainGetEngine(cycle, engine);
 
         PageRenderSupport support = newPageRenderSupport();
 

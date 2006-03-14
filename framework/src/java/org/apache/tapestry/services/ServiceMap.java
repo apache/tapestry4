@@ -38,11 +38,11 @@ public interface ServiceMap
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if the named service does not exist
      */
-    public IEngineService getService(String name);
+    IEngineService getService(String name);
 
     /**
      * Returns true if the name is a known service, or false otherwise.
      */
 
-    public boolean isValid(String name);
+    boolean isValid(String name);
 }
