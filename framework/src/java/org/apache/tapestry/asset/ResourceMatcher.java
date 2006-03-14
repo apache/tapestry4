@@ -34,5 +34,5 @@ public interface ResourceMatcher {
      *         for this matcher, false otherwise.
      */
     
-    public boolean containsResource(String path);
+    boolean containsResource(String path);
 }

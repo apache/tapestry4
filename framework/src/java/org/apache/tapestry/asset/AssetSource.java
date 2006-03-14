@@ -48,5 +48,5 @@ public interface AssetSource
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if the asset does not exist
      */
-    public IAsset findAsset(Resource base, String path, Locale locale, Location location);
+    IAsset findAsset(Resource base, String path, Locale locale, Location location);
 }

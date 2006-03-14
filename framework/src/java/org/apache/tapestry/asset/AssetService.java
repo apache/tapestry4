@@ -57,6 +57,42 @@ import org.apache.tapestry.web.WebResponse;
 
 public class AssetService implements IEngineService
 {
+    /**
+     * Query parameter that stores the path to the resource (with a leading slash).
+     * 
+     * @since 4.0
+     */
+
+    public static final String PATH = "path";
+
+    /**
+     * Query parameter that stores the digest for the file; this is used to authenticate that the
+     * client is allowed to access the file.
+     * 
+     * @since 4.0
+     */
+
+    public static final String DIGEST = "digest";
+    
+    /**
+     * Defaults MIME types, by extension, used when the servlet container doesn't provide MIME
+     * types. ServletExec Debugger, for example, fails to provide these.
+     */
+
+    private static final Map _mimeTypes;
+
+    static
+    {
+        _mimeTypes = new HashMap(17);
+        _mimeTypes.put("css", "text/css");
+        _mimeTypes.put("gif", "image/gif");
+        _mimeTypes.put("jpg", "image/jpeg");
+        _mimeTypes.put("jpeg", "image/jpeg");
+        _mimeTypes.put("htm", "text/html");
+        _mimeTypes.put("html", "text/html");
+    }
+
+    private static final int BUFFER_SIZE = 10240;
 
     /** @since 4.0 */
     private ClassResolver _classResolver;
@@ -78,26 +114,6 @@ public class AssetService implements IEngineService
     private ResourceDigestSource _digestSource;
 
     /**
-     * Defaults MIME types, by extension, used when the servlet container doesn't provide MIME
-     * types. ServletExec Debugger, for example, fails to provide these.
-     */
-
-    private final static Map _mimeTypes;
-
-    static
-    {
-        _mimeTypes = new HashMap(17);
-        _mimeTypes.put("css", "text/css");
-        _mimeTypes.put("gif", "image/gif");
-        _mimeTypes.put("jpg", "image/jpeg");
-        _mimeTypes.put("jpeg", "image/jpeg");
-        _mimeTypes.put("htm", "text/html");
-        _mimeTypes.put("html", "text/html");
-    }
-
-    private static final int BUFFER_SIZE = 10240;
-
-    /**
      * Startup time for this service; used to set the Last-Modified response header.
      * 
      * @since 4.0
@@ -115,23 +131,6 @@ public class AssetService implements IEngineService
     /** @since 4.0 */
 
     private RequestExceptionReporter _exceptionReporter;
-
-    /**
-     * Query parameter that stores the path to the resource (with a leading slash).
-     * 
-     * @since 4.0
-     */
-
-    public static final String PATH = "path";
-
-    /**
-     * Query parameter that stores the digest for the file; this is used to authenticate that the
-     * client is allowed to access the file.
-     * 
-     * @since 4.0
-     */
-
-    public static final String DIGEST = "digest";
 
     /**
      * Builds a {@link ILink}for a {@link PrivateAsset}.
@@ -172,8 +171,8 @@ public class AssetService implements IEngineService
         {
             int dotx = path.lastIndexOf('.');
             if (dotx > -1) {
-            	String key = path.substring(dotx + 1).toLowerCase();
-            	result = (String) _mimeTypes.get(key);
+                String key = path.substring(dotx + 1).toLowerCase();
+                result = (String) _mimeTypes.get(key);
             }
             
             if (result == null)

@@ -30,12 +30,12 @@ import org.apache.tapestry.IAsset;
 
 public abstract class AbstractAsset implements IAsset
 {
-	private Resource _resourceLocation;
+    private Resource _resourceLocation;
     private Location _location;
 
     protected AbstractAsset(Resource resourceLocation, Location location)
     {
-    	_resourceLocation = resourceLocation;
+        _resourceLocation = resourceLocation;
         _location = location;
     }
 
@@ -46,16 +46,16 @@ public abstract class AbstractAsset implements IAsset
     
     public Resource getResourceLocation()
     {
-    	return _resourceLocation;
+        return _resourceLocation;
     }
     
     public String toString()
     {
-    	ToStringBuilder builder = new ToStringBuilder(this);
-    	
-    	builder.append("resourceLocation", _resourceLocation);
-    	builder.append("location", _location);
-    	
-    	return builder.toString();
+        ToStringBuilder builder = new ToStringBuilder(this);
+
+        builder.append("resourceLocation", _resourceLocation);
+        builder.append("location", _location);
+
+        return builder.toString();
     }
 }

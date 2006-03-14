@@ -23,10 +23,13 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class AssetMessages
+final class AssetMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(AssetMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(AssetMessages.class);
 
+    /* defeat insantiation */
+    private AssetMessages() { }
+    
     static String missingAsset(String path, Resource resource)
     {
         return _formatter.format("missing-asset", path, resource);
