@@ -11,6 +11,7 @@
     <person name="Tsvetelin Saykov" id="TS"/>
     <person name="Neil Clayton" id="NC"/>
     <person name="Paul Ferraro" id="PF"/>
+    <person name="Jesse Kuhnert" id="JK" />
     <!-- Retired -->
     <person name="Malcom Edgar" id="ME"/>
     <!-- Add more people here -->
@@ -126,6 +127,21 @@
   <changes>
   	<release version="3.0.4" date="unreleased">
       <action type="fix" dev="GL" fixes-bug="TAPESTRY-431"> Fixed TemplateParser throws an exception and stops parsing when duplicate attributes are found in a tag. </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-877" due-to="Brian K. Wallace">
+      	Javassist url was incorrect.
+      </action>
+      <action type="remove" dev="JK" fixes-bug="TAPESTRY-878" due-to="Brian K. Wallace" >
+      	Removed old tutorial example.
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-806" due-to="Nick Westgate" >
+      	Double checked locking bug prevents use of multi processor environments (efficiently).
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-241" due-to="Kurtis Williams" >
+      	binding for convertor needed to be inherited-binding
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-193" due-to="Brian K. Wallace" >
+      	AssetService not resolving file prefixes correctly.
+      </action>
     </release>
     <release version="3.0.3" date="Mar 26 2005">
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>

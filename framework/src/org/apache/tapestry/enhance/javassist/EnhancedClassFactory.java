@@ -101,12 +101,9 @@ public class EnhancedClassFactory implements IEnhancedClassFactory
 
     public CtClass getObjectType(String type)
     {
-        CtClass result = getClassMapping().getType(type);
 
-        if (result == null)
-        {
             synchronized (this) {
-                result = getClassMapping().getType(type);
+                CtClass result = getClassMapping().getType(type);
 
                 if (result == null)
                 {
@@ -120,10 +117,9 @@ public class EnhancedClassFactory implements IEnhancedClassFactory
                         throw new CodeGenerationException(e);
                     }
                 }
+                return result;
             }
-        }
 
-        return result;
     }
 
 

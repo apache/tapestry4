@@ -54,12 +54,10 @@ public class TableUtils
 
     public static String format(String key, Object[] args)
     {
-        if (s_objStrings == null) {
             synchronized (TableUtils.class) {
                 if (s_objStrings == null)
                     s_objStrings = ResourceBundle.getBundle("org.apache.tapestry.contrib.table.components.TableStrings");
             }
-        }
 
         String pattern = s_objStrings.getString(key);
 

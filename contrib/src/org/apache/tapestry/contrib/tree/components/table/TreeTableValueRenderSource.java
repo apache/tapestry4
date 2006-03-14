@@ -51,8 +51,6 @@ public class TreeTableValueRenderSource implements ITableRendererSource
 		ITableColumn objColumn,
 		Object objRow)
 	{
-		if (m_objComponentRenderer == null)
-		{
 			synchronized (this)
 			{
 				if (m_objComponentRenderer == null)
@@ -67,7 +65,6 @@ public class TreeTableValueRenderSource implements ITableRendererSource
 						new ComponentTableRendererSource(objAddress);
 				}
 			}
-		}
 
 		return m_objComponentRenderer.getRenderer(
 			objCycle,

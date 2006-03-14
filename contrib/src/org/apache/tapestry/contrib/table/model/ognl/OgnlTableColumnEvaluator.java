@@ -49,15 +49,12 @@ public class OgnlTableColumnEvaluator implements ITableColumnEvaluator
 		if (m_strExpression == null || m_strExpression.equals(""))
 			return "";
 
-		if (m_objParsedExpression == null)
-		{
 			synchronized (this)
 			{
 				if (m_objParsedExpression == null)
 					m_objParsedExpression =
 						OgnlUtils.getParsedExpression(m_strExpression);
 			}
-		}
 
 		try
 		{

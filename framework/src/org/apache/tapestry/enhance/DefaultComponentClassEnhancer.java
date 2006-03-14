@@ -85,22 +85,18 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
 
     public Class getEnhancedClass(IComponentSpecification specification, String className)
     {
-        Class result = getCachedClass(specification);
-
-        if (result == null)
-        {
-            synchronized (this)
+            synchronized (specification)
             {
-                result = getCachedClass(specification);
+                Class result = getCachedClass(specification);
+
                 if (result == null)
                 {
                     result = constructComponentClass(specification, className);
                     storeCachedClass(specification, result);
                 }
-            }
-        }
 
-        return result;
+                return result;
+            }
     }
 
     protected void storeCachedClass(IComponentSpecification specification, Class cachedClass)

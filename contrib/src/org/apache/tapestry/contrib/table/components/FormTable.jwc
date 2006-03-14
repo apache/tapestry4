@@ -234,7 +234,7 @@
 	<component id="tableRows" type="TableFormRows">
 		<inherited-binding name="row" parameter-name="row"/>
 		<inherited-binding name="class" parameter-name="rowsClass"/>
-        <binding name="convertor" expression="convertor"/>
+    <inherited-binding name="convertor" expression="convertor"/>
 	</component>
 
 	<component id="tableValues" type="TableValues">

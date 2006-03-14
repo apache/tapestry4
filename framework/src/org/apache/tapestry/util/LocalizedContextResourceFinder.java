@@ -54,8 +54,16 @@ public class LocalizedContextResourceFinder
     public LocalizedResource resolve(String contextPath, Locale locale)
     {
         int dotx = contextPath.lastIndexOf('.');
-        String basePath = contextPath.substring(0, dotx);
-        String suffix = contextPath.substring(dotx);
+        String basePath = null;
+        String suffix = null;
+        // This handles assets without extensions - still allows them to be localized.
+        if (dotx > -1) {
+          basePath = contextPath.substring(0, dotx);
+          suffix = contextPath.substring(dotx);
+        } else {
+          basePath = contextPath;
+          suffix = "";
+        }
 
         LocalizedNameGenerator generator = new LocalizedNameGenerator(basePath, locale, suffix);
 
