@@ -37,7 +37,7 @@
   </component>
   <component id="returnRollover" type="Rollover">
     <binding name="image" value="asset:return"/>
-    <binding name="focus" value="asset:return_h"/>
+    <binding name="mouseOver" value="asset:return_h"/>
   </component>
   <asset name="return" path="images/return.png"/>
   <asset name="return_h" path="images/return_h.png"/>

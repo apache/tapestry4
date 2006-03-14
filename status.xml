@@ -122,6 +122,12 @@
       <action type="add" dev="JK" fixes-bug="TAPESTRY-587" due-to="Jan Vissers">
         Added dutch validation strings properties file.
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-749" due-to="Brian K. Wallace" >
+      	Fixed Vlib runtime warnings.
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-745" due-to="Brian K. Wallace" >
+      	JDK 1.5 requirement added to jboss documentation in examples.
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>

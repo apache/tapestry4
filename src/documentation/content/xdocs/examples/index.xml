@@ -28,6 +28,8 @@
   <body>
     <p> Tapestry's main distribution includes the Tapestry JAR files plus all source code for Tapestry, the Tapestry
       documentation, and Tapestry examples. </p>
+    <note> While the main source distribution does not require a 1.5 JDK, the examples do as they make use of features such
+        as annotations.</note>
     <p> Because of licensing concerns, JAR dependencies (such as Javassist) and example applications are not distributed
       with Tapestry itself. As an Apache Software Foundation project, the Tapestry distributions <em>must</em> be
       limited to just software directly provided by the ASF; nothing from outside the ASF is allowed. </p>

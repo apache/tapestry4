@@ -24,6 +24,7 @@
   <component id="form" type="Form">
     <binding name="listener" value="listener:addBook"/>
     <binding name="clientValidationEnabled" value="true"/>
+    <binding name="delegate" value="validationDelegate"/>
   </component>    
   
   <component id="title" type="TextField">
