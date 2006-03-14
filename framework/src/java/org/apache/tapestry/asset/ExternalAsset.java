@@ -31,13 +31,13 @@ import org.apache.tapestry.Tapestry;
 
 public class ExternalAsset extends AbstractAsset
 {
-    private String _URL;
+    private String _url;
 
     public ExternalAsset(String URL, Location location)
     {
-    	super(null, location);
-    	
-        _URL = URL;
+        super(null, location);
+
+        _url = URL;
     }
 
     /**
@@ -47,7 +47,7 @@ public class ExternalAsset extends AbstractAsset
 
     public String buildURL()
     {
-        return _URL;
+        return _url;
     }
 
     public InputStream getResourceAsStream()
@@ -56,7 +56,7 @@ public class ExternalAsset extends AbstractAsset
 
         try
         {
-            url = new URL(_URL);
+            url = new URL(_url);
 
             return url.openStream();
         }
@@ -64,13 +64,13 @@ public class ExternalAsset extends AbstractAsset
         {
             // MalrformedURLException or IOException
 
-            throw new ApplicationRuntimeException(Tapestry.format("ExternalAsset.resource-missing", _URL), ex);
+            throw new ApplicationRuntimeException(Tapestry.format("ExternalAsset.resource-missing", _url), ex);
         }
 
     }
 
     public String toString()
     {
-        return "ExternalAsset[" + _URL + "]";
+        return "ExternalAsset[" + _url + "]";
     }
 }

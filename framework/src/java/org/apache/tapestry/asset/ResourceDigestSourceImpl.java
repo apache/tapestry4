@@ -41,11 +41,11 @@ import org.apache.tapestry.event.ResetEventListener;
 public class ResourceDigestSourceImpl implements ResourceDigestSource, ResetEventListener,
         ReportStatusListener
 {
+    private static final int BUFFER_SIZE = 5000;
+
     private String _serviceId;
 
     private ClassResolver _classResolver;
-
-    private static final int BUFFER_SIZE = 5000;
 
     /**
      * Map keyed on resource path of DIGEST checksum (as a string).

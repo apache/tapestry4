@@ -35,5 +35,5 @@ public interface ResourceDigestSource
      *             if the resource does not exist, or there is an error calculating the checksum.
      */
 
-    public String getDigestForResource(String resourcePath);
+    String getDigestForResource(String resourcePath);
 }

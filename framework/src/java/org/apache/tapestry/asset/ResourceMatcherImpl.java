@@ -26,12 +26,12 @@ import org.apache.tapestry.util.RegexpMatcher;
  */
 public class ResourceMatcherImpl implements ResetEventListener, ResourceMatcher {
     
-    /** regexp matcher engine */
-    protected RegexpMatcher matcher;
-    /** Resource match configuration regexp strings */
-    protected List contributions;
+    /** regexp matcher engine. */
+    protected RegexpMatcher _matcher;
+    /** Resource match configuration regexp strings. */
+    protected List _contributions;
     
-    /** no args constructor */
+    /** no args constructor. */
     public ResourceMatcherImpl() { }
     
     /**
@@ -40,7 +40,7 @@ public class ResourceMatcherImpl implements ResetEventListener, ResourceMatcher 
      */
     public void initializeService() 
     {
-        matcher = new RegexpMatcher();
+        _matcher = new RegexpMatcher();
     }
     
     /**
@@ -48,7 +48,7 @@ public class ResourceMatcherImpl implements ResetEventListener, ResourceMatcher 
      */
     public synchronized void resetEventDidOccur()
     {
-        matcher.clear();
+        _matcher.clear();
     }
     
     /**
@@ -56,12 +56,12 @@ public class ResourceMatcherImpl implements ResetEventListener, ResourceMatcher 
      */
     public boolean containsResource(String path)
     {
-        if (contributions == null || contributions.size() < 1)
+        if (_contributions == null || _contributions.size() < 1)
             return false;
         
-        for (int i = 0; i < contributions.size(); i++) {
-            String pattern = (String)contributions.get(i);
-            if (matcher.contains(pattern, path))
+        for (int i = 0; i < _contributions.size(); i++) {
+            String pattern = (String)_contributions.get(i);
+            if (_matcher.contains(pattern, path))
                 return true;
         }
         
@@ -75,6 +75,6 @@ public class ResourceMatcherImpl implements ResetEventListener, ResourceMatcher 
      */
     public void setContributions(List contributions)
     {
-        this.contributions = contributions;
+        this._contributions = contributions;
     }
 }

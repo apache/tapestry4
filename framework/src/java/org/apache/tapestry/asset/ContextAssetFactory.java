@@ -108,6 +108,6 @@ public class ContextAssetFactory implements AssetFactory
 
     public void setRequestCycle(IRequestCycle cycle)
     {
-    	_requestCycle = cycle;
+        _requestCycle = cycle;
     }
 }
