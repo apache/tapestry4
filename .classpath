@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry sourcepath="JRE_SRC" kind="var" path="JRE_LIB"/>
 	<classpathentry kind="lib" path="config"/>
 	<classpathentry kind="src" path="framework/src"/>
 	<classpathentry kind="src" path="contrib/src"/>
@@ -24,9 +23,9 @@
 	<classpathentry kind="lib" path="lib/j2ee/geronimo-ejb.jar"/>
 	<classpathentry kind="lib" path="lib/j2ee/jsp-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/j2ee/servlet-api.jar"/>
-	<classpathentry kind="var" path="JYTHON_DIR/jython.jar"/>
 	<classpathentry kind="lib" path="lib/runtime/log4j-1.2.6.jar"/>
 	<classpathentry kind="lib" path="ext-dist/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/ext/ognl-2.6.7.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre-1.4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
