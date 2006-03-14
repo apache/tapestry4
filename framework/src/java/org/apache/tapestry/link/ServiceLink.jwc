@@ -58,4 +58,6 @@
     </description>
   </parameter>  
   
+  <inject object="service:tapestry.services.ServiceMap" property="serviceMap"/>
+  
 </component-specification>

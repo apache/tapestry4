@@ -304,10 +304,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     protected IEngine newEngine(ClassResolver resolver)
     {
         IEngine engine = (IEngine) newMock(IEngine.class);
-
-        ClassResolver cr = new DefaultClassResolver();
-        setReturnValue(engine, cr);
-
+        
         return engine;
     }
 

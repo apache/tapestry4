@@ -19,6 +19,7 @@ import org.apache.hivemind.lib.BeanFactory;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.tapestry.engine.IScriptSource;
 import org.easymock.MockControl;
 
 /**
@@ -37,19 +38,24 @@ public class TestValidatorBindingFactory extends HiveMindTestCase
         MockControl vbfc = newControl(BeanFactory.class);
         BeanFactory vbf = (BeanFactory) vbfc.getMock();
 
+        IScriptSource scriptSource = (IScriptSource)newMock(IScriptSource.class);
+        
         vbf.get("foo,bar=baz");
         vbfc.setReturnValue(validator);
-
+        
         Location l = newLocation();
-
+        
+        validator.setScriptSource(scriptSource);
+        
         replayControls();
 
         ValidatorBindingFactory factory = new ValidatorBindingFactory();
         factory.setValueConverter(vc);
         factory.setValidatorBeanFactory(vbf);
-
+        factory.setScriptSource(scriptSource);
+        
         IBinding binding = factory.createBinding(null, "validator bean", "foo,bar=baz", l);
-
+        
         assertSame(validator, binding.getObject());
         assertSame(l, binding.getLocation());
 
