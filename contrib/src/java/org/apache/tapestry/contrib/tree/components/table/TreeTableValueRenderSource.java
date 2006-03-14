@@ -32,17 +32,20 @@ public class TreeTableValueRenderSource implements ITableRendererSource
 
     private ComponentTableRendererSource m_objComponentRenderer;
     private ComponentAddress m_objComponentAddress = null;
-
+    
+    /* used to synchronize access */
+    private Object m_sync = new Object();
+    
     public TreeTableValueRenderSource()
     {
         m_objComponentRenderer = null;
     }
-
+    
     public TreeTableValueRenderSource(ComponentAddress objComponentAddress)
     {
         m_objComponentAddress = objComponentAddress;
     }
-
+    
     /**
      * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle,
      *      ITableModelSource, ITableColumn, Object)
@@ -52,19 +55,15 @@ public class TreeTableValueRenderSource implements ITableRendererSource
     {
         if (m_objComponentRenderer == null)
         {
-            synchronized(this)
+            synchronized(m_sync)
             {
-                if (m_objComponentRenderer == null)
-                {
-
-                    ComponentAddress objAddress = m_objComponentAddress;
-                    if (m_objComponentAddress == null)
-                        objAddress = new ComponentAddress("contrib:TreeTableNodeViewPage", "treeTableNodeViewDelegator");
-                    m_objComponentRenderer = new ComponentTableRendererSource(objAddress);
-                }
+                ComponentAddress objAddress = m_objComponentAddress;
+                if (m_objComponentAddress == null)
+                    objAddress = new ComponentAddress("contrib:TreeTableNodeViewPage", "treeTableNodeViewDelegator");
+                m_objComponentRenderer = new ComponentTableRendererSource(objAddress);
             }
         }
-
+        
         return m_objComponentRenderer.getRenderer(objCycle, objSource, objColumn, objRow);
     }
 
