@@ -58,11 +58,11 @@ public class ButtonLinkRenderer implements ILinkRenderer
         }
 
         if (!cycle.isRewinding()) {
-	        String url = link.getURL(component.getAnchor(), true);
-	        String target = component.getTarget();
-	        String onclick = (target == null) ? getScript(url) : getScript(url, target);
-	
-	        writer.attribute("onclick", onclick);
+            String url = link.getURL(component.getAnchor(), true);
+            String target = component.getTarget();
+            String onclick = (target == null) ? getScript(url) : getScript(url, target);
+
+            writer.attribute("onclick", onclick);
         }
         
         component.renderAdditionalAttributes(writer, cycle);

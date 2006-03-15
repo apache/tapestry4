@@ -1,4 +1,4 @@
-#Sun Mar 12 18:21:48 EST 2006
+#Tue Mar 14 22:37:08 EST 2006
 =\=\=\=\=\=\=
 <<<<<<<=.working
 >>>>>>>=.merge-right.r368223
@@ -21,7 +21,7 @@ org.eclipse.jdt.core.compiler.debug.sourceFile=generate
 org.eclipse.jdt.core.compiler.problem.annotationSuperInterface=warning
 org.eclipse.jdt.core.compiler.problem.assertIdentifier=error
 org.eclipse.jdt.core.compiler.problem.autoboxing=ignore
-org.eclipse.jdt.core.compiler.problem.deprecation=warning
+org.eclipse.jdt.core.compiler.problem.deprecation=ignore
 org.eclipse.jdt.core.compiler.problem.deprecationInDeprecatedCode=disabled
 org.eclipse.jdt.core.compiler.problem.deprecationWhenOverridingDeprecatedMethod=disabled
 org.eclipse.jdt.core.compiler.problem.discouragedReference=error

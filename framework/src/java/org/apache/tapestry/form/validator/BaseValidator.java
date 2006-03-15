@@ -31,6 +31,15 @@ public abstract class BaseValidator implements Validator
 {
     private String _message;
 
+    public BaseValidator()
+    {
+    }
+
+    public BaseValidator(String initializer)
+    {
+        PropertyUtils.configureProperties(this, initializer);
+    }
+    
     public String getMessage()
     {
         return _message;
@@ -39,15 +48,6 @@ public abstract class BaseValidator implements Validator
     public void setMessage(String message)
     {
         _message = message;
-    }
-
-    public BaseValidator()
-    {
-    }
-
-    public BaseValidator(String initializer)
-    {
-        PropertyUtils.configureProperties(this, initializer);
     }
 
     /**

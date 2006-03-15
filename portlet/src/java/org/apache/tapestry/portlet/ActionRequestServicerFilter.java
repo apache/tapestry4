@@ -30,6 +30,6 @@ import javax.portlet.PortletException;
  */
 public interface ActionRequestServicerFilter
 {
-    public void service(ActionRequest request, ActionResponse response,
+    void service(ActionRequest request, ActionResponse response,
             ActionRequestServicer servicer) throws IOException, PortletException;
 }

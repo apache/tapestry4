@@ -35,11 +35,11 @@ public interface AbsoluteURLBuilder
      * @param port
      *            to suffix the server with (unless the URI begins with "//")
      */
-    public String constructURL(String URI, String scheme, String server, int port);
+    String constructURL(String URI, String scheme, String server, int port);
 
     /**
      * Constructs a URL, defaulting scheme, server and port to the values for the current request.
      */
 
-    public String constructURL(String URI);
+    String constructURL(String URI);
 }

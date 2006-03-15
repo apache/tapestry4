@@ -25,7 +25,7 @@ public class AsciiCharacterMatcher implements ICharacterMatcher
     private boolean[] _charMap;
     
     /**
-     * Create a new ASCII character matcher for identifying the set of provided ASCII characters
+     * Create a new ASCII character matcher for identifying the set of provided ASCII characters.
      * 
      * @param chars the character that this matcher should identify
      */
@@ -40,7 +40,7 @@ public class AsciiCharacterMatcher implements ICharacterMatcher
     }
     
     /**
-     * Match the characters provided in the constructor
+     * Match the characters provided in the constructor.
      * 
      * @see org.apache.tapestry.util.text.ICharacterMatcher#matches(char)
      */

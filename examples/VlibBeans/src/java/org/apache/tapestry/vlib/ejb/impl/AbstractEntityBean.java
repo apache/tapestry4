@@ -27,11 +27,12 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
+import ognl.Ognl;
+import ognl.OgnlException;
+
 import org.apache.tapestry.contrib.ejb.XEJBException;
 import org.apache.tapestry.vlib.ejb.IKeyAllocator;
 import org.apache.tapestry.vlib.ejb.IKeyAllocatorHome;
-import ognl.Ognl;
-import ognl.OgnlException;
 
 /**
  * Provides basic support for the entity context, empty or minimal implementations of the required

@@ -21,10 +21,13 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class ComponentMessages
+final class ComponentMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(ComponentMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(ComponentMessages.class);
 
+    /* defeat instantiation */
+    private ComponentMessages() { }
+    
     static String unableToFormat(IComponent component, Object value, Throwable cause)
     {
         return _formatter.format("unable-to-format", component.getExtendedId(), value, cause);

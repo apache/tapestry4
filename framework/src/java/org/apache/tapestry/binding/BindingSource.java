@@ -33,7 +33,7 @@ public interface BindingSource
      * consists of prefix and a path, i.e., <code>ognl:myProperty</code>.
      * <p>
      * When a prefix exists and is identified, it is used to select the correct
-     * {@link BindingFactory}, and the remainder of the path (i.e., <code>myProperty</code)
+     * {@link BindingFactory}, and the remainder of the path (i.e., <code>myProperty</code>)
      * is passed to the factory.  An unrecognized prefix is treated as a literal value
      * (it is often "javascript:" or "http:", etc.).
      * 
@@ -47,6 +47,6 @@ public interface BindingSource
      * or doesn't match a known binding factory.
      * @param location location used to report errors in the binding
      */
-    public IBinding createBinding(IComponent component, String description, String reference,
+    IBinding createBinding(IComponent component, String description, String reference,
             String defaultBindingType, Location location);
 }

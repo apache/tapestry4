@@ -28,7 +28,7 @@ public interface ApplicationStateManager
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if no such object is declared
      */
-    public boolean exists(String objectName);
+    boolean exists(String objectName);
 
     /**
      * Gets the named application state object, creating it if necessary.
@@ -39,7 +39,7 @@ public interface ApplicationStateManager
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if no such object is declared
      */
-    public Object get(String objectName);
+    Object get(String objectName);
     
     /**
      * Stores a new state object, replacing the old one. The
@@ -51,11 +51,11 @@ public interface ApplicationStateManager
      *             if no such object is declared
      */
     
-    public void store(String objectName, Object stateObject);
+    void store(String objectName, Object stateObject);
 
     /**
      * Asks each {@link StateObjectManager} to store each object obtained.
      */
 
-    public void flush();
+    void flush();
 }

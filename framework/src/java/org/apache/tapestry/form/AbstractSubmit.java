@@ -78,39 +78,39 @@ abstract class AbstractSubmit extends AbstractFormComponent
 
         // Invoke 'listener' now, but defer 'action' for later
         if (listener != null)
-        	listenerInvoker.invokeListener(listener, AbstractSubmit.this, cycle);
-        
+            listenerInvoker.invokeListener(listener, AbstractSubmit.this, cycle);
+
         if (action != null) {
-	        Runnable notify = new Runnable()
-	        {
-	            public void run()
-	            {
-	                listenerInvoker.invokeListener(action, AbstractSubmit.this, cycle);
-	            }
-	        };
-	
+            Runnable notify = new Runnable()
+            {
+                public void run()
+                {
+                    listenerInvoker.invokeListener(action, AbstractSubmit.this, cycle);
+                }
+            };
+
             form.addDeferredRunnable(notify);
         }
     }
 
-    /** parameter */
+    /** parameter. */
     public abstract IActionListener getListener();
 
-    /** parameter */
+    /** parameter. */
     public abstract IActionListener getAction();
 
-    /** parameter */
+    /** parameter. */
     public abstract Object getTag();
 
-    /** parameter */
+    /** parameter. */
     public abstract void setSelected(Object tag);
 
-    /** parameter */
+    /** parameter. */
     public abstract boolean getDefer();
 
-    /** parameter */
+    /** parameter. */
     public abstract Object getParameters();
 
-    /** Injected */
+    /** Injected. */
     public abstract ListenerInvoker getListenerInvoker();
 }

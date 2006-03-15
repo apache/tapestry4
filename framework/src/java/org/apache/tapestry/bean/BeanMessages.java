@@ -21,10 +21,13 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class BeanMessages
+final class BeanMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(BeanMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(BeanMessages.class);
 
+    /* defeat instantiation */
+    private BeanMessages() { }
+    
     static String propertyInitializerName(String propertyName)
     {
         return _formatter.format("property-initializer-name", propertyName);

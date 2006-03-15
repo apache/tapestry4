@@ -29,10 +29,10 @@ public interface ComponentConstructor
      * Requests that a new instance of the component.
      */
 
-    public Object newInstance();
+    Object newInstance();
 
     /**
      * Returns the class actually instantiated (which may be an enhanced subclass).
      */
-    public Class getComponentClass();
+    Class getComponentClass();
 }

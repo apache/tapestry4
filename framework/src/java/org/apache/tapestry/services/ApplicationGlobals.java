@@ -36,20 +36,20 @@ public interface ApplicationGlobals
      * Invoked by the (indirectly) by the servlet at init(), after parsing the application
      * specification.
      */
-    public void storeActivator(WebActivator activator);
+    void storeActivator(WebActivator activator);
 
-    public void storeSpecification(IApplicationSpecification applicationSpecification);
-
-    /**
-     * Invoked (indirectly) by the servlet at init().
-     */
-    public void storeServletContext(ServletContext context);
+    void storeSpecification(IApplicationSpecification applicationSpecification);
 
     /**
      * Invoked (indirectly) by the servlet at init().
      */
+    void storeServletContext(ServletContext context);
 
-    public void storeWebContext(WebContext context);
+    /**
+     * Invoked (indirectly) by the servlet at init().
+     */
+
+    void storeWebContext(WebContext context);
 
     /**
      * Returns the previously stored context.
@@ -57,20 +57,20 @@ public interface ApplicationGlobals
      * @see #store(WebContext)}.
      */
 
-    public WebContext getWebContext();
+    WebContext getWebContext();
 
     /**
      * Returns the previously stored context.
      * 
      * @see #storeServletContext(ServletContext)
      */
-    public ServletContext getServletContext();
+    ServletContext getServletContext();
 
-    public WebActivator getActivator();
+    WebActivator getActivator();
 
-    public IApplicationSpecification getSpecification();
+    IApplicationSpecification getSpecification();
 
-    public String getActivatorName();
+    String getActivatorName();
 
     /**
      * Stores the default set of engine service definitions. Application services override factory
@@ -80,12 +80,12 @@ public interface ApplicationGlobals
      *            List of {@link org.apache.tapestry.engine.IEngineService}.
      */
 
-    public void storeFactoryServices(List factoryServices);
+    void storeFactoryServices(List factoryServices);
 
     /**
      * Returns the factory default services as a List of
      * {@link org.apache.tapestry.engine.IEngineService}.
      */
 
-    public List getFactoryServices();
+    List getFactoryServices();
 }

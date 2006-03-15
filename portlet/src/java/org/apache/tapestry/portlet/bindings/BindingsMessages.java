@@ -20,10 +20,13 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class BindingsMessages
+final class BindingsMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(BindingsMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(BindingsMessages.class);
 
+    /* defeat instantiation */
+    private BindingsMessages() { }
+    
     static String noUserInfo()
     {
         return _formatter.getMessage("no-user-info");

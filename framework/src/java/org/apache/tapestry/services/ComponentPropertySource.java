@@ -43,7 +43,7 @@ public interface ComponentPropertySource
      * @return the value of the given key, or null if not found.
      */
 
-    public String getComponentProperty(IComponent component, String propertyName);
+    String getComponentProperty(IComponent component, String propertyName);
 
     /**
      * Like {@link #getComponentProperty(IComponent, String)}, but the property name will be
@@ -54,7 +54,7 @@ public interface ComponentPropertySource
      * 
      * @return the value of the given property name, or null if not found.
      */
-    public String getLocalizedComponentProperty(IComponent component, Locale locale,
+    String getLocalizedComponentProperty(IComponent component, Locale locale,
             String propertyName);
 
     /**
@@ -68,13 +68,13 @@ public interface ComponentPropertySource
      * @return the value of the given key, or null if not found.
      */
 
-    public String getNamespaceProperty(INamespace namespace, String propertyName);
+    String getNamespaceProperty(INamespace namespace, String propertyName);
 
     /**
      * As with {@link #getLocalizedComponentProperty(IComponent, Locale, String)}, but with a
      * {@link INamespace}.
      */
 
-    public String getLocalizedNamespaceProperty(INamespace namespace, Locale locale,
+    String getLocalizedNamespaceProperty(INamespace namespace, Locale locale,
             String propertyName);
 }

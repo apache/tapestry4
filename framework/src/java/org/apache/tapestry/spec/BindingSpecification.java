@@ -29,7 +29,7 @@ public class BindingSpecification extends BaseLocatable implements IBindingSpeci
 {
     private BindingType _type;
     private String _value;
-	
+    
     public BindingType getType()
     {
         return _type;

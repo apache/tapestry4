@@ -28,16 +28,16 @@ import org.apache.tapestry.TapestryUtils;
  */
 public abstract class CheckboxGroup extends BaseComponent
 {
-    public final static String CHECKBOX_GROUP_ATTRIBUTE = "org.apache.tapestry.contrib.form.CheckboxGroup";
-
+    public static final String CHECKBOX_GROUP_ATTRIBUTE = "org.apache.tapestry.contrib.form.CheckboxGroup";
+    
     public abstract Collection getCheckboxNames();
     public abstract String getFunctionName();
     public abstract void setFunctionName(String functionName);    
 
     public void registerControlledCheckbox(ControlledCheckbox checkbox)
     {
-    	String name = checkbox.getCheckboxName();
-    	String form = checkbox.getForm().getName();
+        String name = checkbox.getCheckboxName();
+        String form = checkbox.getForm().getName();
         getCheckboxNames().add(form + "." + name);
     }
     
@@ -65,9 +65,9 @@ public abstract class CheckboxGroup extends BaseComponent
         String functionName = "setCheckboxGroup";
 
         if (!cycle.isRewinding()) {
-	        PageRenderSupport body = TapestryUtils.getPageRenderSupport(cycle, this);
-	        if (body != null)
-	            functionName = body.getUniqueString("setCheckboxGroup");
+            PageRenderSupport body = TapestryUtils.getPageRenderSupport(cycle, this);
+            if (body != null)
+                functionName = body.getUniqueString("setCheckboxGroup");
         }
         
         setFunctionName(functionName);

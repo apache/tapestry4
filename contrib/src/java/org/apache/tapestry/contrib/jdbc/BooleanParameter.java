@@ -26,13 +26,13 @@ import java.sql.SQLException;
  *
  */
 
-public class BooleanParameter implements IParameter
+public final class BooleanParameter implements IParameter
 {
-    private boolean _value;
-
     public static final BooleanParameter TRUE = new BooleanParameter(true);
 
     public static final BooleanParameter FALSE = new BooleanParameter(false);
+    
+    private boolean _value;
 
     private BooleanParameter(boolean value)
     {

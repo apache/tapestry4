@@ -24,9 +24,11 @@ import org.apache.hivemind.impl.DefaultClassResolver;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class DataSqueezerUtil
+public final class DataSqueezerUtil
 {
-
+    /* defeat instantiation */
+    private DataSqueezerUtil() { }
+    
     /**
      * Returns a data squeezer with a set of basic adaptors, ready to be used by JUnit-tests.
      */

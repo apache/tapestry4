@@ -32,5 +32,5 @@ public interface ChangeObserver
      *
      **/
 
-    public void observeChange(ObservedChangeEvent event);
+    void observeChange(ObservedChangeEvent event);
 }

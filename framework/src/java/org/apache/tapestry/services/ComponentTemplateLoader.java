@@ -26,5 +26,5 @@ import org.apache.tapestry.ITemplateComponent;
  */
 public interface ComponentTemplateLoader
 {
-    public void loadTemplate(IRequestCycle requestCycle, ITemplateComponent loadComponent);
+    void loadTemplate(IRequestCycle requestCycle, ITemplateComponent loadComponent);
 }

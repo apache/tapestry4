@@ -38,8 +38,14 @@ import org.apache.tapestry.form.IFormComponent;
 
 public class NumberValidator extends AbstractNumericValidator
 {
-    private static final Map TYPES = new HashMap();
+    public static final int NUMBER_TYPE_INTEGER = 0;
 
+    public static final int NUMBER_TYPE_REAL = 1;
+    
+    private static final Map TYPES = new HashMap();
+    
+    private static StrategyRegistry _numberAdaptors = new StrategyRegistryImpl();
+    
     static
     {
         TYPES.put("boolean", boolean.class);
@@ -76,17 +82,11 @@ public class NumberValidator extends AbstractNumericValidator
 
     private Number _maximum;
 
-    private static StrategyRegistry _numberAdaptors = new StrategyRegistryImpl();
-
-    public final static int NUMBER_TYPE_INTEGER = 0;
-
-    public final static int NUMBER_TYPE_REAL = 1;
-
     /**
      * This class is not meant for use outside of NumberValidator; it is public only to fascilitate
      * some unit testing.
      */
-    public static abstract class NumberStrategy
+    public abstract static class NumberStrategy
     {
         /**
          * Parses a non-empty {@link String}into the correct subclass of {@link Number}.
@@ -95,7 +95,7 @@ public class NumberValidator extends AbstractNumericValidator
          *             if the String can not be parsed.
          */
 
-        abstract public Number parse(String value);
+        public abstract Number parse(String value);
 
         /**
          * Indicates the type of the number represented -- integer or real. The information is used
@@ -104,7 +104,7 @@ public class NumberValidator extends AbstractNumericValidator
          * 
          * @return one of the predefined number types
          */
-        abstract public int getNumberType();
+        public abstract int getNumberType();
 
         public int compare(Number left, Number right)
         {
@@ -125,7 +125,10 @@ public class NumberValidator extends AbstractNumericValidator
         protected abstract Number coerce(Number number);
     }
 
-    private static abstract class IntegerNumberAdaptor extends NumberStrategy
+    /**
+     * Integer adaptor.
+     */
+    private abstract static class IntegerNumberAdaptor extends NumberStrategy
     {
         public int getNumberType()
         {
@@ -133,7 +136,10 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
-    private static abstract class RealNumberAdaptor extends NumberStrategy
+    /**
+     * Integer adaptor.
+     */
+    private abstract static class RealNumberAdaptor extends NumberStrategy
     {
         public int getNumberType()
         {
@@ -141,6 +147,9 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
+    /**
+     * Integer adaptor.
+     */
     private static class ByteAdaptor extends IntegerNumberAdaptor
     {
         public Number parse(String value)
@@ -154,6 +163,9 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
+    /**
+     * Integer adaptor.
+     */
     private static class ShortAdaptor extends IntegerNumberAdaptor
     {
         public Number parse(String value)
@@ -167,6 +179,9 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
+    /**
+     * Integer adaptor.
+     */
     private static class IntAdaptor extends IntegerNumberAdaptor
     {
         public Number parse(String value)
@@ -180,6 +195,9 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
+    /**
+     * Integer adaptor.
+     */
     private static class LongAdaptor extends IntegerNumberAdaptor
     {
         public Number parse(String value)
@@ -193,6 +211,9 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
+    /**
+     * Integer adaptor.
+     */
     private static class FloatAdaptor extends RealNumberAdaptor
     {
         public Number parse(String value)
@@ -206,6 +227,9 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
+    /**
+     * Integer adaptor.
+     */
     private static class DoubleAdaptor extends RealNumberAdaptor
     {
         public Number parse(String value)
@@ -219,6 +243,9 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
+    /**
+     * Integer adaptor.
+     */
     private static class BigDecimalAdaptor extends RealNumberAdaptor
     {
         public Number parse(String value)
@@ -232,6 +259,9 @@ public class NumberValidator extends AbstractNumericValidator
         }
     }
 
+    /**
+     * Integer adaptor.
+     */
     private static class BigIntegerAdaptor extends IntegerNumberAdaptor
     {
         public Number parse(String value)

@@ -26,7 +26,7 @@ import org.apache.tapestry.Tapestry;
  * @since 1.0.5
  */
 
-abstract public class AbstractBeanInitializer extends BaseLocatable implements IBeanInitializer
+public abstract class AbstractBeanInitializer extends BaseLocatable implements IBeanInitializer
 {
     protected String _propertyName;
 

@@ -27,5 +27,5 @@ public interface ComponentClassProvider
      * Return the component class name, or null if this provider can't resolve it.
      */
 
-    public String provideComponentClassName(ComponentClassProviderContext context);
+    String provideComponentClassName(ComponentClassProviderContext context);
 }

@@ -34,13 +34,13 @@ public interface AttributeHolder
      * @returns Unmodifiable list of string attribute names.
      */
 
-    public List getAttributeNames();
+    List getAttributeNames();
 
     /**
      * Returns the named object, or null if no attribute has been stored with the given name.
      */
 
-    public Object getAttribute(String name);
+    Object getAttribute(String name);
 
     /**
      * Updates the attribute, replacing (or removing) its value. For certain implementations, the
@@ -53,5 +53,5 @@ public interface AttributeHolder
      *            the new value for the attribute, or null to delete the attribute entirely.
      */
 
-    public void setAttribute(String name, Object attribute);
+    void setAttribute(String name, Object attribute);
 }

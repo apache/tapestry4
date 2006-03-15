@@ -22,7 +22,7 @@ package org.apache.tapestry.spec;
 
 public class AssetSpecification extends LocatablePropertyHolder implements IAssetSpecification
 {
-    protected String path;
+    protected String _path;
 
     /** @since 4.0 */
     private String _propertyName;
@@ -35,14 +35,14 @@ public class AssetSpecification extends LocatablePropertyHolder implements IAsse
 
     public String getPath()
     {
-        return path;
+        return _path;
     }
 
     /** @since 3.0 * */
 
     public void setPath(String path)
     {
-        this.path = path;
+        this._path = path;
     }
 
     /** @since 4.0 */

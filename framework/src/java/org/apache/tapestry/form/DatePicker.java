@@ -47,16 +47,6 @@ import org.apache.tapestry.valid.ValidatorException;
 
 public abstract class DatePicker extends AbstractFormComponent implements TranslatedField
 {
-    public abstract Date getValue();
-
-    public abstract void setValue(Date value);
-
-    public abstract boolean isDisabled();
-
-    public abstract boolean getIncludeWeek();
-
-    public abstract IAsset getIcon();
-
     private static final String SYM_NAME = "name";
 
     private static final String SYM_FORMNAME = "formName";
@@ -82,9 +72,19 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
     private static final String SYM_VALUE = "value";
 
     private static final String SYM_BUTTONONCLICKHANDLER = "buttonOnclickHandler";
+    
+    public abstract Date getValue();
+
+    public abstract void setValue(Date value);
+
+    public abstract boolean isDisabled();
+
+    public abstract boolean getIncludeWeek();
+
+    public abstract IAsset getIcon();
 
     /**
-     * Injected
+     * Injected.
      * 
      * @since 4.0
      */
@@ -225,7 +225,7 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
     }
 
     /**
-     * Create an escaped Unicode character
+     * Create an escaped Unicode character.
      * 
      * @param c
      * @return The unicode character in escaped string form

@@ -39,7 +39,7 @@ public class ContentType
     private final Map _parameters = new HashMap();
 
     /**
-     * Creates a new empty content type
+     * Creates a new empty content type.
      */
     public ContentType()
     {

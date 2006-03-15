@@ -16,7 +16,6 @@ package org.apache.tapestry.junit.parse;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,14 +92,13 @@ public class TestTemplateParser extends TestCase
     protected TemplateToken[] run(InputStream stream, ITemplateParserDelegate delegate,
             Resource location) throws TemplateParseException
     {
-        InputStreamReader reader = new InputStreamReader(stream);
         char[] data = null;
         
         try
         {
-            data = IOUtils.toCharArray(reader);
+            data = IOUtils.toCharArray(stream, "UTF-8");
             
-            reader.close();
+            stream.close();
         }
         catch (IOException ex)
         {
@@ -204,7 +202,7 @@ public class TestTemplateParser extends TestCase
     protected void assertCloseToken(TemplateToken token, int line)
     {
         assertEquals("Close token type.", TokenType.CLOSE, token.getType());
-
+        
         checkLine(token, line);
     }
 
@@ -636,7 +634,7 @@ public class TestTemplateParser extends TestCase
     public void testNamespaceAttributeName() throws Exception
     {
         TemplateToken[] tokens = run("NamespaceAttributeName.html", new ParserDelegate("t:id"));
-
+        
         assertTokenCount(tokens, 8);
         assertOpenToken(tokens[1], "outer", "span", 3);
         assertOpenToken(tokens[3], "inner", "span", 4);

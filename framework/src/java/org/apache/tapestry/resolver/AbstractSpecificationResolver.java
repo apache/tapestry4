@@ -30,13 +30,13 @@ import org.apache.tapestry.spec.IComponentSpecification;
 
 public class AbstractSpecificationResolver
 {
-    /** Set by resolve() */
+    /** Set by resolve(). */
     private INamespace _namespace;
 
-    /** Set by resolve() */
+    /** Set by resolve(). */
     private IComponentSpecification _specification;
 
-    /** Set by container */
+    /** Set by container. */
     private ISpecificationSource _specificationSource;
 
     private ISpecificationResolverDelegate _delegate;
@@ -45,7 +45,7 @@ public class AbstractSpecificationResolver
 
     private Resource _contextRoot;
 
-    /** Initialized in initializeService() */
+    /** Initialized in initializeService(). */
 
     private Resource _webInfLocation;
 

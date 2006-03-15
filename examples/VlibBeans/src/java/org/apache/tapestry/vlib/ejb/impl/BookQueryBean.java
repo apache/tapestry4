@@ -45,7 +45,7 @@ public class BookQueryBean extends OperationsBean
 {
     private static final long serialVersionUID = 8782046868254488388L;
     
-	/**
+    /**
      * Stores the results from the most recent query.
      */
 
@@ -273,7 +273,7 @@ public class BookQueryBean extends OperationsBean
     private void processQueryResults(ResultSet set) throws SQLException
     {
         List list = new ArrayList();
-        Object[] columns = new Object[Book.N_COLUMNS];
+        Object[] columns = new Object[Book.NUM_COLUMNS];
 
         while (set.next())
         {

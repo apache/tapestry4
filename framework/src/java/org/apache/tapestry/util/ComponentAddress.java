@@ -40,7 +40,7 @@ public class ComponentAddress implements Serializable
 {
     private static final long serialVersionUID = 533068199722072804L;
 
-	private String _pageName;
+    private String _pageName;
 
     private String _idPath;
 
@@ -57,7 +57,7 @@ public class ComponentAddress implements Serializable
     }
 
     /**
-     * Creates a new ComponentAddress using the given Page Name and ID Path
+     * Creates a new ComponentAddress using the given Page Name and ID Path.
      * 
      * @param pageName
      *            the name of the page that contains the component
@@ -74,7 +74,7 @@ public class ComponentAddress implements Serializable
 
     /**
      * Creates a new ComponentAddress using the given Page Name and ID Path relative on the provided
-     * Namespace
+     * Namespace.
      * 
      * @param namespace
      *            the namespace of the page that contains the component

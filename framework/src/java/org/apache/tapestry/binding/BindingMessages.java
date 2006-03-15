@@ -22,10 +22,13 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class BindingMessages
+final class BindingMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(BindingMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(BindingMessages.class);
 
+    /* defeat insantiation */
+    private BindingMessages() { }
+    
     static String convertObjectError(IBinding binding, Throwable cause)
     {
         return _formatter.format("convert-object-error", binding.getDescription(), cause);

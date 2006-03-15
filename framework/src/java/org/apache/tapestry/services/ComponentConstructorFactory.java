@@ -40,6 +40,6 @@ public interface ComponentConstructorFactory
      * @returns a constructor used to create instances of the enhanced component class
      */
 
-    public ComponentConstructor getComponentConstructor(IComponentSpecification specification,
+    ComponentConstructor getComponentConstructor(IComponentSpecification specification,
             String className);
 }

@@ -28,15 +28,15 @@ import java.util.Map;
 
 public class ContainedComponent extends LocatablePropertyHolder implements IContainedComponent
 {
+    private static final int MAP_SIZE = 3;
+    
+    protected Map bindings;
+
     private String type;
 
     private String copyOf;
 
     private boolean inheritInformalParameters;
-
-    protected Map bindings;
-
-    private static final int MAP_SIZE = 3;
 
     /** @since 4.0 */
     private String _propertyName;
