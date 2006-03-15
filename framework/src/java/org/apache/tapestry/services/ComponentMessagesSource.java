@@ -28,5 +28,5 @@ import org.apache.tapestry.IComponent;
 
 public interface ComponentMessagesSource
 {
-    public Messages getMessages(IComponent component);
+    Messages getMessages(IComponent component);
 }

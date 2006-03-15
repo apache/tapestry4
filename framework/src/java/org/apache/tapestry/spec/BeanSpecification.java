@@ -28,31 +28,31 @@ import org.apache.tapestry.bean.IBeanInitializer;
 
 public class BeanSpecification extends LocatablePropertyHolder implements IBeanSpecification
 {
-    protected String className;
+    protected String _className;
 
-    protected BeanLifecycle lifecycle;
-
-    /** @since 1.0.9 * */
-    private String description;
-
-    /** @since 4.0 */
-
-    private String _propertyName;
+    protected BeanLifecycle _lifecycle;
 
     /**
      * A List of {@link IBeanInitializer}.
      */
 
-    protected List initializers;
+    protected List _initializers;
 
+    /** @since 1.0.9 * */
+    private String _description;
+
+    /** @since 4.0 */
+
+    private String _propertyName;
+    
     public String getClassName()
     {
-        return className;
+        return _className;
     }
 
     public BeanLifecycle getLifecycle()
     {
-        return lifecycle;
+        return _lifecycle;
     }
 
     /**
@@ -61,10 +61,10 @@ public class BeanSpecification extends LocatablePropertyHolder implements IBeanS
 
     public void addInitializer(IBeanInitializer initializer)
     {
-        if (initializers == null)
-            initializers = new ArrayList();
+        if (_initializers == null)
+            _initializers = new ArrayList();
 
-        initializers.add(initializer);
+        _initializers.add(initializer);
     }
 
     /**
@@ -76,21 +76,21 @@ public class BeanSpecification extends LocatablePropertyHolder implements IBeanS
 
     public List getInitializers()
     {
-        return initializers;
+        return _initializers;
     }
 
     public String toString()
     {
         StringBuffer buffer = new StringBuffer("BeanSpecification[");
 
-        buffer.append(className);
+        buffer.append(_className);
         buffer.append(", lifecycle ");
-        buffer.append(lifecycle.getName());
+        buffer.append(_lifecycle.getName());
 
-        if (initializers != null && initializers.size() > 0)
+        if (_initializers != null && _initializers.size() > 0)
         {
             buffer.append(", ");
-            buffer.append(initializers.size());
+            buffer.append(_initializers.size());
             buffer.append(" initializers");
         }
 
@@ -101,26 +101,26 @@ public class BeanSpecification extends LocatablePropertyHolder implements IBeanS
 
     public String getDescription()
     {
-        return description;
+        return _description;
     }
 
     public void setDescription(String desc)
     {
-        description = desc;
+        _description = desc;
     }
 
     /** @since 3.0 * */
 
     public void setClassName(String className)
     {
-        this.className = className;
+        this._className = className;
     }
 
     /** @since 3.0 * */
 
     public void setLifecycle(BeanLifecycle lifecycle)
     {
-        this.lifecycle = lifecycle;
+        this._lifecycle = lifecycle;
     }
 
     /** @since 4.0 */

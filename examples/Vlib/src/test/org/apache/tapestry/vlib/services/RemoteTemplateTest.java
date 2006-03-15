@@ -151,7 +151,7 @@ public class RemoteTemplateTest extends HiveMindTestCase
         Integer bookId = new Integer(33);
 
         IOperations operations = newOperations();
-        Book book = new Book(new Object[Book.N_COLUMNS]);
+        Book book = new Book(new Object[Book.NUM_COLUMNS]);
 
         operations.getBook(bookId);
         setReturnValue(operations, book);

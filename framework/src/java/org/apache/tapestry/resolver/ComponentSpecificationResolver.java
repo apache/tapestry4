@@ -42,7 +42,7 @@ public interface ComponentSpecificationResolver
      * @see #getNamespace()
      * @see #getSpecification()
      */
-    public void resolve(IRequestCycle cycle, INamespace containerNamespace, String type,
+    void resolve(IRequestCycle cycle, INamespace containerNamespace, String type,
             Location location);
 
     /**
@@ -63,21 +63,21 @@ public interface ComponentSpecificationResolver
      * @throws ApplicationRuntimeException
      *             if the type cannot be resolved
      */
-    public void resolve(IRequestCycle cycle, INamespace containerNamespace, String libraryId,
+    void resolve(IRequestCycle cycle, INamespace containerNamespace, String libraryId,
             String type, Location location);
 
     /**
      * The specification resolved by the resolve() method.
      */
-    public IComponentSpecification getSpecification();
+    IComponentSpecification getSpecification();
 
     /**
      * The namespace containing the resolved component.
      */
-    public INamespace getNamespace();
+    INamespace getNamespace();
 
     /**
      * Returns the unqualified type of the component (i.e., with any namespace prefix stripped off).
      */
-    public String getType();
+    String getType();
 }

@@ -36,6 +36,12 @@ import java.util.List;
 
 public class ExceptionAnalyzer
 {
+    private static final int SKIP_LEADING_WHITESPACE = 0;
+
+    private static final int SKIP_T = 1;
+
+    private static final int SKIP_OTHER_WHITESPACE = 2;
+    
     private final List exceptionDescriptions = new ArrayList();
 
     private final List propertyDescriptions = new ArrayList();
@@ -264,25 +270,19 @@ public class ExceptionAnalyzer
             // of readers.
         }
 
-        String result[] = new String[frames.size()];
+        String[] result = new String[frames.size()];
 
         return (String[]) frames.toArray(result);
     }
 
-    private static final int SKIP_LEADING_WHITESPACE = 0;
-
-    private static final int SKIP_T = 1;
-
-    private static final int SKIP_OTHER_WHITESPACE = 2;
-
     /**
-     * Sun's JVM prefixes each line in the stack trace with " <tab>at ", other JVMs don't. This
+     * Sun's JVM prefixes each line in the stack trace with " <tab>at</tab> ", other JVMs don't. This
      * method looks for and strips such stuff.
      */
 
     private String stripFrame(String frame)
     {
-        char array[] = frame.toCharArray();
+        char[] array = frame.toCharArray();
 
         int i = 0;
         int state = SKIP_LEADING_WHITESPACE;

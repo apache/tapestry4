@@ -21,7 +21,7 @@ package org.apache.tapestry.spec;
  * @since 1.0.4
  */
 
-public class BeanLifecycle
+public final class BeanLifecycle
 {
     /**
      * No lifecycle; the bean is created fresh on each reference and not retained.

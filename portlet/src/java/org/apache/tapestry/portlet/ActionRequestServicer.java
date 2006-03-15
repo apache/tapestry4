@@ -29,6 +29,6 @@ import javax.portlet.PortletException;
  */
 public interface ActionRequestServicer
 {
-    public void service(ActionRequest request, ActionResponse response) throws IOException,
+    void service(ActionRequest request, ActionResponse response) throws IOException,
             PortletException;
 }

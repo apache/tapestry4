@@ -31,181 +31,223 @@ import javax.portlet.WindowState;
 
 /**
  * @author Raphael Jean
- *
  */
-public class ActionRequestWrapper extends Object implements ActionRequest 
+public class ActionRequestWrapper extends Object implements ActionRequest
 {
-	private ActionRequest wrapped;
-	
+
+    private ActionRequest wrapped;
+
     public ActionRequestWrapper(ActionRequest request)
     {
         wrapped = request;
     }
-    
-	public InputStream getPortletInputStream() throws IOException {
-		return wrapped.getPortletInputStream();
-	}
 
-	public void setCharacterEncoding(String arg0)
-			throws UnsupportedEncodingException {
-		wrapped.setCharacterEncoding(arg0);
-	}
+    public InputStream getPortletInputStream()
+        throws IOException
+    {
+        return wrapped.getPortletInputStream();
+    }
 
-	public BufferedReader getReader() throws UnsupportedEncodingException,
-			IOException {
-		return wrapped.getReader();
-	}
+    public void setCharacterEncoding(String arg0)
+        throws UnsupportedEncodingException
+    {
+        wrapped.setCharacterEncoding(arg0);
+    }
 
-	public String getCharacterEncoding() {
-		return wrapped.getCharacterEncoding();
-	}
+    public BufferedReader getReader()
+        throws IOException
+    {
+        return wrapped.getReader();
+    }
 
-	public String getContentType() {
-		return wrapped.getContentType();
-	}
+    public String getCharacterEncoding()
+    {
+        return wrapped.getCharacterEncoding();
+    }
 
-	public int getContentLength() {
-		return wrapped.getContentLength();
-	}
+    public String getContentType()
+    {
+        return wrapped.getContentType();
+    }
 
-	public boolean isWindowStateAllowed(WindowState arg0) {
-		return wrapped.isWindowStateAllowed(arg0);
-	}
+    public int getContentLength()
+    {
+        return wrapped.getContentLength();
+    }
 
-	public boolean isPortletModeAllowed(PortletMode arg0) {
-		return wrapped.isPortletModeAllowed(arg0);
-	}
+    public boolean isWindowStateAllowed(WindowState arg0)
+    {
+        return wrapped.isWindowStateAllowed(arg0);
+    }
 
-	public PortletMode getPortletMode() {
-		return wrapped.getPortletMode();
-	}
+    public boolean isPortletModeAllowed(PortletMode arg0)
+    {
+        return wrapped.isPortletModeAllowed(arg0);
+    }
 
-	public WindowState getWindowState() {
-		return wrapped.getWindowState();
-	}
+    public PortletMode getPortletMode()
+    {
+        return wrapped.getPortletMode();
+    }
 
-	public PortletPreferences getPreferences() {
-		return wrapped.getPreferences();
-	}
+    public WindowState getWindowState()
+    {
+        return wrapped.getWindowState();
+    }
 
-	public PortletSession getPortletSession() {
-		return wrapped.getPortletSession();
-	}
+    public PortletPreferences getPreferences()
+    {
+        return wrapped.getPreferences();
+    }
 
-	public PortletSession getPortletSession(boolean arg0) {
-		return wrapped.getPortletSession(arg0);
-	}
+    public PortletSession getPortletSession()
+    {
+        return wrapped.getPortletSession();
+    }
 
-	public String getProperty(String arg0) {
-		return wrapped.getProperty(arg0);
-	}
+    public PortletSession getPortletSession(boolean arg0)
+    {
+        return wrapped.getPortletSession(arg0);
+    }
 
-	public Enumeration getProperties(String arg0) {
-		return wrapped.getProperties(arg0);
-	}
+    public String getProperty(String arg0)
+    {
+        return wrapped.getProperty(arg0);
+    }
 
-	public Enumeration getPropertyNames() {
-		return wrapped.getPropertyNames();
-	}
+    public Enumeration getProperties(String arg0)
+    {
+        return wrapped.getProperties(arg0);
+    }
 
-	public PortalContext getPortalContext() {
-		return wrapped.getPortalContext();
-	}
+    public Enumeration getPropertyNames()
+    {
+        return wrapped.getPropertyNames();
+    }
 
-	public String getAuthType() {
-		return wrapped.getAuthType();
-	}
+    public PortalContext getPortalContext()
+    {
+        return wrapped.getPortalContext();
+    }
 
-	public String getContextPath() {
-		return wrapped.getContextPath();
-	}
+    public String getAuthType()
+    {
+        return wrapped.getAuthType();
+    }
 
-	public String getRemoteUser() {
-		return wrapped.getRemoteUser();
-	}
+    public String getContextPath()
+    {
+        return wrapped.getContextPath();
+    }
 
-	public Principal getUserPrincipal() {
-		return wrapped.getUserPrincipal();
-	}
+    public String getRemoteUser()
+    {
+        return wrapped.getRemoteUser();
+    }
 
-	public boolean isUserInRole(String arg0) {
-		return wrapped.isUserInRole(arg0);
-	}
+    public Principal getUserPrincipal()
+    {
+        return wrapped.getUserPrincipal();
+    }
 
-	public Object getAttribute(String arg0) {
-		return wrapped.getAttribute(arg0);
-	}
+    public boolean isUserInRole(String arg0)
+    {
+        return wrapped.isUserInRole(arg0);
+    }
 
-	public Enumeration getAttributeNames() {
-		return wrapped.getAttributeNames();
-	}
+    public Object getAttribute(String arg0)
+    {
+        return wrapped.getAttribute(arg0);
+    }
 
-	public String getParameter(String arg0) {
-		return wrapped.getParameter(arg0);
-	}
+    public Enumeration getAttributeNames()
+    {
+        return wrapped.getAttributeNames();
+    }
 
-	public Enumeration getParameterNames() {
-		return wrapped.getParameterNames();
-	}
+    public String getParameter(String arg0)
+    {
+        return wrapped.getParameter(arg0);
+    }
 
-	public String[] getParameterValues(String arg0) {
-		return wrapped.getParameterValues(arg0);
-	}
+    public Enumeration getParameterNames()
+    {
+        return wrapped.getParameterNames();
+    }
 
-	public Map getParameterMap() {
-		return wrapped.getParameterMap();
-	}
+    public String[] getParameterValues(String arg0)
+    {
+        return wrapped.getParameterValues(arg0);
+    }
 
-	public boolean isSecure() {
-		return wrapped.isSecure();
-	}
+    public Map getParameterMap()
+    {
+        return wrapped.getParameterMap();
+    }
 
-	public void setAttribute(String arg0, Object arg1) {
-		wrapped.setAttribute(arg0, arg1);
-	}
+    public boolean isSecure()
+    {
+        return wrapped.isSecure();
+    }
 
-	public void removeAttribute(String arg0) {
-		wrapped.removeAttribute(arg0);
-	}
+    public void setAttribute(String arg0, Object arg1)
+    {
+        wrapped.setAttribute(arg0, arg1);
+    }
 
-	public String getRequestedSessionId() {
-		return wrapped.getRequestedSessionId();
-	}
+    public void removeAttribute(String arg0)
+    {
+        wrapped.removeAttribute(arg0);
+    }
 
-	public boolean isRequestedSessionIdValid() {
-		return wrapped.isRequestedSessionIdValid();
-	}
+    public String getRequestedSessionId()
+    {
+        return wrapped.getRequestedSessionId();
+    }
 
-	public String getResponseContentType() {
-		return wrapped.getResponseContentType();
-	}
+    public boolean isRequestedSessionIdValid()
+    {
+        return wrapped.isRequestedSessionIdValid();
+    }
 
-	public Enumeration getResponseContentTypes() {
-		return wrapped.getResponseContentTypes();
-	}
+    public String getResponseContentType()
+    {
+        return wrapped.getResponseContentType();
+    }
 
-	public Locale getLocale() {
-		return wrapped.getLocale();
-	}
+    public Enumeration getResponseContentTypes()
+    {
+        return wrapped.getResponseContentTypes();
+    }
 
-	public Enumeration getLocales() {
-		return wrapped.getLocales();
-	}
+    public Locale getLocale()
+    {
+        return wrapped.getLocale();
+    }
 
-	public String getScheme() {
-		return wrapped.getScheme();
-	}
+    public Enumeration getLocales()
+    {
+        return wrapped.getLocales();
+    }
 
-	public String getServerName() {
-		return wrapped.getServerName();
-	}
+    public String getScheme()
+    {
+        return wrapped.getScheme();
+    }
 
-	public int getServerPort() {
-		return wrapped.getServerPort();
-	}
+    public String getServerName()
+    {
+        return wrapped.getServerName();
+    }
 
-	protected ActionRequest getRequest() {
-		return wrapped;
-	}
+    public int getServerPort()
+    {
+        return wrapped.getServerPort();
+    }
+
+    protected ActionRequest getRequest()
+    {
+        return wrapped;
+    }
 
 }

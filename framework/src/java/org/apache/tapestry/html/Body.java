@@ -170,14 +170,14 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
     public abstract String getElement();
 
     /**
-     * Injected
+     * Injected.
      * 
      * @since 4.0
      */
     public abstract AssetFactory getAssetFactory();
 
     /**
-     * Injected
+     * Injected.
      * 
      * @since 4.0
      */

@@ -24,110 +24,123 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.request.IUploadFile;
 
 /**
- * 
  * @author Raphael Jean
  */
-public abstract class AbstractMultipartDecoder {
-	
-	/**
-	 * Map of UploadPart (which implements IUploadFile), keyed on parameter
-	 * name.
-	 */
-	protected Map _uploadParts = new HashMap();
-	
-	/**
-	 * Map of ValuePart, keyed on parameter name.
-	 */
-	private Map _valueParts = new HashMap();
+public abstract class AbstractMultipartDecoder
+{
 
-	protected int _maxSize = 10000000;
+    protected int _maxSize = 10000000;
 
-	protected int _thresholdSize = 1024;
+    protected int _thresholdSize = 1024;
 
-	protected String _repositoryPath = System.getProperty("java.io.tmpdir");
+    protected String _repositoryPath = System.getProperty("java.io.tmpdir");
 
-	protected String _encoding;
+    protected String _encoding;
+    
+    /**
+     * Map of UploadPart (which implements IUploadFile), keyed on parameter
+     * name.
+     */
+    protected Map _uploadParts = new HashMap();
 
-	public IUploadFile getFileUpload(String parameterName) {
-		return (IUploadFile) _uploadParts.get(parameterName);
-	}
+    /**
+     * Map of ValuePart, keyed on parameter name.
+     */
+    private Map _valueParts = new HashMap();
 
-	public void cleanup() {
-		Iterator i = _uploadParts.values().iterator();
+    public IUploadFile getFileUpload(String parameterName)
+    {
+        return (IUploadFile) _uploadParts.get(parameterName);
+    }
 
-		while (i.hasNext()) {
-			UploadPart part = (UploadPart) i.next();
+    public void cleanup()
+    {
+        Iterator i = _uploadParts.values().iterator();
 
-			part.cleanup();
-		}
-	}
+        while(i.hasNext())
+        {
+            UploadPart part = (UploadPart) i.next();
 
-	protected Map buildParameterMap() {
-		Map result = new HashMap();
+            part.cleanup();
+        }
+    }
 
-		Iterator i = _valueParts.entrySet().iterator();
-		while (i.hasNext()) {
-			Map.Entry e = (Map.Entry) i.next();
+    protected Map buildParameterMap()
+    {
+        Map result = new HashMap();
 
-			String name = (String) e.getKey();
-			ValuePart part = (ValuePart) e.getValue();
+        Iterator i = _valueParts.entrySet().iterator();
+        while(i.hasNext())
+        {
+            Map.Entry e = (Map.Entry) i.next();
 
-			result.put(name, part.getValues());
-		}
+            String name = (String) e.getKey();
+            ValuePart part = (ValuePart) e.getValue();
 
-		return result;
-	}
+            result.put(name, part.getValues());
+        }
 
-	protected void processFileItems(List parts) {
-		if (parts == null)
-			return;
+        return result;
+    }
 
-		Iterator i = parts.iterator();
+    protected void processFileItems(List parts)
+    {
+        if (parts == null) return;
 
-		while (i.hasNext()) {
-			FileItem item = (FileItem) i.next();
+        Iterator i = parts.iterator();
 
-			processFileItem(item);
-		}
-	}
+        while(i.hasNext())
+        {
+            FileItem item = (FileItem) i.next();
 
-	private void processFileItem(FileItem item) {
-		if (item.isFormField()) {
-			processFormFieldItem(item);
-			return;
-		}
+            processFileItem(item);
+        }
+    }
 
-		processUploadFileItem(item);
-	}
+    private void processFileItem(FileItem item)
+    {
+        if (item.isFormField())
+        {
+            processFormFieldItem(item);
+            return;
+        }
 
-	private void processUploadFileItem(FileItem item) {
-		String name = item.getFieldName();
+        processUploadFileItem(item);
+    }
 
-		UploadPart part = new UploadPart(item);
+    private void processUploadFileItem(FileItem item)
+    {
+        String name = item.getFieldName();
 
-		_uploadParts.put(name, part);
-	}
+        UploadPart part = new UploadPart(item);
 
-	void processFormFieldItem(FileItem item) {
-		String name = item.getFieldName();
+        _uploadParts.put(name, part);
+    }
 
-		String value = extractFileItemValue(item);
+    void processFormFieldItem(FileItem item)
+    {
+        String name = item.getFieldName();
 
-		ValuePart part = (ValuePart) _valueParts.get(name);
+        String value = extractFileItemValue(item);
 
-		if (part == null)
-			_valueParts.put(name, new ValuePart(value));
-		else
-			part.add(value);
-	}
+        ValuePart part = (ValuePart) _valueParts.get(name);
 
-	private String extractFileItemValue(FileItem item) {
-		try {
-			return (_encoding == null) ? item.getString() : item
-					.getString(_encoding);
-		} catch (UnsupportedEncodingException ex) {
-			throw new ApplicationRuntimeException(MultipartMessages
-					.unsupportedEncoding(_encoding, ex), ex);
-		}
-	}
+        if (part == null)
+            _valueParts.put(name, new ValuePart(value));
+        else part.add(value);
+    }
+
+    private String extractFileItemValue(FileItem item)
+    {
+        try
+        {
+            return (_encoding == null) ? item.getString() : item
+                    .getString(_encoding);
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            throw new ApplicationRuntimeException(MultipartMessages
+                    .unsupportedEncoding(_encoding, ex), ex);
+        }
+    }
 }

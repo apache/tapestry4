@@ -503,7 +503,7 @@ public class OperationsBean implements SessionBean
             if (!set.next())
                 throw new FinderException("Book " + bookId + " does not exist.");
 
-            Object[] columns = new Object[Book.N_COLUMNS];
+            Object[] columns = new Object[Book.NUM_COLUMNS];
             result = convertRowToBook(set, columns);
 
         }

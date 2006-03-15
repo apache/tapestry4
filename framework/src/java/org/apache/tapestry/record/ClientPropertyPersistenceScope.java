@@ -37,7 +37,7 @@ public interface ClientPropertyPersistenceScope
      * @return true if state should be encoded into the encoding, false otherwise
      */
 
-    public boolean shouldEncodeState(ServiceEncoding encoding, String pageName,
+    boolean shouldEncodeState(ServiceEncoding encoding, String pageName,
             PersistentPropertyData data);
 
     /**
@@ -49,7 +49,7 @@ public interface ClientPropertyPersistenceScope
      * @returns a query parameter name that identifies the page and this client persistence scope.
      */
 
-    public String constructParameterName(String pageName);
+    String constructParameterName(String pageName);
 
     /**
      * Checks a parameter to see if it was the result of {@link #constructParameterName(String)} for
@@ -61,7 +61,7 @@ public interface ClientPropertyPersistenceScope
      *         false otherwise.
      */
 
-    public boolean isParameterForScope(String parameterName);
+    boolean isParameterForScope(String parameterName);
 
     /**
      * Extracts a page name from a query parameter name.
@@ -70,5 +70,5 @@ public interface ClientPropertyPersistenceScope
      *            the paramter name, for which {@link #isParameterForScope(String) must return true
      * @return the name of the page
      */
-    public String extractPageName(String parameterName);
+    String extractPageName(String parameterName);
 }

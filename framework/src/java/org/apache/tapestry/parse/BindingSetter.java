@@ -39,7 +39,7 @@ class BindingSetter extends BaseLocatable
 
     void apply(IBindingSpecification spec)
     {
-    	spec.setLocation(getLocation());
+        spec.setLocation(getLocation());
         _component.setBinding(_name, spec);
     }
 

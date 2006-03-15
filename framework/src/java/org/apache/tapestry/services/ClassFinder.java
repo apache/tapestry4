@@ -33,5 +33,5 @@ public interface ClassFinder
      * @return the class, if found, or null if no class could be found in any of the packages
      */
 
-    public Class findClass(String packageList, String className);
+    Class findClass(String packageList, String className);
 }

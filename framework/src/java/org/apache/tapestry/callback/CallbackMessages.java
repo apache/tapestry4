@@ -21,10 +21,13 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class CallbackMessages
+final class CallbackMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(CallbackMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(CallbackMessages.class);
 
+    /* defeat instantiation */
+    private CallbackMessages() { }
+    
     static String pageNotExternal(String pageName)
     {
         return _formatter.format("page-not-external", pageName);

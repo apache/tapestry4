@@ -24,6 +24,10 @@ import org.apache.hivemind.lib.RemoteExceptionListener;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 import org.apache.tapestry.vlib.ejb.IBookQueryHome;
 
+/**
+ * 
+ * @author hls
+ */
 public class BookQuerySourceImpl implements BookQuerySource, RemoteExceptionListener
 {
     private NameLookup _nameLookup;

@@ -44,6 +44,6 @@ public interface BindingFactory
      *            The location of the binding, used to report any errors related to the binding, or
      *            to the component parameter the binding is bound to.
      */
-    public IBinding createBinding(IComponent root, String bindingDescription, String expression,
+    IBinding createBinding(IComponent root, String bindingDescription, String expression,
             Location location);
 }

@@ -26,6 +26,18 @@ public abstract class AbstractNumericValidator extends BaseValidator
 {
     private boolean _zeroIsNull;
 
+    private String _scriptPath = getDefaultScriptPath();
+    
+    private String _invalidNumericFormatMessage;
+
+    private String _invalidIntegerFormatMessage;
+
+    private String _numberTooSmallMessage;
+
+    private String _numberTooLargeMessage;
+
+    private String _numberRangeMessage;
+    
     public AbstractNumericValidator()
     {
         super();
@@ -55,20 +67,6 @@ public abstract class AbstractNumericValidator extends BaseValidator
     {
         _zeroIsNull = zeroIsNull;
     }
-
-    private String _scriptPath = 
-        getDefaultScriptPath();
-
-    
-    private String _invalidNumericFormatMessage;
-
-    private String _invalidIntegerFormatMessage;
-
-    private String _numberTooSmallMessage;
-
-    private String _numberTooLargeMessage;
-
-    private String _numberRangeMessage;
 
     /**
      * @since 2.2

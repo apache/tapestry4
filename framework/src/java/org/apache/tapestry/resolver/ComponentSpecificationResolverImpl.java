@@ -45,7 +45,9 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * <li>By searching for a named class file within the org.apache.tapestry.component-class-packages
  * property (defined within the namespace)
  * </ul>
+ * 
  * The search for components in library namespaces is more abbreviated:
+ * <ul>
  * <li>As declared in the library specification
  * <li><i>type </i>.jwc in the same folder as the library specification
  * <li>By searching the framework namespace
@@ -58,10 +60,10 @@ import org.apache.tapestry.spec.IComponentSpecification;
 public class ComponentSpecificationResolverImpl extends AbstractSpecificationResolver implements
         ComponentSpecificationResolver
 {
-    /** Set by container */
+    /** Set by container. */
     private Log _log;
 
-    /** Set by resolve() */
+    /** Set by resolve(). */
     private String _type;
 
     private ClassFinder _classFinder;

@@ -37,6 +37,8 @@ import org.apache.tapestry.web.HttpServletWebActivator;
  */
 public class ApplicationSpecificationInitializer implements ApplicationInitializer
 {
+    public static final String APP_SPEC_PATH_PARAM = "org.apache.tapestry.application-specification";
+
     private Log _log;
 
     private ClasspathResourceFactory _classpathResourceFactory;
@@ -44,8 +46,6 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
     private ApplicationGlobals _globals;
 
     private ISpecificationParser _parser;
-
-    public static final String APP_SPEC_PATH_PARAM = "org.apache.tapestry.application-specification";
 
     public void initialize(HttpServlet servlet)
     {

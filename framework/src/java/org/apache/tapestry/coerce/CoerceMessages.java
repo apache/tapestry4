@@ -21,10 +21,13 @@ import org.apache.hivemind.service.ClassFabUtils;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class CoerceMessages
+final class CoerceMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(CoerceMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(CoerceMessages.class);
 
+    /* defeat instantiation */
+    private CoerceMessages() { }
+    
     static String noConverter(Class desiredType)
     {
         return _formatter.format("no-converter", ClassFabUtils.getJavaClassName(desiredType));

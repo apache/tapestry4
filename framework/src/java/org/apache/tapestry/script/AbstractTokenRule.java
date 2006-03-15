@@ -31,6 +31,10 @@ import org.apache.tapestry.util.xml.RuleDirectedParser;
 abstract class AbstractTokenRule extends BaseRule
 {
 
+    private static final int STATE_START = 0;
+    private static final int STATE_DOLLAR = 1;
+    private static final int STATE_COLLECT_EXPRESSION = 2;
+    
     /**
      * Adds a token to its parent, the top object on the stack.
      */
@@ -54,12 +58,8 @@ abstract class AbstractTokenRule extends BaseRule
         addTextTokens(token, content, parser.getLocation());
     }
 
-    private static final int STATE_START = 0;
-    private static final int STATE_DOLLAR = 1;
-    private static final int STATE_COLLECT_EXPRESSION = 2;
-
     /**
-     * Parses the provided text and converts it into a series of 
+     * Parses the provided text and converts it into a series of .
      */
     protected void addTextTokens(IScriptToken token, String text, Location location)
     {

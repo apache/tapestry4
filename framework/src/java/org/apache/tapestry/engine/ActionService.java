@@ -45,13 +45,13 @@ import org.apache.tapestry.web.WebSession;
 public class ActionService implements IEngineService
 {
     /** @since 4.0 */
+    private static final String ACTION = "action";
+    
+    /** @since 4.0 */
     private ResponseRenderer _responseRenderer;
 
     /** @since 4.0 */
     private LinkFactory _linkFactory;
-
-    /** @since 4.0 */
-    private static final String ACTION = "action";
 
     /** @since 4.0 */
     private WebRequest _request;
