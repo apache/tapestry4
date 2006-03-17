@@ -142,6 +142,15 @@
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-193" due-to="Brian K. Wallace" >
       	AssetService not resolving file prefixes correctly.
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-774" due-to="Brian K. Wallace" >
+      	It seems that DirectLink and/or PopupLinkRenderer should be checking for Form rewind and not rendering in that case. 
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-221" due-to="Brian K. Wallace" >
+      	TableFormPages does not support inherited informal parameters that are required to set the stylesheet class.
+      </action>
+      <action type="update" dev="JK" fixes-bug="TAPESTRY-310" due-to="Joni Suoinen" >
+      	Add finnish validation strings
+      </action>
     </release>
     <release version="3.0.3" date="Mar 26 2005">
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>

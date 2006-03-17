@@ -53,6 +53,10 @@ public class PopupLinkRenderer extends DefaultLinkRenderer
 	 */
 	protected String constructURL(ILink link, String anchor, IRequestCycle cycle)
 	{
+      if (cycle.isRewinding()) {
+        return null;
+      }
+      
 		String url = link.getURL(anchor, true);
 		return "javascript: w = window.open(" + normalizeString(url) + ", " + normalizeString(getWindowName()) + ", " + normalizeString(getFeatures()) + "); w.focus();";
 	}
