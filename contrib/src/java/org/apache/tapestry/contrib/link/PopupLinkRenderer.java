@@ -54,11 +54,15 @@ public class PopupLinkRenderer extends DefaultLinkRenderer
     }
 
     /**
-     * @see DefaultLinkRenderer#constructURL(org.apache.tapestry.engine.ILink, String,
+     * @see DefaultLinkRenderer#constructURL(org.apache.tapestry.components.ILinkComponent,
      *      org.apache.tapestry.IRequestCycle)
      */
     protected String constructURL(ILinkComponent component, IRequestCycle cycle)
     {
+        if (cycle.isRewinding()) {
+            return null;
+        }
+        
         String anchor = component.getAnchor();
         ILink link = component.getLink(cycle);
 
