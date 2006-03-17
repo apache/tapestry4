@@ -433,7 +433,7 @@ For example:
 </p>
 
 <source><![CDATA[
-<inject name="registration" type="state" object="registration-data"/>
+<inject property="registration" type="state" object="registration-data"/>
 ]]></source>
 
 <p>

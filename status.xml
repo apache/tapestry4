@@ -150,6 +150,13 @@
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-221" due-to="Brian K. Wallace" >
       	Added informal-parameters to jwc and html for TableFormPages
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-884" due-to="Jarek Woloszyn">
+      	ValidationStrings wasn't being resolved correctly in non en environments, added
+      	a ValidationStrings_en.properties file to help.
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-885" due-to="Diogenes Alberto Moreira" >
+      	Incorrect usage of inject documentation on state page. Updated.
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>
