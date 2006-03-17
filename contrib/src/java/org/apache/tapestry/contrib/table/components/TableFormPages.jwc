@@ -39,6 +39,8 @@
         </description>
     </parameter>
   
+	<component id="informal" type="Any" inherit-informal-parameters="yes"/>
+  
 	<property-specification name="selectedPage" type="int"/>
   
 	<component id="hiddenCurrentPage" type="Hidden">

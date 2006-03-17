@@ -40,7 +40,7 @@
         </description>
     </parameter>
     
-    <parameter name="warningMessage" default-value="message: warning">
+    <parameter name="warningMessage" default-value="message:warning">
         <description>
             The warning message that will appear when the session is about to exipre.
             Here {0} is replaced by the number of minutes that remain until expiration and 

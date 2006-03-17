@@ -141,6 +141,15 @@
       	Added new scriptAsset parameter, as well as param checking to be sure that only one 
       	of scriptPath or scriptAsset can be set.
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-794" due-to="Brian K. Wallace" >
+      	Removed the space between the message binding and the message key for Timeout.jwc.
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-774" due-to="Brian K. Wallace" >
+      	It seems that DirectLink and/or PopupLinkRenderer should be checking for Form rewind and not rendering in that case. 
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-221" due-to="Brian K. Wallace" >
+      	Added informal-parameters to jwc and html for TableFormPages
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>
