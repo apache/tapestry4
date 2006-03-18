@@ -31,7 +31,7 @@ public interface InitializationParameterHolder
      * @return List of String
      */
 
-    public List getInitParameterNames();
+    List getInitParameterNames();
 
     /**
      * Returns the value of the named parameter, or null if the reciever does not have such a
@@ -42,5 +42,5 @@ public interface InitializationParameterHolder
      * @return the corresponding value, or null
      */
 
-    public String getInitParameterValue(String name);
+    String getInitParameterValue(String name);
 }

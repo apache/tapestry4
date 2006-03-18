@@ -28,6 +28,7 @@ import org.apache.hivemind.util.LocalizedResource;
 
 public class LocalizedWebContextResourceFinder
 {
+
     private WebContext _context;
 
     public LocalizedWebContextResourceFinder(WebContext context)
@@ -36,11 +37,12 @@ public class LocalizedWebContextResourceFinder
     }
 
     /**
-     * Resolves the resource, returning a path representing the closest match (with respect to the
-     * provided locale). Returns null if no match.
+     * Resolves the resource, returning a path representing the closest match
+     * (with respect to the provided locale). Returns null if no match.
      * <p>
-     * The provided path is split into a base path and a suffix (at the last period character). The
-     * locale will provide different suffixes to the base path and the first match is returned.
+     * The provided path is split into a base path and a suffix (at the last
+     * period character). The locale will provide different suffixes to the base
+     * path and the first match is returned.
      */
 
     public LocalizedResource resolve(String contextPath, Locale locale)
@@ -48,25 +50,28 @@ public class LocalizedWebContextResourceFinder
         int dotx = contextPath.lastIndexOf('.');
         String basePath;
         String suffix;
-        if (dotx >= 0) {
-        	basePath = contextPath.substring(0, dotx);
-        	suffix = contextPath.substring(dotx);
+        if (dotx >= 0)
+        {
+            basePath = contextPath.substring(0, dotx);
+            suffix = contextPath.substring(dotx);
         }
         else
         {
-        	// Resource without extension
-        	basePath = contextPath;
-        	suffix = "";
+            // Resource without extension
+            basePath = contextPath;
+            suffix = "";
         }
 
-        LocalizedNameGenerator generator = new LocalizedNameGenerator(basePath, locale, suffix);
+        LocalizedNameGenerator generator = new LocalizedNameGenerator(basePath,
+                locale, suffix);
 
-        while (generator.more())
+        while(generator.more())
         {
             String candidatePath = generator.next();
 
             if (isExistingResource(candidatePath))
-                return new LocalizedResource(candidatePath, generator.getCurrentLocale());
+                return new LocalizedResource(candidatePath, generator
+                        .getCurrentLocale());
         }
 
         return null;

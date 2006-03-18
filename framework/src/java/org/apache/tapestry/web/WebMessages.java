@@ -21,10 +21,13 @@ import org.apache.tapestry.util.ContentType;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class WebMessages
+final class WebMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(WebMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(WebMessages.class);
 
+    /* defeat instantiation */
+    private WebMessages() { }
+    
     static String streamOpenError(ContentType contentType, Throwable cause)
     {
         return _formatter.format("stream-open-error", contentType, cause);

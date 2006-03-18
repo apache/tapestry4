@@ -15,16 +15,11 @@
 package org.apache.tapestry.services.impl;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.markup.MarkupWriterSource;
-import org.apache.tapestry.services.RequestLocaleManager;
+import org.apache.tapestry.services.ResponseBuilder;
+import org.apache.tapestry.services.ResponseDelegateFactory;
 import org.apache.tapestry.services.ResponseRenderer;
-import org.apache.tapestry.util.ContentType;
-import org.apache.tapestry.web.WebResponse;
 
 /**
  * Responsible for rendering a response to the client.
@@ -33,58 +28,18 @@ import org.apache.tapestry.web.WebResponse;
  * @since 4.0
  */
 public class ResponseRendererImpl implements ResponseRenderer
-{
-    /**
-     * Inside a {@link org.apache.tapestry.util.ContentType}, the output encoding is called
-     * "charset".
-     */
-
-    public static final String ENCODING_KEY = "charset";
+{   
+    private ResponseDelegateFactory _responseDelegate;
     
-    private RequestLocaleManager _localeManager;
-
-    private MarkupWriterSource _markupWriterSource;
-
-    private WebResponse _webResponse;
-
     public void renderResponse(IRequestCycle cycle) throws IOException
-    {
-        _localeManager.persistLocale();
+    {   
+        ResponseBuilder builder = _responseDelegate.getResponseBuilder(cycle);
         
-        IPage page = cycle.getPage();
-        
-        ContentType contentType = page.getResponseContentType();
-        
-        String encoding = contentType.getParameter(ENCODING_KEY);
-        
-        if (encoding == null)
-        {
-            encoding = cycle.getEngine().getOutputEncoding();
-            
-            contentType.setParameter(ENCODING_KEY, encoding);
-        }
-        
-        PrintWriter printWriter = _webResponse.getPrintWriter(contentType);
-        
-        IMarkupWriter writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
-        
-        cycle.renderPage(writer);
-        
-        writer.close();
+        builder.renderResponse(cycle);
     }
     
-    public void setLocaleManager(RequestLocaleManager localeManager)
+    public void setResponseDelegate(ResponseDelegateFactory responseDelegate)
     {
-        _localeManager = localeManager;
-    }
-
-    public void setMarkupWriterSource(MarkupWriterSource markupWriterSource)
-    {
-        _markupWriterSource = markupWriterSource;
-    }
-
-    public void setWebResponse(WebResponse webResponse)
-    {
-        _webResponse = webResponse;
+        _responseDelegate = responseDelegate;
     }
 }

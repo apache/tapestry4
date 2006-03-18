@@ -180,9 +180,7 @@
     
     <invoke-factory>
       <construct class="impl.ResponseRendererImpl">
-        <set-service property="localeManager" service-id="RequestLocaleManager"/>
-        <set-object property="markupWriterSource"  value="infrastructure:markupWriterSource"/>
-        <set-object property="webResponse" value="infrastructure:response"/>
+        <set-service property="responseDelegate" service-id="tapestry.services.ResponseDelegateFactory" />
       </construct>
     </invoke-factory>
   </service-point>

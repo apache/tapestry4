@@ -25,5 +25,5 @@ import org.apache.tapestry.describe.Describable;
  */
 public interface WebActivator extends InitializationParameterHolder, Describable
 {
-    public String getActivatorName();
+    String getActivatorName();
 }

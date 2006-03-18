@@ -14,9 +14,11 @@
 
 package org.apache.tapestry.form;
 
+import org.apache.tapestry.IJSONRender;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.json.IJSONWriter;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -43,8 +45,9 @@ import org.apache.tapestry.valid.ValidatorException;
  * 
  * @author Howard Lewis Ship
  * @author Paul Ferraro
+ * @author Jesse Kuhnert
  */
-public abstract class PropertySelection extends AbstractFormComponent implements ValidatableField
+public abstract class PropertySelection extends AbstractFormComponent implements ValidatableField, IJSONRender
 {
     /**
      * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
@@ -127,6 +130,14 @@ public abstract class PropertySelection extends AbstractFormComponent implements
         {
             getForm().getDelegate().record(e);
         }
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void renderComponent(IJSONWriter writer, IRequestCycle cycle)
+    {
+        
     }
 
     private boolean isEqual(Object left, Object right)

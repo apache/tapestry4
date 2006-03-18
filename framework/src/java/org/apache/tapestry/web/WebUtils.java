@@ -25,8 +25,11 @@ import org.apache.hivemind.util.Defense;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class WebUtils
+public final class WebUtils
 {
+    /* defeat insantiation */
+    private WebUtils() { }
+    
     /**
      * Converts an Enumeration of Strings into an unmodifiable List of Strings, sorted into
      * ascending order.

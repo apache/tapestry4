@@ -30,7 +30,7 @@ public interface ValidatableFieldSupport
     /**
      * Called during render of the specified component. Renders any contributions from validators.
      */
-    public void renderContributions(ValidatableField field, IMarkupWriter writer,
+    void renderContributions(ValidatableField field, IMarkupWriter writer,
             IRequestCycle cycle);
 
     /**
@@ -39,7 +39,7 @@ public interface ValidatableFieldSupport
      * 
      * @throws ValidatorException if validation fails
      */
-    public void validate(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle, Object value) throws ValidatorException;
+    void validate(ValidatableField component, IMarkupWriter writer, IRequestCycle cycle, Object value) throws ValidatorException;
 
     /**
      * Returns true if this component is required. This usually entails a search of the component's

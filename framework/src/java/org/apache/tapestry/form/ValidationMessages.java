@@ -37,12 +37,12 @@ public interface ValidationMessages
      *            array of arguments formatted with the message format
      */
 
-    public String formatValidationMessage(String messageOverride, String messageKey,
+    String formatValidationMessage(String messageOverride, String messageKey,
             Object[] arguments);
 
     /**
      * Returns the locale for which messages are generated.
      */
 
-    public Locale getLocale();
+    Locale getLocale();
 }
