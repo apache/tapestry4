@@ -30,17 +30,22 @@ public class InjectedValueProviderImpl implements InjectedValueProvider
     private Translator _objectTranslator;
 
     /**
-     * Deletegates out to
-     * {@link Translator#translate(org.apache.hivemind.internal.Module, java.lang.Class, java.lang.String, org.apache.hivemind.Location)
+     * Creates a new value provider.
+     * @param module
+     * @param objectTranslator
      */
-    public Object obtainValue(String locator, Location location)
-    {
-        return _objectTranslator.translate(_module, Object.class, locator, location);
-    }
-
     public InjectedValueProviderImpl(Module module, Translator objectTranslator)
     {
         _module = module;
         _objectTranslator = objectTranslator;
+    }
+    
+    /**
+     * Deletegates out to
+     * {@link Translator#translate(org.apache.hivemind.internal.Module, java.lang.Class, java.lang.String, org.apache.hivemind.Location).
+     */
+    public Object obtainValue(String locator, Location location)
+    {
+        return _objectTranslator.translate(_module, Object.class, locator, location);
     }
 }

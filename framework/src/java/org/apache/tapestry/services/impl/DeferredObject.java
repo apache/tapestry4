@@ -30,6 +30,6 @@ public interface DeferredObject extends Locatable
     /**
      * Returns the target object. The caller is expected to cache the result, if appropriate.
      */
-    public Object getObject();
+    Object getObject();
 
 }

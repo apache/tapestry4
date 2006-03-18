@@ -29,5 +29,5 @@ public interface EngineServiceSource
      * Obtains an actual service implementation, not a proxy.
      */
 
-    public IEngineService resolveEngineService(String name);
+    IEngineService resolveEngineService(String name);
 }

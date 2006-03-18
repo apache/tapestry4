@@ -35,6 +35,12 @@ import org.apache.tapestry.engine.ILink;
  */
 public class EngineServiceOuterProxy implements IEngineService, Serializable
 {
+    
+    /**
+     * generated.
+     */
+    private static final long serialVersionUID = 2050789495671401625L;
+
     private final String _serviceName;
 
     private IEngineService _delegate;
