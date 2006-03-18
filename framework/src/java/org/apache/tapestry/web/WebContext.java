@@ -34,12 +34,12 @@ public interface WebContext extends AttributeHolder, InitializationParameterHold
      * "/" and is interpreted as relative to the current context root.
      */
 
-    public URL getResource(String path);
+    URL getResource(String path);
 
     /**
      * Returns the MIME type of the specified file, or null if the MIME type is not known.
      */
-    public String getMimeType(String resourcePath);
+    String getMimeType(String resourcePath);
     
     /**
      * Returns a directory-like listing of all the paths to resources within 
@@ -51,16 +51,16 @@ public interface WebContext extends AttributeHolder, InitializationParameterHold
      * @return a Set containing the directory listing, or null if there are no resources 
      * in the web application whose path begins with the supplied path.
      */
-    public Set getResourcePaths(String path);
+    Set getResourcePaths(String path);
     
     /**
      * Returns the resource located at the named path as an <code>InputStream</code>
      * object.
      * @param path a <code>String</code> specifying the path to the resource
      * @return the <code>InputStream</code> returned to the servlet, 
-     * 	or <code>null</code> if no resource exists at the specified path
+     *         or <code>null</code> if no resource exists at the specified path
      */
-    public InputStream getResourceAsStream(String path);
+    InputStream getResourceAsStream(String path);
     
     /**
      * Returns a <code>String</code> containing the real path for a given virtual path. 
@@ -71,7 +71,7 @@ public interface WebContext extends AttributeHolder, InitializationParameterHold
      * 
      * @param path a <code>String</code> specifying a virtual path
      * @return a <code>String</code> specifying the real path, or <code>null</code> if the 
-     * 	translation cannot be performed
+     *         translation cannot be performed
      */
-    public String getRealPath(String path);
+    String getRealPath(String path);
 }

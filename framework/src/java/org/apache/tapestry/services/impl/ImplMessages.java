@@ -45,6 +45,11 @@ final class ImplMessages
     /* defeat instantiation */
     private ImplMessages() { }
     
+    static String unknownRequest()
+    {
+        return _formatter.getMessage("unknown-request");
+    }
+    
     static String initializerContribution()
     {
         return _formatter.getMessage("initializer-contribution");

@@ -39,7 +39,7 @@ public interface WebResponse
      * @return the output stream, configured for the given type.
      */
 
-    public OutputStream getOutputStream(ContentType contentType) throws IOException;
+    OutputStream getOutputStream(ContentType contentType) throws IOException;
 
     /**
      * Returns a {@link PrintWriter} to which output should be sent. This method should be invoked
@@ -47,7 +47,7 @@ public interface WebResponse
      * rendered, and the underlying request data is reset.
      */
 
-    public PrintWriter getPrintWriter(ContentType contentType) throws IOException;
+    PrintWriter getPrintWriter(ContentType contentType) throws IOException;
 
     /**
      * Encodes a URL, which adds information to the URL needed to ensure that the request triggered
@@ -55,16 +55,16 @@ public interface WebResponse
      * returned unchanged.
      */
 
-    public String encodeURL(String url);
+    String encodeURL(String url);
 
     /**
      * Resets any buffered content. This may be used after an error to radically change what the
      * output will be.
      */
 
-    public void reset();
+    void reset();
 
-    public void setContentLength(int contentLength);
+    void setContentLength(int contentLength);
 
     /**
      * Returns a value to be prefixed or suffixed with any client-side JavaScript elements
@@ -72,7 +72,7 @@ public interface WebResponse
      * page. For servlets, this is the empty string.
      */
 
-    public String getNamespace();
+    String getNamespace();
 
     /**
      * Sets a response header as a date.
@@ -82,7 +82,7 @@ public interface WebResponse
      * @param date
      *            the date value to set, in milliseconds since the epoch
      */
-    public void setDateHeader(String name, long date);
+    void setDateHeader(String name, long date);
 
     /**
      * Sets a response header as a string.
@@ -93,7 +93,7 @@ public interface WebResponse
      *            the value for the named header
      */
 
-    public void setHeader(String name, String value);
+    void setHeader(String name, String value);
 
     /**
      * Sets a response header with the given name and integer value.
@@ -103,16 +103,16 @@ public interface WebResponse
      * @param value
      *            the value for the named header
      */
-    public void setIntHeader(String name, int value);
+    void setIntHeader(String name, int value);
 
     /**
      * Sets the status code for this response.
      */
-    public void setStatus(int status);
+    void setStatus(int status);
 
     /**
      * Sends an error response.
      */
 
-    public void sendError(int statusCode, String message) throws IOException;
+    void sendError(int statusCode, String message) throws IOException;
 }

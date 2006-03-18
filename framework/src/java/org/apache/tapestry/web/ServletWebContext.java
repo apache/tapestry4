@@ -28,13 +28,15 @@ import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.describe.DescriptionReceiver;
 
 /**
- * Adapts {@link javax.servlet.ServletContext}&nbsp;as {@link org.apache.tapestry.web.WebContext}.
+ * Adapts {@link javax.servlet.ServletContext}&nbsp;as
+ * {@link org.apache.tapestry.web.WebContext}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class ServletWebContext implements WebContext
 {
+
     private static final Log LOG = LogFactory.getLog(ServletWebContext.class);
 
     private final ServletContext _servletContext;
@@ -45,12 +47,12 @@ public class ServletWebContext implements WebContext
 
         _servletContext = context;
     }
-    
+
     public void describeTo(DescriptionReceiver receiver)
     {
         receiver.describeAlternate(_servletContext);
     }
-    
+
     public List getAttributeNames()
     {
         return WebUtils.toSortedList(_servletContext.getAttributeNames());
@@ -65,8 +67,7 @@ public class ServletWebContext implements WebContext
     {
         if (attribute == null)
             _servletContext.removeAttribute(name);
-        else
-            _servletContext.setAttribute(name, attribute);
+        else _servletContext.setAttribute(name, attribute);
 
     }
 
@@ -99,15 +100,18 @@ public class ServletWebContext implements WebContext
         return _servletContext.getMimeType(resourcePath);
     }
 
-	public String getRealPath(String path) {
-		return _servletContext.getRealPath(path);
-	}
+    public String getRealPath(String path)
+    {
+        return _servletContext.getRealPath(path);
+    }
 
-	public InputStream getResourceAsStream(String path) {
-		return _servletContext.getResourceAsStream(path);
-	}
+    public InputStream getResourceAsStream(String path)
+    {
+        return _servletContext.getResourceAsStream(path);
+    }
 
-	public Set getResourcePaths(String path) {
-		return _servletContext.getResourcePaths(path);
-	}
+    public Set getResourcePaths(String path)
+    {
+        return _servletContext.getResourcePaths(path);
+    }
 }

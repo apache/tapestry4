@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,21 +11,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+package org.apache.tapestry.services;
 
-package org.apache.tapestry.form;
+import org.apache.tapestry.IRequestCycle;
+
 
 /**
- * Implemented by form components that can need to be translated and validated. During render the
- * translator is used to translated the value to a string. During rewind, the submitted value is
- * translated back into an object by the translator and then validated.
- * 
- * @author Paul Ferraro
- * @since 4.0
+ * Represents the class responsible for interacting
+ * with components for an ajax request library version and type.
+ *
+ * @author jkuhenrt
  */
-public interface ValidatableField extends IFormComponent
-{
+public interface ResponseBuilder {
+
     /**
-     * Coerced into an Iterator of Validators.
+     * Renders the response to a client. Handles transitioning logic
+     * for setting up page and associated components for response.
+     * 
+     * @param cycle
+     *          The main request cycle object for this request.
      */
-    Object getValidators();
+    void renderResponse(IRequestCycle cycle);
 }
