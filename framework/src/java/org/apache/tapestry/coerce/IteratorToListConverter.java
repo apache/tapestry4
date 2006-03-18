@@ -30,7 +30,7 @@ public final class IteratorToListConverter implements TypeConverter
         Iterator it = (Iterator) value;
         List list = new ArrayList();
         while (it.hasNext())
-        	list.add(it.next());
+            list.add(it.next());
         return list;
     }
 

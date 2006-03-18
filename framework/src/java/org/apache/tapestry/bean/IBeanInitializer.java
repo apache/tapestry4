@@ -33,7 +33,7 @@ public interface IBeanInitializer extends LocationHolder
      *
      **/
 
-    public void setBeanProperty(IBeanProvider provider, Object bean);
+    void setBeanProperty(IBeanProvider provider, Object bean);
 
     /**
      *  Returns the name of the property this initializer
@@ -41,5 +41,5 @@ public interface IBeanInitializer extends LocationHolder
      *
      **/
 
-    public String getPropertyName();
+    String getPropertyName();
 }

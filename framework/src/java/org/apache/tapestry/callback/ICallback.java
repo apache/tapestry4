@@ -41,5 +41,5 @@ public interface ICallback extends Serializable
      *
      **/
 
-    public void performCallback(IRequestCycle cycle);
+    void performCallback(IRequestCycle cycle);
 }

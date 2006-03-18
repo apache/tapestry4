@@ -40,5 +40,5 @@ public interface ValueConverter
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if the value can not be converted
      */
-    public Object coerceValue(Object value, Class desiredType);
+    Object coerceValue(Object value, Class desiredType);
 }

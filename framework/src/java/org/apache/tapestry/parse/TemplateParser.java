@@ -322,7 +322,7 @@ public class TemplateParser implements ITemplateParser
         try
         {
             beforeParse(templateData, delegate, resourceLocation);
-
+            
             parse();
 
             return (TemplateToken[]) _tokens.toArray(new TemplateToken[_tokens.size()]);
@@ -463,20 +463,20 @@ public class TemplateParser implements ITemplateParser
         _cursor = 0;
         _blockStart = -1;
         int length = _templateData.length;
-
+        
         while (_cursor < length)
         {
             if (_templateData[_cursor] != '<')
             {
                 if (_blockStart < 0 && !_ignoring)
                     _blockStart = _cursor;
-
+                
                 advance();
                 continue;
             }
-
+            
             // OK, start of something.
-
+            
             if (lookahead(CLOSE_TAG))
             {
                 closeTag();
@@ -488,17 +488,17 @@ public class TemplateParser implements ITemplateParser
                 skipComment();
                 continue;
             }
-
+            
             // The start of some tag.
-
+            
             startTag();
         }
-
+        
         // Usually there's some text at the end of the template (after the last closing tag) that
         // should
         // be added. Often the last few tags are static tags so we definately
         // need to end the text block.
-
+        
         addTextToken(_templateData.length - 1);
     }
 
@@ -1267,33 +1267,32 @@ public class TemplateParser implements ITemplateParser
 
         if (_cursor >= length)
             return;
-
+        
         char ch = _templateData[_cursor];
-
+        
         _cursor++;
-
+        
         if (ch == '\n')
         {
             _line++;
             _currentLocation = null;
             return;
         }
-
+        
         // A \r, or a \r\n also counts as a new line.
-
+        
         if (ch == '\r')
         {
             _line++;
             _currentLocation = null;
-
+            
             if (_cursor < length && _templateData[_cursor] == '\n')
                 _cursor++;
-
+            
             return;
         }
-
+        
         // Not an end-of-line character.
-
     }
 
     private void advanceOverWhitespace()
