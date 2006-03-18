@@ -34,11 +34,11 @@ import org.apache.hivemind.util.Defense;
  */
 public class ValueConverterImpl implements ValueConverter
 {
-    private Map _converterMap = new HashMap();
-
     /** List of {@link org.apache.tapestry.coerce.TypeConverterContribution}. */
 
     public List _contributions;
+    
+    private Map _converterMap = new HashMap();
 
     private Map _primitiveToWrapper = new HashMap();
 

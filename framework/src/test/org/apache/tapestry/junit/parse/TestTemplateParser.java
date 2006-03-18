@@ -83,7 +83,7 @@ public class TestTemplateParser extends TestCase
             Resource location) throws TemplateParseException
     {
         TemplateParser parser = new TemplateParser();
-
+        
         parser.setFactory(new TemplateTokenFactory());
         
         return parser.parse(templateData, delegate, location);
@@ -118,14 +118,14 @@ public class TestTemplateParser extends TestCase
     {
         String thisClassName = getClass().getName();
         String thisPath = "/" + thisClassName.replace('.', '/') + "/" + file;
-
+        
         Resource location = new ClasspathResource(new DefaultClassResolver(), thisPath);
-
+        
         InputStream stream = getClass().getResourceAsStream(file);
-
+        
         if (stream == null)
             throw new TemplateParseException("File " + file + " not found.");
-
+        
         return run(stream, delegate, location);
     }
 
@@ -641,7 +641,7 @@ public class TestTemplateParser extends TestCase
         assertCloseToken(tokens[4], 4);
         assertCloseToken(tokens[6], 5);
     }
-
+    
     /** @since 4.0 */
     public void testDuplicateTagAttributeFailure()
     {

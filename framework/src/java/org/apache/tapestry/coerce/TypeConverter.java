@@ -30,5 +30,5 @@ public interface TypeConverter
      * will return different types.
      * @throws org.apache.hivemind.ApplicationRuntimeException if the value can not be converted
      */
-    public Object convertValue(Object value);
+    Object convertValue(Object value);
 }

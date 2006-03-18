@@ -42,6 +42,20 @@ public class DirectCallback implements ICallback
 
     private Object[] _parameters;
 
+    /**
+     * Creates a new DirectCallback for the component. The parameters (which may be null) is
+     * retained, not copied.
+     */
+
+    public DirectCallback(IDirect component, Object[] parameters)
+    {
+        Defense.notNull(component, "component");
+
+        _pageName = component.getPage().getPageName();
+        _componentIdPath = component.getIdPath();
+        _parameters = parameters;
+    }
+    
     public String toString()
     {
         StringBuffer buffer = new StringBuffer("DirectCallback[");
@@ -63,20 +77,6 @@ public class DirectCallback implements ICallback
 
         return buffer.toString();
 
-    }
-
-    /**
-     * Creates a new DirectCallback for the component. The parameters (which may be null) is
-     * retained, not copied.
-     */
-
-    public DirectCallback(IDirect component, Object[] parameters)
-    {
-        Defense.notNull(component, "component");
-
-        _pageName = component.getPage().getPageName();
-        _componentIdPath = component.getIdPath();
-        _parameters = parameters;
     }
 
     /**

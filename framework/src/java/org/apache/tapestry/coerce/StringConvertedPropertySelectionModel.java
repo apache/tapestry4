@@ -29,6 +29,10 @@ import org.apache.tapestry.form.IPropertySelectionModel;
  */
 public final class StringConvertedPropertySelectionModel implements IPropertySelectionModel
 {
+    /**
+     * Entry.
+     * @author Howard Lewis Ship
+     */
     private static class Entry
     {
         String _label;

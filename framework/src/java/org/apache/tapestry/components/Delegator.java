@@ -20,29 +20,26 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  A component which delegates it's behavior to another object.
- *
- *  [<a href="../../../../../ComponentReference/Delegator.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship
+ * A component which delegates it's behavior to another object. [<a
+ * href="../../../../../ComponentReference/Delegator.html">Component Reference</a>]
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class Delegator extends AbstractComponent
 {
+
     /**
-     *  Gets its delegate and invokes {@link IRender#render(IMarkupWriter, IRequestCycle)}
-     *  on it.
-     *
-     **/
+     * Gets its delegate and invokes
+     * {@link IRender#render(IMarkupWriter, IRequestCycle)} on it.
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-    	IRender delegate = getDelegate();
-    	
-        if (delegate != null)
-        	delegate.render(writer, cycle);
+        IRender delegate = getDelegate();
+
+        if (delegate != null) delegate.render(writer, cycle);
     }
-    
+
     public abstract IRender getDelegate();
 }
