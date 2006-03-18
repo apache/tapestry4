@@ -30,6 +30,10 @@ public class ServiceEncoderContribution extends BaseLocatable
 
     private String _before;
 
+    private String _after;
+
+    private ServiceEncoder _encoder;
+    
     public String getAfter()
     {
         return _after;
@@ -69,8 +73,4 @@ public class ServiceEncoderContribution extends BaseLocatable
     {
         _id = id;
     }
-
-    private String _after;
-
-    private ServiceEncoder _encoder;
 }

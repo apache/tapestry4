@@ -14,9 +14,9 @@
 
 package org.apache.tapestry.services.impl;
 
-import org.apache.hivemind.impl.BaseLocatable;
-
 import ognl.PropertyAccessor;
+
+import org.apache.hivemind.impl.BaseLocatable;
 
 /**
  * A contribution to the <code>tapestry.ognl.PropertyAccessors</code> configuration point; this

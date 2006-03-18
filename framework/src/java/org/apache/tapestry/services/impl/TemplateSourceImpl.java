@@ -60,15 +60,18 @@ import org.apache.tapestry.util.MultiKey;
 
 public class TemplateSourceImpl implements TemplateSource, ResetEventListener, ReportStatusListener
 {
-    private String _serviceId;
-
-    private Log _log;
 
     // The name of the component/application/etc property that will be used to
     // determine the encoding to use when loading the template
 
     public static final String TEMPLATE_ENCODING_PROPERTY_NAME = "org.apache.tapestry.template-encoding";
 
+    private static final int BUFFER_SIZE = 2000;
+
+    private String _serviceId;
+
+    private Log _log;
+    
     // Cache of previously retrieved templates. Key is a multi-key of
     // specification resource path and locale (local may be null), value
     // is the ComponentTemplate.
@@ -79,8 +82,6 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener, R
     // is the ComponentTemplate.
 
     private Map _templates = Collections.synchronizedMap(new HashMap());
-
-    private static final int BUFFER_SIZE = 2000;
 
     private ITemplateParser _parser;
 

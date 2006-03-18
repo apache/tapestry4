@@ -44,6 +44,10 @@ public class EngineFactoryImpl implements EngineFactory
 
     private ErrorLog _errorLog;
 
+    /**
+     * Creates a new engine?
+     * @author Howard Lewis Ship
+     */
     interface EngineConstructor
     {
         IEngine construct();
@@ -53,6 +57,9 @@ public class EngineFactoryImpl implements EngineFactory
     // instantiate a BaseEngine instance, without using reflection
     // (for efficiency).
 
+    /**
+     * Creates a new reflective engine constructor.
+     */
     static class ReflectiveEngineConstructor implements EngineConstructor
     {
         private Class _engineClass;

@@ -38,10 +38,13 @@ import org.apache.tapestry.spec.IContainedComponent;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-class ImplMessages
+final class ImplMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(ImplMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(ImplMessages.class);
 
+    /* defeat instantiation */
+    private ImplMessages() { }
+    
     static String initializerContribution()
     {
         return _formatter.getMessage("initializer-contribution");

@@ -31,7 +31,7 @@ import org.apache.tapestry.web.WebResponse;
  * <ul>
  * <li>Storing the request and response into {@link org.apache.tapestry.services.RequestGlobals}.
  * <li>Locating the correct engine instance and letting it to the rest of the request.
- * <li>Returning the engine instance to the pool at the end of the request. </ul
+ * <li>Returning the engine instance to the pool at the end of the request. </ul>
  * 
  * @author Howard Lewis Ship
  * @since 4.0

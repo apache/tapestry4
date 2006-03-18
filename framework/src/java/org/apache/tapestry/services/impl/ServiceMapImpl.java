@@ -25,7 +25,7 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.services.ServiceMap;
 
 /**
- * Implementation of {@link org.apache.tapestry.services.ServiceMap}
+ * Implementation of {@link org.apache.tapestry.services.ServiceMap}.
  * 
  * @author Howard Lewis Ship
  * @since 4.0

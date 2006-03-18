@@ -60,7 +60,7 @@ public class LinkFactoryImpl implements LinkFactory
 
     private String _servletPath;
 
-    private final Object[] EMPTY = new Object[0];
+    private final Object[] _empty = new Object[0];
 
     private URLCodec _codec = new URLCodec();
 
@@ -174,7 +174,7 @@ public class LinkFactoryImpl implements LinkFactory
         String[] squeezed = cycle.getParameters(ServiceConstants.PARAMETER);
 
         if (Tapestry.size(squeezed) == 0)
-            return EMPTY;
+            return _empty;
 
         try
         {

@@ -25,9 +25,9 @@ import org.apache.hivemind.impl.BaseLocatable;
  */
 public class ExtensionLookupParameter extends BaseLocatable
 {
-	private String _extensionName;
+    private String _extensionName;
     private Object _default; 
-	
+
     public String getExtensionName()
     {
         return _extensionName;
