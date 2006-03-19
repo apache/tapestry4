@@ -52,14 +52,14 @@ import java.util.List;
 
 public class StatementAssembly
 {
+    public static final String SEP = ", ";
+    
+    private static final String NULL = "NULL";   
+    
     private StringBuffer _buffer = new StringBuffer();
 
-    private static final String NULL = "NULL";
-
-    public static final String SEP = ", ";
-
     /**
-     *  List of {@link IParameter}
+     *  List of {@link IParameter}.
      * 
      **/
 

@@ -24,5 +24,5 @@ import org.apache.tapestry.contrib.table.model.ITableColumn;
  */
 public interface ITableColumnEvaluator extends Serializable
 {
-	Object getColumnValue(ITableColumn objColumn, Object objRow);
+    Object getColumnValue(ITableColumn objColumn, Object objRow);
 }

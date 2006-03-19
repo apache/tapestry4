@@ -25,7 +25,7 @@ package org.apache.tapestry.contrib.table.model;
 public interface IPrimaryKeyConvertor
 {
     /**
-     * Gets the serializable primary key of the given value
+     * Gets the serializable primary key of the given value.
      * 
      * @param objValue the value for which a primary key needs to be extracted
      * @return the serializable primary key of the value
@@ -33,7 +33,7 @@ public interface IPrimaryKeyConvertor
     Object getPrimaryKey(Object objValue);
     
     /**
-     * Gets the value corresponding the given primary key 
+     * Gets the value corresponding the given primary key .
      *  
      * @param objPrimaryKey the primary key for which a value needs to be generated
      * @return the generated value corresponding to the given primary key

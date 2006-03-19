@@ -30,29 +30,30 @@ public class XEJBException extends EJBException
 {
     private static final long serialVersionUID = 3712108893575174833L;
     
-	private Throwable rootCause;
+    private final Throwable _rootCause;
 
     public XEJBException(String message)
     {
         super(message);
+        _rootCause = null;
     }
 
     public XEJBException(String message, Throwable rootCause)
     {
         super(message);
 
-        this.rootCause = rootCause;
+        this._rootCause = rootCause;
     }
 
     public XEJBException(Throwable rootCause)
     {
         super(rootCause.getMessage());
 
-        this.rootCause = rootCause;
+        this._rootCause = rootCause;
     }
 
     public Throwable getRootCause()
     {
-        return rootCause;
+        return _rootCause;
     }
 }

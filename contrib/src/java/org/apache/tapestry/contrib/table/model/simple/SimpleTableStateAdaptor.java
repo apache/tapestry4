@@ -24,6 +24,10 @@ import org.apache.tapestry.contrib.table.components.TableMessages;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.io.SqueezeAdaptor;
 
+/**
+ * 
+ * @author mb
+ */
 public class SimpleTableStateAdaptor implements SqueezeAdaptor
 {
 

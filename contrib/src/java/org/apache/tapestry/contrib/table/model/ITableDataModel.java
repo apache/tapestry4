@@ -17,38 +17,44 @@ package org.apache.tapestry.contrib.table.model;
 import java.util.Iterator;
 
 /**
- * A model of the table's data
- * This model need not be used. Implementations may choose to
- * access data via an abstraction.
+ * A model of the table's data This model need not be used. Implementations may
+ * choose to access data via an abstraction.
  * 
  * @author mindbridge
  */
 public interface ITableDataModel
 {
-	/**
-	 * Method getRowCount.
-	 * @return int the number of rows in the model
-	 */
-	int getRowCount();
 
-	/**
-	 * Iterates over all of the rows in the model
-	 * @return Iterator the iterator for access to the data
-	 */
-	Iterator getRows();
-    
-	/**
-	 * Method addTableDataModelListener
-     * Adds a listener that is notified when the data in the model is changed
-	 * @param objListener the listener to add
-	 */
+    /**
+     * Method getRowCount.
+     * 
+     * @return int the number of rows in the model
+     */
+    int getRowCount();
+
+    /**
+     * Iterates over all of the rows in the model.
+     * 
+     * @return Iterator the iterator for access to the data
+     */
+    Iterator getRows();
+
+    /**
+     * Method addTableDataModelListener Adds a listener that is notified when
+     * the data in the model is changed.
+     * 
+     * @param objListener
+     *            the listener to add
+     */
     void addTableDataModelListener(ITableDataModelListener objListener);
 
-	/**
-	 * Method removeTableDataModelListener.
-     * Removes a listener that is notified when the data in the model is changed
-	 * @param objListener the listener to remove
-	 */
+    /**
+     * Method removeTableDataModelListener. Removes a listener that is notified
+     * when the data in the model is changed
+     * 
+     * @param objListener
+     *            the listener to remove
+     */
     void removeTableDataModelListener(ITableDataModelListener objListener);
-    
+
 }

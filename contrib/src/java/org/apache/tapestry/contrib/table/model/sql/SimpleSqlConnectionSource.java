@@ -26,7 +26,9 @@ import org.apache.commons.logging.LogFactory;
  */
 public class SimpleSqlConnectionSource implements ISqlConnectionSource
 {
-    private static final Log LOG = LogFactory.getLog(SimpleSqlConnectionSource.class);
+
+    private static final Log LOG = LogFactory
+            .getLog(SimpleSqlConnectionSource.class);
 
     private String m_strUrl;
 
@@ -39,7 +41,8 @@ public class SimpleSqlConnectionSource implements ISqlConnectionSource
         this(strUrl, null, null);
     }
 
-    public SimpleSqlConnectionSource(String strUrl, String strUser, String strPwd)
+    public SimpleSqlConnectionSource(String strUrl, String strUser,
+            String strPwd)
     {
         m_strUrl = strUrl;
         m_strUser = strUser;
@@ -49,10 +52,10 @@ public class SimpleSqlConnectionSource implements ISqlConnectionSource
     /**
      * @see org.apache.tapestry.contrib.table.model.sql.ISqlConnectionSource#obtainConnection()
      */
-    public Connection obtainConnection() throws SQLException
+    public Connection obtainConnection()
+        throws SQLException
     {
-        if (m_strUser == null)
-            return DriverManager.getConnection(m_strUrl);
+        if (m_strUser == null) return DriverManager.getConnection(m_strUrl);
 
         return DriverManager.getConnection(m_strUrl, m_strUser, m_strPwd);
     }

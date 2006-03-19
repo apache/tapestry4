@@ -20,31 +20,30 @@ import org.apache.tapestry.contrib.table.model.ITableModel;
 import org.apache.tapestry.contrib.table.model.ITableSessionStateManager;
 
 /**
- * A simple ITableSessionStateManager implementation 
- * that saves nothing at all into the session.
+ * A simple ITableSessionStateManager implementation that saves nothing at all
+ * into the session.
  * 
  * @author mindbridge
  */
 public class NullTableSessionStateManager implements ITableSessionStateManager
 {
-    
-    public final static NullTableSessionStateManager NULL_STATE_MANAGER =
-        new NullTableSessionStateManager();
 
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.ITableSessionStateManager#getSessionState(ITableModel)
-	 */
-	public Serializable getSessionState(ITableModel objModel)
-	{
-		return null;
-	}
+    public static final NullTableSessionStateManager NULL_STATE_MANAGER = new NullTableSessionStateManager();
 
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.ITableSessionStateManager#recreateTableModel(Serializable)
-	 */
-	public ITableModel recreateTableModel(Serializable objState)
-	{
-		return null;
-	}
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableSessionStateManager#getSessionState(ITableModel)
+     */
+    public Serializable getSessionState(ITableModel objModel)
+    {
+        return null;
+    }
+
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableSessionStateManager#recreateTableModel(Serializable)
+     */
+    public ITableModel recreateTableModel(Serializable objState)
+    {
+        return null;
+    }
 
 }

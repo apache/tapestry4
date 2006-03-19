@@ -26,15 +26,17 @@ import org.apache.tapestry.contrib.table.model.common.AbstractTableDataModel;
 import org.apache.tapestry.contrib.table.model.common.ArrayIterator;
 
 /**
- * A minimal list implementation of the 
- * {@link org.apache.tapestry.contrib.table.model.ITableDataModel} interface
+ * A minimal list implementation of the
+ * {@link org.apache.tapestry.contrib.table.model.ITableDataModel} interface.
  * 
  * @author mindbridge
  */
-public class SimpleListTableDataModel extends AbstractTableDataModel implements Serializable
+public class SimpleListTableDataModel extends AbstractTableDataModel implements
+        Serializable
 {
-	private static final long serialVersionUID = 1L;
-	
+
+    private static final long serialVersionUID = 1L;
+
     private List m_arrRows;
 
     public SimpleListTableDataModel(Object[] arrRows)
@@ -60,7 +62,7 @@ public class SimpleListTableDataModel extends AbstractTableDataModel implements 
 
     private void addAll(List arrRows, Iterator objRows)
     {
-        while (objRows.hasNext())
+        while(objRows.hasNext())
             arrRows.add(objRows.next());
     }
 
@@ -73,8 +75,10 @@ public class SimpleListTableDataModel extends AbstractTableDataModel implements 
     }
 
     /**
-     * Returns the row element at the given position
-     * @param nRow the index of the element to return
+     * Returns the row element at the given position.
+     * 
+     * @param nRow
+     *            the index of the element to return
      */
     public Object getRow(int nRow)
     {
@@ -87,9 +91,12 @@ public class SimpleListTableDataModel extends AbstractTableDataModel implements 
     }
 
     /**
-     * Returns an Iterator with the elements from the given range
-     * @param nFrom the start of the range (inclusive)
-     * @param nTo the stop of the range (exclusive)
+     * Returns an Iterator with the elements from the given range.
+     * 
+     * @param nFrom
+     *            the start of the range (inclusive)
+     * @param nTo
+     *            the stop of the range (exclusive)
      */
     public Iterator getRows(int nFrom, int nTo)
     {
@@ -105,9 +112,10 @@ public class SimpleListTableDataModel extends AbstractTableDataModel implements 
     }
 
     /**
-     * Method addRow.
-     * Adds a row object to the model at its end
-     * @param objRow the row object to add
+     * Method addRow. Adds a row object to the model at its end
+     * 
+     * @param objRow
+     *            the row object to add
      */
     public void addRow(Object objRow)
     {
@@ -126,9 +134,10 @@ public class SimpleListTableDataModel extends AbstractTableDataModel implements 
     }
 
     /**
-     * Method removeRow.
-     * Removes a row object from the model
-     * @param objRow the row object to remove
+     * Method removeRow. Removes a row object from the model
+     * 
+     * @param objRow
+     *            the row object to remove
      */
     public void removeRow(Object objRow)
     {

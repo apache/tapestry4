@@ -24,38 +24,37 @@ import org.apache.tapestry.contrib.table.model.ITableModel;
 import org.apache.tapestry.contrib.table.model.ITableRowSource;
 
 /**
- * A low level Table component that generates the rows of the current page in the table.
- * This component must be wrapped by {@link org.apache.tapestry.contrib.table.components.TableView}.
- * 
+ * A low level Table component that generates the rows of the current page in
+ * the table. This component must be wrapped by
+ * {@link org.apache.tapestry.contrib.table.components.TableView}.
  * <p>
- * The component iterates over the rows of the current page in the table. 
- * The rows are wrapped in 'tr' tags by default. 
- * You can define columns manually within, or
- * you can use {@link org.apache.tapestry.contrib.table.components.TableValues} 
- * to generate the columns automatically.
- * 
- * <p> 
- * Please see the Component Reference for details on how to use this component. 
- * 
- *  [<a href="../../../../../../../ComponentReference/contrib.TableRows.html">Component Reference</a>]
+ * The component iterates over the rows of the current page in the table. The
+ * rows are wrapped in 'tr' tags by default. You can define columns manually
+ * within, or you can use
+ * {@link org.apache.tapestry.contrib.table.components.TableValues} to generate
+ * the columns automatically.
+ * <p>
+ * Please see the Component Reference for details on how to use this component. [<a
+ * href="../../../../../../../ComponentReference/contrib.TableRows.html">Component
+ * Reference</a>]
  * 
  * @author mindbridge
- *
  */
-public abstract class TableRows extends AbstractTableViewComponent implements ITableRowSource
+public abstract class TableRows extends AbstractTableViewComponent implements
+        ITableRowSource
 {
 
-	// Parameters
-	public abstract Object getFullSourceParameter();
-	
     // Transient
     private Object m_objTableRow = null;
     private int m_nTableIndex;
+    
+    // Parameters
+    public abstract Object getFullSourceParameter();
 
     /**
-     * Returns the currently rendered table row.
-     * You can call this method to obtain the current row.
-     *  
+     * Returns the currently rendered table row. You can call this method to
+     * obtain the current row.
+     * 
      * @return Object the current table row
      */
     public Object getTableRow()
@@ -64,24 +63,24 @@ public abstract class TableRows extends AbstractTableViewComponent implements IT
     }
 
     /**
-     * Sets the currently rendered table row. 
-     * This method is for internal use only.
+     * Sets the currently rendered table row. This method is for internal use
+     * only.
      * 
-     * @param tableRow The current table row
+     * @param tableRow
+     *            The current table row
      */
     public void setTableRow(Object tableRow)
     {
         m_objTableRow = tableRow;
 
         IBinding objRowBinding = getBinding("row");
-        if (objRowBinding != null)
-            objRowBinding.setObject(tableRow);
+        if (objRowBinding != null) objRowBinding.setObject(tableRow);
     }
 
     /**
-     * Returns the index of the currently rendered table row.
-     * You can call this method to obtain the index of the current row.
-     *  
+     * Returns the index of the currently rendered table row. You can call this
+     * method to obtain the index of the current row.
+     * 
      * @return int the current table index
      */
     public int getTableIndex()
@@ -90,10 +89,11 @@ public abstract class TableRows extends AbstractTableViewComponent implements IT
     }
 
     /**
-     * Sets the index of the currently rendered table row. 
-     * This method is for internal use only.
+     * Sets the index of the currently rendered table row. This method is for
+     * internal use only.
      * 
-     * @param tableIndex The index of the current table row
+     * @param tableIndex
+     *            The index of the current table row
      */
     public void setTableIndex(int tableIndex)
     {
@@ -118,26 +118,28 @@ public abstract class TableRows extends AbstractTableViewComponent implements IT
     public Object getFullSource()
     {
         ITableModel objTableModel = getTableModelSource().getTableModel();
-    	if (objTableModel instanceof IFullTableModel)
-    		return ((IFullTableModel) objTableModel).getRows();
-    	return getFullSourceParameter();
+        if (objTableModel instanceof IFullTableModel)
+            return ((IFullTableModel) objTableModel).getRows();
+        return getFullSourceParameter();
     }
-    
+
     /**
-     * @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter, IRequestCycle)
+     * @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter,
+     *      IRequestCycle)
      */
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        Object objOldValue = cycle.getAttribute(ITableRowSource.TABLE_ROW_SOURCE_ATTRIBUTE);
+        Object objOldValue = cycle
+                .getAttribute(ITableRowSource.TABLE_ROW_SOURCE_ATTRIBUTE);
         cycle.setAttribute(ITableRowSource.TABLE_ROW_SOURCE_ATTRIBUTE, this);
 
         super.renderComponent(writer, cycle);
 
-        cycle.setAttribute(ITableRowSource.TABLE_ROW_SOURCE_ATTRIBUTE, objOldValue);
+        cycle.setAttribute(ITableRowSource.TABLE_ROW_SOURCE_ATTRIBUTE,
+                objOldValue);
 
         // set the current row to null when the component is not active
         m_objTableRow = null;
     }
 
-    
 }

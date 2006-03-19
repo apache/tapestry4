@@ -28,29 +28,30 @@ public class XCreateException extends CreateException
 {
     private static final long serialVersionUID = 6807032467099102587L;
     
-	private Throwable rootCause;
+    private final Throwable _rootCause;
 
     public XCreateException(String message)
     {
         super(message);
+        _rootCause = null;
     }
 
     public XCreateException(String message, Throwable rootCause)
     {
         super(message);
 
-        this.rootCause = rootCause;
+        this._rootCause = rootCause;
     }
 
     public XCreateException(Throwable rootCause)
     {
         super(rootCause.getMessage());
 
-        this.rootCause = rootCause;
+        this._rootCause = rootCause;
     }
 
     public Throwable getRootCause()
     {
-        return rootCause;
+        return _rootCause;
     }
 }

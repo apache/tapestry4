@@ -20,15 +20,17 @@ import java.sql.SQLException;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
 
 /**
- * 
  * @author mindbridge
  */
 public interface ISqlTableDataSource
 {
-	int getRowCount() throws SQLException;
-	ResultSet getCurrentRows(
-		SqlTableColumnModel objColumnModel,
-		SimpleTableState objState)
-		throws SQLException;
-	void closeResultSet(ResultSet objResultSet);
+
+    int getRowCount()
+        throws SQLException;
+
+    ResultSet getCurrentRows(SqlTableColumnModel objColumnModel,
+            SimpleTableState objState)
+        throws SQLException;
+
+    void closeResultSet(ResultSet objResultSet);
 }

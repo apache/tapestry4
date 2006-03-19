@@ -23,11 +23,12 @@ import org.apache.tapestry.contrib.table.model.common.ComponentTableRendererSour
 import org.apache.tapestry.util.ComponentAddress;
 
 /**
- * This is a simple implementation of 
- * {@link org.apache.tapestry.contrib.table.model.ITableRendererSource} 
- * that returns a standard renderer of a column header. <p>
- * 
- * This implementation requires that the column passed is of type SimpleTableColumn
+ * This is a simple implementation of
+ * {@link org.apache.tapestry.contrib.table.model.ITableRendererSource} that
+ * returns a standard renderer of a column header.
+ * <p>
+ * This implementation requires that the column passed is of type
+ * SimpleTableColumn
  * 
  * @see org.apache.tapestry.contrib.table.model.common.AbstractTableColumn
  * @author mindbridge
@@ -35,33 +36,27 @@ import org.apache.tapestry.util.ComponentAddress;
  */
 public class SimpleTableColumnRendererSource implements ITableRendererSource
 {
-	private static final long serialVersionUID = 1L;
-	
-	public SimpleTableColumnRendererSource()
-	{
-	}
 
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
-	 */
-	public IRender getRenderer(
-		IRequestCycle objCycle,
-		ITableModelSource objSource,
-		ITableColumn objColumn,
-		Object objRow)
-	{
-		ComponentAddress objAddress =
-			new ComponentAddress(
-				objSource.getNamespace(),
-				"SimpleTableColumnPage",
-				"tableColumnComponent");
-		ComponentTableRendererSource objComponentRenderer =
-			new ComponentTableRendererSource(objAddress);
+    private static final long serialVersionUID = 1L;
 
-		return objComponentRenderer.getRenderer(
-			objCycle,
-			objSource,
-			objColumn,
-			objRow);
-	}
+    public SimpleTableColumnRendererSource()
+    {
+    }
+
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle,
+     *      ITableModelSource, ITableColumn, Object)
+     */
+    public IRender getRenderer(IRequestCycle objCycle,
+            ITableModelSource objSource, ITableColumn objColumn, Object objRow)
+    {
+        ComponentAddress objAddress = new ComponentAddress(objSource
+                .getNamespace(), "SimpleTableColumnPage",
+                "tableColumnComponent");
+        ComponentTableRendererSource objComponentRenderer = new ComponentTableRendererSource(
+                objAddress);
+
+        return objComponentRenderer.getRenderer(objCycle, objSource, objColumn,
+                objRow);
+    }
 }

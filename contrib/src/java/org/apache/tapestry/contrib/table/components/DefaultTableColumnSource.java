@@ -22,8 +22,13 @@ import org.apache.tapestry.contrib.table.model.IAdvancedTableColumnSource;
 import org.apache.tapestry.contrib.table.model.ognl.ExpressionTableColumn;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
+/**
+ * 
+ * @author mb
+ */
 public class DefaultTableColumnSource implements IAdvancedTableColumnSource
 {
+
     /** @since 4.0 */
     private ExpressionEvaluator _expressionEvaluator;
 
@@ -32,9 +37,11 @@ public class DefaultTableColumnSource implements IAdvancedTableColumnSource
     {
         _expressionEvaluator = expressionEvaluator;
     }
-	
-	public IAdvancedTableColumn generateTableColumn(String strName, String strDisplayName, 
-			boolean bSortable, String strExpression) {
-		return new ExpressionTableColumn(strName, strDisplayName, strExpression, bSortable, _expressionEvaluator);
-	}
+
+    public IAdvancedTableColumn generateTableColumn(String strName,
+            String strDisplayName, boolean bSortable, String strExpression)
+    {
+        return new ExpressionTableColumn(strName, strDisplayName,
+                strExpression, bSortable, _expressionEvaluator);
+    }
 }

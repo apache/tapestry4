@@ -19,20 +19,23 @@ import org.apache.tapestry.contrib.table.model.IAdvancedTableColumnSource;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 
 /**
- * Service used to generate a {@link org.apache.tapestry.contrib.table.model.ITableColumnModel}from
- * a string description.
+ * Service used to generate a
+ * {@link org.apache.tapestry.contrib.table.model.ITableColumnModel}from a
+ * string description.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface TableColumnModelSource
 {
+
     /**
-     * Generate a table column model out of the description string provided. Entries in the
-     * description string are separated by commas. Each column entry is of the format name,
-     * name:expression, or name:displayName:expression. An entry prefixed with ! represents a
-     * non-sortable column. If the whole description string is prefixed with *, it represents
-     * columns to be included in a Form.
+     * Generate a table column model out of the description string provided.
+     * Entries in the description string are separated by commas. Each column
+     * entry is of the format name, name:expression, or
+     * name:displayName:expression. An entry prefixed with ! represents a
+     * non-sortable column. If the whole description string is prefixed with *,
+     * it represents columns to be included in a Form.
      * 
      * @param strDesc
      *            the description of the column model to be generated
@@ -42,6 +45,7 @@ public interface TableColumnModelSource
      *            the component containing the column settings
      * @return a table column model based on the provided parameters
      */
-    public ITableColumnModel generateTableColumnModel(IAdvancedTableColumnSource objColumnSource,
-    		String strDesc, IComponent objComponent, IComponent objColumnSettingsContainer);
+    ITableColumnModel generateTableColumnModel(
+            IAdvancedTableColumnSource objColumnSource, String strDesc,
+            IComponent objComponent, IComponent objColumnSettingsContainer);
 }

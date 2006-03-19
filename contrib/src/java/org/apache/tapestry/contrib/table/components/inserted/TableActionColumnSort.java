@@ -19,7 +19,7 @@ import org.apache.tapestry.contrib.table.model.ITableSortingState;
 
 
 /**
- * <p>A table action that configures the table sorting to use a given column</p>
+ * <p>A table action that configures the table sorting to use a given column</p>.
  *
  * @author teo
  */

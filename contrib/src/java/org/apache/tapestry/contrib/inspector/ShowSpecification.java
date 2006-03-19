@@ -68,6 +68,10 @@ public abstract class ShowSpecification extends BaseComponent implements PageBeg
 
     private IBeanSpecification _beanSpecification;
 
+    /**
+     * 
+     * @author hls
+     */
     private static class ComponentComparitor implements Comparator
     {
         public int compare(Object left, Object right)

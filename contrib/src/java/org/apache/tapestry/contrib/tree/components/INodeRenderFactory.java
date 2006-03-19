@@ -21,8 +21,12 @@ import org.apache.tapestry.contrib.tree.model.ITreeModelSource;
 /**
  * @author ceco
  */
-public interface INodeRenderFactory 
+public interface INodeRenderFactory
 {
-	IRender getRenderByID(Object objUniqueKey, ITreeModelSource objTreeModelSource, IRequestCycle objCycle);	
-	IRender getRender(Object objValue, ITreeModelSource objTreeModelSource, IRequestCycle objCycle);	
+
+    IRender getRenderByID(Object objUniqueKey,
+            ITreeModelSource objTreeModelSource, IRequestCycle objCycle);
+
+    IRender getRender(Object objValue, ITreeModelSource objTreeModelSource,
+            IRequestCycle objCycle);
 }

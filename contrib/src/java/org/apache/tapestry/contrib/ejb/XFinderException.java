@@ -27,29 +27,30 @@ public class XFinderException extends FinderException
 {
     private static final long serialVersionUID = -7761100160348957271L;
     
-	private Throwable rootCause;
+    private final Throwable _rootCause;
 
     public XFinderException(String message)
     {
         super(message);
+        _rootCause = null;
     }
 
     public XFinderException(String message, Throwable rootCause)
     {
         super(message);
 
-        this.rootCause = rootCause;
+        this._rootCause = rootCause;
     }
 
     public XFinderException(Throwable rootCause)
     {
         super(rootCause.getMessage());
 
-        this.rootCause = rootCause;
+        this._rootCause = rootCause;
     }
 
     public Throwable getRootCause()
     {
-        return rootCause;
+        return _rootCause;
     }
 }

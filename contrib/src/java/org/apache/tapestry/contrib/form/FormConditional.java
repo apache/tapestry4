@@ -28,18 +28,23 @@ import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.services.DataSqueezer;
 
 /**
- * A conditional element on a page which will render its wrapped elements zero or one times. This
- * component is a variant of {@link org.apache.tapestry.components.Conditional}, but is designed
- * for operation in a form. The component parameters are stored in hidden fields during rendering
- * and are taken from those fields during the rewind, thus no StaleLink exceptions occur. [ <a
- * href="../../../../../ComponentReference/contrib.FormConditional.html">Component Reference </a>]
+ * A conditional element on a page which will render its wrapped elements zero
+ * or one times. This component is a variant of
+ * {@link org.apache.tapestry.components.Conditional}, but is designed for
+ * operation in a form. The component parameters are stored in hidden fields
+ * during rendering and are taken from those fields during the rewind, thus no
+ * StaleLink exceptions occur. [ <a
+ * href="../../../../../ComponentReference/contrib.FormConditional.html">Component
+ * Reference </a>]
  * 
  * @author Mindbridge
  * @since 3.0
  */
 
-public abstract class FormConditional extends AbstractComponent implements IFormComponent
+public abstract class FormConditional extends AbstractComponent implements
+        IFormComponent
 {
+
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = TapestryUtils.getForm(cycle, this);
@@ -49,8 +54,7 @@ public abstract class FormConditional extends AbstractComponent implements IForm
         // If the cycle is rewinding, but not this particular form,
         // then do nothing (don't even render the body).
 
-        if (cycleRewinding && !form.isRewinding())
-            return;
+        if (cycleRewinding && !form.isRewinding()) return;
 
         String name = form.getElementId(this);
 
@@ -73,8 +77,7 @@ public abstract class FormConditional extends AbstractComponent implements IForm
 
             renderBody(writer, cycle);
 
-            if (render)
-                writer.end(element);
+            if (render) writer.end(element);
         }
     }
 
@@ -93,8 +96,7 @@ public abstract class FormConditional extends AbstractComponent implements IForm
             condition = convertValue(submittedCondition);
         }
 
-        if (isParameterBound("conditionValue"))
-            setConditionValue(condition);
+        if (isParameterBound("conditionValue")) setConditionValue(condition);
 
         return condition;
     }
@@ -105,13 +107,14 @@ public abstract class FormConditional extends AbstractComponent implements IForm
 
         try
         {
-            externalValue = getDataSqueezer().squeeze(value ? Boolean.TRUE : Boolean.FALSE);
+            externalValue = getDataSqueezer().squeeze(
+                    value ? Boolean.TRUE : Boolean.FALSE);
         }
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(Tapestry.format(
-                    "FormConditional.unable-to-convert-value",
-                    Boolean.toString(value)), this, null, ex);
+                    "FormConditional.unable-to-convert-value", Boolean
+                            .toString(value)), this, null, ex);
         }
 
         form.addHiddenValue(name, externalValue);
@@ -127,8 +130,8 @@ public abstract class FormConditional extends AbstractComponent implements IForm
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(Tapestry.format(
-                    "FormConditional.unable-to-convert-string",
-                    value), this, null, ex);
+                    "FormConditional.unable-to-convert-string", value), this,
+                    null, ex);
         }
     }
 

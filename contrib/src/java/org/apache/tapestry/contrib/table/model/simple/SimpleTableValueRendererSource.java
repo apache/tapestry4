@@ -22,11 +22,10 @@ import org.apache.tapestry.contrib.table.model.ITableRendererSource;
 import org.apache.tapestry.valid.RenderString;
 
 /**
- * This is a simple implementation of 
- * {@link org.apache.tapestry.contrib.table.model.ITableRendererSource} 
- * that returns a standard renderer of a column value.
- * 
- * This implementation requires that the column passed is of type SimpleTableColumn
+ * This is a simple implementation of
+ * {@link org.apache.tapestry.contrib.table.model.ITableRendererSource} that
+ * returns a standard renderer of a column value. This implementation requires
+ * that the column passed is of type SimpleTableColumn
  * 
  * @see org.apache.tapestry.contrib.table.model.common.AbstractTableColumn
  * @author mindbridge
@@ -34,31 +33,31 @@ import org.apache.tapestry.valid.RenderString;
  */
 public class SimpleTableValueRendererSource implements ITableRendererSource
 {
-	private static final long serialVersionUID = 1L;
-	
-    /** 
-     *  The representation of null values. This is geared towards HTML, but will
-     *  work for some other *ML languages as well. In any case, changing the 
-     *  column's value renderer allows selecting fully custom rendering behaviour. 
-     **/ 
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * The representation of null values. This is geared towards HTML, but will
+     * work for some other *ML languages as well. In any case, changing the
+     * column's value renderer allows selecting fully custom rendering
+     * behaviour.
+     */
     private static final String EMPTY_REPRESENTATION = "&nbsp;";
 
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
-	 */
-	public IRender getRenderer(
-		IRequestCycle objCycle,
-		ITableModelSource objSource,
-		ITableColumn objColumn,
-		Object objRow)
-	{
-		SimpleTableColumn objSimpleColumn = (SimpleTableColumn) objColumn;
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableRendererSource#getRenderer(IRequestCycle,
+     *      ITableModelSource, ITableColumn, Object)
+     */
+    public IRender getRenderer(IRequestCycle objCycle,
+            ITableModelSource objSource, ITableColumn objColumn, Object objRow)
+    {
+        SimpleTableColumn objSimpleColumn = (SimpleTableColumn) objColumn;
 
-		Object objValue = objSimpleColumn.getColumnValue(objRow);
-		if (objValue == null)
-			return new RenderString(EMPTY_REPRESENTATION, true);
+        Object objValue = objSimpleColumn.getColumnValue(objRow);
+        if (objValue == null)
+            return new RenderString(EMPTY_REPRESENTATION, true);
 
-		return new RenderString(objValue.toString());
-	}
+        return new RenderString(objValue.toString());
+    }
 
 }

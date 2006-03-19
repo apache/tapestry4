@@ -39,6 +39,10 @@ public class PaletteColumn implements IRender
 
     private List _options = new ArrayList();
 
+    /**
+     * 
+     * @author hls
+     */
     private static class ValueComparator implements Comparator
     {
         public int compare(Object o1, Object o2)
@@ -50,6 +54,10 @@ public class PaletteColumn implements IRender
         }
     }
 
+    /**
+     * 
+     * @author hls
+     */
     private static class LabelComparator implements Comparator
     {
         public int compare(Object o1, Object o2)

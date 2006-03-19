@@ -20,10 +20,15 @@ import org.apache.tapestry.util.ComponentAddress;
 
 /**
  * @author ceco
-  */
-public interface ITreeComponent {
-	ComponentAddress getComponentPath();
-	ITreeModelSource getTreeModelSource();
-	ITreeRowSource getTreeRowSource();
-	void resetState();
+ */
+public interface ITreeComponent
+{
+
+    ComponentAddress getComponentPath();
+
+    ITreeModelSource getTreeModelSource();
+
+    ITreeRowSource getTreeRowSource();
+
+    void resetState();
 }

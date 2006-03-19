@@ -14,12 +14,13 @@
 
 package org.apache.tapestry.contrib.tree.model;
 
-
-
 /**
  * @author ceco
  */
-public interface ITreeSessionStateManager {
-	Object getSessionState(ITreeModel objModel);
-	ITreeModel getModel(Object objSessionState);	
+public interface ITreeSessionStateManager
+{
+
+    Object getSessionState(ITreeModel objModel);
+
+    ITreeModel getModel(Object objSessionState);
 }

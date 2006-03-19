@@ -25,17 +25,19 @@ import org.apache.tapestry.services.ExpressionEvaluator;
  */
 public class OgnlTableColumnEvaluator implements ITableColumnEvaluator
 {
-	private static final long serialVersionUID = 1L;
-	
+
+    private static final long serialVersionUID = 1L;
+
+    private static final Log LOG = LogFactory.getLog(OgnlTableColumnEvaluator.class);
+    
     /** @since 4.0 */
 
     private ExpressionEvaluator _expressionEvaluator;
 
-    private static final Log LOG = LogFactory.getLog(OgnlTableColumnEvaluator.class);
-
     private String m_strExpression;
 
-    public OgnlTableColumnEvaluator(String strExpression, ExpressionEvaluator expressionEvaluator)
+    public OgnlTableColumnEvaluator(String strExpression,
+            ExpressionEvaluator expressionEvaluator)
     {
         m_strExpression = strExpression;
         _expressionEvaluator = expressionEvaluator;
@@ -45,11 +47,12 @@ public class OgnlTableColumnEvaluator implements ITableColumnEvaluator
      * @see org.apache.tapestry.contrib.table.model.simple.ITableColumnEvaluator#getColumnValue(ITableColumn,
      *      Object)
      */
-    public synchronized Object getColumnValue(ITableColumn objColumn, Object objRow)
+    public synchronized Object getColumnValue(ITableColumn objColumn,
+            Object objRow)
     {
-        // If no expression is given, then this is a dummy column. Return something.
-        if (m_strExpression == null || m_strExpression.equals(""))
-            return "";
+        // If no expression is given, then this is a dummy column. Return
+        // something.
+        if (m_strExpression == null || m_strExpression.equals("")) return "";
 
         try
         {
@@ -57,7 +60,8 @@ public class OgnlTableColumnEvaluator implements ITableColumnEvaluator
         }
         catch (Exception e)
         {
-            LOG.error("Cannot use column expression '" + m_strExpression + "' in row", e);
+            LOG.error("Cannot use column expression '" + m_strExpression
+                    + "' in row", e);
             return "";
         }
     }

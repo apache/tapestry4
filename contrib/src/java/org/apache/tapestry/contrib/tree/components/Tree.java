@@ -22,41 +22,47 @@ import org.apache.tapestry.util.ComponentAddress;
 /**
  * @author ceco
  */
-public abstract class Tree extends BaseComponent implements ITreeComponent{
+public abstract class Tree extends BaseComponent implements ITreeComponent
+{
 
-	public Tree() {
-		super();
-	}
+    public Tree()
+    {
+        super();
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.components.ITreeComponent#getComponentPath()
-	 */
-	public ComponentAddress getComponentPath() {
-		return new ComponentAddress(this);
-	}
+    /**
+     * @see org.apache.tapestry.contrib.tree.components.ITreeComponent#getComponentPath()
+     */
+    public ComponentAddress getComponentPath()
+    {
+        return new ComponentAddress(this);
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.components.ITreeComponent#getTreeModelSource()
-	 */
-	public ITreeModelSource getTreeModelSource() {
-		TreeView objTreeView = (TreeView)getComponent("treeView");
-		return objTreeView;
-	}
+    /**
+     * @see org.apache.tapestry.contrib.tree.components.ITreeComponent#getTreeModelSource()
+     */
+    public ITreeModelSource getTreeModelSource()
+    {
+        TreeView objTreeView = (TreeView) getComponent("treeView");
+        return objTreeView;
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.components.ITreeComponent#resetState()
-	 */
-	public void resetState() {
-		TreeView objTreeView = (TreeView)getComponent("treeView");
-		objTreeView.resetState();
-	}
+    /**
+     * @see org.apache.tapestry.contrib.tree.components.ITreeComponent#resetState()
+     */
+    public void resetState()
+    {
+        TreeView objTreeView = (TreeView) getComponent("treeView");
+        objTreeView.resetState();
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.components.ITreeComponent#getTreeRowSource()
-	 */
-	public ITreeRowSource getTreeRowSource() {
-		TreeDataView objTreeDataView = (TreeDataView)getComponent("treeData");
-		return objTreeDataView;
-	}
+    /**
+     * @see org.apache.tapestry.contrib.tree.components.ITreeComponent#getTreeRowSource()
+     */
+    public ITreeRowSource getTreeRowSource()
+    {
+        TreeDataView objTreeDataView = (TreeDataView) getComponent("treeData");
+        return objTreeDataView;
+    }
 
 }
