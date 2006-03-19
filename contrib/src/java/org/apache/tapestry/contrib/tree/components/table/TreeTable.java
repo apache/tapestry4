@@ -24,39 +24,45 @@ import org.apache.tapestry.util.ComponentAddress;
 /**
  * @author ceco
  */
-public abstract class TreeTable extends BaseComponent implements ITreeComponent{
+public abstract class TreeTable extends BaseComponent implements ITreeComponent
+{
 
-	/**
-	 * 
-	 */
-	public TreeTable() {
-		super();
-	}
+    /**
+     * 
+     */
+    public TreeTable()
+    {
+        super();
+    }
 
-	public ITreeModelSource getTreeModelSource(){
-		return (ITreeModelSource) getComponent("treeView");
-	}
+    public ITreeModelSource getTreeModelSource()
+    {
+        return (ITreeModelSource) getComponent("treeView");
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.components.ITreeComponent#resetState()
-	 */
-	public void resetState() {
-		TreeView objTreeView = (TreeView)getComponent("treeView");
-		objTreeView.resetState();
-	}
+    /**
+     * @see org.apache.tapestry.contrib.tree.components.ITreeComponent#resetState()
+     */
+    public void resetState()
+    {
+        TreeView objTreeView = (TreeView) getComponent("treeView");
+        objTreeView.resetState();
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.components.ITreeComponent#getComponentPath()
-	 */
-	public ComponentAddress getComponentPath() {
-		return new ComponentAddress(this);
-	}
+    /**
+     * @see org.apache.tapestry.contrib.tree.components.ITreeComponent#getComponentPath()
+     */
+    public ComponentAddress getComponentPath()
+    {
+        return new ComponentAddress(this);
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.components.ITreeComponent#getTreeRowSource()
-	 */
-	public ITreeRowSource getTreeRowSource() {
-		TreeTableDataView objTreeDataView = (TreeTableDataView)getComponent("treeTableDataView");
-		return objTreeDataView;
-	}
+    /**
+     * @see org.apache.tapestry.contrib.tree.components.ITreeComponent#getTreeRowSource()
+     */
+    public ITreeRowSource getTreeRowSource()
+    {
+        TreeTableDataView objTreeDataView = (TreeTableDataView) getComponent("treeTableDataView");
+        return objTreeDataView;
+    }
 }

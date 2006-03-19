@@ -22,10 +22,13 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TableMessages
+public final class TableMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(TableMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(TableMessages.class);
 
+    /* defeat instantiation */
+    private TableMessages() { }
+    
     static String notAColumn(IComponent component, String expression)
     {
         return _formatter.format("not-a-column", component.getExtendedId(), expression);

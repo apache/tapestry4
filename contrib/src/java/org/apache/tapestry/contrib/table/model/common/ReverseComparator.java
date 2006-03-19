@@ -18,23 +18,23 @@ import java.util.Comparator;
 
 /**
  * @author mindbridge
- *
  */
 public class ReverseComparator implements Comparator
 {
-	private Comparator m_objComparator;
 
-	public ReverseComparator(Comparator objComparator)
-	{
-		m_objComparator = objComparator;
-	}
+    private Comparator m_objComparator;
 
-	/**
-	 * @see java.util.Comparator#compare(Object, Object)
-	 */
-	public int compare(Object objValue1, Object objValue2)
-	{
-		return -m_objComparator.compare(objValue1, objValue2);
-	}
+    public ReverseComparator(Comparator objComparator)
+    {
+        m_objComparator = objComparator;
+    }
+
+    /**
+     * @see java.util.Comparator#compare(Object, Object)
+     */
+    public int compare(Object objValue1, Object objValue2)
+    {
+        return -m_objComparator.compare(objValue1, objValue2);
+    }
 
 }

@@ -28,7 +28,7 @@ package org.apache.tapestry.contrib.table.model;
 public interface ITableAction
 {
     /**
-     * Executes the desired action
+     * Executes the desired action.
      * 
      * @param objTableModel the table model on which the action should be executed
      */

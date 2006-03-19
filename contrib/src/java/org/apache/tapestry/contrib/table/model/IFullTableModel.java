@@ -23,9 +23,10 @@ import java.util.Iterator;
  * @author mb
  */
 public interface IFullTableModel extends ITableModel {
-	/**
-	 * Iterates over all of the rows in the model
-	 * @return Iterator the iterator for access to the data
-	 */
-	Iterator getRows();
+    /**
+     * Iterates over all of the rows in the model.
+     * 
+     * @return Iterator the iterator for access to the data
+     */
+    Iterator getRows();
 }

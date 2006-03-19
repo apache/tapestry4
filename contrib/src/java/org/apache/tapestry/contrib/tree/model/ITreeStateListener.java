@@ -17,6 +17,8 @@ package org.apache.tapestry.contrib.tree.model;
 /**
  * @author ceco
  */
-public interface ITreeStateListener {
-	void treeStateChanged(TreeStateEvent objEvent);
+public interface ITreeStateListener
+{
+
+    void treeStateChanged(TreeStateEvent objEvent);
 }

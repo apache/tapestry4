@@ -20,7 +20,11 @@ import org.apache.tapestry.IPage;
  * @author ceco
  */
 
-public interface ISessionStoreManager {
-	Object getSessionState(IPage objPage, String strSessionStateID);
-	Object setSessionState(IPage objPage, String strSessionStateID, Object objSessionState);
+public interface ISessionStoreManager
+{
+
+    Object getSessionState(IPage objPage, String strSessionStateID);
+
+    Object setSessionState(IPage objPage, String strSessionStateID,
+            Object objSessionState);
 }

@@ -18,11 +18,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * 
  * @author mindbridge
  */
 public interface ISqlConnectionSource
 {
-	Connection obtainConnection() throws SQLException;
-	void returnConnection(Connection objConnection);
+
+    Connection obtainConnection()
+        throws SQLException;
+
+    void returnConnection(Connection objConnection);
 }

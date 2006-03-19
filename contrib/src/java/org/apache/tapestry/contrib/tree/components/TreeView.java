@@ -34,8 +34,8 @@ import org.apache.tapestry.util.ComponentAddress;
 
 /**
  */
-public abstract class TreeView extends BaseComponent implements PageDetachListener,
-        PageBeginRenderListener, ITreeModelSource
+public abstract class TreeView extends BaseComponent implements
+        PageDetachListener, PageBeginRenderListener, ITreeModelSource
 {
 
     private static final Log LOG = LogFactory.getLog(TreeView.class);
@@ -72,7 +72,8 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
     }
 
     /**
-     * @see org.apache.tapestry.AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
+     * @see org.apache.tapestry.AbstractComponent#renderComponent(IMarkupWriter,
+     *      IRequestCycle)
      */
 
     /**
@@ -88,10 +89,7 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
      */
     public void pageBeginRender(PageEvent arg0)
     {
-        if (arg0.getRequestCycle().isRewinding())
-        {
-            return;
-        }
+        if (arg0.getRequestCycle().isRewinding()) { return; }
         storeSesion();
     }
 
@@ -142,7 +140,8 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
      * @param sessionStoreManagerBinding
      *            The SessionStoreManagerBinding to set
      */
-    public void setSessionStoreManagerBinding(IBinding sessionStoreManagerBinding)
+    public void setSessionStoreManagerBinding(
+            IBinding sessionStoreManagerBinding)
     {
         m_objSessionStoreManagerBinding = sessionStoreManagerBinding;
     }
@@ -153,7 +152,8 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
      * @param sessionStateManagerBinding
      *            The sessionStateManagerBinding to set
      */
-    public void setSessionStateManagerBinding(IBinding sessionStateManagerBinding)
+    public void setSessionStateManagerBinding(
+            IBinding sessionStateManagerBinding)
     {
         m_objSessionStateManagerBinding = sessionStateManagerBinding;
     }
@@ -174,7 +174,8 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
         }
         else
         {
-            objSessionState = objHolder.getSessionState(this.getPage(), "treeSessionState");
+            objSessionState = objHolder.getSessionState(this.getPage(),
+                    "treeSessionState");
         }
 
         if (objSessionState != null)
@@ -201,7 +202,8 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
         }
 
         ITreeSessionStateManager objSessionManager = getTreeSessionStateMgr();
-        Object objSessionState = objSessionManager.getSessionState(getTreeModel());
+        Object objSessionState = objSessionManager
+                .getSessionState(getTreeModel());
 
         store(objSessionState);
     }
@@ -212,11 +214,12 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
 
         if (objHolder == null)
         {
-            Tapestry.fireObservedChange(this, "treeSessionState", objSessionState);
+            Tapestry.fireObservedChange(this, "treeSessionState",
+                    objSessionState);
         }
         else
         {
-            //String strPath = "treeSessionState";
+            // String strPath = "treeSessionState";
             String strPath = getExtendedId();
             if (LOG.isDebugEnabled())
                 LOG.debug("store(): setting state with: " + strPath);
@@ -244,7 +247,8 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
      */
     public ISessionStoreManager getSessionStoreManager()
     {
-        if (m_objSessionStoreManager == null && getSessionStoreManagerBinding() != null)
+        if (m_objSessionStoreManager == null
+                && getSessionStoreManagerBinding() != null)
         {
             m_objSessionStoreManager = (ISessionStoreManager) getSessionStoreManagerBinding()
                     .getObject();
@@ -347,7 +351,8 @@ public abstract class TreeView extends BaseComponent implements PageDetachListen
         arg1.setAttribute(ITreeModelSource.TREE_MODEL_SOURCE_ATTRIBUTE, this);
 
         super.renderComponent(arg0, arg1);
-        arg1.setAttribute(ITreeModelSource.TREE_MODEL_SOURCE_ATTRIBUTE, objExistedTreeModelSource);
+        arg1.setAttribute(ITreeModelSource.TREE_MODEL_SOURCE_ATTRIBUTE,
+                objExistedTreeModelSource);
     }
 
     /**

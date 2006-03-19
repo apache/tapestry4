@@ -17,25 +17,25 @@ package org.apache.tapestry.contrib.table.model.sql;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnModel;
 
 /**
- * 
  * @author mindbridge
  */
 public class SqlTableColumnModel extends SimpleTableColumnModel
 {
-	private static final long serialVersionUID = 1L;
-	
-	public SqlTableColumnModel(SqlTableColumn[] arrColumns)
-	{
-		super(arrColumns);
-	}
 
-	public SqlTableColumn getSqlColumn(int nColumn)
-	{
-		return (SqlTableColumn) getColumn(nColumn);
-	}
+    private static final long serialVersionUID = 1L;
 
-	public SqlTableColumn getSqlColumn(String strColumn)
-	{
-		return (SqlTableColumn) getColumn(strColumn);
-	}
+    public SqlTableColumnModel(SqlTableColumn[] arrColumns)
+    {
+        super(arrColumns);
+    }
+
+    public SqlTableColumn getSqlColumn(int nColumn)
+    {
+        return (SqlTableColumn) getColumn(nColumn);
+    }
+
+    public SqlTableColumn getSqlColumn(String strColumn)
+    {
+        return (SqlTableColumn) getColumn(strColumn);
+    }
 }

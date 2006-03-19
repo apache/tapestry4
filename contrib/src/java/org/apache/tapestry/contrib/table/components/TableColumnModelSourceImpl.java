@@ -29,13 +29,14 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnModel;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
- * A placeholder for a static methods related to the Table component
+ * A placeholder for a static methods related to the Table component.
  * 
  * @since 3.0
  * @author Mindbridge
  */
 public class TableColumnModelSourceImpl implements TableColumnModelSource
 {
+
     /** @since 4.0 */
     private ExpressionEvaluator _expressionEvaluator;
 
@@ -47,11 +48,12 @@ public class TableColumnModelSourceImpl implements TableColumnModelSource
     }
 
     /**
-     * Generate a table column model out of the description string provided. Entries in the
-     * description string are separated by commas. Each column entry is of the format name,
-     * name:expression, or name:displayName:expression. An entry prefixed with ! represents a
-     * non-sortable column. If the whole description string is prefixed with *, it represents
-     * columns to be included in a Form.
+     * Generate a table column model out of the description string provided.
+     * Entries in the description string are separated by commas. Each column
+     * entry is of the format name, name:expression, or
+     * name:displayName:expression. An entry prefixed with ! represents a
+     * non-sortable column. If the whole description string is prefixed with *,
+     * it represents columns to be included in a Form.
      * 
      * @param strDesc
      *            the description of the column model to be generated
@@ -61,24 +63,24 @@ public class TableColumnModelSourceImpl implements TableColumnModelSource
      *            the component containing the column settings
      * @return a table column model based on the provided parameters
      */
-    public ITableColumnModel generateTableColumnModel(IAdvancedTableColumnSource objColumnSource,
-    		String strDesc, IComponent objComponent, IComponent objColumnSettingsContainer)
+    public ITableColumnModel generateTableColumnModel(
+            IAdvancedTableColumnSource objColumnSource, String strDesc,
+            IComponent objComponent, IComponent objColumnSettingsContainer)
     {
-        if (strDesc == null)
-            return null;
+        if (strDesc == null) return null;
 
         List arrColumns = new ArrayList();
 
         strDesc = strDesc.trim();
         boolean bFormColumns = false;
-        while (strDesc.startsWith("*"))
+        while(strDesc.startsWith("*"))
         {
             strDesc = strDesc.substring(1);
             bFormColumns = true;
         }
 
         StringTokenizer objTokenizer = new StringTokenizer(strDesc, ",");
-        while (objTokenizer.hasMoreTokens())
+        while(objTokenizer.hasMoreTokens())
         {
             String strToken = objTokenizer.nextToken().trim();
 
@@ -87,13 +89,11 @@ public class TableColumnModelSourceImpl implements TableColumnModelSource
                 String strColumnExpression = strToken.substring(1);
 
                 Object objColumn = _expressionEvaluator.read(
-                        objColumnSettingsContainer,
-                        strColumnExpression);
+                        objColumnSettingsContainer, strColumnExpression);
 
                 if (!(objColumn instanceof ITableColumn))
-                    throw new ApplicationRuntimeException(TableMessages.notAColumn(
-                            objComponent,
-                            strColumnExpression));
+                    throw new ApplicationRuntimeException(TableMessages
+                            .notAColumn(objComponent, strColumnExpression));
 
                 arrColumns.add(objColumn);
                 continue;
@@ -106,7 +106,8 @@ public class TableColumnModelSourceImpl implements TableColumnModelSource
                 bSortable = false;
             }
 
-            StringTokenizer objColumnTokenizer = new StringTokenizer(strToken, ":");
+            StringTokenizer objColumnTokenizer = new StringTokenizer(strToken,
+                    ":");
 
             String strName = "";
             if (objColumnTokenizer.hasMoreTokens())
@@ -123,11 +124,12 @@ public class TableColumnModelSourceImpl implements TableColumnModelSource
                 strExpression = objColumnTokenizer.nextToken();
             }
 
-            IAdvancedTableColumn objColumn = 
-            	objColumnSource.generateTableColumn(strName, strDisplayName,
-            			bSortable, strExpression);
+            IAdvancedTableColumn objColumn = objColumnSource
+                    .generateTableColumn(strName, strDisplayName, bSortable,
+                            strExpression);
             if (bFormColumns)
-                objColumn.setColumnRendererSource(SimpleTableColumn.FORM_COLUMN_RENDERER_SOURCE);
+                objColumn
+                        .setColumnRendererSource(SimpleTableColumn.FORM_COLUMN_RENDERER_SOURCE);
             if (objColumnSettingsContainer != null)
                 objColumn.loadSettings(objColumnSettingsContainer);
 

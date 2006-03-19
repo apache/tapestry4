@@ -15,21 +15,20 @@
 package org.apache.tapestry.contrib.tree.model;
 
 /**
- * A Tapestry component that provides the current row value.
- * This interface is used for obtaining the row source by components 
- * wrapped by the row source
+ * A Tapestry component that provides the current row value. This interface is
+ * used for obtaining the row source by components wrapped by the row source
  * 
  * @author tsvetelin
  */
 public interface ITreeRowSource
 {
-    final static String TREE_ROW_SOURCE_ATTRIBUTE = "org.apache.tapestry.contrib.tree.model.ITreeRowSource";
-    
-	/**
-	 * Method getTreeRow
-	 * @return Object the current tree row object.
-	 */
-	TreeRowObject getTreeRow();
-	//Object getTreeRowNodeUID();
-	//int getTreeNodeDeep();
+
+    String TREE_ROW_SOURCE_ATTRIBUTE = "org.apache.tapestry.contrib.tree.model.ITreeRowSource";
+
+    /**
+     * Method getTreeRow.
+     * 
+     * @return Object the current tree row object.
+     */
+    TreeRowObject getTreeRow();
 }

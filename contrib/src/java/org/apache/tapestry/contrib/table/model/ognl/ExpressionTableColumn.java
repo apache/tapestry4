@@ -22,8 +22,9 @@ import org.apache.tapestry.services.ExpressionEvaluator;
  */
 public class ExpressionTableColumn extends SimpleTableColumn
 {
-	private static final long serialVersionUID = 1L;
-	
+
+    private static final long serialVersionUID = 1L;
+
     /** @since 4.0 */
 
     public ExpressionTableColumn(String strColumnName, String strExpression,
@@ -32,25 +33,29 @@ public class ExpressionTableColumn extends SimpleTableColumn
         this(strColumnName, strExpression, false, expressionEvaluator);
     }
 
-    public ExpressionTableColumn(String strColumnName, String strExpression, boolean bSortable,
-            ExpressionEvaluator expressionEvaluator)
+    public ExpressionTableColumn(String strColumnName, String strExpression,
+            boolean bSortable, ExpressionEvaluator expressionEvaluator)
     {
-        this(strColumnName, strColumnName, strExpression, bSortable, expressionEvaluator);
+        this(strColumnName, strColumnName, strExpression, bSortable,
+                expressionEvaluator);
     }
 
-    public ExpressionTableColumn(String strColumnName, String strDisplayName, String strExpression,
-            ExpressionEvaluator expressionEvaluator)
+    public ExpressionTableColumn(String strColumnName, String strDisplayName,
+            String strExpression, ExpressionEvaluator expressionEvaluator)
     {
-        this(strColumnName, strDisplayName, strExpression, false, expressionEvaluator);
+        this(strColumnName, strDisplayName, strExpression, false,
+                expressionEvaluator);
     }
 
-    public ExpressionTableColumn(String strColumnName, String strDisplayName, String strExpression,
-            boolean bSortable, ExpressionEvaluator expressionEvaluator
+    public ExpressionTableColumn(String strColumnName, String strDisplayName,
+            String strExpression, boolean bSortable,
+            ExpressionEvaluator expressionEvaluator
 
     )
     {
         super(strColumnName, strDisplayName, bSortable);
 
-        setEvaluator(new OgnlTableColumnEvaluator(strExpression, expressionEvaluator));
+        setEvaluator(new OgnlTableColumnEvaluator(strExpression,
+                expressionEvaluator));
     }
 }

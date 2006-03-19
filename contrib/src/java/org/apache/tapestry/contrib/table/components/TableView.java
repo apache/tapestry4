@@ -46,64 +46,66 @@ import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 
 /**
- * A low level Table component that wraps all other low level Table components. This component
- * carries the {@link org.apache.tapestry.contrib.table.model.ITableModel}that is used by the other
- * Table components. Please see the documentation of
- * {@link org.apache.tapestry.contrib.table.model.ITableModel}if you need to know more about how a
- * table is represented.
+ * A low level Table component that wraps all other low level Table components.
+ * This component carries the
+ * {@link org.apache.tapestry.contrib.table.model.ITableModel}that is used by
+ * the other Table components. Please see the documentation of
+ * {@link org.apache.tapestry.contrib.table.model.ITableModel}if you need to
+ * know more about how a table is represented.
  * <p>
  * This component also handles the saving of the state of the model using an
- * {@link org.apache.tapestry.contrib.table.model.ITableSessionStateManager}to determine what part
- * of the model is to be saved and an
- * {@link  org.apache.tapestry.contrib.table.model.ITableSessionStoreManager}to determine how to
- * save it.
+ * {@link org.apache.tapestry.contrib.table.model.ITableSessionStateManager}to
+ * determine what part of the model is to be saved and an
+ * {@link  org.apache.tapestry.contrib.table.model.ITableSessionStoreManager}to
+ * determine how to save it.
  * <p>
- * Upon the beginning of a new request cycle when the table model is first needed, the model is
- * obtained using the following process:
+ * Upon the beginning of a new request cycle when the table model is first
+ * needed, the model is obtained using the following process:
  * <ul>
- * <li>The persistent state of the table is loaded. If the tableSessionStoreManager binding has not
- * been bound, the state is loaded from a persistent property within the component (it is null at
- * the beginning). Otherwise the supplied
- * {@link  org.apache.tapestry.contrib.table.model.ITableSessionStoreManager}is used to load the
- * persistent state.
+ * <li>The persistent state of the table is loaded. If the
+ * tableSessionStoreManager binding has not been bound, the state is loaded from
+ * a persistent property within the component (it is null at the beginning).
+ * Otherwise the supplied
+ * {@link  org.apache.tapestry.contrib.table.model.ITableSessionStoreManager}is
+ * used to load the persistent state.
  * <li>The table model is recreated using the
- * {@link org.apache.tapestry.contrib.table.model.ITableSessionStateManager}that could be supplied
- * using the tableSessionStateManager binding (but has a default value and is therefore not
- * required).
- * <li>If the {@link org.apache.tapestry.contrib.table.model.ITableSessionStateManager}returns
+ * {@link org.apache.tapestry.contrib.table.model.ITableSessionStateManager}that
+ * could be supplied using the tableSessionStateManager binding (but has a
+ * default value and is therefore not required).
+ * <li>If the
+ * {@link org.apache.tapestry.contrib.table.model.ITableSessionStateManager}returns
  * null, then a table model is taken from the tableModel binding. Thus, if the
- * {@link org.apache.tapestry.contrib.table.model.common.NullTableSessionStateManager}is used, the
- * table model would be taken from the tableModel binding every time.
+ * {@link org.apache.tapestry.contrib.table.model.common.NullTableSessionStateManager}is
+ * used, the table model would be taken from the tableModel binding every time.
  * </ul>
- * Just before the rendering phase the persistent state of the model is saved in the session. This
- * process occurs in reverse:
+ * Just before the rendering phase the persistent state of the model is saved in
+ * the session. This process occurs in reverse:
  * <ul>
  * <li>The persistent state of the model is taken via the
  * {@link org.apache.tapestry.contrib.table.model.ITableSessionStateManager}.
- * <li>If the tableSessionStoreManager binding has not been bound, the persistent state is saved as
- * a persistent page property. Otherwise the supplied
- * {@link  org.apache.tapestry.contrib.table.model.ITableSessionStoreManager}is used to save the
- * persistent state. Use of the
- * {@link  org.apache.tapestry.contrib.table.model.ITableSessionStoreManager}is usually necessary
- * when tables with the same model have to be used across multiple pages, and hence the state has to
- * be saved in the Visit, rather than in a persistent component property.
+ * <li>If the tableSessionStoreManager binding has not been bound, the
+ * persistent state is saved as a persistent page property. Otherwise the
+ * supplied
+ * {@link  org.apache.tapestry.contrib.table.model.ITableSessionStoreManager}is
+ * used to save the persistent state. Use of the
+ * {@link  org.apache.tapestry.contrib.table.model.ITableSessionStoreManager}is
+ * usually necessary when tables with the same model have to be used across
+ * multiple pages, and hence the state has to be saved in the Visit, rather than
+ * in a persistent component property.
  * </ul>
  * <p>
  * <p>
- * Please see the Component Reference for details on how to use this component. [ <a
- * href="../../../../../../../ComponentReference/contrib.TableView.html">Component Reference </a>]
+ * Please see the Component Reference for details on how to use this component. [
+ * <a
+ * href="../../../../../../../ComponentReference/contrib.TableView.html">Component
+ * Reference </a>]
  * 
  * @author mindbridge
  */
-public abstract class TableView extends BaseComponent implements PageDetachListener,
-        PageBeginRenderListener, ITableModelSource
+public abstract class TableView extends BaseComponent implements
+        PageDetachListener, PageBeginRenderListener, ITableModelSource
 {
-    /** @since 4.0 */
-    public abstract TableColumnModelSource getModelSource();
 
-    /** @since 4.0 */
-    public abstract IAdvancedTableColumnSource getColumnSource();
-    
     // Component properties
     private ITableSessionStateManager m_objDefaultSessionStateManager = null;
 
@@ -113,6 +115,20 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
     private ITableModel m_objTableModel;
 
     private ITableModel m_objCachedTableModelValue;
+
+    /**
+     * The component constructor. Invokes the component member initializations.
+     */
+    public TableView()
+    {
+        initialize();
+    }
+
+    /** @since 4.0 */
+    public abstract TableColumnModelSource getModelSource();
+
+    /** @since 4.0 */
+    public abstract IAdvancedTableColumnSource getColumnSource();
 
     // enhanced parameter methods
     public abstract ITableModel getTableModelValue();
@@ -151,16 +167,8 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
     public abstract void setClientAppState(Serializable sessionState);
 
     public abstract List getTableActions();
-    
-    public abstract void setTableActions(List actions); 
-    
-    /**
-     * The component constructor. Invokes the component member initializations.
-     */
-    public TableView()
-    {
-        initialize();
-    }
+
+    public abstract void setTableActions(List actions);
 
     /**
      * Invokes the component member initializations.
@@ -182,8 +190,9 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
     }
 
     /**
-     * Resets the table by removing any stored table state. This means that the current column to
-     * sort on and the current page will be forgotten and all data will be reloaded.
+     * Resets the table by removing any stored table state. This means that the
+     * current column to sort on and the current page will be forgotten and all
+     * data will be reloaded.
      */
     public void reset()
     {
@@ -217,12 +226,14 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
         if (m_objTableModel == null)
             m_objTableModel = getCachedTableModelValue();
 
-        // if the model from the binding is null, build a model from source and columns
+        // if the model from the binding is null, build a model from source and
+        // columns
         if (m_objTableModel == null)
             m_objTableModel = generateTableModel(null);
 
         if (m_objTableModel == null)
-            throw new ApplicationRuntimeException(TableMessages.missingTableModel(this));
+            throw new ApplicationRuntimeException(TableMessages
+                    .missingTableModel(this));
 
         return m_objTableModel;
     }
@@ -238,7 +249,8 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
         if (objState == null)
         {
             objState = new SimpleTableState();
-            objState.getSortingState().setSortColumn(getInitialSortColumn(), getInitialSortOrder());
+            objState.getSortingState().setSortColumn(getInitialSortColumn(),
+                    getInitialSortOrder());
             objState.getPagingState().setCurrentPage(getInitialPage());
         }
 
@@ -248,42 +260,42 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
 
         // get the column model. if not possible, return null.
         ITableColumnModel objColumnModel = getTableColumnModel();
-        if (objColumnModel == null)
-            return null;
+        if (objColumnModel == null) return null;
 
         Object objSourceValue = getSource();
-        if (objSourceValue == null)
-            return null;
+        if (objSourceValue == null) return null;
 
         // if the source parameter is of type {@link IBasicTableModel},
         // create and return an appropriate wrapper
         if (objSourceValue instanceof IBasicTableModel)
-            return new BasicTableModelWrap((IBasicTableModel) objSourceValue, objColumnModel,
-                    objState);
+            return new BasicTableModelWrap((IBasicTableModel) objSourceValue,
+                    objColumnModel, objState);
 
         // otherwise, the source parameter must contain the data to be displayed
         ITableDataModel objDataModel = null;
         if (objSourceValue instanceof Object[])
-            objDataModel = new SimpleListTableDataModel((Object[]) objSourceValue);
+            objDataModel = new SimpleListTableDataModel(
+                    (Object[]) objSourceValue);
         else if (objSourceValue instanceof List)
             objDataModel = new SimpleListTableDataModel((List) objSourceValue);
         else if (objSourceValue instanceof Collection)
-            objDataModel = new SimpleListTableDataModel((Collection) objSourceValue);
+            objDataModel = new SimpleListTableDataModel(
+                    (Collection) objSourceValue);
         else if (objSourceValue instanceof Iterator)
-            objDataModel = new SimpleListTableDataModel((Iterator) objSourceValue);
+            objDataModel = new SimpleListTableDataModel(
+                    (Iterator) objSourceValue);
 
         if (objDataModel == null)
-            throw new ApplicationRuntimeException(TableMessages.invalidTableSource(
-                    this,
-                    objSourceValue));
+            throw new ApplicationRuntimeException(TableMessages
+                    .invalidTableSource(this, objSourceValue));
 
         return new SimpleTableModel(objDataModel, objColumnModel, objState);
     }
 
     /**
-     * Returns the table column model as specified by the 'columns' binding. If the value of the
-     * 'columns' binding is of a type different than ITableColumnModel, this method makes the
-     * appropriate conversion.
+     * Returns the table column model as specified by the 'columns' binding. If
+     * the value of the 'columns' binding is of a type different than
+     * ITableColumnModel, this method makes the appropriate conversion.
      * 
      * @return The table column model as specified by the 'columns' binding
      */
@@ -291,13 +303,9 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
     {
         Object objColumns = getColumns();
 
-        if (objColumns == null)
-            return null;
+        if (objColumns == null) return null;
 
-        if (objColumns instanceof ITableColumnModel)
-        {
-            return (ITableColumnModel) objColumns;
-        }
+        if (objColumns instanceof ITableColumnModel) { return (ITableColumnModel) objColumns; }
 
         if (objColumns instanceof Iterator)
         {
@@ -313,19 +321,19 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
             // validate that the list contains only ITableColumn instances
             List arrColumnsList = (List) objColumns;
             int nColumnsNumber = arrColumnsList.size();
-            for (int i = 0; i < nColumnsNumber; i++)
+            for(int i = 0; i < nColumnsNumber; i++)
             {
                 if (!(arrColumnsList.get(i) instanceof ITableColumn))
-                    throw new ApplicationRuntimeException(TableMessages.columnsOnlyPlease(this));
+                    throw new ApplicationRuntimeException(TableMessages
+                            .columnsOnlyPlease(this));
             }
-            //objColumns = arrColumnsList.toArray(new ITableColumn[nColumnsNumber]);
+            // objColumns = arrColumnsList.toArray(new
+            // ITableColumn[nColumnsNumber]);
             return new SimpleTableColumnModel(arrColumnsList);
         }
 
-        if (objColumns instanceof ITableColumn[])
-        {
-            return new SimpleTableColumnModel((ITableColumn[]) objColumns);
-        }
+        if (objColumns instanceof ITableColumn[]) { return new SimpleTableColumnModel(
+                (ITableColumn[]) objColumns); }
 
         if (objColumns instanceof String)
         {
@@ -342,21 +350,23 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
             return generateTableColumnModel(strColumns);
         }
 
-        throw new ApplicationRuntimeException(TableMessages.invalidTableColumns(this, objColumns));
+        throw new ApplicationRuntimeException(TableMessages
+                .invalidTableColumns(this, objColumns));
     }
 
     private void addAll(List arrColumnsList, Iterator objColumnsIterator)
     {
-        while (objColumnsIterator.hasNext())
+        while(objColumnsIterator.hasNext())
             arrColumnsList.add(objColumnsIterator.next());
     }
 
     /**
-     * Generate a table column model out of the description string provided. Entries in the
-     * description string are separated by commas. Each column entry is of the format name,
-     * name:expression, or name:displayName:expression. An entry prefixed with ! represents a
-     * non-sortable column. If the whole description string is prefixed with *, it represents
-     * columns to be included in a Form.
+     * Generate a table column model out of the description string provided.
+     * Entries in the description string are separated by commas. Each column
+     * entry is of the format name, name:expression, or
+     * name:displayName:expression. An entry prefixed with ! represents a
+     * non-sortable column. If the whole description string is prefixed with *,
+     * it represents columns to be included in a Form.
      * 
      * @param strDesc
      *            the description of the column model to be generated
@@ -366,25 +376,28 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
     {
         IComponent objColumnSettingsContainer = getColumnSettingsContainer();
         IAdvancedTableColumnSource objColumnSource = getColumnSource();
-        
-        return getModelSource().generateTableColumnModel(objColumnSource, strDesc, this, objColumnSettingsContainer);
+
+        return getModelSource().generateTableColumnModel(objColumnSource,
+                strDesc, this, objColumnSettingsContainer);
     }
 
     /**
-     * The default session state manager to be used in case no such manager is provided by the
-     * corresponding parameter.
+     * The default session state manager to be used in case no such manager is
+     * provided by the corresponding parameter.
      * 
      * @return the default session state manager
      */
     public ITableSessionStateManager getDefaultTableSessionStateManager()
     {
         if (m_objDefaultSessionStateManager == null)
-            m_objDefaultSessionStateManager = new TableViewSessionStateManager(this);
+            m_objDefaultSessionStateManager = new TableViewSessionStateManager(
+                    this);
         return m_objDefaultSessionStateManager;
     }
 
     /**
-     * Invoked when there is a modification of the table state and it needs to be saved
+     * Invoked when there is a modification of the table state and it needs to
+     * be saved.
      * 
      * @see org.apache.tapestry.contrib.table.model.ITableModelSource#fireObservedStateChange()
      */
@@ -394,31 +407,33 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
     }
 
     /**
-     * Ensures that the table state is saved before the render phase begins in case there are
-     * modifications for which {@link #fireObservedStateChange()}has not been invoked.
+     * Ensures that the table state is saved before the render phase begins in
+     * case there are modifications for which {@link #fireObservedStateChange()}has
+     * not been invoked.
      * 
      * @see org.apache.tapestry.event.PageBeginRenderListener#pageBeginRender(org.apache.tapestry.event.PageEvent)
      */
     public void pageBeginRender(PageEvent event)
     {
         executeTableActions();
-        
+
         // 'suspenders': save the table model if it has been already loaded.
         // this means that if a change has been made explicitly in a listener,
-        // it will be saved. this is the last place before committing the changes
+        // it will be saved. this is the last place before committing the
+        // changes
         // where a save can occur
-        if (m_objTableModel != null)
-            saveSessionState();
+        if (m_objTableModel != null) saveSessionState();
     }
 
     /**
-     * Saves the table state using the SessionStateManager to determine what to save and the
-     * SessionStoreManager to determine where to save it.
+     * Saves the table state using the SessionStateManager to determine what to
+     * save and the SessionStoreManager to determine where to save it.
      */
     protected void saveSessionState()
     {
         ITableModel objModel = getTableModel();
-        Serializable objState = getTableSessionStateManager().getSessionState(objModel);
+        Serializable objState = getTableSessionStateManager().getSessionState(
+                objModel);
         storeSessionState(objState);
     }
 
@@ -432,13 +447,12 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
         ITableSessionStoreManager objManager = getTableSessionStoreManager();
         if (objManager != null)
             return objManager.loadState(getPage().getRequestCycle());
-    	String strPersist = getPersist();
-    	if (strPersist.equals("client") || strPersist.equals("client:page"))
-    		return getClientState();
-    	else if (strPersist.equals("client:app"))
-    		return getClientAppState();
-    	else
-    		return getSessionState();
+        String strPersist = getPersist();
+        if (strPersist.equals("client") || strPersist.equals("client:page"))
+            return getClientState();
+        else if (strPersist.equals("client:app"))
+            return getClientAppState();
+        else return getSessionState();
     }
 
     /**
@@ -452,20 +466,20 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
         ITableSessionStoreManager objManager = getTableSessionStoreManager();
         if (objManager != null)
             objManager.saveState(getPage().getRequestCycle(), objState);
-        else {
-        	String strPersist = getPersist();
-        	if (strPersist.equals("client") || strPersist.equals("client:page"))
-        		setClientState(objState);
-        	else if (strPersist.equals("client:app"))
-        		setClientAppState(objState);
-        	else 
-        		setSessionState(objState);
+        else
+        {
+            String strPersist = getPersist();
+            if (strPersist.equals("client") || strPersist.equals("client:page"))
+                setClientState(objState);
+            else if (strPersist.equals("client:app"))
+                setClientAppState(objState);
+            else setSessionState(objState);
         }
     }
 
     /**
-     * Make sure that the values stored in the model are useable and correct. The changes made here
-     * are not saved.
+     * Make sure that the values stored in the model are useable and correct.
+     * The changes made here are not saved.
      */
     protected void validateValues()
     {
@@ -490,45 +504,50 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
     }
 
     /**
-     * Stores a pointer to this component in the Request Cycle while rendering so that wrapped
-     * components have access to it.
+     * Stores a pointer to this component in the Request Cycle while rendering
+     * so that wrapped components have access to it.
      * 
-     * @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter, IRequestCycle)
+     * @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter,
+     *      IRequestCycle)
      */
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        Object objOldValue = cycle.getAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE);
-        cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE, this);
+        Object objOldValue = cycle
+                .getAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE);
+        cycle
+                .setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE,
+                        this);
 
         initialize();
         validateValues();
         super.renderComponent(writer, cycle);
 
-        cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE, objOldValue);
+        cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE,
+                objOldValue);
     }
 
     /**
-     * Stores the provided table action
+     * Stores the provided table action.
      */
     public void storeTableAction(ITableAction action)
     {
         List actions = getTableActions();
-        if (actions == null) {
+        if (actions == null)
+        {
             actions = new ArrayList(5);
             setTableActions(actions);
         }
-        
+
         actions.add(action);
     }
-    
+
     /**
-     * Executes the stored table actions
+     * Executes the stored table actions.
      */
     public void executeTableActions()
     {
         List actions = getTableActions();
-        if (actions == null || actions.isEmpty())
-            return;
+        if (actions == null || actions.isEmpty()) return;
 
         // save the actions and clear the list
         List savedActions = new ArrayList(actions);
@@ -540,9 +559,9 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
             ITableAction action = (ITableAction) it.next();
             action.executeTableAction(objTableModel);
         }
-        
+
         // ensure that the changes are saved
         fireObservedStateChange();
     }
-    
+
 }

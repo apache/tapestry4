@@ -34,11 +34,11 @@ import org.apache.tapestry.util.ComponentAddress;
  */
 public abstract class TablePages extends AbstractTableViewComponent
 {
-    // Bindings    
-    public abstract int getPagesDisplayed();
-
     // Transient
     private int m_nDisplayPage;
+    
+    // Bindings    
+    public abstract int getPagesDisplayed();
 
     /**
      * Returns the displayPage.

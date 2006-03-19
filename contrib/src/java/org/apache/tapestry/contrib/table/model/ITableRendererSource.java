@@ -20,9 +20,10 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * This interface provides a renderer to present the data in a table column.
- * It is usually used by the {@link org.apache.tapestry.contrib.table.model.ITableColumn} 
- * implementations via aggregation.
+ * This interface provides a renderer to present the data in a table column. It
+ * is usually used by the
+ * {@link org.apache.tapestry.contrib.table.model.ITableColumn} implementations
+ * via aggregation.
  * 
  * @see org.apache.tapestry.contrib.table.model.common.AbstractTableColumn
  * @author mindbridge
@@ -30,17 +31,17 @@ import org.apache.tapestry.IRequestCycle;
  */
 public interface ITableRendererSource extends Serializable
 {
-	/**
-	 * Returns a renderer to present the data of the row in the given column. <p>
-	 * This method can also be used to return a renderer to present the
-	 * heading of the column. In such a case the row passed would be null.
-	 * 
-	 * @see org.apache.tapestry.contrib.table.model.ITableColumn#getValueRenderer(IRequestCycle, ITableModelSource, Object)
-	 */
-	public IRender getRenderer(
-		IRequestCycle objCycle,
-		ITableModelSource objSource,
-		ITableColumn objColumn,
-		Object objRow);
+
+    /**
+     * Returns a renderer to present the data of the row in the given column.
+     * <p>
+     * This method can also be used to return a renderer to present the heading
+     * of the column. In such a case the row passed would be null.
+     * 
+     * @see org.apache.tapestry.contrib.table.model.ITableColumn#getValueRenderer(IRequestCycle,
+     *      ITableModelSource, Object)
+     */
+    IRender getRenderer(IRequestCycle objCycle,
+            ITableModelSource objSource, ITableColumn objColumn, Object objRow);
 
 }

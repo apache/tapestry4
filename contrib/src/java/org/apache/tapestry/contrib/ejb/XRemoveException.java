@@ -27,29 +27,30 @@ public class XRemoveException extends RemoveException
 {
     private static final long serialVersionUID = -8940644648555335217L;
     
-	private Throwable rootCause;
+    private final Throwable _rootCause;
 
     public XRemoveException(String message)
     {
         super(message);
+        _rootCause = null;
     }
 
     public XRemoveException(String message, Throwable rootCause)
     {
         super(message);
 
-        this.rootCause = rootCause;
+        this._rootCause = rootCause;
     }
 
     public XRemoveException(Throwable rootCause)
     {
         super(rootCause.getMessage());
 
-        this.rootCause = rootCause;
+        this._rootCause = rootCause;
     }
 
     public Throwable getRootCause()
     {
-        return rootCause;
+        return _rootCause;
     }
 }

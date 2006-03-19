@@ -18,7 +18,7 @@ import org.apache.tapestry.contrib.table.model.ITableModel;
 
 
 /**
- * <p>A table action that changes the current table page</p>
+ * <p>A table action that changes the current table page</p>.
  *
  * @author teo
  */

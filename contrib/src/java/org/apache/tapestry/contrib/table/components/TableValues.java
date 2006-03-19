@@ -80,7 +80,7 @@ public abstract class TableValues extends AbstractTableRowComponent
     }
 
     /**
-     * Returns the renderer to be used to generate the appearance of the current column
+     * Returns the renderer to be used to generate the appearance of the current column.
      * 
      * @return the value renderer of the current column
      */

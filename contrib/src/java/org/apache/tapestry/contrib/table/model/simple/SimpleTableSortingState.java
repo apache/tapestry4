@@ -19,56 +19,61 @@ import java.io.Serializable;
 import org.apache.tapestry.contrib.table.model.ITableSortingState;
 
 /**
- * A minimal implementation of 
- * {@link org.apache.tapestry.contrib.table.model.ITableSortingState}
+ * A minimal implementation of
+ * {@link org.apache.tapestry.contrib.table.model.ITableSortingState}.
  * 
  * @author mindbridge
  */
-public class SimpleTableSortingState
-	implements ITableSortingState, Serializable
+public class SimpleTableSortingState implements ITableSortingState,
+        Serializable
 {
-	private static final long serialVersionUID = 1L;
-	
-	private String m_strSortColumn;
-	private boolean m_bSortOrder;
 
-	public SimpleTableSortingState()
-	{
-		this(null, ITableSortingState.SORT_ASCENDING); 
-	}
+    private static final long serialVersionUID = 1L;
 
-	public SimpleTableSortingState(String strSortColumn, boolean bSortOrder)
-	{
-		m_strSortColumn = strSortColumn; 
-		m_bSortOrder = bSortOrder;
-	}
-	
-	/**
-	 * Returns the SortOrder.
-	 * @return boolean
-	 */
-	public boolean getSortOrder()
-	{
-		return m_bSortOrder;
-	}
+    private String m_strSortColumn;
+    private boolean m_bSortOrder;
 
-	/**
-	 * Returns the SortColumn.
-	 * @return int
-	 */
-	public String getSortColumn()
-	{
-		return m_strSortColumn;
-	}
+    public SimpleTableSortingState()
+    {
+        this(null, ITableSortingState.SORT_ASCENDING);
+    }
 
-	/**
-	 * Sets the SortColumn.
-	 * @param strSortColumn The SortColumn to set
-	 */
-	public void setSortColumn(String strSortColumn, boolean bSortOrder)
-	{
-		m_strSortColumn = strSortColumn;
-		m_bSortOrder = bSortOrder;
-	}
+    public SimpleTableSortingState(String strSortColumn, boolean bSortOrder)
+    {
+        m_strSortColumn = strSortColumn;
+        m_bSortOrder = bSortOrder;
+    }
+
+    /**
+     * Returns the SortOrder.
+     * 
+     * @return boolean
+     */
+    public boolean getSortOrder()
+    {
+        return m_bSortOrder;
+    }
+
+    /**
+     * Returns the SortColumn.
+     * 
+     * @return int
+     */
+    public String getSortColumn()
+    {
+        return m_strSortColumn;
+    }
+
+    /**
+     * Sets the SortColumn.
+     * 
+     * @param strSortColumn
+     *            The SortColumn to set
+     */
+    public void setSortColumn(String strSortColumn, boolean bSortOrder)
+    {
+        m_strSortColumn = strSortColumn;
+        m_bSortOrder = bSortOrder;
+    }
 
 }

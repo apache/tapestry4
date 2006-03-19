@@ -17,9 +17,13 @@
  */
 package org.apache.tapestry.contrib.table.model;
 
-
-public interface IAdvancedTableColumnSource 
+/**
+ * 
+ * @author mb
+ */
+public interface IAdvancedTableColumnSource
 {
-    IAdvancedTableColumn generateTableColumn(String strName, String strDisplayName,
-    		boolean bSortable, String strExpression);
+
+    IAdvancedTableColumn generateTableColumn(String strName,
+            String strDisplayName, boolean bSortable, String strExpression);
 }

@@ -22,90 +22,88 @@ import java.io.ObjectOutput;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  A complex key that may be used as an alternative to nested
- *  {@link java.util.Map}s.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * A complex key that may be used as an alternative to nested
+ * {@link java.util.Map}s.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public class MultiKey implements Externalizable
 {
+
     /**
-     *  @since 2.0.4
-     * 
-     **/
-    
+     * @since 2.0.4
+     */
+
     private static final long serialVersionUID = 4465448607415788806L;
-    
+
     private static final int HASH_CODE_UNSET = -1;
 
     private transient int hashCode = HASH_CODE_UNSET;
 
-    private Object[] keys;
+    private Object[] _keys;
 
     /**
-     *  Public no-arguments constructor needed to be compatible with
-     *  {@link Externalizable}; this leaves the new MultiKey in a
-     *  non-usable state and shouldn't be used by user code.
-     *
-     **/
+     * Public no-arguments constructor needed to be compatible with
+     * {@link Externalizable}; this leaves the new MultiKey in a non-usable
+     * state and shouldn't be used by user code.
+     */
 
     public MultiKey()
     {
     }
 
     /**
-     *  Builds a <code>MultiKey</code> from an array of keys.  If the array is not
-     *  copied, then it must not be modified.
+     * Builds a <code>MultiKey</code> from an array of keys. If the array is
+     * not copied, then it must not be modified.
      * 
-     *  @param keys The components of the key.
-     *  @param makeCopy If true, a copy of the keys is created.  If false,
-     *  the keys are simple retained by the <code>MultiKey</code>.
-     *
-     *  @throws IllegalArgumentException if keys is null, of if the
-     *  first element of keys is null.
-     *
-     **/
+     * @param keys
+     *            The components of the key.
+     * @param makeCopy
+     *            If true, a copy of the keys is created. If false, the keys are
+     *            simple retained by the <code>MultiKey</code>.
+     * @throws IllegalArgumentException
+     *             if keys is null, of if the first element of keys is null.
+     */
 
     public MultiKey(Object[] keys, boolean makeCopy)
     {
         super();
 
         if (keys == null || keys.length == 0)
-            throw new IllegalArgumentException(Tapestry.getMessage("MultiKey.null-keys"));
+            throw new IllegalArgumentException(Tapestry
+                    .getMessage("MultiKey.null-keys"));
 
         if (keys[0] == null)
-            throw new IllegalArgumentException(Tapestry.getMessage("MultiKey.first-element-may-not-be-null"));
+            throw new IllegalArgumentException(Tapestry
+                    .getMessage("MultiKey.first-element-may-not-be-null"));
 
         if (makeCopy)
         {
-            this.keys = new Object[keys.length];
-            System.arraycopy(keys, 0, this.keys, 0, keys.length);
+            this._keys = new Object[keys.length];
+            System.arraycopy(keys, 0, this._keys, 0, keys.length);
         }
-        else
-            this.keys = keys;
+        else this._keys = keys;
     }
 
     /**
-     *  Returns true if:
-     *  <ul>
-     *  <li>The other object is a <code>MultiKey</code>
-     *  <li>They have the same number of key elements
-     *  <li>Every element is an exact match or is equal
-     *  </ul>
-     *
-     **/
+     * Returns true if. :
+     * <ul>
+     * <li>The other object is a <code>MultiKey</code>
+     * <li>They have the same number of key elements
+     * <li>Every element is an exact match or is equal
+     * </ul>
+     */
 
     public boolean equals(Object other)
     {
         int i;
 
-        if (other == null)
-            return false;
+        if (other == null) return false;
 
-        if (keys == null)
-            throw new IllegalStateException(Tapestry.getMessage("MultiKey.no-keys"));
+        if (_keys == null)
+            throw new IllegalStateException(Tapestry
+                    .getMessage("MultiKey.no-keys"));
 
         // Would a hashCode check be worthwhile here?
 
@@ -113,29 +111,26 @@ public class MultiKey implements Externalizable
         {
             MultiKey otherMulti = (MultiKey) other;
 
-            if (keys.length != otherMulti.keys.length)
-                return false;
+            if (_keys.length != otherMulti._keys.length) return false;
 
-            for (i = 0; i < keys.length; i++)
+            for(i = 0; i < _keys.length; i++)
             {
-                // On an exact match, continue.  This means that null matches
+                // On an exact match, continue. This means that null matches
                 // null.
 
-                if (keys[i] == otherMulti.keys[i])
-                    continue;
+                if (_keys[i] == otherMulti._keys[i]) continue;
 
                 // If either is null, but not both, then
                 // not a match.
 
-                if (keys[i] == null || otherMulti.keys[i] == null)
+                if (_keys[i] == null || otherMulti._keys[i] == null)
                     return false;
 
-                if (!keys[i].equals(otherMulti.keys[i]))
-                    return false;
+                if (!_keys[i].equals(otherMulti._keys[i])) return false;
 
             }
 
-            // Every key equal.  A match.
+            // Every key equal. A match.
 
             return true;
         }
@@ -147,27 +142,22 @@ public class MultiKey implements Externalizable
     }
 
     /**
-     *  Returns the hash code of the receiver, which is computed from all the
-     *  non-null key elements.  This value is computed once and
-     *  then cached, so elements should not change their hash codes 
-     *  once created (note that this
-     *  is the same constraint that would be used if the individual 
-     *  key elements were
-     *  themselves {@link java.util.Map} keys.
-     * 
-     *
-     **/
+     * Returns the hash code of the receiver, which is computed from all the
+     * non-null key elements. This value is computed once and then cached, so
+     * elements should not change their hash codes once created (note that this
+     * is the same constraint that would be used if the individual key elements
+     * were themselves {@link java.util.Map} keys.
+     */
 
     public int hashCode()
     {
         if (hashCode == HASH_CODE_UNSET)
         {
-            hashCode = keys[0].hashCode();
+            hashCode = _keys[0].hashCode();
 
-            for (int i = 1; i < keys.length; i++)
+            for(int i = 1; i < _keys.length; i++)
             {
-                if (keys[i] != null)
-                    hashCode ^= keys[i].hashCode();
+                if (_keys[i] != null) hashCode ^= _keys[i].hashCode();
             }
         }
 
@@ -175,9 +165,8 @@ public class MultiKey implements Externalizable
     }
 
     /**
-    *  Identifies all the keys stored by this <code>MultiKey</code>.
-    *
-    **/
+     * Identifies all the keys stored by this <code>MultiKey</code>.
+     */
 
     public String toString()
     {
@@ -186,15 +175,13 @@ public class MultiKey implements Externalizable
 
         buffer = new StringBuffer("MultiKey[");
 
-        for (i = 0; i < keys.length; i++)
+        for(i = 0; i < _keys.length; i++)
         {
-            if (i > 0)
-                buffer.append(", ");
+            if (i > 0) buffer.append(", ");
 
-            if (keys[i] == null)
+            if (_keys[i] == null)
                 buffer.append("<null>");
-            else
-                buffer.append(keys[i]);
+            else buffer.append(_keys[i]);
         }
 
         buffer.append(']');
@@ -203,31 +190,32 @@ public class MultiKey implements Externalizable
     }
 
     /**
-     *  Writes a count of the keys, then writes each individual key.
-     *
-     **/
+     * Writes a count of the keys, then writes each individual key.
+     */
 
-    public void writeExternal(ObjectOutput out) throws IOException
+    public void writeExternal(ObjectOutput out)
+        throws IOException
     {
-        out.writeInt(keys.length);
+        out.writeInt(_keys.length);
 
-        for (int i = 0; i < keys.length; i++)
-            out.writeObject(keys[i]);
+        for(int i = 0; i < _keys.length; i++)
+            out.writeObject(_keys[i]);
     }
 
     /**
-     *  Reads the state previously written by {@link #writeExternal(ObjectOutput)}.
-     *
-     **/
+     * Reads the state previously written by
+     * {@link #writeExternal(ObjectOutput)}.
+     */
 
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
+    public void readExternal(ObjectInput in)
+        throws IOException, ClassNotFoundException
     {
         int count;
 
         count = in.readInt();
-        keys = new Object[count];
+        _keys = new Object[count];
 
-        for (int i = 0; i < count; i++)
-            keys[i] = in.readObject();
+        for(int i = 0; i < count; i++)
+            _keys[i] = in.readObject();
     }
 }

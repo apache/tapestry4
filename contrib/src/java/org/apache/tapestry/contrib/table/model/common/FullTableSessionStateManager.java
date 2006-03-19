@@ -20,31 +20,30 @@ import org.apache.tapestry.contrib.table.model.ITableModel;
 import org.apache.tapestry.contrib.table.model.ITableSessionStateManager;
 
 /**
- * A simple ITableSessionStateManager implementation 
- * that saves the entire table model into the session.
+ * A simple ITableSessionStateManager implementation that saves the entire table
+ * model into the session.
  * 
  * @author mindbridge
  */
 public class FullTableSessionStateManager implements ITableSessionStateManager
 {
 
-    public final static FullTableSessionStateManager FULL_STATE_MANAGER =
-        new FullTableSessionStateManager();
+    public static final FullTableSessionStateManager FULL_STATE_MANAGER = new FullTableSessionStateManager();
 
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.ITableSessionStateManager#getSessionState(ITableModel)
-	 */
-	public Serializable getSessionState(ITableModel objModel)
-	{
-		return (Serializable) objModel;
-	}
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableSessionStateManager#getSessionState(ITableModel)
+     */
+    public Serializable getSessionState(ITableModel objModel)
+    {
+        return (Serializable) objModel;
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.ITableSessionStateManager#recreateTableModel(Serializable)
-	 */
-	public ITableModel recreateTableModel(Serializable objState)
-	{
-		return (ITableModel) objState;
-	}
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableSessionStateManager#recreateTableModel(Serializable)
+     */
+    public ITableModel recreateTableModel(Serializable objState)
+    {
+        return (ITableModel) objState;
+    }
 
 }

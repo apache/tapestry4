@@ -20,6 +20,8 @@ import org.apache.tapestry.contrib.tree.components.ITreeComponent;
 /**
  * @author ceco
  */
-public interface ITreeNodeManager {
-	IRender getRenderer(Object objUniqueKey, ITreeComponent objTreeComponent);
+public interface ITreeNodeManager
+{
+
+    IRender getRenderer(Object objUniqueKey, ITreeComponent objTreeComponent);
 }

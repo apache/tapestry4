@@ -23,23 +23,27 @@ import org.apache.tapestry.contrib.table.model.ITableRendererListener;
 /**
  * @author ceco
  */
-public abstract class TreeTableNodeViewDelegator extends BaseComponent implements ITableRendererListener{
+public abstract class TreeTableNodeViewDelegator extends BaseComponent
+        implements ITableRendererListener
+{
 
-	/**
-	 * 
-	 */
-	public TreeTableNodeViewDelegator() {
-		super();
-	}
+    /**
+     * 
+     */
+    public TreeTableNodeViewDelegator()
+    {
+        super();
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.table.model.ITableRendererListener#initializeRenderer(org.apache.tapestry.IRequestCycle, org.apache.tapestry.contrib.table.model.ITableModelSource, org.apache.tapestry.contrib.table.model.ITableColumn, java.lang.Object)
-	 */
-	public void initializeRenderer(
-		IRequestCycle arg0,
-		ITableModelSource arg1,
-		ITableColumn arg2,
-		Object arg3) {
-	}
+    /**
+     * @see org.apache.tapestry.contrib.table.model.ITableRendererListener#initializeRenderer(org.apache.tapestry.IRequestCycle,
+     *      org.apache.tapestry.contrib.table.model.ITableModelSource,
+     *      org.apache.tapestry.contrib.table.model.ITableColumn,
+     *      java.lang.Object)
+     */
+    public void initializeRenderer(IRequestCycle arg0, ITableModelSource arg1,
+            ITableColumn arg2, Object arg3)
+    {
+    }
 
 }

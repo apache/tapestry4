@@ -18,16 +18,13 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * 
  * @see org.apache.tapestry.contrib.table.model.common.AbstractTableColumn
  * @author mindbridge
  * @since 2.3
  */
 public interface ITableRendererListener extends IComponent
 {
-	void initializeRenderer(
-		IRequestCycle objCycle,
-		ITableModelSource objSource,
-		ITableColumn objColumn,
-		Object objRow);
+
+    void initializeRenderer(IRequestCycle objCycle,
+            ITableModelSource objSource, ITableColumn objColumn, Object objRow);
 }

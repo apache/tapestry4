@@ -21,29 +21,38 @@ package org.apache.tapestry.contrib.table.model;
  */
 public interface ITablePagingState
 {
-	/**
-	 * Method getPageSize provides the size of a page in a number of records.
-	 * This value may be meaningless if the model uses a different method for pagination.
-	 * @return int the current page size
-	 */
-	int getPageSize();
 
-	/**
-	 * Method setPageSize updates the size of a page in a number of records.
-	 * This value may be meaningless if the model uses a different method for pagination.
-	 * @param nPageSize the new page size
-	 */
-	void setPageSize(int nPageSize);
+    /**
+     * Method getPageSize provides the size of a page in a number of records.
+     * This value may be meaningless if the model uses a different method for
+     * pagination.
+     * 
+     * @return int the current page size
+     */
+    int getPageSize();
 
-	/**
-	 * Gets the currently selected page. The page number is counted from 0.
-	 * @return int the current active page
-	 */
-	int getCurrentPage();
+    /**
+     * Method setPageSize updates the size of a page in a number of records.
+     * This value may be meaningless if the model uses a different method for
+     * pagination.
+     * 
+     * @param nPageSize
+     *            the new page size
+     */
+    void setPageSize(int nPageSize);
 
-	/**
-	 * Sets the newly selected page. The page number is counted from 0.
-	 * @param nPage the new active page
-	 */
-	void setCurrentPage(int nPage);
+    /**
+     * Gets the currently selected page. The page number is counted from 0.
+     * 
+     * @return int the current active page
+     */
+    int getCurrentPage();
+
+    /**
+     * Sets the newly selected page. The page number is counted from 0.
+     * 
+     * @param nPage
+     *            the new active page
+     */
+    void setCurrentPage(int nPage);
 }

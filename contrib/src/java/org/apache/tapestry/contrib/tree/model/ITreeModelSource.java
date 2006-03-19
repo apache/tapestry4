@@ -21,9 +21,11 @@ import org.apache.tapestry.IComponent;
  */
 public interface ITreeModelSource extends IComponent
 {
-    final static String TREE_MODEL_SOURCE_ATTRIBUTE = "org.apache.tapestry.contrib.tree.model.ITreeModelSource";
 
-	ITreeModel getTreeModel();
-	ITreeStateListener getTreeStateListener();
+    String TREE_MODEL_SOURCE_ATTRIBUTE = "org.apache.tapestry.contrib.tree.model.ITreeModelSource";
+
+    ITreeModel getTreeModel();
+
+    ITreeStateListener getTreeStateListener();
 
 }
