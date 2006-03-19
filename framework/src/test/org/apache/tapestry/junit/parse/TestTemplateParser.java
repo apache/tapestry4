@@ -92,11 +92,12 @@ public class TestTemplateParser extends TestCase
     protected TemplateToken[] run(InputStream stream, ITemplateParserDelegate delegate,
             Resource location) throws TemplateParseException
     {
+        
         char[] data = null;
         
         try
         {
-            data = IOUtils.toCharArray(stream, "UTF-8");
+            data = IOUtils.toCharArray(stream, "US-ASCII");
             
             stream.close();
         }

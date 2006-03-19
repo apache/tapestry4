@@ -197,10 +197,10 @@
         <property name="serviceMap" object="service:ServiceMap" />
     </contribution>
 
-    <service-point id="ResponseDelegateFactory" interface="ResponseDelegateFactory">
+    <service-point id="ResponseDelegateFactory" interface="org.apache.tapestry.services.ResponseDelegateFactory">
         Delegates choosing an appropriate response to the configured response builder contributions.
         <invoke-factory>
-            <construct class="impl.ResponseDelegateFactoryImpl">
+            <construct class="org.apache.tapestry.services.impl.ResponseDelegateFactoryImpl">
                 <set-configuration property="responseContributors"
                     configuration-id="ResponseContributors" />
             </construct>
@@ -222,12 +222,12 @@
         </schema>
     </configuration-point>
     
-    <service-point id="JSONResponseContributor" interface="ResponseContributor">
+    <service-point id="JSONResponseContributor" interface="org.apache.tapestry.services.ResponseContributor">
         Defines the factory service that is responsible for determining if a particular request is
         one that should recieve a JSON response.
         <invoke-factory>
-            <construct class="impl.JSONResponseContributorImpl" >
-                <set-service property="localeManager" service-id="RequestLocaleManager"/>
+            <construct class="org.apache.tapestry.services.impl.JSONResponseContributorImpl" >
+                <set-service property="localeManager" service-id="tapestry.request.RequestLocaleManager"/>
                 <set-object property="markupWriterSource"  value="infrastructure:markupWriterSource"/>
                 <set-object property="webResponse" value="infrastructure:response"/>
                 <set-service property="webRequest" service-id="tapestry.globals.WebRequest" />
@@ -235,12 +235,12 @@
         </invoke-factory>
     </service-point>
     
-    <service-point id="DefaultResponseContributor" interface="ResponseContributor">
+    <service-point id="DefaultResponseContributor" interface="org.apache.tapestry.services.ResponseContributor">
         Defines the factory service that is responsible for determining if a particular request is
         one that should recieve a JSON response.
         <invoke-factory>
-            <construct class="impl.DefaultResponseContributorImpl" >
-                <set-service property="localeManager" service-id="RequestLocaleManager"/>
+            <construct class="org.apache.tapestry.services.impl.DefaultResponseContributorImpl" >
+                <set-service property="localeManager" service-id="tapestry.request.RequestLocaleManager"/>
                 <set-object property="markupWriterSource"  value="infrastructure:markupWriterSource"/>
                 <set-object property="webResponse" value="infrastructure:response"/>
             </construct>
