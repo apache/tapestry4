@@ -904,6 +904,16 @@
     </release>
   </changes>
   <votes>
+  	<vote title="Andreas Andreou as Tapestry Committer" date="Mar 10 2006" dev="JK">
+		<motion>
+			Andreas has been a very active tapestry user for a long time now, as well as more or less taking the lead role lately on the tacos project. I've been very impressed with his dedication to performance/browser compatibility/etc as well as his overall knowledge of javascript, which will be key with tapestry 4.1 and onward.
+
+Besides all of these things, there is also a very real need for more day to day support of tapestry as a whole. I can't currently think of anyone (that I know) more qualified to come on board.
+		</motion>
+		<response>
+			HLS, JK, RLS, PF, MB, GL, HK, DS: +1
+		</response>
+	</vote>
     <vote title="4.0 Final Release" date="Dec 30 2005" dev="HLS">
       <motion>
         I think 4.0 is ready for a wider release and a new release
@@ -931,7 +941,6 @@
         KT: -1
       </response>
     </vote>
-
     <vote title="Tapestry 4.0-rc-1" date="Nov 30 2005" dev="HLS">
       <motion>
         By the time this vote ends, we'll have some kind of fix for
