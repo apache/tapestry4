@@ -39,8 +39,6 @@
   <parameter name="validators"/>
   <parameter name="id" property="idParameter" default-value="id"/>
   
-  <parameter name="maxSize" default-value="10000000" />
-  
   <reserved-parameter name="type"/>
   <reserved-parameter name="name"/>
   

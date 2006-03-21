@@ -59,15 +59,15 @@ public abstract class Upload extends AbstractFormComponent implements Validatabl
         {
             writer.attribute("disabled", "disabled");
         }
-
+        
         renderIdAttribute(writer, cycle);
-
+        
         renderDelegateAttributes(writer, cycle);
-
+        
         getValidatableFieldSupport().renderContributions(this, writer, cycle);
-
+        
         renderInformalParameters(writer, cycle);
-
+        
         writer.closeTag();
 
         renderDelegateSuffix(writer, cycle);
@@ -79,11 +79,6 @@ public abstract class Upload extends AbstractFormComponent implements Validatabl
      */
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-    	// set the max file upload size first, but only if
-    	// not already set manually on the decoder service
-    	if (!getDecoder().isMaxSizeSet())
-    		getDecoder().setSizeMax(getMaxSize());
-    	
         IUploadFile file = getDecoder().getFileUpload(getName());
         
         if (HiveMind.isBlank(file.getFileName()))
@@ -102,14 +97,6 @@ public abstract class Upload extends AbstractFormComponent implements Validatabl
             getForm().getDelegate().record(e);
         }
     }
-    
-    /**
-     * Max size parameter, in bytes. Parameter is ignored if 
-     * {@link MultipartDecoder#isMaxSizeSet()} returns true.
-     * 
-     * @return The maximum file size that may be uploaded.
-     */
-    public abstract long getMaxSize();
     
     /**
      * Injected.
