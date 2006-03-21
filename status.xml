@@ -155,6 +155,9 @@
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-422" due-to="Brian K. Wallace" >
       	Patches to Javadoc to explicitly state that URLs returned from ExternalService will already be encoded.
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-208" >
+      	Changed method signature to use Collection instead of List.
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>

@@ -15,6 +15,7 @@
 package org.apache.tapestry.contrib.form;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.tapestry.IMarkupWriter;
@@ -103,9 +104,9 @@ public abstract class MultiplePropertySelection extends AbstractFormComponent im
      */
     public static final IMultiplePropertySelectionRenderer DEFAULT_CHECKBOX_RENDERER = new CheckBoxMultiplePropertySelectionRenderer();
 
-    public abstract List getSelectedList();
+    public abstract Collection getSelectedList();
     
-    public abstract void setSelectedList(List selectedList);
+    public abstract void setSelectedList(Collection selectedList);
     
     protected void finishLoad()
     {
@@ -114,7 +115,7 @@ public abstract class MultiplePropertySelection extends AbstractFormComponent im
 
     protected void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        List selectedList = getSelectedList();
+    	Collection selectedList = getSelectedList();
 
         if (selectedList == null)
             throw Tapestry.createRequiredParameterException(this, "selectedList");
