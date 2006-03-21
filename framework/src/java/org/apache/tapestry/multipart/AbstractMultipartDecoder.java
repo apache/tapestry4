@@ -40,8 +40,6 @@ public abstract class AbstractMultipartDecoder {
 	 */
 	private Map _valueParts = new HashMap();
 
-	protected int _maxSize = 10000000;
-
 	protected int _thresholdSize = 1024;
 
 	protected String _repositoryPath = System.getProperty("java.io.tmpdir");

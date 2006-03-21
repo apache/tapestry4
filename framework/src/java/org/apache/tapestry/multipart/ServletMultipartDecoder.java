@@ -28,5 +28,4 @@ public interface ServletMultipartDecoder extends MultipartDecoder {
      */
 
     public HttpServletRequest decode(HttpServletRequest request);
-
 }

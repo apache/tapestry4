@@ -110,7 +110,18 @@
     </td>
 
   </tr>
+  <tr>
 
+    <td>maxSize</td>
+    <td>long</td>
+    <td>in</td>
+    <td>no</td>
+    <td>10000000</td>
+    <td>
+      The default maximum file upload size, in bytes. Default is 10kb.
+    </td>
+
+  </tr>
 </table>
 
 <p>

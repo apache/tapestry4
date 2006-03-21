@@ -33,6 +33,16 @@ public interface MultipartDecoder {
 
 	public IUploadFile getFileUpload(String parameterName);
 
+    /**
+     * Sets the maximum upload file size on the resulting {@link FileUpload} 
+     * object.
+     * 
+     * @see <a href="http://jakarta.apache.org/commons/fileupload/apidocs/org/apache/commons/fileupload/FileUploadBase.html#setSizeMax(long)">FileUpload</a>
+     * @param sizeMax The maximum file size allowed for uploads, default is 10kb
+     */
+    
+    public void setSizeMax(long sizeMax);
+    
 	/**
 	 * Cleans up any temporary resources created during the request processing.
 	 * This typically includes temporary files used to contain uploaded file

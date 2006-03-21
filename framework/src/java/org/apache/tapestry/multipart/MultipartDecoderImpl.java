@@ -35,7 +35,10 @@ import org.apache.hivemind.ApplicationRuntimeException;
  * @since 4.0
  */
 public class MultipartDecoderImpl extends AbstractMultipartDecoder implements ServletMultipartDecoder
-{
+{	
+	/* maximum size of file allowed to be uploaded */
+	protected long _sizeMax = 10000000;
+	
     public HttpServletRequest decode(HttpServletRequest request)
     {
         _encoding = request.getCharacterEncoding();
@@ -57,15 +60,25 @@ public class MultipartDecoderImpl extends AbstractMultipartDecoder implements Se
 
         return new UploadFormParametersWrapper(request, parameterMap);
     }
-
+    
 	private ServletFileUpload createFileUpload() {
     	FileItemFactory factory = new DiskFileItemFactory(_thresholdSize, new File(_repositoryPath));
     	ServletFileUpload upload = new ServletFileUpload(factory);
-
+    	
+    	//set maximum file upload size
+    	upload.setSizeMax(_sizeMax);
+    	
         if (_encoding != null)
             upload.setHeaderEncoding(_encoding);
 
         return upload;
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setSizeMax(long sizeMax)
+	{
+		_sizeMax = sizeMax;
+	}
 }

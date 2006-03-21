@@ -131,6 +131,18 @@
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-830">
         RadioGroup component now rewinds its body appropriately when disabled.
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-368" >
+      	Added maxSize parameter to Upload component, allowing the default maximum
+      	file upload size to be changed.
+      </action>
+      <action type="update" dev="JK" fixes-bug="TAPESTRY-890" due-to="Marcus Shulte">
+      	Updated german validation strings properties.
+      </action>
+      <action type="update" dev="JK" due-to="Pedro Garcia">
+      	The validation strings in ValidationStrings_pt_BR.properties were using double quotes
+      	around characters, which were causing problems for JS parsing. Changed these to use 
+      	single quotes.
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>

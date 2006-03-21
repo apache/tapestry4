@@ -46,11 +46,11 @@ public abstract class Upload extends AbstractFormComponent implements Validatabl
     {
         // Force the form to use the correct encoding type for file uploads.
         IForm form = getForm();
-
+        
         form.setEncodingType("multipart/form-data");
-
+        
         renderDelegatePrefix(writer, cycle);
-
+        
         writer.beginEmpty("input");
         writer.attribute("type", "file");
         writer.attribute("name", getName());
@@ -79,6 +79,9 @@ public abstract class Upload extends AbstractFormComponent implements Validatabl
      */
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
+    	// set the max file upload size first
+    	getDecoder().setSizeMax(getMaxSize());
+    	
         IUploadFile file = getDecoder().getFileUpload(getName());
         
         if (HiveMind.isBlank(file.getFileName()))
@@ -97,6 +100,12 @@ public abstract class Upload extends AbstractFormComponent implements Validatabl
             getForm().getDelegate().record(e);
         }
     }
+    
+    /**
+     * Max size parameter, in bytes. 
+     * @return The maximum file size that may be uploaded.
+     */
+    public abstract long getMaxSize();
     
     /**
      * Injected.

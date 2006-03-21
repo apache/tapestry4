@@ -33,6 +33,9 @@ import org.apache.tapestry.multipart.MultipartMessages;
  */
 public class PortletMultipartDecoderImpl extends AbstractMultipartDecoder implements PortletMultipartDecoder {
 
+	/* maximum size of file allowed to be uploaded */
+	protected long _sizeMax = 10000000;
+	
 	public ActionRequest decode(ActionRequest request) {
         _encoding = request.getCharacterEncoding();
 
@@ -53,15 +56,25 @@ public class PortletMultipartDecoderImpl extends AbstractMultipartDecoder implem
 
         return new UploadFormPortletParametersWrapper(request, parameterMap);
 	}
-
+	
 	private PortletFileUpload createFileUpload() {
     	FileItemFactory factory = new DiskFileItemFactory(_thresholdSize, new File(_repositoryPath));
     	PortletFileUpload upload = new PortletFileUpload(factory);
-
+    	
+    	//set maximum file upload size
+    	upload.setSizeMax(_sizeMax);
+    	
         if (_encoding != null)
             upload.setHeaderEncoding(_encoding);
 
         return upload;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setSizeMax(long sizeMax)
+	{
+		_sizeMax = sizeMax;
+	}
 }
