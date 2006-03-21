@@ -38,6 +38,11 @@ public class MultipartDecoderImpl extends AbstractMultipartDecoder implements Se
 {	
 	/* maximum size of file allowed to be uploaded */
 	protected long _sizeMax = 10000000;
+	/* 
+	 * boolean check for whether someone has manually set 
+	 * the maximum upload size directly on this service 
+	 */
+	protected boolean _sizeMaxSet = false;
 	
     public HttpServletRequest decode(HttpServletRequest request)
     {
@@ -65,7 +70,7 @@ public class MultipartDecoderImpl extends AbstractMultipartDecoder implements Se
     	FileItemFactory factory = new DiskFileItemFactory(_thresholdSize, new File(_repositoryPath));
     	ServletFileUpload upload = new ServletFileUpload(factory);
     	
-    	//set maximum file upload size
+    	// set maximum file upload size
     	upload.setSizeMax(_sizeMax);
     	
         if (_encoding != null)
@@ -79,6 +84,15 @@ public class MultipartDecoderImpl extends AbstractMultipartDecoder implements Se
 	 */
 	public void setSizeMax(long sizeMax)
 	{
+		_sizeMaxSet = true;
 		_sizeMax = sizeMax;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isMaxSizeSet()
+	{
+		return _sizeMaxSet;
 	}
 }

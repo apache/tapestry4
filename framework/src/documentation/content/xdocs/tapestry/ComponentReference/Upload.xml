@@ -118,7 +118,9 @@
     <td>no</td>
     <td>10000000</td>
     <td>
-      The default maximum file upload size, in bytes. Default is 10kb.
+      The default maximum file upload size, in bytes. Default is 10kb. 
+      Note: This parameter will be ignored if the maximum size is set manually
+      on the <link href="&apiroot;/multipart/MultipartDecoder.html">MultipartDecoder</link> service.
     </td>
 
   </tr>
