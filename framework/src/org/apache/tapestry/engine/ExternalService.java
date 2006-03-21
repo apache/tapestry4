@@ -110,6 +110,20 @@ import org.apache.tapestry.request.ResponseOutputStream;
 public class ExternalService extends AbstractService
 {
 
+  /**
+   *  Builds a URL for a service.  This is performed during the
+   *  rendering phase of one request cycle and bulds URLs that will
+   *  invoke activity in a subsequent request cycle.
+   *
+   *  @param cycle Defines the request cycle being processed.
+   *  @param component The component requesting the URL.  Generally, the
+   *  service context is established from the component.
+   *  @param parameters Additional parameters specific to the
+   *  component requesting the EngineServiceLink.
+   *  @return The URL for the service.  The URL always be encoded when it is returned.
+   *
+   **/
+  
     public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (parameters == null || parameters.length == 0)

@@ -553,7 +553,7 @@ In rare cases, your message may have pre-formatted HTML inside it.  Normally, ou
 filtered, so that any reserved
 HTML characters in a message string are expanded to HTML entities.  For example,
 a <literal>&lt;</literal>	 will be expanded to <literal>&amp;lt;</literal>. If this is not desired,
-add  <literal>raw="yes"</literal> to the &span;. This defeats the filtering, and text in the message
+add  <literal>raw="true"</literal> to the &span;. This defeats the filtering, and text in the message
 is passed through as-is.
 </para>
 

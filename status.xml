@@ -151,6 +151,12 @@
       <action type="update" dev="JK" fixes-bug="TAPESTRY-310" due-to="Joni Suoinen" >
       	Add finnish validation strings
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-646" due-to="Brian K. Wallace" >
+      	 Modified text raw="yes" to raw="true" for user guide Insert component documentation.
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-422" due-to="Brian K. Wallace" >
+      	Patches to Javadoc to explicitly state that URLs returned from ExternalService will already be encoded.
+      </action>
     </release>
     <release version="3.0.3" date="Mar 26 2005">
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>
