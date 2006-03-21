@@ -111,14 +111,10 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
         if (form.isRewinding())
         {
             if (!isDisabled())
-            {
                 rewindFormComponent(writer, cycle);
-            }
-
-            // This is for the benefit of the couple of components (LinkSubmit) that allow a body.
-            // The body should render when the component rewinds.
-
-            if (getRenderBodyOnRewind())
+            
+            // This is for the benefit of the couple of components (LinkSubmit and RadioGroup) that allow a body.
+            else if (getAlwaysRenderBodyOnRewind())
                 renderBody(writer, cycle);
         }
         else if (!cycle.isRewinding())
@@ -146,7 +142,7 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
      * 
      * @return false; override this method to change.
      */
-    protected boolean getRenderBodyOnRewind()
+    protected boolean getAlwaysRenderBodyOnRewind()
     {
         return false;
     }

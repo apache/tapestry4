@@ -93,6 +93,16 @@ public abstract class LinkSubmit extends AbstractSubmit
     }
 
     /**
+     * @see org.apache.tapestry.form.AbstractSubmit#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     */
+    protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        super.rewindFormComponent(writer, cycle);
+
+        renderBody(writer, cycle);
+    }
+
+    /**
      * @see org.apache.tapestry.AbstractComponent#prepareForRender(org.apache.tapestry.IRequestCycle)
      */
     protected void prepareForRender(IRequestCycle cycle)
@@ -126,7 +136,7 @@ public abstract class LinkSubmit extends AbstractSubmit
      * Returns true; the LinkSubmit's body should render during a rewind, even if the component is
      * itself disabled.
      */
-    protected boolean getRenderBodyOnRewind()
+    protected boolean getAlwaysRenderBodyOnRewind()
     {
         return true;
     }

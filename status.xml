@@ -128,6 +128,9 @@
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-745" due-to="Brian K. Wallace" >
       	JDK 1.5 requirement added to jboss documentation in examples.
       </action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-830">
+        RadioGroup component now rewinds its body appropriately when disabled.
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>

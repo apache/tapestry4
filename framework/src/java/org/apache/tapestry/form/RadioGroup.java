@@ -204,4 +204,12 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
     {
         return false;
     }
+
+    /**
+     * @see org.apache.tapestry.form.AbstractFormComponent#getRenderBodyOnRewind()
+     */
+    protected boolean getAlwaysRenderBodyOnRewind()
+    {
+        return true;
+    }
 }
