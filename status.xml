@@ -143,6 +143,18 @@
       	around characters, which were causing problems for JS parsing. Changed these to use 
       	single quotes.
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-782" due-to="Brian K. Wallace">
+      	Fixed typo's in TreeTable.jwc, TreeTableDataView.jwc and TreeTableDataView.java (Colunms to Columns) 
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-705" due-to="Brian K. Wallace" >
+      	Insert components javadoc reference linked to old docs, now links to current.
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-646" due-to="Brian K. Wallace" >
+      	Modified text raw="yes" to raw="true" for users guide discussion of Insert component.
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-422" due-to="Brian K. Wallace" >
+      	Patches to Javadoc to explicitly state that URLs returned from ExternalService will already be encoded.
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>

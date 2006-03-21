@@ -25,7 +25,7 @@
            <parameter name="nodeRenderFactory" required="no"/>
            <parameter name="entriesPerTablePage" required="no"/>
            <parameter name="showRootNode" required="no"/>
-           <parameter name="tableColunms" property="tableColumnsParameter" required="no"/>
+           <parameter name="tableColumns" property="tableColumnsParameter" required="no"/>
            <bean name="tableClass" class="org.apache.tapestry.bean.EvenOdd" lifecycle="request"/>
            <component id="table" type="Table">
                       <binding name="tableModel" value="tableModel"/>

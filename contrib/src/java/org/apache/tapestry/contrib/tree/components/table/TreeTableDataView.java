@@ -216,20 +216,20 @@ public abstract class TreeTableDataView extends BaseComponent implements ITreeRo
         arrAllNodes.toArray(arrAllExpandedNodes);
 
         SimpleTableModel objTableModel = new SimpleTableModel(arrAllExpandedNodes,
-                getTableColunms());
+                getTableColumns());
         objTableModel.getPagingState().setPageSize(getEntriesPerTablePage());
 
         return objTableModel;
     }
 
-    public ITableColumn[] getTableColunms()
+    public ITableColumn[] getTableColumns()
     {
         ArrayList arrColumnsList = new ArrayList();
         arrColumnsList.add(new TreeTableColumn("Name", false, null));
 
-        List arrTableColunms = getTableColumnsParameter();
-        if (arrTableColunms != null)
-            arrColumnsList.addAll(arrTableColunms);
+        List arrTableColumns = getTableColumnsParameter();
+        if (arrTableColumns != null)
+            arrColumnsList.addAll(arrTableColumns);
 
         ITableColumn[] arrColumns = new ITableColumn[arrColumnsList.size()];
         arrColumnsList.toArray(arrColumns);
@@ -252,7 +252,7 @@ public abstract class TreeTableDataView extends BaseComponent implements ITreeRo
     public ITableSessionStateManager getTableSessionStateManager()
     {
         SimpleListTableDataModel objDataModel = new SimpleListTableDataModel(generateNodeList());
-        SimpleTableColumnModel objColumnModel = new SimpleTableColumnModel(getTableColunms());
+        SimpleTableColumnModel objColumnModel = new SimpleTableColumnModel(getTableColumns());
         SimpleTableSessionStateManager objStateManager = new SimpleTableSessionStateManager(
                 objDataModel, objColumnModel);
         return objStateManager;
