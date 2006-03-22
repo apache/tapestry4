@@ -344,7 +344,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      * @since 1.0.3
      */
 
-    private ILink getLink(IRequestCycle cycle, String actionId)
+    protected ILink getLink(IRequestCycle cycle, String actionId)
     {
         if (isDirect())
         {

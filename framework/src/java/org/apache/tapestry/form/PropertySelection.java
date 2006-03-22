@@ -115,7 +115,7 @@ public abstract class PropertySelection extends AbstractFormComponent implements
     {
         String value = cycle.getParameter(getName());
         
-        Object object = getModel().translateValue(value);
+        Object object = (value == null) ? null : getModel().translateValue(value);
         
         try
         {

@@ -158,6 +158,18 @@
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-208" >
       	Changed method signature to use Collection instead of List.
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-687" due-to="Chris Norris" >
+      	Applied patch for handling Upload required checks. 
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-743" >
+      	Changed PropertySelection to check for null value before translating.
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-871" due-to="Martin Dirichs" >
+      	Validator_de properties had encoding issues as well as inconsistent usage of ''.
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-422" >
+      	Made Form.getLink protected.
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>
