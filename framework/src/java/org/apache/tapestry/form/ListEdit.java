@@ -23,6 +23,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.tapestry.components.ForBean;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.services.DataSqueezer;
 
@@ -34,6 +35,7 @@ import org.apache.tapestry.services.DataSqueezer;
  * 
  * @author Howard Lewis Ship
  * @since 1.0.2
+ * @deprecated As of release 4.0, replaced by {@link ForBean}
  */
 
 public abstract class ListEdit extends AbstractFormComponent

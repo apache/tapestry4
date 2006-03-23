@@ -170,6 +170,12 @@
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-422" >
       	Made Form.getLink protected.
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-870" due-to="Brian K. Wallace" >
+      	Adds deprecation javadoc to Foreach and ListEdit classes to correspond to the deprecation warning in the respective ComponentReference
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-826" due-to="Brian K. Wallace" >
+      	Changed reference from RenderBody to RenderBlock as RenderBlock has the example usage of @Any 
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>

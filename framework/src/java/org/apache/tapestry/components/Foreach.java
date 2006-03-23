@@ -33,6 +33,7 @@ import org.apache.tapestry.coerce.ValueConverter;
  * (starting with zero).
  * 
  * @author Howard Lewis Ship
+ * @deprecated As of release 4.0, replaced by {@link ForBean}
  */
 
 public abstract class Foreach extends AbstractComponent
