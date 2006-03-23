@@ -176,6 +176,9 @@
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-826" due-to="Brian K. Wallace" >
       	Changed reference from RenderBody to RenderBlock as RenderBlock has the example usage of @Any 
       </action>
+      <action type="update" dev="JK" fixes-bug="TAPESTRY-880" due-to="Fernando" >
+      	Added new port scheme documentation.
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>
