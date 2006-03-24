@@ -25,6 +25,7 @@ import org.apache.tapestry.html.BasePage;
 
 public abstract class Redirect extends BasePage
 {
+
     public void redirectInternal()
     {
         throw new RedirectException("redirect-target.html");

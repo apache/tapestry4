@@ -27,17 +27,17 @@ import org.apache.tapestry.valid.ValidationDelegate;
 
 public class WorkbenchValidationDelegate extends ValidationDelegate
 {
+
     private static final long serialVersionUID = -4782900422264574280L;
 
-	public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle,
+    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle,
             IFormComponent component, IValidator validator)
     {
-        if (isInError())
-            writer.attribute("class", "field-error");
+        if (isInError()) writer.attribute("class", "field-error");
     }
 
-    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component,
-            IValidator validator)
+    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle,
+            IFormComponent component, IValidator validator)
     {
         if (isInError())
         {
@@ -48,29 +48,34 @@ public class WorkbenchValidationDelegate extends ValidationDelegate
             writer.attribute("width", 20);
         }
     }
-    
+
     /**
-     * {@inheritDoc }
+     * {@inheritDoc}
      */
-    public void writeLabelPrefix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
+    public void writeLabelPrefix(IFormComponent component,
+            IMarkupWriter writer, IRequestCycle cycle)
     {
-    	//just prevents font tags
+        // just prevents font tags
     }
-    
+
     /**
-     * {@inheritDoc }
+     * {@inheritDoc}
      */
-    public void writeLabelSuffix(IFormComponent component, IMarkupWriter writer, IRequestCycle cycle)
+    public void writeLabelSuffix(IFormComponent component,
+            IMarkupWriter writer, IRequestCycle cycle)
     {
-    	//just prevents font tags
+        // just prevents font tags
     }
-    
-	/**
-	 * {@inheritDoc}
-	 */
-	public void writeLabelAttributes(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component) {
-		if (isInError(component)) {
-			writer.attribute("class", "error");
-		}
-	}
+
+    /**
+     * {@inheritDoc}
+     */
+    public void writeLabelAttributes(IMarkupWriter writer, IRequestCycle cycle,
+            IFormComponent component)
+    {
+        if (isInError(component))
+        {
+            writer.attribute("class", "error");
+        }
+    }
 }

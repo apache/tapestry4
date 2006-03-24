@@ -32,15 +32,16 @@ import org.apache.tapestry.vlib.ejb.RegistrationException;
 import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
- * Invoked from the {@link Login} page, to allow a user to register into the system on-the-fly.
+ * Invoked from the {@link Login} page, to allow a user to register into the
+ * system on-the-fly.
  * 
  * @author Howard Lewis Ship
  */
 
-@Meta(
-{ "page-type=Login", "anonymous-access=true" })
+@Meta( { "page-type=Login", "anonymous-access=true" })
 public abstract class Register extends VlibPage
 {
+
     public abstract String getFirstName();
 
     public abstract String getLastName();
@@ -88,8 +89,7 @@ public abstract class Register extends VlibPage
         clear(getPassword1Field());
         clear(getPassword1Field());
 
-        if (delegate.getHasErrors())
-            return;
+        if (delegate.getHasErrors()) return;
 
         // Note: we know password1 and password2 are not null
         // because they are required fields.
@@ -102,14 +102,14 @@ public abstract class Register extends VlibPage
 
         RemoteCallback callback = new RemoteCallback()
         {
-            public Object doRemote() throws RemoteException
+
+            public Object doRemote()
+                throws RemoteException
             {
                 try
                 {
                     Person user = getOperations().registerNewUser(
-                            getFirstName(),
-                            getLastName(),
-                            getEmail(),
+                            getFirstName(), getLastName(), getEmail(),
                             password1);
 
                     getLogin().loginUser(user);

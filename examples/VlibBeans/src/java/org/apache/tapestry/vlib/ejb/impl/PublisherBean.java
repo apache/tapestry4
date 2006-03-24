@@ -30,6 +30,7 @@ import javax.ejb.CreateException;
 
 public abstract class PublisherBean extends AbstractEntityBean
 {
+
     public abstract void setPublisherId(Integer value);
 
     public abstract Integer getPublisherId();
@@ -40,12 +41,12 @@ public abstract class PublisherBean extends AbstractEntityBean
 
     protected String[] getAttributePropertyNames()
     {
-        return new String[]
-        { "name" };
+        return new String[] { "name" };
     }
 
     @SuppressWarnings("unused")
-    public Integer ejbCreate(String name) throws CreateException, RemoteException
+    public Integer ejbCreate(String name)
+        throws CreateException, RemoteException
     {
         setPublisherId(allocateKey());
         setName(name);

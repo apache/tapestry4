@@ -19,7 +19,8 @@ import org.apache.tapestry.valid.NumberValidator;
 import org.apache.tapestry.valid.ValidField;
 
 /**
- * Backwards compatible version of the 1.0.7 NumericField component. <table border=1>
+ * Backwards compatible version of the 1.0.7 NumericField component. <table
+ * border=1>
  * <tr>
  * <td>Parameter</td>
  * <td>Type</td>
@@ -36,13 +37,14 @@ import org.apache.tapestry.valid.ValidField;
  * <td>&nbsp;</td>
  * <td>The value to be updated.
  * <p>
- * When the form is submitted, this parameter is only updated if the value is valid.
+ * When the form is submitted, this parameter is only updated if the value is
+ * valid.
  * <p>
- * When rendering, a null value will render as the empty string. A value of zero will render
- * normally.
+ * When rendering, a null value will render as the empty string. A value of zero
+ * will render normally.
  * <p>
- * When the form is submitted, the type of the binding is used to determine what kind of object to
- * convert the string to.</td>
+ * When the form is submitted, the type of the binding is used to determine what
+ * kind of object to convert the string to.</td>
  * </tr>
  * <tr>
  * <td>minimum</td>
@@ -66,9 +68,9 @@ import org.apache.tapestry.valid.ValidField;
  * <td>R</td>
  * <td>no</td>
  * <td>false</td>
- * <td>If true, then a non-null value must be provided. If the field is not required, and a null
- * (all whitespace) value is supplied in the field, then the value parameter is <em>not</em>
- * updated.</td>
+ * <td>If true, then a non-null value must be provided. If the field is not
+ * required, and a null (all whitespace) value is supplied in the field, then
+ * the value parameter is <em>not</em> updated.</td>
  * </tr>
  * <tr>
  * <td>displayName</td>
@@ -76,7 +78,8 @@ import org.apache.tapestry.valid.ValidField;
  * <td>R</td>
  * <td>yes</td>
  * <td>&nbsp;</td>
- * <td>A textual name for the field that is used when formulating error messages.</td>
+ * <td>A textual name for the field that is used when formulating error
+ * messages.</td>
  * </tr>
  * <tr>
  * <td>type</td>
@@ -98,6 +101,7 @@ import org.apache.tapestry.valid.ValidField;
 
 public abstract class NumericField extends ValidField
 {
+
     public abstract Number getMinimum();
 
     public abstract Number getMaximum();
@@ -107,24 +111,21 @@ public abstract class NumericField extends ValidField
     public abstract String getType();
 
     /**
-     * Overrides {@link ValidField#getValidator()}to construct a validator on the fly.
+     * Overrides {@link ValidField#getValidator()}to construct a validator on
+     * the fly.
      */
 
     public IValidator getValidator()
     {
         NumberValidator validator = new NumberValidator();
 
-        if (isParameterBound("minimum"))
-            validator.setMinimum(getMinimum());
+        if (isParameterBound("minimum")) validator.setMinimum(getMinimum());
 
-        if (isParameterBound("maximum"))
-            validator.setMaximum(getMaximum());
+        if (isParameterBound("maximum")) validator.setMaximum(getMaximum());
 
-        if (isParameterBound("required"))
-            validator.setRequired(isRequired());
+        if (isParameterBound("required")) validator.setRequired(isRequired());
 
-        if (isParameterBound("type"))
-            validator.setValueType(getType());
+        if (isParameterBound("type")) validator.setValueType(getType());
 
         return validator;
     }

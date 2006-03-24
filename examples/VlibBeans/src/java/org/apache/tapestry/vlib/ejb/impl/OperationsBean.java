@@ -57,7 +57,8 @@ import org.apache.tapestry.vlib.ejb.SortColumn;
 import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 /**
- * Implementation of the {@link org.apache.tapestry.vlib.ejb.IOperations} stateless session bean.
+ * Implementation of the {@link org.apache.tapestry.vlib.ejb.IOperations}
+ * stateless session bean.
  * <p>
  * Implenents a number of stateless operations for the front end.
  * 
@@ -66,9 +67,10 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 public class OperationsBean implements SessionBean
 {
+
     private static final long serialVersionUID = -3942706099570269035L;
 
-	private transient Context _environment;
+    private transient Context _environment;
 
     private transient IBookHome _bookHome;
 
@@ -83,8 +85,9 @@ public class OperationsBean implements SessionBean
     private transient DataSource _dataSource;
 
     /**
-     * Sets up the bean. Locates the {@link DataSource} for the bean as <code>jdbc/dataSource</code>
-     * within the ENC; this data source is later used by {@link #getConnection()}.
+     * Sets up the bean. Locates the {@link DataSource} for the bean as
+     * <code>jdbc/dataSource</code> within the ENC; this data source is later
+     * used by {@link #getConnection()}.
      */
 
     public void ejbCreate()
@@ -142,8 +145,8 @@ public class OperationsBean implements SessionBean
      * The {@link Book} value object is returned.
      */
 
-    public Book borrowBook(Integer bookId, Integer borrowerId) throws FinderException,
-            RemoteException, BorrowException
+    public Book borrowBook(Integer bookId, Integer borrowerId)
+        throws FinderException, RemoteException, BorrowException
     {
         IBookHome bookHome = getBookHome();
         IPersonHome personHome = getPersonHome();
@@ -176,7 +179,8 @@ public class OperationsBean implements SessionBean
      * Adds a new book, verifying that the publisher and holder actually exist.
      */
 
-    public Integer addBook(Map attributes) throws CreateException, RemoteException
+    public Integer addBook(Map attributes)
+        throws CreateException, RemoteException
     {
         IBookHome home = getBookHome();
 
@@ -190,14 +194,14 @@ public class OperationsBean implements SessionBean
     /**
      * Adds a book, which will be owned and held by the specified owner.
      * <p>
-     * The publisherName may either be the name of a known publisher, or a new name. A new
-     * {@link IPublisher} will be created as necessary.
+     * The publisherName may either be the name of a known publisher, or a new
+     * name. A new {@link IPublisher} will be created as necessary.
      * <p>
      * Returns the newly created book, as a {@link Map} of attributes.
      */
 
-    public Integer addBook(Map attributes, String publisherName) throws CreateException,
-            RemoteException
+    public Integer addBook(Map attributes, String publisherName)
+        throws CreateException, RemoteException
     {
         IPublisher publisher = null;
         IPublisherHome publisherHome = getPublisherHome();
@@ -210,11 +214,11 @@ public class OperationsBean implements SessionBean
         }
         catch (FinderException e)
         {
-            // Ignore, means that no publisher with the given name already exists.
+            // Ignore, means that no publisher with the given name already
+            // exists.
         }
 
-        if (publisher == null)
-            publisher = publisherHome.create(publisherName);
+        if (publisher == null) publisher = publisherHome.create(publisherName);
 
         attributes.put("publisherId", publisher.getPrimaryKey());
 
@@ -230,7 +234,8 @@ public class OperationsBean implements SessionBean
      *            The primary key of the book to update.
      */
 
-    public void updateBook(Integer bookId, Map attributes) throws FinderException, RemoteException
+    public void updateBook(Integer bookId, Map attributes)
+        throws FinderException, RemoteException
     {
         IBookHome bookHome = getBookHome();
 
@@ -255,7 +260,7 @@ public class OperationsBean implements SessionBean
      */
 
     public void updateBook(Integer bookId, Map attributes, String publisherName)
-            throws CreateException, FinderException, RemoteException
+        throws CreateException, FinderException, RemoteException
     {
         IPublisher publisher = null;
 
@@ -270,8 +275,7 @@ public class OperationsBean implements SessionBean
             // Ignore, means we need to create the Publisher
         }
 
-        if (publisher == null)
-            publisher = publisherHome.create(publisherName);
+        if (publisher == null) publisher = publisherHome.create(publisherName);
 
         // Don't duplicate all that other code!
 
@@ -280,8 +284,8 @@ public class OperationsBean implements SessionBean
         updateBook(bookId, attributes);
     }
 
-    public void updatePerson(Integer personId, Map attributes) throws FinderException,
-            RemoteException
+    public void updatePerson(Integer personId, Map attributes)
+        throws FinderException, RemoteException
     {
         IPersonHome home = getPersonHome();
 
@@ -312,7 +316,7 @@ public class OperationsBean implements SessionBean
 
             set = statement.executeQuery();
 
-            while (set.next())
+            while(set.next())
             {
                 Integer primaryKey = (Integer) set.getObject(1);
                 String name = set.getString(2);
@@ -336,8 +340,9 @@ public class OperationsBean implements SessionBean
     }
 
     /**
-     * Fetchs all {@link IPerson} beans in the database and converts them to {@link Person} objects.
-     * Returns the {@link Person}s sorted by last name, then first.
+     * Fetchs all {@link IPerson} beans in the database and converts them to
+     * {@link Person} objects. Returns the {@link Person}s sorted by last name,
+     * then first.
      */
 
     public Person[] getPersons()
@@ -359,9 +364,9 @@ public class OperationsBean implements SessionBean
 
             set = statement.executeQuery();
 
-            Object[] columns = new Object[Person.N_COLUMNS];
+            Object[] columns = new Object[Person.NUM_COLUMNS];
 
-            while (set.next())
+            while(set.next())
             {
                 list.add(convertRowToPerson(set, columns));
             }
@@ -385,7 +390,8 @@ public class OperationsBean implements SessionBean
      *             if the Person does not exist.
      */
 
-    public Person getPerson(Integer personId) throws FinderException
+    public Person getPerson(Integer personId)
+        throws FinderException
     {
         Connection connection = null;
         IStatement statement = null;
@@ -408,9 +414,10 @@ public class OperationsBean implements SessionBean
             set = statement.executeQuery();
 
             if (!set.next())
-                throw new FinderException("Person #" + personId + " does not exist.");
+                throw new FinderException("Person #" + personId
+                        + " does not exist.");
 
-            Object[] columns = new Object[Person.N_COLUMNS];
+            Object[] columns = new Object[Person.NUM_COLUMNS];
             result = convertRowToPerson(set, columns);
 
         }
@@ -426,7 +433,8 @@ public class OperationsBean implements SessionBean
         return result;
     }
 
-    public Person login(String email, String password) throws RemoteException, LoginException
+    public Person login(String email, String password)
+        throws RemoteException, LoginException
     {
         IPersonHome home = getPersonHome();
         IPerson person = null;
@@ -454,7 +462,8 @@ public class OperationsBean implements SessionBean
         }
 
         if (result.isLockedOut())
-            throw new LoginException("You have been locked out of the Virtual Library.", false);
+            throw new LoginException(
+                    "You have been locked out of the Virtual Library.", false);
 
         // Set the last access time for any subsequent login.
 
@@ -463,7 +472,8 @@ public class OperationsBean implements SessionBean
         return result;
     }
 
-    public Map getPersonAttributes(Integer personId) throws FinderException, RemoteException
+    public Map getPersonAttributes(Integer personId)
+        throws FinderException, RemoteException
     {
         IPersonHome home = getPersonHome();
 
@@ -479,7 +489,8 @@ public class OperationsBean implements SessionBean
      *             if the Book does not exist.
      */
 
-    public Book getBook(Integer bookId) throws FinderException
+    public Book getBook(Integer bookId)
+        throws FinderException
     {
         Connection connection = null;
         IStatement statement = null;
@@ -519,7 +530,8 @@ public class OperationsBean implements SessionBean
         return result;
     }
 
-    public Map getBookAttributes(Integer bookId) throws FinderException, RemoteException
+    public Map getBookAttributes(Integer bookId)
+        throws FinderException, RemoteException
     {
         IBookHome home = getBookHome();
 
@@ -529,12 +541,13 @@ public class OperationsBean implements SessionBean
     }
 
     /**
-     * Attempts to register a new user, first checking that the e-mail and names are unique. Returns
-     * the primary key of the new {@link IPerson}.
+     * Attempts to register a new user, first checking that the e-mail and names
+     * are unique. Returns the primary key of the new {@link IPerson}.
      */
 
-    public Person registerNewUser(String firstName, String lastName, String email, String password)
-            throws RegistrationException, CreateException, RemoteException
+    public Person registerNewUser(String firstName, String lastName,
+            String email, String password)
+        throws RegistrationException, CreateException, RemoteException
     {
         IPersonHome home;
 
@@ -563,11 +576,13 @@ public class OperationsBean implements SessionBean
         }
         catch (FinderException ex)
         {
-            throw new XCreateException("Unable to find newly created Person.", ex);
+            throw new XCreateException("Unable to find newly created Person.",
+                    ex);
         }
     }
 
-    public Book deleteBook(Integer bookId) throws RemoveException, RemoteException
+    public Book deleteBook(Integer bookId)
+        throws RemoveException, RemoteException
     {
         IBookHome home = getBookHome();
         Book result = null;
@@ -591,11 +606,12 @@ public class OperationsBean implements SessionBean
      * Transfers a number of books to a new owner.
      */
 
-    public void transferBooks(Integer newOwnerId, Integer[] bookIds) throws FinderException,
-            RemoteException
+    public void transferBooks(Integer newOwnerId, Integer[] bookIds)
+        throws FinderException, RemoteException
     {
         if (bookIds == null)
-            throw new RemoteException("Must supply non-null list of books to transfer.");
+            throw new RemoteException(
+                    "Must supply non-null list of books to transfer.");
 
         if (newOwnerId == null)
             throw new RemoteException("Must provide an owner for the books.");
@@ -609,7 +625,7 @@ public class OperationsBean implements SessionBean
 
         IBookHome home = getBookHome();
 
-        for (int i = 0; i < bookIds.length; i++)
+        for(int i = 0; i < bookIds.length; i++)
         {
             IBook book = home.findByPrimaryKey(bookIds[i]);
 
@@ -617,38 +633,39 @@ public class OperationsBean implements SessionBean
         }
     }
 
-    public void updatePublishers(Publisher[] updated, Integer[] deleted) throws FinderException,
-            RemoveException, RemoteException
+    public void updatePublishers(Publisher[] updated, Integer[] deleted)
+        throws FinderException, RemoveException, RemoteException
     {
         IPublisherHome home = getPublisherHome();
 
         if (updated != null)
         {
-            for (int i = 0; i < updated.length; i++)
+            for(int i = 0; i < updated.length; i++)
             {
-                IPublisher publisher = home.findByPrimaryKey(updated[i].getId());
+                IPublisher publisher = home
+                        .findByPrimaryKey(updated[i].getId());
                 publisher.setName(updated[i].getName());
             }
         }
 
         if (deleted != null)
         {
-            for (int i = 0; i < deleted.length; i++)
+            for(int i = 0; i < deleted.length; i++)
             {
                 home.remove(deleted[i]);
             }
         }
     }
 
-    public void updatePersons(Person[] updated, Integer[] resetPassword, String newPassword,
-            Integer[] deleted, Integer adminId) throws FinderException, RemoveException,
-            RemoteException
+    public void updatePersons(Person[] updated, Integer[] resetPassword,
+            String newPassword, Integer[] deleted, Integer adminId)
+        throws FinderException, RemoveException, RemoteException
     {
         IPersonHome home = getPersonHome();
 
         int count = Tapestry.size(updated);
 
-        for (int i = 0; i < count; i++)
+        for(int i = 0; i < count; i++)
         {
             Person u = updated[i];
             IPerson person = home.findByPrimaryKey(u.getId());
@@ -659,7 +676,7 @@ public class OperationsBean implements SessionBean
 
         count = Tapestry.size(resetPassword);
 
-        for (int i = 0; i < count; i++)
+        for(int i = 0; i < count; i++)
         {
             IPerson person = home.findByPrimaryKey(resetPassword[i]);
 
@@ -674,16 +691,17 @@ public class OperationsBean implements SessionBean
             moveBooksFromDeletedPersons(deleted, adminId);
         }
 
-        for (int i = 0; i < count; i++)
+        for(int i = 0; i < count; i++)
             home.remove(deleted[i]);
     }
 
     /**
-     * Invoked to update all books owned by people about to be deleted, to reassign the books holder
-     * back to the owner.
+     * Invoked to update all books owned by people about to be deleted, to
+     * reassign the books holder back to the owner.
      */
 
-    private void returnBooksFromDeletedPersons(Integer deletedPersonIds[]) throws RemoveException
+    private void returnBooksFromDeletedPersons(Integer deletedPersonIds[])
+        throws RemoveException
     {
         StatementAssembly assembly = new StatementAssembly();
 
@@ -700,8 +718,9 @@ public class OperationsBean implements SessionBean
      * Invoked to execute a bulk update that moves books to the new admin.
      */
 
-    private void moveBooksFromDeletedPersons(Integer deletedPersonIds[], Integer adminId)
-            throws RemoveException
+    private void moveBooksFromDeletedPersons(Integer deletedPersonIds[],
+            Integer adminId)
+        throws RemoveException
     {
         StatementAssembly assembly = new StatementAssembly();
 
@@ -716,7 +735,8 @@ public class OperationsBean implements SessionBean
 
     }
 
-    private void executeUpdate(StatementAssembly assembly) throws XRemoveException
+    private void executeUpdate(StatementAssembly assembly)
+        throws XRemoveException
     {
         Connection connection = null;
         IStatement statement = null;
@@ -737,7 +757,8 @@ public class OperationsBean implements SessionBean
         }
         catch (SQLException ex)
         {
-            throw new XRemoveException("Unable to execute " + assembly + ": " + ex.getMessage(), ex);
+            throw new XRemoveException("Unable to execute " + assembly + ": "
+                    + ex.getMessage(), ex);
         }
         finally
         {
@@ -751,7 +772,8 @@ public class OperationsBean implements SessionBean
      * This works with queries generated by {@link #buildBaseBookQuery()}.
      */
 
-    protected Book convertRowToBook(ResultSet set, Object[] columns) throws SQLException
+    protected Book convertRowToBook(ResultSet set, Object[] columns)
+        throws SQLException
     {
         int column = 1;
 
@@ -760,11 +782,11 @@ public class OperationsBean implements SessionBean
         columns[Book.DESCRIPTION_COLUMN] = set.getString(column++);
         columns[Book.ISBN_COLUMN] = set.getString(column++);
         columns[Book.OWNER_ID_COLUMN] = set.getObject(column++);
-        columns[Book.OWNER_NAME_COLUMN] = buildName(set.getString(column++), set
-                .getString(column++));
+        columns[Book.OWNER_NAME_COLUMN] = buildName(set.getString(column++),
+                set.getString(column++));
         columns[Book.HOLDER_ID_COLUMN] = set.getObject(column++);
-        columns[Book.HOLDER_NAME_COLUMN] = buildName(set.getString(column++), set
-                .getString(column++));
+        columns[Book.HOLDER_NAME_COLUMN] = buildName(set.getString(column++),
+                set.getString(column++));
         columns[Book.PUBLISHER_ID_COLUMN] = set.getObject(column++);
         columns[Book.PUBLISHER_NAME_COLUMN] = set.getString(column++);
         columns[Book.AUTHOR_COLUMN] = set.getString(column++);
@@ -777,28 +799,30 @@ public class OperationsBean implements SessionBean
 
     private String buildName(String firstName, String lastName)
     {
-        if (firstName == null)
-            return lastName;
+        if (firstName == null) return lastName;
 
         return firstName + " " + lastName;
     }
 
     /**
      * All queries must use this exact set of select columns, so that
-     * {@link #convertRow(ResultSet, Object[])} can build the correct {@link Book} from each row.
+     * {@link #convertRow(ResultSet, Object[])} can build the correct
+     * {@link Book} from each row.
      */
 
-    private static final String[] BOOK_SELECT_COLUMNS =
-    { "book.BOOK_ID", "book.TITLE", "book.DESCRIPTION", "book.ISBN", "owner.PERSON_ID",
-            "owner.FIRST_NAME", "owner.LAST_NAME", "holder.PERSON_ID", "holder.FIRST_NAME",
-            "holder.LAST_NAME", "publisher.PUBLISHER_ID", "publisher.NAME", "book.AUTHOR",
-            "book.HIDDEN", "book.LENDABLE", "book.DATE_ADDED" };
+    private static final String[] BOOK_SELECT_COLUMNS = { "book.BOOK_ID",
+            "book.TITLE", "book.DESCRIPTION", "book.ISBN", "owner.PERSON_ID",
+            "owner.FIRST_NAME", "owner.LAST_NAME", "holder.PERSON_ID",
+            "holder.FIRST_NAME", "holder.LAST_NAME", "publisher.PUBLISHER_ID",
+            "publisher.NAME", "book.AUTHOR", "book.HIDDEN", "book.LENDABLE",
+            "book.DATE_ADDED" };
 
-    private static final String[] BOOK_ALIAS_COLUMNS =
-    { "BOOK book", "PERSON owner", "PERSON holder", "PUBLISHER publisher" };
+    private static final String[] BOOK_ALIAS_COLUMNS = { "BOOK book",
+            "PERSON owner", "PERSON holder", "PUBLISHER publisher" };
 
-    private static final String[] BOOK_JOINS =
-    { "book.OWNER_ID = owner.PERSON_ID", "book.HOLDER_ID = holder.PERSON_ID",
+    private static final String[] BOOK_JOINS = {
+            "book.OWNER_ID = owner.PERSON_ID",
+            "book.HOLDER_ID = holder.PERSON_ID",
             "book.PUBLISHER_ID = publisher.PUBLISHER_ID" };
 
     private static final Map BOOK_SORT_ASCENDING = new HashMap();
@@ -808,15 +832,18 @@ public class OperationsBean implements SessionBean
     static
     {
         BOOK_SORT_ASCENDING.put(SortColumn.TITLE, "book.TITLE");
-        BOOK_SORT_ASCENDING.put(SortColumn.HOLDER, "holder.LAST_NAME, holder.FIRST_NAME");
-        BOOK_SORT_ASCENDING.put(SortColumn.OWNER, "owner.FIRST_NAME, owner.LAST_NAME");
+        BOOK_SORT_ASCENDING.put(SortColumn.HOLDER,
+                "holder.LAST_NAME, holder.FIRST_NAME");
+        BOOK_SORT_ASCENDING.put(SortColumn.OWNER,
+                "owner.FIRST_NAME, owner.LAST_NAME");
         BOOK_SORT_ASCENDING.put(SortColumn.PUBLISHER, "publisher.NAME");
         BOOK_SORT_ASCENDING.put(SortColumn.AUTHOR, "book.AUTHOR");
 
         BOOK_SORT_DESCENDING.put(SortColumn.TITLE, "book.TITLE DESC");
-        BOOK_SORT_DESCENDING
-                .put(SortColumn.HOLDER, "holder.LAST_NAME DESC, holder.FIRST_NAME DESC");
-        BOOK_SORT_DESCENDING.put(SortColumn.OWNER, "owner.FIRST_NAME DESC, owner.LAST_NAME DESC");
+        BOOK_SORT_DESCENDING.put(SortColumn.HOLDER,
+                "holder.LAST_NAME DESC, holder.FIRST_NAME DESC");
+        BOOK_SORT_DESCENDING.put(SortColumn.OWNER,
+                "owner.FIRST_NAME DESC, owner.LAST_NAME DESC");
         BOOK_SORT_DESCENDING.put(SortColumn.PUBLISHER, "publisher.NAME DESC");
         BOOK_SORT_DESCENDING.put(SortColumn.AUTHOR, "book.AUTHOR DESC");
     }
@@ -838,16 +865,19 @@ public class OperationsBean implements SessionBean
     }
 
     /**
-     * Adds a sort ordering clause to the statement. If ordering is null, orders by book title.
+     * Adds a sort ordering clause to the statement. If ordering is null, orders
+     * by book title.
      * 
      * @param assembly
      *            to update
      * @param ordering
-     *            defines the column to sort on, and the order (ascending or descending)
+     *            defines the column to sort on, and the order (ascending or
+     *            descending)
      * @since 3.0
      */
 
-    protected void addSortOrdering(StatementAssembly assembly, SortOrdering ordering)
+    protected void addSortOrdering(StatementAssembly assembly,
+            SortOrdering ordering)
     {
         if (ordering == null)
         {
@@ -855,7 +885,8 @@ public class OperationsBean implements SessionBean
             return;
         }
 
-        Map sorts = ordering.isDescending() ? BOOK_SORT_DESCENDING : BOOK_SORT_ASCENDING;
+        Map sorts = ordering.isDescending() ? BOOK_SORT_DESCENDING
+                : BOOK_SORT_ASCENDING;
 
         String term = (String) sorts.get(ordering.getColumn());
 
@@ -863,14 +894,13 @@ public class OperationsBean implements SessionBean
         assembly.add(term);
     }
 
-    protected void addSubstringSearch(StatementAssembly assembly, String column, String value)
+    protected void addSubstringSearch(StatementAssembly assembly,
+            String column, String value)
     {
-        if (value == null)
-            return;
+        if (value == null) return;
 
         String trimmed = value.trim();
-        if (trimmed.length() == 0)
-            return;
+        if (trimmed.length() == 0) return;
 
         // Here's the McKoi dependency: LOWER() is a database-specific
         // SQL function.
@@ -882,11 +912,12 @@ public class OperationsBean implements SessionBean
     }
 
     /**
-     * Closes the resultSet (if not null), then the statement (if not null), then the Connection (if
-     * not null). Exceptions are written to System.out.
+     * Closes the resultSet (if not null), then the statement (if not null),
+     * then the Connection (if not null). Exceptions are written to System.out.
      */
 
-    protected void close(Connection connection, IStatement statement, ResultSet resultSet)
+    protected void close(Connection connection, IStatement statement,
+            ResultSet resultSet)
     {
         if (resultSet != null)
         {
@@ -936,11 +967,13 @@ public class OperationsBean implements SessionBean
             {
                 Object raw = _environment.lookup("ejb/Person");
 
-                _personHome = (IPersonHome) PortableRemoteObject.narrow(raw, IPersonHome.class);
+                _personHome = (IPersonHome) PortableRemoteObject.narrow(raw,
+                        IPersonHome.class);
             }
             catch (NamingException ex)
             {
-                throw new XEJBException("Could not lookup Person home interface.", ex);
+                throw new XEJBException(
+                        "Could not lookup Person home interface.", ex);
             }
 
         }
@@ -957,12 +990,12 @@ public class OperationsBean implements SessionBean
                 Object raw = _environment.lookup("ejb/Publisher");
 
                 _publisherHome = (IPublisherHome) PortableRemoteObject.narrow(
-                        raw,
-                        IPublisherHome.class);
+                        raw, IPublisherHome.class);
             }
             catch (NamingException e)
             {
-                throw new XEJBException("Could not lookup Publisher home interface.", e);
+                throw new XEJBException(
+                        "Could not lookup Publisher home interface.", e);
             }
 
         }
@@ -978,11 +1011,13 @@ public class OperationsBean implements SessionBean
             {
                 Object raw = _environment.lookup("ejb/Book");
 
-                _bookHome = (IBookHome) PortableRemoteObject.narrow(raw, IBookHome.class);
+                _bookHome = (IBookHome) PortableRemoteObject.narrow(raw,
+                        IBookHome.class);
             }
             catch (NamingException e)
             {
-                throw new XEJBException("Could not lookup Book home interface.", e);
+                throw new XEJBException(
+                        "Could not lookup Book home interface.", e);
             }
 
         }
@@ -1002,7 +1037,8 @@ public class OperationsBean implements SessionBean
         }
         catch (SQLException e)
         {
-            throw new XEJBException("Unable to get database connection from pool.", e);
+            throw new XEJBException(
+                    "Unable to get database connection from pool.", e);
         }
     }
 
@@ -1025,7 +1061,8 @@ public class OperationsBean implements SessionBean
      * This works with queries generated by {@link #buildBasePersonQuery()}.
      */
 
-    protected Person convertRowToPerson(ResultSet set, Object[] columns) throws SQLException
+    protected Person convertRowToPerson(ResultSet set, Object[] columns)
+        throws SQLException
     {
         int column = 1;
 
@@ -1040,13 +1077,15 @@ public class OperationsBean implements SessionBean
         return new Person(columns);
     }
 
-    private Boolean getBoolean(ResultSet set, int index) throws SQLException
+    private Boolean getBoolean(ResultSet set, int index)
+        throws SQLException
     {
         return set.getBoolean(index) ? Boolean.TRUE : Boolean.FALSE;
     }
 
-    private void validateUniquePerson(String firstName, String lastName, String email)
-            throws RegistrationException
+    private void validateUniquePerson(String firstName, String lastName,
+            String email)
+        throws RegistrationException
     {
         Connection connection = null;
         IStatement statement = null;
@@ -1072,7 +1111,8 @@ public class OperationsBean implements SessionBean
             set = statement.executeQuery();
 
             if (set.next())
-                throw new RegistrationException("Email address is already in use by another user.");
+                throw new RegistrationException(
+                        "Email address is already in use by another user.");
 
             close(null, statement, set);
 
@@ -1091,12 +1131,14 @@ public class OperationsBean implements SessionBean
             set = statement.executeQuery();
 
             if (set.next())
-                throw new RegistrationException("Name provided is already in use by another user.");
+                throw new RegistrationException(
+                        "Name provided is already in use by another user.");
 
         }
         catch (SQLException e)
         {
-            throw new RegistrationException("Could not access database: " + e.getMessage(), e);
+            throw new RegistrationException("Could not access database: "
+                    + e.getMessage(), e);
         }
         finally
         {
@@ -1104,7 +1146,8 @@ public class OperationsBean implements SessionBean
         }
     }
 
-    public Book returnBook(Integer bookId) throws RemoteException, FinderException
+    public Book returnBook(Integer bookId)
+        throws RemoteException, FinderException
     {
         IBookHome bookHome = getBookHome();
         IBook book = bookHome.findByPrimaryKey(bookId);

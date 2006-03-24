@@ -31,14 +31,14 @@ import org.apache.tapestry.vlib.services.RemoteTemplate;
 public interface OperationsUser
 {
     @InjectObject("service:vlib.Operations")
-    public abstract IOperations getOperations();
+    IOperations getOperations();
 
     @InjectObject("service:vlib.RemoteTemplate")
-    public abstract RemoteTemplate getRemoteTemplate();
+    RemoteTemplate getRemoteTemplate();
 
     @InjectObject("service:vlib.ErrorPresenter")
-    public abstract ErrorPresenter getErrorPresenter();
+    ErrorPresenter getErrorPresenter();
 
     @InjectObject("service:vlib.BookQuerySource")
-    public abstract BookQuerySource getBookQuerySource();
+    BookQuerySource getBookQuerySource();
 }

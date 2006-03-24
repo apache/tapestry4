@@ -41,8 +41,10 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
  */
 
 @Meta("page-type=MyLibrary")
-public abstract class EditBook extends VlibPage implements PageBeginRenderListener
+public abstract class EditBook extends VlibPage implements
+        PageBeginRenderListener
 {
+
     public abstract Map getAttributes();
 
     public abstract void setAttributes(Map attributes);
@@ -55,8 +57,9 @@ public abstract class EditBook extends VlibPage implements PageBeginRenderListen
     public abstract void setBookId(Integer bookId);
 
     /**
-     * Invoked (from {@link MyLibrary}) to begin editting a book. Gets the attributes from the
-     * {@link org.apache.tapestry.vlib.ejb.IBook} and updates the request cycle to render this page,
+     * Invoked (from {@link MyLibrary}) to begin editting a book. Gets the
+     * attributes from the {@link org.apache.tapestry.vlib.ejb.IBook} and
+     * updates the request cycle to render this page,
      */
 
     public void beginEdit(final Integer bookId)
@@ -65,7 +68,9 @@ public abstract class EditBook extends VlibPage implements PageBeginRenderListen
 
         RemoteCallback<Map> callback = new RemoteCallback()
         {
-            public Map doRemote() throws RemoteException
+
+            public Map doRemote()
+                throws RemoteException
             {
                 try
                 {
@@ -79,8 +84,7 @@ public abstract class EditBook extends VlibPage implements PageBeginRenderListen
             }
         };
 
-        Map attributes = getRemoteTemplate().execute(
-                callback,
+        Map attributes = getRemoteTemplate().execute(callback,
                 "Error setting up page for book #" + bookId + ".");
 
         setAttributes(attributes);
@@ -122,14 +126,15 @@ public abstract class EditBook extends VlibPage implements PageBeginRenderListen
 
         // Check for an error from a validation field
 
-        if (isInError())
-            return null;
+        if (isInError()) return null;
 
         final Integer bookId = getBookId();
 
         RemoteCallback callback = new RemoteCallback()
         {
-            public Object doRemote() throws RemoteException
+
+            public Object doRemote()
+                throws RemoteException
             {
 
                 try
@@ -140,7 +145,8 @@ public abstract class EditBook extends VlibPage implements PageBeginRenderListen
                         operations.updateBook(bookId, attributes);
                     else
                     {
-                        operations.updateBook(bookId, attributes, publisherName);
+                        operations
+                                .updateBook(bookId, attributes, publisherName);
                     }
 
                     return null;
@@ -158,7 +164,8 @@ public abstract class EditBook extends VlibPage implements PageBeginRenderListen
 
         };
 
-        getRemoteTemplate().execute(callback, "Error updating book #" + bookId + ".");
+        getRemoteTemplate().execute(callback,
+                "Error updating book #" + bookId + ".");
 
         getModelSource().clear();
 
@@ -171,8 +178,7 @@ public abstract class EditBook extends VlibPage implements PageBeginRenderListen
 
     public void pageBeginRender(PageEvent event)
     {
-        if (getAttributes() == null)
-            setAttributes(new HashMap());
+        if (getAttributes() == null) setAttributes(new HashMap());
     }
 
 }

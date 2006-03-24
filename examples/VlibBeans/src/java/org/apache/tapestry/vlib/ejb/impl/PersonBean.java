@@ -35,8 +35,8 @@ public abstract class PersonBean extends AbstractEntityBean
 
     protected String[] getAttributePropertyNames()
     {
-        return new String[]
-        { "firstName", "lastName", "email", "password", "lockedOut", "admin", "lastAccess" };
+        return new String[] { "firstName", "lastName", "email", "password",
+                "lockedOut", "admin", "lastAccess" };
     }
 
     public abstract void setPersonId(Integer value);
@@ -72,7 +72,8 @@ public abstract class PersonBean extends AbstractEntityBean
     public abstract Timestamp getLastAccess();
 
     @SuppressWarnings("unused")
-    public Integer ejbCreate(Map attributes) throws CreateException, RemoteException
+    public Integer ejbCreate(Map attributes)
+        throws CreateException, RemoteException
     {
         updateEntityAttributes(attributes);
 

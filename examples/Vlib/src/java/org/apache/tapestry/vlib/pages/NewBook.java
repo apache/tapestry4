@@ -40,8 +40,10 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
  * @author Howard Lewis Ship
  */
 
-public abstract class NewBook extends VlibPage implements PageBeginRenderListener
+public abstract class NewBook extends VlibPage implements
+        PageBeginRenderListener
 {
+
     public abstract Map getAttributes();
 
     public abstract void setAttributes(Map attributes);
@@ -84,8 +86,7 @@ public abstract class NewBook extends VlibPage implements PageBeginRenderListene
             return;
         }
 
-        if (isInError())
-            return;
+        if (isInError()) return;
 
         Visit visit = getVisitState();
 
@@ -96,7 +97,9 @@ public abstract class NewBook extends VlibPage implements PageBeginRenderListene
 
         RemoteCallback<Boolean> callback = new RemoteCallback()
         {
-            public Boolean doRemote() throws RemoteException
+
+            public Boolean doRemote()
+                throws RemoteException
             {
                 IOperations operations = getOperations();
 
@@ -120,10 +123,10 @@ public abstract class NewBook extends VlibPage implements PageBeginRenderListene
             }
         };
 
-        boolean clearCache = getRemoteTemplate().execute(callback, "Error adding new book.");
+        boolean clearCache = getRemoteTemplate().execute(callback,
+                "Error adding new book.");
 
-        if (clearCache)
-            getModelSource().clear();
+        if (clearCache) getModelSource().clear();
 
         // Success. First, update the message property of the return page.
 

@@ -29,8 +29,10 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
 /**
  * @author mindbridge
  */
-public abstract class LocaleSelection extends BaseComponent implements ILocaleSelectionListener
+public abstract class LocaleSelection extends BaseComponent implements
+        ILocaleSelectionListener
 {
+
     // properties
     public abstract Locale getCurrentLocale();
 
@@ -45,13 +47,14 @@ public abstract class LocaleSelection extends BaseComponent implements ILocaleSe
     {
         Set objLocaleSet = getLocaleSet();
         addAll(objLocaleSet, arrLocales);
-        // ensure that the framework knows about the change and the set is persisted
+        // ensure that the framework knows about the change and the set is
+        // persisted
         setLocaleSet(objLocaleSet);
     }
 
     private void addAll(Set objLocaleSet, Locale[] arrLocales)
     {
-        for (int i = 0; i < arrLocales.length; i++)
+        for(int i = 0; i < arrLocales.length; i++)
             objLocaleSet.add(arrLocales[i]);
     }
 
@@ -68,8 +71,8 @@ public abstract class LocaleSelection extends BaseComponent implements ILocaleSe
     }
 
     /**
-     * Returns the verbosity of the current locale. This is used by the Block rendering the
-     * 'Verbosity' column
+     * Returns the verbosity of the current locale. This is used by the Block
+     * rendering the 'Verbosity' column
      * 
      * @return int the current locale verbosity
      */
@@ -80,8 +83,8 @@ public abstract class LocaleSelection extends BaseComponent implements ILocaleSe
     }
 
     /**
-     * Generates the context that will be passed to the deleteLocale() listener if a "remove" link
-     * is selected.
+     * Generates the context that will be passed to the deleteLocale() listener
+     * if a "remove" link is selected.
      * <p>
      * This is used by the Block rendering the 'Remove' column.
      * 
@@ -90,13 +93,13 @@ public abstract class LocaleSelection extends BaseComponent implements ILocaleSe
     public String[] getDeleteLocaleContext()
     {
         Locale objLocale = getCurrentLocale();
-        return new String[]
-        { objLocale.getLanguage(), objLocale.getCountry(), objLocale.getVariant() };
+        return new String[] { objLocale.getLanguage(), objLocale.getCountry(),
+                objLocale.getVariant() };
     }
 
     /**
-     * A listener invoked when a "remove" link is selected. It removes from the data model the
-     * locale corresponding to the link.
+     * A listener invoked when a "remove" link is selected. It removes from the
+     * data model the locale corresponding to the link.
      * <p>
      * 
      * @param objCycle
@@ -105,16 +108,17 @@ public abstract class LocaleSelection extends BaseComponent implements ILocaleSe
     public void deleteLocale(IRequestCycle objCycle)
     {
         Object[] arrParams = objCycle.getListenerParameters();
-        Locale objLocale = new Locale(arrParams[0].toString(), arrParams[1].toString(),
-                arrParams[2].toString());
+        Locale objLocale = new Locale(arrParams[0].toString(), arrParams[1]
+                .toString(), arrParams[2].toString());
         getLocaleSet().remove(objLocale);
     }
 
     /**
-     * A class defining the logic for getting the currency symbol from a locale
+     * A class defining the logic for getting the currency symbol from a locale.
      */
     private static class CurrencyEvaluator implements ITableColumnEvaluator
     {
+
         private static final long serialVersionUID = 1L;
 
         /**
@@ -125,19 +129,20 @@ public abstract class LocaleSelection extends BaseComponent implements ILocaleSe
         {
             Locale objLocale = (Locale) objRow;
             String strCountry = objLocale.getCountry();
-            if (strCountry == null || strCountry.equals(""))
-                return "";
+            if (strCountry == null || strCountry.equals("")) return "";
 
-            DecimalFormatSymbols objSymbols = new DecimalFormatSymbols(objLocale);
+            DecimalFormatSymbols objSymbols = new DecimalFormatSymbols(
+                    objLocale);
             return objSymbols.getCurrencySymbol();
         }
     }
 
     /**
-     * A class defining a column for displaying the date format
+     * A class defining a column for displaying the date format.
      */
     private static class DateFormatColumn extends SimpleTableColumn
     {
+
         private static final long serialVersionUID = 1L;
 
         private Date m_objDate;
@@ -152,9 +157,7 @@ public abstract class LocaleSelection extends BaseComponent implements ILocaleSe
         {
             Locale objLocale = (Locale) objRow;
             DateFormat objFormat = DateFormat.getDateTimeInstance(
-                    DateFormat.LONG,
-                    DateFormat.LONG,
-                    objLocale);
+                    DateFormat.LONG, DateFormat.LONG, objLocale);
             return objFormat.format(m_objDate);
         }
     }

@@ -17,10 +17,11 @@ package org.apache.tapestry.vlib.services;
 import java.rmi.RemoteException;
 
 /**
- * Callback interface used when performing
+ * Callback interface used when performing.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
+ * @param <T> the callback
  */
 public interface RemoteCallback<T>
 {

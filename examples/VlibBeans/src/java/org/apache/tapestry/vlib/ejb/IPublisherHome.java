@@ -28,14 +28,18 @@ import javax.ejb.FinderException;
 
 public interface IPublisherHome extends EJBHome
 {
-    public IPublisher create(String name) throws CreateException, RemoteException;
 
-    public IPublisher findByPrimaryKey(Integer key) throws FinderException, RemoteException;
+    IPublisher create(String name)
+        throws CreateException, RemoteException;
+
+    public IPublisher findByPrimaryKey(Integer key)
+        throws FinderException, RemoteException;
 
     /**
      * Finds Publisher with exact match on name.
      */
 
-    public IPublisher findByName(String name) throws FinderException, RemoteException;
+    public IPublisher findByName(String name)
+        throws FinderException, RemoteException;
 
 }

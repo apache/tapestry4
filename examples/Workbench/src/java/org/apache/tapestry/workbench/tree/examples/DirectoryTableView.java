@@ -31,7 +31,8 @@ import org.apache.tapestry.workbench.tree.examples.fsmodel.SFObject;
 /**
  * @author ceco
  */
-public abstract class DirectoryTableView extends BaseComponent implements PageDetachListener
+public abstract class DirectoryTableView extends BaseComponent implements
+        PageDetachListener
 {
 
     private ITableModel m_objTableModel = null;
@@ -77,9 +78,11 @@ public abstract class DirectoryTableView extends BaseComponent implements PageDe
         if (m_objTableModel == null)
         {
             ISelectedFolderSource objSelectedFolderSource = getSelectedFolderSource();
-            Collection colChildrens = objSelectedFolderSource.getSelectedFolderChildren();
+            Collection colChildrens = objSelectedFolderSource
+                    .getSelectedFolderChildren();
 
-            m_objTableModel = new SimpleTableModel(colChildrens.toArray(), getColumns());
+            m_objTableModel = new SimpleTableModel(colChildrens.toArray(),
+                    getColumns());
         }
         return m_objTableModel;
     }
@@ -91,9 +94,10 @@ public abstract class DirectoryTableView extends BaseComponent implements PageDe
             ArrayList arrColumnsList = new ArrayList();
             arrColumnsList.add(new SimpleTableColumn("Name", true)
             {
+
                 private static final long serialVersionUID = -5394217017984056107L;
 
-				public Object getColumnValue(Object objValue)
+                public Object getColumnValue(Object objValue)
                 {
                     SFObject objSFObject = (SFObject) objValue;
                     return objSFObject.getName();
@@ -102,9 +106,10 @@ public abstract class DirectoryTableView extends BaseComponent implements PageDe
 
             arrColumnsList.add(new SimpleTableColumn("Date", true)
             {
+
                 private static final long serialVersionUID = -3258043732869364037L;
 
-				public Object getColumnValue(Object objValue)
+                public Object getColumnValue(Object objValue)
                 {
                     SFObject objSFObject = (SFObject) objValue;
                     return objSFObject.getDate();
@@ -122,7 +127,8 @@ public abstract class DirectoryTableView extends BaseComponent implements PageDe
         if (m_objSelectedFolderSource == null)
         {
             IBinding objBinding = getBinding("selectedFolderSource");
-            m_objSelectedFolderSource = (ISelectedFolderSource) objBinding.getObject();
+            m_objSelectedFolderSource = (ISelectedFolderSource) objBinding
+                    .getObject();
         }
         return m_objSelectedFolderSource;
     }

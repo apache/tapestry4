@@ -24,7 +24,10 @@ import java.rmi.RemoteException;
 
 public interface IPublisher extends IEntityBean
 {
-    public void setName(String value) throws RemoteException;
 
-    public String getName() throws RemoteException;
+    void setName(String value)
+        throws RemoteException;
+
+    String getName()
+        throws RemoteException;
 }

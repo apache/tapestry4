@@ -25,7 +25,7 @@ import org.apache.tapestry.IPage;
 
 public interface IMessageProperty extends IPage
 {
-    public String getMessage();
+    String getMessage();
 
-    public void setMessage(String message);
+    void setMessage(String message);
 }

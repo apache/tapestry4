@@ -20,20 +20,27 @@ import java.util.Set;
  * @author ceco
  */
 
-public interface ITreeStateModel {
-	Set getExpandSelection();
-	/*
-	 * Return the selected node unique key
-	 */
-	Object getSelectedNode();	
-	public void setSelectedNode(Object objUniqueKey);
+public interface ITreeStateModel
+{
 
-	void expand(Object objUniqueKey);
-	void expandPath(Object objUniqueKey);
-	void collapse(Object objUniqueKey);
-	void collapsePath(Object objUniqueKey);
+    Set getExpandSelection();
 
-	boolean isUniqueKeyExpanded(Object objUniqueKey);
-	
-	void resetState();
+    /*
+     * Return the selected node unique key
+     */
+    Object getSelectedNode();
+
+    void setSelectedNode(Object objUniqueKey);
+
+    void expand(Object objUniqueKey);
+
+    void expandPath(Object objUniqueKey);
+
+    void collapse(Object objUniqueKey);
+
+    void collapsePath(Object objUniqueKey);
+
+    boolean isUniqueKeyExpanded(Object objUniqueKey);
+
+    void resetState();
 }

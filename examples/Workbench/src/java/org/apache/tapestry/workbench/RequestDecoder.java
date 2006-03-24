@@ -22,8 +22,8 @@ import org.apache.tapestry.request.DecodedRequest;
 import org.apache.tapestry.request.IRequestDecoder;
 
 /**
- * A useless request decoder (does the same as the default), used to test that a user-supplied
- * extension is actually used.
+ * A useless request decoder (does the same as the default), used to test that a
+ * user-supplied extension is actually used.
  * 
  * @author Howard Lewis Ship
  * @since 2.2
@@ -31,6 +31,7 @@ import org.apache.tapestry.request.IRequestDecoder;
 
 public class RequestDecoder implements IRequestDecoder
 {
+
     private static final Log LOG = LogFactory.getLog(RequestDecoder.class);
 
     public RequestDecoder()
@@ -40,8 +41,7 @@ public class RequestDecoder implements IRequestDecoder
 
     public DecodedRequest decodeRequest(HttpServletRequest request)
     {
-        if (LOG.isDebugEnabled())
-            LOG.debug("Decoding: " + request);
+        if (LOG.isDebugEnabled()) LOG.debug("Decoding: " + request);
 
         DecodedRequest result = new DecodedRequest();
 

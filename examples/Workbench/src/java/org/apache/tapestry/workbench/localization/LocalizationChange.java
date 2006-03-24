@@ -24,6 +24,7 @@ import org.apache.tapestry.html.BasePage;
 
 public abstract class LocalizationChange extends BasePage
 {
+
     private String localeName;
 
     public String getLocaleName()

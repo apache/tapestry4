@@ -39,9 +39,14 @@ import org.apache.tapestry.workbench.tree.examples.fsmodel.FileSystemStateManage
 import org.apache.tapestry.workbench.tree.examples.fsmodel.FolderObject;
 import org.apache.tapestry.workbench.tree.examples.fsmodel.NodeRenderFactory;
 
-public abstract class FileSystemTree extends BasePage implements ISelectedFolderSource,
-        ITreeStateListener, PageDetachListener
+/**
+ * 
+ * @author ceco
+ */
+public abstract class FileSystemTree extends BasePage implements
+        ISelectedFolderSource, ITreeStateListener, PageDetachListener
 {
+
     private ITreeSessionStateManager m_objTreeSessionStateManager = null;
 
     private ITreeDataModel m_objDataModel;
@@ -54,7 +59,7 @@ public abstract class FileSystemTree extends BasePage implements ISelectedFolder
     public abstract IEngineService getAssetService();
 
     /**
-     * Injected
+     * Injected.
      * 
      * @since 4.0
      */
@@ -81,8 +86,8 @@ public abstract class FileSystemTree extends BasePage implements ISelectedFolder
         }
         else
         {
-            FolderObject objFolder = new FolderObject(null, new File(strRootDir), true,
-                    getAssetService());
+            FolderObject objFolder = new FolderObject(null,
+                    new File(strRootDir), true, getAssetService());
             objFolder.reload();
             objParent = objFolder;
         }
@@ -133,7 +138,8 @@ public abstract class FileSystemTree extends BasePage implements ISelectedFolder
 
     public ITreeSessionStateManager getSessionStateManager()
     {
-        // IPage objPage = getRequestCycle().getPage("contrib:TreeNodeViewPage");
+        // IPage objPage =
+        // getRequestCycle().getPage("contrib:TreeNodeViewPage");
         // System.out.println("TreeNodeViewPage NamespaceId :
         // "+objPage.getNamespace().getNamespaceId());
 
@@ -142,7 +148,8 @@ public abstract class FileSystemTree extends BasePage implements ISelectedFolder
             String strRootDir = getTreeRootDir();
             // System.out.println("strRootDir = " + strRootDir);
 
-            m_objTreeSessionStateManager = new FileSystemStateManager(strRootDir, getAssetService());
+            m_objTreeSessionStateManager = new FileSystemStateManager(
+                    strRootDir, getAssetService());
         }
         return m_objTreeSessionStateManager;
     }
@@ -153,15 +160,17 @@ public abstract class FileSystemTree extends BasePage implements ISelectedFolder
     public Collection getSelectedFolderChildren()
     {
         TreeView objTreeView = (TreeView) getComponent("treeView");
-        ITreeStateModel objTreeStateModel = objTreeView.getTreeModel().getTreeStateModel();
+        ITreeStateModel objTreeStateModel = objTreeView.getTreeModel()
+                .getTreeStateModel();
         Object objSelectedNodeUID = objTreeStateModel.getSelectedNode();
         ITreeNode objSelectedNode = null;
         if (objSelectedNodeUID != null)
-            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel().getObject(
-                    objSelectedNodeUID);
+            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel()
+                    .getObject(objSelectedNodeUID);
         else
         {
-            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel().getRoot();
+            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel()
+                    .getRoot();
         }
         return objSelectedNode.getChildren();
     }
@@ -191,15 +200,17 @@ public abstract class FileSystemTree extends BasePage implements ISelectedFolder
     public String getSelectedNodeName()
     {
         TreeView objTreeView = (TreeView) getComponent("treeView");
-        ITreeStateModel objTreeStateModel = objTreeView.getTreeModel().getTreeStateModel();
+        ITreeStateModel objTreeStateModel = objTreeView.getTreeModel()
+                .getTreeStateModel();
         Object objSelectedNodeUID = objTreeStateModel.getSelectedNode();
         ITreeNode objSelectedNode = null;
         if (objSelectedNodeUID != null)
-            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel().getObject(
-                    objSelectedNodeUID);
+            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel()
+                    .getObject(objSelectedNodeUID);
         else
         {
-            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel().getRoot();
+            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel()
+                    .getRoot();
         }
         return objSelectedNode.toString();
     }

@@ -113,7 +113,7 @@ public class RemoteTemplateTest extends HiveMindTestCase
         Integer personId = new Integer(33);
 
         IOperations operations = newOperations();
-        Person person = new Person(new Object[Person.N_COLUMNS]);
+        Person person = new Person(new Object[Person.NUM_COLUMNS]);
 
         operations.getPerson(personId);
         setReturnValue(operations, person);

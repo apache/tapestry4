@@ -22,9 +22,10 @@ package org.apache.tapestry.vlib.ejb;
 
 public class LoginException extends Exception
 {
+
     private static final long serialVersionUID = -1472279052871024178L;
-    
-	private boolean _passwordError;
+
+    private final boolean _passwordError;
 
     public LoginException(String message, boolean passwordError)
     {
@@ -34,8 +35,9 @@ public class LoginException extends Exception
     }
 
     /**
-     * Returns true if the error is related to the password. Otherwise, the error is related to the
-     * email address (either not found, or the user has been invalidated or otherwise locked out).
+     * Returns true if the error is related to the password. Otherwise, the
+     * error is related to the email address (either not found, or the user has
+     * been invalidated or otherwise locked out).
      */
 
     public boolean isPasswordError()
