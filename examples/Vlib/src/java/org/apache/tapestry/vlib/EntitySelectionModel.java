@@ -21,24 +21,31 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.form.IPropertySelectionModel;
 
 /**
- * This class is used as a property selection model to select a primary key. We assume that the
- * primary keys are integers, which makes it easy to translate between the various representations.
+ * This class is used as a property selection model to select a primary key. We
+ * assume that the primary keys are integers, which makes it easy to translate
+ * between the various representations.
  * 
  * @author Howard Lewis Ship
  */
 
 public class EntitySelectionModel implements IPropertySelectionModel
 {
+
+    /**
+     * 
+     * @author hls
+     */
     private static class Entry
     {
+
         Integer primaryKey;
 
         String label;
 
-        Entry(Integer primaryKey, String label)
+        Entry(Integer pkey, String lbl)
         {
-            this.primaryKey = primaryKey;
-            this.label = label;
+            this.primaryKey = pkey;
+            this.label = lbl;
         }
 
     }
@@ -81,16 +88,14 @@ public class EntitySelectionModel implements IPropertySelectionModel
 
         primaryKey = get(index).primaryKey;
 
-        if (primaryKey == null)
-            return "";
+        if (primaryKey == null) return "";
 
         return primaryKey.toString();
     }
 
     public Object translateValue(String value)
     {
-        if (value.equals(""))
-            return null;
+        if (value.equals("")) return null;
 
         try
         {

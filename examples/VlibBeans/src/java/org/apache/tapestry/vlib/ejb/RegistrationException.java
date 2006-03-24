@@ -15,7 +15,8 @@
 package org.apache.tapestry.vlib.ejb;
 
 /**
- * Exception thrown by {@link IOperations#registerNewUser(String, String, String, String)} if the
+ * Exception thrown by
+ * {@link IOperations#registerNewUser(String, String, String, String)} if the
  * registration is not allowed (usually, because of a duplicate email or name).
  * 
  * @author Howard Lewis Ship
@@ -23,9 +24,10 @@ package org.apache.tapestry.vlib.ejb;
 
 public class RegistrationException extends Exception
 {
+
     private static final long serialVersionUID = 1359775792320102947L;
-    
-	private Throwable _rootCause;
+
+    private final Throwable _rootCause;
 
     public RegistrationException(Throwable rootCause)
     {
@@ -44,6 +46,8 @@ public class RegistrationException extends Exception
     public RegistrationException(String message)
     {
         super(message);
+        
+        _rootCause = null;
     }
 
     public Throwable getRootCause()

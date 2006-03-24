@@ -22,86 +22,87 @@ import java.util.Locale;
 
 /**
  * @author mindbridge
- *
  */
-public class VerbosityRating implements Serializable
+public final class VerbosityRating implements Serializable
 {
-	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * Method calculateVerbosity.
-	 * Please note that this method is relatively slow
-	 * It should not be used often, unless for fun :)
-	 * @param objLocale
-	 * @return int
-	 */
-	public static int calculateVerbosity(Locale objLocale)
-	{
-		int nWeekDayVerbosity = calculateWeekDayVerbosity(objLocale);
-		int nMonthVerbosity = calculateMonthVerbosity(objLocale);
-		return nWeekDayVerbosity + nMonthVerbosity;
-	}
 
-	public static int calculateWeekDayVerbosity(Locale objLocale)
-	{
-		SimpleDateFormat objWeekDay = new SimpleDateFormat("EEEE", objLocale);
+    private static final long serialVersionUID = 1L;
 
-		GregorianCalendar objCalendar = new GregorianCalendar();
-		objCalendar.set(Calendar.YEAR, 2000);
-		objCalendar.set(Calendar.MONTH, 0);
-		objCalendar.set(Calendar.DATE, 1);
+    /* defeat instantiation */
+    private VerbosityRating() { }
+    
+    /**
+     * Method calculateVerbosity. Please note that this method is relatively
+     * slow It should not be used often, unless for fun :)
+     * 
+     * @param objLocale
+     * @return int
+     */
+    public static int calculateVerbosity(Locale objLocale)
+    {
+        int nWeekDayVerbosity = calculateWeekDayVerbosity(objLocale);
+        int nMonthVerbosity = calculateMonthVerbosity(objLocale);
+        return nWeekDayVerbosity + nMonthVerbosity;
+    }
 
-		int nCount = 0;
-		for (int i = 0; i < 7; i++)
-		{
-			String strWeekDay = objWeekDay.format(objCalendar.getTime());
-			nCount += strWeekDay.length();
-			objCalendar.add(Calendar.DATE, 1);
-		}
+    public static int calculateWeekDayVerbosity(Locale objLocale)
+    {
+        SimpleDateFormat objWeekDay = new SimpleDateFormat("EEEE", objLocale);
 
-		return nCount;
-	}
+        GregorianCalendar objCalendar = new GregorianCalendar();
+        objCalendar.set(Calendar.YEAR, 2000);
+        objCalendar.set(Calendar.MONTH, 0);
+        objCalendar.set(Calendar.DATE, 1);
 
-	public static int calculateMonthVerbosity(Locale objLocale)
-	{
-		SimpleDateFormat objMonth = new SimpleDateFormat("MMMM", objLocale);
+        int nCount = 0;
+        for(int i = 0; i < 7; i++)
+        {
+            String strWeekDay = objWeekDay.format(objCalendar.getTime());
+            nCount += strWeekDay.length();
+            objCalendar.add(Calendar.DATE, 1);
+        }
 
-		GregorianCalendar objCalendar = new GregorianCalendar();
-		objCalendar.set(Calendar.YEAR, 2000);
-		objCalendar.set(Calendar.MONTH, 0);
-		objCalendar.set(Calendar.DATE, 1);
+        return nCount;
+    }
 
-		int nCount = 0;
-		for (int i = 0; i < 12; i++)
-		{
-			String strMonth = objMonth.format(objCalendar.getTime());
-			nCount += strMonth.length();
-			objCalendar.add(Calendar.MONTH, 1);
-		}
+    public static int calculateMonthVerbosity(Locale objLocale)
+    {
+        SimpleDateFormat objMonth = new SimpleDateFormat("MMMM", objLocale);
 
-		return nCount;
-	}
+        GregorianCalendar objCalendar = new GregorianCalendar();
+        objCalendar.set(Calendar.YEAR, 2000);
+        objCalendar.set(Calendar.MONTH, 0);
+        objCalendar.set(Calendar.DATE, 1);
 
-	public static void main(String[] arrArgs)
-	{
-		int nMax = 0;
-		int nMin = 1000;
+        int nCount = 0;
+        for(int i = 0; i < 12; i++)
+        {
+            String strMonth = objMonth.format(objCalendar.getTime());
+            nCount += strMonth.length();
+            objCalendar.add(Calendar.MONTH, 1);
+        }
 
-		System.out.println("Starting");
+        return nCount;
+    }
 
-		Locale[] arrLocales = Locale.getAvailableLocales();
-		for (int i = 0; i < arrLocales.length; i++)
-		{
-			Locale objLocale = arrLocales[i];
-			int nRating = calculateVerbosity(objLocale);
-			if (nRating > nMax)
-				nMax = nRating;
-			if (nRating < nMin)
-				nMin = nRating;
-		}
+    public static void main(String[] arrArgs)
+    {
+        int nMax = 0;
+        int nMin = 1000;
 
-		System.out.println("Min: " + nMin);
-		System.out.println("Max: " + nMax);
-	}
+        System.out.println("Starting");
+
+        Locale[] arrLocales = Locale.getAvailableLocales();
+        for(int i = 0; i < arrLocales.length; i++)
+        {
+            Locale objLocale = arrLocales[i];
+            int nRating = calculateVerbosity(objLocale);
+            if (nRating > nMax) nMax = nRating;
+            if (nRating < nMin) nMin = nRating;
+        }
+
+        System.out.println("Min: " + nMin);
+        System.out.println("Max: " + nMax);
+    }
 
 }

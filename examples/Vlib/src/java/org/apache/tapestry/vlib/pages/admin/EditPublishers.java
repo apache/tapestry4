@@ -39,16 +39,18 @@ import org.apache.tapestry.vlib.pages.MyLibrary;
 import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
- * Allows editting of the publishers in the database, including deleting publishers (which can be
- * dangerous if any books are linked to the publisher).
+ * Allows editting of the publishers in the database, including deleting
+ * publishers (which can be dangerous if any books are linked to the publisher).
  * 
  * @author Howard Lewis Ship
  */
-@Meta(
-{ "page-type=EditPublishers", "admin-page=true" })
-public abstract class EditPublishers extends VlibPage implements PageBeginRenderListener,
-        PageDetachListener
+@Meta( { "page-type=EditPublishers", "admin-page=true" })
+public abstract class EditPublishers extends VlibPage implements
+        PageBeginRenderListener, PageDetachListener
 {
+
+    private DefaultPrimaryKeyConverter _converter;
+    
     public abstract Publisher getPublisher();
 
     @Message
@@ -63,23 +65,21 @@ public abstract class EditPublishers extends VlibPage implements PageBeginRender
     @InjectPage("MyLibrary")
     public abstract MyLibrary getMyLibrary();
 
-    private DefaultPrimaryKeyConverter _converter;
-
     public DefaultPrimaryKeyConverter getConverter()
     {
-        if (_converter == null)
-            _converter = new DefaultPrimaryKeyConverter()
+        if (_converter == null) _converter = new DefaultPrimaryKeyConverter()
+        {
+
+            // Here's why we DON'T use @Bean ...
+
+            @Override
+            protected Object provideMissingValue(Object key)
             {
-                // Here's why we DON'T use @Bean ...
+                getValidationDelegate().record(null, outOfDate());
+                throw new PageRedirectException(EditPublishers.this);
+            }
 
-                @Override
-                protected Object provideMissingValue(Object key)
-                {
-                    getValidationDelegate().record(null, outOfDate());
-                    throw new PageRedirectException(EditPublishers.this);
-                }
-
-            };
+        };
 
         return _converter;
     }
@@ -95,28 +95,31 @@ public abstract class EditPublishers extends VlibPage implements PageBeginRender
     }
 
     /**
-     * Reads all publishers from the database, building the list of publisher ids, and the map from
-     * id to Publisher. Also, sets the deletedPublisherIds property to an empty set.
+     * Reads all publishers from the database, building the list of publisher
+     * ids, and the map from id to Publisher. Also, sets the deletedPublisherIds
+     * property to an empty set.
      */
 
     private void readPublishers()
     {
         RemoteCallback<Publisher[]> callback = new RemoteCallback()
         {
-            public Publisher[] doRemote() throws RemoteException
+
+            public Publisher[] doRemote()
+                throws RemoteException
             {
                 return getOperations().getPublishers();
             }
         };
 
-        Publisher[] publishers = getRemoteTemplate()
-                .execute(callback, "Could not read publishers.");
+        Publisher[] publishers = getRemoteTemplate().execute(callback,
+                "Could not read publishers.");
 
         DefaultPrimaryKeyConverter converter = getConverter();
 
         converter.clear();
 
-        for (Publisher publisher : publishers)
+        for(Publisher publisher : publishers)
         {
             converter.add(publisher.getId(), publisher);
         }
@@ -135,7 +138,7 @@ public abstract class EditPublishers extends VlibPage implements PageBeginRender
         List keys = new ArrayList(deletedValues.size());
 
         Iterator i = deletedValues.iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             Publisher p = (Publisher) i.next();
             keys.add(p.getId());
@@ -151,7 +154,9 @@ public abstract class EditPublishers extends VlibPage implements PageBeginRender
 
         RemoteCallback callback = new RemoteCallback()
         {
-            public Object doRemote() throws RemoteException
+
+            public Object doRemote()
+                throws RemoteException
             {
 
                 try

@@ -27,83 +27,98 @@ import org.apache.tapestry.contrib.tree.model.ITreeNode;
  */
 public class TreeNode implements IMutableTreeNode
 {
-	private static final long serialVersionUID = 677919478017303186L;
-	
-	protected Set m_setChildren;
-	protected IMutableTreeNode m_objParentNode;
-	
-	/**
-	 * Constructor for TreeNode.
-	 */
-	public TreeNode() {
-		this(null);
-	}
-	public TreeNode(IMutableTreeNode parentNode) {
-		super();
-		m_objParentNode = parentNode;
-		m_setChildren = new HashSet();
-	}
 
+    private static final long serialVersionUID = 677919478017303186L;
 
-	public int getChildCount() {
-		return m_setChildren.size();
-	}
+    protected Set m_setChildren;
+    protected IMutableTreeNode m_objParentNode;
 
-	public ITreeNode getParent() {
-		return m_objParentNode;
-	}
+    /**
+     * Constructor for TreeNode.
+     */
+    public TreeNode()
+    {
+        this(null);
+    }
 
-	public boolean getAllowsChildren() {
-		return true;
-	}
+    public TreeNode(IMutableTreeNode parentNode)
+    {
+        super();
+        m_objParentNode = parentNode;
+        m_setChildren = new HashSet();
+    }
 
-	public boolean isLeaf() {
-		return m_setChildren.size() == 0 ? true:false;
-	}
+    public int getChildCount()
+    {
+        return m_setChildren.size();
+    }
 
-	public Collection children() {
-		return m_setChildren;
-	}
+    public ITreeNode getParent()
+    {
+        return m_objParentNode;
+    }
 
+    public boolean getAllowsChildren()
+    {
+        return true;
+    }
 
-	public void insert(IMutableTreeNode child) {
-		child.setParent(this);
-		m_setChildren.add(child);
-	}
+    public boolean isLeaf()
+    {
+        return m_setChildren.size() == 0 ? true : false;
+    }
 
-	public void remove(IMutableTreeNode node) {
-		m_setChildren.remove(node);
-	}
+    public Collection children()
+    {
+        return m_setChildren;
+    }
 
-	public void removeFromParent() {
-		m_objParentNode.remove(this);
-		m_objParentNode = null;
-	}
+    public void insert(IMutableTreeNode child)
+    {
+        child.setParent(this);
+        m_setChildren.add(child);
+    }
 
-	public void setParent(IMutableTreeNode newParent) {
-		m_objParentNode = newParent;
-	}
+    public void remove(IMutableTreeNode node)
+    {
+        m_setChildren.remove(node);
+    }
 
-	public void insert(Collection colChildren){
-		for (Iterator iter = colChildren.iterator(); iter.hasNext();) {
-			IMutableTreeNode element = (IMutableTreeNode) iter.next();
-			element.setParent(this);
-			m_setChildren.add(element);
-		}
-	}
+    public void removeFromParent()
+    {
+        m_objParentNode.remove(this);
+        m_objParentNode = null;
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.model.ITreeNode#containsChild(ITreeNode)
-	 */
-	public boolean containsChild(ITreeNode node) {
-		return m_setChildren.contains(node);
-	}
+    public void setParent(IMutableTreeNode newParent)
+    {
+        m_objParentNode = newParent;
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.model.ITreeNode#getChildren()
-	 */
-	public Collection getChildren() {
-		return m_setChildren;
-	}
+    public void insert(Collection colChildren)
+    {
+        for(Iterator iter = colChildren.iterator(); iter.hasNext();)
+        {
+            IMutableTreeNode element = (IMutableTreeNode) iter.next();
+            element.setParent(this);
+            m_setChildren.add(element);
+        }
+    }
+
+    /**
+     * @see org.apache.tapestry.contrib.tree.model.ITreeNode#containsChild(ITreeNode)
+     */
+    public boolean containsChild(ITreeNode node)
+    {
+        return m_setChildren.contains(node);
+    }
+
+    /**
+     * @see org.apache.tapestry.contrib.tree.model.ITreeNode#getChildren()
+     */
+    public Collection getChildren()
+    {
+        return m_setChildren;
+    }
 
 }

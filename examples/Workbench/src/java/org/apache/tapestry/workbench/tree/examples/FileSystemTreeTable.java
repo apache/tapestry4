@@ -44,9 +44,14 @@ import org.apache.tapestry.workbench.tree.examples.fsmodel.FolderObject;
 import org.apache.tapestry.workbench.tree.examples.fsmodel.IFileSystemTreeNode;
 import org.apache.tapestry.workbench.tree.examples.fsmodel.NodeRenderFactory;
 
-public abstract class FileSystemTreeTable extends BasePage implements ISelectedFolderSource,
-        ITreeStateListener, PageDetachListener
+/**
+ * 
+ * @author ceco
+ */
+public abstract class FileSystemTreeTable extends BasePage implements
+        ISelectedFolderSource, ITreeStateListener, PageDetachListener
 {
+
     private ITreeSessionStateManager m_objTreeSessionStateManager = null;
 
     private ITreeDataModel m_objDataModel;
@@ -58,7 +63,7 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
     private ArrayList m_arrTableColumns = null;
 
     /**
-     * Injected
+     * Injected.
      * 
      * @since 4.0
      */
@@ -88,8 +93,8 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
         }
         else
         {
-            FolderObject objFolder = new FolderObject(null, new File(strRootDir), true,
-                    getAssetService());
+            FolderObject objFolder = new FolderObject(null,
+                    new File(strRootDir), true, getAssetService());
             objFolder.reload();
             objParent = objFolder;
         }
@@ -143,7 +148,8 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
         if (m_objTreeSessionStateManager == null)
         {
             String strRootDir = getTreeRootDir();
-            m_objTreeSessionStateManager = new FileSystemStateManager(strRootDir, getAssetService());
+            m_objTreeSessionStateManager = new FileSystemStateManager(
+                    strRootDir, getAssetService());
         }
         return m_objTreeSessionStateManager;
     }
@@ -158,12 +164,14 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
             m_arrTableColumns = new ArrayList();
             m_arrTableColumns.add(new SimpleTableColumn("Date", true)
             {
+
                 private static final long serialVersionUID = -8211004113105081255L;
 
                 public Object getColumnValue(Object objValue)
                 {
                     TreeRowObject objRowObject = (TreeRowObject) objValue;
-                    // SFObject objSFObject = (SFObject)objRowObject.getTreeNode();
+                    // SFObject objSFObject =
+                    // (SFObject)objRowObject.getTreeNode();
                     IFileSystemTreeNode objFileSystemTreeNode = (IFileSystemTreeNode) objRowObject
                             .getTreeNode();
                     return objFileSystemTreeNode.getDate();
@@ -180,15 +188,17 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
     {
         TreeTable objTreeTable = (TreeTable) getComponent("tree");
         ITreeModelSource objTreeModelSource = objTreeTable.getTreeModelSource();
-        ITreeStateModel objTreeStateModel = objTreeModelSource.getTreeModel().getTreeStateModel();
+        ITreeStateModel objTreeStateModel = objTreeModelSource.getTreeModel()
+                .getTreeStateModel();
         Object objSelectedNodeUID = objTreeStateModel.getSelectedNode();
         ITreeNode objSelectedNode = null;
         if (objSelectedNodeUID != null)
-            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel().getObject(
-                    objSelectedNodeUID);
+            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel()
+                    .getObject(objSelectedNodeUID);
         else
         {
-            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel().getRoot();
+            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel()
+                    .getRoot();
         }
         return objSelectedNode.getChildren();
     }
@@ -219,15 +229,17 @@ public abstract class FileSystemTreeTable extends BasePage implements ISelectedF
     {
         TreeTable objTreeTable = (TreeTable) getComponent("tree");
         ITreeModelSource objTreeModelSource = objTreeTable.getTreeModelSource();
-        ITreeStateModel objTreeStateModel = objTreeModelSource.getTreeModel().getTreeStateModel();
+        ITreeStateModel objTreeStateModel = objTreeModelSource.getTreeModel()
+                .getTreeStateModel();
         Object objSelectedNodeUID = objTreeStateModel.getSelectedNode();
         ITreeNode objSelectedNode = null;
         if (objSelectedNodeUID != null)
-            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel().getObject(
-                    objSelectedNodeUID);
+            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel()
+                    .getObject(objSelectedNodeUID);
         else
         {
-            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel().getRoot();
+            objSelectedNode = (ITreeNode) getTreeModel().getTreeDataModel()
+                    .getRoot();
         }
         return objSelectedNode.toString();
     }

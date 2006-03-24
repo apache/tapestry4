@@ -41,8 +41,10 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
  * @author Howard Lewis Ship
  */
 
-public abstract class EditProfile extends ActivatePage implements PageBeginRenderListener
+public abstract class EditProfile extends ActivatePage implements
+        PageBeginRenderListener
 {
+
     public abstract String getPassword1();
 
     public abstract void setPassword1(String value);
@@ -74,8 +76,9 @@ public abstract class EditProfile extends ActivatePage implements PageBeginRende
     public abstract MyLibrary getMyLibrary();
 
     /**
-     * Invoked (from {@link MyLibrary}) to begin editting the user's profile. We get the entity
-     * attributes from the {@link org.apache.tapestry.vlib.ejb.IPerson}, and store them in the
+     * Invoked (from {@link MyLibrary}) to begin editting the user's profile.
+     * We get the entity attributes from the
+     * {@link org.apache.tapestry.vlib.ejb.IPerson}, and store them in the
      * attributes page property, ready to provide default values to the
      * {@link org.apache.tapestry.valid.ValidField} components.
      */
@@ -88,7 +91,9 @@ public abstract class EditProfile extends ActivatePage implements PageBeginRende
 
         RemoteCallback<Map> callback = new RemoteCallback()
         {
-            public Map doRemote() throws RemoteException
+
+            public Map doRemote()
+                throws RemoteException
             {
                 try
                 {
@@ -101,7 +106,8 @@ public abstract class EditProfile extends ActivatePage implements PageBeginRende
             }
         };
 
-        Map attributes = getRemoteTemplate().execute(callback, "Error reading user information.");
+        Map attributes = getRemoteTemplate().execute(callback,
+                "Error reading user information.");
 
         attributes.remove("password");
         setAttributes(attributes);
@@ -125,8 +131,7 @@ public abstract class EditProfile extends ActivatePage implements PageBeginRende
         delegate.setFormComponent(getPassword2Field());
         delegate.recordFieldInputValue(null);
 
-        if (delegate.getHasErrors())
-            return;
+        if (delegate.getHasErrors()) return;
 
         final Map attributes = getAttributes();
 
@@ -153,7 +158,9 @@ public abstract class EditProfile extends ActivatePage implements PageBeginRende
 
         RemoteCallback callback = new RemoteCallback()
         {
-            public Object doRemote() throws RemoteException
+
+            public Object doRemote()
+                throws RemoteException
             {
                 try
                 {
@@ -168,7 +175,8 @@ public abstract class EditProfile extends ActivatePage implements PageBeginRende
             }
         };
 
-        getRemoteTemplate().execute(callback, "Error updating user attributes.");
+        getRemoteTemplate()
+                .execute(callback, "Error updating user attributes.");
 
         getModelSource().clear();
 
@@ -177,8 +185,7 @@ public abstract class EditProfile extends ActivatePage implements PageBeginRende
 
     public void pageBeginRender(PageEvent event)
     {
-        if (getAttributes() == null)
-            setAttributes(new HashMap());
+        if (getAttributes() == null) setAttributes(new HashMap());
     }
 
 }

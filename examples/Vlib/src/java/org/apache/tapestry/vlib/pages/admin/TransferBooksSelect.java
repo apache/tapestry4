@@ -29,10 +29,10 @@ import org.apache.tapestry.vlib.VlibPage;
  * 
  * @author Howard Lewis Ship
  */
-@Meta(
-{ "page-type=TransferBooks", "admin-page=true" })
+@Meta( { "page-type=TransferBooks", "admin-page=true" })
 public abstract class TransferBooksSelect extends VlibPage
 {
+
     public abstract Integer getFromUserId();
 
     public abstract Integer getToUserId();
@@ -56,7 +56,8 @@ public abstract class TransferBooksSelect extends VlibPage
 
         if (fromUserId.equals(toUserId))
         {
-            getValidationDelegate().record(getToField(), selectDifferentUsers());
+            getValidationDelegate()
+                    .record(getToField(), selectDifferentUsers());
             return;
         }
 

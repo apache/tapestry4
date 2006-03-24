@@ -30,9 +30,6 @@ import org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor;
 public abstract class LocaleList extends BaseComponent
 {
 
-    @Parameter(required = true)
-    public abstract ILocaleSelectionListener getLocaleSelectionListener();
-
     // immutable values
     private IPrimaryKeyConvertor m_objLocaleConvertor;
 
@@ -42,6 +39,7 @@ public abstract class LocaleList extends BaseComponent
         // a Locale object as a String and converts it back
         m_objLocaleConvertor = new IPrimaryKeyConvertor()
         {
+
             public Object getPrimaryKey(Object objValue)
             {
                 Locale objLocale = (Locale) objValue;
@@ -50,7 +48,8 @@ public abstract class LocaleList extends BaseComponent
 
             public Object getValue(Object objPrimaryKey)
             {
-                StringTokenizer objTokenizer = new StringTokenizer((String) objPrimaryKey, "_");
+                StringTokenizer objTokenizer = new StringTokenizer(
+                        (String) objPrimaryKey, "_");
 
                 String strLanguage = "";
                 if (objTokenizer.hasMoreTokens())
@@ -69,6 +68,9 @@ public abstract class LocaleList extends BaseComponent
         };
     }
 
+    @Parameter(required = true)
+    public abstract ILocaleSelectionListener getLocaleSelectionListener();
+    
     public IPrimaryKeyConvertor getLocaleConvertor()
     {
         return m_objLocaleConvertor;
@@ -86,8 +88,7 @@ public abstract class LocaleList extends BaseComponent
 
         if (bSelected)
             setSelectedLocales.add(objLocale);
-        else
-            setSelectedLocales.remove(objLocale);
+        else setSelectedLocales.remove(objLocale);
 
         // persist value
         setSelectedLocales(setSelectedLocales);

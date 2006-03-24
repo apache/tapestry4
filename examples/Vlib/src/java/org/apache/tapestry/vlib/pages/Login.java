@@ -37,9 +37,10 @@ import org.apache.tapestry.vlib.ejb.Person;
 import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
- * Allows the user to login, by providing email address and password. After succesfully logging in,
- * a cookie is placed on the client browser that provides the default email address for future
- * logins (the cookie persists for a week).
+ * Allows the user to login, by providing email address and password. After
+ * succesfully logging in, a cookie is placed on the client browser that
+ * provides the default email address for future logins (the cookie persists for
+ * a week).
  * 
  * @author Howard Lewis Ship
  */
@@ -47,9 +48,10 @@ import org.apache.tapestry.vlib.services.RemoteCallback;
 @Meta("anonymous-access=true")
 public abstract class Login extends VlibPage implements PageBeginRenderListener
 {
+
     /**
-     * The name of a cookie to store on the user's machine that will identify them next time they
-     * log in.
+     * The name of a cookie to store on the user's machine that will identify
+     * them next time they log in.
      */
 
     private static final String COOKIE_NAME = "org.apache.tapestry.vlib.Login.email";
@@ -87,8 +89,8 @@ public abstract class Login extends VlibPage implements PageBeginRenderListener
     /**
      * Attempts to login.
      * <p>
-     * If the user name is not known, or the password is invalid, then an error message is
-     * displayed.
+     * If the user name is not known, or the password is invalid, then an error
+     * message is displayed.
      */
 
     public void attemptLogin(IRequestCycle cycle)
@@ -105,12 +107,13 @@ public abstract class Login extends VlibPage implements PageBeginRenderListener
 
         // An error, from a validation field, may already have occured.
 
-        if (delegate.getHasErrors())
-            return;
+        if (delegate.getHasErrors()) return;
 
         RemoteCallback callback = new RemoteCallback()
         {
-            public Object doRemote() throws RemoteException
+
+            public Object doRemote()
+                throws RemoteException
             {
 
                 try
@@ -139,9 +142,9 @@ public abstract class Login extends VlibPage implements PageBeginRenderListener
     }
 
     /**
-     * Sets up the {@link Person} as the logged in user, creates a cookie for thier email address
-     * (for subsequent logins), and redirects to the appropriate page ({@link MyLibrary}, or a
-     * specified page).
+     * Sets up the {@link Person} as the logged in user, creates a cookie for
+     * thier email address (for subsequent logins), and redirects to the
+     * appropriate page ({@link MyLibrary}, or a specified page).
      */
 
     public void loginUser(Person person)
@@ -163,8 +166,7 @@ public abstract class Login extends VlibPage implements PageBeginRenderListener
 
         if (callback == null)
             getMyLibrary().activate();
-        else
-            callback.performCallback(cycle);
+        else callback.performCallback(cycle);
 
         getCookieSource().writeCookieValue(COOKIE_NAME, email, COOKIE_MAX_AGE);
 
@@ -173,8 +175,7 @@ public abstract class Login extends VlibPage implements PageBeginRenderListener
 
     public void pageBeginRender(PageEvent event)
     {
-        if (getEmail() == null)
-            getCookieSource().readCookieValue(COOKIE_NAME);
+        if (getEmail() == null) getCookieSource().readCookieValue(COOKIE_NAME);
     }
 
 }

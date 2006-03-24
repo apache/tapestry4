@@ -16,7 +16,12 @@ package org.apache.tapestry.workbench.tree.examples;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author 
+ */
 public class SessionVisit implements Serializable
 {
-	private static final long serialVersionUID = 4805064665115445945L;
+
+    private static final long serialVersionUID = 4805064665115445945L;
 }

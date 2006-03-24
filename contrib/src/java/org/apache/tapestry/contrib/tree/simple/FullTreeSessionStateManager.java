@@ -20,27 +20,31 @@ import org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager;
 /**
  * @author ceco
  */
-public class FullTreeSessionStateManager implements ITreeSessionStateManager {
+public class FullTreeSessionStateManager implements ITreeSessionStateManager
+{
 
-	/**
-	 * Constructor for FullTreeSessionStateManager.
-	 */
-	public FullTreeSessionStateManager() {
-		super();
-	}
+    /**
+     * Constructor for FullTreeSessionStateManager.
+     */
+    public FullTreeSessionStateManager()
+    {
+        super();
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager#getSessionState(ITreeModel)
-	 */
-	public Object getSessionState(ITreeModel objModel) {
-		return objModel;
-	}
+    /**
+     * @see org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager#getSessionState(ITreeModel)
+     */
+    public Object getSessionState(ITreeModel objModel)
+    {
+        return objModel;
+    }
 
-	/**
-	 * @see org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager#getModel(Object)
-	 */
-	public ITreeModel getModel(Object objSessionState) {
-		return (ITreeModel)objSessionState;
-	}
+    /**
+     * @see org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager#getModel(Object)
+     */
+    public ITreeModel getModel(Object objSessionState)
+    {
+        return (ITreeModel) objSessionState;
+    }
 
 }

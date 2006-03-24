@@ -17,42 +17,51 @@ package org.apache.tapestry.contrib.tree.model;
 /**
  * @author ceco
  */
-public class TreeStateEvent {
-	public static final int SELECTED_NODE_CHANGED 	= 1;
-	public static final int NODE_EXPANDED 			= 2;
-	public static final int NODE_COLLAPSED 			= 4;
-	
-	private int m_nEventType;
-	private transient ITreeStateModel m_objTreeStateModel = null;
-	private transient Object m_objNodeUID = null;
+public class TreeStateEvent
+{
 
-	/**
-	 * Constructor for TreeStateEvent.
-	 */
-	public TreeStateEvent(int nEventType, Object objNodeUID, ITreeStateModel objTreeStateModel) {
-		super();
-		m_nEventType = nEventType;
-		m_objNodeUID = objNodeUID;
-		m_objTreeStateModel = objTreeStateModel;
-	}
+    public static final int SELECTED_NODE_CHANGED = 1;
+    public static final int NODE_EXPANDED = 2;
+    public static final int NODE_COLLAPSED = 4;
 
-	/**
-	 * Returns the EventType.
-	 * @return int
-	 */
-	public int getEventType() {
-		return m_nEventType;
-	}
+    private int m_nEventType;
+    private transient ITreeStateModel m_objTreeStateModel = null;
+    private transient Object m_objNodeUID = null;
 
-    public boolean isEvent(int nEventType){
-		return (getEventType() & nEventType) > 0;
-	}
+    /**
+     * Constructor for TreeStateEvent.
+     */
+    public TreeStateEvent(int nEventType, Object objNodeUID,
+            ITreeStateModel objTreeStateModel)
+    {
+        super();
+        m_nEventType = nEventType;
+        m_objNodeUID = objNodeUID;
+        m_objTreeStateModel = objTreeStateModel;
+    }
 
-	public Object getNodeUID() {
-		return m_objNodeUID;
-	}
+    /**
+     * Returns the EventType.
+     * 
+     * @return int
+     */
+    public int getEventType()
+    {
+        return m_nEventType;
+    }
 
-	public ITreeStateModel getTreeStateModel() {
-		return m_objTreeStateModel;
-	}
+    public boolean isEvent(int nEventType)
+    {
+        return (getEventType() & nEventType) > 0;
+    }
+
+    public Object getNodeUID()
+    {
+        return m_objNodeUID;
+    }
+
+    public ITreeStateModel getTreeStateModel()
+    {
+        return m_objTreeStateModel;
+    }
 }

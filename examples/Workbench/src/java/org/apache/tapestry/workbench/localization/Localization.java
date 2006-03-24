@@ -27,6 +27,7 @@ import org.apache.tapestry.html.BasePage;
 
 public abstract class Localization extends BasePage
 {
+
     private IPropertySelectionModel localeModel;
 
     public void formSubmit(IRequestCycle cycle)
@@ -36,8 +37,7 @@ public abstract class Localization extends BasePage
 
     public IPropertySelectionModel getLocaleModel()
     {
-        if (localeModel == null)
-            localeModel = buildLocaleModel();
+        if (localeModel == null) localeModel = buildLocaleModel();
 
         return localeModel;
     }

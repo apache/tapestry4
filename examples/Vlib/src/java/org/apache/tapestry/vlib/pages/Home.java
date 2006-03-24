@@ -20,13 +20,13 @@ import org.apache.tapestry.vlib.VlibPage;
 import org.apache.tapestry.vlib.ejb.MasterQueryParameters;
 
 /**
- * The home page for the application, it's primary purpose is to provide a book search form.
+ * The home page for the application, it's primary purpose is to provide a book
+ * search form.
  * 
  * @author Howard Lewis Ship
  */
 
-@Meta(
-{ "page-type=Search", "anonymous-access=true" })
+@Meta( { "page-type=Search", "anonymous-access=true" })
 public abstract class Home extends VlibPage
 {
 
@@ -42,15 +42,16 @@ public abstract class Home extends VlibPage
     public abstract BookMatches getBookMatches();
 
     /**
-     * Listener method, invokes {@link BookMatches#performQuery(MasterQueryParameters)}.
+     * Listener method, invokes
+     * {@link BookMatches#performQuery(MasterQueryParameters)}.
      */
 
     public void search()
     {
         BookMatches matches = getBookMatches();
 
-        MasterQueryParameters parameters = new MasterQueryParameters(getTitle(), getAuthor(),
-                getOwnerId(), getPublisherId());
+        MasterQueryParameters parameters = new MasterQueryParameters(
+                getTitle(), getAuthor(), getOwnerId(), getPublisherId());
 
         matches.performQuery(parameters);
     }

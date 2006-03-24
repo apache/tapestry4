@@ -28,17 +28,20 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
 import org.apache.tapestry.vlib.services.RemoteCallback;
 
 /**
- * Shows a list of the user's books, allowing books to be editted or even deleted.
+ * Shows a list of the user's books, allowing books to be editted or even
+ * deleted.
  * <p>
- * Note that, unlike elsewhere, book titles do not link to the {@link ViewBook} page. It seems to me
- * there would be a conflict between that behavior and the edit behavior; making the book titles not
- * be links removes the ambiguity over what happens when the book title is clicked (view vs. edit).
+ * Note that, unlike elsewhere, book titles do not link to the {@link ViewBook}
+ * page. It seems to me there would be a conflict between that behavior and the
+ * edit behavior; making the book titles not be links removes the ambiguity over
+ * what happens when the book title is clicked (view vs. edit).
  * 
  * @author Howard Lewis Ship
  */
 
 public abstract class MyLibrary extends ActivatePage
 {
+
     @Persist
     public abstract IBookQuery getOwnedQuery();
 
@@ -81,11 +84,14 @@ public abstract class MyLibrary extends ActivatePage
     private void runQuery()
     {
         final Integer userId = getVisitState().getUserId();
-        final SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
+        final SortOrdering ordering = new SortOrdering(getSortColumn(),
+                isDescending());
 
         RemoteCallback<Integer> callback = new RemoteCallback()
         {
-            public Integer doRemote() throws RemoteException
+
+            public Integer doRemote()
+                throws RemoteException
             {
                 IBookQuery query = getOwnedQuery();
 
@@ -107,7 +113,8 @@ public abstract class MyLibrary extends ActivatePage
             }
         };
 
-        int count = getRemoteTemplate().execute(callback, "Error accessing owned books.");
+        int count = getRemoteTemplate().execute(callback,
+                "Error accessing owned books.");
 
         Browser browser = getBrowser();
 

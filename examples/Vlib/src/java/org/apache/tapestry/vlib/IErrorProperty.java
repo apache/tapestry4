@@ -17,17 +17,16 @@ package org.apache.tapestry.vlib;
 import org.apache.tapestry.IPage;
 
 /**
- *  Marks pages that have an error property (of type String).
- *
- *  @see VirtualLibraryDelegate
- *
- *  @author Howard Lewis Ship
+ * Marks pages that have an error property (of type String).
  * 
- **/
+ * @see VirtualLibraryDelegate
+ * @author Howard Lewis Ship
+ */
 
 public interface IErrorProperty extends IPage
 {
-    public String getError();
 
-    public void setError(String value);
+    String getError();
+
+    void setError(String value);
 }

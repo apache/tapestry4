@@ -28,6 +28,7 @@ import org.apache.tapestry.valid.IValidationDelegate;
 
 public abstract class Fields extends BasePage
 {
+
     public static final int INT_MIN = 5;
 
     public static final int INT_MAX = 20;
