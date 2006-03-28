@@ -23,11 +23,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.event.ChangeObserver;
+import org.apache.tapestry.event.PageAttachListener;
 import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEndRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageAttachListener;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.util.StringSplitter;
@@ -414,7 +414,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         PageEvent event = null;
         Object[] listeners = _listenerList.getListenerList();
 
-        for (int i = 0; i < listeners.length; i += 2)
+        for(int i = listeners.length-2; i >= 0; i -= 2) 
         {
             if (listeners[i] == PageAttachListener.class)
             {
@@ -466,11 +466,11 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         PageEvent event = null;
         Object[] listeners = _listenerList.getListenerList();
 
-        for (int i = 0; i < listeners.length; i += 2)
+        for(int i = listeners.length-2; i >= 0; i -= 2) 
         {
-            if (listeners[i] == PageBeginRenderListener.class)
+            if (listeners[i] == PageBeginRenderListener.class) 
             {
-                PageBeginRenderListener l = (PageBeginRenderListener) listeners[i + 1];
+                PageBeginRenderListener l = (PageBeginRenderListener)listeners[i + 1];
 
                 if (event == null)
                     event = new PageEvent(this, _requestCycle);
