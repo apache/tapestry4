@@ -31,8 +31,9 @@ import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.IScriptSource;
 
 /**
- * Works with the {@link Body}component to add a script (and perhaps some initialization) to the
- * HTML response. [ <a href="../../../../../ComponentReference/Script.html">Component Reference
+ * Works with the {@link Body}component to add a script (and perhaps some
+ * initialization) to the HTML response. [ <a
+ * href="../../../../../ComponentReference/Script.html">Component Reference
  * </a>]
  * 
  * @author Howard Lewis Ship
@@ -40,14 +41,6 @@ import org.apache.tapestry.engine.IScriptSource;
 
 public abstract class Script extends AbstractComponent
 {
-    /**
-     * Injected
-     * 
-     * @since 4.0
-     */
-
-    public abstract IScriptSource getScriptSource();
-
     /**
      * A Map of input and output symbols visible to the body of the Script.
      * 
@@ -57,10 +50,19 @@ public abstract class Script extends AbstractComponent
     private Map _symbols;
 
     /**
-     * Constructs the symbols {@link Map}. This starts with the contents of the symbols parameter
-     * (if specified) to which is added any informal parameters. If both a symbols parameter and
-     * informal parameters are bound, then a copy of the symbols parameter's value is made (that is,
-     * the {@link Map}provided by the symbols parameter is read, but not modified).
+     * Injected.
+     * 
+     * @since 4.0
+     */
+
+    public abstract IScriptSource getScriptSource();
+    
+    /**
+     * Constructs the symbols {@link Map}. This starts with the contents of the
+     * symbols parameter (if specified) to which is added any informal
+     * parameters. If both a symbols parameter and informal parameters are
+     * bound, then a copy of the symbols parameter's value is made (that is, the
+     * {@link Map}provided by the symbols parameter is read, but not modified).
      */
 
     private Map getInputSymbols()
@@ -69,22 +71,20 @@ public abstract class Script extends AbstractComponent
 
         Map baseSymbols = getBaseSymbols();
 
-        if (baseSymbols != null)
-            result.putAll(baseSymbols);
+        if (baseSymbols != null) result.putAll(baseSymbols);
 
         // Now, iterate through all the binding names (which includes both
         // formal and informal parmeters). Skip the formal ones and
         // access the informal ones.
 
         Iterator i = getBindingNames().iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             String bindingName = (String) i.next();
 
             // Skip formal parameters
 
-            if (getSpecification().getParameter(bindingName) != null)
-                continue;
+            if (getSpecification().getParameter(bindingName) != null) continue;
 
             IBinding binding = getBinding(bindingName);
 
@@ -102,38 +102,43 @@ public abstract class Script extends AbstractComponent
 
     private IScript getParsedScript()
     {
-    	IAsset scriptAsset = getScriptAsset();
+        IAsset scriptAsset = getScriptAsset();
         String scriptPath = getScriptPath();
-        
-        //only one of the two is allowed
+
+        // only one of the two is allowed
         if (scriptAsset != null && scriptPath != null)
-        	throw new ApplicationRuntimeException(HTMLMessages.multiAssetParameterError(getBinding("scriptAsset"), 
-        			getBinding("scriptPath")));
-        
+            throw new ApplicationRuntimeException(HTMLMessages
+                    .multiAssetParameterError(getBinding("scriptAsset"),
+                            getBinding("scriptPath")));
+
         if (scriptPath == null && scriptAsset == null)
-        	throw new ApplicationRuntimeException(HTMLMessages.noScriptPathError());
-        
+            throw new ApplicationRuntimeException(HTMLMessages
+                    .noScriptPathError());
+
         IScriptSource source = getScriptSource();
-        
+
         Resource scriptLocation = null;
-        if (scriptPath != null) {
-        	
-        	// If the script path is relative, it should be relative to the Script component's
+        if (scriptPath != null)
+        {
+
+            // If the script path is relative, it should be relative to the
+            // Script component's
             // container (i.e., relative to a page in the application).
-        	
-        	Resource rootLocation = getContainer().getSpecification().getSpecificationLocation();
-        	scriptLocation = rootLocation.getRelativeResource(scriptPath);
-        } else
-        	scriptLocation = scriptAsset.getResourceLocation();
-        
+
+            Resource rootLocation = getContainer().getSpecification()
+                    .getSpecificationLocation();
+            scriptLocation = rootLocation.getRelativeResource(scriptPath);
+        }
+        else scriptLocation = scriptAsset.getResourceLocation();
+
         try
         {
             return source.getScript(scriptLocation);
         }
         catch (RuntimeException ex)
         {
-            throw new ApplicationRuntimeException(ex.getMessage(), this, getBinding("script")
-                    .getLocation(), ex);
+            throw new ApplicationRuntimeException(ex.getMessage(), this,
+                    getBinding("script").getLocation(), ex);
         }
 
     }
@@ -142,7 +147,8 @@ public abstract class Script extends AbstractComponent
     {
         if (!cycle.isRewinding())
         {
-            PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
+            PageRenderSupport pageRenderSupport = TapestryUtils
+                    .getPageRenderSupport(cycle, this);
 
             _symbols = getInputSymbols();
 
@@ -156,14 +162,15 @@ public abstract class Script extends AbstractComponent
     public abstract String getScriptPath();
 
     public abstract IAsset getScriptAsset();
-    
+
     // Parameter
 
     public abstract Map getBaseSymbols();
 
     /**
-     * Returns the complete set of symbols (input and output) from the script execution. This is
-     * visible to the body of the Script, but is cleared after the Script finishes rendering.
+     * Returns the complete set of symbols (input and output) from the script
+     * execution. This is visible to the body of the Script, but is cleared
+     * after the Script finishes rendering.
      * 
      * @since 2.2
      */

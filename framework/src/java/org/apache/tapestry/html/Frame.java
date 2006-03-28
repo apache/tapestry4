@@ -29,6 +29,7 @@ import org.apache.tapestry.engine.ILink;
 
 public abstract class Frame extends AbstractComponent
 {
+
     /**
      * Injected engine service.
      * 

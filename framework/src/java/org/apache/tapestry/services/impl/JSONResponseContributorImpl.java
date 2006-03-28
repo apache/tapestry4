@@ -44,13 +44,13 @@ public class JSONResponseContributorImpl implements ResponseContributor
     
     public static final String JSON_HEADER = "json";
     
-    private RequestLocaleManager _localeManager;
+    protected RequestLocaleManager _localeManager;
     
-    private MarkupWriterSource _markupWriterSource;
+    protected MarkupWriterSource _markupWriterSource;
 
-    private WebResponse _webResponse;
+    protected WebResponse _webResponse;
 
-    private WebRequest _webRequest;
+    protected WebRequest _webRequest;
     
     /**
      * {@inheritDoc}

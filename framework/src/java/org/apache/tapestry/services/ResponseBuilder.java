@@ -20,7 +20,7 @@ import org.apache.tapestry.IRequestCycle;
  * Represents the class responsible for interacting
  * with components for an ajax request library version and type.
  *
- * @author jkuhenrt
+ * @author jkuhnert
  */
 public interface ResponseBuilder {
 

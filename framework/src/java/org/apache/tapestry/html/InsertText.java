@@ -25,29 +25,30 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * Inserts formatted text (possibly collected using a {@link org.apache.tapestry.form.TextArea}
- * component. [<a href="../../../../../ComponentReference/InsertText.html">Component Reference</a>]
+ * Inserts formatted text (possibly collected using a
+ * {@link org.apache.tapestry.form.TextArea} component. [<a
+ * href="../../../../../ComponentReference/InsertText.html">Component Reference</a>]
  * <p>
- * To maintain the line breaks provided originally, this component will break the input into
- * individual lines and insert additional HTML to make each line seperate.
+ * To maintain the line breaks provided originally, this component will break
+ * the input into individual lines and insert additional HTML to make each line
+ * seperate.
  * <p>
- * This can be down more simply, using the &lt;pre&gt; HTML element, but that usually renders the
- * text in a non-proportional font.
+ * This can be down more simply, using the &lt;pre&gt; HTML element, but that
+ * usually renders the text in a non-proportional font.
  * 
  * @author Howard Lewis Ship
  */
 
 public abstract class InsertText extends AbstractComponent
 {
+
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (cycle.isRewinding())
-            return;
+        if (cycle.isRewinding()) return;
 
         String value = getValue();
 
-        if (value == null)
-            return;
+        if (value == null) return;
 
         StringReader reader = null;
         LineNumberReader lineReader = null;
@@ -62,14 +63,13 @@ public abstract class InsertText extends AbstractComponent
 
             int lineNumber = 0;
 
-            while (true)
+            while(true)
             {
                 String line = lineReader.readLine();
 
                 // Exit loop at end of file.
 
-                if (line == null)
-                    break;
+                if (line == null) break;
 
                 mode.writeLine(lineNumber, line, writer, raw);
 
@@ -79,8 +79,8 @@ public abstract class InsertText extends AbstractComponent
         }
         catch (IOException ex)
         {
-            throw new ApplicationRuntimeException(HTMLMessages.textConversionError(ex), this, null,
-                    ex);
+            throw new ApplicationRuntimeException(HTMLMessages
+                    .textConversionError(ex), this, null, ex);
         }
         finally
         {
@@ -92,8 +92,7 @@ public abstract class InsertText extends AbstractComponent
 
     private void close(Reader reader)
     {
-        if (reader == null)
-            return;
+        if (reader == null) return;
 
         try
         {
@@ -104,21 +103,22 @@ public abstract class InsertText extends AbstractComponent
         }
     }
 
-    /** Parameter */
+    /** Parameter. */
     public abstract InsertTextMode getMode();
 
     public abstract void setMode(InsertTextMode mode);
 
-    /** Parameter */
+    /** Parameter. */
 
     public abstract String getValue();
-    
-    /** Parameter */
-    
+
+    /** Parameter. */
+
     public abstract boolean getRaw();
 
     /**
-     * Sets the mode parameter property to its default, {@link InsertTextMode#BREAK}.
+     * Sets the mode parameter property to its default,
+     * {@link InsertTextMode#BREAK}.
      * 
      * @since 3.0
      */

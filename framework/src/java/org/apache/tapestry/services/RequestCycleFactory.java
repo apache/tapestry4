@@ -18,19 +18,20 @@ import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * A factory for creating instances of {@link org.apache.tapestry.IRequestCycle}for the current
- * request.
+ * A factory for creating instances of {@link org.apache.tapestry.IRequestCycle}for
+ * the current request.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface RequestCycleFactory
 {
+
     /**
-     * Constructs the new instance using the request context. This includes accessing
-     * {@link org.apache.tapestry.engine.ServiceEncoder}s to restore any missing query parameters
-     * (that were encoding into the URL).
+     * Constructs the new instance using the request context. This includes
+     * accessing {@link org.apache.tapestry.engine.ServiceEncoder}s to restore
+     * any missing query parameters (that were encoding into the URL).
      */
 
-    public IRequestCycle newRequestCycle(IEngine engine);
+    IRequestCycle newRequestCycle(IEngine engine);
 }

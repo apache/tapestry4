@@ -31,6 +31,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface ServletRequestServicer
 {
-    public void service(HttpServletRequest request, HttpServletResponse response)
+    void service(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException;
 }

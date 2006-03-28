@@ -29,6 +29,7 @@ import org.apache.tapestry.web.WebResponse;
  */
 public interface RequestGlobals
 {
+
     void store(HttpServletRequest request, HttpServletResponse response);
 
     void store(WebRequest request, WebResponse response);

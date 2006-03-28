@@ -22,15 +22,14 @@ import org.apache.tapestry.util.exception.ExceptionDescription;
 
 /**
  * Component used to display an already formatted exception. [ <a
- * href="../../../../../ComponentReference/ExceptionDisplay.html">Component Reference </a>]
+ * href="../../../../../ComponentReference/ExceptionDisplay.html">Component
+ * Reference </a>]
  * 
  * @author Howard Lewis Ship
  */
 
 public abstract class ExceptionDisplay extends BaseComponent
 {
-    public abstract ExceptionDescription[] getExceptions();
-
     private ExceptionDescription _exception;
 
     private EvenOdd _evenOdd;
@@ -41,9 +40,11 @@ public abstract class ExceptionDisplay extends BaseComponent
 
     public abstract void setCount(int count);
 
+    public abstract ExceptionDescription[] getExceptions();
+    
     /**
-     * Each time the current exception is set, as a side effect, the evenOdd helper bean is reset to
-     * even.
+     * Each time the current exception is set, as a side effect, the evenOdd
+     * helper bean is reset to even.
      */
 
     public void setException(ExceptionDescription value)

@@ -40,5 +40,5 @@ public interface IRender
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle);
+    void render(IMarkupWriter writer, IRequestCycle cycle);
 }

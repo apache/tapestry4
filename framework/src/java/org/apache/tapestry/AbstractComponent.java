@@ -611,15 +611,15 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
         try
         {
             _rendering = true;
-
+            
             prepareForRender(cycle);
-
+            
             renderComponent(writer, cycle);
         }
         finally
         {
             _rendering = false;
-
+            
             cleanupAfterRender(cycle);
         }
     }

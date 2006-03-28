@@ -74,17 +74,17 @@ public abstract class Shell extends AbstractComponent
 
             if (getRenderContentType())
                 writeMetaTag(writer, "http-equiv", "Content-Type", writer.getContentType());
-
+            
             getBaseTagWriter().render(writer, cycle);
-
+            
             writer.begin("title");
-
+            
             writer.print(getTitle());
             writer.end(); // title
             writer.println();
-
+            
             IRender delegate = getDelegate();
-
+            
             if (delegate != null)
                 delegate.render(writer, cycle);
 
@@ -108,16 +108,16 @@ public abstract class Shell extends AbstractComponent
 
                 writeStylesheetLink(writer, cycle, stylesheet);
             }
-
+            
             writeRefresh(writer, cycle);
-
+            
             writer.end(); // head
         }
-
+        
         // Render the body, the actual page content
-
+        
         renderBody(writer, cycle);
-
+        
         if (!rewinding)
         {
             writer.end(); // html

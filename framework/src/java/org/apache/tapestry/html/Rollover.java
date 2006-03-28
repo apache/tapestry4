@@ -30,36 +30,38 @@ import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.components.LinkEventType;
 
 /**
- * Combines a link component (such as {@link org.apache.tapestry.link.DirectLink}) with an
- * &lt;img&gt; and JavaScript code to create a rollover effect that works with both Netscape
+ * Combines a link component (such as
+ * {@link org.apache.tapestry.link.DirectLink}) with an &lt;img&gt; and
+ * JavaScript code to create a rollover effect that works with both Netscape
  * Navigator and Internet Explorer. [ <a
- * href="../../../../../ComponentReference/Rollover.html">Component Reference </a>]
+ * href="../../../../../ComponentReference/Rollover.html">Component Reference
+ * </a>]
  * 
  * @author Howard Lewis Ship
  */
 
 public abstract class Rollover extends AbstractComponent
 {
+
     /**
-     * Converts an {@link IAsset}binding into a usable URL. Returns null if the binding does not
-     * exist or the binding's value is null.
+     * Converts an {@link IAsset}binding into a usable URL. Returns null if the
+     * binding does not exist or the binding's value is null.
      */
 
     protected String getAssetURL(IAsset asset)
     {
-        if (asset == null)
-            return null;
+        if (asset == null) return null;
 
         return asset.buildURL();
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        // No body, so we skip it all if not rewinding (assumes no side effects on
+        // No body, so we skip it all if not rewinding (assumes no side effects
+        // on
         // accessors).
 
-        if (cycle.isRewinding())
-            return;
+        if (cycle.isRewinding()) return;
 
         String imageURL = null;
         String mouseOverURL = null;
@@ -67,14 +69,16 @@ public abstract class Rollover extends AbstractComponent
         boolean dynamic = false;
         String imageId = null;
 
-        PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
+        PageRenderSupport pageRenderSupport = TapestryUtils
+                .getPageRenderSupport(cycle, this);
 
         ILinkComponent serviceLink = (ILinkComponent) cycle
                 .getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
 
         if (serviceLink == null)
             throw new ApplicationRuntimeException(Tapestry
-                    .getMessage("Rollover.must-be-contained-by-link"), this, null, null);
+                    .getMessage("Rollover.must-be-contained-by-link"), this,
+                    null, null);
 
         boolean linkDisabled = serviceLink.isDisabled();
 
@@ -82,8 +86,7 @@ public abstract class Rollover extends AbstractComponent
         {
             imageURL = getAssetURL(getDisabled());
 
-            if (imageURL == null)
-                imageURL = getAssetURL(getImage());
+            if (imageURL == null) imageURL = getAssetURL(getImage());
         }
         else
         {
@@ -103,13 +106,12 @@ public abstract class Rollover extends AbstractComponent
 
         if (dynamic)
         {
-            if (mouseOverURL == null)
-                mouseOverURL = imageURL;
+            if (mouseOverURL == null) mouseOverURL = imageURL;
 
-            if (mouseOutURL == null)
-                mouseOutURL = imageURL;
+            if (mouseOutURL == null) mouseOutURL = imageURL;
 
-            imageId = writeScript(cycle, pageRenderSupport, serviceLink, mouseOverURL, mouseOutURL);
+            imageId = writeScript(cycle, pageRenderSupport, serviceLink,
+                    mouseOverURL, mouseOutURL);
 
             writer.attribute("id", imageId);
         }
@@ -124,8 +126,9 @@ public abstract class Rollover extends AbstractComponent
 
     public abstract IScript getScript();
 
-    private String writeScript(IRequestCycle cycle, PageRenderSupport pageRenderSupport,
-            ILinkComponent link, String mouseOverImageURL, String mouseOutImageURL)
+    private String writeScript(IRequestCycle cycle,
+            PageRenderSupport pageRenderSupport, ILinkComponent link,
+            String mouseOverImageURL, String mouseOutImageURL)
     {
         String imageId = pageRenderSupport.getUniqueString(getId());
         String preloadedMouseOverImageURL = pageRenderSupport
@@ -146,8 +149,10 @@ public abstract class Rollover extends AbstractComponent
         // there won't be any timing issues (such as cause
         // bug #113893).
 
-        link.addEventHandler(LinkEventType.MOUSE_OVER, (String) symbols.get("onMouseOverName"));
-        link.addEventHandler(LinkEventType.MOUSE_OUT, (String) symbols.get("onMouseOutName"));
+        link.addEventHandler(LinkEventType.MOUSE_OVER, (String) symbols
+                .get("onMouseOverName"));
+        link.addEventHandler(LinkEventType.MOUSE_OUT, (String) symbols
+                .get("onMouseOutName"));
 
         return imageId;
     }

@@ -29,7 +29,7 @@ import org.apache.tapestry.services.ResponseRenderer;
  */
 public class ResponseRendererImpl implements ResponseRenderer
 {   
-    private ResponseDelegateFactory _responseDelegate;
+    protected ResponseDelegateFactory _responseDelegate;
     
     public void renderResponse(IRequestCycle cycle) throws IOException
     {   

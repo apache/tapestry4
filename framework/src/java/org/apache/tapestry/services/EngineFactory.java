@@ -20,14 +20,15 @@ import org.apache.tapestry.IEngine;
 
 /**
  * Responsible for creating new instance of {@link org.apache.tapestry.IEngine}.
- *
+ * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public interface EngineFactory
 {
-	/**
-	 * Creates and initializes a new engine instance for the specified locale.
-	 */
-	public IEngine constructNewEngineInstance(Locale locale);
+
+    /**
+     * Creates and initializes a new engine instance for the specified locale.
+     */
+    IEngine constructNewEngineInstance(Locale locale);
 }

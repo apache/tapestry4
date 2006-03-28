@@ -35,5 +35,5 @@ public interface InjectedValueProvider
      * @return the value
      */
 
-    public Object obtainValue(String objectReference, Location location);
+    Object obtainValue(String objectReference, Location location);
 }
