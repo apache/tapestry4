@@ -17,25 +17,28 @@ package org.apache.tapestry.services;
 import java.util.Locale;
 
 /**
- * Used to determine what is the client-specified locale, if any, for the current request. This may
- * be stored in the request as an HTTP Cookie, or may be interpolated from request headers.
- * Additionally, the "raw" value provided by the client may be filtered down.
+ * Used to determine what is the client-specified locale, if any, for the
+ * current request. This may be stored in the request as an HTTP Cookie, or may
+ * be interpolated from request headers. Additionally, the "raw" value provided
+ * by the client may be filtered down.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public interface RequestLocaleManager
 {
+
     /**
-     * Determines the locale to use for processing the current request. The value is returned, but
-     * also stored as {@link org.apache.tapestry.services.RequestGlobals#setIncomingLocale(Locale)}.
+     * Determines the locale to use for processing the current request. The
+     * value is returned, but also stored as
+     * {@link org.apache.tapestry.services.RequestGlobals#setIncomingLocale(Locale)}.
      */
 
-    public Locale extractLocaleForCurrentRequest();
+    Locale extractLocaleForCurrentRequest();
 
     /**
      * Stores the thread's locale as a cookie for later use.
      */
 
-    public void persistLocale();
+    void persistLocale();
 }

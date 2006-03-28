@@ -22,10 +22,12 @@ package org.apache.tapestry.services;
  */
 public interface ExpressionCache
 {
+
     /**
-     * Returns the compiled form of the OGNL expression. 
+     * Returns the compiled form of the OGNL expression.
      * 
-     * @throws org.apache.hivemind.ApplicationRuntimeException if the expression is not valid
+     * @throws org.apache.hivemind.ApplicationRuntimeException
+     *             if the expression is not valid
      */
-    public Object getCompiledExpression(String expression);
+    Object getCompiledExpression(String expression);
 }

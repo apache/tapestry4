@@ -20,14 +20,16 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.describe.HTMLDescriber;
 
 /**
- * Component that makes use of {@link org.apache.tapestry.describe.HTMLDescriber}to produce HTML
- * output that describes an object.
+ * Component that makes use of
+ * {@link org.apache.tapestry.describe.HTMLDescriber}to produce HTML output
+ * that describes an object.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public abstract class Describe extends AbstractComponent
 {
+
     /**
      * Parameter object: the object to be described.
      */
@@ -40,8 +42,7 @@ public abstract class Describe extends AbstractComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (cycle.isRewinding())
-            return;
+        if (cycle.isRewinding()) return;
 
         getDescriber().describeObject(getObject(), writer);
     }

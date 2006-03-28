@@ -21,22 +21,28 @@ import org.apache.tapestry.IBinding;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class HTMLMessages
+final class HTMLMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(HTMLMessages.class);
 
+    private static final MessageFormatter _formatter = new MessageFormatter(
+            HTMLMessages.class);
+
+    /* defeats instantiation */
+    private HTMLMessages() { }
+    
     static String textConversionError(Throwable cause)
     {
         return _formatter.format("text-conversion-error", cause);
     }
-    
+
     static String multiAssetParameterError(IBinding asset, IBinding scriptPath)
     {
-    	return _formatter.format("script-multiscript-error", new Object[] {asset, scriptPath});
+        return _formatter.format("script-multiscript-error", new Object[] {
+                asset, scriptPath });
     }
-    
+
     static String noScriptPathError()
     {
-    	return _formatter.getMessage("script-required-path-error");
+        return _formatter.getMessage("script-required-path-error");
     }
 }

@@ -22,45 +22,51 @@ package org.apache.tapestry.services;
  */
 public interface ExpressionEvaluator
 {
+
     /**
      * Reads a property of the target, defined by the expression.
      * 
      * @throws org.apache.hivemind.ApplicationRuntimeException
-     *             if the expression can not be parsed, or if some other error occurs during
-     *             evaluation of the expression.
+     *             if the expression can not be parsed, or if some other error
+     *             occurs during evaluation of the expression.
      */
-    public Object read(Object target, String expression);
+    Object read(Object target, String expression);
 
     /**
-     * Reads a property of the target, defined by the (previously compiled) expression.
+     * Reads a property of the target, defined by the (previously compiled)
+     * expression.
      * 
      * @throws org.apache.hivemind.ApplicationRuntimeException
-     *             if some other error occurs during evaluation of the expression.
+     *             if some other error occurs during evaluation of the
+     *             expression.
      */
-    public Object readCompiled(Object target, Object expression);
+    Object readCompiled(Object target, Object expression);
 
     /**
      * Updates a property of the target, defined by the expression.
      * 
      * @throws org.apache.hivemind.ApplicationRuntimeException
-     *             if the expression can not be parsed, or if some other error occurs during
-     *             evaluation of the expression.
+     *             if the expression can not be parsed, or if some other error
+     *             occurs during evaluation of the expression.
      */
-    public void write(Object target, String expression, Object value);
+    void write(Object target, String expression, Object value);
 
     /**
-     * Updates a property of the target, defined by the (previously compiled) expression.
+     * Updates a property of the target, defined by the (previously compiled)
+     * expression.
      * 
      * @throws org.apache.hivemind.ApplicationRuntimeException
-     *             if some other error occurs during evaluation of the expression.
+     *             if some other error occurs during evaluation of the
+     *             expression.
      */
-    public void writeCompiled(Object target, Object expression, Object value);
+    void writeCompiled(Object target, Object expression, Object value);
 
     /**
-     * Returns true if the expression evaluates to a constant or other literal value.
+     * Returns true if the expression evaluates to a constant or other literal
+     * value.
      * 
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if the expression is not valid
      */
-    public boolean isConstant(String expression);
+    boolean isConstant(String expression);
 }

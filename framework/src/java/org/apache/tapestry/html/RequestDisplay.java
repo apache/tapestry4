@@ -28,14 +28,16 @@ import org.apache.tapestry.describe.ReportStatusHub;
 import org.apache.tapestry.web.WebUtils;
 
 /**
- * Supports the {@link org.apache.tapestry.pages.Exception}&nbsp;page by displaying the request,
- * session, servlet context and servlet object for the current request.
+ * Supports the {@link org.apache.tapestry.pages.Exception}&nbsp;page by
+ * displaying the request, session, servlet context and servlet object for the
+ * current request.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public abstract class RequestDisplay extends BaseComponent
 {
+
     private boolean _even;
 
     // Injected
@@ -61,7 +63,7 @@ public abstract class RequestDisplay extends BaseComponent
 
         Iterator i = WebUtils.toSortedList(p.keys()).iterator();
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
             String key = (String) i.next();
             String value = p.getProperty(key);
@@ -72,12 +74,12 @@ public abstract class RequestDisplay extends BaseComponent
         writer.end();
     }
 
-    private void renderKeyAndValue(IMarkupWriter writer, String key, String value,
-            String pathSeparator)
+    private void renderKeyAndValue(IMarkupWriter writer, String key,
+            String value, String pathSeparator)
     {
         String[] values = split(key, value, pathSeparator);
 
-        for (int i = 0; i < values.length; i++)
+        for(int i = 0; i < values.length; i++)
         {
             writer.begin("tr");
 
@@ -87,8 +89,7 @@ public abstract class RequestDisplay extends BaseComponent
 
             writer.begin("th");
 
-            if (i == 0)
-                writer.print(key);
+            if (i == 0) writer.print(key);
 
             writer.end();
             writer.begin("td");
@@ -100,9 +101,7 @@ public abstract class RequestDisplay extends BaseComponent
 
     private String[] split(String key, String value, String pathSeparator)
     {
-        if (!key.endsWith(".path"))
-            return new String[]
-            { value };
+        if (!key.endsWith(".path")) return new String[] { value };
 
         StringTokenizer tokenizer = new StringTokenizer(value, pathSeparator);
         List values = Collections.list(tokenizer);
@@ -114,6 +113,7 @@ public abstract class RequestDisplay extends BaseComponent
     {
         return new IRender()
         {
+
             public void render(IMarkupWriter writer, IRequestCycle cycle)
             {
                 renderSystemProperties(writer);
@@ -125,6 +125,7 @@ public abstract class RequestDisplay extends BaseComponent
     {
         return new IRender()
         {
+
             public void render(IMarkupWriter writer, IRequestCycle cycle)
             {
                 getReportStatusHub().fireReportStatus(writer);

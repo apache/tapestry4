@@ -24,6 +24,7 @@ import org.apache.tapestry.IMarkupWriter;
 
 public abstract class InsertTextMode
 {
+
     /**
      * Mode where each line (after the first) is preceded by a &lt;br&gt; tag.
      */
@@ -52,7 +53,8 @@ public abstract class InsertTextMode
      * Invoked by the {@link InsertText} component to write the next line.
      * 
      * @param lineNumber
-     *            the line number of the line, starting with 0 for the first line.
+     *            the line number of the line, starting with 0 for the first
+     *            line.
      * @param line
      *            the String for the current line.
      * @param writer
@@ -61,32 +63,44 @@ public abstract class InsertTextMode
      *            if true, then the output should be unfiltered
      */
 
-    public abstract void writeLine(int lineNumber, String line, IMarkupWriter writer, boolean raw);
+    public abstract void writeLine(int lineNumber, String line,
+            IMarkupWriter writer, boolean raw);
 
-    private static class BreakMode extends InsertTextMode
+    /**
+     * 
+     * @author hls
+     */
+    private static final class BreakMode extends InsertTextMode
     {
+
         private BreakMode()
         {
             super("BREAK");
         }
 
-        public void writeLine(int lineNumber, String line, IMarkupWriter writer, boolean raw)
+        public void writeLine(int lineNumber, String line,
+                IMarkupWriter writer, boolean raw)
         {
-            if (lineNumber > 0)
-                writer.beginEmpty("br");
+            if (lineNumber > 0) writer.beginEmpty("br");
 
             writer.print(line, raw);
         }
     }
 
-    private static class ParagraphMode extends InsertTextMode
+    /**
+     * 
+     * @author hls
+     */
+    private static final class ParagraphMode extends InsertTextMode
     {
+
         private ParagraphMode()
         {
             super("PARAGRAPH");
         }
 
-        public void writeLine(int lineNumber, String line, IMarkupWriter writer, boolean raw)
+        public void writeLine(int lineNumber, String line,
+                IMarkupWriter writer, boolean raw)
         {
             writer.begin("p");
 

@@ -19,18 +19,19 @@ import org.apache.tapestry.event.ResetEventListener;
 /**
  * Service interface for a source of <b>reset</b> events; this events are used
  * to inform other services that they should discard any cached data.
- *
+ * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public interface ResetEventHub
 {
-    public void addResetEventListener(ResetEventListener l);
 
-    public void removeResetEventListener(ResetEventListener l);
+    void addResetEventListener(ResetEventListener l);
 
-	/**
-	 * Notifies registered listeners.
-	 */
-    public void fireResetEvent();
+    void removeResetEventListener(ResetEventListener l);
+
+    /**
+     * Notifies registered listeners.
+     */
+    void fireResetEvent();
 }

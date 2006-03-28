@@ -41,11 +41,11 @@ public class DefaultResponseContributorImpl implements ResponseContributor
     
     public static final String ENCODING_KEY = "charset";
     
-    private RequestLocaleManager _localeManager;
+    protected RequestLocaleManager _localeManager;
     
-    private MarkupWriterSource _markupWriterSource;
+    protected MarkupWriterSource _markupWriterSource;
 
-    private WebResponse _webResponse;
+    protected WebResponse _webResponse;
     
     /**
      * {@inheritDoc}

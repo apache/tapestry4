@@ -76,7 +76,7 @@ public interface NamespaceResources
      *             if the specification doesn't exist, is unreadable or invalid.
      */
 
-    public IComponentSpecification getComponentSpecification(Resource libraryResource,
+    IComponentSpecification getComponentSpecification(Resource libraryResource,
             String specificationPath, Location location);
 
 }

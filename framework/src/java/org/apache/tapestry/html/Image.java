@@ -21,8 +21,8 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
- * Used to insert an image. To create a rollover image, use the {@link Rollover} class, which
- * integrates a link with the image assets used with the button. [<a
+ * Used to insert an image. To create a rollover image, use the {@link Rollover}
+ * class, which integrates a link with the image assets used with the button. [<a
  * href="../../../../../ComponentReference/Image.html">Component Reference</a>]
  * 
  * @author Howard Lewis Ship
@@ -30,17 +30,18 @@ import org.apache.tapestry.Tapestry;
 
 public abstract class Image extends AbstractComponent
 {
+
     /**
      * Renders the &lt;img&gt; element.
      */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        // Doesn't contain a body so no need to do anything on rewind (assumes no
+        // Doesn't contain a body so no need to do anything on rewind (assumes
+        // no
         // sideffects to accessor methods via bindings).
 
-        if (cycle.isRewinding())
-            return;
+        if (cycle.isRewinding()) return;
 
         IAsset imageAsset = getImage();
 
