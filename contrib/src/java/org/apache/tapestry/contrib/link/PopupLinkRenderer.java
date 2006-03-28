@@ -59,6 +59,9 @@ public class PopupLinkRenderer extends DefaultLinkRenderer
      */
     protected String constructURL(ILinkComponent component, IRequestCycle cycle)
     {
+        if (cycle.isRewinding())
+            return null;
+
         String anchor = component.getAnchor();
         ILink link = component.getLink(cycle);
 

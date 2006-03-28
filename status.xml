@@ -70,113 +70,116 @@
         in error strings.
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-234" due-to="Matt Raible" >
-      	Display name of SimpleTableColumn now replaces all instances of "." character with
-      	"_".
+        Display name of SimpleTableColumn now replaces all instances of "." character with
+        "_".
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-802" due-to="Raphael Jean" >
-		In portlet mode, the portlet URLs obtained by createActionURL() or createRenderURL() 
-		should NOT be encoded. 
+    In portlet mode, the portlet URLs obtained by createActionURL() or createRenderURL() 
+    should NOT be encoded. 
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-525" due-to="Raphael Jean" >
-		When a Link component attempts to render its link during rewind, the 
-		PortletLinkFactoryImpl crashes because _renderResponse is null. 
+    When a Link component attempts to render its link during rewind, the 
+    PortletLinkFactoryImpl crashes because _renderResponse is null. 
       </action>
       <action type="fix" dev="JK" due-to="Andreas Andreou" >
-		Upload test was failing due to incorrect line number matching for
-		"Contents Match." string assertion.
+    Upload test was failing due to incorrect line number matching for
+    "Contents Match." string assertion.
       </action>
       <action type="fix" dev="JK" due-to="Zedros Schwart" >
-      	Fixed links.ent reference to ExternalAsset, was missing asset package.
+        Fixed links.ent reference to ExternalAsset, was missing asset package.
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-170" due-to="Vjeran Marcinko/Brian K. Wallace">
-      	Modified contrib table column headers to use inlined style and css classes to
-      	do table and image style definitions. Much more compatible with css now.
+        Modified contrib table column headers to use inlined style and css classes to
+        do table and image style definitions. Much more compatible with css now.
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-876" due-to="Brian K. Wallace" >
-      	  Tapestry's resource finder throws a StringIndexOutOfBoundsException when
-      	  an asset doesn't contains a "." (the search result of 'lastIndexOf' is -1).
-      	  
-      	  The patch against trunk simply adds a check in the lastIndexOf as it is
-      	  assumed to be > -1 although the results of the check are used differently
+          Tapestry's resource finder throws a StringIndexOutOfBoundsException when
+          an asset doesn't contains a "." (the search result of 'lastIndexOf' is -1).
+          
+          The patch against trunk simply adds a check in the lastIndexOf as it is
+          assumed to be > -1 although the results of the check are used differently
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-880" due-to="Fernando Padilla" >
-      	need 'port' parameter to supplement 'scheme' parameter for correct generation of urls
+        need 'port' parameter to supplement 'scheme' parameter for correct generation of urls
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-879" due-to="Olve Sæther Hansen" >
-      	http://jakarta.apache.org/tapestry/UsersGuide/page-class.html
-		Has broken links to documentation about
-		tapestry.page.PageClassProviderChain and tapestry.page.ComponentClassProviderChain 
+        http://jakarta.apache.org/tapestry/UsersGuide/page-class.html
+    Has broken links to documentation about
+    tapestry.page.PageClassProviderChain and tapestry.page.ComponentClassProviderChain 
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-453" >
-      	Added new scriptAsset parameter, as well as param checking to be sure that only one 
-      	of scriptPath or scriptAsset can be set.
+        Added new scriptAsset parameter, as well as param checking to be sure that only one 
+        of scriptPath or scriptAsset can be set.
       </action>
       <action type="add" dev="JK" fixes-bug="TAPESTRY-587" due-to="Jan Vissers">
         Added dutch validation strings properties file.
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-749" due-to="Brian K. Wallace" >
-      	Fixed Vlib runtime warnings.
+        Fixed Vlib runtime warnings.
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-745" due-to="Brian K. Wallace" >
-      	JDK 1.5 requirement added to jboss documentation in examples.
+        JDK 1.5 requirement added to jboss documentation in examples.
       </action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-830">
         RadioGroup component now rewinds its body appropriately when disabled.
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-368" >
-      	Added maxSize parameter to Upload component, allowing the default maximum
-      	file upload size to be changed.
+        Added maxSize parameter to Upload component, allowing the default maximum
+        file upload size to be changed.
       </action>
       <action type="update" dev="JK" fixes-bug="TAPESTRY-890" due-to="Marcus Shulte">
-      	Updated german validation strings properties.
+        Updated german validation strings properties.
       </action>
       <action type="update" dev="JK" due-to="Pedro Garcia">
-      	The validation strings in ValidationStrings_pt_BR.properties were using double quotes
-      	around characters, which were causing problems for JS parsing. Changed these to use 
-      	single quotes.
+        The validation strings in ValidationStrings_pt_BR.properties were using double quotes
+        around characters, which were causing problems for JS parsing. Changed these to use 
+        single quotes.
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-782" due-to="Brian K. Wallace">
-      	Fixed typo's in TreeTable.jwc, TreeTableDataView.jwc and TreeTableDataView.java (Colunms to Columns) 
+        Fixed typo's in TreeTable.jwc, TreeTableDataView.jwc and TreeTableDataView.java (Colunms to Columns) 
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-705" due-to="Brian K. Wallace" >
-      	Insert components javadoc reference linked to old docs, now links to current.
+        Insert components javadoc reference linked to old docs, now links to current.
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-646" due-to="Brian K. Wallace" >
-      	Modified text raw="yes" to raw="true" for users guide discussion of Insert component.
+        Modified text raw="yes" to raw="true" for users guide discussion of Insert component.
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-422" due-to="Brian K. Wallace" >
-      	Patches to Javadoc to explicitly state that URLs returned from ExternalService will already be encoded.
+        Patches to Javadoc to explicitly state that URLs returned from ExternalService will already be encoded.
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-208" >
-      	Changed method signature to use Collection instead of List.
+        Changed method signature to use Collection instead of List.
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-687" due-to="Chris Norris" >
-      	Applied patch for handling Upload required checks. 
+        Applied patch for handling Upload required checks. 
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-743" >
-      	Changed PropertySelection to check for null value before translating.
+        Changed PropertySelection to check for null value before translating.
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-871" due-to="Martin Dirichs" >
-      	Validator_de properties had encoding issues as well as inconsistent usage of ''.
+        Validator_de properties had encoding issues as well as inconsistent usage of ''.
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-422" >
-      	Made Form.getLink protected.
+        Made Form.getLink protected.
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-870" due-to="Brian K. Wallace" >
-      	Adds deprecation javadoc to Foreach and ListEdit classes to correspond to the deprecation warning in the respective ComponentReference
+        Adds deprecation javadoc to Foreach and ListEdit classes to correspond to the deprecation warning in the respective ComponentReference
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-826" due-to="Brian K. Wallace" >
-      	Changed reference from RenderBody to RenderBlock as RenderBlock has the example usage of @Any 
+        Changed reference from RenderBody to RenderBlock as RenderBlock has the example usage of @Any 
       </action>
       <action type="update" dev="JK" fixes-bug="TAPESTRY-880" due-to="Fernando" >
-      	Added new port scheme documentation.
+        Added new port scheme documentation.
       </action>
       <action type="update" dev="JK" fixes-bug="TAPESTRY-897" >
-      	Added a renderBaseTag parameter to Shell.
+        Added a renderBaseTag parameter to Shell.
       </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-896" >
-      	Added a hivemind defense check for the incoming type parameter to
-      	ComponentSpecificationResolverImpl.
+        Added a hivemind defense check for the incoming type parameter to
+        ComponentSpecificationResolverImpl.
+      </action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-774" due-to="Mikaël Cluseau">
+        PopupLinkRenderer fails in Form rewind.
       </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
