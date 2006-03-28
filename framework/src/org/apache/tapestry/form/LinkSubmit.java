@@ -100,6 +100,7 @@ public abstract class LinkSubmit extends AbstractFormComponent
                 String formHiddenFieldAttributeName = ATTRIBUTE_FUNCTION_NAME + formName;
                 if (cycle.getAttribute(formHiddenFieldAttributeName) == null)
                 {
+                	body.addInitializationScript("document." + formName + "._linkSubmit.value = null;"); 
                     writer.beginEmpty("input");
                     writer.attribute("type", "hidden");
                     writer.attribute("name", "_linkSubmit");

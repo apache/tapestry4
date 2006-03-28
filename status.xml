@@ -157,6 +157,9 @@
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-422" due-to="Brian K. Wallace" >
       	Patches to Javadoc to explicitly state that URLs returned from ExternalService will already be encoded.
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-339" due-to="Nick Westgate" >
+      	If LinkSubmit is mixed with other submit components in the same form, erroneous submits can occur from pages accessed via the browser back button. This happens because LinkSubmit's hidden variable is never reset. 
+      </action>
     </release>
     <release version="3.0.3" date="Mar 26 2005">
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>
