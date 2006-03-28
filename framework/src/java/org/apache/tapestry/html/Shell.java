@@ -75,7 +75,8 @@ public abstract class Shell extends AbstractComponent
             if (getRenderContentType())
                 writeMetaTag(writer, "http-equiv", "Content-Type", writer.getContentType());
 
-            getBaseTagWriter().render(writer, cycle);
+            if (getRenderBaseTag())
+            	getBaseTagWriter().render(writer, cycle);
 
             writer.begin("title");
 
@@ -204,4 +205,8 @@ public abstract class Shell extends AbstractComponent
     /** @since 4.0 */
 
     public abstract IRender getBaseTagWriter();
+    
+    /** @since 4.0.1 */
+    
+    public abstract boolean getRenderBaseTag();
 }

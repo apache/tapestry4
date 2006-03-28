@@ -82,6 +82,13 @@
     </description>
   </parameter>
   
+  <parameter name="renderBaseTag" default-value="true" >
+  	<description>
+  		Specifies whether or not to render the html basetag element in the document
+  		head.
+  	</description>
+  </parameter>
+  
   <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
   <inject property="pageService" object="engine-service:page"/>
   <inject property="applicationSpecification" object="infrastructure:applicationSpecification"/>

@@ -171,6 +171,13 @@
       <action type="update" dev="JK" fixes-bug="TAPESTRY-880" due-to="Fernando" >
       	Added new port scheme documentation.
       </action>
+      <action type="update" dev="JK" fixes-bug="TAPESTRY-897" >
+      	Added a renderBaseTag parameter to Shell.
+      </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-896" >
+      	Added a hivemind defense check for the incoming type parameter to
+      	ComponentSpecificationResolverImpl.
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>

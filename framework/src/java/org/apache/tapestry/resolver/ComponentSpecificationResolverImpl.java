@@ -19,6 +19,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.LocationImpl;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.ClassFinder;
@@ -92,7 +93,9 @@ public class ComponentSpecificationResolverImpl extends AbstractSpecificationRes
     public void resolve(IRequestCycle cycle, INamespace containerNamespace, String type,
             Location location)
     {
-        int colonx = type.indexOf(':');
+    	Defense.notNull(type, "type");
+    	
+    	int colonx = type.indexOf(':');
 
         if (colonx > 0)
         {

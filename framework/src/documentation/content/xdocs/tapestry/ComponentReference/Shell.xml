@@ -131,6 +131,16 @@
     <td>If specified, the delegate is rendered before the close of the &lt;head&gt;
       tag.  Typically, this is used to provide additional &meta; tags.</td>
   </tr>
+  <tr>
+    <td>renderBaseTag</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>true</td>
+    <td>
+    	Specifies whether or not to render the html basetag element in the document head.
+    </td>
+  </tr>
   
 
 	</table>
