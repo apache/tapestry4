@@ -37,7 +37,7 @@ public abstract class Delegator extends AbstractComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IRender delegate = getDelegate();
-
+        
         if (delegate != null) delegate.render(writer, cycle);
     }
 

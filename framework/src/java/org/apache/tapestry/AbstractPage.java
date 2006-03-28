@@ -29,6 +29,7 @@ import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEndRenderListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageValidateListener;
+import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.util.StringSplitter;
 
 /**
@@ -234,18 +235,18 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      * </ul>
      */
 
-    public void renderPage(IMarkupWriter writer, IRequestCycle cycle)
+    public void renderPage(ResponseBuilder builder, IRequestCycle cycle)
     {
         try
         {
             firePageBeginRender();
-
-            beginResponse(writer, cycle);
-
+            
+            beginResponse(builder.getWriter(), cycle);
+            
             if (!cycle.isRewinding())
                 cycle.commitPageChanges();
-
-            render(writer, cycle);
+            
+            builder.render(this, cycle);
         }
         finally
         {

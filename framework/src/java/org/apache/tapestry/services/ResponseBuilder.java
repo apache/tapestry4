@@ -13,6 +13,8 @@
 // limitations under the License.
 package org.apache.tapestry.services;
 
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 
 
@@ -31,5 +33,27 @@ public interface ResponseBuilder {
      * @param cycle
      *          The main request cycle object for this request.
      */
+    
     void renderResponse(IRequestCycle cycle);
+    
+    /**
+     * Invoked to render a renderable object. Performs any necessary
+     * under the hood type logic involving ajax/json/normal responses, where
+     * needed.
+     * 
+     * @param render The renderable object to render
+     * @param cycle Render request cycle
+     */
+    
+    void render(IRender render, IRequestCycle cycle);
+    
+    /**
+     * Returns the IMarkupWriter associated with this response, it may or may
+     * not be a NullWriter instance depending on the response type.
+     * 
+     * @return A validly writable markup writer, even if the content is sometimes
+     * ignored.
+     */
+    
+    IMarkupWriter getWriter();
 }

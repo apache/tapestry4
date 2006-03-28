@@ -15,6 +15,7 @@ package org.apache.tapestry.services.impl;
 
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.ResponseBuilder;
 
@@ -50,8 +51,25 @@ public class DefaultResponseBuilder implements ResponseBuilder
      */
     public void renderResponse(IRequestCycle cycle)
     {
-        cycle.renderPage(_writer);
+        cycle.renderPage(this);
         
         _writer.close();
+    }
+    
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    public void render(IRender render, IRequestCycle cycle)
+    {
+        render.render(_writer, cycle);
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public IMarkupWriter getWriter()
+    {
+        return _writer;
     }
 }

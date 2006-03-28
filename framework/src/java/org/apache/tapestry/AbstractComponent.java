@@ -431,7 +431,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     public void renderBody(IMarkupWriter writer, IRequestCycle cycle)
     {
         for (int i = 0; i < _bodyCount; i++)
-            _body[i].render(writer, cycle);
+            cycle.getResponseBuilder().render(_body[i], cycle);
     }
 
     /**

@@ -20,14 +20,17 @@ import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
 /**
- * Interface for objects that can handle web requests; few classes implement this, instead they
- * implement {@link org.apache.tapestry.services.WebRequestServicerFilter}&nbsp;and plug into the
- * tapestry.request.WebRequestServicerPipeline configuration point.
+ * Interface for objects that can handle web requests; few classes implement
+ * this, instead they implement
+ * {@link org.apache.tapestry.services.WebRequestServicerFilter}&nbsp;and plug
+ * into the tapestry.request.WebRequestServicerPipeline configuration point.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface WebRequestServicer
 {
-    public void service(WebRequest request, WebResponse response) throws IOException;
+
+    void service(WebRequest request, WebResponse response)
+        throws IOException;
 }

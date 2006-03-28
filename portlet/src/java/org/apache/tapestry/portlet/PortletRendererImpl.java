@@ -25,6 +25,8 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.markup.MarkupWriterSource;
+import org.apache.tapestry.services.ResponseBuilder;
+import org.apache.tapestry.services.impl.DefaultResponseBuilder;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.web.WebResponse;
@@ -39,6 +41,7 @@ import org.apache.tapestry.web.WebResponse;
  */
 public class PortletRendererImpl implements PortletRenderer
 {
+
     private WebResponse _response;
 
     private MarkupWriterSource _markupWriterSource;
@@ -47,7 +50,8 @@ public class PortletRendererImpl implements PortletRenderer
 
     private String _applicationId;
 
-    public void renderPage(IRequestCycle cycle, String pageName) throws IOException
+    public void renderPage(IRequestCycle cycle, String pageName)
+        throws IOException
     {
         cycle.activate(pageName);
 
@@ -57,17 +61,21 @@ public class PortletRendererImpl implements PortletRenderer
 
         PrintWriter printWriter = _response.getPrintWriter(contentType);
 
-        IMarkupWriter writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
+        IMarkupWriter writer = _markupWriterSource.newMarkupWriter(printWriter,
+                contentType);
 
         String namespace = _response.getNamespace();
 
-        PageRenderSupportImpl support = new PageRenderSupportImpl(_assetFactory, namespace, null);
+        PageRenderSupportImpl support = new PageRenderSupportImpl(
+                _assetFactory, namespace, null);
 
         TapestryUtils.storePageRenderSupport(cycle, support);
 
         IMarkupWriter nested = writer.getNestedWriter();
 
-        cycle.renderPage(nested);
+        ResponseBuilder builder = new DefaultResponseBuilder(nested);
+
+        cycle.renderPage(builder);
 
         String id = "Tapestry Portlet " + _applicationId + " " + namespace;
 

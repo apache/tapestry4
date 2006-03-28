@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC
+  "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+<script>
+<input-symbol key="select" required="yes" />
+    <body>
+        <unique>
+            dojo.require("dojo.io");
+            dojo.require("dojo.json");
+            dojo.require("dojo.event");
+            dojo.require("dojo.widget.ComboBox");
+        </unique>
+    </body>
+    <initialization>
+        dojo.event.connect(window, "onload", function() {
+            dojo.debug("Parsing combo box");
+            djConfig.searchIds.push("${select.getId()}");
+            dojo.debug("searchIds length:" + djConfig.searchIds.length);
+            djConfig.parseWidgets = true;
+            dojo.hostenv.makeWidgets();
+        });
+    </initialization>
+</script>

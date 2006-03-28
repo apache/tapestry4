@@ -68,7 +68,7 @@ public class BlockRenderer implements IRender
     {
         m_objBlock = objBlock;
     }
-
+    
     /**
      * @see org.apache.tapestry.IRender#render(IMarkupWriter, IRequestCycle)
      */

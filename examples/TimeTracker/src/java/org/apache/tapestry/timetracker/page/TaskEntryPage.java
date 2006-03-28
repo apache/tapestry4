@@ -37,7 +37,7 @@ public abstract class TaskEntryPage extends BasePage
     
     @Component(type = "PropertySelection", id = "projectChoose",
             bindings = { "model=projectModel", "value=selectedProject",
-            "displayName=message:choose.project"})
+            "displayName=message:choose.project", "filterOnChange=ognl:true"})
     public abstract PropertySelection getProjectSelection();
     
     @InjectObject("service:timetracker.dao.ProjectDao")

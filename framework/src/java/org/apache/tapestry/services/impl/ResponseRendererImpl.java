@@ -35,6 +35,8 @@ public class ResponseRendererImpl implements ResponseRenderer
     {   
         ResponseBuilder builder = _responseDelegate.getResponseBuilder(cycle);
         
+        cycle.setResponseBuilder(builder);
+        
         builder.renderResponse(cycle);
     }
     

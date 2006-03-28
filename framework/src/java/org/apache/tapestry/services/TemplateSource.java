@@ -42,7 +42,7 @@ public interface TemplateSource
      * 
      */
     
-    public static final String TEMPLATE_ASSET_NAME = "$template";
+    String TEMPLATE_ASSET_NAME = "$template";
 
     /**
      *  Name of the component parameter that will be automatically bound to
@@ -54,7 +54,7 @@ public interface TemplateSource
      * 
      */
     
-    public static final String TEMPLATE_TAG_PARAMETER_NAME = "templateTag";
+    String TEMPLATE_TAG_PARAMETER_NAME = "templateTag";
     
     /**
      *  Locates the template for the component.
@@ -67,6 +67,6 @@ public interface TemplateSource
      * 
      */
 
-    public ComponentTemplate getTemplate(IRequestCycle cycle, IComponent component);
+    ComponentTemplate getTemplate(IRequestCycle cycle, IComponent component);
 
 }

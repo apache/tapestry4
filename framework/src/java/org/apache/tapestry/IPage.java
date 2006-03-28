@@ -22,6 +22,7 @@ import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEndRenderListener;
 import org.apache.tapestry.event.PageValidateListener;
+import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.util.ContentType;
 
 /**
@@ -131,7 +132,7 @@ public interface IPage extends IComponent
 
     /**
      * Invoked to render the entire page. This should only be invoked by
-     * {@link IRequestCycle#renderPage(IMarkupWriter writer)}.
+     * {@link IRequestCycle#renderPage(ResponseBuilder builder)}.
      * <p>
      * The page performs a render using the following steps:
      * <ul>
@@ -145,7 +146,7 @@ public interface IPage extends IComponent
      * </ul>
      */
 
-    void renderPage(IMarkupWriter writer, IRequestCycle cycle);
+    void renderPage(ResponseBuilder builder, IRequestCycle cycle);
 
     /**
      * Invoked before a partial render of the page occurs (this happens when rewinding a

@@ -57,7 +57,7 @@ public final class Tapestry
      * require a rewind of the page.
      */
 
-    public final static String ACTION_SERVICE = "action";
+    public static final String ACTION_SERVICE = "action";
 
     /**
      * The name ("direct") of a service that allows stateless behavior for an {@link
@@ -70,7 +70,7 @@ public final class Tapestry
      * available to the {@link org.apache.tapestry.link.DirectLink} component's listener.
      */
 
-    public final static String DIRECT_SERVICE = "direct";
+    public static final String DIRECT_SERVICE = "direct";
 
     /**
      * The name ("external") of a service that a allows {@link IExternalPage} to be selected.
@@ -83,7 +83,7 @@ public final class Tapestry
      * the {@link IExternalPage#activateExternalPage(Object[], IRequestCycle)} method.
      */
 
-    public final static String EXTERNAL_SERVICE = "external";
+    public static final String EXTERNAL_SERVICE = "external";
 
     /**
      * The name ("page") of a service that allows a new page to be selected. Associated with a
@@ -92,14 +92,14 @@ public final class Tapestry
      * The service requires a single parameter: the name of the target page.
      */
 
-    public final static String PAGE_SERVICE = "page";
+    public static final String PAGE_SERVICE = "page";
 
     /**
      * The name ("home") of a service that jumps to the home page. A stand-in for when no service is
      * provided, which is typically the entrypoint to the application.
      */
 
-    public final static String HOME_SERVICE = "home";
+    public static final String HOME_SERVICE = "home";
 
     /**
      * The name ("restart") of a service that invalidates the session and restarts the application.
@@ -238,17 +238,9 @@ public final class Tapestry
 
     /**
      * Class name of an {@link ognl.TypeConverter}implementing class to use as a type converter for
-     * {@link org.apache.tapestry.binding.ExpressionBinding}
+     * {@link org.apache.tapestry.binding.ExpressionBinding}.
      */
     public static final String OGNL_TYPE_CONVERTER = "org.apache.tapestry.ognl-type-converter";
-
-    /**
-     * Prevent instantiation.
-     */
-
-    private Tapestry()
-    {
-    }
 
     /**
      * The version of the framework; this is updated for major releases.
@@ -256,6 +248,8 @@ public final class Tapestry
 
     public static final String VERSION = readVersion();
 
+    private static final String UNKNOWN_VERSION = "Unknown";
+    
     /**
      * Contains strings loaded from TapestryStrings.properties.
      * 
@@ -285,6 +279,15 @@ public final class Tapestry
      */
 
     private static final ThreadLocal _invokedMethodIds = new ThreadLocal();
+
+    
+    /**
+     * Prevent instantiation.
+     */
+
+    private Tapestry()
+    {
+    }
 
     /**
      * Copys all informal {@link IBinding bindings}from a source component to the destination
@@ -458,13 +461,11 @@ public final class Tapestry
         { arg1, arg2, arg3 });
     }
 
-    private static final String UNKNOWN_VERSION = "Unknown";
-
     /**
      * Invoked when the class is initialized to read the current version file.
      */
 
-    private static final String readVersion()
+    private static String readVersion()
     {
         Properties props = new Properties();
 

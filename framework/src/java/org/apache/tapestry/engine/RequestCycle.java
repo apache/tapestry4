@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -29,7 +28,6 @@ import org.apache.hivemind.util.ToStringBuilder;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
-import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RedirectException;
@@ -40,6 +38,7 @@ import org.apache.tapestry.record.PageRecorderImpl;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
+import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.util.QueryParameterMap;
 
@@ -53,7 +52,9 @@ import org.apache.tapestry.util.QueryParameterMap;
 public class RequestCycle implements IRequestCycle
 {
     private static final Log LOG = LogFactory.getLog(RequestCycle.class);
-
+    
+    protected ResponseBuilder _responseBuilder;
+    
     private IPage _page;
 
     private IEngine _engine;
@@ -289,12 +290,24 @@ public class RequestCycle implements IRequestCycle
         return result;
     }
 
+    public void setResponseBuilder(ResponseBuilder builder)
+    {
+        if (_responseBuilder != null)
+            throw new IllegalArgumentException("A ResponseBuilder has already been set on this response.");
+        _responseBuilder = builder;
+    }
+    
+    public ResponseBuilder getResponseBuilder()
+    {
+        return _responseBuilder;
+    }
+    
     public boolean isRewinding()
     {
         return _rewinding;
     }
 
-    public boolean isRewound(IComponent component) throws StaleLinkException
+    public boolean isRewound(IComponent component)
     {
         // If not rewinding ...
 
@@ -324,11 +337,11 @@ public class RequestCycle implements IRequestCycle
     }
 
     /**
-     * Renders the page by invoking {@link IPage#renderPage(IMarkupWriter, IRequestCycle)}. This
+     * Renders the page by invoking {@link IPage#renderPage(ResponseBuilder, IRequestCycle)}. This
      * clears all attributes.
      */
 
-    public void renderPage(IMarkupWriter writer)
+    public void renderPage(ResponseBuilder builder)
     {
         _rewinding = false;
         _actionId = -1;
@@ -336,7 +349,7 @@ public class RequestCycle implements IRequestCycle
 
         try
         {
-            _page.renderPage(writer, this);
+            _page.renderPage(builder, this);
 
         }
         catch (ApplicationRuntimeException ex)
@@ -437,7 +450,7 @@ public class RequestCycle implements IRequestCycle
     }
 
     /**
-     * Rewinds the page by invoking {@link IPage#renderPage(IMarkupWriter, IRequestCycle)}.
+     * Rewinds the page by invoking {@link IPage#renderPage(ResponseBuilder, IRequestCycle)}.
      * <p>
      * The process is expected to end with a {@link RenderRewoundException}. If the entire page is
      * renderred without this exception being thrown, it means that the target action id was not
@@ -453,16 +466,17 @@ public class RequestCycle implements IRequestCycle
         _rewinding = true;
 
         _actionId = -1;
-
+        
         // Parse the action Id as hex since that's whats generated
         // by getNextActionId()
         _targetActionId = Integer.parseInt(targetActionId, 16);
         _targetComponent = targetComponent;
-
+        
         try
         {
-            _page.renderPage(NullWriter.getSharedInstance(), this);
-
+            //TODO: pass in a valid ResponseBuilder!
+            _page.renderPage(null, this);
+            
             // Shouldn't get this far, because the target component should
             // throw the RenderRewoundException.
 

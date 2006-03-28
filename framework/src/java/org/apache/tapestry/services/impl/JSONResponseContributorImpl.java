@@ -87,7 +87,7 @@ public class JSONResponseContributorImpl implements ResponseContributor
      */
     public boolean handlesResponse(IRequestCycle cycle)
     {
-        String parm = _webRequest.getHeader(JSON_HEADER);
+        String parm = cycle.getParameter(JSON_HEADER);
         if (parm != null && Boolean.valueOf(parm).booleanValue())
             return true;
         
