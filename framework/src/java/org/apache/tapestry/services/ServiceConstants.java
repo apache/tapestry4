@@ -68,6 +68,12 @@ public class ServiceConstants
     public static final String PARAMETER = "sp";
 
     /**
+     * Contains a string list of the parts in a response that should be updated. Parts
+     * can be both components and normal html tags resolved via their unique id's.
+     */
+    public static final String UPDATE_PARTS = "updateParts";
+    
+    /**
      * A list of all the constants defined by this class.
      * 
      * @see org.apache.tapestry.form.FormSupportImpl

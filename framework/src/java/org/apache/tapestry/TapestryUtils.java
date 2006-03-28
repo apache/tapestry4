@@ -28,14 +28,21 @@ import org.apache.hivemind.util.Defense;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TapestryUtils
+public final class TapestryUtils
 {
+    public static final String PAGE_RENDER_SUPPORT_ATTRIBUTE = "org.apache.tapestry.PageRenderSupport";
+
+    public static final String FORM_ATTRIBUTE = "org.apache.tapestry.Form";
+    
     private static final char QUOTE = '\'';
 
     private static final char BACKSLASH = '\\';
 
     private static final String EMPTY_QUOTES = "''";
 
+    /* defeat instantiation */
+    private TapestryUtils() { }
+    
     /**
      * Stores an attribute into the request cycle, verifying that no object with that key is already
      * present.
@@ -65,10 +72,6 @@ public class TapestryUtils
 
         cycle.setAttribute(key, object);
     }
-
-    public static final String PAGE_RENDER_SUPPORT_ATTRIBUTE = "org.apache.tapestry.PageRenderSupport";
-
-    public static final String FORM_ATTRIBUTE = "org.apache.tapestry.Form";
 
     /**
      * Stores the support object using {@link #storeUniqueAttribute(IRequestCycle, String, Object)}.

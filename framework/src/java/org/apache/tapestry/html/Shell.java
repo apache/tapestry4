@@ -87,7 +87,7 @@ public abstract class Shell extends AbstractComponent
             
             if (delegate != null)
                 delegate.render(writer, cycle);
-
+            
             IRender ajaxDelegate = getAjaxDelegate();
             
             if (isAjaxEnabled() && ajaxDelegate != null)

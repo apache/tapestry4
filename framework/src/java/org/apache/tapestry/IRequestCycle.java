@@ -14,9 +14,9 @@
 
 package org.apache.tapestry;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.services.Infrastructure;
+import org.apache.tapestry.services.ResponseBuilder;
 
 /**
  * Controller object that manages a single request cycle. A request cycle is one 'hit' on the web
@@ -126,13 +126,31 @@ public interface IRequestCycle
      * If there's a mismatch then a {@link StaleLinkException}is thrown.
      */
 
-    boolean isRewound(IComponent component) throws StaleLinkException;
+    boolean isRewound(IComponent component);
 
+    /**
+     * Sets the {@link ResponseBuilder} to use for this response, don't 
+     * try setting this unless you're very sure you know what you are doing as
+     * this isn't the only way that it is used. (ie replacing this builder won't 
+     * necessarily override another builder being used already)
+     * 
+     * @param builder The response builder that may be used by components
+     * to help with delegate/sub component rendering.
+     */
+    void setResponseBuilder(ResponseBuilder builder);
+    
+    /**
+     * Entry point for getting the response builder used to build
+     * this response.
+     * @return The response builder used for this response.
+     */
+    ResponseBuilder getResponseBuilder();
+    
     /**
      * Removes a previously stored attribute, if one with the given name exists.
      */
 
-    public void removeAttribute(String name);
+    void removeAttribute(String name);
 
     /**
      * Renders the given page. Applications should always use this method to render the page, rather
@@ -140,7 +158,7 @@ public interface IRequestCycle
      * cycle must perform some setup before rendering.
      */
 
-    public void renderPage(IMarkupWriter writer);
+    void renderPage(ResponseBuilder builder);
 
     /**
      * Rewinds a page and executes some form of action when the component with the specified action
@@ -151,7 +169,7 @@ public interface IRequestCycle
      * @deprecated To be removed in 4.1 with no replacement.
      */
 
-    public void rewindPage(String targetActionId, IComponent targetComponent);
+    void rewindPage(String targetActionId, IComponent targetComponent);
 
     /**
      * Allows a temporary object to be stored in the request cycle, which allows otherwise unrelated
@@ -165,7 +183,7 @@ public interface IRequestCycle
      * Attributes are cleared at the end of each render or rewind phase.
      */
 
-    public void setAttribute(String name, Object value);
+    void setAttribute(String name, Object value);
 
     /**
      * Invoked just before rendering the response page to get all
@@ -175,7 +193,7 @@ public interface IRequestCycle
      * @see org.apache.tapestry.engine.IPageRecorder#commit()
      */
 
-    public void commitPageChanges();
+    void commitPageChanges();
 
     /**
      * Returns the service which initiated this request cycle.
@@ -183,7 +201,7 @@ public interface IRequestCycle
      * @since 1.0.1
      */
 
-    public IEngineService getService();
+    IEngineService getService();
 
     /**
      * Used by {@link IForm forms}to perform a <em>partial</em> rewind so as to respond to the
@@ -194,7 +212,7 @@ public interface IRequestCycle
      * @since 1.0.2
      */
 
-    public void rewindForm(IForm form);
+    void rewindForm(IForm form);
 
     /**
      * Invoked by a {@link IEngineService service}&nbsp;to store an array of application-specific
@@ -204,7 +222,7 @@ public interface IRequestCycle
      * @see org.apache.tapestry.engine.DirectService
      * @since 4.0
      */
-    public void setListenerParameters(Object[] parameters);
+    void setListenerParameters(Object[] parameters);
 
     /**
      * Returns parameters previously stored by {@link #setListenerParameters(Object[])}.
@@ -212,7 +230,7 @@ public interface IRequestCycle
      * @since 4.0
      */
 
-    public Object[] getListenerParameters();
+    Object[] getListenerParameters();
 
     /**
      * A convienience for invoking {@link #activate(IPage)}. Invokes {@link #getPage(String)}to
@@ -221,7 +239,7 @@ public interface IRequestCycle
      * @since 3.0
      */
 
-    public void activate(String name);
+    void activate(String name);
 
     /**
      * Sets the active page for the request. The active page is the page which will ultimately
@@ -241,7 +259,7 @@ public interface IRequestCycle
      * 
      * @since 3.0
      */
-    public void activate(IPage page);
+    void activate(IPage page);
 
     /**
      * Returns a query parameter value, or null if not provided in the request. If multiple values
@@ -249,7 +267,7 @@ public interface IRequestCycle
      * 
      * @since 4.0
      */
-    public String getParameter(String name);
+    String getParameter(String name);
 
     /**
      * Returns all query parameter values for the given name. Returns null if no values were
@@ -257,7 +275,7 @@ public interface IRequestCycle
      * 
      * @since 4.0
      */
-    public String[] getParameters(String name);
+    String[] getParameters(String name);
 
     /**
      * Converts a partial URL into an absolute URL. Prefixes the provided URL with servlet context
@@ -267,7 +285,7 @@ public interface IRequestCycle
      * @since 4.0
      */
 
-    public String getAbsoluteURL(String partialURL);
+    String getAbsoluteURL(String partialURL);
 
     /**
      * Forgets any stored changes to the specified page. If the page has already been loaded (and
@@ -277,7 +295,7 @@ public interface IRequestCycle
      * @since 4.0
      */
 
-    public void forgetPage(String name);
+    void forgetPage(String name);
 
     /**
      * Returns the central {@link org.apache.tapestry.services.Infrastructure}&nbsp;object used to
@@ -286,7 +304,7 @@ public interface IRequestCycle
      * @since 4.0
      */
 
-    public Infrastructure getInfrastructure();
+    Infrastructure getInfrastructure();
 
     /**
      * Returns the provided string, possibly modified (with an appended suffix) to make it unique.
@@ -297,7 +315,7 @@ public interface IRequestCycle
      *         with the same baseId).
      */
 
-    public String getUniqueId(String baseId);
+    String getUniqueId(String baseId);
 
     /**
      * Sends a redirect to the client web browser. This is currently a convinience for constructing
@@ -307,5 +325,5 @@ public interface IRequestCycle
      * @throws RedirectException
      */
 
-    public void sendRedirect(String URL);
+    void sendRedirect(String URL);
 }

@@ -13,10 +13,19 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IJSONRender;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.json.IJSONWriter;
 import org.apache.tapestry.services.ResponseBuilder;
+import org.apache.tapestry.services.ServiceConstants;
 
 
 /**
@@ -29,6 +38,11 @@ public class JSONResponseBuilder implements ResponseBuilder
 {
     /** Writer that creates JSON output response. */
     protected IJSONWriter _writer;
+    /** Passed in to bypass normal rendering. */
+    protected IMarkupWriter _nullWriter = NullWriter.getSharedInstance();
+    
+    /** Parts that will be updated. */
+    protected List parts = new ArrayList();
     
     /**
      * Creates a new JSON response builder with a valid
@@ -50,8 +64,50 @@ public class JSONResponseBuilder implements ResponseBuilder
      */
     public void renderResponse(IRequestCycle cycle)
     {
-        //cycle.renderPage(_writer);
+        parseParameters(cycle);
+        
+        cycle.renderPage(this);
         
         _writer.close();
+    }
+    
+    /**
+     * Grabs the incoming parameters needed for json responses,
+     * most notable the {@link ServiceConstants#UPDATE_PARTS} parameter.
+     * @param cycle The request cycle to parse from
+     */
+    protected void parseParameters(IRequestCycle cycle)
+    {
+        Object[] updateParts = cycle.getParameters(ServiceConstants.UPDATE_PARTS);
+        for (int i = 0; i < updateParts.length; i++)
+            parts.add(updateParts[i].toString());
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void render(IRender render, IRequestCycle cycle)
+    {
+        if (IJSONRender.class.isInstance(render) && IComponent.class.isInstance(render)) {
+            IJSONRender json = (IJSONRender)render;
+            IComponent component = (IComponent)render;
+            
+            if (!parts.contains(component.getId())) {
+                render.render(_nullWriter, cycle);
+                return;
+            }
+            
+            json.renderComponent(_writer, cycle);
+        }
+        
+        render.render(_nullWriter, cycle);
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public IMarkupWriter getWriter()
+    {
+        return _nullWriter;
     }
 }

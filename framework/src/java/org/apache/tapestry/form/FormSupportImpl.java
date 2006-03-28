@@ -703,11 +703,11 @@ public class FormSupportImpl implements FormSupport
         if (_prerenderMap.containsKey(key))
             throw new ApplicationRuntimeException(FormMessages.fieldAlreadyPrerendered(field),
                     field, location, null);
-
+        
         NestedMarkupWriter nested = writer.getNestedWriter();
-
+        
         field.render(nested, _cycle);
-
+        
         _prerenderMap.put(key, nested.getBuffer());
     }
 

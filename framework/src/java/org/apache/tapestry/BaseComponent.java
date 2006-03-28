@@ -87,10 +87,10 @@ public class BaseComponent extends AbstractComponent implements ITemplateCompone
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Begin render " + getExtendedId());
-
+        
         for (int i = 0; i < _outerCount; i++)
-            _outer[i].render(writer, cycle);
-
+            cycle.getResponseBuilder().render(_outer[i], cycle);
+        
         if (LOG.isDebugEnabled())
             LOG.debug("End render " + getExtendedId());
     }

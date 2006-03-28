@@ -38,6 +38,8 @@
 	An alternate rendered for the property selection.
   	</description>
   </parameter>
+
+    <parameter name="filterOnChange" default-value="false" />
   
   <parameter name="submitOnChange" deprecated="true">
   	<description>
@@ -53,5 +55,8 @@
   <reserved-parameter name="name"/>
 
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
+  
+  <inject property="directService" object="service:tapestry.services.Direct"/>
+  <inject property="script" type="script" object="PropertySelection.script"/>
   
 </component-specification>

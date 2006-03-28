@@ -21,7 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Filter interface for {@link org.apache.tapestry.services.ServletRequestServicer}. Allows objects
+ * Filter interface for
+ * {@link org.apache.tapestry.services.ServletRequestServicer}. Allows objects
  * and services to "plug into" the pipeline.
  * 
  * @author Howard Lewis Ship
@@ -29,6 +30,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface ServletRequestServicerFilter
 {
-    public void service(HttpServletRequest request, HttpServletResponse response,
-            ServletRequestServicer servicer) throws IOException, ServletException;
+
+    void service(HttpServletRequest request,
+            HttpServletResponse response, ServletRequestServicer servicer)
+        throws IOException, ServletException;
 }

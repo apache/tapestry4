@@ -25,21 +25,41 @@ import org.apache.tapestry.IDirect;
  */
 public class DirectServiceParameter
 {
-    private IDirect _direct;
+    protected IDirect _direct;
 
-    private Object[] _serviceParameters;
+    protected Object[] _serviceParameters;
 
+    protected String[] _updateParts;
+    
+    protected boolean _json;
+    
     public DirectServiceParameter(IDirect direct)
     {
-        this(direct, null);
+        this(direct, null, null, false);
     }
 
     public DirectServiceParameter(IDirect direct, Object[] serviceParameters)
     {
+        this(direct, serviceParameters, null, false);
+    }
+    
+    /**
+     * Creates a new direct service parameter map. 
+     * 
+     * @param direct The object implementing the direct triggerable interface
+     * @param serviceParameters The parameters for the triggered object
+     * @param updateParts The parts expected to be updated on any returned response
+     * triggerd by this direct call.
+     */
+    public DirectServiceParameter(IDirect direct, Object[] serviceParameters,
+            String[] updateParts, boolean json)
+    {
         Defense.notNull(direct, "direct");
-
+        
         _direct = direct;
         _serviceParameters = serviceParameters;
+        _updateParts = updateParts;
+        _json = json;
     }
 
     public IDirect getDirect()
@@ -50,5 +70,15 @@ public class DirectServiceParameter
     public Object[] getServiceParameters()
     {
         return _serviceParameters;
+    }
+    
+    public String[] getUpdateParts()
+    {
+        return _updateParts;
+    }
+    
+    public boolean isJSON()
+    {
+        return _json;
     }
 }

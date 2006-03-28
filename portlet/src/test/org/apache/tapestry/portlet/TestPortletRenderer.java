@@ -28,6 +28,8 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.NestedMarkupWriter;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.markup.MarkupWriterSource;
+import org.apache.tapestry.services.ResponseBuilder;
+import org.apache.tapestry.services.impl.DefaultResponseBuilder;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.web.WebResponse;
@@ -138,9 +140,11 @@ public class TestPortletRenderer extends HiveMindTestCase
         AssetFactory assetFactory = newAssetFactory();
 
         IRequestCycle cycle = newCycle("ZePage", page);
-
-        cycle.renderPage(nested);
-
+        
+        ResponseBuilder builder = new DefaultResponseBuilder(writer);
+        
+        cycle.renderPage(builder);
+        
         writer.comment("BEGIN Tapestry Portlet appId NAMESPACE");
         writer.comment("Page: ZePage");
 
