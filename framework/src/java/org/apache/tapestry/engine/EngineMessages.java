@@ -54,7 +54,7 @@ public class EngineMessages
         return _formatter.format("exception-during-cleanup", cause);
     }
 
-    static String validateCycle(List pageNames)
+    public static String validateCycle(List pageNames)
     {
         StringBuffer buffer = new StringBuffer();
         int count = pageNames.size();

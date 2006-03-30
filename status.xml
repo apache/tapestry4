@@ -181,6 +181,9 @@
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-774" due-to="Mikaël Cluseau">
         PopupLinkRenderer fails in Form rewind.
       </action>
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-855" due-to="Raphael Jean" >
+        Throwing a PageRedirectException from the pageBeginRender() method in a portlet page doesn't redirect to the given page. Instead a NPE is thrown and the exception page is displayed. 
+      </action>
     </release>
     <release version="4.0" date="Jan 6 2006">
       <action type="update" dev="HLS">Add link to DeveloperWorks Tapestry article</action>

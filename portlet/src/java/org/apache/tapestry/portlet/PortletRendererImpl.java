@@ -16,14 +16,19 @@ package org.apache.tapestry.portlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.asset.AssetFactory;
+import org.apache.tapestry.engine.EngineMessages;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.util.PageRenderSupportImpl;
@@ -49,46 +54,88 @@ public class PortletRendererImpl implements PortletRenderer
 
     public void renderPage(IRequestCycle cycle, String pageName) throws IOException
     {
-        cycle.activate(pageName);
+    	try {
+	        cycle.activate(pageName);
+	
+	        IPage page = cycle.getPage();
+	
+	        ContentType contentType = page.getResponseContentType();
+	
+	        PrintWriter printWriter = _response.getPrintWriter(contentType);
+	
+	        IMarkupWriter writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
+	
+	        String namespace = _response.getNamespace();
+	
+	        PageRenderSupportImpl support = new PageRenderSupportImpl(_assetFactory, namespace, null);
+	
+	        TapestryUtils.storePageRenderSupport(cycle, support);
+	
+	        IMarkupWriter nested = writer.getNestedWriter();
+	
+	        cycle.renderPage(nested);
+	
+	        String id = "Tapestry Portlet " + _applicationId + " " + namespace;
+	
+	        writer.comment("BEGIN " + id);
+	        writer.comment("Page: " + page.getPageName());
+	        writer.comment("Generated: " + new Date());
+	        writer.comment("Framework version: " + Tapestry.VERSION);
+	
+	        support.writeBodyScript(writer, cycle);
+	
+	        nested.close();
+	
+	        support.writeInitializationScript(writer);
+	
+	        writer.comment("END " + id);
 
-        IPage page = cycle.getPage();
-
-        ContentType contentType = page.getResponseContentType();
-
-        PrintWriter printWriter = _response.getPrintWriter(contentType);
-
-        IMarkupWriter writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
-
-        String namespace = _response.getNamespace();
-
-        PageRenderSupportImpl support = new PageRenderSupportImpl(_assetFactory, namespace, null);
-
-        TapestryUtils.storePageRenderSupport(cycle, support);
-
-        IMarkupWriter nested = writer.getNestedWriter();
-
-        cycle.renderPage(nested);
-
-        String id = "Tapestry Portlet " + _applicationId + " " + namespace;
-
-        writer.comment("BEGIN " + id);
-        writer.comment("Page: " + page.getPageName());
-        writer.comment("Generated: " + new Date());
-        writer.comment("Framework version: " + Tapestry.VERSION);
-
-        support.writeBodyScript(writer, cycle);
-
-        nested.close();
-
-        support.writeInitializationScript(writer);
-
-        writer.comment("END " + id);
-
-        writer.close();
-
-        // TODO: Trap errors and do some error reporting here?
+	        writer.close();
+	        
+	        // TODO: Trap errors and do some error reporting here?
+    	}
+    	catch (PageRedirectException e) {
+    		handlePageRedirectException(cycle, e);
+    	}
     }
 
+    protected void handlePageRedirectException(IRequestCycle cycle, PageRedirectException exception)
+		throws IOException
+	{
+		List pageNames = new ArrayList();
+		
+		String pageName = exception.getTargetPageName();
+		
+		while (true)
+		{
+		    if (pageNames.contains(pageName))
+		    {
+		        pageNames.add(pageName);
+		
+		        throw new ApplicationRuntimeException(EngineMessages.validateCycle(pageNames));
+		    }
+		
+		    // Record that this page has been a target.
+		
+		    pageNames.add(pageName);
+		
+		    try
+		    {
+		        // Attempt to activate the new page.
+		
+		        cycle.activate(pageName);
+		
+		        break;
+		    }
+		    catch (PageRedirectException secondRedirectException)
+		    {
+		        pageName = secondRedirectException.getTargetPageName();
+		    }
+		}
+		
+		renderPage(cycle, pageName);
+	}
+    
     public void setMarkupWriterSource(MarkupWriterSource markupWriterSource)
     {
         _markupWriterSource = markupWriterSource;
