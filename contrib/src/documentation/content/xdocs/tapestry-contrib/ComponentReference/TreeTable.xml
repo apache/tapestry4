@@ -48,14 +48,125 @@
     <th>Description</th>
   </tr>
 
+	<tr>
+      <td>sessionStateManager</td>
+      <td>
+		  <link href="&apicontrib;/contrib/tree/model/ITreeSessionStateManager.html">ITreeSessionStateManager</link>
+	  </td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>
+	
+	<tr>
+      <td>sessionStoreManager</td>
+      <td>
+		  <link href="&apicontrib;/contrib/tree/model/ISessionStoreManager.html">ISessionStoreManager</link>
+	  </td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>
+	
+	<tr>
+      <td>treeModel</td>
+      <td>
+		  <link href="&apicontrib;/contrib/tree/model/ITreeModel.html">ITreeModel</link>
+	  </td>
+	  <td>custom</td>
+	  <td>yes</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>
+	
+	<tr>
+      <td>treeStateListener</td>
+      <td>
+		  <link href="&apicontrib;/contrib/tree/model/ITreeStateListener.html">ITreeStateListener</link>
+	  </td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>
+	
+	<tr>
+      <td>nodeRenderFactory</td>
+      <td>
+		  <link href="&apicontrib;/contrib/tree/components/INodeRenderFactory.html">INodeRenderFactory</link>
+	  </td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>
+	
+	<tr>
+      <td>nodeViewComponentAddress</td>
+      <td>
+		  org.apache.tapestry.util.ComponentAddress
+	  </td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>	
+	
+	<tr>
+      <td>tableColumns</td>
+      <td>java.util.ArrayList</td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>			
+		
+	<tr>
+      <td>entriesPerTablePage</td>
+      <td>int</td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>	
+	
+	<tr>
+      <td>showRootNode</td>
+      <td>boolean</td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>	
+	
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>forbidden</strong>
 </p>
 
 <p>

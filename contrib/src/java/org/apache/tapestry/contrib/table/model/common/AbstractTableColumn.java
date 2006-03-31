@@ -222,13 +222,16 @@ public class AbstractTableColumn implements IAdvancedTableColumn, Serializable
      */
     public void loadSettings(IComponent objSettingsContainer)
     {
-        IComponent objColumnRendererSource = (IComponent) objSettingsContainer.getComponents().get(getColumnName() + COLUMN_RENDERER_BLOCK_SUFFIX);
+        // Replace any periods in the column name with underscores so columns can be referenced in a @Block
+        String columnName = getColumnName().replace('.', '_');
+
+        IComponent objColumnRendererSource = (IComponent) objSettingsContainer.getComponents().get(columnName + COLUMN_RENDERER_BLOCK_SUFFIX);
         if (objColumnRendererSource == null) 
         	objColumnRendererSource = (IComponent) objSettingsContainer.getComponents().get(COLUMN_RENDERER_BLOCK_SUFFIX);
         if (objColumnRendererSource != null && objColumnRendererSource instanceof Block)
     		setColumnRendererSource(new BlockTableRendererSource((Block) objColumnRendererSource));
 
-        IComponent objValueRendererSource = (IComponent) objSettingsContainer.getComponents().get(getColumnName() + VALUE_RENDERER_BLOCK_SUFFIX);
+        IComponent objValueRendererSource = (IComponent) objSettingsContainer.getComponents().get(columnName + VALUE_RENDERER_BLOCK_SUFFIX);
         if (objValueRendererSource == null)
         	objValueRendererSource = (IComponent) objSettingsContainer.getComponents().get(VALUE_RENDERER_BLOCK_SUFFIX);
         if (objValueRendererSource != null && objValueRendererSource instanceof Block)

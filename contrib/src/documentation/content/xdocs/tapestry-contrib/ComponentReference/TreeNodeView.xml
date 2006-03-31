@@ -48,18 +48,53 @@
     <th>Description</th>
   </tr>
 
+	<tr>
+      <td>showNodeImages</td>
+      <td>boolean</td>
+	  <td>in</td>
+	  <td>no</td>
+	  <td>true</td>
+      <td>
+        Desc...
+      </td>
+    </tr>
+
+	<tr>
+      <td>makeNodeDirect</td>
+      <td>boolean</td>
+	  <td>in</td>
+	  <td>no</td>
+	  <td>true</td>
+      <td>
+        Desc...
+      </td>
+    </tr>			
 	</table>
+	
+	<tr>
+      <td>nodeRenderFactory</td>
+      <td>
+		  <link href="&apicontrib;/contrib/tree/components/INodeRenderFactory.html">INodeRenderFactory</link>
+	  </td>
+	  <td>in</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>			
+	</table>	
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: <em>treedataview, nodeviewdirect</em>
 </p>
 
 </section>

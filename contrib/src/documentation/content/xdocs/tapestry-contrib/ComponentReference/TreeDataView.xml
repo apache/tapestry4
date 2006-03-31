@@ -47,15 +47,52 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
+	
+	<tr>
+      <td>treeView</td>
+      <td>
+		  <link href="&apicontrib;/contrib/tree/components/TreeView.html">TreeView</link>
+	  </td>
+	  <td>in</td>
+	  <td>yes</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>
+	
+	<!-- TODO: parameter value is defined in jwc but used nowhere else
+	<tr>
+      <td>value</td>
+      <td>?</td>
+	  <td>in</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>
+	-->	
+	
+	<tr>
+      <td>showRootNode</td>
+      <td>boolean</td>
+	  <td>in</td>
+	  <td>no</td>
+	  <td>true</td>
+      <td>
+        Desc...
+      </td>
+    </tr>					
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
