@@ -17,6 +17,15 @@
     <!-- Add more people here -->
   </developers>
   <votes>
+    <vote title="3.0.4 Release" date="Mar 27 2006" dev="JK">
+      <motion>
+        Going with the notion that releasing early/often is a good thing, 
+        and we can pretty much release things as often as we want I'd say 
+        we're doing more harm than good by not releasing all of the excellent 
+        work that Brian's been putting into these two releases. 
+      </motion>
+      <response>JK: HK, KT, PF, DS, BW: +1</response>
+    </vote>
     <vote title="Tapestry 3.0.3" date="Mar 26 2005" dev="PF">
       <motion> I finished patching/fixing all of the big issues identified with the last release.  With any luck, this will be the last release for the 3.0 branch. This vote will run for one week.  A +1 vote is to release Tapestry 3.0.3.  I will be able to start the release once the votes are tallied. </motion>
       <response> PF, HK, MB, HLS, TS, DS, EH, GL: +1 </response>
@@ -125,7 +134,7 @@
     -->
   </todo>
   <changes>
-  	<release version="3.0.4" date="unreleased">
+  	<release version="3.0.4" date="Mar 31 2006">
       <action type="fix" dev="GL" fixes-bug="TAPESTRY-431"> Fixed TemplateParser throws an exception and stops parsing when duplicate attributes are found in a tag. </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-877" due-to="Brian K. Wallace">
       	Javassist url was incorrect.

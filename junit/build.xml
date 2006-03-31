@@ -67,7 +67,7 @@
   	  
   <target name="run" depends="compile" description="Run the test suite.">
   	<java fork="true" classname="junit.textui.TestRunner"
-		failonerror="true">
+		failonerror="false">
   		<classpath refid="junit.classpath"/>
 		<arg value="org.apache.tapestry.junit.TapestrySuite"/>
 		<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
