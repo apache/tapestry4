@@ -68,8 +68,7 @@
       <td>
         Desc...
       </td>
-    </tr>			
-	</table>
+    </tr>
 	
 	<tr>
       <td>nodeRenderFactory</td>
@@ -101,7 +100,7 @@
 
 <section>
   <title>Examples</title>
-
 </section>
+
 </body>
 </document>

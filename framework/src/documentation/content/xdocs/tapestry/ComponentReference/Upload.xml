@@ -34,8 +34,8 @@
    service in hivemind. The default is 10000000(10kb).</p>
 
 <section>
+<title>Example override of default maximum file upload size.</title>
 <source><![CDATA[
-Example of how to set the default maximum file upload size.
 <implementation service-id="tapestry.multipart.MultipartDecoder">
 <create-instance class="org.apache.tapestry.multipart.MultipartDecoderImpl,maxSize=-1" model="threaded" />
 </implementation> 
