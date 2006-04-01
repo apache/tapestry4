@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.hivemind.util.Defense;
+import org.apache.log4j.Logger;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IJSONRender;
 import org.apache.tapestry.IMarkupWriter;
@@ -36,6 +37,9 @@ import org.apache.tapestry.services.ServiceConstants;
  */
 public class JSONResponseBuilder implements ResponseBuilder
 {
+    /* logger */
+    protected static final Logger _log = Logger.getLogger(JSONResponseBuilder.class);
+    
     /** Writer that creates JSON output response. */
     protected IJSONWriter _writer;
     /** Passed in to bypass normal rendering. */
@@ -64,6 +68,7 @@ public class JSONResponseBuilder implements ResponseBuilder
      */
     public void renderResponse(IRequestCycle cycle)
     {
+        _log.warn("renderResponse()");
         parseParameters(cycle);
         
         cycle.renderPage(this);

@@ -17,8 +17,11 @@ import java.io.PrintWriter;
 
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.json.IJSONWriter;
+import org.apache.tapestry.json.JSONArray;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
