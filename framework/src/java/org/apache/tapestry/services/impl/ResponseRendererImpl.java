@@ -16,6 +16,7 @@ package org.apache.tapestry.services.impl;
 
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ResponseDelegateFactory;
@@ -29,6 +30,9 @@ import org.apache.tapestry.services.ResponseRenderer;
  */
 public class ResponseRendererImpl implements ResponseRenderer
 {   
+    /* logger */
+    protected static final Logger _log = Logger.getLogger(ResponseRendererImpl.class);
+    
     protected ResponseDelegateFactory _responseDelegate;
     
     public void renderResponse(IRequestCycle cycle) throws IOException
