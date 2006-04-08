@@ -180,7 +180,7 @@
     
     <invoke-factory>
       <construct class="impl.ResponseRendererImpl">
-        <set-service property="responseDelegate" service-id="tapestry.services.ResponseDelegateFactory" />
+        <set-service property="responseDelegateFactory" service-id="tapestry.services.ResponseDelegateFactory" />
       </construct>
     </invoke-factory>
   </service-point>
