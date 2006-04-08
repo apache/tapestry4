@@ -17,7 +17,8 @@ package org.apache.tapestry.form;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IJSONRender;
 import org.apache.tapestry.IMarkupWriter;
@@ -62,7 +63,7 @@ public abstract class PropertySelection extends AbstractFormComponent
     implements ValidatableField, IJSONRender, IDirect
 {
     /* logger */
-    protected static final Logger _log = Logger.getLogger(PropertySelection.class);
+    protected static final Log _log = LogFactory.getLog(PropertySelection.class);
     
     /**
      * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)

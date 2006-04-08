@@ -16,7 +16,7 @@ package org.apache.tapestry.services.impl;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ResponseDelegateFactory;
@@ -29,23 +29,48 @@ import org.apache.tapestry.services.ResponseRenderer;
  * @since 4.0
  */
 public class ResponseRendererImpl implements ResponseRenderer
-{   
-    /* logger */
-    protected static final Logger _log = Logger.getLogger(ResponseRendererImpl.class);
-    
-    protected ResponseDelegateFactory _responseDelegate;
-    
-    public void renderResponse(IRequestCycle cycle) throws IOException
-    {   
-        ResponseBuilder builder = _responseDelegate.getResponseBuilder(cycle);
-        
+{
+
+    private Log _log;
+
+    private ResponseDelegateFactory _responseDelegateFactory;
+
+    public void renderResponse(IRequestCycle cycle)
+        throws IOException
+    {
+        ResponseBuilder builder = getResponseDelegateFactory().getResponseBuilder(
+                cycle);
+
         cycle.setResponseBuilder(builder);
-        
+
         builder.renderResponse(cycle);
     }
-    
-    public void setResponseDelegate(ResponseDelegateFactory responseDelegate)
+
+    /** For subclass access to the injected Log. */
+    public Log getLog()
     {
-        _responseDelegate = responseDelegate;
+        return _log;
+    }
+
+    /** For injection. */
+    public final void setLog(Log log)
+    {
+        _log = log;
+    }
+
+    /**
+     * For injection.
+     */
+    public void setResponseDelegateFactory(ResponseDelegateFactory responseDelegate)
+    {
+        _responseDelegateFactory = responseDelegate;
+    }
+
+    /**
+     * For subclass access.
+     */
+    public ResponseDelegateFactory getResponseDelegateFactory()
+    {
+        return _responseDelegateFactory;
     }
 }
