@@ -56,7 +56,15 @@
   </todo>
   <changes>
   	<release version="4.0.2" date="unreleased" >
-  		
+  		<action type="add" dev="JK" fixes-bug="TAPESTRY-905" due-to="Filip S. Adamsen">
+  			Danish validation strings added.
+  		</action>
+  		<action type="add" dev="JK" fixes-bug="TAPESTRY-903" due-to="Inge">
+  			Norwegian validation strings added.
+  		</action>
+  		<action type="update" dev="JK" fixes-bug="TAPESTRY-901" due-to="Jun Tsai">
+  			Chinese validation strings updated with new tapestry 4 strings.
+  		</action>
   	</release>
     <release version="4.0.1" date="Mar 31 2006" >
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-863" due-to="unknown contributor">
