@@ -460,6 +460,13 @@ public class FormSupportImpl implements FormSupport
             _elementIdAllocator.allocateId(ids[i]);
     }
     
+    /**
+     * @deprecated Please use second render method.
+     */
+    public void render(String method, IRender informalParametersRenderer, ILink link, String scheme)
+    {
+	render(method, informalParametersRenderer, link, scheme, null);
+    }
     public void render(String method, IRender informalParametersRenderer, ILink link, 
     		String scheme, Integer port)
     {

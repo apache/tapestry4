@@ -43,8 +43,30 @@ public interface FormSupport extends FormBehavior
      *            the desired scheme for the generated URL, typically "http" or "https". If
      *            non-null, and the scheme does not match the current request's scheme, then an
      *            absolute URL with the specified scheme will be generated, rather than a URI.
+     * @param port
+     *            the desired port for the generated URL, typically "80", "443". If
+     *            non-null, and the port does not match the current request's port, then an
+     *            absolute URL with the specified port will be generated, rather than a URI.
      */
     public void render(String method, IRender informalParametersRenderer, ILink link, String scheme, Integer port);
+
+    /**
+     * Old interface left around for backwards compatibility.  Please use the second render method.
+     * 
+     * @param method
+     *            the HTTP method ("get" or "post")
+     * @param informalParametersRenderer
+     *            object that will render informal parameters
+     * @param link
+     *            The link to which the form will submit (encapsulating the URL and the query
+     *            parameters)
+     * @param scheme
+     *            the desired scheme for the generated URL, typically "http" or "https". If
+     *            non-null, and the scheme does not match the current request's scheme, then an
+     *            absolute URL with the specified scheme will be generated, rather than a URI.
+     * @deprecated To be removed in 4.1, see new render method that adds the Port parameter.
+     */
+    public void render(String method, IRender informalParametersRenderer, ILink link, String scheme);
 
     /**
      * Invoked to rewind the form, which renders the body of the form, allowing form element
