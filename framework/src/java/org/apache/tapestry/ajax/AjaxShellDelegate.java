@@ -36,10 +36,12 @@ public class AjaxShellDelegate implements IRender
      */
     public void render(IMarkupWriter writer, IRequestCycle cycle)
     {
-        //first configure dojo, has to happen before package include
+        // .append(" baseRelativePath:\"").append(_dojoSource.getResourceLocation().getRelativeResource("").getResourceURL())
+        // first configure dojo, has to happen before package include
         StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");
         str.append("djConfig = { isDebug: true,")
-        .append(" baseRelativePath:\"").append(_dojoSource.getResourceLocation().getRelativeResource("").getResourceURL())
+        .append(" baseRelativePath:\"")
+        .append(_dojoSource.getResourceLocation().getRelativeResource("").getResourceURL())
         
         .append("\", preventBackButtonFix: false, parseWidgets: true };")
         .append(" </script>\n\n ");
