@@ -25,6 +25,7 @@
     <person name="Geoff Longman" id="GL"/>
     <person name="Paul Ferraro" email="pmf8@columbia.edu" id="PF"/>
     <person name="Jesse Kuhnert" email="jkuhnert@gmail.com" id="JK"/>
+    <person name="Andreas Andreou" email="andyhot@di.uoa.gr" id="AA"/>    
     <!-- Add more people here -->
     <!-- Retired: -->
     <person name="Malcom Edgar" id="ME"/>
@@ -56,6 +57,9 @@
   </todo>
   <changes>
   	<release version="4.0.2" date="unreleased" >
+  		<action type="update" dev="AA">
+  			Updated contrib:Tree documentation.
+  		</action>  	
   		<action type="add" dev="JK" fixes-bug="TAPESTRY-905" due-to="Filip S. Adamsen">
   			Danish validation strings added.
   		</action>
