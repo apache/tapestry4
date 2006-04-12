@@ -2,6 +2,9 @@
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.mortbay.jetty.Server"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
 <listAttribute key="org.eclipse.jdt.launching.CLASSPATH">
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;runtimeClasspathEntry containerPath=&quot;JRE_LIB&quot; path=&quot;2&quot;     sourceAttachmentPath=&quot;JRE_SRC&quot; sourceRootPath=&quot;&quot; type=&quot;3&quot;/&gt; "/>
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;jakarta-tapestry&quot; type=&quot;1&quot;/&gt; "/>
@@ -33,6 +36,9 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="jetty.xml"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dorg.apache.tapestry.disable-caching=true  -Dorg.mortbay.util.FileResource.checkAliases=false   -Dorg.apache.tapestry.vlib.debug-enabled=true -Djava.naming.factory.initial=org.jnp.interfaces.NamingContextFactory -Djava.naming.factory.url.pkgs=org.jboss.naming:org.jnp.interfaces -Djava.naming.provider.url=localhost:1099"/>
 <stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_none"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/jakarta-tapestry"/>
+</listAttribute>
 <booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="jakarta-tapestry/examples/Vlib"/>
 <stringAttribute key="org.eclipse.debug.ui.target_run_perspective" value="perspective_none"/>
