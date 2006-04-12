@@ -7,7 +7,8 @@
   <Project rdf:about="http://jakarta.apache.org/tapestry/">
     <created>2006-01-31</created>
     <license rdf:resource="http://usefulinc.com/doap/licenses/asl20" />
-    <name>Apache Jakarta Tapestry</name>
+    <name>Apache Tapestry</name>
+    <!-- Not for long! -->
     <homepage rdf:resource="http://jakarta.apache.org/tapestry/" />
     <asfext:pmc rdf:resource="http://jakarta.apache.org" />
     <shortdesc>Framework for creating dynamic, robust, highly scalable web applications</shortdesc>
@@ -26,8 +27,8 @@
     </release>
     <repository>
       <SVNRepository>
-        <location rdf:resource="http://svn.apache.org/repos/asf/jakarta/tapestry "/>
-        <browse rdf:resource="http://svn.apache.org/viewcvs.cgi/jakarta/tapestry "/>
+        <location rdf:resource="http://svn.apache.org/repos/asf/tapestry/tapestry4"/>
+        <browse rdf:resource="http://svn.apache.org/viewcvs.cgi/tapestry/tapestry4/"/>
       </SVNRepository>
     </repository>
   </Project>
