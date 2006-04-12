@@ -32,7 +32,17 @@
 </p>
 
 <p>
-  <strong>See also:</strong> 
+	The Tree component uses the lower level components 
+	<link href="&apicontrib;/contrib/tree/components/TreeView.html">TreeView</link>
+	(handles the tree model),
+	<link href="&apicontrib;/contrib/tree/components/TreeDataView.html">TreeDataView</link>
+	(handles the tree data),
+	<link href="&apicontrib;/contrib/tree/components/TreeNodeView.html">TreeNodeView</link>
+	(handles the presentation of the data).				
+</p>	  	  
+
+<p>
+  <strong>See also: &TreeView;, &TreeDataView;, &TreeNodeView;</strong> 
 </p>
 
 <section>
@@ -108,9 +118,14 @@
 	  </td>
 	  <td>custom</td>
 	  <td>no</td>
-	  <td>&nbsp;</td>
+	  <td>(<link href="&apicontrib;/contrib/tree/simple/SimpleNodeRenderFactory.html">SimpleNodeRenderFactory</link>)</td>
       <td>
         Allows custom rendering of each node.
+        <p>This parameter defines a factory responsible for creating <link href="&apiroot;/IRender.html">IRender</link> instances
+		which will be used to perform the actual render of each node.</p>
+		  <p>The default factory returns <link href="&apiroot;/valid/RenderString.html">RenderString</link> instances
+			  that output each node's <code>toString()</code>.
+		  </p>		  
       </td>
     </tr>		
 	
@@ -119,7 +134,7 @@
       <td>boolean</td>
 	  <td>custom</td>
 	  <td>no</td>
-	  <td>true</td>
+	  <td>(true)</td>
       <td>
         If node images are shown.
       </td>
@@ -130,7 +145,7 @@
       <td>boolean</td>
 	  <td>custom</td>
 	  <td>no</td>
-	  <td>true</td>
+	  <td>(true)</td>
       <td>
         If true, renders a link around nodes that contain children. This allows 
 		  expanding and collapsing the node.
@@ -142,7 +157,7 @@
       <td>boolean</td>
 	  <td>custom</td>
 	  <td>no</td>
-	  <td>true</td>
+	  <td>(true)</td>
       <td>
         If root node should be visible.
       </td>

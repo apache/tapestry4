@@ -47,15 +47,86 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
+	
+	<!-- Are these params used somewhere?
+	<tr>
+      <td>treeView</td>
+      <td>boolean</td>
+	  <td>&nbsp;</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>	
+	
+	<tr>
+      <td>nodeViewComponentAddress</td>
+      <td>boolean</td>
+	  <td>&nbsp;</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>
+	
+	<tr>
+      <td>nodeRenderFactory</td>
+      <td>boolean</td>
+	  <td>&nbsp;</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>	
+	-->
+	
+	<tr>
+      <td>entriesPerTablePage</td>
+      <td>int</td>
+	  <td>in</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        The number of records displayed per page.
+      </td>
+    </tr>
+
+	<tr>
+      <td>showRootNode</td>
+      <td>boolean</td>
+	  <td>in</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        If root node should be visible.
+      </td>
+    </tr>
+	
+	<tr>
+      <td>tableColumns</td>
+      <td><link href="&apijava;/java/util/List.html">List</link> (of	  	
+		  <link href="&apicontrib;/contrib/table/model/ITableColumn.html">ITableColumn</link>)		  
+	  </td>
+	  <td>in</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+		A list of <link href="&apicontrib;/contrib/table/model/ITableColumn.html"><code>ITableColumn</code></link>
+		objects, each defining a column in the table,
+      </td>
+    </tr>					
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>

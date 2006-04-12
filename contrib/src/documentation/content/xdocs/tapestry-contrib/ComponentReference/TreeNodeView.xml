@@ -28,11 +28,13 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
-</p>
-
 <p>
-  <strong>See also:</strong> 
+	A low level Tree component that renders a tree node.
+	This component should be wrapped by 
+	<link href="&apicontrib;/contrib/tree/components/TreeDataView.html">TreeDataView</link>.
+</p>
+<p>
+  <strong>See also: &Tree;, &TreeView;, &TreeDataView;</strong>  
 </p>
 
 <section>
@@ -55,7 +57,7 @@
 	  <td>no</td>
 	  <td>true</td>
       <td>
-        Desc...
+        If node images are shown.
       </td>
     </tr>
 
@@ -66,7 +68,8 @@
 	  <td>no</td>
 	  <td>true</td>
       <td>
-        Desc...
+        If true, renders a link around nodes that contain children. This allows 
+		  expanding and collapsing the node.
       </td>
     </tr>
 	
@@ -77,9 +80,13 @@
 	  </td>
 	  <td>in</td>
 	  <td>no</td>
-	  <td>&nbsp;</td>
+	  <td>(<link href="&apicontrib;/contrib/tree/simple/SimpleNodeRenderFactory.html">SimpleNodeRenderFactory</link>)</td>
       <td>
-        Desc...
+        A factory responsible for creating <link href="&apiroot;/IRender.html">IRender</link> instances.
+		They will be used to perform the actual render of the tree nodes.
+		  <p>The default factory returns <link href="&apiroot;/valid/RenderString.html">RenderString</link> instances
+			  that output the node's <code>toString()</code>.
+		  </p> 
       </td>
     </tr>			
 	</table>	

@@ -28,11 +28,14 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>
+	A low level Tree component that initiates the rendering of the tree nodes.
+	It should be wrapped by 
+	<link href="&apicontrib;/contrib/tree/components/TreeView.html">TreeView</link>.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &Tree;, &TreeView;, &TreeNodeView;</strong> 
 </p>
 
 <section>
@@ -57,7 +60,8 @@
 	  <td>yes</td>
 	  <td>&nbsp;</td>
       <td>
-        Desc...
+        The TreeView component that provides an 
+		  <link href="&apicontrib;/contrib/tree/model/ITreeModel.html">ITreeModel</link>
       </td>
     </tr>
 	
@@ -81,7 +85,7 @@
 	  <td>no</td>
 	  <td>true</td>
       <td>
-        Desc...
+        If root node should be visible.
       </td>
     </tr>					
 
