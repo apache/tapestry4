@@ -68,6 +68,10 @@
   		<action type="fix" dev="JK" fixes-bug="TAPESTRY-880" due-to="Fernando Padilla">
   			Added backwards compatible fix for new Form interfaces.
   		</action>
+  		<action type="fix" dev="JK" >
+  			Single quoted validation strings for pt_BR were seemingly causing the message content
+  			to not be replaced. Changed the single quotes back to doubles in hopes of fixing this.
+  		</action>
   	</release>
     <release version="4.0.1" date="Mar 31 2006" >
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-863" due-to="unknown contributor">
