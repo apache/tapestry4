@@ -56,7 +56,7 @@
     -->
   </todo>
   <changes>
-  	<release version="4.0.2" date="unreleased" >
+  	<release version="4.0.2" date="Apr 13 2006" >
   		<action type="update" dev="AA">
   			Updated contrib:Tree documentation.
   		</action>  	
@@ -953,6 +953,14 @@
     </release>
   </changes>
   <votes>
+  	<vote title="4.0.2 Release" date="Apr 10 2006" dev="JK">
+      <motion>
+        This release adds a couple very minor patches, and one important fix 
+        that makes the addition of Schema/Port on the Form/FormSupport components 
+        backwards compatible.
+      </motion>
+      <response>JK: HLS, DS, HK, BW, GL, AA, PF, KT: +1</response>
+    </vote>
     <vote title="4.0.1 Release" date="Mar 27 2006" dev="JK">
       <motion>
         Going with the notion that releasing early/often is a good thing, 
