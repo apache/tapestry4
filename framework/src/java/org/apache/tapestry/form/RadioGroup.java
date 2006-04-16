@@ -33,6 +33,14 @@ import org.apache.tapestry.valid.ValidatorException;
  */
 public abstract class RadioGroup extends AbstractFormComponent implements ValidatableField
 {
+    
+    /**
+     * A <code>RadioGroup</code> places itself into the {@link IRequestCycle}as an attribute, so
+     * that its wrapped {@link Radio}components can identify thier state.
+     */
+
+    private static final String ATTRIBUTE_NAME = "org.apache.tapestry.active.RadioGroup";
+    
     // Cached copy of the value from the selectedBinding
     private Object _selection;
 
@@ -45,13 +53,6 @@ public abstract class RadioGroup extends AbstractFormComponent implements Valida
     private boolean _rendering;
 
     private int _nextOptionId;
-
-    /**
-     * A <code>RadioGroup</code> places itself into the {@link IRequestCycle}as an attribute, so
-     * that its wrapped {@link Radio}components can identify thier state.
-     */
-
-    private static final String ATTRIBUTE_NAME = "org.apache.tapestry.active.RadioGroup";
 
     public static RadioGroup get(IRequestCycle cycle)
     {

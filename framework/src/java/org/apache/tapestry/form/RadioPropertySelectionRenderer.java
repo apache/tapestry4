@@ -87,7 +87,7 @@ public class RadioPropertySelectionRenderer implements IPropertySelectionRendere
         writer.begin("td");
         writer.print(model.getLabel(index));
         writer.end(); // <td>
-        writer.end(); // <tr>	
+        writer.end(); // <tr>
 
         writer.println();
     }

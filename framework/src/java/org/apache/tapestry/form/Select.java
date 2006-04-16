@@ -38,6 +38,14 @@ import org.apache.tapestry.valid.ValidatorException;
  */
 public abstract class Select extends AbstractFormComponent implements ValidatableField
 {
+    
+    /**
+     * Used by the <code>Select</code> to record itself as a {@link IRequestCycle}attribute, so
+     * that the {@link Option}components it wraps can have access to it.
+     */
+
+    private static final String ATTRIBUTE_NAME = "org.apache.tapestry.active.Select";
+    
     private boolean _rewinding;
 
     private boolean _rendering;
@@ -45,13 +53,6 @@ public abstract class Select extends AbstractFormComponent implements Validatabl
     private Set _selections;
 
     private int _nextOptionId;
-
-    /**
-     * Used by the <code>Select</code> to record itself as a {@link IRequestCycle}attribute, so
-     * that the {@link Option}components it wraps can have access to it.
-     */
-
-    private final static String ATTRIBUTE_NAME = "org.apache.tapestry.active.Select";
 
     public static Select get(IRequestCycle cycle)
     {

@@ -67,7 +67,7 @@ public abstract class Submit extends AbstractSubmit
         writer.closeTag();
     }
 
-    /** parameter */
+    /** parameter. */
     public abstract String getLabel();
 
 }

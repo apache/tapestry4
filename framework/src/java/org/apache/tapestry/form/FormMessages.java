@@ -22,10 +22,13 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class FormMessages
+final class FormMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(FormMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(FormMessages.class);
 
+    /* defeat instantiation */
+    private FormMessages() { }
+    
     static String formTooManyIds(IComponent form, int actualCount, IComponent component)
     {
         return _formatter.format(

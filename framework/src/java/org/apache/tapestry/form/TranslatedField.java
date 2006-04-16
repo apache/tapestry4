@@ -16,7 +16,12 @@ package org.apache.tapestry.form;
 
 import org.apache.tapestry.form.translator.Translator;
 
+/**
+ * 
+ * @author unknown
+ */
 public interface TranslatedField extends ValidatableField
 {
-	public Translator getTranslator();
+
+    Translator getTranslator();
 }

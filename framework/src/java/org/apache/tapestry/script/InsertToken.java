@@ -17,15 +17,15 @@ package org.apache.tapestry.script;
 import org.apache.hivemind.Location;
 
 /**
- *  A token that writes the value of a property using a property path
- *  routed in the symbols..
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * A token that writes the value of a property using a property path routed in
+ * the symbols..
+ * 
+ * @author Howard Lewis Ship
+ */
 
 class InsertToken extends AbstractToken
 {
+
     private String _expression;
 
     InsertToken(String expression, Location location)
@@ -36,17 +36,15 @@ class InsertToken extends AbstractToken
     }
 
     /**
-     *  Gets the named symbol from the symbols {@link Map}, verifies that
-     *  it is a String, and writes it to the {@link Writer}.
-     *
-     **/
+     * Gets the named symbol from the symbols {@link Map}, verifies that it is
+     * a String, and writes it to the {@link Writer}.
+     */
 
     public void write(StringBuffer buffer, ScriptSession session)
     {
         Object value = evaluate(_expression, session);
 
-        if (value != null)
-            buffer.append(value);
+        if (value != null) buffer.append(value);
     }
 
     public void addToken(IScriptToken token)

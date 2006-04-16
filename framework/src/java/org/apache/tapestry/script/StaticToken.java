@@ -16,29 +16,27 @@ package org.apache.tapestry.script;
 
 import org.apache.hivemind.Location;
 
-
 /**
- *  A token for static portions of the template.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * A token for static portions of the template.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 class StaticToken extends AbstractToken
 {
+
     private String _text;
 
     StaticToken(String text, Location location)
     {
-    	super(location);
-    	
+        super(location);
+
         _text = text;
     }
 
     /**
-     *  Writes the text to the writer.
-     *
-     **/
+     * Writes the text to the writer.
+     */
 
     public void write(StringBuffer buffer, ScriptSession session)
     {

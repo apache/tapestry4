@@ -24,7 +24,7 @@ package org.apache.tapestry.form;
  *             a future release of Tapestry.
  */
 
-public class FormEventType
+public final class FormEventType
 {
     /**
      * Form event triggered when the form is submitted. Allows an event handler to perform any final

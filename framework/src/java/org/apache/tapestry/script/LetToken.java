@@ -19,19 +19,19 @@ import java.util.Map;
 import org.apache.hivemind.Location;
 
 /**
- *  Allows for the creation of new symbols that can be used in the script
- *  or returned to the caller.
- *
- *  <p>The &lt;let&gt; tag wraps around static text and &lt;insert&gt;
- *  elements.  The results are trimmed.
- *
- *  @author Howard Lewis Ship
- *  @since 0.2.9
+ * Allows for the creation of new symbols that can be used in the script or
+ * returned to the caller.
+ * <p>
+ * The &lt;let&gt; tag wraps around static text and &lt;insert&gt; elements. The
+ * results are trimmed.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 0.2.9
+ */
 
 class LetToken extends AbstractToken
 {
+
     private String _key;
     private boolean _unique;
     private int _bufferLengthHighwater = 20;
@@ -46,8 +46,7 @@ class LetToken extends AbstractToken
 
     public void write(StringBuffer buffer, ScriptSession session)
     {
-        if (buffer != null)
-            throw new IllegalArgumentException();
+        if (buffer != null) throw new IllegalArgumentException();
 
         buffer = new StringBuffer(_bufferLengthHighwater);
 
@@ -59,14 +58,14 @@ class LetToken extends AbstractToken
 
         String value = buffer.toString().trim();
 
-        if (_unique)
-            value = session.getUniqueString(value);
+        if (_unique) value = session.getUniqueString(value);
 
         symbols.put(_key, value);
 
         // Store the buffer length from this run for the next run, since its
         // going to be approximately the right size.
 
-        _bufferLengthHighwater = Math.max(_bufferLengthHighwater, buffer.length());
+        _bufferLengthHighwater = Math.max(_bufferLengthHighwater, buffer
+                .length());
     }
 }

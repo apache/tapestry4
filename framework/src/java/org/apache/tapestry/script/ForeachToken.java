@@ -20,11 +20,12 @@ import java.util.Map;
 import org.apache.hivemind.Location;
 
 /**
- * A looping operator, modeled after the Foreach component. It takes as its source as property and
- * iterates through the values, updating a symbol on each pass.
+ * A looping operator, modeled after the Foreach component. It takes as its
+ * source as property and iterates through the values, updating a symbol on each
+ * pass.
  * <p>
- * As of 3.0, the index attribute has been added to foreach to keep track of the current index of
- * the iterating collection.
+ * As of 3.0, the index attribute has been added to foreach to keep track of the
+ * current index of the iterating collection.
  * </p>
  * 
  * @author Howard Lewis Ship, Harish Krishnaswamy
@@ -33,6 +34,7 @@ import org.apache.hivemind.Location;
 
 class ForeachToken extends AbstractToken
 {
+
     private String _key;
 
     private String _index;
@@ -52,21 +54,19 @@ class ForeachToken extends AbstractToken
     {
         Iterator i = (Iterator) session.evaluate(_expression, Iterator.class);
 
-        if (i == null)
-            return;
+        if (i == null) return;
 
         Map symbols = session.getSymbols();
 
         int index = 0;
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
             Object newValue = i.next();
 
             symbols.put(_key, newValue);
 
-            if (_index != null)
-                symbols.put(_index, String.valueOf(index));
+            if (_index != null) symbols.put(_index, String.valueOf(index));
 
             writeChildren(buffer, session);
 

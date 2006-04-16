@@ -15,56 +15,52 @@
 package org.apache.tapestry.form;
 
 /**
- *  Implementation of {@link IPropertySelectionModel} that allows one String from
- *  an array of Strings to be selected as the property.
- *
- *  <p>Uses a simple index number as the value (used to represent the selected String).
- *  This assumes that the possible values for the Strings will remain constant between
- *  request cycles.
- *
- *  @author Howard Lewis Ship
+ * Implementation of {@link IPropertySelectionModel} that allows one String from
+ * an array of Strings to be selected as the property.
+ * <p>
+ * Uses a simple index number as the value (used to represent the selected
+ * String). This assumes that the possible values for the Strings will remain
+ * constant between request cycles.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public class StringPropertySelectionModel implements IPropertySelectionModel
 {
-    private String[] options;
+
+    private String[] _options;
 
     /**
-     * Standard constructor.
-     *
-     * The options are retained (not copied).
-     **/
+     * Standard constructor. The options are retained (not copied).
+     */
 
     public StringPropertySelectionModel(String[] options)
     {
-        this.options = options;
+        this._options = options;
     }
 
     public int getOptionCount()
     {
-        return options.length;
+        return _options.length;
     }
 
     public Object getOption(int index)
     {
-        return options[index];
+        return _options[index];
     }
 
     /**
-     *  Labels match options.
-     *
-     **/
+     * Labels match options.
+     */
 
     public String getLabel(int index)
     {
-        return options[index];
+        return _options[index];
     }
 
     /**
-     *  Values are indexes into the array of options.
-     *
-     **/
+     * Values are indexes into the array of options.
+     */
 
     public String getValue(int index)
     {
@@ -77,7 +73,7 @@ public class StringPropertySelectionModel implements IPropertySelectionModel
 
         index = Integer.parseInt(value);
 
-        return options[index];
+        return _options[index];
     }
 
 }

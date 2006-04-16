@@ -20,6 +20,10 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
 
+/**
+ * 
+ * @author unknown
+ */
 public class TranslatedFieldSupportImpl implements TranslatedFieldSupport
 {
     private ThreadLocale _threadLocale;

@@ -41,20 +41,20 @@ public interface IPropertySelectionModel
      * Returns the number of possible options.
      */
 
-    public int getOptionCount();
+    int getOptionCount();
 
     /**
      * Returns one possible option that will be assigned to the server-side property.
      */
 
-    public Object getOption(int index);
+    Object getOption(int index);
 
     /**
      * Returns the label for an option. It is the responsibility of the adaptor to make this value
      * localized.
      */
 
-    public String getLabel(int index);
+    String getLabel(int index);
 
     /**
      * Returns a String used to represent the option in the HTML (as the value of an &lt;option&gt;
@@ -62,12 +62,12 @@ public interface IPropertySelectionModel
      * into an array.
      */
 
-    public String getValue(int index);
+    String getValue(int index);
 
     /**
      * Returns the option corresponding to a value. This is used when interpreting submitted form
      * parameters.
      */
 
-    public Object translateValue(String value);
+    Object translateValue(String value);
 }

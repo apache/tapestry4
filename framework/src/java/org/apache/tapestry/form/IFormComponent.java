@@ -31,7 +31,7 @@ public interface IFormComponent extends IComponent
      * component is not contained by a form, of if the containing Form is not currently renderring.
      */
 
-    public IForm getForm();
+    IForm getForm();
 
     /**
      * Returns the name of the component, which is automatically generated during renderring.
@@ -48,7 +48,7 @@ public interface IFormComponent extends IComponent
      * referenced.
      */
 
-    public String getName();
+    String getName();
 
     /**
      * Invoked by {@link IForm#getElementId(IFormComponent)} when a name is created for a form
@@ -58,7 +58,7 @@ public interface IFormComponent extends IComponent
      * @see org.apache.tapestry.FormBehavior#getElementId(IFormComponent)
      */
 
-    public void setName(String name);
+    void setName(String name);
 
     /**
      * May be implemented to return a user-presentable, localized name for the component, which is
@@ -67,7 +67,7 @@ public interface IFormComponent extends IComponent
      * @since 1.0.9
      */
 
-    public String getDisplayName();
+    String getDisplayName();
 
     /**
      * Returns true if the component is disabled. This is important when the containing form is
@@ -76,7 +76,7 @@ public interface IFormComponent extends IComponent
      * @since 2.2
      */
 
-    public boolean isDisabled();
+    boolean isDisabled();
 
     /**
      * Returns the component's client-side element id. Typically, this is specified using an id
@@ -90,7 +90,7 @@ public interface IFormComponent extends IComponent
      * @since 4.0
      */
 
-    public String getClientId();
+    String getClientId();
 
     /**
      * Returns true if the field is required. This will (typically) involve consulting the
@@ -99,5 +99,5 @@ public interface IFormComponent extends IComponent
      * @since 4.0
      */
 
-    public boolean isRequired();
+    boolean isRequired();
 }

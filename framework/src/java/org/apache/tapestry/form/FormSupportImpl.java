@@ -79,14 +79,14 @@ public class FormSupportImpl implements FormSupport
 
     public static final String SCRIPT = "/org/apache/tapestry/form/Form.js";
 
-    private final static Set _standardReservedIds;
-
     /**
      * Attribute set to true when a field has been focused; used to prevent conflicting JavaScript
      * for field focusing from being emitted.
      */
 
     public static final String FIELD_FOCUS_ATTRIBUTE = "org.apache.tapestry.field-focused";
+    
+    private static final Set _standardReservedIds;
 
     static
     {
@@ -101,7 +101,7 @@ public class FormSupportImpl implements FormSupport
         _standardReservedIds = Collections.unmodifiableSet(set);
     }
 
-    private final static Set _submitModes;
+    private static final Set _submitModes;
 
     static
     {
@@ -462,7 +462,7 @@ public class FormSupportImpl implements FormSupport
     }
     
     public void render(String method, IRender informalParametersRenderer, ILink link, 
-    		String scheme, Integer port)
+            String scheme, Integer port)
     {
         String formId = _form.getName();
 

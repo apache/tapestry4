@@ -17,17 +17,16 @@ package org.apache.tapestry.script;
 import org.apache.hivemind.Location;
 
 /**
- *  
- *  Like {@link org.apache.tapestry.script.LetToken}, but sets the value
- *  from an expression attribute, rather than a body of full content.
- *
- *  @author Howard Lewis Ship
- *  @since 2.2
- *
- **/
+ * Like {@link org.apache.tapestry.script.LetToken}, but sets the value from an
+ * expression attribute, rather than a body of full content.
+ * 
+ * @author Howard Lewis Ship
+ * @since 2.2
+ */
 
 class SetToken extends AbstractToken
 {
+
     private String _key;
     private String _expression;
 
@@ -39,11 +38,9 @@ class SetToken extends AbstractToken
     }
 
     /**
-     *   
-     *  Doesn't <em>write</em>, it evaluates the expression and assigns
-     *  the result back to the key. 
-     * 
-     **/
+     * Doesn't <em>write</em>, it evaluates the expression and assigns the
+     * result back to the key.
+     */
 
     public void write(StringBuffer buffer, ScriptSession session)
     {

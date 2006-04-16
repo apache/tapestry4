@@ -23,11 +23,11 @@ import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
- * The result of executing a script, the session is used during the parsing process as well.
- * Following
+ * The result of executing a script, the session is used during the parsing
+ * process as well. Following
  * {@link org.apache.tapestry.IScript#execute(org.apache.tapestry.IRequestCycle, org.apache.tapestry.IScriptProcessor, java.util.Map)},
- * the session provides access to output symbols as well as the body and initialization blocks
- * created by the script tokens.
+ * the session provides access to output symbols as well as the body and
+ * initialization blocks created by the script tokens.
  * 
  * @author Howard Lewis Ship
  * @since 0.2.9
@@ -35,6 +35,7 @@ import org.apache.tapestry.services.ExpressionEvaluator;
 
 public class ScriptSessionImpl implements ScriptSession
 {
+
     private IRequestCycle _cycle;
 
     private IScriptProcessor _processor;
@@ -49,9 +50,10 @@ public class ScriptSessionImpl implements ScriptSession
     /** @since 4.0 */
     private ValueConverter _valueConverter;
 
-    public ScriptSessionImpl(Resource scriptTemplateResource, IRequestCycle cycle,
-            IScriptProcessor processor, ExpressionEvaluator evaluator,
-            ValueConverter valueConverter, Map symbols)
+    public ScriptSessionImpl(Resource scriptTemplateResource,
+            IRequestCycle cycle, IScriptProcessor processor,
+            ExpressionEvaluator evaluator, ValueConverter valueConverter,
+            Map symbols)
     {
         _scriptTemplateResource = scriptTemplateResource;
         _cycle = cycle;

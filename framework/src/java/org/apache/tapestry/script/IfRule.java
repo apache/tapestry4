@@ -18,15 +18,15 @@ import org.apache.tapestry.util.xml.RuleDirectedParser;
 import org.xml.sax.Attributes;
 
 /**
- * Constructs an {@link org.apache.tapestry.script.IfToken}
- * from an &lt;if&gt; or &lt;if-not&gt; element, which
- * contains full content.
- *
+ * Constructs an {@link org.apache.tapestry.script.IfToken} from an &lt;if&gt;
+ * or &lt;if-not&gt; element, which contains full content.
+ * 
  * @author Howard Lewis Ship
  * @since 3.0
  */
 class IfRule extends AbstractTokenRule
 {
+
     private boolean _condition;
 
     public IfRule(boolean condition)
@@ -44,13 +44,15 @@ class IfRule extends AbstractTokenRule
         String expression = getAttribute(attributes, "expression");
 
         if (expression == null)
-            expression = getAttribute(attributes, "property-path"); // 1.0, 1.1 DTD
-    
-    	IScriptToken token = new IfToken(_condition, expression, parser.getLocation());
-    	
-    	addToParent(parser, token);
-    	
-    	parser.push(token);
+            expression = getAttribute(attributes, "property-path"); // 1.0, 1.1
+                                                                    // DTD
+
+        IScriptToken token = new IfToken(_condition, expression, parser
+                .getLocation());
+
+        addToParent(parser, token);
+
+        parser.push(token);
     }
 
 }
