@@ -17,6 +17,7 @@ package org.apache.tapestry.util;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.hivemind.util.Defense;
 
@@ -119,9 +120,10 @@ public class QueryParameterMap
         int count = _parameters.size();
 
         String[] result = (String[]) _parameters.keySet().toArray(new String[count]);
-
-        Arrays.sort(result);
-
+        
+        if (!TreeMap.class.isInstance(_parameters))
+            Arrays.sort(result);
+        
         return result;
     }
 }

@@ -29,6 +29,8 @@ public class AjaxShellDelegate implements IRender
 {
     protected IAsset _dojoSource;
     
+    protected IAsset _dojoPath;
+    
     protected IEngineService _assetService;
     
     /**
@@ -36,17 +38,16 @@ public class AjaxShellDelegate implements IRender
      */
     public void render(IMarkupWriter writer, IRequestCycle cycle)
     {
-        // .append(" baseRelativePath:\"").append(_dojoSource.getResourceLocation().getRelativeResource("").getResourceURL())
         // first configure dojo, has to happen before package include
         StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");
         str.append("djConfig = { isDebug: true,")
         .append(" baseRelativePath:\"")
-        .append(_dojoSource.getResourceLocation().getRelativeResource("").getResourceURL())
-        
+        .append(_assetService.getLink(true,
+                _dojoPath.getResourceLocation().getPath()).getAbsoluteURL())
         .append("\", preventBackButtonFix: false, parseWidgets: true };")
         .append(" </script>\n\n ");
         
-        //include the js package
+        // include the core dojo.js package
         str.append("<script type=\"text/javascript\" src=\"")
         .append(_assetService.getLink(true,
                 _dojoSource.getResourceLocation()
@@ -63,6 +64,15 @@ public class AjaxShellDelegate implements IRender
     public void setDojoSource(IAsset dojoSource)
     {
         _dojoSource = dojoSource;
+    }
+    
+    /**
+     * Sets the dojo baseRelativePath value.
+     * @param dojoPath
+     */
+    public void setDojoPath(IAsset dojoPath)
+    {
+        _dojoPath = dojoPath;
     }
     
     /**

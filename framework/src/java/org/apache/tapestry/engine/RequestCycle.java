@@ -292,8 +292,8 @@ public class RequestCycle implements IRequestCycle
 
     public void setResponseBuilder(ResponseBuilder builder)
     {
-        if (_responseBuilder != null)
-            throw new IllegalArgumentException("A ResponseBuilder has already been set on this response.");
+        //if (_responseBuilder != null)
+          //  throw new IllegalArgumentException("A ResponseBuilder has already been set on this response.");
         _responseBuilder = builder;
     }
     

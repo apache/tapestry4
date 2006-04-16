@@ -55,6 +55,8 @@ public class ResourceDigestSourceImpl implements ResourceDigestSource, ResetEven
 
     public synchronized String getDigestForResource(String resourcePath)
     {
+        if (resourcePath == null) return null;
+        
         String result = (String) _cache.get(resourcePath);
 
         if (result == null)

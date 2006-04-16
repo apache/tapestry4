@@ -16,6 +16,8 @@ package org.apache.tapestry.asset;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.test.HiveMindTestCase;
@@ -25,6 +27,7 @@ import org.apache.oro.text.regex.PatternCompiler;
 import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+import org.apache.tapestry.services.ServiceConstants;
 
 /**
  * Tests for unprotected resource contributions.
@@ -43,7 +46,7 @@ public class TestUnprotectedAsset extends HiveMindTestCase
     public void testUnProtectedMatch()
     {
         Pattern pr = newPattern("org/apache/tapestry/asset/.*.txt");
-
+        
         assertFalse(matcher.contains("org/apache/tapestry/foobar.png", pr));
         assertTrue(matcher.contains("org/apache/tapestry/asset/base-resource.txt", pr));
         assertFalse(matcher.contains("org/apache/tapestry/asset/foobar.png", pr));
@@ -95,7 +98,29 @@ public class TestUnprotectedAsset extends HiveMindTestCase
 
         assertFalse("Urtime > drtime: " + urtime + " > " + drtime, urtime < drtime);
     }
-
+    
+    /**
+     * Tests new path ordering encoding.
+     */
+    public void testPathComparator()
+    {
+        Map parameters = new TreeMap(new AssetComparator());
+        
+        parameters.put(ServiceConstants.SERVICE, "test");
+        parameters.put("PATH", "value");
+        parameters.put("digest", "digvalue");
+        
+        assertEquals("test", parameters.get(ServiceConstants.SERVICE));
+        assertEquals("value", parameters.get("PATH"));
+        assertEquals("digvalue", parameters.get("digest"));
+        
+        int count = parameters.size();
+        String[] result = (String[]) parameters.keySet().toArray(new String[count]);
+        assertEquals(3, result.length);
+        
+        assertEquals("PATH", result[2]);
+    }
+    
     /**
      * Tests the implementation of {@link ResourceMatcher}.
      */
@@ -107,6 +132,8 @@ public class TestUnprotectedAsset extends HiveMindTestCase
         patterns.add("/org/apache/tapestry/asset/.*.css");
         patterns.add("/org/apache/tapestry/asset/.*.js");
         patterns.add("/org/apache/tapestry/asset/[%$4]rew\\invalidpattern");
+        patterns.add("/org/apache/tapestry/html/dojo*");
+        patterns.add("org/apache/tapestry/html/dojo/*/*.png");
         rm.setContributions(patterns);
         rm.initializeService();
         
@@ -116,5 +143,10 @@ public class TestUnprotectedAsset extends HiveMindTestCase
         assertTrue(rm.containsResource("/org/apache/tapestry/asset/foo.txt"));
         assertFalse(rm.containsResource("/org/apache/tapestry/asset/foo.TXT"));
         assertTrue(rm.containsResource("/org/apache/tapestry/asset/subdirectory/foo.css"));
+        assertTrue(rm.containsResource("/org/apache/tapestry/html/dojo/"));
+        assertTrue(rm.containsResource("/org/apache/tapestry/html/dojo/dojo.js"));
+        assertTrue(rm.containsResource("/org/apache/tapestry/html/dojo/src/json.js"));
+        assertTrue(rm.containsResource("/org/apache/tapestry/html/dojo/src/test.png"));
     }
+    
 }
