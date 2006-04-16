@@ -28,7 +28,7 @@ public class TestPageCallback extends BaseComponentTestCase
 {
     public void testByString()
     {
-        IRequestCycle cycle = newCycle();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
 
         cycle.activate("Fred");
 
@@ -45,7 +45,7 @@ public class TestPageCallback extends BaseComponentTestCase
 
     public void testByPage()
     {
-        IRequestCycle cycle = newCycle();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
         IPage page = newPage("Barney");
 
         cycle.activate("Barney");

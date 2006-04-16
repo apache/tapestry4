@@ -37,7 +37,7 @@ public class TestBlock extends BaseComponentTestCase
         final Block block = (Block) newInstance(Block.class);
 
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle();
+        IRequestCycle cycle = newCycle(writer);
 
         replayControls();
 

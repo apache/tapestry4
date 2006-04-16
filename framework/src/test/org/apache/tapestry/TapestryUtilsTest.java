@@ -29,7 +29,7 @@ public class TapestryUtilsTest extends BaseComponentTestCase
 
     private IRequestCycle newCycle(String key, Object attribute)
     {
-        IRequestCycle cycle = newCycle();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
 
         trainGetAttribute(cycle, key, attribute);
 
@@ -99,7 +99,7 @@ public class TapestryUtilsTest extends BaseComponentTestCase
 
     public void testRemovePageRenderSupport()
     {
-        IRequestCycle cycle = newCycle();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
 
         cycle.removeAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE);
 
@@ -112,7 +112,7 @@ public class TapestryUtilsTest extends BaseComponentTestCase
 
     public void testRemoveForm()
     {
-        IRequestCycle cycle = newCycle();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
 
         cycle.removeAttribute(TapestryUtils.FORM_ATTRIBUTE);
 

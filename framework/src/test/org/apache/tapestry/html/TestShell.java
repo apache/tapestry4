@@ -14,12 +14,11 @@
 
 package org.apache.tapestry.html;
 
-import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.test.Creator;
-import org.easymock.MockControl;
 
 /**
  * Tests for the {@link org.apache.tapestry.html.Shell}&nbsp; component.
@@ -27,30 +26,9 @@ import org.easymock.MockControl;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TestShell extends HiveMindTestCase
+public class TestShell extends BaseComponentTestCase
 {
     private Creator _creator = new Creator();
-
-    private IMarkupWriter newMarkupWriter()
-    {
-        return (IMarkupWriter) newMock(IMarkupWriter.class);
-    }
-
-    private IRequestCycle newRequestCycle(boolean rewinding)
-    {
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
-
-        cycle.isRewinding();
-        control.setReturnValue(rewinding);
-
-        return cycle;
-    }
-
-    private IRender newRender()
-    {
-        return (IRender) newMock(IRender.class);
-    }
 
     /**
      * Test that Shell does very little when the entire page is rewinding (which itself is a
@@ -59,8 +37,8 @@ public class TestShell extends HiveMindTestCase
 
     public void testRewinding()
     {
-        IMarkupWriter writer = newMarkupWriter();
-        IRequestCycle cycle = newRequestCycle(true);
+        IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle(true, writer);
 
         IRender body = newRender();
 

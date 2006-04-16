@@ -31,16 +31,16 @@ import org.apache.tapestry.spec.ComponentSpecification;
  */
 public class TestAny extends BaseComponentTestCase
 {
+
     public void testElementNull()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
         Location l = newLocation();
-
+        
         replayControls();
-
-        Any any = (Any) newInstance(Any.class, new Object[]
-        { "location", l });
+        
+        Any any = (Any) newInstance(Any.class, new Object[] { "location", l });
 
         try
         {
@@ -49,7 +49,8 @@ public class TestAny extends BaseComponentTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            assertEquals(ComponentMessages.anyElementNotDefined(), ex.getMessage());
+            assertEquals(ComponentMessages.anyElementNotDefined(), ex
+                    .getMessage());
             assertSame(l, ex.getLocation());
         }
 
@@ -59,7 +60,7 @@ public class TestAny extends BaseComponentTestCase
     public void testRender()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(false);
+        IRequestCycle cycle = newCycle(false, writer);
         IRender body = newRender();
 
         writer.begin("span");
@@ -70,8 +71,8 @@ public class TestAny extends BaseComponentTestCase
 
         replayControls();
 
-        Any any = (Any) newInstance(Any.class, new Object[]
-        { "element", "span" });
+        Any any = (Any) newInstance(Any.class,
+                new Object[] { "element", "span" });
 
         any.addBody(body);
 
@@ -83,7 +84,7 @@ public class TestAny extends BaseComponentTestCase
     public void testRenderWithInformalParameters()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(false);
+        IRequestCycle cycle = newCycle(false, writer);
         IRender body = newRender();
         IBinding binding = newBinding("fred");
 
@@ -96,8 +97,8 @@ public class TestAny extends BaseComponentTestCase
 
         replayControls();
 
-        Any any = (Any) newInstance(Any.class, new Object[]
-        { "element", "span", "specification", new ComponentSpecification() });
+        Any any = (Any) newInstance(Any.class, new Object[] { "element",
+                "span", "specification", new ComponentSpecification() });
 
         any.addBody(body);
         any.setBinding("class", binding);
@@ -110,15 +111,15 @@ public class TestAny extends BaseComponentTestCase
     public void testRewind()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(true);
+        IRequestCycle cycle = newCycle(true, writer);
         IRender body = newRender();
 
         body.render(writer, cycle);
 
         replayControls();
 
-        Any any = (Any) newInstance(Any.class, new Object[]
-        { "element", "span" });
+        Any any = (Any) newInstance(Any.class,
+                new Object[] { "element", "span" });
 
         any.addBody(body);
 

@@ -15,8 +15,10 @@
 package org.apache.tapestry.html;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.test.Creator;
 import org.easymock.MockControl;
 
@@ -90,26 +92,39 @@ public class TestPageEvents extends HiveMindTestCase
 
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) control.getMock();
-
+        
+        IMarkupWriter writer = (IMarkupWriter)newMock(IMarkupWriter.class);
+        ResponseBuilder builder = (ResponseBuilder)newMock(ResponseBuilder.class);
+        
         cycle.isRewinding();
         control.setReturnValue(true);
 
+        builder.getWriter();
+        setReturnValue(builder, writer);
+        
+        builder.render(page, cycle);
+        
         replayControls();
-
+        
         // Code path: no listener list
 
-        page.renderPage(null, cycle);
-
+        page.renderPage(builder, cycle);
+        
         verifyControls();
 
         cycle.isRewinding();
         control.setReturnValue(true);
 
+        builder.getWriter();
+        setReturnValue(builder, writer);
+        
+        builder.render(page, cycle);
+        
         replayControls();
 
         page.addPageBeginRenderListener(l);
 
-        page.renderPage(null, cycle);
+        page.renderPage(builder, cycle);
 
         assertEquals("pageBeginRender", l.getMethod());
 
@@ -122,9 +137,14 @@ public class TestPageEvents extends HiveMindTestCase
         cycle.isRewinding();
         control.setReturnValue(true);
 
+        builder.getWriter();
+        setReturnValue(builder, writer);
+        
+        builder.render(page, cycle);
+        
         replayControls();
 
-        page.renderPage(null, cycle);
+        page.renderPage(builder, cycle);
 
         assertNull(l.getMethod());
 
@@ -139,25 +159,38 @@ public class TestPageEvents extends HiveMindTestCase
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) control.getMock();
 
+        IMarkupWriter writer = (IMarkupWriter)newMock(IMarkupWriter.class);
+        ResponseBuilder builder = (ResponseBuilder)newMock(ResponseBuilder.class);
+        
         cycle.isRewinding();
         control.setReturnValue(true);
 
+        builder.getWriter();
+        setReturnValue(builder, writer);
+        
+        builder.render(page, cycle);
+        
         replayControls();
 
         // Code path: no listener list
 
-        page.renderPage(null, cycle);
+        page.renderPage(builder, cycle);
 
         verifyControls();
 
         cycle.isRewinding();
         control.setReturnValue(true);
 
+        builder.getWriter();
+        setReturnValue(builder, writer);
+        
+        builder.render(page, cycle);
+        
         replayControls();
 
         page.addPageEndRenderListener(l);
 
-        page.renderPage(null, cycle);
+        page.renderPage(builder, cycle);
 
         assertEquals("pageEndRender", l.getMethod());
 
@@ -170,9 +203,14 @@ public class TestPageEvents extends HiveMindTestCase
         cycle.isRewinding();
         control.setReturnValue(true);
 
+        builder.getWriter();
+        setReturnValue(builder, writer);
+        
+        builder.render(page, cycle);
+        
         replayControls();
 
-        page.renderPage(null, cycle);
+        page.renderPage(builder, cycle);
 
         assertNull(l.getMethod());
 

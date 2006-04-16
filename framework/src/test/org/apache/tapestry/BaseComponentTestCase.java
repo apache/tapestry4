@@ -28,8 +28,11 @@ import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.markup.AsciiMarkupFilter;
 import org.apache.tapestry.markup.MarkupWriterImpl;
+import org.apache.tapestry.services.ResponseBuilder;
+import org.apache.tapestry.services.impl.DefaultResponseBuilder;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.test.Creator;
@@ -94,19 +97,57 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IRequestCycle newCycle()
     {
-        return (IRequestCycle) newMock(IRequestCycle.class);
+        return (IRequestCycle)newMock(IRequestCycle.class);
     }
 
+    protected IRequestCycle newCycle(IMarkupWriter writer)
+    {
+        IRequestCycle cycle = (IRequestCycle) newMock(IRequestCycle.class);
+        
+        trainResponseBuilder(cycle, writer);
+        
+        return cycle;
+    }
+    
     protected IRequestCycle newCycle(boolean rewinding)
+    {
+        return newCycle(rewinding, null);
+    }
+    
+    protected IRequestCycle newCycle(boolean rewinding, boolean trainWriter)
+    {
+        MockControl control = newControl(IRequestCycle.class);
+        IRequestCycle cycle = (IRequestCycle) control.getMock();
+
+        trainIsRewinding(cycle, rewinding);
+        
+        if (trainWriter)
+            trainResponseBuilder(cycle, null);
+        
+        return cycle;
+    }
+    
+    protected IRequestCycle newCycle(boolean rewinding, IMarkupWriter writer)
     {
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) control.getMock();
 
         trainIsRewinding(cycle, rewinding);
 
+        trainResponseBuilder(cycle, writer);
+        
         return cycle;
     }
-
+    
+    protected void trainResponseBuilder(IRequestCycle cycle, IMarkupWriter writer)
+    {
+        ResponseBuilder builder = 
+            new DefaultResponseBuilder(writer == null ? NullWriter.getSharedInstance() : writer);
+        
+        cycle.getResponseBuilder();
+        setReturnValue(cycle, builder);
+    }
+    
     protected void trainIsRewinding(IRequestCycle cycle, boolean rewinding)
     {
         cycle.isRewinding();

@@ -51,7 +51,7 @@ public class TestInsert extends BaseComponentTestCase
 
     public void testRewinding()
     {
-        IRequestCycle cycle = newCycle(true);
+        IRequestCycle cycle = newCycle(true, false);
 
         replayControls();
 
@@ -64,7 +64,7 @@ public class TestInsert extends BaseComponentTestCase
 
     public void testNullValue()
     {
-        IRequestCycle cycle = newCycle(false);
+        IRequestCycle cycle = newCycle(false, false);
 
         replayControls();
 
@@ -78,16 +78,16 @@ public class TestInsert extends BaseComponentTestCase
 
     public void testNoFormat()
     {
-        IRequestCycle cycle = newCycle(false);
         IMarkupWriter writer = newWriter();
-
+        IRequestCycle cycle = newCycle(false, false);
+        
         writer.print("42", false);
-
+        
         replayControls();
-
+        
         Insert insert = (Insert) newInstance(Insert.class, new Object[]
         { "value", new Integer(42) });
-
+        
         insert.render(writer, cycle);
 
         verifyControls();
@@ -95,17 +95,17 @@ public class TestInsert extends BaseComponentTestCase
 
     public void testFormat()
     {
-        IRequestCycle cycle = newCycle(false);
         IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle(false, false);
 
         Date date = new Date();
         DateFormat format = DateFormat.getDateInstance();
         String expected = format.format(date);
-
+        
         writer.print(expected, false);
-
+        
         replayControls();
-
+        
         Insert insert = (Insert) newInstance(Insert.class, new Object[]
         { "value", date, "format", format });
 
@@ -119,16 +119,16 @@ public class TestInsert extends BaseComponentTestCase
         Object value = "xyzzyx";
         Location l = fabricateLocation(87);
         IBinding binding = newBinding(l);
-
+        
         Format format = DateFormat.getInstance();
-
-        IRequestCycle cycle = newCycle(false);
+        
+        IRequestCycle cycle = newCycle(false, false);
         IMarkupWriter writer = newWriter();
-
+        
         IPage page = newBasePage("Flintstone");
-
+        
         replayControls();
-
+        
         Insert insert = (Insert) newInstance(Insert.class, new Object[]
         { "value", value, "format", format });
         insert.setBinding("format", binding);
@@ -155,7 +155,7 @@ public class TestInsert extends BaseComponentTestCase
 
     public void testRaw()
     {
-        IRequestCycle cycle = newCycle(false);
+        IRequestCycle cycle = newCycle(false, false);
         IMarkupWriter writer = newWriter();
 
         writer.print("42", true);
@@ -174,7 +174,7 @@ public class TestInsert extends BaseComponentTestCase
     {
         IBinding informal = newBinding("informal-value");
 
-        IRequestCycle cycle = newCycle(false);
+        IRequestCycle cycle = newCycle(false, false);
         IMarkupWriter writer = newWriter();
         IComponentSpecification spec = newSpec("informal", null);
 
