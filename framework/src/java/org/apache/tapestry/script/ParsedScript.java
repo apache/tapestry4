@@ -33,6 +33,7 @@ import org.apache.tapestry.services.ExpressionEvaluator;
 
 public class ParsedScript extends AbstractToken implements IScript
 {
+
     private Resource _scriptResource;
 
     private ExpressionEvaluator _evaluator;
@@ -41,8 +42,8 @@ public class ParsedScript extends AbstractToken implements IScript
 
     private ValueConverter _valueConverter;
 
-    public ParsedScript(ExpressionEvaluator evaluator, ValueConverter valueConverter,
-            Location location)
+    public ParsedScript(ExpressionEvaluator evaluator,
+            ValueConverter valueConverter, Location location)
     {
         super(location);
 
@@ -60,10 +61,11 @@ public class ParsedScript extends AbstractToken implements IScript
      * Creates the {@link ScriptSessionImpl}and invokes
      * {@link org.apache.tapestry.script.AbstractToken#writeChildren(java.lang.StringBuffer, org.apache.tapestry.script.ScriptSession)}.
      */
-    public void execute(IRequestCycle cycle, IScriptProcessor processor, Map symbols)
+    public void execute(IRequestCycle cycle, IScriptProcessor processor,
+            Map symbols)
     {
-        ScriptSession session = new ScriptSessionImpl(_scriptResource, cycle, processor,
-                _evaluator, _valueConverter, symbols);
+        ScriptSession session = new ScriptSessionImpl(_scriptResource, cycle,
+                processor, _evaluator, _valueConverter, symbols);
 
         writeChildren(null, session);
     }

@@ -100,16 +100,16 @@ public abstract class ImageSubmit extends Submit
         super.handleClick(cycle, form);
     }
 
-    /** parameter */
+    /** parameter. */
     public abstract IAsset getDisabledImage();
 
-    /** parameter */
+    /** parameter. */
     public abstract IAsset getImage();
 
-    /** parameter */
+    /** parameter. */
     public abstract String getNameOverride();
 
-    /** parameter */
+    /** parameter. */
     public abstract void setPoint(Point point);
 
     protected void prepareForRender(IRequestCycle cycle)

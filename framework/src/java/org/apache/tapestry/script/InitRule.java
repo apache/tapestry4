@@ -18,10 +18,9 @@ import org.apache.tapestry.util.xml.RuleDirectedParser;
 import org.xml.sax.Attributes;
 
 /**
- * Constructs an {@link org.apache.tapestry.script.InitToken}
- * from an &lt;initialization&gt; element, which
- * contains full content.
- *
+ * Constructs an {@link org.apache.tapestry.script.InitToken} from an
+ * &lt;initialization&gt; element, which contains full content.
+ * 
  * @author Howard Lewis Ship
  * @since 3.0
  */
@@ -30,16 +29,16 @@ public class InitRule extends AbstractTokenRule
 
     public void endElement(RuleDirectedParser parser)
     {
-		parser.pop();
+        parser.pop();
     }
 
     public void startElement(RuleDirectedParser parser, Attributes attributes)
     {
-		IScriptToken token = new InitToken(parser.getLocation());
-		
-		addToParent(parser, token);
-		
-		parser.push(token);
+        IScriptToken token = new InitToken(parser.getLocation());
+
+        addToParent(parser, token);
+
+        parser.push(token);
     }
 
 }

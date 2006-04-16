@@ -23,14 +23,15 @@ import org.apache.tapestry.util.xml.RuleDirectedParser;
 import org.xml.sax.Attributes;
 
 /**
- * Constructs an {@link org.apache.tapestry.script.InputSymbolToken}from an &lt;input-symbol&gt;
- * element.
+ * Constructs an {@link org.apache.tapestry.script.InputSymbolToken}from an
+ * &lt;input-symbol&gt; element.
  * 
  * @author Howard Lewis Ship
  * @since 3.0
  */
 class InputSymbolRule extends BaseRule
 {
+
     private ClassResolver _resolver;
 
     public InputSymbolRule(ClassResolver resolver)
@@ -42,15 +43,16 @@ class InputSymbolRule extends BaseRule
     {
         String key = getAttribute(attributes, "key");
 
-        parser.validate(key, Tapestry.SIMPLE_PROPERTY_NAME_PATTERN, "ScriptParser.invalid-key");
+        parser.validate(key, Tapestry.SIMPLE_PROPERTY_NAME_PATTERN,
+                "ScriptParser.invalid-key");
 
         String className = getAttribute(attributes, "class");
         Class expectedClass = lookupClass(parser, className);
 
         String required = getAttribute(attributes, "required");
 
-        InputSymbolToken token = new InputSymbolToken(key, expectedClass, required.equals("yes"),
-                parser.getLocation());
+        InputSymbolToken token = new InputSymbolToken(key, expectedClass,
+                required.equals("yes"), parser.getLocation());
 
         IScriptToken parent = (IScriptToken) parser.peek();
         parent.addToken(token);
@@ -58,8 +60,7 @@ class InputSymbolRule extends BaseRule
 
     private Class lookupClass(RuleDirectedParser parser, String className)
     {
-        if (HiveMind.isBlank(className))
-            return null;
+        if (HiveMind.isBlank(className)) return null;
 
         try
         {
@@ -68,8 +69,8 @@ class InputSymbolRule extends BaseRule
         catch (Exception ex)
         {
             throw new DocumentParseException(Tapestry.format(
-                    "ScriptParser.unable-to-resolve-class",
-                    className), parser.getLocation(), ex);
+                    "ScriptParser.unable-to-resolve-class", className), parser
+                    .getLocation(), ex);
         }
     }
 }

@@ -45,5 +45,5 @@ public interface ValidatableFieldSupport
      * Returns true if this component is required. This usually entails a search of the component's
      * validators.
      */
-    public boolean isRequired(ValidatableField field);
+    boolean isRequired(ValidatableField field);
 }

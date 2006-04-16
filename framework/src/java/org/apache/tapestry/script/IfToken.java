@@ -25,6 +25,7 @@ import org.apache.hivemind.Location;
 
 class IfToken extends AbstractToken
 {
+
     private boolean _condition;
 
     private String _expression;
@@ -44,7 +45,6 @@ class IfToken extends AbstractToken
 
     public void write(StringBuffer buffer, ScriptSession session)
     {
-        if (evaluate(session) == _condition)
-            writeChildren(buffer, session);
+        if (evaluate(session) == _condition) writeChildren(buffer, session);
     }
 }

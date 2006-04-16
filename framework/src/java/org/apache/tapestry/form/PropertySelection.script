@@ -14,47 +14,6 @@
     </body>
     <initialization>
         dojo.event.connect(window, "onload", function() {
-            
-            var uriobj = new dojo.uri.Uri(dojo.hostenv.getBaseScriptUri().toString());
-            var relobj = new dojo.uri.Uri("src/widget/templates/HtmlComboBox.html");
-            dojo.debug("uri: " + uriobj);
-            dojo.debug("relobj: " + relobj);
-            dojo.debug("relobj.path is : " + relobj.path);
-            
-            dojo.debug("dojouri: " + dojo.uri.dojoUri("src/widget/templates/HtmlComboBox.html"));
-            
-            if (relobj.path == "" &amp;&amp; relobj.scheme == null &amp;&amp;
-                relobj.authority == null &amp;&amp; relobj.query == null) {
-                dojo.debug("hit null relobj stuff");
-                if (relobj.fragment != null) { uriobj.fragment = relobj.fragment; }
-                relobj = uriobj;
-            }
-            
-            if (relobj.path.charAt(0) != "/") {
-                        var path = uriobj.path.substring(0,
-                            uriobj.path.lastIndexOf("/") + 1) + relobj.path;
-
-                        var segs = path.split("/");
-                        for (var j = 0; j &lt; segs.length; j++) {
-                            if (segs[j] == ".") {
-                                if (j == segs.length - 1) { segs[j] = ""; }
-                                else { segs.splice(j, 1); j--; }
-                            } else if (j > 0 &amp;&amp; !(j == 1 &amp;&amp; segs[0] == "") &amp;&amp;
-                                segs[j] == ".." &amp;&amp; segs[j-1] != "..") {
-
-                                if (j == segs.length - 1) { segs.splice(j, 1); segs[j - 1] = ""; }
-                                else { segs.splice(j - 1, 2); j -= 2; }
-                            }
-                        }
-                        relobj.path = segs.join("/");
-            }
-            
-            dojo.debug("relobj.path is : " + relobj.path);
-            dojo.debug("relobj.scheme: " + relobj.scheme);
-            dojo.debug("relobj.authority: " + relobj.authority);
-            dojo.debug("relobj.query: " + relobj.query);
-            dojo.debug("relobj.fragment: " + relobj.fragment);
-            
             dojo.debug("Parsing combo box");
             // djConfig.searchIds.push("${select.getId()}");
             // dojo.debug("searchIds length:" + djConfig.searchIds.length);

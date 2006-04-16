@@ -44,7 +44,7 @@ public interface FormSupport extends FormBehavior
      *            non-null, and the scheme does not match the current request's scheme, then an
      *            absolute URL with the specified scheme will be generated, rather than a URI.
      */
-    public void render(String method, IRender informalParametersRenderer, ILink link, String scheme, Integer port);
+    void render(String method, IRender informalParametersRenderer, ILink link, String scheme, Integer port);
 
     /**
      * Invoked to rewind the form, which renders the body of the form, allowing form element
@@ -54,5 +54,5 @@ public interface FormSupport extends FormBehavior
      * @return a code indicating why the form was submitted: {@link FormConstants#SUBMIT_NORMAL},
      *         {@link FormConstants#SUBMIT_CANCEL} or {@link FormConstants#SUBMIT_REFRESH}.
      */
-    public String rewind();
+    String rewind();
 }

@@ -18,7 +18,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * Interface for objects that contribute client-side events back to a form
+ * Interface for objects that contribute client-side events back to a form.
  * 
  * @author Paul Ferraro
  * @since 4.0
@@ -40,6 +40,6 @@ public interface FormComponentContributor
      * @param field
      *            the field for which contributions are being rendered
      */
-    public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
+    void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
             FormComponentContributorContext context, IFormComponent field);
 }

@@ -21,20 +21,23 @@ import org.apache.tapestry.util.xml.RuleDirectedParser;
 import org.xml.sax.Attributes;
 
 /**
- * Rule for &lt;script&gt; element. Creates a {@link org.apache.tapestry.script.ParsedScript}.
+ * Rule for &lt;script&gt; element. Creates a
+ * {@link org.apache.tapestry.script.ParsedScript}.
  * 
  * @author Howard Lewis Ship
  * @since 3.0
  */
 public class ScriptRule extends BaseRule
 {
+
     /** @since 4.0 */
     private ExpressionEvaluator _evaluator;
 
     /** @since 4.0 */
     private ValueConverter _valueConverter;
 
-    public ScriptRule(ExpressionEvaluator evaluator, ValueConverter valueConverter)
+    public ScriptRule(ExpressionEvaluator evaluator,
+            ValueConverter valueConverter)
     {
         _evaluator = evaluator;
         _valueConverter = valueConverter;
@@ -47,7 +50,8 @@ public class ScriptRule extends BaseRule
 
     public void startElement(RuleDirectedParser parser, Attributes attributes)
     {
-        ParsedScript script = new ParsedScript(_evaluator, _valueConverter, parser.getLocation());
+        ParsedScript script = new ParsedScript(_evaluator, _valueConverter,
+                parser.getLocation());
 
         parser.push(script);
     }

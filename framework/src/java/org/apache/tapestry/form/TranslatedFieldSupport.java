@@ -18,11 +18,37 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.valid.ValidatorException;
 
+/**
+ * 
+ * @author unknown
+ */
 public interface TranslatedFieldSupport
 {
-    public String format(TranslatedField field, Object object);
-    
-    public Object parse(TranslatedField field, String text) throws ValidatorException;
 
-    public void renderContributions(TranslatedField field, IMarkupWriter writer, IRequestCycle cycle);
+    /**
+     * Formats the field translation.
+     * @param field
+     * @param object
+     * @return
+     */
+    String format(TranslatedField field, Object object);
+
+    /**
+     * Parses the field value.
+     * @param field
+     * @param text
+     * @return
+     * @throws ValidatorException
+     */
+    Object parse(TranslatedField field, String text)
+        throws ValidatorException;
+
+    /**
+     * Renders any contributions.
+     * @param field
+     * @param writer
+     * @param cycle
+     */
+    void renderContributions(TranslatedField field,
+            IMarkupWriter writer, IRequestCycle cycle);
 }

@@ -31,7 +31,7 @@ public interface FormComponentContributorContext extends ValidationMessages
      * Includes the indicated script; the path is a path on the classpath.
      */
 
-    public void includeClasspathScript(String path);
+    void includeClasspathScript(String path);
 
     /**
      * Adds initialization to register a submit handler on the client side. A submit handler is a
@@ -42,7 +42,7 @@ public interface FormComponentContributorContext extends ValidationMessages
      *            of a listener function ("function(event) { ... } ").
      */
 
-    public void addSubmitHandler(String handler);
+    void addSubmitHandler(String handler);
 
     /**
      * Registers a field for automatic focus. The goal is for the first field that is in error to
@@ -54,5 +54,5 @@ public interface FormComponentContributorContext extends ValidationMessages
      * @see org.apache.tapestry.FormBehavior#registerForFocus(IFormComponent, int)
      */
 
-    public void registerForFocus(int priority);
+     void registerForFocus(int priority);
 }

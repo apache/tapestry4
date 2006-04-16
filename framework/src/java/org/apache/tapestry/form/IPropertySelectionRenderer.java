@@ -18,40 +18,36 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  Defines an object that works with a {@link PropertySelection} component
- *  to render the individual elements obtained from the {@link IPropertySelectionModel model}.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Defines an object that works with a {@link PropertySelection} component to
+ * render the individual elements obtained from the
+ * {@link IPropertySelectionModel model}.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public interface IPropertySelectionRenderer
 {
-    /**
-     *  Begins the rendering of the {@link PropertySelection}.
-     *
-     **/
-
-    public void beginRender(PropertySelection component, IMarkupWriter writer, IRequestCycle cycle);
 
     /**
-     *  Invoked for each element obtained from the {@link IPropertySelectionModel model}.
-     *
-     **/
+     * Begins the rendering of the {@link PropertySelection}.
+     */
 
-    public void renderOption(
-        PropertySelection component,
-        IMarkupWriter writer,
-        IRequestCycle cycle,
-        IPropertySelectionModel model,
-        Object option,
-        int index,
-        boolean selected);
+    void beginRender(PropertySelection component, IMarkupWriter writer,
+            IRequestCycle cycle);
 
     /**
-     *  Ends the rendering of the {@link PropertySelection}.
-     *
-     **/
+     * Invoked for each element obtained from the
+     * {@link IPropertySelectionModel model}.
+     */
 
-    public void endRender(PropertySelection component, IMarkupWriter writer, IRequestCycle cycle);
+    void renderOption(PropertySelection component, IMarkupWriter writer,
+            IRequestCycle cycle, IPropertySelectionModel model, Object option,
+            int index, boolean selected);
+
+    /**
+     * Ends the rendering of the {@link PropertySelection}.
+     */
+
+    void endRender(PropertySelection component, IMarkupWriter writer,
+            IRequestCycle cycle);
 }

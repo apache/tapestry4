@@ -27,24 +27,26 @@ import org.apache.tapestry.engine.IEngineService;
  */
 public class AjaxShellDelegate implements IRender
 {
-    protected IAsset _dojoSource;
+    private IAsset _dojoSource;
     
-    protected IAsset _dojoPath;
+    private IAsset _dojoPath;
     
-    protected IEngineService _assetService;
+    private IEngineService _assetService;
     
     /**
      * {@inheritDoc}
      */
     public void render(IMarkupWriter writer, IRequestCycle cycle)
     {
+        // TODO: Add ability to make all of these parameters more configurable
+        
         // first configure dojo, has to happen before package include
         StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");
         str.append("djConfig = { isDebug: true,")
         .append(" baseRelativePath:\"")
         .append(_assetService.getLink(true,
                 _dojoPath.getResourceLocation().getPath()).getAbsoluteURL())
-        .append("\", preventBackButtonFix: false, parseWidgets: true };")
+        .append("\", preventBackButtonFix: false, parseWidgets: false };")
         .append(" </script>\n\n ");
         
         // include the core dojo.js package
