@@ -39,7 +39,7 @@ public class TestIfElse extends BaseComponentTestCase
     private IRender newRender(IMarkupWriter writer, IRequestCycle cycle)
     {
         IRender render = (IRender) newMock(IRender.class);
-
+        
         render.render(writer, cycle);
 
         return render;
@@ -50,30 +50,32 @@ public class TestIfElse extends BaseComponentTestCase
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
 
+        IMarkupWriter writer = newWriter();
+        
         cycle.isRewinding();
         cyclec.setReturnValue(false);
         
         cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
         cyclec.setReturnValue(null);
         
+        trainResponseBuilder(cycle, writer);
+        
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
         
         cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE);
         cyclec.setReturnValue(Boolean.TRUE);
         
-        IMarkupWriter writer = newWriter();
         IRender body = newRender(writer, cycle);
         IRender body2 = newRender();
-
+        
         replayControls();
-
-
+        
         IfBean conditional = (IfBean) newInstance(IfBean.class, new Object[]
         { "condition", Boolean.TRUE });
         conditional.addBody(body);
-
+        
         conditional.render(writer, cycle);
-
+        
         ElseBean reverse = (ElseBean) newInstance(ElseBean.class);
         reverse.addBody(body2);
         reverse.render(writer, cycle);
@@ -85,7 +87,8 @@ public class TestIfElse extends BaseComponentTestCase
     {
         MockControl cyclec = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-
+        IMarkupWriter writer = newWriter();
+        
         cycle.isRewinding();
         cyclec.setReturnValue(false);
         
@@ -100,12 +103,12 @@ public class TestIfElse extends BaseComponentTestCase
         cycle.isRewinding();
         cyclec.setReturnValue(false);
         
-        IMarkupWriter writer = newWriter();
+        trainResponseBuilder(cycle, writer);
+        
         IRender body = newRender();
         IRender body2 = newRender(writer, cycle);
 
         replayControls();
-
 
         IfBean conditional = (IfBean) newInstance(IfBean.class, new Object[]
         { "condition", Boolean.FALSE });
@@ -121,6 +124,8 @@ public class TestIfElse extends BaseComponentTestCase
 
     public void testRenderInFormTrue()
     {
+        IMarkupWriter writer = newWriter();
+        
         IfBean conditional = (IfBean) newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.TRUE });
 
@@ -141,12 +146,13 @@ public class TestIfElse extends BaseComponentTestCase
         
         form.addHiddenValue("If", "T");
         
+        trainResponseBuilder(cycle, writer);
+        
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
         
         cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE);
         cyclec.setReturnValue(Boolean.TRUE);
         
-        IMarkupWriter writer = newWriter();
         IRender body = newRender(writer, cycle);
         IRender body2 = newRender();
 
@@ -165,6 +171,8 @@ public class TestIfElse extends BaseComponentTestCase
 
     public void testRenderInFormFalse()
     {
+        IMarkupWriter writer = newWriter();
+        
         IfBean conditional = (IfBean) newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.FALSE });
 
@@ -193,7 +201,8 @@ public class TestIfElse extends BaseComponentTestCase
         cycle.isRewinding();
         cyclec.setReturnValue(false);
         
-        IMarkupWriter writer = newWriter();
+        trainResponseBuilder(cycle, writer);
+        
         IRender body = newRender();
         IRender body2 = newRender(writer, cycle);
 
@@ -212,6 +221,8 @@ public class TestIfElse extends BaseComponentTestCase
 
     public void testIgnoreElementWhenRewindingTrue()
     {
+        IMarkupWriter writer = newWriter();
+        
         IfBean conditional = (IfBean) newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.TRUE, "element", "div" });
         
@@ -236,12 +247,12 @@ public class TestIfElse extends BaseComponentTestCase
         cycle.getParameter("If");
         cyclec.setReturnValue("T");
 
+        trainResponseBuilder(cycle, writer);
+        
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
 
         cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE);
         cyclec.setReturnValue(Boolean.TRUE);
-        
-        IMarkupWriter writer = newWriter();
 
         IRender body = newRender(writer, cycle);
         IRender body2 = newRender();
@@ -260,6 +271,8 @@ public class TestIfElse extends BaseComponentTestCase
 
     public void testIgnoreElementWhenRewindingFalse()
     {
+        IMarkupWriter writer = newWriter();
+        
         IfBean conditional = (IfBean) newInstance(TestIfBean.class, 
         		new Object[] { "condition", Boolean.TRUE, "element", "div" });
         
@@ -283,17 +296,17 @@ public class TestIfElse extends BaseComponentTestCase
         
         cycle.getParameter("If");
         cyclec.setReturnValue("F");
-
+        
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.FALSE);
-
+        
         cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE);
         cyclec.setReturnValue(Boolean.FALSE);
         
         cycle.isRewinding();
         cyclec.setReturnValue(true);
         
-        IMarkupWriter writer = newWriter();
-
+        trainResponseBuilder(cycle, writer);
+        
         IRender body = newRender();
         IRender body2 = newRender(writer, cycle);
 
@@ -311,6 +324,8 @@ public class TestIfElse extends BaseComponentTestCase
 
     public void testElement()
     {
+        IMarkupWriter writer = newWriter();
+        
 		IBinding informal = newBinding("informal-value");
         IComponentSpecification spec = newSpec("informal", null);
 
@@ -323,7 +338,6 @@ public class TestIfElse extends BaseComponentTestCase
         cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
         cyclec.setReturnValue(null);
         
-        IMarkupWriter writer = newWriter();
         IRender body = newRender(writer, cycle);
 
         writer.begin("div");
@@ -331,6 +345,8 @@ public class TestIfElse extends BaseComponentTestCase
 
         writer.end("div");
 
+        trainResponseBuilder(cycle, writer);
+        
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
 
         

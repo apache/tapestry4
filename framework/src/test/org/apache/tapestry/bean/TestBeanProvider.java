@@ -161,7 +161,7 @@ public class TestBeanProvider extends BaseComponentTestCase
     private void trainForConstructor(IPage page, IComponent component, ClassResolver resolver,
             ClassFinder classFinder)
     {
-        IRequestCycle cycle = newCycle();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
         Infrastructure infrastructure = (Infrastructure) newMock(Infrastructure.class);
         INamespace namespace = (INamespace) newMock(INamespace.class);
 

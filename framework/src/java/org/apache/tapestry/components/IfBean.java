@@ -31,8 +31,12 @@ import org.apache.tapestry.services.DataSqueezer;
  */
 public abstract class IfBean extends AbstractFormComponent
 {
-    public final static String IF_VALUE_ATTRIBUTE = "org.mb.tapestry.base.IfValue";
+    public static final String IF_VALUE_ATTRIBUTE = "org.mb.tapestry.base.IfValue";
 
+    private boolean _rendering = false;
+
+    private boolean _conditionValue;
+    
     public abstract IBinding getConditionValueBinding();
 
     public abstract boolean getCondition();
@@ -42,10 +46,6 @@ public abstract class IfBean extends AbstractFormComponent
     public abstract String getElement();
 
     public abstract IActionListener getListener();
-
-    private boolean _rendering = false;
-
-    private boolean _conditionValue;
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -178,7 +178,7 @@ public abstract class IfBean extends AbstractFormComponent
     }
 
     /**
-     * Returns the value of the condition
+     * Returns the value of the condition.
      * 
      * @return the condition value
      */

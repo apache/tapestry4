@@ -29,7 +29,7 @@ public class TestInsertText extends BaseComponentTestCase
     public void testRewinding()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(true);
+        IRequestCycle cycle = newCycle(true, false);
 
         replayControls();
 
@@ -43,7 +43,7 @@ public class TestInsertText extends BaseComponentTestCase
     public void testRenderNull()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(false);
+        IRequestCycle cycle = newCycle(false, false);
 
         replayControls();
 
@@ -57,7 +57,7 @@ public class TestInsertText extends BaseComponentTestCase
     public void testRenderBreaks()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(false);
+        IRequestCycle cycle = newCycle(false, false);
 
         writer.print("Now is the time", false);
         writer.beginEmpty("br");
@@ -81,7 +81,7 @@ public class TestInsertText extends BaseComponentTestCase
     public void testRenderParas()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(false);
+        IRequestCycle cycle = newCycle(false, false);
 
         writer.begin("p");
         writer.print("Now is the time", false);
@@ -109,7 +109,7 @@ public class TestInsertText extends BaseComponentTestCase
     public void testRenderRaw()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(false);
+        IRequestCycle cycle = newCycle(false, false);
 
         writer.print("output", true);
         writer.beginEmpty("br");

@@ -32,7 +32,7 @@ public class TestRenderBlock extends BaseComponentTestCase
         RenderBlock rb = (RenderBlock) newInstance(RenderBlock.class);
 
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
 
         replayControls();
 
@@ -50,7 +50,7 @@ public class TestRenderBlock extends BaseComponentTestCase
         { "block", b });
 
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
 
         b.renderForComponent(writer, cycle, rb);
 

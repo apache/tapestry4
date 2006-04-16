@@ -29,7 +29,7 @@ public class DescribeTest extends BaseComponentTestCase
     public void testRewinding()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(true);
+        IRequestCycle cycle = newCycle(true, false);
 
         replayControls();
 
@@ -43,10 +43,10 @@ public class DescribeTest extends BaseComponentTestCase
     public void testRender()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(false);
-
+        IRequestCycle cycle = newCycle(false, false);
+        
         Object object = new Object();
-
+        
         HTMLDescriber describer = (HTMLDescriber) newMock(HTMLDescriber.class);
 
         describer.describeObject(object, writer);

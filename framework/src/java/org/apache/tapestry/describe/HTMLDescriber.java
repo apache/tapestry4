@@ -24,5 +24,5 @@ import org.apache.tapestry.IMarkupWriter;
  */
 public interface HTMLDescriber
 {
-    public void describeObject(Object object, IMarkupWriter writer);
+    void describeObject(Object object, IMarkupWriter writer);
 }

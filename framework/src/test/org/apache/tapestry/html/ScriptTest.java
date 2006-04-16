@@ -67,7 +67,7 @@ public class ScriptTest extends BaseComponentTestCase
         IScript script = newScript();
 
         PageRenderSupport support = newPageRenderSupport();
-        IRequestCycle cycle = newCycle(false);
+        IRequestCycle cycle = newCycle(false, false);
         IMarkupWriter writer = newWriter();
         Resource scriptLocation = newResource();
         IRender body = newRender();
@@ -90,6 +90,8 @@ public class ScriptTest extends BaseComponentTestCase
 
         body.render(writer, cycle);
 
+        trainResponseBuilder(cycle, writer);
+        
         replayControls();
 
         component.addBody(body);
@@ -105,8 +107,8 @@ public class ScriptTest extends BaseComponentTestCase
         MockScript script = new MockScript();
 
         PageRenderSupport support = newPageRenderSupport();
-        IRequestCycle cycle = newCycle(false);
         IMarkupWriter writer = newWriter();
+        IRequestCycle cycle = newCycle(false, false);
         Resource scriptLocation = newResource();
         IRender body = newRender();
 
@@ -129,6 +131,8 @@ public class ScriptTest extends BaseComponentTestCase
 
         body.render(writer, cycle);
 
+        trainResponseBuilder(cycle, writer);
+        
         replayControls();
 
         component.addBody(body);
@@ -148,7 +152,7 @@ public class ScriptTest extends BaseComponentTestCase
         MockScript script = new MockScript();
 
         PageRenderSupport support = newPageRenderSupport();
-        IRequestCycle cycle = newCycle(false);
+        IRequestCycle cycle = newCycle(false, false);
         IMarkupWriter writer = newWriter();
         Resource scriptLocation = newResource();
         IRender body = newRender();
@@ -176,6 +180,8 @@ public class ScriptTest extends BaseComponentTestCase
 
         body.render(writer, cycle);
 
+        trainResponseBuilder(cycle, writer);
+        
         replayControls();
 
         component.addBody(body);
@@ -194,11 +200,13 @@ public class ScriptTest extends BaseComponentTestCase
     public void testRewinding()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle(true);
+        IRequestCycle cycle = newCycle(true, false);
         IRender body = newRender();
 
         body.render(writer, cycle);
 
+        trainResponseBuilder(cycle, writer);
+        
         replayControls();
 
         Script component = (Script) newInstance(Script.class);
@@ -215,7 +223,7 @@ public class ScriptTest extends BaseComponentTestCase
     	IScriptSource source = newScriptSource();
         
         PageRenderSupport support = newPageRenderSupport();
-        IRequestCycle cycle = newCycle(false);
+        IRequestCycle cycle = newCycle(false, false);
         IMarkupWriter writer = newWriter();
         IRender body = newRender();
         
@@ -250,7 +258,7 @@ public class ScriptTest extends BaseComponentTestCase
         IScript script = newScript();
         
         PageRenderSupport support = newPageRenderSupport();
-        IRequestCycle cycle = newCycle(false);
+        IRequestCycle cycle = newCycle(false, false);
         IMarkupWriter writer = newWriter();
         Resource scriptLocation = newResource();
         IRender body = newRender();
@@ -273,6 +281,8 @@ public class ScriptTest extends BaseComponentTestCase
         script.execute(cycle, support, new HashMap());
         
         body.render(writer, cycle);
+        
+        trainResponseBuilder(cycle, writer);
         
         replayControls();
         

@@ -15,10 +15,13 @@
 package org.apache.tapestry.junit;
 
 import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.NullWriter;
+import org.apache.tapestry.services.ResponseBuilder;
+import org.apache.tapestry.services.impl.DefaultResponseBuilder;
 import org.apache.tapestry.test.Creator;
 
 /**
@@ -29,7 +32,7 @@ import org.apache.tapestry.test.Creator;
  * @since 3.0
  */
 
-public class TestComponent extends TapestryTestCase
+public class TestComponent extends BaseComponentTestCase
 {
     private static class TestRender implements IRender
     {
@@ -62,22 +65,33 @@ public class TestComponent extends TapestryTestCase
 
     public void testOuter() throws Exception
     {
+        IMarkupWriter writer = new NullWriter();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        
         Creator creator = new Creator();
-
+        
         FakeComponent c = (FakeComponent) creator.newInstance(FakeComponent.class);
-
+        
         TestRender[] list = new TestRender[50];
-
+        
+        ResponseBuilder builder = 
+            new DefaultResponseBuilder(writer);
+        
         for (int i = 0; i < list.length; i++)
         {
             list[i] = new TestRender();
             c.addOuterTest(list[i]);
+            
+            cycle.getResponseBuilder();
+            setReturnValue(cycle, builder);
         }
-
-        IMarkupWriter writer = new NullWriter();
-
-        c.testRenderComponent(writer, null);
-
+        
+        replayControls();
+        
+        c.testRenderComponent(writer, cycle);
+        
+        verifyControls();
+        
         for (int i = 0; i < list.length; i++)
             assertTrue("Outer object #" + i + " did render.", list[i].rendered);
     }

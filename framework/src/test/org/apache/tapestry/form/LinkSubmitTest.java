@@ -76,6 +76,8 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
         trainGetUniqueId(cycle, "fred_id", "fred_id_unique");
 
+        trainResponseBuilder(cycle, writer);
+        
         replayControls();
 
         linkSubmit.renderFormComponent(writer, cycle);
@@ -96,6 +98,8 @@ public class LinkSubmitTest extends BaseComponentTestCase
         { "disabled", Boolean.TRUE, "form", form, "name", "fred_1", "idParameter", "fred_id" });
         linkSubmit.addBody(newBody());
 
+        trainResponseBuilder(cycle, writer);
+        
         replayControls();
 
         linkSubmit.renderFormComponent(writer, cycle);
@@ -230,7 +234,9 @@ public class LinkSubmitTest extends BaseComponentTestCase
         trainGetParameter(cycle, FormConstants.SUBMIT_NAME_PARAMETER, null);
 
         // ... and back to AbstractFormComponent
-
+        
+        trainResponseBuilder(cycle, writer);
+        
         body.render(writer, cycle);
 
         replayControls();

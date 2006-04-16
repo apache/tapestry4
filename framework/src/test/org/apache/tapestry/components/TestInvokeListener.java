@@ -42,7 +42,7 @@ public class TestInvokeListener extends BaseComponentTestCase
     public void testSuccess()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
 
         IActionListener listener = newListener();
         ListenerInvoker invoker = newInvoker();
@@ -66,7 +66,7 @@ public class TestInvokeListener extends BaseComponentTestCase
     public void testEnsureParametersClearedAfterException()
     {
         IMarkupWriter writer = newWriter();
-        IRequestCycle cycle = newCycle();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
 
         IActionListener listener = newListener();
 
