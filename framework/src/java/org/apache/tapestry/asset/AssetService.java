@@ -23,6 +23,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -151,14 +152,14 @@ public class AssetService implements IEngineService
 
         String digest = _digestSource.getDigestForResource(path);
 
-        Map parameters = new HashMap();
-
+        Map parameters = new TreeMap(new AssetComparator());
+        
         parameters.put(ServiceConstants.SERVICE, getName());
         parameters.put(PATH, path);
         parameters.put(DIGEST, digest);
-
+        
         // Service is stateless, which is the exception to the rule.
-
+        
         return _linkFactory.constructLink(this, post, parameters, false);
     }
 
@@ -196,6 +197,7 @@ public class AssetService implements IEngineService
         String path = cycle.getParameter(PATH);
         String md5Digest = cycle.getParameter(DIGEST);
         boolean checkDigest = !_unprotectedMatcher.containsResource(path);
+        
         try
         {
             if (checkDigest
@@ -255,7 +257,12 @@ public class AssetService implements IEngineService
         //even if it doesn't exist in header the value will be -1, 
         //which means we need to write out the contents of the resource
         
-        long modify = Long.parseLong(_request.getHeader("If-Modified-Since"));
+        String header = _request.getHeader("If-Modified-Since");
+        long modify = -1;
+        
+        if (header != null)
+            modify = Long.parseLong(header);
+        
         if (resource.lastModified() > modify)
             return false;
         

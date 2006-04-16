@@ -19,6 +19,7 @@ import java.util.Locale;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.LocationImpl;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.IAsset;
@@ -142,6 +143,114 @@ public class ClasspathAssetFactoryTest extends HiveMindTestCase
         verifyControls();
     }
 
+    public void testCreateDirectoryAsset()
+    {
+        IEngineService assetService = newService();
+        Location l = newLocation();
+        
+        replayControls();
+        
+        ClasspathAssetFactory factory = new ClasspathAssetFactory();
+        factory.setClassResolver(getClassResolver());
+        factory.setAssetService(assetService);
+        factory.setLocalizer(new DefaultResourceLocalizer());
+        
+        String path = "/org/apache/tapestry/html/dojo";
+        
+        Resource subResource = new ClasspathResource(getClassResolver(), path);
+        IAsset asset = factory.createAsset(subResource, l);
+        
+        assertTrue(asset instanceof PrivateAsset);
+        assertEquals(path, asset
+                .getResourceLocation().getPath());
+        assertSame(l, asset.getLocation());
+        
+        verifyControls();
+    }
+    
+    public void testCreateRelativeDirectoryAsset()
+    {
+        IEngineService assetService = newService();
+        Resource shell = new ClasspathResource(getClassResolver(),
+            "/org/apache/tapestry/html/Shell.jwc");
+        Location l = new LocationImpl(shell);
+        
+        replayControls();
+        
+        ClasspathAssetFactory factory = new ClasspathAssetFactory();
+        factory.setClassResolver(getClassResolver());
+        factory.setAssetService(assetService);
+        factory.setLocalizer(new DefaultResourceLocalizer());
+        
+        String path = "/org/apache/tapestry/html/dojo/dojo.js";
+        
+        IAsset asset = factory.createAsset(shell, path, 
+                Locale.getDefault(),
+                l);
+        
+        assertTrue(asset instanceof PrivateAsset);
+        assertEquals(path, asset
+                .getResourceLocation().getPath());
+        assertSame(l, asset.getLocation());
+        
+        verifyControls();
+    }
+    
+    public void testCreateRelativeDirectoryMissingAsset()
+    {
+        IEngineService assetService = newService();
+        Resource shell = new ClasspathResource(getClassResolver(),
+            "/org/apache/tapestry/html/Shell.jwc");
+        Location l = new LocationImpl(shell);
+        
+        replayControls();
+        
+        ClasspathAssetFactory factory = new ClasspathAssetFactory();
+        factory.setClassResolver(getClassResolver());
+        factory.setAssetService(assetService);
+        factory.setLocalizer(new DefaultResourceLocalizer());
+        
+        String path = "/org/apache/tapestry/html/dojo/";
+        
+        IAsset asset = factory.createAsset(shell, path, 
+                Locale.getDefault(),
+                l);
+        
+        assertTrue(asset instanceof PrivateAsset);
+        assertEquals(path, asset
+                .getResourceLocation().getPath());
+        assertSame(l, asset.getLocation());
+        
+        verifyControls();
+    }
+    
+    /**
+     * Tests relative sub-directory paths.
+     */
+    public void testRelativeDirectoryPath()
+    {
+        IEngineService assetService = newService();
+        Location l = newLocation();
+        
+        replayControls();
+        
+        ClasspathAssetFactory factory = new ClasspathAssetFactory();
+        factory.setClassResolver(getClassResolver());
+        factory.setAssetService(assetService);
+        factory.setLocalizer(new DefaultResourceLocalizer());
+        
+        Resource subResource = new ClasspathResource(getClassResolver(),
+                "/org/apache/tapestry/asset/subresource/sub-resource.txt");
+        IAsset asset = factory.createAsset(subResource, l);
+        
+        assertTrue(asset instanceof PrivateAsset);
+        assertEquals("/org/apache/tapestry/asset/subresource/sub-resource.txt",
+                asset.getResourceLocation().getPath());
+        assertSame(l, asset.getLocation());
+        
+        verifyControls();
+    }
+    
     private ClasspathResource newBaseResource()
     {
         return new ClasspathResource(getClassResolver(),

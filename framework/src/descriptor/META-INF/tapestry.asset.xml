@@ -157,6 +157,11 @@
         <attribute name="contains" required="true" unique="true">
           The regexp pattern to match against.
         </attribute>
+        
+        <rules>
+            <push-attribute attribute="contains"/>
+            <invoke-parent method="addElement"/>
+        </rules>
       </element>
     </schema>    
   </configuration-point>
@@ -164,14 +169,7 @@
   <contribution configuration-id="UnprotectedAssets">
    List of unprotected asset regexps for ResourceMatcher service.
    
-   <unprotected-resource contains="org/apache/tapestry/html/dojo/**/*.js" />
-   <unprotected-resource contains="org/apache/tapestry/html/dojo/**/*.css" />
-   <unprotected-resource contains="org/apache/tapestry/html/dojo/**/*.html" />
-   <unprotected-resource contains="org/apache/tapestry/html/dojo/**/*.htm" />
-   <unprotected-resource contains="org/apache/tapestry/html/dojo/**/*.gif" />
-   <unprotected-resource contains="org/apache/tapestry/html/dojo/**/*.jpg" />
-   <unprotected-resource contains="org/apache/tapestry/html/dojo/**/*.svg" />
-   <unprotected-resource contains="org/apache/tapestry/html/dojo/**/*.png" />
+   <unprotected-resource contains="org/apache/tapestry/html/dojo*" />
   </contribution>
   
   <service-point id="UnprotectedResourceMatcher" interface="ResourceMatcher" >

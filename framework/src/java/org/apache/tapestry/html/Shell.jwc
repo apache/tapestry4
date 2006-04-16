@@ -105,6 +105,14 @@
      </description>
   </parameter>
   
+  <parameter name="dojoPath" 
+             default-value="asset:defaultDojoPath" >
+     <description>
+     Specifies the default path to the root dojo folder, not the dojo.js file itself. This
+     is used by the djConfig.baseRelativePath javascript configuration variable in dojo.
+     </description>
+  </parameter>
+  
   <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
   <inject property="pageService" object="engine-service:page"/>
   <inject property="applicationSpecification" object="infrastructure:applicationSpecification"/>
@@ -114,7 +122,9 @@
   <bean name="coreAjaxDelegate" class="org.apache.tapestry.ajax.AjaxShellDelegate">
    <set name="dojoSource" value="dojoSource" />
    <set name="assetService" value="assetService" />
+   <set name="dojoPath" value="dojoPath" />
   </bean>
   
   <asset name="defaultDojoSource" path="classpath:/org/apache/tapestry/html/dojo/dojo.js" />
+  <asset name="defaultDojoPath" path="classpath:/org/apache/tapestry/html/dojo/" />
 </component-specification>
