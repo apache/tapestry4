@@ -122,19 +122,22 @@ public class DefaultResponseBuilder implements ResponseBuilder
      * 
      * {@inheritDoc}
      */
-    public void render(IRender render, IRequestCycle cycle)
+    public void render(IMarkupWriter writer, IRender render, IRequestCycle cycle)
     {
-        if (_writer == null)
-            render.render(NullWriter.getSharedInstance(), cycle);
-        else
+        if (writer == null)
             render.render(_writer, cycle);
+        else
+            render.render(writer, cycle);
     }
-
+    
     /** 
      * {@inheritDoc}
      */
     public IMarkupWriter getWriter()
     {
+        if (_writer == null)
+            return NullWriter.getSharedInstance();
+        
         return _writer;
     }
 }

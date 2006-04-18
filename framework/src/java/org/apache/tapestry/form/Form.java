@@ -327,7 +327,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     public void rewind(IMarkupWriter writer, IRequestCycle cycle)
     {
-        render(writer, cycle);
+        cycle.getResponseBuilder().render(writer, this, cycle);
     }
     
     /**

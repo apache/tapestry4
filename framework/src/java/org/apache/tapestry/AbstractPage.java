@@ -22,6 +22,7 @@ import javax.swing.event.EventListenerList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageAttachListener;
 import org.apache.tapestry.event.PageBeginRenderListener;
@@ -241,12 +242,12 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         {
             firePageBeginRender();
             
-            beginResponse(builder.getWriter(), cycle);
+            beginResponse(cycle.isRewinding() ? NullWriter.getSharedInstance() : builder.getWriter(), cycle);
             
             if (!cycle.isRewinding())
                 cycle.commitPageChanges();
             
-            builder.render(this, cycle);
+            builder.render(cycle.isRewinding() ? NullWriter.getSharedInstance() : null, this, cycle);
         }
         finally
         {
