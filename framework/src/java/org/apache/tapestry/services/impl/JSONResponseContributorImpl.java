@@ -14,17 +14,12 @@
 package org.apache.tapestry.services.impl;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.json.IJSONWriter;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ResponseContributor;
-import org.apache.tapestry.util.ContentType;
-import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
 /**
@@ -35,22 +30,14 @@ import org.apache.tapestry.web.WebResponse;
  */
 public class JSONResponseContributorImpl implements ResponseContributor
 {
-    /**
-     * Inside a {@link org.apache.tapestry.util.ContentType}, the output encoding is called
-     * "charset".
-     */
-    
-    public static final String ENCODING_KEY = "charset";
     
     public static final String JSON_HEADER = "json";
     
     protected RequestLocaleManager _localeManager;
     
     protected MarkupWriterSource _markupWriterSource;
-
+    
     protected WebResponse _webResponse;
-
-    protected WebRequest _webRequest;
     
     /**
      * {@inheritDoc}
@@ -58,28 +45,8 @@ public class JSONResponseContributorImpl implements ResponseContributor
     public ResponseBuilder createBuilder(IRequestCycle cycle)
     throws IOException
     {
-        _localeManager.persistLocale();
-        
-        IPage page = cycle.getPage();
-        
-        ContentType contentType = page.getResponseContentType();
-        
-        String encoding = contentType.getParameter(ENCODING_KEY);
-        
-        if (encoding == null)
-        {
-            encoding = cycle.getEngine().getOutputEncoding();
-            
-            contentType.setParameter(ENCODING_KEY, encoding);
-        }
-        
-        PrintWriter printWriter = _webResponse.getPrintWriter(contentType);
-        
-        IJSONWriter writer = _markupWriterSource.newJSONWriter(printWriter, contentType);
-        
-        JSONResponseBuilder builder = new JSONResponseBuilder(writer);
-        
-        return builder;
+        return new JSONResponseBuilder(_localeManager, _markupWriterSource,
+                _webResponse);
     }
     
     /**
@@ -107,10 +74,5 @@ public class JSONResponseContributorImpl implements ResponseContributor
     public void setWebResponse(WebResponse webResponse)
     {
         _webResponse = webResponse;
-    }
-    
-    public void setWebRequest(WebRequest webRequest)
-    {
-        _webRequest = webRequest;
     }
 }

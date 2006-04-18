@@ -109,6 +109,7 @@
             <![CDATA[
             <postfield name="(.*?)".*?/>
             ]]>
+            <match>u</match>
             <match>formids</match>
             <match>action</match>
             <match>component</match>
@@ -116,8 +117,7 @@
             <match>service</match>
             <match>reservedids</match>     
             <match>submitmode</match>       
-            <match>submitname</match>       
-            <match>u</match>
+            <match>submitname</match>
             <match>l</match>
         </assert-output-matches>
 

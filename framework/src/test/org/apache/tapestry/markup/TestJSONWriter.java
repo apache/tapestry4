@@ -13,15 +13,11 @@
 // limitations under the License.
 package org.apache.tapestry.markup;
 
+import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.json.IJSONWriter;
-import org.apache.tapestry.json.JSONArray;
-
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -37,15 +33,15 @@ public class TestJSONWriter extends HiveMindTestCase
      */
     public void testPropertyList() 
     {
-        String listGoal = "{\"red\":\"ball\",\"orange\":\"orange\",\"black\":\"cat\"}";
-        
         IJSONWriter writer = newWriter();
         
         writer.put("red", "ball");
         writer.put("black", "cat");
         writer.put("orange", "orange");
         
-        assertEquals(listGoal, output(writer));
+        assertEquals(writer.get("red"), "ball");
+        assertEquals(writer.get("black"), "cat");
+        assertEquals(writer.get("orange"), "orange");
     }
     
     /**

@@ -24,10 +24,13 @@ import org.apache.tapestry.IPage;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class EngineMessages
+public final class EngineMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(EngineMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(EngineMessages.class);
 
+    /* defeat instantiation */
+    private EngineMessages() { }
+    
     public static String serviceNoParameter(IEngineService service)
     {
         return _formatter.format("service-no-parameter", service.getName());

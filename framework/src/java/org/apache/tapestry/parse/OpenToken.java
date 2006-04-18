@@ -42,7 +42,7 @@ public class OpenToken extends TemplateToken
     private Map _attributes;
 
     /**
-     * Creates a new token with the given tag, id and type
+     * Creates a new token with the given tag, id and type.
      * 
      * @param tag
      *            the template tag which represents the component, typically "span"

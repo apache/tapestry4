@@ -25,6 +25,7 @@ import org.apache.tapestry.IRequestCycle;
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
+ * @deprecated To be replaced with {@link ResponseBuilder}.
  */
 public interface ResponseRenderer
 {

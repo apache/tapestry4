@@ -13,6 +13,8 @@
 // limitations under the License.
 package org.apache.tapestry.services;
 
+import java.io.IOException;
+
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
@@ -34,7 +36,8 @@ public interface ResponseBuilder {
      *          The main request cycle object for this request.
      */
     
-    void renderResponse(IRequestCycle cycle);
+    void renderResponse(IRequestCycle cycle)
+    throws IOException;
     
     /**
      * Invoked to render a renderable object. Performs any necessary
@@ -49,7 +52,8 @@ public interface ResponseBuilder {
     
     /**
      * Returns the IMarkupWriter associated with this response, it may or may
-     * not be a NullWriter instance depending on the response type.
+     * not be a NullWriter instance depending on the response type or stage 
+     * of the render cycle. (specifically during rewind)
      * 
      * @return A validly writable markup writer, even if the content is sometimes
      * ignored.

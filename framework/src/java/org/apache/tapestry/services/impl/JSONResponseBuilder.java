@@ -13,21 +13,25 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IJSONRender;
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.json.IJSONWriter;
+import org.apache.tapestry.markup.MarkupWriterSource;
+import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ServiceConstants;
+import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  * Class that implements JSON responses in tapestry.
@@ -37,36 +41,74 @@ import org.apache.tapestry.services.ServiceConstants;
  */
 public class JSONResponseBuilder implements ResponseBuilder
 {
-    private static final Log _log = LogFactory.getLog(JSONResponseBuilder.class);
+    /**
+     * Inside a {@link org.apache.tapestry.util.ContentType}, the output encoding is called
+     * "charset".
+     */
+    
+    public static final String ENCODING_KEY = "charset";
 
     /** Writer that creates JSON output response. */
     protected IJSONWriter _writer;
     /** Passed in to bypass normal rendering. */
     protected IMarkupWriter _nullWriter = NullWriter.getSharedInstance();
-
+    
     /** Parts that will be updated. */
     protected List parts = new ArrayList();
+    
+    protected RequestLocaleManager _localeManager;
+    
+    protected MarkupWriterSource _markupWriterSource;
 
+    protected WebResponse _webResponse;
+    
     /**
-     * Creates a new JSON response builder with a valid writer for persisting
-     * output to the response stream.
+     * Creates a new response builder with the required services it needs
+     * to render the response when {@link #renderResponse(IRequestCycle)} is called.
      * 
-     * @param writer
-     *            The response writer used to render the response.
+     * @param localeManager 
+     *          Used to set the locale on the response.
+     * @param markupWriterSource
+     *          Creates IJSONWriter instance to be used.
+     * @param webResponse
+     *          Web response for output stream.
      */
-    public JSONResponseBuilder(IJSONWriter writer)
+    public JSONResponseBuilder(RequestLocaleManager localeManager, 
+            MarkupWriterSource markupWriterSource,
+            WebResponse webResponse)
     {
-        Defense.notNull(writer, "writer");
-
-        _writer = writer;
+        _localeManager = localeManager;
+        _markupWriterSource = markupWriterSource;
+        _webResponse = webResponse;
     }
-
+    
     /**
      * {@inheritDoc}
      */
     public void renderResponse(IRequestCycle cycle)
+    throws IOException
     {
-        _log.warn("renderResponse()");
+        _localeManager.persistLocale();
+        
+        IPage page = cycle.getPage();
+        
+        ContentType contentType = page.getResponseContentType();
+        
+        String encoding = contentType.getParameter(ENCODING_KEY);
+        
+        if (encoding == null)
+        {
+            encoding = cycle.getEngine().getOutputEncoding();
+            
+            contentType.setParameter(ENCODING_KEY, encoding);
+        }
+        
+        PrintWriter printWriter = _webResponse.getPrintWriter(contentType);
+        
+        _writer = _markupWriterSource.newJSONWriter(printWriter, contentType);
+        
+        // render response
+        
         parseParameters(cycle);
 
         cycle.renderPage(this);
@@ -99,13 +141,13 @@ public class JSONResponseBuilder implements ResponseBuilder
         {
             IJSONRender json = (IJSONRender) render;
             IComponent component = (IComponent) render;
-
+            
             if (!parts.contains(component.getId()))
             {
                 render.render(_nullWriter, cycle);
                 return;
             }
-
+            
             json.renderComponent(_writer, cycle);
         }
 

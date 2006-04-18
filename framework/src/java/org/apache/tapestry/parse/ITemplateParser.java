@@ -17,34 +17,35 @@ package org.apache.tapestry.parse;
 import org.apache.hivemind.Resource;
 
 /**
- * Service interface for the <code>tapestry.TemplateParser</code> service. 
+ * Service interface for the <code>tapestry.TemplateParser</code> service.
  * Note that this requires a threaded service model.
- * 
  * <p>
- * Note: had to use the 'I' prefix, so that {@link org.apache.tapestry.parse.TemplateParser}
- * could keep its name. Otherwise, it makes Spindle support really, really ugly.
- *
+ * Note: had to use the 'I' prefix, so that
+ * {@link org.apache.tapestry.parse.TemplateParser} could keep its name.
+ * Otherwise, it makes Spindle support really, really ugly.
+ * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public interface ITemplateParser
 {
+
     /**
-     *  Parses the template data into an array of {@link TemplateToken}s.
-     *
-     *  <p>The parser is <i>decidedly</i> not threadsafe, so care should be taken
-     *  that only a single thread accesses it.
-     *
-     *  @param templateData the HTML template to parse.  Some tokens will hold
-     *  a reference to this array.
-     *  @param delegate  object that "knows" about defined components
-     *  @param resourceLocation a description of where the template originated from,
-     *  used with error messages.
-     *
-     **/
-    public abstract TemplateToken[] parse(
-        char[] templateData,
-        ITemplateParserDelegate delegate,
-        Resource resourceLocation)
-        throws TemplateParseException;
+     * Parses the template data into an array of {@link TemplateToken}s.
+     * <p>
+     * The parser is <i>decidedly</i> not threadsafe, so care should be taken
+     * that only a single thread accesses it.
+     * 
+     * @param templateData
+     *            the HTML template to parse. Some tokens will hold a reference
+     *            to this array.
+     * @param delegate
+     *            object that "knows" about defined components
+     * @param resourceLocation
+     *            a description of where the template originated from, used with
+     *            error messages.
+     */
+    TemplateToken[] parse(char[] templateData,
+            ITemplateParserDelegate delegate, Resource resourceLocation)
+    throws TemplateParseException;
 }
