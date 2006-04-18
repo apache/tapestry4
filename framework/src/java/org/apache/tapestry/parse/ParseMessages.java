@@ -25,10 +25,13 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-class ParseMessages
+final class ParseMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(ParseMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(ParseMessages.class);
 
+    /* defeat instantiation */
+    private ParseMessages() { }
+    
     static String commentNotEnded(int line)
     {
         return _formatter.format("comment-not-ended", new Integer(line));

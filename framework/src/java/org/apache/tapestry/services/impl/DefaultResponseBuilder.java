@@ -13,11 +13,19 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
-import org.apache.hivemind.util.Defense;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.NullWriter;
+import org.apache.tapestry.markup.MarkupWriterSource;
+import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
+import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.web.WebResponse;
 
 
 /**
@@ -27,22 +35,50 @@ import org.apache.tapestry.services.ResponseBuilder;
  * @author jkuhnert
  */
 public class DefaultResponseBuilder implements ResponseBuilder
-{
+{   
+    /**
+     * Inside a {@link org.apache.tapestry.util.ContentType}, the output encoding is called
+     * "charset".
+     */
+    
+    public static final String ENCODING_KEY = "charset";
+    
+    protected RequestLocaleManager _localeManager;
+    
+    protected MarkupWriterSource _markupWriterSource;
+
+    protected WebResponse _webResponse;
+    
     /** Writer that creates JSON output response. */
     protected IMarkupWriter _writer;
     
     /**
-     * Creates a new markup writer response builder with a valid
-     * writer for persisting output to the response stream.
-     * 
+     * Used in testing only.
      * @param writer
-     *          The response writer used to render the response.
      */
     public DefaultResponseBuilder(IMarkupWriter writer)
     {
-        Defense.notNull(writer, "writer");
-        
         _writer = writer;
+    }
+    
+    /**
+     * Creates a new response builder with the required services it needs
+     * to render the response when {@link #renderResponse(IRequestCycle)} is called.
+     * 
+     * @param localeManager 
+     *          Used to set the locale on the response.
+     * @param markupWriterSource
+     *          Creates IMarkupWriter instance to be used.
+     * @param webResponse
+     *          Web response for output stream.
+     */
+    public DefaultResponseBuilder(RequestLocaleManager localeManager, 
+            MarkupWriterSource markupWriterSource,
+            WebResponse webResponse)
+    {
+        _localeManager = localeManager;
+        _markupWriterSource = markupWriterSource;
+        _webResponse = webResponse;
     }
     
     /**
@@ -50,7 +86,33 @@ public class DefaultResponseBuilder implements ResponseBuilder
      * {@inheritDoc}
      */
     public void renderResponse(IRequestCycle cycle)
+    throws IOException
     {
+        if (_writer == null) {
+            
+            _localeManager.persistLocale();
+            
+            IPage page = cycle.getPage();
+
+            ContentType contentType = page.getResponseContentType();
+
+            String encoding = contentType.getParameter(ENCODING_KEY);
+
+            if (encoding == null)
+            {
+                encoding = cycle.getEngine().getOutputEncoding();
+
+                contentType.setParameter(ENCODING_KEY, encoding);
+            }
+
+            PrintWriter printWriter = _webResponse.getPrintWriter(contentType);
+
+            _writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
+        
+        }
+        
+        // render response
+        
         cycle.renderPage(this);
         
         _writer.close();
@@ -62,7 +124,10 @@ public class DefaultResponseBuilder implements ResponseBuilder
      */
     public void render(IRender render, IRequestCycle cycle)
     {
-        render.render(_writer, cycle);
+        if (_writer == null)
+            render.render(NullWriter.getSharedInstance(), cycle);
+        else
+            render.render(_writer, cycle);
     }
 
     /** 

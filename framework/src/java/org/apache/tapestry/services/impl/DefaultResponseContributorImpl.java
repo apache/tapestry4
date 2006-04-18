@@ -14,16 +14,12 @@
 package org.apache.tapestry.services.impl;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ResponseContributor;
-import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebResponse;
 
 /**
@@ -34,13 +30,6 @@ import org.apache.tapestry.web.WebResponse;
  */
 public class DefaultResponseContributorImpl implements ResponseContributor
 {
-    /**
-     * Inside a {@link org.apache.tapestry.util.ContentType}, the output encoding is called
-     * "charset".
-     */
-    
-    public static final String ENCODING_KEY = "charset";
-    
     protected RequestLocaleManager _localeManager;
     
     protected MarkupWriterSource _markupWriterSource;
@@ -53,28 +42,8 @@ public class DefaultResponseContributorImpl implements ResponseContributor
     public ResponseBuilder createBuilder(IRequestCycle cycle)
     throws IOException
     {
-        _localeManager.persistLocale();
-        
-        IPage page = cycle.getPage();
-        
-        ContentType contentType = page.getResponseContentType();
-        
-        String encoding = contentType.getParameter(ENCODING_KEY);
-        
-        if (encoding == null)
-        {
-            encoding = cycle.getEngine().getOutputEncoding();
-            
-            contentType.setParameter(ENCODING_KEY, encoding);
-        }
-        
-        PrintWriter printWriter = _webResponse.getPrintWriter(contentType);
-        
-        IMarkupWriter writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
-        
-        DefaultResponseBuilder builder = new DefaultResponseBuilder(writer);
-        
-        return builder;
+        return new DefaultResponseBuilder(_localeManager, _markupWriterSource,
+                _webResponse);
     }
     
     /**

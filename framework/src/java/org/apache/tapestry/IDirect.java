@@ -30,7 +30,7 @@ public interface IDirect extends IComponent
      *
      **/
 
-    public void trigger(IRequestCycle cycle);
+    void trigger(IRequestCycle cycle);
 
     /**
      *  Invoked by the direct service to query the component as to
@@ -43,6 +43,6 @@ public interface IDirect extends IComponent
      * 
      **/
 
-    public boolean isStateful();
+    boolean isStateful();
 
 }

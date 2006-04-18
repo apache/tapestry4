@@ -28,7 +28,7 @@ public interface ITemplateParserDelegate
      * Returns true if the component id is valid, false if the component id is not recognized.
      */
 
-    public boolean getKnownComponent(String componentId);
+    boolean getKnownComponent(String componentId);
 
     /**
      * Returns true if the specified component allows a body, false otherwise. The parser uses this
@@ -38,7 +38,7 @@ public interface ITemplateParserDelegate
      *             if no such component exists
      */
 
-    public boolean getAllowBody(String componentId, Location location);
+    boolean getAllowBody(String componentId, Location location);
 
     /**
      * Used with implicit components to determine if the component allows a body or not.
@@ -52,12 +52,12 @@ public interface ITemplateParserDelegate
      * @since 3.0
      */
 
-    public boolean getAllowBody(String libraryId, String type, Location location);
+    boolean getAllowBody(String libraryId, String type, Location location);
 
     /**
      * Returns the name of the attribute used to indicate a component. The default is "jwcid", but
      * this can be overriden in a number of ways.
      */
 
-    public String getComponentAttributeName();
+    String getComponentAttributeName();
 }

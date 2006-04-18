@@ -37,7 +37,7 @@ public abstract class Select extends AbstractComponent
      * that the {@link Option}components it wraps can have access to it.
      */
 
-    private final static String ATTRIBUTE_NAME = "org.apache.tapestry.active.Select";
+    private static final String ATTRIBUTE_NAME = "org.apache.tapestry.active.Select";
 
     /**
      * @see org.apache.tapestry.AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)

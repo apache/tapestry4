@@ -40,11 +40,11 @@ public interface ISpecificationParser
      * 
      * @throws org.apache.hivemind.ApplicationRuntimeException on any error.
      */
-    public IApplicationSpecification parseApplicationSpecification(Resource resource);
+    IApplicationSpecification parseApplicationSpecification(Resource resource);
 
-    public IComponentSpecification parseComponentSpecification(Resource resource);
+    IComponentSpecification parseComponentSpecification(Resource resource);
 
-    public ILibrarySpecification parseLibrarySpecification(Resource resource);
+    ILibrarySpecification parseLibrarySpecification(Resource resource);
 
-    public IComponentSpecification parsePageSpecification(Resource resource);
+    IComponentSpecification parsePageSpecification(Resource resource);
 }

@@ -179,9 +179,7 @@
     Renders the active page as the response.
     
     <invoke-factory>
-      <construct class="impl.ResponseRendererImpl">
-        <set-service property="responseDelegateFactory" service-id="tapestry.services.ResponseDelegateFactory" />
-      </construct>
+      <construct class="impl.ResponseRendererImpl" />
     </invoke-factory>
   </service-point>
   
@@ -215,7 +213,8 @@
         <set-service property="strategySource" service-id="tapestry.persist.PropertyPersistenceStrategySource"/>       
         <set-service property="infrastructure" service-id="tapestry.Infrastructure"/>
 		<set-service property="absoluteURLBuilder" service-id="AbsoluteURLBuilder"/>
-		<set-service property="requestGlobals" service-id="tapestry.globals.RequestGlobals"/>    
+		<set-service property="requestGlobals" service-id="tapestry.globals.RequestGlobals"/>  
+        <set-service property="responseDelegateFactory" service-id="tapestry.services.ResponseDelegateFactory" />  
       </construct>
     </invoke-factory>
     

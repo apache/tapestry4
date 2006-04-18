@@ -152,9 +152,8 @@ public class RequestCycle implements IRequestCycle
         _strategySource = environment.getStrategySource();
         _absoluteURLBuilder = environment.getAbsoluteURLBuilder();
         _log = new ErrorLogImpl(environment.getErrorHandler(), LOG);
-
     }
-
+    
     /**
      * Alternate constructor used <strong>only for testing purposes</strong>.
      * 
@@ -474,8 +473,7 @@ public class RequestCycle implements IRequestCycle
         
         try
         {
-            //TODO: pass in a valid ResponseBuilder!
-            _page.renderPage(null, this);
+            _page.renderPage(getResponseBuilder(), this);
             
             // Shouldn't get this far, because the target component should
             // throw the RenderRewoundException.

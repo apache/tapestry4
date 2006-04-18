@@ -16,10 +16,7 @@ package org.apache.tapestry.services.impl;
 
 import java.io.IOException;
 
-import org.apache.commons.logging.Log;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.services.ResponseBuilder;
-import org.apache.tapestry.services.ResponseDelegateFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 
 /**
@@ -30,47 +27,9 @@ import org.apache.tapestry.services.ResponseRenderer;
  */
 public class ResponseRendererImpl implements ResponseRenderer
 {
-
-    private Log _log;
-
-    private ResponseDelegateFactory _responseDelegateFactory;
-
     public void renderResponse(IRequestCycle cycle)
         throws IOException
     {
-        ResponseBuilder builder = getResponseDelegateFactory().getResponseBuilder(
-                cycle);
-
-        cycle.setResponseBuilder(builder);
-
-        builder.renderResponse(cycle);
-    }
-
-    /** For subclass access to the injected Log. */
-    public Log getLog()
-    {
-        return _log;
-    }
-
-    /** For injection. */
-    public final void setLog(Log log)
-    {
-        _log = log;
-    }
-
-    /**
-     * For injection.
-     */
-    public void setResponseDelegateFactory(ResponseDelegateFactory responseDelegate)
-    {
-        _responseDelegateFactory = responseDelegate;
-    }
-
-    /**
-     * For subclass access.
-     */
-    public ResponseDelegateFactory getResponseDelegateFactory()
-    {
-        return _responseDelegateFactory;
+        cycle.getResponseBuilder().renderResponse(cycle);
     }
 }

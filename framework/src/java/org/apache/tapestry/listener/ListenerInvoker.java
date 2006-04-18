@@ -41,5 +41,5 @@ public interface ListenerInvoker
      *            the current request cycle, to be passed to the listener.
      */
 
-    public void invokeListener(IActionListener listener, IComponent source, IRequestCycle cycle);
+    void invokeListener(IActionListener listener, IComponent source, IRequestCycle cycle);
 }

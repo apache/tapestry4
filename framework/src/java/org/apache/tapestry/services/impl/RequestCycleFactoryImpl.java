@@ -14,8 +14,10 @@
 
 package org.apache.tapestry.services.impl;
 
+import java.io.IOException;
 import java.util.Iterator;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorHandler;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
@@ -29,6 +31,7 @@ import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.RequestCycleFactory;
 import org.apache.tapestry.services.RequestGlobals;
+import org.apache.tapestry.services.ResponseDelegateFactory;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.QueryParameterMap;
 import org.apache.tapestry.web.WebRequest;
@@ -56,6 +59,8 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
     private RequestGlobals _requestGlobals;
 
+    private ResponseDelegateFactory _responseDelegateFactory;
+    
     public void initializeService()
     {
         _environment = new RequestCycleEnvironment(_errorHandler, _infrastructure, _strategySource,
@@ -75,7 +80,13 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
         IRequestCycle cycle = new RequestCycle(engine, parameters, serviceName, _environment);
         
         _requestGlobals.store(cycle);
-
+        
+        try {
+            cycle.setResponseBuilder(_responseDelegateFactory.getResponseBuilder(cycle));
+        } catch (IOException e) {
+            throw new ApplicationRuntimeException("Error creating response builder.", e);
+        }
+        
         return cycle;
     }
 
@@ -154,5 +165,21 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
     public void setRequestGlobals(RequestGlobals requestGlobals)
     {
         _requestGlobals = requestGlobals;
+    }
+    
+    /**
+     * For injection.
+     */
+    public void setResponseDelegateFactory(ResponseDelegateFactory responseDelegate)
+    {
+        _responseDelegateFactory = responseDelegate;
+    }
+
+    /**
+     * For subclass access.
+     */
+    public ResponseDelegateFactory getResponseDelegateFactory()
+    {
+        return _responseDelegateFactory;
     }
 }

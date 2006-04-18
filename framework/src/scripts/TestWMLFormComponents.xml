@@ -78,13 +78,13 @@
             <![CDATA[
             <postfield name="(.*?)".*?/>
             ]]>
+            <match>u</match>
             <match>formids</match>
             <match>component</match>
             <match>page</match>
             <match>service</match>
             <match>submitmode</match>
             <match>submitname</match>
-            <match>u</match>
             
             <match>formids</match>          
             <match>action</match>

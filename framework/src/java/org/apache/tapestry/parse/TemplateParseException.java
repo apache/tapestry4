@@ -28,8 +28,8 @@ public class TemplateParseException extends Exception implements Locatable
 {
     private static final long serialVersionUID = 3741503276431589982L;
     
-	private Location _location;
-    private Throwable _rootCause;
+    private final Location _location;
+    private final Throwable _rootCause;
 
     public TemplateParseException(String message)
     {
