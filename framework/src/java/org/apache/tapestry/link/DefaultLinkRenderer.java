@@ -23,8 +23,9 @@ import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.ILink;
 
 /**
- * Default implementation of {@link org.apache.tapestry.link.ILinkRenderer}, which does nothing
- * special. Can be used as a base class to provide additional handling.
+ * Default implementation of {@link org.apache.tapestry.link.ILinkRenderer},
+ * which does nothing special. Can be used as a base class to provide additional
+ * handling.
  * 
  * @author Howard Lewis Ship, David Solis
  * @since 3.0
@@ -32,21 +33,25 @@ import org.apache.tapestry.engine.ILink;
 
 public class DefaultLinkRenderer implements ILinkRenderer
 {
+
     /**
-     * A shared instance used as a default for any link that doesn't explicitly override.
+     * A shared instance used as a default for any link that doesn't explicitly
+     * override.
      */
 
     public static final ILinkRenderer SHARED_INSTANCE = new DefaultLinkRenderer();
 
-    public void renderLink(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent linkComponent)
+    public void renderLink(IMarkupWriter writer, IRequestCycle cycle,
+            ILinkComponent linkComponent)
     {
         IMarkupWriter wrappedWriter = null;
 
         if (cycle.getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(LinkMessages.noNesting(), linkComponent, null,
-                    null);
+            throw new ApplicationRuntimeException(LinkMessages.noNesting(),
+                    linkComponent, null, null);
 
-        cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, linkComponent);
+        cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME,
+                linkComponent);
 
         boolean hasBody = getHasBody();
 
@@ -56,45 +61,45 @@ public class DefaultLinkRenderer implements ILinkRenderer
         {
             if (hasBody)
                 writer.begin(getElement());
-            else
+            else 
                 writer.beginEmpty(getElement());
-
-            writer.attribute(getUrlAttribute(), constructURL(linkComponent, cycle));
-
+            
+            writer.attribute(getUrlAttribute(), constructURL(linkComponent,
+                    cycle));
+            
             String target = linkComponent.getTarget();
-
+            
             if (HiveMind.isNonBlank(target))
                 writer.attribute(getTargetAttribute(), target);
-
+            
             beforeBodyRender(writer, cycle, linkComponent);
-
+            
             // Allow the wrapped components a chance to render.
             // Along the way, they may interact with this component
             // and cause the name variable to get set.
 
             wrappedWriter = writer.getNestedWriter();
         }
-        else
+        else 
             wrappedWriter = writer;
 
-        if (hasBody)
-            linkComponent.renderBody(wrappedWriter, cycle);
+        if (hasBody) linkComponent.renderBody(wrappedWriter, cycle);
 
         if (!disabled)
         {
             afterBodyRender(writer, cycle, linkComponent);
-
+            
             linkComponent.renderAdditionalAttributes(writer, cycle);
-
+            
             if (hasBody)
             {
                 wrappedWriter.close();
-
+                
                 // Close the <element> tag
-
+                
                 writer.end();
             }
-            else
+            else 
                 writer.closeTag();
         }
 
@@ -102,8 +107,9 @@ public class DefaultLinkRenderer implements ILinkRenderer
     }
 
     /**
-     * Converts the EngineServiceLink into a URI or URL. This implementation gets the scheme and
-     * anchor from the component (both of which may be null), and invokes
+     * Converts the EngineServiceLink into a URI or URL. This implementation
+     * gets the scheme and anchor from the component (both of which may be
+     * null), and invokes
      * {@link ILink#getURL(String, String, int, String, boolean)}.
      */
 
@@ -115,30 +121,32 @@ public class DefaultLinkRenderer implements ILinkRenderer
         Integer port = component.getPort();
         int portI = (port == null) ? 0 : port.intValue();
         String anchor = component.getAnchor();
-        
+
         return link.getURL(scheme, null, portI, anchor, true);
     }
 
     /**
-     * Invoked after the href attribute has been written but before the body of the link is rendered
-     * (but only if the link is not disabled).
+     * Invoked after the href attribute has been written but before the body of
+     * the link is rendered (but only if the link is not disabled).
      * <p>
      * This implementation does nothing.
      */
 
-    protected void beforeBodyRender(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent link)
+    protected void beforeBodyRender(IMarkupWriter writer, IRequestCycle cycle,
+            ILinkComponent link)
     {
     }
 
     /**
      * Invoked after the body of the link is rendered, but before
-     * {@link ILinkComponent#renderAdditionalAttributes(IMarkupWriter, IRequestCycle)}is invoked
-     * (but only if the link is not disabled).
+     * {@link ILinkComponent#renderAdditionalAttributes(IMarkupWriter, IRequestCycle)}is
+     * invoked (but only if the link is not disabled).
      * <p>
      * This implementation does nothing.
      */
 
-    protected void afterBodyRender(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent link)
+    protected void afterBodyRender(IMarkupWriter writer, IRequestCycle cycle,
+            ILinkComponent link)
     {
     }
 

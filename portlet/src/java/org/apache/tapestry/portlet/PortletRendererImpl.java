@@ -75,7 +75,8 @@ public class PortletRendererImpl implements PortletRenderer
 
         ResponseBuilder builder = new DefaultResponseBuilder(nested);
 
-        cycle.renderPage(builder);
+        builder.renderResponse(cycle);
+        // cycle.renderPage(builder);
 
         String id = "Tapestry Portlet " + _applicationId + " " + namespace;
 

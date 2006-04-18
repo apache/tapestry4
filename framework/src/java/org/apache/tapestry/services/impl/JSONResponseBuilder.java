@@ -134,7 +134,7 @@ public class JSONResponseBuilder implements ResponseBuilder
     /**
      * {@inheritDoc}
      */
-    public void render(IRender render, IRequestCycle cycle)
+    public void render(IMarkupWriter writer, IRender render, IRequestCycle cycle)
     {
         if (IJSONRender.class.isInstance(render)
                 && IComponent.class.isInstance(render))
@@ -150,7 +150,7 @@ public class JSONResponseBuilder implements ResponseBuilder
             
             json.renderComponent(_writer, cycle);
         }
-
+        
         render.render(_nullWriter, cycle);
     }
 

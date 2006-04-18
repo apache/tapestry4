@@ -659,36 +659,34 @@ public class MockTester
 
         PatternMatcher matcher = getMatcher();
         Pattern compiled = compile(pattern);
-
-        List l = element.getChildren("match");
+        
+        List<Element> l = element.getChildren("match");
         int count = l.size();
         int i = 0;
 
         while (matcher.contains(input, compiled))
         {
             MatchResult match = matcher.getMatch();
-
+            String actual = match.group(subgroup);
+            
+            boolean matched = contentContains(l, actual);
+            
             if (i >= count)
             {
                 System.err.println(outputString);
                 throw new AssertionFailedError(buildTestName(name) + ": Too many matches for '"
                         + pattern + "'.");
             }
-
-            Element e = (Element) l.get(i);
-            String expected = e.getTextTrim();
-            String actual = match.group(subgroup);
-
-            if (!actual.equals(expected))
-            {
+            
+            if (!matched) {
                 System.err.println(outputString);
-                throw new AssertionFailedError(buildTestName(name) + "[" + i + "]: Expected '"
-                        + expected + "' but got '" + actual + "'.");
+                throw new AssertionFailedError(buildTestName(name) + ": No expected match found for "
+                        + "output of '" + actual + "'. ");
             }
-
+            
             i++;
         }
-
+        
         if (i < count)
         {
             System.err.println(outputString);
@@ -697,6 +695,16 @@ public class MockTester
         }
     }
 
+    private boolean contentContains(List<Element> elements, String text)
+    {
+        for (Element e : elements) {
+            if (e.getTextTrim().equals(text))
+                return true;
+        }
+        
+        return false;
+    }
+    
     private void executeExceptionAssertions(Element request)
     {
         List l = request.getChildren("assert-exception");

@@ -15,9 +15,9 @@
 package org.apache.tapestry.html;
 
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.test.Creator;
 import org.easymock.MockControl;
@@ -92,17 +92,18 @@ public class TestPageEvents extends HiveMindTestCase
 
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) control.getMock();
-        
-        IMarkupWriter writer = (IMarkupWriter)newMock(IMarkupWriter.class);
         ResponseBuilder builder = (ResponseBuilder)newMock(ResponseBuilder.class);
         
         cycle.isRewinding();
         control.setReturnValue(true);
-
-        builder.getWriter();
-        setReturnValue(builder, writer);
         
-        builder.render(page, cycle);
+        cycle.isRewinding();
+        control.setReturnValue(true);
+        
+        cycle.isRewinding();
+        control.setReturnValue(true);
+        
+        builder.render(NullWriter.getSharedInstance(), page, cycle);
         
         replayControls();
         
@@ -114,11 +115,14 @@ public class TestPageEvents extends HiveMindTestCase
 
         cycle.isRewinding();
         control.setReturnValue(true);
-
-        builder.getWriter();
-        setReturnValue(builder, writer);
         
-        builder.render(page, cycle);
+        cycle.isRewinding();
+        control.setReturnValue(true);
+        
+        cycle.isRewinding();
+        control.setReturnValue(true);
+        
+        builder.render(NullWriter.getSharedInstance(), page, cycle);
         
         replayControls();
 
@@ -136,11 +140,14 @@ public class TestPageEvents extends HiveMindTestCase
 
         cycle.isRewinding();
         control.setReturnValue(true);
-
-        builder.getWriter();
-        setReturnValue(builder, writer);
         
-        builder.render(page, cycle);
+        cycle.isRewinding();
+        control.setReturnValue(true);
+        
+        cycle.isRewinding();
+        control.setReturnValue(true);
+        
+        builder.render(NullWriter.getSharedInstance(), page, cycle);
         
         replayControls();
 
@@ -158,17 +165,18 @@ public class TestPageEvents extends HiveMindTestCase
 
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) control.getMock();
-
-        IMarkupWriter writer = (IMarkupWriter)newMock(IMarkupWriter.class);
         ResponseBuilder builder = (ResponseBuilder)newMock(ResponseBuilder.class);
         
         cycle.isRewinding();
         control.setReturnValue(true);
-
-        builder.getWriter();
-        setReturnValue(builder, writer);
         
-        builder.render(page, cycle);
+        cycle.isRewinding();
+        control.setReturnValue(true);
+        
+        cycle.isRewinding();
+        control.setReturnValue(true);
+        
+        builder.render(NullWriter.getSharedInstance(), page, cycle);
         
         replayControls();
 
@@ -180,11 +188,14 @@ public class TestPageEvents extends HiveMindTestCase
 
         cycle.isRewinding();
         control.setReturnValue(true);
-
-        builder.getWriter();
-        setReturnValue(builder, writer);
         
-        builder.render(page, cycle);
+        cycle.isRewinding();
+        control.setReturnValue(true);
+        
+        cycle.isRewinding();
+        control.setReturnValue(true);
+        
+        builder.render(NullWriter.getSharedInstance(), page, cycle);
         
         replayControls();
 
@@ -202,11 +213,14 @@ public class TestPageEvents extends HiveMindTestCase
 
         cycle.isRewinding();
         control.setReturnValue(true);
-
-        builder.getWriter();
-        setReturnValue(builder, writer);
         
-        builder.render(page, cycle);
+        cycle.isRewinding();
+        control.setReturnValue(true);
+        
+        cycle.isRewinding();
+        control.setReturnValue(true);
+        
+        builder.render(NullWriter.getSharedInstance(), page, cycle);
         
         replayControls();
 

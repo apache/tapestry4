@@ -84,10 +84,14 @@ public class TestUnprotectedAsset extends HiveMindTestCase
 
         ResourceDigestSourceImpl s = new ResourceDigestSourceImpl();
         s.setClassResolver(new DefaultClassResolver());
-
+        
+        // call methods once to be sure things get cached properly
+        
         assertEquals("a5f4663532ea3efe22084df086482290", s
                 .getDigestForResource("/org/apache/tapestry/asset/tapestry-in-action.png"));
-
+        
+        matcher.contains("/org/apache/tapestry/asset/tapestry-in-action.png", pr);
+        
         long currTime = System.currentTimeMillis();
         s.getDigestForResource("/org/apache/tapestry/asset/tapestry-in-action.png");
         long drtime = System.currentTimeMillis() - currTime;

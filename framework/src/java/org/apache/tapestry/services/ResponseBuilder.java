@@ -44,11 +44,14 @@ public interface ResponseBuilder {
      * under the hood type logic involving ajax/json/normal responses, where
      * needed.
      * 
+     * @param writer 
+     *          The markup writer to use, this may be ignored or swapped
+     *          out for a different writer depending on the implementation being used.
      * @param render The renderable object to render
      * @param cycle Render request cycle
      */
     
-    void render(IRender render, IRequestCycle cycle);
+    void render(IMarkupWriter writer, IRender render, IRequestCycle cycle);
     
     /**
      * Returns the IMarkupWriter associated with this response, it may or may
