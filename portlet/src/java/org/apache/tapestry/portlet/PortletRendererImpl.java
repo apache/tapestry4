@@ -72,12 +72,11 @@ public class PortletRendererImpl implements PortletRenderer
         TapestryUtils.storePageRenderSupport(cycle, support);
 
         IMarkupWriter nested = writer.getNestedWriter();
-
+        
         ResponseBuilder builder = new DefaultResponseBuilder(nested);
-
+        
         builder.renderResponse(cycle);
-        // cycle.renderPage(builder);
-
+        
         String id = "Tapestry Portlet " + _applicationId + " " + namespace;
 
         writer.comment("BEGIN " + id);
@@ -87,7 +86,7 @@ public class PortletRendererImpl implements PortletRenderer
 
         support.writeBodyScript(writer, cycle);
 
-        nested.close();
+        // nested.close();
 
         support.writeInitializationScript(writer);
 
