@@ -26,6 +26,8 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.markup.AsciiMarkupFilter;
 import org.apache.tapestry.markup.MarkupWriterImpl;
+import org.apache.tapestry.services.ResponseBuilder;
+import org.apache.tapestry.services.impl.DefaultResponseBuilder;
 import org.easymock.MockControl;
 
 /**
@@ -71,6 +73,11 @@ public class TestPageRenderSupport extends HiveMindTestCase
         return new MarkupWriterImpl("text/html", new PrintWriter(_writer), new AsciiMarkupFilter());
     }
 
+    private ResponseBuilder newBuilder(IMarkupWriter writer)
+    {
+        return new DefaultResponseBuilder(writer);
+    }
+    
     private void assertOutput(String[] expectedLines)
     {
         StringBuffer buffer = new StringBuffer();
@@ -105,7 +112,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l, newBuilder(null));
 
         assertSame(l, prs.getLocation());
 
@@ -121,7 +128,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l, newBuilder(writer));
 
         assertEquals("tapestry_preload[0].src", prs.getPreloadedImageReference("/foo/bar.gif"));
         assertEquals("tapestry_preload[1].src", prs.getPreloadedImageReference("/zip/zap.png"));
@@ -152,7 +159,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "NAMESPACE", l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "NAMESPACE", l, newBuilder(writer));
 
         assertEquals("NAMESPACE_preload[0].src", prs.getPreloadedImageReference("/foo/bar.gif"));
 
@@ -176,7 +183,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l, newBuilder(writer));
 
         prs.addBodyScript("myBodyScript();");
 
@@ -196,7 +203,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l, newBuilder(null));
 
         assertEquals("foo", prs.getUniqueString("foo"));
         assertEquals("foo_0", prs.getUniqueString("foo"));
@@ -213,7 +220,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "NAMESPACE", l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "NAMESPACE", l, newBuilder(null));
 
         assertEquals("fooNAMESPACE", prs.getUniqueString("foo"));
         assertEquals("fooNAMESPACE_0", prs.getUniqueString("foo"));
@@ -231,7 +238,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(factory, "", l, newBuilder(writer));
 
         prs.addInitializationScript("myInitializationScript1();");
         prs.addInitializationScript("myInitializationScript2();");
@@ -240,7 +247,9 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         assertOutput(new String[]
         { "<script language=\"JavaScript\" type=\"text/javascript\"><!--",
-                "myInitializationScript1();", "myInitializationScript2();", "", "// --></script>" });
+                "dojo.event.connect(window, 'onload', function(e) {",
+                "myInitializationScript1();", "myInitializationScript2();", 
+                "});", "// --></script>" });
 
         verifyControls();
     }
@@ -269,7 +278,7 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         replayControls();
 
-        PageRenderSupportImpl prs = new PageRenderSupportImpl(assetFactory, "", null);
+        PageRenderSupportImpl prs = new PageRenderSupportImpl(assetFactory, "", null, newBuilder(writer));
 
         prs.addExternalScript(script1);
         prs.addExternalScript(script2);

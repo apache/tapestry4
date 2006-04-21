@@ -84,7 +84,7 @@ public class PopupLinkRenderer extends DefaultLinkRenderer
         builder.addln("newWindow.focus();");
         builder.end();
 
-        support.addBodyScript(builder.toString());
+        support.addBodyScript(component, builder.toString());
 
         return "javascript:" + functionName + "();";
     }

@@ -16,6 +16,7 @@ package org.apache.tapestry.html;
 
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
@@ -59,9 +60,17 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
 
     public void addInitializationScript(String script)
     {
-        _pageRenderSupport.addInitializationScript(script);
+        addInitializationScript(null, script);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void addInitializationScript(IComponent target, String script)
+    {
+        _pageRenderSupport.addInitializationScript(target, script);
+    }
+    
     /**
      * Adds additional scripting code to the page. This code will be added to a large block of
      * scripting code at the top of the page (i.e., the before the &lt;body&gt; tag).
@@ -81,9 +90,18 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
 
     public void addBodyScript(String script)
     {
-        _pageRenderSupport.addBodyScript(script);
+        addBodyScript(null, script);
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    public void addBodyScript(IComponent target, String script)
+    {
+        _pageRenderSupport.addBodyScript(target, script);
+    }
+    
     /**
      * Used to include a script from an outside URL (the scriptLocation is a URL, probably obtained
      * from an asset. This adds an &lt;script src="..."&gt; tag before the main &lt;script&gt; tag.
@@ -94,9 +112,18 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
 
     public void addExternalScript(Resource scriptLocation)
     {
-        _pageRenderSupport.addExternalScript(scriptLocation);
+        addExternalScript(null, scriptLocation);
     }
 
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    public void addExternalScript(IComponent target, Resource scriptLocation)
+    {
+        _pageRenderSupport.addExternalScript(target, scriptLocation);
+    }
+    
     /**
      * Retrieves the <code>Body</code> that was stored into the request cycle. This allows
      * components wrapped by the <code>Body</code> to locate it and access the services it
@@ -117,7 +144,7 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
         super.prepareForRender(cycle);
 
         _pageRenderSupport = new PageRenderSupportImpl(getAssetFactory(), getResponse()
-                .getNamespace(), getLocation());
+                .getNamespace(), getLocation(), cycle.getResponseBuilder());
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)

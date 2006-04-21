@@ -32,5 +32,5 @@ public interface PageRenderSupport extends IScriptProcessor
      * <code>tapestry_preload[7].src</code>.
      */
 
-    public String getPreloadedImageReference(String url);
+    String getPreloadedImageReference(String url);
 }

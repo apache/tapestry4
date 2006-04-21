@@ -17,6 +17,7 @@ package org.apache.tapestry.script;
 import java.util.Map;
 
 import org.apache.hivemind.Resource;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScriptProcessor;
 import org.apache.tapestry.coerce.ValueConverter;
@@ -92,17 +93,32 @@ public class ScriptSessionImpl implements ScriptSession
 
     public void addBodyScript(String script)
     {
-        _processor.addBodyScript(script);
+        addBodyScript(null, script);
     }
-
+    
+    public void addBodyScript(IComponent target, String script)
+    {
+        _processor.addBodyScript(target, script);
+    }
+    
     public void addExternalScript(Resource resource)
     {
-        _processor.addExternalScript(resource);
+        addExternalScript(null, resource);
+    }
+    
+    public void addExternalScript(IComponent target, Resource resource)
+    {
+        _processor.addExternalScript(target, resource);
     }
 
     public void addInitializationScript(String script)
     {
-        _processor.addInitializationScript(script);
+        addInitializationScript(null, script);
+    }
+
+    public void addInitializationScript(IComponent target, String script)
+    {
+        _processor.addInitializationScript(target, script);
     }
 
     public String getUniqueString(String baseValue)

@@ -153,12 +153,36 @@ public class JSONResponseBuilder implements ResponseBuilder
         
         render.render(_nullWriter, cycle);
     }
-
+    
     /**
      * {@inheritDoc}
      */
     public IMarkupWriter getWriter()
     {
         return _nullWriter;
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isBodyScriptAllowed(IComponent target)
+    {
+        return false;
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isExternalScriptAllowed(IComponent target)
+    {
+        return false;
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isInitializationScriptAllowed(IComponent target)
+    {
+        return false;
     }
 }

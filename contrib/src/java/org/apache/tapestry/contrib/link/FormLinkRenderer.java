@@ -91,7 +91,7 @@ public class FormLinkRenderer extends DefaultLinkRenderer
                         null, null);
 
             String function = generateFormFunction(formName, l, anchor);
-            body.addBodyScript(function);
+            body.addBodyScript(linkComponent, function);
 
             if (hasBody)
                 writer.begin(getElement());

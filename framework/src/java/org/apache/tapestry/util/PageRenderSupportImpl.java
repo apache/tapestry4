@@ -24,11 +24,13 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.asset.AssetFactory;
+import org.apache.tapestry.services.ResponseBuilder;
 
 /**
  * Implementation of {@link org.apache.tapestry.PageRenderSupport}. The
@@ -43,6 +45,8 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
     private final Location _location;
 
+    private final ResponseBuilder _builder;
+    
     // Lines that belong inside the onLoad event handler for the <body> tag.
     private StringBuffer _initializationScript;
 
@@ -71,18 +75,20 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
     private final IdAllocator _idAllocator;
 
     private final String _preloadName;
-
-    public PageRenderSupportImpl(AssetFactory assetFactory, String namespace, Location location)
+    
+    public PageRenderSupportImpl(AssetFactory assetFactory, String namespace, 
+            Location location, ResponseBuilder builder)
     {
         Defense.notNull(assetFactory, "assetService");
-
+        
         _assetFactory = assetFactory;
         _location = location;
         _idAllocator = new IdAllocator(namespace);
-
+        _builder = builder;
+        
         _preloadName = (namespace.equals("") ? "tapestry" : namespace) + "_preload";
     }
-
+    
     /**
      * Returns the location, which may be used in error messages. In practical terms, this is the
      * location of the {@link org.apache.tapestry.html.Body}&nbsp;component.
@@ -123,26 +129,48 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
         return reference;
     }
-
+    
     public void addBodyScript(String script)
     {
+        addBodyScript(null, script);
+    }
+
+    public void addBodyScript(IComponent target, String script)
+    {
+        if (!_builder.isBodyScriptAllowed(target)) return;
+        
         if (_bodyScript == null)
             _bodyScript = new StringBuffer(script.length());
 
         _bodyScript.append(script);
     }
-
+    
     public void addInitializationScript(String script)
     {
+        addInitializationScript(null, script);
+    }
+
+    public void addInitializationScript(IComponent target, String script)
+    {
+        if (!_builder.isInitializationScriptAllowed(target)) return;
+        
         if (_initializationScript == null)
             _initializationScript = new StringBuffer(script.length() + 1);
 
         _initializationScript.append(script);
         _initializationScript.append('\n');
     }
-
+    
     public void addExternalScript(Resource scriptLocation)
     {
+        addExternalScript(null, scriptLocation);
+
+    }
+    
+    public void addExternalScript(IComponent target, Resource scriptLocation)
+    {
+        if (!_builder.isExternalScriptAllowed(target)) return;
+        
         if (_externalScripts == null)
             _externalScripts = new ArrayList();
 
@@ -239,9 +267,13 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         writer.attribute("language", "JavaScript");
         writer.attribute("type", "text/javascript");
         writer.printRaw("<!--\n");
-
+        
+        writer.printRaw("dojo.event.connect(window, 'onload', function(e) {\n");
+        
         writer.printRaw(_initializationScript.toString());
-
+        
+        writer.printRaw("});");
+        
         writer.printRaw("\n// -->");
         writer.end();
     }
