@@ -15,16 +15,19 @@
 package org.apache.tapestry.event;
 
 /**
- * An object that listens to page events. The {@link org.apache.tapestry.IPage page}generates
- * events before and after rendering a response. These events also occur before and after a form
+ * An object that listens to page events. The
+ * {@link org.apache.tapestry.IPage page}generates events before and after
+ * rendering a response. These events also occur before and after a form
  * rewinds.
  * 
  * @author Howard Lewis Ship
  * @since 1.0.5
- * @deprecated To be removed in 4.1. Use {@link org.apache.tapestry.event.PageBeginRenderListener}
- *             and/or {@link org.apache.tapestry.event.PageEndRenderListener}.
+ * @deprecated To be removed in 4.1. Use
+ *             {@link org.apache.tapestry.event.PageBeginRenderListener} and/or
+ *             {@link org.apache.tapestry.event.PageEndRenderListener}.
  */
 
-public interface PageRenderListener extends PageBeginRenderListener, PageEndRenderListener
+public interface PageRenderListener extends PageBeginRenderListener,
+        PageEndRenderListener
 {
 }

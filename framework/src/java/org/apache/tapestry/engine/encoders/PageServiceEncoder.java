@@ -20,16 +20,19 @@ import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.services.ServiceConstants;
 
 /**
- * The canonical implementation of {@link org.apache.tapestry.engine.ServiceEncoder}, it encodes
- * page name and a service name. The page name becomes the servlet path, prefixed with "/" and
- * suffixed with a dot and a particular extension. In this way, "/app?service=page&amp;page=Home"
- * becomes simply "Home.html". This is most suitable for the "page" and "external" services.
+ * The canonical implementation of
+ * {@link org.apache.tapestry.engine.ServiceEncoder}, it encodes page name and
+ * a service name. The page name becomes the servlet path, prefixed with "/" and
+ * suffixed with a dot and a particular extension. In this way,
+ * "/app?service=page&amp;page=Home" becomes simply "Home.html". This is most
+ * suitable for the "page" and "external" services.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class PageServiceEncoder implements ServiceEncoder
 {
+
     private String _extension;
 
     private String _serviceName;
@@ -38,15 +41,13 @@ public class PageServiceEncoder implements ServiceEncoder
     {
         String service = encoding.getParameterValue(ServiceConstants.SERVICE);
 
-        if (!service.equals(_serviceName))
-            return;
+        if (!service.equals(_serviceName)) return;
 
         String pageName = encoding.getParameterValue(ServiceConstants.PAGE);
 
         // Only handle pages in the application namespace (not from a library).
 
-        if (pageName.indexOf(INamespace.SEPARATOR) >= 0)
-            return;
+        if (pageName.indexOf(INamespace.SEPARATOR) >= 0) return;
 
         StringBuffer buffer = new StringBuffer("/");
         buffer.append(pageName);
@@ -64,13 +65,11 @@ public class PageServiceEncoder implements ServiceEncoder
         String servletPath = encoding.getServletPath();
 
         int dotx = servletPath.lastIndexOf('.');
-        if (dotx < 0)
-            return;
+        if (dotx < 0) return;
 
         String extension = servletPath.substring(dotx + 1);
 
-        if (!extension.equals(_extension))
-            return;
+        if (!extension.equals(_extension)) return;
 
         // Skip the slash and the dot.
 

@@ -23,8 +23,10 @@ import org.apache.hivemind.impl.BaseLocatable;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class InstantiateClassStateObjectFactory extends BaseLocatable implements StateObjectFactory
+public class InstantiateClassStateObjectFactory extends BaseLocatable implements
+        StateObjectFactory
 {
+
     private Class _objectClass;
 
     public Object createStateObject()
@@ -35,9 +37,9 @@ public class InstantiateClassStateObjectFactory extends BaseLocatable implements
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(StateMessages.unableToInstantiateObject(
-                    _objectClass,
-                    ex), getLocation(), ex);
+            throw new ApplicationRuntimeException(StateMessages
+                    .unableToInstantiateObject(_objectClass, ex),
+                    getLocation(), ex);
         }
     }
 

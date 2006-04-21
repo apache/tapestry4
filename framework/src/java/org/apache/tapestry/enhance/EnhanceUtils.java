@@ -35,7 +35,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class EnhanceUtils
+public final class EnhanceUtils
 {
     public static final MethodSignature FINISH_LOAD_SIGNATURE = new MethodSignature(void.class,
             "finishLoad", new Class[]
@@ -49,6 +49,29 @@ public class EnhanceUtils
             void.class, "cleanupAfterRender", new Class[]
             { IRequestCycle.class }, null);
 
+    /**
+     * Used to unwrap primitive types inside the accessor method. In each case, the binding is in a
+     * variable named "binding", and {0} will be the actual type of the property. The Map is keyed
+     * on the primtive type.
+     */
+
+    private static Map _unwrappers = new HashMap();
+
+    static
+    {
+        _unwrappers.put(boolean.class, "toBoolean");
+        _unwrappers.put(byte.class, "toByte");
+        _unwrappers.put(char.class, "toChar");
+        _unwrappers.put(short.class, "toShort");
+        _unwrappers.put(int.class, "toInt");
+        _unwrappers.put(long.class, "toLong");
+        _unwrappers.put(float.class, "toFloat");
+        _unwrappers.put(double.class, "toDouble");
+    }
+    
+    /* defeat instantiation */
+    private EnhanceUtils() { }
+    
     public static String createMutatorMethodName(String propertyName)
     {
         return "set" + upcase(propertyName);
@@ -179,26 +202,6 @@ public class EnhanceUtils
         Double wrapped = (Double) binding.getObject(Double.class);
 
         return wrapped == null ? 0.0d : wrapped.doubleValue();
-    }
-
-    /**
-     * Used to unwrap primitive types inside the accessor method. In each case, the binding is in a
-     * variable named "binding", and {0} will be the actual type of the property. The Map is keyed
-     * on the primtive type.
-     */
-
-    private static Map _unwrappers = new HashMap();
-
-    static
-    {
-        _unwrappers.put(boolean.class, "toBoolean");
-        _unwrappers.put(byte.class, "toByte");
-        _unwrappers.put(char.class, "toChar");
-        _unwrappers.put(short.class, "toShort");
-        _unwrappers.put(int.class, "toInt");
-        _unwrappers.put(long.class, "toLong");
-        _unwrappers.put(float.class, "toFloat");
-        _unwrappers.put(double.class, "toDouble");
     }
 
     /**

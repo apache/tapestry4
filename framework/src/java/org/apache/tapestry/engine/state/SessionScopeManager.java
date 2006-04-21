@@ -19,21 +19,23 @@ import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
 
 /**
- * Manager for the 'session' scope; state objects are stored as HttpSession attributes. The
- * HttpSession is created as necessary.
+ * Manager for the 'session' scope; state objects are stored as HttpSession
+ * attributes. The HttpSession is created as necessary.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class SessionScopeManager implements StateObjectPersistenceManager
 {
+
     private WebRequest _request;
 
     private String _applicationId;
 
     private String buildKey(String objectName)
     {
-        // For Portlets, the application id is going to be somewhat redundant, since
+        // For Portlets, the application id is going to be somewhat redundant,
+        // since
         // the Portlet API keeps portlets seperate anyway.
 
         return "state:" + _applicationId + ":" + objectName;
@@ -52,8 +54,7 @@ public class SessionScopeManager implements StateObjectPersistenceManager
     {
         WebSession session = _request.getSession(false);
 
-        if (session == null)
-            return false;
+        if (session == null) return false;
 
         return session.getAttribute(buildKey(objectName)) != null;
     }
@@ -79,8 +80,7 @@ public class SessionScopeManager implements StateObjectPersistenceManager
         {
             SessionStoreOptimized optimized = (SessionStoreOptimized) stateObject;
 
-            if (!optimized.isStoreToSessionNeeded())
-                return;
+            if (!optimized.isStoreToSessionNeeded()) return;
         }
 
         String key = buildKey(objectName);

@@ -17,14 +17,15 @@ package org.apache.tapestry.engine.state;
 import org.apache.hivemind.impl.BaseLocatable;
 
 /**
- * Contribution to the tapestry.state.ApplicationObjects or tapestry.state.FactoryObjects
- * configuration points.
+ * Contribution to the tapestry.state.ApplicationObjects or
+ * tapestry.state.FactoryObjects configuration points.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class StateObjectContribution extends BaseLocatable
 {
+
     private String _name;
 
     private String _scope;

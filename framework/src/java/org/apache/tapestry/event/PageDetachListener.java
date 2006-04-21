@@ -31,5 +31,5 @@ public interface PageDetachListener extends EventListener
      * Invoked by the page from its {@link org.apache.tapestry.IPage#detach()}method.
      */
 
-    public void pageDetached(PageEvent event);
+    void pageDetached(PageEvent event);
 }

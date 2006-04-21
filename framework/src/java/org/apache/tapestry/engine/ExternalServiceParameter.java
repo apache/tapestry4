@@ -24,6 +24,7 @@ import org.apache.hivemind.util.Defense;
  */
 public class ExternalServiceParameter
 {
+
     private String _pageName;
 
     private Object[] _serviceParameters;

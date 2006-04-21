@@ -22,6 +22,7 @@ import org.apache.hivemind.util.Defense;
  */
 public class StateObjectManagerImpl implements StateObjectManager
 {
+
     private StateObjectPersistenceManager _persistenceManager;
 
     private StateObjectFactory _factory;

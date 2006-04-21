@@ -42,6 +42,12 @@ public class NumberTranslator extends FormatTranslator
     {
     }
 
+    //TODO: Needed until HIVEMIND-134 fix is available
+    public NumberTranslator(String initializer)
+    {
+        PropertyUtils.configureProperties(this, initializer);
+    }
+    
     protected String formatObject(IFormComponent field, Locale locale, Object object)
     {
         Number number = (Number) object;
@@ -54,12 +60,6 @@ public class NumberTranslator extends FormatTranslator
         }
 
         return super.formatObject(field, locale, object);
-    }
-
-    // Needed until HIVEMIND-134 fix is available
-    public NumberTranslator(String initializer)
-    {
-        PropertyUtils.configureProperties(this, initializer);
     }
 
     /**

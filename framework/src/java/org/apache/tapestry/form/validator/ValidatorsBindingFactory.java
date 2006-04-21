@@ -22,6 +22,10 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.AbstractBindingFactory;
 
+/**
+ * 
+ * @author unknown
+ */
 public class ValidatorsBindingFactory extends AbstractBindingFactory
 {
     private ValidatorFactory _validatorFactory;

@@ -15,18 +15,19 @@
 package org.apache.tapestry.engine.state;
 
 /**
- * Interface for the nuts and bolts of getting and storing application state objects. These are
- * intended to be stateless, and manage a number of state objects, mapping objectNames to internal
- * storage in some way.
+ * Interface for the nuts and bolts of getting and storing application state
+ * objects. These are intended to be stateless, and manage a number of state
+ * objects, mapping objectNames to internal storage in some way.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface StateObjectPersistenceManager
 {
-    public boolean exists(String objectName);
 
-    public Object get(String objectName, StateObjectFactory factory);
+    boolean exists(String objectName);
 
-    public void store(String objectName, Object stateObject);
+    Object get(String objectName, StateObjectFactory factory);
+
+    void store(String objectName, Object stateObject);
 }

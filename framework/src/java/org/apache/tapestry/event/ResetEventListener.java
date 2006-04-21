@@ -26,5 +26,5 @@ import java.util.EventListener;
  */
 public interface ResetEventListener extends EventListener
 {
-    public void resetEventDidOccur();
+    void resetEventDidOccur();
 }

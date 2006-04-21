@@ -28,9 +28,10 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.LinkFactory;
 
 /**
- * Restarts the Tapestry application. This is normally reserved for dealing with catastrophic
- * failures of the application. Discards the {@link javax.servlet.http.HttpSession}, if any, and
- * redirects to the Tapestry application servlet URL (invoking the {@link HomeService}).
+ * Restarts the Tapestry application. This is normally reserved for dealing with
+ * catastrophic failures of the application. Discards the
+ * {@link javax.servlet.http.HttpSession}, if any, and redirects to the
+ * Tapestry application servlet URL (invoking the {@link HomeService}).
  * 
  * @author Howard Lewis Ship
  * @since 1.0.9
@@ -38,6 +39,7 @@ import org.apache.tapestry.services.LinkFactory;
 
 public class RestartService implements IEngineService
 {
+
     /** @since 4.0 */
     private Log _log;
 
@@ -56,14 +58,16 @@ public class RestartService implements IEngineService
     public ILink getLink(boolean post, Object parameter)
     {
         if (parameter != null)
-            throw new IllegalArgumentException(EngineMessages.serviceNoParameter(this));
+            throw new IllegalArgumentException(EngineMessages
+                    .serviceNoParameter(this));
 
         Map parameters = new HashMap();
 
         return _linkFactory.constructLink(this, post, parameters, true);
     }
 
-    public void service(IRequestCycle cycle) throws IOException
+    public void service(IRequestCycle cycle)
+        throws IOException
     {
         HttpSession session = _request.getSession(false);
 

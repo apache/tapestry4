@@ -17,13 +17,16 @@ package org.apache.tapestry.enhance;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- * A worker that is employed by the {@link org.apache.tapestry.services.ComponentConstructorFactory}
- * to perform some enhancement.
+ * A worker that is employed by the
+ * {@link org.apache.tapestry.services.ComponentConstructorFactory} to perform
+ * some enhancement.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface EnhancementWorker
 {
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec);
+
+    void performEnhancement(EnhancementOperation op,
+            IComponentSpecification spec);
 }

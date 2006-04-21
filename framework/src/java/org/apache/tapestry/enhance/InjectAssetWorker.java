@@ -34,12 +34,14 @@ import org.apache.tapestry.spec.IComponentSpecification;
  */
 public class InjectAssetWorker implements EnhancementWorker
 {
+
     private ErrorLog _errorLog;
 
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
+    public void performEnhancement(EnhancementOperation op,
+            IComponentSpecification spec)
     {
         Iterator i = spec.getAssetNames().iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             String name = (String) i.next();
 
@@ -55,33 +57,35 @@ public class InjectAssetWorker implements EnhancementWorker
                 }
                 catch (Exception ex)
                 {
-                    _errorLog.error(EnhanceMessages.errorAddingProperty(propertyName, op
-                            .getBaseClass(), ex), as.getLocation(), ex);
+                    _errorLog.error(EnhanceMessages.errorAddingProperty(
+                            propertyName, op.getBaseClass(), ex), as
+                            .getLocation(), ex);
                 }
             }
         }
     }
 
-    public void injectAsset(EnhancementOperation op, String assetName, String propertyName,
-            Location location)
+    public void injectAsset(EnhancementOperation op, String assetName,
+            String propertyName, Location location)
     {
         Defense.notNull(op, "op");
         Defense.notNull(assetName, "assetName");
         Defense.notNull(propertyName, "propertyName");
 
-        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, null);
+        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName,
+                null);
 
         op.claimReadonlyProperty(propertyName);
 
         if (!propertyType.isAssignableFrom(IAsset.class))
-            throw new ApplicationRuntimeException(EnhanceMessages.incompatiblePropertyType(
-                    propertyName,
-                    propertyType,
-                    IAsset.class));
+            throw new ApplicationRuntimeException(EnhanceMessages
+                    .incompatiblePropertyType(propertyName, propertyType,
+                            IAsset.class));
 
         String methodName = op.getAccessorMethodName(propertyName);
 
-        MethodSignature sig = new MethodSignature(propertyType, methodName, null, null);
+        MethodSignature sig = new MethodSignature(propertyType, methodName,
+                null, null);
 
         String code = "return getAsset(\"" + assetName + "\");";
 

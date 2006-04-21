@@ -27,21 +27,24 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 
 /**
- * Injects components for which the property attribute of the &lt;component&gt; element was
- * specified. This makes it easier to reference a particular component from Java code.
+ * Injects components for which the property attribute of the &lt;component&gt;
+ * element was specified. This makes it easier to reference a particular
+ * component from Java code.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class InjectComponentWorker implements EnhancementWorker
 {
+
     private ErrorLog _errorLog;
 
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
+    public void performEnhancement(EnhancementOperation op,
+            IComponentSpecification spec)
     {
         Iterator i = spec.getComponentIds().iterator();
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
             String id = (String) i.next();
 
@@ -57,47 +60,50 @@ public class InjectComponentWorker implements EnhancementWorker
                 }
                 catch (Exception ex)
                 {
-                    _errorLog.error(EnhanceMessages.errorAddingProperty(propertyName, op
-                            .getBaseClass(), ex), cc.getLocation(), ex);
+                    _errorLog.error(EnhanceMessages.errorAddingProperty(
+                            propertyName, op.getBaseClass(), ex), cc
+                            .getLocation(), ex);
                 }
             }
         }
     }
 
-    public void injectComponent(EnhancementOperation op, String componentId, String propertyName,
-            Location location)
+    public void injectComponent(EnhancementOperation op, String componentId,
+            String propertyName, Location location)
     {
         Defense.notNull(op, "op");
         Defense.notNull(componentId, "componentId");
         Defense.notNull(propertyName, "propertyName");
 
-        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, null);
+        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName,
+                null);
 
         op.claimReadonlyProperty(propertyName);
 
         String fieldName = "_$" + propertyName;
         String classField = op.getClassReference(propertyType);
-        String locationField = op.addInjectedField(
-                fieldName + "$location",
-                Location.class,
-                location);
+        String locationField = op.addInjectedField(fieldName + "$location",
+                Location.class, location);
 
         op.addField(fieldName, propertyType);
 
-        EnhanceUtils.createSimpleAccessor(op, fieldName, propertyName, propertyType, location);
+        EnhanceUtils.createSimpleAccessor(op, fieldName, propertyName,
+                propertyType, location);
 
-        // I.e. _$fred = (IComponent) TapestryUtils.getComponent(this, "fred", IComponent.class,
+        // I.e. _$fred = (IComponent) TapestryUtils.getComponent(this, "fred",
+        // IComponent.class,
         // location)
 
         BodyBuilder builder = new BodyBuilder();
 
-        builder.add("{0} = ({1}) ", fieldName, ClassFabUtils.getJavaClassName(propertyType));
+        builder.add("{0} = ({1}) ", fieldName, ClassFabUtils
+                .getJavaClassName(propertyType));
         builder.add("{0}#getComponent(this, ", TapestryUtils.class.getName());
         builder.addQuoted(componentId);
         builder.add(", {0}, {1});", classField, locationField);
 
-        op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE, builder
-                .toString());
+        op.extendMethodImplementation(IComponent.class,
+                EnhanceUtils.FINISH_LOAD_SIGNATURE, builder.toString());
     }
 
     public void setErrorLog(ErrorLog errorLog)

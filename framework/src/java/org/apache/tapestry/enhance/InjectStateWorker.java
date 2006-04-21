@@ -26,31 +26,37 @@ import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.spec.InjectSpecification;
 
 /**
- * Worker for injecting application state objects as properties of the component. These properties
- * are read/write and must be "live" (changes are propogated back into the
- * {@link org.apache.tapestry.engine.state.ApplicationStateManager}). They should also cache in a
- * local variable for efficiency, and clear out that variable at the end of the request.
+ * Worker for injecting application state objects as properties of the
+ * component. These properties are read/write and must be "live" (changes are
+ * propogated back into the
+ * {@link org.apache.tapestry.engine.state.ApplicationStateManager}). They
+ * should also cache in a local variable for efficiency, and clear out that
+ * variable at the end of the request.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class InjectStateWorker implements InjectEnhancementWorker
 {
+
     private ApplicationStateManager _applicationStateManager;
 
-    public void performEnhancement(EnhancementOperation op, InjectSpecification spec)
+    public void performEnhancement(EnhancementOperation op,
+            InjectSpecification spec)
     {
-        injectState(op, spec.getObject(), spec.getProperty(), spec.getLocation());
+        injectState(op, spec.getObject(), spec.getProperty(), spec
+                .getLocation());
     }
 
-    void injectState(EnhancementOperation op, String objectName, String propertyName,
-            Location location)
+    void injectState(EnhancementOperation op, String objectName,
+            String propertyName, Location location)
     {
         Defense.notNull(op, "op");
         Defense.notNull(objectName, "objectName");
         Defense.notNull(propertyName, "propertyName");
 
-        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, null);
+        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName,
+                null);
         String fieldName = "_$" + propertyName;
 
         // State properties are read/write
@@ -59,10 +65,8 @@ public class InjectStateWorker implements InjectEnhancementWorker
 
         op.addField(fieldName, propertyType);
 
-        String managerField = op.addInjectedField(
-                "_$applicationStateManager",
-                ApplicationStateManager.class,
-                _applicationStateManager);
+        String managerField = op.addInjectedField("_$applicationStateManager",
+                ApplicationStateManager.class, _applicationStateManager);
 
         BodyBuilder builder = new BodyBuilder();
 
@@ -70,14 +74,16 @@ public class InjectStateWorker implements InjectEnhancementWorker
 
         builder.begin();
         builder.addln("if ({0} == null)", fieldName);
-        builder.addln("  {0} = ({1}) {2}.get(\"{3}\");", new Object[]
-        { fieldName, ClassFabUtils.getJavaClassName(propertyType), managerField, objectName });
+        builder.addln("  {0} = ({1}) {2}.get(\"{3}\");", new Object[] {
+                fieldName, ClassFabUtils.getJavaClassName(propertyType),
+                managerField, objectName });
         builder.addln("return {0};", fieldName);
         builder.end();
 
         String methodName = op.getAccessorMethodName(propertyName);
 
-        MethodSignature sig = new MethodSignature(propertyType, methodName, null, null);
+        MethodSignature sig = new MethodSignature(propertyType, methodName,
+                null, null);
 
         op.addMethod(Modifier.PUBLIC, sig, builder.toString(), location);
 
@@ -89,21 +95,20 @@ public class InjectStateWorker implements InjectEnhancementWorker
         builder.addln("{0} = $1;", fieldName);
         builder.end();
 
-        sig = new MethodSignature(void.class, EnhanceUtils.createMutatorMethodName(propertyName),
-                new Class[]
-                { propertyType }, null);
+        sig = new MethodSignature(void.class, EnhanceUtils
+                .createMutatorMethodName(propertyName),
+                new Class[] { propertyType }, null);
 
         op.addMethod(Modifier.PUBLIC, sig, builder.toString(), location);
 
         // Extend pageDetached() to clean out the cached field value.
 
-        op.extendMethodImplementation(
-                PageDetachListener.class,
-                EnhanceUtils.PAGE_DETACHED_SIGNATURE,
-                fieldName + " = null;");
+        op.extendMethodImplementation(PageDetachListener.class,
+                EnhanceUtils.PAGE_DETACHED_SIGNATURE, fieldName + " = null;");
     }
 
-    public void setApplicationStateManager(ApplicationStateManager applicationStateManager)
+    public void setApplicationStateManager(
+            ApplicationStateManager applicationStateManager)
     {
         _applicationStateManager = applicationStateManager;
     }

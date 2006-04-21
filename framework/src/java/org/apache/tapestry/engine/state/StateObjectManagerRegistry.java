@@ -20,11 +20,12 @@ package org.apache.tapestry.engine.state;
  */
 public interface StateObjectManagerRegistry
 {
+
     /**
      * Returns the named {@link StateObjectManager}.
      * 
      * @throws org.apache.hivemind.ApplicationRuntimeException
      *             if no such SOPM is defined.
      */
-    public StateObjectManager get(String objectName);
+    StateObjectManager get(String objectName);
 }

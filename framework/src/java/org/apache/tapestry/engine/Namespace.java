@@ -33,8 +33,8 @@ import org.apache.tapestry.spec.ILibrarySpecification;
 
 /**
  * Implementation of {@link org.apache.tapestry.INamespace} that works with a
- * {@link org.apache.tapestry.services.NamespaceResources} to obtain page and component
- * specifications as needed.
+ * {@link org.apache.tapestry.services.NamespaceResources} to obtain page and
+ * component specifications as needed.
  * 
  * @author Howard Lewis Ship
  * @since 2.2
@@ -42,6 +42,7 @@ import org.apache.tapestry.spec.ILibrarySpecification;
 
 public class Namespace implements INamespace
 {
+
     private final ILibrarySpecification _specification;
 
     private final String _id;
@@ -59,15 +60,17 @@ public class Namespace implements INamespace
     private final NamespaceResources _resources;
 
     /**
-     * Map of {@link org.apache.tapestry.spec.ComponentSpecification}keyed on page name. The map is
-     * synchronized because different threads may try to update it simultaneously (due to dynamic
-     * page discovery in the application namespace).
+     * Map of {@link org.apache.tapestry.spec.ComponentSpecification}keyed on
+     * page name. The map is synchronized because different threads may try to
+     * update it simultaneously (due to dynamic page discovery in the
+     * application namespace).
      */
 
     private final Map _pages = Collections.synchronizedMap(new HashMap());
 
     /**
-     * Map of {@link org.apache.tapestry.spec.ComponentSpecification}keyed on component alias.
+     * Map of {@link org.apache.tapestry.spec.ComponentSpecification}keyed on
+     * component alias.
      */
 
     private final Map _components = Collections.synchronizedMap(new HashMap());
@@ -78,8 +81,8 @@ public class Namespace implements INamespace
 
     private final Map _children = Collections.synchronizedMap(new HashMap());
 
-    public Namespace(String id, INamespace parent, ILibrarySpecification specification,
-            NamespaceResources resources)
+    public Namespace(String id, INamespace parent,
+            ILibrarySpecification specification, NamespaceResources resources)
     {
         _id = id;
         _parent = parent;
@@ -98,8 +101,7 @@ public class Namespace implements INamespace
 
         if (_applicationNamespace)
             buffer.append("<application>");
-        else
-            buffer.append(getExtendedId());
+        else buffer.append(getExtendedId());
 
         buffer.append(']');
 
@@ -113,11 +115,9 @@ public class Namespace implements INamespace
 
     public String getExtendedId()
     {
-        if (_applicationNamespace)
-            return null;
+        if (_applicationNamespace) return null;
 
-        if (_extendedId == null)
-            _extendedId = buildExtendedId();
+        if (_extendedId == null) _extendedId = buildExtendedId();
 
         return _extendedId;
     }
@@ -165,7 +165,8 @@ public class Namespace implements INamespace
 
     public IComponentSpecification getPageSpecification(String name)
     {
-        IComponentSpecification result = (IComponentSpecification) _pages.get(name);
+        IComponentSpecification result = (IComponentSpecification) _pages
+                .get(name);
 
         if (result == null)
         {
@@ -193,7 +194,8 @@ public class Namespace implements INamespace
 
     public IComponentSpecification getComponentSpecification(String alias)
     {
-        IComponentSpecification result = (IComponentSpecification) _components.get(alias);
+        IComponentSpecification result = (IComponentSpecification) _components
+                .get(alias);
 
         if (result == null)
         {
@@ -211,22 +213,20 @@ public class Namespace implements INamespace
 
     private String buildExtendedId()
     {
-        if (_parent == null)
-            return _id;
+        if (_parent == null) return _id;
 
         String parentId = _parent.getExtendedId();
 
         // If immediate child of application namespace
 
-        if (parentId == null)
-            return _id;
+        if (parentId == null) return _id;
 
         return parentId + "." + _id;
     }
 
     /**
-     * Returns a string identifying the namespace, for use in error messages. I.e., "Application
-     * namespace" or "namespace 'foo'".
+     * Returns a string identifying the namespace, for use in error messages.
+     * I.e., "Application namespace" or "namespace 'foo'".
      */
 
     public String getNamespaceId()
@@ -253,15 +253,15 @@ public class Namespace implements INamespace
 
         if (path == null)
             throw new ApplicationRuntimeException(Tapestry.format(
-                    "Namespace.no-such-page",
-                    name,
-                    getNamespaceId()));
+                    "Namespace.no-such-page", name, getNamespaceId()));
 
         // We don't record line-precise data about <page> elements
-        // so use the location for the specification as a whole (at least identifying
+        // so use the location for the specification as a whole (at least
+        // identifying
         // the right file)
 
-        return _resources.getPageSpecification(getSpecificationLocation(), path, getLocation());
+        return _resources.getPageSpecification(getSpecificationLocation(),
+                path, getLocation());
     }
 
     private IComponentSpecification locateComponentSpecification(String type)
@@ -270,16 +270,15 @@ public class Namespace implements INamespace
 
         if (path == null)
             throw new ApplicationRuntimeException(Tapestry.format(
-                    "Namespace.no-such-alias",
-                    type,
-                    getNamespaceId()));
+                    "Namespace.no-such-alias", type, getNamespaceId()));
 
         // We don't record line-precise data about <component-type> elements
-        // so use the location for the specification as a whole (at least identifying
+        // so use the location for the specification as a whole (at least
+        // identifying
         // the right file)
 
-        return _resources
-                .getComponentSpecification(getSpecificationLocation(), path, getLocation());
+        return _resources.getComponentSpecification(getSpecificationLocation(),
+                path, getLocation());
     }
 
     private INamespace createNamespace(String id)
@@ -288,25 +287,23 @@ public class Namespace implements INamespace
 
         if (path == null)
             throw new ApplicationRuntimeException(Tapestry.format(
-                    "Namespace.library-id-not-found",
-                    id,
-                    getNamespaceId()));
+                    "Namespace.library-id-not-found", id, getNamespaceId()));
 
         // We don't record line-precise data about <library> elements
-        // so use the location for the specification as a whole (at least identifying
+        // so use the location for the specification as a whole (at least
+        // identifying
         // the right file)
 
         ILibrarySpecification ls = _resources.findChildLibrarySpecification(
-                getSpecificationLocation(),
-                path,
-                getLocation());
+                getSpecificationLocation(), path, getLocation());
 
         return new Namespace(id, this, ls, _resources);
     }
 
     public synchronized boolean containsPage(String name)
     {
-        return _pages.containsKey(name) || (_specification.getPageSpecificationPath(name) != null);
+        return _pages.containsKey(name)
+                || (_specification.getPageSpecificationPath(name) != null);
     }
 
     /** @since 2.3 * */
@@ -315,8 +312,7 @@ public class Namespace implements INamespace
     {
         String prefix = getExtendedId();
 
-        if (prefix == null)
-            return pageName;
+        if (prefix == null) return pageName;
 
         return prefix + SEPARATOR + pageName;
     }
@@ -363,8 +359,7 @@ public class Namespace implements INamespace
 
     public Location getLocation()
     {
-        if (_specification == null)
-            return null;
+        if (_specification == null) return null;
 
         return _specification.getLocation();
     }

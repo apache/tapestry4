@@ -30,8 +30,8 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 
 /**
- * Responsible for adding properties to a class corresponding to specified properties in the
- * component's specification.
+ * Responsible for adding properties to a class corresponding to specified
+ * properties in the component's specification.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -40,22 +40,24 @@ import org.apache.tapestry.spec.IPropertySpecification;
  */
 public class SpecifiedPropertyWorker implements EnhancementWorker
 {
+
     private ErrorLog _errorLog;
 
     private BindingSource _bindingSource;
 
     /**
-     * Iterates over the specified properties, creating an enhanced property for each (a field, an
-     * accessor, a mutator). Persistent properties will invoke
-     * {@link org.apache.tapestry.Tapestry#fireObservedChange(IComponent, String, Object)}in thier
-     * mutator.
+     * Iterates over the specified properties, creating an enhanced property for
+     * each (a field, an accessor, a mutator). Persistent properties will invoke
+     * {@link org.apache.tapestry.Tapestry#fireObservedChange(IComponent, String, Object)}in
+     * thier mutator.
      */
 
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
+    public void performEnhancement(EnhancementOperation op,
+            IComponentSpecification spec)
     {
         Iterator i = spec.getPropertySpecificationNames().iterator();
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
             String name = (String) i.next();
             IPropertySpecification ps = spec.getPropertySpecification(name);
@@ -66,15 +68,14 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
             }
             catch (RuntimeException ex)
             {
-                _errorLog.error(
-                        EnhanceMessages.errorAddingProperty(name, op.getBaseClass(), ex),
-                        ps.getLocation(),
-                        ex);
+                _errorLog.error(EnhanceMessages.errorAddingProperty(name, op
+                        .getBaseClass(), ex), ps.getLocation(), ex);
             }
         }
     }
 
-    private void performEnhancement(EnhancementOperation op, IPropertySpecification ps)
+    private void performEnhancement(EnhancementOperation op,
+            IPropertySpecification ps)
     {
         Defense.notNull(ps, "ps");
 
@@ -84,13 +85,16 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         String initialValue = ps.getInitialValue();
         Location location = ps.getLocation();
 
-        addProperty(op, propertyName, specifiedType, persistent, initialValue, location);
+        addProperty(op, propertyName, specifiedType, persistent, initialValue,
+                location);
     }
 
-    public void addProperty(EnhancementOperation op, String propertyName, String specifiedType,
-            boolean persistent, String initialValue, Location location)
+    public void addProperty(EnhancementOperation op, String propertyName,
+            String specifiedType, boolean persistent, String initialValue,
+            Location location)
     {
-        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, specifiedType);
+        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName,
+                specifiedType);
 
         op.claimProperty(propertyName);
 
@@ -99,20 +103,23 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
         op.addField(field, propertyType);
 
         // Release 3.0 would squack a bit about overriding non-abstract methods
-        // if they exist. 4.0 is less picky ... it blindly adds new methods, possibly
+        // if they exist. 4.0 is less picky ... it blindly adds new methods,
+        // possibly
         // overwriting methods in the base component class.
 
-        EnhanceUtils.createSimpleAccessor(op, field, propertyName, propertyType, location);
+        EnhanceUtils.createSimpleAccessor(op, field, propertyName,
+                propertyType, location);
 
         addMutator(op, propertyName, propertyType, field, persistent, location);
 
         if (initialValue == null)
             addReinitializer(op, propertyType, field);
-        else
-            addInitialValue(op, propertyName, propertyType, field, initialValue, location);
+        else addInitialValue(op, propertyName, propertyType, field,
+                initialValue, location);
     }
 
-    private void addReinitializer(EnhancementOperation op, Class propertyType, String fieldName)
+    private void addReinitializer(EnhancementOperation op, Class propertyType,
+            String fieldName)
     {
         String defaultFieldName = fieldName + "$default";
 
@@ -120,64 +127,63 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
 
         // On finishLoad(), store the current value into the default field.
 
-        op.extendMethodImplementation(
-                IComponent.class,
-                EnhanceUtils.FINISH_LOAD_SIGNATURE,
-                defaultFieldName + " = " + fieldName + ";");
+        op.extendMethodImplementation(IComponent.class,
+                EnhanceUtils.FINISH_LOAD_SIGNATURE, defaultFieldName + " = "
+                        + fieldName + ";");
 
         // On pageDetach(), restore the attribute to its default value.
 
-        op.extendMethodImplementation(
-                PageDetachListener.class,
-                EnhanceUtils.PAGE_DETACHED_SIGNATURE,
-                fieldName + " = " + defaultFieldName + ";");
+        op.extendMethodImplementation(PageDetachListener.class,
+                EnhanceUtils.PAGE_DETACHED_SIGNATURE, fieldName + " = "
+                        + defaultFieldName + ";");
     }
 
-    private void addInitialValue(EnhancementOperation op, String propertyName, Class propertyType,
-            String fieldName, String initialValue, Location location)
+    private void addInitialValue(EnhancementOperation op, String propertyName,
+            Class propertyType, String fieldName, String initialValue,
+            Location location)
     {
-        String description = EnhanceMessages.initialValueForProperty(propertyName);
+        String description = EnhanceMessages
+                .initialValueForProperty(propertyName);
 
-        InitialValueBindingCreator creator = new InitialValueBindingCreator(_bindingSource,
-                description, initialValue, location);
+        InitialValueBindingCreator creator = new InitialValueBindingCreator(
+                _bindingSource, description, initialValue, location);
 
-        String creatorField = op.addInjectedField(
-                fieldName + "$initialValueBindingCreator",
-                InitialValueBindingCreator.class,
-                creator);
+        String creatorField = op.addInjectedField(fieldName
+                + "$initialValueBindingCreator",
+                InitialValueBindingCreator.class, creator);
 
         String bindingField = fieldName + "$initialValueBinding";
         op.addField(bindingField, IBinding.class);
 
         BodyBuilder builder = new BodyBuilder();
 
-        builder.addln("{0} = {1}.createBinding(this);", bindingField, creatorField);
+        builder.addln("{0} = {1}.createBinding(this);", bindingField,
+                creatorField);
 
-        op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE, builder
-                .toString());
+        op.extendMethodImplementation(IComponent.class,
+                EnhanceUtils.FINISH_LOAD_SIGNATURE, builder.toString());
 
         builder.clear();
 
-        builder.addln("{0} = {1};", fieldName, EnhanceUtils.createUnwrapExpression(
-                op,
-                bindingField,
-                propertyType));
+        builder.addln("{0} = {1};", fieldName, EnhanceUtils
+                .createUnwrapExpression(op, bindingField, propertyType));
 
         String code = builder.toString();
 
-        // In finishLoad() and pageDetach(), de-reference the binding to get the value
+        // In finishLoad() and pageDetach(), de-reference the binding to get the
+        // value
         // for the property.
 
-        op.extendMethodImplementation(IComponent.class, EnhanceUtils.FINISH_LOAD_SIGNATURE, code);
-        op.extendMethodImplementation(
-                PageDetachListener.class,
-                EnhanceUtils.PAGE_DETACHED_SIGNATURE,
-                code);
+        op.extendMethodImplementation(IComponent.class,
+                EnhanceUtils.FINISH_LOAD_SIGNATURE, code);
+        op.extendMethodImplementation(PageDetachListener.class,
+                EnhanceUtils.PAGE_DETACHED_SIGNATURE, code);
 
     }
 
-    private void addMutator(EnhancementOperation op, String propertyName, Class propertyType,
-            String fieldName, boolean persistent, Location location)
+    private void addMutator(EnhancementOperation op, String propertyName,
+            Class propertyType, String fieldName, boolean persistent,
+            Location location)
     {
         String methodName = EnhanceUtils.createMutatorMethodName(propertyName);
 
@@ -196,8 +202,8 @@ public class SpecifiedPropertyWorker implements EnhancementWorker
 
         body.end();
 
-        MethodSignature sig = new MethodSignature(void.class, methodName, new Class[]
-        { propertyType }, null);
+        MethodSignature sig = new MethodSignature(void.class, methodName,
+                new Class[] { propertyType }, null);
 
         op.addMethod(Modifier.PUBLIC, sig, body.toString(), location);
     }

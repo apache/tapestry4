@@ -17,9 +17,10 @@ package org.apache.tapestry.enhance;
 import org.apache.tapestry.spec.InjectSpecification;
 
 /**
- * A kind of enhancement worker dedicated to injection, based on the &lt;inject&gt; element of the
- * specification. There are different types of injection which match up to different implementations
- * of this interface (i.e., the Strategy pattern).
+ * A kind of enhancement worker dedicated to injection, based on the
+ * &lt;inject&gt; element of the specification. There are different types of
+ * injection which match up to different implementations of this interface
+ * (i.e., the Strategy pattern).
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -28,11 +29,14 @@ import org.apache.tapestry.spec.InjectSpecification;
  */
 public interface InjectEnhancementWorker
 {
+
     /**
-     * Perform the enhancement defined by the {@link org.apache.tapestry.spec.InjectSpecification}.
-     * Thrown runtime exceptions are caught and reported by the invoker.
+     * Perform the enhancement defined by the
+     * {@link org.apache.tapestry.spec.InjectSpecification}. Thrown runtime
+     * exceptions are caught and reported by the invoker.
      */
 
-    public void performEnhancement(EnhancementOperation op, InjectSpecification spec);
+    void performEnhancement(EnhancementOperation op,
+            InjectSpecification spec);
 
 }

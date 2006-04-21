@@ -20,43 +20,40 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  Encapsulates information related to the page listener
- *  interfaces.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.5
+ * Encapsulates information related to the page listener interfaces.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 1.0.5
+ */
 
 public class PageEvent extends EventObject
 {
+
     private static final long serialVersionUID = -6167989946862112436L;
-    
-	private transient IPage page;
-    private transient IRequestCycle requestCycle;
+
+    private transient IPage _page;
+    private transient IRequestCycle _requestCycle;
 
     /**
-     *  Constructs a new instance of the event.  The
-     *  {@link EventObject#getSource()} of the event will
-     *  be the {@link IPage}.
-     *
-     **/
+     * Constructs a new instance of the event. The
+     * {@link EventObject#getSource()} of the event will be the {@link IPage}.
+     */
 
     public PageEvent(IPage page, IRequestCycle cycle)
     {
         super(page);
 
-        this.page = page;
-        this.requestCycle = cycle;
+        this._page = page;
+        this._requestCycle = cycle;
     }
 
     public IPage getPage()
     {
-        return page;
+        return _page;
     }
 
     public IRequestCycle getRequestCycle()
     {
-        return requestCycle;
+        return _requestCycle;
     }
 }

@@ -27,6 +27,7 @@ import org.apache.hivemind.ErrorLog;
  */
 public class SOMRegistryImpl implements StateObjectManagerRegistry
 {
+
     private ErrorLog _errorLog;
 
     private Map _factoryContributions;
@@ -45,7 +46,7 @@ public class SOMRegistryImpl implements StateObjectManagerRegistry
         contributions.putAll(_applicationContributions);
 
         Iterator i = contributions.values().iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             StateObjectContribution c = (StateObjectContribution) i.next();
 
@@ -57,14 +58,13 @@ public class SOMRegistryImpl implements StateObjectManagerRegistry
 
             if (pm == null)
             {
-                _errorLog.error(
-                        StateMessages.unknownScope(objectName, scope),
-                        c.getLocation(),
-                        null);
+                _errorLog.error(StateMessages.unknownScope(objectName, scope),
+                        c.getLocation(), null);
                 continue;
             }
 
-            StateObjectManager manager = new StateObjectManagerImpl(objectName, c.getFactory(), pm);
+            StateObjectManager manager = new StateObjectManagerImpl(objectName,
+                    c.getFactory(), pm);
 
             _objectManagers.put(objectName, manager);
 
@@ -73,10 +73,12 @@ public class SOMRegistryImpl implements StateObjectManagerRegistry
 
     public StateObjectManager get(String objectName)
     {
-        StateObjectManager manager = (StateObjectManager) _objectManagers.get(objectName);
+        StateObjectManager manager = (StateObjectManager) _objectManagers
+                .get(objectName);
 
         if (manager == null)
-            throw new ApplicationRuntimeException(StateMessages.unknownStateObjectName(objectName));
+            throw new ApplicationRuntimeException(StateMessages
+                    .unknownStateObjectName(objectName));
 
         return manager;
     }

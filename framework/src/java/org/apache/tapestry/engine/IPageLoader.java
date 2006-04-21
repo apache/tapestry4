@@ -32,44 +32,51 @@ import org.apache.tapestry.spec.IComponentSpecification;
 
 public interface IPageLoader
 {
+
     /**
-     * Invoked to create an implicit component (one which is defined in the containing component's
-     * template, rather that in the containing component's specification).
+     * Invoked to create an implicit component (one which is defined in the
+     * containing component's template, rather that in the containing
+     * component's specification).
      * 
      * @see org.apache.tapestry.services.impl.ComponentTemplateLoaderImpl
      * @since 3.0
      */
 
-    public IComponent createImplicitComponent(IRequestCycle cycle, IComponent container, String componentId,
-            String componentType, Location location);
+    IComponent createImplicitComponent(IRequestCycle cycle,
+            IComponent container, String componentId, String componentType,
+            Location location);
 
     /**
-     * Invoked by the {@link IPageSource}to load a specific page. This method is not reentrant. The
-     * page is immediately attached to the {@link IEngine engine}.
+     * Invoked by the {@link IPageSource}to load a specific page. This method
+     * is not reentrant. The page is immediately attached to the
+     * {@link IEngine engine}.
      * 
      * @param name
      *            the simple (unqualified) name of the page to load
      * @param namespace
-     *            from which the page is to be loaded (used when resolving components embedded by
-     *            the page)
+     *            from which the page is to be loaded (used when resolving
+     *            components embedded by the page)
      * @param cycle
-     *            the request cycle the page is initially loaded for (this is used to define the
-     *            locale of the new page, and provide access to the corect specification source,
-     *            etc.).
+     *            the request cycle the page is initially loaded for (this is
+     *            used to define the locale of the new page, and provide access
+     *            to the corect specification source, etc.).
      * @param specification
      *            the specification for the page
      */
 
-    public IPage loadPage(String name, INamespace namespace, IRequestCycle cycle, IComponentSpecification specification);
+    IPage loadPage(String name, INamespace namespace,
+            IRequestCycle cycle, IComponentSpecification specification);
 
     /**
      * Invoked by a component (from within its
-     * {@link IComponent#finishLoad(IRequestCycle, IPageLoader, IComponentSpecification)}method) to
-     * load the template for the component. This will result in new components being created, and
-     * the "outers" of the component being updated.
+     * {@link IComponent#finishLoad(IRequestCycle, IPageLoader, IComponentSpecification)}method)
+     * to load the template for the component. This will result in new
+     * components being created, and the "outers" of the component being
+     * updated.
      * 
      * @see ITemplateComponent
      * @since 4.0
      */
-    public void loadTemplateForComponent(IRequestCycle cycle, ITemplateComponent component);
+    void loadTemplateForComponent(IRequestCycle cycle,
+            ITemplateComponent component);
 }

@@ -26,5 +26,5 @@ import java.util.EventListener;
  */
 public interface ReportStatusListener extends EventListener
 {
-    public void reportStatus(ReportStatusEvent event);
+    void reportStatus(ReportStatusEvent event);
 }

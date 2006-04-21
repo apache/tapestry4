@@ -16,11 +16,12 @@ package org.apache.tapestry.enhance;
 
 import org.apache.tapestry.spec.IComponentSpecification;
 
-/** 
- * 
+/**
  * @author Howard M. Lewis Ship
  */
 public interface EnhancedClassValidator
 {
-    public void validate(Class baseClass, Class enhancedClass, IComponentSpecification specification);
+
+    void validate(Class baseClass, Class enhancedClass,
+            IComponentSpecification specification);
 }

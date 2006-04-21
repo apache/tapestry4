@@ -22,5 +22,6 @@ package org.apache.tapestry.engine.state;
  */
 public interface StateObjectFactory
 {
-    public Object createStateObject();
+
+    Object createStateObject();
 }

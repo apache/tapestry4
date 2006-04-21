@@ -20,10 +20,13 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-class ValidatorMessages
+final class ValidatorMessages
 {
     private static final MessageFormatter _formatter = new MessageFormatter(ValidatorMessages.class);
 
+    /* defeat instantiation */
+    private ValidatorMessages() { }
+    
     static String unknownValidator(String name)
     {
         return _formatter.format("unknown-validator", name);

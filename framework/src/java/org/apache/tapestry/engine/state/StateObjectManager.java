@@ -15,35 +15,39 @@
 package org.apache.tapestry.engine.state;
 
 /**
- * Interface for an object that manages a single application state object. Represents the named
- * intersection of a {@link org.apache.tapestry.engine.state.StateObjectPersistenceManager}for
+ * Interface for an object that manages a single application state object.
+ * Represents the named intersection of a
+ * {@link org.apache.tapestry.engine.state.StateObjectPersistenceManager}for
  * storing the state object between request cycles, and a
- * {@link org.apache.tapestry.engine.state.StateObjectFactory}to create the object in the first
- * place.
+ * {@link org.apache.tapestry.engine.state.StateObjectFactory}to create the
+ * object in the first place.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface StateObjectManager
 {
+
     /**
-     * Returns true if the application state object exists (i.e., a value has been stored).
+     * Returns true if the application state object exists (i.e., a value has
+     * been stored).
      */
-    public boolean exists();
+    boolean exists();
 
     /**
      * Gets or creates the application state object.
      */
 
-    public Object get();
+    Object get();
 
     /**
-     * Stores (if necessary) the object back into persistent storage. This is not application to all
-     * storage scopes.
+     * Stores (if necessary) the object back into persistent storage. This is
+     * not application to all storage scopes.
      * 
      * @param stateObject
-     *            the application state object previously obtained from {@link #get()}.
+     *            the application state object previously obtained from
+     *            {@link #get()}.
      */
 
-    public void store(Object stateObject);
+    void store(Object stateObject);
 }

@@ -28,20 +28,24 @@ import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- * Validates that an enhanced class is correct; checks that all inherited abstract methods are, in
- * fact, implemented in the class.
+ * Validates that an enhanced class is correct; checks that all inherited
+ * abstract methods are, in fact, implemented in the class.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class EnhancedClassValidatorImpl implements EnhancedClassValidator
 {
+
     private ErrorLog _errorLog;
 
-    public void validate(Class baseClass, Class enhancedClass, IComponentSpecification specification)
+    public void validate(Class baseClass, Class enhancedClass,
+            IComponentSpecification specification)
     {
-        // Set of MethodSignatures for methods that have a non-abstract implementation
-        // The Set is built working from the deepest subclass up to (and including) java.lang.Object
+        // Set of MethodSignatures for methods that have a non-abstract
+        // implementation
+        // The Set is built working from the deepest subclass up to (and
+        // including) java.lang.Object
 
         Set implementedMethods = new HashSet();
         // Key is MethodSignature, value is Method
@@ -52,22 +56,27 @@ public class EnhancedClassValidatorImpl implements EnhancedClassValidator
 
         Class current = enhancedClass;
 
-        while (true)
+        while(true)
         {
             addInterfaceMethods(current, interfaceMethods);
 
-            // Inside Eclipse, for abstract classes, getDeclaredMethods() does NOT report methods
-            // inherited from interfaces. For Sun JDK and abstract classes, getDeclaredMethods()
+            // Inside Eclipse, for abstract classes, getDeclaredMethods() does
+            // NOT report methods
+            // inherited from interfaces. For Sun JDK and abstract classes,
+            // getDeclaredMethods()
             // DOES report interface methods
-            // (as if they were declared by the class itself). This code is needlessly complex so
+            // (as if they were declared by the class itself). This code is
+            // needlessly complex so
             // that the checks work in both
-            // situations. Basically, I think Eclipse is right and Sun JDK is wrong and we're using
-            // the interfaceMethods map as a filter to ignore methods that Sun JDK is attributing
+            // situations. Basically, I think Eclipse is right and Sun JDK is
+            // wrong and we're using
+            // the interfaceMethods map as a filter to ignore methods that Sun
+            // JDK is attributing
             // to the class.
 
             Method[] methods = current.getDeclaredMethods();
 
-            for (int i = 0; i < methods.length; i++)
+            for(int i = 0; i < methods.length; i++)
             {
                 Method m = methods[i];
 
@@ -77,20 +86,16 @@ public class EnhancedClassValidatorImpl implements EnhancedClassValidator
 
                 if (isAbstract)
                 {
-                    if (interfaceMethods.containsKey(s))
-                        continue;
+                    if (interfaceMethods.containsKey(s)) continue;
 
-                    // If a superclass defines an abstract method that a subclass implements, then
+                    // If a superclass defines an abstract method that a
+                    // subclass implements, then
                     // all's OK.
 
-                    if (implementedMethods.contains(s))
-                        continue;
+                    if (implementedMethods.contains(s)) continue;
 
-                    _errorLog.error(EnhanceMessages.noImplForAbstractMethod(
-                            m,
-                            current,
-                            baseClass,
-                            enhancedClass), location, null);
+                    _errorLog.error(EnhanceMessages.noImplForAbstractMethod(m,
+                            current, baseClass, enhancedClass), location, null);
                 }
 
                 implementedMethods.add(s);
@@ -98,30 +103,27 @@ public class EnhancedClassValidatorImpl implements EnhancedClassValidator
 
             current = current.getSuperclass();
 
-            // No need to check Object.class; it is concrete and doesn't implement any interfaces,
+            // No need to check Object.class; it is concrete and doesn't
+            // implement any interfaces,
             // or provide any methods
             // that might be declared in an interface.
 
-            if (current == null || current == Object.class)
-                break;
+            if (current == null || current == Object.class) break;
         }
 
         Iterator i = interfaceMethods.entrySet().iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             Map.Entry entry = (Map.Entry) i.next();
 
             MethodSignature sig = (MethodSignature) entry.getKey();
 
-            if (implementedMethods.contains(sig))
-                continue;
+            if (implementedMethods.contains(sig)) continue;
 
             Method method = (Method) entry.getValue();
 
             _errorLog.error(EnhanceMessages.unimplementedInterfaceMethod(
-                    method,
-                    baseClass,
-                    enhancedClass), location, null);
+                    method, baseClass, enhancedClass), location, null);
         }
 
     }
@@ -130,20 +132,20 @@ public class EnhancedClassValidatorImpl implements EnhancedClassValidator
     {
         Class[] interfaces = current.getInterfaces();
 
-        for (int i = 0; i < interfaces.length; i++)
+        for(int i = 0; i < interfaces.length; i++)
             addMethodsFromInterface(interfaces[i], interfaceMethods);
     }
 
-    private void addMethodsFromInterface(Class interfaceClass, Map interfaceMethods)
+    private void addMethodsFromInterface(Class interfaceClass,
+            Map interfaceMethods)
     {
         Method[] methods = interfaceClass.getMethods();
 
-        for (int i = 0; i < methods.length; i++)
+        for(int i = 0; i < methods.length; i++)
         {
             MethodSignature sig = new MethodSignature(methods[i]);
 
-            if (interfaceMethods.containsKey(sig))
-                continue;
+            if (interfaceMethods.containsKey(sig)) continue;
 
             interfaceMethods.put(sig, methods[i]);
         }

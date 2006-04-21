@@ -18,27 +18,29 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- * Checks to see if the component implements a specific interface, and adds code to the component's
- * finishLoad() method to register (with the page) for such notifications.
+ * Checks to see if the component implements a specific interface, and adds code
+ * to the component's finishLoad() method to register (with the page) for such
+ * notifications.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class InjectListenerRegistrationWorker implements EnhancementWorker
 {
+
     private Class _listenerInterface;
 
     private String _registerMethodName;
 
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
+    public void performEnhancement(EnhancementOperation op,
+            IComponentSpecification spec)
     {
 
         if (op.implementsInterface(_listenerInterface))
         {
-            op.extendMethodImplementation(
-                    IComponent.class,
-                    EnhanceUtils.FINISH_LOAD_SIGNATURE,
-                    "getPage()." + _registerMethodName + "(this);");
+            op.extendMethodImplementation(IComponent.class,
+                    EnhanceUtils.FINISH_LOAD_SIGNATURE, "getPage()."
+                            + _registerMethodName + "(this);");
         }
     }
 

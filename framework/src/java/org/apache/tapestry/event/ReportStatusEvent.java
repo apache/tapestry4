@@ -21,16 +21,23 @@ import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.describe.DescriptionReceiver;
 
 /**
- * Event object used by {@link org.apache.tapestry.event.ReportStatusListener}; the event
- * implements {@link org.apache.tapestry.describe.DescriptionReceiver}; classes (typically,
- * HiveMind service implementations) that implement the listener interface will "describe"
- * themselves to the event.
+ * Event object used by {@link org.apache.tapestry.event.ReportStatusListener};
+ * the event implements {@link org.apache.tapestry.describe.DescriptionReceiver};
+ * classes (typically, HiveMind service implementations) that implement the
+ * listener interface will "describe" themselves to the event.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class ReportStatusEvent extends EventObject implements DescriptionReceiver
+public class ReportStatusEvent extends EventObject implements
+        DescriptionReceiver
 {
+
+    /**
+     * serialVersionUID.
+     */
+    private static final long serialVersionUID = 7546818328708861783L;
+    
     private final DescriptionReceiver _receiver;
 
     public ReportStatusEvent(Object source, DescriptionReceiver receiver)

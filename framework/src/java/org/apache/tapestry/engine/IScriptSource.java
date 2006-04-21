@@ -26,10 +26,11 @@ import org.apache.tapestry.IScript;
 
 public interface IScriptSource
 {
+
     /**
      * Retrieves the script identified by the location from the source's cache,
      * reading and parsing the script if necessary.
      */
 
-    public IScript getScript(Resource resource);
+    IScript getScript(Resource resource);
 }

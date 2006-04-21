@@ -28,5 +28,5 @@ import java.util.EventListener;
  */
 public interface PageAttachListener extends EventListener
 {
-    public void pageAttached(PageEvent event);
+    void pageAttached(PageEvent event);
 }

@@ -20,10 +20,13 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class StateMessages
+final class StateMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(StateMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(StateMessages.class);
 
+    /* defeat instantiation */
+    private StateMessages() { }
+    
     static String unknownStateObjectName(String objectName)
     {
         return _formatter.format("unknown-state-object-name", objectName);

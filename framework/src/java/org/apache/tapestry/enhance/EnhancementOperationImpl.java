@@ -46,15 +46,18 @@ import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.util.ObjectIdentityMap;
 
 /**
- * Implementation of {@link org.apache.tapestry.enhance.EnhancementOperation}that knows how to
- * collect class changes from enhancements. The method {@link #getConstructor()} finalizes the
- * enhancement into a {@link org.apache.tapestry.services.ComponentConstructor}.
+ * Implementation of {@link org.apache.tapestry.enhance.EnhancementOperation}that
+ * knows how to collect class changes from enhancements. The method
+ * {@link #getConstructor()} finalizes the enhancement into a
+ * {@link org.apache.tapestry.services.ComponentConstructor}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class EnhancementOperationImpl implements EnhancementOperation
 {
+    static int _uid = 0;
+    
     private ClassResolver _resolver;
 
     private IComponentSpecification _specification;
@@ -98,14 +101,16 @@ public class EnhancementOperationImpl implements EnhancementOperation
     private BodyBuilder _constructorBuilder;
 
     /**
-     * Makes sure that names created by {@link #addInjectedField(String, Object)} have unique names.
+     * Makes sure that names created by
+     * {@link #addInjectedField(String, Object)} have unique names.
      */
 
     private final IdAllocator _idAllocator = new IdAllocator();
 
     /**
-     * Map keyed on MethodSignature, value is Location. Used to track which methods have been
-     * created, based on which location data (identified conflicts).
+     * Map keyed on MethodSignature, value is Location. Used to track which
+     * methods have been created, based on which location data (identified
+     * conflicts).
      */
 
     private final Map _methods = new HashMap();
@@ -114,9 +119,19 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     private final Log _log;
 
+    /**
+     * Alternate package private constructor used by the test suite, to bypass
+     * the defense checks above.
+     */
+
+    EnhancementOperationImpl()
+    {
+        _log = null;
+    }
+    
     public EnhancementOperationImpl(ClassResolver classResolver,
-            IComponentSpecification specification, Class baseClass, ClassFactory classFactory,
-            Log log)
+            IComponentSpecification specification, Class baseClass,
+            ClassFactory classFactory, Log log)
     {
         Defense.notNull(classResolver, "classResolver");
         Defense.notNull(specification, "specification");
@@ -147,33 +162,34 @@ public class EnhancementOperationImpl implements EnhancementOperation
     }
 
     /**
-     * We want to find the properties of the class, but in many cases, the class is abstract. Some
-     * JDK's (Sun) will include public methods from interfaces implemented by the class in the
-     * public declared methods for the class (which is used by the Introspector). Eclipse's built-in
-     * compiler does not appear to (this may have to do with compiler options I've been unable to
-     * track down). The solution is to augment the information provided directly by the Introspector
-     * with additional information compiled by Introspecting the interfaces directly or indirectly
-     * implemented by the class.
+     * We want to find the properties of the class, but in many cases, the class
+     * is abstract. Some JDK's (Sun) will include public methods from interfaces
+     * implemented by the class in the public declared methods for the class
+     * (which is used by the Introspector). Eclipse's built-in compiler does not
+     * appear to (this may have to do with compiler options I've been unable to
+     * track down). The solution is to augment the information provided directly
+     * by the Introspector with additional information compiled by Introspecting
+     * the interfaces directly or indirectly implemented by the class.
      */
     private void introspectBaseClass()
     {
         try
         {
-            synchronized (HiveMind.INTROSPECTOR_MUTEX)
+            synchronized(HiveMind.INTROSPECTOR_MUTEX)
             {
                 addPropertiesDeclaredInBaseClass();
             }
         }
         catch (IntrospectionException ex)
         {
-            throw new ApplicationRuntimeException(EnhanceMessages.unabelToIntrospectClass(
-                    _baseClass,
-                    ex), ex);
+            throw new ApplicationRuntimeException(EnhanceMessages
+                    .unabelToIntrospectClass(_baseClass, ex), ex);
         }
 
     }
 
-    private void addPropertiesDeclaredInBaseClass() throws IntrospectionException
+    private void addPropertiesDeclaredInBaseClass()
+        throws IntrospectionException
     {
         Class introspectClass = _baseClass;
 
@@ -181,14 +197,14 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         List interfaceQueue = new ArrayList();
 
-        while (introspectClass != null)
+        while(introspectClass != null)
         {
             addInterfacesToQueue(introspectClass, interfaceQueue);
 
             introspectClass = introspectClass.getSuperclass();
         }
 
-        while (!interfaceQueue.isEmpty())
+        while(!interfaceQueue.isEmpty())
         {
             Class interfaceClass = (Class) interfaceQueue.remove(0);
 
@@ -202,35 +218,25 @@ public class EnhancementOperationImpl implements EnhancementOperation
     {
         Class[] interfaces = introspectClass.getInterfaces();
 
-        for (int i = 0; i < interfaces.length; i++)
+        for(int i = 0; i < interfaces.length; i++)
             interfaceQueue.add(interfaces[i]);
     }
 
-    private void addPropertiesDeclaredInClass(Class introspectClass) throws IntrospectionException
+    private void addPropertiesDeclaredInClass(Class introspectClass)
+        throws IntrospectionException
     {
         BeanInfo bi = Introspector.getBeanInfo(introspectClass);
 
         PropertyDescriptor[] pds = bi.getPropertyDescriptors();
 
-        for (int i = 0; i < pds.length; i++)
+        for(int i = 0; i < pds.length; i++)
         {
             PropertyDescriptor pd = pds[i];
 
             String name = pd.getName();
 
-            if (!_properties.containsKey(name))
-                _properties.put(name, pd);
+            if (!_properties.containsKey(name)) _properties.put(name, pd);
         }
-    }
-
-    /**
-     * Alternate package private constructor used by the test suite, to bypass the defense checks
-     * above.
-     */
-
-    EnhancementOperationImpl()
-    {
-        _log = null;
     }
 
     public void claimProperty(String propertyName)
@@ -238,7 +244,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
         Defense.notNull(propertyName, "propertyName");
 
         if (_claimedProperties.contains(propertyName))
-            throw new ApplicationRuntimeException(EnhanceMessages.claimedProperty(propertyName));
+            throw new ApplicationRuntimeException(EnhanceMessages
+                    .claimedProperty(propertyName));
 
         _claimedProperties.add(propertyName);
     }
@@ -250,8 +257,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);
 
         if (pd != null && pd.getWriteMethod() != null)
-            throw new ApplicationRuntimeException(EnhanceMessages.readonlyProperty(propertyName, pd
-                    .getWriteMethod()));
+            throw new ApplicationRuntimeException(EnhanceMessages
+                    .readonlyProperty(propertyName, pd.getWriteMethod()));
     }
 
     public void addField(String name, Class type)
@@ -259,7 +266,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
         _classFab.addField(name, type);
     }
 
-    public String addInjectedField(String fieldName, Class fieldType, Object value)
+    public String addInjectedField(String fieldName, Class fieldType,
+            Object value)
     {
         Defense.notNull(fieldName, "fieldName");
         Defense.notNull(fieldType, "fieldType");
@@ -269,24 +277,26 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         // See if this object has been previously added.
 
-        if (existing != null)
-            return existing;
+        if (existing != null) return existing;
 
         // TODO: Should be ensure that the name is unique?
 
-        // Make sure that the field has a unique name (at least, among anything added
+        // Make sure that the field has a unique name (at least, among anything
+        // added
         // via addFinalField().
 
         String uniqueName = _idAllocator.allocateId(fieldName);
 
-        // ClassFab doesn't have an option for saying the field should be final, just private.
+        // ClassFab doesn't have an option for saying the field should be final,
+        // just private.
         // Doesn't make a huge difference.
 
         _classFab.addField(uniqueName, fieldType);
 
         int parameterIndex = addConstructorParameter(fieldType, value);
 
-        constructorBuilder().addln("{0} = ${1};", uniqueName, Integer.toString(parameterIndex));
+        constructorBuilder().addln("{0} = ${1};", uniqueName,
+                Integer.toString(parameterIndex));
 
         // Remember the mapping from the value to the field name.
 
@@ -327,19 +337,15 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         PropertyDescriptor pd = getPropertyDescriptor(name);
 
-        if (pd == null)
-            return;
+        if (pd == null) return;
 
         Class propertyType = pd.getPropertyType();
 
-        if (propertyType.equals(expectedType))
-            return;
+        if (propertyType.equals(expectedType)) return;
 
-        throw new ApplicationRuntimeException(EnhanceMessages.propertyTypeMismatch(
-                _baseClass,
-                name,
-                propertyType,
-                expectedType));
+        throw new ApplicationRuntimeException(EnhanceMessages
+                .propertyTypeMismatch(_baseClass, name, propertyType,
+                        expectedType));
     }
 
     private PropertyDescriptor getPropertyDescriptor(String name)
@@ -359,7 +365,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
         return EnhanceUtils.createAccessorMethodName(propertyName);
     }
 
-    public void addMethod(int modifier, MethodSignature sig, String methodBody, Location location)
+    public void addMethod(int modifier, MethodSignature sig, String methodBody,
+            Location location)
     {
         Defense.notNull(sig, "sig");
         Defense.notNull(methodBody, "methodBody");
@@ -367,8 +374,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         Location existing = (Location) _methods.get(sig);
         if (existing != null)
-            throw new ApplicationRuntimeException(EnhanceMessages.methodConflict(sig, existing),
-                    location, null);
+            throw new ApplicationRuntimeException(EnhanceMessages
+                    .methodConflict(sig, existing), location, null);
 
         _methods.put(sig, location);
 
@@ -386,8 +393,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         String result = (String) _finalFields.get(clazz);
 
-        if (result == null)
-            result = addClassReference(clazz);
+        if (result == null) result = addClassReference(clazz);
 
         return result;
     }
@@ -398,7 +404,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         Class c = clazz;
 
-        while (c.isArray())
+        while(c.isArray())
         {
             buffer.append("array$");
             c = c.getComponentType();
@@ -412,8 +418,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
     }
 
     /**
-     * Adds a new constructor parameter, returning the new count. This is convienient, because the
-     * first element added is accessed as $1, etc.
+     * Adds a new constructor parameter, returning the new count. This is
+     * convienient, because the first element added is accessed as $1, etc.
      */
 
     private int addConstructorParameter(Class type, Object value)
@@ -436,8 +442,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
     }
 
     /**
-     * Returns an object that can be used to construct instances of the enhanced component subclass.
-     * This should only be called once.
+     * Returns an object that can be used to construct instances of the enhanced
+     * component subclass. This should only be called once.
      */
 
     public ComponentConstructor getConstructor()
@@ -450,14 +456,13 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
             Object[] params = _constructorArguments.toArray();
 
-            return new ComponentConstructorImpl(c, params, _classFab.toString(), _specification
-                    .getLocation());
+            return new ComponentConstructorImpl(c, params,
+                    _classFab.toString(), _specification.getLocation());
         }
         catch (Throwable t)
         {
-            throw new ApplicationRuntimeException(EnhanceMessages.classEnhancementFailure(
-                    _baseClass,
-                    t), _classFab, null, t);
+            throw new ApplicationRuntimeException(EnhanceMessages
+                    .classEnhancementFailure(_baseClass, t), _classFab, null, t);
         }
     }
 
@@ -472,17 +477,17 @@ public class EnhancementOperationImpl implements EnhancementOperation
             Class[] types = (Class[]) _constructorTypes
                     .toArray(new Class[_constructorTypes.size()]);
 
-            _classFab.addConstructor(types, null, _constructorBuilder.toString());
+            _classFab.addConstructor(types, null, _constructorBuilder
+                    .toString());
         }
 
-        if (_log != null)
-            _log.debug("Creating class:\n\n" + _classFab);
+        if (_log != null) _log.debug("Creating class:\n\n" + _classFab);
     }
 
     private void finalizeIncompleteMethods()
     {
         Iterator i = _incompleteMethods.entrySet().iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             Map.Entry e = (Map.Entry) i.next();
             MethodSignature sig = (MethodSignature) e.getKey();
@@ -506,8 +511,6 @@ public class EnhancementOperationImpl implements EnhancementOperation
         return componentClass.getConstructors()[0];
     }
 
-    static int _uid = 0;
-
     private String newClassName()
     {
         String baseName = _baseClass.getName();
@@ -516,12 +519,13 @@ public class EnhancementOperationImpl implements EnhancementOperation
         return "$" + baseName.substring(dotx + 1) + "_" + _uid++;
     }
 
-    public void extendMethodImplementation(Class interfaceClass, MethodSignature methodSignature,
-            String code)
+    public void extendMethodImplementation(Class interfaceClass,
+            MethodSignature methodSignature, String code)
     {
         addInterfaceIfNeeded(interfaceClass);
 
-        BodyBuilder builder = (BodyBuilder) _incompleteMethods.get(methodSignature);
+        BodyBuilder builder = (BodyBuilder) _incompleteMethods
+                .get(methodSignature);
 
         if (builder == null)
         {
@@ -535,8 +539,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     private void addInterfaceIfNeeded(Class interfaceClass)
     {
-        if (implementsInterface(interfaceClass))
-            return;
+        if (implementsInterface(interfaceClass)) return;
 
         _classFab.addInterface(interfaceClass);
         _addedInterfaces.add(interfaceClass);
@@ -544,16 +547,14 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     public boolean implementsInterface(Class interfaceClass)
     {
-        if (interfaceClass.isAssignableFrom(_baseClass))
-            return true;
+        if (interfaceClass.isAssignableFrom(_baseClass)) return true;
 
         Iterator i = _addedInterfaces.iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             Class addedInterface = (Class) i.next();
 
-            if (interfaceClass.isAssignableFrom(addedInterface))
-                return true;
+            if (interfaceClass.isAssignableFrom(addedInterface)) return true;
         }
 
         return false;
@@ -574,8 +575,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
     }
 
     /**
-     * Returns true if the base class implements the provided method as either a public or a
-     * protected method.
+     * Returns true if the base class implements the provided method as either a
+     * public or a protected method.
      */
 
     private boolean existingImplementation(MethodSignature sig)
@@ -604,11 +605,12 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         Class c = _baseClass;
 
-        while (c != Object.class)
+        while(c != Object.class)
         {
             try
             {
-                return c.getDeclaredMethod(sig.getName(), sig.getParameterTypes());
+                return c.getDeclaredMethod(sig.getName(), sig
+                        .getParameterTypes());
             }
             catch (NoSuchMethodException ex)
             {
@@ -627,26 +629,25 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         Iterator i = _properties.values().iterator();
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
             PropertyDescriptor pd = (PropertyDescriptor) i.next();
 
             String name = pd.getName();
 
-            if (_claimedProperties.contains(name))
-                continue;
+            if (_claimedProperties.contains(name)) continue;
 
-            if (isAbstractProperty(pd))
-                result.add(name);
+            if (isAbstractProperty(pd)) result.add(name);
         }
 
         return result;
     }
 
     /**
-     * A property is abstract if either its read method or it write method is abstract. We could do
-     * some additional checking to ensure that both are abstract if either is. Note that in many
-     * cases, there will only be one accessor (a reader or a writer).
+     * A property is abstract if either its read method or it write method is
+     * abstract. We could do some additional checking to ensure that both are
+     * abstract if either is. Note that in many cases, there will only be one
+     * accessor (a reader or a writer).
      */
     private boolean isAbstractProperty(PropertyDescriptor pd)
     {
