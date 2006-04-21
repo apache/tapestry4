@@ -119,7 +119,7 @@
   <inject property="baseTagWriter" object="service:tapestry.url.BaseTagWriter"/>
   <inject property="assetService" object="service:tapestry.services.Asset"/>
   
-  <bean name="coreAjaxDelegate" class="org.apache.tapestry.ajax.AjaxShellDelegate">
+  <bean name="coreAjaxDelegate" class="org.apache.tapestry.dojo.AjaxShellDelegate">
    <set name="dojoSource" value="dojoSource" />
    <set name="assetService" value="assetService" />
    <set name="dojoPath" value="dojoPath" />

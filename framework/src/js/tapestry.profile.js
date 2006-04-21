@@ -7,7 +7,11 @@ var dependencies = [
 	"dojo.io.IO",
 	"dojo.io.BrowserIO",
 	"dojo.event.*", // NOTE: this includes topic support
-	"dojo.lang.*",
+	"dojo.lang.common",
+	"dojo.event",
+	"dojo.dom",
+	"dojo.html",
+	"dojo.json",
 	"dojo.widget.Manager"
 ];
 

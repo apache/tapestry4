@@ -20,7 +20,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.services.AbsoluteURLBuilder;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.RestartService}.
@@ -59,11 +58,6 @@ public class RestartServiceTest extends ServiceTestCase
     {
         request.getSession(create);
         setReturnValue(request, session);
-    }
-
-    private AbsoluteURLBuilder newBuilder()
-    {
-        return (AbsoluteURLBuilder) newMock(AbsoluteURLBuilder.class);
     }
 
     private HttpServletResponse newServletResponse()

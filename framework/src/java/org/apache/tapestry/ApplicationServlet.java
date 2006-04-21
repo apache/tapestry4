@@ -68,18 +68,6 @@ public class ApplicationServlet extends HttpServlet
     private static final Log LOG = LogFactory.getLog(ApplicationServlet.class);
 
     /**
-     * Invokes {@link #doService(HttpServletRequest, HttpServletResponse)}.
-     * 
-     * @since 1.0.6
-     */
-
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException,
-            ServletException
-    {
-        doService(request, response);
-    }
-
-    /**
      * @since 2.3
      */
 
@@ -103,6 +91,18 @@ public class ApplicationServlet extends HttpServlet
      * @since 4.0
      */
     private ServletRequestServicer _requestServicer;
+    
+    /**
+     * Invokes {@link #doService(HttpServletRequest, HttpServletResponse)}.
+     * 
+     * @since 1.0.6
+     */
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException,
+            ServletException
+    {
+        doService(request, response);
+    }
 
     /**
      * Handles the GET and POST requests. Performs the following:

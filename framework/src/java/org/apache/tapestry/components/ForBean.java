@@ -57,10 +57,17 @@ public abstract class ForBean extends AbstractFormComponent
      */
     private static final char DESC_PRIMARY_KEY = 'P';
 
-    private final RepSource COMPLETE_REP_SOURCE = new CompleteRepSource();
+    private final RepSource _completeRepSource = new CompleteRepSource();
 
-    private final RepSource KEY_EXPRESSION_REP_SOURCE = new KeyExpressionRepSource();
+    private final RepSource _keyExpressionRepSource = new KeyExpressionRepSource();
 
+    // intermediate members
+    private Object _value;
+
+    private int _index;
+
+    private boolean _rendering;
+    
     // parameters
     public abstract String getElement();
 
@@ -80,13 +87,6 @@ public abstract class ForBean extends AbstractFormComponent
     public abstract ValueConverter getValueConverter();
 
     public abstract ExpressionEvaluator getExpressionEvaluator();
-
-    // intermediate members
-    private Object _value;
-
-    private int _index;
-
-    private boolean _rendering;
 
     /**
      * Gets the source binding and iterates through its values. For each, it updates the value
@@ -420,7 +420,7 @@ public abstract class ForBean extends AbstractFormComponent
     }
 
     /**
-     * Uses the 'keyExpression' parameter to determine the primary key of the given value
+     * Uses the 'keyExpression' parameter to determine the primary key of the given value.
      * 
      * @param value
      *            The value from which the primary key should be extracted
@@ -438,7 +438,7 @@ public abstract class ForBean extends AbstractFormComponent
     }
 
     /**
-     * Uses the 'converter' parameter to determine the primary key of the given value
+     * Uses the 'converter' parameter to determine the primary key of the given value.
      * 
      * @param value
      *            The value from which the primary key should be extracted
@@ -483,7 +483,7 @@ public abstract class ForBean extends AbstractFormComponent
                     fullSourceIterator,
                     repToValueMap,
                     rep,
-                    COMPLETE_REP_SOURCE);
+                    _completeRepSource);
             if (value != null)
                 return value;
         }
@@ -507,7 +507,7 @@ public abstract class ForBean extends AbstractFormComponent
                             fullSourceIterator,
                             repToValueMap,
                             rep,
-                            KEY_EXPRESSION_REP_SOURCE);
+                            _keyExpressionRepSource);
 
                 // If 'converter' is defined, try to perform conversion from primary key to value
                 if (value == null)
@@ -635,7 +635,7 @@ public abstract class ForBean extends AbstractFormComponent
     }
 
     /**
-     * An interface that provides the string representation of a given value
+     * An interface that provides the string representation of a given value.
      */
     protected interface RepSource
     {
