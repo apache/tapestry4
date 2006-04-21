@@ -66,14 +66,14 @@ public class PortletRendererImpl implements PortletRenderer
 
         String namespace = _response.getNamespace();
 
-        PageRenderSupportImpl support = new PageRenderSupportImpl(
-                _assetFactory, namespace, null);
-
-        TapestryUtils.storePageRenderSupport(cycle, support);
-
         IMarkupWriter nested = writer.getNestedWriter();
         
         ResponseBuilder builder = new DefaultResponseBuilder(nested);
+        
+        PageRenderSupportImpl support = new PageRenderSupportImpl(
+                _assetFactory, namespace, null, builder);
+
+        TapestryUtils.storePageRenderSupport(cycle, support);
         
         builder.renderResponse(cycle);
         

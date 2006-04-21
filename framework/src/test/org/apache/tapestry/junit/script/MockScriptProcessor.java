@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.hivemind.Resource;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IScriptProcessor;
 import org.apache.tapestry.util.IdAllocator;
 
@@ -39,12 +40,17 @@ public class MockScriptProcessor implements IScriptProcessor
 
     public void addBodyScript(String script)
     {
+        addBodyScript(null, script);
+    }
+
+    public void addBodyScript(IComponent target, String script)
+    {
         if (_body == null)
             _body = new StringBuffer();
 
         _body.append(script);
     }
-
+    
     public String getBody()
     {
         if (_body == null)
@@ -55,12 +61,17 @@ public class MockScriptProcessor implements IScriptProcessor
 
     public void addInitializationScript(String script)
     {
+        addInitializationScript(null, script);
+    }
+
+    public void addInitializationScript(IComponent target, String script)
+    {
         if (_initialization == null)
             _initialization = new StringBuffer();
 
         _initialization.append(script);
     }
-
+    
     public String getInitialization()
     {
         if (_initialization == null)
@@ -70,6 +81,11 @@ public class MockScriptProcessor implements IScriptProcessor
     }
 
     public void addExternalScript(Resource scriptResource)
+    {
+        addExternalScript(null, scriptResource);
+    }
+    
+    public void addExternalScript(IComponent target, Resource scriptResource)
     {
         if (_externalScripts == null)
             _externalScripts = new ArrayList();

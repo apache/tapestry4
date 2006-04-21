@@ -15,6 +15,7 @@ package org.apache.tapestry.services;
 
 import java.io.IOException;
 
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
@@ -25,6 +26,7 @@ import org.apache.tapestry.IRequestCycle;
  * with components for an ajax request library version and type.
  *
  * @author jkuhnert
+ * @since 4.1
  */
 public interface ResponseBuilder {
 
@@ -63,4 +65,35 @@ public interface ResponseBuilder {
      */
     
     IMarkupWriter getWriter();
+    
+    /**
+     * Determines if the specified component should have its javascript 
+     * body added to the response.
+     * 
+     * @param target
+     *          The component to allow/disallow body script content from.
+     * @return True if the component script should be allowed.
+     */
+    boolean isBodyScriptAllowed(IComponent target);
+    
+    /**
+     * Determines if the specified component should have its javascript 
+     * initialization added to the response.
+     * 
+     * @param target
+     *          The component to allow/disallow initialization script content from.
+     * @return True if the component script should be allowed.
+     */
+    boolean isInitializationScriptAllowed(IComponent target);
+    
+    /**
+     * Determines if the specified component should have its javascript 
+     * external resource scripts added to the response.
+     * 
+     * @param target
+     *          The component to check for inclusion/exclusion.
+     * @return True if external scripts from this component should be added to
+     *          the response.
+     */
+    boolean isExternalScriptAllowed(IComponent target);
 }

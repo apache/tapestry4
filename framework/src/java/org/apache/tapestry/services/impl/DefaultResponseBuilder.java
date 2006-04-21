@@ -16,6 +16,7 @@ package org.apache.tapestry.services.impl;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
@@ -139,5 +140,29 @@ public class DefaultResponseBuilder implements ResponseBuilder
             return NullWriter.getSharedInstance();
         
         return _writer;
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isBodyScriptAllowed(IComponent target)
+    {
+        return true;
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isExternalScriptAllowed(IComponent target)
+    {
+        return true;
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean isInitializationScriptAllowed(IComponent target)
+    {
+        return true;
     }
 }

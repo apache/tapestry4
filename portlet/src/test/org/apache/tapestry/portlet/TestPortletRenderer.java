@@ -28,6 +28,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.NestedMarkupWriter;
 import org.apache.tapestry.asset.AssetFactory;
 import org.apache.tapestry.markup.MarkupWriterSource;
+import org.apache.tapestry.services.impl.DefaultResponseBuilder;
 import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.web.WebResponse;
@@ -99,6 +100,11 @@ public class TestPortletRenderer extends HiveMindTestCase
 
     private IRequestCycle newCycle(String pageName, IPage page)
     {
+        return newCycle(pageName, page, null);
+    }
+    
+    private IRequestCycle newCycle(String pageName, IPage page, IMarkupWriter writer)
+    {
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) control.getMock();
 
@@ -113,7 +119,7 @@ public class TestPortletRenderer extends HiveMindTestCase
         // We can check that an instance of PageRenderSupport is passed in, but
         // we can't (easily) check thta it's configured the way we want.
         cycle.setAttribute("org.apache.tapestry.PageRenderSupport", new PageRenderSupportImpl(
-                newAssetFactory(), "", null));
+                newAssetFactory(), "", null, new DefaultResponseBuilder(writer)));
         control.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
         { null, new TypeMatcher() }));
         

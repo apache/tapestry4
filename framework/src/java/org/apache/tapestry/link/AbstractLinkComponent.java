@@ -159,7 +159,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
 
             buffer.append("}\n\n");
 
-            pageRenderSupport.addBodyScript(buffer.toString());
+            pageRenderSupport.addBodyScript(this, buffer.toString());
         }
 
         writer.attribute(attributeName, "javascript:" + wrapperFunctionName + "();");

@@ -48,6 +48,6 @@ public interface ILinkRenderer
      * 
      **/
 
-    public void renderLink(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent linkComponent);
+    void renderLink(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent linkComponent);
 
 }

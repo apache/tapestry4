@@ -34,5 +34,4 @@
  
   <inject property="assetFactory" object="infrastructure:assetFactory"/>
   <inject property="response" object="infrastructure:response"/>
-      
 </component-specification>
