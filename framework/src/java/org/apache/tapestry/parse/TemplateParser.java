@@ -91,21 +91,6 @@ import org.apache.tapestry.util.IdAllocator;
 public class TemplateParser implements ITemplateParser
 {
     /**
-     * A "magic" component id that causes the tag with the id and its entire body to be ignored
-     * during parsing.
-     */
-
-    private static final String REMOVE_ID = "$remove$";
-
-    /**
-     * A "magic" component id that causes the tag to represent the true content of the template. Any
-     * content prior to the tag is discarded, and any content after the tag is ignored. The tag
-     * itself is not included.
-     */
-
-    private static final String CONTENT_ID = "$content$";
-
-    /**
      * The attribute, checked for in &lt;span&gt; tags, that signfies that the span is being used as
      * an invisible localization.
      * 
@@ -123,17 +108,9 @@ public class TemplateParser implements ITemplateParser
      */
 
     public static final String RAW_ATTRIBUTE_NAME = "raw";
-
-    /**
-     * Attribute name used to identify components.
-     * 
-     * @since 4.0
-     */
-
-    private String _componentAttributeName;
-
-    private static final String PROPERTY_NAME_PATTERN = "_?[a-zA-Z]\\w*";
-
+    
+    public static final String PROPERTY_NAME_PATTERN = "_?[a-zA-Z]\\w*";
+    
     /**
      * Pattern used to recognize ordinary components (defined in the specification).
      * 
@@ -141,7 +118,7 @@ public class TemplateParser implements ITemplateParser
      */
 
     public static final String SIMPLE_ID_PATTERN = "^(" + PROPERTY_NAME_PATTERN + ")$";
-
+    
     /**
      * Pattern used to recognize implicit components (whose type is defined in the template).
      * Subgroup 1 is the id (which may be null) and subgroup 2 is the type (which may be qualified
@@ -154,6 +131,21 @@ public class TemplateParser implements ITemplateParser
     public static final String IMPLICIT_ID_PATTERN = "^(" + PROPERTY_NAME_PATTERN + ")?@((("
             + PROPERTY_NAME_PATTERN + "):)?((" + PROPERTY_NAME_PATTERN + "/)*"
             + PROPERTY_NAME_PATTERN + "))$";
+    
+    /**
+     * A "magic" component id that causes the tag with the id and its entire body to be ignored
+     * during parsing.
+     */
+
+    private static final String REMOVE_ID = "$remove$";
+
+    /**
+     * A "magic" component id that causes the tag to represent the true content of the template. Any
+     * content prior to the tag is discarded, and any content after the tag is ignored. The tag
+     * itself is not included.
+     */
+
+    private static final String CONTENT_ID = "$content$";
 
     private static final int IMPLICIT_ID_PATTERN_ID_GROUP = 1;
 
@@ -163,6 +155,42 @@ public class TemplateParser implements ITemplateParser
 
     private static final int IMPLICIT_ID_PATTERN_SIMPLE_TYPE_GROUP = 5;
 
+    private static final char[] COMMENT_START = new char[]
+                                                         { '<', '!', '-', '-' };
+
+    private static final char[] COMMENT_END = new char[]
+                                                       { '-', '-', '>' };
+
+    private static final char[] CLOSE_TAG = new char[]
+                                                     { '<', '/' };
+    
+    private static final int WAIT_FOR_ATTRIBUTE_NAME = 0;
+
+    private static final int COLLECT_ATTRIBUTE_NAME = 1;
+
+    private static final int ADVANCE_PAST_EQUALS = 2;
+
+    private static final int WAIT_FOR_ATTRIBUTE_VALUE = 3;
+
+    private static final int COLLECT_QUOTED_VALUE = 4;
+
+    private static final int COLLECT_UNQUOTED_VALUE = 5;
+    
+    /**
+     * Conversions needed by {@link #convertEntitiesToPlain(String)}.
+     */
+
+    private static final String[] CONVERSIONS =
+    { "&lt;", "<", "&gt;", ">", "&quot;", "\"", "&amp;", "&" };
+    
+    /**
+     * Attribute name used to identify components.
+     * 
+     * @since 4.0
+     */
+
+    private String _componentAttributeName;
+    
     private Pattern _simpleIdPattern;
 
     private Pattern _implicitIdPattern;
@@ -198,11 +226,15 @@ public class TemplateParser implements ITemplateParser
     private char[] _templateData;
 
     /**
-     * List of Tag
+     * List of Tag.
      */
 
     private List _stack = new ArrayList();
 
+    /**
+     * 
+     * @author hls
+     */
     private static class Tag
     {
         // The element, i.e., <jwc> or virtually any other element (via jwcid attribute)
@@ -409,7 +441,6 @@ public class TemplateParser implements ITemplateParser
      */
 
     protected void templateParseProblem(ApplicationRuntimeException exception, int line, int cursor)
-            throws ApplicationRuntimeException
     {
         throw exception;
     }
@@ -448,15 +479,6 @@ public class TemplateParser implements ITemplateParser
             return false;
         }
     }
-
-    private static final char[] COMMENT_START = new char[]
-    { '<', '!', '-', '-' };
-
-    private static final char[] COMMENT_END = new char[]
-    { '-', '-', '>' };
-
-    private static final char[] CLOSE_TAG = new char[]
-    { '<', '/' };
 
     protected void parse() throws TemplateParseException
     {
@@ -556,18 +578,6 @@ public class TemplateParser implements ITemplateParser
 
         _blockStart = -1;
     }
-
-    private static final int WAIT_FOR_ATTRIBUTE_NAME = 0;
-
-    private static final int COLLECT_ATTRIBUTE_NAME = 1;
-
-    private static final int ADVANCE_PAST_EQUALS = 2;
-
-    private static final int WAIT_FOR_ATTRIBUTE_VALUE = 3;
-
-    private static final int COLLECT_QUOTED_VALUE = 4;
-
-    private static final int COLLECT_UNQUOTED_VALUE = 5;
 
     private void startTag() throws TemplateParseException
     {
@@ -1371,13 +1381,6 @@ public class TemplateParser implements ITemplateParser
 
         return null;
     }
-
-    /**
-     * Conversions needed by {@link #convertEntitiesToPlain(String)}
-     */
-
-    private static final String[] CONVERSIONS =
-    { "&lt;", "<", "&gt;", ">", "&quot;", "\"", "&amp;", "&" };
 
     /**
      * Provided a raw input string that has been recognized to be an expression, this removes excess

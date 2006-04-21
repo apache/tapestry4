@@ -17,8 +17,6 @@ package org.apache.tapestry.form;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IJSONRender;
 import org.apache.tapestry.IMarkupWriter;
@@ -27,6 +25,7 @@ import org.apache.tapestry.IScript;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.dojo.IWidget;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -60,11 +59,8 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Jesse Kuhnert
  */
 public abstract class PropertySelection extends AbstractFormComponent 
-    implements ValidatableField, IJSONRender, IDirect
+    implements ValidatableField, IJSONRender, IDirect, IWidget
 {
-    /* logger */
-    protected static final Log _log = LogFactory.getLog(PropertySelection.class);
-    
     /**
      * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
      */
@@ -83,25 +79,7 @@ public abstract class PropertySelection extends AbstractFormComponent
         
         renderIdAttribute(writer, cycle);
         
-        // if filtering add additional scripts
-        // TODO: This isn't real yet, just getting things mostly working first
-        if (isFilterOnChange()) {
-            
-            DirectServiceParameter dsp = 
-                new DirectServiceParameter(this, new Object[]{}, 
-                        new String[]{getId()}, true);
-            ILink link = getDirectService().getLink(true, dsp);
-            
-            writer.attribute("dojoType", "ComboBox");
-            writer.attribute("dataUrl", link.getURL());
-            writer.attribute("mode", "remote");
-            
-            Map parms = new HashMap();
-            parms.put("select", this);
-            
-            PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, this);
-            getScript().execute(cycle, prs, parms);
-        }
+        renderWidget(writer, cycle);
         
         renderDelegateAttributes(writer, cycle);
         
@@ -143,7 +121,7 @@ public abstract class PropertySelection extends AbstractFormComponent
         }
         
         writer.end(); // <select>
-
+        
         renderDelegateSuffix(writer, cycle);
     }
 
@@ -173,35 +151,51 @@ public abstract class PropertySelection extends AbstractFormComponent
      */
     public void renderComponent(IJSONWriter writer, IRequestCycle cycle)
     {
-        _log.warn("renderComponent() JSON request");
         IPropertySelectionModel model = getModel();
         
         if (model == null)
             throw Tapestry.createRequiredParameterException(this, "model");
         
         int count = model.getOptionCount();
-        _log.warn("total count:" + count);
         
         for (int i = 0; i < count; i++)
         {
             String value = model.getValue(i);
             String label = model.getLabel(i);
             
-            _log.warn("Filter value:" + getFilter() + "with label:" + label + " on count:" + i);
-            
             if (getFilter() == null || getFilter().length() <= 0) {
                 writer.put(value, label);
-                _log.warn("Writing filter value");
                 continue;
             }
             
             // primitive filter, for now
             // TODO: Create filter interface in IPropertySelectionModel
-            if (getFilter() != null 
+            if (getFilter() != null && getFilter().trim().length() > 0
                     && label.toLowerCase().indexOf(getFilter().toLowerCase()) > -1) {
                 writer.put(value, label);
             }
         }
+    }
+    
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    public void renderWidget(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        if (!isFilterOnChange() || cycle.isRewinding()) return;
+        
+        DirectServiceParameter dsp = 
+            new DirectServiceParameter(this, new Object[]{}, 
+                    new String[]{getId()}, true);
+        ILink link = getDirectService().getLink(true, dsp);
+        
+        Map parms = new HashMap();
+        parms.put("id", this.getClientId());
+        parms.put("props", "{dataUrl:'" + link.getURL() + "', mode: 'remote'}");
+        
+        PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, this);
+        getScript().execute(cycle, prs, parms);
     }
     
     /** 
@@ -219,9 +213,9 @@ public abstract class PropertySelection extends AbstractFormComponent
      */
     public void trigger(IRequestCycle cycle)
     {
-        setFilter("zeit");
+        setFilter(cycle.getParameter("searchString"));
     }
-
+    
     private boolean isEqual(Object left, Object right)
     {
         // Both null, or same object, then are equal

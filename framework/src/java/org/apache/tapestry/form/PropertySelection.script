@@ -3,7 +3,10 @@
   "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
   "http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
 <script>
-<input-symbol key="select" required="yes" />
+<include-script resource-path="/org/apache/tapestry/dojo/Widget.js"/>
+
+<input-symbol key="id" required="yes" />
+<input-symbol key="props" required="yes" />
     <body>
         <unique>
             dojo.require("dojo.io");
@@ -13,11 +16,6 @@
         </unique>
     </body>
     <initialization>
-        dojo.event.connect(window, "onload", function() {
-            dojo.debug("Parsing combo box");
-            // djConfig.searchIds.push("${select.getId()}");
-            // dojo.debug("searchIds length:" + djConfig.searchIds.length);
-            // dojo.hostenv.makeWidgets();
-        });
+        tapestry.widget.synchronizeWidgetState("${id}", "combobox", ${props});
     </initialization>
 </script>

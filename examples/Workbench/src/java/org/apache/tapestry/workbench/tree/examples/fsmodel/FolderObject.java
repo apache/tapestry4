@@ -22,9 +22,22 @@ import java.util.Vector;
 import org.apache.tapestry.contrib.tree.model.ITreeNode;
 import org.apache.tapestry.engine.IEngineService;
 
+/**
+ * 
+ * @author unknown
+ */
 public class FolderObject extends SFObject
 {
 
+    /**
+     * serialVersionUID.
+     */
+    private static final long serialVersionUID = 1889745019885512018L;
+
+    private static final String openImage = "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeOpen.gif";
+
+    private static final String closedImage = "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeClosed.gif";
+    
     /**
      * @associates <{File}>
      * @supplierCardinality 0..*
@@ -157,10 +170,6 @@ public class FolderObject extends SFObject
     {
         return false;
     }
-
-    private final static String openImage = "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeOpen.gif";
-
-    private final static String closedImage = "/org/apache/tapestry/workbench/tree/examples/fsmodel/TreeClosed.gif";
 
     public AssetsHolder getAssets()
     {

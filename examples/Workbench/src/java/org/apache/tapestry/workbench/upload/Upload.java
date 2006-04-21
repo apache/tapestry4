@@ -29,6 +29,11 @@ import org.apache.tapestry.valid.IValidationDelegate;
 
 public abstract class Upload extends BasePage
 {
+    private static final String[] bytesPerLineOptions = new String[]
+    { "8", "16", "24", "32", "40", "48" };
+
+    private IPropertySelectionModel bplModel;
+
     public abstract IUploadFile getFile();
 
     public abstract boolean isShowAscii();
@@ -36,12 +41,7 @@ public abstract class Upload extends BasePage
     public abstract String getBytesPerLine();
 
     public abstract IValidationDelegate getDelegate();
-
-    private static final String[] bytesPerLineOptions = new String[]
-    { "8", "16", "24", "32", "40", "48" };
-
-    private IPropertySelectionModel bplModel;
-
+    
     @InjectPage("UploadResults")
     public abstract UploadResults getUploadResults();
 

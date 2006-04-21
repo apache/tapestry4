@@ -21,31 +21,5 @@
 
 <page-specification class="org.apache.tapestry.timetracker.page.TaskEntryPage">
     
-  <!-- 
-  <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate" property="delegate"/>
-  
-  <property name="clientValidationEnabled" persist="client" initial-value="true"/>
-  <property name="includeWeek" persist="client"/>
-  <property name="startDate" persist="client"/>
-  <property name="endDate" persist="client"/>
-
-  <bean name="required" class="org.apache.tapestry.form.validator.Required"></bean>
-  <bean name="maxDate" class="org.apache.tapestry.form.validator.MaxDate">
-    <set name="maxDate" value="new java.util.Date()"></set>
-  </bean>
-  <bean name="minDate" class="org.apache.tapestry.form.validator.MinDate">
-    <set name="minDate" value="new java.util.Date()"></set>
-  </bean>
-  
-  <component id="inputEnabled" type="Checkbox">
-    <binding name="value" value="clientValidationEnabled"/> 
-    <binding name="onchange" value="literal:javascript:this.form.events.submit();"/>
-  </component>
-  
-  <component id="showError" type="ShowError">
-     <binding name="delegate" value="bean:delegate"/>
-  </component>
-    -->
-    
 </page-specification>
 

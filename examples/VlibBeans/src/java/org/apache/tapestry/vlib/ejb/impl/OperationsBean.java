@@ -70,6 +70,50 @@ public class OperationsBean implements SessionBean
 
     private static final long serialVersionUID = -3942706099570269035L;
 
+    /**
+     * All queries must use this exact set of select columns, so that
+     * {@link #convertRow(ResultSet, Object[])} can build the correct
+     * {@link Book} from each row.
+     */
+
+    private static final String[] BOOK_SELECT_COLUMNS = { "book.BOOK_ID",
+            "book.TITLE", "book.DESCRIPTION", "book.ISBN", "owner.PERSON_ID",
+            "owner.FIRST_NAME", "owner.LAST_NAME", "holder.PERSON_ID",
+            "holder.FIRST_NAME", "holder.LAST_NAME", "publisher.PUBLISHER_ID",
+            "publisher.NAME", "book.AUTHOR", "book.HIDDEN", "book.LENDABLE",
+            "book.DATE_ADDED" };
+
+    private static final String[] BOOK_ALIAS_COLUMNS = { "BOOK book",
+            "PERSON owner", "PERSON holder", "PUBLISHER publisher" };
+
+    private static final String[] BOOK_JOINS = {
+            "book.OWNER_ID = owner.PERSON_ID",
+            "book.HOLDER_ID = holder.PERSON_ID",
+            "book.PUBLISHER_ID = publisher.PUBLISHER_ID" };
+
+    private static final Map BOOK_SORT_ASCENDING = new HashMap();
+
+    private static final Map BOOK_SORT_DESCENDING = new HashMap();
+
+    static
+    {
+        BOOK_SORT_ASCENDING.put(SortColumn.TITLE, "book.TITLE");
+        BOOK_SORT_ASCENDING.put(SortColumn.HOLDER,
+                "holder.LAST_NAME, holder.FIRST_NAME");
+        BOOK_SORT_ASCENDING.put(SortColumn.OWNER,
+                "owner.FIRST_NAME, owner.LAST_NAME");
+        BOOK_SORT_ASCENDING.put(SortColumn.PUBLISHER, "publisher.NAME");
+        BOOK_SORT_ASCENDING.put(SortColumn.AUTHOR, "book.AUTHOR");
+
+        BOOK_SORT_DESCENDING.put(SortColumn.TITLE, "book.TITLE DESC");
+        BOOK_SORT_DESCENDING.put(SortColumn.HOLDER,
+                "holder.LAST_NAME DESC, holder.FIRST_NAME DESC");
+        BOOK_SORT_DESCENDING.put(SortColumn.OWNER,
+                "owner.FIRST_NAME DESC, owner.LAST_NAME DESC");
+        BOOK_SORT_DESCENDING.put(SortColumn.PUBLISHER, "publisher.NAME DESC");
+        BOOK_SORT_DESCENDING.put(SortColumn.AUTHOR, "book.AUTHOR DESC");
+    }
+    
     private transient Context _environment;
 
     private transient IBookHome _bookHome;
@@ -700,7 +744,7 @@ public class OperationsBean implements SessionBean
      * reassign the books holder back to the owner.
      */
 
-    private void returnBooksFromDeletedPersons(Integer deletedPersonIds[])
+    private void returnBooksFromDeletedPersons(Integer[] deletedPersonIds)
         throws RemoveException
     {
         StatementAssembly assembly = new StatementAssembly();
@@ -718,7 +762,7 @@ public class OperationsBean implements SessionBean
      * Invoked to execute a bulk update that moves books to the new admin.
      */
 
-    private void moveBooksFromDeletedPersons(Integer deletedPersonIds[],
+    private void moveBooksFromDeletedPersons(Integer[] deletedPersonIds,
             Integer adminId)
         throws RemoveException
     {
@@ -802,50 +846,6 @@ public class OperationsBean implements SessionBean
         if (firstName == null) return lastName;
 
         return firstName + " " + lastName;
-    }
-
-    /**
-     * All queries must use this exact set of select columns, so that
-     * {@link #convertRow(ResultSet, Object[])} can build the correct
-     * {@link Book} from each row.
-     */
-
-    private static final String[] BOOK_SELECT_COLUMNS = { "book.BOOK_ID",
-            "book.TITLE", "book.DESCRIPTION", "book.ISBN", "owner.PERSON_ID",
-            "owner.FIRST_NAME", "owner.LAST_NAME", "holder.PERSON_ID",
-            "holder.FIRST_NAME", "holder.LAST_NAME", "publisher.PUBLISHER_ID",
-            "publisher.NAME", "book.AUTHOR", "book.HIDDEN", "book.LENDABLE",
-            "book.DATE_ADDED" };
-
-    private static final String[] BOOK_ALIAS_COLUMNS = { "BOOK book",
-            "PERSON owner", "PERSON holder", "PUBLISHER publisher" };
-
-    private static final String[] BOOK_JOINS = {
-            "book.OWNER_ID = owner.PERSON_ID",
-            "book.HOLDER_ID = holder.PERSON_ID",
-            "book.PUBLISHER_ID = publisher.PUBLISHER_ID" };
-
-    private static final Map BOOK_SORT_ASCENDING = new HashMap();
-
-    private static final Map BOOK_SORT_DESCENDING = new HashMap();
-
-    static
-    {
-        BOOK_SORT_ASCENDING.put(SortColumn.TITLE, "book.TITLE");
-        BOOK_SORT_ASCENDING.put(SortColumn.HOLDER,
-                "holder.LAST_NAME, holder.FIRST_NAME");
-        BOOK_SORT_ASCENDING.put(SortColumn.OWNER,
-                "owner.FIRST_NAME, owner.LAST_NAME");
-        BOOK_SORT_ASCENDING.put(SortColumn.PUBLISHER, "publisher.NAME");
-        BOOK_SORT_ASCENDING.put(SortColumn.AUTHOR, "book.AUTHOR");
-
-        BOOK_SORT_DESCENDING.put(SortColumn.TITLE, "book.TITLE DESC");
-        BOOK_SORT_DESCENDING.put(SortColumn.HOLDER,
-                "holder.LAST_NAME DESC, holder.FIRST_NAME DESC");
-        BOOK_SORT_DESCENDING.put(SortColumn.OWNER,
-                "owner.FIRST_NAME DESC, owner.LAST_NAME DESC");
-        BOOK_SORT_DESCENDING.put(SortColumn.PUBLISHER, "publisher.NAME DESC");
-        BOOK_SORT_DESCENDING.put(SortColumn.AUTHOR, "book.AUTHOR DESC");
     }
 
     protected StatementAssembly buildBaseBookQuery()

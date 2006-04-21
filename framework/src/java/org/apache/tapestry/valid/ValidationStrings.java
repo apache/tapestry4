@@ -45,6 +45,11 @@ public final class ValidationStrings
     
     private static final String RESOURCE_BUNDLE = ValidationStrings.class.getName();
     
+    private ValidationStrings()
+    {
+        // Disable construction
+    }
+    
     /**
      * Fetches the appropriate validation message pattern from the appropriate localized resource.
      * This method should be called with the locale of the current request.
@@ -54,8 +59,4 @@ public final class ValidationStrings
         return ResourceBundle.getBundle(RESOURCE_BUNDLE, locale).getString(key);
     }
     
-    private ValidationStrings()
-    {
-        // Disable construction
-    }
 }

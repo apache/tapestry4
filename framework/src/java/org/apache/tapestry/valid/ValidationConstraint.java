@@ -24,8 +24,6 @@ import java.io.Serializable;
 
 public class ValidationConstraint implements Serializable
 {
-    private static final long serialVersionUID = 371593028205311930L;
-
     /**
      * Indicates that no value (or a value consisting only of white space) was provided for a field
      * that requires a non-null value.
@@ -98,7 +96,7 @@ public class ValidationConstraint implements Serializable
     public static final ValidationConstraint CONSISTENCY = new ValidationConstraint("CONSISTENCY");
 
     /**
-     * Indicates that a URL is not of the correct format
+     * Indicates that a URL is not of the correct format.
      * 
      * @since 3.0
      */
@@ -106,7 +104,7 @@ public class ValidationConstraint implements Serializable
     public static final ValidationConstraint URL_FORMAT = new ValidationConstraint("URL_FORMAT");
 
     /**
-     * Indicates that the URL does not use one of the specified protocols
+     * Indicates that the URL does not use one of the specified protocols.
      * 
      * @since 3.0
      */
@@ -114,6 +112,8 @@ public class ValidationConstraint implements Serializable
     public static final ValidationConstraint DISALLOWED_PROTOCOL = new ValidationConstraint(
             "DISALLOWED_PROTOCOL");
 
+    private static final long serialVersionUID = 371593028205311930L;
+    
     private final String _name;
 
     /**
