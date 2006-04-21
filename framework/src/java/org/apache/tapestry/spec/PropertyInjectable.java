@@ -15,20 +15,22 @@
 package org.apache.tapestry.spec;
 
 /**
- * Interface extended by several specification interfaces to indicate that the runtime object
- * constructed from the specification can be injected into the component class.
+ * Interface extended by several specification interfaces to indicate that the
+ * runtime object constructed from the specification can be injected into the
+ * component class.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface PropertyInjectable
 {
-    /**
-     * Returns the name of the property to be created for this component, or null if no property
-     * should be created.
-     */
-    public String getPropertyName();
 
-    public void setPropertyName(String propertyName);
+    /**
+     * Returns the name of the property to be created for this component, or
+     * null if no property should be created.
+     */
+    String getPropertyName();
+
+    void setPropertyName(String propertyName);
 
 }

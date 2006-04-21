@@ -40,5 +40,5 @@ public interface IRequestDecoder
      * 
      **/
 
-    public DecodedRequest decodeRequest(HttpServletRequest request);
+    DecodedRequest decodeRequest(HttpServletRequest request);
 }

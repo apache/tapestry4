@@ -20,8 +20,10 @@ import org.apache.hivemind.impl.BaseLocatable;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class InjectSpecificationImpl extends BaseLocatable implements InjectSpecification
+public class InjectSpecificationImpl extends BaseLocatable implements
+        InjectSpecification
 {
+
     private String _property;
 
     private String _object;

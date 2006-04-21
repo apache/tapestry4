@@ -21,10 +21,13 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class SpecMessages
+final class SpecMessages
 {
     private static final MessageFormatter _formatter = new MessageFormatter(SpecMessages.class);
 
+    /* defeat instantiation */
+    private SpecMessages() { }
+    
     static String claimedProperty(String propertyName, Object existing)
     {
         return _formatter.format("claimed-property", propertyName, HiveMind

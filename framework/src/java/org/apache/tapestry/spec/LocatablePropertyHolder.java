@@ -19,20 +19,21 @@ import org.apache.hivemind.LocationHolder;
 import org.apache.tapestry.util.BasePropertyHolder;
 
 /**
- *  Base class for implementing both
- *  interfaces {@link org.apache.tapestry.util.IPropertyHolder} and
- *  {@link org.apache.tapestry.ILocationHolder}.  This is
- *  used by all the specification classes.
- *
- *  @author Howard Lewis Ship
- *  @since 3.0
- *
- **/
+ * Base class for implementing both interfaces
+ * {@link org.apache.tapestry.util.IPropertyHolder} and
+ * {@link org.apache.tapestry.ILocationHolder}. This is used by all the
+ * specification classes.
+ * 
+ * @author Howard Lewis Ship
+ * @since 3.0
+ */
 
-public class LocatablePropertyHolder extends BasePropertyHolder implements LocationHolder
+public class LocatablePropertyHolder extends BasePropertyHolder implements
+        LocationHolder
 {
-	private Location _location;
-	
+
+    private Location _location;
+
     public Location getLocation()
     {
         return _location;

@@ -27,10 +27,15 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-class ResolverMessages
+final class ResolverMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(ResolverMessages.class);
 
+    private static final MessageFormatter _formatter = new MessageFormatter(
+            ResolverMessages.class);
+    
+    /* defeat instantiation */
+    private ResolverMessages() { }
+    
     static String noSuchComponentType(String type, INamespace namespace)
     {
         return _formatter.format("no-such-component-type", type, namespace);
@@ -38,7 +43,8 @@ class ResolverMessages
 
     static String noSuchPage(String name, INamespace namespace)
     {
-        return _formatter.format("no-such-page", name, namespace.getNamespaceId());
+        return _formatter.format("no-such-page", name, namespace
+                .getNamespaceId());
     }
 
     static String resolvingComponent(String type, INamespace namespace)
@@ -54,13 +60,15 @@ class ResolverMessages
     static String installingComponent(String type, INamespace namespace,
             IComponentSpecification specification)
     {
-        return _formatter.format("installing-component", type, namespace, specification);
+        return _formatter.format("installing-component", type, namespace,
+                specification);
     }
 
     static String installingPage(String pageName, INamespace namespace,
             IComponentSpecification specification)
     {
-        return _formatter.format("installing-page", pageName, namespace, specification);
+        return _formatter.format("installing-page", pageName, namespace,
+                specification);
     }
 
     static String resolvingPage(String pageName, INamespace namespace)
@@ -78,10 +86,11 @@ class ResolverMessages
         return _formatter.format("found-html-template", resource);
     }
 
-    public static String componentIsDeprecated(String componentType, Location location)
+    public static String componentIsDeprecated(String componentType,
+            Location location)
     {
-        return _formatter.format("component-is-deprecated", componentType, HiveMind
-                .getLocationString(location));
+        return _formatter.format("component-is-deprecated", componentType,
+                HiveMind.getLocationString(location));
     }
 
     static String webInfNotAllowed(String simpleName)

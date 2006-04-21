@@ -18,39 +18,42 @@ import org.apache.hivemind.LocationHolder;
 
 /**
  * Defines a transient or persistant property of a component or page. A
- * {@link org.apache.tapestry.enhance.ComponentClassFactory}uses this information to create a
- * subclass with the necessary instance variables and methods.
+ * {@link org.apache.tapestry.enhance.ComponentClassFactory}uses this
+ * information to create a subclass with the necessary instance variables and
+ * methods.
  * 
  * @author glongman@intelligentworks.com
  */
 public interface IPropertySpecification extends LocationHolder
 {
+
     /**
-     * Returns the initial value for this property, as a binding reference. May return null if the
-     * property has no initial value. The initial value is from finishLoad() and re-applied in
-     * pageDetached().
+     * Returns the initial value for this property, as a binding reference. May
+     * return null if the property has no initial value. The initial value is
+     * from finishLoad() and re-applied in pageDetached().
      */
 
-    public String getInitialValue();
+    String getInitialValue();
 
-    public String getName();
+    String getName();
 
     /**
      * Returns true if {@link #getPersistence()}is null.
      */
-    public boolean isPersistent();
+    boolean isPersistent();
 
-    public String getType();
+    String getType();
 
-    public void setInitialValue(String initialValue);
+    void setInitialValue(String initialValue);
 
     /**
-     * Sets the name of the property. This should not be changed once this IPropertySpecification is
-     * added to a {@link org.apache.tapestry.spec.IComponentSpecification}.
+     * Sets the name of the property. This should not be changed once this
+     * IPropertySpecification is added to a
+     * {@link org.apache.tapestry.spec.IComponentSpecification}.
      */
-    public void setName(String name);
+    void setName(String name);
 
-    public void setType(String type);
+    void setType(String type);
 
     /**
      * A string indicating how the property is persisted.
@@ -58,13 +61,13 @@ public interface IPropertySpecification extends LocationHolder
      * @since 4.0
      */
 
-    public void setPersistence(String persistence);
+    void setPersistence(String persistence);
 
     /**
      * If null, then the property is not persistent.
      * 
      * @since 4.0
      */
-    public String getPersistence();
+    String getPersistence();
 
 }

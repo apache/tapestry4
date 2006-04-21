@@ -24,16 +24,19 @@ import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.TapestryUtils;
 
 /**
- * Defines a formal parameter to a component. A <code>IParameterSpecification</code> is contained
- * by a {@link IComponentSpecification}.
+ * Defines a formal parameter to a component. A
+ * <code>IParameterSpecification</code> is contained by a
+ * {@link IComponentSpecification}.
  * <p>
  * TBD: Identify arrays in some way.
  * 
  * @author Howard Lewis Ship
  */
 
-public class ParameterSpecification extends BaseLocatable implements IParameterSpecification
+public class ParameterSpecification extends BaseLocatable implements
+        IParameterSpecification
 {
+
     private boolean _required = false;
 
     private String _type;
@@ -60,8 +63,8 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
     private boolean _deprecated = false;
 
     /**
-     * Returns the class name of the expected type of the parameter. The default value is
-     * <code>java.lang.Object</code> which matches anything.
+     * Returns the class name of the expected type of the parameter. The default
+     * value is <code>java.lang.Object</code> which matches anything.
      */
 
     public String getType()
@@ -70,8 +73,8 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
     }
 
     /**
-     * Returns true if the parameter is required by the component. The default is false, meaning the
-     * parameter is optional.
+     * Returns true if the parameter is required by the component. The default
+     * is false, meaning the parameter is optional.
      */
 
     public boolean isRequired()
@@ -85,8 +88,8 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
     }
 
     /**
-     * Sets the type of value expected for the parameter. This can be left blank to indicate any
-     * type.
+     * Sets the type of value expected for the parameter. This can be left blank
+     * to indicate any type.
      */
 
     public void setType(String value)
@@ -117,7 +120,8 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
     }
 
     /**
-     * Sets the property name (of the component class) to connect the parameter to.
+     * Sets the property name (of the component class) to connect the parameter
+     * to.
      */
 
     public void setPropertyName(String propertyName)

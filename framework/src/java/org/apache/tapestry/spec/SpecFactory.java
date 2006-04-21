@@ -20,10 +20,11 @@ import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.coerce.ValueConverter;
 
 /**
- * A Factory used by {@link org.apache.tapestry.parse.SpecificationParser}&nbsp; to create Tapestry
- * domain objects.
+ * A Factory used by {@link org.apache.tapestry.parse.SpecificationParser}&nbsp;
+ * to create Tapestry domain objects.
  * <p>
- * The default implementation here creates the expected runtime instances of classes in packages:
+ * The default implementation here creates the expected runtime instances of
+ * classes in packages:
  * <ul>
  * <li>org.apache.tapestry.spec</li>
  * <li>org.apache.tapestry.bean</li>
@@ -37,6 +38,7 @@ import org.apache.tapestry.coerce.ValueConverter;
 
 public class SpecFactory
 {
+
     /**
      * Creates a concrete instance of {@link ApplicationSpecification}.
      */
@@ -112,25 +114,28 @@ public class SpecFactory
     }
 
     /** @since 4.0 */
-    public BindingBeanInitializer createBindingBeanInitializer(BindingSource source)
+    public BindingBeanInitializer createBindingBeanInitializer(
+            BindingSource source)
     {
         return new BindingBeanInitializer(source);
     }
 
     /**
-     * Creates a concrete instance of {@link org.apache.tapestry.spec.IExtensionSpecification}.
+     * Creates a concrete instance of
+     * {@link org.apache.tapestry.spec.IExtensionSpecification}.
      * 
      * @since 2.2
      */
 
-    public IExtensionSpecification createExtensionSpecification(ClassResolver resolver,
-            ValueConverter valueConverter)
+    public IExtensionSpecification createExtensionSpecification(
+            ClassResolver resolver, ValueConverter valueConverter)
     {
         return new ExtensionSpecification(resolver, valueConverter);
     }
 
     /**
-     * Creates a concrete instance of {@link org.apache.tapestry.spec.IPropertySpecification}.
+     * Creates a concrete instance of
+     * {@link org.apache.tapestry.spec.IPropertySpecification}.
      * 
      * @since 3.0
      */

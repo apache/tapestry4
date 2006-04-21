@@ -26,27 +26,29 @@ import org.apache.tapestry.spec.IComponentSpecification;
  */
 public interface PageSpecificationResolver
 {
+
     /**
      * Resolve the name (which may have a library id prefix) to a namespace (see
-     * {@link #getNamespace()}) and a specification (see {@link #getSpecification()}).
+     * {@link #getNamespace()}) and a specification (see
+     * {@link #getSpecification()}).
      * 
      * @throws org.apache.tapestry.PageNotFoundException
      *             if the name cannot be resolved to the name of a page
      */
-    public void resolve(IRequestCycle cycle, String prefixedName);
+    void resolve(IRequestCycle cycle, String prefixedName);
 
     /**
      * Returns just the name of the page, unqualified by any namespace.
      */
-    public String getSimplePageName();
+    String getSimplePageName();
 
     /**
      * Returns the namespace containing the page.
      */
-    public INamespace getNamespace();
+    INamespace getNamespace();
 
     /**
      * Returns the specification for the page.
      */
-    public IComponentSpecification getSpecification();
+    IComponentSpecification getSpecification();
 }

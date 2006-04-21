@@ -22,29 +22,31 @@ import org.apache.hivemind.LocationHolder;
  */
 public interface InjectSpecification extends LocationHolder
 {
+
     /**
      * Returns the name of the property to be created.
      */
 
-    public String getProperty();
+    String getProperty();
 
-    public void setProperty(String property);
+    void setProperty(String property);
 
     /**
      * Returns the type of injection. Different injection types interpret the
-     * {@link #getObject() object property} differently. Ultimately, the type is used to select the
-     * correct {@link org.apache.tapestry.enhance.InjectEnhancementWorker}.
+     * {@link #getObject() object property} differently. Ultimately, the type is
+     * used to select the correct
+     * {@link org.apache.tapestry.enhance.InjectEnhancementWorker}.
      */
 
-    public String getType();
+    String getType();
 
-    public void setType(String type);
+    void setType(String type);
 
     /**
      * Returns the string used to indentify a particular object.
      */
 
-    public String getObject();
+    String getObject();
 
-    public void setObject(String object);
+    void setObject(String object);
 }
