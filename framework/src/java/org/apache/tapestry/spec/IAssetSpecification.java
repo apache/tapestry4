@@ -29,8 +29,8 @@ public interface IAssetSpecification extends IPropertyHolder, LocationHolder, Lo
      * Returns the base path for the asset. This may be interpreted as a URL, relative URL or the
      * path to a resource, depending on the type of asset.
      */
-    public String getPath();
+    String getPath();
 
     /** @since 3.0 * */
-    public void setPath(String path);
+    void setPath(String path);
 }

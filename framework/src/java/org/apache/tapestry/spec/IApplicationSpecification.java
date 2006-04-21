@@ -32,9 +32,9 @@ public interface IApplicationSpecification extends ILibrarySpecification
      * 
      **/
     
-    public String getName();
+    String getName();
 
-    public void setEngineClassName(String value);
+    void setEngineClassName(String value);
     
     /**
      *  Returns the name of the class (which implements {@link org.apache.tapestry.IEngine}).
@@ -42,7 +42,7 @@ public interface IApplicationSpecification extends ILibrarySpecification
      * 
      **/
     
-    public String getEngineClassName();
+    String getEngineClassName();
     
-    public void setName(String name);
+    void setName(String name);
 }

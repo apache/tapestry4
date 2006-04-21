@@ -20,37 +20,40 @@ import org.apache.hivemind.LocationHolder;
 import org.apache.tapestry.util.IPropertyHolder;
 
 /**
- * Defines an "extension", which is much like a helper bean, but is part of a library or application
- * specification (and has the same lifecycle as the application).
+ * Defines an "extension", which is much like a helper bean, but is part of a
+ * library or application specification (and has the same lifecycle as the
+ * application).
  * 
  * @author glongman@intelligentworks.com
  */
-public interface IExtensionSpecification extends IPropertyHolder, LocationHolder
+public interface IExtensionSpecification extends IPropertyHolder,
+        LocationHolder
 {
-    public abstract String getClassName();
 
-    public abstract void setClassName(String className);
+    String getClassName();
 
-    public abstract void addConfiguration(String propertyName, String value);
+    void setClassName(String className);
 
-    /**
-     * Returns an immutable Map of the configuration; keyed on property name, with values as
-     * properties to assign.
-     */
-    public abstract Map getConfiguration();
+    void addConfiguration(String propertyName, String value);
 
     /**
-     * Invoked to instantiate an instance of the extension and return it. It also configures
-     * properties of the extension.
+     * Returns an immutable Map of the configuration; keyed on property name,
+     * with values as properties to assign.
      */
-    public abstract Object instantiateExtension();
+    Map getConfiguration();
 
     /**
-     * Returns true if the extensions should be instantiated immediately after the containing
-     * {@link org.apache.tapestry.spec.LibrarySpecification}if parsed. Non-immediate extensions are
-     * instantiated only as needed.
+     * Invoked to instantiate an instance of the extension and return it. It
+     * also configures properties of the extension.
      */
-    public abstract boolean isImmediate();
+    Object instantiateExtension();
 
-    public abstract void setImmediate(boolean immediate);
+    /**
+     * Returns true if the extensions should be instantiated immediately after
+     * the containing {@link org.apache.tapestry.spec.LibrarySpecification}if
+     * parsed. Non-immediate extensions are instantiated only as needed.
+     */
+    boolean isImmediate();
+
+    void setImmediate(boolean immediate);
 }

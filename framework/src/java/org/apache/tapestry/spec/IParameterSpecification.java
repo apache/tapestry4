@@ -19,8 +19,9 @@ import java.util.Collection;
 import org.apache.hivemind.LocationHolder;
 
 /**
- * Defines a formal parameter to a component. An <code>IParameterSpecification</code> is contained
- * by a {@link IComponentSpecification}.
+ * Defines a formal parameter to a component. An
+ * <code>IParameterSpecification</code> is contained by a
+ * {@link IComponentSpecification}.
  * <p>
  * TBD: Identify arrays in some way.
  * 
@@ -28,73 +29,78 @@ import org.apache.hivemind.LocationHolder;
  */
 public interface IParameterSpecification extends LocationHolder
 {
-    /**
-     * Returns the class name of the expected type of the parameter. The default value is
-     * <code>java.lang.Object</code> which matches anything.
-     */
-    public String getType();
 
     /**
-     * Returns true if the parameter is required by the component. The default is false, meaning the
-     * parameter is optional.
+     * Returns the class name of the expected type of the parameter. The default
+     * value is <code>java.lang.Object</code> which matches anything.
      */
-    public boolean isRequired();
-
-    public void setRequired(boolean value);
+    String getType();
 
     /**
-     * Sets the type of value expected for the parameter. This can be left blank to indicate any
-     * type.
+     * Returns true if the parameter is required by the component. The default
+     * is false, meaning the parameter is optional.
      */
-    public void setType(String value);
+    boolean isRequired();
+
+    void setRequired(boolean value);
+
+    /**
+     * Sets the type of value expected for the parameter. This can be left blank
+     * to indicate any type.
+     */
+    void setType(String value);
 
     /**
      * Returns the documentation for this parameter.
      * 
      * @since 1.0.9
      */
-    public String getDescription();
+    String getDescription();
 
     /**
      * Sets the documentation for this parameter.
      * 
      * @since 1.0.9
      */
-    public void setDescription(String description);
+    void setDescription(String description);
 
     /**
-     * Sets the property name (of the component class) to connect the parameter to.
+     * Sets the property name (of the component class) to connect the parameter
+     * to.
      */
-    public void setPropertyName(String propertyName);
+    void setPropertyName(String propertyName);
 
     /**
      * Returns the name of the JavaBeans property to connect the parameter to.
      */
-    public String getPropertyName();
+    String getPropertyName();
 
     /**
-     * Returns the default value for the parameter (or null if the parameter has no default value).
-     * Required parameters may not have a default value. The default value is a
-     * <em>binding locator</em> (a prefixed value, as with a binding element).
+     * Returns the default value for the parameter (or null if the parameter has
+     * no default value). Required parameters may not have a default value. The
+     * default value is a <em>binding locator</em> (a prefixed value, as with
+     * a binding element).
      */
-    public String getDefaultValue();
+    String getDefaultValue();
 
     /**
-     * Sets the default value of the JavaBeans property if no binding is provided
+     * Sets the default value of the JavaBeans property if no binding is
+     * provided.
      */
-    public void setDefaultValue(String defaultValue);
+    void setDefaultValue(String defaultValue);
 
     /**
-     * Returns true if the parameter property should cache the result of the binding.
+     * Returns true if the parameter property should cache the result of the
+     * binding.
      * 
      * @since 4.0
      */
 
-    public boolean getCache();
+    boolean getCache();
 
     /** @since 4.0 */
 
-    public void setCache(boolean cache);
+    void setCache(boolean cache);
 
     /**
      * Returns the (primary) name of the parameter.
@@ -102,22 +108,22 @@ public interface IParameterSpecification extends LocationHolder
      * @since 4.0
      */
 
-    public String getParameterName();
+    String getParameterName();
 
     /**
      * @since 4.0
      */
 
-    public void setParameterName(String name);
+    void setParameterName(String name);
 
     /**
-     * Returns a non-null collection of strings for the aliases of the parameter. This is usually an
-     * empty list.
+     * Returns a non-null collection of strings for the aliases of the
+     * parameter. This is usually an empty list.
      * 
      * @since 4.0
      */
 
-    public Collection getAliasNames();
+    Collection getAliasNames();
 
     /**
      * Sets the list of aliases as a comma-seperated list.
@@ -127,21 +133,21 @@ public interface IParameterSpecification extends LocationHolder
      * @since 4.0
      */
 
-    public void setAliases(String nameList);
+    void setAliases(String nameList);
 
     /**
-     * Returns true if the parameter is deprecated. Deprecated parameter generate a warning when
-     * bound.
+     * Returns true if the parameter is deprecated. Deprecated parameter
+     * generate a warning when bound.
      * 
      * @since 4.0
      */
 
-    public boolean isDeprecated();
+    boolean isDeprecated();
 
     /**
      * @since 4.0
      */
 
-    public void setDeprecated(boolean deprecated);
+    void setDeprecated(boolean deprecated);
 
 }

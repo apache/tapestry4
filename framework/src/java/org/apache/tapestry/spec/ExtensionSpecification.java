@@ -39,11 +39,11 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements
         IExtensionSpecification
 {
     private static final Log LOG = LogFactory.getLog(ExtensionSpecification.class);
-
-    private String _className;
-
+    
     protected Map _configuration = new HashMap();
-
+    
+    private String _className;
+    
     private boolean _immediate;
 
     /** @since 4.0 */
