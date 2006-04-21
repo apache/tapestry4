@@ -14,8 +14,8 @@
 
 package org.apache.tapestry.form.validator;
 
-import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.FormComponentContributor;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidatorException;
 
@@ -48,7 +48,7 @@ public interface Validator extends FormComponentContributor
      *             if the object violates the constraint represented by this Validator.
      */
 
-    public void validate(IFormComponent field, ValidationMessages messages, Object object)
+    void validate(IFormComponent field, ValidationMessages messages, Object object)
             throws ValidatorException;
 
     /**
@@ -57,11 +57,11 @@ public interface Validator extends FormComponentContributor
      * return true.
      */
 
-    public boolean getAcceptsNull();
+    boolean getAcceptsNull();
 
     /**
      * Returns true if this field is required. Returns false otherwise.
      */
 
-    public boolean isRequired();
+    boolean isRequired();
 }

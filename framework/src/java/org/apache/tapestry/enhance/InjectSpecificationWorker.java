@@ -27,11 +27,13 @@ import org.apache.tapestry.spec.IComponentSpecification;
  */
 public class InjectSpecificationWorker implements EnhancementWorker
 {
+
     public static final String SPECIFICATION_PROPERTY_NAME = "specification";
 
     private ErrorLog _errorLog;
 
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
+    public void performEnhancement(EnhancementOperation op,
+            IComponentSpecification spec)
     {
         try
         {
@@ -39,28 +41,26 @@ public class InjectSpecificationWorker implements EnhancementWorker
         }
         catch (Exception ex)
         {
-            _errorLog.error(EnhanceMessages.errorAddingProperty(SPECIFICATION_PROPERTY_NAME, op
-                    .getBaseClass(), ex), spec.getLocation(), ex);
+            _errorLog.error(EnhanceMessages.errorAddingProperty(
+                    SPECIFICATION_PROPERTY_NAME, op.getBaseClass(), ex), spec
+                    .getLocation(), ex);
         }
     }
 
-    public void injectSpecification(EnhancementOperation op, IComponentSpecification spec)
+    public void injectSpecification(EnhancementOperation op,
+            IComponentSpecification spec)
     {
         Defense.notNull(op, "op");
         Defense.notNull(spec, "spec");
 
         op.claimReadonlyProperty(SPECIFICATION_PROPERTY_NAME);
 
-        String fieldName = op.addInjectedField(
-                "_$" + SPECIFICATION_PROPERTY_NAME,
-                IComponentSpecification.class,
+        String fieldName = op.addInjectedField("_$"
+                + SPECIFICATION_PROPERTY_NAME, IComponentSpecification.class,
                 spec);
 
-        EnhanceUtils.createSimpleAccessor(
-                op,
-                fieldName,
-                SPECIFICATION_PROPERTY_NAME,
-                IComponentSpecification.class,
+        EnhanceUtils.createSimpleAccessor(op, fieldName,
+                SPECIFICATION_PROPERTY_NAME, IComponentSpecification.class,
                 spec.getLocation());
     }
 

@@ -20,10 +20,13 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class ErrorMessages
+public final class ErrorMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(ErrorMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(ErrorMessages.class);
 
+    /* defeat instantiation */
+    private ErrorMessages() { }
+    
     public static String unableToProcessClientRequest(Throwable cause)
     {
         return _formatter.format("unable-to-process-client-request", cause);

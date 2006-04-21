@@ -22,24 +22,29 @@ package org.apache.tapestry.engine;
  */
 public interface ServiceEncoder
 {
+
     /**
-     * Invoked by the {@link org.apache.tapestry.services.LinkFactory}&nbsp;to encode the request.
-     * Encoding is the process of modifying the encoding object to represent the same data in a
-     * different format; the canoncial example is to replace the
+     * Invoked by the {@link org.apache.tapestry.services.LinkFactory}&nbsp;to
+     * encode the request. Encoding is the process of modifying the encoding
+     * object to represent the same data in a different format; the canoncial
+     * example is to replace the
      * {@link org.apache.tapestry.services.ServiceConstants#PAGE}and
-     * {@link org.apache.tapestry.services.ServiceConstants#SERVICE}query parameters with a servlet
-     * path (i.e., "/Home.html", if the ".html" extension is mapped to the page service).
+     * {@link org.apache.tapestry.services.ServiceConstants#SERVICE}query
+     * parameters with a servlet path (i.e., "/Home.html", if the ".html"
+     * extension is mapped to the page service).
      * <p>
-     * The {@link org.apache.tapestry.services.LinkFactory}&nbsp;iterates over a collection of
-     * encoders, stopping once the ServiceRequestEncoding is modified in any way.
+     * The {@link org.apache.tapestry.services.LinkFactory}&nbsp;iterates over
+     * a collection of encoders, stopping once the ServiceRequestEncoding is
+     * modified in any way.
      */
 
-    public void encode(ServiceEncoding encoding);
+    void encode(ServiceEncoding encoding);
 
     /**
-     * Invoked to decode a request. The encoder is responsible for recognizing a request it may have
-     * encoded, and for restoring any query parameters is may have removed.
+     * Invoked to decode a request. The encoder is responsible for recognizing a
+     * request it may have encoded, and for restoring any query parameters is
+     * may have removed.
      */
 
-    public void decode(ServiceEncoding encoding);
+    void decode(ServiceEncoding encoding);
 }

@@ -13,16 +13,18 @@
 // limitations under the License.
 
 package org.apache.tapestry.enhance;
+
 import org.apache.tapestry.IScript;
 
 /**
- * A wrapper around {@link org.apache.tapestry.engine.IScriptSource} that will obtain an
- * {@link org.apache.tapestry.IScript} instance as needed.
+ * A wrapper around {@link org.apache.tapestry.engine.IScriptSource} that will
+ * obtain an {@link org.apache.tapestry.IScript} instance as needed.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface DeferredScript
 {
-    public IScript getScript();
+
+    IScript getScript();
 }

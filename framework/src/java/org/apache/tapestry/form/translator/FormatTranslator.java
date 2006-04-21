@@ -35,6 +35,22 @@ public abstract class FormatTranslator extends AbstractTranslator
 {
     private String _pattern;
 
+    public FormatTranslator()
+    {
+        _pattern = defaultPattern();
+    }
+
+    //TODO: Needed until HIVEMIND-134 fix is available
+    public FormatTranslator(String initializer)
+    {
+        PropertyUtils.configureProperties(this, initializer);
+
+        if (HiveMind.isBlank(_pattern))
+        {
+            _pattern = defaultPattern();
+        }
+    }
+    
     protected abstract String defaultPattern();
 
     /**
@@ -85,21 +101,5 @@ public abstract class FormatTranslator extends AbstractTranslator
     public void setPattern(String pattern)
     {
         _pattern = pattern;
-    }
-
-    public FormatTranslator()
-    {
-        _pattern = defaultPattern();
-    }
-
-    // Needed until HIVEMIND-134 fix is available
-    public FormatTranslator(String initializer)
-    {
-        PropertyUtils.configureProperties(this, initializer);
-
-        if (HiveMind.isBlank(_pattern))
-        {
-            _pattern = defaultPattern();
-        }
     }
 }

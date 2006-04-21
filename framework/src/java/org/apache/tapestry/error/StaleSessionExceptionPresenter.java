@@ -27,6 +27,7 @@ import org.apache.tapestry.StaleSessionException;
  */
 public interface StaleSessionExceptionPresenter
 {
+
     /**
      * Reports the stale session exception.
      * 
@@ -35,6 +36,7 @@ public interface StaleSessionExceptionPresenter
      * @param cause
      *            the exception that was caught
      */
-    public void presentStaleSessionException(IRequestCycle cycle, StaleSessionException cause)
-            throws IOException;
+    void presentStaleSessionException(IRequestCycle cycle,
+            StaleSessionException cause)
+        throws IOException;
 }

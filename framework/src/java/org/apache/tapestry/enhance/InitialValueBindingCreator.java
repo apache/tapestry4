@@ -21,14 +21,15 @@ import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingSource;
 
 /**
- * Encapsulates information needed to construct an initial value binding for a specified property
- * (with an initial value).
+ * Encapsulates information needed to construct an initial value binding for a
+ * specified property (with an initial value).
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class InitialValueBindingCreator
 {
+
     private BindingSource _bindingSource;
 
     private String _description;
@@ -37,6 +38,15 @@ public class InitialValueBindingCreator
 
     private Location _location;
 
+    public InitialValueBindingCreator(BindingSource bindingSource,
+            String description, String initialValue, Location location)
+    {
+        _bindingSource = bindingSource;
+        _description = description;
+        _initialValue = initialValue;
+        _location = location;
+    }
+    
     /**
      * This method is just implemented for testing purposes.
      */
@@ -45,21 +55,15 @@ public class InitialValueBindingCreator
     {
         InitialValueBindingCreator c = (InitialValueBindingCreator) obj;
 
-        return _bindingSource == c._bindingSource && _description.equals(c._description)
-                && _initialValue.equals(c._initialValue) && _location.equals(c._location);
-    }
-
-    public InitialValueBindingCreator(BindingSource bindingSource, String description,
-            String initialValue, Location location)
-    {
-        _bindingSource = bindingSource;
-        _description = description;
-        _initialValue = initialValue;
-        _location = location;
+        return _bindingSource == c._bindingSource
+                && _description.equals(c._description)
+                && _initialValue.equals(c._initialValue)
+                && _location.equals(c._location);
     }
 
     public IBinding createBinding(IComponent component)
     {
-        return _bindingSource.createBinding(component, _description, _initialValue, BindingConstants.OGNL_PREFIX, _location);
+        return _bindingSource.createBinding(component, _description,
+                _initialValue, BindingConstants.OGNL_PREFIX, _location);
     }
 }

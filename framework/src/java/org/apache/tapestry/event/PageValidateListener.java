@@ -17,21 +17,25 @@ package org.apache.tapestry.event;
 import java.util.EventListener;
 
 /**
- *  An interface for objects that want to take part in the validation of the page.
- *
- *  @author Mindbridge
- *  @since 3.0
- **/
+ * An interface for objects that want to take part in the validation of the
+ * page.
+ * 
+ * @author Mindbridge
+ * @since 3.0
+ */
 
 public interface PageValidateListener extends EventListener
 {
-    /**
-     *  Invoked by the page from its
-     *  {@link org.apache.tapestry.IPage#validate(org.apache.tapestry.IRequestCycle)} method.
-     *
-     *  <p>May throw a {@link org.apache.tapestry.PageRedirectException}, to redirect the user
-     *  to an appropriate part of the system (such as, a login page).
-     **/
 
-    public void pageValidate(PageEvent event);
+    /**
+     * Invoked by the page from its
+     * {@link org.apache.tapestry.IPage#validate(org.apache.tapestry.IRequestCycle)}
+     * method.
+     * <p>
+     * May throw a {@link org.apache.tapestry.PageRedirectException}, to
+     * redirect the user to an appropriate part of the system (such as, a login
+     * page).
+     */
+
+    void pageValidate(PageEvent event);
 }

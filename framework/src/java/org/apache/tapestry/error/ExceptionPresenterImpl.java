@@ -25,6 +25,7 @@ import org.apache.tapestry.services.ResponseRenderer;
  */
 public class ExceptionPresenterImpl implements ExceptionPresenter
 {
+
     private RequestExceptionReporter _requestExceptionReporter;
 
     private ResponseRenderer _responseRenderer;
@@ -74,7 +75,8 @@ public class ExceptionPresenterImpl implements ExceptionPresenter
         _exceptionPageName = exceptionPageName;
     }
 
-    public void setRequestExceptionReporter(RequestExceptionReporter requestExceptionReporter)
+    public void setRequestExceptionReporter(
+            RequestExceptionReporter requestExceptionReporter)
     {
         _requestExceptionReporter = requestExceptionReporter;
     }

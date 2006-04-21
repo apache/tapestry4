@@ -22,13 +22,16 @@ import org.apache.tapestry.web.WebRequest;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class EngineUtils
+public final class EngineUtils
 {
 
+    /* defeat instantiation */
+    private EngineUtils() { }
+    
     /**
-     * Invoked by {@link #getURL(String, String, int, String, boolean)} to see if an absolute URL is
-     * needed (because a specific scheme, server or port was indicated that does not match the
-     * incoming request).
+     * Invoked by {@link #getURL(String, String, int, String, boolean)} to see
+     * if an absolute URL is needed (because a specific scheme, server or port
+     * was indicated that does not match the incoming request).
      * 
      * @param scheme
      *            the desired URL scheme, or null
@@ -40,17 +43,16 @@ public class EngineUtils
      *            the request to check against
      * @return true if absolute URL is needed, false otherwise
      */
-    public static boolean needAbsoluteURL(String scheme, String server, int port, WebRequest request)
+    public static boolean needAbsoluteURL(String scheme, String server,
+            int port, WebRequest request)
     {
-        if (scheme != null && !scheme.equals(request.getScheme()))
-            return true;
-    
+        if (scheme != null && !scheme.equals(request.getScheme())) return true;
+
         if (server != null && !server.equals(request.getServerName()))
             return true;
-    
-        if (port != 0 && port != request.getServerPort())
-            return true;
-    
+
+        if (port != 0 && port != request.getServerPort()) return true;
+
         return false;
     }
 

@@ -32,5 +32,5 @@ public interface PageEndRenderListener extends EventListener
      * @see org.apache.tapestry.AbstractComponent#pageEndRender(PageEvent)
      */
 
-    public void pageEndRender(PageEvent event);
+    void pageEndRender(PageEvent event);
 }

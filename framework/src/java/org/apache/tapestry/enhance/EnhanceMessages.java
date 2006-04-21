@@ -29,10 +29,13 @@ import org.apache.tapestry.Tapestry;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-class EnhanceMessages
+final class EnhanceMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(EnhanceMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(EnhanceMessages.class);
 
+    /* defeat instantiation */
+    private EnhanceMessages() { }
+    
     static String noImplForAbstractMethod(Method method, Class declareClass, Class baseClass,
             Class enhancedClass)
     {

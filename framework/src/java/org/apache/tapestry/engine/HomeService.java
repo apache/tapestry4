@@ -25,9 +25,9 @@ import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
 
 /**
- * An implementation of the home service that renders the Home page. This is the most likely
- * candidate for overriding ... for example, to select the page to render based on known information
- * about the user (stored as a cookie).
+ * An implementation of the home service that renders the Home page. This is the
+ * most likely candidate for overriding ... for example, to select the page to
+ * render based on known information about the user (stored as a cookie).
  * 
  * @author Howard Lewis Ship
  * @since 1.0.9
@@ -35,6 +35,7 @@ import org.apache.tapestry.services.ServiceConstants;
 
 public class HomeService implements IEngineService
 {
+
     /** @since 4.0 */
     private ResponseRenderer _responseRenderer;
 
@@ -49,7 +50,8 @@ public class HomeService implements IEngineService
     public ILink getLink(boolean post, Object parameter)
     {
         if (parameter != null)
-            throw new IllegalArgumentException(EngineMessages.serviceNoParameter(this));
+            throw new IllegalArgumentException(EngineMessages
+                    .serviceNoParameter(this));
 
         Map parameters = new HashMap();
 
@@ -58,7 +60,8 @@ public class HomeService implements IEngineService
         return _linkFactory.constructLink(this, post, parameters, true);
     }
 
-    public void service(IRequestCycle cycle) throws IOException
+    public void service(IRequestCycle cycle)
+        throws IOException
     {
         cycle.activate(_pageName);
 

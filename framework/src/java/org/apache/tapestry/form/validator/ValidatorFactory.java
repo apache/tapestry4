@@ -43,7 +43,7 @@ import org.apache.tapestry.IComponent;
  * with the given name.
  * <p>
  * A full validator specification might be:
- * <code>required,email[%email-format],minLength=20[Email addresses must be at least 20 characters long.]
+ * <code>required,email[%email-format],minLength=20[Email addresses must be at least 20 characters long.]</code>
  * 
  * @author Howard Lewis Ship
  * @since 4.0
@@ -60,5 +60,5 @@ public interface ValidatorFactory
      *            a string identifying which validators and their configuration
      * @return List of {@link Validator} (possibly empty)
      */
-    public List constructValidatorList(IComponent component, String specification);
+    List constructValidatorList(IComponent component, String specification);
 }

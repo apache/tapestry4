@@ -19,15 +19,17 @@ import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.services.ServiceConstants;
 
 /**
- * Encodes the service name, typical output is "/page.svc" where "page" is a service name. This is
- * useful for the home and restart services, for example. This encoder should be prioritized very
- * low so that it doesn't prevent other encoders from doing their work.
+ * Encodes the service name, typical output is "/page.svc" where "page" is a
+ * service name. This is useful for the home and restart services, for example.
+ * This encoder should be prioritized very low so that it doesn't prevent other
+ * encoders from doing their work.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class ServiceExtensionEncoder implements ServiceEncoder
 {
+
     private String _extension;
 
     public void setExtension(String extension)
@@ -53,10 +55,10 @@ public class ServiceExtensionEncoder implements ServiceEncoder
 
         String extension = servletPath.substring(dotx + 1);
 
-        if (!extension.equals(_extension))
-            return;
+        if (!extension.equals(_extension)) return;
 
-        // The first character should be a slash, then the service name, then the dot.
+        // The first character should be a slash, then the service name, then
+        // the dot.
 
         String service = servletPath.substring(1, dotx);
 

@@ -23,21 +23,25 @@ import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.services.ResponseRenderer;
 
 /**
- * Implementation of {@link org.apache.tapestry.error.StaleLinkExceptionPresenter} that uses a page
- * to present the exception. The page must implement a property named "message" of type String and
- * should present that message to the user.
+ * Implementation of
+ * {@link org.apache.tapestry.error.StaleLinkExceptionPresenter} that uses a
+ * page to present the exception. The page must implement a property named
+ * "message" of type String and should present that message to the user.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class StaleLinkExceptionPresenterImpl implements StaleLinkExceptionPresenter
+public class StaleLinkExceptionPresenterImpl implements
+        StaleLinkExceptionPresenter
 {
+
     private ResponseRenderer _responseRenderer;
 
     private String _pageName;
 
-    public void presentStaleLinkException(IRequestCycle cycle, StaleLinkException cause)
-            throws IOException
+    public void presentStaleLinkException(IRequestCycle cycle,
+            StaleLinkException cause)
+        throws IOException
     {
         IPage exceptionPage = cycle.getPage(_pageName);
 

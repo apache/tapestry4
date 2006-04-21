@@ -15,11 +15,9 @@
 package org.apache.tapestry.engine;
 
 import org.apache.hivemind.ErrorHandler;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
-import org.apache.tapestry.util.QueryParameterMap;
 
 /**
  * An object that contains all the invariant parameters to the

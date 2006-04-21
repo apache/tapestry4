@@ -20,13 +20,15 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleLinkException;
 
 /**
- * Service interface for informing the user about a {@link org.apache.tapestry.StaleLinkException}.
+ * Service interface for informing the user about a
+ * {@link org.apache.tapestry.StaleLinkException}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface StaleLinkExceptionPresenter
 {
+
     /**
      * Reports the stale link exception.
      * 
@@ -35,6 +37,7 @@ public interface StaleLinkExceptionPresenter
      * @param cause
      *            the exception that was caught
      */
-    public void presentStaleLinkException(IRequestCycle cycle, StaleLinkException cause)
-            throws IOException;
+    void presentStaleLinkException(IRequestCycle cycle,
+            StaleLinkException cause)
+        throws IOException;
 }

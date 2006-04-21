@@ -33,13 +33,15 @@ import org.apache.tapestry.spec.IComponentSpecification;
  */
 public class InjectBeanWorker implements EnhancementWorker
 {
+
     private ErrorLog _errorLog;
 
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
+    public void performEnhancement(EnhancementOperation op,
+            IComponentSpecification spec)
     {
         Iterator i = spec.getBeanNames().iterator();
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
             String name = (String) i.next();
 
@@ -54,15 +56,16 @@ public class InjectBeanWorker implements EnhancementWorker
                 }
                 catch (Exception ex)
                 {
-                    _errorLog.error(EnhanceMessages.errorAddingProperty(propertyName, op
-                            .getBaseClass(), ex), bs.getLocation(), ex);
+                    _errorLog.error(EnhanceMessages.errorAddingProperty(
+                            propertyName, op.getBaseClass(), ex), bs
+                            .getLocation(), ex);
                 }
             }
         }
     }
 
-    public void injectBean(EnhancementOperation op, String beanName, String propertyName,
-            Location location)
+    public void injectBean(EnhancementOperation op, String beanName,
+            String propertyName, Location location)
     {
         Defense.notNull(op, "op");
         Defense.notNull(beanName, "beanName");
@@ -70,18 +73,20 @@ public class InjectBeanWorker implements EnhancementWorker
 
         op.claimReadonlyProperty(propertyName);
 
-        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName, null);
+        Class propertyType = EnhanceUtils.extractPropertyType(op, propertyName,
+                null);
 
         String methodName = op.getAccessorMethodName(propertyName);
 
-        MethodSignature sig = new MethodSignature(propertyType, methodName, null, null);
+        MethodSignature sig = new MethodSignature(propertyType, methodName,
+                null, null);
 
         // i.e.
         // return (foo.bar.Baz) getBeans().getBean("baz");
 
         op.addMethod(Modifier.PUBLIC, sig, "return ("
-                + ClassFabUtils.getJavaClassName(propertyType) + ") getBeans().getBean(\""
-                + beanName + "\");", location);
+                + ClassFabUtils.getJavaClassName(propertyType)
+                + ") getBeans().getBean(\"" + beanName + "\");", location);
     }
 
     public void setErrorLog(ErrorLog errorLog)

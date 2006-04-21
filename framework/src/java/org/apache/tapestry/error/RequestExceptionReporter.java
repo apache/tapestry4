@@ -15,8 +15,8 @@
 package org.apache.tapestry.error;
 
 /**
- * Service responsible for producing console output when there is an error processing the request
- * (and the normal Exception page can not be displayed).
+ * Service responsible for producing console output when there is an error
+ * processing the request (and the normal Exception page can not be displayed).
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
@@ -24,5 +24,6 @@ package org.apache.tapestry.error;
  */
 public interface RequestExceptionReporter
 {
-    public void reportRequestException(String message, Throwable cause);
+
+    void reportRequestException(String message, Throwable cause);
 }

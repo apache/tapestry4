@@ -17,19 +17,20 @@ package org.apache.tapestry.event;
 import java.util.EventListener;
 
 /**
- * Event listener for determining when a page is about to start rendering. Rendering includes the
- * replay of a form to handle form submissions.
+ * Event listener for determining when a page is about to start rendering.
+ * Rendering includes the replay of a form to handle form submissions.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface PageBeginRenderListener extends EventListener
 {
+
     /**
-     * Invoked before just before the page renders a response. This provides listeners with a last
-     * chance to initialize themselves for the render. This initialization can include modifying
-     * peristent page properties.
+     * Invoked before just before the page renders a response. This provides
+     * listeners with a last chance to initialize themselves for the render.
+     * This initialization can include modifying peristent page properties.
      */
 
-    public void pageBeginRender(PageEvent event);
+    void pageBeginRender(PageEvent event);
 }
