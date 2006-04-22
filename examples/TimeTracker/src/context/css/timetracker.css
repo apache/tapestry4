@@ -1,4 +1,6 @@
 @import url("undohtml.css");  /* CSS to undo some default browser css that gets in the way more than it helps */
+@import url("dojo.css");
+@import url("forms.css");
 
 body {
     width: auto;

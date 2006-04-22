@@ -92,15 +92,9 @@ public class JdbcConnectionProxy implements InvocationHandler, Discardable
     public void threadDidDiscardService()
     {
         try {
-            if (_log.isDebugEnabled())
-                _log.debug("threadDidDiscardService(): Closing connection: " + _conn.isClosed());
-            
             if (!_conn.isClosed()) {
-                if (!_conn.getAutoCommit()) {
-                    if (_log.isDebugEnabled())
-                        _log.debug("Committing uncommitted transaction.");
+                if (!_conn.getAutoCommit())
                     _conn.commit();
-                }
             }
         } catch (SQLException e) {
             _log.error("SQL error cleaning up connection, rolling back transaction(if any).", e);

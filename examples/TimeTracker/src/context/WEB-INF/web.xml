@@ -32,7 +32,7 @@
   
   <servlet>
   	<servlet-name>timetracker</servlet-name>
-    <servlet-class>org.apache.tapestry.ApplicationServlet</servlet-class>
+    <servlet-class>org.apache.tapestry.timetracker.servlet.ConfigurationServlet</servlet-class>
   	<load-on-startup>0</load-on-startup>
   </servlet>
      

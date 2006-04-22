@@ -49,7 +49,6 @@ RegistryShutdownListener
         
         _log = parms.getLog();
         try {
-            _log.debug("Opening connection ");
             Connection conn = _dataSource.getConnection();
             
             return Proxy.newProxyInstance(this.getClass()

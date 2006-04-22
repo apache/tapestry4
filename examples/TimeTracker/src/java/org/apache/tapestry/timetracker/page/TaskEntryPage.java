@@ -14,7 +14,6 @@
 package org.apache.tapestry.timetracker.page;
 
 import java.util.Date;
-import java.util.List;
 
 import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.InjectObject;
@@ -51,14 +50,13 @@ public abstract class TaskEntryPage extends BasePage
     
     public abstract Date getStartTime();
     
+    
     /**
      * Selection model for projects.
      * @return
      */
     public IPropertySelectionModel getProjectModel()
     {
-        List<Project> projects = getProjectDao().listProjects();
-        projects.add(0, new Project(-1, "Choose.."));
-        return new BeanPropertySelectionModel(projects, "name");
+        return new BeanPropertySelectionModel(getProjectDao().listProjects(), "name");
     }
 }
