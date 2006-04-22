@@ -21,6 +21,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -96,6 +99,8 @@ public class AssetService implements IEngineService
 
     private static final int BUFFER_SIZE = 10240;
 
+    private static final DateFormat CACHED_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+    
     /** @since 4.0 */
     private ClassResolver _classResolver;
 
@@ -260,8 +265,10 @@ public class AssetService implements IEngineService
         String header = _request.getHeader("If-Modified-Since");
         long modify = -1;
         
-        if (header != null)
-            modify = Long.parseLong(header);
+        try {
+            if (header != null)
+                modify = CACHED_FORMAT.parse(header).getTime();
+        } catch (ParseException e) { e.printStackTrace(); }
         
         if (resource.lastModified() > modify)
             return false;
