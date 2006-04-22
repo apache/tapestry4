@@ -77,8 +77,6 @@ public class URLRetriever
 
         try
         {
-            _pageContext.getOut().flush();
-
             dispatcher.include(request, _pageContext.getResponse());
         }
         catch (IOException ex)
