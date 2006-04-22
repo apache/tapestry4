@@ -2,7 +2,7 @@
 <!-- $Id$ -->
 <!DOCTYPE script PUBLIC
 	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
-	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+	"http://tapestry.apache.org/dtd/Script_3_0.dtd">
   
 <script>
 
@@ -25,7 +25,7 @@
 </let>
 
 <let key="buttonOnclickHandler">
-  javascript:${calendarObject}.toggle(document.${formName}.${name});	
+  javascript:if(!document.${formName}.${name}.disabled) { ${calendarObject}.toggle(document.${formName}.${name});} 
 </let>
 
 <body>
