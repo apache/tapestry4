@@ -1393,7 +1393,9 @@ itself.
 	<td>
 	If blank (the default), then the property is transient (i.e., not persistent).  Otherwise, the
   name of a persistence strategy must be supplied. The most common persistence
-  strategy is "session" (the property is stored into an HttpSession attribute).
+  strategy is "session" (the property is stored into an HttpSession attribute) - see
+		<link href="state.html#state.page-properties.types">Managing server-side state</link> for 
+		more details.
 	</td>
 </tr>
 <tr>

@@ -57,6 +57,9 @@
   </todo>
   <changes>
   	<release version="4.0.3" date="unreleased" >
+  		<action type="update" dev="AA" fixes-bug="TAPESTRY-366">
+  			Documentation of persist attribute.
+  		</action> 		  
   		<action type="fix" dev="AA" fixes-bug="TAPESTRY-842" due-to="Alan Chandler">
   			Wrong example for Script component.
   		</action>  	
