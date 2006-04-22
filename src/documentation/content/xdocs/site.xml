@@ -217,7 +217,8 @@
     </info>
     
     <related label="Related Projects">
-      	<appfuse label="AppFuse" href="https://appfuse.dev.java.net/"/> 
+      	<appfuse label="AppFuse" href="https://appfuse.dev.java.net/"/>
+      	<item label="Cognition Framework" href="http://www.cognitionframework.org"/>
       	<item label="HiveMind" href="http://jakarta.apache.org/hivemind/"/>
     	<item label="Spindle" href="http://spindle.sourceforge.net/"/>
     	<item label="Tacos" href="http://tacos.sourceforge.net"/>
