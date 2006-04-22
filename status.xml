@@ -57,7 +57,9 @@
   </todo>
   <changes>
   	<release version="4.0.3" date="unreleased" >
-  	
+  		<action type="fix" dev="AA" fixes-bug="TAPESTRY-842" due-to="Alan Chandler">
+  			Wrong example for Script component.
+  		</action>  	
   	</release>
   	<release version="4.0.2" date="Apr 13 2006" >
   		<action type="update" dev="AA">

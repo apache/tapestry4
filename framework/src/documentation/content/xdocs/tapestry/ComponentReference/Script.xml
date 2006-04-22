@@ -185,7 +185,9 @@ Selects the specified form input field on body load if the input type is not
 Input symbols:
   component: the component input field to give focus
 -->
-
+	
+<script>
+	
 <input-symbol key="component" class="org.apache.tapestry.form.AbstractFormComponent" required="yes"/>
 
 <let key="formObject">
@@ -196,11 +198,9 @@ Input symbols:
 	${formObject}.${component.name}
 </let>
 
-<script>
-
 <body>
 function setFocus() {
-    var inputField = ${componentObject.name};
+    var inputField = ${componentObject};
 
     if (inputField.type != "hidden") {
         if (inputField.disabled != true) {
