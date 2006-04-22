@@ -143,16 +143,16 @@ public class DateValidator extends BaseValidator
                 result = format.parse(value);
             }
 
-            Calendar _calendar = new GregorianCalendar();
+            Calendar calendar = new GregorianCalendar();
 
-            _calendar.setTime(result);
+            calendar.setTime(result);
 
             // SimpleDateFormat allows two-digit dates to be
             // entered, i.e., 12/24/66 is Dec 24 0066 ... that's
             // probably not what is really wanted, so treat
             // it as an invalid date.
 
-            if (_calendar.get(Calendar.YEAR) < 1000)
+            if (calendar.get(Calendar.YEAR) < 1000)
                 result = null;
 
         }
