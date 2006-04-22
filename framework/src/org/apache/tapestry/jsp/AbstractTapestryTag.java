@@ -122,7 +122,7 @@ public abstract class AbstractTapestryTag extends TagSupport
         if (_parameters.startsWith(TemplateParser.OGNL_EXPRESSION_PREFIX))
         {
             String expression =
-                _parameters.substring(TemplateParser.OGNL_EXPRESSION_PREFIX.length() + 1);
+                _parameters.substring(TemplateParser.OGNL_EXPRESSION_PREFIX.length());
 
             return convertExpression(expression);
         }
