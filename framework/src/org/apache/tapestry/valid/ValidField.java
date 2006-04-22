@@ -82,21 +82,22 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
 
         boolean rendering = !cycle.isRewinding();
 
-        if (rendering)
+        if (rendering && !isDisabled())
             delegate.writePrefix(writer, cycle, this, validator);
 
         super.renderComponent(writer, cycle);
 
-        if (rendering)
-            delegate.writeSuffix(writer, cycle, this, validator);
+        if (!isDisabled()) {
+            if (rendering)
+                delegate.writeSuffix(writer, cycle, this, validator);
 
-        // If rendering and there's either an error in the field,
-        // then we may have identified the default field (which will
-        // automatically receive focus).
+            // If rendering and there's either an error in the field,
+            // then we may have identified the default field (which will
+            // automatically receive focus).
 
-        if (rendering && delegate.isInError())
-            addSelect(cycle);
-
+            if (rendering && delegate.isInError())
+                addSelect(cycle);
+        }
         // That's OK, but an ideal situation would know about non-validating
         // text fields, and also be able to put the cursor in the
         // first field, period (even if there are no required or error fields).
@@ -111,6 +112,10 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
 
     protected void beforeCloseTag(IMarkupWriter writer, IRequestCycle cycle)
     {
+        if (isDisabled()) {
+            return;
+        }
+        
         IValidator validator = getValidator();
 
         validator.renderValidatorContribution(this, writer, cycle);
@@ -167,7 +172,7 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
         Object value = getValue();
         String result = getValidator().toString(this, value);
 
-        if (Tapestry.isBlank(result) && getValidator().isRequired())
+        if (Tapestry.isBlank(result) && getValidator().isRequired() && !isDisabled())
             addSelect(getPage().getRequestCycle());
 
         return result;
