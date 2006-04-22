@@ -17,7 +17,7 @@
 <!--  $Id$ -->
 <!DOCTYPE component-specification PUBLIC 
   "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "http://tapestry.apache.org/dtd/Tapestry_3_0.dtd">
 	
 <component-specification class="org.apache.tapestry.contrib.table.components.TableFormPages" 
 	allow-body="no" allow-informal-parameters="yes">
@@ -27,8 +27,6 @@
         It is a low level Table component that renders the pages in the table. 
         This component must be wrapped by TableView. 
 	</description>
-  
-	<component id="informal" type="Any" inherit-informal-parameters="yes"/>
   
 	<parameter name="pagesDisplayed" 
 		type="int" 
@@ -42,6 +40,8 @@
     </parameter>
   
 	<property-specification name="selectedPage" type="int"/>
+  
+	<component id="informal" type="Any" inherit-informal-parameters="yes"/>
   
 	<component id="hiddenCurrentPage" type="Hidden">
 		<binding name="value" expression="currentPage"/>
