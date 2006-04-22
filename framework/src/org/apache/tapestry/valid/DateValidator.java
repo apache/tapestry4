@@ -43,7 +43,6 @@ public class DateValidator extends BaseValidator
     private String _displayFormat;
     private Date _minimum;
     private Date _maximum;
-    private Calendar _calendar;
     private String _scriptPath = "/org/apache/tapestry/valid/DateValidator.script";
 
     private static DateFormat defaultDateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -144,8 +143,7 @@ public class DateValidator extends BaseValidator
                 result = format.parse(value);
             }
 
-            if (_calendar == null)
-                _calendar = new GregorianCalendar();
+            Calendar _calendar = new GregorianCalendar();
 
             _calendar.setTime(result);
 
