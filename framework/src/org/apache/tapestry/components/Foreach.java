@@ -105,7 +105,6 @@ public abstract class Foreach extends AbstractComponent
             while (hasNext)
             {
                 _value = dataSource.next();
-                hasNext = dataSource.hasNext();
 
                 if (indexBinding != null)
                     indexBinding.setInt(_index);
@@ -125,6 +124,7 @@ public abstract class Foreach extends AbstractComponent
                     writer.end();
 
                 _index++;
+                hasNext = dataSource.hasNext();
             }
         }
         finally
