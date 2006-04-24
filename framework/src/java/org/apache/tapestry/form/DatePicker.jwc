@@ -21,6 +21,11 @@
 
 <component-specification class="org.apache.tapestry.form.DatePicker" allow-body="no">
   
+  <description>
+    Provides a form Date field component for selecting dates.
+    DatePicker presents a drop down monthly calendar for users to select dates from.
+  </description>
+  
   <parameter name="value" required="yes"/>
   <parameter name="disabled"/>
   <parameter name="includeWeek"/>

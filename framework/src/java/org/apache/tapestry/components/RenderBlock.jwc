@@ -23,6 +23,11 @@
 	allow-body="no" 
 	allow-informal-parameters="yes">
 	
+	<description>
+    Renders the body of a Block component, which may be selected dynamically.
+    The Block may be on the same page as the RenderBlock or on another page entirely. 
+	</description>
+	
   <parameter name="block" required="yes"/>
   	
 </component-specification>
