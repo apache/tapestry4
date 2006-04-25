@@ -21,6 +21,7 @@ import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.DirectServiceParameter;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.listener.ListenerInvoker;
 
@@ -48,8 +49,8 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
         Object[] serviceParameters = constructServiceParameters(getParameters());
 
         DirectServiceParameter dsp = new DirectServiceParameter(this, serviceParameters);
-
-        return getLink(cycle, Tapestry.DIRECT_SERVICE, dsp);
+        
+        return getDirectService().getLink(false, dsp);
     }
 
     /**
@@ -116,4 +117,11 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
      */
 
     public abstract ListenerInvoker getListenerInvoker();
+    
+    /**
+     * Injected.
+     * 
+     * @since 4.0.3
+     */    
+    public abstract IEngineService getDirectService();    
 }
