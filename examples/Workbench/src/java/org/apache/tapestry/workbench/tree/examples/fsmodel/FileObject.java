@@ -23,6 +23,8 @@ import org.apache.tapestry.engine.IEngineService;
 
 public class FileObject extends SFObject
 {
+    private static final long serialVersionUID = -4552981105079058185L;
+
     private long m_lSize;
 
     private final IEngineService _assetService;

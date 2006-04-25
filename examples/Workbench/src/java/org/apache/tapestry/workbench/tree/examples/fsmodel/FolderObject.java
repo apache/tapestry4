@@ -24,6 +24,7 @@ import org.apache.tapestry.engine.IEngineService;
 
 public class FolderObject extends SFObject
 {
+    private static final long serialVersionUID = 1889745019885512018L;
 
     /**
      * @associates <{File}>
