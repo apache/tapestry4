@@ -45,8 +45,6 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
 
     private Boolean m_objShowNodeImages;
 
-    private Boolean m_objMakeNodeDirect;
-
     private INodeRenderFactory m_objNodeRenderFactory;
 
     private IAsset m_objOpenNodeImage;
@@ -70,7 +68,6 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
         m_objNodeState = null;
         m_objShowNodeImages = null;
         m_objNodeRenderFactory = null;
-        m_objMakeNodeDirect = null;
         m_CurrentForeachConnectImageValue = TreeRowObject.LINE_CONN_IMG;
     }
 
@@ -543,15 +540,6 @@ public abstract class TreeNodeView extends BaseComponent implements PageDetachLi
         ITreeModelSource objSource = (ITreeModelSource) getPage().getRequestCycle().getAttribute(
                 ITreeModelSource.TREE_MODEL_SOURCE_ATTRIBUTE);
         return objSource;
-    }
-
-    public boolean getShowConnectImage()
-    {
-        ITreeRowSource objRowSource = getTreeRowSource();
-        int nRowType = objRowSource.getTreeRow().getTreeRowPossiotionType();
-        if (TreeRowObject.MIDDLE_ROW == nRowType)
-            return true;
-        return false;
     }
 
     public int[] getForeachConnectImageList()

@@ -17,6 +17,7 @@ package org.apache.tapestry.contrib.ajax;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.tapestry.BaseComponent;
@@ -37,10 +38,12 @@ public abstract class Timeout extends BaseComponent {
 	public abstract boolean getDisableAutoProlong();
 	
 	public abstract String getExpirationFunction();
+    
+    public abstract HttpServletRequest getHttpServletRequest();
 	
 	protected HttpSession getSession()
 	{
-		return getPage().getRequestCycle().getRequestContext().getSession();
+        return getHttpServletRequest().getSession(false);
 	}
 	
 	protected int getSessionTime()

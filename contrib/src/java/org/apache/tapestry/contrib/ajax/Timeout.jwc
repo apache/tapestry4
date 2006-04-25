@@ -73,10 +73,12 @@
             The JavaScript function that will be invoked when the session expires.
         </description>
     </parameter>
-
         
     <component id="script" type="Script">
         <binding name="script" value="literal:/org/apache/tapestry/contrib/ajax/Timeout.script"/>
         <binding name="symbols" value="scriptSymbols"/>
     </component>
+    
+    <inject property="httpServletRequest" object="service:tapestry.globals.HttpServletRequest"/>
+    
 </component-specification>

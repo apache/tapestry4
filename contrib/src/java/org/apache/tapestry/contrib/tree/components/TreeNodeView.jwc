@@ -96,9 +96,6 @@
     
     <asset name="_whiteSpaceImage" path="WhiteSpace.gif"/>
     
-    <component id="showConnectImage" type="If">
-        <binding name="condition" value="showConnectImage"/>
-    </component>
     <component id="connectImage" type="Image">
         <binding name="image" value="connectImage"/>
     </component>

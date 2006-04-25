@@ -36,7 +36,7 @@
         <description>The tag to use to wrap the values in, 'td' by default.</description>
     </parameter>
 
-    <parameter name="class" property="cellClass">
+    <parameter name="class" property="cellClass" cache="false">
         <description>The CSS class of the table values</description>
     </parameter>
     
