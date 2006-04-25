@@ -63,6 +63,15 @@
   		<action type="fix" dev="AA" fixes-bug="TAPESTRY-842" due-to="Alan Chandler">
   			Wrong example for Script component.
   		</action>  	
+  		<action type="fix" dev="AA" fixes-bug="TAPESTRY-590">
+  			Removed usages of deprecated method AbstractLinkComponent.getLink().
+  		</action>  	
+  		<action type="fix" dev="AA" fixes-bug="TAPESTRY-799" due-to="Jan Berkel">
+  			TableColumns and TableValues no longer cache their class parameter.
+  		</action>
+  		<action type="fix" dev="AA" fixes-bug="TAPESTRY-841">
+  			Removed unreferenced component from TreeNodeView specification.
+  		</action>    		   			
   	</release>
   	<release version="4.0.2" date="Apr 13 2006" >
   		<action type="update" dev="AA">
