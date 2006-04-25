@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.contrib.table.model.ognl;
 
+import java.util.Map;
+
+import ognl.ClassResolver;
 import ognl.Ognl;
 import ognl.OgnlException;
 
@@ -21,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.simple.ITableColumnEvaluator;
+import org.apache.tapestry.util.prop.OgnlClassResolver;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -31,6 +35,8 @@ public class OgnlTableColumnEvaluator implements ITableColumnEvaluator
 {
 	private static final Log LOG =
 		LogFactory.getLog(ExpressionTableColumn.class);
+
+    private final ClassResolver _ognlResolver = new OgnlClassResolver();
 
 	private String m_strExpression;
 	transient private Object m_objParsedExpression = null;
@@ -58,7 +64,8 @@ public class OgnlTableColumnEvaluator implements ITableColumnEvaluator
 
 		try
 		{
-			Object objValue = Ognl.getValue(m_objParsedExpression, objRow);
+            Map context = Ognl.createDefaultContext(objRow, _ognlResolver);
+			Object objValue = Ognl.getValue(m_objParsedExpression, context, objRow);
 			return objValue;
 		}
 		catch (OgnlException e)
