@@ -108,7 +108,7 @@ First we'll show a page that makes use of the TabPanel component.
 <source><![CDATA[
 <html jwcid="@Shell" title="TabPanel Test">
   <body>
-  <span jwcid="@TabPanel" blockNames="ognl:{'berlin', 'rome', 'tokyo'}" selectColor="#FFFF00" unSelectColor="#CCFFFF" borderColor="#00CC33"/>
+  <span jwcid="@TabPanel" blockIds="ognl:{'berlin', 'rome', 'tokyo'}" selectColor="#FFFF00" unSelectColor="#CCFFFF" borderColor="#00CC33"/>
 
   <span jwcid="berlin@Block">
     <h1>Berlin</h1>
@@ -270,7 +270,7 @@ public abstract class TabPanel extends BaseComponent
       String selectedId = getSelectedBlockId();
       
       if (selectedId == null)
-        selectedId = (String) getBlockNames().get(0);
+        selectedId = (String) getBlockIds().get(0);
         
       return (Block) getContainer().getComponent(selectedId);   
     }
@@ -280,7 +280,7 @@ public abstract class TabPanel extends BaseComponent
       String selectedId = getSelectedBlockId();
       
       if (selectedId == null)
-        selectedId = (String) getBlockNames().get(0);
+        selectedId = (String) getBlockIds().get(0);
         
       return getBlockId().equals(selectedId);
     }
