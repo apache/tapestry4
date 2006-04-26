@@ -138,7 +138,11 @@
       <index label="Overview" href="index.html"/>
  
        <ComponentReference label="Components" href="ComponentReference/">
+         <CheckboxGroup label="CheckboxGroup" href="CheckboxGroup.html"/>
          <Choose label="Choose" href="Choose.html"/>
+         <ControlCheckbox label="ControlCheckbox" href="ControlCheckbox.html"/>
+         <ControlledCheckbox label="ControlledCheckbox" href="ControlledCheckbox.html"/>
+         <DumpObject label="DumpObject" href="DumpObject.html"/>
          <DateField label="DateField" href="DateField.html"/>
          <FormConditional label="FormConditional" href="FormConditional.html"/>
          <FormTable label="FormTable" href="FormTable.html"/>

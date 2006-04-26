@@ -182,7 +182,11 @@
 
 <!-- Links to contrib Component Reference -->
 
+<!ENTITY CheckboxGroup		'<link href="site:CheckboxGroup">CheckboxGroup</link>'>
 <!ENTITY Choose 			'<link href="site:Choose">Choose</link>'>
+<!ENTITY ControlCheckbox	'<link href="site:ControlCheckbox">ControlCheckbox</link>'>
+<!ENTITY ControlledCheckbox '<link href="site:ControlledCheckbox">ControlledCheckbox</link>'>
+<!ENTITY DumpObject 		'<link href="site:DumpObject">DumpObject</link>'>
 <!ENTITY MultiplePropertySelection  '<link href="site:MultiplePropertySelection">MultiplePropertySelection</link>'>
 <!ENTITY Otherwise 			'<link href="site:Otherwise">Otherwise</link>'>
 <!ENTITY Palette 			'<link href="site:Palette">Palette</link>'>
