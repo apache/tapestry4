@@ -30,7 +30,7 @@
 		<link href="http://www.apache.org/foundation/">Apache Software Foundation</link> meritocracy rules to guide
 		its future development.
 Tapestry Developers plan features, discuss and vote  on the
- <link href="http://jakarta.apache.org/site/mail2.html#tapestry">Tapestry Developers' Mailing List</link>.
+ <link href="http://jakarta.apache.org/site/mail2.html#Tapestry">Tapestry Developers' Mailing List</link>.
 </p>
  
 <p>
@@ -100,6 +100,16 @@ and has  added a suite of WML components to the framework.</p>
         <link href="http://tacos.sourceforge.net">Tacos</link>. He is currently working
         on ajax specfic features in tapestry, as well as wherever else he can.
        </p>
+</section>
+
+<section>
+	<title>Andreas Andreou</title>
+	<p></p>
+</section>
+
+<section>
+	<title>Brian Wallace</title>
+	<p></p>
 </section>
 
 </body>
