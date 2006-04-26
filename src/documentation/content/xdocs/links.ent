@@ -93,7 +93,7 @@
 <!ENTITY ITemplateSourceDelegate 	'<link href="&apiroot;/engine/ITemplateSourceDelegate.html">ITemplateSourceDelegate</link>'>
 <!ENTITY IValidator 				'<link href="&apiroot;/valid/IValidator.html">IValidator</link>'>
 <!ENTITY IValidationDelegate 		'<link href="&apiroot;/valid/IValidationDelegate.html">IValidationDelegate</link>'>
-<!ENTITY IUploadFile 				'<link href="&apiroot;/IUploadFile.html">IUploadFile</link>'>
+<!ENTITY IUploadFile 				'<link href="&apiroot;/request/IUploadFile.html">IUploadFile</link>'>
 <!ENTITY ListenerMap 				'<link href="&apiroot;/listener/ListenerMap.html">ListenerMap</link>'>
 
 <!ENTITY PageAttachListener 		'<link href="&apiroot;/event/PageAttachListener.html">PageAttachListener</link>'>

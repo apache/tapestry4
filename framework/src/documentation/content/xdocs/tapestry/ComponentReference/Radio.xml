@@ -34,7 +34,7 @@
   <p>Generally the &PropertySelection; component is used in preference to 
   the Radio and &RadioGroup;, except in special cases.</p>
 <p>
-  <strong>See also: <link href="&apiroot;/components/Radio.html">org.apache.tapestry.components.Radio</link>, &Form;, &Option;, &PropertySelection;, &RadioGroup;, &Select;</strong> 
+  <strong>See also: <link href="&apiroot;/form/Radio.html">org.apache.tapestry.form.Radio</link>, &Form;, &Option;, &PropertySelection;, &RadioGroup;, &Select;</strong> 
 
 </p>
 
