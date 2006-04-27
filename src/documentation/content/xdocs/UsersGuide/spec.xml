@@ -121,8 +121,6 @@ it is expected that there will be some runtime warnings).
   </li>
   <li>The &lt;static-binding&gt; and &lt;message-binding&gt; elements have been removed, replaced with
     the &spec.binding; element and the ognl: and message: prefixes, respectively.</li>
-  <li>The &lt;inherited-binding&gt; element has been removed; parameters of parent components may be
-    accessed as properties.</li>
   <li>The &lt;property&gt; element (in 3.0) has been renamed to &spec.meta;.</li>
   <li>The &lt;property-specification&gt; element (in 3.0) has been renamed to &spec.property;. The type
     attribute has been dropped. The persistent attribute has been renamed to persist, and is a string
@@ -935,6 +933,51 @@ a global service to the application.
 
 
 </section> <!-- spec.extension -->
+
+<section id="spec.inherited-binding">
+  <title>&lt;inherited-binding&gt; element</title>
+  
+  <p>
+    Appears in: &spec.component-specification;.
+  </p>
+  
+  <p>
+	Binds a parameter of an embedded component to a parameter of its container.
+	In an instantiated component, bindings can be accessed with the OGNL expression bindings.name. 
+  </p>
+  
+  <table>
+<tr>
+  <th>Name</th>
+  <th>Type</th>
+  <th>Required ?</th>
+  <th>Default Value</th>
+  <th>Description</th>
+</tr>
+
+<tr>
+  <td>name</td>
+  <td>string</td>
+  <td>yes</td>
+  <td/>
+  <td>
+    The name of the parameter to bind.
+  </td>
+</tr>
+
+<tr>
+  <td>parameter-name</td>
+  <td>string</td>
+  <td>yes</td>
+  <td></td>
+  <td>
+  	The name of a parameter of the containing component.
+  </td>
+</tr>
+
+  </table>
+  
+</section>  <!-- spec.inherited-binding -->
 
 <section id="spec.inject">
   <title>&lt;inject&gt; element</title>

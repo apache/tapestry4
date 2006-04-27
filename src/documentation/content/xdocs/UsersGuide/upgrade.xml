@@ -282,43 +282,6 @@ equivalent:
 ]]></source>
   
   
-  
-  
-</section>
-
-<section>
-  <title>Inherited binding</title>
-  
-<p>
-Tapestry 3.0 included an &lt;inherited-binding&gt; element, this was a way to directly pass the &IBinding; object for a component parameter
-to a parameter of a nested component. This is no longer supported in Tapestry 4.0; instead, the property for the component parameter should be 
-bound to the nested component parameter:
-</p>
-
-<source><![CDATA[
-
-  <!-- 3.0 -->
-  
-  <parameter name="itemCount" type="int"/>
-
-  <component id="nested" type="Nested">
-    <inherited-binding name="count" parameter-name="itemCount"/>
-  </component>
-  
-  <!-- 4.0 -->
-  
-  <parameter name="itemCount"/>
-  
-  <component id="nested" type="Nested">
-    <binding name="count" value="itemCount"/>
-  </component>
-
-]]></source>
-
-<warning>
-  inherited-binding may make a comeback in Tapestry 4.0!
-</warning>
-  
 </section>
   
 </section> <!-- upgrade.parameters -->
