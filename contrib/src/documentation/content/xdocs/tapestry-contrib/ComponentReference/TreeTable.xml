@@ -114,7 +114,7 @@
 	<tr>
       <td>nodeViewComponentAddress</td>
       <td>
-		  <link href="@apiroot;/util/ComponentAddress.html">ComponentAddress</link>
+		  <link href="&apiroot;/util/ComponentAddress.html">ComponentAddress</link>
 	  </td>
 	  <td>custom</td>
 	  <td>no</td>
