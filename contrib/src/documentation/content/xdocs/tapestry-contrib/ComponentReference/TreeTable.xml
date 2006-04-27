@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- 
-   Copyright 2005 The Apache Software Foundation
+   Copyright 2005, 2006 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@
 	  <td>no</td>
 	  <td>&nbsp;</td>
       <td>
-        Desc...
+        The sessionStateManager is responsible for handling collapse/expansion and selection of the tree nodes.
       </td>
     </tr>
 	
@@ -70,7 +70,7 @@
 	  <td>no</td>
 	  <td>&nbsp;</td>
       <td>
-        Desc...
+        The sessionStoreManager holds the key to retrieving the session state.
       </td>
     </tr>
 	
@@ -83,7 +83,7 @@
 	  <td>yes</td>
 	  <td>&nbsp;</td>
       <td>
-        Desc...
+        ITreeModel implementation that holds the tree data and state models
       </td>
     </tr>
 	
@@ -96,7 +96,7 @@
 	  <td>no</td>
 	  <td>&nbsp;</td>
       <td>
-        Desc...
+        Listener that responds to changes in the tree state
       </td>
     </tr>
 	
@@ -109,14 +109,14 @@
 	  <td>no</td>
 	  <td>&nbsp;</td>
       <td>
-        Desc...
+        Factory responsible for the rendering of each node.
       </td>
     </tr>
 	
 	<tr>
       <td>nodeViewComponentAddress</td>
       <td>
-		  org.apache.tapestry.util.ComponentAddress
+		  <link href="@api;/org/apache/tapestry/util/ComponentAddress.html">ComponentAddress</link>
 	  </td>
 	  <td>custom</td>
 	  <td>no</td>
@@ -133,7 +133,7 @@
 	  <td>no</td>
 	  <td>&nbsp;</td>
       <td>
-        Desc...
+        Array of columns for the tree
       </td>
     </tr>			
 		
@@ -144,7 +144,7 @@
 	  <td>no</td>
 	  <td>&nbsp;</td>
       <td>
-        Desc...
+        Number of nodes in the tree per page
       </td>
     </tr>	
 	
@@ -155,7 +155,7 @@
 	  <td>no</td>
 	  <td>&nbsp;</td>
       <td>
-        Desc...
+        If <code>true</code>, the root node of the tree will be displayed.
       </td>
     </tr>	
 	
@@ -175,9 +175,5 @@
 
 </section>
 
-<section>
-  <title>Examples</title>
-
-</section>
 </body>
 </document>
