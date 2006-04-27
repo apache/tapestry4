@@ -209,6 +209,7 @@
 <!ENTITY TreeTableDataView 	'<link href="site:TreeTableDataView">TreeTableDataView</link>'>
 <!ENTITY TreeTableNodeViewDelegator 	'<link href="site:TreeTableNodeViewDelegator">TreeTableNodeViewDelegator</link>'>
 <!ENTITY TreeView 			'<link href="site:TreeView">TreeView</link>'>
+<!ENTITY XTile					'<link href="site:XTile">XTile</link>'>
 
 <!-- External links -->
 

@@ -170,6 +170,7 @@
          <TreeView label="TreeView" href="TreeView.html"/>
          <ValidatingTextField label="ValidatingTextField" href="ValidatingTextField.html"/>
          <When label="When" href="When.html"/>
+         <XTile label="XTile" href="XTile.html"/>
        </ComponentReference>
          
       <reports label="Reports">
