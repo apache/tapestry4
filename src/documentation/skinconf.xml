@@ -81,7 +81,7 @@
   <host-logo></host-logo>
 
   <!-- relative url of a favicon file, normally favicon.ico -->
-  <favicon-url>favicon.ico</favicon-url>
+  <favicon-url>images/favicon.ico</favicon-url>
 
   <!-- The following are used to construct a copyright statement -->
   <year>2006</year>
