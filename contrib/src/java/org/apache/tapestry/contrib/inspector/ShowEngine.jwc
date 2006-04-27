@@ -43,7 +43,7 @@
   
   <component id="restartButton" type="Rollover">
     <binding name="image" value="asset:restart"/>
-    <binding name="focus" value="asset:restartFocus"/>
+    <binding name="mouseOver" value="asset:restartFocus"/>
   </component>
   
   <component id="reset" type="ServiceLink">
@@ -52,7 +52,7 @@
   
   <component id="resetButton" type="Rollover">
     <binding name="image" value="asset:reset"/>
-    <binding name="focus" value="asset:resetFocus"/>
+    <binding name="mouseOver" value="asset:resetFocus"/>
   </component>
   
   <asset name="reset" path="Reset_Np1.gif"/>

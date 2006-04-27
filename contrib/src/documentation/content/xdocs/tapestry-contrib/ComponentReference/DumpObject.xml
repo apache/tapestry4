@@ -28,34 +28,43 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
-</p>
-
 <p>
-  <strong>See also:</strong> 
+	Dumps out an object's serialized representation in a mix of hex and ascii. The output is
+    formatted for a fixed width font and should typically be enclosed in &lt;pre&gt; tags.
 </p>
 
 <section>
   <title>Parameters</title>
   
 <table>
-  <tr> 
-    <th>Name</th>
-    <th>Type</th>
-	  <th>Direction</th>
-    <th>Required</th> 
-    <th>Default</th>
-    <th>Description</th>
-  </tr>
+	<tr> 
+    	<th>Name</th>
+	    <th>Type</th>
+	 	<th>Direction</th>
+	    <th>Required</th> 
+    	<th>Default</th>
+	    <th>Description</th>
+	</tr>
 
-	</table>
+    <tr>
+		<td>object</td>
+		<td>Object</td> 
+		<td>in</td>
+		<td>yes</td>
+		<td></td>
+		<td>
+			The object to be displayed as HTML.
+		</td>
+    </tr>
+    	
+</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
@@ -66,7 +75,9 @@
 
 <section>
   <title>Examples</title>
-
+	<source><![CDATA[
+<span jwcid="@contrib:DumpObject" object="ognl:new java.util.Date()"/>
+	]]></source>
 </section>
 </body>
 </document>
