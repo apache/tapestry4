@@ -151,7 +151,10 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      * of the page. This is most useful when properties have non-null initial values.
      * <p>
      * Subclasses may override this implementation (which is empty).
-     * 
+     * <p>
+     * Deprecation note: Pages should implement {@link PageBeginRenderListener} and perform all initialization
+     * in pageBeginRender. This combined with not having instance variables ensures a pristine Page being
+     * put back into the pool and re-initialized properly prior to being rendered.
      * @since 2.2
      * @deprecated To be removed in 4.1 with no replacement.
      * @see PageDetachListener
