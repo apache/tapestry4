@@ -27,12 +27,10 @@
   </header>
   
   <body>
-
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
-</p>
+  <p>The TreeTable is an implementation of a tree component using tables for nodes.</p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &Tree; &Table;</strong> 
 </p>
 
 <section>
@@ -175,5 +173,6 @@
 
 </section>
 
+ <p>The Workbench under Examples shows an example of the TreeTable</p>
 </body>
 </document>
