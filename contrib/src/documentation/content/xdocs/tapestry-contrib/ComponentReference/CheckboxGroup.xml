@@ -28,34 +28,41 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>
+	A component defining a group of checkboxes that will be controlled together.
+	Typically the ControlCheckbox and ControlledCheckbox components are placed
+	in the body of this component.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &ControlCheckbox;, &ControlledCheckbox;</strong> 
 </p>
 
 <section>
   <title>Parameters</title>
   
 <table>
-  <tr> 
-    <th>Name</th>
-    <th>Type</th>
-	  <th>Direction</th>
-    <th>Required</th> 
-    <th>Default</th>
-    <th>Description</th>
-  </tr>
+	<tr> 
+    	<th>Name</th>
+	    <th>Type</th>
+	 	<th>Direction</th>
+	    <th>Required</th> 
+    	<th>Default</th>
+	    <th>Description</th>
+	</tr>
 
-	</table>
+    <tr>
+		<td colspan="6">No parameters defined.</td>
+    </tr>
+    	
+</table>  
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>forbidden</strong>
 </p>
 
 <p>
@@ -66,7 +73,38 @@
 
 <section>
   <title>Examples</title>
-
+  <p>Template</p>
+	<source><![CDATA[	
+<form jwcid="form">
+    <span jwcid="checkboxGroup">
+    	<input jwcid="controlCheckbox"/>	
+    		<input jwcid="controlledCheckbox1"/>
+    		<input jwcid="controlledCheckbox2"/>
+    		<input jwcid="controlledCheckbox3"/>                        
+    </span>    
+    ...
+</form>    
+	]]></source>
+		
+  <p>Specification</p>
+	<source><![CDATA[
+<property name="state1" persist="session" initial-value="false"/>
+<property name="state2" persist="session" initial-value="false"/>
+<property name="state3" persist="session" initial-value="false"/>        
+	
+   <component id="checkboxGroup" type="contrib:CheckboxGroup"/>    
+   <component id="controlCheckbox" type="contrib:ControlCheckbox"/>
+   
+<component id="controlledCheckbox1" type="contrib:ControlledCheckbox">
+	<binding name="value" value="state1"/>
+</component>   
+<component id="controlledCheckbox2" type="contrib:ControlledCheckbox">
+	<binding name="value" value="state2"/>
+</component> 
+<component id="controlledCheckbox3" type="contrib:ControlledCheckbox">
+	<binding name="value" value="state3"/>
+</component>  
+	]]></source>	
 </section>
 </body>
 </document>

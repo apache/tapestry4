@@ -78,6 +78,12 @@
 	<source><![CDATA[
 <span jwcid="@contrib:DumpObject" object="ognl:new java.util.Date()"/>
 	]]></source>
+<p>and the output will be like this:</p>
+	<source><![CDATA[
+0000: aced0005 7372000e 6a617661 2e757469  |....sr..java.uti|
+0010: 6c2e4461 7465686a 81014b59 74190300  |l.Datehj..KYt...|
+0020: 00787077 08000001 0adac264 3d78      |.xpw.......d=x  |	
+	]]></source>	
 </section>
 </body>
 </document>

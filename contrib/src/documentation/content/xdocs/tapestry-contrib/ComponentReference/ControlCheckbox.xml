@@ -28,11 +28,13 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>
+	Creates a checkbox that will automatically select or deselect 
+	all controlled checkboxes in the checkbox group.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &CheckboxGroup;, &ControlledCheckbox;</strong> 
 </p>
 
 <section>
@@ -47,26 +49,71 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
-
+  <tr> 
+    <td>group</td>
+    <td><link href="&apicontrib;/contrib/form/checkboxes/CheckboxGroup.html">CheckboxGroup</link></td>
+	  <td>in</td>
+    <td>no</td> 
+    <td>null</td>
+    <td>
+			If provided, it specifies the CheckboxGroup
+            this component belongs to. If it is not specified, then the component is a
+            a part of the CheckboxGroup that wraps it.
+            Please note that if this parameter is used, then the CheckboxGroup it refers to 
+            must either enclose the current component, or must be defined after it.    
+    </td>
+  </tr>
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
-  Reserved parameters: <em>none</em>
+  Reserved parameters: <em>type, onclick</em>
 </p>
 
 </section>
 
 <section>
   <title>Examples</title>
-
+  <p>Template</p>
+	<source><![CDATA[	
+<form jwcid="form">
+    <span jwcid="checkboxGroup">
+    	<input jwcid="controlCheckbox"/>	
+    		<input jwcid="controlledCheckbox1"/>
+    		<input jwcid="controlledCheckbox2"/>
+    		<input jwcid="controlledCheckbox3"/>                        
+    </span>    
+    ...
+</form>    
+	]]></source>
+		
+  <p>Specification</p>
+	<source><![CDATA[
+<property name="state1" persist="session" initial-value="false"/>
+<property name="state2" persist="session" initial-value="false"/>
+<property name="state3" persist="session" initial-value="false"/>        
+	
+   <component id="checkboxGroup" type="contrib:CheckboxGroup"/>    
+   <component id="controlCheckbox" type="contrib:ControlCheckbox"/>
+   
+<component id="controlledCheckbox1" type="contrib:ControlledCheckbox">
+	<binding name="value" value="state1"/>
+</component>   
+<component id="controlledCheckbox2" type="contrib:ControlledCheckbox">
+	<binding name="value" value="state2"/>
+</component> 
+<component id="controlledCheckbox3" type="contrib:ControlledCheckbox">
+	<binding name="value" value="state3"/>
+</component>  
+	]]></source>	
 </section>
+
 </body>
 </document>
