@@ -201,7 +201,7 @@
 <!ENTITY TableRows 			'<link href="site:TableRows">TableRows</link>'>
 <!ENTITY TableValues 		'<link href="site:TableValues">TableValues</link>'>
 <!ENTITY TableView 			'<link href="site:TableView">TableView</link>'>
-
+<!ENTITY Timeout 			'<link href="site:Timeout">Timeout</link>'>
 <!ENTITY Tree 				'<link href="site:Tree">Tree</link>'>
 <!ENTITY TreeDataView 		'<link href="site:TreeDataView">TreeDataView</link>'>
 <!ENTITY TreeNodeView 		'<link href="site:TreeNodeView">TreeNodeView</link>'>

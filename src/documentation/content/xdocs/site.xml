@@ -160,6 +160,7 @@
          <TablePages label="TablePages" href="TablePages.html"/>
          <TableValues label="TableValues" href="TableValues.html"/>
          <TableView label="TableView" href="TableView.html"/>
+         <Timeout label="Timeout" href="Timeout.html"/>
          <Tree label="Tree" href="Tree.html"/>
          <TreeDataView label="TreeDataView" href="TreeDataView.html"/>
          <TreeNodeView label="TreeNodeView" href="TreeNodeView.html"/>
