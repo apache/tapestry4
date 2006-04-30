@@ -28,11 +28,18 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>
+        A version of &TablePages that is designed for operation in a form. 
+        It is a low level Table component that renders the pages in the table. 
+        This component must be wrapped by &TableView. 
+</p>
+<p>    
+    The component generates a list of pages in the &Table; centered around the current one and 
+    allows you to navigate to other pages. 
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &Table;, &TablePages;, &TableView;, &TableColumns;, &TableRows;, &TableValues;</strong> 
 </p>
 
 <section>
@@ -48,14 +55,29 @@
     <th>Description</th>
   </tr>
 
+    <tr>
+      <td>pagesDisplayed</td>
+      <td>int</td>
+      <td>auto</td>
+      <td>no</td>
+      <td>7</td>
+
+      <td>Determines the maximum number of pages to be displayed in the page list 
+          when the table has more than one page.
+          <br/>
+          For example, if the table has 20 pages, and 10 is the current page, 
+          pages from 7 to 13 in the page list will be shown 
+          if this parameter has a value of 7. </td>
+    </tr>
+    
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
@@ -64,9 +86,5 @@
 
 </section>
 
-<section>
-  <title>Examples</title>
-
-</section>
 </body>
 </document>
