@@ -27,12 +27,139 @@
   </header>
   
   <body>
-
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>
+  Provides a HTML &lt;table&gt; element. The Table component is a facade component 
+  in the Table family. Table allows you to present a sortable and pagable table 
+  simply and easily by using only this one component.
 </p>
+<p>
+ The Table component allows you to manipulate its appearance by allowing you 
+ to define the 'class' attributes of its internal elements. If you want to change 
+ the structure of the table, however, you can instead build your own using the 
+ lower level components &TableView;, &TablePages;, &TableColumns;, &TableRows;, and &TableValues;.
+</p>
+ <p>
+ The Table component delegates the handling of the table model and related
+ activities to the &TableView;, 
+ and more detailed information about the process can be found in the 
+ documentation of that class.
+</p>
+<p>
+   <strong>Providing the data</strong>
+</p>
+<p>
+  There are many ways to provide the component with the data it has to render, 
+  but here are the three major ones:
+</p>
+<ol>
+  <li> <p>The data is passed to the <code>source</code> parameter in the form of an array, 
+       a collection, or an iterator, and the table columns are defined using the 
+       <code>columns</code> parameter (see further for details). 
+       Both of these parameters will be evaluated at every request by default, 
+       so changes in the data or the table columns will be displayed immediately.
+       </p>
+      <p>
+         The example below uses this method.
+      </p>
+      <p>
+         This is the easiest and most straightforward approach. It has one performance limitation, 
+         however - if the table is sorting the data according to a given column, 
+         the sorting will be performed at every request. 
+         The next methods provide ways to resolve this possible performance issue.
+      </p>
+  </li>
+  <li>
+       <p>The data is passed to the <code>source</code> parameter via an object that
+       implements the <link href="&apicontrib;/contrib/table/model/IBasicTableModel.html"><code>IBasicTableModel</code></link>
+       interface. Through that interface you are given the sorting column (if any) and 
+       the numbers of the items that will be displayed on the current page. 
+       You then need to provide the component with the corresponding data.
+       </p>
+       <p>
+         This method allows you to perform the sorting in the database and load only the data 
+         that will be displayed on the current page 
+         (e.g. by using the ORDER BY, LIMIT, and OFFSET clauses in SQL)
+         and hence it could be far more efficient.
+       </p>
+  </li>
+  <li>
+      <p>All of the information (data, columns, state) is packaged in an
+<link href="&apicontrib;/contrib/table/model/ITableModel.html"><code>ITableModel</code></link>
+and is passed to the <code>tableModel</code> parameter.
+      </p>
+      <p>
+        This approach allows greatest flexibility, but is recommended only for advanced users of the Table components. 
+      </p>
+  </li>
+</ol>
+
+<p><strong>Defining the columns</strong></p>
 
 <p>
-  <strong>See also:</strong> 
+If you define the table columns using the <code>columns</code> parameter, you can either
+provide a list of <link href="@apicontrib;/contrib/table/model/ITableColumn.html"><code>ITableColumn</code></link>
+objects, each defining a column in the table, or you can define the columns using 
+a string that describes each column. 
+</p>
+<p>
+Please see the example below as a demonstration of the use of the latter approach.
+</p>
+<p>
+The string describing the columns must be formatted in the following way:
+</p>
+<ul>
+    <li>The column definitions in the string are separated by commas</li>
+        
+    <li>Each column definition must be of one of the following types:
+        <ul>
+            <li>id</li>
+            <li>id:expression</li>
+            <li>id:description:expression</li>
+        </ul>
+        <br/>
+        Here the <strong>id</strong> defines the identification of the column, the <strong>expression</strong> is an
+        OGNL expression that extracts the column value from the row object, and <strong>description</strong>
+        is the title of the column if it is not defined otherwise.
+        <p>
+        Each column definition may be prefixed by the <strong>!</strong> character, 
+        which identifies the column as non-sortable.
+        </p>
+        <p>
+        If defined, a Block with a name that is starts with the column id and 
+        ends with <em>ColumnValue</em> will be used to render the column values.
+        Similarly, a Block with a name that starts with the column id and 
+        ends with <em>ColumnHeader</em> will be used to render the column headers.
+        </p>
+        <p>
+        Finally, the title of the column will be taken from translation strings of the component
+        by using the column id as a key.
+        </p>
+        <p>
+        Please see the <code>LocaleSelection</code> component for examples.
+        </p>
+    </li>
+    <li>A column definition may also be of the type
+        <ul>
+            <li>=expression</li>
+        </ul>
+        <br/>
+        in which case it identifies an OGNL expression that returns an 
+        <link href="&apicontrib;/contrib/table/model/ITableColumn.html"><code>ITableColumn</code></link>
+        object defining the column.
+    </li>
+    <li>The full description string may be prefixed by the <strong>*</strong> character,
+        which means that the table is to be rendered within a form, and the 
+        column headers must submit the form if they are clickable (i.e. if the column is sortable).
+    </li>
+</ul>
+<p>
+Here is an example of the use of a description string to define columns:
+<code>
+  columns="locale:toString(), =currencyColumn, verbosity:Verbosity:currentRowVerbosity, !delete"
+</code>
+</p>
+<p>
+  <strong>See also: &TablePages;, &TableView;, &TableColumns;, &TableRows;, &TableValues;</strong> 
 </p>
 
 <section>
@@ -48,14 +175,242 @@
     <th>Description</th>
   </tr>
 
-	</table>
+ <tr>
+  <td>source</td>
+  <td><link href="&apijava;/docs/api/java/lang/Object.html">Object</link>[]<br/>
+      <link href="&apijava;/docs/api/java/util/Collection.html">Collection</link><br/>
+      <link href="&apijava;/docs/api/java/util/Iterator.html">Iterator</link><br/>
+      <link href="&apicontrib;/contrib/table/model/IBasicTableModel.html"><code>IBasicTableModel</code></link>
+  </td>
+  <td>in</td>
+  <td rowspan="3">You must provide either both <code>source</code> and <code>columns</code> parameters 
+      or the <code>tableModel</code> parameter</td>
+  <td>&nbsp;</td>
+  <td>
+    The data to be displayed by the component. This parameter must be used 
+    in combination with the <code>columns</code> parameter. 
+    The parameter must be an array of values, a collection, an iterator, 
+    or an object implementing the IBasicTableModel interface.
+  </td> 
+ </tr>
+
+ <tr>
+  <td>columns</td>
+  <td>
+      <link href="&apijava;/docs/api/java/lang/String.html">String</link><br/>
+      <link href="&apicontrib;/contrib/table/model/ITableColumnModel.html">ITableColumnModel</link><br/>
+      <link href="&apicontrib;/contrib/table/model/ITableColumn.html">ITableColumn[]</link><br/>
+      <link href="&apijava;/docs/api/java/util/List.html">List</link><br/>
+      <link href="&apijava;/docs/api/java/util/Iterator.html">Iterator</link>
+  </td>
+  <td>in</td>
+  <td>&nbsp;</td>
+  <td>
+    The table columns to be displayed. 
+    The parameter must be an array, a list, or an Iterator of ITableColumn objects,
+    an ITableColumnModel, or a String describing the columns (see documentation).
+  </td> 
+ </tr>
+
+ <tr>
+  <td>tableModel</td>
+  <td><link href="&apicontrib;/contrib/table/model/ITableModel.html"><code>ITableModel</code></link></td>
+  <td>in</td>
+  <td>&nbsp;</td>
+  <td>The <link href="&apicontrib;/contrib/table/model/ITableModel.html"><code>ITableModel</code></link> to be used to render the table. 
+      The model contains all of the information needed to render the table and gives greatest flexibility, 
+      but it may be harder to implement than simply using the <code>source</code> and <code>columns</code> parameters. 
+  </td> 
+ </tr>
+
+ <tr>
+  <td>tableSessionStateManager</td>
+  <td><link href="&apicontrib;/contrib/table/model/ITableSessionStateManager.html"><code>ITableSessionStateManager</code></link></td>
+  <td>in</td>
+  <td>no</td>
+  <td>A custom session state manager that reloads the data at each request if it is provided
+      via the <code>source</code> and <code>columns</code> parameters or stores all 
+      of it in the session if it is provided via the <code>tableModel</code> parameter</td>
+  <td>This is the session state manager that will control what part of the 
+      table model will be saved in the session state. 
+      It is then used to recreate the table model by
+      using what was saved in the session. 
+      <p> You can use one of the stock implementations of  
+      <link href="&apicontrib;/contrib/table/model/ITableSessionStateManager.html"><code>ITableSessionStateManager</code></link>
+      to determine the session state behaviour, or you can define your own.</p>
+  </td> 
+ </tr>
+
+ <tr>
+  <td>tableSessionStoreManager</td>
+  <td><link href="&apicontrib;/contrib/table/model/ITableSessionStoreManager.html"><code>ITableSessionStoreManager</code></link></td>
+  <td>in</td>
+  <td>no</td>
+  <td>null</td>
+  <td>Determines how the session state (returned by the session state manager)
+      will be saved in the session. If this parameter is null, then the state
+      will be saved as a persistent property. If it is not null, then the methods
+      of the interface will be used to save and load the state.
+  </td> 
+ </tr>
+
+ <tr>
+  <td>columnSettingsContainer</td>
+  <td><link href="&apicontrib;/IComponent.html"><code>IComponent</code></link></td>
+  <td>in</td>
+  <td>no</td>
+  <td>container</td>
+  <td>The container used to look up Blocks and messages when the source/columns mode
+      is being used.
+  </td> 
+ </tr>
+
+ <tr>
+  <td>row</td>
+  <td>Object</td>
+  <td>out</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td>The value object of the current row being rendered.</td> 
+ </tr>
+
+ <tr>
+  <td>column</td>
+  <td><link href="&apicontrib;/contrib/table/model/ITableColumn.html"><code>ITableColumn</code></link></td>
+  <td>out</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td>The object representing the current column being rendered.</td> 
+ </tr>
+
+ <tr>
+  <td>pageSize</td>
+  <td>
+      <code>int</code>
+  </td>
+  <td>in</td>
+  <td>no</td>
+  <td>10</td>
+  <td>
+      The number of records displayed per page. 
+      <p>
+      This parameter is only used with the <code>source</code> and <code>columns</code> parameters.
+      </p>
+  </td> 
+ </tr>
+
+ <tr>
+  <td>initialSortColumn</td>
+  <td>
+      <link href="&apijava;/docs/api/java/lang/String.html">String</link>
+  </td>
+  <td>in</td>
+  <td>no</td>
+  <td>null</td>
+  <td>
+      The id of the column to initially sort the table by. 
+      A value of <code>null</code> indicates no sorting.
+      <p>
+      This parameter is only used with the <code>source</code> and <code>columns</code> parameters.
+      </p>
+  </td> 
+ </tr>
+
+ <tr>
+  <td>initialSortOrder</td>
+  <td>
+      <code>boolean</code>
+  </td>
+  <td>in</td>
+  <td>no</td>
+  <td>false</td>
+  <td>
+      The order of the initial sorting.
+      Set this parameter to <code>false</code> to sort in an ascending order
+      and to <code>true</code> to sort in a descending one.
+      <p>
+      This parameter is only used with the <code>source</code> and <code>columns</code> parameters.
+      </p>
+  </td> 
+ </tr>
+
+ <tr>
+  <td>pagesDisplayed</td>
+  <td>int</td>
+  <td>in</td>
+  <td>no</td>
+  <td>7</td>
+  <td>Determines the maximum number of pages to be displayed in the page list
+      when the table has more than one page.
+      <p>For example, if the table has 20 pages, and 10 is the current page,
+      pages from 7 to 13 in the page list will be shown if this parameter has 
+      a value of 7.
+      </p>
+  </td> 
+ </tr>
+
+ <tr>
+  <td>arrowUpAsset</td>
+  <td><link href="&apicontrib;/IAsset.html"><code>IAsset</code></link></td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td>The image to use to describe a column sorted in an ascending order.</td> 
+ </tr>
+
+ <tr>
+  <td>arrowDownAsset</td>
+  <td><link href="&apicontrib;/IAsset.html"><code>IAsset</code></link></td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td>The image to use to describe a column sorted in a descending order.</td> 
+ </tr>
+
+ <tr>
+  <td>pagesClass</td>
+  <td><link href="&apijava;/docs/api/java/lang/String.html">String</link></td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td>The CSS class of the table pages.</td> 
+ </tr>
+
+ <tr>
+  <td>columnsClass</td>
+  <td><link href="&apijava;/docs/api/java/lang/String.html">String</link></td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td>The CSS class of the table columns.</td> 
+ </tr>
+
+ <tr>
+  <td>rowsClass</td>
+  <td><link href="&apijava;/docs/api/java/lang/String.html">String</link></td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td>The CSS class of the table rows.</td> 
+ </tr>
+
+ <tr>
+  <td>valuesClass</td>
+  <td><link href="&apijava;/docs/api/java/lang/String.html">String</link></td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td>The CSS class of the table values.</td> 
+ </tr>
+
+  </table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>removed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
@@ -66,6 +421,24 @@
 
 <section>
   <title>Examples</title>
+
+<p>
+You can find examples in the Tutorial 
+as part of the Workbench application under the "Table" tab. 
+</p>
+<p>That page consists of two components -- the <code>LocaleList</code> component and the
+<code>LocaleSelection</code> component. </p>
+<p>The <code>LocaleList</code> component allows you to view all 
+Locales in a table (similar to the example above), as well as to choose Locales 
+from the table and add them to your "selection". </p>
+<p>The <code>LocaleSelection</code> component displays the selected 
+Locales and provides additional information about them. It also allows Locales 
+to be removed from the selection. </p>
+<p>Even though the two components utilizing the Table are placed on a single 
+page, they can operate without any interference from each other with no effort 
+at all on part of the developer -- each table can be sorted independently, for 
+example. This is a good illustration of the power of Tapestry's component 
+approach. </p>
 
 </section>
 </body>
