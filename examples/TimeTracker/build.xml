@@ -45,7 +45,7 @@
     <ibiblio-dependency artifact="hivemind"           version="${hivemind.version}" group="hivemind"          use="run"/>
     <ibiblio-dependency artifact="hivemind-lib"       version="${hivemind.version}" group="hivemind"          use="run"/>
     <ibiblio-dependency artifact="javassist"          version="${javassist.version}"  group="jboss"           use="run"/>
-    <ibiblio-dependency artifact="log4j"              version="${log4j.version}"    group="log4j"             use="test"/>
+    <ibiblio-dependency artifact="log4j"              version="${log4j.version}"    group="log4j"             />
     <ibiblio-dependency artifact="ognl"               version="${ognl.version}"     group="ognl"              use="run"/>
     <ibiblio-dependency artifact="oro"                version="${oro.version}"      group="oro"               use="run"/>
     <ibiblio-dependency artifact="servletapi"         version="${servlet.version}"  group="servletapi"/>
