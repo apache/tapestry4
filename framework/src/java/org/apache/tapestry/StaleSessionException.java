@@ -17,24 +17,22 @@ package org.apache.tapestry;
 import org.apache.hivemind.ApplicationRuntimeException;
 
 /**
- *  Exception thrown by an {@link org.apache.tapestry.engine.IEngineService} when it discovers that
- *  the {@link javax.servlet.http.HttpSession}
- *  has timed out (and been replaced by a new, empty
- *  one).
- *
- *  <p>The application should redirect to the stale-session page.
- *
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Exception thrown by an {@link org.apache.tapestry.engine.IEngineService} when
+ * it discovers that the {@link javax.servlet.http.HttpSession} has timed out
+ * (and been replaced by a new, empty one).
+ * <p>
+ * The application should redirect to the stale-session page.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public class StaleSessionException extends ApplicationRuntimeException
 {
+
     private static final long serialVersionUID = 6733303549871198597L;
-    
-	private transient IPage _page;
-    private String _pageName;
+
+    private final transient IPage _page;
+    private final String _pageName;
 
     public StaleSessionException()
     {
@@ -46,8 +44,8 @@ public class StaleSessionException extends ApplicationRuntimeException
         super(message, page, null, null);
         _page = page;
 
-        if (page != null)
-            _pageName = page.getPageName();
+        if (page != null) _pageName = page.getPageName();
+        else _pageName = null;
     }
 
     public String getPageName()
@@ -56,9 +54,9 @@ public class StaleSessionException extends ApplicationRuntimeException
     }
 
     /**
-     *  Returns the page referenced by the service URL, if known, or null otherwise.
-     *
-     **/
+     * Returns the page referenced by the service URL, if known, or null
+     * otherwise.
+     */
 
     public IPage getPage()
     {

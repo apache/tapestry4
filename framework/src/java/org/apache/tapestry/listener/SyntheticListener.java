@@ -21,18 +21,20 @@ import org.apache.tapestry.IRequestCycle;
 
 /**
  * Adapter class that combines a target object (typically, a component) with a
- * {@link org.apache.tapestry.listener.ListenerMethodInvoker}. This is the bridge from listener
- * method names to listener method invocations.
+ * {@link org.apache.tapestry.listener.ListenerMethodInvoker}. This is the
+ * bridge from listener method names to listener method invocations.
  * <p>
- * TODO: It would really be nice if we could get the location of the listener binding into thrown
- * exceptions. As implemented, as best, it will be the location of the &lt;page-specification&gt;
- * (or &lt;component&gt;) of the page (or component) containing the listener method.
+ * TODO: It would really be nice if we could get the location of the listener
+ * binding into thrown exceptions. As implemented, as best, it will be the
+ * location of the &lt;page-specification&gt; (or &lt;component&gt;) of the page
+ * (or component) containing the listener method.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class SyntheticListener implements IActionListener
 {
+
     private final Object _target;
 
     private final ListenerMethodInvoker _invoker;

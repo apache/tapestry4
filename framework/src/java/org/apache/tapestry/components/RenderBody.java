@@ -20,22 +20,19 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  Renders the text and components wrapped by a component.
- *
- *  [<a href="../../../../../ComponentReference/RenderBody.html">Component Reference</a>]
+ * Renders the text and components wrapped by a component. [<a
+ * href="../../../../../ComponentReference/RenderBody.html">Component Reference</a>]
  * 
- *  @author Howard Lewis Ship
- * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class RenderBody extends AbstractComponent
 {
+
     /**
-     *  Finds this <code>RenderBody</code>'s container, and invokes
-     *  {@link IComponent#renderBody(IMarkupWriter, IRequestCycle)}
-     *  on it.
-     *
-     **/
+     * Finds this <code>RenderBody</code>'s container, and invokes
+     * {@link IComponent#renderBody(IMarkupWriter, IRequestCycle)} on it.
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {

@@ -14,22 +14,9 @@
 
 package org.apache.tapestry.form;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.tapestry.IDirect;
-import org.apache.tapestry.IJSONRender;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IScript;
-import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.TapestryUtils;
-import org.apache.tapestry.dojo.IWidget;
-import org.apache.tapestry.engine.DirectServiceParameter;
-import org.apache.tapestry.engine.IEngineService;
-import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.json.IJSONWriter;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -59,7 +46,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Jesse Kuhnert
  */
 public abstract class PropertySelection extends AbstractFormComponent 
-    implements ValidatableField, IJSONRender, IDirect, IWidget
+    implements ValidatableField
 {   
     /**
      * @see org.apache.tapestry.form.AbstractFormComponent#renderFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
@@ -75,7 +62,7 @@ public abstract class PropertySelection extends AbstractFormComponent
             writer.attribute("disabled", "disabled");
         
         if (getSubmitOnChange())
-            writer.attribute("onchange", "javascript:   this.form.events.submit();");
+            writer.attribute("onchange", "javascript: this.form.events.submit();");
         
         renderIdAttribute(writer, cycle);
         
@@ -86,46 +73,40 @@ public abstract class PropertySelection extends AbstractFormComponent
         // Apply informal attributes.
         renderInformalParameters(writer, cycle);
         
-        if (isFilterOnChange()) {
-            renderWidget(writer, cycle);
-        } else {
-            
-            writer.println();
-            
-            IPropertySelectionModel model = getModel();
-            
-            if (model == null)
-                throw Tapestry.createRequiredParameterException(this, "model");
-            
-            int count = model.getOptionCount();
-            boolean foundSelected = false;
-            Object value = getValue();
+        writer.println();
+        
+        IPropertySelectionModel model = getModel();
+        
+        if (model == null)
+            throw Tapestry.createRequiredParameterException(this, "model");
+        
+        int count = model.getOptionCount();
+        boolean foundSelected = false;
+        Object value = getValue();
+        
+        for (int i = 0; i < count; i++)
+        {
+            Object option = model.getOption(i);
 
-            for (int i = 0; i < count; i++)
+            writer.begin("option");
+            writer.attribute("value", model.getValue(i));
+
+            if (!foundSelected && isEqual(option, value))
             {
-                Object option = model.getOption(i);
+                writer.attribute("selected", "selected");
 
-                writer.begin("option");
-                writer.attribute("value", model.getValue(i));
-
-                if (!foundSelected && isEqual(option, value))
-                {
-                    writer.attribute("selected", "selected");
-
-                    foundSelected = true;
-                }
-
-                writer.print(model.getLabel(i));
-
-                writer.end();
-
-                writer.println();
+                foundSelected = true;
             }
 
-            writer.end(); // <select>
-        
+            writer.print(model.getLabel(i));
+
+            writer.end();
+
+            writer.println();
         }
-        
+
+        writer.end(); // <select>
+
         renderDelegateSuffix(writer, cycle);
     }
 
@@ -150,76 +131,6 @@ public abstract class PropertySelection extends AbstractFormComponent
         }
     }
     
-    /**
-     * {@inheritDoc}
-     */
-    public void renderComponent(IJSONWriter writer, IRequestCycle cycle)
-    {
-        IPropertySelectionModel model = getModel();
-        
-        if (model == null)
-            throw Tapestry.createRequiredParameterException(this, "model");
-        
-        int count = model.getOptionCount();
-        
-        for (int i = 0; i < count; i++)
-        {
-            String value = model.getValue(i);
-            String label = model.getLabel(i);
-            
-            if (getFilter() == null || getFilter().trim().length() <= 0) {
-                writer.put(value, label);
-                continue;
-            }
-            
-            // primitive filter, for now
-            // TODO: Create filter interface in IPropertySelectionModel
-            if (getFilter() != null 
-                    && label.toLowerCase().indexOf(getFilter().toLowerCase()) > -1) {
-                writer.put(value, label);
-            }
-        }
-    }
-    
-    /**
-     * 
-     * {@inheritDoc}
-     */
-    public void renderWidget(IMarkupWriter writer, IRequestCycle cycle)
-    {
-        if (cycle.isRewinding()) return;
-        
-        DirectServiceParameter dsp = 
-            new DirectServiceParameter(this, new Object[]{}, 
-                    new String[]{getId()}, true);
-        ILink link = getDirectService().getLink(true, dsp);
-        
-        Map parms = new HashMap();
-        parms.put("id", this.getClientId());
-        parms.put("props", "{dataUrl:'" + link.getURL() + "&filter=%{searchString}', mode: 'remote', forceValidOption:true}");
-        
-        PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, this);
-        getScript().execute(cycle, prs, parms);
-    }
-    
-    /** 
-     * {@inheritDoc}
-     */
-    public boolean isStateful()
-    {
-        return false;
-    }
-    
-    /**
-     * Triggerd by using filterOnChange logic.
-     * 
-     * {@inheritDoc}
-     */
-    public void trigger(IRequestCycle cycle)
-    {
-        setFilter(cycle.getParameter("filter"));
-    }
-    
     private boolean isEqual(Object left, Object right)
     {
         // Both null, or same object, then are equal
@@ -239,9 +150,6 @@ public abstract class PropertySelection extends AbstractFormComponent
     
     public abstract IPropertySelectionModel getModel();
     
-    /** @since 4.1 */
-    public abstract boolean isFilterOnChange();
-    
     /** @since 2.2 * */
     public abstract boolean getSubmitOnChange();
 
@@ -251,28 +159,10 @@ public abstract class PropertySelection extends AbstractFormComponent
     /** @since 2.2 * */
     public abstract void setValue(Object value);
     
-    /** @since 4.1 */
-    public abstract void setFilter(String value);
-    
-    /** @since 4.1 */
-    public abstract String getFilter();
-    
     /**
      * Injected.
      */
     public abstract ValidatableFieldSupport getValidatableFieldSupport();
-
-    /**
-     * Injected.
-     * @return
-     */
-    public abstract IEngineService getDirectService();
-    
-    /**
-     * Injected.
-     * @return
-     */
-    public abstract IScript getScript();
     
     /**
      * @see org.apache.tapestry.form.AbstractFormComponent#isRequired()

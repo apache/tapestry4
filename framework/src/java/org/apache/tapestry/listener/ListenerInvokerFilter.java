@@ -19,15 +19,17 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * Filter interface used with {@link org.apache.tapestry.listener.ListenerInvoker}. Implementations
- * of this filter interface may be plugged into the listener method invocation pipeline. Typical
- * applications involve handling transactions.
+ * Filter interface used with
+ * {@link org.apache.tapestry.listener.ListenerInvoker}. Implementations of
+ * this filter interface may be plugged into the listener method invocation
+ * pipeline. Typical applications involve handling transactions.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface ListenerInvokerFilter
 {
-    public void invokeListener(IActionListener listener, IComponent source, IRequestCycle cycle,
-            ListenerInvoker delegate);
+
+    void invokeListener(IActionListener listener, IComponent source,
+            IRequestCycle cycle, ListenerInvoker delegate);
 }

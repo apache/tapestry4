@@ -17,14 +17,5 @@
     </body>
     <initialization>
         tapestry.widget.synchronizeWidgetState("${id}", "combobox", ${props});
-        
-        dojo.event.connect(dojo.widget.byId("${id}"), "setValue" , function(e) {
-            var widget = dojo.widget.byId("${id}");
-            dojo.debug("Widget now has value : " + widget.getValue());
-            dojo.debug("this.comboBoxValue " + widget.comboBoxValue.name + widget.comboBoxValue.value);
-            dojo.debug("name " + widget.name);
-            dojo.debug("comboBoxSelectionValue " + widget.comboBoxSelectionValue);
-            dojo.debug("formInputName " + widget.formInputName);
-        });
     </initialization>
 </script>

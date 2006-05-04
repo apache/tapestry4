@@ -41,7 +41,7 @@ public interface IAsset extends Locatable
      *             if the asset does not exist.
      */
 
-    public String buildURL();
+    String buildURL();
 
     /**
      * Accesses the localized version of the resource (if possible) and returns it as an input
@@ -51,11 +51,11 @@ public interface IAsset extends Locatable
      *             if the asset does not exist, or can't be read.
      */
 
-    public InputStream getResourceAsStream();
+    InputStream getResourceAsStream();
 
     /**
      * Returns the underlying location of the asset.
      */
 
-    public Resource getResourceLocation();
+    Resource getResourceLocation();
 }

@@ -17,46 +17,45 @@ package org.apache.tapestry;
 import org.apache.hivemind.ApplicationRuntimeException;
 
 /**
- *  Exception thrown to force a redirection to an arbitrary location.
- *  This is used when, after processing a request (such as a form
- *  submission or a link being clicked), it is desirable to go
- *  to some arbitrary new location.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.6
- *
- **/
+ * Exception thrown to force a redirection to an arbitrary location. This is
+ * used when, after processing a request (such as a form submission or a link
+ * being clicked), it is desirable to go to some arbitrary new location.
+ * 
+ * @author Howard Lewis Ship
+ * @since 1.0.6
+ */
 
 public class RedirectException extends ApplicationRuntimeException
 {
-	private static final long serialVersionUID = -9215837473156146010L;
-	
-	private String _redirectLocation;
 
-	public RedirectException(String redirectLocation)
-	{
-		this(null, redirectLocation);
-	}
+    private static final long serialVersionUID = -9215837473156146010L;
 
-	/** 
-	 *  @param message A message describing why the redirection is taking place.
-	 *  @param redirectLocation The location to redirect to, may be a relative path (relative
-	 *  to the {@link javax.servlet.ServletContext}).
-	 *
-	 *  @see javax.servlet.http.HttpServletResponse#sendRedirect(String)
-	 *  @see javax.servlet.http.HttpServletResponse#encodeRedirectURL(String)
-	 *
-	 **/
+    private final String _redirectLocation;
 
-	public RedirectException(String message, String redirectLocation)
-	{
-		super(message);
+    public RedirectException(String redirectLocation)
+    {
+        this(null, redirectLocation);
+    }
 
-		_redirectLocation = redirectLocation;
-	}
+    /**
+     * @param message
+     *            A message describing why the redirection is taking place.
+     * @param redirectLocation
+     *            The location to redirect to, may be a relative path (relative
+     *            to the {@link javax.servlet.ServletContext}).
+     * @see javax.servlet.http.HttpServletResponse#sendRedirect(String)
+     * @see javax.servlet.http.HttpServletResponse#encodeRedirectURL(String)
+     */
 
-	public String getRedirectLocation()
-	{
-		return _redirectLocation;
-	}
+    public RedirectException(String message, String redirectLocation)
+    {
+        super(message);
+
+        _redirectLocation = redirectLocation;
+    }
+
+    public String getRedirectLocation()
+    {
+        return _redirectLocation;
+    }
 }

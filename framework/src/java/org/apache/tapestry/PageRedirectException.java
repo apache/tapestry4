@@ -28,7 +28,7 @@ public class PageRedirectException extends ApplicationRuntimeException
 {
     private static final long serialVersionUID = -7693744317997065965L;
     
-	private String _targetPageName;
+    private final String _targetPageName;
 
     public PageRedirectException(String targetPageName)
     {

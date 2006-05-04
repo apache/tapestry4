@@ -27,5 +27,5 @@ public interface ITemplateComponent extends IComponent
     /**
      * Adds an "outer" renderable object.
      */
-    public void addOuter(IRender render);
+    void addOuter(IRender render);
 }

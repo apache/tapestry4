@@ -15,13 +15,15 @@
 package org.apache.tapestry.describe;
 
 /**
- * Holds the style information used by {@link org.apache.tapestry.describe.HTMLDescriptionReceiver}.
+ * Holds the style information used by
+ * {@link org.apache.tapestry.describe.HTMLDescriptionReceiver}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class HTMLDescriptionReceiverStyles
 {
+
     private String _tableClass = "described-object";
 
     private String _headerClass = "described-object-title";

@@ -15,31 +15,35 @@
 package org.apache.tapestry.components;
 
 /**
- * An interface for converting an objects to their primary keys and back. Typically used to
- * determine how to store a given object as a hidden value when rendering a form.
+ * An interface for converting an objects to their primary keys and back.
+ * Typically used to determine how to store a given object as a hidden value
+ * when rendering a form.
  * <p>
- * This interface is used by the {@link org.apache.tapestry.components.ForBean For component}. When
- * a primary key converter is available, it is used during the render, and as part of the rewind
- * phase that processes the form submission.
+ * This interface is used by the
+ * {@link org.apache.tapestry.components.ForBean For component}. When a primary
+ * key converter is available, it is used during the render, and as part of the
+ * rewind phase that processes the form submission.
  * <p>
- * During rendering, {@link #getPrimaryKey(Object)} is invoked for each value. This method is
- * invoked just before the For's body is rendered. The resulting primary key is written into the
- * client as a hidden form field.
+ * During rendering, {@link #getPrimaryKey(Object)} is invoked for each value.
+ * This method is invoked just before the For's body is rendered. The resulting
+ * primary key is written into the client as a hidden form field.
  * <p>
- * Likewise, during rewind, {@link #getValue(Object)} is invoked for each key, to get back the same
- * (or equivalent) object. Again, the method is invoked just before the For's body is rendered.
+ * Likewise, during rewind, {@link #getValue(Object)} is invoked for each key,
+ * to get back the same (or equivalent) object. Again, the method is invoked
+ * just before the For's body is rendered.
  * <p>
- * The {@link org.apache.tapestry.util.DefaultPrimaryKeyConverter} uses this relationship between a
- * For component and its primary key converter to track what the current value being rendered or
- * rewound is.
+ * The {@link org.apache.tapestry.util.DefaultPrimaryKeyConverter} uses this
+ * relationship between a For component and its primary key converter to track
+ * what the current value being rendered or rewound is.
  * 
  * @author mb
  * @since 4.0
  */
 public interface IPrimaryKeyConverter
 {
+
     /**
-     * Returns the primary key of the given value
+     * Returns the primary key of the given value.
      * 
      * @param objValue
      *            the value for which a primary key needs to be extracted
@@ -48,7 +52,7 @@ public interface IPrimaryKeyConverter
     Object getPrimaryKey(Object value);
 
     /**
-     * Returns the value corresponding the given primary key
+     * Returns the value corresponding the given primary key.
      * 
      * @param objPrimaryKey
      *            the primary key for which a value needs to be generated

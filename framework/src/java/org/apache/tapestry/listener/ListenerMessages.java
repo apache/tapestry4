@@ -23,10 +23,13 @@ import org.apache.tapestry.Tapestry;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class ListenerMessages
+final class ListenerMessages
 {
     private static final MessageFormatter _formatter = new MessageFormatter(ListenerMessages.class);
 
+    /* defeat instantiation */
+    private ListenerMessages() { }
+    
     static String objectMissingMethod(Object target, String name)
     {
         return _formatter.format("object-missing-method", target, name);

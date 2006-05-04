@@ -22,6 +22,7 @@ import org.apache.tapestry.IRender;
  */
 public class RenderableAdapterFactoryImpl implements RenderableAdapterFactory
 {
+
     private RenderStrategy _strategy;
 
     /**

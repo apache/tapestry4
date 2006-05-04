@@ -18,7 +18,7 @@ package org.apache.tapestry;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class TapestryConstants
+public final class TapestryConstants
 {
     /**
      * Name of the cookie written to the client web browser to identify the locale.

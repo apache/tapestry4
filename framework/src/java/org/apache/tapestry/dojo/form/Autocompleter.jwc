@@ -19,7 +19,7 @@
   "-//Apache Software Foundation//Tapestry Specification 4.0//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
   
-<component-specification class="org.apache.tapestry.form.PropertySelection" 
+<component-specification class="org.apache.tapestry.dojo.form.Autocompleter" 
 	allow-body="no" 
 	allow-informal-parameters="yes">
   
@@ -32,7 +32,9 @@
   <parameter name="model" required="yes"/>
   	
   <parameter name="disabled"/>
-    
+
+  <parameter name="filterOnChange" default-value="false" />
+  
   <parameter name="submitOnChange" deprecated="true">
   	<description>
   	Enables logic to submit containing form when value changes.
@@ -47,5 +49,8 @@
   <reserved-parameter name="name"/>
 
   <inject property="validatableFieldSupport" object="service:tapestry.form.ValidatableFieldSupport"/>
+  
+  <inject property="directService" object="service:tapestry.services.Direct"/>
+  <inject property="script" type="script" object="Autocompleter.script"/>
   
 </component-specification>

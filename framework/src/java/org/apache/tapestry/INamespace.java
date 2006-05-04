@@ -45,7 +45,7 @@ public interface INamespace extends Locatable, IPropertySource
      * Reserved name of a the implicit Framework library.
      */
 
-    public static final String FRAMEWORK_NAMESPACE = "framework";
+    String FRAMEWORK_NAMESPACE = "framework";
 
     /**
      * Reserved name for the implicit (root) application namespace. Use of this prefix allows page
@@ -55,7 +55,7 @@ public interface INamespace extends Locatable, IPropertySource
      * @since 4.0
      */
 
-    public static final String APPLICATION_NAMESPACE = "application";
+    String APPLICATION_NAMESPACE = "application";
 
     /**
      * Character used to seperate the namespace prefix from the page name or component type.
@@ -63,7 +63,7 @@ public interface INamespace extends Locatable, IPropertySource
      * @since 2.3
      */
 
-    public static final char SEPARATOR = ':';
+    char SEPARATOR = ':';
 
     /**
      * Returns an identifier for the namespace. Identifiers are simple names (they start with a
@@ -73,13 +73,13 @@ public interface INamespace extends Locatable, IPropertySource
      * The application namespace has a null id; the framework namespace has an id of "framework".
      */
 
-    public String getId();
+    String getId();
 
     /**
      * Returns the extended id for this namespace, which is a dot-seperated sequence of ids.
      */
 
-    public String getExtendedId();
+    String getExtendedId();
 
     /**
      * Returns a version of the extended id appropriate for error messages. This is the based on
@@ -89,7 +89,7 @@ public interface INamespace extends Locatable, IPropertySource
      * @since 3.0
      */
 
-    public String getNamespaceId();
+    String getNamespaceId();
 
     /**
      * Returns the parent namespace; the namespace which contains this namespace.
@@ -97,7 +97,7 @@ public interface INamespace extends Locatable, IPropertySource
      * The application and framework namespaces return null as the parent.
      */
 
-    public INamespace getParentNamespace();
+    INamespace getParentNamespace();
 
     /**
      * Returns a namespace contained by this namespace.
@@ -110,14 +110,14 @@ public interface INamespace extends Locatable, IPropertySource
      *             if no such namespace exist.
      */
 
-    public INamespace getChildNamespace(String id);
+    INamespace getChildNamespace(String id);
 
     /**
      * Returns a sorted, immutable list of the ids of the immediate children of this namespace. May
      * return the empty list, but won't return null.
      */
 
-    public List getChildIds();
+    List getChildIds();
 
     /**
      * Returns the page specification of the named page (defined within the namespace).
@@ -129,20 +129,20 @@ public interface INamespace extends Locatable, IPropertySource
      *             if the page specification doesn't exist or can't be loaded
      */
 
-    public IComponentSpecification getPageSpecification(String name);
+    IComponentSpecification getPageSpecification(String name);
 
     /**
      * Returns true if this namespace contains the specified page name.
      */
 
-    public boolean containsPage(String name);
+    boolean containsPage(String name);
 
     /**
      * Returns a sorted list of page names. May return an empty list, but won't return null. The
      * return list is immutable.
      */
 
-    public List getPageNames();
+    List getPageNames();
 
     /**
      * Returns the path for the named component (within the namespace).
@@ -154,7 +154,7 @@ public interface INamespace extends Locatable, IPropertySource
      *             if the specification doesn't exist or can't be loaded
      */
 
-    public IComponentSpecification getComponentSpecification(String type);
+    IComponentSpecification getComponentSpecification(String type);
 
     /**
      * Returns true if the namespace contains the indicated component type.
@@ -163,14 +163,14 @@ public interface INamespace extends Locatable, IPropertySource
      *            a simple component type (no namespace prefix is allowed)
      */
 
-    public boolean containsComponentType(String type);
+    boolean containsComponentType(String type);
 
     /**
      * Returns the {@link org.apache.tapestry.spec.LibrarySpecification}from which this namespace
      * was created.
      */
 
-    public ILibrarySpecification getSpecification();
+    ILibrarySpecification getSpecification();
 
     /**
      * Constructs a qualified name for the given simple page name by applying the correct prefix (if
@@ -179,14 +179,14 @@ public interface INamespace extends Locatable, IPropertySource
      * @since 2.3
      */
 
-    public String constructQualifiedName(String pageName);
+    String constructQualifiedName(String pageName);
 
     /**
      * Returns the location of the resource from which the specification for this namespace was
      * read.
      */
 
-    public Resource getSpecificationLocation();
+    Resource getSpecificationLocation();
 
     /**
      * Returns true if the namespace is the special application namespace (which has special search
@@ -195,7 +195,7 @@ public interface INamespace extends Locatable, IPropertySource
      * @since 3.0
      */
 
-    public boolean isApplicationNamespace();
+    boolean isApplicationNamespace();
 
     /**
      * Used to specify additional pages beyond those that came from the namespace's specification.
@@ -204,7 +204,7 @@ public interface INamespace extends Locatable, IPropertySource
      * @since 3.0
      */
 
-    public void installPageSpecification(String pageName, IComponentSpecification specification);
+    void installPageSpecification(String pageName, IComponentSpecification specification);
 
     /**
      * Used to specify additional components beyond those that came from the namespace's
@@ -214,6 +214,6 @@ public interface INamespace extends Locatable, IPropertySource
      * @since 3.0
      */
 
-    public void installComponentSpecification(String type, IComponentSpecification specification);
+    void installComponentSpecification(String type, IComponentSpecification specification);
 
 }

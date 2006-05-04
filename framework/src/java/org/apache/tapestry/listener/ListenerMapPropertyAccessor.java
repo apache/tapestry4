@@ -20,8 +20,9 @@ import ognl.ObjectPropertyAccessor;
 import ognl.OgnlException;
 
 /**
- * Exposes {@link org.apache.tapestry.IActionListener}&nbsp;listeners provided by the
- * {@link org.apache.tapestry.listener.ListenerMap}&nbsp;as read-only properties of the map.
+ * Exposes {@link org.apache.tapestry.IActionListener}&nbsp;listeners provided
+ * by the {@link org.apache.tapestry.listener.ListenerMap}&nbsp;as read-only
+ * properties of the map.
  * 
  * @author Howard Lewis Ship
  * @since 2.2
@@ -29,12 +30,15 @@ import ognl.OgnlException;
 
 public class ListenerMapPropertyAccessor extends ObjectPropertyAccessor
 {
+
     /**
-     * Checks to see if the ListenerMapImpl provides the named listener, returning the listener if
-     * it does. Otherwise, invokes the super implementation.
+     * Checks to see if the ListenerMapImpl provides the named listener,
+     * returning the listener if it does. Otherwise, invokes the super
+     * implementation.
      */
 
-    public Object getProperty(Map context, Object target, Object name) throws OgnlException
+    public Object getProperty(Map context, Object target, Object name)
+        throws OgnlException
     {
         ListenerMap map = (ListenerMap) target;
         String listenerName = (String) name;
@@ -46,17 +50,17 @@ public class ListenerMapPropertyAccessor extends ObjectPropertyAccessor
     }
 
     /**
-     * Returns true if the ListenerMap contains the named listener, otherwise invokes
-     * super-implementation.
+     * Returns true if the ListenerMap contains the named listener, otherwise
+     * invokes super-implementation.
      */
 
-    public boolean hasGetProperty(Map context, Object target, Object oname) throws OgnlException
+    public boolean hasGetProperty(Map context, Object target, Object oname)
+        throws OgnlException
     {
         ListenerMap map = (ListenerMap) target;
         String listenerName = (String) oname;
 
-        if (map.canProvideListener(listenerName))
-            return true;
+        if (map.canProvideListener(listenerName)) return true;
 
         return super.hasGetProperty(context, target, oname);
     }

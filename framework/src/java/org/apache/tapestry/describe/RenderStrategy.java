@@ -26,5 +26,7 @@ import org.apache.tapestry.IRequestCycle;
  */
 public interface RenderStrategy
 {
-    public void renderObject(Object object, IMarkupWriter writer, IRequestCycle cycle);
+
+    void renderObject(Object object, IMarkupWriter writer,
+            IRequestCycle cycle);
 }

@@ -30,5 +30,5 @@ public interface IAction extends IComponent
      * state (or the visit object) are non-stateful and can return false.
      */
 
-    public boolean getRequiresSession();
+    boolean getRequiresSession();
 }

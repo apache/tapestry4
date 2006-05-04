@@ -17,19 +17,20 @@ package org.apache.tapestry.describe;
 import java.util.Collection;
 
 /**
- * An object that is provided with a description of another object. The receiver will format this
- * information.
+ * An object that is provided with a description of another object. The receiver
+ * will format this information.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface DescriptionReceiver
 {
+
     /**
      * Invoke to describe another object instead of the current object.
      */
 
-    public void describeAlternate(Object alternate);
+    void describeAlternate(Object alternate);
 
     /**
      * Provides a title for the object; usually the object's class name.
@@ -37,53 +38,54 @@ public interface DescriptionReceiver
      * @throws IllegalStateException
      *             if called more than once (for the same object)
      */
-    public void title(String title);
+    void title(String title);
 
     /**
-     * Starts a new sub-section within the description. A description may have any number of
-     * sections (but sections do not nest). A second title is only emitted when the firstproperty
-     * within the section is emitted.
+     * Starts a new sub-section within the description. A description may have
+     * any number of sections (but sections do not nest). A second title is only
+     * emitted when the firstproperty within the section is emitted.
      * 
      * @throws IllegalStateException
      *             if called before invoking {@link #title(String)}.
      */
-    public void section(String section);
+    void section(String section);
 
     /**
-     * Emits a key/value pair, describing a property of the object. The value will itself be
-     * described. This method is overridden for scalar property types.
+     * Emits a key/value pair, describing a property of the object. The value
+     * will itself be described. This method is overridden for scalar property
+     * types.
      * 
      * @throws IllegalStateException
      *             if called before invoking {@link #title(String)}
      */
-    public void property(String key, Object value);
+    void property(String key, Object value);
 
-    public void property(String key, boolean value);
+    void property(String key, boolean value);
 
-    public void property(String key, byte value);
+    void property(String key, byte value);
 
-    public void property(String key, short value);
+    void property(String key, short value);
 
-    public void property(String key, int value);
+    void property(String key, int value);
 
-    public void property(String key, long value);
+    void property(String key, long value);
 
-    public void property(String key, float value);
+    void property(String key, float value);
 
-    public void property(String key, double value);
+    void property(String key, double value);
 
-    public void property(String key, char value);
-
-    /**
-     * Emits a list of values for the key. Each value will be described. Emits nothing if the array
-     * is null.
-     */
-    public void array(String key, Object[] values);
+    void property(String key, char value);
 
     /**
-     * As with {@link #array(String, Object[])}, but the values are in a collection (which may be
-     * null, to emit nothing).
+     * Emits a list of values for the key. Each value will be described. Emits
+     * nothing if the array is null.
+     */
+    void array(String key, Object[] values);
+
+    /**
+     * As with {@link #array(String, Object[])}, but the values are in a
+     * collection (which may be null, to emit nothing).
      */
 
-    public void collection(String key, Collection values);
+    void collection(String key, Collection values);
 }

@@ -23,10 +23,12 @@ package org.apache.tapestry.describe;
  */
 public interface Describable
 {
+
     /**
-     * Invoked to have the receiver describe itself (largely in terms of properties and values). If
-     * the caller does not invoke any methods on the receiver, then the a default description of the
-     * caller will be used (based on <code>toString()</code>.
+     * Invoked to have the receiver describe itself (largely in terms of
+     * properties and values). If the caller does not invoke any methods on the
+     * receiver, then the a default description of the caller will be used
+     * (based on <code>toString()</code>.
      */
-    public void describeTo(DescriptionReceiver receiver);
+    void describeTo(DescriptionReceiver receiver);
 }

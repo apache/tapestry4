@@ -20,10 +20,13 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class DescribeMessages
+final class DescribeMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(DescribeMessages.class);
+    private static final MessageFormatter _formatter = new MessageFormatter(DescribeMessages.class);
 
+    /* defeat instantiation */
+    private DescribeMessages() { }
+    
     static String mustSetTitleBeforeSection()
     {
         return _formatter.getMessage("must-set-title-before-section");

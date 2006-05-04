@@ -22,16 +22,19 @@ import org.apache.tapestry.IMarkupWriter;
  */
 public class HTMLDescriberImpl implements HTMLDescriber
 {
+
     private RootDescriptionReceiverFactory _receiverFactory;
 
     public void describeObject(Object object, IMarkupWriter writer)
     {
-        RootDescriptionReciever dr = _receiverFactory.newRootDescriptionReceiver(writer);
+        RootDescriptionReciever dr = _receiverFactory
+                .newRootDescriptionReceiver(writer);
 
         dr.describe(object);
     }
 
-    public void setReceiverFactory(RootDescriptionReceiverFactory receiverFactory)
+    public void setReceiverFactory(
+            RootDescriptionReceiverFactory receiverFactory)
     {
         _receiverFactory = receiverFactory;
     }

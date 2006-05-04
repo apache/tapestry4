@@ -15,21 +15,23 @@
 package org.apache.tapestry.listener;
 
 /**
- * A service which provides access to {@link org.apache.tapestry.listener.ListenerMap}
- * &nbsp;objects.
+ * A service which provides access to
+ * {@link org.apache.tapestry.listener.ListenerMap} &nbsp;objects.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface ListenerMapSource
 {
+
     /**
-     * Constructs a listener map for the provided object, which must not be null.
+     * Constructs a listener map for the provided object, which must not be
+     * null.
      * 
      * @param object
      *            the object to provide a map for
      * @return a ListenerMap configured for the object
      */
 
-    public ListenerMap getListenerMapForObject(Object object);
+    ListenerMap getListenerMapForObject(Object object);
 }

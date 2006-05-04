@@ -37,5 +37,5 @@ public interface IActionListener
      *
      **/
 
-    public void actionTriggered(IComponent component, IRequestCycle cycle);
+    void actionTriggered(IComponent component, IRequestCycle cycle);
 }

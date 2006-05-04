@@ -28,6 +28,7 @@ import org.apache.tapestry.IRequestCycle;
  */
 public class RenderBridge implements IRender
 {
+
     private Object _object;
 
     private RenderStrategy _strategy;

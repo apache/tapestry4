@@ -18,20 +18,22 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * Default implementation that delegates to the {@link org.apache.tapestry.describe.HTMLDescriber}
- * service.
+ * Default implementation that delegates to the
+ * {@link org.apache.tapestry.describe.HTMLDescriber} service.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class DefaultRenderStrategy implements RenderStrategy
 {
+
     private HTMLDescriber _describer;
 
     /**
      * Invokes {@link HTMLDescriber#describeObject(Object, IMarkupWriter)}.
      */
-    public void renderObject(Object object, IMarkupWriter writer, IRequestCycle cycle)
+    public void renderObject(Object object, IMarkupWriter writer,
+            IRequestCycle cycle)
     {
         _describer.describeObject(object, writer);
     }

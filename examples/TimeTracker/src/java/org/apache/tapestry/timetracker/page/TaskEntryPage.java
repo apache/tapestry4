@@ -15,12 +15,14 @@ package org.apache.tapestry.timetracker.page;
 
 import java.util.Date;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.InjectObject;
+import org.apache.tapestry.dojo.form.Autocompleter;
 import org.apache.tapestry.form.BeanPropertySelectionModel;
 import org.apache.tapestry.form.DatePicker;
 import org.apache.tapestry.form.IPropertySelectionModel;
-import org.apache.tapestry.form.PropertySelection;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.timetracker.dao.ProjectDao;
 import org.apache.tapestry.timetracker.model.Project;
@@ -33,11 +35,12 @@ import org.apache.tapestry.timetracker.model.Project;
  */
 public abstract class TaskEntryPage extends BasePage
 {
+    private static final Log _log = LogFactory.getLog(TaskEntryPage.class);
     
-    @Component(type = "PropertySelection", id = "projectChoose",
+    @Component(type = "Autocompleter", id = "projectChoose",
             bindings = { "model=projectModel", "value=selectedProject",
             "displayName=message:choose.project", "filterOnChange=ognl:true"})
-    public abstract PropertySelection getProjectSelection();
+    public abstract Autocompleter getProjectSelection();
     
     @InjectObject("service:timetracker.dao.ProjectDao")
     public abstract ProjectDao getProjectDao();
@@ -50,7 +53,6 @@ public abstract class TaskEntryPage extends BasePage
     
     public abstract Date getStartTime();
     
-    
     /**
      * Selection model for projects.
      * @return
@@ -58,5 +60,13 @@ public abstract class TaskEntryPage extends BasePage
     public IPropertySelectionModel getProjectModel()
     {
         return new BeanPropertySelectionModel(getProjectDao().listProjects(), "name");
+    }
+    
+    /**
+     * Invoked by form to add a new task.
+     */
+    public void addTask()
+    {
+        _log.debug("addTask() selected task is " + getSelectedProject().getName());
     }
 }

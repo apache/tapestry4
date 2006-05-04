@@ -29,6 +29,7 @@ import org.apache.tapestry.IActionListener;
  */
 public class ListenerMapImpl implements ListenerMap
 {
+
     private final Object _target;
 
     /**
@@ -69,12 +70,12 @@ public class ListenerMapImpl implements ListenerMap
 
     private IActionListener createListener(String name)
     {
-        ListenerMethodInvoker invoker = (ListenerMethodInvoker) _invokers.get(name);
+        ListenerMethodInvoker invoker = (ListenerMethodInvoker) _invokers
+                .get(name);
 
         if (invoker == null)
-            throw new ApplicationRuntimeException(ListenerMessages.objectMissingMethod(
-                    _target,
-                    name), _target, null, null);
+            throw new ApplicationRuntimeException(ListenerMessages
+                    .objectMissingMethod(_target, name), _target, null, null);
 
         return new SyntheticListener(_target, invoker);
     }

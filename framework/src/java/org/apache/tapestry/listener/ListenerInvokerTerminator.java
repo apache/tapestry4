@@ -20,8 +20,8 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * Terminator implementation for the tapestry.listener.InvokeListener pipeline; this is what finally
- * turns around and invokes
+ * Terminator implementation for the tapestry.listener.InvokeListener pipeline;
+ * this is what finally turns around and invokes
  * {@link org.apache.tapestry.IActionListener#actionTriggered(IComponent, IRequestCycle)}.
  * 
  * @author Howard M. Lewis Ship
@@ -32,23 +32,23 @@ public class ListenerInvokerTerminator implements ListenerInvoker
 
     /**
      * @param listener
-     *            to be invoked, may be null if no listener is found (a convienience for all the
-     *            places where listeners are optional)
+     *            to be invoked, may be null if no listener is found (a
+     *            convienience for all the places where listeners are optional)
      * @param source
-     *            the component generating the listener "event", to be passed to the listener. Not
-     *            generally used, but may not be null.
+     *            the component generating the listener "event", to be passed to
+     *            the listener. Not generally used, but may not be null.
      * @param cycle
      *            the current request cycle, to be passed to the listener.
      * @param delegate
      *            the next invoker in the pipeline
      */
-    public void invokeListener(IActionListener listener, IComponent source, IRequestCycle cycle)
+    public void invokeListener(IActionListener listener, IComponent source,
+            IRequestCycle cycle)
     {
         Defense.notNull(source, "source");
         Defense.notNull(cycle, "cycle");
 
-        if (listener != null)
-            listener.actionTriggered(source, cycle);
+        if (listener != null) listener.actionTriggered(source, cycle);
     }
 
 }

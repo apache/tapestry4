@@ -17,13 +17,14 @@ package org.apache.tapestry.listener;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * An object, used by a {@link org.apache.tapestry.listener.ListenerMap}, to match requests
- * (possibly with service parameters) to methods (possibly with arguments). Given a request, a
- * (possibly null or empty) array of service parameters, and a target object (and its set of public
- * void methods), the mapping will search for the mostly likely mapping. In order:
+ * An object, used by a {@link org.apache.tapestry.listener.ListenerMap}, to
+ * match requests (possibly with service parameters) to methods (possibly with
+ * arguments). Given a request, a (possibly null or empty) array of service
+ * parameters, and a target object (and its set of public void methods), the
+ * mapping will search for the mostly likely mapping. In order:
  * <ul>
- * <li>public void method(params) (where the method takes the same number of parameters as there
- * are service parameters)
+ * <li>public void method(params) (where the method takes the same number of
+ * parameters as there are service parameters)
  * <li>public void method(IRequestCycle, params)
  * <li>public void method()
  * <li>public void method(IRequestCycle)
@@ -34,5 +35,6 @@ import org.apache.tapestry.IRequestCycle;
  */
 public interface ListenerMethodInvoker
 {
-    public void invokeListenerMethod(Object target, IRequestCycle cycle);
+
+    void invokeListenerMethod(Object target, IRequestCycle cycle);
 }
