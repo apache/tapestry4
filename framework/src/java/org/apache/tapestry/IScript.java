@@ -35,7 +35,7 @@ public interface IScript
      *
      **/
 
-    public Resource getScriptResource();
+    Resource getScriptResource();
 
     /**
      * Executes the script, which will read and modify the symbols {@link Map}.  The
@@ -52,5 +52,5 @@ public interface IScript
      *
      */
 
-    public void execute(IRequestCycle cycle, IScriptProcessor processor, Map symbols);
+    void execute(IRequestCycle cycle, IScriptProcessor processor, Map symbols);
 }

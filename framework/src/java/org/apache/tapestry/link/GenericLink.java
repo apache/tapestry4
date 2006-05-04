@@ -18,21 +18,18 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
 
 /**
- *  An implementation of {@link org.apache.tapestry.components.ILinkComponent} 
- *  that allows
- *  the exact HREF to be specified, usually used for client side
- *  scripting.  
+ * An implementation of {@link org.apache.tapestry.components.ILinkComponent}
+ * that allows the exact HREF to be specified, usually used for client side
+ * scripting. [<a
+ * href="../../../../../ComponentReference/GenericLink.html">Component Reference</a>]
  * 
- *  [<a href="../../../../../ComponentReference/GenericLink.html">Component Reference</a>]
- * 
- *
- *  @author Howard Lewis Ship
- *  @since 2.0.2
- * 
- **/
+ * @author Howard Lewis Ship
+ * @since 2.0.2
+ */
 
 public abstract class GenericLink extends AbstractLinkComponent
 {
+
     public abstract String getHref();
 
     public ILink getLink(IRequestCycle cycle)

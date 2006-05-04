@@ -37,14 +37,14 @@ public interface IForm extends IAction, FormBehavior
      * @deprecated To be removed; use {@link TapestryUtils#FORM_ATTRIBUTE}instead.
      */
 
-    public static final String ATTRIBUTE_NAME = TapestryUtils.FORM_ATTRIBUTE;
+    String ATTRIBUTE_NAME = TapestryUtils.FORM_ATTRIBUTE;
 
     /**
      * Invoked by the {@link IRequestCycle}to allow a form that uses the direct service, to respond
      * to the form submission.
      */
 
-    public void rewind(IMarkupWriter writer, IRequestCycle cycle);
+    void rewind(IMarkupWriter writer, IRequestCycle cycle);
 
     /**
      * Returns the name of the form. The name is determined as the form component begins to render,
@@ -56,7 +56,7 @@ public interface IForm extends IAction, FormBehavior
      * @since 1.0.5
      */
 
-    public String getName();
+    String getName();
 
     /**
      * Returns the validation delegate for the form. Returns null if the form does not have a
@@ -65,7 +65,7 @@ public interface IForm extends IAction, FormBehavior
      * @since 1.0.8
      */
 
-    public IValidationDelegate getDelegate();
+    IValidationDelegate getDelegate();
 
     /**
      * Indicates whether or not client-side validation will be generated during render.
@@ -73,7 +73,7 @@ public interface IForm extends IAction, FormBehavior
      * @return true, if client-side validation is enabled, false otherwise
      * @since 4.0
      */
-    public boolean isClientValidationEnabled();
+    boolean isClientValidationEnabled();
 
     /**
      * Returns true if the form should support automatic field focus (that is, adding JavaScript to
@@ -86,5 +86,5 @@ public interface IForm extends IAction, FormBehavior
      * @since 4.0
      */
 
-    public boolean getFocus();
+    boolean getFocus();
 }

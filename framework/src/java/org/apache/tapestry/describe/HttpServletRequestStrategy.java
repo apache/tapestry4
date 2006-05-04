@@ -59,7 +59,7 @@ public class HttpServletRequestStrategy implements DescribableStrategy
 
         List keys = WebUtils.toSortedList(request.getParameterNames());
         Iterator i = keys.iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             String key = (String) i.next();
             String[] values = request.getParameterValues(key);
@@ -70,7 +70,7 @@ public class HttpServletRequestStrategy implements DescribableStrategy
         receiver.section("Headers");
         keys = WebUtils.toSortedList(request.getHeaderNames());
         i = keys.iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             String key = (String) i.next();
             String value = request.getHeader(key);
@@ -81,7 +81,7 @@ public class HttpServletRequestStrategy implements DescribableStrategy
         receiver.section("Attributes");
         keys = WebUtils.toSortedList(request.getAttributeNames());
         i = keys.iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             String key = (String) i.next();
             Object value = request.getAttribute(key);

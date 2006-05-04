@@ -39,8 +39,9 @@ public class ServletStrategy implements DescribableStrategy
 
         receiver.section("Initialization Parameters");
 
-        Iterator i = WebUtils.toSortedList(config.getInitParameterNames()).iterator();
-        while (i.hasNext())
+        Iterator i = WebUtils.toSortedList(config.getInitParameterNames())
+                .iterator();
+        while(i.hasNext())
         {
             String key = (String) i.next();
 

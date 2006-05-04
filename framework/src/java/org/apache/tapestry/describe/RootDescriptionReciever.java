@@ -15,9 +15,10 @@
 package org.apache.tapestry.describe;
 
 /**
- * Extended version of {@link org.apache.tapestry.describe.DescriptionReceiver} that adds the
- * ability to describe the root object, and to finish the description of an object (allowing the
- * same receiver to be used to describe several objects).
+ * Extended version of {@link org.apache.tapestry.describe.DescriptionReceiver}
+ * that adds the ability to describe the root object, and to finish the
+ * description of an object (allowing the same receiver to be used to describe
+ * several objects).
  * 
  * @author Howard M. Lewis Ship
  */
@@ -25,8 +26,9 @@ public interface RootDescriptionReciever extends DescriptionReceiver
 {
 
     /**
-     * Describes the object, using a {@link DescribableStrategy}, or just the object's toString()
-     * if there is no strategy for the object. Automatically invokes {@link #finishUp()} when done.
+     * Describes the object, using a {@link DescribableStrategy}, or just the
+     * object's toString() if there is no strategy for the object. Automatically
+     * invokes {@link #finishUp()} when done.
      * 
      * @param object
      *            to be described, which may be null
@@ -34,8 +36,8 @@ public interface RootDescriptionReciever extends DescriptionReceiver
     void describe(Object object);
 
     /**
-     * Invoked after one object has been fully described. Ends a &lt;table&gt;, if one has been
-     * started, and resets the receiver to begin a new object.
+     * Invoked after one object has been fully described. Ends a &lt;table&gt;,
+     * if one has been started, and resets the receiver to begin a new object.
      */
     void finishUp();
 

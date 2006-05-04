@@ -26,7 +26,6 @@ import org.apache.tapestry.IRequestCycle;
  */
 public interface IWidget
 {
-    
     /**
      * Similar to the semantics involved with normal <code>AbstractComponent.renderComponent</code>
      * method writing component state to the output stream.

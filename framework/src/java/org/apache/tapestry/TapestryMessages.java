@@ -20,11 +20,14 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-class TapestryMessages
+final class TapestryMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(TapestryMessages.class,
+    private static final MessageFormatter _formatter = new MessageFormatter(TapestryMessages.class,
             "TapestryStrings2");
 
+    /* defeat instantiation */
+    private TapestryMessages() { }
+    
     static String servletInitFailure(Throwable cause)
     {
         return _formatter.format("servlet-init-failure", cause);

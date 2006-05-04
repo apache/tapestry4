@@ -32,6 +32,7 @@
 
     <component-type type="ActionLink" specification-path="link/ActionLink.jwc"/>
     <component-type type="Any" specification-path="components/Any.jwc"/>
+    <component-type type="Autocompleter" specification-path="dojo/form/Autocompleter.jwc"/>
     <component-type type="Block" specification-path="components/Block.jwc"/>
     <component-type type="Body" specification-path="html/Body.jwc"/>
     <component-type type="Button" specification-path="form/Button.jwc"/>

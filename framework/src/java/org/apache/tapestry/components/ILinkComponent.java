@@ -20,9 +20,9 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
 
 /**
- * A component that renders an HTML &lt;a&gt; element. It exposes some properties to the components
- * it wraps. This is basically to facilitate the {@link org.apache.tapestry.html.Rollover}
- * component.
+ * A component that renders an HTML &lt;a&gt; element. It exposes some
+ * properties to the components it wraps. This is basically to facilitate the
+ * {@link org.apache.tapestry.html.Rollover} component.
  * 
  * @author Howard Lewis Ship
  */
@@ -31,22 +31,24 @@ public interface ILinkComponent extends IComponent
 {
 
     /**
-     * Returns the desired scheme (i.e., "http" or "https") for the link, or null to not output a
-     * specific scheme (in which case the URL will fall under the incoming request's scheme).
+     * Returns the desired scheme (i.e., "http" or "https") for the link, or
+     * null to not output a specific scheme (in which case the URL will fall
+     * under the incoming request's scheme).
      * 
      * @since 4.0
      */
 
-    public String getScheme();
+    String getScheme();
 
     /**
-     * Returns the desired port (i.e., "80" or "443") for the link, or null to not output a
-     * specific port (in which case the URL will fall under the incoming request's port).
+     * Returns the desired port (i.e., "80" or "443") for the link, or null to
+     * not output a specific port (in which case the URL will fall under the
+     * incoming request's port).
      * 
      * @since 4.1
      */
 
-    public Integer getPort();
+    Integer getPort();
 
     /**
      * Returns whether this service link component is enabled or disabled.
@@ -54,7 +56,7 @@ public interface ILinkComponent extends IComponent
      * @since 0.2.9
      */
 
-    public boolean isDisabled();
+    boolean isDisabled();
 
     /**
      * Returns the anchor defined for this link, or null for no anchor.
@@ -62,44 +64,48 @@ public interface ILinkComponent extends IComponent
      * @since 3.0
      */
 
-    public String getAnchor();
+    String getAnchor();
 
     /**
-     * Returns the name of the target window or frame for this link, or null if current window or
-     * frame is to be used.
+     * Returns the name of the target window or frame for this link, or null if
+     * current window or frame is to be used.
      * 
      * @since 4.0
      */
-    public String getTarget();
+    String getTarget();
 
     /**
-     * Adds a new event handler. When the event occurs, the JavaScript function specified is
-     * executed. Multiple functions can be specified, in which case all of them are executed.
+     * Adds a new event handler. When the event occurs, the JavaScript function
+     * specified is executed. Multiple functions can be specified, in which case
+     * all of them are executed.
      * <p>
-     * This was created for use by {@link org.apache.tapestry.html.Rollover} to set mouse over and
-     * mouse out handlers on the {@link ILinkComponent} that wraps it, but can be used for many
-     * other things as well.
+     * This was created for use by {@link org.apache.tapestry.html.Rollover} to
+     * set mouse over and mouse out handlers on the {@link ILinkComponent} that
+     * wraps it, but can be used for many other things as well.
      * 
      * @since 0.2.9
      */
 
-    public void addEventHandler(LinkEventType type, String functionName);
+    void addEventHandler(LinkEventType type, String functionName);
 
     /**
-     * Invoked by the {@link org.apache.tapestry.link.ILinkRenderer} (if the link is not disabled)
-     * to provide a {@link org.apache.tapestry.engine.EngineServiceLink} that the renderer can
-     * convert into a URL.
+     * Invoked by the {@link org.apache.tapestry.link.ILinkRenderer} (if the
+     * link is not disabled) to provide a
+     * {@link org.apache.tapestry.engine.EngineServiceLink} that the renderer
+     * can convert into a URL.
      */
 
-    public ILink getLink(IRequestCycle cycle);
+    ILink getLink(IRequestCycle cycle);
 
     /**
-     * Invoked (by the {@link org.apache.tapestry.link.ILinkRenderer}) to make the link render any
-     * additional attributes. These are informal parameters, plus any attributes related to events.
-     * This is only invoked for non-disabled links.
+     * Invoked (by the {@link org.apache.tapestry.link.ILinkRenderer}) to make
+     * the link render any additional attributes. These are informal parameters,
+     * plus any attributes related to events. This is only invoked for
+     * non-disabled links.
      * 
      * @since 3.0
      */
 
-    public void renderAdditionalAttributes(IMarkupWriter writer, IRequestCycle cycle);
+    void renderAdditionalAttributes(IMarkupWriter writer,
+            IRequestCycle cycle);
 }

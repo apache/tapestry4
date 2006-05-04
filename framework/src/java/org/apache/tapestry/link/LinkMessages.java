@@ -22,10 +22,15 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class LinkMessages
+public final class LinkMessages
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(LinkMessages.class);
 
+    private static final MessageFormatter _formatter = new MessageFormatter(
+            LinkMessages.class);
+
+    /* defeat instantiation */
+    private LinkMessages() { }
+    
     public static String noNesting()
     {
         return _formatter.getMessage("no-nesting");

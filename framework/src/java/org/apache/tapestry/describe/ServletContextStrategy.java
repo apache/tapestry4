@@ -36,12 +36,14 @@ public class ServletContextStrategy implements DescribableStrategy
         receiver.title("ServletContext");
 
         receiver.property("serverInfo", context.getServerInfo());
-        receiver.property("version", context.getMajorVersion() + "." + context.getMinorVersion());
+        receiver.property("version", context.getMajorVersion() + "."
+                + context.getMinorVersion());
 
         receiver.section("Attributes");
 
-        Iterator i = WebUtils.toSortedList(context.getAttributeNames()).iterator();
-        while (i.hasNext())
+        Iterator i = WebUtils.toSortedList(context.getAttributeNames())
+                .iterator();
+        while(i.hasNext())
         {
             String key = (String) i.next();
 
@@ -50,7 +52,7 @@ public class ServletContextStrategy implements DescribableStrategy
 
         receiver.section("Initialization Parameters");
         i = WebUtils.toSortedList(context.getInitParameterNames()).iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             String key = (String) i.next();
 

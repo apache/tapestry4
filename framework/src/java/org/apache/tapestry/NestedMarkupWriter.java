@@ -33,5 +33,5 @@ public interface NestedMarkupWriter extends IMarkupWriter
      * Getting the buffer will <em>close</em> the writer.
      */
 
-    public String getBuffer();
+    String getBuffer();
 }

@@ -33,27 +33,32 @@ import org.apache.tapestry.event.ResetEventListener;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class ListenerMapSourceImpl implements ListenerMapSource, ResetEventListener
+public class ListenerMapSourceImpl implements ListenerMapSource,
+        ResetEventListener
 {
+
     /**
      * Sorts {@link Method}s into descending order by parameter count.
      */
 
     private static class ParameterCountComparator implements Comparator
     {
+
         public int compare(Object o1, Object o2)
         {
             Method m1 = (Method) o1;
             Method m2 = (Method) o2;
 
-            return m2.getParameterTypes().length - m1.getParameterTypes().length;
+            return m2.getParameterTypes().length
+                    - m1.getParameterTypes().length;
         }
 
     }
 
     /**
-     * Keyed on Class, value is a Map. The inner Map is an invoker map ... keyed on listener method
-     * name, value is {@link org.apache.tapestry.listener.ListenerMethodInvoker}.
+     * Keyed on Class, value is a Map. The inner Map is an invoker map ... keyed
+     * on listener method name, value is
+     * {@link org.apache.tapestry.listener.ListenerMethodInvoker}.
      */
 
     private final Map _classToInvokerMap = new HashMap();
@@ -103,15 +108,13 @@ public class ListenerMapSourceImpl implements ListenerMapSource, ResetEventListe
 
         Arrays.sort(methods, new ParameterCountComparator());
 
-        for (int i = 0; i < methods.length; i++)
+        for(int i = 0; i < methods.length; i++)
         {
             Method m = methods[i];
 
-            if (!isAcceptibleListenerMethodReturnType(m))
-                continue;
+            if (!isAcceptibleListenerMethodReturnType(m)) continue;
 
-            if (Modifier.isStatic(m.getModifiers()))
-                continue;
+            if (Modifier.isStatic(m.getModifiers())) continue;
 
             String name = m.getName();
 
@@ -128,7 +131,8 @@ public class ListenerMapSourceImpl implements ListenerMapSource, ResetEventListe
         if (returnType == void.class || returnType == String.class)
             return true;
 
-        return IPage.class.isAssignableFrom(returnType) || ILink.class.isAssignableFrom(returnType);
+        return IPage.class.isAssignableFrom(returnType)
+                || ILink.class.isAssignableFrom(returnType);
     }
 
     private Map convertMethodListMapToInvokerMap(Map map)
@@ -136,7 +140,7 @@ public class ListenerMapSourceImpl implements ListenerMapSource, ResetEventListe
         Map result = new HashMap();
 
         Iterator i = map.entrySet().iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             Map.Entry e = (Map.Entry) i.next();
 
@@ -145,7 +149,8 @@ public class ListenerMapSourceImpl implements ListenerMapSource, ResetEventListe
 
             Method[] methods = convertMethodListToArray(methodList);
 
-            ListenerMethodInvoker invoker = createListenerMethodInvoker(name, methods);
+            ListenerMethodInvoker invoker = createListenerMethodInvoker(name,
+                    methods);
 
             result.put(name, invoker);
         }
@@ -154,11 +159,12 @@ public class ListenerMapSourceImpl implements ListenerMapSource, ResetEventListe
     }
 
     /**
-     * This implementation returns a new {@link ListenerMethodInvoker}. Subclasses can override to
-     * provide their own implementation.
+     * This implementation returns a new {@link ListenerMethodInvoker}.
+     * Subclasses can override to provide their own implementation.
      */
 
-    protected ListenerMethodInvoker createListenerMethodInvoker(String name, Method[] methods)
+    protected ListenerMethodInvoker createListenerMethodInvoker(String name,
+            Method[] methods)
     {
         return new ListenerMethodInvokerImpl(name, methods);
     }

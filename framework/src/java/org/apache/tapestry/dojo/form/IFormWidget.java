@@ -1,4 +1,4 @@
-// Copyright 2005 The Apache Software Foundation
+// Copyright May 4, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,24 +11,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+package org.apache.tapestry.dojo.form;
 
-package org.apache.tapestry.describe;
+import org.apache.tapestry.dojo.IWidget;
+
 
 /**
- * Implementation for objects that natively implement
- * {@link org.apache.tapestry.describe.Describable}.
+ * Represents an html input field managed by a dojo widget.
  * 
- * @author Howard M. Lewis Ship
- * @since 4.0
+ * @author jkuhnert
  */
-public class NativeStrategy implements DescribableStrategy
+public interface IFormWidget extends IWidget
 {
-
-    public void describeObject(Object object, DescriptionReceiver receiver)
-    {
-        Describable d = (Describable) object;
-
-        d.describeTo(receiver);
-    }
-
+ 
+    
+    
 }

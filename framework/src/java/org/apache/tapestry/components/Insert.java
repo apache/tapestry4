@@ -23,26 +23,26 @@ import org.apache.tapestry.IRequestCycle;
 
 /**
  * Used to insert some text (from a parameter) into the HTML. [ <a
- * href="../../../../../ComponentReference/Insert.html">Component Reference </a>]
+ * href="../../../../../ComponentReference/Insert.html">Component Reference
+ * </a>]
  * 
  * @author Howard Lewis Ship
  */
 
 public abstract class Insert extends AbstractComponent
 {
+
     /**
      * Prints its value parameter, possibly formatted by its format parameter.
      */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (cycle.isRewinding())
-            return;
+        if (cycle.isRewinding()) return;
 
         Object value = getValue();
 
-        if (value == null)
-            return;
+        if (value == null) return;
 
         String insert = null;
 
@@ -60,10 +60,9 @@ public abstract class Insert extends AbstractComponent
             }
             catch (Exception ex)
             {
-                throw new ApplicationRuntimeException(ComponentMessages.unableToFormat(
-                        this,
-                        value,
-                        ex), this, getBinding("format").getLocation(), ex);
+                throw new ApplicationRuntimeException(ComponentMessages
+                        .unableToFormat(this, value, ex), this, getBinding(
+                        "format").getLocation(), ex);
             }
         }
 
@@ -78,9 +77,8 @@ public abstract class Insert extends AbstractComponent
         }
 
         writer.print(insert, getRaw());
-        
-        if (styleClass != null)
-            writer.end(); // <span>
+
+        if (styleClass != null) writer.end(); // <span>
     }
 
     public abstract Object getValue();

@@ -22,6 +22,7 @@ package org.apache.tapestry.describe;
  */
 public class DefaultStrategy implements DescribableStrategy
 {
+
     public void describeObject(Object object, DescriptionReceiver receiver)
     {
         // Does nothing, which results in the object's toString().

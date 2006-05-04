@@ -29,7 +29,9 @@ import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.engine.NullWriter;
+import org.apache.tapestry.json.IJSONWriter;
 import org.apache.tapestry.markup.AsciiMarkupFilter;
+import org.apache.tapestry.markup.JSONWriterImpl;
 import org.apache.tapestry.markup.MarkupWriterImpl;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.impl.DefaultResponseBuilder;
@@ -69,7 +71,15 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
         return new MarkupWriterImpl("text/html", pw, new AsciiMarkupFilter());
     }
-
+    
+    protected IJSONWriter newBufferJSONWriter()
+    {
+        _charArrayWriter = new CharArrayWriter();
+        PrintWriter pw = new PrintWriter(_charArrayWriter);
+        
+        return new JSONWriterImpl(pw);
+    }
+    
     protected void assertBuffer(String expected)
     {
         String actual = _charArrayWriter.toString();

@@ -17,7 +17,8 @@ package org.apache.tapestry.describe;
 import org.apache.tapestry.IMarkupWriter;
 
 /**
- * Creates a new instance of {@link org.apache.tapestry.describe.HTMLDescriptionReceiver} around a
+ * Creates a new instance of
+ * {@link org.apache.tapestry.describe.HTMLDescriptionReceiver} around a
  * provided {@link org.apache.tapestry.IMarkupWriter}.
  * 
  * @author Howard M. Lewis Ship
@@ -25,5 +26,7 @@ import org.apache.tapestry.IMarkupWriter;
  */
 public interface RootDescriptionReceiverFactory
 {
-    public RootDescriptionReciever newRootDescriptionReceiver(IMarkupWriter writer);
+
+    RootDescriptionReciever newRootDescriptionReceiver(
+            IMarkupWriter writer);
 }

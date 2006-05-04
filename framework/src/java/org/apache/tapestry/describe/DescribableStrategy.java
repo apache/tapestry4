@@ -23,5 +23,6 @@ package org.apache.tapestry.describe;
  */
 public interface DescribableStrategy
 {
-    public void describeObject(Object object, DescriptionReceiver receiver);
+
+    void describeObject(Object object, DescriptionReceiver receiver);
 }

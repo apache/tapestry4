@@ -26,21 +26,24 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * Adapter for displaying {@link org.apache.hivemind.Location}&nbsp;objects as HTML. This may
- * include showing the content of the {@link org.apache.hivemind.Resource}, with the line indicated
- * in the Location highlighted.
+ * Adapter for displaying {@link org.apache.hivemind.Location}&nbsp;objects as
+ * HTML. This may include showing the content of the
+ * {@link org.apache.hivemind.Resource}, with the line indicated in the
+ * Location highlighted.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class LocationRenderStrategy implements RenderStrategy
 {
+
     /**
      * Lines before and after the actual location to display.
      */
     private static final int RANGE = 5;
 
-    public void renderObject(Object object, IMarkupWriter writer, IRequestCycle cycle)
+    public void renderObject(Object object, IMarkupWriter writer,
+            IRequestCycle cycle)
     {
         Location l = (Location) object;
 
@@ -50,18 +53,17 @@ public class LocationRenderStrategy implements RenderStrategy
 
         int lineNumber = l.getLineNumber();
 
-        if (lineNumber < 1)
-            return;
+        if (lineNumber < 1) return;
 
         URL url = l.getResource().getResourceURL();
 
-        if (url == null)
-            return;
+        if (url == null) return;
 
         writeResourceContent(writer, url, lineNumber);
     }
 
-    private void writeResourceContent(IMarkupWriter writer, URL url, int lineNumber)
+    private void writeResourceContent(IMarkupWriter writer, URL url,
+            int lineNumber)
     {
         LineNumberReader reader = null;
 
@@ -74,20 +76,17 @@ public class LocationRenderStrategy implements RenderStrategy
             writer.begin("table");
             writer.attribute("class", "location-content");
 
-            while (true)
+            while(true)
             {
                 String line = reader.readLine();
 
-                if (line == null)
-                    break;
+                if (line == null) break;
 
                 int currentLine = reader.getLineNumber();
 
-                if (currentLine > lineNumber + RANGE)
-                    break;
+                if (currentLine > lineNumber + RANGE) break;
 
-                if (currentLine < lineNumber - RANGE)
-                    continue;
+                if (currentLine < lineNumber - RANGE) continue;
 
                 writer.begin("tr");
 
@@ -123,8 +122,7 @@ public class LocationRenderStrategy implements RenderStrategy
     {
         try
         {
-            if (reader != null)
-                reader.close();
+            if (reader != null) reader.close();
         }
         catch (IOException ex)
         {

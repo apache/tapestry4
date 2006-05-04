@@ -17,8 +17,8 @@ package org.apache.tapestry.describe;
 import org.apache.tapestry.IRender;
 
 /**
- * A source of light-weight objects that can render a particular object. This is a more pure
- * implementation of the GoF Adapter pattern, based on wrapping a
+ * A source of light-weight objects that can render a particular object. This is
+ * a more pure implementation of the GoF Adapter pattern, based on wrapping a
  * {@link org.apache.tapestry.describe.RenderStrategy}.
  * 
  * @author Howard M. Lewis Ship
@@ -26,9 +26,11 @@ import org.apache.tapestry.IRender;
  */
 public interface RenderableAdapterFactory
 {
+
     /**
-     * Returns an object that can render the input object. Simple implementations will just just
-     * output a string; complex implementations may output complex markup.
+     * Returns an object that can render the input object. Simple
+     * implementations will just just output a string; complex implementations
+     * may output complex markup.
      */
-    public IRender getRenderableAdaptor(Object object);
+    IRender getRenderableAdaptor(Object object);
 }

@@ -20,9 +20,10 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
 /**
- * A component for creating a link to {@link org.apache.tapestry.IExternalPage}using the
- * {@link org.apache.tapestry.engine.ExternalService}. [ <a
- * href="../../../../../ComponentReference/ExternalLink.html">Component Reference </a>]
+ * A component for creating a link to {@link org.apache.tapestry.IExternalPage}using
+ * the {@link org.apache.tapestry.engine.ExternalService}. [ <a
+ * href="../../../../../ComponentReference/ExternalLink.html">Component
+ * Reference </a>]
  * 
  * @see org.apache.tapestry.IExternalPage
  * @see org.apache.tapestry.engine.ExternalService
@@ -31,14 +32,16 @@ import org.apache.tapestry.engine.ILink;
 
 public abstract class ExternalLink extends AbstractLinkComponent
 {
+
     public abstract IEngineService getExternalService();
 
     public ILink getLink(IRequestCycle cycle)
     {
-        Object[] serviceParameters = DirectLink.constructServiceParameters(getParameters());
+        Object[] serviceParameters = DirectLink
+                .constructServiceParameters(getParameters());
 
-        ExternalServiceParameter esp = new ExternalServiceParameter(getTargetPage(),
-                serviceParameters);
+        ExternalServiceParameter esp = new ExternalServiceParameter(
+                getTargetPage(), serviceParameters);
 
         return getExternalService().getLink(false, esp);
     }

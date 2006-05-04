@@ -18,34 +18,39 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.event.ReportStatusListener;
 
 /**
- * Service for collecting together status information across the framework; service implementations
- * implement the {@link org.apache.tapestry.event.ReportStatusListener} interface and register
- * themselves as listeners here. When desired, the {@link #fireReportStatus(IMarkupWriter)} event
- * will invoke the listener method on each registered object.
+ * Service for collecting together status information across the framework;
+ * service implementations implement the
+ * {@link org.apache.tapestry.event.ReportStatusListener} interface and register
+ * themselves as listeners here. When desired, the
+ * {@link #fireReportStatus(IMarkupWriter)} event will invoke the listener
+ * method on each registered object.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface ReportStatusHub
 {
+
     /**
-     * Adds the listener; listeners will be invoked in the order in which they are added.
-     * <strong>Note: only service implementation that are singletons should be report status
-     * listeners. Threaded or pooled implementations should not be added; or should be careful to
-     * add and remove themselves from the hub directly.</strong>
+     * Adds the listener; listeners will be invoked in the order in which they
+     * are added. <strong>Note: only service implementation that are singletons
+     * should be report status listeners. Threaded or pooled implementations
+     * should not be added; or should be careful to add and remove themselves
+     * from the hub directly.</strong>
      * 
      * @param listener
      */
-    public void addReportStatusListener(ReportStatusListener listener);
+    void addReportStatusListener(ReportStatusListener listener);
 
-    public void removeReportStatusListener(ReportStatusListener listener);
+    void removeReportStatusListener(ReportStatusListener listener);
 
     /**
      * Generates an HTML status report by invoking
-     * {@link ReportStatusListener#reportStatus(ReportStatusEvent)} on each registered listener.
+     * {@link ReportStatusListener#reportStatus(ReportStatusEvent)} on each
+     * registered listener.
      * 
      * @param writer
      *            a markup writer to send the report to.
      */
-    public void fireReportStatus(IMarkupWriter writer);
+    void fireReportStatus(IMarkupWriter writer);
 }

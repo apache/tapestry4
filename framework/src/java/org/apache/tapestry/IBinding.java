@@ -35,7 +35,7 @@ public interface IBinding extends Locatable
      * Returns the value of this binding. This is the essential method.
      */
 
-    public Object getObject();
+    Object getObject();
 
     /**
      * Returns the value for the binding after performing some basic checks.
@@ -49,7 +49,7 @@ public interface IBinding extends Locatable
      * @since 0.2.9
      */
 
-    public Object getObject(Class type);
+    Object getObject(Class type);
 
     /**
      * Returns true if the value is invariant (not changing; the same value returned each time).
@@ -60,7 +60,7 @@ public interface IBinding extends Locatable
      * @since 2.0.3
      */
 
-    public boolean isInvariant();
+    boolean isInvariant();
 
     /**
      * Updates the value of the binding, if possible.
@@ -69,7 +69,7 @@ public interface IBinding extends Locatable
      *                If the binding is read only.
      */
 
-    public void setObject(Object value);
+    void setObject(Object value);
 
     /**
      * Returns a description of how the binding is used; this description
@@ -78,5 +78,5 @@ public interface IBinding extends Locatable
      * @since 4.0
      */
     
-    public String getDescription();
+    String getDescription();
 }

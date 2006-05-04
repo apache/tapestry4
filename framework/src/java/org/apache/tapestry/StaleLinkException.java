@@ -17,45 +17,46 @@ package org.apache.tapestry;
 import org.apache.hivemind.ApplicationRuntimeException;
 
 /**
- *  Exception thrown by an {@link org.apache.tapestry.engine.IEngineService} when it discovers that
- *  the an action link was for an out-of-date version of the page.
- *
- *  <p>The application should redirect to the StaleLink page.
- *
- *
- *  @author Howard Lewis Ship
+ * Exception thrown by an {@link org.apache.tapestry.engine.IEngineService} when
+ * it discovers that the an action link was for an out-of-date version of the
+ * page.
+ * <p>
+ * The application should redirect to the StaleLink page.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public class StaleLinkException extends ApplicationRuntimeException
 {
+
     private static final long serialVersionUID = -1266992401198999606L;
-    
-	private transient IPage _page;
-    private String _pageName;
-    private String _targetIdPath;
-    private String _targetActionId;
+
+    private final transient IPage _page;
+    private final String _pageName;
+    private final String _targetIdPath;
+    private final String _targetActionId;
 
     public StaleLinkException()
     {
         super(null, null, null, null);
+        
+        _targetIdPath = null;
+        _page = null;
+        _pageName = null;
+        _targetActionId = null;
     }
 
     /**
-     *  Constructor used when the action id is found, but the target id path
-     *  did not match the actual id path.
-     *
-     **/
+     * Constructor used when the action id is found, but the target id path did
+     * not match the actual id path.
+     */
 
-    public StaleLinkException(IComponent component, String targetActionId, String targetIdPath)
+    public StaleLinkException(IComponent component, String targetActionId,
+            String targetIdPath)
     {
-        super(
-            Tapestry.format(
-                "StaleLinkException.action-mismatch",
-                new String[] { targetActionId, component.getIdPath(), targetIdPath }),
-            component,
-            null,
-            null);
+        super(Tapestry.format("StaleLinkException.action-mismatch",
+                new String[] { targetActionId, component.getIdPath(),
+                        targetIdPath }), component, null, null);
 
         _page = component.getPage();
         _pageName = _page.getPageName();
@@ -65,29 +66,25 @@ public class StaleLinkException extends ApplicationRuntimeException
     }
 
     /**
-     *  Constructor used when the target action id is not found.
-     *
-     **/
+     * Constructor used when the target action id is not found.
+     */
 
-    public StaleLinkException(IPage page, String targetActionId, String targetIdPath)
+    public StaleLinkException(IPage page, String targetActionId,
+            String targetIdPath)
     {
-        this(
-            Tapestry.format(
-                "StaleLinkException.component-mismatch",
-                targetActionId,
-                targetIdPath),
-            page);
-
-        _targetActionId = targetActionId;
-        _targetIdPath = targetIdPath;
+        this(Tapestry.format("StaleLinkException.component-mismatch",
+                targetActionId, targetIdPath), page);
     }
 
     public StaleLinkException(String message, IComponent component)
     {
         super(message, component, null, null);
+        
+        _targetIdPath = null;
+        _page = null;
+        _pageName = null;
+        _targetActionId = null;
     }
-
-
 
     public String getPageName()
     {
@@ -95,16 +92,15 @@ public class StaleLinkException extends ApplicationRuntimeException
     }
 
     /**
-     *  Returns the page referenced by the service URL, if known, 
-     *  or null otherwise.
-     *
-     **/
+     * Returns the page referenced by the service URL, if known, or null
+     * otherwise.
+     */
 
     public IPage getPage()
     {
         return _page;
     }
-    
+
     public String getTargetActionId()
     {
         return _targetActionId;

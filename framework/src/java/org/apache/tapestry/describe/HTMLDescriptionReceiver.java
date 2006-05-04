@@ -21,17 +21,18 @@ import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IMarkupWriter;
 
 /**
- * Implementation of {@link org.apache.tapestry.describe.DescriptionReceiver} that produces HTML
- * output using a {@link org.apache.tapestry.IMarkupWriter}.
+ * Implementation of {@link org.apache.tapestry.describe.DescriptionReceiver}
+ * that produces HTML output using a {@link org.apache.tapestry.IMarkupWriter}.
  * <p>
- * TODO: Make {@link #describeAlternate(Object)} exclusive with the other methods
- * {@link #title(String)}, {@link #property(String, Object)}, etc.
+ * TODO: Make {@link #describeAlternate(Object)} exclusive with the other
+ * methods {@link #title(String)}, {@link #property(String, Object)}, etc.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class HTMLDescriptionReceiver implements RootDescriptionReciever
 {
+
     // Emitted for null values.
 
     static final String NULL_VALUE = "<NULL>";
@@ -50,13 +51,14 @@ public class HTMLDescriptionReceiver implements RootDescriptionReciever
 
     private boolean _even = true;
 
-    public HTMLDescriptionReceiver(IMarkupWriter writer, DescribableStrategy adapter)
+    public HTMLDescriptionReceiver(IMarkupWriter writer,
+            DescribableStrategy adapter)
     {
         this(writer, adapter, new HTMLDescriptionReceiverStyles());
     }
 
-    public HTMLDescriptionReceiver(IMarkupWriter writer, DescribableStrategy strategy,
-            HTMLDescriptionReceiverStyles styles)
+    public HTMLDescriptionReceiver(IMarkupWriter writer,
+            DescribableStrategy strategy, HTMLDescriptionReceiverStyles styles)
     {
         Defense.notNull(writer, "writer");
         Defense.notNull(strategy, "strategy");
@@ -94,8 +96,7 @@ public class HTMLDescriptionReceiver implements RootDescriptionReciever
     {
         // When false, a <table> was started, which must be closed.
 
-        if (!_emitDefault)
-            _writer.end("table");
+        if (!_emitDefault) _writer.end("table");
 
         _writer.println();
 
@@ -132,7 +133,8 @@ public class HTMLDescriptionReceiver implements RootDescriptionReciever
         Defense.notNull(section, "section");
 
         if (_title == null)
-            throw new IllegalStateException(DescribeMessages.mustSetTitleBeforeSection());
+            throw new IllegalStateException(DescribeMessages
+                    .mustSetTitleBeforeSection());
 
         _section = section;
     }
@@ -140,12 +142,13 @@ public class HTMLDescriptionReceiver implements RootDescriptionReciever
     private void assertTitleSet()
     {
         if (_title == null)
-            throw new IllegalStateException(DescribeMessages.mustSetTitleBeforeProperty());
+            throw new IllegalStateException(DescribeMessages
+                    .mustSetTitleBeforeProperty());
     }
 
     /**
-     * Invoked to ensure that the section portion has been output, before any properties within the
-     * section are output.
+     * Invoked to ensure that the section portion has been output, before any
+     * properties within the section are output.
      */
 
     private void emitSection()
@@ -237,7 +240,8 @@ public class HTMLDescriptionReceiver implements RootDescriptionReciever
             return;
         }
 
-        new HTMLDescriptionReceiver(_writer, _strategy, _styles).describe(value);
+        new HTMLDescriptionReceiver(_writer, _strategy, _styles)
+                .describe(value);
     }
 
     public void property(String key, boolean value)
@@ -304,20 +308,18 @@ public class HTMLDescriptionReceiver implements RootDescriptionReciever
 
         assertTitleSet();
 
-        if (values == null || values.length == 0)
-            return;
+        if (values == null || values.length == 0) return;
 
         emitSection();
 
-        for (int i = 0; i < values.length; i++)
+        for(int i = 0; i < values.length; i++)
         {
             _writer.begin("tr");
             writeRowClass();
 
             _writer.begin("th");
 
-            if (i == 0)
-                _writer.print(key);
+            if (i == 0) _writer.print(key);
 
             _writer.end();
 
@@ -337,23 +339,21 @@ public class HTMLDescriptionReceiver implements RootDescriptionReciever
 
         assertTitleSet();
 
-        if (values == null || values.isEmpty())
-            return;
+        if (values == null || values.isEmpty()) return;
 
         emitSection();
 
         Iterator i = values.iterator();
         boolean first = true;
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
             _writer.begin("tr");
             writeRowClass();
 
             _writer.begin("th");
 
-            if (first)
-                _writer.print(key);
+            if (first) _writer.print(key);
 
             _writer.end();
             _writer.begin("td");

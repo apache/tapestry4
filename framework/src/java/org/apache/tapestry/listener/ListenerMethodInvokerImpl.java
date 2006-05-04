@@ -25,19 +25,20 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ILink;
 
 /**
- * Logic for mapping a listener method name to an actual method invocation; this may require a
- * little searching to find the correct version of the method, based on the number of parameters to
- * the method (there's a lot of flexibility in terms of what methods may be considered a listener
- * method).
+ * Logic for mapping a listener method name to an actual method invocation; this
+ * may require a little searching to find the correct version of the method,
+ * based on the number of parameters to the method (there's a lot of flexibility
+ * in terms of what methods may be considered a listener method).
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
 {
+
     /**
-     * Methods with a name appropriate for this class, sorted into descending order by number of
-     * parameters.
+     * Methods with a name appropriate for this class, sorted into descending
+     * order by number of parameters.
      */
 
     private final Method[] _methods;
@@ -77,22 +78,22 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
         if (searchAndInvoke(target, true, false, cycle, listenerParameters))
             return;
 
-        throw new ApplicationRuntimeException(ListenerMessages.noListenerMethodFound(
-                _name,
-                listenerParameters,
-                target), target, null, null);
+        throw new ApplicationRuntimeException(ListenerMessages
+                .noListenerMethodFound(_name, listenerParameters, target),
+                target, null, null);
     }
 
-    private boolean searchAndInvoke(Object target, boolean includeCycle, boolean includeParameters,
-            IRequestCycle cycle, Object[] listenerParameters)
+    private boolean searchAndInvoke(Object target, boolean includeCycle,
+            boolean includeParameters, IRequestCycle cycle,
+            Object[] listenerParameters)
     {
         int listenerParameterCount = Tapestry.size(listenerParameters);
-        int methodParameterCount = includeParameters ? listenerParameterCount : 0;
+        int methodParameterCount = includeParameters ? listenerParameterCount
+                : 0;
 
-        if (includeCycle)
-            methodParameterCount++;
+        if (includeCycle) methodParameterCount++;
 
-        for (int i = 0; i < _methods.length; i++)
+        for(int i = 0; i < _methods.length; i++)
         {
             Method m = _methods[i];
 
@@ -101,11 +102,9 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
 
             Class[] parameterTypes = m.getParameterTypes();
 
-            if (parameterTypes.length < methodParameterCount)
-                break;
+            if (parameterTypes.length < methodParameterCount) break;
 
-            if (parameterTypes.length != methodParameterCount)
-                continue;
+            if (parameterTypes.length != methodParameterCount) continue;
 
             boolean firstIsCycle = parameterTypes.length > 0
                     && parameterTypes[0] == IRequestCycle.class;
@@ -118,16 +117,10 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
             // any methods whose first parameter is the request cycle
             // (we'll catch those in a later search).
 
-            if (includeCycle != firstIsCycle)
-                continue;
+            if (includeCycle != firstIsCycle) continue;
 
-            invokeListenerMethod(
-                    m,
-                    target,
-                    includeCycle,
-                    includeParameters,
-                    cycle,
-                    listenerParameters);
+            invokeListenerMethod(m, target, includeCycle, includeParameters,
+                    cycle, listenerParameters);
 
             return true;
         }
@@ -135,24 +128,25 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
         return false;
     }
 
-    private void invokeListenerMethod(Method listenerMethod, Object target, boolean includeCycle,
-            boolean includeParameters, IRequestCycle cycle, Object[] listenerParameters)
+    private void invokeListenerMethod(Method listenerMethod, Object target,
+            boolean includeCycle, boolean includeParameters,
+            IRequestCycle cycle, Object[] listenerParameters)
     {
         Object[] parameters = new Object[listenerMethod.getParameterTypes().length];
         int cursor = 0;
 
-        if (includeCycle)
-            parameters[cursor++] = cycle;
+        if (includeCycle) parameters[cursor++] = cycle;
 
         if (includeParameters)
-            for (int i = 0; i < Tapestry.size(listenerParameters); i++)
+            for(int i = 0; i < Tapestry.size(listenerParameters); i++)
                 parameters[cursor++] = listenerParameters[i];
 
         Object methodResult = null;
 
         try
         {
-            methodResult = invokeTargetMethod(target, listenerMethod, parameters);
+            methodResult = invokeTargetMethod(target, listenerMethod,
+                    parameters);
         }
         catch (InvocationTargetException ex)
         {
@@ -161,24 +155,21 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
             if (targetException instanceof ApplicationRuntimeException)
                 throw (ApplicationRuntimeException) targetException;
 
-            throw new ApplicationRuntimeException(ListenerMessages.listenerMethodFailure(
-                    listenerMethod,
-                    target,
-                    targetException), target, null, targetException);
+            throw new ApplicationRuntimeException(ListenerMessages
+                    .listenerMethodFailure(listenerMethod, target,
+                            targetException), target, null, targetException);
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(ListenerMessages.listenerMethodFailure(
-                    listenerMethod,
-                    target,
-                    ex), target, null, ex);
+            throw new ApplicationRuntimeException(ListenerMessages
+                    .listenerMethodFailure(listenerMethod, target, ex), target,
+                    null, ex);
 
         }
 
         // void methods return null
 
-        if (methodResult == null)
-            return;
+        if (methodResult == null) return;
 
         // The method scanner, inside ListenerMapSourceImpl,
         // ensures that only methods that return void, String,
@@ -204,12 +195,13 @@ public class ListenerMethodInvokerImpl implements ListenerMethodInvoker
     }
 
     /**
-     * Provided as a hook so that subclasses can perform any additional work before or after
-     * invoking the listener method.
+     * Provided as a hook so that subclasses can perform any additional work
+     * before or after invoking the listener method.
      */
 
-    protected Object invokeTargetMethod(Object target, Method listenerMethod, Object[] parameters)
-            throws IllegalAccessException, InvocationTargetException
+    protected Object invokeTargetMethod(Object target, Method listenerMethod,
+            Object[] parameters)
+        throws IllegalAccessException, InvocationTargetException
     {
         return listenerMethod.invoke(target, parameters);
     }

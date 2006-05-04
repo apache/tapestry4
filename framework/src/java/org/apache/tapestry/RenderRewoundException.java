@@ -17,18 +17,18 @@ package org.apache.tapestry;
 import org.apache.hivemind.ApplicationRuntimeException;
 
 /**
- *  A special subclass of {@link ApplicationRuntimeException} that can be thrown
- *  when a component has determined that the state of the page has been
- *  rewound.
- *
+ * A special subclass of {@link ApplicationRuntimeException} that can be thrown
+ * when a component has determined that the state of the page has been rewound.
+ * 
  * @author Howard Lewis Ship
- **/
+ */
 
 public class RenderRewoundException extends ApplicationRuntimeException
 {
+
     private static final long serialVersionUID = -4212602864703507206L;
 
-	public RenderRewoundException(Object component)
+    public RenderRewoundException(Object component)
     {
         super(null, component, null, null);
     }

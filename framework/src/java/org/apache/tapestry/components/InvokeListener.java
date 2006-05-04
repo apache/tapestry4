@@ -22,17 +22,20 @@ import org.apache.tapestry.link.DirectLink;
 import org.apache.tapestry.listener.ListenerInvoker;
 
 /**
- * Invokes a listener method, passing listener parameters. This is used when a page or component
- * needs some setup logic that can be best accomplished in Java code.
+ * Invokes a listener method, passing listener parameters. This is used when a
+ * page or component needs some setup logic that can be best accomplished in
+ * Java code.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public abstract class InvokeListener extends AbstractComponent
 {
+
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        Object[] parameters = DirectLink.constructServiceParameters(getParameters());
+        Object[] parameters = DirectLink
+                .constructServiceParameters(getParameters());
 
         try
         {
@@ -46,12 +49,12 @@ public abstract class InvokeListener extends AbstractComponent
         }
     }
 
-    /** Parameter */
+    /** Parameter. */
     public abstract IActionListener getListener();
 
-    /** Parameter */
+    /** Parameter. */
     public abstract Object getParameters();
 
-    /** Injected */
+    /** Injected. */
     public abstract ListenerInvoker getListenerInvoker();
 }
