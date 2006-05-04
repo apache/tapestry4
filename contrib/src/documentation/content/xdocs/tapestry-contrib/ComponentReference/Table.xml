@@ -97,7 +97,7 @@ and is passed to the <code>tableModel</code> parameter.
 
 <p>
 If you define the table columns using the <code>columns</code> parameter, you can either
-provide a list of <link href="@apicontrib;/contrib/table/model/ITableColumn.html"><code>ITableColumn</code></link>
+provide a list of <link href="&apicontrib;/contrib/table/model/ITableColumn.html"><code>ITableColumn</code></link>
 objects, each defining a column in the table, or you can define the columns using 
 a string that describes each column. 
 </p>
