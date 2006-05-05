@@ -402,9 +402,9 @@ public class TestDataSqueezer extends TestCase
         assertEquals("fred", PropertyUtils.read(instance, "name"));
         assertEquals("flintstone", PropertyUtils.read(instance, "value"));
 
-        DataSqueezer ds = newDataSqueezer(resolver);
+        DataSqueezer dsq = newDataSqueezer(resolver);
 
-        String encoded = ds.squeeze(instance);
+        String encoded = dsq.squeeze(instance);
 
         // OK; build a whole new class loader & stack to decode that
         // string back into an object.
@@ -430,11 +430,11 @@ public class TestDataSqueezer extends TestCase
 
     private DataSqueezer newDataSqueezer(ClassResolver resolver)
     {
-        DataSqueezerImpl ds = new DataSqueezerImpl();
+        DataSqueezerImpl dsq = new DataSqueezerImpl();
         SerializableAdaptor adaptor = new SerializableAdaptor();
         adaptor.setResolver(resolver);
 
-        ds.register(adaptor);
-        return ds;
+        dsq.register(adaptor);
+        return dsq;
     }
 }

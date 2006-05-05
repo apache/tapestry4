@@ -22,9 +22,9 @@ import org.apache.tapestry.form.IPropertySelectionModel;
 /**
  *  A high level component used to render a drop-down list of options that the user may select.
  *
- *  Informal parameters are applied to the <select> tag.  To have greater control over the <option> tags, you must use
- *  a Select and Option or a concrete class of {@link org.apache.tapestry.link.ILinkRenderer} with the
- *  {@link OptionRenderer}.
+ *  Informal parameters are applied to the &lt;select&gt; tag.  To have greater control over the 
+ *  &lt;option&gt; tags, you must use a Select and Option or a concrete class 
+ *  of {@link org.apache.tapestry.link.ILinkRenderer} with the {@link OptionRenderer}.
  *
  *  @author David Solis
  */

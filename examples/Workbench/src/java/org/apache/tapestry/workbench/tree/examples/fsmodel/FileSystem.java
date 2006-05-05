@@ -29,6 +29,11 @@ import org.apache.tapestry.engine.IEngineService;
 public class FileSystem implements IFileSystemTreeNode
 {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3895257178984217762L;
+
     private transient AssetsHolder m_objAssetsHolder = null;
 
     /**

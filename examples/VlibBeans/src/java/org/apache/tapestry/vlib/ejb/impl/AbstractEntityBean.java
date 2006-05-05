@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.ejb.CreateException;
-import javax.ejb.EJBException;
 import javax.ejb.EntityBean;
 import javax.ejb.EntityContext;
 import javax.naming.Context;
@@ -104,7 +103,7 @@ public abstract class AbstractEntityBean implements EntityBean
      * Empty implementation; subclasses may override.
      */
 
-    public void ejbActivate() throws EJBException, RemoteException
+    public void ejbActivate() throws RemoteException
     {
         // does nothing
     }
@@ -113,7 +112,7 @@ public abstract class AbstractEntityBean implements EntityBean
      * Empty implementation; subclasses may override.
      */
 
-    public void ejbPassivate() throws EJBException, RemoteException
+    public void ejbPassivate() throws RemoteException
     {
         // does nothing
     }
@@ -122,7 +121,7 @@ public abstract class AbstractEntityBean implements EntityBean
      * Empty implementation; subclasses may override.
      */
 
-    public void ejbRemove() throws EJBException, RemoteException
+    public void ejbRemove() throws RemoteException
     {
         // does nothing
     }
@@ -131,7 +130,7 @@ public abstract class AbstractEntityBean implements EntityBean
      * Does nothing.
      */
 
-    public void ejbLoad() throws EJBException, RemoteException
+    public void ejbLoad() throws RemoteException
     {
     }
 
@@ -139,7 +138,7 @@ public abstract class AbstractEntityBean implements EntityBean
      * Does nothing.
      */
 
-    public void ejbStore() throws EJBException, RemoteException
+    public void ejbStore() throws RemoteException
     {
     }
 

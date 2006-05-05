@@ -56,7 +56,7 @@ public class LocalizedPropertiesLoader
 
     /**
      * Creates a new loader that will load the properties from the given input
-     * stream using the default character encoding
+     * stream using the default character encoding.
      * 
      * @param ins
      *            the input stream to load the properties from
@@ -68,7 +68,7 @@ public class LocalizedPropertiesLoader
 
     /**
      * Creates a new loader that will load the properties from the given input
-     * stream using the provided character encoding
+     * stream using the provided character encoding.
      * 
      * @param ins
      *            the input stream to load the properties from
@@ -85,7 +85,7 @@ public class LocalizedPropertiesLoader
     }
 
     /**
-     * Creates a new loader that will load the properties from the given reader
+     * Creates a new loader that will load the properties from the given reader.
      * 
      * @param reader
      *            the Reader to load the properties from
@@ -97,7 +97,7 @@ public class LocalizedPropertiesLoader
 
     /**
      * Read the properties from the provided stream and store them into the
-     * given map
+     * given map.
      * 
      * @param properties
      *            the map where the properties will be stored

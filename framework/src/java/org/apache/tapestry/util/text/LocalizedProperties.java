@@ -17,7 +17,6 @@ package org.apache.tapestry.util.text;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +37,7 @@ public class LocalizedProperties
     private Map _propertyMap;
 
     /**
-     * Create a new object with an empty property storage
+     * Create a new object with an empty property storage.
      */
     public LocalizedProperties()
     {
@@ -95,7 +94,7 @@ public class LocalizedProperties
     }
 
     /**
-     * Stores a property value
+     * Stores a property value.
      * 
      * @param key
      *            the property key
@@ -146,7 +145,7 @@ public class LocalizedProperties
      * @throws IOException
      */
     public void load(InputStream ins, String encoding)
-        throws UnsupportedEncodingException, IOException
+        throws IOException
     {
         LocalizedPropertiesLoader loader = new LocalizedPropertiesLoader(ins,
                 encoding);
