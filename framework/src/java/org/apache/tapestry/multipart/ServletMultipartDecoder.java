@@ -17,16 +17,17 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Raphael Jean
- *
  */
-public interface ServletMultipartDecoder extends MultipartDecoder {
-	
+public interface ServletMultipartDecoder extends MultipartDecoder
+{
+
     /**
-     * Decodes the request, returning a new {@link javax.servlet.http.HttpServletRequest}
-     * implementation that will allow access to the form fields submitted in the request (but omits
+     * Decodes the request, returning a new
+     * {@link javax.servlet.http.HttpServletRequest} implementation that will
+     * allow access to the form fields submitted in the request (but omits
      * uploaded files.
      */
 
-    public HttpServletRequest decode(HttpServletRequest request);
+    HttpServletRequest decode(HttpServletRequest request);
 
 }

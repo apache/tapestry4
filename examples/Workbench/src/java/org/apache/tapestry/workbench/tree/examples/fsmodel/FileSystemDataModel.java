@@ -23,70 +23,78 @@ import org.apache.tapestry.contrib.tree.simple.SimpleTreeDataModel;
 /**
  * @author ceco
  */
-public class FileSystemDataModel extends SimpleTreeDataModel
-    implements Serializable
+public class FileSystemDataModel extends SimpleTreeDataModel implements
+        Serializable
 {
+
     private static final long serialVersionUID = 2384273235598992452L;
 
-	/**
+    /**
      * Constructor for FileSystemDataModel.
+     * 
      * @param objRootNode
      */
-    public FileSystemDataModel(ITreeNode objRootNode) {
+    public FileSystemDataModel(ITreeNode objRootNode)
+    {
         super(objRootNode);
     }
 
     /**
      * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getObject(Object)
      */
-    public Object getObject(Object objUniqueKey) {
-        return findNode(objUniqueKey, (IFileSystemTreeNode)getRoot());
+    public Object getObject(Object objUniqueKey)
+    {
+        return findNode(objUniqueKey, (IFileSystemTreeNode) getRoot());
     }
 
     private IFileSystemTreeNode findNode(Object objUniqueKey,
-                                         IFileSystemTreeNode objParentNode) {
+            IFileSystemTreeNode objParentNode)
+    {
         String strUniqueKey = (String) objUniqueKey;
         String strParentUniqueKey = objParentNode.getAbsolutePath();
 
-        if (strUniqueKey.equals(strParentUniqueKey)) {
-            return objParentNode;
-        }
+        if (strUniqueKey.equals(strParentUniqueKey)) { return objParentNode; }
 
         IFileSystemTreeNode obj = null;
 
-		if(strUniqueKey.startsWith(strParentUniqueKey))
-		{
-	        for (Iterator iter = objParentNode.getChildren().iterator(); iter.hasNext();) {
-	            IFileSystemTreeNode element = (IFileSystemTreeNode) iter.next();
-	            obj = findNode(objUniqueKey, element);
-	            if (obj != null) {
-	                break;
-	            }
-	        }
-		}
+        if (strUniqueKey.startsWith(strParentUniqueKey))
+        {
+            for(Iterator iter = objParentNode.getChildren().iterator(); iter
+                    .hasNext();)
+            {
+                IFileSystemTreeNode element = (IFileSystemTreeNode) iter.next();
+                obj = findNode(objUniqueKey, element);
+                if (obj != null)
+                {
+                    break;
+                }
+            }
+        }
 
         return obj;
     }
 
     /**
-     * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getUniqueKey(Object, Object)
+     * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getUniqueKey(Object,
+     *      Object)
      */
-    public Object getUniqueKey(Object objTarget, Object objParentUniqueKey) {
+    public Object getUniqueKey(Object objTarget, Object objParentUniqueKey)
+    {
         IFileSystemTreeNode objNode = (IFileSystemTreeNode) objTarget;
         return objNode.getAbsolutePath();
     }
 
     /**
-     * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#isAncestorOf(Object, Object)
+     * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#isAncestorOf(Object,
+     *      Object)
      */
     public boolean isAncestorOf(Object objChildUniqueKey,
-                                Object objParentUniqueKey) {
-        String strChildAbsolutePath = (String)objChildUniqueKey;
-        String strParentAbsolutePath = (String)objParentUniqueKey;
+            Object objParentUniqueKey)
+    {
+        String strChildAbsolutePath = (String) objChildUniqueKey;
+        String strParentAbsolutePath = (String) objParentUniqueKey;
 
-        if("".equals(strParentAbsolutePath)) {
-            return true;
-        }
+        if ("".equals(strParentAbsolutePath)) { return true; }
 
         return strChildAbsolutePath.lastIndexOf(strParentAbsolutePath) > -1;
     }
@@ -94,9 +102,9 @@ public class FileSystemDataModel extends SimpleTreeDataModel
     /**
      * @see org.apache.tapestry.contrib.tree.model.ITreeDataModel#getParentUniqueKey(Object)
      */
-    public Object getParentUniqueKey(Object objChildUniqueKey) {
-        IFileSystemTreeNode objNode =
-            (IFileSystemTreeNode) getObject(objChildUniqueKey);
+    public Object getParentUniqueKey(Object objChildUniqueKey)
+    {
+        IFileSystemTreeNode objNode = (IFileSystemTreeNode) getObject(objChildUniqueKey);
         return objNode.getParent();
     }
 

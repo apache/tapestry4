@@ -22,12 +22,13 @@ import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * Used to defer connection of inherited informal bindings.
- *
+ * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 class QueuedInheritInformalBindings implements IQueuedInheritedBinding
 {
+
     private IComponent _component;
 
     QueuedInheritInformalBindings(IComponent component)
@@ -40,34 +41,29 @@ class QueuedInheritInformalBindings implements IQueuedInheritedBinding
 
         IComponent container = _component.getContainer();
 
-        for (Iterator it = container.getBindingNames().iterator(); it.hasNext();)
+        for(Iterator it = container.getBindingNames().iterator(); it.hasNext();)
         {
             String bindingName = (String) it.next();
             connectInformalBinding(container, _component, bindingName);
         }
     }
 
-    private void connectInformalBinding(
-        IComponent container,
-        IComponent component,
-        String bindingName)
+    private void connectInformalBinding(IComponent container,
+            IComponent component, String bindingName)
     {
         IComponentSpecification componentSpec = component.getSpecification();
         IComponentSpecification containerSpec = container.getSpecification();
 
         // check if binding already exists in the component
-        if (component.getBinding(bindingName) != null)
-            return;
+        if (component.getBinding(bindingName) != null) return;
 
         // check if parameter is informal for the component
         if (componentSpec.getParameter(bindingName) != null
-            || componentSpec.isReservedParameterName(bindingName))
-            return;
+                || componentSpec.isReservedParameterName(bindingName)) return;
 
         // check if parameter is informal for the container
         if (containerSpec.getParameter(bindingName) != null
-            || containerSpec.isReservedParameterName(bindingName))
-            return;
+                || containerSpec.isReservedParameterName(bindingName)) return;
 
         // if everything passes, establish binding
         IBinding binding = container.getBinding(bindingName);

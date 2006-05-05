@@ -34,6 +34,7 @@ import org.apache.tapestry.util.StringSplitter;
  */
 public class UrlValidator extends BaseValidator
 {
+
     private int _minimumLength;
 
     private String _minimumLengthMessage;
@@ -63,16 +64,15 @@ public class UrlValidator extends BaseValidator
 
     public String toString(IFormComponent field, Object value)
     {
-        if (value == null)
-            return null;
+        if (value == null) return null;
 
         return value.toString();
     }
 
-    public Object toObject(IFormComponent field, String input) throws ValidatorException
+    public Object toObject(IFormComponent field, String input)
+        throws ValidatorException
     {
-        if (checkRequired(field, input))
-            return null;
+        if (checkRequired(field, input)) return null;
 
         if (_minimumLength > 0 && input.length() < _minimumLength)
             throw new ValidatorException(buildMinimumLengthMessage(field),
@@ -82,11 +82,9 @@ public class UrlValidator extends BaseValidator
             throw new ValidatorException(buildInvalidUrlFormatMessage(field),
                     ValidationConstraint.URL_FORMAT);
 
-        if (!isAllowedProtocol(input))
-        {
-            throw new ValidatorException(buildDisallowedProtocolMessage(field),
-                    ValidationConstraint.DISALLOWED_PROTOCOL);
-        }
+        if (!isAllowedProtocol(input)) { throw new ValidatorException(
+                buildDisallowedProtocolMessage(field),
+                ValidationConstraint.DISALLOWED_PROTOCOL); }
 
         return input;
     }
@@ -101,20 +99,18 @@ public class UrlValidator extends BaseValidator
         _minimumLength = minimumLength;
     }
 
-    public void renderValidatorContribution(IFormComponent field, IMarkupWriter writer,
-            IRequestCycle cycle)
+    public void renderValidatorContribution(IFormComponent field,
+            IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (!isClientScriptingEnabled())
-            return;
+        if (!isClientScriptingEnabled()) return;
 
         Map symbols = new HashMap();
 
         if (isRequired())
             symbols.put("requiredMessage", buildRequiredMessage(field)); //$NON-NLS-1$
 
-        if (_minimumLength > 0)
-            symbols.put("minimumLengthMessage", //$NON-NLS-1$
-                    buildMinimumLengthMessage(field));
+        if (_minimumLength > 0) symbols.put("minimumLengthMessage", //$NON-NLS-1$
+                buildMinimumLengthMessage(field));
 
         symbols.put("urlFormatMessage", buildInvalidUrlFormatMessage(field)); //$NON-NLS-1$
 
@@ -128,13 +124,10 @@ public class UrlValidator extends BaseValidator
 
     private String buildUrlRegexpProtocols()
     {
-        if (_allowedProtocols == null)
-        {
-            return null;
-        }
+        if (_allowedProtocols == null) { return null; }
         String regexp = "/("; //$NON-NLS-1$
         Iterator iter = _allowedProtocols.iterator();
-        while (iter.hasNext())
+        while(iter.hasNext())
         {
             String protocol = (String) iter.next();
             regexp += protocol;
@@ -188,7 +181,7 @@ public class UrlValidator extends BaseValidator
             }
             String actualProtocol = oUrl.getProtocol();
             Iterator iter = _allowedProtocols.iterator();
-            while (iter.hasNext())
+            while(iter.hasNext())
             {
                 String protocol = (String) iter.next();
                 if (protocol.equals(actualProtocol))
@@ -240,12 +233,14 @@ public class UrlValidator extends BaseValidator
         String pattern = getPattern(_minimumLengthMessage, "field-too-short", //$NON-NLS-1$
                 field.getPage().getLocale());
 
-        return formatString(pattern, Integer.toString(_minimumLength), field.getDisplayName());
+        return formatString(pattern, Integer.toString(_minimumLength), field
+                .getDisplayName());
     }
 
     protected String buildInvalidUrlFormatMessage(IFormComponent field)
     {
-        String pattern = getPattern(_invalidUrlFormatMessage, "invalid-url-format", //$NON-NLS-1$
+        String pattern = getPattern(_invalidUrlFormatMessage,
+                "invalid-url-format", //$NON-NLS-1$
                 field.getPage().getLocale());
 
         return formatString(pattern, field.getDisplayName());
@@ -253,16 +248,14 @@ public class UrlValidator extends BaseValidator
 
     protected String buildDisallowedProtocolMessage(IFormComponent field)
     {
-        if (_allowedProtocols == null)
-        {
-            return null;
-        }
-        String pattern = getPattern(_disallowedProtocolMessage, "disallowed-protocol", //$NON-NLS-1$
+        if (_allowedProtocols == null) { return null; }
+        String pattern = getPattern(_disallowedProtocolMessage,
+                "disallowed-protocol", //$NON-NLS-1$
                 field.getPage().getLocale());
 
         String allowedProtocols = ""; //$NON-NLS-1$
         Iterator iter = _allowedProtocols.iterator();
-        while (iter.hasNext())
+        while(iter.hasNext())
         {
             String protocol = (String) iter.next();
             if (!allowedProtocols.equals("")) { //$NON-NLS-1$
@@ -283,12 +276,10 @@ public class UrlValidator extends BaseValidator
 
     protected String getPattern(String override, String key, Locale locale)
     {
-        if (override != null)
-            return override;
+        if (override != null) return override;
 
         ResourceBundle strings = ResourceBundle.getBundle(
-                "org.apache.tapestry.valid.ValidationStrings",
-                locale);
+                "org.apache.tapestry.valid.ValidationStrings", locale);
         return strings.getString(key);
     }
 
@@ -302,7 +293,7 @@ public class UrlValidator extends BaseValidator
         // String[] aProtocols = protocols.split(","); //$NON-NLS-1$
         String[] aProtocols = spliter.splitToArray(protocols); //$NON-NLS-1$
         _allowedProtocols = new Vector();
-        for (int i = 0; i < aProtocols.length; i++)
+        for(int i = 0; i < aProtocols.length; i++)
         {
             _allowedProtocols.add(aProtocols[i]);
         }

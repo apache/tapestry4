@@ -24,6 +24,7 @@ import org.apache.tapestry.services.DataSqueezer;
 
 public class StringAdaptor implements SqueezeAdaptor
 {
+
     private static final String PREFIX = "S";
 
     public String getPrefix()
@@ -45,13 +46,13 @@ public class StringAdaptor implements SqueezeAdaptor
 
     /**
      * Strips the prefix from the string. This method is only invoked by the
-     * {@link DataSqueezerImpl} if the string leads with its normal prefix (an 'S').
+     * {@link DataSqueezerImpl} if the string leads with its normal prefix (an
+     * 'S').
      */
 
     public Object unsqueeze(DataSqueezer squeezer, String string)
     {
-        if (string.length() == 1)
-            return "";
+        if (string.length() == 1) return "";
 
         return string.substring(1);
     }

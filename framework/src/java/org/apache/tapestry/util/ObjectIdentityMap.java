@@ -15,14 +15,16 @@
 package org.apache.tapestry.util;
 
 /**
- * A simple map-like collection, similar to (but more more limited than) JDK 1.4's IdentityHashMap.
- * It is designed for <em>small</em> collections of objects.
+ * A simple map-like collection, similar to (but more more limited than) JDK
+ * 1.4's IdentityHashMap. It is designed for <em>small</em> collections of
+ * objects.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 public class ObjectIdentityMap
 {
+
     private int _pairCount = 0;
 
     // Alternates between keys and values
@@ -33,13 +35,14 @@ public class ObjectIdentityMap
      * Adds or updates a key in the bag.
      * 
      * @param key
-     *            the key to store a value under; an existing value with the key is discarded
+     *            the key to store a value under; an existing value with the key
+     *            is discarded
      * @param value
      *            the value to store
      */
     public void put(Object key, Object value)
     {
-        for (int i = 0; i < _pairCount; i++)
+        for(int i = 0; i < _pairCount; i++)
         {
             int index = 2 * i;
 
@@ -68,14 +71,11 @@ public class ObjectIdentityMap
 
     public Object get(Object key)
     {
-        for (int i = 0; i < _pairCount; i++)
+        for(int i = 0; i < _pairCount; i++)
         {
             int index = 2 * i;
 
-            if (_pairs[index] == key)
-            {
-                return _pairs[index + 1];
-            }
+            if (_pairs[index] == key) { return _pairs[index + 1]; }
         }
 
         return null;
@@ -89,7 +89,8 @@ public class ObjectIdentityMap
 
         if (newLength >= currentSize)
         {
-            // Expand to dobule current size. Allocate room for 5 keys and 5 values
+            // Expand to dobule current size. Allocate room for 5 keys and 5
+            // values
             // initially.
 
             int newSize = Math.max(10, 2 * currentSize);

@@ -25,13 +25,15 @@ import org.apache.hivemind.util.ToStringBuilder;
 
 public class PropertyChangeImpl implements PropertyChange
 {
+
     private String _componentPath;
 
     private String _propertyName;
 
     private Object _newValue;
 
-    public PropertyChangeImpl(String componentPath, String propertyName, Object newValue)
+    public PropertyChangeImpl(String componentPath, String propertyName,
+            Object newValue)
     {
         Defense.notNull(propertyName, "propertyName");
 
@@ -44,7 +46,8 @@ public class PropertyChangeImpl implements PropertyChange
     }
 
     /**
-     * The path to the component on the page, or null if the property is a property of the page.
+     * The path to the component on the page, or null if the property is a
+     * property of the page.
      */
 
     public String getComponentPath()
@@ -83,8 +86,7 @@ public class PropertyChangeImpl implements PropertyChange
 
     public boolean equals(Object object)
     {
-        if (this == object)
-            return true;
+        if (this == object) return true;
 
         if (object == null || object.getClass() != this.getClass())
             return false;
@@ -92,7 +94,8 @@ public class PropertyChangeImpl implements PropertyChange
         PropertyChangeImpl other = (PropertyChangeImpl) object;
 
         return same(_componentPath, other._componentPath)
-                && same(_propertyName, other._propertyName) && same(_newValue, other._newValue);
+                && same(_propertyName, other._propertyName)
+                && same(_newValue, other._newValue);
     }
 
     private boolean same(Object o1, Object o2)

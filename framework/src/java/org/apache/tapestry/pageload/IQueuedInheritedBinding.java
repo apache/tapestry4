@@ -15,14 +15,15 @@
 package org.apache.tapestry.pageload;
 
 /**
- * Part of the scheme to defer connection of bindings until after all components (including
- * implicit components loaded from templates, and component contained within those, etc.)
- * are loaded.
- *
+ * Part of the scheme to defer connection of bindings until after all components
+ * (including implicit components loaded from templates, and component contained
+ * within those, etc.) are loaded.
+ * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 interface IQueuedInheritedBinding
 {
+
     void connect();
 }

@@ -25,20 +25,23 @@ import org.apache.tapestry.web.WebContext;
 import org.apache.tapestry.web.WebContextResource;
 
 /**
- * Locates and reads the application specification for the portlet and stores it into
- * {@link org.apache.tapestry.services.ApplicationGlobals}.
+ * Locates and reads the application specification for the portlet and stores it
+ * into {@link org.apache.tapestry.services.ApplicationGlobals}.
  * <p>
  * TODO: Merge this code with
- * {@link org.apache.tapestry.services.impl.ApplicationSpecificationInitializer}, they're very
- * similar. This would probably be an additional service that would do the lookup based on the
- * {@link org.apache.tapestry.web.WebActivator}&nbsp;and the {@link org.apache.tapestry.web.WebContext}.
+ * {@link org.apache.tapestry.services.impl.ApplicationSpecificationInitializer},
+ * they're very similar. This would probably be an additional service that would
+ * do the lookup based on the {@link org.apache.tapestry.web.WebActivator}&nbsp;and
+ * the {@link org.apache.tapestry.web.WebContext}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  * @see org.apache.tapestry.services.impl.ApplicationSpecificationInitializer
  */
-public class PortletApplicationSpecificationInitializer implements PortletApplicationInitializer
+public class PortletApplicationSpecificationInitializer implements
+        PortletApplicationInitializer
 {
+
     private WebContext _context;
 
     private ApplicationGlobals _globals;
@@ -62,11 +65,11 @@ public class PortletApplicationSpecificationInitializer implements PortletApplic
         String expectedName = name + ".application";
 
         Resource webInfLocation = new WebContextResource(_context, "/WEB-INF/");
-        Resource webInfAppLocation = webInfLocation.getRelativeResource(name + "/");
+        Resource webInfAppLocation = webInfLocation.getRelativeResource(name
+                + "/");
 
         Resource result = check(webInfAppLocation, expectedName);
-        if (result != null)
-            return result;
+        if (result != null) return result;
 
         return check(webInfLocation, expectedName);
     }
@@ -75,8 +78,7 @@ public class PortletApplicationSpecificationInitializer implements PortletApplic
     {
         Resource result = resource.getRelativeResource(name);
 
-        if (result.getResourceURL() != null)
-            return result;
+        if (result.getResourceURL() != null) return result;
 
         return null;
     }
@@ -87,8 +89,8 @@ public class PortletApplicationSpecificationInitializer implements PortletApplic
 
         // Pretend the file exists in the most common expected location.
 
-        Resource virtualLocation = new WebContextResource(_context, "/WEB-INF/" + name
-                + ".application");
+        Resource virtualLocation = new WebContextResource(_context, "/WEB-INF/"
+                + name + ".application");
 
         result.setSpecificationLocation(virtualLocation);
 

@@ -15,35 +15,33 @@
 package org.apache.tapestry.util;
 
 /**
- *  Used to split a string into substrings based on a single character
- *  delimiter.  A fast, simple version of
- *  {@link java.util.StringTokenizer}.
- *
- *  @author Howard Lewis Ship
+ * Used to split a string into substrings based on a single character delimiter.
+ * A fast, simple version of {@link java.util.StringTokenizer}.
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public class StringSplitter
 {
-    private char delimiter;
+
+    private char _delimiter;
 
     public StringSplitter(char delimiter)
     {
-        this.delimiter = delimiter;
+        this._delimiter = delimiter;
     }
 
     public char getDelimiter()
     {
-        return delimiter;
+        return _delimiter;
     }
 
     /**
-     *  Splits a string on the delimter into an array of String
-     *  tokens.  The delimiters are not included in the tokens.  Null
-     *  tokens (caused by two consecutive delimiter) are reduced to an
-     *  empty string. Leading delimiters are ignored.
-     *
-     **/
+     * Splits a string on the delimter into an array of String tokens. The
+     * delimiters are not included in the tokens. Null tokens (caused by two
+     * consecutive delimiter) are reduced to an empty string. Leading delimiters
+     * are ignored.
+     */
 
     public String[] splitToArray(String value)
     {
@@ -64,9 +62,9 @@ public class StringSplitter
         start = 0;
         length = 0;
 
-        for (i = 0; i < buffer.length; i++)
+        for(i = 0; i < buffer.length; i++)
         {
-            if (buffer[i] != delimiter)
+            if (buffer[i] != _delimiter)
             {
                 length++;
                 continue;
@@ -96,9 +94,9 @@ public class StringSplitter
             length = 0;
         }
 
-        // Special case:  if the string contains no delimiters
-        // then it isn't really split.  Wrap the input string
-        // in an array and return.  This is a little optimization
+        // Special case: if the string contains no delimiters
+        // then it isn't really split. Wrap the input string
+        // in an array and return. This is a little optimization
         // to prevent a new String instance from being
         // created unnecessarily.
 

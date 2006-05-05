@@ -29,20 +29,20 @@
 	<property name="module.javac.target" value="1.5" />
 	<property name="module.javac.source" value="1.5" />
 	<property name="module.install.dir" value="${root.dir}/target/js" />
-
+	
 	<property name="root.dir" value="../../.." />
 	<property file="${root.dir}/config/build.properties" />
 	<property name="profile.file" value="tapestry.profile.js" />
-
+	
 	<property name="release.dir" value="${dojo.dir}/../release/" />
-
+	
 	<import file="${hivebuild.dir}/jar-module.xml" />
-
+	
 	<target name="check-dependencies" description="Ensures that dojo.dir is set.">
 
 		<fail message="dojo.dir not set" unless="dojo.dir" />
 	</target>
-
+	
 	<!-- ====================================================== -->
 	<!-- Building												-->
 	<!-- ====================================================== -->

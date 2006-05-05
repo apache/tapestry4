@@ -47,8 +47,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * many bells and whistles but has some key features needed when parsing a document (rather than a
  * configuration file): <br>
  * <ul>
- * <li>Notifications for each bit of text
- * </ul>
+ * <li>Notifications for each bit of text</li>
  * <li>Tracking of exact location within the document.</li>
  * </ul>
  * <p>
@@ -65,6 +64,8 @@ public class RuleDirectedParser extends DefaultHandler
 {
     private static final Log LOG = LogFactory.getLog(RuleDirectedParser.class);
 
+    private static SAXParserFactory _parserFactory;
+    
     private Resource _documentLocation;
 
     private List _ruleStack = new ArrayList();
@@ -80,8 +81,6 @@ public class RuleDirectedParser extends DefaultHandler
     private int _column = -1;
 
     private Location _location;
-
-    private static SAXParserFactory _parserFactory;
 
     private SAXParser _parser;
 
@@ -513,7 +512,6 @@ public class RuleDirectedParser extends DefaultHandler
      */
 
     public void validate(String value, String pattern, String errorKey)
-            throws DocumentParseException
     {
         if (_matcher == null)
             _matcher = new RegexpMatcher();

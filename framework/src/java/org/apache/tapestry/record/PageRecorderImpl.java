@@ -34,6 +34,7 @@ import org.apache.tapestry.spec.IPropertySpecification;
  */
 public class PageRecorderImpl implements IPageRecorder
 {
+
     private String _pageName;
 
     private IRequestCycle _requestCycle;
@@ -74,7 +75,7 @@ public class PageRecorderImpl implements IPageRecorder
 
         Iterator i = changes.iterator();
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
             PropertyChange change = (PropertyChange) i.next();
 
@@ -86,9 +87,11 @@ public class PageRecorderImpl implements IPageRecorder
     {
         String idPath = change.getComponentPath();
 
-        IComponent component = (idPath == null) ? page : page.getNestedComponent(idPath);
+        IComponent component = (idPath == null) ? page : page
+                .getNestedComponent(idPath);
 
-        PropertyUtils.write(component, change.getPropertyName(), change.getNewValue());
+        PropertyUtils.write(component, change.getPropertyName(), change
+                .getNewValue());
     }
 
     public void observeChange(ObservedChangeEvent event)
@@ -98,37 +101,40 @@ public class PageRecorderImpl implements IPageRecorder
 
         if (_locked)
         {
-            _log.error(RecordMessages.recorderLocked(propertyName, component), null, null);
+            _log.error(RecordMessages.recorderLocked(propertyName, component),
+                    null, null);
             return;
         }
 
-        PropertyPersistenceStrategy strategy = findStrategy(component, propertyName);
+        PropertyPersistenceStrategy strategy = findStrategy(component,
+                propertyName);
 
         if (strategy != null)
-            strategy.store(_pageName, component.getIdPath(), propertyName, event.getNewValue());
+            strategy.store(_pageName, component.getIdPath(), propertyName,
+                    event.getNewValue());
     }
 
     // package private for testing
 
-    PropertyPersistenceStrategy findStrategy(IComponent component, String propertyName)
+    PropertyPersistenceStrategy findStrategy(IComponent component,
+            String propertyName)
     {
         // So much for Law of Demeter!
 
-        IPropertySpecification propertySpecification = component.getSpecification()
-                .getPropertySpecification(propertyName);
+        IPropertySpecification propertySpecification = component
+                .getSpecification().getPropertySpecification(propertyName);
 
         if (propertySpecification == null)
         {
-            _log.error(
-                    RecordMessages.missingPropertySpecification(propertyName, component),
-                    null,
-                    null);
+            _log.error(RecordMessages.missingPropertySpecification(
+                    propertyName, component), null, null);
             return null;
         }
 
         String name = propertySpecification.getPersistence();
 
-        // Should check for nulls, but the architecture of the framework pretty much
+        // Should check for nulls, but the architecture of the framework pretty
+        // much
         // ensures that we won't get here unless there is a property
         // and a persistence value for the property.
 
@@ -138,7 +144,9 @@ public class PageRecorderImpl implements IPageRecorder
         }
         catch (ApplicationRuntimeException ex)
         {
-            _log.error(ex.getMessage(), propertySpecification.getLocation(), ex);
+            _log
+                    .error(ex.getMessage(),
+                            propertySpecification.getLocation(), ex);
 
             return null;
         }

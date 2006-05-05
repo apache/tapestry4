@@ -20,12 +20,14 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * This component serves as a container for one item that is listed as a choice in a {@link Select}.
- * A {@link Select}offers a selection of choices from which usersu may choose one or more items.
- * The select list is created using a select element which contains a collection of option elements.
- * A string or text describing the item appears between the opening and closing option tags. In
- * order to have a dynamic onpick attribute it is better to use a concrete class of
- * {@link org.apache.tapestry.link.ILinkRenderer}with the {@link OptionRenderer}.
+ * This component serves as a container for one item that is listed as a choice
+ * in a {@link Select}. A {@link Select}offers a selection of choices from
+ * which usersu may choose one or more items. The select list is created using a
+ * select element which contains a collection of option elements. A string or
+ * text describing the item appears between the opening and closing option tags.
+ * In order to have a dynamic onpick attribute it is better to use a concrete
+ * class of {@link org.apache.tapestry.link.ILinkRenderer}with the
+ * {@link OptionRenderer}.
  * 
  * @author David Solis
  * @since 3.0
@@ -35,7 +37,8 @@ public abstract class Option extends AbstractComponent
 {
 
     /**
-     * @see org.apache.tapestry.AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
+     * @see org.apache.tapestry.AbstractComponent#renderComponent(IMarkupWriter,
+     *      IRequestCycle)
      */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -47,8 +50,7 @@ public abstract class Option extends AbstractComponent
             writer.begin("option");
 
             String value = getValue();
-            if (HiveMind.isNonBlank(value))
-                writer.attribute("value", value);
+            if (HiveMind.isNonBlank(value)) writer.attribute("value", value);
 
             renderInformalParameters(writer, cycle);
 

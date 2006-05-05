@@ -18,30 +18,39 @@ import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.hivemind.service.ClassFabUtils;
 
 /**
- * Container of static methods to format logging and exception messages, used within the
- * org.apache.tapesty.test package (and a few sub-packages).
+ * Container of static methods to format logging and exception messages, used
+ * within the org.apache.tapesty.test package (and a few sub-packages).
  * <p>
- * Technically, these are messages for the test package, and this class should be called
- * TestMessages ... but that's always a bad idea (it makes the class look like a JUnit test suite).
+ * Technically, these are messages for the test package, and this class should
+ * be called TestMessages ... but that's always a bad idea (it makes the class
+ * look like a JUnit test suite).
  * <p>
- * This class is public, not package private, because some related sub-packages make use of it as
- * well.
+ * This class is public, not package private, because some related sub-packages
+ * make use of it as well.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class ScriptMessages
+public final class ScriptMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(ScriptMessages.class);
+
+    private static final MessageFormatter _formatter = new MessageFormatter(
+            ScriptMessages.class);
+
+    /* defeat instantiation */
+    private ScriptMessages()
+    {
+    }
 
     static String wrongTypeForEnhancement(Class type)
     {
-        return _formatter
-                .format("wrong-type-for-enhancement", ClassFabUtils.getJavaClassName(type));
+        return _formatter.format("wrong-type-for-enhancement", ClassFabUtils
+                .getJavaClassName(type));
     }
 
     static String unableToInstantiate(Class abstractClass, Throwable cause)
     {
-        return _formatter.format("unable-to-instantiate", abstractClass.getName(), cause);
+        return _formatter.format("unable-to-instantiate", abstractClass
+                .getName(), cause);
     }
 }

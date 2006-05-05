@@ -22,10 +22,11 @@ import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
 
 /**
- * Sets render parameters on the current {@link javax.portlet.ActionResponse} that will invoke the
- * {@link org.apache.tapestry.portlet.RenderService} to render the (currently) active page. This
- * reflects the Portlet API's very clear division between processing an action and rendering a
- * response; we need to record into the implicit render URL the render service and the name of the
+ * Sets render parameters on the current {@link javax.portlet.ActionResponse}
+ * that will invoke the {@link org.apache.tapestry.portlet.RenderService} to
+ * render the (currently) active page. This reflects the Portlet API's very
+ * clear division between processing an action and rendering a response; we need
+ * to record into the implicit render URL the render service and the name of the
  * active page.
  * 
  * @author Howard M. Lewis Ship
@@ -33,6 +34,7 @@ import org.apache.tapestry.services.ServiceConstants;
  */
 public class PortletResponseRenderer implements ResponseRenderer
 {
+
     private PortletRequest _request;
 
     private ActionResponse _response;
@@ -41,12 +43,13 @@ public class PortletResponseRenderer implements ResponseRenderer
     {
         String pageName = cycle.getPage().getPageName();
 
-        _response.setRenderParameter(ServiceConstants.SERVICE, PortletConstants.RENDER_SERVICE);
+        _response.setRenderParameter(ServiceConstants.SERVICE,
+                PortletConstants.RENDER_SERVICE);
         _response.setRenderParameter(ServiceConstants.PAGE, pageName);
-        _response.setRenderParameter(PortletConstants.PORTLET_MODE, _request.getPortletMode()
-                .toString());
-        _response.setRenderParameter(PortletConstants.WINDOW_STATE, _request.getWindowState()
-                .toString());
+        _response.setRenderParameter(PortletConstants.PORTLET_MODE, _request
+                .getPortletMode().toString());
+        _response.setRenderParameter(PortletConstants.WINDOW_STATE, _request
+                .getWindowState().toString());
     }
 
     public void setResponse(ActionResponse response)

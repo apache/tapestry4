@@ -37,18 +37,21 @@ import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
 /**
- * Service used to present a runtime exception to the user. This is very tricky in the Portlet world
- * because of the split between the action and render requests (much more likely to get an error
- * during the action request than during the render request, but both are possible).
+ * Service used to present a runtime exception to the user. This is very tricky
+ * in the Portlet world because of the split between the action and render
+ * requests (much more likely to get an error during the action request than
+ * during the render request, but both are possible).
  * <p>
- * During an action request, this code will render the HTML markup for the exception into a buffer
- * that is stored as persistent attribute in the portal session.
+ * During an action request, this code will render the HTML markup for the
+ * exception into a buffer that is stored as persistent attribute in the portal
+ * session.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class PortletExceptionPresenter implements ExceptionPresenter
 {
+
     private PortletRequestGlobals _globals;
 
     private RenderStrategy _renderStrategy;
@@ -67,8 +70,7 @@ public class PortletExceptionPresenter implements ExceptionPresenter
         {
             if (_globals.isRenderRequest())
                 reportRenderRequestException(cycle, cause);
-            else
-                reportActionRequestException(cycle, cause);
+            else reportActionRequestException(cycle, cause);
         }
         catch (Exception ex)
         {
@@ -90,13 +92,14 @@ public class PortletExceptionPresenter implements ExceptionPresenter
                 .unableToProcessClientRequest(cause), cause);
     }
 
-    private void reportActionRequestException(IRequestCycle cycle, Throwable cause)
+    private void reportActionRequestException(IRequestCycle cycle,
+            Throwable cause)
     {
         CharArrayWriter caw = new CharArrayWriter();
         PrintWriter pw = new PrintWriter(caw);
 
-        IMarkupWriter writer = _markupWriterSource
-                .newMarkupWriter(pw, new ContentType("text/html"));
+        IMarkupWriter writer = _markupWriterSource.newMarkupWriter(pw,
+                new ContentType("text/html"));
 
         writeException(writer, cycle, cause);
 
@@ -105,21 +108,22 @@ public class PortletExceptionPresenter implements ExceptionPresenter
         String markup = caw.toString();
 
         _request.getSession(true).setAttribute(
-                PortletConstants.PORTLET_EXCEPTION_MARKUP_ATTRIBUTE,
-                markup);
+                PortletConstants.PORTLET_EXCEPTION_MARKUP_ATTRIBUTE, markup);
 
         ActionResponse response = _globals.getActionResponse();
 
-        response.setRenderParameter(ServiceConstants.SERVICE, PortletConstants.EXCEPTION_SERVICE);
+        response.setRenderParameter(ServiceConstants.SERVICE,
+                PortletConstants.EXCEPTION_SERVICE);
     }
 
-    private void reportRenderRequestException(IRequestCycle cycle, Throwable cause)
-            throws IOException
+    private void reportRenderRequestException(IRequestCycle cycle,
+            Throwable cause)
+        throws IOException
     {
         PrintWriter pw = _response.getPrintWriter(new ContentType("text/html"));
 
-        IMarkupWriter writer = _markupWriterSource
-                .newMarkupWriter(pw, new ContentType("text/html"));
+        IMarkupWriter writer = _markupWriterSource.newMarkupWriter(pw,
+                new ContentType("text/html"));
 
         writeException(writer, cycle, cause);
     }
@@ -139,7 +143,8 @@ public class PortletExceptionPresenter implements ExceptionPresenter
         _request = request;
     }
 
-    public void setRequestExceptionReporter(RequestExceptionReporter requestExceptionReporter)
+    public void setRequestExceptionReporter(
+            RequestExceptionReporter requestExceptionReporter)
     {
         _requestExceptionReporter = requestExceptionReporter;
     }
@@ -177,7 +182,7 @@ public class PortletExceptionPresenter implements ExceptionPresenter
             writer.begin("table");
             writer.attribute("class", "portlet-section-subheader");
 
-            for (int i = 0; i < properties.length; i++)
+            for(int i = 0; i < properties.length; i++)
             {
                 writer.begin("tr");
 
@@ -191,7 +196,8 @@ public class PortletExceptionPresenter implements ExceptionPresenter
 
                 writer.begin("td");
 
-                _renderStrategy.renderObject(properties[i].getValue(), writer, cycle);
+                _renderStrategy.renderObject(properties[i].getValue(), writer,
+                        cycle);
                 writer.end("tr");
                 writer.println();
             }
@@ -200,14 +206,13 @@ public class PortletExceptionPresenter implements ExceptionPresenter
             writer.println();
         }
 
-        if (!showStackTrace)
-            return;
+        if (!showStackTrace) return;
 
         writer.begin("ul");
 
         String[] trace = exception.getStackTrace();
 
-        for (int i = 0; i < trace.length; i++)
+        for(int i = 0; i < trace.length; i++)
         {
             writer.begin("li");
             writer.print(trace[i]);
@@ -220,12 +225,15 @@ public class PortletExceptionPresenter implements ExceptionPresenter
 
     }
 
-    private void writeException(IMarkupWriter writer, IRequestCycle cycle, Throwable cause)
+    private void writeException(IMarkupWriter writer, IRequestCycle cycle,
+            Throwable cause)
     {
-        ExceptionDescription[] exceptions = new ExceptionAnalyzer().analyze(cause);
+        ExceptionDescription[] exceptions = new ExceptionAnalyzer()
+                .analyze(cause);
 
-        for (int i = 0; i < exceptions.length; i++)
-            writeException(writer, cycle, exceptions[i], i + 1 == exceptions.length);
+        for(int i = 0; i < exceptions.length; i++)
+            writeException(writer, cycle, exceptions[i],
+                    i + 1 == exceptions.length);
     }
 
 }

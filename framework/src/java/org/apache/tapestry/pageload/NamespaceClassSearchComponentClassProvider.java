@@ -18,23 +18,28 @@ import org.apache.tapestry.INamespace;
 import org.apache.tapestry.services.ClassFinder;
 
 /**
- * Searches for a class with a name matching the page name. Searches in the default Java package,
- * and possibly additional packages defined as meta-data within the namespace.
+ * Searches for a class with a name matching the page name. Searches in the
+ * default Java package, and possibly additional packages defined as meta-data
+ * within the namespace.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class NamespaceClassSearchComponentClassProvider implements ComponentClassProvider
+public class NamespaceClassSearchComponentClassProvider implements
+        ComponentClassProvider
 {
+
     /**
-     * Property, defined as meta data of the containing namespace, that defines a comma-seperated
-     * list of packages to search for page or component classes within.
+     * Property, defined as meta data of the containing namespace, that defines
+     * a comma-seperated list of packages to search for page or component
+     * classes within.
      */
     private String _packagesName;
 
     private ClassFinder _classFinder;
 
-    public String provideComponentClassName(ComponentClassProviderContext context)
+    public String provideComponentClassName(
+            ComponentClassProviderContext context)
     {
         INamespace namespace = context.getNamespace();
         String packages = namespace.getPropertyValue(_packagesName);

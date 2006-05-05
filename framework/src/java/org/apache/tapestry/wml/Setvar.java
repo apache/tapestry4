@@ -20,8 +20,8 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * The setvar element specifies the variable to set in the current browser context as a side effect
- * of executing a task.
+ * The setvar element specifies the variable to set in the current browser
+ * context as a side effect of executing a task.
  * 
  * @author David Solis
  * @since 3.0
@@ -29,14 +29,14 @@ import org.apache.tapestry.IRequestCycle;
 
 public abstract class Setvar extends AbstractComponent
 {
+
     /**
      * @see AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
      */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (cycle.isRewinding())
-            return;
+        if (cycle.isRewinding()) return;
 
         writer.beginEmpty("setvar");
 
@@ -48,8 +48,7 @@ public abstract class Setvar extends AbstractComponent
 
         if (HiveMind.isNonBlank(value))
             writer.attribute("value", value);
-        else
-            writer.attribute("value", "");
+        else writer.attribute("value", "");
 
         writer.closeTag();
     }

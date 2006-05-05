@@ -33,6 +33,7 @@ import org.apache.tapestry.util.io.BinaryDumpOutputStream;
 
 public abstract class UploadResults extends BasePage
 {
+
     public abstract void setFile(IUploadFile file);
 
     public abstract void setFileDump(String fileDump);
@@ -57,12 +58,11 @@ public abstract class UploadResults extends BasePage
 
             byte[] buffer = new byte[1000];
 
-            while (true)
+            while(true)
             {
                 int length = in.read(buffer);
 
-                if (length < 0)
-                    break;
+                if (length < 0) break;
 
                 out.write(buffer, 0, length);
             }
@@ -80,7 +80,8 @@ public abstract class UploadResults extends BasePage
         }
         catch (IOException ex)
         {
-            throw new ApplicationRuntimeException("Unable to display file.", this, null, ex);
+            throw new ApplicationRuntimeException("Unable to display file.",
+                    this, null, ex);
         }
         finally
         {

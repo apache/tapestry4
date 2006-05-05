@@ -21,6 +21,10 @@ import java.util.Collection;
 import org.apache.tapestry.contrib.tree.model.ITreeNode;
 import org.apache.tapestry.engine.IEngineService;
 
+/**
+ * 
+ * @author unknown
+ */
 public class FileObject extends SFObject
 {
     private long m_lSize;

@@ -15,13 +15,15 @@
 package org.apache.tapestry.util.text;
 
 /**
- * A factory for creating character translators depending on the encoding
+ * A factory for creating character translators depending on the encoding.
  * 
  * @author mb
  * @since 4.0
  */
-public interface ICharacterTranslatorSource 
+public interface ICharacterTranslatorSource
 {
-	ICharacterTranslator getDefaultTranslator();
-	ICharacterTranslator getTranslator(String encoding);
+
+    ICharacterTranslator getDefaultTranslator();
+
+    ICharacterTranslator getTranslator(String encoding);
 }

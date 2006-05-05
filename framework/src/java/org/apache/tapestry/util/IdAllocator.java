@@ -20,8 +20,9 @@ import java.util.Map;
 import org.apache.hivemind.util.Defense;
 
 /**
- * Used to "uniquify" names within a given context. A base name is passed in, and the return value
- * is the base name, or the base name extended with a suffix to make it unique.
+ * Used to "uniquify" names within a given context. A base name is passed in,
+ * and the return value is the base name, or the base name extended with a
+ * suffix to make it unique.
  * 
  * @author Howard Lewis Ship
  * @since 3.0
@@ -29,14 +30,20 @@ import org.apache.hivemind.util.Defense;
 
 public class IdAllocator
 {
+
     private static final String SEPARATOR = "_";
 
     private final Map _generatorMap = new HashMap();
 
     private final String _namespace;
 
+    /**
+     * 
+     * @author unkonwn
+     */
     private static class NameGenerator
     {
+
         private final String _baseId;
 
         private int _index;
@@ -65,8 +72,8 @@ public class IdAllocator
     }
 
     /**
-     * Allocates the id. Repeated calls for the same name will return "name", "name_0", "name_1",
-     * etc.
+     * Allocates the id. Repeated calls for the same name will return "name",
+     * "name_0", "name_1", etc.
      */
 
     public String allocateId(String name)
@@ -81,13 +88,13 @@ public class IdAllocator
             g = new NameGenerator(key);
             result = key;
         }
-        else
-            result = g.nextId();
+        else result = g.nextId();
 
-        // Handle the degenerate case, where a base name of the form "foo$0" has been
+        // Handle the degenerate case, where a base name of the form "foo$0" has
+        // been
         // requested. Skip over any duplicates thus formed.
 
-        while (_generatorMap.containsKey(result))
+        while(_generatorMap.containsKey(result))
             result = g.nextId();
 
         _generatorMap.put(result, g);

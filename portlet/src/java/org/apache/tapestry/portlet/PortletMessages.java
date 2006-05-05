@@ -20,9 +20,16 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class PortletMessages
+final class PortletMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(PortletMessages.class);
+
+    private static final MessageFormatter _formatter = new MessageFormatter(
+            PortletMessages.class);
+
+    /* defeat instantiation */
+    private PortletMessages()
+    {
+    }
 
     static String unsupportedMethod(String methodName)
     {

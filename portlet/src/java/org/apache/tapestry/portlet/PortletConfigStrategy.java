@@ -41,9 +41,10 @@ public class PortletConfigStrategy implements DescribableStrategy
 
         receiver.section("Init Parameters");
 
-        Iterator i = WebUtils.toSortedList(pc.getInitParameterNames()).iterator();
+        Iterator i = WebUtils.toSortedList(pc.getInitParameterNames())
+                .iterator();
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
             String name = (String) i.next();
             receiver.property(name, pc.getInitParameter(name));

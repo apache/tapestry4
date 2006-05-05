@@ -21,14 +21,15 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 /**
- * Used to define the commands in the <code>tapestry.portlet.RenderRequestServicerPipeline</code>
- * configuration.
+ * Used to define the commands in the
+ * <code>tapestry.portlet.RenderRequestServicerPipeline</code> configuration.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface RenderRequestServicer
 {
-    public void service(RenderRequest request, RenderResponse response) throws IOException,
-            PortletException;
+
+    void service(RenderRequest request, RenderResponse response)
+        throws IOException, PortletException;
 }

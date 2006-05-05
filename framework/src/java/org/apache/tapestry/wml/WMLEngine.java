@@ -17,13 +17,14 @@ package org.apache.tapestry.wml;
 import org.apache.tapestry.engine.BaseEngine;
 
 /**
- * Subclass of {@link BaseEngine} used for WML applications to change the Exception, StaleLink and
- * StaleSession pages.
+ * Subclass of {@link BaseEngine} used for WML applications to change the
+ * Exception, StaleLink and StaleSession pages.
  * 
  * @author David Solis
  * @since 3.0
- * @deprecated To be removed in 4.1. No longer necessary; the differences between WML applications
- *             and HTML applications are now handled via a startup mode. See
+ * @deprecated To be removed in 4.1. No longer necessary; the differences
+ *             between WML applications and HTML applications are now handled
+ *             via a startup mode. See
  *             {@link org.apache.tapestry.services.impl.SetupServletApplicationGlobals}.
  */
 

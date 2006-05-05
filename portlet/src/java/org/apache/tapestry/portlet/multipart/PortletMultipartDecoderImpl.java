@@ -29,11 +29,13 @@ import org.apache.tapestry.multipart.MultipartMessages;
 
 /**
  * @author Raphael Jean
- *
  */
-public class PortletMultipartDecoderImpl extends AbstractMultipartDecoder implements PortletMultipartDecoder {
+public class PortletMultipartDecoderImpl extends AbstractMultipartDecoder
+        implements PortletMultipartDecoder
+{
 
-	public ActionRequest decode(ActionRequest request) {
+    public ActionRequest decode(ActionRequest request)
+    {
         _encoding = request.getCharacterEncoding();
 
         PortletFileUpload upload = createFileUpload();
@@ -46,22 +48,24 @@ public class PortletMultipartDecoderImpl extends AbstractMultipartDecoder implem
         }
         catch (FileUploadException ex)
         {
-            throw new ApplicationRuntimeException(MultipartMessages.unableToDecode(ex), ex);
+            throw new ApplicationRuntimeException(MultipartMessages
+                    .unableToDecode(ex), ex);
         }
 
         Map parameterMap = buildParameterMap();
 
         return new UploadFormPortletParametersWrapper(request, parameterMap);
-	}
+    }
 
-	private PortletFileUpload createFileUpload() {
-    	FileItemFactory factory = new DiskFileItemFactory(_thresholdSize, new File(_repositoryPath));
-    	PortletFileUpload upload = new PortletFileUpload(factory);
+    private PortletFileUpload createFileUpload()
+    {
+        FileItemFactory factory = new DiskFileItemFactory(_thresholdSize,
+                new File(_repositoryPath));
+        PortletFileUpload upload = new PortletFileUpload(factory);
 
-        if (_encoding != null)
-            upload.setHeaderEncoding(_encoding);
+        if (_encoding != null) upload.setHeaderEncoding(_encoding);
 
         return upload;
-	}
+    }
 
 }

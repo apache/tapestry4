@@ -18,20 +18,20 @@ import org.apache.tapestry.link.DefaultLinkRenderer;
 import org.apache.tapestry.link.ILinkRenderer;
 
 /**
- *  A subclass of {@link org.apache.tapestry.link.DefaultLinkRenderer} for
- *  the WML Go element.
- *
- *  @author David Solis
- *  @since 3.0
- **/
+ * A subclass of {@link org.apache.tapestry.link.DefaultLinkRenderer} for the
+ * WML Go element.
+ * 
+ * @author David Solis
+ * @since 3.0
+ */
 public class GoLinkRenderer extends DefaultLinkRenderer
 {
 
-	/**
-	 *  A singleton for the go link. 
-	 **/
+    /**
+     * A singleton for the go link.
+     */
 
-	 public static final ILinkRenderer SHARED_INSTANCE = new GoLinkRenderer();
+    public static final ILinkRenderer SHARED_INSTANCE = new GoLinkRenderer();
 
     public String getElement()
     {

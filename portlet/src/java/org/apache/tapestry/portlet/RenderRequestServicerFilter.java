@@ -30,6 +30,8 @@ import javax.portlet.RenderResponse;
  */
 public interface RenderRequestServicerFilter
 {
-    public void service(RenderRequest request, RenderResponse response,
-            RenderRequestServicer servicer) throws IOException, PortletException;
+
+    void service(RenderRequest request, RenderResponse response,
+            RenderRequestServicer servicer)
+        throws IOException, PortletException;
 }

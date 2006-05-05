@@ -23,21 +23,22 @@ import javax.portlet.RenderResponse;
 import org.apache.tapestry.services.WebRequestServicer;
 
 /**
- * Bridges from the <code>tapestry.portlet.RenderRequestServicerPipeline</code> to the standard
- * <code>tapestry.request.WebRequestServicerPipeline</code>.
+ * Bridges from the <code>tapestry.portlet.RenderRequestServicerPipeline</code>
+ * to the standard <code>tapestry.request.WebRequestServicerPipeline</code>.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class RenderRequestServicerToWebRequestServicerBridge implements RenderRequestServicer
+public class RenderRequestServicerToWebRequestServicerBridge implements
+        RenderRequestServicer
 {
 
     private PortletRequestGlobals _portletRequestGlobals;
 
     private WebRequestServicer _webRequestServicer;
 
-    public void service(RenderRequest request, RenderResponse response) throws IOException,
-            PortletException
+    public void service(RenderRequest request, RenderResponse response)
+        throws IOException, PortletException
     {
         _portletRequestGlobals.store(request, response);
 
@@ -54,7 +55,8 @@ public class RenderRequestServicerToWebRequestServicerBridge implements RenderRe
         }
     }
 
-    public void setPortletRequestGlobals(PortletRequestGlobals portletRequestGlobals)
+    public void setPortletRequestGlobals(
+            PortletRequestGlobals portletRequestGlobals)
     {
         _portletRequestGlobals = portletRequestGlobals;
     }

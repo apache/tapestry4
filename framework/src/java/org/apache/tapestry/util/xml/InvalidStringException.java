@@ -18,7 +18,7 @@ import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
 
 /**
- * Exception thrown if there is any kind of error validating a string during document parsing
+ * Exception thrown if there is any kind of error validating a string during document parsing.
  * 
  * @author Geoffrey Longman
  * @since 2.2
@@ -28,7 +28,7 @@ public class InvalidStringException extends DocumentParseException implements Lo
 {
     private static final long serialVersionUID = 8199998733585358584L;
     
-	private String _invalidString;
+    private final String _invalidString;
 
     public InvalidStringException(String message, String invalidString, Location location)
     {

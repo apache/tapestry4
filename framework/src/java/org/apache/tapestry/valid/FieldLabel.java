@@ -24,35 +24,37 @@ import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
- * Used to label an {@link IFormComponent}. Because such fields know their displayName
- * (user-presentable name), there's no reason to hard code the label in a page's HTML template (this
- * also helps with localization). [ <a
- * href="../../../../../ComponentReference/FieldLabel.html">Component Reference </a>]
+ * Used to label an {@link IFormComponent}. Because such fields know their
+ * displayName (user-presentable name), there's no reason to hard code the label
+ * in a page's HTML template (this also helps with localization). [ <a
+ * href="../../../../../ComponentReference/FieldLabel.html">Component Reference
+ * </a>]
  * 
  * @author Howard Lewis Lewis Ship
  */
 
 public abstract class FieldLabel extends AbstractComponent
 {
+
     // Parameter
     public abstract boolean isPrerender();
 
     /**
-     * Gets the {@link IForm}&nbsp;and {@link IValidationDelegate delegate}, then renders the
-     * label obtained from the field. Does nothing when rewinding.
+     * Gets the {@link IForm}&nbsp;and {@link IValidationDelegate delegate},
+     * then renders the label obtained from the field. Does nothing when
+     * rewinding.
      */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = TapestryUtils.getForm(cycle, this);
-        
+
         IFormComponent field = getField();
-        
+
         if (field != null && isPrerender())
             form.prerenderField(writer, field, getLocation());
 
-        if (cycle.isRewinding())
-            return;
+        if (cycle.isRewinding()) return;
 
         String displayName = getDisplayName();
 
@@ -64,8 +66,8 @@ public abstract class FieldLabel extends AbstractComponent
             displayName = field.getDisplayName();
 
             if (displayName == null)
-                throw new BindingException(ValidMessages.noDisplayName(this, field), this, null,
-                        getBinding("field"), null);
+                throw new BindingException(ValidMessages.noDisplayName(this,
+                        field), this, null, getBinding("field"), null);
         }
 
         IValidationDelegate delegate = form.getDelegate();
@@ -76,9 +78,8 @@ public abstract class FieldLabel extends AbstractComponent
 
         writer.begin("label");
 
-        if (id != null)
-            writer.attribute("for", id);
-        
+        if (id != null) writer.attribute("for", id);
+
         delegate.writeLabelAttributes(writer, cycle, field);
         renderInformalParameters(writer, cycle);
 

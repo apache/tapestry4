@@ -19,21 +19,21 @@ import java.util.Map;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderResponse;
 
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.services.impl.LinkFactoryImpl;
 import org.apache.tapestry.util.QueryParameterMap;
 
 /**
- * Extended version of {@link org.apache.tapestry.services.impl.LinkFactoryImpl}&nbsp;that can
- * create generate Portlet URLs.
+ * Extended version of {@link org.apache.tapestry.services.impl.LinkFactoryImpl}&nbsp;that
+ * can create generate Portlet URLs.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class PortletLinkFactoryImpl extends LinkFactoryImpl
 {
+
     private RenderResponse _renderResponse;
 
     public void setRenderResponse(RenderResponse renderResponse)
@@ -41,8 +41,8 @@ public class PortletLinkFactoryImpl extends LinkFactoryImpl
         _renderResponse = renderResponse;
     }
 
-    public ILink constructLink(IEngineService service, boolean post, Map parameters,
-            boolean stateful)
+    public ILink constructLink(IEngineService service, boolean post,
+            Map parameters, boolean stateful)
     {
         finalizeParameters(service, parameters);
 

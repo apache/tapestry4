@@ -58,28 +58,28 @@ public interface IOperations extends EJBObject
      * Returns the primary key of the newly created book.
      */
 
-    public Integer addBook(Map attributes, String publisherName)
+    Integer addBook(Map attributes, String publisherName)
         throws CreateException, RemoteException;
 
     /**
      * Updates a book to an existing publisher.
      */
 
-    public void updateBook(Integer bookId, Map attributes)
+    void updateBook(Integer bookId, Map attributes)
         throws FinderException, RemoteException;
 
     /**
      * Updates a book for a unknown publisher.
      */
 
-    public void updateBook(Integer bookId, Map attributes, String publisherName)
+    void updateBook(Integer bookId, Map attributes, String publisherName)
         throws CreateException, FinderException, RemoteException;
 
     /**
      * Updates a Person. Returns the attributes of the update person.
      */
 
-    public void updatePerson(Integer personId, Map attributes)
+    void updatePerson(Integer personId, Map attributes)
         throws FinderException, RemoteException;
 
     /**
@@ -87,7 +87,7 @@ public interface IOperations extends EJBObject
      * sorted by name.
      */
 
-    public Publisher[] getPublishers()
+    Publisher[] getPublishers()
         throws RemoteException;
 
     /**
@@ -95,7 +95,7 @@ public interface IOperations extends EJBObject
      * sorted by last name, then by first name.
      */
 
-    public Person[] getPersons()
+    Person[] getPersons()
         throws RemoteException;
 
     /**
@@ -105,7 +105,7 @@ public interface IOperations extends EJBObject
      *             if the Person does not exist.
      */
 
-    public Person getPerson(Integer personId)
+    Person getPerson(Integer personId)
         throws FinderException, RemoteException;
 
     /**
@@ -117,14 +117,14 @@ public interface IOperations extends EJBObject
      *             the user may not log in for other reasons.
      */
 
-    public Person login(String email, String password)
+    Person login(String email, String password)
         throws LoginException, RemoteException;
 
     /**
      * Retrieves the attributes of a {@link IPerson} as a {@link Map}.
      */
 
-    public Map getPersonAttributes(Integer personId)
+    Map getPersonAttributes(Integer personId)
         throws FinderException, RemoteException;
 
     /**
@@ -135,14 +135,14 @@ public interface IOperations extends EJBObject
      *             if the Book does not exist.
      */
 
-    public Book getBook(Integer bookId)
+    Book getBook(Integer bookId)
         throws FinderException, RemoteException;
 
     /**
      * Retrieves the attributes of a {@link IBook} as a {@link Map}.
      */
 
-    public Map getBookAttributes(Integer bookId)
+    Map getBookAttributes(Integer bookId)
         throws FinderException, RemoteException;
 
     /**
@@ -150,7 +150,7 @@ public interface IOperations extends EJBObject
      * are unique. Returns the primary key of the new {@link IPerson}.
      */
 
-    public Person registerNewUser(String firstName, String lastName,
+    Person registerNewUser(String firstName, String lastName,
             String email, String password)
         throws RegistrationException, CreateException, RemoteException;
 
@@ -161,7 +161,7 @@ public interface IOperations extends EJBObject
      *             if the book is not known.
      */
 
-    public Book returnBook(Integer bookId)
+    Book returnBook(Integer bookId)
         throws RemoteException, FinderException;
 
     /**
@@ -170,14 +170,14 @@ public interface IOperations extends EJBObject
      * @return the Book as it was before being deleted.
      */
 
-    public Book deleteBook(Integer bookId)
+    Book deleteBook(Integer bookId)
         throws RemoveException, RemoteException;
 
     /**
      * Transfers a number of books to a new owner.
      */
 
-    public void transferBooks(Integer newOwnerId, Integer[] bookIds)
+    void transferBooks(Integer newOwnerId, Integer[] bookIds)
         throws FinderException, RemoteException;
 
     /**
@@ -192,7 +192,7 @@ public interface IOperations extends EJBObject
      *            tied to this Publisher. May be null or empty.
      */
 
-    public void updatePublishers(Publisher[] updated, Integer[] deleted)
+    void updatePublishers(Publisher[] updated, Integer[] deleted)
         throws FinderException, RemoveException, RemoteException;
 
     /**
@@ -224,7 +224,7 @@ public interface IOperations extends EJBObject
      *            transferred to this person.
      */
 
-    public void updatePersons(Person[] updated, Integer[] resetPassword,
+    void updatePersons(Person[] updated, Integer[] resetPassword,
             String newPassword, Integer[] deleted, Integer adminId)
         throws FinderException, RemoveException, RemoteException;
 

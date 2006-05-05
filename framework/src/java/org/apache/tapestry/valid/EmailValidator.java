@@ -23,8 +23,9 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
- * Simple validation of email strings, to enforce required, and minimum length (maximum length is
- * enforced in the client browser, by setting a maximum input length on the text field).
+ * Simple validation of email strings, to enforce required, and minimum length
+ * (maximum length is enforced in the client browser, by setting a maximum input
+ * length on the text field).
  * 
  * @author Malcolm Edgar
  * @since 2.3
@@ -32,6 +33,7 @@ import org.apache.tapestry.form.IFormComponent;
 
 public class EmailValidator extends BaseValidator
 {
+
     private int _minimumLength;
 
     private String _minimumLengthMessage;
@@ -45,7 +47,8 @@ public class EmailValidator extends BaseValidator
     }
 
     /**
-     * Initializes the EmailValidator with properties defined by the initializer.
+     * Initializes the EmailValidator with properties defined by the
+     * initializer.
      * 
      * @since 4.0
      */
@@ -57,16 +60,15 @@ public class EmailValidator extends BaseValidator
 
     public String toString(IFormComponent field, Object value)
     {
-        if (value == null)
-            return null;
+        if (value == null) return null;
 
         return value.toString();
     }
 
-    public Object toObject(IFormComponent field, String input) throws ValidatorException
+    public Object toObject(IFormComponent field, String input)
+        throws ValidatorException
     {
-        if (checkRequired(field, input))
-            return null;
+        if (checkRequired(field, input)) return null;
 
         if (_minimumLength > 0 && input.length() < _minimumLength)
             throw new ValidatorException(buildMinimumLengthMessage(field),
@@ -89,11 +91,10 @@ public class EmailValidator extends BaseValidator
         _minimumLength = minimumLength;
     }
 
-    public void renderValidatorContribution(IFormComponent field, IMarkupWriter writer,
-            IRequestCycle cycle)
+    public void renderValidatorContribution(IFormComponent field,
+            IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (!isClientScriptingEnabled())
-            return;
+        if (!isClientScriptingEnabled()) return;
 
         Map symbols = new HashMap();
 
@@ -104,9 +105,11 @@ public class EmailValidator extends BaseValidator
             symbols.put("requiredMessage", buildRequiredMessage(field));
 
         if (_minimumLength > 0)
-            symbols.put("minimumLengthMessage", buildMinimumLengthMessage(field));
+            symbols.put("minimumLengthMessage",
+                    buildMinimumLengthMessage(field));
 
-        String pattern = getPattern(getInvalidEmailFormatMessage(), "invalid-email-format", locale);
+        String pattern = getPattern(getInvalidEmailFormatMessage(),
+                "invalid-email-format", locale);
 
         symbols.put("emailFormatMessage", formatString(pattern, displayName));
 
@@ -119,9 +122,10 @@ public class EmailValidator extends BaseValidator
     }
 
     /**
-     * Allows a developer to use the existing validation logic with a different client-side script.
-     * This is often sufficient to allow application-specific error presentation (perhaps by using
-     * DHTML to update the content of a &lt;span&gt; tag, or to use a more sophisticated pop-up
+     * Allows a developer to use the existing validation logic with a different
+     * client-side script. This is often sufficient to allow
+     * application-specific error presentation (perhaps by using DHTML to update
+     * the content of a &lt;span&gt; tag, or to use a more sophisticated pop-up
      * window than <code>window.alert()</code>).
      */
 
@@ -160,8 +164,8 @@ public class EmailValidator extends BaseValidator
     }
 
     /**
-     * Overrides the <code>invalid-email-format</code> bundle key. Parameter {0} is the display
-     * name of the field.
+     * Overrides the <code>invalid-email-format</code> bundle key. Parameter
+     * {0} is the display name of the field.
      * 
      * @since 3.0
      */
@@ -172,8 +176,8 @@ public class EmailValidator extends BaseValidator
     }
 
     /**
-     * Overrides the <code>field-too-short</code> bundle key. Parameter {0} is the minimum length.
-     * Parameter {1} is the display name of the field.
+     * Overrides the <code>field-too-short</code> bundle key. Parameter {0} is
+     * the minimum length. Parameter {1} is the display name of the field.
      * 
      * @since 3.0
      */
@@ -186,18 +190,19 @@ public class EmailValidator extends BaseValidator
 
     protected String buildMinimumLengthMessage(IFormComponent field)
     {
-        String pattern = getPattern(_minimumLengthMessage, "field-too-short", field.getPage()
-                .getLocale());
+        String pattern = getPattern(_minimumLengthMessage, "field-too-short",
+                field.getPage().getLocale());
 
-        return formatString(pattern, Integer.toString(_minimumLength), field.getDisplayName());
+        return formatString(pattern, Integer.toString(_minimumLength), field
+                .getDisplayName());
     }
 
     /** @since 3.0 */
 
     protected String buildInvalidEmailFormatMessage(IFormComponent field)
     {
-        String pattern = getPattern(_invalidEmailFormatMessage, "invalid-email-format", field
-                .getPage().getLocale());
+        String pattern = getPattern(_invalidEmailFormatMessage,
+                "invalid-email-format", field.getPage().getLocale());
 
         return formatString(pattern, field.getDisplayName());
     }

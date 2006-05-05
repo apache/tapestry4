@@ -25,14 +25,16 @@ import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 
 /**
- * For all parameters in the examined component that have default values, but are not bound,
- * automatically add an ExpressionBinding with the default value.
+ * For all parameters in the examined component that have default values, but
+ * are not bound, automatically add an ExpressionBinding with the default value.
  * 
  * @author mindbridge
  * @since 3.0
  */
-public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
+public class EstablishDefaultParameterValuesVisitor implements
+        IComponentVisitor
 {
+
     /** @since 4.0 */
     private BindingSource _bindingSource;
 
@@ -45,39 +47,38 @@ public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
 
         Iterator i = spec.getParameterNames().iterator();
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
             String name = (String) i.next();
             IParameterSpecification parameterSpec = spec.getParameter(name);
 
             // Skip aliases
 
-            if (!name.equals(parameterSpec.getParameterName()))
-                continue;
+            if (!name.equals(parameterSpec.getParameterName())) continue;
 
             String defaultValue = parameterSpec.getDefaultValue();
-            if (defaultValue == null)
-                continue;
+            if (defaultValue == null) continue;
 
             // the parameter has a default value, so it must not be required
             if (parameterSpec.isRequired())
                 throw new ApplicationRuntimeException(PageloadMessages
-                        .parameterMustHaveNoDefaultValue(component, name), component, parameterSpec
-                        .getLocation(), null);
+                        .parameterMustHaveNoDefaultValue(component, name),
+                        component, parameterSpec.getLocation(), null);
 
-            // if there is no binding for this parameter, bind it to the default value.
-            // In 3.0, default-value was always an OGNL expression, but now its a binding reference.
+            // if there is no binding for this parameter, bind it to the default
+            // value.
+            // In 3.0, default-value was always an OGNL expression, but now its
+            // a binding reference.
 
             if (component.getBinding(name) == null)
             {
-                String description = PageloadMessages.defaultParameterName(name);
+                String description = PageloadMessages
+                        .defaultParameterName(name);
 
-                IBinding binding = _bindingSource.createBinding(
-                        component,
-                        description,
-                        defaultValue,
-                        BindingConstants.OGNL_PREFIX,
-                        parameterSpec.getLocation());
+                IBinding binding = _bindingSource.createBinding(component,
+                        description, defaultValue,
+                        BindingConstants.OGNL_PREFIX, parameterSpec
+                                .getLocation());
 
                 component.setBinding(name, binding);
             }

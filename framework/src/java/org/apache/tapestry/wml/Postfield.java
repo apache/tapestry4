@@ -18,8 +18,8 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * The postfield element specifies a field name and value for transmission to an origin server
- * during a URL request.
+ * The postfield element specifies a field name and value for transmission to an
+ * origin server during a URL request.
  * 
  * @see Go
  * @author David Solis
@@ -28,8 +28,10 @@ import org.apache.tapestry.IRequestCycle;
 
 public abstract class Postfield extends AbstractPostfield
 {
+
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {

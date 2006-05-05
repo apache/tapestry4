@@ -24,14 +24,15 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import org.apache.hivemind.util.Defense;
 
 /**
- * {@link javax.servlet.http.HttpServletRequest}&nbsp; wrapper that provides access to the form
- * field values uploaded in a multipart request.
+ * {@link javax.servlet.http.HttpServletRequest}&nbsp; wrapper that provides
+ * access to the form field values uploaded in a multipart request.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class UploadFormParametersWrapper extends HttpServletRequestWrapper
 {
+
     /**
      * Map of {@link ValuePart}&nbsp;keyed on parameter name.
      */
@@ -39,9 +40,11 @@ public class UploadFormParametersWrapper extends HttpServletRequestWrapper
 
     /**
      * @param parameterMap
-     *            a map whose keys are parameter names and whose values are arrays of Strings.
+     *            a map whose keys are parameter names and whose values are
+     *            arrays of Strings.
      */
-    public UploadFormParametersWrapper(HttpServletRequest request, Map parameterMap)
+    public UploadFormParametersWrapper(HttpServletRequest request,
+            Map parameterMap)
     {
         super(request);
 

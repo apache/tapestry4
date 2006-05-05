@@ -23,16 +23,19 @@ import java.util.Map;
 import org.apache.hivemind.util.Defense;
 
 /**
- * Stores persistent property changes concerning a single page. The data may be stored as an encoded
- * string and the PPD can turn between encoded and object form.
+ * Stores persistent property changes concerning a single page. The data may be
+ * stored as an encoded string and the PPD can turn between encoded and object
+ * form.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class PersistentPropertyData
 {
+
     /**
-     * Keyed on {@link org.apache.tapestry.record.ChangeKey}, values are new objects.
+     * Keyed on {@link org.apache.tapestry.record.ChangeKey}, values are new
+     * objects.
      */
 
     private Map _changes;
@@ -42,7 +45,8 @@ public class PersistentPropertyData
     private final PersistentPropertyDataEncoder _encoder;
 
     /**
-     * Creates a new data using the specified encoder. The set of page changes is initially empty.
+     * Creates a new data using the specified encoder. The set of page changes
+     * is initially empty.
      */
 
     public PersistentPropertyData(PersistentPropertyDataEncoder encoder)
@@ -55,8 +59,7 @@ public class PersistentPropertyData
 
     public String getEncoded()
     {
-        if (_encoded == null)
-            _encoded = encode();
+        if (_encoded == null) _encoded = encode();
 
         return _encoded;
     }
@@ -109,16 +112,16 @@ public class PersistentPropertyData
 
         Iterator i = _changes.entrySet().iterator();
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
             Map.Entry me = (Map.Entry) i.next();
 
             ChangeKey changeKey = (ChangeKey) me.getKey();
             Object value = me.getValue();
 
-            PropertyChange change = new PropertyChangeImpl(changeKey.getComponentPath(), changeKey
-                    .getPropertyName(), value);
-            
+            PropertyChange change = new PropertyChangeImpl(changeKey
+                    .getComponentPath(), changeKey.getPropertyName(), value);
+
             result.add(change);
         }
 
@@ -137,7 +140,7 @@ public class PersistentPropertyData
         Map result = new HashMap();
 
         Iterator i = pageChanges.iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             PropertyChange pc = (PropertyChange) i.next();
 

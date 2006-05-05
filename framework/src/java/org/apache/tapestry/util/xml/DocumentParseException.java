@@ -30,9 +30,10 @@ import org.xml.sax.SAXParseException;
 
 public class DocumentParseException extends ApplicationRuntimeException
 {
+
     private static final long serialVersionUID = 4630222650675402789L;
 
-	public DocumentParseException(String message)
+    public DocumentParseException(String message)
     {
         this(message, (Resource) null);
     }
@@ -47,15 +48,18 @@ public class DocumentParseException extends ApplicationRuntimeException
         super(message, location, null);
     }
 
-    public DocumentParseException(String message, Location location, Throwable rootCause)
+    public DocumentParseException(String message, Location location,
+            Throwable rootCause)
     {
         super(message, location, rootCause);
     }
 
-    public DocumentParseException(String message, Resource resource, SAXParseException rootCause)
+    public DocumentParseException(String message, Resource resource,
+            SAXParseException rootCause)
     {
-        this(message, resource == null ? null : new LocationImpl(resource, rootCause
-                .getLineNumber(), rootCause.getColumnNumber()), rootCause);
+        this(message, resource == null ? null : new LocationImpl(resource,
+                rootCause.getLineNumber(), rootCause.getColumnNumber()),
+                rootCause);
     }
 
     public DocumentParseException(String message, Resource resource)
@@ -63,8 +67,10 @@ public class DocumentParseException extends ApplicationRuntimeException
         this(message, resource, (Throwable) null);
     }
 
-    public DocumentParseException(String message, Resource resource, Throwable rootCause)
+    public DocumentParseException(String message, Resource resource,
+            Throwable rootCause)
     {
-        this(message, resource == null ? null : new LocationImpl(resource), rootCause);
+        this(message, resource == null ? null : new LocationImpl(resource),
+                rootCause);
     }
 }

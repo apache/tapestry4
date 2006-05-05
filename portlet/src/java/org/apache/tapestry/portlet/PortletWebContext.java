@@ -30,13 +30,15 @@ import org.apache.tapestry.web.WebContext;
 import org.apache.tapestry.web.WebUtils;
 
 /**
- * Adapts {@link javax.portlet.PortletContext}as {@link org.apache.tapestry.web.WebContext}.
+ * Adapts {@link javax.portlet.PortletContext}as
+ * {@link org.apache.tapestry.web.WebContext}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class PortletWebContext implements WebContext
 {
+
     private static final Log LOG = LogFactory.getLog(PortletWebContext.class);
 
     private final PortletContext _portletContext;
@@ -76,8 +78,7 @@ public class PortletWebContext implements WebContext
     {
         if (attribute == null)
             _portletContext.removeAttribute(name);
-        else
-            _portletContext.setAttribute(name, attribute);
+        else _portletContext.setAttribute(name, attribute);
     }
 
     public List getInitParameterNames()
@@ -100,15 +101,18 @@ public class PortletWebContext implements WebContext
         receiver.describeAlternate(_portletContext);
     }
 
-	public String getRealPath(String path) {
-		return _portletContext.getRealPath(path);
-	}
+    public String getRealPath(String path)
+    {
+        return _portletContext.getRealPath(path);
+    }
 
-	public InputStream getResourceAsStream(String path) {
-		return _portletContext.getResourceAsStream(path);
-	}
+    public InputStream getResourceAsStream(String path)
+    {
+        return _portletContext.getResourceAsStream(path);
+    }
 
-	public Set getResourcePaths(String path) {
-		return _portletContext.getResourcePaths(path);
-	}
+    public Set getResourcePaths(String path)
+    {
+        return _portletContext.getResourcePaths(path);
+    }
 }

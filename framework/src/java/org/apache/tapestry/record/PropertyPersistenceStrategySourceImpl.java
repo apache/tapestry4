@@ -25,15 +25,18 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.engine.ServiceEncoding;
 
 /**
- * Implementation of the <code>tapestry.persist.PropertyPersistenceStrategySource</code> service.
+ * Implementation of the
+ * <code>tapestry.persist.PropertyPersistenceStrategySource</code> service.
  * Allows access to other services, that implement the
  * {@link org.apache.tapestry.record.PropertyPersistenceStrategy} interface.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class PropertyPersistenceStrategySourceImpl implements PropertyPersistenceStrategySource
+public class PropertyPersistenceStrategySourceImpl implements
+        PropertyPersistenceStrategySource
 {
+
     // Set from tapestry.props.PersistenceStrategy
     private List _contributions;
 
@@ -42,7 +45,7 @@ public class PropertyPersistenceStrategySourceImpl implements PropertyPersistenc
     public void initializeService()
     {
         Iterator i = _contributions.iterator();
-        while (i.hasNext())
+        while(i.hasNext())
         {
             PropertyPersistenceStrategyContribution c = (PropertyPersistenceStrategyContribution) i
                     .next();
@@ -54,7 +57,8 @@ public class PropertyPersistenceStrategySourceImpl implements PropertyPersistenc
     public PropertyPersistenceStrategy getStrategy(String name)
     {
         if (!_strategies.containsKey(name))
-            throw new ApplicationRuntimeException(RecordMessages.unknownPersistenceStrategy(name));
+            throw new ApplicationRuntimeException(RecordMessages
+                    .unknownPersistenceStrategy(name));
 
         return (PropertyPersistenceStrategy) _strategies.get(name);
     }
@@ -65,9 +69,10 @@ public class PropertyPersistenceStrategySourceImpl implements PropertyPersistenc
 
         Iterator i = _strategies.values().iterator();
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
-            PropertyPersistenceStrategy s = (PropertyPersistenceStrategy) i.next();
+            PropertyPersistenceStrategy s = (PropertyPersistenceStrategy) i
+                    .next();
 
             result.addAll(s.getStoredChanges(pageName));
         }
@@ -79,21 +84,24 @@ public class PropertyPersistenceStrategySourceImpl implements PropertyPersistenc
     {
         Iterator i = _strategies.values().iterator();
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
-            PropertyPersistenceStrategy s = (PropertyPersistenceStrategy) i.next();
+            PropertyPersistenceStrategy s = (PropertyPersistenceStrategy) i
+                    .next();
 
             s.discardStoredChanges(pageName);
         }
     }
 
-    public void addParametersForPersistentProperties(ServiceEncoding encoding, boolean post)
+    public void addParametersForPersistentProperties(ServiceEncoding encoding,
+            boolean post)
     {
         Iterator i = _strategies.values().iterator();
 
-        while (i.hasNext())
+        while(i.hasNext())
         {
-            PropertyPersistenceStrategy s = (PropertyPersistenceStrategy) i.next();
+            PropertyPersistenceStrategy s = (PropertyPersistenceStrategy) i
+                    .next();
 
             s.addParametersForPersistentProperties(encoding, post);
         }

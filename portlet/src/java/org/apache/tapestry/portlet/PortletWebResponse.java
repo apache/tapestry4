@@ -25,13 +25,15 @@ import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebResponse;
 
 /**
- * Adapts {@link javax.portlet.PortletResponse} as {@link org.apache.tapestry.web.WebResponse}.
+ * Adapts {@link javax.portlet.PortletResponse} as
+ * {@link org.apache.tapestry.web.WebResponse}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class PortletWebResponse implements WebResponse
 {
+
     private final PortletResponse _portletResponse;
 
     public PortletWebResponse(PortletResponse portletResponse)
@@ -41,14 +43,16 @@ public class PortletWebResponse implements WebResponse
         _portletResponse = portletResponse;
     }
 
-    public OutputStream getOutputStream(ContentType contentType) throws IOException
+    public OutputStream getOutputStream(ContentType contentType)
+        throws IOException
     {
         unsupported("getOutputStream");
 
         return null;
     }
 
-    public PrintWriter getPrintWriter(ContentType contentType) throws IOException
+    public PrintWriter getPrintWriter(ContentType contentType)
+        throws IOException
     {
         unsupported("getPrintWriter");
 
@@ -73,8 +77,8 @@ public class PortletWebResponse implements WebResponse
     }
 
     /**
-     * Returns the empty string. The {@link RenderWebResponse}&nbsp;subclass actually provides a
-     * real value here.
+     * Returns the empty string. The {@link RenderWebResponse}&nbsp;subclass
+     * actually provides a real value here.
      */
     public String getNamespace()
     {
@@ -83,7 +87,8 @@ public class PortletWebResponse implements WebResponse
 
     protected final void unsupported(String methodName)
     {
-        throw new UnsupportedOperationException(PortletMessages.unsupportedMethod(methodName));
+        throw new UnsupportedOperationException(PortletMessages
+                .unsupportedMethod(methodName));
     }
 
     /** Unsupported. */
@@ -111,7 +116,8 @@ public class PortletWebResponse implements WebResponse
     }
 
     /** Unsupported. */
-    public void sendError(int statusCode, String message) throws IOException
+    public void sendError(int statusCode, String message)
+        throws IOException
     {
         unsupported("sendError");
     }

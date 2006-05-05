@@ -21,14 +21,15 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * A wrapper around {@link String}&nbsp;that allows the String to be renderred. This is primarily
- * used to present error messages.
+ * A wrapper around {@link String}&nbsp;that allows the String to be renderred.
+ * This is primarily used to present error messages.
  * 
  * @author Howard Lewis Ship
  */
 
 public class RenderString implements IRender, Serializable
 {
+
     private static final long serialVersionUID = 6215074338439140780L;
 
     private String _string;
@@ -44,8 +45,8 @@ public class RenderString implements IRender, Serializable
      * @param string
      *            the string to render
      * @param raw
-     *            if true, the String is rendered as-is, with no filtering. If false (the default),
-     *            the String is filtered.
+     *            if true, the String is rendered as-is, with no filtering. If
+     *            false (the default), the String is filtered.
      */
 
     public RenderString(String string, boolean raw)
@@ -55,14 +56,14 @@ public class RenderString implements IRender, Serializable
     }
 
     /**
-     * Renders the String to the writer. Does nothing if the string is null. If raw is true, uses
-     * {@link IMarkupWriter#printRaw(String)}, otherwise {@link IMarkupWriter#print(String)}.
+     * Renders the String to the writer. Does nothing if the string is null. If
+     * raw is true, uses {@link IMarkupWriter#printRaw(String)}, otherwise
+     * {@link IMarkupWriter#print(String)}.
      */
 
     public void render(IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (_string == null)
-            return;
+        if (_string == null) return;
 
         writer.print(_string, _raw);
     }
@@ -78,9 +79,9 @@ public class RenderString implements IRender, Serializable
     }
 
     /**
-     * Returns the string that would be rendered. This is part of the contract for error renderers
-     * used with validation ... must provide a user-presentable toString() that does not include any
-     * markup.
+     * Returns the string that would be rendered. This is part of the contract
+     * for error renderers used with validation ... must provide a
+     * user-presentable toString() that does not include any markup.
      */
 
     public String toString()

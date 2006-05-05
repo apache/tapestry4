@@ -20,13 +20,15 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * The do element provides a general mechanism for the user to act upon the current card, in other
- * words a card-level user interface element. The representation of the do element is user agent
- * dependent and the author must only assume that the element is mapped to a unique user interface
- * widget that the user can activate. For example, the widget mapping may be to a graphically
- * rendered button, a soft or function key, a voice-activated command sequence, or any other
- * interface that has a simple "activate" operation with no inter-operation persistent state. The do
- * element may appear at both the card and deck-level.
+ * The do element provides a general mechanism for the user to act upon the
+ * current card, in other words a card-level user interface element. The
+ * representation of the do element is user agent dependent and the author must
+ * only assume that the element is mapped to a unique user interface widget that
+ * the user can activate. For example, the widget mapping may be to a
+ * graphically rendered button, a soft or function key, a voice-activated
+ * command sequence, or any other interface that has a simple "activate"
+ * operation with no inter-operation persistent state. The do element may appear
+ * at both the card and deck-level.
  * 
  * @author David Solis
  * @since 3.0
@@ -34,6 +36,7 @@ import org.apache.tapestry.IRequestCycle;
 
 public abstract class Do extends AbstractComponent
 {
+
     /**
      * @see AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
      */
@@ -49,16 +52,14 @@ public abstract class Do extends AbstractComponent
             writer.attribute("type", getType());
 
             String label = getLabel();
-            if (HiveMind.isNonBlank(label))
-                writer.attribute("label", label);
+            if (HiveMind.isNonBlank(label)) writer.attribute("label", label);
 
             renderInformalParameters(writer, cycle);
         }
 
         renderBody(writer, cycle);
 
-        if (render)
-            writer.end();
+        if (render) writer.end();
     }
 
     public abstract String getType();

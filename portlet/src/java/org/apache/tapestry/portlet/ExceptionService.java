@@ -34,6 +34,7 @@ import org.apache.tapestry.web.WebSession;
  */
 public class ExceptionService implements IEngineService
 {
+
     private WebRequest _request;
 
     private WebResponse _response;
@@ -42,22 +43,27 @@ public class ExceptionService implements IEngineService
 
     public ILink getLink(boolean post, Object parameter)
     {
-        throw new UnsupportedOperationException(PortletMessages.unsupportedMethod("getLink"));
+        throw new UnsupportedOperationException(PortletMessages
+                .unsupportedMethod("getLink"));
     }
 
-    public void service(IRequestCycle cycle) throws IOException
+    public void service(IRequestCycle cycle)
+        throws IOException
     {
         WebSession session = _request.getSession(true);
         String markup = (String) session
                 .getAttribute(PortletConstants.PORTLET_EXCEPTION_MARKUP_ATTRIBUTE);
 
-        PrintWriter writer = _response.getPrintWriter(new ContentType("text/html"));
+        PrintWriter writer = _response.getPrintWriter(new ContentType(
+                "text/html"));
 
         PortletURL url = _globals.getRenderResponse().createActionURL();
 
-        writer.println("<span class=\"portlet-msg-error\">An exception has occured.</span>");
+        writer
+                .println("<span class=\"portlet-msg-error\">An exception has occured.</span>");
         writer.println("<br/>");
-        writer.println("<a href=\"" + url.toString() + "\">Click here to continue</a>");
+        writer.println("<a href=\"" + url.toString()
+                + "\">Click here to continue</a>");
         writer.print("<br/><hr/>");
         writer.println();
 

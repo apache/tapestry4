@@ -36,6 +36,7 @@ import org.apache.tapestry.web.WebUtils;
  */
 public class PortletWebRequest implements WebRequest
 {
+
     private final PortletRequest _portletRequest;
 
     private WebSession _webSession;
@@ -69,13 +70,11 @@ public class PortletWebRequest implements WebRequest
 
     public WebSession getSession(boolean create)
     {
-        if (_webSession != null)
-            return _webSession;
+        if (_webSession != null) return _webSession;
 
         PortletSession session = _portletRequest.getPortletSession(create);
 
-        if (session != null)
-            _webSession = new PortletWebSession(session);
+        if (session != null) _webSession = new PortletWebSession(session);
 
         return _webSession;
     }
@@ -96,7 +95,8 @@ public class PortletWebRequest implements WebRequest
     }
 
     /**
-     * Returns "&lt;PortletRequest&gt;", because portlets don't have a notion of request URI.
+     * Returns "&lt;PortletRequest&gt;", because portlets don't have a notion of
+     * request URI.
      */
 
     public String getRequestURI()
@@ -136,13 +136,13 @@ public class PortletWebRequest implements WebRequest
     {
         if (attribute == null)
             _portletRequest.removeAttribute(name);
-        else
-            _portletRequest.setAttribute(name, attribute);
+        else _portletRequest.setAttribute(name, attribute);
     }
 
     protected final void unsupported(String methodName)
     {
-        throw new UnsupportedOperationException(PortletMessages.unsupportedMethod(methodName));
+        throw new UnsupportedOperationException(PortletMessages
+                .unsupportedMethod(methodName));
     }
 
     public void describeTo(DescriptionReceiver receiver)

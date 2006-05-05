@@ -28,6 +28,7 @@ import org.apache.tapestry.util.QueryParameterMap;
  */
 public class PortletLink implements ILink
 {
+
     private final PortletURL _portletURL;
 
     private final QueryParameterMap _parameters;
@@ -48,24 +49,22 @@ public class PortletLink implements ILink
 
     public String getURL(String anchor, boolean includeParameters)
     {
-        if (includeParameters)
-            loadParameters();
+        if (includeParameters) loadParameters();
 
         String url = _portletURL.toString();
 
         url = unencode(url);
 
-        if (anchor != null)
-            url = url + "#" + anchor;
+        if (anchor != null) url = url + "#" + anchor;
 
         return url;
     }
 
     /**
-     * The PortletURL class returns a url that's already XML-escaped, ready for inclusion directly
-     * into the response stream. However, the IMarkupWriter expects to do that encoding too ... and
-     * double encoding is bad. So we back out the most likely encoding (convert '&amp;amp;' to just
-     * '&amp;').
+     * The PortletURL class returns a url that's already XML-escaped, ready for
+     * inclusion directly into the response stream. However, the IMarkupWriter
+     * expects to do that encoding too ... and double encoding is bad. So we
+     * back out the most likely encoding (convert '&amp;amp;' to just '&amp;').
      */
 
     private String unencode(String url)
@@ -73,12 +72,11 @@ public class PortletLink implements ILink
         StringBuffer buffer = new StringBuffer(url.length());
         String text = url;
 
-        while (true)
+        while(true)
         {
             int ampx = text.indexOf("&amp;");
 
-            if (ampx < 0)
-                break;
+            if (ampx < 0) break;
 
             // Take up to and including the '&'
 
@@ -96,33 +94,35 @@ public class PortletLink implements ILink
     {
         String[] names = _parameters.getParameterNames();
 
-        for (int i = 0; i < names.length; i++)
+        for(int i = 0; i < names.length; i++)
         {
             String name = names[i];
             String[] values = _parameters.getParameterValues(name);
 
-            if (values != null)
-                _portletURL.setParameter(name, values);
+            if (values != null) _portletURL.setParameter(name, values);
         }
     }
 
     public String getURL(String scheme, String server, int port, String anchor,
             boolean includeParameters)
     {
-        // Ignore scheme, server and port ... those are under the control of the portlet container.
+        // Ignore scheme, server and port ... those are under the control of the
+        // portlet container.
 
         return getURL(anchor, includeParameters);
     }
 
     public String getAbsoluteURL()
     {
-        throw new UnsupportedOperationException(PortletMessages.unsupportedMethod("getAbsoluteURL"));
+        throw new UnsupportedOperationException(PortletMessages
+                .unsupportedMethod("getAbsoluteURL"));
     }
 
-    public String getAbsoluteURL(String scheme, String server, int port, String anchor,
-            boolean includeParameters)
+    public String getAbsoluteURL(String scheme, String server, int port,
+            String anchor, boolean includeParameters)
     {
-        throw new UnsupportedOperationException(PortletMessages.unsupportedMethod("getAbsoluteURL"));
+        throw new UnsupportedOperationException(PortletMessages
+                .unsupportedMethod("getAbsoluteURL"));
     }
 
     public String[] getParameterNames()

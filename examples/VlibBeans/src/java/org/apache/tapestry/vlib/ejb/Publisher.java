@@ -24,6 +24,7 @@ import java.io.Serializable;
 
 public class Publisher implements Serializable
 {
+
     private static final long serialVersionUID = -2843992788128325821L;
 
     private Integer _id;
@@ -47,7 +48,8 @@ public class Publisher implements Serializable
     }
 
     /**
-     * Name is a writable property of this bean, to support the applications' EditPublisher's page.
+     * Name is a writable property of this bean, to support the applications'
+     * EditPublisher's page.
      * 
      * @see IOperations#updatePublishers(Publisher[],Integer[])
      */

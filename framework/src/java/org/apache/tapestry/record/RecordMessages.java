@@ -21,24 +21,34 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class RecordMessages
+final class RecordMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(RecordMessages.class);
+
+    private static final MessageFormatter _formatter = new MessageFormatter(
+            RecordMessages.class);
+
+    /* defeat instantiation */
+    private RecordMessages()
+    {
+    }
 
     static String unknownPersistenceStrategy(String name)
     {
         return _formatter.format("unknown-persistence-strategy", name);
     }
 
-    static String missingPropertySpecification(String propertyName, IComponent component)
+    static String missingPropertySpecification(String propertyName,
+            IComponent component)
     {
-        return _formatter.format("missing-property-specification", propertyName, component
-                .getExtendedId(), component.getSpecification().getSpecificationLocation());
+        return _formatter.format("missing-property-specification",
+                propertyName, component.getExtendedId(), component
+                        .getSpecification().getSpecificationLocation());
     }
 
     static String recorderLocked(String propertyName, IComponent component)
     {
-        return _formatter.format("recorder-locked", propertyName, component.getExtendedId());
+        return _formatter.format("recorder-locked", propertyName, component
+                .getExtendedId());
     }
 
     static String decodeFailure(Throwable cause)

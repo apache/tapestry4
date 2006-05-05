@@ -18,13 +18,14 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.engine.IPageRecorder;
 
 /**
- * Used to obtain a page recorder instance. Starting in Tapestry 3.0, page recorders are short-lived
- * and specific to a single request.
+ * Used to obtain a page recorder instance. Starting in Tapestry 3.0, page
+ * recorders are short-lived and specific to a single request.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface PageRecorderSource
 {
-    public IPageRecorder createPageRecorder(IPage page);
+
+    IPageRecorder createPageRecorder(IPage page);
 }

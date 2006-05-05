@@ -31,6 +31,7 @@ import org.apache.tapestry.web.WebUtils;
  */
 public class PortletSessionDescribableStrategy implements DescribableStrategy
 {
+
     public void describeObject(Object object, DescriptionReceiver receiver)
     {
         PortletSession session = (PortletSession) object;
@@ -39,13 +40,16 @@ public class PortletSessionDescribableStrategy implements DescribableStrategy
 
         receiver.property("creationTime", new Date(session.getCreationTime()));
         receiver.property("id", session.getId());
-        receiver.property("lastAccessedTime", new Date(session.getLastAccessedTime()));
-        receiver.property("maxInactiveInterval", session.getMaxInactiveInterval());
+        receiver.property("lastAccessedTime", new Date(session
+                .getLastAccessedTime()));
+        receiver.property("maxInactiveInterval", session
+                .getMaxInactiveInterval());
         receiver.property("new", session.isNew());
 
         receiver.section("Attributes");
-        Iterator i = WebUtils.toSortedList(session.getAttributeNames()).iterator();
-        while (i.hasNext())
+        Iterator i = WebUtils.toSortedList(session.getAttributeNames())
+                .iterator();
+        while(i.hasNext())
         {
             String key = (String) i.next();
             receiver.property(key, session.getAttribute(key));

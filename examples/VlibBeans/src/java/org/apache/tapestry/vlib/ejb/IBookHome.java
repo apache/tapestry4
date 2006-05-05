@@ -33,6 +33,6 @@ public interface IBookHome extends EJBHome
     IBook create(Map attributes)
         throws CreateException, RemoteException;
 
-    public IBook findByPrimaryKey(Integer key)
+    IBook findByPrimaryKey(Integer key)
         throws FinderException, RemoteException;
 }
