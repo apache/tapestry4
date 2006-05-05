@@ -21,13 +21,21 @@ import org.apache.tapestry.IComponent;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class ValidMessages
+final class ValidMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(ValidMessages.class);
+
+    private static final MessageFormatter _formatter = new MessageFormatter(
+            ValidMessages.class);
+
+    /* defeat instantiation */
+    private ValidMessages()
+    {
+    }
 
     static String noDisplayName(IComponent label, IComponent field)
     {
-        return _formatter.format("no-display-name", label.getExtendedId(), field.getExtendedId());
+        return _formatter.format("no-display-name", label.getExtendedId(),
+                field.getExtendedId());
     }
 
 }

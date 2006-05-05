@@ -20,10 +20,13 @@ import org.apache.hivemind.impl.MessageFormatter;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-class UtilMessages
+final class UtilMessages
 {
     private static final MessageFormatter _formatter = new MessageFormatter(UtilMessages.class);
 
+    /* defeat instantiation */
+    private UtilMessages() { }
+    
     static String valueNotFound(Object value)
     {
         return _formatter.format("value-not-found", value);

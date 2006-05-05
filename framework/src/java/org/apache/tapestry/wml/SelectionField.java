@@ -27,14 +27,17 @@ import org.apache.tapestry.form.IPropertySelectionModel;
  */
 public abstract class SelectionField extends AbstractPostfield
 {
+
     /**
-     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
+     * @see org.apache.tapestry.form.AbstractFormComponent#rewindFormComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
      */
     protected void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String optionValue = cycle.getParameter(getName());
         IPropertySelectionModel model = getModel();
-        Object value = (optionValue == null) ? null : model.translateValue(optionValue);
+        Object value = (optionValue == null) ? null : model
+                .translateValue(optionValue);
 
         updateValue(value);
     }

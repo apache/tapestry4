@@ -15,14 +15,16 @@
 package org.apache.tapestry.pageload;
 
 /**
- * The final command in the tapestry.page.PageClassProviderChain configuration, returns a fixed
- * value for page class name.
+ * The final command in the tapestry.page.PageClassProviderChain configuration,
+ * returns a fixed value for page class name.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class GlobalDefaultComponentClassProvider implements ComponentClassProvider
+public class GlobalDefaultComponentClassProvider implements
+        ComponentClassProvider
 {
+
     private String _componentClassName;
 
     public void setComponentClassName(String componentClassName)
@@ -30,7 +32,8 @@ public class GlobalDefaultComponentClassProvider implements ComponentClassProvid
         _componentClassName = componentClassName;
     }
 
-    public String provideComponentClassName(ComponentClassProviderContext context)
+    public String provideComponentClassName(
+            ComponentClassProviderContext context)
     {
         return _componentClassName;
     }

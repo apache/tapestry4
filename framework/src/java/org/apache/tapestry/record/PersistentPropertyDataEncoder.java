@@ -17,27 +17,28 @@ package org.apache.tapestry.record;
 import java.util.List;
 
 /**
- * Responsible for encoding {@link org.apache.tapestry.record.PropertyChange}s into and out of plain
- * strings.
+ * Responsible for encoding {@link org.apache.tapestry.record.PropertyChange}s
+ * into and out of plain strings.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface PersistentPropertyDataEncoder
 {
+
     /**
-     * Encodes a (possibly empty) list of {@link PropertyChange}s into a string representation that
-     * can later be decoded.
+     * Encodes a (possibly empty) list of {@link PropertyChange}s into a string
+     * representation that can later be decoded.
      * 
      * @returns encoded string (possibly empty, but not null)
      */
-    public String encodePageChanges(List changes);
+    String encodePageChanges(List changes);
 
     /**
-     * Takes a string with an encoded set of page changes, and converts it back into a list of
-     * {@link org.apache.tapestry.record.PropertyChange}s.
+     * Takes a string with an encoded set of page changes, and converts it back
+     * into a list of {@link org.apache.tapestry.record.PropertyChange}s.
      */
 
-    public List decodePageChanges(String encoded);
+    List decodePageChanges(String encoded);
 
 }

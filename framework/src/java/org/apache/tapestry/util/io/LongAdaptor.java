@@ -24,6 +24,7 @@ import org.apache.tapestry.services.DataSqueezer;
 
 public class LongAdaptor implements SqueezeAdaptor
 {
+
     private static final String PREFIX = "l";
 
     public String getPrefix()
@@ -37,8 +38,8 @@ public class LongAdaptor implements SqueezeAdaptor
     }
 
     /**
-     * Invoked <code>toString()</code> on data (which is type {@link Long}), and prefixs the
-     * result.
+     * Invoked <code>toString()</code> on data (which is type {@link Long}),
+     * and prefixs the result.
      */
 
     public String squeeze(DataSqueezer squeezer, Object data)

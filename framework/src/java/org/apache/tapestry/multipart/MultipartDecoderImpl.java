@@ -27,15 +27,18 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.hivemind.ApplicationRuntimeException;
 
 /**
- * Implementation of {@link org.apache.tapestry.multipart.MultipartDecoder}that is based on <a
- * href="http://jakarta.apache.org/commons/fileupload/">Jakarta FileUpload </a>.
+ * Implementation of {@link org.apache.tapestry.multipart.MultipartDecoder}that
+ * is based on <a href="http://jakarta.apache.org/commons/fileupload/">Jakarta
+ * FileUpload </a>.
  * 
  * @author Howard M. Lewis Ship
  * @author Joe Panico
  * @since 4.0
  */
-public class MultipartDecoderImpl extends AbstractMultipartDecoder implements ServletMultipartDecoder
+public class MultipartDecoderImpl extends AbstractMultipartDecoder implements
+        ServletMultipartDecoder
 {
+
     public HttpServletRequest decode(HttpServletRequest request)
     {
         _encoding = request.getCharacterEncoding();
@@ -50,7 +53,8 @@ public class MultipartDecoderImpl extends AbstractMultipartDecoder implements Se
         }
         catch (FileUploadException ex)
         {
-            throw new ApplicationRuntimeException(MultipartMessages.unableToDecode(ex), ex);
+            throw new ApplicationRuntimeException(MultipartMessages
+                    .unableToDecode(ex), ex);
         }
 
         Map parameterMap = buildParameterMap();
@@ -58,14 +62,15 @@ public class MultipartDecoderImpl extends AbstractMultipartDecoder implements Se
         return new UploadFormParametersWrapper(request, parameterMap);
     }
 
-	private ServletFileUpload createFileUpload() {
-    	FileItemFactory factory = new DiskFileItemFactory(_thresholdSize, new File(_repositoryPath));
-    	ServletFileUpload upload = new ServletFileUpload(factory);
+    private ServletFileUpload createFileUpload()
+    {
+        FileItemFactory factory = new DiskFileItemFactory(_thresholdSize,
+                new File(_repositoryPath));
+        ServletFileUpload upload = new ServletFileUpload(factory);
 
-        if (_encoding != null)
-            upload.setHeaderEncoding(_encoding);
+        if (_encoding != null) upload.setHeaderEncoding(_encoding);
 
         return upload;
-	}
+    }
 
 }

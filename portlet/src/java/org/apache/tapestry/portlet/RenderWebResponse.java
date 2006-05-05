@@ -31,6 +31,7 @@ import org.apache.tapestry.util.ContentType;
  */
 public class RenderWebResponse extends PortletWebResponse
 {
+
     private final RenderResponse _renderResponse;
 
     public RenderWebResponse(RenderResponse renderResponse)
@@ -45,7 +46,8 @@ public class RenderWebResponse extends PortletWebResponse
         _renderResponse.reset();
     }
 
-    public PrintWriter getPrintWriter(ContentType contentType) throws IOException
+    public PrintWriter getPrintWriter(ContentType contentType)
+        throws IOException
     {
         Defense.notNull(contentType, "contentType");
 

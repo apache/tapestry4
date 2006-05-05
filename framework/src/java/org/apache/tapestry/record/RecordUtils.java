@@ -29,8 +29,11 @@ import org.apache.tapestry.web.WebSession;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class RecordUtils
+public final class RecordUtils
 {
+    /* defeat instantiation */
+    private RecordUtils() { }
+    
     /**
      * Builds a {@link PropertyChange} instance for the given key and value pulled from the
      * {@link org.apache.tapestry.web.WebSession}.

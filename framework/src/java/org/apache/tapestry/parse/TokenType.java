@@ -21,8 +21,9 @@ package org.apache.tapestry.parse;
  * @author Howard Lewis Ship
  */
 
-public class TokenType
+public final class TokenType
 {
+
     /**
      * Raw HTML text.
      * 

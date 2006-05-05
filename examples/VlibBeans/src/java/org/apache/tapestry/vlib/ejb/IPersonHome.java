@@ -33,7 +33,7 @@ public interface IPersonHome extends EJBHome
     IPerson create(Map attributes)
         throws CreateException, RemoteException;
 
-    public IPerson findByPrimaryKey(Integer key)
+    IPerson findByPrimaryKey(Integer key)
         throws FinderException, RemoteException;
 
     /**
@@ -42,6 +42,6 @@ public interface IPersonHome extends EJBHome
      * instead.
      */
 
-    public IPerson findByEmail(String email)
+    IPerson findByEmail(String email)
         throws FinderException, RemoteException;
 }

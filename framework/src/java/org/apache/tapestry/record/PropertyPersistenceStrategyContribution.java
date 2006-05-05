@@ -17,13 +17,15 @@ package org.apache.tapestry.record;
 import org.apache.hivemind.impl.BaseLocatable;
 
 /**
- * A contribution to the <code>tapestry.persist.PersistenceStrategy</code> configuration.
+ * A contribution to the <code>tapestry.persist.PersistenceStrategy</code>
+ * configuration.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class PropertyPersistenceStrategyContribution extends BaseLocatable
 {
+
     private String _name;
 
     private PropertyPersistenceStrategy _strategy;

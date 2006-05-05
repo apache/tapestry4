@@ -28,14 +28,17 @@ import org.apache.tapestry.web.WebContext;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class PortletWebContextInitializer implements PortletApplicationInitializer
+public class PortletWebContextInitializer implements
+        PortletApplicationInitializer
 {
+
     private ApplicationGlobals _applicationGlobals;
 
     public void initialize(PortletConfig portletConfig)
     {
         WebActivator activator = new PortletWebActivator(portletConfig);
-        WebContext context = new PortletWebContext(portletConfig.getPortletContext());
+        WebContext context = new PortletWebContext(portletConfig
+                .getPortletContext());
 
         _applicationGlobals.storeActivator(activator);
         _applicationGlobals.storeWebContext(context);

@@ -29,6 +29,7 @@ import org.apache.tapestry.form.IFormComponent;
 
 public class FieldTracking implements IFieldTracking, Serializable
 {
+
     private static final long serialVersionUID = -5397563163968532716L;
 
     private transient IFormComponent _component;
@@ -42,8 +43,8 @@ public class FieldTracking implements IFieldTracking, Serializable
     private ValidationConstraint _constraint;
 
     /**
-     * Constructor used for unassociated errors; errors that are not about any particular field
-     * within the form.
+     * Constructor used for unassociated errors; errors that are not about any
+     * particular field within the form.
      */
 
     FieldTracking()
@@ -51,7 +52,8 @@ public class FieldTracking implements IFieldTracking, Serializable
     }
 
     /**
-     * Standard constructor for a field (with the given name), rendered by the specified component.
+     * Standard constructor for a field (with the given name), rendered by the
+     * specified component.
      */
 
     FieldTracking(String fieldName, IFormComponent component)

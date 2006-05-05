@@ -20,8 +20,9 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- * The Timer element declares a card timer, which exposes a means of processing inactivity or idle
- * time. The timer is initialised and started at card entry and is stopped when the card is exited.
+ * The Timer element declares a card timer, which exposes a means of processing
+ * inactivity or idle time. The timer is initialised and started at card entry
+ * and is stopped when the card is exited.
  * 
  * @author David Solis
  * @since 3.0
@@ -29,6 +30,7 @@ import org.apache.tapestry.IRequestCycle;
 
 public abstract class Timer extends AbstractComponent
 {
+
     /**
      * @see AbstractComponent#renderComponent(IMarkupWriter, IRequestCycle)
      */
@@ -46,8 +48,7 @@ public abstract class Timer extends AbstractComponent
             String value = getValue();
             if (HiveMind.isNonBlank(value))
                 writer.attribute("value", value);
-            else
-                writer.attribute("value", "0");
+            else writer.attribute("value", "0");
 
             renderInformalParameters(writer, cycle);
 

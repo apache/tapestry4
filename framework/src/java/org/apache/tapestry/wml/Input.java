@@ -46,22 +46,19 @@ public abstract class Input extends AbstractComponent
             writer.attribute("name", getName());
 
             String title = getTitle();
-            if (HiveMind.isNonBlank(title))
-                writer.attribute("title", title);
+            if (HiveMind.isNonBlank(title)) writer.attribute("title", title);
 
             String format = getFormat();
             if (HiveMind.isNonBlank(format))
                 writer.attribute("format", format);
 
             boolean emptyok = isEmptyok();
-            if (emptyok != false)
-                writer.attribute("emptyok", emptyok);
+            if (emptyok != false) writer.attribute("emptyok", emptyok);
 
             renderInformalParameters(writer, cycle);
 
             String value = getValue();
-            if (HiveMind.isNonBlank(value))
-                writer.attribute("value", value);
+            if (HiveMind.isNonBlank(value)) writer.attribute("value", value);
 
             writer.closeTag();
         }

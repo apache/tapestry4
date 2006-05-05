@@ -19,6 +19,10 @@ import java.io.File;
 import org.apache.tapestry.contrib.tree.model.ITreeNode;
 import org.apache.tapestry.engine.IEngineService;
 
+/**
+ * 
+ * @author unknown
+ */
 public class Drive extends FolderObject
 {
     private String m_strType;

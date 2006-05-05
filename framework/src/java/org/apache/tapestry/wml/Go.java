@@ -20,8 +20,8 @@ import org.apache.tapestry.form.Form;
 import org.apache.tapestry.form.FormSupport;
 
 /**
- * The go element declares a go task, indicating navigation to a URI. If the URI names a WML card or
- * deck, it is displayed.
+ * The go element declares a go task, indicating navigation to a URI. If the URI
+ * names a WML card or deck, it is displayed.
  * 
  * @author David Solis
  * @since 3.0
@@ -29,6 +29,7 @@ import org.apache.tapestry.form.FormSupport;
 
 public abstract class Go extends Form
 {
+
     /**
      * This component doesn't support event handlers.
      */
@@ -41,7 +42,8 @@ public abstract class Go extends Form
         return "Go" + actionId;
     }
 
-    protected FormSupport newFormSupport(IMarkupWriter writer, IRequestCycle cycle)
+    protected FormSupport newFormSupport(IMarkupWriter writer,
+            IRequestCycle cycle)
     {
         return new GoFormSupportImpl(writer, cycle, this);
     }

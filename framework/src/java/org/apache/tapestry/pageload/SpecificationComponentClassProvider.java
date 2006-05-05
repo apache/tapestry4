@@ -15,16 +15,18 @@
 package org.apache.tapestry.pageload;
 
 /**
- * Implementation of {@link org.apache.tapestry.pageload.ComponentClassProvider} that returns the
- * value from the specification.
+ * Implementation of {@link org.apache.tapestry.pageload.ComponentClassProvider}
+ * that returns the value from the specification.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class SpecificationComponentClassProvider implements ComponentClassProvider
+public class SpecificationComponentClassProvider implements
+        ComponentClassProvider
 {
 
-    public String provideComponentClassName(ComponentClassProviderContext context)
+    public String provideComponentClassName(
+            ComponentClassProviderContext context)
     {
         // May return null when the spec doesn't indicate the class name.
 

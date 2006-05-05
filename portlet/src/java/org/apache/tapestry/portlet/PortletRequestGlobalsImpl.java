@@ -21,14 +21,15 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 /**
- * Implementation of the tapestry.portlet.PortletRequestGlobals service, which uses the threaded
- * service lifecycle model.
+ * Implementation of the tapestry.portlet.PortletRequestGlobals service, which
+ * uses the threaded service lifecycle model.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class PortletRequestGlobalsImpl implements PortletRequestGlobals
 {
+
     private ActionRequest _actionRequest;
 
     private ActionResponse _actionResponse;

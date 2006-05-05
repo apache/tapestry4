@@ -16,10 +16,17 @@ package org.apache.tapestry.util.io;
 
 import org.apache.hivemind.impl.MessageFormatter;
 
-class IoMessages
+/**
+ * 
+ * @author hls
+ */
+final class IoMessages
 {
     private static final MessageFormatter _formatter = new MessageFormatter(IoMessages.class);
 
+    /* defeat instantiation */
+    private IoMessages() { }
+    
     static String encodeFailure(Object object, Throwable cause)
     {
         return _formatter.format("encode-failure", object, cause);

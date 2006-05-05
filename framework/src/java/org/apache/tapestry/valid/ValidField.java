@@ -20,20 +20,23 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.AbstractFormComponent;
 
 /**
- * A {@link Form}component that creates a text field that allows for validation of user input and
- * conversion between string and object values. [ <a
- * href="../../../../../ComponentReference/ValidField.html">Component Reference </a>]
+ * A {@link Form}component that creates a text field that allows for validation
+ * of user input and conversion between string and object values. [ <a
+ * href="../../../../../ComponentReference/ValidField.html">Component Reference
+ * </a>]
  * <p>
- * A ValidatingTextField uses an {@link IValidationDelegate} to track errors and an
- * {@link IValidator}to convert between strings and objects (as well as perform validations). The
- * validation delegate is shared by all validating text fields in a form, the validator may be
- * shared my multiple elements as desired.
+ * A ValidatingTextField uses an {@link IValidationDelegate} to track errors and
+ * an {@link IValidator}to convert between strings and objects (as well as
+ * perform validations). The validation delegate is shared by all validating
+ * text fields in a form, the validator may be shared my multiple elements as
+ * desired.
  * 
  * @author Howard Lewis Ship
  */
 
 public abstract class ValidField extends AbstractFormComponent
 {
+
     public abstract boolean isHidden();
 
     public abstract boolean isDisabled();
@@ -54,8 +57,9 @@ public abstract class ValidField extends AbstractFormComponent
     {
         IValidationDelegate delegate = getForm().getDelegate();
 
-        delegate.registerForFocus(this, delegate.isInError() ? ValidationConstants.ERROR_FIELD
-                : ValidationConstants.NORMAL_FIELD);
+        delegate.registerForFocus(this,
+                delegate.isInError() ? ValidationConstants.ERROR_FIELD
+                        : ValidationConstants.NORMAL_FIELD);
 
         delegate.writePrefix(writer, cycle, this, null);
 
@@ -63,14 +67,12 @@ public abstract class ValidField extends AbstractFormComponent
 
         writer.attribute("type", isHidden() ? "password" : "text");
 
-        if (isDisabled())
-            writer.attribute("disabled", "disabled");
+        if (isDisabled()) writer.attribute("disabled", "disabled");
 
         writer.attribute("name", getName());
 
         String value = readValue();
-        if (value != null)
-            writer.attribute("value", value);
+        if (value != null) writer.attribute("value", value);
 
         renderIdAttribute(writer, cycle);
 
@@ -112,8 +114,7 @@ public abstract class ValidField extends AbstractFormComponent
 
         IValidationDelegate delegate = getForm().getDelegate();
 
-        if (delegate.isInError())
-            return delegate.getFieldInputValue();
+        if (delegate.isInError()) return delegate.getFieldInputValue();
 
         Object value = getValue();
 

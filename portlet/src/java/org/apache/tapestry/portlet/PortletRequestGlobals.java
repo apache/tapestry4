@@ -21,33 +21,35 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 /**
- * Stores the current Portlet request and response, for access by other services.
+ * Stores the current Portlet request and response, for access by other
+ * services.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface PortletRequestGlobals
 {
-    public void store(ActionRequest request, ActionResponse response);
 
-    public void store(RenderRequest request, RenderResponse response);
+    void store(ActionRequest request, ActionResponse response);
 
-    public ActionRequest getActionRequest();
+    void store(RenderRequest request, RenderResponse response);
 
-    public ActionResponse getActionResponse();
+    ActionRequest getActionRequest();
 
-    public RenderRequest getRenderRequest();
+    ActionResponse getActionResponse();
 
-    public RenderResponse getRenderResponse();
+    RenderRequest getRenderRequest();
+
+    RenderResponse getRenderResponse();
 
     /**
-     * Returns true if {@link #store(RenderRequest, RenderResponse)}has been invoked, false
-     * otherwise.
+     * Returns true if {@link #store(RenderRequest, RenderResponse)}has been
+     * invoked, false otherwise.
      */
-    public boolean isRenderRequest();
+    boolean isRenderRequest();
 
     /**
      * Returns whatever is available; the ActionRequest or the PortletRequest.
      */
-    public PortletRequest getPortletRequest();
+    PortletRequest getPortletRequest();
 }

@@ -20,27 +20,27 @@ import java.util.Map;
 import javax.portlet.ActionRequest;
 
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.multipart.ValuePart;
 
 /**
  * @author Raphael Jean
- *
  */
-public class UploadFormPortletParametersWrapper extends ActionRequestWrapper {
+public class UploadFormPortletParametersWrapper extends ActionRequestWrapper
+{
 
     /**
      * Map of {@link ValuePart}&nbsp;keyed on parameter name.
      */
     private Map _parameterMap;
 
-	public UploadFormPortletParametersWrapper(ActionRequest request,
-			Map parameterMap) {
-		super(request);
-        
+    public UploadFormPortletParametersWrapper(ActionRequest request,
+            Map parameterMap)
+    {
+        super(request);
+
         Defense.notNull(parameterMap, "parameterMap");
 
         _parameterMap = Collections.unmodifiableMap(parameterMap);
-	}
+    }
 
     public String getParameter(String name)
     {
@@ -66,7 +66,7 @@ public class UploadFormPortletParametersWrapper extends ActionRequestWrapper {
 
     public String toString()
     {
-        return "<UploadFormPortletParametersWrapper for "  + getRequest() + ">";
+        return "<UploadFormPortletParametersWrapper for " + getRequest() + ">";
     }
 
 }

@@ -22,6 +22,7 @@ import org.apache.tapestry.markup.AbstractMarkupFilter;
  */
 public class WMLMarkupFilter extends AbstractMarkupFilter
 {
+
     public WMLMarkupFilter()
     {
         super(new WMLCharacterTranslatorSource().getDefaultTranslator());

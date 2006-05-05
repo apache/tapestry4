@@ -24,38 +24,44 @@ import org.apache.tapestry.portlet.ActionRequestServicerFilter;
 
 /**
  * @author Raphael Jean
- *
  */
-public class PortletMultipartDecoderFilter implements ActionRequestServicerFilter 
+public class PortletMultipartDecoderFilter implements
+        ActionRequestServicerFilter
 {
+
     private PortletMultipartDecoder _decoder;
 
-	public void service(ActionRequest request, ActionResponse response,
-			ActionRequestServicer servicer) throws IOException, PortletException 
-	{
+    public void service(ActionRequest request, ActionResponse response,
+            ActionRequestServicer servicer)
+        throws IOException, PortletException
+    {
         String contentType = request.getContentType();
 
-        // contentType is occasionally null in testing. The browser tacks on additional
-        // information onto the contentType to indicate where the boundaries are in
+        // contentType is occasionally null in testing. The browser tacks on
+        // additional
+        // information onto the contentType to indicate where the boundaries are
+        // in
         // the stream.
 
-        boolean encoded = contentType != null && contentType.startsWith("multipart/form-data");
+        boolean encoded = contentType != null
+                && contentType.startsWith("multipart/form-data");
 
         try
         {
-            ActionRequest newRequest = encoded ? _decoder.decode(request) : request;
+            ActionRequest newRequest = encoded ? _decoder.decode(request)
+                    : request;
 
             servicer.service(newRequest, response);
         }
         finally
         {
-            if (encoded)
-                _decoder.cleanup();
+            if (encoded) _decoder.cleanup();
         }
-	}
+    }
 
-	public void setDecoder(PortletMultipartDecoder decoder) {
-		this._decoder = decoder;
-	}
+    public void setDecoder(PortletMultipartDecoder decoder)
+    {
+        this._decoder = decoder;
+    }
 
 }

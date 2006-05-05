@@ -19,13 +19,16 @@ import javax.portlet.PortletConfig;
 import org.apache.tapestry.services.impl.AbstractSetupApplicationGlobals;
 
 /**
- * Alternative to {@link org.apache.tapestry.services.impl.SetupServletApplicationGlobals}, but for
- * Portlets and the <code>tapestry.portlet.services.FactoryServices</code> configuration point.
+ * Alternative to
+ * {@link org.apache.tapestry.services.impl.SetupServletApplicationGlobals},
+ * but for Portlets and the
+ * <code>tapestry.portlet.services.FactoryServices</code> configuration point.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class SetupPortletApplicationGlobals extends AbstractSetupApplicationGlobals implements
+public class SetupPortletApplicationGlobals extends
+        AbstractSetupApplicationGlobals implements
         PortletApplicationInitializer
 {
 

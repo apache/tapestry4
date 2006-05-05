@@ -23,9 +23,9 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.util.Defense;
 
 /**
- * Specialized subclass of {@link java.io.ObjectInputStream}that knows how to resolve classes with
- * a non-default class loader (represented by an instance of
- * {@link org.apache.hivemind.ClassResolver}).
+ * Specialized subclass of {@link java.io.ObjectInputStream}that knows how to
+ * resolve classes with a non-default class loader (represented by an instance
+ * of {@link org.apache.hivemind.ClassResolver}).
  * 
  * @author Howard Lewis Ship
  * @since 3.0
@@ -33,9 +33,11 @@ import org.apache.hivemind.util.Defense;
 
 public class ResolvingObjectInputStream extends ObjectInputStream
 {
+
     private ClassResolver _resolver;
 
-    public ResolvingObjectInputStream(ClassResolver resolver, InputStream input) throws IOException
+    public ResolvingObjectInputStream(ClassResolver resolver, InputStream input)
+        throws IOException
     {
         super(input);
 
@@ -45,10 +47,12 @@ public class ResolvingObjectInputStream extends ObjectInputStream
     }
 
     /**
-     * Overrides the default implementation to have the resource resolver find the class.
+     * Overrides the default implementation to have the resource resolver find
+     * the class.
      */
 
-    protected Class resolveClass(ObjectStreamClass v) throws IOException, ClassNotFoundException
+    protected Class resolveClass(ObjectStreamClass v)
+        throws IOException, ClassNotFoundException
     {
         return _resolver.findClass(v.getName());
     }

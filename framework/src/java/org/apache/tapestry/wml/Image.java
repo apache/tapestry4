@@ -20,19 +20,20 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  The Image component indicates that an image is to be included in the text flow. Image layout is done within the
- *  context of normal text layout.
- *
- *  @author David Solis
- *  @since 3.0
- *
- **/
+ * The Image component indicates that an image is to be included in the text
+ * flow. Image layout is done within the context of normal text layout.
+ * 
+ * @author David Solis
+ * @since 3.0
+ */
 
 public abstract class Image extends AbstractComponent
 {
+
     /**
-     *  @see org.apache.tapestry.AbstractComponent#renderComponent(org.apache.tapestry.IMarkupWriter, org.apache.tapestry.IRequestCycle)
-     **/
+     * @see org.apache.tapestry.AbstractComponent#renderComponent(org.apache.tapestry.IMarkupWriter,
+     *      org.apache.tapestry.IRequestCycle)
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -54,5 +55,5 @@ public abstract class Image extends AbstractComponent
 
     public abstract IAsset getImage();
 
-	public abstract String getAlt();
+    public abstract String getAlt();
 }

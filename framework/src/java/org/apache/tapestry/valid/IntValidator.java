@@ -22,12 +22,14 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
- * A type-specific replacement for {@link org.apache.tapestry.valid.NumberValidator}.
+ * A type-specific replacement for
+ * {@link org.apache.tapestry.valid.NumberValidator}.
  * 
  * @author Howard M. Lewis Ship
  */
 public class IntValidator extends AbstractNumericValidator
 {
+
     private boolean _minimumSet;
 
     private int _minimum;
@@ -47,56 +49,51 @@ public class IntValidator extends AbstractNumericValidator
 
     public String toString(IFormComponent field, Object value)
     {
-        if (value == null)
-            return null;
+        if (value == null) return null;
 
         // Be generous; maybe it isn't quite an int, so
         // treat it as a Number
 
         Number number = (Number) value;
 
-        if (getZeroIsNull() && number.intValue() == 0)
-            return null;
+        if (getZeroIsNull() && number.intValue() == 0) return null;
 
         return number.toString();
     }
 
-    public Object toObject(IFormComponent field, String value) throws ValidatorException
+    public Object toObject(IFormComponent field, String value)
+        throws ValidatorException
     {
-        if (checkRequired(field, value))
-            return null;
+        if (checkRequired(field, value)) return null;
 
         try
         {
             int intValue = Integer.parseInt(value);
 
             if (_minimumSet && intValue < _minimum)
-                throw new ValidatorException(buildNumberTooSmallMessage(
-                        field,
+                throw new ValidatorException(buildNumberTooSmallMessage(field,
                         new Integer(_minimum)), ValidationConstraint.TOO_SMALL);
 
             if (_maximumSet && intValue > _maximum)
-                throw new ValidatorException(buildNumberTooLargeMessage(
-                        field,
+                throw new ValidatorException(buildNumberTooLargeMessage(field,
                         new Integer(_maximum)), ValidationConstraint.TOO_LARGE);
 
             return new Integer(intValue);
         }
         catch (NumberFormatException ex)
         {
-            throw new ValidatorException(buildInvalidNumericFormatMessage(field),
+            throw new ValidatorException(
+                    buildInvalidNumericFormatMessage(field),
                     ValidationConstraint.NUMBER_FORMAT);
         }
     }
 
-    public void renderValidatorContribution(IFormComponent field, IMarkupWriter writer,
-            IRequestCycle cycle)
+    public void renderValidatorContribution(IFormComponent field,
+            IMarkupWriter writer, IRequestCycle cycle)
     {
-        if (!isClientScriptingEnabled())
-            return;
+        if (!isClientScriptingEnabled()) return;
 
-        if (!(isRequired() || _minimumSet || _maximumSet))
-            return;
+        if (!(isRequired() || _minimumSet || _maximumSet)) return;
 
         Map symbols = buildSymbols(field);
 
@@ -120,7 +117,8 @@ public class IntValidator extends AbstractNumericValidator
             symbols.put("minimum", minimum);
             symbols.put("maximum", maximum);
 
-            symbols.put("rangeMessage", buildRangeMessage(field, minimum, maximum));
+            symbols.put("rangeMessage", buildRangeMessage(field, minimum,
+                    maximum));
         }
 
         return symbols;

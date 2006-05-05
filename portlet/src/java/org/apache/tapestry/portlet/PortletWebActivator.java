@@ -24,13 +24,15 @@ import org.apache.tapestry.web.WebActivator;
 import org.apache.tapestry.web.WebUtils;
 
 /**
- * Adapts a {@link javax.portlet.PortletConfig}&nbsp; as {@link org.apache.tapestry.web.WebActivator}.
+ * Adapts a {@link javax.portlet.PortletConfig}&nbsp; as
+ * {@link org.apache.tapestry.web.WebActivator}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class PortletWebActivator implements WebActivator
 {
+
     private final PortletConfig _config;
 
     public PortletWebActivator(PortletConfig config)

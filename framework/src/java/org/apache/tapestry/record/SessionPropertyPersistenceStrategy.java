@@ -24,17 +24,20 @@ import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
 
 /**
- * The most basic {@link org.apache.tapestry.record.PropertyPersistenceStrategy}, which stores
- * properties in the HttpSession as attributes.
+ * The most basic {@link org.apache.tapestry.record.PropertyPersistenceStrategy},
+ * which stores properties in the HttpSession as attributes.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class SessionPropertyPersistenceStrategy implements PropertyPersistenceStrategy
+public class SessionPropertyPersistenceStrategy implements
+        PropertyPersistenceStrategy
 {
+
     public static final String STRATEGY_ID = "session";
 
-    // Really, the name of the servlet; used as a prefix on all HttpSessionAttribute keys
+    // Really, the name of the servlet; used as a prefix on all
+    // HttpSessionAttribute keys
     // to keep things straight if multiple Tapestry apps are deployed
     // in the same WAR.
 
@@ -42,19 +45,16 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
 
     private WebRequest _request;
 
-    public void store(String pageName, String idPath, String propertyName, Object newValue)
+    public void store(String pageName, String idPath, String propertyName,
+            Object newValue)
     {
         Defense.notNull(pageName, "pageName");
         Defense.notNull(propertyName, "propertyName");
 
         WebSession session = _request.getSession(true);
 
-        String attributeName = RecordUtils.buildChangeKey(
-                STRATEGY_ID,
-                _applicationId,
-                pageName,
-                idPath,
-                propertyName);
+        String attributeName = RecordUtils.buildChangeKey(STRATEGY_ID,
+                _applicationId, pageName, idPath, propertyName);
 
         session.setAttribute(attributeName, newValue);
     }
@@ -65,27 +65,24 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
 
         WebSession session = _request.getSession(false);
 
-        if (session == null)
-            return Collections.EMPTY_LIST;
+        if (session == null) return Collections.EMPTY_LIST;
 
         final Collection result = new ArrayList();
 
         WebSessionAttributeCallback callback = new WebSessionAttributeCallback()
         {
+
             public void handleAttribute(WebSession session, String name)
             {
-                PropertyChange change = RecordUtils.buildChange(name, session.getAttribute(name));
+                PropertyChange change = RecordUtils.buildChange(name, session
+                        .getAttribute(name));
 
                 result.add(change);
             }
         };
 
-        RecordUtils.iterateOverMatchingAttributes(
-                STRATEGY_ID,
-                _applicationId,
-                pageName,
-                session,
-                callback);
+        RecordUtils.iterateOverMatchingAttributes(STRATEGY_ID, _applicationId,
+                pageName, session, callback);
 
         return result;
     }
@@ -94,30 +91,27 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
     {
         WebSession session = _request.getSession(false);
 
-        if (session == null)
-            return;
+        if (session == null) return;
 
         WebSessionAttributeCallback callback = new WebSessionAttributeCallback()
         {
+
             public void handleAttribute(WebSession session, String name)
             {
                 session.setAttribute(name, null);
             }
         };
 
-        RecordUtils.iterateOverMatchingAttributes(
-                STRATEGY_ID,
-                _applicationId,
-                pageName,
-                session,
-                callback);
+        RecordUtils.iterateOverMatchingAttributes(STRATEGY_ID, _applicationId,
+                pageName, session, callback);
     }
 
     /**
      * Does nothing; session persistence does not make use of query parameters.
      */
 
-    public void addParametersForPersistentProperties(ServiceEncoding encoding, boolean post)
+    public void addParametersForPersistentProperties(ServiceEncoding encoding,
+            boolean post)
     {
     }
 

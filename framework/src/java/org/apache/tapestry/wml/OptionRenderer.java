@@ -18,23 +18,21 @@ import org.apache.tapestry.link.DefaultLinkRenderer;
 import org.apache.tapestry.link.ILinkRenderer;
 
 /**
- *  Implementation of {@link org.apache.tapestry.link.ILinkRenderer} for
- *  the WML Option element.
- *
- *  The value attribute is reserved.
- *
- *  @author David Solis
- *  @since 3.0
- *
- **/
+ * Implementation of {@link org.apache.tapestry.link.ILinkRenderer} for the WML
+ * Option element. The value attribute is reserved.
+ * 
+ * @author David Solis
+ * @since 3.0
+ */
 
 public class OptionRenderer extends DefaultLinkRenderer
 {
-	/**
-	 *  A singleton for the option link.
-	 **/
 
-	 public static final ILinkRenderer SHARED_INSTANCE = new OptionRenderer();
+    /**
+     * A singleton for the option link.
+     */
+
+    public static final ILinkRenderer SHARED_INSTANCE = new OptionRenderer();
 
     protected String getElement()
     {

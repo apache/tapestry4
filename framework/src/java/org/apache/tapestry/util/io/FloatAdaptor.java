@@ -24,6 +24,7 @@ import org.apache.tapestry.services.DataSqueezer;
 
 public class FloatAdaptor implements SqueezeAdaptor
 {
+
     private static final String PREFIX = "f";
 
     public String getPrefix()
@@ -37,8 +38,8 @@ public class FloatAdaptor implements SqueezeAdaptor
     }
 
     /**
-     * Invoked <code>toString()</code> on data (which is type {@link Float}), and prefixs the
-     * result.
+     * Invoked <code>toString()</code> on data (which is type {@link Float}),
+     * and prefixs the result.
      */
 
     public String squeeze(DataSqueezer squeezer, Object data)

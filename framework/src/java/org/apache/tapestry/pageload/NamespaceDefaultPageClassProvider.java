@@ -23,14 +23,18 @@ import org.apache.tapestry.TapestryConstants;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class NamespaceDefaultPageClassProvider implements ComponentClassProvider
+public class NamespaceDefaultPageClassProvider implements
+        ComponentClassProvider
 {
 
-    public String provideComponentClassName(ComponentClassProviderContext context)
+    public String provideComponentClassName(
+            ComponentClassProviderContext context)
     {
-        // This may be null, if the namespace fails to define this meta data value.
+        // This may be null, if the namespace fails to define this meta data
+        // value.
 
-        return context.getNamespace().getPropertyValue(TapestryConstants.PAGE_CLASS_NAME);
+        return context.getNamespace().getPropertyValue(
+                TapestryConstants.PAGE_CLASS_NAME);
     }
 
 }

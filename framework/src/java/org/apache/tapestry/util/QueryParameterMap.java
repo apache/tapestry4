@@ -22,14 +22,15 @@ import java.util.TreeMap;
 import org.apache.hivemind.util.Defense;
 
 /**
- * A wrapper around a Map that stores query parameter values. Map keys are strings. Map values can
- * be simple strings or array of string (or null).
+ * A wrapper around a Map that stores query parameter values. Map keys are
+ * strings. Map values can be simple strings or array of string (or null).
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class QueryParameterMap
 {
+
     private final Map _parameters;
 
     public QueryParameterMap()
@@ -38,9 +39,9 @@ public class QueryParameterMap
     }
 
     /**
-     * Constructor around an existing Map whose keys and values are expected to conform expected use
-     * (keys are strings, values are null, string or string array). The map passed in is retained (
-     * not copied).
+     * Constructor around an existing Map whose keys and values are expected to
+     * conform expected use (keys are strings, values are null, string or string
+     * array). The map passed in is retained ( not copied).
      */
 
     public QueryParameterMap(Map parameterMap)
@@ -51,7 +52,8 @@ public class QueryParameterMap
     }
 
     /**
-     * Replaces the parameter value for the given name wit the new value (which may be null).
+     * Replaces the parameter value for the given name wit the new value (which
+     * may be null).
      */
 
     public void setParameterValue(String name, String value)
@@ -62,8 +64,8 @@ public class QueryParameterMap
     }
 
     /**
-     * Replaces the parameter value for the given name wit the new list of values (which may be
-     * empty or null).
+     * Replaces the parameter value for the given name wit the new list of
+     * values (which may be empty or null).
      */
 
     public void setParameterValues(String name, String[] values)
@@ -74,8 +76,8 @@ public class QueryParameterMap
     }
 
     /**
-     * Gets a query parameter value. If an array of values was stored, this returns the first value.
-     * May return null.
+     * Gets a query parameter value. If an array of values was stored, this
+     * returns the first value. May return null.
      */
 
     public String getParameterValue(String name)
@@ -84,8 +86,7 @@ public class QueryParameterMap
 
         Object values = _parameters.get(name);
 
-        if (values == null || values instanceof String)
-            return (String) values;
+        if (values == null || values instanceof String) return (String) values;
 
         String[] array = (String[]) values;
 
@@ -93,9 +94,9 @@ public class QueryParameterMap
     }
 
     /**
-     * Returns the array of values for the specified parameter. If only a lone value was stored (via
-     * {@link #setParameterValue(String, String)}, then the value is wrapped as a string array and
-     * returned.
+     * Returns the array of values for the specified parameter. If only a lone
+     * value was stored (via {@link #setParameterValue(String, String)}, then
+     * the value is wrapped as a string array and returned.
      */
     public String[] getParameterValues(String name)
     {
@@ -108,8 +109,7 @@ public class QueryParameterMap
 
         String loneValue = (String) values;
 
-        return new String[]
-        { loneValue };
+        return new String[] { loneValue };
     }
 
     /**
@@ -119,11 +119,11 @@ public class QueryParameterMap
     {
         int count = _parameters.size();
 
-        String[] result = (String[]) _parameters.keySet().toArray(new String[count]);
-        
-        if (!TreeMap.class.isInstance(_parameters))
-            Arrays.sort(result);
-        
+        String[] result = (String[]) _parameters.keySet().toArray(
+                new String[count]);
+
+        if (!TreeMap.class.isInstance(_parameters)) Arrays.sort(result);
+
         return result;
     }
 }

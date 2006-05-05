@@ -22,64 +22,75 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IContainedComponent;
 
 /**
- * Messages for the pageload package
+ * Messages for the pageload package.
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
-class PageloadMessages
+final class PageloadMessages
 {
-    private final static MessageFormatter _formatter = new MessageFormatter(PageloadMessages.class);
 
-    static String parameterMustHaveNoDefaultValue(IComponent component, String name)
+    private static final MessageFormatter _formatter = new MessageFormatter(
+            PageloadMessages.class);
+
+    /* defeat instantiation */
+    private PageloadMessages()
     {
-        return _formatter.format(
-                "parameter-must-have-no-default-value",
-                component.getExtendedId(),
-                name);
     }
 
-    static String unableToInitializeProperty(String propertyName, IComponent component,
-            Throwable cause)
+    static String parameterMustHaveNoDefaultValue(IComponent component,
+            String name)
     {
-        return _formatter.format("unable-to-initialize-property", propertyName, component, cause);
+        return _formatter.format("parameter-must-have-no-default-value",
+                component.getExtendedId(), name);
+    }
+
+    static String unableToInitializeProperty(String propertyName,
+            IComponent component, Throwable cause)
+    {
+        return _formatter.format("unable-to-initialize-property", propertyName,
+                component, cause);
     }
 
     static String requiredParameterNotBound(String name, IComponent component)
     {
-        return _formatter.format("required-parameter-not-bound", name, component.getExtendedId());
+        return _formatter.format("required-parameter-not-bound", name,
+                component.getExtendedId());
     }
 
     static String inheritInformalInvalidComponentFormalOnly(IComponent component)
     {
-        return _formatter.format("inherit-informal-invalid-component-formal-only", component
-                .getExtendedId());
+        return _formatter.format(
+                "inherit-informal-invalid-component-formal-only", component
+                        .getExtendedId());
     }
 
-    static String inheritInformalInvalidContainerFormalOnly(IComponent container,
-            IComponent component)
-    {
-        return _formatter.format("inherit-informal-invalid-container-formal-only", container
-                .getExtendedId(), component.getExtendedId());
-    }
-
-    static String formalParametersOnly(IComponent component, String parameterName)
-    {
-        return _formatter
-                .format("formal-parameters-only", component.getExtendedId(), parameterName);
-    }
-
-    static String unableToInstantiateComponent(IComponent container, Throwable cause)
+    static String inheritInformalInvalidContainerFormalOnly(
+            IComponent container, IComponent component)
     {
         return _formatter.format(
-                "unable-to-instantiate-component",
-                container.getExtendedId(),
-                cause);
+                "inherit-informal-invalid-container-formal-only", container
+                        .getExtendedId(), component.getExtendedId());
+    }
+
+    static String formalParametersOnly(IComponent component,
+            String parameterName)
+    {
+        return _formatter.format("formal-parameters-only", component
+                .getExtendedId(), parameterName);
+    }
+
+    static String unableToInstantiateComponent(IComponent container,
+            Throwable cause)
+    {
+        return _formatter.format("unable-to-instantiate-component", container
+                .getExtendedId(), cause);
     }
 
     static String classNotComponent(Class componentClass)
     {
-        return _formatter.format("class-not-component", componentClass.getName());
+        return _formatter.format("class-not-component", componentClass
+                .getName());
     }
 
     static String unableToInstantiate(String className, Throwable cause)
@@ -118,18 +129,19 @@ class PageloadMessages
                 .getLocationString(binding));
     }
 
-    public static String usedParameterAlias(IContainedComponent contained, String name,
-            String parameterName, Location bindingLocation)
+    public static String usedParameterAlias(IContainedComponent contained,
+            String name, String parameterName, Location bindingLocation)
     {
-        return _formatter.format("used-parameter-alias", new Object[]
-        { HiveMind.getLocationString(bindingLocation), contained.getType(), name, parameterName });
+        return _formatter.format("used-parameter-alias", new Object[] {
+                HiveMind.getLocationString(bindingLocation),
+                contained.getType(), name, parameterName });
     }
 
-    public static String deprecatedParameter(String parameterName, Location location,
-            String componentType)
+    public static String deprecatedParameter(String parameterName,
+            Location location, String componentType)
     {
-        return _formatter.format("deprecated-parameter", parameterName, HiveMind
-                .getLocationString(location), componentType);
+        return _formatter.format("deprecated-parameter", parameterName,
+                HiveMind.getLocationString(location), componentType);
     }
 
 }

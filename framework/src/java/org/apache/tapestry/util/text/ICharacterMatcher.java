@@ -20,12 +20,14 @@ package org.apache.tapestry.util.text;
  * @author mb
  * @since 4.0
  */
-public interface ICharacterMatcher 
+public interface ICharacterMatcher
 {
+
     /**
-     * Determine whether the given character matches the implemented rule
+     * Determine whether the given character matches the implemented rule.
      * 
-     * @param ch the character to be matched
+     * @param ch
+     *            the character to be matched
      * @return true if the character matches the rule
      */
     boolean matches(char ch);

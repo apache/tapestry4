@@ -17,8 +17,8 @@ package org.apache.tapestry.util.io;
 import org.apache.tapestry.services.DataSqueezer;
 
 /**
- * Squeezes a {@link Integer}. This adaptor claims all the digits as prefix characters, so its the
- * very simplest conversion of all!
+ * Squeezes a {@link Integer}. This adaptor claims all the digits as prefix
+ * characters, so its the very simplest conversion of all!
  * 
  * @author Howard Lewis Ship
  */
@@ -37,7 +37,8 @@ public class IntegerAdaptor implements SqueezeAdaptor
     }
 
     /**
-     * Simply invokes <code>toString()</code> on the data, which is actually type {@link Integer}.
+     * Simply invokes <code>toString()</code> on the data, which is actually
+     * type {@link Integer}.
      */
 
     public String squeeze(DataSqueezer squeezer, Object data)

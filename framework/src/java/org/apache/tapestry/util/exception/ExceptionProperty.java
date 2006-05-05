@@ -17,36 +17,38 @@ package org.apache.tapestry.util.exception;
 import java.io.Serializable;
 
 /**
- * Captures a name/value property pair from an exception. Part of an {@link ExceptionDescription}.
+ * Captures a name/value property pair from an exception. Part of an
+ * {@link ExceptionDescription}.
  * 
  * @author Howard Lewis Ship
  */
 
 public class ExceptionProperty implements Serializable
 {
+
     private static final long serialVersionUID = 5260773289683550374L;
 
     /**
      * @since 2.0.4
      */
 
-    private String name;
+    private String _name;
 
-    private Object value;
+    private Object _value;
 
     public ExceptionProperty(String name, Object value)
     {
-        this.name = name;
-        this.value = value;
+        this._name = name;
+        this._value = value;
     }
 
     public String getName()
     {
-        return name;
+        return _name;
     }
 
     public Object getValue()
     {
-        return value;
+        return _value;
     }
 }

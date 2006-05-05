@@ -15,8 +15,8 @@
 package org.apache.tapestry.record;
 
 /**
- * Represents a change to a component on a page, this represents a datum of information stored by a
- * {@link org.apache.tapestry.engine.IPageRecorder}.
+ * Represents a change to a component on a page, this represents a datum of
+ * information stored by a {@link org.apache.tapestry.engine.IPageRecorder}.
  * <p>
  * Renamed from IPageChange in release 4.0.
  * 
@@ -25,21 +25,23 @@ package org.apache.tapestry.record;
 
 public interface PropertyChange
 {
+
     /**
-     * The path to the component on the page, or null if the property is a property of the page.
+     * The path to the component on the page, or null if the property is a
+     * property of the page.
      */
 
-    public String getComponentPath();
+    String getComponentPath();
 
     /**
      * The new value for the property, which may be null.
      */
 
-    public Object getNewValue();
+    Object getNewValue();
 
     /**
      * The name of the property that changed.
      */
 
-    public String getPropertyName();
+    String getPropertyName();
 }

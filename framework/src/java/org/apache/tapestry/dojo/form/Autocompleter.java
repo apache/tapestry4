@@ -24,7 +24,6 @@ import org.apache.tapestry.IScript;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
-import org.apache.tapestry.dojo.IWidget;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -41,7 +40,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author jkuhnert
  */
 public abstract class Autocompleter extends AbstractFormWidget 
-    implements ValidatableField, IJSONRender, IDirect, IWidget
+    implements ValidatableField, IJSONRender, IDirect
 {
     
     /**

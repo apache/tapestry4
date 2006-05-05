@@ -18,21 +18,23 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 
 /**
- * Handles connecting an inherited binding. These will be going away soon (if not in release 4.0
- * itself).
+ * Handles connecting an inherited binding. These will be going away soon (if
+ * not in release 4.0 itself).
  * 
  * @author Howard Lewis Ship
  * @since 4.0
  */
 class QueuedInheritedBinding implements IQueuedInheritedBinding
 {
+
     private IComponent _component;
 
     private String _containerParameterName;
 
     private String _parameterName;
 
-    QueuedInheritedBinding(IComponent component, String containerParameterName, String parameterName)
+    QueuedInheritedBinding(IComponent component, String containerParameterName,
+            String parameterName)
     {
         _component = component;
         _containerParameterName = containerParameterName;
@@ -41,14 +43,16 @@ class QueuedInheritedBinding implements IQueuedInheritedBinding
 
     public void connect()
     {
-        IBinding binding = _component.getContainer().getBinding(_containerParameterName);
+        IBinding binding = _component.getContainer().getBinding(
+                _containerParameterName);
 
-        if (binding == null)
-            return;
+        if (binding == null) return;
 
-        // In many cases, a default parameter binding will have been set on the child component
+        // In many cases, a default parameter binding will have been set on the
+        // child component
         // parameter, which
-        // gets overwritten by this inherited binding. There's still a lot of ambiquity concerning
+        // gets overwritten by this inherited binding. There's still a lot of
+        // ambiquity concerning
         // binding
         // an alias this way.
 

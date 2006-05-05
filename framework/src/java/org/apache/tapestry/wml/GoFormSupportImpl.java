@@ -22,15 +22,17 @@ import org.apache.tapestry.form.FormEventType;
 import org.apache.tapestry.form.FormSupportImpl;
 
 /**
- * Subclass of {@link org.apache.tapestry.form.FormSupportImpl}&nbsp;that adjusts the output markup
- * to conform to WML.
+ * Subclass of {@link org.apache.tapestry.form.FormSupportImpl}&nbsp;that
+ * adjusts the output markup to conform to WML.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class GoFormSupportImpl extends FormSupportImpl
 {
-    public GoFormSupportImpl(IMarkupWriter writer, IRequestCycle cycle, IForm form)
+
+    public GoFormSupportImpl(IMarkupWriter writer, IRequestCycle cycle,
+            IForm form)
     {
         super(writer, cycle, form);
     }
@@ -50,13 +52,13 @@ public class GoFormSupportImpl extends FormSupportImpl
         writeHiddenFieldList();
     }
 
-    protected void writeHiddenField(IMarkupWriter writer, String name, String id, String value)
+    protected void writeHiddenField(IMarkupWriter writer, String name,
+            String id, String value)
     {
         writer.beginEmpty("postfield");
         writer.attribute("name", name);
 
-        if (HiveMind.isNonBlank(id))
-            writer.attribute("id", id);
+        if (HiveMind.isNonBlank(id)) writer.attribute("id", id);
 
         writer.attribute("value", value);
         writer.println();

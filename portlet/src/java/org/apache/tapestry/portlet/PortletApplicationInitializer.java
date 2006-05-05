@@ -17,13 +17,15 @@ package org.apache.tapestry.portlet;
 import javax.portlet.PortletConfig;
 
 /**
- * Command interface for the <code>tapestry.portlet.ApplicationInitializer</code> configuration
- * point, which is used by the application portlet to bootstrap the application.
+ * Command interface for the
+ * <code>tapestry.portlet.ApplicationInitializer</code> configuration point,
+ * which is used by the application portlet to bootstrap the application.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface PortletApplicationInitializer
 {
-    public void initialize(PortletConfig portletConfig);
+
+    void initialize(PortletConfig portletConfig);
 }

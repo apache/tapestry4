@@ -18,7 +18,7 @@ package org.apache.tapestry.portlet;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public class PortletConstants
+public final class PortletConstants
 {
     /**
      * Name of the render service, whose job is to render a page. The page to render is identified

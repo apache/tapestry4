@@ -18,10 +18,6 @@ dojo.require("dojo.dom");
 dojo.require("dojo.event");
 dojo.require("dojo.lang.common");
 
-// global Tapestry object definition
-//var tapestry;
-//if(dj_undef("tapestry")){ tapestry={}; }
-
 // Define core widget management methods
 tapestry.widget = {
 	

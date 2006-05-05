@@ -27,15 +27,17 @@ import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 
 /**
- * Replacement for the standard home service, used by Portlets. This exists to handle the special
- * case where a Portlet render request arrives when there is not a Portlet action request prior ...
- * this can happen when a Portlet is first added to a Portal page.
+ * Replacement for the standard home service, used by Portlets. This exists to
+ * handle the special case where a Portlet render request arrives when there is
+ * not a Portlet action request prior ... this can happen when a Portlet is
+ * first added to a Portal page.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class PortletHomeService implements IEngineService
 {
+
     private PortletRenderer _portletRenderer;
 
     private PortletRequestGlobals _requestGlobals;
@@ -54,7 +56,8 @@ public class PortletHomeService implements IEngineService
     public ILink getLink(boolean post, Object parameter)
     {
         if (parameter != null)
-            throw new IllegalArgumentException(EngineMessages.serviceNoParameter(this));
+            throw new IllegalArgumentException(EngineMessages
+                    .serviceNoParameter(this));
 
         Map parameters = new HashMap();
 
@@ -71,7 +74,8 @@ public class PortletHomeService implements IEngineService
         _responseRenderer = responseRenderer;
     }
 
-    public void service(IRequestCycle cycle) throws IOException
+    public void service(IRequestCycle cycle)
+        throws IOException
     {
         String pageName = _pageResolver.getPageNameForRequest(cycle);
 

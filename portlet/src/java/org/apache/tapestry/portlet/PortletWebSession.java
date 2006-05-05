@@ -24,13 +24,15 @@ import org.apache.tapestry.web.WebSession;
 import org.apache.tapestry.web.WebUtils;
 
 /**
- * Adapts a {@link javax.portlet.PortletSession}as a {@link org.apache.tapestry.web.WebSession}.
+ * Adapts a {@link javax.portlet.PortletSession}as a
+ * {@link org.apache.tapestry.web.WebSession}.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class PortletWebSession implements WebSession
 {
+
     private final PortletSession _portletSession;
 
     public PortletWebSession(final PortletSession portletSession)

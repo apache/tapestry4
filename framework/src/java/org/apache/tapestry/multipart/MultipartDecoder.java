@@ -24,20 +24,21 @@ import org.apache.tapestry.request.IUploadFile;
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
-public interface MultipartDecoder {
-	
-	/**
-	 * Gets a file upload with the given name, or returns null if no such file
-	 * upload was in the request.
-	 */
+public interface MultipartDecoder
+{
 
-	public IUploadFile getFileUpload(String parameterName);
+    /**
+     * Gets a file upload with the given name, or returns null if no such file
+     * upload was in the request.
+     */
 
-	/**
-	 * Cleans up any temporary resources created during the request processing.
-	 * This typically includes temporary files used to contain uploaded file
-	 * content.
-	 */
+    IUploadFile getFileUpload(String parameterName);
 
-	void cleanup();
+    /**
+     * Cleans up any temporary resources created during the request processing.
+     * This typically includes temporary files used to contain uploaded file
+     * content.
+     */
+
+    void cleanup();
 }

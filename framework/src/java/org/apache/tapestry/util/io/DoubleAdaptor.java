@@ -24,6 +24,7 @@ import org.apache.tapestry.services.DataSqueezer;
 
 public class DoubleAdaptor implements SqueezeAdaptor
 {
+
     private static final String PREFIX = "d";
 
     public String getPrefix()
@@ -37,8 +38,8 @@ public class DoubleAdaptor implements SqueezeAdaptor
     }
 
     /**
-     * Invoked <code>toString()</code> on data (which is type {@link Double}), and prefixs the
-     * result.
+     * Invoked <code>toString()</code> on data (which is type {@link Double}),
+     * and prefixs the result.
      */
 
     public String squeeze(DataSqueezer squeezer, Object data)

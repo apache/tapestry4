@@ -27,9 +27,9 @@ public class ValidatorException extends Exception
 {
     private static final long serialVersionUID = 2451683137746501377L;
 
-	private IRender _errorRenderer;
+    private final IRender _errorRenderer;
 
-    private ValidationConstraint _constraint;
+    private final ValidationConstraint _constraint;
 
     public ValidatorException(String errorMessage)
     {

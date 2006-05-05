@@ -19,14 +19,16 @@ import java.util.Collection;
 import org.apache.tapestry.engine.ServiceEncoding;
 
 /**
- * Defines how a persistent property is made persistent. The typical implementation is to store the
- * persistent property into the session as a session attribute.
+ * Defines how a persistent property is made persistent. The typical
+ * implementation is to store the persistent property into the session as a
+ * session attribute.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public interface PropertyPersistenceStrategy
 {
+
     /**
      * Stores the new value.
      * 
@@ -40,35 +42,43 @@ public interface PropertyPersistenceStrategy
      *            the new value (which may be null)
      */
 
-    public void store(String pageName, String idPath, String propertyName, Object newValue);
+    void store(String pageName, String idPath, String propertyName,
+            Object newValue);
 
     /**
-     * Returns a collection of {@link org.apache.tapestry.record.PropertyChange}s. These represent
-     * prior changes previously stored. The order is not significant. Must not return null. Does not
-     * have to reflect changes made during the current request (this method is typically invoked as
-     * part of rolling back a page to a prior state, before any further changes are possible).
+     * Returns a collection of {@link org.apache.tapestry.record.PropertyChange}s.
+     * These represent prior changes previously stored. The order is not
+     * significant. Must not return null. Does not have to reflect changes made
+     * during the current request (this method is typically invoked as part of
+     * rolling back a page to a prior state, before any further changes are
+     * possible).
      */
 
-    public Collection getStoredChanges(String pageName);
+    Collection getStoredChanges(String pageName);
 
     /**
      * Invoked to discard any stored changes for the specified page.
      */
-    public void discardStoredChanges(String pageName);
+    void discardStoredChanges(String pageName);
 
     /**
-     * Invoked by a {@link org.apache.tapestry.services.LinkFactory}&nbsp;, the parameters may be
-     * modified (added to) to store information related to persistent properties. This method is
-     * forwarded to all {@link PropertyPersistenceStrategy}s.
+     * Invoked by a {@link org.apache.tapestry.services.LinkFactory}&nbsp;, the
+     * parameters may be modified (added to) to store information related to
+     * persistent properties. This method is forwarded to all
+     * {@link PropertyPersistenceStrategy}s.
      * 
      * @param encoding
-     *            Service encoding, which indentifies the URL and the query parameters from which
-     *            the {@link org.apache.tapestry.engine.ILink}&nbsp;will be created.
+     *            Service encoding, which indentifies the URL and the query
+     *            parameters from which the
+     *            {@link org.apache.tapestry.engine.ILink}&nbsp;will be
+     *            created.
      * @param post
-     *            if true, then the link will be used for a post (not a get, i.e., for a HTML form);
-     *            this may affect what information is encoded into the link
+     *            if true, then the link will be used for a post (not a get,
+     *            i.e., for a HTML form); this may affect what information is
+     *            encoded into the link
      * @see PropertyPersistenceStrategySource
      */
 
-    public void addParametersForPersistentProperties(ServiceEncoding encoding, boolean post);
+    void addParametersForPersistentProperties(ServiceEncoding encoding,
+            boolean post);
 }

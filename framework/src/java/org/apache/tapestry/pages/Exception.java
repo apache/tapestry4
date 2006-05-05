@@ -27,7 +27,8 @@ import org.apache.tapestry.util.exception.ExceptionDescription;
 
 public abstract class Exception extends BasePage implements PageDetachListener
 {
-    /** Transient property */
+
+    /** Transient property. */
     public abstract void setExceptions(ExceptionDescription[] exceptions);
 
     public void setException(Throwable value)

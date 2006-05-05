@@ -20,15 +20,17 @@ package org.apache.tapestry.util.text;
  * @author mb
  * @since 4.0
  */
-public interface ICharacterTranslator 
+public interface ICharacterTranslator
 {
-	/**
-	 * Translates the provided character into a string 
-	 * 
-	 * @param ch the character to be translated
-	 * @return null if the character is not to be translated,
-	 * an empty string if the character is to be ignored, 
-	 * or another string to represent the character translation
-	 */
-	String translate(char ch);
+
+    /**
+     * Translates the provided character into a string
+     * 
+     * @param ch
+     *            the character to be translated
+     * @return null if the character is not to be translated, an empty string if
+     *         the character is to be ignored, or another string to represent
+     *         the character translation
+     */
+    String translate(char ch);
 }

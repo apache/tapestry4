@@ -20,13 +20,15 @@ import java.io.OutputStream;
 import org.apache.hivemind.util.Defense;
 
 /**
- * An output stream that copies bytes pushed through it to two other output streams.
+ * An output stream that copies bytes pushed through it to two other output
+ * streams.
  * 
  * @author Howard M. Lewis Ship
  * @since 4.0
  */
 public class TeeOutputStream extends OutputStream
 {
+
     private final OutputStream _os1;
 
     private final OutputStream _os2;
@@ -40,31 +42,36 @@ public class TeeOutputStream extends OutputStream
         _os2 = os2;
     }
 
-    public void close() throws IOException
+    public void close()
+        throws IOException
     {
         _os1.close();
         _os2.close();
     }
 
-    public void flush() throws IOException
+    public void flush()
+        throws IOException
     {
         _os1.flush();
         _os2.flush();
     }
 
-    public void write(byte[] b, int off, int len) throws IOException
+    public void write(byte[] b, int off, int len)
+        throws IOException
     {
         _os1.write(b, off, len);
         _os2.write(b, off, len);
     }
 
-    public void write(byte[] b) throws IOException
+    public void write(byte[] b)
+        throws IOException
     {
         _os1.write(b);
         _os1.write(b);
     }
 
-    public void write(int b) throws IOException
+    public void write(int b)
+        throws IOException
     {
         _os1.write(b);
         _os2.write(b);
