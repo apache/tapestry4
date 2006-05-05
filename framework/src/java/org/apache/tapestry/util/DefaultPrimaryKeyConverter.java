@@ -124,7 +124,7 @@ public class DefaultPrimaryKeyConverter implements IPrimaryKeyConverter
     }
 
     /**
-     * Returns true if the deleted values set is empty (or null).l
+     * Returns true if the deleted values set is empty (or null).
      */
     private boolean isDeletedValuesEmpty()
     {

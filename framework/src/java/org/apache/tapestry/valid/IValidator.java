@@ -69,7 +69,7 @@ public interface IValidator
      * @since 2.2
      */
 
-    public void renderValidatorContribution(IFormComponent field, IMarkupWriter writer,
+    void renderValidatorContribution(IFormComponent field, IMarkupWriter writer,
             IRequestCycle cycle);
 
     /**

@@ -24,7 +24,7 @@ public interface ICharacterTranslator
 {
 
     /**
-     * Translates the provided character into a string
+     * Translates the provided character into a string.
      * 
      * @param ch
      *            the character to be translated

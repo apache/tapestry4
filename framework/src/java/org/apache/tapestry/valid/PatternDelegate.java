@@ -29,7 +29,7 @@ public interface PatternDelegate
      * @param input The string under test.
      * @return Returns true if the pattern exists in the input string; returns false otherwise.
      */
-    public boolean contains(String patternString, String input);
+    boolean contains(String patternString, String input);
     
     /**
      * Returns the escaped sequence of characters representing the pattern string provided.
@@ -37,5 +37,5 @@ public interface PatternDelegate
      * @param patternString The raw sequence of characters that represent the pattern.
      * @return The escaped sequence of characters that represent the pattern.
      */
-    public String getEscapedPatternString(String patternString);
+    String getEscapedPatternString(String patternString);
 }

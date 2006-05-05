@@ -53,7 +53,7 @@ public abstract class Input extends AbstractComponent
                 writer.attribute("format", format);
 
             boolean emptyok = isEmptyok();
-            if (emptyok != false) writer.attribute("emptyok", emptyok);
+            if (emptyok) writer.attribute("emptyok", emptyok);
 
             renderInformalParameters(writer, cycle);
 

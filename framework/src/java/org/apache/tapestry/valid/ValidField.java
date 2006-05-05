@@ -45,7 +45,7 @@ public abstract class ValidField extends AbstractFormComponent
 
     public abstract void setValue(Object value);
 
-    /** Parameter */
+    /** Parameter. */
 
     public abstract String getDisplayName();
 

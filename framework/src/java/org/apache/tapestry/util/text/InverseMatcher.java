@@ -25,7 +25,7 @@ public class InverseMatcher implements ICharacterMatcher
     private ICharacterMatcher _matcher;
     
     /**
-     * Creates a new object that inverts the matching rule of the provided matcher
+     * Creates a new object that inverts the matching rule of the provided matcher.
      * 
      * @param matcher the matcher whose behaviour will be inverted
      */

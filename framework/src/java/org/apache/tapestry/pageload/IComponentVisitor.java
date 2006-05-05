@@ -17,7 +17,7 @@ package org.apache.tapestry.pageload;
 import org.apache.tapestry.IComponent;
 
 /**
- *  An interface defining an entity that is interested in examining a particular component 
+ *  An interface defining an entity that is interested in examining a particular component .
  * 
  *  @author mindbridge
  *  @since 3.0

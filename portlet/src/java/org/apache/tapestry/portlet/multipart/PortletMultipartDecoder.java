@@ -28,5 +28,5 @@ public interface PortletMultipartDecoder extends MultipartDecoder {
      * uploaded files).
      */
 
-    public ActionRequest decode(ActionRequest request);
+    ActionRequest decode(ActionRequest request);
 }

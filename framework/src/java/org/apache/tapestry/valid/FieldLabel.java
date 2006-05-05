@@ -90,12 +90,12 @@ public abstract class FieldLabel extends AbstractComponent
         delegate.writeLabelSuffix(field, writer, cycle);
     }
 
-    /** displayName parameter */
+    /** displayName parameter. */
     public abstract String getDisplayName();
 
-    /** field parameter */
+    /** field parameter. */
     public abstract IFormComponent getField();
 
-    /** raw parameter */
+    /** raw parameter. */
     public abstract boolean getRaw();
 }

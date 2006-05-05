@@ -30,7 +30,7 @@ public class ExtendedReader extends Reader
     private char _bufferedChar;
     
     /**
-     * Creates a new extended reader that reads from the provided object
+     * Creates a new extended reader that reads from the provided object.
      * 
      * @param in the Reader to get data from
      */
@@ -59,7 +59,7 @@ public class ExtendedReader extends Reader
     }
     
     /**
-     * Determines whether the end of the stream is reached
+     * Determines whether the end of the stream is reached.
      * 
      * @return true if at the end of stream
      * @throws IOException if an error occurs
