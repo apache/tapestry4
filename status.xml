@@ -25,7 +25,8 @@
     <person name="Geoff Longman" id="GL"/>
     <person name="Paul Ferraro" email="pmf8@columbia.edu" id="PF"/>
     <person name="Jesse Kuhnert" email="jkuhnert@gmail.com" id="JK"/>
-    <person name="Andreas Andreou" email="andyhot@di.uoa.gr" id="AA"/>    
+    <person name="Andreas Andreou" email="andyhot@di.uoa.gr" id="AA"/>
+    <person name="Brian Wallace" email="crosshelix@gmail.gom" id="BW"/>
     <!-- Add more people here -->
     <!-- Retired: -->
     <person name="Malcom Edgar" id="ME"/>
@@ -74,8 +75,66 @@
   		</action>   
   		<action type="add" dev="AA" fixes-bug="TAPESTRY-681">
   			Added Inherited-binding documentation.
-  		</action>  		 		   			
+      </action>
+      <action type="fix" dev="BW" fixes-bug="TAPESTRY-305">
+        Wrong example for file download
+  		</action>
+      <action type="fix" dev="BW" fixes-bug="TAPESTRY-562">
+        Example web.xml in Configuring Tapestry section of UserGuide does not meet the dtd specification.
+      </action>
+      <action type="fix" dev="BW" fixes-bug="TAPESTRY-640">
+        ValidationStrings.properties for Swedish (sv) has an error
+      </action>
+      <action type="fix" dev="AA" fixes-bug="TAPESTRY-771">
+        Dependencies are not loaded from Ibiblio when using Tapestry in a Maven 2 project
+      </action>
+      <action type="fix" dev="BW" fixes-bug="TAPESTRY-809">
+        Performance bottleneck due to HiveMind class loading issue
+      </action>
+      <action type="fix" dev="BW" fixes-bug="TAPESTRY-818">
+        LinkSubmit documentation lacks "action" parameter
+      </action>
+      <action type="fix" dev="BW" fixes-bug="TAPESTRY-832">
+        Bad links to the javadoc in the component reference: Radio, RadioGroup, Upload
+      </action>
+      <action type="fix" dev="BW" fixes-bug="TAPESTRY-843">
+        Friendly URL documentation concerning security and ugly URLs
+      </action>
+      <action type="fix" dev="BW" fixes-bug="TAPESTRY-854">
+        Document replacement for AbstractPage.initialize()
+      </action>
+      <action type="fix" dev="BW" fixes-bug="TAPESTRY-911">
+        Duplicate [TAPESTRY-869]: Date Picker Icon does not have alt test
+      </action>
+      <action type="fix" dev="BW" fixes-bug="TAPESTRY-920">
+        Body.get() documentation incorrect
+      </action>
+      <action type="fix" dev="BW" fixes-bug="TAPESTRY-927">
+        example in renderblock documentation broken
+      </action>
+      <action type="fix" dev="BW" fixes-bug="TAPESTRY-932">
+        SimpleTableColumnComponent.html contains invalid CSS
+      </action>
+    <action type="update" dev="BW" fixes-bug="TAPESTRY-516">
+      Make Page extension configurable.
+    </action>
+    <action type="update" dev="BW" fixes-bug="TAPESTRY-834">
+      Missing documentation in componentes descriptor
+    </action>
+    <action type="update" dev="BW" fixes-bug="TAPESTRY-839">
+      Documentation for location of hivemodule.xml unclear for web applications
+    </action>
+    <action type="update" dev="BW" fixes-bug="TAPESTRY-930">
+      Tapestry Documentation Errata (Render Block)
+    </action>
+    <action type="add" fixes-bug="TAPESTRY-486">
+      Missing contrib component documentation
+    </action>
+    <action type="add" dev="BW" fixes-bug="TAPESTRY-916">
+      Place link to Cognition Framework under Related Items within Tapestry Forrest docs
+    </action>
   	</release>
+
   	<release version="4.0.2" date="Apr 13 2006" >
   		<action type="update" dev="AA">
   			Updated contrib:Tree documentation.
