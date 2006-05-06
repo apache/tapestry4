@@ -36,6 +36,9 @@
 	
 	<property name="release.dir" value="${dojo.dir}/../release/" />
 	
+	<taskdef name="dojo-test" classname="org.dojotoolkit.ant.DojoTestTask" 
+			classpath="lib/ant-dojotest.jar" />
+	
 	<import file="${hivebuild.dir}/jar-module.xml" />
 	
 	<target name="check-dependencies" description="Ensures that dojo.dir is set.">
@@ -73,5 +76,13 @@
 			</fileset>
 		</copy>
 	</target>
-
+	
+	<!-- ====================================================== -->
+	<!-- Testing												-->
+	<!-- ====================================================== -->
+	
+	<target name="test-js" description="Tests tapestry js package with dojo test utils." >
+		<dojo-test dojosrc="${dojo.dir}/../" testsrc="tests"/>
+	</target>
+	
 </project>
