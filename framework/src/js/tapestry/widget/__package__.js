@@ -1,2 +1,7 @@
-dojo.provide("tapestry.widget");
-dojo.widget.manager.registerWidgetPackage("tapestry.widget");
+dojo.hostenv.conditionalLoadModule({
+	common: [
+		"tapestry.widget.Widget"
+	]
+});
+dojo.hostenv.moduleLoaded("tapestry.widget.*");
+dojo.debugShallow(tapestry);
