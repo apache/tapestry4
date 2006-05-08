@@ -30,8 +30,23 @@
 
 <p>A form element used to handle file uploads. The uploaded file is represented by an instance of &IUploadFile;.</p>
 
+<p>The maximum upload size of a file can be set by configuring the <link href="&apiroot;/multipart/MultipartDecoder.html">MultipartDecoder</link>
+   service in hivemind. The default is 10000000(10kb).</p>
+
+<section>
+<title>Example override of default maximum file upload size.</title>
+<source><![CDATA[
+<implementation service-id="tapestry.multipart.ServletMultipartDecoder">
+<create-instance class="org.apache.tapestry.multipart.MultipartDecoderImpl,maxSize=-1" model="threaded" />
+</implementation> 
+]]></source>
+</section>
+
 <p>
-  <strong>See also: <link href="&apiroot;/form/Upload.html">org.apache.tapestry.form.Upload</link>, &Form;</strong>
+  <strong>See also: 
+  
+  <link href="&apiroot;/form/Upload.html">org.apache.tapestry.form.Upload</link>, &Form;</strong>,
+  <link href="&apiroot;/multipart/ServletMultipartDecoder.html">ServletMultipartDecoder</link>
 </p>
 
 <warning>
@@ -110,7 +125,6 @@
     </td>
 
   </tr>
-
 </table>
 
 <p>
