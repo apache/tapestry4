@@ -33,6 +33,13 @@
    and receive its response without reloading the page (Ajax)
 </p>
 
+<warning>
+	The <link href="&apicontrib;/contrib/ajax/XTileService.html">XTileService</link>
+	that this component uses does NOT activate any page - it simply calls the specified 
+	listener. This means that pageBeginRender() methods will not get called and that 
+	cycle.getPage() will return null.
+</warning>
+
 <section>
   <title>Parameters</title>
   
@@ -54,8 +61,8 @@
 		<td></td>
 		<td>
         The listener that will be invoked when the Javascript function with the given name is invoked.
-        Any parameters passed to the send function will be available from cycle.getServiceParameters(). 
-        In addition, the listener can perform cycle.setServiceParameters() to pass an array of
+        Any parameters passed to the send function will be available from cycle.getListenerParameters(). 
+        In addition, the listener can perform cycle.setListenerParameters() to pass an array of
         strings to the JavaScript receive function.
 		</td>
     </tr>
@@ -137,7 +144,7 @@
   </head>
   <body>
     <span jwcid="@contrib:XTile" listener="ognl:listeners.handleListRequest"
-        sendName="sendPrefix" receiveName="receivevList"/>
+        sendName="sendPrefix" receiveName="recvList"/>
     <form action="Results.html" method="post">
        <input type="text" onkeyup="sendPrefix(this.value)"/>
        <br/>
@@ -161,12 +168,12 @@
     .
     .
     public void handleListRequest(IRequestCycle cycle) {
-      Object[] params = cycle.getServiceParameters();
+      Object[] params = cycle.getListenerParameters();
       if (params.length == 0) return;
 
       String typed = params[0].toString();
       String[] ret = findCompletions(typed);
-      cycle.setServiceParameters(ret);
+      cycle.setListenerParameters(ret);
     }
     .
     .
