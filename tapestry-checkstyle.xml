@@ -3,7 +3,7 @@
 	This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-Checkstyle-Configuration: Tapestry
+Checkstyle-Configuration: tapestry
 Description:
 
 -->
@@ -11,6 +11,7 @@ Description:
 <module name="Checker">
     <property name="severity" value="warning"/>
     <module name="TreeWalker">
+        <module name="FileContentsHolder"/>
         <module name="JavadocStyle"/>
         <module name="ConstantName">
             <property name="format" value="^[A-Z][A-Z0-9]|[a-z][a-z0-9]*(_[A-Z0-9]|[a-z0-9]+)*$"/>
@@ -82,4 +83,7 @@ Description:
     </module>
     <module name="PackageHtml"/>
     <module name="NewlineAtEndOfFile"/>
+    <module name="SuppressionCommentFilter">
+        <metadata name="com.atlassw.tools.eclipse.checkstyle.comment" value="Enables ignoring checkstyle errors in sepecific blocks"/>
+    </module>
 </module>

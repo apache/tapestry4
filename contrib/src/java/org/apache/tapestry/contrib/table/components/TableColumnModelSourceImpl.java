@@ -71,15 +71,15 @@ public class TableColumnModelSourceImpl implements TableColumnModelSource
 
         List arrColumns = new ArrayList();
 
-        strDesc = strDesc.trim();
+        String desc = strDesc.trim();
         boolean bFormColumns = false;
-        while(strDesc.startsWith("*"))
+        while(desc.startsWith("*"))
         {
-            strDesc = strDesc.substring(1);
+            desc = desc.substring(1);
             bFormColumns = true;
         }
 
-        StringTokenizer objTokenizer = new StringTokenizer(strDesc, ",");
+        StringTokenizer objTokenizer = new StringTokenizer(desc, ",");
         while(objTokenizer.hasMoreTokens())
         {
             String strToken = objTokenizer.nextToken().trim();

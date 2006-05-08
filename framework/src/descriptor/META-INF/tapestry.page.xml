@@ -41,7 +41,6 @@
         <set-service property="componentTemplateLoader" service-id="ComponentTemplateLoader"/>
         <set-service property="establishDefaultParameterValuesVisitor"
           service-id="EstablishDefaultParameterValuesVisitor"/>
-        <set-object property="valueConverter" value="infrastructure:valueConverter"/>
         <set-service property="assetSource" service-id="tapestry.asset.AssetSource"/>
         <set-service property="pageClassProvider" service-id="PageClassProvider"/>
         <set-service property="componentClassProvider" service-id="ComponentClassProvider"/>

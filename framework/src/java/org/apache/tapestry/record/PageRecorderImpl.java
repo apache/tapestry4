@@ -23,7 +23,6 @@ import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IPageRecorder;
 import org.apache.tapestry.event.ObservedChangeEvent;
 import org.apache.tapestry.spec.IPropertySpecification;
@@ -37,24 +36,20 @@ public class PageRecorderImpl implements IPageRecorder
 
     private String _pageName;
 
-    private IRequestCycle _requestCycle;
-
     private PropertyPersistenceStrategySource _strategySource;
 
     private boolean _locked = false;
 
     private ErrorLog _log;
 
-    public PageRecorderImpl(String pageName, IRequestCycle requestCycle,
-            PropertyPersistenceStrategySource strategySource, ErrorLog log)
+    public PageRecorderImpl(String pageName, PropertyPersistenceStrategySource strategySource, 
+            ErrorLog log)
     {
         Defense.notNull(pageName, "pageName");
-        Defense.notNull(requestCycle, "requestCycle");
         Defense.notNull(strategySource, "strategySource");
         Defense.notNull(log, "log");
 
         _pageName = pageName;
-        _requestCycle = requestCycle;
         _strategySource = strategySource;
         _log = log;
     }

@@ -94,7 +94,7 @@ public class JSONObject
         /**
          * There is only intended to be a single instance of the NULL object, so
          * the clone method returns itself.
-         * 
+         * CHECKSTYLE:OFF
          * @return NULL.
          */
         protected Object clone()

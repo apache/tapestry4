@@ -282,7 +282,7 @@ public class RequestCycle implements IRequestCycle
 
         if (result == null)
         {
-            result = new PageRecorderImpl(name, this, _strategySource, _log);
+            result = new PageRecorderImpl(name, _strategySource, _log);
             _pageRecorders.put(name, result);
         }
 

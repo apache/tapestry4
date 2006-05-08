@@ -38,7 +38,6 @@ import org.apache.tapestry.ITemplateComponent;
 import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.asset.AssetSource;
 import org.apache.tapestry.binding.BindingSource;
-import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.services.ComponentConstructor;
@@ -93,10 +92,6 @@ public class PageLoader implements IPageLoader
     /** @since 4.0 */
 
     private ComponentConstructorFactory _componentConstructorFactory;
-
-    /** @since 4.0 */
-
-    private ValueConverter _valueConverter;
 
     /** @since 4.0 */
 
@@ -752,12 +747,6 @@ public class PageLoader implements IPageLoader
             ComponentConstructorFactory componentConstructorFactory)
     {
         _componentConstructorFactory = componentConstructorFactory;
-    }
-
-    /** @since 4.0 */
-    public void setValueConverter(ValueConverter valueConverter)
-    {
-        _valueConverter = valueConverter;
     }
 
     /** @since 4.0 */
