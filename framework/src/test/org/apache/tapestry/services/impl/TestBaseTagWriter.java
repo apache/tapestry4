@@ -35,6 +35,7 @@ public class TestBaseTagWriter extends HiveMindTestCase
 
         writer.beginEmpty("base");
         writer.attribute("href", url);
+        writer.printRaw("<!--[if IE]></base><![endif]-->");
         writer.println();
 
         return writer;
