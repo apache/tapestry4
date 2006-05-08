@@ -36,7 +36,7 @@
 <section>
 <title>Example override of default maximum file upload size.</title>
 <source><![CDATA[
-<implementation service-id="tapestry.multipart.MultipartDecoder">
+<implementation service-id="tapestry.multipart.ServletMultipartDecoder">
 <create-instance class="org.apache.tapestry.multipart.MultipartDecoderImpl,maxSize=-1" model="threaded" />
 </implementation> 
 ]]></source>
@@ -46,7 +46,7 @@
   <strong>See also: 
   
   <link href="&apiroot;/form/Upload.html">org.apache.tapestry.form.Upload</link>, &Form;</strong>,
-  <link href="&apiroot;/multipart/MultipartDecoder.html">MultipartDecoder</link>
+  <link href="&apiroot;/multipart/ServletMultipartDecoder.html">ServletMultipartDecoder</link>
 </p>
 
 <warning>
