@@ -55,7 +55,8 @@ public class BaseTagWriter implements IRender
         String url = cycle.getAbsoluteURL(sb.toString());
 
         writer.beginEmpty("base");
-        writer.attribute("href", url);
+        writer.attribute("href", url);        
+        writer.printRaw("<!--[if IE]></base><![endif]-->");
 
         writer.println();
     }
