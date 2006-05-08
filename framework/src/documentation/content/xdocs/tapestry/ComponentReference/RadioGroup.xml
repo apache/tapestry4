@@ -40,7 +40,7 @@
 </warning>
 
 <p>
-  <strong>See also: <link href="&apiroot;/components/RadioGroup.html">org.apache.tapestry.components.RadioGroup</link>, &Option;, &PropertySelection;, &Radio;, &Select;</strong> 
+  <strong>See also: <link href="&apiroot;/form/RadioGroup.html">org.apache.tapestry.form.RadioGroup</link>, &Option;, &PropertySelection;, &Radio;, &Select;</strong> 
 
 </p>
 

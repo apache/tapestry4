@@ -22,6 +22,7 @@ import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.multipart.UploadPart;
 import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
@@ -54,7 +55,8 @@ public class Required extends BaseValidator
     {
         if ((object == null)
                 || (String.class.isInstance(object) && (((String) object).length() == 0))
-                || (Collection.class.isInstance(object) && ((Collection) object).isEmpty()))
+                || (Collection.class.isInstance(object) && ((Collection) object).isEmpty())
+                || (UploadPart.class.isInstance(object) && ((UploadPart) object).getSize() < 1))
         {
             String message = buildMessage(messages, field);
             throw new ValidatorException(message, ValidationConstraint.REQUIRED);

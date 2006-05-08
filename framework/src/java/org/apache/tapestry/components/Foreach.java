@@ -34,6 +34,7 @@ import org.apache.tapestry.coerce.ValueConverter;
  * each successive index into the source (starting with zero).
  * 
  * @author Howard Lewis Ship
+ * @deprecated As of release 4.0, replaced by {@link ForBean}
  */
 
 public abstract class Foreach extends AbstractComponent

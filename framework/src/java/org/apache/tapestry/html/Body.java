@@ -129,8 +129,11 @@ public abstract class Body extends AbstractComponent implements PageRenderSuppor
      * components wrapped by the <code>Body</code> to locate it and access the services it
      * provides.
      * 
+     * @param cycle Request cycle in which the Body was stored
+     * @return Body wrapping the components for the specified request cycle
+     * 
      * @deprecated To be removed in 4.1. Use
-     *             {@link org.apache.tapestry.TapestryUtils#getPageRenderSupport(IRequestCycle)}
+     *             {@link org.apache.tapestry.TapestryUtils#getOptionalPageRenderSupport(IRequestCycle)}
      *             instead.
      */
 

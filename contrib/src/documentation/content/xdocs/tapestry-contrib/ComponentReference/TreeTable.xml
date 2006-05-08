@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- 
-   Copyright 2005 The Apache Software Foundation
+   Copyright 2005, 2006 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -27,12 +27,10 @@
   </header>
   
   <body>
-
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
-</p>
+  <p>The TreeTable is an implementation of a tree component using tables for nodes.</p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &Tree; &Table;</strong> 
 </p>
 
 <section>
@@ -48,14 +46,125 @@
     <th>Description</th>
   </tr>
 
+	<tr>
+      <td>sessionStateManager</td>
+      <td>
+		  <link href="&apicontrib;/contrib/tree/model/ITreeSessionStateManager.html">ITreeSessionStateManager</link>
+	  </td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        The sessionStateManager is responsible for handling collapse/expansion and selection of the tree nodes.
+      </td>
+    </tr>
+	
+	<tr>
+      <td>sessionStoreManager</td>
+      <td>
+		  <link href="&apicontrib;/contrib/tree/model/ISessionStoreManager.html">ISessionStoreManager</link>
+	  </td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        The sessionStoreManager holds the key to retrieving the session state.
+      </td>
+    </tr>
+	
+	<tr>
+      <td>treeModel</td>
+      <td>
+		  <link href="&apicontrib;/contrib/tree/model/ITreeModel.html">ITreeModel</link>
+	  </td>
+	  <td>custom</td>
+	  <td>yes</td>
+	  <td>&nbsp;</td>
+      <td>
+        ITreeModel implementation that holds the tree data and state models
+      </td>
+    </tr>
+	
+	<tr>
+      <td>treeStateListener</td>
+      <td>
+		  <link href="&apicontrib;/contrib/tree/model/ITreeStateListener.html">ITreeStateListener</link>
+	  </td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Listener that responds to changes in the tree state
+      </td>
+    </tr>
+	
+	<tr>
+      <td>nodeRenderFactory</td>
+      <td>
+		  <link href="&apicontrib;/contrib/tree/components/INodeRenderFactory.html">INodeRenderFactory</link>
+	  </td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Factory responsible for the rendering of each node.
+      </td>
+    </tr>
+	
+	<tr>
+      <td>nodeViewComponentAddress</td>
+      <td>
+		  <link href="&apiroot;/util/ComponentAddress.html">ComponentAddress</link>
+	  </td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        The ComponentAddress class contains the path to a component, allowing it to locate an instance of that component in a different IRequestCycle.
+      </td>
+    </tr>	
+	
+	<tr>
+      <td>tableColumns</td>
+      <td>java.util.ArrayList</td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Array of columns for the tree
+      </td>
+    </tr>			
+		
+	<tr>
+      <td>entriesPerTablePage</td>
+      <td>int</td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Number of nodes in the tree per page
+      </td>
+    </tr>	
+	
+	<tr>
+      <td>showRootNode</td>
+      <td>boolean</td>
+	  <td>custom</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        If <code>true</code>, the root node of the tree will be displayed.
+      </td>
+    </tr>	
+	
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>forbidden</strong>
 </p>
 
 <p>
@@ -64,9 +173,6 @@
 
 </section>
 
-<section>
-  <title>Examples</title>
-
-</section>
+ <p>The Workbench under Examples shows an example of the TreeTable</p>
 </body>
 </document>

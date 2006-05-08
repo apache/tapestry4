@@ -28,11 +28,14 @@
   
   <body>
 
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+<p>
+	A low level Tree component that initiates the rendering of the tree nodes.
+	It should be wrapped by 
+	<link href="&apicontrib;/contrib/tree/components/TreeView.html">TreeView</link>.
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &Tree;, &TreeView;, &TreeNodeView;</strong> 
 </p>
 
 <section>
@@ -47,15 +50,53 @@
     <th>Default</th>
     <th>Description</th>
   </tr>
+	
+	<tr>
+      <td>treeView</td>
+      <td>
+		  <link href="&apicontrib;/contrib/tree/components/TreeView.html">TreeView</link>
+	  </td>
+	  <td>in</td>
+	  <td>yes</td>
+	  <td>&nbsp;</td>
+      <td>
+        The TreeView component that provides an 
+		  <link href="&apicontrib;/contrib/tree/model/ITreeModel.html">ITreeModel</link>
+      </td>
+    </tr>
+	
+	<!-- TODO: parameter value is defined in jwc but used nowhere else
+	<tr>
+      <td>value</td>
+      <td>?</td>
+	  <td>in</td>
+	  <td>no</td>
+	  <td>&nbsp;</td>
+      <td>
+        Desc...
+      </td>
+    </tr>
+	-->	
+	
+	<tr>
+      <td>showRootNode</td>
+      <td>boolean</td>
+	  <td>in</td>
+	  <td>no</td>
+	  <td>true</td>
+      <td>
+        If root node should be visible.
+      </td>
+    </tr>					
 
 	</table>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>

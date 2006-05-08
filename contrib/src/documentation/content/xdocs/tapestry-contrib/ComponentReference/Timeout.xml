@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2006 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+[
+	<!ENTITY projectroot '../../'>
+	<!ENTITY % links.ent SYSTEM "../../links.ent">
+	%links.ent;
+]>
+<document>
+  <header>
+    <title>Timeout</title>
+  </header>
+  
+  <body>
+
+<p>
+        Displays a message to the user when a certain amount of time remains
+        to the expiration of the session.
+</p>
+
+<section>
+  <title>Parameters</title>
+  
+<table>
+	<tr> 
+    	<th>Name</th>
+	    <th>Type</th>
+	 	<th>Direction</th>
+	    <th>Required</th> 
+    	<th>Default</th>
+	    <th>Description</th>
+	</tr>
+
+    <tr>
+		<td>warningTime</td>
+		<td>int</td> 
+		<td>in</td>
+		<td>no</td>
+		<td>300</td>
+		<td>
+       The number of seconds before session expiration when a warning message will appear.
+		</td>
+    </tr>
+    	
+    <tr>
+		<td>autoProlongTime</td>
+		<td>int</td> 
+		<td>in</td>
+		<td>no</td>
+		<td>900</td>
+		<td>
+        The number of seconds before session expiration when the session 
+        will be automatically prolonged upon user activity.
+		</td>
+    </tr>
+    	
+    <tr>
+		<td>warningMessage</td>
+		<td>String</td> 
+		<td>in</td>
+		<td>no</td>
+		<td>The connection was inactive for more than {0} minutes. Your session will expire at {1}.\\n Please click OK to continue your work or CANCEL to close the session.</td>
+		<td>
+        The warning message that will appear when the session is about to exipre.
+        Here {0} is replaced by the number of minutes that remain until expiration and 
+        {1} is replaced with the time when the expiration will occur.
+		</td>
+    </tr>
+    	
+    <tr>
+		<td>expirationMessage</td>
+		<td>String</td> 
+		<td>in</td>
+		<td>no</td>
+		<td>Your session has expired. Please log in again.</td>
+		<td>
+        The message that will appear when the session exipres and
+        the user needs to log in again.
+		</td>
+    </tr>
+    	
+    <tr>
+		<td>disableWarning</td>
+		<td>boolean</td> 
+		<td>in</td>
+		<td>no</td>
+		<td>false</td>
+		<td>
+        Do not display a warning message after 'warningTime' seconds.
+		</td>
+    </tr>
+    	
+    <tr>
+		<td>disableAutoProlong</td>
+		<td>boolean</td> 
+		<td>in</td>
+		<td>no</td>
+		<td>false</td>
+		<td>
+        Disable the automatic prolonging of a session after 'autoProlongTime' seconds
+        upon user activity.
+		</td>
+    </tr>
+    	
+    <tr>
+		<td>expirationFunction</td>
+		<td>String</td> 
+		<td>in</td>
+		<td>no</td>
+		<td>null</td>
+		<td>
+        The JavaScript function that will be invoked when the session expires.
+		</td>
+    </tr>
+    	
+</table>
+  
+<p>
+  Body: <strong>removed</strong>
+</p>  
+
+<p>
+  Informal parameters: <strong>forbidden</strong>
+</p>
+
+<p>
+  Reserved parameters: <em>none</em>
+</p>
+
+</section>
+
+<section>
+  <title>Examples</title>
+	<source><![CDATA[
+<html>
+  <head>
+    <title>Timeout Example</title>
+  </head>
+  <body>
+    <span jwcid="@contrib:Timeout" warningTime="100"/>
+  </body>
+</html>
+	]]></source>
+</section>
+</body>
+</document>

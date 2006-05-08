@@ -53,7 +53,7 @@
   </tr>
     <tr>
       <td>selectedList</td>
-      <td>java.util.List</td> <td>in-out</td> <td>yes</td> <td>&nbsp;</td>
+      <td>java.util.Collection</td> <td>in-out</td> <td>yes</td> <td>&nbsp;</td>
       <td>
         The property to set. During rendering, this property is read, and sets the default value of the options in the select. When the form is submitted, list is cleared, then has each selected option added to it.
       </td>

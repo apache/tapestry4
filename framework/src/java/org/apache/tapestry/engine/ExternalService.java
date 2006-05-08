@@ -119,6 +119,11 @@ public class ExternalService implements IEngineService
     /** @since 4.0 */
     private LinkFactory _linkFactory;
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @return The URL for the service. The URL will always be encoded when it is returned.
+     */
     public ILink getLink(boolean post, Object parameter)
     {
         Defense.isAssignable(parameter, ExternalServiceParameter.class, "parameter");
