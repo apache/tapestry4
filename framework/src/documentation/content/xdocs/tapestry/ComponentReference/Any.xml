@@ -122,7 +122,7 @@ This template is complemented by some details in the specification:
 ]]></source>
 
 <p>
-The &RenderBody; component contains an extensive example that includes the use of the Any component.
+The &RenderBlock; component contains an extensive example that includes the use of the Any component.
 </p>
 
 </section>

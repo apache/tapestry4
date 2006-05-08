@@ -38,7 +38,7 @@
       <dev label="Developers" href="dev.html"/>
       <dependencies label="Dependencies" href="dependencies.html"/>
       <downloads label="Downloads" href="downloads.html"/>
-      <olddoc label="3.0.3 Documentation" href="http://jakarta.apache.org/tapestry/3.0.3/"/>
+      <olddoc label="3.0.4 Documentation" href="http://jakarta.apache.org/tapestry/3.0.4/"/>
     </project>
     
     
@@ -138,7 +138,11 @@
       <index label="Overview" href="index.html"/>
  
        <ComponentReference label="Components" href="ComponentReference/">
+         <CheckboxGroup label="CheckboxGroup" href="CheckboxGroup.html"/>
          <Choose label="Choose" href="Choose.html"/>
+         <ControlCheckbox label="ControlCheckbox" href="ControlCheckbox.html"/>
+         <ControlledCheckbox label="ControlledCheckbox" href="ControlledCheckbox.html"/>
+         <DumpObject label="DumpObject" href="DumpObject.html"/>
          <DateField label="DateField" href="DateField.html"/>
          <FormConditional label="FormConditional" href="FormConditional.html"/>
          <FormTable label="FormTable" href="FormTable.html"/>
@@ -156,6 +160,7 @@
          <TablePages label="TablePages" href="TablePages.html"/>
          <TableValues label="TableValues" href="TableValues.html"/>
          <TableView label="TableView" href="TableView.html"/>
+         <Timeout label="Timeout" href="Timeout.html"/>
          <Tree label="Tree" href="Tree.html"/>
          <TreeDataView label="TreeDataView" href="TreeDataView.html"/>
          <TreeNodeView label="TreeNodeView" href="TreeNodeView.html"/>
@@ -165,6 +170,7 @@
          <TreeView label="TreeView" href="TreeView.html"/>
          <ValidatingTextField label="ValidatingTextField" href="ValidatingTextField.html"/>
          <When label="When" href="When.html"/>
+         <XTile label="XTile" href="XTile.html"/>
        </ComponentReference>
          
       <reports label="Reports">
@@ -217,7 +223,8 @@
     </info>
     
     <related label="Related Projects">
-      	<appfuse label="AppFuse" href="https://appfuse.dev.java.net/"/> 
+      	<appfuse label="AppFuse" href="https://appfuse.dev.java.net/"/>
+      	<item label="Cognition Framework" href="http://www.cognitionframework.org"/>
       	<item label="HiveMind" href="http://jakarta.apache.org/hivemind/"/>
     	<item label="Spindle" href="http://spindle.sourceforge.net/"/>
     	<item label="Tacos" href="http://tacos.sourceforge.net"/>

@@ -53,13 +53,13 @@
 
   <tr>
     <td>service</td>
-    <td>&IEngineService;</td>
+    <td>String</td>
  
     <td>in</td>
     <td>yes</td>
     <td></td>
     <td>
-      The &IEngineService; to invoke.
+      The name of the &IEngineService; to invoke.
     </td>
   </tr>
   <tr>
@@ -115,7 +115,19 @@ List</td>
     </td>
   </tr>
   
-  
+  <tr>
+    <td>port</td>
+    <td>Integer</td>
+    <td>in</td>
+    <td>no</td>
+    <td/>
+    <td> The required port (80, 443, 8080. 8443, typically) for the URL. This will force the creation of an
+      absolute URL when the current request's scheme does not match the value for this parameter. This is most
+      often used in conjunction with scheme to switch to "https:443"/"https:8443" for secure portions of an
+      application (such as a login page), before switching back to standard "http:80"/"http:80" for the majority
+      of an application. </td>
+  </tr>
+
   <tr>
     <td>renderer</td>
     <td>&ILinkRenderer;</td>

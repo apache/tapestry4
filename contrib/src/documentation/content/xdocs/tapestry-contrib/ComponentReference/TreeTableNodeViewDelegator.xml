@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- 
-   Copyright 2005 The Apache Software Foundation
+   Copyright 2005, 2006 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -27,45 +27,28 @@
   </header>
   
   <body>
-
-<p> <strong>THIS PAGE UNDER CONSTRUCTION</strong>
+    <p>The TreeTableNodeViewDelegator is used in conjunction with a &TreeNodeView; to render the &TreeNodeView;
 </p>
 
 <p>
-  <strong>See also:</strong> 
+  <strong>See also: &TreeNodeView;</strong> 
 </p>
 
 <section>
   <title>Parameters</title>
-  
-<table>
-  <tr> 
-    <th>Name</th>
-    <th>Type</th>
-	  <th>Direction</th>
-    <th>Required</th> 
-    <th>Default</th>
-    <th>Description</th>
-  </tr>
-
-	</table>
+    <p>None</p>
   
 <p>
-  Body: <strong>removed / allowed</strong>
+  Body: <strong>allowed</strong>
 </p>  
 
 <p>
-  Informal parameters: <strong>allowed  / forbidden</strong>
+  Informal parameters: <strong>allowed</strong>
 </p>
 
 <p>
   Reserved parameters: <em>none</em>
 </p>
-
-</section>
-
-<section>
-  <title>Examples</title>
 
 </section>
 </body>

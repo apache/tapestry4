@@ -77,6 +77,41 @@
           If specified, the listener is notified. This notification occurs as the component is rewinded, i.e., prior to the Form's listener. In addition, the selected property (if bound) will be updated before the listener is notified.
       </td>
     </tr>
+	<tr>
+ 		<td>action</td>
+ 		<td>&IActionListener;</td>
+ 		<td>in</td>
+ 		<td>no</td>
+ 		<td>&nbsp;</td>
+ 		<td>
+          A listener that is notified if this component is triggered
+          just before the form's listener, after all components 
+          enclosed by the Form have had a chance to update their properties.
+ 		</td>
+	</tr>   
+   <tr>
+    <td>parameters</td>
+    <td>Object</td>
+    <td>in</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>
+      Parameter(s) gathered at the time the link is triggered, 
+      supplied as listener parameters in the IRequestCycle
+      available to the listener.  
+      <p>
+      If the parameter is a Collection, it will be converted to
+      an Object array (to match the IRequestCycle getListenerParameters()
+      signature).
+      </p>
+      <p>
+      Allows deferred listeners 
+      (defer = true) access to any rewind state not conveniently
+      placed using tag/selected (e.g. when there are multiple objects
+      to select as might happen with a nested Foreach).
+      </p>
+    </td>
+   </tr>
 	</table>
   
 <p>

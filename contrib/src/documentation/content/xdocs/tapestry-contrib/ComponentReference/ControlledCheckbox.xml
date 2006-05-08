@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+[
+	<!ENTITY projectroot '../../'>
+	<!ENTITY % links.ent SYSTEM "../../links.ent">
+	%links.ent;
+]>
+<document>
+  <header>
+    <title>ControlledCheckbox</title>
+  </header>
+  
+  <body>
+
+<p>
+	A checkbox whose state may be controlled by other checkboxes using JavaScript.
+	The checkbox rendered by this component may be automatically selected or deselected
+	by a ControlCheckbox within the same group.
+</p>
+
+<p>
+  <strong>See also: &CheckboxGroup;, &ControlCheckbox;</strong> 
+</p>
+
+<section>
+  <title>Parameters</title>
+  
+<table>
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr> 
+    <td>value</td>
+    <td>boolean</td>
+	  <td>in/out</td>
+    <td>yes</td> 
+    <td></td>
+    <td>
+		Value editted by the component; read on render, updated on form submit. 
+		This sets the check attribute of the rendered element.    
+    </td>
+  </tr>
+  <tr> 
+    <td>disabled</td>
+    <td>boolean</td>
+	  <td>in</td>
+    <td>no</td> 
+    <td>false</td>
+    <td>
+		If true, then the checkbox will render as disabled and any input from the checkbox will be ignored.  
+    </td>
+  </tr> 
+  <tr> 
+    <td>group</td>
+    <td><link href="&apicontrib;/contrib/form/checkboxes/CheckboxGroup.html">CheckboxGroup</link></td>
+	  <td>in</td>
+    <td>no</td> 
+    <td>null</td>
+    <td>
+			If provided, it specifies the CheckboxGroup
+            this component belongs to. If it is not specified, then the component is a
+            a part of the CheckboxGroup that wraps it.
+            Please note that if this parameter is used, then the CheckboxGroup it refers to 
+            must either enclose the current component, or must be defined after it.    
+    </td>
+  </tr>   
+	</table>
+  
+<p>
+  Body: <strong>removed / allowed</strong>
+</p>  
+
+<p>
+  Informal parameters: <strong>allowed  / forbidden</strong>
+</p>
+
+<p>
+  Reserved parameters: <em>none</em>
+</p>
+
+</section>
+
+<section>
+  <title>Examples</title>
+  <p>Template</p>
+	<source><![CDATA[	
+<form jwcid="form">
+    <span jwcid="checkboxGroup">
+    	<input jwcid="controlCheckbox"/>	
+    		<input jwcid="controlledCheckbox1"/>
+    		<input jwcid="controlledCheckbox2"/>
+    		<input jwcid="controlledCheckbox3"/>                        
+    </span>    
+    ...
+</form>    
+	]]></source>
+		
+  <p>Specification</p>
+	<source><![CDATA[
+<property name="state1" persist="session" initial-value="false"/>
+<property name="state2" persist="session" initial-value="false"/>
+<property name="state3" persist="session" initial-value="false"/>        
+	
+   <component id="checkboxGroup" type="contrib:CheckboxGroup"/>    
+   <component id="controlCheckbox" type="contrib:ControlCheckbox"/>
+   
+<component id="controlledCheckbox1" type="contrib:ControlledCheckbox">
+	<binding name="value" value="state1"/>
+</component>   
+<component id="controlledCheckbox2" type="contrib:ControlledCheckbox">
+	<binding name="value" value="state2"/>
+</component> 
+<component id="controlledCheckbox3" type="contrib:ControlledCheckbox">
+	<binding name="value" value="state3"/>
+</component>  
+	]]></source>	
+</section>
+</body>
+</document>

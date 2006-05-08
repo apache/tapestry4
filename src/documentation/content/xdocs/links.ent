@@ -93,7 +93,7 @@
 <!ENTITY ITemplateSourceDelegate 	'<link href="&apiroot;/engine/ITemplateSourceDelegate.html">ITemplateSourceDelegate</link>'>
 <!ENTITY IValidator 				'<link href="&apiroot;/valid/IValidator.html">IValidator</link>'>
 <!ENTITY IValidationDelegate 		'<link href="&apiroot;/valid/IValidationDelegate.html">IValidationDelegate</link>'>
-<!ENTITY IUploadFile 				'<link href="&apiroot;/IUploadFile.html">IUploadFile</link>'>
+<!ENTITY IUploadFile 				'<link href="&apiroot;/request/IUploadFile.html">IUploadFile</link>'>
 <!ENTITY ListenerMap 				'<link href="&apiroot;/listener/ListenerMap.html">ListenerMap</link>'>
 
 <!ENTITY PageAttachListener 		'<link href="&apiroot;/event/PageAttachListener.html">PageAttachListener</link>'>
@@ -182,7 +182,11 @@
 
 <!-- Links to contrib Component Reference -->
 
+<!ENTITY CheckboxGroup		'<link href="site:CheckboxGroup">CheckboxGroup</link>'>
 <!ENTITY Choose 			'<link href="site:Choose">Choose</link>'>
+<!ENTITY ControlCheckbox	'<link href="site:ControlCheckbox">ControlCheckbox</link>'>
+<!ENTITY ControlledCheckbox '<link href="site:ControlledCheckbox">ControlledCheckbox</link>'>
+<!ENTITY DumpObject 		'<link href="site:DumpObject">DumpObject</link>'>
 <!ENTITY MultiplePropertySelection  '<link href="site:MultiplePropertySelection">MultiplePropertySelection</link>'>
 <!ENTITY Otherwise 			'<link href="site:Otherwise">Otherwise</link>'>
 <!ENTITY Palette 			'<link href="site:Palette">Palette</link>'>
@@ -197,6 +201,15 @@
 <!ENTITY TableRows 			'<link href="site:TableRows">TableRows</link>'>
 <!ENTITY TableValues 		'<link href="site:TableValues">TableValues</link>'>
 <!ENTITY TableView 			'<link href="site:TableView">TableView</link>'>
+<!ENTITY Timeout 			'<link href="site:Timeout">Timeout</link>'>
+<!ENTITY Tree 				'<link href="site:Tree">Tree</link>'>
+<!ENTITY TreeDataView 		'<link href="site:TreeDataView">TreeDataView</link>'>
+<!ENTITY TreeNodeView 		'<link href="site:TreeNodeView">TreeNodeView</link>'>
+<!ENTITY TreeTable 			'<link href="site:TreeTable">TreeTable</link>'>
+<!ENTITY TreeTableDataView 	'<link href="site:TreeTableDataView">TreeTableDataView</link>'>
+<!ENTITY TreeTableNodeViewDelegator 	'<link href="site:TreeTableNodeViewDelegator">TreeTableNodeViewDelegator</link>'>
+<!ENTITY TreeView 			'<link href="site:TreeView">TreeView</link>'>
+<!ENTITY XTile					'<link href="site:XTile">XTile</link>'>
 
 <!-- External links -->
 

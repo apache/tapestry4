@@ -23,54 +23,41 @@
 ]>
 <document>
   <header>
-    <title>TableFormPages</title>
+    <title>DumpObject</title>
   </header>
   
   <body>
 
 <p>
-        A version of &TablePages; that is designed for operation in a form. 
-        It is a low level Table component that renders the pages in the table. 
-        This component must be wrapped by &TableView;. 
-</p>
-<p>    
-    The component generates a list of pages in the &Table; centered around the current one and 
-    allows you to navigate to other pages. 
-</p>
-
-<p>
-  <strong>See also: &Table;, &TablePages;, &TableView;, &TableColumns;, &TableRows;, &TableValues;</strong> 
+	Dumps out an object's serialized representation in a mix of hex and ascii. The output is
+    formatted for a fixed width font and should typically be enclosed in &lt;pre&gt; tags.
 </p>
 
 <section>
   <title>Parameters</title>
   
 <table>
-  <tr> 
-    <th>Name</th>
-    <th>Type</th>
-	  <th>Direction</th>
-    <th>Required</th> 
-    <th>Default</th>
-    <th>Description</th>
-  </tr>
+	<tr> 
+    	<th>Name</th>
+	    <th>Type</th>
+	 	<th>Direction</th>
+	    <th>Required</th> 
+    	<th>Default</th>
+	    <th>Description</th>
+	</tr>
 
     <tr>
-      <td>pagesDisplayed</td>
-      <td>int</td>
-      <td>auto</td>
-      <td>no</td>
-      <td>7</td>
-
-      <td>Determines the maximum number of pages to be displayed in the page list 
-          when the table has more than one page.
-          <br/>
-          For example, if the table has 20 pages, and 10 is the current page, 
-          pages from 7 to 13 in the page list will be shown 
-          if this parameter has a value of 7. </td>
+		<td>object</td>
+		<td>Object</td> 
+		<td>in</td>
+		<td>yes</td>
+		<td></td>
+		<td>
+			The object to be displayed as HTML.
+		</td>
     </tr>
-    
-	</table>
+    	
+</table>
   
 <p>
   Body: <strong>removed</strong>
@@ -86,5 +73,17 @@
 
 </section>
 
+<section>
+  <title>Examples</title>
+	<source><![CDATA[
+<span jwcid="@contrib:DumpObject" object="ognl:new java.util.Date()"/>
+	]]></source>
+<p>and the output will be like this:</p>
+	<source><![CDATA[
+0000: aced0005 7372000e 6a617661 2e757469  |....sr..java.uti|
+0010: 6c2e4461 7465686a 81014b59 74190300  |l.Datehj..KYt...|
+0020: 00787077 08000001 0adac264 3d78      |.xpw.......d=x  |	
+	]]></source>	
+</section>
 </body>
 </document>

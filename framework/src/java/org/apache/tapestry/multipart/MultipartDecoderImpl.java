@@ -38,6 +38,8 @@ import org.apache.hivemind.ApplicationRuntimeException;
 public class MultipartDecoderImpl extends AbstractMultipartDecoder implements
         ServletMultipartDecoder
 {
+	/* maximum size of file allowed to be uploaded */
+	protected long _maxSize = 10000000;
 
     public HttpServletRequest decode(HttpServletRequest request)
     {
@@ -68,9 +70,21 @@ public class MultipartDecoderImpl extends AbstractMultipartDecoder implements
                 new File(_repositoryPath));
         ServletFileUpload upload = new ServletFileUpload(factory);
 
-        if (_encoding != null) upload.setHeaderEncoding(_encoding);
+    	// set maximum file upload size
+    	upload.setSizeMax(_maxSize);
+
+        if (_encoding != null)
+            upload.setHeaderEncoding(_encoding);
 
         return upload;
     }
 
+	/**
+	 * Sets the maximum size that an uploaded file will be allowed to have.
+	 * @param maxSize The maximum size, in bytes.
+	 */
+	public void setMaxSize(long maxSize)
+	{
+		_maxSize = maxSize;
+}
 }

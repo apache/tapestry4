@@ -26,6 +26,7 @@ public interface ServletMultipartDecoder extends MultipartDecoder
      * {@link javax.servlet.http.HttpServletRequest} implementation that will
      * allow access to the form fields submitted in the request (but omits
      * uploaded files.
+     * @param request The incoming servlet request
      */
 
     HttpServletRequest decode(HttpServletRequest request);

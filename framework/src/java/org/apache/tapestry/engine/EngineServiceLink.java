@@ -39,7 +39,9 @@ import org.apache.tapestry.web.WebRequest;
 public class EngineServiceLink implements ILink
 {
     private static final int DEFAULT_HTTP_PORT = 80;
-    
+
+    private static final int DEFAULT_HTTPS_PORT = 443;
+
     private final IRequestCycle _cycle;
 
     private final String _servletPath;

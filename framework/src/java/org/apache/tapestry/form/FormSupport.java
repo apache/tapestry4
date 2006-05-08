@@ -43,6 +43,10 @@ public interface FormSupport extends FormBehavior
      *            the desired scheme for the generated URL, typically "http" or "https". If
      *            non-null, and the scheme does not match the current request's scheme, then an
      *            absolute URL with the specified scheme will be generated, rather than a URI.
+     * @param port
+     *            the desired port for the generated URL, typically "80", "443". If
+     *            non-null, and the port does not match the current request's port, then an
+     *            absolute URL with the specified port will be generated, rather than a URI.
      */
     void render(String method, IRender informalParametersRenderer, ILink link, String scheme, Integer port);
 
