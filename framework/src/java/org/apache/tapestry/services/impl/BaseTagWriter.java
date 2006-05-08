@@ -56,6 +56,7 @@ public class BaseTagWriter implements IRender
 
         writer.beginEmpty("base");
         writer.attribute("href", url);
+        writer.printRaw("<!--[if IE]></base><![endif]-->");
 
         writer.println();
     }
