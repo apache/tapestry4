@@ -97,9 +97,17 @@ and has  added a suite of WML components to the framework.</p>
     <title>Jesse Kuhnert</title>    
        <p>
         Jesse initially cut his teeth working on a component project for tapestry called 
-        <link href="http://tacos.sourceforge.net"/>Tacos</link>. He is currently working
+        <link href="http://tacos.sourceforge.net">Tacos</link>. He is currently working
         on ajax specfic features in tapestry, as well as wherever else he can.
        </p>
+</section>
+
+<section>
+	<title>Brian Wallace</title>	
+	  <p>
+	   Brian started active development in Tapestry's 3.0 maintenance branch
+	   after adopting it prior to its move to Apache.
+	  </p>
 </section>
 
 </body>
