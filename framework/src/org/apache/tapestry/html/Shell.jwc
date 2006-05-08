@@ -33,6 +33,17 @@
     </description>
   </parameter>
   
+  <parameter 
+  	name="raw" 
+  	type="boolean"
+  	direction="in"
+  	default-value="false">
+    <description>
+  	If false (the default), then HTML characters in the title are escaped.  If
+  	true, then value is emitted exactly as is.
+    </description>
+  </parameter>
+
   <parameter name="stylesheet" 
   	type="org.apache.tapestry.IAsset"
   	direction="in">

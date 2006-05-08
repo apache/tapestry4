@@ -88,7 +88,11 @@ public abstract class Shell extends AbstractComponent
 
             writer.begin("title");
 
-            writer.print(getTitle());
+            if (getRaw()) {
+               writer.printRaw(getTitle());
+            } else {
+               writer.print(getTitle());
+            }
             writer.end(); // title
             writer.println();
 
@@ -205,4 +209,5 @@ public abstract class Shell extends AbstractComponent
 
     public abstract boolean getRenderContentType();
     
+    public abstract boolean getRaw();
 }
