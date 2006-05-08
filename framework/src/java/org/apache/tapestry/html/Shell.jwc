@@ -32,6 +32,16 @@
     </description>
   </parameter>
   
+  <parameter 
+  	name="raw" 
+  	default-value="false">
+    <description>
+  	If false (the default), then HTML characters in the title are escaped.  If
+  	true, then value is emitted exactly as is.
+    </description>
+  </parameter>
+
+
   <parameter name="stylesheet">
     <description>
     If specified, provides an external stylesheet for the page.
@@ -80,6 +90,13 @@
     If specified, the delegate is rendered before the close of the &lt;head&gt;
     tag (typically used to provide &lt;meta&gt; tags).
     </description>
+  </parameter>
+  
+  <parameter name="renderBaseTag" default-value="true" >
+  	<description>
+  		Specifies whether or not to render the html basetag element in the document
+  		head.
+  	</description>
   </parameter>
   
   <parameter name="ajaxDelegate" 
