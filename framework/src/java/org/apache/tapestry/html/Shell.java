@@ -78,8 +78,12 @@ public abstract class Shell extends AbstractComponent
             if (getRenderBaseTag())
             	getBaseTagWriter().render(writer, cycle);
 
-            writer.begin("title");
 
+            if (getRaw()) {
+               writer.printRaw(getTitle());
+            } else {
+               writer.print(getTitle());
+            }
             writer.print(getTitle());
             writer.end(); // title
             writer.println();
@@ -209,4 +213,9 @@ public abstract class Shell extends AbstractComponent
     /** @since 4.0.1 */
     
     public abstract boolean getRenderBaseTag();
+    
+    /** @since 4.0.3 */
+    
+    public abstract boolean getRaw();
+
 }

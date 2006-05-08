@@ -74,6 +74,16 @@
   </tr>
   
   <tr>
+    <td>raw</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+    <td>If false (the default), then HTML characters in the title are escaped.  If
+  	true, then value is emitted exactly as is.</td>
+  </tr>
+  
+  <tr>
     <td>stylesheet</td>
     <td>&IAsset;</td>
     <td>in</td>
