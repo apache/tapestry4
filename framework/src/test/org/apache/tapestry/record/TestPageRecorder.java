@@ -25,7 +25,6 @@ import org.apache.hivemind.Resource;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.ObservedChangeEvent;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
@@ -40,11 +39,6 @@ import org.easymock.MockControl;
  */
 public class TestPageRecorder extends HiveMindTestCase
 {
-    private IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
-    }
-
     private ErrorLog newLog()
     {
         return (ErrorLog) newMock(ErrorLog.class);
@@ -52,7 +46,6 @@ public class TestPageRecorder extends HiveMindTestCase
 
     public void testGetChanges()
     {
-        IRequestCycle cycle = newCycle();
         ErrorLog log = newLog();
 
         MockControl sourcec = newControl(PropertyPersistenceStrategySource.class);
@@ -66,7 +59,7 @@ public class TestPageRecorder extends HiveMindTestCase
 
         replayControls();
 
-        PageRecorderImpl pr = new PageRecorderImpl("Foo", cycle, source, log);
+        PageRecorderImpl pr = new PageRecorderImpl("Foo", source, log);
 
         Collection actual = pr.getChanges();
 
@@ -94,7 +87,6 @@ public class TestPageRecorder extends HiveMindTestCase
 
     public void testObserveChange()
     {
-        IRequestCycle cycle = newCycle();
         ErrorLog log = newLog();
 
         MockControl pagec = newControl(IPage.class);
@@ -123,7 +115,7 @@ public class TestPageRecorder extends HiveMindTestCase
 
         replayControls();
 
-        PageRecorderImpl pr = new PageRecorderImpl("Foo", cycle, source, log);
+        PageRecorderImpl pr = new PageRecorderImpl("Foo", source, log);
 
         ObservedChangeEvent event = new ObservedChangeEvent(page, "foobar", newValue);
 
@@ -137,8 +129,6 @@ public class TestPageRecorder extends HiveMindTestCase
         Location l = fabricateLocation(12);
         Throwable inner = new ApplicationRuntimeException("Simulated error.");
         ErrorLog log = newLog();
-
-        IRequestCycle cycle = newCycle();
 
         MockControl sourcec = newControl(PropertyPersistenceStrategySource.class);
         PropertyPersistenceStrategySource source = (PropertyPersistenceStrategySource) sourcec
@@ -172,7 +162,7 @@ public class TestPageRecorder extends HiveMindTestCase
 
         replayControls();
 
-        PageRecorderImpl pr = new PageRecorderImpl("SomePage", cycle, source, log);
+        PageRecorderImpl pr = new PageRecorderImpl("SomePage", source, log);
 
         assertNull(pr.findStrategy(component, "zip"));
 
@@ -181,7 +171,6 @@ public class TestPageRecorder extends HiveMindTestCase
 
     public void testRollbackPageProperty()
     {
-        IRequestCycle cycle = newCycle();
         ErrorLog log = newLog();
 
         Creator creator = new Creator();
@@ -199,7 +188,7 @@ public class TestPageRecorder extends HiveMindTestCase
 
         replayControls();
 
-        PageRecorderImpl pr = new PageRecorderImpl("MyPage", cycle, source, log);
+        PageRecorderImpl pr = new PageRecorderImpl("MyPage", source, log);
 
         pr.rollback(page);
 
@@ -210,7 +199,6 @@ public class TestPageRecorder extends HiveMindTestCase
 
     public void testRollbackComponentProperty()
     {
-        IRequestCycle cycle = newCycle();
         ErrorLog log = newLog();
 
         MockControl pagec = newControl(IPage.class);
@@ -234,7 +222,7 @@ public class TestPageRecorder extends HiveMindTestCase
 
         replayControls();
 
-        PageRecorderImpl pr = new PageRecorderImpl("MyPage", cycle, source, log);
+        PageRecorderImpl pr = new PageRecorderImpl("MyPage", source, log);
 
         pr.rollback(page);
 
@@ -243,7 +231,6 @@ public class TestPageRecorder extends HiveMindTestCase
 
     public void testChangeWhileLocked()
     {
-        IRequestCycle cycle = newCycle();
         ErrorLog log = newLog();
 
         MockControl pagec = newControl(IPage.class);
@@ -263,7 +250,7 @@ public class TestPageRecorder extends HiveMindTestCase
 
         replayControls();
 
-        PageRecorderImpl pr = new PageRecorderImpl("MyPage", cycle, source, log);
+        PageRecorderImpl pr = new PageRecorderImpl("MyPage", source, log);
 
         pr.commit();
 
@@ -277,7 +264,6 @@ public class TestPageRecorder extends HiveMindTestCase
     public void testChangeToNonSpecifiedProperty()
     {
         Resource r = fabricateLocation(99).getResource();
-        IRequestCycle cycle = newCycle();
         ErrorLog log = newLog();
 
         MockControl pagec = newControl(IPage.class);
@@ -311,7 +297,7 @@ public class TestPageRecorder extends HiveMindTestCase
 
         replayControls();
 
-        PageRecorderImpl pr = new PageRecorderImpl("TestPage", cycle, source, log);
+        PageRecorderImpl pr = new PageRecorderImpl("TestPage", source, log);
 
         ObservedChangeEvent event = new ObservedChangeEvent(page, "foobar", new Object());
 
