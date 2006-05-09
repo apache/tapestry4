@@ -162,6 +162,82 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
+    public void beginBodyScript(IRequestCycle cycle)
+    {
+        IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
+        
+        writer.begin("script");
+        writer.printRaw("\n//<![CDATA[\n");
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void endBodyScript(IRequestCycle cycle)
+    {
+        IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
+        
+        writer.printRaw("\n//]]>\n");
+        writer.end();
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void writeBodyScript(String script, IRequestCycle cycle)
+    {
+        IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
+        
+        writer.printRaw(script);
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void writeExternalScript(String url, IRequestCycle cycle)
+    {
+        IMarkupWriter writer = getWriter(ResponseBuilder.INCLUDE_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
+        
+        writer.begin("script");
+        writer.attribute("type", "text/javascript");
+        writer.attribute("src", url);
+        writer.end();
+        writer.println();
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void writeImageInitializations(String script, String preloadName, IRequestCycle cycle)
+    {
+        IMarkupWriter writer = getWriter(ResponseBuilder.BODY_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
+        
+        writer.printRaw("\n\nvar " + preloadName + " = new Array();\n");
+        writer.printRaw("if (document.images)\n");
+        writer.printRaw("{\n");
+        writer.printRaw(script);
+        writer.printRaw("}\n");
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void writeInitializationScript(String script)
+    {
+        IMarkupWriter writer = getWriter(ResponseBuilder.INITIALIZATION_SCRIPT, ResponseBuilder.SCRIPT_TYPE);
+        
+        writer.begin("script");
+        writer.printRaw("\n//<![CDATA[\n");
+        
+        writer.printRaw(script);
+        
+        writer.printRaw("\n//]]>\n");
+        writer.end();
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
     public void render(IMarkupWriter writer, IRender render, IRequestCycle cycle)
     {
         if (IComponent.class.isInstance(render)
@@ -189,17 +265,10 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     }
     
     /**
-     * Gets a write that will output its content in a <code>response</code>
-     * element with the given id and type. 
      * 
-     * @param id 
-     *          The response element id to give writer.
-     * @param type
-     *          Optional - If specified will give the response element a type
-     *          attribute.
-     * @return A valid {@link IMarkupWriter} instance to write content to.
+     * {@inheritDoc}
      */
-    IMarkupWriter getWriter(String id, String type)
+    public IMarkupWriter getWriter(String id, String type)
     {
         Defense.notNull(id, "id can't be null");
         
@@ -299,7 +368,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         //form components have id's generated to ensure uniqueness
         if (comp instanceof IFormComponent)
             id = ((IFormComponent)comp).getClientId();
-        if (id != null) 
+        if (id != null)
             return id;
         
         id = comp.getId();

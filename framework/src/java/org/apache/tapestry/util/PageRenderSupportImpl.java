@@ -114,7 +114,7 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
             if (_imageInitializations == null)
                 _imageInitializations = new StringBuffer();
-
+            
             _imageInitializations.append("  ");
             _imageInitializations.append(varName);
             _imageInitializations.append(" = new Image();\n");
@@ -123,7 +123,7 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
             _imageInitializations.append(" = \"");
             _imageInitializations.append(URL);
             _imageInitializations.append("\";\n");
-
+            
             _imageMap.put(URL, reference);
         }
 
@@ -134,7 +134,7 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
     {
         addBodyScript(null, script);
     }
-
+    
     public void addBodyScript(IComponent target, String script)
     {
         if (!_builder.isBodyScriptAllowed(target)) return;
@@ -164,7 +164,6 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
     public void addExternalScript(Resource scriptLocation)
     {
         addExternalScript(null, scriptLocation);
-
     }
     
     public void addExternalScript(IComponent target, Resource scriptLocation)
@@ -173,43 +172,38 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
         
         if (_externalScripts == null)
             _externalScripts = new ArrayList();
-
+        
         if (_externalScripts.contains(scriptLocation))
             return;
 
         // Record the Resource so we don't include it twice.
 
         _externalScripts.add(scriptLocation);
-
     }
 
     public String getUniqueString(String baseValue)
     {
         return _idAllocator.allocateId(baseValue);
     }
-
+    
     private void writeExternalScripts(IMarkupWriter writer, IRequestCycle cycle)
     {
         int count = Tapestry.size(_externalScripts);
         for (int i = 0; i < count; i++)
         {
             Resource scriptLocation = (Resource) _externalScripts.get(i);
-
+            
             IAsset asset = _assetFactory.createAsset(scriptLocation, null);
-
+            
             String url = asset.buildURL();
-
+            
             // Note: important to use begin(), not beginEmpty(), because browser don't
             // interpret <script .../> properly.
-
-            writer.begin("script");
-            writer.attribute("type", "text/javascript");
-            writer.attribute("src", url);
-            writer.end();
-            writer.println();
+            
+            _builder.writeExternalScript(url, cycle);
         }
     }
-
+    
     /**
      * Writes a single large JavaScript block containing:
      * <ul>
@@ -228,30 +222,22 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
 
         if (!(any(_bodyScript) || any(_imageInitializations)))
             return;
-
-        writer.begin("script");
-        writer.attribute("type", "text/javascript");
-        writer.printRaw("<!--");
-
+        
+        _builder.beginBodyScript(cycle);
+        
         if (any(_imageInitializations))
         {
-            writer.printRaw("\n\nvar " + _preloadName + " = new Array();\n");
-            writer.printRaw("if (document.images)\n");
-            writer.printRaw("{\n");
-            writer.printRaw(_imageInitializations.toString());
-            writer.printRaw("}\n");
+            _builder.writeImageInitializations(_imageInitializations.toString(), _preloadName, cycle);
         }
 
         if (any(_bodyScript))
         {
-            writer.printRaw("\n\n");
-            writer.printRaw(_bodyScript.toString());
+            _builder.writeBodyScript(_bodyScript.toString(), cycle);
         }
-
-        writer.printRaw("\n\n// -->");
-        writer.end();
+        
+        _builder.endBodyScript(cycle);
     }
-
+    
     /**
      * Writes any image initializations; this should be invoked at the end of the render, after all
      * the related HTML will have already been streamed to the client and parsed by the web browser.
@@ -262,20 +248,8 @@ public class PageRenderSupportImpl implements Locatable, PageRenderSupport
     {
         if (!any(_initializationScript))
             return;
-
-        writer.begin("script");
-        writer.attribute("language", "JavaScript");
-        writer.attribute("type", "text/javascript");
-        writer.printRaw("<!--\n");
         
-        writer.printRaw("dojo.event.connect(window, 'onload', function(e) {\n");
-        
-        writer.printRaw(_initializationScript.toString());
-        
-        writer.printRaw("});");
-        
-        writer.printRaw("\n// -->");
-        writer.end();
+        _builder.writeInitializationScript(_initializationScript.toString());
     }
 
     private boolean any(StringBuffer buffer)
