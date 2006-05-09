@@ -22,7 +22,7 @@
 <component-specification allow-body="no" allow-informal-parameters="yes">
 
   <description>
-    Displays the properties of an object as an HTML table or a simple string.
+    Dumps out an object's serialized representation in a mix of hex and ascii.
   </description> 
   
   <parameter name="object" required="true">
