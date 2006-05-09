@@ -165,6 +165,14 @@ public class JSONResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
+    public IMarkupWriter getWriter(String id, String type)
+    {
+        return _nullWriter;
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
     public boolean isBodyScriptAllowed(IComponent target)
     {
         return false;
@@ -184,5 +192,53 @@ public class JSONResponseBuilder implements ResponseBuilder
     public boolean isInitializationScriptAllowed(IComponent target)
     {
         return false;
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void beginBodyScript(IRequestCycle cycle)
+    {
+        // does nothing
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void endBodyScript(IRequestCycle cycle)
+    {
+        // does nothing
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void writeBodyScript(String script, IRequestCycle cycle)
+    {
+        // does nothing
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void writeExternalScript(String url, IRequestCycle cycle)
+    {
+        // does nothing
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void writeImageInitializations(String script, String preloadName, IRequestCycle cycle)
+    {
+        // does nothing
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void writeInitializationScript(String script)
+    {
+        // does nothing
     }
 }

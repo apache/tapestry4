@@ -64,13 +64,16 @@ public class ScriptParser
     /** @since 3.0 */
     public static final String SCRIPT_DTD_3_0_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN";
 
+    /** @since 4.1 */
+    public static final String SCRIPT_DTD_4_0_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Script Specification 4.0//EN";
+    
     private RuleDirectedParser _parser;
     
     public ScriptParser(ClassResolver resolver, ExpressionEvaluator evaluator,
             ValueConverter valueConverter)
     {
         _parser = new RuleDirectedParser();
-
+        
         _parser.registerEntity(SCRIPT_DTD_1_0_PUBLIC_ID,
                 "/org/apache/tapestry/script/Script_1_0.dtd");
         _parser.registerEntity(SCRIPT_DTD_1_1_PUBLIC_ID,
@@ -79,7 +82,9 @@ public class ScriptParser
                 "/org/apache/tapestry/script/Script_1_2.dtd");
         _parser.registerEntity(SCRIPT_DTD_3_0_PUBLIC_ID,
                 "/org/apache/tapestry/script/Script_3_0.dtd");
-
+        _parser.registerEntity(SCRIPT_DTD_4_0_PUBLIC_ID,
+        "/org/apache/tapestry/script/Script_4_0.dtd");
+        
         _parser.addRule("script", new ScriptRule(evaluator, valueConverter));
         _parser.addRule("let", new LetRule());
         _parser.addRule("set", new SetRule());
@@ -91,7 +96,7 @@ public class ScriptParser
         _parser.addRule("if-not", new IfRule(false));
         _parser.addRule("foreach", new ForeachRule());
         _parser.addRule("unique", new UniqueRule());
-
+        
         // This will go away when the 1.1 and earler DTDs are retired.
         _parser.addRule("insert", new InsertRule());
 

@@ -105,9 +105,9 @@ public class DefaultResponseBuilder implements ResponseBuilder
 
                 contentType.setParameter(ENCODING_KEY, encoding);
             }
-
+            
             PrintWriter printWriter = _webResponse.getPrintWriter(contentType);
-
+            
             _writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
         
         }
@@ -141,7 +141,18 @@ public class DefaultResponseBuilder implements ResponseBuilder
         
         return _writer;
     }
-
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public IMarkupWriter getWriter(String id, String type)
+    {
+        if (_writer == null)
+            return NullWriter.getSharedInstance();
+        
+        return _writer;
+    }
+    
     /** 
      * {@inheritDoc}
      */
@@ -164,5 +175,88 @@ public class DefaultResponseBuilder implements ResponseBuilder
     public boolean isInitializationScriptAllowed(IComponent target)
     {
         return true;
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void beginBodyScript(IRequestCycle cycle)
+    {
+        IMarkupWriter writer = getWriter();
+        
+        writer.begin("script");
+        writer.attribute("type", "text/javascript");
+        writer.printRaw("<!--");
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void endBodyScript(IRequestCycle cycle)
+    {
+        IMarkupWriter writer = getWriter();
+        
+        writer.printRaw("\n\n// -->");
+        writer.end();
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void writeBodyScript(String script, IRequestCycle cycle)
+    {
+        IMarkupWriter writer = getWriter();
+        
+        writer.printRaw("\n\n");
+        writer.printRaw(script);
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public void writeExternalScript(String url, IRequestCycle cycle)
+    {
+        IMarkupWriter writer = getWriter();
+        
+        writer.begin("script");
+        writer.attribute("type", "text/javascript");
+        writer.attribute("src", url);
+        writer.end();
+        writer.println();
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void writeImageInitializations(String script, String preloadName, IRequestCycle cycle)
+    {
+        IMarkupWriter writer = getWriter();
+        
+        writer.printRaw("\n\nvar " + preloadName + " = new Array();\n");
+        writer.printRaw("if (document.images)\n");
+        writer.printRaw("{\n");
+        writer.printRaw(script);
+        writer.printRaw("}\n");
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void writeInitializationScript(String script)
+    {
+        IMarkupWriter writer = getWriter();
+        
+        writer.begin("script");
+        writer.attribute("type", "text/javascript");
+        writer.printRaw("<!--\n");
+        
+        writer.printRaw("dojo.event.connect(window, 'onload', function(e) {\n");
+        
+        writer.printRaw(script);
+        
+        writer.printRaw("});");
+        
+        writer.printRaw("\n// -->");
+        writer.end();
     }
 }
