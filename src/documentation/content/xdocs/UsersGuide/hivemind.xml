@@ -151,6 +151,8 @@ public abstract class MyPage extends BasePage
         <li>/WEB-INF/<em>applicationId</em>/hivemodule.xml</li>
         <li>/WEB-INF/hivemodule.xml</li>
       </ul>
+      <note>The descriptor will not be recognized if it is located in META-INF/ in the context root of a web application
+            however it will if it is under the WEB-INF/ locations. The META-INF/ location is specific to libraries.</note>
       <p> Both of these files exist in the web application context; the <em>applicationId</em> is the name of the application 
         servlet, as given in web.xml deployment descriptor (this is only useful in the very rare case that you package 
         more than one Tapestry application in a single web application). </p>

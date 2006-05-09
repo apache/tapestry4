@@ -60,6 +60,13 @@
     ambitious, but more limited, patch was required). 
     </p>
     
+    <warning>
+      For security purposes, enabling friendly URLs implies that pages are no longer
+      accessible via their ugly URL counterpart. This is not the case. If a malevolent user
+      can either guess - or via cookies identify - your servlet path, they can construct an
+      ugly URL to a resource that is protected via security and gain access to the protected
+      resource.
+    </warning>
     <p>
     Friendly URLs are divided into two concerns:
     </p>
