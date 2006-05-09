@@ -80,6 +80,8 @@ public class CheckBoxMultiplePropertySelectionRenderer
         writer.beginEmpty("input");
         writer.attribute("type", "checkbox");
         writer.attribute("name", component.getName());
+        String id = component.getName() + "." +model.getValue(index);
+        writer.attribute("id", id);
         writer.attribute("value", model.getValue(index));
 
         if (component.isDisabled())
@@ -93,7 +95,10 @@ public class CheckBoxMultiplePropertySelectionRenderer
         writer.println();
 
         writer.begin("td");
+        writer.begin("label");
+        writer.attribute("for", id);
         writer.print(model.getLabel(index));
+        writer.end(); // <label>
         writer.end(); // <td>
         writer.end(); // <tr>
 
