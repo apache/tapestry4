@@ -39,7 +39,7 @@
   </component>
 
   <component id="inputDisableInspector" type="Checkbox">
-    <binding name="value" value="page.visit.disableInspector"/>
+    <binding name="value" value="visit.disableInspector"/>
     <binding name="onclick" value="literal:javascript:this.form.events.submit();"/>
   </component>
 

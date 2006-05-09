@@ -113,7 +113,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      * <li>Clears the changeObserved property
      * <li>Invokes {@link PageDetachListener#pageDetached(PageEvent)}on all listeners
      * <li>Invokes {@link #initialize()}to clear/reset any properties
-     * <li>Clears the engine, visit and requestCycle properties
+     * <li>Clears the engine and requestCycle properties
      * </ul>
      * <p>
      * Subclasses may override this method, but must invoke this implementation (usually, last).
