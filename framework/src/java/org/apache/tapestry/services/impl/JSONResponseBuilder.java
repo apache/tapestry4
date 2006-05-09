@@ -115,7 +115,7 @@ public class JSONResponseBuilder implements ResponseBuilder
 
         _writer.close();
     }
-
+    
     /**
      * Grabs the incoming parameters needed for json responses, most notable the
      * {@link ServiceConstants#UPDATE_PARTS} parameter.
@@ -130,7 +130,7 @@ public class JSONResponseBuilder implements ResponseBuilder
         for(int i = 0; i < updateParts.length; i++)
             parts.add(updateParts[i].toString());
     }
-
+    
     /**
      * {@inheritDoc}
      */
