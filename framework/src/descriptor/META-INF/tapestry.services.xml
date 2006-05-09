@@ -235,6 +235,19 @@
         </invoke-factory>
     </service-point>
     
+    <service-point id="DojoAjaxResponseContributor" interface="org.apache.tapestry.services.ResponseContributor">
+        Defines the factory service that is responsible for determining if a particular request is
+        one that should recieve dojo ajax responses.
+        <invoke-factory>
+            <construct class="org.apache.tapestry.services.impl.DojoAjaxResponseContributorImpl" >
+                <set-service property="localeManager" service-id="tapestry.request.RequestLocaleManager"/>
+                <set-object property="markupWriterSource"  value="infrastructure:markupWriterSource"/>
+                <set-object property="webResponse" value="infrastructure:response"/>
+                <set-object property="webRequest" value="infrastructure:request"/>
+            </construct>
+        </invoke-factory>
+    </service-point>
+    
     <service-point id="DefaultResponseContributor" interface="org.apache.tapestry.services.ResponseContributor">
         Defines the factory service that is responsible for determining if a particular request is
         one that should recieve a JSON response.
@@ -252,6 +265,7 @@
         belonging to a certain protocol, so no guarantees are made as to the
         friendlyness/compatibility between various implementations.
         <invoker object="service:JSONResponseContributor" />
+        <invoker object="service:DojoAjaxResponseContributor" />
         <invoker object="service:DefaultResponseContributor" />
     </contribution>
 

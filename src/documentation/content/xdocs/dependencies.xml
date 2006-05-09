@@ -63,6 +63,14 @@
       </tr>
       <tr>
         <td>
+          <link href="&maven;/commons-lang/jars/">commons-lang</link>
+        </td>
+        <td>2.1</td>
+        <td>ASL</td>
+        <td>Common utility functionality.</td>
+      </tr>
+      <tr>
+        <td>
           <link href="&maven;/commons-logging/jars/">commons-logging</link>
         </td>
         <td> 1.0.4 </td>
