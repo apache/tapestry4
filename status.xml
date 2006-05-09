@@ -133,6 +133,9 @@
     <action type="add" dev="BW" fixes-bug="TAPESTRY-916">
       Place link to Cognition Framework under Related Items within Tapestry Forrest docs
     </action>
+  		<action type="fix" dev="AA" fixes-bug="TAPESTRY-935">
+  			Improve output of base tag (for IE).
+  		</action>     
   	</release>
 
   	<release version="4.0.2" date="Apr 13 2006" >
