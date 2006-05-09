@@ -242,11 +242,11 @@ public class TestPageRenderSupport extends HiveMindTestCase
 
         prs.addInitializationScript("myInitializationScript1();");
         prs.addInitializationScript("myInitializationScript2();");
-
+        
         prs.writeInitializationScript(writer);
-
+        
         assertOutput(new String[]
-        { "<script language=\"JavaScript\" type=\"text/javascript\"><!--",
+        { "<script type=\"text/javascript\"><!--",
                 "dojo.event.connect(window, 'onload', function(e) {",
                 "myInitializationScript1();", "myInitializationScript2();", 
                 "});", "// --></script>" });
