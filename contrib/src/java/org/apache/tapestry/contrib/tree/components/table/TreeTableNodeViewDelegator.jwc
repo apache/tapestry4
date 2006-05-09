@@ -22,6 +22,10 @@
 <component-specification class="org.apache.tapestry.contrib.tree.components.table.TreeTableNodeViewDelegator"
     allow-body="yes" allow-informal-parameters="yes">
 
+    <description>
+      Renders a TreeNodeView
+    </description>
+    
      <component id="treeNodeView" type="TreeNodeView">
     </component>
 
