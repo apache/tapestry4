@@ -80,11 +80,7 @@ public abstract class Shell extends AbstractComponent
             
             writer.begin("title");
             
-            if (getRaw()) {
-                writer.printRaw(getTitle());
-             } else {
-                writer.print(getTitle());
-             }
+            writer.print(getTitle(), getRaw());               
             writer.end(); // title
             writer.println();
             
