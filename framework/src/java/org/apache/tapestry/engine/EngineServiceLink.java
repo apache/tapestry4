@@ -122,21 +122,18 @@ public class EngineServiceLink implements ILink
         StringBuffer buffer = new StringBuffer();
 
         if (scheme == null)
-            buffer.append(_request.getScheme());
-        else
-            buffer.append(scheme);
+            scheme = _request.getScheme();
 
+        buffer.append(scheme);
         buffer.append("://");
 
         if (server == null)
-            buffer.append(_request.getServerName());
-        else
-            buffer.append(server);
+            server = _request.getServerName();
+
+        buffer.append(server);
 
         if (port == 0)
-            buffer.append(_request.getServerPort());
-        else
-            buffer.append(port);
+            port = _request.getServerPort();
 
         if (!(scheme.equals("http") && port == DEFAULT_HTTP_PORT))
         {
