@@ -150,16 +150,17 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements
 
     private Object instantiateInstance(Class extensionClass, Object result)
     {
+        Object returnResult = result;
         try
         {
-            result = extensionClass.newInstance();
+            returnResult = extensionClass.newInstance();
         }
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(ex.getMessage(), getLocation(), ex);
         }
 
-        return result;
+        return returnResult;
     }
 
     public String toString()

@@ -108,12 +108,13 @@ public class NumberValidator extends AbstractNumericValidator
 
         public int compare(Number left, Number right)
         {
-            if (!left.getClass().equals(right.getClass()))
-                right = coerce(right);
+            Number comparisonRight = right;
+            if (!left.getClass().equals(comparisonRight.getClass()))
+                comparisonRight = coerce(comparisonRight);
 
             Comparable lc = (Comparable) left;
 
-            return lc.compareTo(right);
+            return lc.compareTo(comparisonRight);
         }
 
         /**

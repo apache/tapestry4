@@ -177,20 +177,21 @@ public class DefaultPrimaryKeyConverter implements IPrimaryKeyConverter
      */
     protected final Set updateValueSetForLastValue(Set set, boolean inSet)
     {
+        Set updatedSet = set;
         if (inSet)
         {
-            if (set == null)
-                set = new HashSet();
+            if (updatedSet == null)
+                updatedSet = new HashSet();
 
-            set.add(_lastValue);
+            updatedSet.add(_lastValue);
 
-            return set;
+            return updatedSet;
         }
 
-        if (set != null)
-            set.remove(_lastValue);
+        if (updatedSet != null)
+            updatedSet.remove(_lastValue);
 
-        return set;
+        return updatedSet;
     }
 
     /**

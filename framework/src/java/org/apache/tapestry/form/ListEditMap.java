@@ -175,20 +175,21 @@ public class ListEditMap
 
     protected Set updateSet(Set set, boolean value)
     {
+        Set updatedSet = set;
         if (value)
         {
-            if (set == null)
-                set = new HashSet();
+            if (updatedSet == null)
+                updatedSet = new HashSet();
 
-            set.add(_currentKey);
+            updatedSet.add(_currentKey);
         }
         else
         {
-            if (set != null)
-                set.remove(_currentKey);
+            if (updatedSet != null)
+                updatedSet.remove(_currentKey);
         }
 
-        return set;
+        return updatedSet;
     }
 
     /**

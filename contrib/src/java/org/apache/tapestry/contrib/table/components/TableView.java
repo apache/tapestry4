@@ -245,18 +245,19 @@ public abstract class TableView extends BaseComponent implements
      */
     protected ITableModel generateTableModel(SimpleTableState objState)
     {
+        SimpleTableState usableObjState = objState;
         // create a new table state if none is passed
-        if (objState == null)
+        if (usableObjState == null)
         {
-            objState = new SimpleTableState();
-            objState.getSortingState().setSortColumn(getInitialSortColumn(),
+            usableObjState = new SimpleTableState();
+            usableObjState.getSortingState().setSortColumn(getInitialSortColumn(),
                     getInitialSortOrder());
-            objState.getPagingState().setCurrentPage(getInitialPage());
+            usableObjState.getPagingState().setCurrentPage(getInitialPage());
         }
 
         // update the page size if set in the parameter
         if (isParameterBound("pageSize"))
-            objState.getPagingState().setPageSize(getPageSize());
+            usableObjState.getPagingState().setPageSize(getPageSize());
 
         // get the column model. if not possible, return null.
         ITableColumnModel objColumnModel = getTableColumnModel();
@@ -269,7 +270,7 @@ public abstract class TableView extends BaseComponent implements
         // create and return an appropriate wrapper
         if (objSourceValue instanceof IBasicTableModel)
             return new BasicTableModelWrap((IBasicTableModel) objSourceValue,
-                    objColumnModel, objState);
+                    objColumnModel, usableObjState);
 
         // otherwise, the source parameter must contain the data to be displayed
         ITableDataModel objDataModel = null;
@@ -289,7 +290,7 @@ public abstract class TableView extends BaseComponent implements
             throw new ApplicationRuntimeException(TableMessages
                     .invalidTableSource(this, objSourceValue));
 
-        return new SimpleTableModel(objDataModel, objColumnModel, objState);
+        return new SimpleTableModel(objDataModel, objColumnModel, usableObjState);
     }
 
     /**

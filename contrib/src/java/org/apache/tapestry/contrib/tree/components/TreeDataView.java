@@ -103,12 +103,13 @@ public abstract class TreeDataView extends BaseComponent implements
             ITreeModel objTreeModel, IMarkupWriter writer, IRequestCycle cycle,
             int nRowPossiotionType, int[] arrConnectImages, boolean bLast)
     {
+        int rowPositionType = nRowPossiotionType;
         m_nTreeDeep = nDepth;
         int nNumberOfChildren = objTreeModel.getTreeDataModel().getChildCount(
                 objParent);
         boolean bLeaf = (nNumberOfChildren == 0) ? true : false;
         m_objTreeRowObject = new TreeRowObject(objParent, objParentUID, nDepth,
-                bLeaf, nRowPossiotionType, arrConnectImages);
+                bLeaf, rowPositionType, arrConnectImages);
 
         super.renderComponent(writer, cycle);
 
@@ -131,10 +132,10 @@ public abstract class TreeDataView extends BaseComponent implements
                         .getUniqueKey(objChild, objParentUID);
                 boolean bChildLast = !iter.hasNext();
                 if (bChildLast)
-                    nRowPossiotionType = TreeRowObject.LAST_ROW;
-                else nRowPossiotionType = TreeRowObject.MIDDLE_ROW;
+                    rowPositionType = TreeRowObject.LAST_ROW;
+                else rowPositionType = TreeRowObject.MIDDLE_ROW;
                 walkTree(objChild, objChildUID, nDepth + 1, objTreeModel,
-                        writer, cycle, nRowPossiotionType, arrConnectImagesNew,
+                        writer, cycle, rowPositionType, arrConnectImagesNew,
                         bChildLast);
             }
         }

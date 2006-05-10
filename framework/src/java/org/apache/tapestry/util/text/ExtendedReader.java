@@ -113,17 +113,19 @@ public class ExtendedReader extends Reader
      */
     public synchronized int read(char[] cbuf, int off, int len) throws IOException
     {
+        int offset = off;
         if (len <= 0)
             return 0;
+        int readLength = len;
         
         boolean extraChar = _hasBufferedChar;
         if (_hasBufferedChar) {
             _hasBufferedChar = false;
-            cbuf[off++] = _bufferedChar;
-            len--;
+            cbuf[offset++] = _bufferedChar;
+            readLength--;
         }
 
-        int read = _reader.read(cbuf, off, len);
+        int read = _reader.read(cbuf, offset, readLength);
         if (extraChar)
             read++;
         return read;
@@ -161,11 +163,12 @@ public class ExtendedReader extends Reader
      */
     public synchronized long skip(long n) throws IOException
     {
-        if (_hasBufferedChar && n > 0) {
+        long skipChars = n;
+        if (_hasBufferedChar && skipChars > 0) {
             _hasBufferedChar = false;
-            n--;
+            skipChars--;
         }
-        return _reader.skip(n);
+        return _reader.skip(skipChars);
     }
 
     /** 
