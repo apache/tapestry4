@@ -72,6 +72,22 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     private Map _writers = new HashMap();
     
     /**
+     * Creates a builder with a pre-configured {@link IMarkupWriter}. 
+     * Currently only used for testing.
+     * 
+     * @param writer
+     *          The markup writer to render all "good" content to.
+     * @param parts
+     *          A set of string ids of the components that may have 
+     *          their responses rendered.
+     */
+    public DojoAjaxResponseBuilder(IMarkupWriter writer, List parts)
+    {
+        _writer = writer;
+        if (parts != null) _parts.addAll(parts);
+    }
+    
+    /**
      * Creates a new response builder with the required services it needs
      * to render the response when {@link #renderResponse(IRequestCycle)} is called.
      * 
@@ -244,6 +260,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
                 && contains((IComponent)render))
         {
             render.render(getComponentWriter((IComponent)render), cycle);
+            return;
         }
         
         render.render(NullWriter.getSharedInstance(), cycle);
@@ -280,8 +297,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         //with xml element response begin/ends. This is very
         //important.
         IMarkupWriter nestedWriter = _writer.getNestedWriter();
+        nestedWriter.begin("response");
         nestedWriter.attribute("id", id);
-        if (type != null) 
+        if (type != null)
             nestedWriter.attribute("type", type);
         
         _writers.put(id, nestedWriter);
@@ -321,12 +339,36 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             
             nw.end();
             
-            _writer.printRaw(ScriptUtils.ensureValidScriptTags(nw.getBuffer()));
+            if (!isScriptWriter(key))
+                _writer.printRaw(ScriptUtils.ensureValidScriptTags(nw.getBuffer()));
+            else
+                _writer.printRaw(nw.getBuffer());
         }
         
         //end response
         _writer.printRaw("</ajax-response>");
         _writer.flush();
+    }
+    
+    /**
+     * Determines if the specified markup writer key is one of
+     * the pre-defined script keys from ResponseBuilder.
+     * 
+     * @param key
+     *          The key to check.
+     * @return True, if key is one of the ResponseBuilder keys. 
+     *         (BODY_SCRIPT,INCLUDE_SCRIPT,INITIALIZATION_SCRIPT)
+     */
+    boolean isScriptWriter(String key)
+    {
+        if (key == null) return false;
+        
+        if (ResponseBuilder.BODY_SCRIPT.equals(key)
+                || ResponseBuilder.INCLUDE_SCRIPT.equals(key)
+                || ResponseBuilder.INITIALIZATION_SCRIPT.equals(key))
+            return true;
+        
+        return false;
     }
     
     /**
@@ -367,9 +409,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
         String id = null;
         //form components have id's generated to ensure uniqueness
         if (comp instanceof IFormComponent)
-            id = ((IFormComponent)comp).getClientId();
-        if (id != null)
-            return id;
+            return ((IFormComponent)comp).getClientId();
         
         id = comp.getId();
         if (comp.getBinding("id") != null
