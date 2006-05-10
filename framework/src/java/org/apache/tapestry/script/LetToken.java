@@ -48,15 +48,15 @@ class LetToken extends AbstractToken
     {
         if (buffer != null) throw new IllegalArgumentException();
 
-        buffer = new StringBuffer(_bufferLengthHighwater);
+        StringBuffer useBuffer = new StringBuffer(_bufferLengthHighwater);
 
-        writeChildren(buffer, session);
+        writeChildren(useBuffer, session);
 
         // Store the symbol back into the root set of symbols.
 
         Map symbols = session.getSymbols();
 
-        String value = buffer.toString().trim();
+        String value = useBuffer.toString().trim();
 
         if (_unique) value = session.getUniqueString(value);
 
@@ -65,7 +65,7 @@ class LetToken extends AbstractToken
         // Store the buffer length from this run for the next run, since its
         // going to be approximately the right size.
 
-        _bufferLengthHighwater = Math.max(_bufferLengthHighwater, buffer
+        _bufferLengthHighwater = Math.max(_bufferLengthHighwater, useBuffer
                 .length());
     }
 }

@@ -38,16 +38,16 @@ class BodyToken extends AbstractToken
     {
         if (buffer != null) throw new IllegalArgumentException();
 
-        buffer = new StringBuffer(_bufferLengthHighwater);
+        StringBuffer useBuffer = new StringBuffer(_bufferLengthHighwater);
 
-        writeChildren(buffer, session);
+        writeChildren(useBuffer, session);
 
-        session.addBodyScript(buffer.toString());
+        session.addBodyScript(useBuffer.toString());
 
         // Store the buffer length from this run for the next run, since its
         // going to be approximately the right size.
 
-        _bufferLengthHighwater = Math.max(_bufferLengthHighwater, buffer
+        _bufferLengthHighwater = Math.max(_bufferLengthHighwater, useBuffer
                 .length());
     }
 }

@@ -949,14 +949,15 @@ public class TemplateParser implements ITemplateParser
     private void processComponentStart(String tagName, String jwcId, boolean emptyTag,
             int startLine, int cursorStart, Location startLocation) throws TemplateParseException
     {
-        if (jwcId.equalsIgnoreCase(CONTENT_ID))
+        String componentId = jwcId;
+        if (componentId.equalsIgnoreCase(CONTENT_ID))
         {
             processContentTag(tagName, startLine, cursorStart, emptyTag);
 
             return;
         }
 
-        boolean isRemoveId = jwcId.equalsIgnoreCase(REMOVE_ID);
+        boolean isRemoveId = componentId.equalsIgnoreCase(REMOVE_ID);
 
         if (_ignoring && !isRemoveId)
             templateParseProblem(
@@ -968,11 +969,11 @@ public class TemplateParser implements ITemplateParser
         String type = null;
         boolean allowBody = false;
 
-        if (_patternMatcher.matches(jwcId, _implicitIdPattern))
+        if (_patternMatcher.matches(componentId, _implicitIdPattern))
         {
             MatchResult match = _patternMatcher.getMatch();
 
-            jwcId = match.group(IMPLICIT_ID_PATTERN_ID_GROUP);
+            componentId = match.group(IMPLICIT_ID_PATTERN_ID_GROUP);
             type = match.group(IMPLICIT_ID_PATTERN_TYPE_GROUP);
 
             String libraryId = match.group(IMPLICIT_ID_PATTERN_LIBRARY_ID_GROUP);
@@ -988,8 +989,8 @@ public class TemplateParser implements ITemplateParser
             // New for 4.0: the component type may included slashes ('/'), but these
             // are not valid identifiers, so we convert them to '$'.
 
-            if (jwcId == null)
-                jwcId = _idAllocator.allocateId("$" + simpleType.replace('/', '$'));
+            if (componentId == null)
+                componentId = _idAllocator.allocateId("$" + simpleType.replace('/', '$'));
 
             try
             {
@@ -1006,23 +1007,23 @@ public class TemplateParser implements ITemplateParser
         {
             if (!isRemoveId)
             {
-                if (!_patternMatcher.matches(jwcId, _simpleIdPattern))
+                if (!_patternMatcher.matches(componentId, _simpleIdPattern))
                     templateParseProblem(
-                            ParseMessages.componentIdInvalid(tagName, startLine, jwcId),
+                            ParseMessages.componentIdInvalid(tagName, startLine, componentId),
                             startLocation,
                             startLine,
                             cursorStart);
 
-                if (!_delegate.getKnownComponent(jwcId))
+                if (!_delegate.getKnownComponent(componentId))
                     templateParseProblem(
-                            ParseMessages.unknownComponentId(tagName, startLine, jwcId),
+                            ParseMessages.unknownComponentId(tagName, startLine, componentId),
                             startLocation,
                             startLine,
                             cursorStart);
 
                 try
                 {
-                    allowBody = _delegate.getAllowBody(jwcId, startLocation);
+                    allowBody = _delegate.getAllowBody(componentId, startLocation);
                 }
                 catch (ApplicationRuntimeException e)
                 {
@@ -1051,7 +1052,7 @@ public class TemplateParser implements ITemplateParser
 
         if (!isRemoveId)
         {
-            addOpenToken(tagName, jwcId, type, startLocation);
+            addOpenToken(tagName, componentId, type, startLocation);
 
             if (emptyTag)
                 _tokens.add(_factory.createCloseToken(tagName, getCurrentLocation()));

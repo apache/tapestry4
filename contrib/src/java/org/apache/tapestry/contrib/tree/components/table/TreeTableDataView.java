@@ -137,13 +137,13 @@ public abstract class TreeTableDataView extends BaseComponent implements
             Object objParentUID, int nDepth, ITreeModel objTreeModel,
             int nRowPossiotionType, int[] arrConnectImages, boolean bLast)
     {
+        int rowPositionType = nRowPossiotionType;
         m_nTreeDeep = nDepth;
-
         int nNumberOfChildren = objTreeModel.getTreeDataModel().getChildCount(
                 objParent);
         boolean bLeaf = (nNumberOfChildren == 0) ? true : false;
         TreeRowObject objTreeRowObject = new TreeRowObject(objParent,
-                objParentUID, nDepth, bLeaf, nRowPossiotionType,
+                objParentUID, nDepth, bLeaf, rowPositionType,
                 arrConnectImages);
         arrAllExpandedNodes.add(objTreeRowObject);
 
@@ -166,10 +166,10 @@ public abstract class TreeTableDataView extends BaseComponent implements
                         .getUniqueKey(objChild, objParentUID);
                 boolean bChildLast = !iter.hasNext();
                 if (bChildLast)
-                    nRowPossiotionType = TreeRowObject.LAST_ROW;
-                else nRowPossiotionType = TreeRowObject.MIDDLE_ROW;
+                    rowPositionType = TreeRowObject.LAST_ROW;
+                else rowPositionType = TreeRowObject.MIDDLE_ROW;
                 walkTree(arrAllExpandedNodes, objChild, objChildUID,
-                        nDepth + 1, objTreeModel, nRowPossiotionType,
+                        nDepth + 1, objTreeModel, rowPositionType,
                         arrConnectImagesNew, bChildLast);
             }
         }

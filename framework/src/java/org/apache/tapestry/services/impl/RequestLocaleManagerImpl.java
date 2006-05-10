@@ -108,17 +108,18 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
 
     Locale filterRequestedLocale(String localeName)
     {
+        String requestLocaleName = localeName;
         if (_acceptedLocaleNamesSet.isEmpty())
-            return getLocale(localeName);
+            return getLocale(requestLocaleName);
 
         while (true)
         {
-            if (_acceptedLocaleNamesSet.contains(localeName))
-                return getLocale(localeName);
+            if (_acceptedLocaleNamesSet.contains(requestLocaleName))
+                return getLocale(requestLocaleName);
 
-            localeName = stripTerm(localeName);
+            requestLocaleName = stripTerm(requestLocaleName);
 
-            if (localeName.length() == 0)
+            if (requestLocaleName.length() == 0)
                 return _defaultLocale;
         }
     }

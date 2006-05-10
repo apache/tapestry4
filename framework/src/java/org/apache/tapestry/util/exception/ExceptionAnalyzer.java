@@ -84,12 +84,13 @@ public class ExceptionAnalyzer
 
     public ExceptionDescription[] analyze(Throwable exception)
     {
+        Throwable thrown = exception;
         try
         {
 
-            while (exception != null)
+            while (thrown != null)
             {
-                exception = buildDescription(exception);
+                thrown = buildDescription(thrown);
             }
 
             ExceptionDescription[] result = new ExceptionDescription[exceptionDescriptions.size()];

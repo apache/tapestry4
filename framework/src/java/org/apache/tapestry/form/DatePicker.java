@@ -232,11 +232,12 @@ public abstract class DatePicker extends AbstractFormComponent implements Transl
      */
     private static String escape(char c)
     {
+        char unescapedChar = c;
         StringBuffer b = new StringBuffer();
         for (int i = 0; i < 4; i++)
         {
-            b.append(Integer.toHexString(c & 0x000F).toUpperCase());
-            c >>>= 4;
+            b.append(Integer.toHexString(unescapedChar & 0x000F).toUpperCase());
+            unescapedChar >>>= 4;
         }
         b.append("u\\");
         return b.reverse().toString();
