@@ -120,27 +120,21 @@ public class EngineServiceLink implements ILink
             boolean includeParameters)
     {
         StringBuffer buffer = new StringBuffer();
-
-        if (scheme == null)
-            scheme = _request.getScheme();
-
-        buffer.append(scheme);
+        
+        int nport = port == 0 ? _request.getServerPort() : port;
+        String nscheme = scheme == null ? _request.getScheme() : scheme;
+        
+        buffer.append(nscheme);
         buffer.append("://");
-
-        if (server == null)
-            server = _request.getServerName();
-
-        buffer.append(server);
-
-        if (port == 0)
-            port = _request.getServerPort();
-
-        if (!(scheme.equals("http") && port == DEFAULT_HTTP_PORT))
+        
+        buffer.append(server == null ? _request.getServerName() : server);
+        
+        if (!(nscheme.equals("http") && nport == DEFAULT_HTTP_PORT))
         {
             buffer.append(':');
-            buffer.append(port);
+            buffer.append(nport);
         }
-
+        
         // Add the servlet path and the rest of the URL & query parameters.
         // The servlet path starts with a leading slash.
 
