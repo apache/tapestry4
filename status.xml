@@ -78,6 +78,13 @@
         Added a new utility implementation of IPropertySelectionModel that uses commons-beanutils to
         select values from a standard POJO object.
       </action>
+      <action type="add" dev="JK" due-to="James Carman" fixes-bug="TAPESTRY-917">
+        Applied patch that adds enhanced hivemind autowiring of services to components/pages.
+      </action>
+      <action type="update" dev="JK" fixes-bug="TAPESTRY-917" >
+        Added isReadOnly method to EnhancementOperation interface to support discovering properties
+        without having to throw exceptions.
+      </action>
     </release>
     <release version="4.0.1" date="unreleased" >
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-863" due-to="unknown contributor">

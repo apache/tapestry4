@@ -62,6 +62,19 @@
        
   </configuration-point>
   
+  <service-point id="AutowireWorkerFactory" interface="org.apache.hivemind.ServiceImplementationFactory" parameters-occurs="none">
+    Constructs AutowireWorker.
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.AutowireWorkerFactory" />
+    </invoke-factory>
+  </service-point>
+
+  <service-point id="AutowireWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    Automatically injects HiveMind service objects into read-only properties if exactly
+    one HiveMind service point is compatible with the property type.
+    <invoke-factory service-id="AutowireWorkerFactory" />
+  </service-point>
+  
   <contribution configuration-id="EnhancementWorkers">
     
     <!-- These can actually run in any order, as long as abstract-property runs later. -->
@@ -74,6 +87,11 @@
     <command id="inject-component" object="service:InjectComponentWorker" before="abstract-property"/>
     <command id="inject-bean" object="service:InjectBeanWorker" before="abstract-property"/>
     <command id="inject-asset" object="service:InjectAssetWorker" before="abstract-property"/>
+    <command 
+      id="inject-autowire" 
+      object="service:AutowireWorker" 
+      before="tapestry.enhance.abstract-property"
+      after="tapestry.enhance.inject-messages,tapestry.enhance.inject-specification,tapestry.enhance.specified-property,tapestry.enhance.parameter,tapestry.enhance.dispatch-inject,tapestry.enhance.inject-component,tapestry.enhance.inject-bean,tapestry.enhance.inject-asset"/>
     
     <!-- After all the previous workers have had their chance, we "fill in" any unclaimed properties
          as transient page properties. -->

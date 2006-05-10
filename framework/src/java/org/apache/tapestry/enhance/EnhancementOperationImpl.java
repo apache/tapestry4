@@ -249,13 +249,28 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
         _claimedProperties.add(propertyName);
     }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public boolean canClaimAsReadOnlyProperty(String propertyName)
+    {
+        if(_claimedProperties.contains(propertyName)) 
+            return false;
+        
+        PropertyDescriptor pd = getPropertyDescriptor(propertyName);
+        
+        if (pd == null) return false;
+        
+        return pd.getWriteMethod() == null ? true : false;
+    }
 
     public void claimReadonlyProperty(String propertyName)
     {
         claimProperty(propertyName);
-
+        
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);
-
+        
         if (pd != null && pd.getWriteMethod() != null)
             throw new ApplicationRuntimeException(EnhanceMessages
                     .readonlyProperty(propertyName, pd.getWriteMethod()));
@@ -347,8 +362,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
                 .propertyTypeMismatch(_baseClass, name, propertyType,
                         expectedType));
     }
-
-    private PropertyDescriptor getPropertyDescriptor(String name)
+    
+    PropertyDescriptor getPropertyDescriptor(String name)
     {
         return (PropertyDescriptor) _properties.get(name);
     }

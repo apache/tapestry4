@@ -127,11 +127,15 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         replayControls();
 
-        EnhancementOperation eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
+        EnhancementOperationImpl eo = new EnhancementOperationImpl(new DefaultClassResolver(), spec,
                 BaseComponent.class, cf, null);
-
+        
+        assertFalse(eo.canClaimAsReadOnlyProperty("foo"));
+        
         eo.claimReadonlyProperty("foo");
-
+        
+        assertFalse(eo.canClaimAsReadOnlyProperty("foo"));
+        
         verifyControls();
     }
 
