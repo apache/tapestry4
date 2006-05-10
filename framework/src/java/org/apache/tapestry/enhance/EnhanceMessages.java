@@ -22,6 +22,7 @@ import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * Messages for this package.
@@ -157,5 +158,10 @@ final class EnhanceMessages
     static String mustBeBoolean(String propertyName)
     {
         return _formatter.format("must-be-boolean", propertyName);
+    }
+    
+    static String autowiring( String propertyName, IComponentSpecification spec, Object proxy )
+    {
+        return _formatter.format( "autowiring", propertyName, spec.getDescription(), proxy );
     }
 }

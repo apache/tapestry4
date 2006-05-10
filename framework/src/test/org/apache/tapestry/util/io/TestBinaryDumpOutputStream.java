@@ -22,8 +22,8 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.ObjectOutputStream;
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -43,7 +43,7 @@ public class TestBinaryDumpOutputStream extends TestCase
     private String contentsOf(String path) throws Exception
     {
         String sep = System.getProperty("line.separator");
-
+        
         InputStream is = getClass().getResourceAsStream(path);
 
         is = new BufferedInputStream(is);
@@ -77,13 +77,12 @@ public class TestBinaryDumpOutputStream extends TestCase
         CharArrayWriter writer = new CharArrayWriter();
 
         BinaryDumpOutputStream bdos = new BinaryDumpOutputStream(writer);
-
+        
         ObjectOutputStream oos = new ObjectOutputStream(bdos);
-
         oos.writeObject(createOutputObject());
-
+        
         oos.close();
-
+        
         assertEquals(contentsOf("Basic.txt"), writer.toString());
     }
 
@@ -91,13 +90,17 @@ public class TestBinaryDumpOutputStream extends TestCase
      * Creates and returns the object to be written out to the stream. The tests are dependenent on
      * the serialization of HashMap and String not changing between JDKs. If such a change does
      * occur, we'll need to devise an Externalizable object to write to the stream.
+     * 
+     * I've changed this to use a List instead, as ordering of a list shouldn't change while
+     * ordering of a hashmap isn't guaranteed at all.
      */
-    private Map createOutputObject()
+    private List createOutputObject()
     {
-        Map map = new HashMap();
-        map.put("alpha", "beta");
-        map.put("gabba gabba", "we accept you");
-        return map;
+        List list = new ArrayList();
+        list.add("alpha");
+        list.add("beta");
+        list.add("gabba gabba");
+        return list;
     }
 
     public void testOptions() throws Exception

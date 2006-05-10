@@ -52,7 +52,17 @@ public interface EnhancementOperation
      */
 
     void claimReadonlyProperty(String propertyName);
-
+    
+    /**
+     * Checks to see if the specified property can be claimed as read only. 
+     * 
+     * @param propertyName
+     *          The property to check.
+     * @return True, if no setter method has been created for the specified property and
+     *          the property hasn't been claimed by someone else.
+     */
+    boolean canClaimAsReadOnlyProperty(String propertyName);
+    
     /**
      * Returns a list of the names of existing properties that are not claimed
      * and which have abstract accessor methods.

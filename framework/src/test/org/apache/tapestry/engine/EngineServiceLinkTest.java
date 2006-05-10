@@ -155,18 +155,18 @@ public class EngineServiceLinkTest extends BaseComponentTestCase
         EngineServiceLink l = new EngineServiceLink(rc, "/ctx/app", ENCODING, _urlCodec, request,
                 buildParameters("myservice", null), false);
 
-        trainGetScheme(request, "HTTP");
-
-        trainGetServerName(request, "TESTSERVER.COM");
-
         trainGetServerPort(request, 9187);
-
+        
+        trainGetScheme(request, "HTTP");
+        
+        trainGetServerName(request, "TESTSERVER.COM");
+        
         trainEncodeURL(rc, 
         		"HTTP://TESTSERVER.COM:9187/ctx/app?service=myservice", 
         		"HTTP://TESTSERVER.COM:9187/ctx/app?service=myservice");
         
         replayControls();
-
+        
         assertEquals("HTTP://TESTSERVER.COM:9187/ctx/app?service=myservice", l.getAbsoluteURL());
 
         verifyControls();
