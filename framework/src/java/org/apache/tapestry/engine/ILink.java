@@ -107,7 +107,7 @@ public interface ILink
     public String[] getParameterNames();
 
     /**
-     * Returns the values for the named parameter. Will return null if the no value is defined for
+     * Returns the values for the named parameter. Will return null if no value is defined for
      * the parameter.
      */
 
