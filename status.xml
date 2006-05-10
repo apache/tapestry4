@@ -135,7 +135,10 @@
     </action>
   		<action type="fix" dev="AA" fixes-bug="TAPESTRY-935">
   			Improve output of base tag (for IE).
-  		</action>     
+  		</action>   
+  		<action type="fix" dev="AA" fixes-bug="TAPESTRY-829" due-to="Ido M. Tamir">
+  			FormLinkRenderer throws NPE with DirectlLinks.
+  		</action>   		  
   	</release>
 
   	<release version="4.0.2" date="Apr 13 2006" >
