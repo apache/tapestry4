@@ -89,7 +89,7 @@
   
   <parameter name="clientValidationEnabled">
     <description>
-    If true (the default) then client-side validation will be generated upon render for any
+    If true then client-side validation will be generated upon render for any
         required or validating fields.
 	</description>
   </parameter>
