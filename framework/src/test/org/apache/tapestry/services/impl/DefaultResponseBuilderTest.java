@@ -33,11 +33,12 @@ import org.apache.tapestry.services.ResponseBuilder;
  * 
  * @author jkuhnert
  */
+@SuppressWarnings("cast")
 public class DefaultResponseBuilderTest extends HiveMindTestCase
 {
 
     private static CharArrayWriter _writer;
-
+    
     private static String lineSeperator = (String)java.security.AccessController.doPrivileged(
             new sun.security.action.GetPropertyAction("line.separator"));
     
