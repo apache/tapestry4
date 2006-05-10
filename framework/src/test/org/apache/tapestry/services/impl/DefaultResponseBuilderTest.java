@@ -38,7 +38,7 @@ public class DefaultResponseBuilderTest extends HiveMindTestCase
 
     private static CharArrayWriter _writer;
 
-    private static String lineSeperator = java.security.AccessController.doPrivileged(
+    private static String lineSeperator = (String)java.security.AccessController.doPrivileged(
             new sun.security.action.GetPropertyAction("line.separator"));
     
     private PrintWriter newPrintWriter()
