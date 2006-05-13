@@ -83,7 +83,9 @@ public abstract class Autocompleter extends AbstractFormWidget
         StringBuffer str = new StringBuffer("{");
         str.append("dataUrl:'").append(link.getURL()).append("&filter=%{searchString}',")
         .append("mode:'remote',")
-        .append("forceValidOption:true,")
+        .append("autoComplete:true,")
+        .append("dojoType:'ComboBox', ")
+        .append("widgetId:'").append(getName()).append("', ")
         .append("name:'").append(getName()).append("'")
         .append("}");
         

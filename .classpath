@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry excluding="org/apache/tapestry/html/dojo/" path="framework/src/java" kind="src"/>
 	<classpathentry path="framework/src/js" kind="src"/>
-	<classpathentry path="framework/src/java/org/apache/tapestry/html/dojo" kind="src"/>
 	<classpathentry path="examples/TimeTracker/src/java" kind="src"/>
 	<classpathentry path="framework/src/test" kind="src"/>
 	<classpathentry path="contrib/src/java" kind="src"/>

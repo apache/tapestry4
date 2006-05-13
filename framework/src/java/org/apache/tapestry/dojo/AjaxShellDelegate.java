@@ -44,7 +44,6 @@ public class AjaxShellDelegate implements IRender
         StringBuffer str = new StringBuffer("<script type=\"text/javascript\">");
         str.append("djConfig = { isDebug: true,")
         .append(" debugContainerId:'debug',")
-        .append(" debugAtAllCosts:true,")
         .append(" baseRelativePath:\"")
         .append(_assetService.getLink(true,
                 _dojoPath.getResourceLocation().getPath()).getAbsoluteURL())
