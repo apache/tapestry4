@@ -12,10 +12,11 @@
             dojo.require("dojo.io");
             dojo.require("dojo.json");
             dojo.require("dojo.event");
+            dojo.require("dojo.widget.Manager");
             dojo.require("dojo.widget.ComboBox");
         </unique>
     </body>
     <initialization>
-        tapestry.widget.synchronizeWidgetState("${id}", "combobox", ${props});
+        tapestry.widget.synchronizeWidgetState("${id}", "ComboBox", ${props});
     </initialization>
 </script>

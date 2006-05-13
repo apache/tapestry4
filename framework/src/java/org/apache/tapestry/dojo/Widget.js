@@ -13,7 +13,7 @@
 // limitations under the License.
 dojo.provide("tapestry.widget");
 
-dojo.require("dojo.widget");
+dojo.require("dojo.widget.*");
 dojo.require("dojo.dom");
 dojo.require("dojo.event");
 dojo.require("dojo.lang.common");
