@@ -42,6 +42,9 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
 
     private static CharArrayWriter _writer;
     
+    private static String LINE_SEPERATOR = (String)java.security.AccessController.doPrivileged(
+            new sun.security.action.GetPropertyAction("line.separator"));
+    
     private PrintWriter newPrintWriter()
     {
         _writer = new CharArrayWriter();
@@ -265,8 +268,10 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         assertOutput("<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\" [\n" + 
                 "<!ENTITY nbsp \'&#160;\'>\n" + 
                 "]>\n" + 
-                "<ajax-response><response id=\"includescript\" type=\"script\"><script type=\"text/javascript\" src=\"http://noname/js/package.js\"></script>\n" + 
-                "<script type=\"text/javascript\" src=\"http://noname/js/package.js\"></script>\n" + 
+                "<ajax-response><response id=\"includescript\" type=\"script\"><script type=\"text/javascript\" src=\"http://noname/js/package.js\"></script>" + 
+                LINE_SEPERATOR +
+                "<script type=\"text/javascript\" src=\"http://noname/js/package.js\"></script>" +
+                LINE_SEPERATOR +
                 "</response></ajax-response>");
         
         verifyControls();
