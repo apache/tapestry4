@@ -39,7 +39,7 @@ public class DefaultResponseBuilderTest extends HiveMindTestCase
 
     private static CharArrayWriter _writer;
     
-    private static String lineSeperator = (String)java.security.AccessController.doPrivileged(
+    private static String LINE_SEPERATOR = (String)java.security.AccessController.doPrivileged(
             new sun.security.action.GetPropertyAction("line.separator"));
     
     private PrintWriter newPrintWriter()
@@ -177,12 +177,12 @@ public class DefaultResponseBuilderTest extends HiveMindTestCase
         builder.writeExternalScript(script1, cycle);
         
         assertOutput("<script type=\"text/javascript\" src=\""
-                + script1 + "\"></script>" + lineSeperator);
+                + script1 + "\"></script>" + LINE_SEPERATOR);
         
         builder.writeExternalScript(script2, cycle);
         
         assertOutput("<script type=\"text/javascript\" src=\""
-                + script2 + "\"></script>" + lineSeperator);
+                + script2 + "\"></script>" + LINE_SEPERATOR);
         
         verifyControls();
     }
