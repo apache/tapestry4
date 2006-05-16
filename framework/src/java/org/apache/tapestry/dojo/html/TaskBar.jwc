@@ -51,24 +51,14 @@
     <parameter name="constrainToContainer">
         <description>If true, the pane cannot be moved outside its container.</description>
     </parameter>
-    <parameter name="resizable" default-value="ognl:true">
-        <description>If true, a resize handle appears at the lower right of the pane.</description>
-    </parameter>
     <parameter name="persistPosition" default-value="ognl:true">
         <description>If true, the position and size of the pane are persisted with cookies.</description>
     </parameter>
 
     <parameter name="id" property="idParameter" default-value="id">
         <description>
-            The html id of the div created by the pane.
-        </description>
-    </parameter>
-
-    <parameter name="taskBar">
-        <description>
-            The taskbar this pane belongs to. If specified, this can either be
-            the html id of the TaskBar or the FloatingPane instance representing
-            the TaskBar.
+            The html id of the div created by the pane. An additional html id is
+            created for the inner div, named ${id}ContentId.
         </description>
     </parameter>
 
@@ -76,8 +66,10 @@
         <description>Additional javascript options. Use JSON notation.</description>
     </parameter>
     
-    <property name="isTaskBar" initial-value="false"/>      
+    <property name="taskBar"/>  
+    <property name="isTaskBar" initial-value="true"/>
+    <property name="resizable" initial-value="false"/>
 
-    <inject property="script" type="script" object="FloatingPane.script"/>
+    <inject property="script" type="script" object="TaskBar.script"/>
 
 </component-specification>
