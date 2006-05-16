@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2004, 2005, 2006 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE component-specification PUBLIC
+        "-//Apache Software Foundation//Tapestry Specification 4.0//EN"
+        "http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd">
+
+<component-specification class="org.apache.tapestry.dojo.html.FloatingPane"
+                         allow-body="yes" allow-informal-parameters="yes">
+
+    <description>
+        Creates a FloatingPane - an independant window within an html document.
+        The FloatingPane can have shadow and title. It can be constraint
+        into its container, allow resizing, persist its size and position with
+        cookies and belong to a TaskBar.
+        A TaskBar can also be created from a FloatingPane if the isTaskBar parameter
+        is set to true. A TaskBar does not render its toolbar and automatically displays
+        the panes that are registered to it.
+    </description>
+
+    <parameter name="minHeight" default-value="literal:100">
+        <description></description>
+    </parameter>
+    <parameter name="minWidth" default-value="literal:200"/>
+
+    <parameter name="hasShadow" default-value="ognl:true">
+        <description>Add shadow to the pane.</description>
+    </parameter>
+    <parameter name="hasToolbar" default-value="ognl:true">
+        <description></description>
+    </parameter>
+
+    <parameter name="title" default-value="literal:Floating Pane">
+        <description>The title of the pane.</description>
+    </parameter>
+
+    <parameter name="constrainToContainer">
+        <description>If true, the pane cannot be moved outside its container.</description>
+    </parameter>
+    <parameter name="resizable" default-value="ognl:true">
+        <description>If true, a resize handle appears at the lower right of the pane.</description>
+    </parameter>
+    <parameter name="persistPosition" default-value="ognl:true">
+        <description>If true, the position and size of the pane are persisted with cookies.</description>
+    </parameter>
+
+    <parameter name="style"
+               default-value="literal:width: 600px; height: 480px; left: 100px; top: 100px; display: none">
+        <description>The css styles to apply to the div created by the pane.</description>
+    </parameter>
+
+    <parameter name="id" property="idParameter" default-value="id">
+        <description>
+            The html id of the div created by the pane. An additional html id is
+            created for the inner div, named ${id}ContentId.
+        </description>
+    </parameter>
+
+    <parameter name="taskBar">
+        <description>
+            The taskbar this pane belongs to. If specified, this can either be
+            the html id of the TaskBar or the FloatingPane instance representing
+            the TaskBar.
+        </description>
+    </parameter>
+    <parameter name="isTaskBar">
+        <description>
+            If true, this FloatingPane becomes a TaskBar.
+        </description>
+    </parameter>
+
+    <parameter name="options">
+        <description>Additional javascript options. Use JSON notation.</description>
+    </parameter>
+    
+    <component id="outerDiv" type="Any" inherit-informal-parameters="true">
+        <binding name="id" value="idParameter"/>
+    </component>      
+
+    <inject property="script" type="script" object="FloatingPane.script"/>
+
+</component-specification>
