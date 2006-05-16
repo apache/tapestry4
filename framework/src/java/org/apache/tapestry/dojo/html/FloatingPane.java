@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
@@ -33,7 +33,7 @@ import org.apache.tapestry.json.JSONObject;
  * @author andyhot
  * @since 4.1
  */
-public abstract class FloatingPane extends BaseComponent implements IWidget {
+public abstract class FloatingPane extends AbstractComponent implements IWidget {
 
     /** Title of the FloatingPane. */
     public abstract String getTitle();
@@ -58,9 +58,6 @@ public abstract class FloatingPane extends BaseComponent implements IWidget {
 
     /** Should contrain to container. */
     public abstract boolean getConstrainToContainer();
-
-    /** style. */
-    public abstract String getStyle();
 
     /** id. */
     public abstract String getIdParameter();
@@ -105,7 +102,13 @@ public abstract class FloatingPane extends BaseComponent implements IWidget {
      */
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        super.renderComponent(writer, cycle);
+        writer.begin("div");
+        writer.attribute("id", getIdParameter());
+        
+        renderInformalParameters(writer, cycle);
+        renderBody(writer, cycle);
+        
+        writer.end();
         
         JSONObject obj = DojoUtils.parseJSONParameter(this, "options");
 
@@ -119,7 +122,6 @@ public abstract class FloatingPane extends BaseComponent implements IWidget {
         obj.put("hasShadow", getHasShadow());
         obj.put("resizable", isResizable());
         obj.put("taskBarId", getTaskBarId());
-        //obj.put("contentNodeId", getId() + "ContentId");
         //obj.put("persistenceWidgetPosition", getPersistPosition());        
 
         //Setup our script includes
