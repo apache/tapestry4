@@ -80,7 +80,9 @@
     <component-type type="ValidField" specification-path="valid/ValidField.jwc"/>
     
 	<component-type type="FloatingPane" specification-path="dojo/html/FloatingPane.jwc"/>    
+	<component-type type="DojoDebugConsole" specification-path="dojo/html/DojoDebugConsole.jwc"/>        
 	<component-type type="TaskBar" specification-path="dojo/html/TaskBar.jwc"/>        
+	<component-type type="TitlePane" specification-path="dojo/html/TitlePane.jwc"/>            
 
     <page name="StaleLink" specification-path="pages/StaleLink.page"/>
     <page name="StaleSession" specification-path="pages/StaleSession.page"/>
