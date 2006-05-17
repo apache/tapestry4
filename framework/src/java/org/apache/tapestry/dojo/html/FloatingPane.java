@@ -33,20 +33,8 @@ import org.apache.tapestry.json.JSONObject;
  * @author andyhot
  * @since 4.1
  */
-public abstract class FloatingPane extends AbstractComponent implements IWidget {
-
-    /** Title of the FloatingPane. */
-    public abstract String getTitle();
-
-    /** Min height of the FloatingPane. */
-    public abstract int getMinWidth();
-
-    /** Min width of the FloatingPane. */
-    public abstract int getMinHeight();
-
-    /** Has Shadow. */
-    public abstract boolean getHasShadow();
-
+public abstract class FloatingPane extends AbstractComponent implements IWidget, IDojoFloatingPane 
+{
     /** Has Tool bar. */
     public abstract boolean getHasToolbar();
 
@@ -56,14 +44,8 @@ public abstract class FloatingPane extends AbstractComponent implements IWidget 
     /** Should persist position (with cookies). */
     public abstract boolean getPersistPosition();
 
-    /** Should contrain to container. */
-    public abstract boolean getConstrainToContainer();
-
     /** id. */
     public abstract String getIdParameter();
-
-    /** The taskBar this pane is connected to. */
-    public abstract Object getTaskBar();
 
     /** Is this pane a taskBar? */
     public abstract boolean getIsTaskBar();
@@ -113,12 +95,16 @@ public abstract class FloatingPane extends AbstractComponent implements IWidget 
         JSONObject obj = DojoUtils.parseJSONParameter(this, "options");
 
         obj.put("title", getTitle());
+        if (getIcon() != null)
+            obj.put("iconSrc", getIcon().buildURL());
+        if (getHref() != null)
+            obj.put("href", getHref());
         obj.put("widgetId", getId());
         obj.put("toggle", "fade");
         obj.put("constrainToContainer", getConstrainToContainer());
-        obj.put("displayMaximizeAction", true);
-        obj.put("displayMinimizeAction", true);
-        obj.put("displayCloseAction", true);
+        obj.put("displayMaximizeAction", getDisplayMaximizeAction());
+        obj.put("displayMinimizeAction", getDisplayMinimizeAction());
+        obj.put("displayCloseAction", getDisplayCloseAction());
         obj.put("hasShadow", getHasShadow());
         obj.put("resizable", isResizable());
         obj.put("taskBarId", getTaskBarId());

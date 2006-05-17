@@ -9,8 +9,6 @@
     <body>
         <unique>
 			dojo.require("dojo.widget.FloatingPane");
-			dojo.require("dojo.widget.LayoutContainer");
-			dojo.require("dojo.widget.ResizeHandle");
         </unique>
     </body>
 
