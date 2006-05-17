@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC
+	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+<script>
+	<include-script resource-path="/org/apache/tapestry/dojo/Widget.js"/>
+	<input-symbol key="id" required="yes" />
+	<input-symbol key="props" required="yes" />
+    <body>
+        <unique>
+			dojo.require("dojo.widget.TitlePane");
+        </unique>
+    </body>
+
+    <initialization>
+	    tapestry.widget.synchronizeWidgetState("${id}", "TitlePane", ${props});
+    </initialization>
+</script>
