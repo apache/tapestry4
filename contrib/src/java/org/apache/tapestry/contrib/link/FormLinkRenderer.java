@@ -18,6 +18,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.html.Body;
@@ -83,12 +84,7 @@ public class FormLinkRenderer extends DefaultLinkRenderer
             ILink l = linkComponent.getLink(cycle);
             String anchor = linkComponent.getAnchor();
 
-            Body body = Body.get(cycle);
-
-            if (body == null)
-                throw new ApplicationRuntimeException(Tapestry.format(
-                        "must-be-contained-by-body", "FormLinkRenderer"), this,
-                        null, null);
+            Body body = (Body) TapestryUtils.getPageRenderSupport(cycle, linkComponent);
 
             String function = generateFormFunction(formName, l, anchor);
             body.addBodyScript(linkComponent, function);
@@ -152,11 +148,11 @@ public class FormLinkRenderer extends DefaultLinkRenderer
         {
             String parameter = parameterNames[i];
             String[] values = link.getParameterValues(parameter);
-            for(int j = 0; j < values.length; j++)
-            {
-                String value = values[j];
-                buf.append("  html += \"<input type='hidden' name='"
-                        + parameter + "' value='" + value + "'/>\";\n");
+            if (values != null) {               
+                for (int j = 0; j < values.length; j++) {
+                    String value = values[j];
+                    buf.append("  html += \"<input type='hidden' name='" + parameter + "' value='" + value + "'/>\";\n");
+                }
             }
         }
         buf.append("  html += \"<\" + \"/form>\";\n");
