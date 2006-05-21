@@ -21,6 +21,7 @@ import org.apache.hivemind.LocationHolder;
 import org.apache.hivemind.Messages;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.listener.ListenerMap;
+import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 
@@ -30,7 +31,7 @@ import org.apache.tapestry.spec.IContainedComponent;
  * Components are created dynamically from thier class names (part of the
  * {@link IComponentSpecification}).
  * 
- * @author Howard Leiws Ship
+ * @author Howard Lewis Ship
  */
 
 public interface IComponent extends IRender, LocationHolder
@@ -364,4 +365,13 @@ public interface IComponent extends IRender, LocationHolder
      * @since 4.0
      */
     void setContainedComponent(IContainedComponent containedComponent);
+    
+    /**
+     * Returns the event connection manager services that handles creating/accepting
+     * browser events associated with various properties of components.
+     * 
+     * @return eventInvoker, may not be null
+     * @since 4.1
+     */
+    ComponentEventInvoker getEventInvoker();
 }

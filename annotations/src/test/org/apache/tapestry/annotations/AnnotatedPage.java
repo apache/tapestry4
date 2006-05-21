@@ -143,4 +143,7 @@ public abstract class AnnotatedPage extends BasePage
 
     @InitialValue("fred")
     public abstract int getPropertyWithInitialValue();
+    
+    @EventListener(events = { "onClick" }, targets = { "email" })
+    public void eventListener() { }
 }

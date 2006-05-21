@@ -23,6 +23,7 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.NullWriter;
 import org.apache.tapestry.markup.MarkupWriterSource;
+import org.apache.tapestry.services.ComponentRenderWorker;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.util.ContentType;
@@ -44,14 +45,16 @@ public class DefaultResponseBuilder implements ResponseBuilder
     
     public static final String ENCODING_KEY = "charset";
     
-    protected RequestLocaleManager _localeManager;
+    private RequestLocaleManager _localeManager;
     
-    protected MarkupWriterSource _markupWriterSource;
+    private MarkupWriterSource _markupWriterSource;
 
-    protected WebResponse _webResponse;
+    private WebResponse _webResponse;
+    
+    private ComponentRenderWorker _renderWorker;
     
     /** Writer that creates JSON output response. */
-    protected IMarkupWriter _writer;
+    private IMarkupWriter _writer;
     
     /**
      * Used in testing only.
@@ -75,11 +78,12 @@ public class DefaultResponseBuilder implements ResponseBuilder
      */
     public DefaultResponseBuilder(RequestLocaleManager localeManager, 
             MarkupWriterSource markupWriterSource,
-            WebResponse webResponse)
+            WebResponse webResponse, ComponentRenderWorker renderWorker)
     {
         _localeManager = localeManager;
         _markupWriterSource = markupWriterSource;
         _webResponse = webResponse;
+        _renderWorker = renderWorker;
     }
     
     /**
@@ -129,6 +133,9 @@ public class DefaultResponseBuilder implements ResponseBuilder
             render.render(_writer, cycle);
         else
             render.render(writer, cycle);
+        
+        if (IComponent.class.isInstance(render))
+            _renderWorker.renderComponent(cycle, (IComponent)render);
     }
     
     /** 

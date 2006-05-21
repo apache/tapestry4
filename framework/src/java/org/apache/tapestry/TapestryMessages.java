@@ -70,6 +70,12 @@ final class TapestryMessages
                 .format("attempt-to-change-contained-component", component.getExtendedId());
     }
 
+    static String attemptToChangeEventInvoker(IComponent component)
+    {
+        return _formatter
+                .format("attempt-to-change-event-invoker", component.getExtendedId());
+    }
+    
     static String componentWrongType(IComponent component, Class expectedType)
     {
         return _formatter.format("component-wrong-type", component.getExtendedId(), expectedType

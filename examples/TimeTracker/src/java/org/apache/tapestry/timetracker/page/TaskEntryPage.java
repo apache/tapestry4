@@ -18,6 +18,7 @@ import java.util.Date;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.annotations.Component;
+import org.apache.tapestry.annotations.EventListener;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.dojo.form.Autocompleter;
 import org.apache.tapestry.form.BeanPropertySelectionModel;
@@ -68,5 +69,16 @@ public abstract class TaskEntryPage extends BasePage
     public void addTask()
     {
         _log.debug("addTask() selected task is " + getSelectedProject().getName());
+    }
+    
+    /**
+     * Invoked when an item is selected from the project
+     * selection list.
+     */
+    @EventListener(events = {"selectOption"}, 
+            targets = { "projectChoose" })
+    public void projectSelected()
+    {
+        
     }
 }

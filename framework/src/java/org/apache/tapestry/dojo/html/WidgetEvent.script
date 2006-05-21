@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC
+  "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+<script>
+<include-script resource-path="/org/apache/tapestry/dojo/Widget.js"/>
+
+<input-symbol key="component" required="yes" />
+<input-symbol key="url" required="yes" />
+<input-symbol key="events" required="yes" />
+    <body>
+        <unique>
+            dojo.require("dojo.io");
+            dojo.require("dojo.json");
+            dojo.require("dojo.event");
+        </unique>
+    </body>
+    <initialization>
+        <foreach expression="events" key="event">
+        dojo.event.connect(dojo.widget.byId("${component.id}"), "${event}", function(e) {
+            dojo.debug("Event fired");
+        });
+        </foreach>
+    </initialization>
+</script>
