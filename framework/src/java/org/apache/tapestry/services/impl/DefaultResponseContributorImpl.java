@@ -17,6 +17,7 @@ import java.io.IOException;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.markup.MarkupWriterSource;
+import org.apache.tapestry.services.ComponentRenderWorker;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ResponseContributor;
@@ -36,6 +37,8 @@ public class DefaultResponseContributorImpl implements ResponseContributor
 
     protected WebResponse _webResponse;
     
+    private ComponentRenderWorker _renderWorker;
+    
     /**
      * {@inheritDoc}
      */
@@ -43,7 +46,7 @@ public class DefaultResponseContributorImpl implements ResponseContributor
     throws IOException
     {
         return new DefaultResponseBuilder(_localeManager, _markupWriterSource,
-                _webResponse);
+                _webResponse, _renderWorker);
     }
     
     /**
@@ -67,5 +70,10 @@ public class DefaultResponseContributorImpl implements ResponseContributor
     public void setWebResponse(WebResponse webResponse)
     {
         _webResponse = webResponse;
+    }
+    
+    public void setComponentRenderWorker(ComponentRenderWorker renderWorker)
+    {
+        _renderWorker = renderWorker;
     }
 }

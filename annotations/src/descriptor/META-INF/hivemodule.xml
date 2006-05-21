@@ -122,7 +122,20 @@
     <worker annotation="Component" object="instance:ComponentAnnotationWorker"/>
     <worker annotation="InjectMeta" object="instance:InjectMetaAnnotationWorker"/>
     <worker annotation="InjectScript" object="instance:InjectScriptAnnotationWorker"/>
+    <worker annotation="EventListener" object="service:EventListenerAnnotationWorker"/>
   </contribution>
+  
+  <service-point id="EventListenerAnnotationWorker" interface="MethodAnnotationEnhancementWorker">
+    
+    Connects IActionListener method invocations with client side javascript events.
+    
+    <invoke-factory>
+      <construct class="EventListenerAnnotationWorker">
+        <set-service property="componentEventInvoker" service-id="tapestry.event.ComponentEventInvoker"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
   
   <service-point id="InjectObjectAnnotationWorker" interface="MethodAnnotationEnhancementWorker">
     

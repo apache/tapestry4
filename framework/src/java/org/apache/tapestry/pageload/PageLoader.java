@@ -499,8 +499,6 @@ public class PageLoader implements IPageLoader
         String className = _componentClassProvider
                 .provideComponentClassName(context);
 
-        // String className = spec.getComponentClassName();
-
         if (HiveMind.isBlank(className))
             className = BaseComponent.class.getName();
         else

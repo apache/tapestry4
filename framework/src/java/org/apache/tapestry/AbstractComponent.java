@@ -29,8 +29,10 @@ import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.bean.BeanProvider;
 import org.apache.tapestry.engine.IPageLoader;
+import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.listener.ListenerMap;
+import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 
@@ -40,7 +42,7 @@ import org.apache.tapestry.spec.IContainedComponent;
  * @author Howard Lewis Ship
  */
 
-public abstract class AbstractComponent extends BaseLocatable implements IComponent
+public abstract class AbstractComponent extends BaseLocatable implements IDirectEvent
 {
     private static final int MAP_SIZE = 5;
     
@@ -143,7 +145,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     /** @since 4.0 */
 
     private IContainedComponent _containedComponent;
-
+    
     public void addAsset(String name, IAsset asset)
     {
         Defense.notNull(name, "name");
@@ -644,7 +646,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      */
 
     protected abstract void renderComponent(IMarkupWriter writer, IRequestCycle cycle);
-
+    
     /**
      * Invoked by {@link #render(IMarkupWriter, IRequestCycle)}after the component renders. This
      * implementation does nothing.
@@ -856,5 +858,28 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
         _containedComponent = containedComponent;
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ComponentEventInvoker getEventInvoker()
+    {
+        throw new IllegalStateException(TapestryMessages.providedByEnhancement("getEventInvoker"));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void triggerEvent(IRequestCycle cycle, BrowserEvent event)
+    {
+        getEventInvoker().invokeListeners(this, cycle, event);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isStateful()
+    {
+        return false;
+    }
 }

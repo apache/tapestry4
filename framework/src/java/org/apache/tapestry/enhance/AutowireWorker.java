@@ -56,8 +56,11 @@ public class AutowireWorker implements EnhancementWorker
             if( _module.containsService( propertyType )) {
                 final Object serviceProxy = _module.getService( propertyType );
                 final Location location = spec.getLocation();
+                
                 _log.debug( EnhanceMessages.autowiring( propertyName, spec, serviceProxy ) );
+                
                 final String fieldName = op.addInjectedField( "_$" + propertyName, propertyType, serviceProxy );
+                
                 EnhanceUtils.createSimpleAccessor( op, fieldName, propertyName, propertyType, location );
                 op.claimReadonlyProperty( propertyName );
             }
