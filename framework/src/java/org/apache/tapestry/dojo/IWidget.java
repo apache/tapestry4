@@ -13,6 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry.dojo;
 
+import org.apache.tapestry.IDirectEvent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 
@@ -24,7 +25,7 @@ import org.apache.tapestry.IRequestCycle;
  * 
  * @author jkuhnert
  */
-public interface IWidget
+public interface IWidget extends IDirectEvent
 {
     /**
      * Similar to the semantics involved with normal <code>AbstractComponent.renderComponent</code>

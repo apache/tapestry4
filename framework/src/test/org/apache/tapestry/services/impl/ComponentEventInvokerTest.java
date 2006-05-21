@@ -1,4 +1,4 @@
-// Copyright May 4, 2006 The Apache Software Foundation
+// Copyright May 21, 2006 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,16 +11,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package org.apache.tapestry.dojo.form;
+package org.apache.tapestry.services.impl;
 
-import org.apache.tapestry.dojo.IWidget;
+import org.apache.tapestry.BaseComponentTestCase;
 
 
 /**
- * Represents an html input field managed by a dojo widget.
+ * Tests functionality of {@link ComponentEventInvoker}.
  * 
  * @author jkuhnert
  */
-public interface IFormWidget extends IWidget
+public class ComponentEventInvokerTest extends BaseComponentTestCase
 {
+    
+    
 }

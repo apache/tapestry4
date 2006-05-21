@@ -122,10 +122,9 @@
     <worker annotation="Component" object="instance:ComponentAnnotationWorker"/>
     <worker annotation="InjectMeta" object="instance:InjectMetaAnnotationWorker"/>
     <worker annotation="InjectScript" object="instance:InjectScriptAnnotationWorker"/>
-    <worker annotation="EventListener" object="service:EventListenerAnnotationWorker"/>
   </contribution>
   
-  <service-point id="EventListenerAnnotationWorker" interface="MethodAnnotationEnhancementWorker">
+  <service-point id="EventListenerAnnotationWorker" interface="SecondaryAnnotationWorker">
     
     Connects IActionListener method invocations with client side javascript events.
     
@@ -158,6 +157,7 @@
   
   <contribution configuration-id="SecondaryAnnotationWorkers"> 
     <command id="initial-value" object="instance:InitialValueAnnotationWorker"/>
+    <command id="event-listener" object="service:EventListenerAnnotationWorker"/>
   </contribution>
   
   <service-point id="SecondaryAnnotationWorkers" interface="SecondaryAnnotationWorker">

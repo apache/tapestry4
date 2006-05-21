@@ -27,6 +27,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.BrowserEvent;
+import org.apache.tapestry.event.EventTarget;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
@@ -147,8 +148,12 @@ public class DirectEventService implements IEngineService
     protected void triggerComponent(IRequestCycle cycle, IDirectEvent direct, Object[] parameters)
     {
         cycle.setListenerParameters(parameters);
-
-        direct.triggerEvent(cycle, new BrowserEvent("onSelect"));
+        
+        //TODO: This is BS! Need to grab real params 
+        Map tprops = new HashMap();
+        tprops.put("id", "testId");
+        
+        direct.triggerEvent(cycle, new BrowserEvent("onSelect", new EventTarget(tprops)));
     }
 
     public String getName()

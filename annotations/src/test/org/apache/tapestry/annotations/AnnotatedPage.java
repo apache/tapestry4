@@ -140,10 +140,14 @@ public abstract class AnnotatedPage extends BasePage
 
     @InjectScript("foo.script")
     public abstract IScript getScript();
-
+    
     @InitialValue("fred")
     public abstract int getPropertyWithInitialValue();
     
-    @EventListener(events = { "onClick" }, targets = { "email" })
+    @EventListener(events = { "onClick" }, targets = { "email" }, 
+            elements = { "foo" })
     public void eventListener() { }
+    
+    @EventListener(events = { "onClick" })
+    public void brokenTargetListener() { }
 }

@@ -21,11 +21,21 @@ package org.apache.tapestry.event;
  */
 public class BrowserEvent
 {
-    private String _name;
+    private final String _name;
     
-    public BrowserEvent(String name)
+    private final EventTarget _target;
+    
+    /**
+     * Creates a new browser event with the specified
+     * name/target properties.
+     * 
+     * @param name The name of the event, ie "onClick", "onBlur", etc..
+     * @param target The target of the client side event.
+     */
+    public BrowserEvent(String name, EventTarget target)
     {
         _name = name;
+        _target = target;
     }
     
     /**
@@ -39,5 +49,14 @@ public class BrowserEvent
     public String getName()
     {
         return _name;
+    }
+    
+    /**
+     * Returns the target of the client side event.
+     * @return
+     */
+    public EventTarget getTarget()
+    {
+        return _target;
     }
 }

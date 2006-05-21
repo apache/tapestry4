@@ -15,7 +15,8 @@ package org.apache.tapestry.annotations;
 
 import java.lang.reflect.Method;
 
-import org.apache.hivemind.Location;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -26,23 +27,41 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * 
  * @author jkuhnert
  */
-public class EventListenerAnnotationWorker implements MethodAnnotationEnhancementWorker
+public class EventListenerAnnotationWorker implements SecondaryAnnotationWorker
 {
     private ComponentEventInvoker _invoker;
     
     /** 
      * {@inheritDoc}
      */
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec, 
-            Method method, Location location)
+    public boolean canEnhance(Method method)
+    {
+        return method.getAnnotation(EventListener.class) != null;
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void peformEnhancement(EnhancementOperation op, IComponentSpecification spec, 
+            Method method, Resource classResource)
     {
         EventListener listener = method.getAnnotation(EventListener.class);
         
         String[] targets = listener.targets();
+        String[] elements = listener.elements();
         
-        for (int i=0; i < targets.length; i++)
+        if (targets.length < 1 && elements.length < 1)
+            throw new ApplicationRuntimeException(AnnotationMessages.targetsNotFound(method));
+        
+        for (int i=0; i < targets.length; i++) {
+            if (spec.getComponent(targets[i]) == null)
+                throw new ApplicationRuntimeException(AnnotationMessages.componentNotFound(method, targets[i]));
+            
             _invoker.addEventListener(targets[i], listener.events(), method.getName());
+        }
         
+        for (int i=0; i < elements.length; i++)
+            _invoker.addElementEventListener(elements[i], listener.events(), method.getName());
     }
     
     /**
