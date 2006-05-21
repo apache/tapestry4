@@ -37,6 +37,8 @@ public class ComponentEventInvoker implements ResetEventListener
 {
     private Map _components = new HashMap();
     
+    private Map _elements = new HashMap();
+    
     private ListenerInvoker _invoker;
     
     /**
@@ -56,8 +58,27 @@ public class ComponentEventInvoker implements ResetEventListener
         Defense.notNull(cycle, "cycle");
         Defense.notNull(event, "event");
         
-        ComponentEventProperty prop = getComponentEvents(component.getId());
+        String id = component.getId();
         
+        if (hasEvents(id)) {
+            
+            ComponentEventProperty prop = getComponentEvents(component.getId());
+            invokeListeners(prop, component, cycle, event);
+        }
+        
+        // else, may be an element invoked event
+        String targetId = (String)event.getTarget().get("id");
+        
+        if (hasElementEvents(targetId)) {
+            
+            ComponentEventProperty prop = getElementEvents(component.getId());
+            invokeListeners(prop, component, cycle, event);
+        }
+    }
+    
+    void invokeListeners(ComponentEventProperty prop, IComponent component, 
+            IRequestCycle cycle, BrowserEvent event)
+    {
         List listeners = prop.getEventListeners(event.getName());
         for (int i=0; i < listeners.size(); i++) {
             String methodName = (String)listeners.get(i);
@@ -75,7 +96,7 @@ public class ComponentEventInvoker implements ResetEventListener
      * Adds a deferred event listener binding for the specified component.
      * 
      * @param componentId 
-     *          The component to add an event listener for.
+     *          The component this is for.
      * @param events
      *          The events that should cause the listener to be executed.
      * @param methodName
@@ -85,6 +106,20 @@ public class ComponentEventInvoker implements ResetEventListener
     public void addEventListener(String componentId, String[] events, String methodName)
     {
         ComponentEventProperty property = getComponentEvents(componentId);
+        
+        property.addListener(events, methodName);
+    }
+    
+    /**
+     * Adds a deferred event listener binding for the specified html element.
+     * 
+     * @param elementId
+     * @param events
+     * @param methodName
+     */
+    public void addElementEventListener(String elementId, String[] events, String methodName)
+    {
+        ComponentEventProperty property = getElementEvents(elementId);
         
         property.addListener(events, methodName);
     }
@@ -101,6 +136,24 @@ public class ComponentEventInvoker implements ResetEventListener
     public boolean hasEvents(String componentId)
     {
         return _components.get(componentId) != null;
+    }
+    
+    /**
+     * 
+     * @return True, if any html element events exist.
+     */
+    public boolean hasElementEvents()
+    {
+        return _elements.size() > 0;
+    }
+    
+    /**
+     * 
+     * @return True, if the html element has events.
+     */
+    public boolean hasElementEvents(String id)
+    {
+        return _elements.get(id) != null;
     }
     
     /**
@@ -121,9 +174,28 @@ public class ComponentEventInvoker implements ResetEventListener
         return prop;
     }
     
+    /**
+     * Gets event properties fro the specified component, creates a new
+     * instance if one doesn't exist already.
+     * 
+     * @param id The component id 
+     * @return A new/existing instance.
+     */
+    public ComponentEventProperty getElementEvents(String id)
+    {
+        ComponentEventProperty prop = (ComponentEventProperty)_elements.get(id);
+        if (prop == null) {
+            prop = new ComponentEventProperty();
+            _elements.put(id, prop);
+        }
+        
+        return prop;
+    }
+    
     public void resetEventDidOccur()
     {
         _components.clear();
+        _elements.clear();
     }
     
     /**

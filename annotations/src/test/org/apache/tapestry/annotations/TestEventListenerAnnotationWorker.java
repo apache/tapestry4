@@ -16,11 +16,13 @@ package org.apache.tapestry.annotations;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import org.apache.hivemind.Location;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IContainedComponent;
 
 
 /**
@@ -32,19 +34,25 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
 
     public void testEventConnection()
     {
-        Location l = newLocation();
-        
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
+        IContainedComponent container = (IContainedComponent)newMock(IContainedComponent.class);
+        Resource resource = newResource(AnnotatedPage.class);
         
         EventListenerAnnotationWorker worker = new EventListenerAnnotationWorker();
         ComponentEventInvoker invoker = new ComponentEventInvoker();
         worker.setComponentEventInvoker(invoker);
         
+        spec.getComponent("email");
+        setReturnValue(spec, container);
+        
         replayControls();
         
         Method m = findMethod(AnnotatedPage.class, "eventListener");
-        worker.performEnhancement(op, spec, m, l);
+        
+        assertTrue(worker.canEnhance(m));
+        assertFalse(worker.canEnhance(findMethod(AnnotatedPage.class, "getPersistentProperty")));
+        worker.peformEnhancement(op, spec, m, resource);
         
         verifyControls();
         
@@ -54,6 +62,63 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         List listeners = property.getEventListeners("onClick");
         assertNotNull(listeners);
         assertEquals(1, listeners.size());
+        
+        property = invoker.getElementEvents("foo");
+        assertNotNull(property);
+        
+        listeners = property.getEventListeners("onClick");
+        assertNotNull(listeners);
+        assertEquals(1, listeners.size());
     }
-
+    
+    public void testComponentNotFound()
+    {
+        EnhancementOperation op = newOp();
+        IComponentSpecification spec = newSpec();
+        Resource resource = newResource(AnnotatedPage.class);
+        
+        EventListenerAnnotationWorker worker = new EventListenerAnnotationWorker();
+        
+        spec.getComponent("email");
+        setReturnValue(spec, null);
+        
+        replayControls();
+        
+        Method m = findMethod(AnnotatedPage.class, "eventListener");
+        
+        assertTrue(worker.canEnhance(m));
+        
+        try {
+            worker.peformEnhancement(op, spec, m, resource);
+            unreachable();
+        } catch (ApplicationRuntimeException e) {
+            assertExceptionSubstring(e, "Unable to find component");
+        }
+        
+        verifyControls();
+    }
+    
+    public void testTargetsNotFound()
+    {
+        EnhancementOperation op = newOp();
+        IComponentSpecification spec = newSpec();
+        Resource resource = newResource(AnnotatedPage.class);
+        
+        EventListenerAnnotationWorker worker = new EventListenerAnnotationWorker();
+        
+        replayControls();
+        
+        Method m = findMethod(AnnotatedPage.class, "brokenTargetListener");
+        
+        assertTrue(worker.canEnhance(m));
+        
+        try {
+            worker.peformEnhancement(op, spec, m, resource);
+            unreachable();
+        } catch (ApplicationRuntimeException e) {
+            assertExceptionSubstring(e, "No targets found for");
+        }
+        
+        verifyControls();
+    }
 }

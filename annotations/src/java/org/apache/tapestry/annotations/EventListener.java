@@ -33,11 +33,15 @@ import java.lang.annotation.Target;
 public @interface EventListener
 {
     /**
-     * The unique {@link IComponent} or html element ids of the targeted 
-     * sources that this listener will be listening to events on. These 
-     * ids may be specified as constant string values or OGNL expressions.
+     * The unique {@link IComponent} ids of the targeted 
+     * sources that this listener will be listening to events on. 
      */
-    String[] targets();
+    String[] targets() default {};
+    
+    /**
+     * The unique html element ids to listen to the events on.
+     */
+    String[] elements() default {};
     
     /**
      * The list of events that should cause this listener to invoke. 
