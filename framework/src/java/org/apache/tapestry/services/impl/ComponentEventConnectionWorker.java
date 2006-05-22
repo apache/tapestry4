@@ -14,6 +14,7 @@
 package org.apache.tapestry.services.impl;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.hivemind.ClassResolver;
@@ -28,6 +29,7 @@ import org.apache.tapestry.dojo.IWidget;
 import org.apache.tapestry.engine.DirectEventServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IScriptSource;
+import org.apache.tapestry.html.Body;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.services.ComponentRenderWorker;
 
@@ -49,6 +51,8 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     private String _componentScript;
     
     private String _widgetScript;
+    
+    private String _elementScript;
     
     private ClassResolver _resolver;
     
@@ -75,6 +79,41 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         Resource resource = getScript(component);
         
         _scriptSource.getScript(resource).execute(cycle, prs, parms);
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void renderBody(IRequestCycle cycle, Body component)
+    {
+        if (!_invoker.hasElementEvents())
+            return;
+        
+        Map parms = new HashMap();
+        DirectEventServiceParameter dsp =
+            new DirectEventServiceParameter(component, new Object[] {}, new String[] {}, false);
+        String url = _eventEngine.getLink(false, dsp).getURL();
+        
+        PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, component);
+        Resource resource = new ClasspathResource(_resolver, _elementScript);
+        
+        Map elements = _invoker.getElementEvents();
+        Iterator keys = elements.keySet().iterator();
+        
+        // build our list of targets / events
+        while (keys.hasNext()) {
+            String target = (String)keys.next();
+            
+            ComponentEventProperty prop = (ComponentEventProperty)elements.get(target);
+            
+            parms.put("target", target);
+            parms.put("url", url);
+            parms.put("events", prop.getEvents());
+            
+            _scriptSource.getScript(resource).execute(cycle, prs, parms);
+            
+            parms.clear();
+        }
     }
     
     Resource getScript(IComponent component)
@@ -123,6 +162,16 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     public void setWidgetScript(String script)
     {
         _widgetScript = script;
+    }
+    
+    /**
+     * The javascript that connects html elements to direct
+     * listener methods.
+     * @param script
+     */
+    public void setElementScript(String script)
+    {
+        _elementScript = script;
     }
     
     /**
