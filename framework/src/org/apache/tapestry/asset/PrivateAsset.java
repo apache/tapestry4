@@ -74,6 +74,11 @@ public class PrivateAsset extends AbstractAsset
         IEngine engine = cycle.getEngine();
         
         URL resourceURL = engine.getResourceResolver().getResource(path);
+        
+        if (resourceURL == null)
+            throw new ApplicationRuntimeException(
+                Tapestry.format("missing-resource", path));        
+        
         String checksum = engine.getResourceChecksumSource().getChecksum(resourceURL);
         
         String[] parameters = new String[] { path, checksum };
