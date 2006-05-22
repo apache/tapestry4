@@ -24,7 +24,7 @@
   <property name="module.junit.jvmarg" value="-Duser.language=en -Duser.country=US"/>
   <property name="module.javac-test.source" value="1.5"/>
   <property name="module.javac-test.target" value="1.5"/>
-    
+  
   <property name="root.dir" value=".."/>
   <property file="${root.dir}/config/build.properties"/>
   <property file="${root.dir}/config/common.properties"/>
@@ -72,7 +72,18 @@ project.version=${project.version}
 </echo>
   </target>
 	
+
+	<property name="js.dir" value="src/js" />
+	<property name="dojo.js.dir" value="${js.dir}/dojo" />
+	<property name="tapestry.js.dir" value="${js.dir}/tapestry" />
+	
  <target name="compile" depends="compile-dependencies,create-version-file">
+ 	<copy todir="${java.classes.dir}/dojo" overwrite="true" preservelastmodified="true">
+ 		<fileset dir="${dojo.js.dir}" />
+ 	</copy>
+ 	<copy todir="${java.classes.dir}/tapestry" overwrite="true" preservelastmodified="true">
+ 	 	<fileset dir="${tapestry.js.dir}" />
+ 	</copy>
     <default-compile/>
   </target>	
   
