@@ -12,6 +12,7 @@
     <person name="Neil Clayton" id="NC"/>
     <person name="Paul Ferraro" id="PF"/>
     <person name="Jesse Kuhnert" id="JK" />
+    <person name="Andreas Andreou" id="AA" />
     <!-- Retired -->
     <person name="Malcom Edgar" id="ME"/>
     <!-- Add more people here -->
@@ -134,6 +135,14 @@
     -->
   </todo>
   <changes>
+	<release version="3.0.5" date="Unreleased">
+      <action type="fix" dev="AA" fixes-bug="TAPESTRY-959">
+      	Better error reporting when asset service fails to compute checksum.
+      </action>
+      <action type="fix" dev="AA" fixes-bug="TAPESTRY-960">
+      	Better error reporting when private assets are missing.
+      </action>      
+    </release>  
   	<release version="3.0.4" date="Mar 31 2006">
       <action type="fix" dev="GL" fixes-bug="TAPESTRY-431"> Fixed TemplateParser throws an exception and stops parsing when duplicate attributes are found in a tag. </action>
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-877" due-to="Brian K. Wallace">
