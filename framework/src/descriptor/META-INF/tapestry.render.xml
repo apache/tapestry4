@@ -48,6 +48,7 @@
         <set-service property="eventEngine" service-id="tapestry.event.DirectEvent"/>
         <set property="componentScript" value="/org/apache/tapestry/ComponentEvent.script" />
         <set property="widgetScript" value="/org/apache/tapestry/dojo/html/WidgetEvent.script" />
+        <set property="elementScript" value="/org/apache/tapestry/html/ElementEvent.script" />
         <set-service property="scriptSource" service-id="tapestry.script.ScriptSource"/>
       </construct>
     </invoke-factory>

@@ -15,6 +15,7 @@ package org.apache.tapestry.services;
 
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.html.Body;
 
 
 /**
@@ -37,4 +38,16 @@ public interface ComponentRenderWorker
      *          The component that has just been rendered.
      */
     void renderComponent(IRequestCycle cycle, IComponent component);
+    
+    /**
+     * Special render for handling html element targets. This is invoked
+     * just after the body component renders its body, but before the script
+     * data is written out. 
+     * 
+     * @param cycle
+     *          The associated request cycle.
+     * @param component
+     *          The {@link Body} component, which holds the needed {@link PageRenderSupport} object.
+     */
+    void renderBody(IRequestCycle cycle, Body component);
 }

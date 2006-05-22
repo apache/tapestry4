@@ -62,7 +62,7 @@ public class ComponentEventInvoker implements ResetEventListener
         
         if (hasEvents(id)) {
             
-            ComponentEventProperty prop = getComponentEvents(component.getId());
+            ComponentEventProperty prop = getComponentEvents(id);
             invokeListeners(prop, component, cycle, event);
         }
         
@@ -71,7 +71,7 @@ public class ComponentEventInvoker implements ResetEventListener
         
         if (hasElementEvents(targetId)) {
             
-            ComponentEventProperty prop = getElementEvents(component.getId());
+            ComponentEventProperty prop = getElementEvents(id);
             invokeListeners(prop, component, cycle, event);
         }
     }
@@ -190,6 +190,15 @@ public class ComponentEventInvoker implements ResetEventListener
         }
         
         return prop;
+    }
+    
+    /**
+     * Returns the {@link Map} being managed for element events.
+     * @return
+     */
+    public Map getElementEvents()
+    {
+        return _elements;
     }
     
     public void resetEventDidOccur()
