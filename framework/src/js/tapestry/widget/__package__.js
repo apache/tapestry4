@@ -1,7 +1,6 @@
-dojo.hostenv.conditionalLoadModule({
+dojo.kwCompoundRequire({
 	common: [
 		"tapestry.widget.Widget"
 	]
 });
-dojo.hostenv.moduleLoaded("tapestry.widget.*");
-dojo.debugShallow(tapestry);
+dojo.provide("tapestry.widget.*");

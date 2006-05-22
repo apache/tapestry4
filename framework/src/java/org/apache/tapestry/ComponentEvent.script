@@ -3,8 +3,6 @@
   "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
   "http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
 <script>
-<include-script resource-path="/org/apache/tapestry/dojo/Widget.js"/>
-
 <input-symbol key="component" required="yes" />
 <input-symbol key="url" required="yes" />
 <input-symbol key="events" required="yes" />

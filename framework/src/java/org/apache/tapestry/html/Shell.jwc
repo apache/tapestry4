@@ -115,6 +115,13 @@
      </description>
   </parameter>
   
+  <parameter name="tapestrySource" 
+             default-value="asset:defaultTapestrySource" >
+     <description>
+     If specified, allows for the default tapestry source included to be overriden.
+     </description>
+  </parameter>
+  
   <parameter name="dojoSource" 
              default-value="asset:defaultDojoSource" >
      <description>
@@ -140,8 +147,10 @@
    <set name="dojoSource" value="dojoSource" />
    <set name="assetService" value="assetService" />
    <set name="dojoPath" value="dojoPath" />
+   <set name="tapestrySource" value="tapestrySource" />
   </bean>
   
-  <asset name="defaultDojoSource" path="classpath:/org/apache/tapestry/html/dojo/dojo.js" />
-  <asset name="defaultDojoPath" path="classpath:/org/apache/tapestry/html/dojo/" />
+  <asset name="defaultDojoSource" path="classpath:/dojo/dojo.js" />
+  <asset name="defaultDojoPath" path="classpath:/dojo/" />
+  <asset name="defaultTapestrySource" path="classpath:/tapestry/core.js" />
 </component-specification>

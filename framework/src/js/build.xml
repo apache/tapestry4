@@ -82,7 +82,8 @@
 	<!-- ====================================================== -->
 	
 	<target name="test-js" description="Tests tapestry js package with dojo test utils." >
-		<dojo-test dojosrc="${dojo.dir}/../" testsrc="tests"/>
+		 <dojo-test dojosrc="./dojo/" testsrc="tests"/>
+		<!-- <dojo-test dojosrc="${dojo.dir}/../" testsrc="tests"/> -->
 	</target>
 	
 </project>
