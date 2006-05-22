@@ -1,15 +1,12 @@
-dojo.setModulePrefix("tapestry", "../tapestry/framework/src/js/tapestry");
+dojo.require("dojo.widget.Checkbox");
 
-dojo.require("dojo.widget.*");
-dojo.require("dojo.widget.DatePicker");
+dojo.setModulePrefix("tapestry", "../tapestry");
 
+dojo.require("tapestry.*");
 dojo.require("tapestry.test");
 dojo.require("tapestry.widget.*");
 
 function test_syncfailure_widget(){
-	
-	jum.assertEquals("test1", dojo.hostenv.getBaseScriptUri(), "/home/jkuhnert/projects/dojo/");
-	
 	try {
 		tapestry.widget.synchronizeWidgetState("bs", "NonExistant", {});
 	} catch (e) { jum.assertTrue("test2", e instanceof Error); return; }
@@ -17,6 +14,6 @@ function test_syncfailure_widget(){
 }
 
 function test_create_widget(){
-	var dp = new dojo.widget.DatePicker();
+	var dp = new dojo.widget.Checkbox();
 	jum.assertFalse("test1", !dp);
 }

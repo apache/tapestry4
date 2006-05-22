@@ -31,6 +31,8 @@ public class AjaxShellDelegate implements IRender
     
     private IAsset _dojoPath;
     
+    private IAsset _tapestrySource;
+    
     private IEngineService _assetService;
     
     /**
@@ -56,6 +58,12 @@ public class AjaxShellDelegate implements IRender
                 _dojoSource.getResourceLocation()
                 .getPath()).getAbsoluteURL()).append("\"></script>");
         
+        // include core tapestry.js package
+        str.append("<script type=\"text/javascript\" src=\"")
+        .append(_assetService.getLink(true,
+                _tapestrySource.getResourceLocation()
+                .getPath()).getAbsoluteURL()).append("\"></script>");
+        
         writer.printRaw(str.toString());
     }
     
@@ -76,6 +84,15 @@ public class AjaxShellDelegate implements IRender
     public void setDojoPath(IAsset dojoPath)
     {
         _dojoPath = dojoPath;
+    }
+    
+    /**
+     * Sets a valid base path to resolve tapestry.js.
+     * @param tapestrySource
+     */
+    public void setTapestrySource(IAsset tapestrySource)
+    {
+        _tapestrySource = tapestrySource;
     }
     
     /**

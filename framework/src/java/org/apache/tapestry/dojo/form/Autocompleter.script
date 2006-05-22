@@ -3,8 +3,6 @@
   "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
   "http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
 <script>
-<include-script resource-path="/org/apache/tapestry/dojo/Widget.js"/>
-
 <input-symbol key="id" required="yes" />
 <input-symbol key="props" required="yes" />
     <body>
@@ -14,6 +12,8 @@
             dojo.require("dojo.event");
             dojo.require("dojo.widget.Manager");
             dojo.require("dojo.widget.ComboBox");
+            
+            dojo.require("tapestry.widget.*");
         </unique>
     </body>
     <initialization>
