@@ -22,14 +22,29 @@
   <service-point id="DataSqueezer" interface="org.apache.tapestry.services.DataSqueezer">
     
     Converts back and forth between primitive and object types and encoded strings.
+    <invoke-factory service-id="hivemind.lib.PipelineFactory">
+      <create-pipeline filter-interface="org.apache.tapestry.services.DataSqueezerFilter"
+                       configuration-id="DataSqueezerFilters"
+                       terminator="service:DataSqueezerTerminator" />    
+    </invoke-factory>
     
+    
+  </service-point>
+  
+  <configuration-point id="DataSqueezerFilters" schema-id="hivemind.lib.Pipeline">
+  Allows you to plug in your own custom data squeezers in front of the default Tapestry
+  data squeezer.
+  </configuration-point>
+  
+  <service-point id="DataSqueezerTerminator" 
+                 visibility="private" 
+                 interface="org.apache.tapestry.services.DataSqueezer">
     <invoke-factory>
       <construct class="DataSqueezerImpl">
         <set-configuration property="squeezeAdaptors"
                            configuration-id="SqueezeAdaptors"/>
       </construct>
     </invoke-factory>
-    
   </service-point>
   
   <configuration-point id="SqueezeAdaptors" occurs="1..n">
