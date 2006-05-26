@@ -136,7 +136,7 @@ public class AssetService implements IEngineService
      * them to not expire ... but a year will do.
      */
 
-    private final long _expireTime = _startupTime + 365 * 24 * 60 * 60 * 1000;
+    private final long _expireTime = _startupTime + 365 * 24 * 60 * 60 * 1000L;
 
     /** @since 4.0 */
 
