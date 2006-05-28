@@ -87,8 +87,8 @@ public class ComponentEventInvoker implements ResetEventListener
             if (container == null) // only IPage has no container
                 container = component; 
             
-            IActionListener listener = component.getListeners().getListener(methodName);
-            _invoker.invokeListener(listener, component, cycle);
+            IActionListener listener = container.getListeners().getListener(methodName);
+            _invoker.invokeListener(listener, container, cycle);
         }
     }
     

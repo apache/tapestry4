@@ -27,7 +27,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.BrowserEvent;
-import org.apache.tapestry.event.EventTarget;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
@@ -43,15 +42,15 @@ import org.apache.tapestry.web.WebSession;
  */
 
 public class DirectEventService implements IEngineService
-{
+{   
     /** @since 4.0 */
-    protected ResponseRenderer _responseRenderer;
+    private ResponseRenderer _responseRenderer;
 
     /** @since 4.0 */
-    protected LinkFactory _linkFactory;
+    private LinkFactory _linkFactory;
 
     /** @since 4.0 */
-    protected WebRequest _request;
+    private WebRequest _request;
 
     /** @since 4.0 */
     private IRequestCycle _requestCycle;
@@ -132,14 +131,14 @@ public class DirectEventService implements IEngineService
                 throw new StaleSessionException(EngineMessages.requestStateSession(direct),
                         componentPage);
         }
-
+        
         Object[] parameters = _linkFactory.extractListenerParameters(cycle);
-
+        
         triggerComponent(cycle, direct, parameters);
-
+        
         // Render the response. This will be the active page
         // unless the direct component (or its delegate) changes it.
-
+        
         _responseRenderer.renderResponse(cycle);
     }
 
@@ -147,18 +146,24 @@ public class DirectEventService implements IEngineService
 
     protected void triggerComponent(IRequestCycle cycle, IDirectEvent direct, Object[] parameters)
     {
-        cycle.setListenerParameters(parameters);
+        BrowserEvent event = null;
+        if (BrowserEvent.hasBrowserEvent(cycle)) {
+            event = new BrowserEvent(cycle);
+            
+            Object[] parms = new Object[parameters.length + 1];
+            System.arraycopy(parameters, 0, parms, 0, parameters.length);
+            parms[parms.length - 1] = event;
+            
+            cycle.setListenerParameters(parms);
+        } else
+            throw new ApplicationRuntimeException("No browser event found in request.");
         
-        //TODO: This is BS! Need to grab real params 
-        Map tprops = new HashMap();
-        tprops.put("id", "testId");
-        
-        direct.triggerEvent(cycle, new BrowserEvent("onSelect", new EventTarget(tprops)));
+        direct.triggerEvent(cycle, event);
     }
 
     public String getName()
     {
-        return Tapestry.DIRECT_SERVICE;
+        return Tapestry.DIRECT_EVENT_SERVICE;
     }
 
     /** @since 4.0 */

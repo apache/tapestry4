@@ -12,12 +12,25 @@
             dojo.require("dojo.json");
             dojo.require("dojo.event");
             dojo.require("dojo.widget.Manager");
+            dojo.require("tapestry.event");
         </unique>
     </body>
     <initialization>
         <foreach expression="events" key="event">
         dojo.event.connect(dojo.widget.byId("${component.id}"), "${event}", function(e) {
-            dojo.debug("Event fired");
+            var content={beventname:"${event}"};
+            tapestry.event.buildEventProperties(e, content);
+            if (!content["beventtarget.id"]) content["beventtarget.id"]="${component.id}";
+            
+            dojo.io.bind({
+                url:"${url}",
+                content:content,
+                preventCache:true,
+                load: function(type, data, evt) { dojo.debug("Response "); },
+                error: function(type, error) { dojo.debug("Error"); },
+                mimetype: "text/xml",
+                encoding: "UTF-8"
+            });
         });
         </foreach>
     </initialization>

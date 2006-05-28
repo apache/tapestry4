@@ -19,6 +19,7 @@ import java.util.Map;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.html.BasePage;
 
 /**
@@ -69,6 +70,16 @@ public class ListenerMethodHolder
     {
     }
 
+    public void barneyClicked(BrowserEvent event)
+    {
+        
+    }
+    
+    public void bangbangClicked(IRequestCycle cycle, BrowserEvent event, int argument)
+    {
+        
+    }
+    
     public void noMatch(String argument1, double argument2, long argument3)
     {
 

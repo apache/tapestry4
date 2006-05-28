@@ -21,6 +21,7 @@ import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.event.BrowserEvent;
 import org.easymock.MockControl;
 
 /**
@@ -112,7 +113,26 @@ public class TestListenerMapSource extends HiveMindTestCase
 
         verifyControls();
     }
+    
+    public void testFoundWithAllParameters()
+    {
+        BrowserEvent event = new BrowserEvent("onClick", null);
+        IRequestCycle cycle = newCycle(new Object[] { event, new Integer(8) });
+        ListenerMethodHolder holder = newHolder();
+        
+        holder.bangbangClicked(cycle, event, 8);
+        
+        replayControls();
 
+        ListenerMapSource source = new ListenerMapSourceImpl();
+
+        ListenerMap map = source.getListenerMapForObject(holder);
+
+        map.getListener("bangbangClicked").actionTriggered(null, cycle);
+
+        verifyControls();
+    }
+    
     /**
      * No exact match on parameter count, fall through to the no-arguments
      * method implementation.

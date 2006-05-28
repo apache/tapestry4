@@ -15,7 +15,6 @@ package org.apache.tapestry;
 
 import org.apache.tapestry.event.BrowserEvent;
 
-
 /**
  * Interface that defines classes that may be invoked directly by
  * the event service. 

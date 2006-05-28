@@ -1,6 +1,6 @@
 dojo.setModulePrefix("tapestry", "../tapestry");
 
-dojo.require("tapestry.event");
+dojo.require("tapestry.*");
 dojo.require("tapestry.test");
 
 // override to make sure our fake events pass
@@ -18,6 +18,6 @@ function test_eventCapture_props(){
 	
 	jum.assertTrue("evType", dojo.event.browser.isEvent(fevent));
 	jum.assertTrue("testNullProp", tapestry.event.buildEventProperties({}));
-	jum.assertTrue("type", props.type != "undefined");
-	jum.assertEquals("targetEncoded", "gobbly", props.target);
+	jum.assertTrue("type", props.beventtype != "undefined");
+	jum.assertEquals("targetprops", "testid", props["beventtarget.id"]);
 }
