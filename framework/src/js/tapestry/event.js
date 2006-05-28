@@ -20,14 +20,15 @@ tapestry.event = {
 		if (!dojo.event.browser.isEvent(event)) return {};
 		if (!props) props={};
 		
-		if(event["type"]) props.type=event.type;
-		if(event["keys"]) props.keys=encodeUriComponent(event.keys);
-		if(event["pageX"]) props.pageX=evt.pageX;
-		if(event["pageY"]) props.pageY=evt.pageY;
-		if(event["layerX"]) props.layerX=evt.layerX;
-		if(event["layerY"]) props.layerY=evt.layerY;
+		if(event["type"]) props.beventtype=event.type;
+		if(event["keys"]) props.beventkeys=event.keys;
+		if (event["charCode"]) props.beventcharCode=event.charCode;
+		if(event["pageX"]) props.beventpageX=event.pageX;
+		if(event["pageY"]) props.beventpageY=event.pageY;
+		if(event["layerX"]) props.beventlayerX=event.layerX;
+		if(event["layerY"]) props.beventlayerY=event.layerY;
 		
-		if (event["target"]) props.target=encodeURI(this.buildTargetProperties(event.target));
+		if (event["target"]) this.buildTargetProperties(props, event.target);
 		
 		return props;
 	},
@@ -36,11 +37,11 @@ tapestry.event = {
 	 * Generic function to build a properties object populated with
 	 * relevent target data.
 	 */
-	buildTargetProperties:function(target){
+	buildTargetProperties:function(props, target){
 		if(!target) return;
 		
 		if (dojo.dom.isNode(target))
-			return this.buildNodeProperties(target);
+			return this.buildNodeProperties(props, target);
 		else
 			dojo.raise("buildTargetProperties() Unknown target type:" + target);
 	},
@@ -48,7 +49,8 @@ tapestry.event = {
 	/**
 	 * Builds needed target node properties, like the nodes id.
 	 */
-	buildNodeProperties:function(node) {
-		return {id:node.getAttribute("id")};
+	buildNodeProperties:function(props, node) {
+		if (node.getAttribute("id"))
+			props["beventtarget.id"]=node.getAttribute("id");
 	}
 }

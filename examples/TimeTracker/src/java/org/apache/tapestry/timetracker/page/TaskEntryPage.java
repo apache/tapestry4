@@ -79,6 +79,6 @@ public abstract class TaskEntryPage extends BasePage
             targets = { "projectChoose" }, elements = { "startPicker" })
     public void projectSelected()
     {
-        
+        _log.debug("projectSelected()");
     }
 }

@@ -73,6 +73,15 @@ public final class Tapestry
     public static final String DIRECT_SERVICE = "direct";
 
     /**
+     * Almost identical to the direct service, except specifically for handling
+     * browser level events.
+     * 
+     * @since 4.1
+     */
+    
+    public static final String DIRECT_EVENT_SERVICE = "directevent";
+    
+    /**
      * The name ("external") of a service that a allows {@link IExternalPage} to be selected.
      * Associated with a {@link org.apache.tapestry.link.ExternalLink} component.
      * <p>

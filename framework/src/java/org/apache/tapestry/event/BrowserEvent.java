@@ -13,6 +13,12 @@
 // limitations under the License.
 package org.apache.tapestry.event;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IRequestCycle;
+
 
 /**
  * Represents a client side generated browser event.
@@ -21,9 +27,56 @@ package org.apache.tapestry.event;
  */
 public class BrowserEvent
 {
-    private final String _name;
+    static final String NAME="beventname";
+    static final String TYPE="beventtype";
+    static final String KEYS="beventkeys";
+    static final String CHAR_CODE="beventcharCode";
+    static final String PAGE_X="beventpageX";
+    static final String PAGE_Y="beventpageY";
+    static final String LAYER_X="beventlayerX";
+    static final String LAYER_Y="beventlayerY";
     
-    private final EventTarget _target;
+    static final String TARGET="beventtarget";
+    static final String TARGET_ATTR_ID="id";
+    
+    private String _name;
+    private String _type;
+    private String[] _keys;
+    private String _charCode;
+    private String _pageX;
+    private String _pageY;
+    private String _layerX;
+    private String _layerY;
+    private EventTarget _target;
+    
+    /**
+     * Creates a new browser event that will extract its own
+     * parameters.
+     * 
+     * @param cycle
+     *          The request cycle to extract parameters from.
+     */
+    public BrowserEvent(IRequestCycle cycle)
+    {
+        Defense.notNull(cycle, "cycle");
+        
+        _name = cycle.getParameter(NAME);
+        _type = cycle.getParameter(TYPE);
+        _keys = cycle.getParameters(KEYS);
+        _charCode = cycle.getParameter(CHAR_CODE);
+        _pageX = cycle.getParameter(PAGE_X);
+        _pageY = cycle.getParameter(PAGE_Y);
+        _layerX = cycle.getParameter(LAYER_X);
+        _layerY = cycle.getParameter(LAYER_Y);
+        
+        String targetId = cycle.getParameter(TARGET + "." + TARGET_ATTR_ID);
+        if (targetId != null) {
+            Map props = new HashMap();
+            props.put(TARGET_ATTR_ID, targetId);
+            
+            _target = new EventTarget(props);
+        }
+    }
     
     /**
      * Creates a new browser event with the specified
@@ -58,5 +111,75 @@ public class BrowserEvent
     public EventTarget getTarget()
     {
         return _target;
+    }
+    
+    /**
+     * @return the charCode
+     */
+    public String getCharCode()
+    {
+        return _charCode;
+    }
+    
+    /**
+     * @return the keys
+     */
+    public String[] getKeys()
+    {
+        return _keys;
+    }
+
+    /**
+     * @return the layerX
+     */
+    public String getLayerX()
+    {
+        return _layerX;
+    }
+
+    /**
+     * @return the layerY
+     */
+    public String getLayerY()
+    {
+        return _layerY;
+    }
+
+    /**
+     * @return the pageX
+     */
+    public String getPageX()
+    {
+        return _pageX;
+    }
+
+    /**
+     * @return the pageY
+     */
+    public String getPageY()
+    {
+        return _pageY;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType()
+    {
+        return _type;
+    }
+
+    /**
+     * Utility method to check if the current request contains
+     * a browser event.
+     * @param cycle
+     *          The associated request.
+     * @return True if the request contains browser event data.
+     */
+    public static boolean hasBrowserEvent(IRequestCycle cycle)
+    {
+        Defense.notNull(cycle, "cycle");
+        
+        return cycle.getParameter(NAME) != null;
     }
 }
