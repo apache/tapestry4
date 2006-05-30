@@ -52,6 +52,11 @@ public final class EngineMessages
         return _formatter.format("page-not-compatible", page.getPageName(), expectedType.getName());
     }
 
+    public static String noBrowserEvent()
+    {
+        return _formatter.format("missing-browser-event", new Object[]{});
+    }
+    
     static String exceptionDuringCleanup(Throwable cause)
     {
         return _formatter.format("exception-during-cleanup", cause);

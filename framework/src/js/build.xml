@@ -39,7 +39,7 @@
 	<taskdef name="dojo-test" classname="org.dojotoolkit.ant.DojoTestTask" 
 			classpath="lib/ant-dojotest.jar" />
 	
-	<import file="${hivebuild.dir}/jar-module.xml" />
+	<import file="${hivebuild.dir}/module.xml" />
 	
 	<target name="check-dependencies" description="Ensures that dojo.dir is set.">
 
@@ -61,29 +61,25 @@
 			<property name="docless" value="true" />
 			<property name="profile" value="tapestry" />
 		</ant>
-
-		<copy todir="${root.dir}/bin/org/apache/tapestry/html" overwrite="true">
+		
+		<copy todir="${java.classes.dir}/dojo" overwrite="true">
 			<fileset dir="${release.dir}">
 				<exclude name="dojo/demos/**" />
+				<exclude name="dojo/tests/**" />
 			</fileset>
 		</copy>
 	</target>
 	
-	<target name="copy-libs">
-		<copy todir="${root.dir}/bin/org/apache/tapestry/html" overwrite="true">
-			<fileset dir="${release.dir}">
-				<exclude name="dojo/demos/**" />
-			</fileset>
-		</copy>
+	<target name="install" >
+	
 	</target>
 	
 	<!-- ====================================================== -->
 	<!-- Testing												-->
 	<!-- ====================================================== -->
 	
-	<target name="test-js" description="Tests tapestry js package with dojo test utils." >
+	<target name="run-tests" description="Tests tapestry js package with dojo test utils." >
 		 <dojo-test dojosrc="./dojo/" testsrc="tests"/>
-		<!-- <dojo-test dojosrc="${dojo.dir}/../" testsrc="tests"/> -->
 	</target>
 	
 </project>

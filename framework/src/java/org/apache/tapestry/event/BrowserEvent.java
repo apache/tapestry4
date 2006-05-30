@@ -27,17 +27,17 @@ import org.apache.tapestry.IRequestCycle;
  */
 public class BrowserEvent
 {
-    static final String NAME="beventname";
-    static final String TYPE="beventtype";
-    static final String KEYS="beventkeys";
-    static final String CHAR_CODE="beventcharCode";
-    static final String PAGE_X="beventpageX";
-    static final String PAGE_Y="beventpageY";
-    static final String LAYER_X="beventlayerX";
-    static final String LAYER_Y="beventlayerY";
+    public static final String NAME="beventname";
+    public static final String TYPE="beventtype";
+    public static final String KEYS="beventkeys";
+    public static final String CHAR_CODE="beventcharCode";
+    public static final String PAGE_X="beventpageX";
+    public static final String PAGE_Y="beventpageY";
+    public static final String LAYER_X="beventlayerX";
+    public static final String LAYER_Y="beventlayerY";
     
-    static final String TARGET="beventtarget";
-    static final String TARGET_ATTR_ID="id";
+    public static final String TARGET="beventtarget";
+    public static final String TARGET_ATTR_ID="id";
     
     private String _name;
     private String _type;

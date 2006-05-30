@@ -1,5 +1,4 @@
 dojo.provide("tapestry.widget.DropDownDatePicker");
-dojo.widget.manager.registerWidgetPackage("tapestry.widget");
 
 dojo.require("dojo.widget");
 dojo.require("dojo.widget.HtmlWidget");
@@ -8,11 +7,13 @@ dojo.require("dojo.event");
 dojo.require("dojo.html");
 dojo.require("dojo.date");
 
+dojo.widget.tags.addParseTreeHandler("dojo:dropdowndatepicker");
+
 tapestry.widget.DropDownDatePicker = function(){
 	
 	dojo.widget.HtmlWidget.call(this);
 	this.widgetType = "DropDownDatePicker";
-	
+	this.subWidgetType="";
 	this.templateString = '<div><input type="text" value="" style="vertical-align:middle;" dojoAttachPoint="valueInputNode" /> <img src="" alt="" dojoAttachPoint="containerDropdownNode" dojoAttachEvent="onclick: onDropdown;" style="vertical-align:middle; cursor:pointer; cursor:hand;" /><div dojoAttachPoint="subWidgetContainerNode" class="dropDownContainer"><div dojoAttachPoint="subWidgetNode" class="subWidgetContainer"></div></div></div>';
 	this.templateCssPath = "";
 	
@@ -67,12 +68,8 @@ tapestry.widget.DropDownDatePicker = function(){
 dojo.inherits(tapestry.widget.DropDownDatePicker, dojo.widget.HtmlWidget);
 
 dojo.lang.extend(tapestry.widget.DropDownDatePicker, {
-	
 	//	default attributes
 	dateFormat:"%m/%d/%Y", //see <http://www.opengroup.org/onlinepubs/007908799/xsh/strftime.html>
-	dateIconPath:"../../tapestry/widget/templates/images/dateIcon.gif",
+	dateIconPath:"templates/images/dateIcon.gif",
 	inputWidth:"6em"
-	
 });
-
-dojo.widget.tags.addParseTreeHandler("dojo:dropdowndatepicker");

@@ -1,4 +1,5 @@
 dojo.provide("tapestry.widget.TDatePicker");
+
 dojo.require("dojo.widget.DatePicker");
 dojo.require("dojo.widget.html.DatePicker");
 

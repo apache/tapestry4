@@ -146,17 +146,16 @@ public class DirectEventService implements IEngineService
 
     protected void triggerComponent(IRequestCycle cycle, IDirectEvent direct, Object[] parameters)
     {
-        BrowserEvent event = null;
-        if (BrowserEvent.hasBrowserEvent(cycle)) {
-            event = new BrowserEvent(cycle);
-            
-            Object[] parms = new Object[parameters.length + 1];
-            System.arraycopy(parameters, 0, parms, 0, parameters.length);
-            parms[parms.length - 1] = event;
-            
-            cycle.setListenerParameters(parms);
-        } else
-            throw new ApplicationRuntimeException("No browser event found in request.");
+        if (!BrowserEvent.hasBrowserEvent(cycle))
+            throw new ApplicationRuntimeException(EngineMessages.noBrowserEvent());
+        
+        BrowserEvent event = new BrowserEvent(cycle);
+        
+        Object[] parms = new Object[parameters.length + 1];
+        System.arraycopy(parameters, 0, parms, 0, parameters.length);
+        parms[parms.length - 1] = event;
+        
+        cycle.setListenerParameters(parms);
         
         direct.triggerEvent(cycle, event);
     }

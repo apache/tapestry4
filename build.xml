@@ -23,6 +23,7 @@
 
 	<filelist id="project.modules" dir="." files="
 			framework/build.xml 
+			framework/src/js/build.xml 
 			portlet/build.xml 
 			contrib/build.xml 
 			annotations/build.xml 

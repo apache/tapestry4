@@ -10,11 +10,11 @@
 
 <script type="text/javascript">
 var djConfig = {
-    isDebug: true,
-    debugAtAllCosts: true
+    isDebug: true
 };
 </script>
-<script type="text/javascript" src="../../../java/org/apache/tapestry/html/dojo/dojo.js"></script>
+<script type="text/javascript" src="../../dojo/dojo.js"></script>
+<script type="text/javascript" src="../../tapestry/core.js"></script>
 <style type="text/css">
 body { font-family : sans-serif; }
 
@@ -112,15 +112,12 @@ body { font-family : sans-serif; }
 
 </head>
 <script type="text/javascript">
-    dojo.setModulePrefix("tapestry", "../../../../../../js/tapestry"); 
-    dojo.setModulePrefix("tapestry.widget", "../../../../../../js/tapestry/widget"); 
-    
     dojo.require("tapestry.widget.DropDownDatePicker");
 </script>
 <body>
 
 <p>
-<div dojoType="DropDownDatePicker" subWidgetType="DatePicker" widgetId="date1" />
+<div dojoType="DropDownDatePicker" subWidgetType="TDatePicker" widgetId="date1" ></div>
 </p>
 
 </body>

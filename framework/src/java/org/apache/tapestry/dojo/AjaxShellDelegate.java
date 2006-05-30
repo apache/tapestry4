@@ -13,6 +13,7 @@
 // limitations under the License.
 package org.apache.tapestry.dojo;
 
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
@@ -27,6 +28,17 @@ import org.apache.tapestry.engine.IEngineService;
  */
 public class AjaxShellDelegate implements IRender
 {
+    /** Client side debug log level. */
+    public static final String BROWSER_LOG_DEBUG="DEBUG";
+    /** Client side info log level. */
+    public static final String BROWSER_LOG_INFO="INFO";
+    /** Client side warning log level. */
+    public static final String BROWSER_LOG_WARNING="WARNING";
+    /** Client side error log level. */
+    public static final String BROWSER_LOG_ERROR="ERROR";
+    /** Client side critical log level. */
+    public static final String BROWSER_LOG_CRITICAL="CRITICAL";
+    
     private IAsset _dojoSource;
     
     private IAsset _dojoPath;
@@ -34,6 +46,8 @@ public class AjaxShellDelegate implements IRender
     private IAsset _tapestrySource;
     
     private IEngineService _assetService;
+    
+    private String _browserLogLevel = BROWSER_LOG_WARNING;
     
     /**
      * {@inheritDoc}
@@ -64,7 +78,35 @@ public class AjaxShellDelegate implements IRender
                 _tapestrySource.getResourceLocation()
                 .getPath()).getAbsoluteURL()).append("\"></script>");
         
+        // logging configuration
+        str.append("\n<script type=\"text/javascript\">")
+        .append("dojo.require(\"dojo.logging.Logger\");\n")
+        .append("dojo.log.setLevel(dojo.log.getLevel(\"").append(_browserLogLevel)
+        .append("\"));</script>");
+        
         writer.printRaw(str.toString());
+    }
+    
+    /**
+     * Sets the dojo logging level. Similar to log4j style
+     * log levels. 
+     * @param level The string constant for the level, valid values
+     *              are:
+     *              <p>
+     *              <ul>
+     *              <li>{@link #BROWSER_LOG_DEBUG}</li>
+     *              <li>{@link #BROWSER_LOG_INFO}</li>
+     *              <li>{@link #BROWSER_LOG_WARNING}</li>
+     *              <li>{@link #BROWSER_LOG_ERROR}</li>
+     *              <li>{@link #BROWSER_LOG_CRITICAL}</li>
+     *              </ul>
+     *              </p>
+     */
+    public void setLogLevel(String level)
+    {
+        Defense.notNull("level", level);
+        
+        _browserLogLevel = level;
     }
     
     /**
