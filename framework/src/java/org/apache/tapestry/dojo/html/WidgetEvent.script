@@ -21,7 +21,7 @@
             var content={beventname:"${event}"};
             tapestry.event.buildEventProperties(e, content);
             if (!content["beventtarget.id"]) content["beventtarget.id"]="${component.id}";
-            
+            dojo.debug("Selected value " + dojo.widget.byId("${component.id}").comboBoxSelectionValue.value);
             dojo.io.bind({
                 url:"${url}",
                 content:content,

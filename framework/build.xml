@@ -77,7 +77,7 @@ project.version=${project.version}
 	<property name="dojo.js.dir" value="${js.dir}/dojo" />
 	<property name="tapestry.js.dir" value="${js.dir}/tapestry" />
 	
- <target name="compile" depends="compile-dependencies,create-version-file">
+  <target name="compile" depends="compile-dependencies,create-version-file">
  	<copy todir="${java.classes.dir}/dojo" overwrite="true" preservelastmodified="true">
  		<fileset dir="${dojo.js.dir}" />
  	</copy>

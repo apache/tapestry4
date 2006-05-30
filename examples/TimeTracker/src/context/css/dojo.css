@@ -11,7 +11,7 @@ div.fm-hopt table.dojoComboBox {
     width: 50%;
     border-top: 1px solid #ddd;
     border-right: 1px solid #ddd;
-    position: fixed;
+    position: absolute;
     overflow: auto;
     left: 0px;
     bottom: 0px;
@@ -22,6 +22,6 @@ div.fm-hopt table.dojoComboBox {
     font: 9px lucida grande, Arial, Verdana;
     z-index: 2000;
     opacity: 0.8;
-    filter: alpha(opacity :   80);
+    filter: alpha(opacity : 80);
     background: #eef1f8;
 }

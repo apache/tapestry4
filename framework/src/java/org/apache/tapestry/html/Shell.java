@@ -71,12 +71,12 @@ public abstract class Shell extends AbstractComponent
             writer.println();
 
             writeMetaTag(writer, "name", "generator", GENERATOR_CONTENT);
-
+            
             if (getRenderContentType())
                 writeMetaTag(writer, "http-equiv", "Content-Type", writer.getContentType());
             
             if (getRenderBaseTag())
-            getBaseTagWriter().render(writer, cycle);
+                getBaseTagWriter().render(writer, cycle);
             
             writer.begin("title");
             
