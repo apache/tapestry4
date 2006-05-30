@@ -9,10 +9,9 @@
     <body>
         <unique>
             dojo.require("dojo.io");
-            dojo.require("dojo.json");
             dojo.require("dojo.event");
             dojo.require("dojo.widget.Manager");
-            dojo.require("tapestry.event");
+            dojo.require("tapestry.*");
         </unique>
     </body>
     <initialization>
@@ -21,13 +20,14 @@
             var content={beventname:"${event}"};
             tapestry.event.buildEventProperties(e, content);
             if (!content["beventtarget.id"]) content["beventtarget.id"]="${component.id}";
-            dojo.debug("Selected value " + dojo.widget.byId("${component.id}").comboBoxSelectionValue.value);
+            
             dojo.io.bind({
                 url:"${url}",
                 content:content,
+                headers:{"dojo-ajax-request":true},
                 preventCache:true,
-                load: function(type, data, evt) { dojo.debug("Response "); },
-                error: function(type, error) { dojo.debug("Error"); },
+                load: (function(){tapestry.load.apply(this, arguments);}),
+                error: (function(){tapestry.error.apply(this, arguments);}),
                 mimetype: "text/xml",
                 encoding: "UTF-8"
             });

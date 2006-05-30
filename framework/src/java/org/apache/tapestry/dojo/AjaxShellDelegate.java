@@ -81,8 +81,9 @@ public class AjaxShellDelegate implements IRender
         // logging configuration
         str.append("\n<script type=\"text/javascript\">")
         .append("dojo.require(\"dojo.logging.Logger\");\n")
+        .append("dojo.event.connect(window, \"onload\",function(e){")
         .append("dojo.log.setLevel(dojo.log.getLevel(\"").append(_browserLogLevel)
-        .append("\"));</script>");
+        .append("\"));});</script>");
         
         writer.printRaw(str.toString());
     }
