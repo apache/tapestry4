@@ -8,15 +8,18 @@
 <input-symbol key="events" required="yes" />
     <body>
         <unique>
-            dojo.require("dojo.io");
-            dojo.require("dojo.json");
             dojo.require("dojo.event");
+            dojo.require("tapestry.*");
         </unique>
     </body>
     <initialization>
         <foreach expression="events" key="event">
         dojo.event.connect(dojo.byId("${component.id}"), "${event}", function(e) {
-            dojo.debug("Event fired");
+            var content={beventname:"${event}"};
+            tapestry.event.buildEventProperties(e, content);
+            if (!content["beventtarget.id"]) content["beventtarget.id"]="${component.id}";
+            
+            tapestry.bind("${url}", content);
         });
         </foreach>
     </initialization>

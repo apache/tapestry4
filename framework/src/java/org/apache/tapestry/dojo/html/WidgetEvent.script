@@ -8,9 +8,7 @@
 <input-symbol key="events" required="yes" />
     <body>
         <unique>
-            dojo.require("dojo.io");
             dojo.require("dojo.event");
-            dojo.require("dojo.widget.Manager");
             dojo.require("tapestry.*");
         </unique>
     </body>
@@ -21,16 +19,7 @@
             tapestry.event.buildEventProperties(e, content);
             if (!content["beventtarget.id"]) content["beventtarget.id"]="${component.id}";
             
-            dojo.io.bind({
-                url:"${url}",
-                content:content,
-                headers:{"dojo-ajax-request":true},
-                preventCache:true,
-                load: (function(){tapestry.load.apply(this, arguments);}),
-                error: (function(){tapestry.error.apply(this, arguments);}),
-                mimetype: "text/xml",
-                encoding: "UTF-8"
-            });
+            tapestry.bind("${url}", content);
         });
         </foreach>
     </initialization>
