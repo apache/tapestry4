@@ -58,7 +58,7 @@ public class DojoAjaxResponseContributorImpl implements ResponseContributor
     {
         return _webRequest.getHeader(DOJO_AJAX_HEADER) != null;
     }
-
+    
     public void setLocaleManager(RequestLocaleManager localeManager)
     {
         _localeManager = localeManager;

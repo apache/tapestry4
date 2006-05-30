@@ -153,3 +153,13 @@ TABLE.described-object TR.odd
 {
   background-color: #C0C0FF;
 }
+
+a.toggle {
+    text-decoration:none;
+    color: #4066A0;
+    font-weight:bold;
+}
+
+a.toggle:hover {
+    border-bottom: 2px solid #EDCC5F;
+}
