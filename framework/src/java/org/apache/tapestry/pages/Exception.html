@@ -14,20 +14,27 @@
    limitations under the License.
 -->
 <span jwcid="$content$">
-<html jwcid="@Shell" title="Exception" stylesheet="ognl:assets.stylesheet" ajaxEnabled="true">
+<html jwcid="@Shell" title="Exception" stylesheet="ognl:assets.stylesheet" doctype="ognl:''" ajaxEnabled="true">
 <body>
 
 <span class="exception-header">
 An exception has occurred.
 </span>
 
-<p>You may continue by <b><a jwcid="restart">restarting</a></b> the session.
+<p>You may continue by <b><a jwcid="restart">restarting</a></b> the session.</p>
 
 <span jwcid="@ExceptionDisplay" exceptions="ognl:exceptions"/>
 
-<p>
-
 <span jwcid="@RequestDisplay"/>
+
+<script type="text/javascript">
+dojo.require("dojo.style");
+
+function toggleDisplay(id){
+	dojo.style.toggleShowing(dojo.byId(id));
+	return false;
+}
+</script>
 
 </body>
 </html>

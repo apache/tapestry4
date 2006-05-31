@@ -17,6 +17,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.EventListener;
 import org.apache.tapestry.annotations.InjectObject;
@@ -79,5 +80,6 @@ public abstract class TaskEntryPage extends BasePage
     public void projectSelected()
     {
         _log.debug("projectSelected()");
+        throw new ApplicationRuntimeException("Oops!");
     }
 }
