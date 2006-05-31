@@ -24,6 +24,7 @@ import java.util.Map;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.NestedMarkupWriter;
@@ -58,11 +59,16 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      * The response element type.
      */
     public static final String ELEMENT_TYPE = "element";
+    /**
+     * The response exception type.
+     */
+    public static final String EXCEPTION_TYPE = "exception";
     
     // used to create IMarkupWriter
     private RequestLocaleManager _localeManager;
     private MarkupWriterSource _markupWriterSource;
     private WebResponse _webResponse;
+    private String _exceptionPageName;
     
     // our response writer
     private IMarkupWriter _writer;
@@ -100,11 +106,12 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     public DojoAjaxResponseBuilder(RequestLocaleManager localeManager, 
             MarkupWriterSource markupWriterSource,
-            WebResponse webResponse)
+            WebResponse webResponse, String exceptionPageName)
     {
         _localeManager = localeManager;
         _markupWriterSource = markupWriterSource;
         _webResponse = webResponse;
+        _exceptionPageName = exceptionPageName;
     }
     
     /** 
@@ -256,6 +263,17 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     public void render(IMarkupWriter writer, IRender render, IRequestCycle cycle)
     {
+        if (NestedMarkupWriter.class.isInstance(writer)) {
+            render.render(writer, cycle);
+            return;
+        }
+        
+        if (IPage.class.isInstance(render)
+                && ((IPage)render).getPageName().indexOf(_exceptionPageName) > -1) {
+            render.render(getWriter(_exceptionPageName, EXCEPTION_TYPE), cycle);
+            return;
+        }
+        
         if (IComponent.class.isInstance(render)
                 && contains((IComponent)render))
         {

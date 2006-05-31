@@ -41,6 +41,8 @@ public class DojoAjaxResponseContributorImpl implements ResponseContributor
     
     private WebRequest _webRequest;
     
+    private String _exceptionPageName;
+    
     /** 
      * {@inheritDoc}
      */
@@ -48,7 +50,7 @@ public class DojoAjaxResponseContributorImpl implements ResponseContributor
         throws IOException
     {
         return new DojoAjaxResponseBuilder(_localeManager, _markupWriterSource,
-                _webResponse);
+                _webResponse, _exceptionPageName);
     }
     
     /** 
@@ -77,5 +79,10 @@ public class DojoAjaxResponseContributorImpl implements ResponseContributor
     public void setWebRequest(WebRequest webRequest)
     {
         _webRequest  = webRequest;
+    }
+    
+    public void setExceptionPageName(String name)
+    {
+        _exceptionPageName = name;
     }
 }
