@@ -416,6 +416,8 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     boolean contains(IComponent target)
     {
+        if (target == null) return false;
+        
         return _parts.contains(getComponentId(target));
     }
     
