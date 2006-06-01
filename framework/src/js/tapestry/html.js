@@ -1,40 +1,6 @@
-dojo.provide("tapestry.event");
-
-dojo.require("dojo.event");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.widget.Dialog");
-dojo.require("dojo.html");
+dojo.provide("tapestry.html");
 
 tapestry.html={
-
-	presentException:function(node, kwArgs) {
-		var excnode=document.createElement("div");
-		excnode.setAttribute("id", "exceptiondialog");
-		document.body.appendChild(excnode);
-		
-		var contentnode=document.createElement("div");
-		contentnode.innerHTML=this.getContentAsString(node);
-		dojo.html.setClass(contentnode, "exceptionDialog");
-		
-		var navnode=document.createElement("div");
-		navnode.setAttribute("id", "exceptionDialogHandle");
-		dojo.html.setClass(navnode, "exceptionCloseLink");
-		navnode.appendChild(document.createTextNode("Close"));
-		
-		excnode.appendChild(navnode);
-		excnode.appendChild(contentnode);
-		
-		var dialog=dojo.widget.createWidget("Dialog", {widgetId:"exception"}, excnode);
-		
-		dojo.event.cnnect(navnode, "onclick", dialog, "hide");
-		dojo.event.connect(dialog, "hide", function(e) {
-			dojo.widget.byId("exception").destroy();
-			var node=dojo.byId("exceptiondialog");
-			if (node) dojo.dom.removeNode(node);
-		});
-		
-		dialog.show();
-	},
 	
 	getContentAsString:function(node){
 		if (typeof node.xml != "undefined")

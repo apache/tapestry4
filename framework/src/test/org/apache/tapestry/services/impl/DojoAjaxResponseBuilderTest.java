@@ -103,6 +103,17 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         assertSame(builder.getWriter(), writer);
     }
     
+    public void testNullContains() 
+    {
+        ResponseBuilder builder = new DojoAjaxResponseBuilder(null, null);
+        
+        replayControls();
+        
+        builder.isBodyScriptAllowed(null);
+        
+        verifyControls();
+    }
+    
     public void testPartialRender()
     {
         IRender render = (IRender)newMock(IRender.class);
