@@ -92,6 +92,9 @@
       <action type="add" dev="JK" due-to="James Carman" fixes-bug="TAPESTRY-947">
         Changed data squeezer to be a pipeline, allowing for a more flexible contribution/configuration.
       </action>
+      <action type="add" dev="JK" >
+        Added new IComponent.getClientId for global element id resolution on all components.
+      </action>
     </release>
     <release version="4.0.1" date="unreleased" >
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-863" due-to="unknown contributor">

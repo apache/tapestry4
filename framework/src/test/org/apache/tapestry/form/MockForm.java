@@ -140,6 +140,11 @@ public class MockForm implements IForm
     {
     }
 
+    public String getClientId()
+    {
+        return null;
+    }
+    
     public Map getAssets()
     {
         return null;
