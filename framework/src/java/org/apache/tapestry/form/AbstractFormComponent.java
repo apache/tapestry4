@@ -184,5 +184,10 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
 
     protected abstract void renderFormComponent(IMarkupWriter writer, IRequestCycle cycle);
 
+    /**
+     * 
+     * @param writer
+     * @param cycle
+     */
     protected abstract void rewindFormComponent(IMarkupWriter writer, IRequestCycle cycle);
 }

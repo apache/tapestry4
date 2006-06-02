@@ -17,7 +17,7 @@
         dojo.event.connect(dojo.byId("${target}"), "${event}", function(e) {
             var content={beventname:"${event}"};
             tapestry.event.buildEventProperties(e, content);
-            if (!content["beventtarget.id"]) content["beventtarget.id"]="${component.id}";
+            if (!content["beventtarget.id"]) content["beventtarget.id"]="${target}";
             
             tapestry.bind("${url}", content);
         });

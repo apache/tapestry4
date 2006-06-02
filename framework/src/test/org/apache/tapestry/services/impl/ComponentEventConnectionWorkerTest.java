@@ -32,6 +32,9 @@ import org.apache.tapestry.dojo.IWidget;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.engine.IScriptSource;
+import org.apache.tapestry.html.Body;
+import org.easymock.MockControl;
+import org.easymock.classextension.MockClassControl;
 
 
 /**
@@ -138,6 +141,41 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         replayControls();
         
         worker.renderComponent(cycle, widget);
+        
+        verifyControls();
+    }
+    
+    public void testScriptResource()
+    {   
+        ClassResolver resolver = new DefaultClassResolver();
+        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        
+        String compScript = "/org/apache/tapestry/ComponentEvent.script";
+        String widScript = "/org/apache/tapestry/dojo/html/WidgetEvent.script";
+        String elementScript = "/org/apache/tapestry/html/ElementEvent.script";
+        
+        ComponentEventConnectionWorker worker = new ComponentEventConnectionWorker();
+        worker.setClassResolver(resolver);
+        worker.setComponentEventInvoker(invoker);
+        worker.setComponentScript(compScript);
+        worker.setWidgetScript(widScript);
+        worker.setElementScript(elementScript);
+        
+        IDirectEvent component = (IDirectEvent)newMock(IDirectEvent.class);
+        IWidget widget = (IWidget)newMock(IWidget.class);
+        MockControl bodyControl = MockClassControl.createControl(Body.class);
+        Body body = (Body) bodyControl.getMock();
+        
+        assertNotNull(worker.getScript(component));
+        assertEquals(compScript, worker.getScript(component).getPath());
+        
+        assertNotNull(worker.getScript(widget));
+        assertEquals(widScript, worker.getScript(widget).getPath());
+        
+        assertNotNull(worker.getScript(body));
+        assertEquals(elementScript, worker.getScript(body).getPath());
+        
+        replayControls();
         
         verifyControls();
     }

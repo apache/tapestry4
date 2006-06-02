@@ -48,4 +48,18 @@ public @interface EventListener
      * Ie <code>events = {"onClick", "onOptionSelect"}</code> etc..
      */
     String[] events();
+    
+    /**
+     * The form id of the form that should have its data submitted when one 
+     * of the specified events is triggered.
+     * @return
+     */
+    String submitForm() default "";
+    
+    /**
+     * Whether or not to perform form validation if the {@link #form()} parameter has 
+     * been set. Default is false.
+     * @return
+     */
+    boolean validateForm() default false;
 }

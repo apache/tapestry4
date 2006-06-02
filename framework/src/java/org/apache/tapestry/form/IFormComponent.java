@@ -86,6 +86,12 @@ public interface IFormComponent extends IComponent
      * {@link #getName()}, if a component renders more than once (such as inside a loop) then on
      * each render it will have a different clientId.
      * 
+     * <p>
+     * <b>Note:</b>Though semantically this method should result in the roughly the same results,
+     * the method used to create unique client ID's on form components is <i>not</i> the same as that
+     * defined in {@link IComponent}. 
+     * </p>
+     * 
      * @return the id, or null if the component doesn't support an id.
      * @since 4.0
      */

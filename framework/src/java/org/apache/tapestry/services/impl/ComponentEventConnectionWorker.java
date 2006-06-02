@@ -56,6 +56,10 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     
     private ClassResolver _resolver;
     
+    private ClasspathResource _componentResource;
+    private ClasspathResource _widgetResource;
+    private ClasspathResource _elementResource;
+    
     /** 
      * {@inheritDoc}
      */
@@ -95,7 +99,7 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
         String url = _eventEngine.getLink(false, dsp).getURL();
         
         PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, component);
-        Resource resource = new ClasspathResource(_resolver, _elementScript);
+        Resource resource = getScript(component);
         
         Map elements = _invoker.getElementEvents();
         Iterator keys = elements.keySet().iterator();
@@ -118,10 +122,22 @@ public class ComponentEventConnectionWorker implements ComponentRenderWorker
     
     Resource getScript(IComponent component)
     {
-        if (IWidget.class.isInstance(component))
-            return new ClasspathResource(_resolver, _widgetScript);
+        if (IWidget.class.isInstance(component)) {
+            if (_widgetResource == null) 
+                _widgetResource = new ClasspathResource(_resolver, _widgetScript);
+            return _widgetResource;
+        }
         
-        return new ClasspathResource(_resolver, _componentScript);
+        if (Body.class.isInstance(component)) {
+            if (_elementResource == null) 
+                _elementResource = new ClasspathResource(_resolver, _elementScript);
+            return _elementResource;
+        }
+        
+        if (_componentResource == null) 
+            _componentResource = new ClasspathResource(_resolver, _componentScript);
+        
+        return _componentResource;
     }
     
     /**

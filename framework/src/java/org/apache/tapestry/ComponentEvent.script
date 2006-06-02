@@ -14,10 +14,10 @@
     </body>
     <initialization>
         <foreach expression="events" key="event">
-        dojo.event.connect(dojo.byId("${component.id}"), "${event}", function(e) {
+        dojo.event.connect(dojo.byId("${component.clientId}"), "${event}", function(e) {
             var content={beventname:"${event}"};
             tapestry.event.buildEventProperties(e, content);
-            if (!content["beventtarget.id"]) content["beventtarget.id"]="${component.id}";
+            if (!content["beventtarget.id"]) content["beventtarget.id"]="${component.clientId}";
             
             tapestry.bind("${url}", content);
         });

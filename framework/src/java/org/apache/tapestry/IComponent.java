@@ -174,6 +174,17 @@ public interface IComponent extends IRender, LocationHolder
     String getIdPath();
 
     /**
+     * Returns the component's client-side element id. This has traditionally been an 
+     * {@link IFormComponent} only binding but now applies to all components. The method
+     * should check to see if any id parameter/property has been set already and use that
+     * above all others, falling back to {@link #getId()} if nothing else is found.
+     * 
+     * @return the id, or null if the component doesn't support a client id.
+     * @since 4.1
+     */
+    String getClientId();
+    
+    /**
      * Returns the page which ultimately contains the receiver. A page will return itself.
      */
 

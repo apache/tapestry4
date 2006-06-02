@@ -40,7 +40,7 @@ public abstract class TaskEntryPage extends BasePage
     
     @Component(type = "Autocompleter", id = "projectChoose",
             bindings = { "model=projectModel", "value=selectedProject",
-            "displayName=message:choose.project", "filterOnChange=ognl:true"})
+            "displayName=message:choose.project", "filterOnChange=true"})
     public abstract Autocompleter getProjectSelection();
     
     @InjectObject("service:timetracker.dao.ProjectDao")
