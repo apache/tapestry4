@@ -54,6 +54,8 @@ public abstract class TaskEntryPage extends BasePage
     
     public abstract Date getStartTime();
     
+    public abstract Project getCurrentProject();
+    
     /**
      * Selection model for projects.
      * @return
@@ -75,9 +77,10 @@ public abstract class TaskEntryPage extends BasePage
      * Invoked when an item is selected from the project
      * selection list.
      */
-    @EventListener(events = "selectOption", targets = "projectChoose")
+    @EventListener(events = "selectOption", targets = "projectChoose",
+            submitForm = "taskForm")
     public void projectSelected()
     {
-        _log.debug("projectSelected()");
+        _log.debug("projectSelected() " + getSelectedProject());
     }
 }

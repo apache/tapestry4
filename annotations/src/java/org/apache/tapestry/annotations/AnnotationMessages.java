@@ -103,11 +103,6 @@ final class AnnotationMessages
         return _formatter.format("failure-enhancing-method", method, cause);
     }
     
-    static String componentNotFound(Method method, String id)
-    {
-        return _formatter.format("no-component-found", method, id);
-    }
-    
     static String targetsNotFound(Method method)
     {
         return _formatter.format("no-targets-found", method);

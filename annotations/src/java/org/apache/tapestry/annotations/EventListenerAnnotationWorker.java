@@ -49,19 +49,22 @@ public class EventListenerAnnotationWorker implements SecondaryAnnotationWorker
         
         String[] targets = listener.targets();
         String[] elements = listener.elements();
+        String formId = listener.submitForm();
+        boolean validateForm = listener.validateForm();
         
         if (targets.length < 1 && elements.length < 1)
             throw new ApplicationRuntimeException(AnnotationMessages.targetsNotFound(method));
         
         for (int i=0; i < targets.length; i++) {
-            if (spec.getComponent(targets[i]) == null)
-                throw new ApplicationRuntimeException(AnnotationMessages.componentNotFound(method, targets[i]));
             
-            _invoker.addEventListener(targets[i], listener.events(), method.getName());
+            _invoker.addEventListener(targets[i], listener.events(), 
+                    method.getName(), formId, validateForm);
+            
         }
         
         for (int i=0; i < elements.length; i++)
-            _invoker.addElementEventListener(elements[i], listener.events(), method.getName());
+            _invoker.addElementEventListener(elements[i], listener.events(), 
+                    method.getName(), formId, validateForm);
     }
     
     /**

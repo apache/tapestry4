@@ -6,7 +6,7 @@ core features available in tapestry, as well as how a sample application might b
 using them.
 </p>
 
-<form jwcid="@Form" listener="listener:addTask" >
+<form jwcid="taskForm@Form" listener="listener:addTask" >
     <fieldset>
     <legend><span jwcid="@Insert" value="message:new.task"/></legend>
     
@@ -31,5 +31,6 @@ using them.
       <input jwcid="@Submit" value="message:button.add" />
     </div>
     </fieldset>
+    
 </form>
 </span>

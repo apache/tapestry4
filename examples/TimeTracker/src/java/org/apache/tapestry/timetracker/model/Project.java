@@ -13,14 +13,18 @@
 // limitations under the License.
 package org.apache.tapestry.timetracker.model;
 
+import java.io.Serializable;
+
 
 /**
  * Represents a project for which time will be tracked.
  *
  * @author jkuhnert
  */
-public class Project
+public class Project implements Serializable
 {
+    /** generated serial id. */
+    private static final long serialVersionUID = 9198547617843380606L;
     protected long _id;
     protected String _name;
     

@@ -30,6 +30,19 @@ import java.util.Set;
 public class ComponentEventProperty
 {
     private Map _eventMap = new HashMap();
+    private Map _formEventMap = new HashMap();
+    
+    private String _componentId;
+    
+    /**
+     * Creates a new component event property with
+     * the specified component id.
+     * @param componentId
+     */
+    public ComponentEventProperty(String componentId)
+    {
+        _componentId = componentId;
+    }
     
     /**
      * Adds a listener bound to the specified client side
@@ -37,11 +50,33 @@ public class ComponentEventProperty
      * @param events
      * @param methodName
      */
-    public void addListener(String[] events, String methodName)
+    public void addListener(String[] events, String methodName, 
+            String formId, boolean validateForm)
     {
         for (int i=0; i < events.length; i++) {
-            addEventListener(events[i], methodName);
+            if (formId != null && formId.length() > 0)
+                addFormEventListener(events[i], methodName, formId, validateForm);
+            else
+                addEventListener(events[i], methodName);
         }
+    }
+    
+    /**
+     * Adds a form listener to the specified client side event.
+     * @param event
+     * @param methodName
+     * @param formId 
+     * @param validateForm
+     */
+    public void addFormEventListener(String event, String methodName,
+            String formId, boolean validateForm)
+    {
+        EventBoundListener listener = 
+            new EventBoundListener(methodName, formId, validateForm, _componentId);
+        
+        List listeners = getFormEventListeners(event);
+        if (!listeners.contains(listener))
+            listeners.add(listener);
     }
     
     /**
@@ -51,11 +86,22 @@ public class ComponentEventProperty
      */
     public void addEventListener(String event, String methodName)
     {
+        EventBoundListener listener = 
+            new EventBoundListener(methodName, _componentId);
+        
         List listeners = getEventListeners(event);
-        if (!listeners.contains(methodName))
-            listeners.add(methodName);
+        if (!listeners.contains(listener))
+            listeners.add(listener);
     }
     
+    /**
+     * @return the componentId
+     */
+    public String getComponentId()
+    {
+        return _componentId;
+    }
+
     /**
      * Gets the current list of listeners for a specific event,
      * creates a new instance if one doesn't exist already.
@@ -75,11 +121,40 @@ public class ComponentEventProperty
     }
     
     /**
-     * The set of all events.
+     * Gets the current list of listeners for a specific event,
+     * creates a new instance if one doesn't exist already.
+     * 
+     * @param event
+     * @return
+     */
+    public List getFormEventListeners(String event)
+    {
+        List listeners = (List)_formEventMap.get(event);
+        if (listeners == null) {
+            listeners = new ArrayList();
+            _formEventMap.put(event, listeners);
+        }
+        
+        return listeners;
+    }
+    
+    /**
+     * The set of all non form based events.
      * @return The unique set of events.
      */
     public Set getEvents()
     {
         return _eventMap.keySet();
     }
+    
+    /**
+     * The set of all form based listener events.
+     * @return
+     */
+    public Set getFormEvents()
+    {
+        return _formEventMap.keySet();
+    }
+    
+    
 }

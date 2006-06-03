@@ -20,9 +20,9 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.enhance.EnhancementOperation;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
+import org.apache.tapestry.internal.event.EventBoundListener;
 import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.spec.IContainedComponent;
 
 
 /**
@@ -36,15 +36,11 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
     {
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
-        IContainedComponent container = (IContainedComponent)newMock(IContainedComponent.class);
         Resource resource = newResource(AnnotatedPage.class);
         
         EventListenerAnnotationWorker worker = new EventListenerAnnotationWorker();
         ComponentEventInvoker invoker = new ComponentEventInvoker();
         worker.setComponentEventInvoker(invoker);
-        
-        spec.getComponent("email");
-        setReturnValue(spec, container);
         
         replayControls();
         
@@ -71,31 +67,34 @@ public class TestEventListenerAnnotationWorker extends BaseAnnotationTestCase
         assertEquals(1, listeners.size());
     }
     
-    public void testComponentNotFound()
+    public void testFormEventConnection()
     {
         EnhancementOperation op = newOp();
         IComponentSpecification spec = newSpec();
         Resource resource = newResource(AnnotatedPage.class);
         
         EventListenerAnnotationWorker worker = new EventListenerAnnotationWorker();
-        
-        spec.getComponent("email");
-        setReturnValue(spec, null);
+        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        worker.setComponentEventInvoker(invoker);
         
         replayControls();
         
-        Method m = findMethod(AnnotatedPage.class, "eventListener");
+        Method m = findMethod(AnnotatedPage.class, "formListener");
         
         assertTrue(worker.canEnhance(m));
-        
-        try {
-            worker.peformEnhancement(op, spec, m, resource);
-            unreachable();
-        } catch (ApplicationRuntimeException e) {
-            assertExceptionSubstring(e, "Unable to find component");
-        }
+        worker.peformEnhancement(op, spec, m, resource);
         
         verifyControls();
+        
+        ComponentEventProperty property = invoker.getComponentEvents("email");
+        assertNotNull(property);
+        
+        List listeners = property.getFormEventListeners("onClick");
+        assertNotNull(listeners);
+        assertEquals(1, listeners.size());
+        EventBoundListener formListener = (EventBoundListener)listeners.get(0);
+        assertEquals("testForm", formListener.getFormId());
+        assertFalse(formListener.isValidateForm());
     }
     
     public void testTargetsNotFound()

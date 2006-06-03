@@ -411,7 +411,7 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
 
         return _idPath;
     }
-
+    
     /**
      * 
      * {@inheritDoc}
@@ -419,6 +419,9 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
      */
     public String getClientId()
     {
+        if (_bindings == null)
+            return getId();
+        
         IBinding id = (IBinding)_bindings.get("id");
         if (id == null)
             return getId();
