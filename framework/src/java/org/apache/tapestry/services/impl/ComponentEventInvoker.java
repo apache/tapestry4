@@ -24,6 +24,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
+import org.apache.tapestry.internal.event.EventBoundListener;
 import org.apache.tapestry.listener.ListenerInvoker;
 
 
@@ -81,13 +82,14 @@ public class ComponentEventInvoker implements ResetEventListener
     {
         List listeners = prop.getEventListeners(event.getName());
         for (int i=0; i < listeners.size(); i++) {
-            String methodName = (String)listeners.get(i);
+            EventBoundListener eventListener = (EventBoundListener)listeners.get(i);
             
             IComponent container = component.getContainer();
             if (container == null) // only IPage has no container
                 container = component; 
             
-            IActionListener listener = container.getListeners().getListener(methodName);
+            IActionListener listener = 
+                container.getListeners().getListener(eventListener.getMethodName());
             _invoker.invokeListener(listener, container, cycle);
         }
     }
@@ -103,11 +105,12 @@ public class ComponentEventInvoker implements ResetEventListener
      *          The page/component listener name that should be executed when
      *          one of the supplied events occurs.
      */
-    public void addEventListener(String componentId, String[] events, String methodName)
+    public void addEventListener(String componentId, String[] events, 
+            String methodName, String formId, boolean validateForm)
     {
         ComponentEventProperty property = getComponentEvents(componentId);
         
-        property.addListener(events, methodName);
+        property.addListener(events, methodName, formId, validateForm);
     }
     
     /**
@@ -117,11 +120,12 @@ public class ComponentEventInvoker implements ResetEventListener
      * @param events
      * @param methodName
      */
-    public void addElementEventListener(String elementId, String[] events, String methodName)
+    public void addElementEventListener(String elementId, String[] events, 
+            String methodName, String formId, boolean validateForm)
     {
         ComponentEventProperty property = getElementEvents(elementId);
         
-        property.addListener(events, methodName);
+        property.addListener(events, methodName, formId, validateForm);
     }
     
     /**
@@ -167,7 +171,7 @@ public class ComponentEventInvoker implements ResetEventListener
     {
         ComponentEventProperty prop = (ComponentEventProperty)_components.get(id);
         if (prop == null) {
-            prop = new ComponentEventProperty();
+            prop = new ComponentEventProperty(id);
             _components.put(id, prop);
         }
         
@@ -185,7 +189,7 @@ public class ComponentEventInvoker implements ResetEventListener
     {
         ComponentEventProperty prop = (ComponentEventProperty)_elements.get(id);
         if (prop == null) {
-            prop = new ComponentEventProperty();
+            prop = new ComponentEventProperty(id);
             _elements.put(id, prop);
         }
         

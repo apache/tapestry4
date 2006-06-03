@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IForm;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.form.Checkbox;
@@ -150,4 +151,13 @@ public abstract class AnnotatedPage extends BasePage
     
     @EventListener(events = { "onClick" })
     public void brokenTargetListener() { }
+    
+    @Component(type = "Form", id = "testForm")
+    public abstract IForm getForm();
+    
+    @EventListener(events = { "onClick" }, targets = { "email" }, submitForm = "testForm")
+    public void formListener() { }
+    
+    @EventListener(events = { "onClick" }, targets = { "email" }, submitForm = "notExisting")
+    public void brokenFormListener() { }
 }
