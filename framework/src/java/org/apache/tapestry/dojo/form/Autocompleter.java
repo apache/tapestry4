@@ -84,8 +84,27 @@ public abstract class Autocompleter extends AbstractFormWidget
         str.append("dataUrl:'").append(link.getURL()).append("&filter=%{searchString}',")
         .append("mode:'remote',")
         .append("widgetId:'").append(getName()).append("', ")
-        .append("name:'").append(getName()).append("'")
-        .append("}");
+        .append("name:'").append(getName()).append("'");
+        
+        IPropertySelectionModel model = getModel();
+        if (model == null)
+            throw Tapestry.createRequiredParameterException(this, "model");
+        
+        int count = model.getOptionCount();
+        Object value = getValue();
+        
+        for (int i = 0; i < count; i++) {
+            Object option = model.getOption(i);
+            
+            if (isEqual(option, value)) {
+                str.append(", comboBoxValue:'").append(model.getValue(i)).append("',")
+                .append("comboBoxSelectionValue:'").append(model.getLabel(i))
+                .append("'");
+                break;
+            }
+        }
+        
+        str.append("}");
         
         parms.put("props", str.toString());
         
@@ -143,6 +162,23 @@ public abstract class Autocompleter extends AbstractFormWidget
         {
             getForm().getDelegate().record(e);
         }
+    }
+    
+    private boolean isEqual(Object left, Object right)
+    {
+        // Both null, or same object, then are equal
+        
+        if (left == right)
+            return true;
+        
+        // If one is null, the other isn't, then not equal.
+        
+        if (left == null || right == null)
+            return false;
+        
+        // Both non-null; use standard comparison.
+        
+        return left.equals(right);
     }
     
     /** 

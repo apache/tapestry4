@@ -78,7 +78,7 @@
 	<!-- Testing												-->
 	<!-- ====================================================== -->
 	
-	<target name="default-run-tests" description="Tests tapestry js package with dojo test utils." >
+	<target name="test" description="Tests tapestry js package with dojo test utils." >
 		 <dojo-test dojosrc="./dojo/" testsrc="tests"/>
 	</target>
 	
