@@ -29,8 +29,8 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.NestedMarkupWriter;
 import org.apache.tapestry.engine.NullWriter;
-import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.markup.MarkupWriterSource;
+import org.apache.tapestry.markup.NestedMarkupWriterImpl;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ServiceConstants;
@@ -153,6 +153,15 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
+    public void updateComponent(String id)
+    {
+        if (!_parts.contains(id))
+            _parts.add(id);
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
     public IMarkupWriter getWriter()
     {
         return _writer;
@@ -263,7 +272,7 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     public void render(IMarkupWriter writer, IRender render, IRequestCycle cycle)
     {
-        if (NestedMarkupWriter.class.isInstance(writer)) {
+        if (NestedMarkupWriterImpl.class.isInstance(writer)) {
             render.render(writer, cycle);
             return;
         }
@@ -417,7 +426,6 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     boolean contains(IComponent target)
     {
         if (target == null) return false;
-        
         return _parts.contains(getComponentId(target));
     }
     
@@ -429,7 +437,9 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
      */
     String getComponentId(IComponent comp)
     {
-        String id = null;
+        return comp.getClientId();
+        
+        /* String id = null;
         //form components have id's generated to ensure uniqueness
         if (comp instanceof IFormComponent)
             return ((IFormComponent)comp).getClientId();
@@ -440,5 +450,6 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
             id = comp.getBinding("id").getObject().toString();
         
         return id;
+        */
     }
 }

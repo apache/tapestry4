@@ -17,6 +17,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.EventListener;
 import org.apache.tapestry.annotations.InjectObject;
@@ -68,9 +69,10 @@ public abstract class TaskEntryPage extends BasePage
     /**
      * Invoked by form to add a new task.
      */
-    public void addTask()
+    public void addTask(IRequestCycle cycle)
     {
         _log.debug("addTask() selected task is " + getSelectedProject().getName());
+        cycle.getResponseBuilder().updateComponent("projectDescription");
     }
     
     /**
@@ -79,8 +81,9 @@ public abstract class TaskEntryPage extends BasePage
      */
     @EventListener(events = "selectOption", targets = "projectChoose",
             submitForm = "taskForm")
-    public void projectSelected()
+    public void projectSelected(IRequestCycle cycle)
     {
         _log.debug("projectSelected() " + getSelectedProject());
+        // cycle.getResponseBuilder().updateComponent("projectDescription");
     }
 }

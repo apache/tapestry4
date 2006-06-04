@@ -54,7 +54,7 @@ public class JSONResponseBuilder implements ResponseBuilder
     protected IMarkupWriter _nullWriter = NullWriter.getSharedInstance();
     
     /** Parts that will be updated. */
-    protected List parts = new ArrayList();
+    protected List _parts = new ArrayList();
     
     protected RequestLocaleManager _localeManager;
     
@@ -128,7 +128,7 @@ public class JSONResponseBuilder implements ResponseBuilder
         Object[] updateParts = cycle
                 .getParameters(ServiceConstants.UPDATE_PARTS);
         for(int i = 0; i < updateParts.length; i++)
-            parts.add(updateParts[i].toString());
+            _parts.add(updateParts[i].toString());
     }
     
     /**
@@ -142,7 +142,7 @@ public class JSONResponseBuilder implements ResponseBuilder
             IJSONRender json = (IJSONRender) render;
             IComponent component = (IComponent) render;
             
-            if (!parts.contains(component.getId()))
+            if (!_parts.contains(component.getId()))
             {
                 render.render(_nullWriter, cycle);
                 return;
@@ -152,6 +152,15 @@ public class JSONResponseBuilder implements ResponseBuilder
         }
         
         render.render(_nullWriter, cycle);
+    }
+    
+    /** 
+     * {@inheritDoc}
+     */
+    public void updateComponent(String id)
+    {
+        if (!_parts.contains(id))
+            _parts.add(id);
     }
     
     /**

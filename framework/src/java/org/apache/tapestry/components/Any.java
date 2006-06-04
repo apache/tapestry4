@@ -31,7 +31,7 @@ public abstract class Any extends AbstractComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String element = getElement();
-
+        
         if (element == null)
             throw new ApplicationRuntimeException(ComponentMessages.anyElementNotDefined(), this,
                     null, null);
@@ -41,8 +41,10 @@ public abstract class Any extends AbstractComponent
         if (!rewinding)
         {
             writer.begin(element);
-
+            
             renderInformalParameters(writer, cycle);
+            if (!isParameterBound("id"))
+                renderIdAttribute(writer, cycle);
         }
 
         renderBody(writer, cycle);
