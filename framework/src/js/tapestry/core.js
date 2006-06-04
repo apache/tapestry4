@@ -47,9 +47,15 @@ tapestry={
 	 */
 	load:function(type, data, http, kwArgs){
 		dojo.log.debug("Response recieved.");
-		
+		if (!data) {
+			dojo.log.err("No data received in response.");
+			return;
+		}
 		var resp=data.getElementsByTagName("ajax-response");
-		if (!resp || resp.length < 1 || !resp[0].childNodes) { dojo.log.warn("No ajax-response elements recieved."); return; }
+		if (!resp || resp.length < 1 || !resp[0].childNodes) {
+			dojo.log.warn("No ajax-response elements recieved.");
+			return; 
+		}
 		
 		var elms=resp[0].childNodes;
 		for (var i=0; i<elms.length; i++) {

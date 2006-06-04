@@ -27,9 +27,6 @@ import java.util.Set;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.Resource;
-import org.apache.hivemind.impl.DefaultClassResolver;
-import org.apache.hivemind.util.ClasspathResource;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
@@ -76,9 +73,7 @@ public class FormSupportImpl implements FormSupport
      */
 
     public static final String SUBMIT_MODE = "submitmode";
-
-    public static final String SCRIPT = "/org/apache/tapestry/form/Form.js";
-
+    
     /**
      * Attribute set to true when a field has been focused; used to prevent conflicting JavaScript
      * for field focusing from being emitted.
@@ -157,8 +152,6 @@ public class FormSupportImpl implements FormSupport
 
     private final IMarkupWriter _writer;
 
-    private final Resource _script;
-
     private final IValidationDelegate _delegate;
 
     private final PageRenderSupport _pageRenderSupport;
@@ -177,8 +170,6 @@ public class FormSupportImpl implements FormSupport
         _rewinding = cycle.isRewound(form);
         _allocatedIdIndex = 0;
         
-        _script = new ClasspathResource(new DefaultClassResolver(), SCRIPT);
-        
         _pageRenderSupport = TapestryUtils.getOptionalPageRenderSupport(cycle);
     }
 
@@ -195,7 +186,6 @@ public class FormSupportImpl implements FormSupport
         _writer = null;
         _delegate = null;
         _pageRenderSupport = null;
-        _script = null;
     }
 
     /**
@@ -545,9 +535,8 @@ public class FormSupportImpl implements FormSupport
     {
         if (_pageRenderSupport == null)
             return;
-
-        _pageRenderSupport.addExternalScript(_script);
-
+        
+        _pageRenderSupport.addInitializationScript("dojo.require(\"tapestry.form\");");
         _pageRenderSupport.addInitializationScript("Tapestry.register_form('" + formId + "');");
     }
 
