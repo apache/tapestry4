@@ -60,13 +60,43 @@ tapestry={
 		var elms=resp[0].childNodes;
 		for (var i=0; i<elms.length; i++) {
 			var type=elms[i].getAttribute("type");
+			var id=elms[i].getAttribute("id");
 			
 			if (type == "exception") {
 				dojo.log.err("Remote server exception received.");
 				tapestry.presentException(elms[i], kwArgs);
 				return;
 			}
+			
+			if (!id) {
+				dojo.raise("No element id found in ajax-response node.");
+				return;
+			}
+			
+			var node=dojo.byId(id);
+			if (!node) {
+				dojo.log.err("No node could be found to update content in with id " + id);
+				return;
+			}
+			
+			tapestry.loadContent(id, node, elms[i]);
 		}
+	},
+	
+	loadContent:function(id, node, element){
+    	if (element.childNodes && element.childNodes.length > 0) {
+        	for (var i = 0; i < element.childNodes.length; i++) {
+            	if (element.childNodes[i].nodeType != 1) continue;
+				
+            	var nodeId = element.childNodes[i].getAttribute("id");
+            	if (nodeId && nodeId == id) {
+                	element=element.childNodes[i];
+                	break;
+            	}
+        	}
+    	}
+    	
+    	node.innerHTML=tapestry.html.getContentAsString(element);
 	},
 	
 	presentException:function(node, kwArgs) {

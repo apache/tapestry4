@@ -64,6 +64,16 @@ public interface ResponseBuilder {
     void render(IMarkupWriter writer, IRender render, IRequestCycle cycle);
     
     /**
+     * If the component identified by the specified id isn't already set to
+     * be updated, will add it to the response for updating. (Only applicable
+     * in dynamic responses such as XHR/JSON ).
+     * 
+     * @param id
+     *          The {@link IComponent} id to update.
+     */
+    void updateComponent(String id);
+    
+    /**
      * Invoked by {@link PageRenderSupport} to write external js package
      * includes. This method will be invoked for each external script requesting
      * inclusion in the response.

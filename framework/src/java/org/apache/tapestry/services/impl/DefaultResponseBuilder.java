@@ -141,6 +141,13 @@ public class DefaultResponseBuilder implements ResponseBuilder
     /** 
      * {@inheritDoc}
      */
+    public void updateComponent(String id)
+    {
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
     public IMarkupWriter getWriter()
     {
         if (_writer == null)

@@ -286,12 +286,25 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
             }
             else
                 attribute = value.toString();
-
+            
             writer.attribute(name, attribute);
         }
-
     }
-
+    
+    /**
+     * Overriden by {@link AbstractFormComponent} to provide different 
+     * behaviour. 
+     * 
+     * @param writer
+     * @param cycle
+     */
+    protected void renderIdAttribute(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        String id = getClientId();
+        if (id != null)
+            writer.attribute("id", id);
+    }
+    
     /** @since 4.0 */
     private boolean isFormalParameter(String name)
     {
