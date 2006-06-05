@@ -31,7 +31,9 @@
 	{
 		var requestObject = getRequest();
 		if (!requestObject) {
-			$errorFunctionName();
+			<if expression="errorFunctionName != null">
+			${errorFunctionName}();
+			</if>
 			return;
 		}
 		
@@ -53,7 +55,7 @@
   					${receiveFunctionName}(data);
   				}
   				<if expression="errorFunctionName != null">
-  				else if ("${errorFunctionName}" = "")
+  				else
   					${errorFunctionName}(requestObject);
   				</if>
 			}
