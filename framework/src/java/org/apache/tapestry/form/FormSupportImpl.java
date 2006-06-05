@@ -39,6 +39,7 @@ import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.valid.IValidationDelegate;
@@ -545,7 +546,7 @@ public class FormSupportImpl implements FormSupport
         _form.getDelegate().clear();
 
         String mode = _cycle.getParameter(SUBMIT_MODE);
-
+        
         // On a cancel, don't bother rendering the body or anything else at all.
 
         if (FormConstants.SUBMIT_CANCEL.equals(mode))
@@ -554,9 +555,14 @@ public class FormSupportImpl implements FormSupport
         reinitializeIdAllocatorForRewind();
 
         _form.renderBody(_writer, _cycle);
-
+        
+        // New, handles cases where an eventlistener
+        // causes a form submission.
+        BrowserEvent event = new BrowserEvent(_cycle);
+        _form.getEventInvoker().invokeListeners(_form, _cycle, event);
+        
         int expected = _allocatedIds.size();
-
+        
         // The other case, _allocatedIdIndex > expected, is
         // checked for inside getElementId(). Remember that
         // _allocatedIdIndex is incremented after allocating.
@@ -569,6 +575,7 @@ public class FormSupportImpl implements FormSupport
                     - _allocatedIdIndex, nextExpectedId), _form);
         }
 
+        
         runDeferredRunnables();
 
         if (_submitModes.contains(mode))

@@ -84,6 +84,6 @@ public abstract class TaskEntryPage extends BasePage
     public void projectSelected(IRequestCycle cycle)
     {
         _log.debug("projectSelected() " + getSelectedProject());
-        // cycle.getResponseBuilder().updateComponent("projectDescription");
+        cycle.getResponseBuilder().updateComponent("projectDescription");
     }
 }
