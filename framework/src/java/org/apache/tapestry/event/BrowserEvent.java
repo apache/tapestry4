@@ -69,12 +69,12 @@ public class BrowserEvent
         _layerX = cycle.getParameter(LAYER_X);
         _layerY = cycle.getParameter(LAYER_Y);
         
+        Map props = new HashMap();
+        _target = new EventTarget(props);
+        
         String targetId = cycle.getParameter(TARGET + "." + TARGET_ATTR_ID);
         if (targetId != null) {
-            Map props = new HashMap();
             props.put(TARGET_ATTR_ID, targetId);
-            
-            _target = new EventTarget(props);
         }
     }
     

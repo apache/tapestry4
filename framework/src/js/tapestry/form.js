@@ -1,10 +1,21 @@
 dojo.provide("tapestry.form");
-dojo.provide("Tapestry");
 
 dojo.require("tapestry.core");
 
+/**
+ * Provides central handling of all client side form related logic.
+ * 
+ * Validation system to be replaced with {@link dojo.validate#check(form, profile)}.
+ */
 tapestry.form={
 	
+	/**
+	 * Generically displays a window alert for the 
+	 * given field when in error.
+	 * 
+	 * @param field The field element
+	 * @param message The message to display
+	 */
 	invalidField:function(field, message){
 		if (field.disabled) return;
 		
@@ -12,6 +23,12 @@ tapestry.form={
     	window.alert(message);
 	},
 	
+	/**
+	 * If possible, brings keyboard input focus
+	 * to the specified field.
+	 * 
+	 * @param field The field(field id) of the field to focus.
+	 */
 	focusField:function(field){
 		if (arguments.length < 1) return;
 		
@@ -28,6 +45,11 @@ tapestry.form={
         }
 	},
 	
+	/**
+	 * Trims whitespace from before/after field.
+	 * @param id The field(field id) of the field to trim
+	 * 			 whitespace input from.
+	 */
 	trimField:function(id){
 		if (arguments.length < 1) return;
 		
@@ -39,10 +61,18 @@ tapestry.form={
 		elem.value = elem.value.replace(/(^\s*|\s*$)/g, "");
 	},
 	
-	requireField:function(fieldId, message){
+	/**
+	 * Checks if the field specified has a non-null value
+	 * selected. This covers input fields/checkboxes/radio groups/etc..
+	 * 
+	 * @param field The field(field id) of the field to check for input.
+	 * @param message The message to be displayed if no value has been input/selected
+	 * 				  for the field.
+	 */
+	requireField:function(field, message){
 		if (arguments.length < 1) return;
 		
-		var elem=dojo.byId(fieldId);
+		var elem=dojo.byId(field);
 		if (!elem) return;
 		
 		// Are textbox, textarea, or password fields blank.
@@ -69,10 +99,29 @@ tapestry.form={
 		}
 	},
 	
-	submit:function(id, submitName){
+	registerForm:function(id){
 		var form=dojo.byId(id);
 		if (!form) {
 			dojo.raise("Form not found with id " + id);
+			return;
+		}
+		
+		dojo.log.warn("registerForm() not implemented yet.");
+	},
+	
+	/**
+	 * Submits the form specified, optionally setting the submitname
+	 * hidden input field to the value of submitName to let the Form 
+	 * component on server know which button caused the submission. (For
+	 * the case of submit button listeners).
+	 * 
+	 * @param form The form(form id) to submit.
+	 * @param submitName Optional submit name string to use when submitting.
+	 */
+	submit:function(form, submitName){
+		var form=dojo.byId(form);
+		if (!form) {
+			dojo.raise("Form not found with id " + form);
 			return;
 		}
 		
@@ -80,15 +129,27 @@ tapestry.form={
 		form.submit();
 	},
 	
-	submitAsync:function(id, submitName){
-		var form=dojo.byId(id);
+	/**
+	 * Does almost the same thing as {@link tapestry.form#submit(form, submitName)}, 
+	 * but submits the request via XHR to the server asynchronously.
+	 * 
+	 * @param form The form(form id) to submit.
+	 * @param submitName Optional submit name string to use when submitting.
+	 * @param content Optional content map, mainly used to pass in browser
+	 * 				  event parameters to form submission, but can be any
+	 * 				  typical form/value pair.
+	 */
+	submitAsync:function(form, submitName, content){
+		var form=dojo.byId(form);
 		if (!form) {
 			dojo.raise("Form not found with id " + id);
 			return;
 		}
 		
+		form.submitname.value=submitName;
 		dojo.io.bind({
 			formNode:form,
+			content:content,
             headers:{"dojo-ajax-request":true},
             useCache:true,
             preventCache:true,
@@ -100,71 +161,4 @@ tapestry.form={
 	}
 }
 
-// Backwards compatibility functions, to be removed in 4.1.1 js version
-
-// global used to deprecate old event connection methods
-tapestry.form.deprecateConnect=function(){
-	dojo.deprecated("Tapestry.on<event>",
-					"use dojo.event.connect instead",
-					"4.1.1");
-}
-
-// BEGIN old function definitions
-
-Tapestry.default_invalid_field_handler=function(event, field, message){
-	dojo.deprecated("Tapestry.default_invalid_field_handler", 
-					"use tapestry.form.invalidField instead", 
-					"4.1.1");
-	tapestry.form.invalidField(field, message);
-}
-
-Tapestry.find=function(id){
-	dojo.deprecated("Tapestry.find",
-					"use dojo.byId instead",
-					"4.1.1");
-	return dojo.byId(id);
-}
-
-Tapestry.register_form=function(formId){
-	dojo.deprecated("Tapestry.register_form",
-					"use tapestry.form.registerForm instead",
-					"4.1.1");
-}
-
-Tapestry.onpresubmit=tapestry.form.deprecateConnect;
-Tapestry.onsubmit=tapestry.form.deprecateConnect;
-Tapestry.onpostsubmit=tapestry.form.deprecateConnect;
-Tapestry.onreset=tapestry.form.deprecateConnect;
-Tapestry.onrefresh=tapestry.form.deprecateConnect;
-Tapestry.oncancel=tapestry.form.deprecateConnect;
-
-Tapestry.set_focus=function (field){
-	dojo.deprecated("Tapestry.set_focus",
-					"use tapestry.form.focusField instead",
-					"4.1.1");
-	tapestry.form.focusField(field);
-}
-
-Tapestry.trim_field_value = function(fieldId)
-{
-	dojo.deprecated("Tapestry.trim_field_value",
-					"use tapestry.form.trimField instead",
-					"4.1.1");
-	tapestry.form.trimField(fieldId);
-}
-
-Tapestry.require_field = function(event, fieldId, message)
-{
-	dojo.deprecated("Tapestry.require_field",
-					"use tapestry.form.requireField instead",
-					"4.1.1");
-	tapestry.form.requireField(fieldId, message);
-}
-
-Tapestry.submit_form = function(form_id, field_name)
-{
-	dojo.deprecated("Tapestry.submit_form",
-					"use tapestry.form.submit instead",
-					"4.1.1");
-	tapestry.form.submit(form_id, field_name);
-}
+dojo.require("tapestry.form_compat");
