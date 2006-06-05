@@ -95,6 +95,15 @@
       <action type="add" dev="JK" >
         Added new IComponent.getClientId for global element id resolution on all components.
       </action>
+      <action type="add" dev="AA" fixes-bug="TAPESTRY-929">
+        Added configuration point for contributing OGNL null handlers.
+      </action>
+      <action type="fix" dev="AA" fixes-bug="TAPESTRY-935">
+      	Improve output of base tag (for IE).
+  	  </action>   
+  	  <action type="fix" dev="AA" fixes-bug="TAPESTRY-829" due-to="Ido M. Tamir">
+  		FormLinkRenderer throws NPE with DirectlLinks.
+  	  </action>       
     </release>
     <release version="4.0.1" date="unreleased" >
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-863" due-to="unknown contributor">
