@@ -80,7 +80,7 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
         while (j.hasNext())
         {
             NullHandlerContribution h = (NullHandlerContribution) j.next();
-            System.out.println("Configuring: " + h.getSubjectClass());
+            
             OgnlRuntime.setNullHandler(h.getSubjectClass(), h.getHandler());
         }        
 
