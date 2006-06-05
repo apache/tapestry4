@@ -130,23 +130,23 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         
         render.render(NullWriter.getSharedInstance(), cycle);
         
-        comp1.getId();
+        comp1.getClientId();
         setReturnValue(comp1, "id1");
         
-        comp1.getBinding("id");
-        setReturnValue(comp1, null);
+        /*comp1.getBinding("id");
+        setReturnValue(comp1, null);*/
         
-        comp1.getId();
+        comp1.getClientId();
         setReturnValue(comp1, "id1");
         
-        comp1.getBinding("id");
-        setReturnValue(comp1, null);
+        /*comp1.getBinding("id");
+        setReturnValue(comp1, null);*/
         
-        comp1.getId();
+        comp1.getClientId();
         setReturnValue(comp1, "id1");
         
-        comp1.getBinding("id");
-        setReturnValue(comp1, null);
+        /*comp1.getBinding("id");
+        setReturnValue(comp1, null);*/
         
         writer.getNestedWriter();
         setReturnValue(writer, nested);
@@ -179,20 +179,20 @@ public class DojoAjaxResponseBuilderTest extends HiveMindTestCase
         
         ResponseBuilder builder = new DojoAjaxResponseBuilder(null, parts);
         
-        comp.getId();
+        comp.getClientId();
         setReturnValue(comp, "comp");
-        comp.getBinding("id");
-        setReturnValue(comp, null);
+        /*comp.getBinding("id");
+        setReturnValue(comp, null);*/
         
-        comp.getId();
+        comp.getClientId();
         setReturnValue(comp, "comp1");
-        comp.getBinding("id");
-        setReturnValue(comp, null);
+        /*comp.getBinding("id");
+        setReturnValue(comp, null);*/
         
-        comp.getId();
+        comp.getClientId();
         setReturnValue(comp, "comp");
-        comp.getBinding("id");
-        setReturnValue(comp, null);
+        /*comp.getBinding("id");
+        setReturnValue(comp, null);*/
         
         replayControls();
         
