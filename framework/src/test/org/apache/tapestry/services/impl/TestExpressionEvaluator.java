@@ -150,6 +150,7 @@ public class TestExpressionEvaluator extends HiveMindTestCase
 
         ee.setApplicationSpecification(newAppSpec());
         ee.setContributions(Collections.EMPTY_LIST);
+        ee.setNullHandlerContributions(Collections.EMPTY_LIST);
 
         replayControls();
 
@@ -216,6 +217,7 @@ public class TestExpressionEvaluator extends HiveMindTestCase
         ee.setExpressionCache(cache);
         ee.setApplicationSpecification(as);
         ee.setContributions(Collections.EMPTY_LIST);
+        ee.setNullHandlerContributions(Collections.EMPTY_LIST);
 
         ee.initializeService();
 
