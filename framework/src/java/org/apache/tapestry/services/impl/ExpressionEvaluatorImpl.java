@@ -46,6 +46,8 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
     private TypeConverter _typeConverter;
 
     private List _contributions;
+    
+    private List _nullHandlerContributions;
 
     // Context, with a root of null, used when evaluating an expression
     // to see if it is a constant.
@@ -72,6 +74,15 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
 
             OgnlRuntime.setPropertyAccessor(c.getSubjectClass(), c.getAccessor());
         }
+        
+        Iterator j = _nullHandlerContributions.iterator();
+
+        while (j.hasNext())
+        {
+            NullHandlerContribution h = (NullHandlerContribution) j.next();
+            System.out.println("Configuring: " + h.getSubjectClass());
+            OgnlRuntime.setNullHandler(h.getSubjectClass(), h.getHandler());
+        }        
 
         _defaultContext = Ognl.createDefaultContext(null, _ognlResolver, _typeConverter);
 
@@ -153,4 +164,9 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
     {
         _contributions = contributions;
     }
+    
+    public void setNullHandlerContributions(List nullHandlerContributions)
+    {
+        _nullHandlerContributions = nullHandlerContributions;
+    }    
 }

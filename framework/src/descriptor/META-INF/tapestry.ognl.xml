@@ -27,6 +27,7 @@
       <construct class="impl.ExpressionEvaluatorImpl">
         <set-object property="applicationSpecification" value="infrastructure:applicationSpecification"/>
         <set-configuration property="contributions" configuration-id="PropertyAccessors"/>
+        <set-configuration property="nullHandlerContributions" configuration-id="NullHandlers"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -39,6 +40,33 @@
       </construct>
     </invoke-factory>
   </service-point>
+  
+  <configuration-point id="NullHandlers">
+    
+    Defines handler objects mapped to particular classes. OGNL NullHandler objects
+    allow specifying how nulls are handled within OGNL expressions on a class-by-class
+    basis.
+    
+    <schema>
+      
+      <element name="null-handler">
+        
+        <attribute name="class" required="true" translator="class">
+          The class for which the null handler will be used.
+        </attribute>
+        
+        <attribute name="object" required="true" translator="object">
+          An object implementing the OGNL accessor interface.
+        </attribute>
+        
+        <conversion class="impl.NullHandlerContribution">
+          <map attribute="class" property="subjectClass"/>
+          <map attribute="object" property="handler"/>
+        </conversion>
+      </element>
+      
+    </schema>
+  </configuration-point>  
   
   <configuration-point id="PropertyAccessors">
     
