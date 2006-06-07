@@ -19,30 +19,7 @@
 	<classpathentry path="portlet/src/descriptor" exported="true" kind="lib"/>
 	<classpathentry path="contrib/src/descriptor" exported="true" kind="lib"/>
 	<classpathentry path="annotations/src/descriptor" kind="lib"/>
-	<classpathentry path="ext-package/lib/commons-codec-1.3.jar" exported="true" kind="lib"/>
-	<classpathentry path="ext-package/lib/commons-logging-1.0.4.jar" exported="true" kind="lib"/>
-	<classpathentry path="ext-package/lib/easymock-1.1.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/javassist-3.0.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/jdom-1.0.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/junit-3.8.1.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/log4j-1.2.8.jar" exported="true" kind="lib"/>
-	<classpathentry path="ext-package/lib/ognl-2.6.7.jar" exported="true" kind="lib"/>
-	<classpathentry path="ext-package/lib/oro-2.0.8.jar" exported="true" kind="lib"/>
-	<classpathentry path="ext-package/lib/servletapi-2.3.jar" exported="true" kind="lib"/>
-	<classpathentry path="ext-package/lib/cglib-full-2.0.2.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/easymockclassextension-1.1.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/jboss-j2ee-3.2.1.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/portlet-api-1.0.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/jcharts-0.6.0.jar" kind="lib"/>
 	<classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
-	<classpathentry path="ext-package/lib/commons-fileupload-1.1.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/hivemind-1.1.1.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/hivemind-lib-1.1.1.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/commons-io-1.1.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/commons-beanutils-1.7.0.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/commons-collections-3.1.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/commons-dbcp-1.2.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/commons-pool-1.2.jar" kind="lib"/>
-	<classpathentry path="ext-package/lib/commons-lang-2.1.jar" kind="lib"/>
+	<classpathentry path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER" kind="con"/>
 	<classpathentry path="bin" kind="output"/>
 </classpath>
