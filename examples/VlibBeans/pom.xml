@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.tapestry</groupId>
+    <artifactId>VlibBeans</artifactId>
+    <packaging>jar</packaging>
+    <version>4.1.0-SNAPSHOT</version>
+    <!-- This should change to tapestry-project -->
+    <parent>
+        <groupId>org.apache.tapestry</groupId>
+        <artifactId>examples</artifactId>
+        <version>4.1.0-SNAPSHOT</version>
+    </parent>
+    <name>Tapestry Virtual Library</name>
+    <inceptionYear>2006</inceptionYear>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.tapestry</groupId>
+            <artifactId>framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tapestry</groupId>
+            <artifactId>annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tapestry</groupId>
+            <artifactId>contrib</artifactId>
+            <version>4.1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jboss-j2ee</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <sourceDirectory>src/java</sourceDirectory>
+        <testSourceDirectory>src/test</testSourceDirectory>
+        <plugins>
+                <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.2</version>
+                </plugin>
+        </plugins>
+    </build>
+</project>
