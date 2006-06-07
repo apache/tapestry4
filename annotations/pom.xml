@@ -66,7 +66,7 @@
     <distributionManagement>
     <site>
       <id>tapestry</id>
-      <url>scp://minotaur.apache.org/www/tapestry.apache.org/tapestry4/</url>
+      <url>scp://minotaur.apache.org/www/tapestry.apache.org/tapestry4/annotations</url>
     </site>
     </distributionManagement>
 </project>

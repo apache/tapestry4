@@ -42,6 +42,7 @@
         </plugins>
     </build>
     <reporting>
+        <outputDirectory>../target/site/portlet</outputDirectory>
         <plugins>
             <!-- 
             <plugin>
@@ -66,6 +67,7 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
                     <linksource>true</linksource>
+                    <destDir>../target/site/portlet/apidocs</destDir>
                 </configuration>
             </plugin>
         </plugins>
@@ -73,7 +75,7 @@
     <distributionManagement>
     <site>
       <id>tapestry</id>
-      <url>scp://minotaur.apache.org/www/tapestry.apache.org/tapestry4/</url>
+      <url>scp://minotaur.apache.org/www/tapestry.apache.org/tapestry4/portlet</url>
     </site>
     </distributionManagement>
 </project>
