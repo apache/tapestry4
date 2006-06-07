@@ -78,6 +78,7 @@
         <module>annotations</module>
         <module>portlet</module>
         <module>examples</module>
+        <module>maven-skin</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -206,4 +207,10 @@
       <url>scp://minotaur.apache.org/www/tapestry.apache.org/tapestry4/</url>
     </site>
     </distributionManagement>
+<repositories>
+ <repository>
+   <id>apache.snapshots</id>
+   <url>http://cvs.apache.org/maven-snapshot-repository</url>
+ </repository>
+</repositories>
 </project>
