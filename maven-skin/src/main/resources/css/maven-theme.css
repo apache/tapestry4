@@ -150,6 +150,11 @@ table {
 	background: url(../images/banner.jpg);
 }
 */
+
+#bannerRight img {
+    padding-top:53px;   
+}
+
 #navcolumn ul {
 	margin: 5px 0 15px -0em;
 }
