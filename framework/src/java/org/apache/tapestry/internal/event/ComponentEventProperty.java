@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.tapestry.event.BrowserEvent;
+
 
 /**
  * Represents a configured listener/event(s) binding for a 
@@ -156,5 +158,33 @@ public class ComponentEventProperty
         return _formEventMap.keySet();
     }
     
-    
+    /**
+     * Creates a list of listeners bound to a particular form
+     * and client side browser event. 
+     * 
+     * @param formId
+     *          The form to find listeners for.
+     * @param event
+     *          The browser event that generated the request.
+     * @param append 
+     *          The optional list to add the listeners to.
+     * @return The list of listeners to invoke for the form and event passed in,
+     *          will be empty if none found.
+     */
+    public List getFormEventListeners(String formId, BrowserEvent event, List append)
+    {   
+        List ret = (append == null) ? new ArrayList() : append;
+        
+        List listeners = (List)_formEventMap.get(event.getName());
+        if (listeners == null) 
+            return ret;
+        
+        for (int i=0; i < listeners.size(); i++) {
+            EventBoundListener listener = (EventBoundListener)listeners.get(i);
+            if (listener.getFormId().equals(formId))
+                ret.add(listener);
+        }
+        
+        return ret;
+    }
 }

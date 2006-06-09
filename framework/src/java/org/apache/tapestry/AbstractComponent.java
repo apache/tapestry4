@@ -54,6 +54,9 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
 
     private static final Map EMPTY_MAP = Collections.unmodifiableMap(new HashMap(1));
 
+    /** @since 4.1 */
+    protected String _clientId;
+    
     /**
      * The page that contains the component, possibly itself (if the component is in fact, a page).
      */
@@ -300,6 +303,16 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
      */
     protected void renderIdAttribute(IMarkupWriter writer, IRequestCycle cycle)
     {
+        // try to generate a client id if needed/possible
+        if (_clientId == null) {
+            String id = getBoundId();
+            if (id == null) id = getId();
+            
+            _clientId = 
+                cycle.getUniqueId(TapestryUtils
+                        .convertTapestryIdToNMToken(id));
+        }
+        
         String id = getClientId();
         if (id != null)
             writer.attribute("id", id);
@@ -432,12 +445,24 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
      */
     public String getClientId()
     {
-        if (_bindings == null)
+        if (_clientId != null)
+            return _clientId;
+        
+        String boundId = getBoundId();
+        if (boundId == null)
             return getId();
+        
+        return boundId;
+    }
+    
+    String getBoundId()
+    {
+        if (_bindings == null)
+            return null;
         
         IBinding id = (IBinding)_bindings.get("id");
         if (id == null)
-            return getId();
+            return null;
         
         return id.getObject().toString();
     }

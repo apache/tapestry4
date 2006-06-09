@@ -15,6 +15,7 @@
 package org.apache.tapestry.form;
 
 import org.apache.tapestry.FormBehavior;
+import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.engine.ILink;
 
@@ -59,4 +60,11 @@ public interface FormSupport extends FormBehavior
      *         {@link FormConstants#SUBMIT_CANCEL} or {@link FormConstants#SUBMIT_REFRESH}.
      */
     String rewind();
+    
+    /**
+     * Gets a reference to the previously stored {@link IForm}.
+     * @return The form this object is managing/supporting.
+     * @since 4.1
+     */
+    IForm getForm();
 }
