@@ -13,16 +13,20 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.ResetEventListener;
+import org.apache.tapestry.form.FormSupport;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.internal.event.EventBoundListener;
 import org.apache.tapestry.listener.ListenerInvoker;
@@ -91,6 +95,45 @@ public class ComponentEventInvoker implements ResetEventListener
             IActionListener listener = 
                 container.getListeners().getListener(eventListener.getMethodName());
             _invoker.invokeListener(listener, container, cycle);
+        }
+    }
+    
+    /**
+     * Causes the configured listeners for the passed {@link FormSupport}'s {@link IForm) to
+     * be invoked, if mapped to this request/event.
+     * 
+     * @param formSupport
+     *          The form support object being rendered.
+     * @param cycle
+     *          The associated request.
+     * @param event
+     *          The event that started it all.
+     */
+    public void invokeFormListeners(FormSupport formSupport, final IRequestCycle cycle, 
+            BrowserEvent event)
+    {
+        IForm component = formSupport.getForm();
+        String id = component.getId();
+        
+        List listeners = getFormEvents(id, event);
+        
+        for (int i=0; i < listeners.size(); i++) {
+            EventBoundListener eventListener = (EventBoundListener)listeners.get(i);
+            
+            final IComponent container = 
+                (component.getContainer() == null) ? component : component.getContainer();
+            
+            final IActionListener listener = 
+                container.getListeners().getListener(eventListener.getMethodName());
+            
+            // defer execution until after form is done rewinding
+            component.addDeferredRunnable(new Runnable()
+            {
+                public void run()
+                {
+                    _invoker.invokeListener(listener, container, cycle);
+                }
+            });
         }
     }
     
@@ -176,6 +219,38 @@ public class ComponentEventInvoker implements ResetEventListener
         }
         
         return prop;
+    }
+    
+    /**
+     * Listeners mapped with a submitForm=formId binding are a special case for the
+     * invokers, as we can't just invoke them but must plug the EventListener in to
+     * the normal form rewind logic. This handles mapping an incoming form submission
+     * to our pre-mapped form event invokers.
+     * 
+     * @param id 
+     *          The component id of the form.
+     * @param event
+     *          The browser event based on.
+     * @return List of listeners on specified form/event combination, will be empty
+     *          list if none found.
+     */
+    List getFormEvents(String id, BrowserEvent event)
+    {
+        List ret = new ArrayList();
+        
+        Iterator it = _components.values().iterator();
+        while (it.hasNext()) {
+            ComponentEventProperty prop = (ComponentEventProperty)it.next();
+            prop.getFormEventListeners(id, event, ret);
+        }
+        
+        it = _elements.values().iterator();
+        while (it.hasNext()) {
+            ComponentEventProperty prop = (ComponentEventProperty)it.next();
+            prop.getFormEventListeners(id, event, ret);
+        }
+        
+        return ret;
     }
     
     /**

@@ -190,6 +190,14 @@ public class FormSupportImpl implements FormSupport
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public IForm getForm()
+    {
+        return _form;
+    }
+    
+    /**
      * Adds an event handler for the form, of the given type.
      */
 
@@ -559,7 +567,7 @@ public class FormSupportImpl implements FormSupport
         // New, handles cases where an eventlistener
         // causes a form submission.
         BrowserEvent event = new BrowserEvent(_cycle);
-        _form.getEventInvoker().invokeListeners(_form, _cycle, event);
+        _form.getEventInvoker().invokeFormListeners(this, _cycle, event);
         
         int expected = _allocatedIds.size();
         

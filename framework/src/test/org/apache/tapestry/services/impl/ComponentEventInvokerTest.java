@@ -17,12 +17,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.hivemind.test.AggregateArgumentsMatcher;
+import org.apache.hivemind.test.ArgumentMatcher;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.IgnoreMatcher;
 import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.event.EventTarget;
+import org.apache.tapestry.form.FormSupport;
 import org.apache.tapestry.internal.event.ComponentEventProperty;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.listener.ListenerMap;
@@ -126,6 +131,53 @@ public class ComponentEventInvokerTest extends BaseComponentTestCase
         replayControls();
         
         invoker.invokeListeners(comp, cycle, event);
+        
+        verifyControls();
+    }
+    
+    public void testInvokeFormListener()
+    {
+        IRequestCycle cycle = newCycle();
+        IForm form = newForm();
+        FormSupport formSupport = (FormSupport) newMock(FormSupport.class);
+        Runnable runnable = (Runnable)newMock(Runnable.class);
+        
+        ListenerInvoker listenerInvoker = (ListenerInvoker)newMock(ListenerInvoker.class);
+        ListenerMap listenerMap = (ListenerMap)newMock(ListenerMap.class);
+        IActionListener listener = (IActionListener)newMock(IActionListener.class);
+        
+        Map tprops = new HashMap();
+        tprops.put("id", "testId");
+        BrowserEvent event = new BrowserEvent("onSelect", new EventTarget(tprops));
+        
+        ComponentEventInvoker invoker = new ComponentEventInvoker();
+        invoker.setListenerInvoker(listenerInvoker);
+        
+        invoker.addEventListener("testId", new String[] { "onSelect" }, "fooListener",
+                "form1", false);
+        
+        formSupport.getForm();
+        setReturnValue(formSupport, form);
+        form.getId();
+        setReturnValue(form, "form1");
+        
+        form.getContainer();
+        setReturnValue(form, form);
+        form.getContainer();
+        setReturnValue(form, form);
+        form.getListeners();
+        setReturnValue(form, listenerMap);
+        
+        listenerMap.getListener("fooListener");
+        setReturnValue(listenerMap, listener);
+        
+        form.addDeferredRunnable(runnable);
+        ArgumentMatcher ignore = new IgnoreMatcher();
+        getControl(form).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[] { ignore }));
+        
+        replayControls();
+        
+        invoker.invokeFormListeners(formSupport, cycle, event);
         
         verifyControls();
     }

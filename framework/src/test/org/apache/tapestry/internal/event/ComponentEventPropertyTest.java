@@ -16,6 +16,7 @@ package org.apache.tapestry.internal.event;
 import java.util.List;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.event.BrowserEvent;
 
 
 /**
@@ -62,6 +63,25 @@ public class ComponentEventPropertyTest extends HiveMindTestCase
         assertNotNull(prop.getFormEventListeners("onFoo"));
         
         List listeners = prop.getFormEventListeners("onFoo");
+        assertEquals(1, listeners.size());
+        
+        EventBoundListener listener = (EventBoundListener)listeners.get(0);
+        assertEquals("compid", listener.getComponentId());
+        assertEquals("formid", listener.getFormId());
+        assertFalse(listener.isValidateForm());
+        
+        assertEquals("doFoo", listener.getMethodName());
+    }
+    
+    public void testGetFormEvents()
+    {
+        String[] events = {"onFoo"};
+        ComponentEventProperty prop = new ComponentEventProperty("compid");
+        BrowserEvent event = new BrowserEvent("onFoo", null);
+        
+        prop.addListener(events, "doFoo", "formid", false);
+        
+        List listeners = prop.getFormEventListeners("formid", event, null);
         assertEquals(1, listeners.size());
         
         EventBoundListener listener = (EventBoundListener)listeners.get(0);
