@@ -678,6 +678,9 @@ public abstract class AbstractComponent extends BaseLocatable implements IDirect
             _rendering = false;
             
             cleanupAfterRender(cycle);
+            
+            // @since 4.1
+            _clientId = null;
         }
     }
 

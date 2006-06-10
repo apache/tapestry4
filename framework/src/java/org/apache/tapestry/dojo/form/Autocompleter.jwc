@@ -35,11 +35,13 @@
 
   <parameter name="filterOnChange" default-value="false" />
   
-  <parameter name="submitOnChange" deprecated="true">
-  	<description>
-  	Enables logic to submit containing form when value changes.
-  	</description>
-  </parameter>
+  <parameter name="autocomplete" default-value="true" />
+  
+  <parameter name="searchDelay" default-value="100" />
+  
+  <parameter name="fadeTime" default-value="200" />
+  
+  <parameter name="maxListLength" default-value="8" />
   
   <parameter name="displayName"/>
   <parameter name="validators"/>

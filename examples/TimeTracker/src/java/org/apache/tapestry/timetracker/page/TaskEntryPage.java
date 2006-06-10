@@ -21,6 +21,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.annotations.Component;
 import org.apache.tapestry.annotations.EventListener;
 import org.apache.tapestry.annotations.InjectObject;
+import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.dojo.form.Autocompleter;
 import org.apache.tapestry.form.BeanPropertySelectionModel;
 import org.apache.tapestry.form.DatePicker;
@@ -47,6 +48,7 @@ public abstract class TaskEntryPage extends BasePage
     @InjectObject("service:timetracker.dao.ProjectDao")
     public abstract ProjectDao getProjectDao();
     
+    @Persist("session")
     public abstract Project getSelectedProject();
     
     @Component(type = "DatePicker", id = "startPicker",

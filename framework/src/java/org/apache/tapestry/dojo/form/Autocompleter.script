@@ -17,11 +17,12 @@
         </unique>
     </body>
     <initialization>
-        tapestry.widget.synchronizeWidgetState("${id}", "Select", ${props});
-        if (${props}["label"] &amp;&amp; ${props}["value"]){
+        var ${id}prop=${props};
+        tapestry.widget.synchronizeWidgetState("${id}", "Select", ${id}prop);
+        if (${id}prop["label"] &amp;&amp; ${id}prop["value"]){
             var selw=dojo.widget.byId("${id}");
-            selw.setValue(${props}["value"]);
-            selw.setLabel(${props}["label"]);
+            selw.setValue(${id}prop["value"]);
+            selw.setLabel(${id}prop["label"]);
         }
     </initialization>
 </script>
