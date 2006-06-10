@@ -23,7 +23,10 @@ function test_last_msg(){
 }
 
 function test_form_deprecated(){
-	Tapestry.register_form("null");
+	try {
+		Tapestry.register_form("null");
+		throw new JUMAssertFailure("Previous test should have failed.");
+	} catch (e) { jum.assertTrue("testFormDepre", e instanceof Error); return; }
 	jum.assertTrue("deprecated", lastMsgContains("deprecated"));
 	Tapestry.onpresubmit();
 	jum.assertTrue("deprecated", lastMsgContains("deprecated"));
