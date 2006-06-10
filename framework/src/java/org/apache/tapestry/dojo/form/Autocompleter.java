@@ -84,7 +84,7 @@ public abstract class Autocompleter extends AbstractFormWidget
         str.append("dataUrl:'").append(link.getURL()).append("&filter=%{searchString}',")
         .append("mode:'remote',")
         .append("widgetId:'").append(getName()).append("', ")
-        .append("name:'").append(getName()).append("'");
+        .append("name:'").append(getName()).append("' ");
         
         IPropertySelectionModel model = getModel();
         if (model == null)
@@ -97,8 +97,8 @@ public abstract class Autocompleter extends AbstractFormWidget
             Object option = model.getOption(i);
             
             if (isEqual(option, value)) {
-                str.append(", comboBoxValue:'").append(model.getValue(i)).append("',")
-                .append("comboBoxSelectionValue:'").append(model.getLabel(i))
+                str.append(", value:'").append(model.getValue(i)).append("',")
+                .append("label:'").append(model.getLabel(i))
                 .append("'");
                 break;
             }
@@ -148,7 +148,7 @@ public abstract class Autocompleter extends AbstractFormWidget
      */
     protected void rewindFormWidget(IMarkupWriter writer, IRequestCycle cycle)
     {
-        String value = cycle.getParameter(getName() + "_selected");
+        String value = cycle.getParameter(getName());
         
         Object object = getModel().translateValue(value);
         

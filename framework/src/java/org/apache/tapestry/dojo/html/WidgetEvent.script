@@ -36,7 +36,7 @@
                     dojo.log.debug("Connected to formEvent!");
                     
                     <foreach expression="formEvent[1]" key="formName">
-                    tapestry.form.submitAsync("${formName}", "test", content);
+                    tapestry.form.submitAsync("${formName}", content);
                     </foreach>
                 });
             </foreach>

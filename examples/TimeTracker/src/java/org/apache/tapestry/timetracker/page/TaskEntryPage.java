@@ -67,15 +67,6 @@ public abstract class TaskEntryPage extends BasePage
     }
     
     /**
-     * Invoked by form to add a new task.
-     */
-    public void addTask(IRequestCycle cycle)
-    {
-        _log.debug("addTask() selected task is " + getSelectedProject().getName());
-        cycle.getResponseBuilder().updateComponent("projectDescription");
-    }
-    
-    /**
      * Invoked when an item is selected from the project
      * selection list.
      */
