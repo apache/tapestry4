@@ -204,6 +204,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     public static final String TAPESTRY_DTD_4_0_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Specification 4.0//EN";
 
+    /** @since 4.1 */
+    
+    public static final String TAPESTRY_DTD_4_1_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Specification 4.1//EN";
+    
     private static final int STATE_ALLOW_DESCRIPTION = 2000;
 
     private static final int STATE_ALLOW_PROPERTY = 2001;
@@ -1750,6 +1754,12 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             return getDTDInputSource("Tapestry_4_0.dtd");
         }
 
+        if (TAPESTRY_DTD_4_1_PUBLIC_ID.equals(publicId)) 
+        {
+            _dtd40 = true;
+            return getDTDInputSource("Tapestry_4_1.dtd");
+        }
+        
         if (TAPESTRY_DTD_3_0_PUBLIC_ID.equals(publicId))
             return getDTDInputSource("Tapestry_3_0.dtd");
 

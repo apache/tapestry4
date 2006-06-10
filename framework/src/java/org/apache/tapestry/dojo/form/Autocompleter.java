@@ -31,6 +31,7 @@ import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.form.ValidatableField;
 import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.apache.tapestry.json.IJSONWriter;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidatorException;
 
 /**
@@ -42,6 +43,8 @@ import org.apache.tapestry.valid.ValidatorException;
 public abstract class Autocompleter extends AbstractFormWidget 
     implements ValidatableField, IJSONRender, IDirect
 {
+    // mode, can be remote or local (local being from html rendered option elements)
+    private static final String MODE_REMOTE = "remote";
     
     /**
      * 
@@ -56,9 +59,6 @@ public abstract class Autocompleter extends AbstractFormWidget
         
         if (isDisabled())
             writer.attribute("disabled", "disabled");
-        
-        if (getSubmitOnChange())
-            writer.attribute("onchange", "javascript:   this.form.events.submit();");
         
         renderIdAttribute(writer, cycle);
         
@@ -80,11 +80,11 @@ public abstract class Autocompleter extends AbstractFormWidget
         Map parms = new HashMap();
         parms.put("id", getClientId());
         
-        StringBuffer str = new StringBuffer("{");
-        str.append("dataUrl:'").append(link.getURL()).append("&filter=%{searchString}',")
-        .append("mode:'remote',")
-        .append("widgetId:'").append(getName()).append("', ")
-        .append("name:'").append(getName()).append("' ");
+        JSONObject json = new JSONObject();
+        json.put("dataUrl", link.getURL() + "&filter=%{searchString}");
+        json.put("mode", MODE_REMOTE);
+        json.put("widgetId", getName());
+        json.put("name", getName());
         
         IPropertySelectionModel model = getModel();
         if (model == null)
@@ -97,16 +97,13 @@ public abstract class Autocompleter extends AbstractFormWidget
             Object option = model.getOption(i);
             
             if (isEqual(option, value)) {
-                str.append(", value:'").append(model.getValue(i)).append("',")
-                .append("label:'").append(model.getLabel(i))
-                .append("'");
+                json.put("value", model.getValue(i));
+                json.put("label", model.getLabel(i));
                 break;
             }
         }
         
-        str.append("}");
-        
-        parms.put("props", str.toString());
+        parms.put("props", json.toString());
         
         PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, this);
         getScript().execute(cycle, prs, parms);
@@ -204,9 +201,18 @@ public abstract class Autocompleter extends AbstractFormWidget
     /** @since 4.1 */
     public abstract boolean isFilterOnChange();
     
-    /** @since 2.2 * */
-    public abstract boolean getSubmitOnChange();
-
+    /** whether or not to autocomplete the input text. */
+    public abstract boolean isAutocomplete();
+    
+    /** How long to wait(in ms) before searching after input is received. */
+    public abstract int getSearchDelay();
+    
+    /** The duration(in ms) of the fade effect of list going away. */
+    public abstract int getFadeTime();
+    
+    /** The maximum number of items displayed in select list before the scrollbar is activated. */
+    public abstract int getMaxListLength();
+    
     /** @since 2.2 * */
     public abstract Object getValue();
 
