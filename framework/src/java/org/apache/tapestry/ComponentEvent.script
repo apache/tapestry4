@@ -28,7 +28,15 @@
         </if>
         <if expression="formEvents">
             <foreach expression="formEvents" key="formEvent">
-                dojo.log.debug("Connecting form event ${formEvent[0]}");
+                dojo.event.connect(dojo.byId("${clientId}"), "${formEvent[0]}", function(e){
+                    var content={beventname:"${formEvent[0]}"};
+                    tapestry.event.buildEventProperties(e, content);
+                    if (!content["beventtarget.id"]) content["beventtarget.id"]="${clientId}";
+                    
+                    <foreach expression="formEvent[1]" key="formName">
+                    tapestry.form.submitAsync("${formName}", content);
+                    </foreach>
+                });
             </foreach>
         </if>
     </initialization>

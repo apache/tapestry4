@@ -11,12 +11,17 @@
             dojo.require("dojo.json");
             dojo.require("dojo.event");
             dojo.require("dojo.widget.Manager");
-            dojo.require("dojo.widget.ComboBox");
+            dojo.require("dojo.widget.Select");
             
             dojo.require("tapestry.widget.*");
         </unique>
     </body>
     <initialization>
-        tapestry.widget.synchronizeWidgetState("${id}", "ComboBox", ${props});
+        tapestry.widget.synchronizeWidgetState("${id}", "Select", ${props});
+        if (${props}["label"] &amp;&amp; ${props}["value"]){
+            var selw=dojo.widget.byId("${id}");
+            selw.setValue(${props}["value"]);
+            selw.setLabel(${props}["label"]);
+        }
     </initialization>
 </script>
