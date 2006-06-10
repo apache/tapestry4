@@ -125,7 +125,9 @@ tapestry.form={
 			return;
 		}
 		
-		form.submitname.value=submitName;
+		if (submitName){
+			form.submitname.value=submitName;
+		}
 		form.submit();
 	},
 	
@@ -134,19 +136,21 @@ tapestry.form={
 	 * but submits the request via XHR to the server asynchronously.
 	 * 
 	 * @param form The form(form id) to submit.
-	 * @param submitName Optional submit name string to use when submitting.
 	 * @param content Optional content map, mainly used to pass in browser
 	 * 				  event parameters to form submission, but can be any
 	 * 				  typical form/value pair.
+	 * @param submitName Optional submit name string to use when submitting.
 	 */
-	submitAsync:function(form, submitName, content){
+	submitAsync:function(form, content, submitName){
 		var form=dojo.byId(form);
 		if (!form) {
 			dojo.raise("Form not found with id " + id);
 			return;
 		}
 		
-		form.submitname.value=submitName;
+		if (submitName){
+			form.submitname.value=submitName;
+		}
 		dojo.io.bind({
 			formNode:form,
 			content:content,
