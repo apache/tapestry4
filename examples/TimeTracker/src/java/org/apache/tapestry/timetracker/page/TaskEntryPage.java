@@ -23,8 +23,9 @@ import org.apache.tapestry.annotations.EventListener;
 import org.apache.tapestry.annotations.InjectObject;
 import org.apache.tapestry.annotations.Persist;
 import org.apache.tapestry.dojo.form.Autocompleter;
+import org.apache.tapestry.dojo.form.DropdownDatePicker;
+import org.apache.tapestry.dojo.form.DropdownTimePicker;
 import org.apache.tapestry.form.BeanPropertySelectionModel;
-import org.apache.tapestry.form.DatePicker;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.timetracker.dao.ProjectDao;
@@ -51,13 +52,22 @@ public abstract class TaskEntryPage extends BasePage
     @Persist("session")
     public abstract Project getSelectedProject();
     
-    @Component(type = "DatePicker", id = "startPicker",
-            bindings = {"value=startTime"})
-    public abstract DatePicker getStartPicker();
+    public abstract Project getCurrentProject();
     
+    @Component(type = "DropdownDatePicker", id = "datePicker",
+            bindings = {"value=date", "displayName=message:task.start.date"})
+    public abstract DropdownDatePicker getDatePicker();
+    public abstract Date getDate();
+    
+    @Component(type = "DropdownTimePicker", id = "startPicker",
+            bindings = {"value=startTime", "displayName=message:task.start.time"})
+    public abstract DropdownTimePicker getStartPicker();
     public abstract Date getStartTime();
     
-    public abstract Project getCurrentProject();
+    @Component(type = "DropdownTimePicker", id = "endPicker",
+            bindings = {"value=endTime", "displayName=message:task.end.time"})
+    public abstract DropdownTimePicker getEndPicker();
+    public abstract Date getEndTime();
     
     /**
      * Selection model for projects.

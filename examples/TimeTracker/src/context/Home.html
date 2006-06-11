@@ -6,36 +6,55 @@ core features available in tapestry, as well as how a sample application might b
 using them.
 </p>
 
+<form jwcid="taskForm@Form" class="container">
+<h3><span jwcid="@Insert" value="message:new.task"/></h3>
+	<fieldset>
+    <table width="90%" class="form" cellpadding="2" cellspacing="0" >
+    <tr>
+      <td><label jwcid="@FieldLabel" field="component:projectChoose" /></td>
+      <td><label>Description</label></td>
+      <td><label>Duration</label></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><div class="field required"><span jwcid="projectChoose" /></div></td>
+      <td><div class="field"><input name="fm-lastname" id="fm-lastname" type="text" /></div></td>
+      <td><div jwcid="duration@Any">18 minutes</div></td>
+      <td>&nbsp;</td>
+    </tr>
+    
+    <tr>
+      <td><label jwcid="@FieldLabel" field="component:datePicker" /></td>
+      <td><label jwcid="@FieldLabel" field="component:startPicker" /></td>
+      <td><label jwcid="@FieldLabel" field="component:endPicker" /></td>
+      <td>&nbsp;</td>
+    </tr>
+    
+    <tr>
+	  <td><div class="field required"><input jwcid="datePicker" /></div></td>
+      <td>
+      	<div class="field required">
+      		<input jwcid="startPicker" />
+      	</div>
+      </td>
+      <td>
+      	<div class="field required">
+      		<input jwcid="endPicker" />
+      	</div>
+      </td>
+      <td>
+      	<input jwcid="@Submit" value="message:button.add" class="submitButton" />
+      </td>
+    </tr>
+    
+    </table>
+    </fieldset>
+</form>
+
 <div jwcid="projectDescription@Any" >
 	<span jwcid="@If" condition="ognl:selectedProject">
-		<span jwcid="@Insert" value="ognl:selectedProject.name" />
+		<h2 style="clear:left" ><span jwcid="@Insert" value="ognl:selectedProject.name" /></h2>
 	</span>
 </div>
 
-<form jwcid="taskForm@Form" >
-    <fieldset>
-    <legend><span jwcid="@Insert" value="message:new.task"/></legend>
-    
-    <div class="fm-hopt">
-      <span jwcid="@FieldLabel" field="component:projectChoose" />
-      <span jwcid="projectChoose" />
-    </div>
-    
-    <div class="fm-hopt">
-      <label for="startPicker">Start</label>
-      <input jwcid="startPicker" style="width:auto" size="10"  />
-    </div>
-    <div class="fm-hopt">
-      <label for="fm-middlename">End</label>
-      <input style="width:auto" size="10" id="fm-middlename" name="fm-middlename" type="text" />
-    </div>
-    <div class="fm-hreq">
-      <label for="fm-lastname">Description</label>
-      <input name="fm-lastname" id="fm-lastname" type="text" />
-    </div>
-    <div id="fm-hsubmit" class="fm-req">
-      <input jwcid="@Submit" value="message:button.add" />
-    </div>
-    </fieldset>
-</form>
 </span>

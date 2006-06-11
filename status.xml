@@ -104,6 +104,9 @@
   	  <action type="fix" dev="AA" fixes-bug="TAPESTRY-829" due-to="Ido M. Tamir">
   		FormLinkRenderer throws NPE with DirectlLinks.
   	  </action>       
+      <action type="fix" dev="JK" fixes-bug="TAPESTRY-952" >
+        Added logic to asset service that checks for incoming css file relative paths.
+      </action>
     </release>
     <release version="4.0.1" date="unreleased" >
       <action type="fix" dev="JK" fixes-bug="TAPESTRY-863" due-to="unknown contributor">

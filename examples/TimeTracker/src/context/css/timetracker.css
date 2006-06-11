@@ -15,6 +15,9 @@ body, td, th {
     margin-left: 3%;
 }
 
+h2 { font: 1.4em Tahoma, Myriad, sans-serif; font-weight:bold; color: #296cb5; padding-bottom:0; }
+h3 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; color: #296cb5; padding-bottom:0; }
+
 p {
     margin-bottom: 8px;   
 }

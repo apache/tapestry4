@@ -25,3 +25,16 @@ div.fm-hopt table.dojoComboBox {
     filter: alpha(opacity : 80);
     background: #eef1f8;
 }
+
+.timePickerContainer {
+	background: #7591bc url("images/dpBg.gif") top left repeat-x;
+}
+
+.timeContainer thead tr td {
+	border-bottom:1px solid #e6e6e6;
+	margin:0;
+	padding:0.45em 0 0.45em 0;
+	color:#fff;
+	font:bold 0.75em Helvetica, Arial, Verdana, sans-serif;
+	text-align:center;
+}

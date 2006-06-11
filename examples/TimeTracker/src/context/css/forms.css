@@ -1,165 +1,55 @@
-/* Styles */
-form {
-    margin: 0;
-    padding: 0;
+div.requiredClause{
+	width:auto;
+	float:right;
+	padding-left:2px;
+	border-left:3px solid #ff660a;
+	margin-top:1.5em;
+	font-size: 0.7em;
+	font-weight:bold;
 }
 
-fieldset {
-    margin: 1em 0;
-    float: left;
-}
+form { clear:both; border:1px solid #d0d8e2; margin:0; margin-bottom:1.5em; }
+form.container { padding:2em 1.5em; }
+* html form.container { width:100%; }
 
-legend {
-    margin-bottom: 0.7em;
-    padding: 0 .5em;
-    color: #036;
-    background: transparent;
-    font-size: 1.3em;
-    font-weight: bold;
-    float: left;
-    border-bottom: 1px solid #ccc;;
-    padding: 0 .5em;
-}
+/* field wrappers */
+form div.field{ margin-right:1.5em; padding-left:5px; }
+* html form div.field { margin-right:0.5em; }
 
-label {
-    float: left;
-    width: 100px;
-    padding: 0 1em;
-    text-align: right;
-}
+/* use in conjunction with div.field: <div class="field required"></div> */
+form div.required{ border-left:3px solid #ff660a; padding-left:2px; }
+form label{ display:block; margin-top:1em; font-size:0.65em; }
+form .ex-container label{ margin-top:0.75em; }
 
-fieldset div {
-    margin-bottom: .5em;
-    padding: 0;
-    display: block;
-}
+/* input elements */
+form div.dropdown,
+form input.text,
+form input.numeric,
+form select,
+form textarea { border: 1px solid #a2da87; padding: 0.15em; width:100%; }
+form div.dropdown{ padding:0; height:22px; background-color:#fff;}
+form textarea { font-family:sans-serif; font-size:0.8em; margin: 0.55em 0; }
+* html form textarea { width:auto; }
+* html form select{ width:90%; }
 
-fieldset div input,fieldset div textarea {
-    width: 150px;
-    border-top: 1px solid #555;
-    border-left: 1px solid #555;
-    border-bottom: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    padding: 1px;
-    color: #333;
-}
+/*form textarea:focus { background-color: #F1F6FC; }*/
+form input.numeric { text-align:right; }
 
-fieldset div select {
-    padding: 1px;
-}
+form p { font-size:0.75em; }
+form h2 { font: 1.2em Tahoma, Myriad, sans-serif; background: #eef0f7 top left repeat-y; color: #4a7db5; padding: 1em 0.35em; }
+form h3 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; color: #296cb5; margin:1.5em -1em 0 -1em; border-bottom: 1px solid #d0d8e2; padding-bottom:0; }
+form h4 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; margin:0; margin-top:1em; border-bottom: 1px solid #ddd; }
 
-div.fm-multi div {
-    margin: 5px 0;
-}
-
-div.fm-multi input {
-    width: 1em;
-}
-
-div.fm-multi label {
-    display: block;
-    width: 200px;
-    padding-left: 5em;
-    text-align: left;
-}
-
-#fm-submit {
-    clear: both;
-    padding-top: 1em;
-    text-align: center;
-}
-
-#fm-submit input {
-    border: 1px solid #333;
-    padding: 2px 1em;
-    background: #555;
-    color: #fff;
-    font-size: 100%;
-}
-
-input:focus,textarea:focus {
-    background: #D6AE33;
-    color: #000;
-}
-
-fieldset div input:focus,fieldset div textarea:focus {
-    border-top: 1px solid #292929;
-    border-left: 1px solid #292929; 
-}
-
-/* required fields - does not work in IE */
-fieldset div.fm-req,fieldset div.fm-hreq {
-    font-weight: bold;
-}
-
-fieldset div.fm-req label:before,fieldset div.fm-hreq label:before {
-    content: "* "; /* does not work in IE */
-}
-
-div.fm-hopt,div.fm-hreq {
-    clear: none;
-    float: left;
-    margin-right: 1em;
-    margin-bottom: 1em;
-}
-
-div.fm-hopt label,div.fm-hreq label {
-    width: auto;
-    padding-left: 0px;
-    padding-bottom: 0.2em;
-}
-
-div.fm-hopt input,div.fm-hreq input {
-    clear: left;
-    float: left;
-}
-
-div.fm-hopt select,div.fm-hreq select {
-    clear: left;
-    float: left;
-}
-
-div.fm-hopt a {
-    clear: left;
-    float: left;
-}
-
-#fm-hsubmit {
-    text-align: center;
-    padding-top: 14px;
-    margin-right: 0.5em;
-    float: left;
-    width:auto;
-}
-
-#fm-hsubmitsec {
-    text-align: center;
-    padding-top: 14px;
-    margin-right: 0.5em;
-    float: left;
-}
-
-#fm-hsubmit input {
-    border: 1px solid #292929;
-    padding: 2px 1em;
-    background: #2A78B0;
-    color: #fff;
-    font-size: 100%;
-    float: left;
-    clear: left;
-    width:auto;
-}
-
-#fm-hsubmitsec input {
-    border: 1px solid #aaaaaa;
-    padding: 2px 1em;
-    background: #D4D4D4;
-    color: #555555;
-    font-size: 100%;
-    float: left;
-    clear: left;
-}
-
-#fm-hsubmit .dialog,#fm-hsubmitsec .dialog {
-    float: right;
+.submitButton,.submitButton:focus {
+	width: auto;
+	border: none;
+	background-color: #699ED9;
+	color: #fff;
+	padding: 0.1em;
+	border-bottom: 1px solid #5885b6 !important;
+	border-right: 1px solid #5885b6 !important;
+	border-top: 1px solid #92b8e2 !important;
+	border-left: 1px solid #92b8e2 !important;
+	cursor: hand;
+	cursor: pointer;
 }
