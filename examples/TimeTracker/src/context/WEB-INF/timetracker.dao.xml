@@ -26,4 +26,12 @@
         </invoke-factory>
     </service-point>
     
+    <service-point id="TaskDao" interface="TaskDao" >
+        <invoke-factory service-id="hivemind.BuilderFactory">
+            <construct class="TaskDao" autowire-services="false">
+                <set-service property="connection" service-id="timetracker.db.HsqlConnection" />
+            </construct>
+        </invoke-factory>
+    </service-point>
+    
 </module>

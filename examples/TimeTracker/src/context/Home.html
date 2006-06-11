@@ -12,13 +12,13 @@ using them.
     <table width="90%" class="form" cellpadding="2" cellspacing="0" >
     <tr>
       <td><label jwcid="@FieldLabel" field="component:projectChoose" /></td>
-      <td><label>Description</label></td>
+      <td><label jwcid="@FieldLabel" field="component:descriptionField" /></td>
       <td><label>Duration</label></td>
       <td>&nbsp;</td>
     </tr>
     <tr>
       <td><div class="field required"><span jwcid="projectChoose" /></div></td>
-      <td><div class="field"><input name="fm-lastname" id="fm-lastname" type="text" /></div></td>
+      <td><div class="field required"><input jwcid="descriptionField" /></div></td>
       <td><div jwcid="duration@Any">18 minutes</div></td>
       <td>&nbsp;</td>
     </tr>
@@ -43,7 +43,7 @@ using them.
       	</div>
       </td>
       <td>
-      	<input jwcid="@Submit" value="message:button.add" class="submitButton" />
+      	<input jwcid="@Submit" value="message:button.add" class="submitButton" action="listener:addTask" />
       </td>
     </tr>
     

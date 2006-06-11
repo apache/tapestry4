@@ -231,6 +231,7 @@
                 <set-service property="localeManager" service-id="tapestry.request.RequestLocaleManager"/>
                 <set-object property="markupWriterSource"  value="infrastructure:markupWriterSource"/>
                 <set-object property="webResponse" value="infrastructure:response"/>
+                <set-object property="webRequest" value="infrastructure:request"/>
             </construct>
         </invoke-factory>
     </service-point>

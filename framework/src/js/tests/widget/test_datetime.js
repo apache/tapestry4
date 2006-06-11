@@ -12,5 +12,5 @@ function test_time_format(){
 	
 	dt = new Date("03:00 am");
 	value = dojo.date.format(dt, "%I:%M %p");
-	jum.assertTrue(value, value.indexOf("NaN") < 0);
+	jum.assertFalse(value, value.indexOf("NaN") < 0);
 }
