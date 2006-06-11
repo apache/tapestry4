@@ -20,6 +20,7 @@ import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ResponseBuilder;
 import org.apache.tapestry.services.ResponseContributor;
+import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
 /**
@@ -33,11 +34,13 @@ public class JSONResponseContributorImpl implements ResponseContributor
     
     public static final String JSON_HEADER = "json";
     
-    protected RequestLocaleManager _localeManager;
+    private RequestLocaleManager _localeManager;
     
-    protected MarkupWriterSource _markupWriterSource;
+    private MarkupWriterSource _markupWriterSource;
     
-    protected WebResponse _webResponse;
+    private WebResponse _webResponse;
+    
+    private WebRequest _webRequest;
     
     /**
      * {@inheritDoc}
@@ -57,6 +60,8 @@ public class JSONResponseContributorImpl implements ResponseContributor
         String parm = cycle.getParameter(JSON_HEADER);
         if (parm != null && Boolean.valueOf(parm).booleanValue())
             return true;
+        if (_webRequest.getHeader(JSON_HEADER) != null)
+            return true;
         
         return false;
     }
@@ -74,5 +79,10 @@ public class JSONResponseContributorImpl implements ResponseContributor
     public void setWebResponse(WebResponse webResponse)
     {
         _webResponse = webResponse;
+    }
+    
+    public void setWebRequest(WebRequest webRequest)
+    {
+        _webRequest  = webRequest;
     }
 }

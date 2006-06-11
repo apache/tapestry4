@@ -27,9 +27,12 @@ import org.apache.tapestry.dojo.form.DropdownDatePicker;
 import org.apache.tapestry.dojo.form.DropdownTimePicker;
 import org.apache.tapestry.form.BeanPropertySelectionModel;
 import org.apache.tapestry.form.IPropertySelectionModel;
+import org.apache.tapestry.form.TextField;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.timetracker.dao.ProjectDao;
+import org.apache.tapestry.timetracker.dao.TaskDao;
 import org.apache.tapestry.timetracker.model.Project;
+import org.apache.tapestry.timetracker.model.Task;
 
 
 /**
@@ -69,6 +72,15 @@ public abstract class TaskEntryPage extends BasePage
     public abstract DropdownTimePicker getEndPicker();
     public abstract Date getEndTime();
     
+    @Component(type = "TextField", id = "descriptionField",
+            bindings = { "value=description", 
+            "displayName=message:task.description"})
+    public abstract TextField getDescriptionField();
+    public abstract String getDescription();
+    
+    @InjectObject("service:timetracker.dao.TaskDao")
+    public abstract TaskDao getTaskDao();
+    
     /**
      * Selection model for projects.
      * @return
@@ -88,5 +100,19 @@ public abstract class TaskEntryPage extends BasePage
     {
         _log.debug("projectSelected() " + getSelectedProject());
         cycle.getResponseBuilder().updateComponent("projectDescription");
+    }
+    
+    /**
+     * Invoked by form to add a new task.
+     */
+    public void addTask()
+    {
+        Task task = new Task();
+        task.setProjectId(getSelectedProject().getId());
+        task.setDescription(getDescription());
+        task.setStartDate(getStartTime());
+        task.setEndDate(getEndTime());
+        
+        getTaskDao().addTask(task);
     }
 }
