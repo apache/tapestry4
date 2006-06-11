@@ -153,4 +153,18 @@ public class TestUnprotectedAsset extends HiveMindTestCase
         assertTrue(rm.containsResource("/org/apache/tapestry/html/dojo/src/test.png"));
     }
     
+    public void testCssPaths()
+    {
+        AssetService service = new AssetService();
+        String path = "/dojo/src/widget/template/HtmlComboBox.cssimages/foo.gif";
+        
+        assertEquals("/dojo/src/widget/template/images/foo.gif", service.translateCssPath(path));
+        assertEquals("/boo/templates/things/", 
+                service.translateCssPath("/boo/templates/somethingdumb.cssthings/"));
+        assertEquals("/foo/path/css/images.png", 
+                service.translateCssPath("/foo/path/css/images.png"));
+        assertEquals("/things/mytemplate.css",
+                service.translateCssPath("/things/mytemplate.css"));
+        assertNull(service.translateCssPath(null));
+    }
 }

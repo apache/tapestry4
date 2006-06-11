@@ -4,11 +4,11 @@
 The DTD for Tapestry application, library, page and component specifications.
 Associated with the public identifier:
 
-	-//Apache Software Foundation//Tapestry Specification 4.0//EN
+	-//Apache Software Foundation//Tapestry Specification 4.1//EN
 	
 The canonical location for the DTD is:
 
-	http://jakarta.apache.org/tapestry/dtd/Tapestry_4_0.dtd
+	http://jakarta.apache.org/tapestry/dtd/Tapestry_4_1.dtd
 
 For application specifications, the root element is application.
 

@@ -438,18 +438,5 @@ public class DojoAjaxResponseBuilder implements ResponseBuilder
     String getComponentId(IComponent comp)
     {
         return comp.getClientId();
-        
-        /* String id = null;
-        //form components have id's generated to ensure uniqueness
-        if (comp instanceof IFormComponent)
-            return ((IFormComponent)comp).getClientId();
-        
-        id = comp.getId();
-        if (comp.getBinding("id") != null
-                && comp.getBinding("id").getObject() != null)
-            id = comp.getBinding("id").getObject().toString();
-        
-        return id;
-        */
     }
 }

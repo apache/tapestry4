@@ -222,7 +222,7 @@ public class AssetService implements IEngineService
                 return;
             }
             
-            URL resourceURL = _classResolver.getResource(path);
+            URL resourceURL = _classResolver.getResource(translateCssPath(path));
             
             if (resourceURL == null)
                 throw new ApplicationRuntimeException(AssetMessages.noSuchResource(path));
@@ -243,6 +243,32 @@ public class AssetService implements IEngineService
 
     }
 
+    /**
+     * Utility that helps to resolve css file relative resources included
+     * in a css temlpate via "url('../images/foo.gif')" style css.
+     * 
+     * @param path The incoming path to check for css resource relativity
+     * @return The path unchanged if not containing a css relative path, otherwise
+     *          returns the path without the css filename in it so the resource is resolvable
+     *          directly from the path.
+     */
+    String translateCssPath(String path)
+    {
+        if (path == null) return null;
+        
+        // don't parse out actual css files
+        if (path.endsWith(".css")) return path;
+        
+        int index = path.lastIndexOf(".css");
+        if (index <= -1) return path;
+        
+        // now need to parse out whatever css file was referenced to get the real path
+        int pathEnd = path.lastIndexOf("/", index);
+        if (pathEnd <= -1) return path;
+        
+        return path.substring(0, pathEnd + 1) + path.substring(index + 4, path.length());
+    }
+    
     /**
      * Checks if the resource contained within the specified URL 
      * has a modified time greater than the request header value
