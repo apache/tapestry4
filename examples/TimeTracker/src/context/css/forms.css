@@ -53,3 +53,12 @@ form h4 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; margin:0; ma
 	cursor: hand;
 	cursor: pointer;
 }
+
+.fieldMissing {
+    background: #bedef4;
+}
+
+.fieldInvalid {
+    background: #ffaf7e;
+    font-weight: bold;
+}

@@ -46,7 +46,8 @@ public abstract class TaskEntryPage extends BasePage
     
     @Component(type = "Autocompleter", id = "projectChoose",
             bindings = { "model=projectModel", "value=selectedProject",
-            "displayName=message:choose.project", "filterOnChange=true"})
+            "displayName=message:choose.project", "filterOnChange=true",
+            "validators=validators:required"})
     public abstract Autocompleter getProjectSelection();
     
     @InjectObject("service:timetracker.dao.ProjectDao")
@@ -63,18 +64,21 @@ public abstract class TaskEntryPage extends BasePage
     public abstract Date getDate();
     
     @Component(type = "DropdownTimePicker", id = "startPicker",
-            bindings = {"value=startTime", "displayName=message:task.start.time"})
+            bindings = {"value=startTime", "displayName=message:task.start.time",
+            "validators=validators:required"})
     public abstract DropdownTimePicker getStartPicker();
     public abstract Date getStartTime();
     
     @Component(type = "DropdownTimePicker", id = "endPicker",
-            bindings = {"value=endTime", "displayName=message:task.end.time"})
+            bindings = {"value=endTime", "displayName=message:task.end.time",
+            "validators=validators:required"})
     public abstract DropdownTimePicker getEndPicker();
     public abstract Date getEndTime();
     
     @Component(type = "TextField", id = "descriptionField",
             bindings = { "value=description", 
-            "displayName=message:task.description"})
+            "displayName=message:task.description",
+            "validators=validators:required"})
     public abstract TextField getDescriptionField();
     public abstract String getDescription();
     

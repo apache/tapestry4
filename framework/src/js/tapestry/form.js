@@ -1,5 +1,8 @@
 dojo.provide("tapestry.form");
 
+dojo.require("dojo.event");
+dojo.require("dojo.event.browser");
+
 dojo.require("tapestry.core");
 
 /**
@@ -8,6 +11,8 @@ dojo.require("tapestry.core");
  * Validation system to be replaced with {@link dojo.validate#check(form, profile)}.
  */
 tapestry.form={
+	
+	forms:{}, // registered form references
 	
 	/**
 	 * Generically displays a window alert for the 
@@ -99,6 +104,11 @@ tapestry.form={
 		}
 	},
 	
+	/**
+	 * Registers the form with the local <code>forms</code> property so 
+	 * that there is a central reference of all tapestry forms.
+	 * @param id The form(form id) to register.
+	 */
 	registerForm:function(id){
 		var form=dojo.byId(id);
 		if (!form) {
@@ -106,7 +116,73 @@ tapestry.form={
 			return;
 		}
 		
-		dojo.log.warn("registerForm() not implemented yet.");
+		if (!this.forms[id]) {
+			this.forms[id]={};
+			this.forms[id].validateForm=true;
+			this.forms[id].profiles=[];
+			
+			dojo.event.connect(form, "onsubmit", this, "onFormSubmit");
+		} else {
+			dojo.log.warn("registerForm(" + id + ") Form already registered.");
+		}
+	},
+	
+	/**
+	 * Registers a form validation/translation profile. There
+	 * can potentially be more than one profile registered with
+	 * a form.
+	 * 
+	 * The profiles will be consulted at various points in the forms
+	 * life, which currently only involves running the profile checks
+	 * before form submission. (more points to be determined in the future)
+	 * 
+	 * @see {@link dojo.validate.check(form, profile)}.
+	 * 
+	 * @param id The form(form id) to register profile with.
+	 * @param profile The object containing all of the validation/value
+	 * 				  constraints for the form. 
+	 */
+	registerProfile:function(id, profile){
+		if (!this.forms[id]) {
+			dojo.raise("registerProfile(" + id + ") No form previously registered with that id.");
+			return;
+		}
+		
+		this.forms[id].profiles.push(profile);
+	},
+
+	/**
+	 * If a form registered with the specified formId
+	 * exists a local property will be set that causes
+	 * validation to be turned on/off depending on the argument.
+	 * 
+	 * @param formId The id of the form to turn validation on/off for.
+	 * @param validate Boolean for whether or not to validate form, if
+	 * 				   not specified assumes true.
+	 */
+	setFormValidating:function(formId, validate){
+		if (this.forms[id]){
+			this.forms[id].validateForm = validate ? true : false;
+		}
+	},
+	
+	/**
+	 * Event connected function that is invoked when a form
+	 * is submitted.
+	 */
+	onFormSubmit:function(evt){
+		if (!evt || !evt.target) {
+			dojo.raise("No target for form event." + evt);
+			return;
+		}
+		
+		var id=evt.target.getAttribute("id");
+		if (!id) return;
+		
+		if (!tapestry.form.validation.validateForm(evt.target, this.forms[id])) {
+			dojo.event.browser.stopEvent(evt);
+			dojo.log.info("Stopped form submission, invalid input.");
+		}
 	},
 	
 	/**
@@ -165,4 +241,5 @@ tapestry.form={
 	}
 }
 
+dojo.require("tapestry.form.validation");
 dojo.require("tapestry.form_compat");

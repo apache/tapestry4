@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form;
 
+import org.apache.tapestry.json.JSONObject;
+
 /**
  * Object that provides support to objects that implement
  * {@link org.apache.tapestry.form.FormComponentContributor}. For the moment, at least, this is all
@@ -55,4 +57,11 @@ public interface FormComponentContributorContext extends ValidationMessages
      */
 
      void registerForFocus(int priority);
+     
+     /**
+      * The javascript object profile being built by this context to validate/translate
+      * form values. This is really just a delegate to {@link FormBehavior}.
+      * @return {@link JSONObject} profile.
+      */
+     JSONObject getProfile();
 }

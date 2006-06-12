@@ -4,9 +4,6 @@ dojo.require("tapestry.*");
 dojo.require("tapestry.test");
 dojo.require("tapestry.form");
 
-// override to make sure our fake events pass
-dojo.event.browser.isEvent=function() { return true; }
-
 tapestry.form.invalidField=function(field, message){
 }
 

@@ -3,9 +3,6 @@ dojo.setModulePrefix("tapestry", "../tapestry");
 dojo.require("tapestry.*");
 dojo.require("tapestry.test");
 
-// override to make sure our fake events pass
-dojo.event.browser.isEvent=function() { return true; }
-
 function test_eventCapture_props(){
 	var fevent=document.createEvent('UIEvents');
 	fevent.type="testType";
