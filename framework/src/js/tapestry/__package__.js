@@ -2,6 +2,6 @@ dojo.kwCompoundRequire({
 	common: [
 		"tapestry.core","tapestry.event"
 	],
-	browser: ["tapestry.html","tapestry.form"]
+	browser: ["tapestry.html"]
 });
 dojo.provide("tapestry.*");

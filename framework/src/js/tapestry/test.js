@@ -1,5 +1,8 @@
 dojo.provide("tapestry.test");
 
+// override to make sure our fake events pass
+dojo.event.browser.isEvent=function() { return true; }
+
 if (dj_undef("byId", dj_global)) {
 dojo.byId = function(id, doc){
 	if(id && (typeof id == "string" || id instanceof String)){

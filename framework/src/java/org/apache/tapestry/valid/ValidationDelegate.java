@@ -28,7 +28,7 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
- * A base implementation of {@link IValidationDelegate}that can be used as a
+ * A base implementation of {@link IValidationDelegate} that can be used as a
  * managed bean. This class is often subclassed, typically to override
  * presentation details.
  * 

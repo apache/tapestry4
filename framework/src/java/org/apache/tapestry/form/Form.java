@@ -30,6 +30,7 @@ import org.apache.tapestry.engine.ActionServiceParameter;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.web.WebResponse;
@@ -64,7 +65,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     private String _name;
 
     private FormSupport _formSupport;
-
+    
     /**
      * Renders informal parameters.
      * @author hls
@@ -444,4 +445,11 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         _formSupport.registerForFocus(field, priority);
     }
 
+    /** 
+     * {@inheritDoc}
+     */
+    public JSONObject getProfile()
+    {
+        return _formSupport.getProfile();
+    }
 }

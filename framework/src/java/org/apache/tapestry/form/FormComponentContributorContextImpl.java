@@ -23,6 +23,7 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
+import org.apache.tapestry.json.JSONObject;
 
 /**
  * Implementation of {@link org.apache.tapestry.form.FormComponentContributorContext}.
@@ -42,7 +43,7 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
     private final IForm _form;
 
     private final String _formId;
-
+    
     /**
      * Used only for testing.
      */
@@ -90,4 +91,8 @@ public class FormComponentContributorContextImpl extends ValidationMessagesImpl 
         _form.registerForFocus(_field, priority);
     }
 
+    public JSONObject getProfile()
+    {
+        return _form.getProfile();
+    }
 }

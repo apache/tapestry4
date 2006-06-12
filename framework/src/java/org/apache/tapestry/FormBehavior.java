@@ -17,6 +17,7 @@ package org.apache.tapestry;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.form.FormEventType;
 import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.json.JSONObject;
 
 /**
  * Common interface extended by {@link org.apache.tapestry.IForm}&nbsp;and
@@ -161,4 +162,10 @@ public interface FormBehavior
 
     void registerForFocus(IFormComponent field, int priority);
 
+    /**
+     * The javascript object profile being built by this context to validate/translate
+     * form values.
+     * @return {@link JSONObject} profile.
+     */
+    JSONObject getProfile();
 }

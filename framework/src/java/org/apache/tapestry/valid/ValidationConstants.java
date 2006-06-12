@@ -21,7 +21,7 @@ package org.apache.tapestry.valid;
  * @author Howard Lewis Ship
  * @since 4.0
  */
-public class ValidationConstants
+public final class ValidationConstants
 {
     
     public static final int NORMAL_FIELD = 1;
@@ -29,4 +29,8 @@ public class ValidationConstants
     public static final int REQUIRED_FIELD = 2;
     
     public static final int ERROR_FIELD = 3;
+    
+    public static final String REQUIRED = "required";
+    
+    public static final String REQUIRED_MESSAGE = "required-message";
 }

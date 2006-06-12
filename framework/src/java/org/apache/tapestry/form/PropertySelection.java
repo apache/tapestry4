@@ -43,7 +43,6 @@ import org.apache.tapestry.valid.ValidatorException;
  * 
  * @author Howard Lewis Ship
  * @author Paul Ferraro
- * @author Jesse Kuhnert
  */
 public abstract class PropertySelection extends AbstractFormComponent 
     implements ValidatableField

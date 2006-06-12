@@ -18,10 +18,10 @@ import java.util.Collection;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.multipart.UploadPart;
 import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
@@ -71,19 +71,18 @@ public class Required extends BaseValidator
                 new Object[]
                 { field.getDisplayName() });
     }
-
+    
     public void renderContribution(IMarkupWriter writer, IRequestCycle cycle,
             FormComponentContributorContext context, IFormComponent field)
     {
         context.registerForFocus(ValidationConstants.REQUIRED_FIELD);
-
-        StringBuffer buffer = new StringBuffer("function(event) { Tapestry.require_field(event, '");
-        buffer.append(field.getClientId());
-        buffer.append("', ");
-        buffer.append(TapestryUtils.enquote(buildMessage(context, field)));
-        buffer.append("); }");
-
-        context.addSubmitHandler(buffer.toString());
+        
+        JSONObject profile = context.getProfile();
+        
+        accumulateProperty(profile, ValidationConstants.REQUIRED, field.getClientId());
+        
+        setProfileProperty(field, profile, 
+                ValidationConstants.REQUIRED, buildMessage(context, field));
     }
 
     /**

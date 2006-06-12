@@ -40,6 +40,7 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.event.BrowserEvent;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.valid.IValidationDelegate;
@@ -157,6 +158,8 @@ public class FormSupportImpl implements FormSupport
 
     private final PageRenderSupport _pageRenderSupport;
 
+    private final JSONObject _profile;
+    
     public FormSupportImpl(IMarkupWriter writer, IRequestCycle cycle, IForm form)
     {
         Defense.notNull(writer, "writer");
@@ -172,6 +175,7 @@ public class FormSupportImpl implements FormSupport
         _allocatedIdIndex = 0;
         
         _pageRenderSupport = TapestryUtils.getOptionalPageRenderSupport(cycle);
+        _profile = new JSONObject();
     }
 
     /**
@@ -187,6 +191,7 @@ public class FormSupportImpl implements FormSupport
         _writer = null;
         _delegate = null;
         _pageRenderSupport = null;
+        _profile = null;
     }
 
     /**
@@ -530,10 +535,16 @@ public class FormSupportImpl implements FormSupport
 
         if (!_form.getFocus() || _cycle.getAttribute(FIELD_FOCUS_ATTRIBUTE) != null)
             return;
-
-        _pageRenderSupport.addInitializationScript("Tapestry.set_focus('" + fieldId + "');");
-
+        
+        _pageRenderSupport.addInitializationScript(_form, "tapestry.form.focusField('" + fieldId + "');");
         _cycle.setAttribute(FIELD_FOCUS_ATTRIBUTE, Boolean.TRUE);
+        
+        // register the validation profile with client side form manager
+        
+        if (_form.isClientValidationEnabled()) {
+            _pageRenderSupport.addInitializationScript(_form, "tapestry.form.registerProfile('" + formId + "'," 
+                    + _profile.toString() + ");");
+        }
     }
 
     /**
@@ -545,10 +556,10 @@ public class FormSupportImpl implements FormSupport
         if (_pageRenderSupport == null)
             return;
         
-        _pageRenderSupport.addInitializationScript("dojo.require(\"tapestry.form\");");
-        _pageRenderSupport.addInitializationScript("Tapestry.register_form('" + formId + "');");
+        _pageRenderSupport.addInitializationScript(_form, "dojo.require(\"tapestry.form\");"
+                + "tapestry.form.registerForm('" + formId + "');");
     }
-
+    
     public String rewind()
     {
         _form.getDelegate().clear();
@@ -746,4 +757,11 @@ public class FormSupportImpl implements FormSupport
         _delegate.registerForFocus(field, priority);
     }
 
+    /** 
+     * {@inheritDoc}
+     */
+    public JSONObject getProfile()
+    {
+        return _profile;
+    }
 }

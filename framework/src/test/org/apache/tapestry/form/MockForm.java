@@ -33,6 +33,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IPageLoader;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -57,6 +58,8 @@ public class MockForm implements IForm
 
     private boolean _focus = true;
 
+    private JSONObject _profile = new JSONObject();
+    
     public MockForm()
     {
         this(null, null);
@@ -368,5 +371,13 @@ public class MockForm implements IForm
      */
     public void setEventInvoker(ComponentEventInvoker invoker)
     {
+    }
+
+    /** 
+     * {@inheritDoc}
+     */
+    public JSONObject getProfile()
+    {
+        return _profile;
     }
 }
