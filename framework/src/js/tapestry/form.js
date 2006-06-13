@@ -178,10 +178,14 @@ tapestry.form={
 		
 		var id=evt.target.getAttribute("id");
 		if (!id) return;
-		
+		try {
 		if (!tapestry.form.validation.validateForm(evt.target, this.forms[id])) {
 			dojo.event.browser.stopEvent(evt);
 			dojo.log.info("Stopped form submission, invalid input.");
+		}
+		} catch (e) {
+			alert("Error validating form:" + e);
+			dojo.event.browser.stopEvent(evt);
 		}
 	},
 	
