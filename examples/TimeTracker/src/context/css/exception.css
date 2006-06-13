@@ -1,32 +1,44 @@
 .exceptionDialog {
-    overflow:auto;
-    display:block;
-    margin-left:5%;
-    margin-right:5%;
-    height:500px;
-    background-color:white;
+    overflow: auto;
+    display: block;
+    margin-left: 5%;
+    margin-right: 5%;
+    height: 500px;
+    background-color: white;
     border-left: 2px solid #E07000;
     border-right: 2px solid #E07000;
     border-bottom: 2px solid #E07000;
-	-moz-border-radius-bottomright: 10px;
-	-moz-border-radius-bottomleft: 10px;
+    -moz-border-radius-bottomright: 10px;
+    -moz-border-radius-bottomleft: 10px;
 }
 
 .exceptionCloseLink {
-    display:block;
-    margin-left:5%;
-    margin-right:5%;
+    display: block;
+    margin-left: 5%;
+    margin-right: 5%;
     background-color: ThreeDFace;
-    padding-top:3px;
-    padding-left:5px;
-    padding-bottom:3px;
-    font-weight:bold;
-    color:#000000;
-    cursor:pointer; 
-    cursor:hand;
+    padding-top: 3px;
+    padding-left: 5px;
+    padding-bottom: 3px;
+    font-weight: bold;
+    color: #000000;
+    cursor: pointer;
+    cursor: hand;
     border-left: 2px solid #E07000;
     border-right: 2px solid #E07000;
     border-top: 2px solid #E07000;
-	-moz-border-radius-topright: 10px;
-	-moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 10px;
+    -moz-border-radius-topleft: 10px;
+}
+
+.alertDialog {
+    width: 50%;
+    border: 2px solid #ff660a;
+    padding: 1em;
+    padding-bottom: 1.7em;
+    background: #ffffff;
+}
+
+.alertDialog .dojoButton {
+    float: right;
 }

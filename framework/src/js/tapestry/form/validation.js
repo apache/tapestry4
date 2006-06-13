@@ -2,6 +2,9 @@ dojo.provide("tapestry.form.validation");
 
 dojo.require("dojo.validate.check");
 dojo.require("dojo.html");
+dojo.require("dojo.widget.*");
+
+dojo.require("tapestry.widget.AlertDialog");
 
 tapestry.form.validation={
 	
@@ -47,6 +50,7 @@ tapestry.form.validation={
 			var results=dojo.validate.check(form, props.profiles[i]);
 			
 			if (!this.processResults(form, results, props.profiles[i])) {
+				this.summarizeErrors(form, results, props.profiles[i]);
 				return false;
 			}
 		}
@@ -71,6 +75,8 @@ tapestry.form.validation={
 	processResults:function(form, results, profile){
 		if (results.isSuccessful()) return true; 
 		
+		//TODO: Need to remove previous field validation
+		//decorations for things fixed since last run
 		var formValid=true;
 		if (results.hasMissing()) {
 			var missing=results.getMissing();
@@ -110,5 +116,33 @@ tapestry.form.validation={
 		if (!dojo.html.hasClass(field, this.invalidClass)){
 			dojo.html.prependClass(field, this.invalidClass);
 		}
+	},
+	
+	/**
+	 * Optionally allows an alert dialog/dhtml dialog/etc to 
+	 * be displayed to user to alert them to the invalid state
+	 * of their form if validation errors have occurred. 
+	 * 
+	 * @param form The form being validated.
+	 * @param results Returned value of dojo.validate.check(form, profile)
+	 * @param profile Validation profile definition 
+	 */
+	summarizeErrors:function(form, results, profile){
+		
+		var ad=dojo.widget.byId("validationDialog");
+		if (ad) {
+			ad.setMessage("You ~still~ have form input errors...wtf?");
+			ad.show();
+			return;
+		}
+		
+		var node=document.createElement("span");
+		document.body.appendChild(node);
+		var dialog=dojo.widget.createWidget("AlertDialog", 
+						{
+							widgetId:"validationDialog",
+							message:"Form input errors found, please fix before proceeding."
+						}, node);
+		dialog.show();
 	}
 }
