@@ -22,7 +22,7 @@ dojo.widget.defineWidget(
 			tapestry.widget.DropdownTimePicker.superclass.fillInTemplate.call(this, args, frag);
 			var source = this.getFragNodeRef(frag);
 			
-			if(args.date){ this.date = args.date; }
+			if(args.date){ this.date = new Date(args.date); }
 			
 			var dpNode = document.createElement("div");
 			this.containerNode.appendChild(dpNode);
@@ -45,9 +45,10 @@ dojo.widget.defineWidget(
 		},
 		
 		onInputChange: function(){
+			if (this.inputNode.value.length < 1) return;
 			var tmp = new Date(this.inputNode.value);
 			this.timePicker.time = tmp;
-			this.timePicker.setDateTime(dojo.widget.TimePikcer.util.toRfcDateTime(tmp));
+			this.timePicker.setDateTime(dojo.widget.TimePicker.util.toRfcDateTime(tmp));
 			this.timePicker.initData();
 			this.timePicker.initUI();
 		}

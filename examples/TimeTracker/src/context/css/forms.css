@@ -62,3 +62,21 @@ form h4 { font: 0.8em Tahoma, Myriad, sans-serif; font-weight:bold; margin:0; ma
     background: #ffaf7e;
     font-weight: bold;
 }
+
+.missingList, .invalidList {
+    padding: 0.6em;
+    padding-top: 0.2em;
+}
+
+.missingList {
+    border-top: 4px solid #bedef4;
+}
+
+.invalidList {
+    border-top: 4px solid #ffaf7e;
+}
+
+.missingList li, .invalidList li {
+    list-style:none;
+    font-style:italic;
+}

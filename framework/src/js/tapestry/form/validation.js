@@ -46,6 +46,8 @@ tapestry.form.validation={
 		if (!props) return true; // form exists but no profile? just submit I guess..
 		if (!props.validateForm) return true;
 		
+		this.clearValidationDecorations(form, props);
+		
 		for (var i=0; i < props.profiles.length; i++) {
 			var results=dojo.validate.check(form, props.profiles[i]);
 			
@@ -75,8 +77,8 @@ tapestry.form.validation={
 	processResults:function(form, results, profile){
 		if (results.isSuccessful()) return true; 
 		
-		//TODO: Need to remove previous field validation
-		//decorations for things fixed since last run
+		// TODO: Need to remove previous field validation
+		// decorations for things fixed since last run
 		var formValid=true;
 		if (results.hasMissing()) {
 			var missing=results.getMissing();
@@ -118,6 +120,13 @@ tapestry.form.validation={
 		}
 	},
 	
+	clearValidationDecorations:function(form, props){
+		for (var i=0; i<form.elements.length; i++) {
+			dojo.html.removeClass(form.elements[i], this.missingClass);
+			dojo.html.removeClass(form.elements[i], this.invalidClass);
+		}
+	},
+	
 	/**
 	 * Optionally allows an alert dialog/dhtml dialog/etc to 
 	 * be displayed to user to alert them to the invalid state
@@ -128,10 +137,44 @@ tapestry.form.validation={
 	 * @param profile Validation profile definition 
 	 */
 	summarizeErrors:function(form, results, profile){
+		var merrs=[];
+		var ierrs=[];
+		if (results.hasMissing()){
+			var fields=results.getMissing();
+			for (var i=0; i<fields.length; i++){
+				if (profile[fields[i]] && profile[fields[i]]["required"]){
+					merrs.push(profile[fields[i]]["required"]);
+				}
+			}
+		}
+		if (results.hasInvalid()){
+			var fields=results.getInvalid();
+			for (var i=0; i<fields.length; i++){
+				if (profile[fields[i]] && profile[fields[i]]["required"]){
+					ierrs.push(profile[fields[i]]["required"]);
+				}
+			}
+		}
+		
+		var msg="";
+		if (merrs.length > 0) {
+			msg+='<ul class="missingList">';
+			for (var i=0; i<merrs.length;i++) {
+				msg+="<li>"+merrs[i]+"</li>";
+			}
+			msg+="</ul>";
+		}
+		if (ierrs.length > 0) {
+			msg+='<ul class="invalidList">';
+			for (var i=0; i<ierrs.length;i++) {
+				msg+="<li>"+ierrs[i]+"</li>";
+			}
+			msg+="</ul>";
+		}
 		
 		var ad=dojo.widget.byId("validationDialog");
 		if (ad) {
-			ad.setMessage("You ~still~ have form input errors...wtf?");
+			ad.setMessage(msg);
 			ad.show();
 			return;
 		}
@@ -141,7 +184,7 @@ tapestry.form.validation={
 		var dialog=dojo.widget.createWidget("AlertDialog", 
 						{
 							widgetId:"validationDialog",
-							message:"Form input errors found, please fix before proceeding."
+							message:msg
 						}, node);
 		dialog.show();
 	}
