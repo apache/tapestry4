@@ -22,7 +22,6 @@ import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.Max}.
@@ -98,17 +97,16 @@ public class TestMax extends BaseValidatorTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         IFormComponent field = newField("My Field", "myfield");
-        MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext) contextc
-                .getMock();
+        
+        FormComponentContributorContext context = 
+            (FormComponentContributorContext)newMock(FormComponentContributorContext.class);
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/NumberValidator.js");
-
-        trainFormatMessage(contextc, context, null, ValidationStrings.VALUE_TOO_LARGE, new Object[]
+        
+        trainFormatMessage(context, null, ValidationStrings.VALUE_TOO_LARGE, new Object[]
         { "My Field", new Double(20) }, "default message");
 
-        context
-                .addSubmitHandler("function(event) { Tapestry.validate_max_number(event, 'myfield', 20.0, 'default message'); }");
+        context.addSubmitHandler("function(event) { Tapestry.validate_max_number(event, 'myfield', 20.0, 'default message'); }");
 
         replayControls();
 
@@ -122,23 +120,21 @@ public class TestMax extends BaseValidatorTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         IFormComponent field = newField("My Field", "myfield");
-        MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext) contextc
-                .getMock();
+        
+        FormComponentContributorContext context = 
+            (FormComponentContributorContext)newMock(FormComponentContributorContext.class);
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/NumberValidator.js");
 
         trainFormatMessage(
-                contextc,
                 context,
                 "custom",
                 ValidationStrings.VALUE_TOO_LARGE,
                 new Object[]
                 { "My Field", new Double(20) },
                 "custom\\message");
-
-        context
-                .addSubmitHandler("function(event) { Tapestry.validate_max_number(event, 'myfield', 20.0, 'custom\\\\message'); }");
+        
+        context.addSubmitHandler("function(event) { Tapestry.validate_max_number(event, 'myfield', 20.0, 'custom\\\\message'); }");
 
         replayControls();
 

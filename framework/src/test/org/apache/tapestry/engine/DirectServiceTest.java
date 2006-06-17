@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.engine;
 
+import static org.easymock.EasyMock.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -365,8 +366,7 @@ public class DirectServiceTest extends ServiceTestCase
 
     protected void trainIsStateful(IDirect direct, boolean isStateful)
     {
-        direct.isStateful();
-        setReturnValue(direct, isStateful);
+        expect(direct.isStateful()).andReturn(isStateful);
     }
 
     public void testStaleSession() throws Exception

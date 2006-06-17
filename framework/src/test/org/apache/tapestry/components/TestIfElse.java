@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.components;
 
+import static org.easymock.EasyMock.expect;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
@@ -47,23 +48,19 @@ public class TestIfElse extends BaseComponentTestCase
 
     public void testRenderPlainTrue()
     {
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = (IRequestCycle) newMock(IRequestCycle.class);
 
         IMarkupWriter writer = newWriter();
         
-        cycle.isRewinding();
-        cyclec.setReturnValue(false);
+        expect(cycle.isRewinding()).andReturn(false);
         
-        cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
-        cyclec.setReturnValue(null);
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(null);
         
         trainResponseBuilder(cycle, writer);
         
         cycle.setAttribute(IfBean.IF_VALUE_ATTRIBUTE, Boolean.TRUE);
         
-        cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE);
-        cyclec.setReturnValue(Boolean.TRUE);
+        expect(cycle.getAttribute(IfBean.IF_VALUE_ATTRIBUTE)).andReturn(Boolean.TRUE);
         
         IRender body = newRender(writer, cycle);
         IRender body2 = newRender();

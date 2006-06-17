@@ -13,23 +13,24 @@
 // limitations under the License.
 package org.apache.tapestry.services.impl;
 
+import static org.easymock.EasyMock.checkOrder;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
-import org.apache.hivemind.test.AggregateArgumentsMatcher;
-import org.apache.hivemind.test.ArgumentMatcher;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IDirectEvent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.IgnoreMatcher;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.dojo.IWidget;
@@ -90,35 +91,20 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         invoker.addEventListener("comp1", new String[] {"onclick"}, 
                 "testMethod", null, false);
         
-        cycle.isRewinding();
-        setReturnValue(cycle, false);
+        expect(cycle.isRewinding()).andReturn(false);
         
-        component.getId();
-        setReturnValue(component, "comp1");
-        
-        component.getId();
-        setReturnValue(component, "comp1");
-        
-        component.getClientId();
-        setReturnValue(component, "comp1");
+        expect(component.getId()).andReturn("comp1").anyTimes();
+        expect(component.getClientId()).andReturn("comp1").anyTimes();
         
         trainGetLinkCheckIgnoreParameter(engine, cycle, false, new Object(), link);
         trainGetURL(link, "/some/url");
         
-        cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE);
-        setReturnValue(cycle, prs);
+        expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE))
+        .andReturn(prs).anyTimes();
         
-        cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE);
-        setReturnValue(cycle, prs);
+        expect(scriptSource.getScript(compScriptResource)).andReturn(script);
         
-        scriptSource.getScript(compScriptResource);
-        setReturnValue(scriptSource, script);
-        
-        script.execute(cycle, prs, new HashMap());
-        
-        ArgumentMatcher ignore = new IgnoreMatcher();
-        getControl(script).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, null, ignore }));
+        script.execute(eq(cycle), eq(prs), isA(Map.class));
         
         replayControls();
         
@@ -137,34 +123,20 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         assertTrue(invoker.hasEvents("wid1"));
         
-        cycle.isRewinding();
-        setReturnValue(cycle, false);
+        expect(cycle.isRewinding()).andReturn(false);
      
-        widget.getId();
-        setReturnValue(widget, "wid1");
-        
-        widget.getId();
-        setReturnValue(widget, "wid1");
-        
-        widget.getClientId();
-        setReturnValue(widget, "wid1");
+        expect(widget.getId()).andReturn("wid1").anyTimes();
+        expect(widget.getClientId()).andReturn("wid1").anyTimes();
         
         trainGetLinkCheckIgnoreParameter(engine, cycle, false, new Object(), link);
         trainGetURL(link, "/some/url2");
         
-        cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE);
-        setReturnValue(cycle, prs);
-
-        cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE);
-        setReturnValue(cycle, prs);
+        expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE))
+        .andReturn(prs).anyTimes();
         
-        scriptSource.getScript(widScriptResource);
-        setReturnValue(scriptSource, script);
+        expect(scriptSource.getScript(widScriptResource)).andReturn(script);
         
-        script.execute(cycle, prs, new HashMap());
-        
-        getControl(script).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, null, ignore }));
+        script.execute(eq(cycle), eq(prs), isA(Map.class));
         
         replayControls();
         
@@ -179,8 +151,7 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         ComponentEventConnectionWorker worker = new ComponentEventConnectionWorker();
         
-        cycle.isRewinding();
-        setReturnValue(cycle, true);
+        expect(cycle.isRewinding()).andReturn(true);
         
         replayControls();
         
@@ -195,11 +166,9 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         ComponentEventConnectionWorker worker = new ComponentEventConnectionWorker();
         
-        cycle.isRewinding();
-        setReturnValue(cycle, false);
+        expect(cycle.isRewinding()).andReturn(false);
         
-        cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE);
-        setReturnValue(cycle, null);
+        expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(null);
         
         replayControls();
         
@@ -225,23 +194,14 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         invoker.addEventListener("comp1", new String[] {"onclick"}, 
                 "testMethod", "form1", false);
         
-        cycle.isRewinding();
-        setReturnValue(cycle, false);
+        expect(cycle.isRewinding()).andReturn(false);
         
-        cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE);
-        setReturnValue(cycle, prs);
+        expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
         
-        component.getId();
-        setReturnValue(component, "comp1");
+        expect(component.getId()).andReturn("comp1").anyTimes();
+        expect(component.getClientId()).andReturn("comp1").anyTimes();
         
-        cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1");
-        setReturnValue(cycle, null);
-        
-        component.getId();
-        setReturnValue(component, "comp1");
-        
-        component.getClientId();
-        setReturnValue(component, "comp1");
+        expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
         
         replayControls();
         
@@ -300,23 +260,14 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         invoker.addEventListener("comp1", new String[] {"onclick"}, 
                 "testMethod", "form1", false);
         
-        cycle.isRewinding();
-        setReturnValue(cycle, false);
+        expect(cycle.isRewinding()).andReturn(false);
         
-        cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE);
-        setReturnValue(cycle, prs);
+        expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
         
-        component.getId();
-        setReturnValue(component, "comp1");
+        expect(component.getId()).andReturn("comp1").anyTimes();
+        expect(component.getClientId()).andReturn("comp1").anyTimes();
         
-        component.getId();
-        setReturnValue(component, "comp1");
-        
-        component.getClientId();
-        setReturnValue(component, "comp1");
-        
-        cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1");
-        setReturnValue(cycle, null);
+        expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
         
         replayControls();
         
@@ -328,55 +279,36 @@ public class ComponentEventConnectionWorkerTest extends BaseComponentTestCase
         
         resetControls();
         
-        cycle.isRewinding();
-        setReturnValue(cycle, false);
+        checkOrder(form, false);
+        checkOrder(component, false);
         
-        cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE);
-        setReturnValue(cycle, prs);
+        expect(cycle.isRewinding()).andReturn(false);
         
-        form.getId();
-        setReturnValue(form, "form1");
+        expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE)).andReturn(prs);
         
-        cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1");
-        setReturnValue(cycle, null);
+        expect(form.getId()).andReturn("form1").anyTimes();
         
-        form.getId();
-        setReturnValue(form, "form1");
+        expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1")).andReturn(null);
         
-        cycle.setAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1", new ArrayList());
-        ArgumentMatcher ignore = new IgnoreMatcher();
-        getControl(cycle)
-        .setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]{ null, ignore }));
+        cycle.setAttribute(eq(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1"), 
+                isA(List.class));
         
-        form.getId();
-        setReturnValue(form, "form1");
+        expect(form.getName()).andReturn("form1_0").anyTimes();
         
-        form.getName();
-        setReturnValue(form, "form1_0");
-        
-        form.getId();
-        setReturnValue(form, "form1");
-        component.getId();
-        setReturnValue(component, "comp1");
-        form.getId();
-        setReturnValue(form, "form1");
-        form.getId();
-        setReturnValue(form, "form1");
+        expect(component.getId()).andReturn("comp1").anyTimes();
         
         List formNames = new ArrayList();
         formNames.add("form1_0");
-        cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1");
-        setReturnValue(cycle, formNames);
         
-        cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE);
-        setReturnValue(cycle, prs);
+        expect(cycle.getAttribute(ComponentEventConnectionWorker.FORM_NAME_LIST + "form1"))
+        .andReturn(formNames);
         
-        scriptSource.getScript(compScriptResource);
-        setReturnValue(scriptSource, script);
+        expect(cycle.getAttribute(TapestryUtils.PAGE_RENDER_SUPPORT_ATTRIBUTE))
+        .andReturn(prs);
         
-        script.execute(cycle, prs, new HashMap());
-        getControl(script).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, null, ignore }));
+        expect(scriptSource.getScript(compScriptResource)).andReturn(script);
+        
+        script.execute(eq(cycle), eq(prs), isA(Map.class));
         
         replayControls();
         

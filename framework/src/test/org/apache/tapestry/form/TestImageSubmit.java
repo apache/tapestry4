@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.expect;
+
 import java.awt.Point;
 
 import org.apache.hivemind.util.PropertyUtils;
@@ -25,7 +27,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidationConstants;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.ImageSubmit}.
@@ -37,11 +38,9 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 {
     protected IAsset newAsset(IRequestCycle cycle, String imageURL)
     {
-        MockControl control = newControl(IAsset.class);
-        IAsset asset = (IAsset) control.getMock();
+        IAsset asset = (IAsset)newMock(IAsset.class);
 
-        asset.buildURL();
-        control.setReturnValue(imageURL);
+        expect(asset.buildURL()).andReturn(imageURL);
 
         return asset;
     }
@@ -51,10 +50,8 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         Creator creator = new Creator();
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class);
 
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IForm form = (IForm)newMock(IForm.class);
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cycle, form);
@@ -70,12 +67,9 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
     public void testRender()
     {
-        MockControl delegatec = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IValidationDelegate delegate = newDelegate();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
         IAsset image = newAsset(cycle, "image-url");
 
@@ -88,10 +82,9 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         trainWasPrerendered(form, writer, submit, false);
 
         trainGetDelegate(form, delegate);
-
+        
         delegate.setFormComponent(submit);
-        delegatec.setVoidCallable();
-
+        
         trainGetElementId(form, submit, "fred");
 
         trainIsRewinding(form, false);
@@ -104,7 +97,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         writer.attribute("border", 0);
         writer.attribute("src", "image-url");
         writer.closeTag();
-
+        
         trainIsInError(delegate, false);
 
         delegate.registerForFocus(submit, ValidationConstants.NORMAL_FIELD);
@@ -118,13 +111,11 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
     public void testRenderDisabled()
     {
-        MockControl delegatec = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IValidationDelegate delegate = newDelegate();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
+        
         IAsset image = newAsset(cycle, "disabled-image-url");
 
         Creator creator = new Creator();
@@ -135,9 +126,8 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         trainWasPrerendered(form, writer, submit, false);
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
-
+        expect(form.getDelegate()).andReturn(delegate);
+        
         delegate.setFormComponent(submit);
 
         trainGetElementId(form, submit, "fred");
@@ -163,13 +153,11 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
     public void testRenderDisabledNoDisabledImage()
     {
-        MockControl delegatec = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IValidationDelegate delegate = newDelegate();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
+        
         IAsset image = newAsset(cycle, "image-url");
 
         Creator creator = new Creator();
@@ -180,8 +168,7 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         trainWasPrerendered(form, writer, submit, false);
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
+        expect(form.getDelegate()).andReturn(delegate);
 
         delegate.setFormComponent(submit);
 
@@ -208,13 +195,11 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
     public void testRenderWithNameOverride()
     {
-        MockControl delegatec = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IValidationDelegate delegate = newDelegate();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
+        
         IAsset image = newAsset(cycle, "image-url");
 
         Creator creator = new Creator();
@@ -225,14 +210,12 @@ public class TestImageSubmit extends BaseFormComponentTestCase
 
         trainWasPrerendered(form, writer, submit, false);
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
+        expect(form.getDelegate()).andReturn(delegate);
 
         delegate.setFormComponent(submit);
 
-        form.getElementId(submit, "barney");
-        formc.setReturnValue("barney$0");
-
+        expect(form.getElementId(submit, "barney")).andReturn("barney$0");
+        
         trainIsRewinding(form, false);
 
         trainIsRewinding(cycle, false);
@@ -262,18 +245,15 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         { "disabled", Boolean.TRUE });
 
         IValidationDelegate delegate = newDelegate();
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cycle, form);
 
         trainWasPrerendered(form, writer, submit, false);
-
-        form.getDelegate();
-        formc.setReturnValue(delegate);
+        
+        expect(form.getDelegate()).andReturn(delegate);
 
         delegate.setFormComponent(submit);
 
@@ -294,18 +274,15 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         ImageSubmit submit = (ImageSubmit) creator.newInstance(ImageSubmit.class);
 
         IValidationDelegate delegate = newDelegate();
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cycle, form);
 
         trainWasPrerendered(form, writer, submit, false);
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
+        expect(form.getDelegate()).andReturn(delegate);
 
         delegate.setFormComponent(submit);
 
@@ -332,18 +309,15 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         submit.setBinding("selected", binding);
 
         IValidationDelegate delegate = newDelegate();
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cycle, form);
 
         trainWasPrerendered(form, writer, submit, false);
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
+        expect(form.getDelegate()).andReturn(delegate);
 
         delegate.setFormComponent(submit);
 
@@ -380,18 +354,15 @@ public class TestImageSubmit extends BaseFormComponentTestCase
         submit.setBinding("point", binding);
 
         IValidationDelegate delegate = newDelegate();
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cycle, form);
 
         trainWasPrerendered(form, writer, submit, false);
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
+        expect(form.getDelegate()).andReturn(delegate);
 
         delegate.setFormComponent(submit);
 

@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.record;
 
+import static org.easymock.EasyMock.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -188,45 +189,38 @@ public class ClientPropertyPersistenceStrategyTest extends HiveMindTestCase
     private void trainDecodePageChanges(PersistentPropertyDataEncoder encoder, String encoded,
             List changes)
     {
-        encoder.decodePageChanges(encoded);
-        setReturnValue(encoder, changes);
+        expect(encoder.decodePageChanges(encoded)).andReturn(changes);
     }
 
     private void trainExtractPageName(ClientPropertyPersistenceScope scope, String parameterName,
             String pageName)
     {
-        scope.extractPageName(parameterName);
-        setReturnValue(scope, pageName);
+        expect(scope.extractPageName(parameterName)).andReturn(pageName);
     }
 
     private void trainGetPage(IRequestCycle cycle, IPage page)
     {
-        cycle.getPage();
-        setReturnValue(cycle, page);
+        expect(cycle.getPage()).andReturn(page);
     }
 
     private void trainGetPageName(IPage page, String pageName)
     {
-        page.getPageName();
-        setReturnValue(page, pageName);
+        expect(page.getPageName()).andReturn(pageName);
     }
 
     private void trainGetParameterNames(WebRequest request, String[] names)
     {
-        request.getParameterNames();
-        setReturnValue(request, Arrays.asList(names));
+        expect(request.getParameterNames()).andReturn(Arrays.asList(names));
     }
 
     private void trainGetParameterValue(WebRequest request, String parameterName, String value)
     {
-        request.getParameterValue(parameterName);
-        setReturnValue(request, value);
+        expect(request.getParameterValue(parameterName)).andReturn(value);
     }
 
     private void trainIsParameterForScope(ClientPropertyPersistenceScope scope,
             String parameterName, boolean result)
     {
-        scope.isParameterForScope(parameterName);
-        setReturnValue(scope, result);
+        expect(scope.isParameterForScope(parameterName)).andReturn(result);
     }
 }

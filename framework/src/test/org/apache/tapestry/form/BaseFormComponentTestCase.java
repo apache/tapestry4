@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.*;
+
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IBinding;
@@ -40,9 +42,7 @@ public abstract class BaseFormComponentTestCase extends BaseComponentTestCase
 
     protected void trainIsInError(IValidationDelegate delegate, boolean isInError)
     {
-        delegate.isInError();
-
-        setReturnValue(delegate,isInError);
+        expect(delegate.isInError()).andReturn(isInError);
     }
 
     protected IForm newForm()
@@ -52,43 +52,36 @@ public abstract class BaseFormComponentTestCase extends BaseComponentTestCase
 
     protected void trainGetForm(IRequestCycle cycle, IForm form)
     {
-        cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE);
-
-        setReturnValue(cycle,form);
+        expect(cycle.getAttribute(TapestryUtils.FORM_ATTRIBUTE)).andReturn(form);
     }
 
     protected void trainGetDelegate(IForm form, IValidationDelegate delegate)
     {
-        form.getDelegate();
-
-        setReturnValue(form,delegate);
+        expect(form.getDelegate()).andReturn(delegate);
     }
 
     protected void trainGetParameter(IRequestCycle cycle, String parameterName,
             String parameterValue)
     {
-        cycle.getParameter(parameterName);
-        setReturnValue(cycle,parameterValue);
+        expect(cycle.getParameter(parameterName)).andReturn(parameterValue);
     }
 
     protected void trainWasPrerendered(IForm form, IMarkupWriter writer, IComponent component,
             boolean wasPrerendered)
     {
-        form.wasPrerendered(writer, component);
-        setReturnValue(form,wasPrerendered);
+        expect(form.wasPrerendered(writer, component)).andReturn(wasPrerendered);
     }
 
     protected void trainIsRewinding(IForm form, boolean isRewinding)
     {
-        form.isRewinding();
-        setReturnValue(form,isRewinding);
+        expect(form.isRewinding()).andReturn(isRewinding);
     }
-
+    
     protected void trainGetElementId(IForm form, IFormComponent component, String name)
     {
         form.getElementId(component);
         component.setName(name);
-        setReturnValue(form,name);
+        expectLastCall().andReturn(name);
     }
 
     protected IBinding newBinding()

@@ -14,6 +14,7 @@
 
 package org.apache.tapestry;
 
+import static org.easymock.EasyMock.*;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.test.Creator;
@@ -91,8 +92,9 @@ public class TestAbstractComponent extends BaseComponentTestCase
         IPage page = newPage("Fred");
 
         trainGetIdPath(page, null);
-
+        
         replayControls();
+        replay();
 
         IComponent component = (IComponent) creator.newInstance(BaseComponent.class, new Object[]
         { "page", page, "container", page, "id", "barney" });
@@ -112,6 +114,7 @@ public class TestAbstractComponent extends BaseComponentTestCase
         }
 
         verifyControls();
+        verify();
     }
 
     private IContainedComponent newContainedComponent()

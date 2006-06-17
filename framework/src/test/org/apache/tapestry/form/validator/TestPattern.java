@@ -23,7 +23,6 @@ import org.apache.tapestry.util.RegexpMatcher;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.Pattern}
@@ -104,16 +103,14 @@ public class TestPattern extends BaseValidatorTestCase
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-
-        MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext) contextc
-                .getMock();
+        FormComponentContributorContext context = 
+            (FormComponentContributorContext)newMock(FormComponentContributorContext.class);
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
 
         IFormComponent field = newField("Fred", "myfield");
 
-        trainFormatMessage(contextc, context, null, ValidationStrings.REGEX_MISMATCH, new Object[]
+        trainFormatMessage(context, null, ValidationStrings.REGEX_MISMATCH, new Object[]
         { "Fred" }, "default message");
 
         context
@@ -133,17 +130,14 @@ public class TestPattern extends BaseValidatorTestCase
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-
-        MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext) contextc
-                .getMock();
+        FormComponentContributorContext context = 
+            (FormComponentContributorContext)newMock(FormComponentContributorContext.class);
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
 
         IFormComponent field = newField("Fred", "myfield");
 
         trainFormatMessage(
-                contextc,
                 context,
                 "custom",
                 ValidationStrings.REGEX_MISMATCH,

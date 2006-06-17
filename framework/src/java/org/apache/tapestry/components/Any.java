@@ -43,7 +43,7 @@ public abstract class Any extends AbstractComponent
             writer.begin(element);
             
             renderInformalParameters(writer, cycle);
-            if (!isParameterBound("id"))
+            if (getId() != null && !isParameterBound("id"))
                 renderIdAttribute(writer, cycle);
         }
 

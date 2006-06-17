@@ -60,6 +60,8 @@ public class MockForm implements IForm
 
     private JSONObject _profile = new JSONObject();
     
+    private ComponentEventInvoker _invoker;
+    
     public MockForm()
     {
         this(null, null);
@@ -363,7 +365,7 @@ public class MockForm implements IForm
      */
     public ComponentEventInvoker getEventInvoker()
     {
-        return null;
+        return _invoker;
     }
 
     /** 
@@ -371,6 +373,7 @@ public class MockForm implements IForm
      */
     public void setEventInvoker(ComponentEventInvoker invoker)
     {
+        _invoker = invoker;
     }
 
     /** 

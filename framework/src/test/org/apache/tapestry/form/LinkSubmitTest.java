@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.*;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -248,27 +249,23 @@ public class LinkSubmitTest extends BaseComponentTestCase
 
     private void trainIsRewinding(IForm form, boolean isRewindind)
     {
-        form.isRewinding();
-        setReturnValue(form, isRewindind);
+        expect(form.isRewinding()).andReturn(isRewindind);
     }
 
     protected void trainGetElementId(IForm form, IFormComponent field, String name)
     {
-        form.getElementId(field);
-        setReturnValue(form, name);
+        expect(form.getElementId(field)).andReturn(name);
     }
 
     protected void trainGetDelegate(IForm form, IValidationDelegate delegate)
     {
-        form.getDelegate();
-        setReturnValue(form, delegate);
+        expect(form.getDelegate()).andReturn(delegate);
     }
 
     protected void trainWasPrerendered(IForm form, IMarkupWriter writer, IFormComponent field,
             boolean wasPrendered)
     {
-        form.wasPrerendered(writer, field);
-        setReturnValue(form, wasPrendered);
+        expect(form.wasPrerendered(writer, field)).andReturn(wasPrendered);
     }
 
     protected void trainGetForm(IRequestCycle cycle, IForm form)

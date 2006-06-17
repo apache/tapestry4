@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.web;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -24,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.web.ServletWebRequest}.
@@ -54,9 +56,8 @@ public class TestServletWebRequest extends BaseWebTestCase
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
-        request.getParameterNames();
-        setReturnValue(request, newEnumeration());
-
+        expect(request.getParameterNames()).andReturn(newEnumeration());
+        
         replayControls();
 
         WebRequest wr = new ServletWebRequest(request, response);
@@ -75,8 +76,7 @@ public class TestServletWebRequest extends BaseWebTestCase
 
         String value = "William Orbit";
 
-        request.getParameter("artist");
-        setReturnValue(request, value);
+        expect(request.getParameter("artist")).andReturn(value);
 
         replayControls();
 
@@ -95,8 +95,7 @@ public class TestServletWebRequest extends BaseWebTestCase
         String[] values =
         { "William Orbit", "Steely Dan" };
 
-        request.getParameterValues("artist");
-        setReturnValue(request, values);
+        expect(request.getParameterValues("artist")).andReturn(values);
 
         replayControls();
 
@@ -112,8 +111,7 @@ public class TestServletWebRequest extends BaseWebTestCase
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
-        request.getContextPath();
-        setReturnValue(request, "/foo");
+        expect(request.getContextPath()).andReturn("/foo");
 
         replayControls();
 
@@ -129,9 +127,8 @@ public class TestServletWebRequest extends BaseWebTestCase
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
-        request.getAttributeNames();
-        setReturnValue(request, newEnumeration());
-
+        expect(request.getAttributeNames()).andReturn(newEnumeration());
+        
         replayControls();
 
         WebRequest wr = new ServletWebRequest(request, response);
@@ -150,8 +147,7 @@ public class TestServletWebRequest extends BaseWebTestCase
 
         Object attribute = new Object();
 
-        request.getAttribute("attr");
-        setReturnValue(request, attribute);
+        expect(request.getAttribute("attr")).andReturn(attribute);
 
         replayControls();
 
@@ -236,8 +232,7 @@ public class TestServletWebRequest extends BaseWebTestCase
 
     private void trainGetSession(HttpServletRequest request, boolean create, HttpSession session)
     {
-        request.getSession(create);
-        setReturnValue(request, session);
+        expect(request.getSession(create)).andReturn(session);
     }
 
     private HttpSession newSession()
@@ -250,8 +245,7 @@ public class TestServletWebRequest extends BaseWebTestCase
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
-        request.getScheme();
-        setReturnValue(request, "http");
+        expect(request.getScheme()).andReturn("http");
 
         replayControls();
 
@@ -267,8 +261,7 @@ public class TestServletWebRequest extends BaseWebTestCase
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
-        request.getServerName();
-        setReturnValue(request, "www.myhost.com");
+        expect(request.getServerName()).andReturn("www.myhost.com");
 
         replayControls();
 
@@ -284,9 +277,8 @@ public class TestServletWebRequest extends BaseWebTestCase
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
-        request.getServerPort();
-        setReturnValue(request, 80);
-
+        expect(request.getServerPort()).andReturn(80);
+        
         replayControls();
 
         WebRequest wr = new ServletWebRequest(request, response);
@@ -301,8 +293,7 @@ public class TestServletWebRequest extends BaseWebTestCase
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
-        request.getRequestURI();
-        setReturnValue(request, "/foo/bar");
+        expect(request.getRequestURI()).andReturn("/foo/bar");
 
         replayControls();
 
@@ -354,8 +345,7 @@ public class TestServletWebRequest extends BaseWebTestCase
     private void trainGetRequestDispatcher(HttpServletRequest request, String path,
             RequestDispatcher dispatcher)
     {
-        request.getRequestDispatcher(path);
-        setReturnValue(request, dispatcher);
+        expect(request.getRequestDispatcher(path)).andReturn(dispatcher);
     }
 
     public void testForwardInternalNoDispatcher() throws Exception
@@ -395,7 +385,7 @@ public class TestServletWebRequest extends BaseWebTestCase
         trainGetRequestDispatcher(request, "/servlet-exception.html", dispatcher);
 
         dispatcher.forward(request, response);
-        setThrowable(dispatcher, t1);
+        expectLastCall().andThrow(t1);
 
         replayControls();
 
@@ -421,7 +411,7 @@ public class TestServletWebRequest extends BaseWebTestCase
         trainGetRequestDispatcher(request, "/io-exception.html", dispatcher);
 
         dispatcher.forward(request, response);
-        setThrowable(dispatcher, t2);
+        expectLastCall().andThrow(t2);
 
         replayControls();
 
@@ -446,9 +436,8 @@ public class TestServletWebRequest extends BaseWebTestCase
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
-        response.encodeRedirectURL("http://foo.bar");
-        setReturnValue(response, "<encoded: http://foo.bar>");
-
+        expect(response.encodeRedirectURL("http://foo.bar")).andReturn("<encoded: http://foo.bar>");
+        
         response.sendRedirect("<encoded: http://foo.bar>");
 
         replayControls();
@@ -463,17 +452,15 @@ public class TestServletWebRequest extends BaseWebTestCase
     public void testForwardExternalFailure() throws Exception
     {
         HttpServletRequest request = newRequest();
-        MockControl responsec = newControl(HttpServletResponse.class);
-        HttpServletResponse response = (HttpServletResponse) responsec.getMock();
+        HttpServletResponse response = (HttpServletResponse)newMock(HttpServletResponse.class);
 
         Throwable t = new IOException("Mock IO Exception");
 
-        response.encodeRedirectURL("/");
-        responsec.setReturnValue("<encoded: http://foo.bar>");
-
+        expect(response.encodeRedirectURL("/")).andReturn("<encoded: http://foo.bar>");
+        
         response.sendRedirect("<encoded: http://foo.bar>");
-        responsec.setThrowable(t);
-
+        expectLastCall().andThrow(t);
+        
         replayControls();
 
         WebRequest wr = new ServletWebRequest(request, response);
@@ -497,9 +484,8 @@ public class TestServletWebRequest extends BaseWebTestCase
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
-        request.getServletPath();
-        setReturnValue(request, "/foo");
-
+        expect(request.getServletPath()).andReturn("/foo");
+        
         replayControls();
 
         WebRequest wr = new ServletWebRequest(request, response);
@@ -514,9 +500,8 @@ public class TestServletWebRequest extends BaseWebTestCase
         HttpServletRequest request = newRequest();
         HttpServletResponse response = newResponse();
 
-        request.getPathInfo();
-        setReturnValue(request, "bar/baz");
-
+        expect(request.getPathInfo()).andReturn("bar/baz");
+        
         replayControls();
 
         WebRequest wr = new ServletWebRequest(request, response);

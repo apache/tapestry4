@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.engine;
 
+import static org.easymock.EasyMock.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -484,34 +485,6 @@ public class DirectEventServiceTest extends ServiceTestCase
     
     protected void trainIsStateful(IDirectEvent direct, boolean isStateful)
     {
-        direct.isStateful();
-        setReturnValue(direct, isStateful);
-    }
-    
-    protected void trainExtractBrowserEvent(IRequestCycle cycle)
-    {
-        cycle.getParameter(BrowserEvent.NAME);
-        setReturnValue(cycle, "onClick");
-        
-        cycle.getParameter(BrowserEvent.NAME);
-        setReturnValue(cycle, "onClick");
-        
-        cycle.getParameter(BrowserEvent.TYPE);
-        setReturnValue(cycle, "click");
-        cycle.getParameters(BrowserEvent.KEYS);
-        setReturnValue(cycle, null);
-        cycle.getParameter(BrowserEvent.CHAR_CODE);
-        setReturnValue(cycle, null);
-        cycle.getParameter(BrowserEvent.PAGE_X);
-        setReturnValue(cycle, "123");
-        cycle.getParameter(BrowserEvent.PAGE_Y);
-        setReturnValue(cycle, "1243");
-        cycle.getParameter(BrowserEvent.LAYER_X);
-        setReturnValue(cycle, null);
-        cycle.getParameter(BrowserEvent.LAYER_Y);
-        setReturnValue(cycle, null);
-        
-        cycle.getParameter(BrowserEvent.TARGET + "." + BrowserEvent.TARGET_ATTR_ID);
-        setReturnValue(cycle, "element1");
+        expect(direct.isStateful()).andReturn(isStateful);
     }
 }

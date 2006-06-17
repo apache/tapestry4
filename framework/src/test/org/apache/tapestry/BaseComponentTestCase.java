@@ -14,6 +14,8 @@
 
 package org.apache.tapestry;
 
+import static org.easymock.EasyMock.*;
+
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 
@@ -22,13 +24,12 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.test.AggregateArgumentsMatcher;
-import org.apache.hivemind.test.ArgumentMatcher;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.engine.NullWriter;
+import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.json.IJSONWriter;
 import org.apache.tapestry.markup.AsciiMarkupFilter;
 import org.apache.tapestry.markup.JSONWriterImpl;
@@ -154,14 +155,12 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         ResponseBuilder builder = 
             new DefaultResponseBuilder(writer == null ? NullWriter.getSharedInstance() : writer);
         
-        cycle.getResponseBuilder();
-        setReturnValue(cycle, builder);
+        expect(cycle.getResponseBuilder()).andReturn(builder);
     }
     
     protected void trainIsRewinding(IRequestCycle cycle, boolean rewinding)
     {
-        cycle.isRewinding();
-        setReturnValue(cycle, rewinding);
+        expect(cycle.isRewinding()).andReturn(rewinding);
     }
 
     protected IRequestCycle newCycleGetPage(String pageName, IPage page)
@@ -169,8 +168,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) control.getMock();
 
-        cycle.getPage(pageName);
-        control.setReturnValue(page);
+        expect(cycle.getPage(pageName)).andReturn(page);
 
         return cycle;
     }
@@ -180,9 +178,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) control.getMock();
 
-        cycle.getUniqueId(id);
-        control.setReturnValue(uniqueId);
-
+        expect(cycle.getUniqueId(id)).andReturn(uniqueId);
         return cycle;
     }
 
@@ -191,9 +187,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         MockControl control = newControl(IRequestCycle.class);
         IRequestCycle cycle = (IRequestCycle) control.getMock();
 
-        cycle.getParameter(name);
-        control.setReturnValue(value);
-
+        expect(cycle.getParameter(name)).andReturn(value);
         return cycle;
     }
 
@@ -207,9 +201,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         MockControl control = newControl(IBinding.class);
         IBinding binding = (IBinding) control.getMock();
 
-        binding.getObject();
-        control.setReturnValue(value);
-
+        expect(binding.getObject()).andReturn(value);
         return binding;
     }
 
@@ -227,12 +219,8 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         MockControl control = newControl(IComponent.class);
         IComponent component = (IComponent) control.getMock();
 
-        component.getExtendedId();
-        control.setReturnValue(extendedId);
-
-        component.getLocation();
-        control.setReturnValue(location);
-
+        expect(component.getExtendedId()).andReturn(extendedId);
+        expect(component.getLocation()).andReturn(location);
         return component;
     }
 
@@ -241,9 +229,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
         MockControl control = newControl(IComponentSpecification.class);
         IComponentSpecification spec = (IComponentSpecification) control.getMock();
 
-        spec.getParameter(parameterName);
-        control.setReturnValue(pspec);
-
+        expect(spec.getParameter(parameterName)).andReturn(pspec);
         return spec;
     }
 
@@ -264,12 +250,10 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected IPage newPage(String name, int count)
     {
-        MockControl control = newControl(IPage.class);
-        IPage page = (IPage) control.getMock();
-
-        page.getPageName();
-        control.setReturnValue(name, count);
-
+        IPage page = (IPage)newMock(IPage.class);
+        
+        expect(page.getPageName()).andReturn(name).times(count);
+        
         return page;
     }
 
@@ -301,49 +285,32 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected void trainGetAttribute(IRequestCycle cycle, String attributeName, Object attribute)
     {
-        MockControl control = getControl(cycle);
-
-        cycle.getAttribute(attributeName);
-
-        control.setReturnValue(attribute);
+        expect(cycle.getAttribute(attributeName)).andReturn(attribute);
     }
 
     protected void trainGetUniqueId(IRequestCycle cycle, String id, String uniqueId)
     {
-        MockControl control = getControl(cycle);
-
-        cycle.getUniqueId(id);
-        control.setReturnValue(uniqueId);
+        expect(cycle.getUniqueId(id)).andReturn(uniqueId);
     }
 
     protected void trainGetIdPath(IComponent component, String idPath)
     {
-        MockControl control = getControl(component);
-
-        component.getIdPath();
-        control.setReturnValue(idPath);
+        expect(component.getIdPath()).andReturn(idPath);
     }
 
     protected void trainGetParameter(IRequestCycle cycle, String name, String value)
     {
-        MockControl control = getControl(cycle);
-
-        cycle.getParameter(name);
-        control.setReturnValue(value);
+        expect(cycle.getParameter(name)).andReturn(value);
     }
 
     protected void trainGetPageName(IPage page, String pageName)
     {
-        page.getPageName();
-
-        setReturnValue(page, pageName);
+        expect(page.getPageName()).andReturn(pageName);
     }
 
     protected void trainBuildURL(IAsset asset, IRequestCycle cycle, String URL)
     {
-        asset.buildURL();
-
-        setReturnValue(asset, URL);
+        expect(asset.buildURL()).andReturn(URL);
     }
 
     protected IAsset newAsset()
@@ -360,9 +327,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected void trainGetEngine(IPage page, IEngine engine)
     {
-        page.getEngine();
-
-        setReturnValue(page, engine);
+        expect(page.getEngine()).andReturn(engine);
     }
 
     protected IComponent newComponent()
@@ -372,20 +337,17 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected void trainGetPage(IComponent component, IPage page)
     {
-        component.getPage();
-        setReturnValue(component, page);
+        expect(component.getPage()).andReturn(page);
     }
 
     protected void trainGetExtendedId(IComponent component, String extendedId)
     {
-        component.getExtendedId();
-        setReturnValue(component, extendedId);
+        expect(component.getExtendedId()).andReturn(extendedId);
     }
 
     protected void trainGetLocation(Locatable locatable, Location location)
     {
-        locatable.getLocation();
-        setReturnValue(locatable, location);
+        expect(locatable.getLocation()).andReturn(location);
     }
 
     protected IBinding newBinding()
@@ -395,8 +357,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected void trainGetComponent(IComponent container, String componentId, IComponent containee)
     {
-        container.getComponent(componentId);
-        setReturnValue(container, containee);
+        expect(container.getComponent(componentId)).andReturn(containee);
     }
 
     protected IEngineService newEngineService()
@@ -407,27 +368,18 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     protected void trainGetLink(IEngineService service, IRequestCycle cycle, boolean post,
             Object parameter, ILink link)
     {
-        service.getLink(post, parameter);
-        setReturnValue(service, link);
+        expect(service.getLink(post, parameter)).andReturn(link);
     }
 
     protected void trainGetLinkCheckIgnoreParameter(IEngineService service, IRequestCycle cycle,
             boolean post, Object parameter, ILink link)
     {
-        service.getLink(post, parameter);
-
-        ArgumentMatcher ignore = new IgnoreMatcher();
-
-        getControl(service).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, ignore, null }));
-
-        setReturnValue(service, link);
+        expect(service.getLink(eq(post), anyObject())).andReturn(link);
     }
 
     protected void trainGetURL(ILink link, String URL)
     {
-        link.getURL();
-        setReturnValue(link, URL);
+        expect(link.getURL()).andReturn(URL);
     }
 
     protected void trainGetPageRenderSupport(IRequestCycle cycle, PageRenderSupport support)
@@ -452,26 +404,22 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected void trainEncodeURL(IRequestCycle rc, String URL, String encodedURL)
     {
-        rc.encodeURL(URL);
-        setReturnValue(rc, encodedURL);
+        expect(rc.encodeURL(URL)).andReturn(encodedURL);
     }
 
     protected void trainGetServerPort(WebRequest request, int port)
     {
-        request.getServerPort();
-        setReturnValue(request, port);
+        expect(request.getServerPort()).andReturn(port);
     }
 
     protected void trainGetServerName(WebRequest request, String serverName)
     {
-        request.getServerName();
-        setReturnValue(request, serverName);
+        expect(request.getServerName()).andReturn(serverName);
     }
 
     protected void trainGetScheme(WebRequest request, String scheme)
     {
-        request.getScheme();
-        setReturnValue(request, scheme);
+        expect(request.getScheme()).andReturn(scheme);
     }
 
     protected NestedMarkupWriter newNestedWriter()
@@ -481,9 +429,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected void trainGetNestedWriter(IMarkupWriter writer, NestedMarkupWriter nested)
     {
-
-        writer.getNestedWriter();
-        setReturnValue(writer, nested);
+        expect(writer.getNestedWriter()).andReturn(nested);
     }
     
     protected void trainGetURL(ILink link, String scheme, String anchor, String URL)
@@ -493,9 +439,7 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
     
     protected void trainGetURL(ILink link, String scheme, String anchor, String URL, int port)
     {
-        link.getURL(scheme, null, port, anchor, true);
-
-        setReturnValue(link, URL);
+        expect(link.getURL(scheme, null, port, anchor, true)).andReturn(URL);
     }
 
     protected ILink newLink()
@@ -505,39 +449,32 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected void trainGetLink(ILinkComponent component, IRequestCycle cycle, ILink link)
     {
-        component.getLink(cycle);
-        setReturnValue(component, link);
+        expect(component.getLink(cycle)).andReturn(link);
     }
 
     protected void trainGetEngine(IRequestCycle cycle, IEngine engine)
     {
-        cycle.getEngine();
-        setReturnValue(cycle, engine);
+        expect(cycle.getEngine()).andReturn(engine);
     }
 
     protected void trainGetParameterValues(ILink link, String parameterName, String[] values)
     {
-        link.getParameterValues(parameterName);
-        setReturnValue(link, values);
+        expect(link.getParameterValues(parameterName)).andReturn(values);
     }
 
     protected void trainGetParameterNames(ILink link, String[] names)
     {
-        link.getParameterNames();
-
-        setReturnValue(link, names);
+        expect(link.getParameterNames()).andReturn(names);
     }
 
     protected void trainGetSpecification(IComponent component, IComponentSpecification spec)
     {
-        component.getSpecification();
-        setReturnValue(component, spec);
+        expect(component.getSpecification()).andReturn(spec);
     }
 
     protected void trainGetBinding(IComponent component, String name, IBinding binding)
     {
-        component.getBinding(name);
-        setReturnValue(component, binding);
+        expect(component.getBinding(name)).andReturn(binding);
     }
 
     protected Log newLog()
@@ -547,7 +484,29 @@ public abstract class BaseComponentTestCase extends HiveMindTestCase
 
     protected void trainGetId(IComponent component, String id)
     {
-        component.getId();
-        setReturnValue(component, id);
+        expect(component.getId()).andReturn(id);
+    }
+    
+    protected void trainExtractBrowserEvent(IRequestCycle cycle)
+    {
+        expect(cycle.getParameter(BrowserEvent.NAME)).andReturn("onClick");
+        
+        cycle.getParameter(BrowserEvent.TYPE);
+        setReturnValue(cycle, "click");
+        cycle.getParameters(BrowserEvent.KEYS);
+        setReturnValue(cycle, null);
+        cycle.getParameter(BrowserEvent.CHAR_CODE);
+        setReturnValue(cycle, null);
+        cycle.getParameter(BrowserEvent.PAGE_X);
+        setReturnValue(cycle, "123");
+        cycle.getParameter(BrowserEvent.PAGE_Y);
+        setReturnValue(cycle, "1243");
+        cycle.getParameter(BrowserEvent.LAYER_X);
+        setReturnValue(cycle, null);
+        cycle.getParameter(BrowserEvent.LAYER_Y);
+        setReturnValue(cycle, null);
+        
+        cycle.getParameter(BrowserEvent.TARGET + "." + BrowserEvent.TARGET_ATTR_ID);
+        setReturnValue(cycle, "element1");
     }
 }

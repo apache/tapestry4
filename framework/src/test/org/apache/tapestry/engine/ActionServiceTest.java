@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.engine;
 
+import static org.easymock.EasyMock.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -362,7 +363,6 @@ public class ActionServiceTest extends ServiceTestCase
 
     protected void trainGetRequiresSession(IAction action, boolean requiresSession)
     {
-        action.getRequiresSession();
-        setReturnValue(action, requiresSession);
+        expect(action.getRequiresSession()).andReturn(requiresSession);
     }
 }

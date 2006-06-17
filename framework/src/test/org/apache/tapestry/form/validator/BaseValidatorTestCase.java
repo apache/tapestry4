@@ -14,11 +14,12 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.easymock.EasyMock.*;
+
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
-import org.easymock.MockControl;
 
 /**
  * Base class for writing {@link org.apache.tapestry.form.validator.Validator} tests.
@@ -30,27 +31,20 @@ public abstract class BaseValidatorTestCase extends BaseComponentTestCase
 {
     protected IFormComponent newField(String displayName)
     {
-        MockControl control = newControl(IFormComponent.class);
-        IFormComponent field = (IFormComponent) control.getMock();
-
-        field.getDisplayName();
-        control.setReturnValue(displayName);
-
+        IFormComponent field = (IFormComponent)newMock(IFormComponent.class);
+        
+        expect(field.getDisplayName()).andReturn(displayName);
+        
         return field;
     }
 
     protected IFormComponent newField(String displayName, String clientId)
     {
-        MockControl control = MockControl.createNiceControl(IFormComponent.class);
-        addControl(control);
+        IFormComponent field = (IFormComponent)newMock(IFormComponent.class);
+        checkOrder(field, false);
         
-        IFormComponent field = (IFormComponent) control.getMock();
-
-        field.getClientId();
-        control.setReturnValue(clientId);
-
-        field.getDisplayName();
-        control.setReturnValue(displayName);
+        expect(field.getClientId()).andReturn(clientId).anyTimes();
+        expect(field.getDisplayName()).andReturn(displayName);
         
         return field;
     }
@@ -68,20 +62,18 @@ public abstract class BaseValidatorTestCase extends BaseComponentTestCase
     protected ValidationMessages newMessages(String messageOverride, String messageKey,
             Object[] parameters, String result)
     {
-        MockControl control = newControl(ValidationMessages.class);
-        ValidationMessages messages = (ValidationMessages) control.getMock();
-
-        trainFormatMessage(control, messages, messageOverride, messageKey, parameters, result);
+        ValidationMessages messages = (ValidationMessages)newMock(ValidationMessages.class);
+        
+        trainFormatMessage(messages, messageOverride, messageKey, parameters, result);
 
         return messages;
     }
 
-    protected void trainFormatMessage(MockControl control, ValidationMessages messages,
+    protected void trainFormatMessage(ValidationMessages messages,
             String messageOverride, String messageKey, Object[] parameters, String result)
     {
-        messages.formatValidationMessage(messageOverride, messageKey, parameters);
-        control.setMatcher(MockControl.ARRAY_MATCHER);
-        control.setReturnValue(result);
+        expect(messages.formatValidationMessage(eq(messageOverride), eq(messageKey), aryEq(parameters)))
+        .andReturn(result);
     }
 
     protected FormComponentContributorContext newContext()
