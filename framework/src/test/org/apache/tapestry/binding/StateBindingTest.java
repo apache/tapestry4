@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.binding;
 
+import static org.easymock.EasyMock.*;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
@@ -72,13 +74,10 @@ public class StateBindingTest extends HiveMindTestCase
         Location l = fabricateLocation(22);
 
         Throwable t = new RuntimeException("Nested exception.");
+        ApplicationStateManager asm = (ApplicationStateManager) newMock(ApplicationStateManager.class);
 
-        MockControl asmc = newControl(ApplicationStateManager.class);
-        ApplicationStateManager asm = (ApplicationStateManager) asmc.getMock();
-
-        asm.exists("fred");
-        asmc.setThrowable(t);
-
+        expect(asm.exists("fred")).andThrow(t);
+        
         ValueConverter vc = newValueConverter();
 
         replayControls();

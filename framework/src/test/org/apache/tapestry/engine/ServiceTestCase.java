@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.engine;
 
+import static org.easymock.EasyMock.*;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.event.BrowserEvent;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.web.WebRequest;
@@ -42,9 +44,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
     {
         IPage result = (IPage) newMock(IPage.class);
 
-        result.getPageName();
-        setReturnValue(result, name);
-
+        expect(result.getPageName()).andReturn(name);
         return result;
     }
 
@@ -52,8 +52,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
     {
         HttpServletRequest result = (HttpServletRequest) newMock(HttpServletRequest.class);
 
-        result.getSession();
-        setReturnValue(result, session);
+        expect(result.getSession()).andReturn(session);
 
         return result;
     }
@@ -62,8 +61,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
     {
         WebRequest result = (WebRequest) newMock(WebRequest.class);
 
-        result.getSession(false);
-        setReturnValue(result, session);
+        expect(result.getSession(false)).andReturn(session);
 
         return result;
     }
@@ -72,8 +70,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
     {
         HttpServletRequest result = (HttpServletRequest) newMock(HttpServletRequest.class);
 
-        result.getSession(create);
-        setReturnValue(result, session);
+        expect(result.getSession(create)).andReturn(session);
 
         return result;
     }
@@ -82,8 +79,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
     {
         WebRequest result = (WebRequest) newMock(WebRequest.class);
 
-        result.getSession(create);
-        setReturnValue(result, session);
+        expect(result.getSession(create)).andReturn(session);
 
         return result;
     }
@@ -92,8 +88,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
     {
         HttpSession session = newSession();
 
-        session.isNew();
-        setReturnValue(session, isNew);
+        expect(session.isNew()).andReturn(isNew);
 
         return session;
     }
@@ -102,8 +97,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
     {
         WebSession session = newWebSession();
 
-        session.isNew();
-        setReturnValue(session, isNew);
+        expect(session.isNew()).andReturn(isNew);
 
         return session;
     }
@@ -127,9 +121,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
     {
         LinkFactory lf = (LinkFactory) newMock(LinkFactory.class);
 
-        lf.constructLink(null, false, parameters, stateful);
-
-        setReturnValue(lf, link);
+        expect(lf.constructLink(null, false, parameters, stateful)).andReturn(link);
 
         return lf;
     }
@@ -142,8 +134,7 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
     protected void trainConstructLink(LinkFactory linkFactory, IEngineService service,
             boolean post, Map parameters, boolean stateful, ILink link)
     {
-        linkFactory.constructLink(service, post, parameters, stateful);
-        setReturnValue(linkFactory, link);
+        expect(linkFactory.constructLink(service, post, parameters, stateful)).andReturn(link);
     }
 
     protected LinkFactory newLinkFactory()
@@ -153,34 +144,56 @@ public abstract class ServiceTestCase extends BaseComponentTestCase
 
     protected void trainGetPage(IRequestCycle cycle, IPage page)
     {
-        cycle.getPage();
-        setReturnValue(cycle, page);
+        expect(cycle.getPage()).andReturn(page);
     }
 
     protected void trainGetNestedComponent(IPage page, String idPath, IComponent component)
     {
-        page.getNestedComponent(idPath);
-        setReturnValue(page, component);
+        expect(page.getNestedComponent(idPath)).andReturn(component);
     }
 
     protected void trainGetPage(IRequestCycle cycle, String pageName, IPage page)
     {
-        cycle.getPage(pageName);
-        setReturnValue(cycle, page);
+        expect(cycle.getPage(pageName)).andReturn(page);
     }
 
     protected void trainExtractListenerParameters(LinkFactory factory, IRequestCycle cycle, Object[] parameters)
     {
-        factory.extractListenerParameters(cycle);
-        setReturnValue(factory, parameters);
+        expect(factory.extractListenerParameters(cycle)).andReturn(parameters);
     }
 
     protected void trainGetAbsoluteURL(IRequestCycle cycle, String shortURL, String fullURL)
     {
-        cycle.getAbsoluteURL(shortURL);
-        setReturnValue(cycle, fullURL);
+        expect(cycle.getAbsoluteURL(shortURL)).andReturn(fullURL);
     }
 
+    protected void trainExtractBrowserEvent(IRequestCycle cycle)
+    {
+        cycle.getParameter(BrowserEvent.NAME);
+        setReturnValue(cycle, "onClick");
+        
+        cycle.getParameter(BrowserEvent.NAME);
+        setReturnValue(cycle, "onClick");
+        
+        cycle.getParameter(BrowserEvent.TYPE);
+        setReturnValue(cycle, "click");
+        cycle.getParameters(BrowserEvent.KEYS);
+        setReturnValue(cycle, null);
+        cycle.getParameter(BrowserEvent.CHAR_CODE);
+        setReturnValue(cycle, null);
+        cycle.getParameter(BrowserEvent.PAGE_X);
+        setReturnValue(cycle, "123");
+        cycle.getParameter(BrowserEvent.PAGE_Y);
+        setReturnValue(cycle, "1243");
+        cycle.getParameter(BrowserEvent.LAYER_X);
+        setReturnValue(cycle, null);
+        cycle.getParameter(BrowserEvent.LAYER_Y);
+        setReturnValue(cycle, null);
+        
+        cycle.getParameter(BrowserEvent.TARGET + "." + BrowserEvent.TARGET_ATTR_ID);
+        setReturnValue(cycle, "element1");
+    }
+    
     protected Log newLog()
     {
         return (Log) newMock(Log.class);

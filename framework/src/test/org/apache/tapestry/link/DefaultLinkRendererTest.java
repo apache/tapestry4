@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.link;
 
+import static org.easymock.EasyMock.*;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.BaseComponentTestCase;
@@ -193,14 +194,12 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
     protected void trainGetScheme(ILinkComponent component, String scheme)
     {
-        component.getScheme();
-        setReturnValue(component, scheme);
+        expect(component.getScheme()).andReturn(scheme);
     }
     
     protected void trainGetPort(ILinkComponent component, Integer port)
     {
-        component.getPort();
-        setReturnValue(component, port);
+        expect(component.getPort()).andReturn(port);
     }
     
     public void testStandardWithSchemaAnchorAndTarget()
@@ -458,19 +457,16 @@ public class DefaultLinkRendererTest extends BaseComponentTestCase
 
     protected void trainGetAnchor(ILinkComponent component, String anchor)
     {
-        component.getAnchor();
-        setReturnValue(component, anchor);
+        expect(component.getAnchor()).andReturn(anchor);
     }
 
     protected void trainGetTarget(ILinkComponent component, String target)
     {
-        component.getTarget();
-        setReturnValue(component, target);
+        expect(component.getTarget()).andReturn(target);
     }
 
     protected void trainIsDisabled(ILinkComponent component, boolean isDisabled)
     {
-        component.isDisabled();
-        setReturnValue(component, isDisabled);
+        expect(component.isDisabled()).andReturn(isDisabled);
     }
 }

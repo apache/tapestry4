@@ -23,7 +23,6 @@ import org.apache.tapestry.util.RegexpMatcher;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.Email}.
@@ -103,16 +102,15 @@ public class TestEmail extends BaseValidatorTestCase
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-
-        MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext) contextc
-                .getMock();
+        
+        FormComponentContributorContext context = 
+            (FormComponentContributorContext)newMock(FormComponentContributorContext.class);
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
 
         IFormComponent field = newField("Fred", "myfield");
 
-        trainFormatMessage(contextc, context, null, ValidationStrings.INVALID_EMAIL, new Object[]
+        trainFormatMessage(context, null, ValidationStrings.INVALID_EMAIL, new Object[]
         { "Fred" }, "default\\message");
 
         context.addSubmitHandler("function(event) { Tapestry.validate_regex(event, 'myfield', '"
@@ -132,17 +130,14 @@ public class TestEmail extends BaseValidatorTestCase
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-
-        MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext) contextc
-                .getMock();
+        FormComponentContributorContext context = 
+            (FormComponentContributorContext)newMock(FormComponentContributorContext.class);
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/RegExValidator.js");
 
         IFormComponent field = newField("Fred", "barney");
 
         trainFormatMessage(
-                contextc,
                 context,
                 "custom",
                 ValidationStrings.INVALID_EMAIL,

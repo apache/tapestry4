@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.engine;
 
+import static org.easymock.EasyMock.*;
 import org.apache.hivemind.ErrorHandler;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IEngine;
@@ -69,9 +70,8 @@ public class RequestCycleTest extends HiveMindTestCase
     {
         Infrastructure infrastructure = (Infrastructure) newMock(Infrastructure.class);
 
-        infrastructure.getPageSource();
-        setReturnValue(infrastructure, source);
-
+        expect(infrastructure.getPageSource()).andReturn(source);
+        
         return infrastructure;
     }
 
@@ -87,9 +87,8 @@ public class RequestCycleTest extends HiveMindTestCase
 
         Infrastructure infrastructure = newInfrastructure(newPageSource());
 
-        infrastructure.getServiceMap();
-        setReturnValue(infrastructure, map);
-
+        expect(infrastructure.getServiceMap()).andReturn(map);
+        
         RequestCycleEnvironment env = new RequestCycleEnvironment(newErrorHandler(),
                 infrastructure, newStrategySource(), newBuilder());
         IEngine engine = newEngine();
@@ -109,8 +108,7 @@ public class RequestCycleTest extends HiveMindTestCase
     {
         ServiceMap map = (ServiceMap) newMock(ServiceMap.class);
 
-        map.getService(serviceName);
-        setReturnValue(map, service);
+        expect(map.getService(serviceName)).andReturn(service);
 
         return map;
     }

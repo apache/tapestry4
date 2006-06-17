@@ -82,25 +82,25 @@
 
 		<assert-output name="span tag">
 <![CDATA[
-<span>span tag</span>
+<span id="Any">span tag</span>
 ]]>
 		</assert-output>
 
 		<assert-output name="div tag">
 <![CDATA[
-<div>div tag</div>
+<div id="Any_0">div tag</div>
 ]]>
 		</assert-output>
 		
 		<assert-output name="b tag">
 <![CDATA[
-<b>b tag</b>
+<b id="Any_1">b tag</b>
 ]]>
 		</assert-output>
 		
 		<assert-output name="i tag">
 <![CDATA[
-<i>i tag</i>
+<i id="any">i tag</i>
 ]]>
 		</assert-output>
 		

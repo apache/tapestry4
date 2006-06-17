@@ -14,11 +14,12 @@
 
 package org.apache.tapestry.engine.state;
 
+import static org.easymock.EasyMock.expect;
+
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.SessionStoreOptimized;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.engine.state.SessionScopeManager}.
@@ -30,22 +31,18 @@ public class TestSessionScopeManager extends HiveMindTestCase
 {
     private WebRequest newRequest(boolean create, WebSession session)
     {
-        MockControl control = newControl(WebRequest.class);
-        WebRequest request = (WebRequest) control.getMock();
-
-        request.getSession(create);
-        control.setReturnValue(session);
+        WebRequest request = (WebRequest)newMock(WebRequest.class);
+        
+        expect(request.getSession(create)).andReturn(session);
 
         return request;
     }
 
     private WebRequest newRequest(WebSession session)
     {
-        MockControl control = newControl(WebRequest.class);
-        WebRequest request = (WebRequest) control.getMock();
+        WebRequest request = (WebRequest)newMock(WebRequest.class);
 
-        request.getSession(true);
-        control.setReturnValue(session);
+        expect(request.getSession(true)).andReturn(session);
 
         return request;
     }
@@ -61,11 +58,9 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
     private StateObjectFactory newFactory(Object stateObject)
     {
-        MockControl control = newControl(StateObjectFactory.class);
-        StateObjectFactory factory = (StateObjectFactory) control.getMock();
+        StateObjectFactory factory = (StateObjectFactory)newMock(StateObjectFactory.class);
 
-        factory.createStateObject();
-        control.setReturnValue(stateObject);
+        expect(factory.createStateObject()).andReturn(stateObject);
 
         return factory;
     }
@@ -194,8 +189,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
     {
         SessionStoreOptimized optimized = (SessionStoreOptimized) newMock(SessionStoreOptimized.class);
 
-        optimized.isStoreToSessionNeeded();
-        setReturnValue(optimized,dirty);
+        expect(optimized.isStoreToSessionNeeded()).andReturn(dirty);
 
         return optimized;
     }

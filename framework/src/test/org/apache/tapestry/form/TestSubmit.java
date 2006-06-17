@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.aryEq;
+import static org.easymock.EasyMock.expect;
+
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -27,7 +30,6 @@ import org.apache.tapestry.listener.ListenerInvokerTerminator;
 import org.apache.tapestry.test.Creator;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidationConstants;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.Submit}.
@@ -42,10 +44,8 @@ public class TestSubmit extends BaseFormComponentTestCase
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class);
 
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IForm form = (IForm)newMock(IForm.class);
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cycle, form);
@@ -64,12 +64,9 @@ public class TestSubmit extends BaseFormComponentTestCase
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class);
 
-        MockControl delegatec = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IValidationDelegate delegate = newDelegate();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cycle, form);
@@ -77,9 +74,8 @@ public class TestSubmit extends BaseFormComponentTestCase
         trainWasPrerendered(form, writer, submit, false);
 
         trainGetDelegate(form, delegate);
-
+        
         delegate.setFormComponent(submit);
-        delegatec.setVoidCallable();
 
         trainGetElementId(form, submit, "fred");
 
@@ -109,12 +105,9 @@ public class TestSubmit extends BaseFormComponentTestCase
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
         { "disabled", Boolean.TRUE });
 
-        MockControl delegatec = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IValidationDelegate delegate = newDelegate();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cycle, form);
@@ -124,7 +117,6 @@ public class TestSubmit extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(submit);
-        delegatec.setVoidCallable();
 
         trainGetElementId(form, submit, "fred");
 
@@ -151,12 +143,9 @@ public class TestSubmit extends BaseFormComponentTestCase
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
         { "label", "flintstone" });
 
-        MockControl delegatec = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) delegatec.getMock();
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IValidationDelegate delegate = newDelegate();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cycle, form);
@@ -166,7 +155,6 @@ public class TestSubmit extends BaseFormComponentTestCase
         trainGetDelegate(form, delegate);
 
         delegate.setFormComponent(submit);
-        delegatec.setVoidCallable();
 
         trainGetElementId(form, submit, "fred");
 
@@ -198,19 +186,16 @@ public class TestSubmit extends BaseFormComponentTestCase
         { "disabled", Boolean.TRUE });
 
         IValidationDelegate delegate = newDelegate();
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cycle, form);
 
         trainWasPrerendered(form, writer, submit, false);
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
-
+        expect(form.getDelegate()).andReturn(delegate);
+        
         delegate.setFormComponent(submit);
 
         trainGetElementId(form, submit, "fred");
@@ -230,19 +215,16 @@ public class TestSubmit extends BaseFormComponentTestCase
         Submit submit = (Submit) creator.newInstance(Submit.class);
 
         IValidationDelegate delegate = newDelegate();
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cycle, form);
 
         trainWasPrerendered(form, writer, submit, false);
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
-
+        expect(form.getDelegate()).andReturn(delegate);
+        
         delegate.setFormComponent(submit);
 
         trainGetElementId(form, submit, "fred");
@@ -263,19 +245,16 @@ public class TestSubmit extends BaseFormComponentTestCase
         Submit submit = (Submit) creator.newInstance(Submit.class);
 
         IValidationDelegate delegate = newDelegate();
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cycle, form);
 
         trainWasPrerendered(form, writer, submit, false);
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
-
+        expect(form.getDelegate()).andReturn(delegate);
+        
         delegate.setFormComponent(submit);
 
         trainGetElementId(form, submit, "fred");
@@ -301,18 +280,15 @@ public class TestSubmit extends BaseFormComponentTestCase
         submit.setBinding("selected", binding);
 
         IValidationDelegate delegate = newDelegate();
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IForm form = newForm();
+        IRequestCycle cycle = newCycle();
         IMarkupWriter writer = newWriter();
 
         trainGetForm(cycle, form);
 
         trainWasPrerendered(form, writer, submit, false);
 
-        form.getDelegate();
-        formc.setReturnValue(delegate);
+        expect(form.getDelegate()).andReturn(delegate);
 
         delegate.setFormComponent(submit);
 
@@ -380,18 +356,15 @@ public class TestSubmit extends BaseFormComponentTestCase
     {
         IActionListener action = newListener();
         MockForm form = new MockForm();
-        MockControl cycleControl = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cycleControl.getMock();
-
+        IRequestCycle cycle = newCycle();
+        
         Object parameter = new Object();
         Creator creator = new Creator();
         Submit submit = (Submit) creator.newInstance(Submit.class, new Object[]
         { "action", action, "parameters", parameter, "listenerInvoker",
                 new ListenerInvokerTerminator() });
-
-        cycle.setListenerParameters(new Object[]
-        { parameter });
-        cycleControl.setMatcher(MockControl.ARRAY_MATCHER);
+        
+        cycle.setListenerParameters(aryEq(new Object[] { parameter }));
 
         replayControls();
 
@@ -412,8 +385,7 @@ public class TestSubmit extends BaseFormComponentTestCase
     {
         IActionListener action = newListener();
         MockForm form = new MockForm();
-        MockControl cycleControl = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cycleControl.getMock();
+        IRequestCycle cycle = newCycle();
 
         Collection parameters = new LinkedList();
         parameters.add("p1");
@@ -424,9 +396,7 @@ public class TestSubmit extends BaseFormComponentTestCase
         { "action", action, "parameters", parameters, "listenerInvoker",
                 new ListenerInvokerTerminator() });
 
-        cycle.setListenerParameters(new Object[]
-        { "p1", "p2" });
-        cycleControl.setMatcher(MockControl.ARRAY_MATCHER);
+        cycle.setListenerParameters(aryEq(new Object[]{ "p1", "p2" }));
 
         replayControls();
 

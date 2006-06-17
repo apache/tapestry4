@@ -14,15 +14,16 @@
 
 package org.apache.tapestry.dojo.form;
 
-import java.util.HashMap;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
 
-import org.apache.hivemind.test.AggregateArgumentsMatcher;
-import org.apache.hivemind.test.ArgumentMatcher;
+import java.util.Map;
+
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.IgnoreMatcher;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
@@ -34,7 +35,6 @@ import org.apache.tapestry.form.ValidatableFieldSupport;
 import org.apache.tapestry.json.IJSONWriter;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.TextField}.
@@ -48,18 +48,13 @@ public class TestAutocompleter extends BaseFormComponentTestCase
     {
         String[] values = { "red", "green", "blue" };
         StringPropertySelectionModel model = new StringPropertySelectionModel(values);
-        
-        MockControl vfsc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport vfs = (ValidatableFieldSupport) vfsc.getMock();
+        ValidatableFieldSupport vfs = (ValidatableFieldSupport)newMock(ValidatableFieldSupport.class);
         
         Autocompleter component = (Autocompleter) newInstance(Autocompleter.class, new Object[]
         { "model", model, "validatableFieldSupport", vfs });
         
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-        
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IForm form = (IForm) newMock(IForm.class);
         
         IMarkupWriter writer = newWriter();
         
@@ -77,7 +72,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         String key = "0";
         String value = values[0];
         
-        trainGetParameter(cycle, "barney_selected", key);
+        trainGetParameter(cycle, "barney", key);
         
         try
         {
@@ -101,11 +96,8 @@ public class TestAutocompleter extends BaseFormComponentTestCase
     {
         Autocompleter component = (Autocompleter) newInstance(Autocompleter.class);
         
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-        
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IForm form = (IForm) newMock(IForm.class);
         
         IMarkupWriter writer = newWriter();
         
@@ -135,11 +127,8 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         
         ValidatableFieldSupport vfs = (ValidatableFieldSupport) newMock(ValidatableFieldSupport.class);
         
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
-        
-        MockControl formc = newControl(IForm.class);
-        IForm form = (IForm) formc.getMock();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        IForm form = (IForm) newMock(IForm.class);
         
         IMarkupWriter writer = newBufferWriter();
         
@@ -186,11 +175,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         PageRenderSupport prs = newPageRenderSupport();
         trainGetPageRenderSupport(cycle, prs);
         
-        script.execute(cycle, prs, new HashMap());
-        
-        ArgumentMatcher ignore = new IgnoreMatcher();
-        getControl(script).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, null, ignore }));
+        script.execute(eq(cycle), eq(prs), isA(Map.class));
         
         replayControls();
         
@@ -206,8 +191,7 @@ public class TestAutocompleter extends BaseFormComponentTestCase
         String[] values = { "red", "green", "blue", "yellow" };
         StringPropertySelectionModel model = new StringPropertySelectionModel(values);
         
-        MockControl cyclec = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) cyclec.getMock();
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
         
         IJSONWriter json = newBufferJSONWriter();
         
@@ -228,14 +212,12 @@ public class TestAutocompleter extends BaseFormComponentTestCase
     
     public void testIsRequired()
     {
-        MockControl supportc = newControl(ValidatableFieldSupport.class);
-        ValidatableFieldSupport support = (ValidatableFieldSupport) supportc.getMock();
+        ValidatableFieldSupport support = (ValidatableFieldSupport)newMock(ValidatableFieldSupport.class);
         
         Autocompleter field = (Autocompleter) newInstance(Autocompleter.class, new Object[]
         { "validatableFieldSupport", support, });
         
-        support.isRequired(field);
-        supportc.setReturnValue(true);
+        expect(support.isRequired(field)).andReturn(true);
         
         replayControls();
         

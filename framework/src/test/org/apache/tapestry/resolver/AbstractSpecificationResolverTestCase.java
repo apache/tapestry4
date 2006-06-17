@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.resolver;
 
+import static org.easymock.EasyMock.expect;
+
 import java.net.URL;
 
 import org.apache.commons.logging.Log;
@@ -24,7 +26,6 @@ import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
 
 /**
  * Base class for testing specification resolvers.
@@ -52,11 +53,9 @@ public abstract class AbstractSpecificationResolverTestCase extends HiveMindTest
 
     protected Resource newResource(URL url)
     {
-        MockControl control = newControl(Resource.class);
-        Resource resource = (Resource) control.getMock();
+        Resource resource = (Resource)newMock(Resource.class);
 
-        resource.getResourceURL();
-        control.setReturnValue(url);
+        expect(resource.getResourceURL()).andReturn(url);
 
         return resource;
     }
@@ -68,8 +67,7 @@ public abstract class AbstractSpecificationResolverTestCase extends HiveMindTest
 
     protected void train(Log log, String message)
     {
-        log.isDebugEnabled();
-        setReturnValue(log, true);
+        expect(log.isDebugEnabled()).andReturn(true);
 
         log.debug(message);
     }
@@ -91,62 +89,52 @@ public abstract class AbstractSpecificationResolverTestCase extends HiveMindTest
 
     protected void trainContainsPage(INamespace namespace, String pageName, boolean containsPage)
     {
-        namespace.containsPage(pageName);
-        setReturnValue(namespace, containsPage);
+        expect(namespace.containsPage(pageName)).andReturn(containsPage);
     }
 
     protected void trainFindPageSpecification(ISpecificationResolverDelegate delegate, IRequestCycle cycle, INamespace application, String pageName, IComponentSpecification spec)
     {
-        delegate.findPageSpecification(cycle, application, pageName);
-        setReturnValue(delegate, spec);
+        expect(delegate.findPageSpecification(cycle, application, pageName)).andReturn(spec);
     }
 
     protected void trainGetApplicationNamespace(ISpecificationSource source, INamespace application)
     {
-        source.getApplicationNamespace();
-        setReturnValue(source, application);
+        expect(source.getApplicationNamespace()).andReturn(application);
     }
 
     protected void trainGetChildNamespace(INamespace child, String name, INamespace application)
     {
-        application.getChildNamespace(name);
-        setReturnValue(application, child);
+        expect(application.getChildNamespace(name)).andReturn(child);
     }
 
     protected void trainGetFrameworkNamespace(ISpecificationSource source, INamespace framework)
     {
-        source.getFrameworkNamespace();
-        setReturnValue(source, framework);
+        expect(source.getFrameworkNamespace()).andReturn(framework);
     }
 
     protected void trainGetNamespaceId(INamespace namespace, String namespaceId)
     {
-        namespace.getNamespaceId();
-        setReturnValue(namespace, namespaceId);
+        expect(namespace.getNamespaceId()).andReturn(namespaceId);
     }
 
     protected void trainGetSpecificationLocation(INamespace namespace, Resource resource)
     {
-        namespace.getSpecificationLocation();
-        setReturnValue(namespace, resource);
+        expect(namespace.getSpecificationLocation()).andReturn(resource);
     }
 
     protected void trainGetSpecificationLocation(INamespace namespace, Resource root, String path)
     {
-        namespace.getSpecificationLocation();
-        setReturnValue(namespace, root.getRelativeResource(path));
+        expect(namespace.getSpecificationLocation()).andReturn(root.getRelativeResource(path));
     }
 
     protected void trainIsApplicationNamespace(INamespace namespace, boolean isApplicationNamespace)
     {
-        namespace.isApplicationNamespace();
-        setReturnValue(namespace, isApplicationNamespace);
+        expect(namespace.isApplicationNamespace()).andReturn(isApplicationNamespace);
     }
 
     protected void trainIsDebugEnabled(Log log, boolean isDebugEnabled)
     {
-        log.isDebugEnabled();
-        setReturnValue(log, isDebugEnabled);
+        expect(log.isDebugEnabled()).andReturn(isDebugEnabled);
     }
 
 }

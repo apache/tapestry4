@@ -22,7 +22,6 @@ import org.apache.tapestry.form.ValidationMessages;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
 
 public class TestMaxLength extends BaseValidatorTestCase
 {
@@ -96,13 +95,13 @@ public class TestMaxLength extends BaseValidatorTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         IFormComponent field = newField("My Field", "myfield");
-        MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext) contextc
-                .getMock();
+        
+        FormComponentContributorContext context = 
+            (FormComponentContributorContext)newMock(FormComponentContributorContext.class);
 
         context.includeClasspathScript("/org/apache/tapestry/form/validator/StringValidator.js");
 
-        trainFormatMessage(contextc, context, null, ValidationStrings.VALUE_TOO_LONG, new Object[]
+        trainFormatMessage(context, null, ValidationStrings.VALUE_TOO_LONG, new Object[]
         { new Integer(20), "My Field" }, "default\\message");
 
         context

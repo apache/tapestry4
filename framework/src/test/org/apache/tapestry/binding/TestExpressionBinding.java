@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.binding;
 
+import static org.easymock.EasyMock.*;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.coerce.ValueConverter;
@@ -31,41 +32,32 @@ public class TestExpressionBinding extends BindingTestCase
 {
 
     public void testInvariant()
-    {
-        MockControl evc = newControl(ExpressionEvaluator.class);
-        ExpressionEvaluator ev = (ExpressionEvaluator) evc.getMock();
-
-        MockControl ecc = newControl(ExpressionCache.class);
-        ExpressionCache ec = (ExpressionCache) ecc.getMock();
-
-        MockControl cc = newControl(IComponent.class);
-        IComponent component = (IComponent) cc.getMock();
+    {   
+        ExpressionEvaluator ev = createMock(ExpressionEvaluator.class);
+        ExpressionCache ec = createMock(ExpressionCache.class);
+        IComponent component = createMock(IComponent.class);
 
         Object compiled = new Object();
-
+        
         Object expressionValue = "EXPRESSION-VALUE";
-
+        
         ValueConverter vc = newValueConverter();
-
-        ec.getCompiledExpression("exp");
-        ecc.setReturnValue(compiled);
-
-        ev.isConstant("exp");
-        evc.setReturnValue(true);
-
-        ev.readCompiled(component, compiled);
-        evc.setReturnValue(expressionValue);
-
-        component.getExtendedId();
-        cc.setReturnValue("Foo/bar.baz");
-
-        replayControls();
-
+        
+        expect(ec.getCompiledExpression("exp")).andReturn(compiled);
+        
+        expect(ev.isConstant("exp")).andReturn(true);
+        
+        expect(ev.readCompiled(component, compiled)).andReturn(expressionValue);
+        
+        expect(component.getExtendedId()).andReturn("Foo/bar.baz");
+        
+        replay(ev,ec,component);
+        
         ExpressionBinding b = new ExpressionBinding("param", fabricateLocation(1), vc, component,
                 "exp", ev, ec);
-
+        
         assertEquals(true, b.isInvariant());
-
+        
         // A second time, to test the 'already initialized'
         // code path.
 
@@ -79,7 +71,7 @@ public class TestExpressionBinding extends BindingTestCase
 
         assertEquals("ExpressionBinding[Foo/bar.baz exp]", b.toString());
 
-        verifyControls();
+        verify(ev,ec,component);
     }
 
     public void testVariant()

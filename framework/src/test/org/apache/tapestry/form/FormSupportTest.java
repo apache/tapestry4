@@ -14,9 +14,12 @@
 
 package org.apache.tapestry.form;
 
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
@@ -27,6 +30,8 @@ import org.apache.tapestry.NestedMarkupWriter;
 import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.event.BrowserEvent;
+import org.apache.tapestry.services.impl.ComponentEventInvoker;
 import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
@@ -163,7 +168,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         form.setBody(body);
 
-        trainRegister(support);
+        trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
         { "service" });
@@ -194,7 +199,7 @@ public class FormSupportTest extends BaseComponentTestCase
         trainGetFocusField(delegate, "wilma");
         trainGetFieldFocus(cycle, null);
 
-        trainFocus(support);
+        trainFocus(support, form);
 
         trainSetFieldFocus(cycle);
 
@@ -211,14 +216,15 @@ public class FormSupportTest extends BaseComponentTestCase
         IRequestCycle cycle = newCycle();
         IValidationDelegate delegate = newDelegate();
         MockForm form = new MockForm(delegate);
-
+        ComponentEventInvoker invoker = (ComponentEventInvoker)newMock(ComponentEventInvoker.class);
+        
         trainIsRewound(cycle, form, true);
         trainGetPageRenderSupport(cycle, null);
 
         replayControls();
 
         final FormSupport fs = new FormSupportImpl(writer, cycle, form);
-
+        
         verifyControls();
 
         delegate.clear();
@@ -233,7 +239,12 @@ public class FormSupportTest extends BaseComponentTestCase
         { barney1, wilma, barney2 }, writer);
 
         form.setBody(body);
-
+        form.setEventInvoker(invoker);
+        
+        trainExtractBrowserEvent(cycle);
+        
+        invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
+        
         replayControls();
 
         assertEquals(FormConstants.SUBMIT_NORMAL, fs.rewind());
@@ -272,7 +283,7 @@ public class FormSupportTest extends BaseComponentTestCase
             }
         });
 
-        trainRegister(support);
+        trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
         { "service" });
@@ -345,7 +356,7 @@ public class FormSupportTest extends BaseComponentTestCase
             }
         });
 
-        trainRegister(support);
+        trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
         { "service" });
@@ -463,7 +474,7 @@ public class FormSupportTest extends BaseComponentTestCase
             }
         });
 
-        trainRegister(support);
+        trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
         { "service" });
@@ -541,7 +552,7 @@ public class FormSupportTest extends BaseComponentTestCase
             }
         });
 
-        trainRegister(support);
+        trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
         { "service" });
@@ -575,7 +586,8 @@ public class FormSupportTest extends BaseComponentTestCase
         IRequestCycle cycle = newCycle();
         IValidationDelegate delegate = newDelegate();
         MockForm form = new MockForm(delegate);
-
+        ComponentEventInvoker invoker = org.easymock.classextension.EasyMock.createMock(ComponentEventInvoker.class);
+        
         trainIsRewound(cycle, form, true);
 
         trainGetPageRenderSupport(cycle, null);
@@ -595,7 +607,12 @@ public class FormSupportTest extends BaseComponentTestCase
         IRender body = newComponentRenderBody(fs, component, writer);
 
         form.setBody(body);
-
+        form.setEventInvoker(invoker);
+        
+        trainExtractBrowserEvent(cycle);
+        
+        invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
+        
         replayControls();
 
         assertEquals(FormConstants.SUBMIT_REFRESH, fs.rewind());
@@ -631,7 +648,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         form.setBody(body);
 
-        trainRegister(support);
+        trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
         { "action" });
@@ -708,7 +725,7 @@ public class FormSupportTest extends BaseComponentTestCase
             }
         });
 
-        trainRegister(support);
+        trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
         { "service" });
@@ -754,7 +771,9 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         IValidationDelegate delegate = newDelegate();
-
+        ComponentEventInvoker invoker = 
+            org.easymock.classextension.EasyMock.createMock(ComponentEventInvoker.class);
+        
         MockForm form = new MockForm(delegate);
 
         trainIsRewound(cycle, form, true);
@@ -776,7 +795,12 @@ public class FormSupportTest extends BaseComponentTestCase
         IRender body = newComponentRenderBody(fs, component, writer);
 
         form.setBody(body);
-
+        form.setEventInvoker(invoker);
+        
+        trainExtractBrowserEvent(cycle);
+        
+        invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
+        
         replayControls();
 
         assertEquals(FormConstants.SUBMIT_NORMAL, fs.rewind());
@@ -900,7 +924,9 @@ public class FormSupportTest extends BaseComponentTestCase
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
         IValidationDelegate delegate = newDelegate();
-
+        ComponentEventInvoker invoker = 
+            org.easymock.classextension.EasyMock.createMock(ComponentEventInvoker.class);
+        
         MockForm form = new MockForm(delegate, l);
 
         trainIsRewound(cycle, form, true);
@@ -927,7 +953,12 @@ public class FormSupportTest extends BaseComponentTestCase
         { barney1, wilma }, writer);
 
         form.setBody(body);
-
+        form.setEventInvoker(invoker);
+        
+        trainExtractBrowserEvent(cycle);
+        
+        invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
+        
         replayControls();
 
         try
@@ -976,7 +1007,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         form.setBody(body);
 
-        trainRegister(support);
+        trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
         { "service" });
@@ -1060,7 +1091,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         form.setBody(body);
 
-        trainRegister(support);
+        trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
         { "service" });
@@ -1132,7 +1163,7 @@ public class FormSupportTest extends BaseComponentTestCase
 
         form.setBody(body);
 
-        trainRegister(support);
+        trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
         { "service" });
@@ -1179,7 +1210,9 @@ public class FormSupportTest extends BaseComponentTestCase
         IRequestCycle cycle = newCycle();
         IValidationDelegate delegate = newDelegate();
         MockForm form = new MockForm(delegate);
-
+        ComponentEventInvoker invoker = 
+            org.easymock.classextension.EasyMock.createMock(ComponentEventInvoker.class);
+        
         trainIsRewound(cycle, form, true);
 
         trainGetPageRenderSupport(cycle, null);
@@ -1199,7 +1232,12 @@ public class FormSupportTest extends BaseComponentTestCase
         IRender body = newComponentRenderBody(fs, component, writer);
 
         form.setBody(body);
-
+        form.setEventInvoker(invoker);
+        
+        trainExtractBrowserEvent(cycle);
+        
+        invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
+        
         replayControls();
 
         assertEquals(FormConstants.SUBMIT_NORMAL, fs.rewind());
@@ -1213,7 +1251,9 @@ public class FormSupportTest extends BaseComponentTestCase
         IRequestCycle cycle = newCycle();
         IValidationDelegate delegate = newDelegate();
         MockForm form = new MockForm(delegate);
-
+        ComponentEventInvoker invoker = 
+            org.easymock.classextension.EasyMock.createMock(ComponentEventInvoker.class);
+        
         trainIsRewound(cycle, form, true);
 
         trainGetPageRenderSupport(cycle, null);
@@ -1230,6 +1270,10 @@ public class FormSupportTest extends BaseComponentTestCase
 
         writer.print("DEFERRED");
 
+        trainExtractBrowserEvent(cycle);
+        
+        invoker.invokeFormListeners(eq(fs), eq(cycle), isA(BrowserEvent.class));
+        
         replayControls();
 
         IRender body = new IRender()
@@ -1250,7 +1294,8 @@ public class FormSupportTest extends BaseComponentTestCase
         };
 
         form.setBody(body);
-
+        form.setEventInvoker(invoker);
+        
         assertEquals(FormConstants.SUBMIT_NORMAL, fs.rewind());
 
         verifyControls();
@@ -1287,7 +1332,7 @@ public class FormSupportTest extends BaseComponentTestCase
             }
         });
 
-        trainRegister(support);
+        trainRegister(support, form, "myform");
 
         trainGetParameterNames(link, new String[]
         { "service" });
@@ -1346,9 +1391,9 @@ public class FormSupportTest extends BaseComponentTestCase
         writer.attribute("style", "display:none;");
     }
 
-    private void trainFocus(PageRenderSupport support)
+    private void trainFocus(PageRenderSupport support, IForm form)
     {
-        support.addInitializationScript("Tapestry.set_focus('wilma');");
+        support.addInitializationScript(form, "tapestry.form.focusField('wilma');");
     }
 
     private void trainGetFieldFocus(IRequestCycle cycle, Object value)
@@ -1409,16 +1454,18 @@ public class FormSupportTest extends BaseComponentTestCase
 
     protected void trainIsRewound(IRequestCycle cycle, IForm form, boolean isRewound)
     {
-        cycle.isRewound(form);
-        setReturnValue(cycle, isRewound);
+        expect(cycle.isRewound(form)).andReturn(isRewound);
     }
 
-    private void trainRegister(PageRenderSupport support)
+    private void trainRegister(PageRenderSupport support, IForm form, String formId)
     {
-        support.addExternalScript(new ClasspathResource(getClassResolver(),
+        /* support.addExternalScript(new ClasspathResource(getClassResolver(),
                 "/org/apache/tapestry/form/Form.js"));
 
         support.addInitializationScript("Tapestry.register_form('myform');");
+        */
+        support.addInitializationScript(form, "dojo.require(\"tapestry.form\");"
+                + "tapestry.form.registerForm('" + formId + "');");
     }
 
     private void trainSetFieldFocus(IRequestCycle cycle)

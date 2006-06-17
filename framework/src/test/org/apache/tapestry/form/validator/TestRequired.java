@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.form.validator;
 
+import static org.easymock.EasyMock.expect;
+
 import java.util.Collections;
 
 import org.apache.tapestry.IMarkupWriter;
@@ -21,11 +23,11 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.FormComponentContributorContext;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.ValidationMessages;
+import org.apache.tapestry.json.JSONObject;
 import org.apache.tapestry.valid.ValidationConstants;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationStrings;
 import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.validator.Required}.
@@ -153,33 +155,31 @@ public class TestRequired extends BaseValidatorTestCase
         verifyControls();
     }
 
+    // TODO: Need to validate JSON object contributions!
     public void testRenderContribution()
     {
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newCycle();
-
-        MockControl contextc = newControl(FormComponentContributorContext.class);
-        FormComponentContributorContext context = (FormComponentContributorContext) contextc
-                .getMock();
-
+        
+        FormComponentContributorContext context = 
+            (FormComponentContributorContext)newMock(FormComponentContributorContext.class);
+        
         IFormComponent field = newField("Fred", "fred");
-
+        
         context.registerForFocus(ValidationConstants.REQUIRED_FIELD);
-
+        
+        expect(context.getProfile()).andReturn(new JSONObject());
+        
         trainFormatMessage(
-                contextc,
                 context,
                 null,
                 ValidationStrings.REQUIRED_FIELD,
                 new Object[]
                 { "Fred" },
                 "Default\\Message for Fred.");
-
-        context
-                .addSubmitHandler("function(event) { Tapestry.require_field(event, 'fred', 'Default\\\\Message for Fred.'); }");
-
+        
         replayControls();
-
+        
         new Required().renderContribution(writer, cycle, context, field);
         verifyControls();
     }

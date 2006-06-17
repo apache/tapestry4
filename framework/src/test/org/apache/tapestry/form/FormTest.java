@@ -14,15 +14,16 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.hivemind.test.AggregateArgumentsMatcher;
-import org.apache.hivemind.test.ArgumentMatcher;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+
 import org.apache.tapestry.BaseComponentTestCase;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IgnoreMatcher;
 import org.apache.tapestry.RenderRewoundException;
 import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.DirectServiceParameter;
@@ -31,7 +32,6 @@ import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.listener.ListenerInvoker;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.web.WebResponse;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.form.Form}. Most of the testing is, still alas, done with
@@ -54,15 +54,12 @@ public class FormTest extends BaseComponentTestCase
 
     protected void trainGetNextActionId(IRequestCycle cycle, String actionId)
     {
-        cycle.getNextActionId();
-        setReturnValue(cycle, actionId);
+        expect(cycle.getNextActionId()).andReturn(actionId);
     }
 
     protected void trainGetUniqueId(IRequestCycle cycle, String baseId, String uniqueId)
     {
-        cycle.getUniqueId(baseId);
-
-        setReturnValue(cycle, uniqueId);
+        expect(cycle.getUniqueId(baseId)).andReturn(uniqueId);
     }
 
     protected WebResponse newResponse()
@@ -72,8 +69,7 @@ public class FormTest extends BaseComponentTestCase
 
     protected void trainGetNamespace(WebResponse response, String namespace)
     {
-        response.getNamespace();
-        setReturnValue(response, namespace);
+        expect(response.getNamespace()).andReturn(namespace);
     }
 
     protected IValidationDelegate newDelegate()
@@ -101,11 +97,9 @@ public class FormTest extends BaseComponentTestCase
 
         trainGetNextActionId(cycle, "7");
 
-        support.rewind();
-        setReturnValue(support, FormConstants.SUBMIT_NORMAL);
-
-        delegate.getHasErrors();
-        setReturnValue(delegate, false);
+        expect(support.rewind()).andReturn(FormConstants.SUBMIT_NORMAL);
+        
+        expect(delegate.getHasErrors()).andReturn(false);
 
         invoker.invokeListener(listener, form, cycle);
 
@@ -233,16 +227,12 @@ public class FormTest extends BaseComponentTestCase
 
     private void trainRender(FormSupport support, ILink link, IRender render, String scheme, Integer port)
     {
-        support.render("post", render, link, scheme, port);
-        getControl(support).setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
-        { null, new IgnoreMatcher(), null, null }));
+        support.render(eq("post"), isA(IRender.class), eq(link), eq(scheme), eq(port));
     }
 
     protected void trainIsRewinding(FormSupport support, boolean isRewinding)
     {
-
-        support.isRewinding();
-        setReturnValue(support, isRewinding);
+        expect(support.isRewinding()).andReturn(isRewinding);
     }
 
     public void testFindCancelListener()
@@ -332,7 +322,7 @@ public class FormTest extends BaseComponentTestCase
         IValidationDelegate delegate = newDelegate(true);
 
         replayControls();
-
+        
         Form form = (Form) newInstance(Form.class, new Object[]
         { "delegate", delegate, "success", success, "cancel", cancel, "refresh", refresh,
                 "listener", listener });
@@ -344,12 +334,10 @@ public class FormTest extends BaseComponentTestCase
 
     private IValidationDelegate newDelegate(boolean hasErrors)
     {
-        MockControl control = newControl(IValidationDelegate.class);
-        IValidationDelegate delegate = (IValidationDelegate) control.getMock();
-
-        delegate.getHasErrors();
-        control.setReturnValue(hasErrors);
-
+        IValidationDelegate delegate = (IValidationDelegate) newMock(IValidationDelegate.class);
+        
+        expect(delegate.getHasErrors()).andReturn(hasErrors);
+        
         return delegate;
     }
 }
