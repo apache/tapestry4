@@ -173,6 +173,7 @@ public class PersistentPropertyDataEncoderTest extends HiveMindTestCase
      * 
      * @see org.apache.tapestry.junit.utils.TestDataSqueezer#testClassLoader()
      */
+    /*
     public void testEncodeDecodeCustomClass() throws Exception
     {
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
@@ -223,7 +224,7 @@ public class PersistentPropertyDataEncoderTest extends HiveMindTestCase
         assertEquals("fred", PropertyUtils.read(instance2, "name"));
         assertEquals("flintstone", PropertyUtils.read(instance2, "value"));
     }
-
+*/
     private ClassResolver newClassResolver(File jarFile) throws Exception
     {
         URLClassLoader classLoader = new URLClassLoader(new URL[]
@@ -232,5 +233,4 @@ public class PersistentPropertyDataEncoderTest extends HiveMindTestCase
         return new DefaultClassResolver(classLoader);
 
     }
-
 }

@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.portlet;
 
+import static org.easymock.EasyMock.*;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletConfig;
@@ -23,7 +25,6 @@ import javax.portlet.RenderResponse;
 
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.portlet.ApplicationPortlet}.
@@ -66,19 +67,17 @@ public class TestApplicationPortlet extends HiveMindTestCase
     private Registry newRegistry(PortletApplicationInitializer initializer,
             ActionRequestServicer actionRequestServicer, RenderRequestServicer renderRequestServicer)
     {
-        MockControl control = newControl(Registry.class);
-        Registry registry = (Registry) control.getMock();
+        Registry registry = (Registry) newMock(Registry.class);
 
-        registry.getService(
+        expect(registry.getService(
                 "tapestry.portlet.PortletApplicationInitializer",
-                PortletApplicationInitializer.class);
-        control.setReturnValue(initializer);
+                PortletApplicationInitializer.class)).andReturn(initializer);
 
-        registry.getService("tapestry.portlet.ActionRequestServicer", ActionRequestServicer.class);
-        control.setReturnValue(actionRequestServicer);
+        expect(registry.getService("tapestry.portlet.ActionRequestServicer", ActionRequestServicer.class))
+        .andReturn(actionRequestServicer);
 
-        registry.getService("tapestry.portlet.RenderRequestServicer", RenderRequestServicer.class);
-        control.setReturnValue(renderRequestServicer);
+        expect(registry.getService("tapestry.portlet.RenderRequestServicer", RenderRequestServicer.class))
+        .andReturn(renderRequestServicer);
 
         return registry;
     }
@@ -110,34 +109,28 @@ public class TestApplicationPortlet extends HiveMindTestCase
 
     public void testParseOptionalDescriptors() throws Exception
     {
-        MockControl configc = MockControl.createControl(PortletConfig.class);
-        addControl(configc);
-        PortletConfig config = (PortletConfig) configc.getMock();
+        PortletConfig config = (PortletConfig)newMock(PortletConfig.class);
+        PortletContext context = (PortletContext)newMock(PortletContext.class);
 
-        MockControl contextc = MockControl.createControl(PortletContext.class);
-        addControl(contextc);
-        PortletContext context = (PortletContext) contextc.getMock();
-
-        config.getPortletName();
-        configc.setReturnValue("myportlet", 3);
-
+        checkOrder(config, false);
+        checkOrder(context, false);
+        
+        expect(config.getPortletName()).andReturn("myportlet").anyTimes();
         // Called once in ApplicationPortlet code,
         // then inside PortletWebContextInitializer
 
-        config.getPortletContext();
-        configc.setReturnValue(context, 2);
+        expect(config.getPortletContext()).andReturn(context).anyTimes();
+        
+        expect(context.getResource("/WEB-INF/myportlet/hivemodule.xml"))
+        .andReturn(getClass().getResource("hivemodule-portlet.xml")).anyTimes();
+        
+        expect(context.getResource("/WEB-INF/hivemodule.xml"))
+        .andReturn(getClass().getResource("hivemodule.xml")).anyTimes();
+        
+        expect(context.getResource("/WEB-INF/myportlet/myportlet.application"))
+        .andReturn(null);
 
-        context.getResource("/WEB-INF/myportlet/hivemodule.xml");
-        contextc.setReturnValue(getClass().getResource("hivemodule-portlet.xml"), 2);
-
-        context.getResource("/WEB-INF/hivemodule.xml");
-        contextc.setReturnValue(getClass().getResource("hivemodule.xml"), 2);
-
-        context.getResource("/WEB-INF/myportlet/myportlet.application");
-        contextc.setReturnValue(null);
-
-        context.getResource("/WEB-INF/myportlet.application");
-        contextc.setReturnValue(null);
+        expect(context.getResource("/WEB-INF/myportlet.application")).andReturn(null);
 
         replayControls();
 
@@ -224,7 +217,7 @@ public class TestApplicationPortlet extends HiveMindTestCase
         RenderRequestServicer renderRequestServicer = newRenderRequestServicer();
 
         Registry registry = newRegistry(initializer, actionRequestServicer, renderRequestServicer);
-
+        
         PortletConfig config = newConfig();
 
         initializer.initialize(config);

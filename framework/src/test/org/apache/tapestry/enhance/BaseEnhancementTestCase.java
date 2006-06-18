@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+
 import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
@@ -31,8 +33,7 @@ public abstract class BaseEnhancementTestCase extends HiveMindTestCase
     {
         IComponentSpecification spec = newSpec();
 
-        spec.getLocation();
-        setReturnValue(spec, location);
+        expect(spec.getLocation()).andReturn(location);
 
         return spec;
     }
@@ -50,8 +51,8 @@ public abstract class BaseEnhancementTestCase extends HiveMindTestCase
     protected void trainAddInjectedField(EnhancementOperation op, String fieldName,
             Class fieldType, Object injectedValue, String injectedFieldName)
     {
-        op.addInjectedField(fieldName, fieldType, injectedValue);
-        setReturnValue(op, injectedFieldName);
+        expect(op.addInjectedField(fieldName, fieldType, injectedValue))
+        .andReturn(injectedFieldName);
 
     }
 
@@ -68,20 +69,17 @@ public abstract class BaseEnhancementTestCase extends HiveMindTestCase
     protected void trainGetAccessorMethodName(EnhancementOperation op, String propertyName,
             String methodName)
     {
-        op.getAccessorMethodName(propertyName);
-        setReturnValue(op, methodName);
+        expect(op.getAccessorMethodName(propertyName)).andReturn(methodName);
     }
 
     protected void trainGetPropertyType(EnhancementOperation op, String propertyName,
             Class propertyType)
     {
-        op.getPropertyType(propertyName);
-        setReturnValue(op, propertyType);
+        expect(op.getPropertyType(propertyName)).andReturn(propertyType);
     }
 
     protected void trainGetBaseClass(EnhancementOperation op, Class baseClass)
     {
-        op.getBaseClass();
-        setReturnValue(op, baseClass);
+        expect(op.getBaseClass()).andReturn(baseClass);
     }
 }

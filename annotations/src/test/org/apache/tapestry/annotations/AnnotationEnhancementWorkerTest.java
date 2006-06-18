@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.annotations;
 
+import static org.easymock.EasyMock.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -41,8 +42,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
     {
         EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
 
-        op.getBaseClass();
-        setReturnValue(op, baseClass);
+        expect(op.getBaseClass()).andReturn(baseClass);
 
         return op;
     }
@@ -235,12 +235,10 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
         classWorker.performEnhancement(op, spec, DeprecatedBean.class, location);
         setThrowable(classWorker, t);
 
-        log
-                .error(
-                        "An error occured processing annotation @java.lang.Deprecated() of "
-                                + "class org.apache.tapestry.annotations.DeprecatedBean: Simulated failure.",
-                        null,
-                        t);
+        log.error("An error occured processing annotation @java.lang.Deprecated() of "
+                + "class org.apache.tapestry.annotations.DeprecatedBean: Simulated failure.",
+                null,
+                t);
 
         replayControls();
 
@@ -281,8 +279,7 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         Resource classResource = newResource(AnnotatedPage.class);
 
-        secondary.canEnhance(method);
-        setReturnValue(secondary, true);
+        expect(secondary.canEnhance(method)).andReturn(true);
 
         secondary.peformEnhancement(op, spec, method, classResource);
 
@@ -311,13 +308,12 @@ public class AnnotationEnhancementWorkerTest extends BaseAnnotationTestCase
 
         RuntimeException cause = new RuntimeException("Forced.");
 
-        secondary.canEnhance(method);
-        setThrowable(secondary, cause);
-
+        expect(secondary.canEnhance(method)).andThrow(cause);
+        
         log.error(AnnotationMessages.failureEnhancingMethod(method, cause), null, cause);
-
+        
         replayControls();
-
+        
         AnnotationEnhancementWorker worker = new AnnotationEnhancementWorker();
         worker.setSecondaryAnnotationWorker(secondary);
         worker.setMethodWorkers(Collections.EMPTY_MAP);

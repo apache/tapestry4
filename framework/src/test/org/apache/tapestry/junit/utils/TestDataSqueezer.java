@@ -378,7 +378,7 @@ public class TestDataSqueezer extends TestCase
         {
         }
     }
-
+/*
     public void testClassLoader() throws Exception
     {
         File tempDir = new File(System.getProperty("java.io.tmpdir"));
@@ -418,7 +418,7 @@ public class TestDataSqueezer extends TestCase
         assertEquals("fred", PropertyUtils.read(output, "name"));
         assertEquals("flintstone", PropertyUtils.read(output, "value"));
     }
-
+*/
     private ClassResolver newClassResolver(File jarFile) throws Exception
     {
         URLClassLoader classLoader = new URLClassLoader(new URL[]

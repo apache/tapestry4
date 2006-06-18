@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.vlib.services;
 
+import static org.easymock.EasyMock.*;
 import java.io.IOException;
 
 import org.apache.hivemind.test.HiveMindTestCase;
@@ -189,13 +190,11 @@ public class DiscardSessionFilterTest extends HiveMindTestCase
 
     private void trainGetSession(WebRequest request, WebSession session)
     {
-        request.getSession(false);
-        setReturnValue(request, session);
+        expect(request.getSession(false)).andReturn(session);
     }
 
     private void trainGetDiscardSession(ApplicationLifecycle lifecycle, boolean discard)
     {
-        lifecycle.getDiscardSession();
-        setReturnValue(lifecycle, discard);
+        expect(lifecycle.getDiscardSession()).andReturn(discard);
     }
 }

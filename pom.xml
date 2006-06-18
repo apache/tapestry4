@@ -10,6 +10,7 @@
     <name>Tapestry</name>
     <inceptionYear>2006</inceptionYear>
     <url>http://tapestry.apache.org/tapestry4</url>
+    
     <licenses>
         <license>
             <name>Apache Software License 2.0</name>
@@ -17,39 +18,46 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+    
     <organization>
         <name>Apache Software Foundation</name>
         <url>http://www.apache.org</url>
     </organization>
+    
     <issueManagement>
         <system>jira</system>
         <url>http://issues.apache.org/jira/browse/TAPESTRY</url>
     </issueManagement>
+    
     <scm>
         <connection>scm:svn:https://svn.apache.org/repos/asf/tapestry/tapestry4/trunk</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/tapestry/tapestry4/trunk/</developerConnection>
+        <developerConnection>
+            scm:svn:https://svn.apache.org/repos/asf/tapestry/tapestry4/trunk/
+        </developerConnection>
         <url>http://svn.apache.org/viewcvs.cgi/tapestry/tapestry4/trunk</url>
     </scm>
+    
     <mailingLists>
-    <mailingList>
-      <name>Tapestry User List</name>
-      <subscribe>tapestry-users-subscribe@tapestry.apache.org</subscribe>
-      <unsubscribe>tapestry-users-unsubscribe@tapestry.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/mod_mbox/tapestry-users/</archive>
-    </mailingList>
-    <mailingList>
-      <name>Tapestry Developer List</name>
-      <subscribe>tapestry-dev-subscribe@tapestry.apache.org</subscribe>
-      <unsubscribe>tapestry-dev-unsubscribe@tapestry.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/mod_mbox/tapestry-dev/</archive>
-    </mailingList>
-    <mailingList>
-      <name>Tapestry Commits List</name>
-      <subscribe>tapestry-commits-subscribe@tapestry.apache.org</subscribe>
-      <unsubscribe>tapestry-commits-unsubscribe@tapestry.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/mod_mbox/tapestry-commits/</archive>
-    </mailingList>
-  </mailingLists>
+        <mailingList>
+            <name>Tapestry User List</name>
+            <subscribe>tapestry-users-subscribe@tapestry.apache.org</subscribe>
+            <unsubscribe>tapestry-users-unsubscribe@tapestry.apache.org</unsubscribe>
+            <archive>http://mail-archives.apache.org/mod_mbox/tapestry-users/</archive>
+        </mailingList>
+        <mailingList>
+            <name>Tapestry Developer List</name>
+            <subscribe>tapestry-dev-subscribe@tapestry.apache.org</subscribe>
+            <unsubscribe>tapestry-dev-unsubscribe@tapestry.apache.org</unsubscribe>
+            <archive>http://mail-archives.apache.org/mod_mbox/tapestry-dev/</archive>
+        </mailingList>
+        <mailingList>
+            <name>Tapestry Commits List</name>
+            <subscribe>tapestry-commits-subscribe@tapestry.apache.org</subscribe>
+            <unsubscribe>tapestry-commits-unsubscribe@tapestry.apache.org</unsubscribe>
+            <archive>http://mail-archives.apache.org/mod_mbox/tapestry-commits/</archive>
+        </mailingList>
+    </mailingLists>
+    
     <developers>
         <developer>
             <id>hls</id>
@@ -72,6 +80,7 @@
             <timezone>EST</timezone>
         </developer>
     </developers>
+    
     <modules>
         <module>framework</module>
         <module>contrib</module>
@@ -79,6 +88,7 @@
         <module>portlet</module>
         <module>examples</module>
     </modules>
+    
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -201,15 +211,24 @@
         </plugins>
     </reporting>
     <distributionManagement>
-    <site>
-      <id>tapestry</id>
-      <url>scp://minotaur.apache.org/www/tapestry.apache.org/tapestry4/</url>
-    </site>
+        <site>
+            <id>tapestry</id>
+            <url>scp://minotaur.apache.org/www/tapestry.apache.org/tapestry4.1/</url>
+        </site>
+        <repository>
+            <id>tapestry-repo</id>
+            <url>scp://minotaur.apache.org/www/www.apache.org/dist/maven-repository</url>
+        </repository>
+        <snapshotRepository>
+            <id>tapestry-snapshot-repo</id>
+            <url>scp://minotaur.apache.org/www/cvs.apache.org/maven-snapshot-repository</url>
+        </snapshotRepository>
     </distributionManagement>
-<repositories>
- <repository>
-   <id>apache.snapshots</id>
-   <url>http://cvs.apache.org/maven-snapshot-repository</url>
- </repository>
-</repositories>
+    
+    <repositories>
+        <repository>
+            <id>apache.snapshots</id>
+            <url>http://cvs.apache.org/maven-snapshot-repository</url>
+        </repository>
+    </repositories>
 </project>

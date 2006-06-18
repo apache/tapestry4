@@ -13,6 +13,8 @@
 // limitations under the License.
 package org.apache.tapestry.enhance;
 
+import static org.easymock.EasyMock.expect;
+
 import java.lang.reflect.Modifier;
 import java.util.Collections;
 
@@ -21,7 +23,6 @@ import org.apache.hivemind.Registry;
 import org.apache.hivemind.impl.RegistryBuilder;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.easymock.MockControl;
 
 
 /**
@@ -48,40 +49,31 @@ public class TestAutowireWorker extends BaseEnhancementTestCase
     {
         final Registry registry = buildFrameworkRegistry("autowire-single.xml" );
         Location l = newLocation();
-        MockControl opControl = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opControl.getMock();
+        EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
         
-        op.findUnclaimedAbstractProperties();
-        opControl.setReturnValue( Collections.singletonList( HELLO_SERVICE_PROPERTY ) );
+        expect(op.findUnclaimedAbstractProperties())
+        .andReturn(Collections.singletonList( HELLO_SERVICE_PROPERTY ));
         
-        op.getPropertyType( HELLO_SERVICE_PROPERTY );
-        opControl.setReturnValue( HelloService.class );
+        expect(op.getPropertyType( HELLO_SERVICE_PROPERTY )).andReturn(HelloService.class);
         
-        op.canClaimAsReadOnlyProperty(HELLO_SERVICE_PROPERTY);
-        opControl.setReturnValue(true);
+        expect(op.canClaimAsReadOnlyProperty(HELLO_SERVICE_PROPERTY)).andReturn(true);
         
-        MockControl specControl = newControl( IComponentSpecification.class );
-        IComponentSpecification spec = ( IComponentSpecification )specControl.getMock();
+        IComponentSpecification spec = ( IComponentSpecification )newMock(IComponentSpecification.class);
         
-        spec.getLocation();
-        specControl.setReturnValue( l );
+        expect(spec.getLocation()).andReturn(l);
         
-        spec.getDescription();
-        specControl.setReturnValue( "Component1" );
+        expect(spec.getDescription()).andReturn("Component1");
         
         final String fieldName = "_$" + HELLO_SERVICE_PROPERTY;
         final HelloService proxy = ( HelloService )registry.getService( HelloService.class );
         
-        op.addInjectedField( fieldName, HelloService.class, proxy );
-        opControl.setReturnValue( fieldName );
+        expect(op.addInjectedField( fieldName, HelloService.class, proxy )).andReturn( fieldName );
         
-        op.getAccessorMethodName( HELLO_SERVICE_PROPERTY );
-        opControl.setReturnValue( "getHelloService" );
+        expect(op.getAccessorMethodName( HELLO_SERVICE_PROPERTY )).andReturn("getHelloService");
         
         op.addMethod(Modifier.PUBLIC, new MethodSignature(HelloService.class, "getHelloService", null,
                 null), "return " + fieldName + ";", l);
         op.claimReadonlyProperty( HELLO_SERVICE_PROPERTY );
-        opControl.setVoidCallable();
         
         replayControls();
         
@@ -93,17 +85,14 @@ public class TestAutowireWorker extends BaseEnhancementTestCase
     
     private void assertNotAutowired( Registry registry )
     {
-        MockControl opControl = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opControl.getMock();
+        EnhancementOperation op = (EnhancementOperation)newMock(EnhancementOperation.class);
         
-        op.findUnclaimedAbstractProperties();
-        opControl.setReturnValue( Collections.singletonList( HELLO_SERVICE_PROPERTY ) );
+        expect(op.findUnclaimedAbstractProperties())
+        .andReturn(Collections.singletonList( HELLO_SERVICE_PROPERTY ));
         
-        op.getPropertyType( HELLO_SERVICE_PROPERTY );
-        opControl.setReturnValue( HelloService.class );
+        expect(op.getPropertyType( HELLO_SERVICE_PROPERTY )).andReturn(HelloService.class);
         
-        op.canClaimAsReadOnlyProperty(HELLO_SERVICE_PROPERTY);
-        opControl.setReturnValue(true);
+        expect(op.canClaimAsReadOnlyProperty(HELLO_SERVICE_PROPERTY)).andReturn(true);
         
         replayControls();
         

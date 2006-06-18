@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.contrib.components;
 
+import static org.easymock.EasyMock.expect;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -25,7 +27,6 @@ import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.test.Creator;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.contrib.components.DumpObject}
@@ -120,15 +121,13 @@ public class TestDumpObject extends HiveMindTestCase
 
     private IRequestCycle newCycle(boolean isRewinding)
     {
-        MockControl control = newControl(IRequestCycle.class);
-        IRequestCycle cycle = (IRequestCycle) control.getMock();
-
-        cycle.isRewinding();
-        control.setReturnValue(isRewinding);
-
+        IRequestCycle cycle = (IRequestCycle)newMock(IRequestCycle.class);
+        
+        expect(cycle.isRewinding()).andReturn(isRewinding);
+        
         return cycle;
     }
-
+    
     private IMarkupWriter newWriter()
     {
         return (IMarkupWriter) newMock(IMarkupWriter.class);

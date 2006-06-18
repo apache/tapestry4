@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.vlib.services;
 
+import static org.easymock.EasyMock.*;
 import java.rmi.RemoteException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -58,8 +59,7 @@ public class RemoteTemplateTest extends HiveMindTestCase
 
         coordinator.fireRemoteExceptionDidOccur(callback, t);
 
-        callback.doRemote();
-        setReturnValue(callback, "rubble");
+        expect(callback.doRemote()).andReturn("rubble");
 
         replayControls();
 
@@ -115,8 +115,7 @@ public class RemoteTemplateTest extends HiveMindTestCase
         IOperations operations = newOperations();
         Person person = new Person(new Object[Person.NUM_COLUMNS]);
 
-        operations.getPerson(personId);
-        setReturnValue(operations, person);
+        expect(operations.getPerson(personId)).andReturn(person);
 
         replayControls();
 
@@ -133,8 +132,7 @@ public class RemoteTemplateTest extends HiveMindTestCase
         IOperations operations = newOperations();
         Person[] persons = new Person[0];
 
-        operations.getPersons();
-        setReturnValue(operations, persons);
+        expect(operations.getPersons()).andReturn(persons);
 
         replayControls();
 
@@ -153,8 +151,7 @@ public class RemoteTemplateTest extends HiveMindTestCase
         IOperations operations = newOperations();
         Book book = new Book(new Object[Book.NUM_COLUMNS]);
 
-        operations.getBook(bookId);
-        setReturnValue(operations, book);
+        expect(operations.getBook(bookId)).andReturn(book);
 
         replayControls();
 
@@ -173,8 +170,7 @@ public class RemoteTemplateTest extends HiveMindTestCase
 
     private void trainDoRemote(RemoteCallback callback, Throwable t) throws RemoteException
     {
-        callback.doRemote();
-        setThrowable(callback, t);
+        expect(callback.doRemote()).andThrow(t);
     }
 
     private RemoteExceptionCoordinator newCoordinator()
