@@ -14,6 +14,7 @@
     </parent>
     <name>Core Library</name>
     <inceptionYear>2006</inceptionYear>
+
     <dependencies>
         <dependency>
             <groupId>jboss</groupId>
@@ -92,21 +93,73 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <build>
         <sourceDirectory>src/java</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>src/descriptor/META-INF</directory>
+                <includes>
+                    <include>**</include>
+                </includes>
+                <targetPath>META-INF</targetPath>
+            </resource>
+            <resource>
+                <directory>src/java</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/js/dojo</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <targetPath>dojo</targetPath>
+            </resource>
+            <resource>
+                <directory>src/js/tapestry</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <targetPath>tapestry</targetPath>
+            </resource>
+        </resources>
+
         <testSourceDirectory>src/test</testSourceDirectory>
+        <testResources>
+            <testResource>
+                <directory>src/test</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </testResource>
+            <testResource>
+                <directory>src/conf</directory>
+                <includes>
+                    <include>log4j.properties</include>
+                </includes>
+            </testResource>
+        </testResources>
 
         <plugins>
-                <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.2</version> 
+                <version>2.2</version>
                 <configuration>
                     <testSourceDirectory>src/test</testSourceDirectory>
                 </configuration>
-                </plugin>
+            </plugin>
         </plugins>
     </build>
+
     <reporting>
         <outputDirectory>../target/site/framework</outputDirectory>
         <plugins>
@@ -120,8 +173,14 @@
                 <reportSets>
                     <reportSet>
                         <reports>
-                            <report>dependencies</report>
                             <report>index</report>
+                            <report>dependencies</report>
+                            <report>project-team</report>
+                            <report>mailing-list</report>
+                            <report>cim</report>
+                            <report>issue-tracking</report>
+                            <report>license</report>
+                            <report>scm</report>
                         </reports>
                     </reportSet>
                 </reportSets>
@@ -134,12 +193,25 @@
                     <destDir>../target/site/framework/apidocs</destDir>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <configuration>
+                    <configLocation>${basedir}/tapestry-checkstyle.xml</configLocation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clover-plugin</artifactId>
+            </plugin>
         </plugins>
     </reporting>
-    <distributionManagement>
-    <site>
-      <id>tapestry</id>
-      <url>scp://minotaur.apache.org/www/tapestry.apache.org/tapestry4/framework</url>
-    </site>
-    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>apache.snapshots</id>
+            <url>http://cvs.apache.org/maven-snapshot-repository</url>
+        </repository>
+    </repositories>
+
 </project>

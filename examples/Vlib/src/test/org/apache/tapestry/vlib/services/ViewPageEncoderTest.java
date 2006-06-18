@@ -14,11 +14,14 @@
 
 package org.apache.tapestry.vlib.services;
 
+import static org.easymock.EasyMock.aryEq;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ServiceEncoding;
 import org.apache.tapestry.services.ServiceConstants;
-import org.easymock.internal.ArrayMatcher;
 
 /**
  * Tests for {@link org.apache.tapestry.vlib.services.ViewPageEncoder}.
@@ -106,10 +109,9 @@ public class ViewPageEncoderTest extends HiveMindTestCase
 
         encoding.setParameterValue(ServiceConstants.SERVICE, Tapestry.EXTERNAL_SERVICE);
         encoding.setParameterValue(ServiceConstants.PAGE, "ViewBook");
-        encoding.setParameterValues(ServiceConstants.PARAMETER, new String[]
-        { "2001" });
-        getControl(encoding).setMatcher(new ArrayMatcher());
-
+        encoding.setParameterValues(eq(ServiceConstants.PARAMETER), aryEq(new String[]
+        { "2001" }));
+        
         replayControls();
 
         _encoder.decode(encoding);
@@ -119,20 +121,17 @@ public class ViewPageEncoderTest extends HiveMindTestCase
 
     protected void trainGetPathInfo(ServiceEncoding encoding, String pathInfo)
     {
-        encoding.getPathInfo();
-        setReturnValue(encoding, pathInfo);
+        expect(encoding.getPathInfo()).andReturn(pathInfo);
     }
 
     private void trainGetServletPath(ServiceEncoding encoding, String servletPath)
     {
-        encoding.getServletPath();
-        setReturnValue(encoding, servletPath);
+        expect(encoding.getServletPath()).andReturn(servletPath);
     }
 
     private void trainGetParameterValues(ServiceEncoding encoding, String name, String[] values)
     {
-        encoding.getParameterValues(name);
-        setReturnValue(encoding, values);
+        expect(encoding.getParameterValues(name)).andReturn(values);
     }
 
     private ServiceEncoding newEncoding()
@@ -142,7 +141,6 @@ public class ViewPageEncoderTest extends HiveMindTestCase
 
     private void trainGetParameterValue(ServiceEncoding encoding, String name, String value)
     {
-        encoding.getParameterValue(name);
-        setReturnValue(encoding, value);
+        expect(encoding.getParameterValue(name)).andReturn(value);
     }
 }

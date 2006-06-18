@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="Apache Tapestry">
+
+<project name="Tapestry">
     <bannerLeft>
-        <name>Tapestry</name>
+        <name>Tapestry Web Application Framework</name>
         <href>http://tapestry.apache.org/</href>
         <src>images/tapestry_banner.gif</src>
     </bannerLeft>
     <bannerRight>
-        <name>Apache</name>
+        <name>Apache Software Foundation</name>
         <href>http://www.apache.org</href>
         <src>images/asf_logo_wide.gif</src>
     </bannerRight>
+    
     <skin>
         <groupId>org.apache.tapestry</groupId>
         <artifactId>maven-skin</artifactId>
         <version>1.0-SNAPSHOT</version>
     </skin>
+    
+    <publishDate format="dd MMM yyyy" />
+    
     <body>
         <links>
-            <item name="Apache" href="http://www.apache.org/"/>
-        </links> 
+            <item name="Tapestry" href="http://tapestry.apache.org" />
+            <item name="Hivemind" href="http://jakarta.apache.org/hivemind" />
+            <item name="Apache" href="http://www.apache.org/" />
+        </links>
         
-        <menu name="Developer Info">
-            <item name="Environment" href="dev/env.html"/>
-        </menu>
+        <head>
+            <script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
+            <script type="text/javascript">_uacct = "UA-400821-1"; urchinTracker();</script>
+        </head>
         
         <menu ref="modules" />
         
         ${reports} 
     </body>
+    
 </project>

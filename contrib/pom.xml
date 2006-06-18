@@ -25,29 +25,84 @@
             <artifactId>jboss-j2ee</artifactId>
             <version>4.0.2</version>
         </dependency>
+        <dependency>
+            <groupId>hivemind</groupId>
+            <artifactId>hivemind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>hivemind</groupId>
+            <artifactId>hivemind-lib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymockclassextension</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.9</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+    
     <build>
         <sourceDirectory>src/java</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>src/descriptor/META-INF</directory>
+                <includes><include>**</include></includes>
+                <targetPath>META-INF</targetPath>
+            </resource>
+            <resource>
+                <directory>src/java</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        
         <testSourceDirectory>src/test</testSourceDirectory>
+        <testResources>
+            <testResource>
+                <directory>src/test</directory>
+                <includes><include>**/*</include></includes>
+                 <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
 
         <plugins>
-                <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.2</version>
-                </plugin>
+            </plugin>
         </plugins>
     </build>
+
     <reporting>
         <outputDirectory>../target/site/contrib</outputDirectory>
         <plugins>
-            <!-- 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>surefire-report-maven-plugin</artifactId>
             </plugin>
-             -->
-           <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <reportSets>
@@ -69,10 +124,5 @@
             </plugin>
         </plugins>
     </reporting>
-    <distributionManagement>
-    <site>
-      <id>tapestry</id>
-      <url>scp://minotaur.apache.org/www/tapestry.apache.org/tapestry4/contrib</url>
-    </site>
-    </distributionManagement>
+
 </project>

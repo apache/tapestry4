@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.vlib.services;
 
+import static org.easymock.EasyMock.*;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
@@ -40,8 +41,7 @@ public class ErrorPresenterTest extends HiveMindTestCase
 
     protected void trainGetPage(IRequestCycle cycle, String pageName, IPage page)
     {
-        cycle.getPage(pageName);
-        setReturnValue(cycle, page);
+        expect(cycle.getPage(pageName)).andReturn(page);
     }
 
     protected Visit newVisit()
@@ -55,8 +55,7 @@ public class ErrorPresenterTest extends HiveMindTestCase
         IErrorProperty page = newPage();
         ApplicationStateManager manager = newApplicationStateManager();
 
-        manager.exists("visit");
-        setReturnValue(manager, false);
+        expect(manager.exists("visit")).andReturn(false);
 
         trainGetPage(cycle, "Home", page);
 
@@ -78,14 +77,11 @@ public class ErrorPresenterTest extends HiveMindTestCase
         ApplicationStateManager manager = newApplicationStateManager();
         Visit visit = newVisit();
 
-        manager.exists("visit");
-        setReturnValue(manager, true);
+        expect(manager.exists("visit")).andReturn(true);
 
-        manager.get("visit");
-        setReturnValue(manager, visit);
+        expect(manager.get("visit")).andReturn(visit);
 
-        visit.isUserLoggedIn();
-        setReturnValue(visit, false);
+        expect(visit.isUserLoggedIn()).andReturn(false);
 
         trainGetPage(cycle, "Home", page);
 
@@ -122,14 +118,11 @@ public class ErrorPresenterTest extends HiveMindTestCase
         ApplicationStateManager manager = newApplicationStateManager();
         Visit visit = newVisit();
 
-        manager.exists("visit");
-        setReturnValue(manager, true);
+        expect(manager.exists("visit")).andReturn(true);
 
-        manager.get("visit");
-        setReturnValue(manager, visit);
+        expect(manager.get("visit")).andReturn(visit);
 
-        visit.isUserLoggedIn();
-        setReturnValue(visit, true);
+        expect(visit.isUserLoggedIn()).andReturn(true);
 
         trainGetPage(cycle, "MyLibrary", page);
 
