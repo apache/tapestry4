@@ -196,10 +196,8 @@
                 <reportSets>
                     <reportSet>
                         <reports>
-                            <report>dependencies</report>
                             <report>project-team</report>
                             <report>mailing-list</report>
-                            <report>cim</report>
                             <!-- mailing-list, cim -->
                             <report>license</report>
                             <report>scm</report>
