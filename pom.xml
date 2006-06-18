@@ -78,7 +78,6 @@
         <module>annotations</module>
         <module>portlet</module>
         <module>examples</module>
-        <module>maven-skin</module>
     </modules>
     <dependencyManagement>
         <dependencies>
