@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<document>
+    <properties>
+        <title>Tapestry 4.1 - Dojo Integrated</title>
+        <author email="jkuhnert@apache.org">Jesse Kuhnert</author>
+    </properties>
+    <body>
+        <section name="Upcoming Release">
+            <p>
+                This development series is focused around providing a full layer of support for building
+                highly dynamic web applications(XHR/ajax/dhtml) using all of the resources that modern browsers allow. 
+            </p>
+            
+            <p>
+                Tapestry is an open-source framework for creating dynamic, robust, highly scalable
+                web applications in Java. Tapestry complements and builds upon the standard Java
+                Servlet API, and so it works in any servlet container or application server.
+            </p>
+        </section>
+        
+        <section name="Dojo - The JavaScript Toolkit">
+            <p>
+                Most of the functionality in this series is based entirely on the wonderful <a href="http://dojotoolkit.org">Dojo</a>
+                javascript toolkit library. Not to say that you won't easily be able to plug in another toolkit if
+                you like, just that the defaults will all be based around dojo.
+            </p>
+        </section>
+    </body>
+</document>

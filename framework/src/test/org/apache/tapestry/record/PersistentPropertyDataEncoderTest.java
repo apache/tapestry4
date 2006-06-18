@@ -15,8 +15,6 @@
 package org.apache.tapestry.record;
 
 import java.io.File;
-import java.io.Serializable;
-import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.hivemind.util.PropertyUtils;
 
 /**
  * Tests for {@link org.apache.tapestry.record.PersistentPropertyDataEncoderImpl}.

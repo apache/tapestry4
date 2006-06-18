@@ -16,7 +16,6 @@ package org.apache.tapestry.junit.utils;
 
 import java.io.File;
 import java.io.Serializable;
-import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -29,7 +28,6 @@ import junit.framework.TestCase;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.impl.DefaultClassResolver;
-import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.ComponentAddress;
 import org.apache.tapestry.util.io.DataSqueezerImpl;

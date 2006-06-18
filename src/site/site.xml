@@ -32,6 +32,11 @@
             <script type="text/javascript">_uacct = "UA-400821-1"; urchinTracker();</script>
         </head>
         
+        <menu name="Quick Links">
+            <item name="Home" href="/index.html" />
+            <item name="Download" href="/download.html" />
+        </menu>
+        
         <menu ref="modules" />
         
         ${reports} 

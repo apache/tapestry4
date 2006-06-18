@@ -1,0 +1,43 @@
+ ------
+Download Tapestry 4.1.0 Snapshot
+ ------
+Jesse Kuhnert
+ ------
+18 June 2006
+ ------
+
+Download Tapestry 4.1.0 Snapshot
+
+  The Tapestry snapshot builds are currently only available via the maven2 repository at
+  
+  {{{http://people.apache.org/maven-snapshot-repository/}}}
+	
+  This release is currently under active development and should not be considered stable. To add this repository
+  to your own projects pom.xml you will need a section that looks like:
+
++---------------------------------------------------------
+<repositories>
+	<repository>
+    	<id>apache.snapshots</id>
+        <url>http://cvs.apache.org/maven-snapshot-repository</url>
+    </repository>
+</repositories>
++---------------------------------------------------------
+
+  The dependency inclusion rules should be easy once you have the snapshot repository installed, here is 
+  an example of adding just the framework and annotation modules:
+
++---------------------------------------------------------
+<dependency>
+    <groupId>org.apache.tapestry</groupId>
+    <artifactId>framework</artifactId>
+    <version>4.1.0-SNAPSHOT</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.tapestry</groupId>
+    <artifactId>annotations</artifactId>
+    <version>4.1.0-SNAPSHOT</version>
+</dependency>
++---------------------------------------------------------
+
+  Tapestry 4.1.0 is distributed under the {{{http://tapestry.apache.org/license.html} Apache License, version 2.0}}.
