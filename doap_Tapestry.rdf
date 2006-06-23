@@ -4,18 +4,18 @@
          xmlns="http://usefulinc.com/ns/doap#" 
          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
          xmlns:asfext="http:projects.apache.org/ns/asfext#">
-  <Project rdf:about="http://jakarta.apache.org/tapestry/">
+  <Project rdf:about="http://tapestry.apache.org/">
     <created>2006-01-31</created>
     <license rdf:resource="http://usefulinc.com/doap/licenses/asl20" />
     <name>Apache Tapestry</name>
     <!-- Not for long! -->
-    <homepage rdf:resource="http://jakarta.apache.org/tapestry/" />
-    <asfext:pmc rdf:resource="http://jakarta.apache.org" />
+    <homepage rdf:resource="http://tapestry.apache.org/" />
+    <asfext:pmc rdf:resource="http://tapestry.apache.org/" />
     <shortdesc>Framework for creating dynamic, robust, highly scalable web applications</shortdesc>
     <description>Tapestry is a component-based web application framework, written in Java. Tapestry is more than a simple templating system; Tapestry builds on the Java Servlet API to build a platform for creating dynamic, interactive web sites. More than just another templating language, Tapestry is a real framework for building complex applications from simple, reusable components. Tapestry offloads much of the error-prone work in creating web applications into the framework itself, taking over mundane tasks such as dispatching incoming requests, constructing and interpretting URLs encoded with information, handling localization and internationalization and much more besides.</description>
     <bug-database rdf:resource="http://issues.apache.org/jira/secure/BrowseProject.jspa?id= 10573" />
-    <mailing-list rdf:resource="http://jakarta.apache.org/site/mail2.html#Tapestry" />
-    <download-page rdf:resource="http://jakarta.apache.org/tapestry/downloads.html" />
+    <mailing-list rdf:resource="http://tapestry.apache.org/mail-lists.html" />
+    <download-page rdf:resource="http://tapestry.apache.org/download.html" />
     <programming-language>Java</programming-language>
     <category rdf:resource="http://projects.apache.org/category/web-framework" />
     <release>
