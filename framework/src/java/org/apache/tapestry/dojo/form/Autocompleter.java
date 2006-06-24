@@ -104,6 +104,7 @@ public abstract class Autocompleter extends AbstractFormWidget
         }
         
         parms.put("props", json.toString());
+        parms.put("form", getForm().getName());
         
         PageRenderSupport prs = TapestryUtils.getPageRenderSupport(cycle, this);
         getScript().execute(cycle, prs, parms);

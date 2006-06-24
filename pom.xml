@@ -9,7 +9,7 @@
     <description>Java Web Application Framework</description>
     <name>Tapestry</name>
     <inceptionYear>2006</inceptionYear>
-    <url>http://tapestry.apache.org/tapestry4</url>
+    <url>http://tapestry.apache.org/tapestry4.1/</url>
 
     <licenses>
         <license>
@@ -212,15 +212,15 @@
     <distributionManagement>
         <site>
             <id>tapestry</id>
-            <url>scp://minotaur.apache.org/www/tapestry.apache.org/tapestry4.1/</url>
+            <url>scp://apache.org/www/tapestry.apache.org/tapestry4.1/</url>
         </site>
         <repository>
             <id>tapestry-repo</id>
-            <url>scp://minotaur.apache.org/www/www.apache.org/dist/maven-repository</url>
+            <url>scp://apache.org/www/www.apache.org/dist/maven-repository</url>
         </repository>
         <snapshotRepository>
             <id>tapestry-snapshot-repo</id>
-            <url>scp://minotaur.apache.org/www/cvs.apache.org/maven-snapshot-repository</url>
+            <url>scp://apache.org/www/cvs.apache.org/maven-snapshot-repository</url>
         </snapshotRepository>
     </distributionManagement>
 

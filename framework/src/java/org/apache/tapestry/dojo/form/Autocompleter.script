@@ -5,6 +5,7 @@
 <script>
 <input-symbol key="id" required="yes" />
 <input-symbol key="props" required="yes" />
+<input-symbol key="form" required="yes" />
     <body>
         <unique>
             dojo.require("dojo.io");

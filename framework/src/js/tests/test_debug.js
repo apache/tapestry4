@@ -20,10 +20,5 @@ function test_debug_logLevel(){
 	dojo.log.debug("DEFINITELY SHOULDNT see this");
 	jum.assertEquals("logmsglength", currLength, dojo.logging.logQueueHandler.data.length);
 	
-	currLength = dojo.logging.logQueueHandler.data.length;
-	dojo.log.warn("Filtered warning");
-	dojo.log.err("Filtered error");
-	jum.assertEquals("logmsgfilteredlength", currLength + 2, dojo.logging.logQueueHandler.data.length);
-	
 	dojo.log.setLevel(dojo.log.getLevel("DEBUG"));
 }

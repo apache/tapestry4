@@ -3,13 +3,13 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.tapestry</groupId>
-    <artifactId>Workbench</artifactId>
+    <artifactId>tapestry-Workbench</artifactId>
     <packaging>jar</packaging>
     <version>4.1.0-SNAPSHOT</version>
     <!-- This should change to tapestry-project -->
     <parent>
         <groupId>org.apache.tapestry</groupId>
-        <artifactId>examples</artifactId>
+        <artifactId>tapestry-examples</artifactId>
         <version>4.1.0-SNAPSHOT</version>
     </parent>
     <name>Tapestry Workbench</name>
@@ -22,11 +22,11 @@
         </dependency>
         <dependency>
             <groupId>org.apache.tapestry</groupId>
-            <artifactId>annotations</artifactId>
+            <artifactId>tapestry-annotations</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.tapestry</groupId>
-            <artifactId>contrib</artifactId>
+            <artifactId>tapestry-contrib</artifactId>
         </dependency>
     </dependencies>
     <build>
