@@ -22,8 +22,8 @@
     
     <body>
         <links>
-            <item name="Tapestry" href="http://tapestry.apache.org" />
-            <item name="Hivemind" href="http://jakarta.apache.org/hivemind" />
+            <item name="Tapestry" href="http://tapestry.apache.org/" />
+            <item name="Hivemind" href="http://jakarta.apache.org/hivemind/" />
             <item name="Apache" href="http://www.apache.org/" />
         </links>
         

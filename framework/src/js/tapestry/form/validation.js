@@ -77,8 +77,6 @@ tapestry.form.validation={
 	processResults:function(form, results, profile){
 		if (results.isSuccessful()) return true; 
 		
-		// TODO: Need to remove previous field validation
-		// decorations for things fixed since last run
 		var formValid=true;
 		if (results.hasMissing()) {
 			var missing=results.getMissing();
@@ -99,6 +97,16 @@ tapestry.form.validation={
 	 * @param profile The form validation profile.
 	 */
 	handleMissingField:function(field, profile){
+		// if it's a widget form control try to point the field
+		// to the widget controlled field
+		/* var w=dojo.widget.byId(field);
+		if (w) {
+			if (w["textInputNode"]){
+				field=w.textInputNode;
+			}
+		}
+		*/
+		
 		dojo.html.removeClass(field, this.invalidClass);
 		
 		if (!dojo.html.hasClass(field, this.missingClass)){
@@ -120,6 +128,10 @@ tapestry.form.validation={
 		}
 	},
 	
+	/**
+	 * Clears out previous css classes set on fields 
+	 * in error.
+	 */
 	clearValidationDecorations:function(form, props){
 		for (var i=0; i<form.elements.length; i++) {
 			dojo.html.removeClass(form.elements[i], this.missingClass);
