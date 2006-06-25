@@ -21,6 +21,13 @@
         <load service-id="timetracker.db.DatabaseInstaller" />
     </contribution>
     
+    <contribution configuration-id="tapestry.url.ServiceEncoders">
+        <asset-encoder id="asset" path="/assets" />
+        <extension-encoder id="extension" extension="svc" after="*"/>
+        <direct-service-encoder id="direct" stateless-extension="direct" stateful-extension="sdirect"/>
+        <page-service-encoder id="page" extension="htm" service="page"/>
+    </contribution>
+    
     <sub-module descriptor="timetracker.db.xml" />
     <sub-module descriptor="timetracker.dao.xml" />
 </module>
