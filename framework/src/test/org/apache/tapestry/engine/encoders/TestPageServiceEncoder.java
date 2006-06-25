@@ -71,6 +71,32 @@ public class TestPageServiceEncoder extends HiveMindTestCase
         verifyControls();
     }
 
+    public void testEncodeHtm()
+    {
+        MockControl control = newControl(ServiceEncoding.class);
+        ServiceEncoding e = (ServiceEncoding) control.getMock();
+
+        e.getParameterValue(ServiceConstants.SERVICE);
+        control.setReturnValue("page");
+
+        e.getParameterValue(ServiceConstants.PAGE);
+        control.setReturnValue("Home");
+
+        e.setServletPath("/Home.htm");
+        e.setParameterValue(ServiceConstants.SERVICE, null);
+        e.setParameterValue(ServiceConstants.PAGE, null);
+
+        replayControls();
+
+        PageServiceEncoder encoder = new PageServiceEncoder();
+        encoder.setServiceName("page");
+        encoder.setExtension("htm");
+
+        encoder.encode(e);
+
+        verifyControls();
+    }
+    
     public void testEncodeInNamespace()
     {
         MockControl control = newControl(ServiceEncoding.class);
@@ -158,6 +184,28 @@ public class TestPageServiceEncoder extends HiveMindTestCase
 
         PageServiceEncoder encoder = new PageServiceEncoder();
         encoder.setExtension("html");
+        encoder.setServiceName("page");
+
+        encoder.decode(e);
+
+        verifyControls();
+    }
+    
+    public void testDecodeHtmSuccess()
+    {
+        MockControl control = newControl(ServiceEncoding.class);
+        ServiceEncoding e = (ServiceEncoding) control.getMock();
+
+        e.getServletPath();
+        control.setReturnValue("/Home.htm");
+
+        e.setParameterValue(ServiceConstants.SERVICE, "page");
+        e.setParameterValue(ServiceConstants.PAGE, "Home");
+
+        replayControls();
+
+        PageServiceEncoder encoder = new PageServiceEncoder();
+        encoder.setExtension("htm");
         encoder.setServiceName("page");
 
         encoder.decode(e);
